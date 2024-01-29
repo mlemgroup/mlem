@@ -6,8 +6,8 @@
 //
 
 import Dependencies
-import SwiftUI
 import PhotosUI
+import SwiftUI
 
 extension HorizontalAlignment {
     enum LabelStart: AlignmentID {
@@ -32,7 +32,6 @@ struct PostComposerView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    let postTracker: PostTracker
     let editModel: PostEditorModel
     
     @AppStorage("promptUser.permission.privacy.allowImageUploads") var askedForPermissionToUploadImages: Bool = false
@@ -49,14 +48,16 @@ struct PostComposerView: View {
     @State var isShowingErrorDialog: Bool = false
     @State var errorDialogMessage: String = ""
     
-    @State var uploadTask: Task<(), any Error>?
+    @State var uploadTask: Task<Void, any Error>?
     
     @Environment(\.layoutDirection) var layoutDirection
     
     @FocusState private var focusedField: Field?
     
+    @State var titleSlurMatch: String?
+    @State var bodySlurMatch: String?
+    
     init(editModel: PostEditorModel) {
-        self.postTracker = editModel.postTracker
         self.editModel = editModel
         
         self._postTitle = State(initialValue: editModel.editPost?.post.name ?? "")
@@ -75,25 +76,10 @@ struct PostComposerView: View {
                 .edgesIgnoringSafeArea(.bottom)
                 VStack(spacing: 0) {
                     // Community Row
-                    HStack {
-                        CommunityLabelView(
-                            community: editModel.community,
-                            serverInstanceLocation: .bottom,
-                            overrideShowAvatar: true
-                        )
-                        Spacer()
-                        if let person = siteInformation.myUserInfo?.localUserView.person {
-                            UserLabelView(
-                                person: person,
-                                serverInstanceLocation: .bottom,
-                                overrideShowAvatar: true
-                            )
-                            .environment(\.layoutDirection, layoutDirection == .leftToRight ? .rightToLeft : .leftToRight)
-                        }
-                    }
-                    .padding(.bottom, 15)
-                    .padding(.horizontal)
-                    .zIndex(1)
+                    headerView
+                        .padding(.bottom, 15)
+                        .padding(.horizontal)
+                        .zIndex(1)
                     
                     VStack(spacing: 15) {
                         TextField("Title", text: $postTitle, axis: .vertical)
@@ -105,17 +91,22 @@ struct PostComposerView: View {
                             }
                             .padding(.top)
                             .padding(.horizontal)
+                            .onChange(of: postTitle) { newValue in
+                                titleSlurMatch = siteInformation.instance?.firstSlurFilterMatch(newValue)
+                            }
                                              
                         if attachmentModel.imageModel != nil || attachmentModel.url.isNotEmpty {
                             VStack {
                                 let url = URL(string: attachmentModel.url)
                                 if !(url?.isImage ?? true) {
                                     HStack(spacing: AppConstants.postAndCommentSpacing) {
-                                        Image(systemName: "link")
+                                        Image(systemName: Icons.websiteAddress)
                                             .foregroundStyle(.blue)
+                                            .padding(.leading, 5)
                                         Text(attachmentModel.url)
                                             .foregroundStyle(.secondary)
                                             .lineLimit(1)
+                                        Spacer()
                                         Button(action: attachmentModel.removeLinkAction, label: {
                                             Image(systemName: Icons.close)
                                                 .fontWeight(.semibold)
@@ -143,7 +134,6 @@ struct PostComposerView: View {
                                                 .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
                                         }
                                         VStack(alignment: .leading) {
-                                            
                                             if attachmentModel.imageModel?.state == nil {
                                                 Text("Attached Image")
                                             } else {
@@ -189,6 +179,9 @@ struct PostComposerView: View {
                         .accessibilityLabel("Post Body")
                         .focused($focusedField, equals: .body)
                         .padding(.horizontal)
+                        .onChange(of: postBody) { newValue in
+                            bodySlurMatch = siteInformation.instance?.firstSlurFilterMatch(newValue)
+                        }
                         
                         Spacer()
                     }
@@ -236,11 +229,10 @@ struct PostComposerView: View {
                         }
                     }
                     .accessibilityLabel("Toggle NSFW")
-                    
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     LinkUploadOptionsView(model: attachmentModel) {
-                        Label("Attach image or link", systemImage: "link")
+                        Label("Attach Image or Link", systemImage: Icons.websiteAddress)
                     }
                     .disabled(attachmentModel.imageModel != nil || attachmentModel.url.isNotEmpty)
                 }
@@ -264,5 +256,37 @@ struct PostComposerView: View {
         }
         .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    @ViewBuilder
+    var headerView: some View {
+        HStack {
+            CommunityLabelView(
+                community: editModel.community,
+                serverInstanceLocation: .bottom,
+                overrideShowAvatar: true
+            )
+            Spacer()
+            if let person = siteInformation.myUserInfo?.localUserView.person {
+                UserLabelView(
+                    person: person,
+                    serverInstanceLocation: .bottom,
+                    overrideShowAvatar: true
+                )
+                .environment(\.layoutDirection, layoutDirection == .leftToRight ? .rightToLeft : .leftToRight)
+            }
+        }
+        .overlay {
+            if let slurMatch = titleSlurMatch == nil ? bodySlurMatch : titleSlurMatch {
+                ZStack {
+                    Capsule()
+                        .fill(.red)
+                    Text("\"\(slurMatch)\" is disallowed.")
+                        .foregroundStyle(.white)
+                }
+                .padding(-2)
+            }
+        }
+        .animation(.default, value: titleSlurMatch == nil && bodySlurMatch == nil)
     }
 }

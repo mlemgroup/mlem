@@ -9,7 +9,6 @@
 import XCTest
 
 final class RoutableTests: XCTestCase {
-    
     private enum MockRoute: Routable {
         case routeA
         case routeB(Int)
@@ -50,23 +49,5 @@ final class RoutableTests: XCTestCase {
     func testMockRoute_handlesNestedUnsupportedValue() throws {
         let data = "Mock Unsupported Value"
         XCTAssertThrowsError(try MockRoute.routeC(.makeRoute(data)))
-    }
-    
-    // MARK: - AppRoutes
-    
-    /// Passing in raw data value should return a valid route.
-    /// Assert `(Data) –> Route`.
-    func testNavigationRouteHandlesDataValue() throws {
-        let value = CommunityLinkWithContext(community: nil, feedType: .all)
-        let route = try AppRoute.makeRoute(value)
-        XCTAssert(route == .communityLinkWithContext(value))
-    }
-    
-    /// Passing in a route enum with an associated value should return the passed in value.
-    func testNavigationRouteHandlesNonNestedAssociatedValueEnumCase() throws {
-        let data = CommunityLinkWithContext(community: nil, feedType: .all)
-        let value = AppRoute.communityLinkWithContext(data)
-        let route = try AppRoute.makeRoute(value)
-        XCTAssert(route == value)
     }
 }

@@ -46,7 +46,7 @@ enum Icons {
     
     // misc post
     static let posts: String = "doc.plaintext"
-    static let replies: String = "bubble"
+    static let replies: String = "bubble.left"
     static let unreadReplies: String = "text.bubble"
     static let textPost: String = "text.book.closed"
     static let titleOnlyPost: String = "character.bubble"

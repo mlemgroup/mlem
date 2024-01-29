@@ -21,13 +21,21 @@ struct SearchResultListView: View {
             ForEach(contentTracker.items, id: \.uid) { contentModel in
                 Group {
                     if let community = contentModel.wrappedValue as? CommunityModel {
-                        CommunityResultView(community, showTypeLabel: showTypeLabel, trackerCallback: {
-                            contentTracker.update(with: AnyContentModel($0))
-                        })
+                        CommunityResultView(
+                            community,
+                            complications: showTypeLabel ? .withTypeLabel : .withoutTypeLabel,
+                            trackerCallback: {
+                                contentTracker.update(with: AnyContentModel($0))
+                            }
+                        )
                     } else if let user = contentModel.wrappedValue as? UserModel {
-                        UserResultView(user, showTypeLabel: showTypeLabel, trackerCallback: {
-                            contentTracker.update(with: AnyContentModel($0))
-                        })
+                        UserResultView(
+                            user,
+                            complications: showTypeLabel ? .withTypeLabel : .withoutTypeLabel,
+                            trackerCallback: {
+                                contentTracker.update(with: AnyContentModel($0))
+                            }
+                        )
                     }
                 }
                 .simultaneousGesture(TapGesture().onEnded {
@@ -75,7 +83,6 @@ struct SearchResultListView: View {
 }
 
 struct SearchResultsListViewPreview: View {
-
     @StateObject var searchModel: SearchModel = .init()
     @StateObject var contentTracker: ContentTracker<AnyContentModel> = .init()
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()

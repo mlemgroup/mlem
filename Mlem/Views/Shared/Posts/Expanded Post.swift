@@ -54,8 +54,8 @@ struct ExpandedPost: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
 
     @StateObject var commentTracker: CommentTracker = .init()
-    @EnvironmentObject var postTracker: PostTracker
-    @State var post: PostModel
+    @EnvironmentObject var postTracker: StandardPostTracker
+    @StateObject var post: PostModel
     var community: CommunityModel?
     
     @State var commentErrorDetails: ErrorDetails?
@@ -85,8 +85,8 @@ struct ExpandedPost: View {
                 if commentTracker.comments.isEmpty {
                     await loadComments()
                 }
+                await post.markRead(true)
             }
-            .task { await postTracker.markRead(post: post) }
             .refreshable { await refreshComments() }
             .onChange(of: commentSortingType) { newSortingType in
                 withAnimation(.easeIn(duration: 0.4)) {
@@ -227,7 +227,8 @@ struct ExpandedPost: View {
                     
                     Spacer()
                     
-                    EllipsisMenu(size: 24, menuFunctions: genMenuFunctions())
+                    let functions = post.menuFunctions(editorTracker: editorTracker, postTracker: postTracker)
+                    EllipsisMenu(size: 24, menuFunctions: functions)
                 }
                 
                 LargePost(
@@ -258,9 +259,9 @@ struct ExpandedPost: View {
                 saved: post.saved,
                 accessibilityContext: "post",
                 widgets: layoutWidgetTracker.groups.post,
-                upvote: upvotePost,
-                downvote: downvotePost,
-                save: savePost,
+                upvote: post.toggleUpvote,
+                downvote: post.toggleDownvote,
+                save: post.toggleSave,
                 reply: replyToPost,
                 shareURL: URL(string: post.post.apId),
                 shouldShowScore: shouldShowScoreInPostBar,

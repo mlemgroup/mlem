@@ -107,6 +107,7 @@ struct WebsiteIconComplex: View {
         .accessibilityAddTraits(.isLink)
         .accessibilityLabel("\(linkLabel) from \(linkHost)")
         .cornerRadius(AppConstants.largeItemCornerRadius)
+        .background(Color.systemBackground)
         .overlay(
             RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
                 .stroke(Color(.secondarySystemBackground), lineWidth: 1)
@@ -118,6 +119,15 @@ struct WebsiteIconComplex: View {
                 if let onTapActions {
                     onTapActions()
                 }
+            }
+        }
+        .contextMenu {
+            if let url = post.linkUrl {
+                Button("Copy", systemImage: Icons.copy) {
+                    let pasteboard = UIPasteboard.general
+                    pasteboard.url = url
+                }
+                ShareLink(item: url)
             }
         }
     }

@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 30/11/2023.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct MatrixLinkView: View {
     @Dependency(\.siteInformation) var siteInformation: SiteInformationTracker
@@ -37,7 +37,7 @@ struct MatrixLinkView: View {
         Form {
             Section {
                 VStack {
-                    Image("logo.matrix")
+                    Image("matrix.logo")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 100)
@@ -48,7 +48,6 @@ struct MatrixLinkView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .listRowBackground(Color(.systemGroupedBackground))
-                
             }
             Section {
                 TextField(text: $matrixUserId) {
@@ -116,5 +115,6 @@ struct MatrixLinkView: View {
             }
         }
         .hoistNavigation()
+        .interactiveDismissDisabled(hasEdited != .unedited)
     }
 }

@@ -8,6 +8,10 @@
 import Dependencies
 import Foundation
 
+enum PersonRequestError: Error {
+    case notFound
+}
+
 class PersonRepository {
     @Dependency(\.apiClient) private var apiClient
     
@@ -45,6 +49,16 @@ class PersonRepository {
     /// - Returns: GetPersonDetailsResponse for the given user
     func loadUserDetails(for id: Int, limit: Int, savedOnly: Bool = false) async throws -> GetPersonDetailsResponse {
         try await apiClient.getPersonDetails(for: id, limit: limit, savedOnly: savedOnly)
+    }
+    
+    func loadUserDetails(for url: URL, limit: Int, savedOnly: Bool = false) async throws -> GetPersonDetailsResponse {
+        let result = try await apiClient.resolve(query: url.absoluteString)
+        switch result {
+        case let .person(person):
+            return try await loadUserDetails(for: person.person.id, limit: limit, savedOnly: savedOnly)
+        default:
+            throw PersonRequestError.notFound
+        }
     }
     
     func getUnreadCounts() async throws -> APIPersonUnreadCounts {

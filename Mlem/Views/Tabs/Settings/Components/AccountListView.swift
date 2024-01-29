@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 22/12/2023.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct QuickSwitcherView: View {
     var body: some View {
@@ -23,7 +23,7 @@ struct QuickSwitcherView: View {
 struct AccountListView: View {
     @Environment(\.setAppFlow) var setFlow
     
-    @AppStorage("accountSort") var accountSort: AccountSortMode = .name
+    @AppStorage("accountSort") var accountSort: AccountSortMode = .custom
     @AppStorage("groupAccountSort") var groupAccountSort: Bool = false
     @EnvironmentObject var appState: AppState
     
@@ -47,10 +47,14 @@ struct AccountListView: View {
         self.isQuickSwitcher = isQuickSwitcher
     }
     
+    var shouldAllowReordering: Bool {
+        (accountSort == .custom || accountsTracker.savedAccounts.count == 2) && !isQuickSwitcher
+    }
+    
     var body: some View {
         Group {
             if !isSwitching {
-                if accountsTracker.savedAccounts.count > 3 && groupAccountSort {
+                if accountsTracker.savedAccounts.count > 3, groupAccountSort {
                     ForEach(Array(accountGroups.enumerated()), id: \.offset) { offset, group in
                         Section {
                             ForEach(group.accounts, id: \.self) { account in
@@ -73,6 +77,7 @@ struct AccountListView: View {
                         ForEach(accounts, id: \.self) { account in
                             AccountButtonView(account: account, isSwitching: $isSwitching)
                         }
+                        .onMove(perform: shouldAllowReordering ? reorderAccount : nil)
                     }
                 }
                 Section {
@@ -96,7 +101,7 @@ struct AccountListView: View {
             if let text {
                 Text(text)
             }
-            if !isQuickSwitcher && accountsTracker.savedAccounts.count > 2 {
+            if !isQuickSwitcher, accountsTracker.savedAccounts.count > 2 {
                 Spacer()
                 sortModeMenu()
             }
@@ -111,11 +116,17 @@ struct AccountListView: View {
                     Label(sortMode.label, systemImage: sortMode.systemImage).tag(sortMode)
                 }
             }
+            .onChange(of: accountSort) { newValue in
+                if newValue == .custom {
+                    groupAccountSort = false
+                }
+            }
             if accountsTracker.savedAccounts.count > 3 {
                 Divider()
                 Toggle(isOn: $groupAccountSort) {
                     Label("Grouped", systemImage: "square.stack.3d.up.fill")
                 }
+                .disabled(accountSort == .custom)
             }
         } label: {
             HStack(alignment: .center, spacing: 2) {
