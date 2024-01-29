@@ -47,7 +47,10 @@ struct InstanceModel {
     var reportsEmailAdmins: Bool?
     
     init(domainName: String) throws {
-        if let url = URL(string: "https://\(domainName)") {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = domainName
+        if let url = components.url {
             self.url = url
             displayName = name
         }
