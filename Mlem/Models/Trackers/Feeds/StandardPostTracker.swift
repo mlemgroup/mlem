@@ -54,6 +54,9 @@ class StandardPostTracker: StandardTracker<PostModel> {
     private(set) var postSortType: PostSortType
     private var filters: [PostFilter: Int]
     
+    // true when the items in the tracker are stale and should not be displayed
+    @Published var isStale: Bool = false
+    
     // prefetching
     private let prefetcher = ImagePrefetcher(
         pipeline: ImagePipeline.shared,

@@ -509,7 +509,6 @@
 		CDEBC3392A9ADE6C00518D9D /* APIClient+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEBC3382A9ADE6C00518D9D /* APIClient+Post.swift */; };
 		CDEC95122B5B318B004BA288 /* CommunityFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEC95112B5B318B004BA288 /* CommunityFeedView.swift */; };
 		CDEC95142B5CBC42004BA288 /* AggregateFeedView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEC95132B5CBC42004BA288 /* AggregateFeedView+Logic.swift */; };
-		CDEC95162B5D8C05004BA288 /* SavedFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEC95152B5D8C05004BA288 /* SavedFeedView.swift */; };
 		CDEC95192B5D950D004BA288 /* PostFeedView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEC95182B5D950D004BA288 /* PostFeedView+Logic.swift */; };
 		CDF1EF162A6C3BC2003594B6 /* End Of Feed View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF1EF152A6C3BC2003594B6 /* End Of Feed View.swift */; };
 		CDF1EF182A6C40C9003594B6 /* Menu Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF1EF172A6C40C9003594B6 /* Menu Button.swift */; };
@@ -1064,7 +1063,6 @@
 		CDEBC3382A9ADE6C00518D9D /* APIClient+Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient+Post.swift"; sourceTree = "<group>"; };
 		CDEC95112B5B318B004BA288 /* CommunityFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityFeedView.swift; sourceTree = "<group>"; };
 		CDEC95132B5CBC42004BA288 /* AggregateFeedView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AggregateFeedView+Logic.swift"; sourceTree = "<group>"; };
-		CDEC95152B5D8C05004BA288 /* SavedFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedFeedView.swift; sourceTree = "<group>"; };
 		CDEC95182B5D950D004BA288 /* PostFeedView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostFeedView+Logic.swift"; sourceTree = "<group>"; };
 		CDF1EF152A6C3BC2003594B6 /* End Of Feed View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "End Of Feed View.swift"; sourceTree = "<group>"; };
 		CDF1EF172A6C40C9003594B6 /* Menu Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Menu Button.swift"; sourceTree = "<group>"; };
@@ -2784,7 +2782,6 @@
 				CDEC95112B5B318B004BA288 /* CommunityFeedView.swift */,
 				CD4BAD422B507F2B00A1E726 /* AggregateFeedView.swift */,
 				CDEC95132B5CBC42004BA288 /* AggregateFeedView+Logic.swift */,
-				CDEC95152B5D8C05004BA288 /* SavedFeedView.swift */,
 			);
 			path = "Feed Types";
 			sourceTree = "<group>";
@@ -3237,7 +3234,6 @@
 				637218672A3A2AAD008C4816 /* GetPersonDetails.swift in Sources */,
 				B1A26FE12A44AAB200B91A32 /* EnvironmentValues+NavigationPathWithRoutes.swift in Sources */,
 				CDD55D222B2674BD002020C7 /* String+ParseLinks.swift in Sources */,
-				CDEC95162B5D8C05004BA288 /* SavedFeedView.swift in Sources */,
 				6332FDC027EFB05F0009A98A /* Settings Item.swift in Sources */,
 				031A93D62AC847DA0077030C /* UploadConfirmationView.swift in Sources */,
 				CD8C55342A95515C0060B75B /* Onboarding Text.swift in Sources */,

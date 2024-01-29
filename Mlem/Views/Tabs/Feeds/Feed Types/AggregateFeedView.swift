@@ -16,8 +16,10 @@ struct AggregateFeedView: View {
     @EnvironmentObject var appState: AppState
     
     @StateObject var postTracker: StandardPostTracker
+    @StateObject var savedContentTracker: UserContentTracker
     
     @State var postSortType: PostSortType
+    @State var availableFeeds: [FeedType] = [.all, .local, .subscribed]
     
     @Binding var selectedFeed: FeedType?
     
@@ -48,13 +50,36 @@ struct AggregateFeedView: View {
             showReadPosts: showReadPosts,
             feedType: feedType
         ))
+        
+        // StateObject can't be optional so we initialize with a dummy user
+        self._savedContentTracker = .init(wrappedValue: .init(internetSpeed: internetSpeed, userId: nil, saved: true))
+        
         self._selectedFeed = selectedFeed
     }
     
     var body: some View {
         content
-            .environment(\.feedType, postTracker.feedType)
-            .environmentObject(postTracker)
+            .environment(\.feedType, selectedFeed)
+            .task(id: appState.currentActiveAccount) {
+                // ensure that .saved isn't an available feed until user id resolved
+                if let userId = appState.currentActiveAccount?.id {
+                    do {
+                        try await savedContentTracker.updateUserId(to: userId)
+                        
+                        if availableFeeds.count < 4 {
+                            availableFeeds.append(.saved)
+                        }
+                    } catch {
+                        errorHandler.handle(error)
+                    }
+                }
+            }
+            .task(id: selectedFeed) {
+                if let selectedFeed, selectedFeed != .saved {
+                    await postTracker.changeFeedType(to: selectedFeed)
+                    postTracker.isStale = false
+                }
+            }
             .refreshable {
                 await Task {
                     do {
@@ -91,9 +116,18 @@ struct AggregateFeedView: View {
                             .padding(.top, -1)
                     }
                     
-                    PostFeedView(postSortType: $postSortType, showCommunity: true)
-                        .environmentObject(postTracker)
-                        .animation(.easeOut(duration: 0.2), value: selectedFeed)
+                    Group {
+                        switch selectedFeed {
+                        case .all, .local, .subscribed:
+                            PostFeedView(postSortType: $postSortType, showCommunity: true)
+                                .environmentObject(postTracker)
+                        case .saved:
+                            UserContentFeedView()
+                                .environmentObject(savedContentTracker)
+                        default:
+                            EmptyView() // shouldn't be possible
+                        }
+                    }
                 }
             }
         }
@@ -106,7 +140,11 @@ struct AggregateFeedView: View {
                 MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
             }
         } label: {
-            FeedHeaderView(feedType: postTracker.feedType)
+            if let selectedFeed {
+                FeedHeaderView(feedType: selectedFeed)
+            } else {
+                EmptyView() // shouldn't be possible
+            }
         }
         .buttonStyle(.plain)
     }
@@ -119,7 +157,7 @@ struct AggregateFeedView: View {
             }
         } label: {
             HStack(alignment: .center, spacing: 0) {
-                Text(postTracker.feedType.label)
+                Text(selectedFeed?.label ?? "")
                     .font(.headline)
                 Image(systemName: Icons.dropdown)
                     .scaleEffect(0.7)

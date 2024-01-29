@@ -23,23 +23,4 @@ extension UserContentFeedView {
             )
         }
     }
-    
-    func genFeedSwitchingFunctions() -> [MenuFunction] {
-        var ret: [MenuFunction] = .init()
-        FeedType.allAggregateFeedCases.forEach { type in
-            let (imageName, enabled) = type != .saved
-                ? (type.iconName, true)
-                : (type.iconNameFill, false)
-            ret.append(MenuFunction.standardMenuFunction(
-                text: type.label,
-                imageName: imageName,
-                destructiveActionPrompt: nil,
-                enabled: enabled,
-                callback: {
-                    selectedFeed = type
-                }
-            ))
-        }
-        return ret
-    }
 }

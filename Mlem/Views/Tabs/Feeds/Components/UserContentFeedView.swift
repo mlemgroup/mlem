@@ -22,105 +22,24 @@ struct UserContentFeedView: View {
     
     @EnvironmentObject var appState: AppState
     
-    @StateObject var userContentTracker: UserContentTracker
+    @EnvironmentObject var userContentTracker: UserContentTracker
 
     @State var errorDetails: ErrorDetails?
     
-    @Binding var selectedFeed: FeedType?
-    
-    @Namespace var scrollToTop
-    @State private var scrollToTopAppeared = false
-    private var scrollToTopId: Int? {
-        userContentTracker.items.first?.uid.hashValue
-    }
-    
-    init(userId: Int, saved: Bool, selectedFeed: Binding<FeedType?>) {
-        @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
-        self._userContentTracker = .init(wrappedValue: .init(internetSpeed: internetSpeed, userId: userId, saved: saved))
-        self._selectedFeed = selectedFeed
-    }
-    
     var body: some View {
         content
+            .animation(.easeOut(duration: 0.2), value: userContentTracker.items.isEmpty)
             .task { await userContentTracker.loadMoreItems() }
-            .toolbar {
-                ToolbarItemGroup(placement: .secondaryAction) {
-                    Menu {
-                        ForEach(genPostSizeSwitchingFunctions()) { menuFunction in
-                            MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
-                        }
-                    } label: {
-                        Label("Post Size", systemImage: Icons.postSizeSetting)
-                    }
-                }
-            }
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    navBarTitle
-                        .opacity(scrollToTopAppeared ? 0 : 1)
-                        .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
-                }
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarColor(visibility: .automatic)
     }
     
     var content: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                VStack(spacing: 0) {
-                    ScrollToView(appeared: $scrollToTopAppeared)
-                        .id(scrollToTop)
-                    headerView
-                        .padding(.top, -1)
-                }
-                
-                LazyVStack(spacing: 0) {
-                    if userContentTracker.items.isEmpty {
-                        noPostsView()
-                    } else {
-                        ForEach(userContentTracker.items, id: \.uid) { feedItem(for: $0) }
-                        EndOfFeedView(loadingState: userContentTracker.loadingState, viewType: .hobbit)
-                    }
-                }
-                .animation(.easeOut(duration: 0.2), value: userContentTracker.items.isEmpty)
-                .animation(.easeOut(duration: 0.2), value: selectedFeed)
+        LazyVStack(spacing: 0) {
+            if userContentTracker.items.isEmpty {
+                noPostsView()
+            } else {
+                ForEach(userContentTracker.items, id: \.uid) { feedItem(for: $0) }
+                EndOfFeedView(loadingState: userContentTracker.loadingState, viewType: .hobbit)
             }
-        }
-        .fancyTabScrollCompatible()
-    }
-    
-    @ViewBuilder
-    var headerView: some View {
-        Menu {
-            ForEach(genFeedSwitchingFunctions()) { menuFunction in
-                MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
-            }
-        } label: {
-            FeedHeaderView(feedType: .saved)
-        }
-        .buttonStyle(.plain)
-    }
-    
-    @ViewBuilder
-    var navBarTitle: some View {
-        Menu {
-            ForEach(genFeedSwitchingFunctions()) { menuFunction in
-                MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
-            }
-        } label: {
-            HStack(alignment: .center, spacing: 0) {
-                Text(FeedType.saved.label)
-                    .font(.headline)
-                Image(systemName: Icons.dropdown)
-                    .scaleEffect(0.7)
-                    .fontWeight(.semibold)
-            }
-            .foregroundColor(.primary)
-            .accessibilityElement(children: .combine)
-            .accessibilityHint("Activate to change feeds.")
-            // this disables the implicit animation on the header view...
-            .transaction { $0.animation = nil }
         }
     }
   

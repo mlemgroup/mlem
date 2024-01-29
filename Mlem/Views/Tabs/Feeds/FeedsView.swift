@@ -84,10 +84,8 @@ struct FeedsView: View {
                 NavigationStack(path: $feedTabNavigation.path) {
                     Group {
                         switch selectedFeed {
-                        case .all, .local, .subscribed:
+                        case .all, .local, .subscribed, .saved:
                             AggregateFeedView(selectedFeed: $selectedFeed)
-                        case .saved:
-                            SavedFeedView(selectedFeed: $selectedFeed)
                         case let .community(communityModel):
                             CommunityFeedView(communityModel: communityModel)
                         case .none:
