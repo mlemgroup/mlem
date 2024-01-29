@@ -106,7 +106,14 @@ struct InstanceView: View {
                     if instance.canFetchUptime {
                         switch uptimeData {
                         case .success(let uptimeData):
-                            InstanceUptimeView(instance: instance, uptimeData: uptimeData)
+                            VStack {
+                                Text("We couldn't connect to \(instance.name). Perhaps the instance is offline?")
+                                    .multilineTextAlignment(.center)
+                                    .foregroundStyle(.secondary)
+                                Divider()
+                                InstanceUptimeView(instance: instance, uptimeData: uptimeData)
+                            }
+                            .background(Color(uiColor: .systemGroupedBackground))
                         case .failure:
                             ErrorView(errorDetails)
                                 .padding(.top, 5)
