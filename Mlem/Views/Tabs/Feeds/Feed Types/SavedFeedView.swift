@@ -18,11 +18,7 @@ struct SavedFeedView: View {
     // ugly little hack to deal with the fact that dependencies don't propagate state changes nicely but we need to listen for siteInformation.myUserInfo to resolve
     @State var userId: Int?
     
-    init() {
-        @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
-        
-        @Dependency(\.siteInformation) var siteInformation
-    }
+    @Binding var selectedFeed: FeedType?
     
     var body: some View {
         content
@@ -31,7 +27,7 @@ struct SavedFeedView: View {
     @ViewBuilder
     var content: some View {
         if let userId {
-            UserContentFeedView(userId: userId, saved: true)
+            UserContentFeedView(userId: userId, saved: true, selectedFeed: $selectedFeed)
         } else {
             // TODO: better site information loading state handling
             LoadingView(whatIsLoading: .posts)

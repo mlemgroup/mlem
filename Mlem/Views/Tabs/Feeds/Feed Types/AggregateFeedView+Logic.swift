@@ -20,8 +20,14 @@ extension AggregateFeedView {
                 destructiveActionPrompt: nil,
                 enabled: enabled,
                 callback: {
+                    // if switching to a feed that can be handled by AggregateFeedView, just change tracker type; otherwise update nav stack
                     Task {
-                        await postTracker.changeFeedType(to: type)
+                        switch type {
+                        case .saved:
+                            selectedFeed = .saved
+                        default:
+                            await postTracker.changeFeedType(to: type)
+                        }
                     }
                 }
             ))

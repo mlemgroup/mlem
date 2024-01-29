@@ -19,13 +19,22 @@ struct AggregateFeedView: View {
     
     @State var postSortType: PostSortType
     
+    @Binding var selectedFeed: FeedType?
+    
     @Namespace var scrollToTop
     @State private var scrollToTopAppeared = false
     private var scrollToTopId: Int? {
         postTracker.items.first?.id
     }
     
-    init(feedType: FeedType) {
+    init(selectedFeed: Binding<FeedType?>) {
+        var feedType: FeedType = .all
+        if let selectedFeed = selectedFeed.wrappedValue {
+            feedType = selectedFeed
+        } else {
+            assertionFailure("nil feedType passed in to AggregateFeedView!")
+        }
+        
         // need to grab some stuff from app storage to initialize with
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
@@ -39,22 +48,7 @@ struct AggregateFeedView: View {
             showReadPosts: showReadPosts,
             feedType: feedType
         ))
-    }
-    
-    var subtitle: String {
-        switch postTracker.feedType {
-        case .all:
-            return "Posts from all federated instances"
-        case .local:
-            return "Posts from \(appState.currentActiveAccount?.instanceLink.host() ?? "your instance's") communities"
-        case .subscribed:
-            return "Posts from all subscribed communities"
-        case .saved:
-            return "Your saved posts"
-        default:
-            assertionFailure("We shouldn't be here...")
-            return ""
-        }
+        self._selectedFeed = selectedFeed
     }
     
     var body: some View {
@@ -99,6 +93,7 @@ struct AggregateFeedView: View {
                     
                     PostFeedView(postSortType: $postSortType, showCommunity: true)
                         .environmentObject(postTracker)
+                        .animation(.easeOut(duration: 0.2), value: selectedFeed)
                 }
             }
         }
@@ -111,36 +106,7 @@ struct AggregateFeedView: View {
                 MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
             }
         } label: {
-            VStack(spacing: 0) {
-                HStack(alignment: .center, spacing: AppConstants.postAndCommentSpacing) {
-                    Image(systemName: postTracker.feedType.iconNameCircle)
-                        .resizable()
-                        .frame(width: 44, height: 44)
-                        .foregroundStyle(postTracker.feedType.color ?? .primary)
-                        .padding(.leading, AppConstants.postAndCommentSpacing)
-                        
-                    VStack(alignment: .leading, spacing: 0) {
-                        HStack(spacing: 5) {
-                            Text(postTracker.feedType.label)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.01)
-                                .fontWeight(.semibold)
-                            Image(systemName: Icons.dropdown)
-                                .foregroundStyle(.secondary)
-                        }
-                        .font(.title2)
-                            
-                        Text(subtitle)
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
-                    }
-                    .frame(height: 44)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .padding(.vertical, 5)
-                        .padding(.bottom, 3)
-                Divider()
-            }
+            FeedHeaderView(feedType: postTracker.feedType)
         }
         .buttonStyle(.plain)
     }

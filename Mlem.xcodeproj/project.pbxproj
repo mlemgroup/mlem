@@ -337,7 +337,8 @@
 		CD16A0642B66F81A000312D2 /* UserContentModel+TrackerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD16A0632B66F81A000312D2 /* UserContentModel+TrackerItem.swift */; };
 		CD16A0662B670039000312D2 /* HierarchicalComment+TrackerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD16A0652B670039000312D2 /* HierarchicalComment+TrackerItem.swift */; };
 		CD16A0682B670327000312D2 /* UserContentFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD16A0672B670327000312D2 /* UserContentFeedView.swift */; };
-		CD16A06A2B670ABE000312D2 /* UserContentFeedView+MenuFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD16A0692B670ABE000312D2 /* UserContentFeedView+MenuFunctions.swift */; };
+		CD16A06A2B670ABE000312D2 /* UserContentFeedView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD16A0692B670ABE000312D2 /* UserContentFeedView+Logic.swift */; };
+		CD16A06C2B674ABF000312D2 /* FeedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD16A06B2B674ABF000312D2 /* FeedHeaderView.swift */; };
 		CD1824402AA8E24100D9BEB5 /* View+DestructiveConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18243F2AA8E24100D9BEB5 /* View+DestructiveConfirmation.swift */; };
 		CD18DC6B2A5202D4002C56BC /* MarkPersonMentionAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18DC6A2A5202D4002C56BC /* MarkPersonMentionAsReadRequest.swift */; };
 		CD18DC6F2A5209C3002C56BC /* MarkPrivateMessageAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18DC6E2A5209C3002C56BC /* MarkPrivateMessageAsReadRequest.swift */; };
@@ -892,7 +893,8 @@
 		CD16A0632B66F81A000312D2 /* UserContentModel+TrackerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserContentModel+TrackerItem.swift"; sourceTree = "<group>"; };
 		CD16A0652B670039000312D2 /* HierarchicalComment+TrackerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HierarchicalComment+TrackerItem.swift"; sourceTree = "<group>"; };
 		CD16A0672B670327000312D2 /* UserContentFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserContentFeedView.swift; sourceTree = "<group>"; };
-		CD16A0692B670ABE000312D2 /* UserContentFeedView+MenuFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserContentFeedView+MenuFunctions.swift"; sourceTree = "<group>"; };
+		CD16A0692B670ABE000312D2 /* UserContentFeedView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserContentFeedView+Logic.swift"; sourceTree = "<group>"; };
+		CD16A06B2B674ABF000312D2 /* FeedHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedHeaderView.swift; sourceTree = "<group>"; };
 		CD18243F2AA8E24100D9BEB5 /* View+DestructiveConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+DestructiveConfirmation.swift"; sourceTree = "<group>"; };
 		CD18DC6A2A5202D4002C56BC /* MarkPersonMentionAsReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkPersonMentionAsReadRequest.swift; sourceTree = "<group>"; };
 		CD18DC6E2A5209C3002C56BC /* MarkPrivateMessageAsReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkPrivateMessageAsReadRequest.swift; sourceTree = "<group>"; };
@@ -2502,7 +2504,8 @@
 				CDCA28D32B58AF53009D9F54 /* PostFeedView+MenuFunctions.swift */,
 				CDEC95182B5D950D004BA288 /* PostFeedView+Logic.swift */,
 				CD16A0672B670327000312D2 /* UserContentFeedView.swift */,
-				CD16A0692B670ABE000312D2 /* UserContentFeedView+MenuFunctions.swift */,
+				CD16A0692B670ABE000312D2 /* UserContentFeedView+Logic.swift */,
+				CD16A06B2B674ABF000312D2 /* FeedHeaderView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -3320,7 +3323,7 @@
 				CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */,
 				CDCBD7242A8D62FF00387A2C /* InstanceMetadata.swift in Sources */,
 				CD18DC6B2A5202D4002C56BC /* MarkPersonMentionAsReadRequest.swift in Sources */,
-				CD16A06A2B670ABE000312D2 /* UserContentFeedView+MenuFunctions.swift in Sources */,
+				CD16A06A2B670ABE000312D2 /* UserContentFeedView+Logic.swift in Sources */,
 				CD4BAD3B2B4C6C3200A1E726 /* FeedRowView.swift in Sources */,
 				CD1824402AA8E24100D9BEB5 /* View+DestructiveConfirmation.swift in Sources */,
 				CD82A2502A7162D400111034 /* GetPersonUnreadCount.swift in Sources */,
@@ -3386,6 +3389,7 @@
 				6D7782342A48EE8C008AC1BF /* APIPrivateMessageView.swift in Sources */,
 				030E86392AC6B44B000283A6 /* DeletePictrsFile.swift in Sources */,
 				50811B342A9204EB006BA3F2 /* APICommunityAggregates+Mock.swift in Sources */,
+				CD16A06C2B674ABF000312D2 /* FeedHeaderView.swift in Sources */,
 				CDC1C93F2A7AB8C700072E3D /* AccessibilitySettingsView.swift in Sources */,
 				50C99B622A629C06005D57DD /* ErrorHandler+Dependency.swift in Sources */,
 				CD309C462A93FBD300988F95 /* Logo View.swift in Sources */,

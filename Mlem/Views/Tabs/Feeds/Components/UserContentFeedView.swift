@@ -26,15 +26,23 @@ struct UserContentFeedView: View {
 
     @State var errorDetails: ErrorDetails?
     
-    init(userId: Int, saved: Bool) {
+    @Binding var selectedFeed: FeedType?
+    
+    @Namespace var scrollToTop
+    @State private var scrollToTopAppeared = false
+    private var scrollToTopId: Int? {
+        userContentTracker.items.first?.uid.hashValue
+    }
+    
+    init(userId: Int, saved: Bool, selectedFeed: Binding<FeedType?>) {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         self._userContentTracker = .init(wrappedValue: .init(internetSpeed: internetSpeed, userId: userId, saved: saved))
+        self._selectedFeed = selectedFeed
     }
     
     var body: some View {
         content
             .task { await userContentTracker.loadMoreItems() }
-            .animation(.easeOut(duration: 0.2), value: userContentTracker.items.isEmpty)
             .toolbar {
                 ToolbarItemGroup(placement: .secondaryAction) {
                     Menu {
@@ -46,20 +54,74 @@ struct UserContentFeedView: View {
                     }
                 }
             }
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    navBarTitle
+                        .opacity(scrollToTopAppeared ? 0 : 1)
+                        .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
+                }
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarColor(visibility: .automatic)
     }
     
     var content: some View {
         ScrollView {
-            LazyVStack(spacing: 0) {
-                if userContentTracker.items.isEmpty {
-                    noPostsView()
-                } else {
-                    ForEach(userContentTracker.items, id: \.uid) { feedItem(for: $0) }
-                    EndOfFeedView(loadingState: userContentTracker.loadingState, viewType: .hobbit)
+            VStack(spacing: 0) {
+                VStack(spacing: 0) {
+                    ScrollToView(appeared: $scrollToTopAppeared)
+                        .id(scrollToTop)
+                    headerView
+                        .padding(.top, -1)
                 }
+                
+                LazyVStack(spacing: 0) {
+                    if userContentTracker.items.isEmpty {
+                        noPostsView()
+                    } else {
+                        ForEach(userContentTracker.items, id: \.uid) { feedItem(for: $0) }
+                        EndOfFeedView(loadingState: userContentTracker.loadingState, viewType: .hobbit)
+                    }
+                }
+                .animation(.easeOut(duration: 0.2), value: userContentTracker.items.isEmpty)
+                .animation(.easeOut(duration: 0.2), value: selectedFeed)
             }
         }
         .fancyTabScrollCompatible()
+    }
+    
+    @ViewBuilder
+    var headerView: some View {
+        Menu {
+            ForEach(genFeedSwitchingFunctions()) { menuFunction in
+                MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
+            }
+        } label: {
+            FeedHeaderView(feedType: .saved)
+        }
+        .buttonStyle(.plain)
+    }
+    
+    @ViewBuilder
+    var navBarTitle: some View {
+        Menu {
+            ForEach(genFeedSwitchingFunctions()) { menuFunction in
+                MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
+            }
+        } label: {
+            HStack(alignment: .center, spacing: 0) {
+                Text(FeedType.saved.label)
+                    .font(.headline)
+                Image(systemName: Icons.dropdown)
+                    .scaleEffect(0.7)
+                    .fontWeight(.semibold)
+            }
+            .foregroundColor(.primary)
+            .accessibilityElement(children: .combine)
+            .accessibilityHint("Activate to change feeds.")
+            // this disables the implicit animation on the header view...
+            .transaction { $0.animation = nil }
+        }
     }
   
     @ViewBuilder
@@ -113,15 +175,15 @@ struct UserContentFeedView: View {
     @ViewBuilder
     private func noPostsView() -> some View {
         VStack {
-            // don't show posts until site information loads to avoid jarring redraw
-            if userContentTracker.loadingState == .loading {
+            if userContentTracker.loadingState == .loading ||
+                (userContentTracker.items.isEmpty && userContentTracker.loadingState == .idle) {
                 LoadingView(whatIsLoading: .posts)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .transition(.opacity)
             } else if let errorDetails {
                 ErrorView(errorDetails)
                     .frame(maxWidth: .infinity)
-            } else {
+            } else if userContentTracker.loadingState == .done {
                 // NoPostsView(loadingState: postTracker.loadingState)
                 Text("no items :(")
                     .transition(.scale(scale: 0.9).combined(with: .opacity))
