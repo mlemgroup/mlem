@@ -75,9 +75,9 @@ struct PostFeedView: View {
                 }
             }
             .toolbar {
-                ToolbarItem(placement: .primaryAction) { sortMenu }
-                
                 if versionSafePostSort != nil {
+                    ToolbarItem(placement: .primaryAction) { sortMenu }
+                    
                     ToolbarItemGroup(placement: .secondaryAction) {
                         ForEach(genEllipsisMenuFunctions()) { menuFunction in
                             MenuButton(menuFunction: menuFunction, confirmDestructive: nil)

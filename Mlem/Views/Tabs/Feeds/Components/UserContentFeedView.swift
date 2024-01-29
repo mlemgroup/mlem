@@ -17,8 +17,6 @@ struct UserContentFeedView: View {
     @AppStorage("showReadPosts") var showReadPosts: Bool = true
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("postSize") var postSize: PostSize = .large
-    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
-    @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
     
     @EnvironmentObject var appState: AppState
     
@@ -30,6 +28,20 @@ struct UserContentFeedView: View {
         content
             .animation(.easeOut(duration: 0.2), value: userContentTracker.items.isEmpty)
             .task { await userContentTracker.loadMoreItems() }
+            .toolbar {
+                ToolbarItemGroup(placement: .secondaryAction) {
+                    ForEach(genEllipsisMenuFunctions()) { menuFunction in
+                        MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
+                    }
+                    Menu {
+                        ForEach(genPostSizeSwitchingFunctions()) { menuFunction in
+                            MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
+                        }
+                    } label: {
+                        Label("Post Size", systemImage: Icons.postSizeSetting)
+                    }
+                }
+            }
     }
     
     var content: some View {
