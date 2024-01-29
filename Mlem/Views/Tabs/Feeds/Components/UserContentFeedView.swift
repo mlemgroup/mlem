@@ -87,7 +87,6 @@ struct UserContentFeedView: View {
     @ViewBuilder
     private func feedComment(for hierarchicalComment: HierarchicalComment) -> some View {
         VStack(spacing: 0) {
-            // NavigationLink(.postLinkWithContext(.init(post: post, community: nil, postTracker: nil))) {
             NavigationLink(.lazyLoadPostLinkWithContext(.init(
                 post: hierarchicalComment.commentView.post,
                 scrollTarget: hierarchicalComment.id
