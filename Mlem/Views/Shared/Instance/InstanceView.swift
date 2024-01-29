@@ -103,15 +103,20 @@ struct InstanceView: View {
                     }
                 }
                 if let errorDetails {
-                    switch uptimeData {
-                    case .success(let uptimeData):
-                        InstanceUptimeView(instance: instance, uptimeData: uptimeData)
-                    case .failure:
+                    if instance.canFetchUptime {
+                        switch uptimeData {
+                        case .success(let uptimeData):
+                            InstanceUptimeView(instance: instance, uptimeData: uptimeData)
+                        case .failure:
+                            ErrorView(errorDetails)
+                                .padding(.top, 5)
+                        default:
+                            ProgressView()
+                                .padding(.top, 30)
+                        }
+                    } else {
                         ErrorView(errorDetails)
                             .padding(.top, 5)
-                    default:
-                        ProgressView()
-                            .padding(.top, 30)
                     }
                 } else if instance.creationDate != nil {
                     VStack(spacing: 0) {

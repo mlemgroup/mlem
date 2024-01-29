@@ -55,7 +55,9 @@ struct InstanceUptimeView: View {
             }
             .padding(.top, 30)
             if let url = instance.uptimeFrontendUrl {
-                footnote("Uptime data fetched from [lemmy-status.org](\(url))")
+                Text("Uptime data fetched from [lemmy-status.org](\(url))")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
                     .padding(.vertical, 8)
                     .padding(.leading, 6)
             }
@@ -100,7 +102,7 @@ struct InstanceUptimeView: View {
                     if mostRecentOutage.endTime != nil {
                         let relTime = mostRecentOutage.relativeTimeCaption
                         let length = mostRecentOutage.differenceTitle(unitsStyle: .full)
-                        footnote("The last outage was \(relTime), and lasted for \(length).")
+                        footnote("The most recent outage was \(relTime), and lasted for \(length).")
                     }
                 }
             }
@@ -112,7 +114,7 @@ struct InstanceUptimeView: View {
     
     @ViewBuilder
     var recentChecks: some View {
-        VStack(spacing: 3) {
+        VStack(alignment: .leading, spacing: 3) {
             HStack(spacing: 3) {
                 ForEach(uptimeData.results) { result in
                     if diffWithoutColor {
