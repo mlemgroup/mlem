@@ -40,8 +40,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     UserView(user: user, communityContext: communityContext)
                         .environmentObject(appState)
                         .environmentObject(quickLookState)
-                case let .instance(domainName, instance):
-                    InstanceView(domainName: domainName, instance: instance)
+                case let .instance(instance):
+                    InstanceView(instance: instance)
                 case let .postLinkWithContext(postLink):
                     ExpandedPost(post: postLink.post, community: postLink.community, scrollTarget: postLink.scrollTarget)
                         .environmentObject(postLink.postTracker)
@@ -223,7 +223,7 @@ struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
                             return
                         }
                     } catch {
-                        OpenURLAction(handler: { _ in .systemAction }).callAsFunction(url)
+                        print("Error whilst attempting to resolve URL!")
                     }
                     
                     // if all else fails fallback!

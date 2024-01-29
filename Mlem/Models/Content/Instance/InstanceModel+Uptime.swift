@@ -44,7 +44,7 @@ extension InstanceModel {
     ]
     
     var canFetchUptime: Bool { InstanceModel.uptimeSupportedInstances.contains(name) }
-    
+
     var uptimeDataUrl: URL? {
         guard canFetchUptime else { return nil }
         let name = "_\(name.replacingOccurrences(of: ".", with: "-"))"

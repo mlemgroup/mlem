@@ -8,6 +8,11 @@
 import SwiftUI
 
 struct InstanceModel {
+    
+    enum InstanceError: Error {
+        case invalidUrl
+    }
+    
     var displayName: String!
     var description: String?
     var avatar: URL?
@@ -41,6 +46,14 @@ struct InstanceModel {
     var applicationsEmailAdmins: Bool?
     var reportsEmailAdmins: Bool?
     
+    init(domainName: String) throws {
+        if let url = URL(string: "https://\(domainName)") {
+            self.url = url
+            displayName = name
+        }
+        throw InstanceError.invalidUrl
+    }
+    
     init(from response: SiteResponse) {
         self.update(with: response)
     }
@@ -57,7 +70,7 @@ struct InstanceModel {
         self.update(with: stub)
     }
     
-    var name: String { url.host() ?? displayName }
+    var name: String { url.host() ?? "Unknown" }
     
     mutating func update(with response: SiteResponse) {
         self.administrators = response.admins.map {

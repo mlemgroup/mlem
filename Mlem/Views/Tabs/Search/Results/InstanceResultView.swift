@@ -47,7 +47,7 @@ struct InstanceResultView: View {
     }
     
     var body: some View {
-        NavigationLink(value: AppRoute.instance(instance.url.host(), instance)) {
+        NavigationLink(value: AppRoute.instance(instance)) {
             HStack(spacing: 10) {
                 AvatarView(instance: instance, avatarSize: 48, iconResolution: .fixed(128))
                 
