@@ -53,7 +53,7 @@ struct CollapsibleSection<Content: View>: View {
                     content()
                 }
                 
-                if let footer = footer {
+                if let footer {
                     Text(footer)
                         .textCase(.uppercase)
                         .font(.footnote)
@@ -66,5 +66,5 @@ struct CollapsibleSection<Content: View>: View {
         .clipShape(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius))
         .fixedSize(horizontal: false, vertical: true)
         .padding(.horizontal, 16)
-  }
+    }
 }

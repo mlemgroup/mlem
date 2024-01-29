@@ -5,8 +5,8 @@
 //  Created by Jake Shirley on 6/26/23.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct ProfileView: View {
     // appstorage

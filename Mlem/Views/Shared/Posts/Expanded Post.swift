@@ -82,7 +82,9 @@ struct ExpandedPost: View {
                 ToolbarItemGroup(placement: .navigationBarTrailing) { toolbarMenu }
             }
             .task {
-                await loadComments()
+                if commentTracker.comments.isEmpty {
+                    await loadComments()
+                }
                 await post.markRead(true)
             }
             .refreshable { await refreshComments() }

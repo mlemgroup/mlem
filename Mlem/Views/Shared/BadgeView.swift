@@ -76,19 +76,19 @@ struct BadgeView: View {
         self.label = "Unsupported Badge"
         if let host = url.host(), host == "img.shields.io" {
             let path = url.pathComponents
-            self.decodeBadgeType(path)
-            self.decodeLabel(path[2])
+            decodeBadgeType(path)
+            decodeLabel(path[2])
             if let components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
                 if let parameters = components.queryItems {
                     for parameter in parameters {
                         switch parameter.name {
                         case "logo":
                             if let value = parameter.value {
-                                self.decodeLogo(name: value)
+                                decodeLogo(name: value)
                             }
                         case "color":
                             if let value = parameter.value {
-                                self.decodeColor(value)
+                                decodeColor(value)
                             }
                         default:
                             break
@@ -108,23 +108,23 @@ struct BadgeView: View {
     mutating func decodeBadgeType(_ path: [String]) {
         switch path[1] {
         case "mastodon":
-            self.label = "Follow on Mastodon"
-            self.color = .init(Color(hex: "6364FF"), text: .white)
-            self.logo = .bundle("mastodon.logo")
+            label = "Follow on Mastodon"
+            color = .init(Color(hex: "6364FF"), text: .white)
+            logo = .bundle("mastodon.logo")
         case "discord":
-            self.label = "Join Discord Server"
-            self.color = .init(Color(hex: "5865F2"), text: .white)
-            self.logo = .bundle("discord.logo")
+            label = "Join Discord Server"
+            color = .init(Color(hex: "5865F2"), text: .white)
+            logo = .bundle("discord.logo")
         case "matrix":
-            self.label = "Join Matrix Room"
-            self.color = .init(.black, outline: .white, text: .white)
-            self.logo = .bundle("matrix.logo")
+            label = "Join Matrix Room"
+            color = .init(.black, outline: .white, text: .white)
+            logo = .bundle("matrix.logo")
         case "github":
-            self.label = "Github"
-            self.color = .init(.black, outline: .white, text: .white)
-            self.logo = .bundle("github.logo")
+            label = "Github"
+            color = .init(.black, outline: .white, text: .white)
+            logo = .bundle("github.logo")
         case "lemmy":
-            self.label = path[2]
+            label = path[2]
         default:
             break
         }
@@ -133,20 +133,20 @@ struct BadgeView: View {
     mutating func decodeLabel(_ text: String) {
         let parts = text.replacingOccurrences(of: "_", with: " ").split(separator: "-")
         if parts.count == 3 {
-            self.label = String(parts[0])
-            self.message = String(parts[1])
-            self.decodeColor(String(parts[2]))
+            label = String(parts[0])
+            message = String(parts[1])
+            decodeColor(String(parts[2]))
         } else if parts.count == 2 {
-            self.label = String(parts[0])
-            self.decodeColor(String(parts[1]))
+            label = String(parts[0])
+            decodeColor(String(parts[1]))
         }
     }
     
     mutating func decodeColor(_ text: String) {
         if color == nil {
-            self.color = BadgeView.colorNameMap[text]
-            if self.color == nil {
-                self.color = .init(Color(hex: text), text: .primary)
+            color = BadgeView.colorNameMap[text]
+            if color == nil {
+                color = .init(Color(hex: text), text: .primary)
             }
         }
     }
@@ -154,15 +154,15 @@ struct BadgeView: View {
     mutating func decodeLogo(name: String) {
         switch name {
         case "github":
-            self.logo = .bundle("github.logo")
+            logo = .bundle("github.logo")
         case "matrix":
-            self.logo = .bundle("matrix.logo")
+            logo = .bundle("matrix.logo")
         case "mastodon":
-            self.logo = .bundle("mastodon.logo")
+            logo = .bundle("mastodon.logo")
         case "discord":
-            self.logo = .bundle("discord.logo")
+            logo = .bundle("discord.logo")
         case "lemmy":
-            self.logo = .bundle("lemmy.logo")
+            logo = .bundle("lemmy.logo")
         default:
             break
         }
@@ -172,9 +172,9 @@ struct BadgeView: View {
         HStack(spacing: 7) {
             Group {
                 switch logo {
-                case .bundle(let name):
+                case let .bundle(name):
                     Image(name)
-                case .system(let systemName):
+                case let .system(systemName):
                     Image(systemName: systemName)
                 case nil:
                     EmptyView()
@@ -200,7 +200,6 @@ struct BadgeView: View {
                 .stroke(color?.outline ?? .secondary, lineWidth: 1)
         }
     }
-        
 }
 
 #Preview("Variants") {
@@ -227,11 +226,12 @@ struct BadgeView: View {
     ScrollView {
         LazyVGrid(
             columns: .init(repeating: GridItem(.adaptive(minimum: 200, maximum: .infinity)), count: 2),
-            alignment: .leading, spacing: 10) {
-                ForEach(Array(BadgeView.colorNameMap.keys).sorted(by: >), id: \.self) { key in
+            alignment: .leading, spacing: 10
+        ) {
+            ForEach(Array(BadgeView.colorNameMap.keys).sorted(by: >), id: \.self) { key in
                 BadgeView(label: "Color", message: key, color: BadgeView.colorNameMap[key]!)
-                }
             }
-            .padding()
+        }
+        .padding()
     }
 }

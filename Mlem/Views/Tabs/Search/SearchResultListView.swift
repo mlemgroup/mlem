@@ -83,7 +83,6 @@ struct SearchResultListView: View {
 }
 
 struct SearchResultsListViewPreview: View {
-
     @StateObject var searchModel: SearchModel = .init()
     @StateObject var contentTracker: ContentTracker<AnyContentModel> = .init()
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
