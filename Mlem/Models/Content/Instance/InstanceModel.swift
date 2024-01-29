@@ -53,8 +53,9 @@ struct InstanceModel {
         if let url = components.url {
             self.url = url
             displayName = name
+        } else {
+            throw InstanceError.invalidUrl
         }
-        throw InstanceError.invalidUrl
     }
     
     init(from response: SiteResponse) {
