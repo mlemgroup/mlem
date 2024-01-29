@@ -13,6 +13,10 @@ struct CommentItem: View {
         case standard, never
     }
     
+    enum PageContext {
+        case posts, profile
+    }
+    
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.commentRepository) var commentRepository
     @Dependency(\.errorHandler) var errorHandler
@@ -27,6 +31,7 @@ struct CommentItem: View {
     @AppStorage("shouldShowSavedInCommentBar") var shouldShowSavedInCommentBar: Bool = false
     @AppStorage("shouldShowRepliesInCommentBar") var shouldShowRepliesInCommentBar: Bool = true
     @AppStorage("compactComments") var compactComments: Bool = false
+    @AppStorage("collapseChildComments") var collapseComments: Bool = false
     @AppStorage("tapCommentToCollapse") var tapCommentToCollapse: Bool = true
 
     // MARK: Temporary
@@ -36,6 +41,8 @@ struct CommentItem: View {
     @State var dirtyScore: Int // = 0
     @State var dirtySaved: Bool // = false
     @State var dirty: Bool = false
+    
+    @State var isCommentReplyHidden: Bool = false
 
     @State var isComposingReport: Bool = false
 
@@ -65,6 +72,7 @@ struct CommentItem: View {
     let showPostContext: Bool
     let showCommentCreator: Bool
     let enableSwipeActions: Bool
+    let pageContext: PageContext
     
     // MARK: Destructive confirmation
     
@@ -101,7 +109,8 @@ struct CommentItem: View {
         indentBehaviour: IndentBehaviour = .standard,
         showPostContext: Bool,
         showCommentCreator: Bool,
-        enableSwipeActions: Bool = true
+        enableSwipeActions: Bool = true,
+        pageContext: PageContext = .posts
     ) {
         self.hierarchicalComment = hierarchicalComment
         self.postContext = postContext
@@ -109,6 +118,7 @@ struct CommentItem: View {
         self.showPostContext = showPostContext
         self.showCommentCreator = showCommentCreator
         self.enableSwipeActions = enableSwipeActions
+        self.pageContext = pageContext
 
         _dirtyVote = State(initialValue: hierarchicalComment.commentView.myVote ?? .resetVote)
         _dirtyScore = State(initialValue: hierarchicalComment.commentView.counts.score)
@@ -185,6 +195,22 @@ struct CommentItem: View {
                     Spacer()
                         .frame(height: AppConstants.postAndCommentSpacing)
                 }
+                
+                if collapseComments,
+                   pageContext == .posts,
+                   !hierarchicalComment.isCollapsed,
+                   hierarchicalComment.depth == 0,
+                   hierarchicalComment.children.count > 0,
+                   !isCommentReplyHidden {
+                    Divider()
+                    HStack {
+                        CollapsedCommentReplies(numberOfReplies: .constant(hierarchicalComment.commentView.counts.childCount))
+                            .onTapGesture {
+                                isCommentReplyHidden = true
+                                uncollapseComment()
+                            }
+                    }
+                }
             }
         }
         .contentShape(Rectangle()) // allow taps in blank space to register
@@ -206,6 +232,15 @@ struct CommentItem: View {
         .contextMenu {
             ForEach(genMenuFunctions()) { item in
                 MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+            }
+        }
+        .onChange(of: collapseComments) { newValue in
+            if pageContext == .posts {
+                if newValue == false {
+                    uncollapseComment()
+                } else {
+                    collapseComment()
+                }
             }
         }
     }

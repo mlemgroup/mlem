@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 22/12/2023.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct QuickSwitcherView: View {
     var body: some View {
@@ -54,7 +54,7 @@ struct AccountListView: View {
     var body: some View {
         Group {
             if !isSwitching {
-                if accountsTracker.savedAccounts.count > 3 && groupAccountSort {
+                if accountsTracker.savedAccounts.count > 3, groupAccountSort {
                     ForEach(Array(accountGroups.enumerated()), id: \.offset) { offset, group in
                         Section {
                             ForEach(group.accounts, id: \.self) { account in
@@ -101,7 +101,7 @@ struct AccountListView: View {
             if let text {
                 Text(text)
             }
-            if !isQuickSwitcher && accountsTracker.savedAccounts.count > 2 {
+            if !isQuickSwitcher, accountsTracker.savedAccounts.count > 2 {
                 Spacer()
                 sortModeMenu()
             }

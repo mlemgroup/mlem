@@ -9,7 +9,7 @@ import Foundation
 
 extension UserModel {
     func blockMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> MenuFunction {
-        return .standardMenuFunction(
+        .standardMenuFunction(
             text: blocked ? "Unblock" : "Block",
             imageName: blocked ? Icons.show : Icons.hide,
             destructiveActionPrompt: blocked ? nil : AppConstants.blockUserPrompt,
@@ -25,7 +25,7 @@ extension UserModel {
     
     func menuFunctions(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
-        if let instanceHost = self.profileUrl.host() {
+        if let instanceHost = profileUrl.host() {
             let instance: InstanceModel?
             if let site {
                 instance = .init(from: site)

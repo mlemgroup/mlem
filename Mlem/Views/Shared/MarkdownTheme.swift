@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 15/01/2024.
 //
 
-import SwiftUI
 import MarkdownUI
+import SwiftUI
 
 extension Theme {
     static let mlem = Theme()

@@ -54,7 +54,7 @@ class PersonRepository {
     func loadUserDetails(for url: URL, limit: Int, savedOnly: Bool = false) async throws -> GetPersonDetailsResponse {
         let result = try await apiClient.resolve(query: url.absoluteString)
         switch result {
-        case .person(let person):
+        case let .person(person):
             return try await loadUserDetails(for: person.person.id, limit: limit, savedOnly: savedOnly)
         default:
             throw PersonRequestError.notFound

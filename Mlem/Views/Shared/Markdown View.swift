@@ -69,13 +69,13 @@ struct MarkdownView: View {
     @ViewBuilder
     func renderBlock(block: MarkdownBlock) -> some View {
         switch block.type {
-        case .text(let text):
+        case let .text(text):
             renderAsMarkdown(text: text, theme: theme)
-        case .image(url: let imageUrl):
+        case let .image(url: imageUrl):
             if let imageUrl = URL(string: imageUrl) {
                 imageView(url: imageUrl, blockId: block.id)
             }
-        case .linkedImage(imageUrl: let imageUrl, linkUrl: let linkUrl):
+        case let .linkedImage(imageUrl: imageUrl, linkUrl: linkUrl):
             if let imageUrl = URL(string: imageUrl), let linkUrl = URL(string: linkUrl) {
                 Link(destination: linkUrl) {
                     imageView(url: imageUrl, blockId: block.id, shouldExpand: false)
@@ -91,12 +91,13 @@ struct MarkdownView: View {
                 return AnyView(
                     BadgeView(url: url)
                         .padding(.vertical, 4)
-                    )
+                )
             } else if !MarkdownView.hiddenImageDomains.contains(host) {
                 if replaceImagesWithEmoji {
                     return AnyView(renderAsMarkdown(
                         text: AppConstants.pictureEmoji[blockId % AppConstants.pictureEmoji.count],
-                        theme: theme)
+                        theme: theme
+                    )
                     )
                 } else {
                     return AnyView(
@@ -136,7 +137,7 @@ struct MarkdownView: View {
         var blocks: [MarkdownBlock] = []
         if let firstImage = try imageLinkLooker.firstMatch(in: text) {
             if firstImage.range.lowerBound != .init(utf16Offset: 0, in: text) {
-                blocks.append(contentsOf: try parseMarkdownForImages(text: String(text[..<firstImage.range.lowerBound]), blockId: blockId)
+                try blocks.append(contentsOf: parseMarkdownForImages(text: String(text[..<firstImage.range.lowerBound]), blockId: blockId)
                 )
                 blockId += blocks.count
             }
@@ -150,14 +151,13 @@ struct MarkdownView: View {
                 )
             )
             blockId += 1
-            if firstImage.range.upperBound != .init(utf16Offset: text.count-1, in: text) {
-                blocks.append(contentsOf: try parseMarkdownForImages(text: String(text[firstImage.range.upperBound...]), blockId: blockId)
+            if firstImage.range.upperBound != .init(utf16Offset: text.count - 1, in: text) {
+                try blocks.append(contentsOf: parseMarkdownForImages(text: String(text[firstImage.range.upperBound...]), blockId: blockId)
                 )
             }
         } else if let firstImage = try imageLooker.firstMatch(in: text) {
-
             if firstImage.range.lowerBound != .init(utf16Offset: 0, in: text) {
-                blocks.append(contentsOf: try parseMarkdownForImages(text: String(text[..<firstImage.range.lowerBound]), blockId: blockId)
+                try blocks.append(contentsOf: parseMarkdownForImages(text: String(text[..<firstImage.range.lowerBound]), blockId: blockId)
                 )
                 blockId += blocks.count
             }
@@ -168,8 +168,8 @@ struct MarkdownView: View {
                 )
             )
             blockId += 1
-            if firstImage.range.upperBound != .init(utf16Offset: text.count-1, in: text) {
-                blocks.append(contentsOf: try parseMarkdownForImages(text: String(text[firstImage.range.upperBound...]), blockId: blockId)
+            if firstImage.range.upperBound != .init(utf16Offset: text.count - 1, in: text) {
+                try blocks.append(contentsOf: parseMarkdownForImages(text: String(text[firstImage.range.upperBound...]), blockId: blockId)
                 )
             }
         } else if !text.isEmpty {

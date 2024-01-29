@@ -82,7 +82,6 @@ extension PostModel {
                     await self.delete()
                 }
             })
-            
         }
         
         // Share
