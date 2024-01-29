@@ -2,76 +2,144 @@
 //  FeedType.swift
 //  Mlem
 //
-//  Created by Jonathan de Jong on 12.06.2023.
+//  Created by Eric Andrews on 2024-01-08.
 //
 
+import Foundation
 import SwiftUI
 
-enum FeedType: String, Encodable, SettingsOptions, AssociatedColor {
-    var id: Self { self }
-
+enum FeedType {
+    case all, local, subscribed, saved
+    case community(CommunityModel)
+    
+    static var allAggregateFeedCases: [FeedType] = [.all, .local, .subscribed, .saved]
+    
     var label: String {
-        return rawValue
-    }
-    
-    var description: String {
         switch self {
-        case .all:
-            return "Subscribed communities from all instances"
-        case .local:
-            return "Local communities from your server"
-        case .subscribed:
-            return "All communities that federate with your server"
+        case .all: "All"
+        case .local: "Local"
+        case .subscribed: "Subscribed"
+        case .saved: "Saved"
+        case let .community(communityModel): communityModel.name
         }
     }
     
-    var color: Color? {
+    /// Maps FeedType to APIListingType
+    var toApiListingType: APIListingType {
         switch self {
-        case .all:
-            return .blue
-        case .local:
-            return .green
-        case .subscribed:
-            return .red
+        case .all: .all
+        case .local: .local
+        case .subscribed: .subscribed
+        case .saved: .all // TODO: change this?
+        case .community: .subscribed
         }
     }
+    
+    /// String for use in shortcuts
+    var toShortcutString: String {
+        switch self {
+        case .all: "All"
+        case .local: "Local"
+        case .subscribed: "Subscribed"
+        case .saved: "Saved" // TODO: change this?
+        case .community: "Subscribed"
+        }
+    }
+    
+    static func fromShortcutString(shortcut: String?) -> FeedType? {
+        switch shortcut {
+        case "All":
+            return .all
+        case "Local":
+            return .local
+        case "Subscribed":
+            return .subscribed
+        case "Saved":
+            return .saved
+        default:
+            return nil
+        }
+    }
+    
+    var communityId: Int? {
+        switch self {
+        case let .community(communityModel): communityModel.communityId
+        default: nil
+        }
+    }
+}
 
-    case subscribed = "Subscribed"
-    case local = "Local"
-    case all = "All"
+extension FeedType: Hashable, Identifiable {
+    func hash(into hasher: inout Hasher) {
+        switch self {
+        case .all:
+            hasher.combine("all")
+        case .local:
+            hasher.combine("local")
+        case .subscribed:
+            hasher.combine("subscribed")
+        case .saved:
+            hasher.combine("saved")
+        case let .community(communityModel):
+            hasher.combine("community")
+            hasher.combine(communityModel.communityId)
+        }
+    }
+    
+    var id: Int { hashValue }
 }
 
 extension FeedType: AssociatedIcon {
     var iconName: String {
         switch self {
-        case .all: return Icons.federatedFeed
-        case .local: return Icons.localFeed
-        case .subscribed: return Icons.subscribedFeed
+        case .all: Icons.federatedFeed
+        case .local: Icons.localFeed
+        case .subscribed: Icons.subscribedFeed
+        case .saved: Icons.savedFeed
+        case .community: Icons.community
         }
     }
     
     var iconNameFill: String {
         switch self {
-        case .all: return Icons.federatedFeedFill
-        case .local: return Icons.localFeedFill
-        case .subscribed: return Icons.subscribedFeedFill
+        case .all: Icons.federatedFeedFill
+        case .local: Icons.localFeedFill
+        case .subscribed: Icons.subscribedFeedFill
+        case .saved: Icons.savedFeedFill
+        case .community: Icons.communityFill
         }
     }
     
     var iconNameCircle: String {
         switch self {
-        case .all: return Icons.federatedFeedCircle
-        case .local: return Icons.localFeedCircle
-        case .subscribed: return Icons.subscribedFeedCircle
+        case .all: Icons.federatedFeedCircle
+        case .local: Icons.localFeedCircle
+        case .subscribed: Icons.subscribedFeedCircle
+        case .saved: Icons.savedFeedCircle
+        case .community: Icons.community
         }
     }
     
     /// Icon to use in system settings. This should be removed when the "unified symbol handling" is closed
     var settingsIconName: String {
         switch self {
-        case .all: return "circle.hexagongrid"
-        case .local: return "house"
-        case .subscribed: return "newspaper"
+        case .all: "circle.hexagongrid"
+        case .local: "house"
+        case .subscribed: "newspaper"
+        case .saved: Icons.save
+        case .community: Icons.community
+        }
+    }
+}
+
+extension FeedType: AssociatedColor {
+    var color: Color? {
+        switch self {
+        case .all: .blue
+        case .local: .purple
+        case .subscribed: .red
+        case .saved: .green
+        case .community: .blue
         }
     }
 }

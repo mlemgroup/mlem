@@ -46,7 +46,7 @@ enum Icons {
     
     // misc post
     static let posts: String = "doc.plaintext"
-    static let replies: String = "bubble"
+    static let replies: String = "bubble.left"
     static let unreadReplies: String = "text.bubble"
     static let textPost: String = "text.book.closed"
     static let titleOnlyPost: String = "character.bubble"
@@ -188,6 +188,7 @@ enum Icons {
     static let limitImageHeightSetting: String = "rectangle.compress.vertical"
     static let swipeUpGestureSetting: String = "arrow.up.to.line.alt"
     static let appLockSettings: String = "lock.app.dashed"
+    static let collapseComments: String = "arrow.down.and.line.horizontal.and.arrow.up"
     
     // misc
     static let switchUser: String = "person.crop.circle.badge.plus"

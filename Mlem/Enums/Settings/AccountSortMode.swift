@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum AccountSortMode: String, CaseIterable {
-    case name, instance, mostRecent
+    case custom, name, instance, mostRecent
     
     var label: String {
         switch self {
@@ -18,6 +18,8 @@ enum AccountSortMode: String, CaseIterable {
             return "Instance"
         case .mostRecent:
             return "Most Recent"
+        case .custom:
+            return "Custom Order"
         }
     }
     
@@ -29,6 +31,8 @@ enum AccountSortMode: String, CaseIterable {
             return "at"
         case .mostRecent:
             return "clock"
+        case .custom:
+            return "line.3.horizontal.decrease"
         }
     }
 }

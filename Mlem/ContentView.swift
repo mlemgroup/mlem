@@ -39,28 +39,19 @@ struct ContentView: View {
     @AppStorage("allowTabBarSwipeUpGesture") var allowTabBarSwipeUpGesture: Bool = true
     @AppStorage("appLock") var appLock: AppLock = .disabled
 
+    @StateObject private var quickLookState: ImageDetailSheetState = .init()
     @StateObject var biometricUnlock = BiometricUnlock()
-    
+
+    var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
+
     var isAppLocked: Bool {
         appLock != .disabled && !biometricUnlock.isUnlocked
-    }
-    
-    @StateObject private var quickLookState: ImageDetailSheetState = .init()
-    
-    var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
-    
-    var myUser: UserModel? {
-        if let person = siteInformation.myUserInfo?.localUserView.person {
-            return UserModel(from: person)
-        } else {
-            return nil
-        }
     }
     
     var body: some View {
         FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
             Group {
-                FeedRoot()
+                FeedsView()
                     .fancyTabItem(tag: TabSelection.feeds) {
                         FancyTabBarLabel(
                             tag: TabSelection.feeds,
@@ -82,7 +73,7 @@ struct ContentView: View {
                         }
                 }
                     
-                ProfileView(user: myUser)
+                ProfileView()
                     .fancyTabItem(tag: TabSelection.profile) {
                         FancyTabBarLabel(
                             tag: TabSelection.profile,
@@ -171,7 +162,6 @@ struct ContentView: View {
             if phase != .active {
                 isPresentingAccountSwitcher = false
             }
-            
             if phase == .background || phase == .inactive, appLock != .disabled {
                 biometricUnlock.isUnlocked = false
             }

@@ -14,6 +14,7 @@ class SiteInformationTracker: ObservableObject {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.accountsTracker) var accountsTracker
     
+    @Published private(set) var instance: InstanceModel?
     @Published private(set) var enableDownvotes = true
     @Published var version: SiteVersion?
     @Published private(set) var allLanguages: [APILanguage] = .init()
@@ -23,8 +24,8 @@ class SiteInformationTracker: ObservableObject {
         version = account.siteVersion
         Task {
             do {
-            
                 let response = try await apiClient.loadSiteInformation()
+                instance = .init(from: response)
                 enableDownvotes = response.siteView.localSite.enableDownvotes
                 version = SiteVersion(response.version)
                 if version != account.siteVersion {
@@ -35,6 +36,7 @@ class SiteInformationTracker: ObservableObject {
                 }
                 myUserInfo = response.myUser
                 allLanguages = response.allLanguages
+                
             } catch {
                 errorHandler.handle(error)
             }

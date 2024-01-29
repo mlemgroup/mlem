@@ -14,6 +14,7 @@ struct ReportCommentReply: ResponseEditorModel {
     
     var id: Int { commentReply.id }
     let canUpload: Bool = false
+    let showSlurWarning: Bool = false
     let modalName: String = "Report Comment"
     let prefillContents: String? = nil
     let commentReply: ReplyModel

@@ -17,7 +17,9 @@ struct GeneralSettingsView: View {
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     @AppStorage("appLock") var appLock: AppLock = .disabled
     
-    @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
+    @AppStorage("tapCommentToCollapse") var tapCommentToCollapse: Bool = true
+    
+    @AppStorage("defaultFeed") var defaultFeed: DefaultFeedType = .subscribed
     
     @AppStorage("hapticLevel") var hapticLevel: HapticPriority = .low
     @AppStorage("upvoteOnSave") var upvoteOnSave: Bool = false
@@ -46,14 +48,16 @@ struct GeneralSettingsView: View {
                     currentValue: $hapticLevel,
                     options: HapticPriority.allCases
                 )
-                
+                SwitchableSettingsItem(
+                    settingPictureSystemName: Icons.collapseComments,
+                    settingName: "Tap Comments to Collapse",
+                    isTicked: $tapCommentToCollapse
+                )
                 SwitchableSettingsItem(
                     settingPictureSystemName: Icons.upvoteOnSave,
                     settingName: "Upvote on Save",
                     isTicked: $upvoteOnSave
                 )
-            } footer: {
-                Text("You may need to restart the app for Upvote on Save changes to take effect.")
             }
             
             Section {
@@ -97,7 +101,7 @@ struct GeneralSettingsView: View {
                     settingIconSystemName: defaultFeed.settingsIconName,
                     settingName: "Default Feed",
                     currentValue: $defaultFeed,
-                    options: FeedType.allCases
+                    options: DefaultFeedType.allCases
                 )
             } footer: {
                 Text("The feed to show by default when you open the app.")

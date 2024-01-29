@@ -5,16 +5,16 @@
 //  Created by Sjmarf on 17/12/2023.
 //
 
-import SwiftUI
 import Dependencies
 import PhotosUI
+import SwiftUI
 
 class LinkAttachmentModel: ObservableObject {
     @Dependency(\.pictrsRepository) private var pictrsRepository: PictrsRespository
     @Dependency(\.apiClient) private var apiClient: APIClient
     @Dependency(\.errorHandler) private var errorHandler: ErrorHandler
     
-    var uploadTask: Task<(), any Error>?
+    var uploadTask: Task<Void, any Error>?
     
     @AppStorage("promptUser.permission.privacy.allowImageUploads") var askedForPermissionToUploadImages: Bool = false
     @AppStorage("confirmImageUploads") var confirmImageUploads: Bool = false
@@ -64,7 +64,7 @@ class LinkAttachmentModel: ObservableObject {
     
     func prepareToUpload(result: Result<URL, Error>) {
         switch result {
-        case .success(let url):
+        case let .success(url):
             do {
                 guard url.startAccessingSecurityScopedResource() else {
                     imageModel = .init(state: .failed("Invalid permissions"))
@@ -77,21 +77,21 @@ class LinkAttachmentModel: ObservableObject {
                 url.stopAccessingSecurityScopedResource()
                 imageModel = .init(state: .failed(String(describing: error)))
             }
-        case .failure(let error):
+        case let .failure(error):
             imageModel = .init(state: .failed(String(describing: error)))
         }
     }
     
     func prepareToUpload(data: Data) {
         imageModel = .init()
-        self.imageModel?.state = .readyToUpload(data: data)
+        imageModel?.state = .readyToUpload(data: data)
         if let uiImage = UIImage(data: data) {
-            self.imageModel?.image = Image(uiImage: uiImage)
+            imageModel?.image = Image(uiImage: uiImage)
         }
-        if self.askedForPermissionToUploadImages == false || self.confirmImageUploads {
-            self.showingUploadConfirmation = true
+        if askedForPermissionToUploadImages == false || confirmImageUploads {
+            showingUploadConfirmation = true
         } else {
-            self.uploadImage()
+            uploadImage()
         }
     }
     
@@ -112,7 +112,7 @@ class LinkAttachmentModel: ObservableObject {
     }
     
     func uploadImage() {
-        guard let imageModel = imageModel else { return }
+        guard let imageModel else { return }
         Task(priority: .userInitiated) {
             self.uploadTask = try await pictrsRepository.uploadImage(
                 imageModel: imageModel,
@@ -120,8 +120,8 @@ class LinkAttachmentModel: ObservableObject {
                     DispatchQueue.main.async {
                         self.imageModel = newValue
                         switch newValue.state {
-                        case .uploaded(let file):
-                            if let file = file {
+                        case let .uploaded(file):
+                            if let file {
                                 do {
                                     var components = URLComponents()
                                     components.scheme = try self.apiClient.session.instanceUrl.scheme
@@ -142,13 +142,13 @@ class LinkAttachmentModel: ObservableObject {
     }
     
     func deletePictrs(compareUrl: String? = nil) {
-        if let task = self.uploadTask {
+        if let task = uploadTask {
             task.cancel()
         }
-        switch self.imageModel?.state {
-        case .uploaded(file: let file):
-            if let file = file {
-                self.photosPickerItem = nil
+        photosPickerItem = nil
+        switch imageModel?.state {
+        case let .uploaded(file: file):
+            if let file {
                 Task {
                     do {
                         if let compareUrl {
@@ -177,10 +177,10 @@ class LinkAttachmentModel: ObservableObject {
                 }
             }
         default:
-            self.imageModel = nil
+            imageModel = nil
         }
-        if url == "" && self.imageModel != nil {
-            self.imageModel = nil
+        if url == "", imageModel != nil {
+            imageModel = nil
         }
     }
 }
