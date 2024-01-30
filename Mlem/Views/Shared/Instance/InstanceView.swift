@@ -126,7 +126,7 @@ struct InstanceView: View {
                         case .details:
                             if instance.userCount != nil {
                                 VStack(spacing: 0) {
-                                    InstanceStatsView(instance: instance)
+                                    InstanceDetailsView(instance: instance)
                                         .padding(.vertical, 16)
                                         .background(Color(uiColor: .systemGroupedBackground))
                                     if colorScheme == .light {

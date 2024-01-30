@@ -34,7 +34,7 @@
 		031A93D62AC847DA0077030C /* UploadConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031A93D52AC847DA0077030C /* UploadConfirmationView.swift */; };
 		031BF9532AB24BAF00F4517F /* SiteVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031BF9522AB24BAF00F4517F /* SiteVersion.swift */; };
 		031BF9552AB25AFB00F4517F /* SiteVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031BF9542AB25AFB00F4517F /* SiteVersionTests.swift */; };
-		031F95572B5C7FF20069C244 /* InstanceStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031F95562B5C7FF20069C244 /* InstanceStatsView.swift */; };
+		031F95572B5C7FF20069C244 /* InstanceDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031F95562B5C7FF20069C244 /* InstanceDetailsView.swift */; };
 		032109472AA7C3FC00912DFC /* CommunityLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032109462AA7C3FC00912DFC /* CommunityLabelView.swift */; };
 		032109492AA7C41800912DFC /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032109482AA7C41800912DFC /* AvatarView.swift */; };
 		032DD2FD2AC3594B00F1B33D /* LinkAttatchmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032DD2FC2AC3594B00F1B33D /* LinkAttatchmentView.swift */; };
@@ -587,7 +587,7 @@
 		031A93D52AC847DA0077030C /* UploadConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadConfirmationView.swift; sourceTree = "<group>"; };
 		031BF9522AB24BAF00F4517F /* SiteVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteVersion.swift; sourceTree = "<group>"; };
 		031BF9542AB25AFB00F4517F /* SiteVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteVersionTests.swift; sourceTree = "<group>"; };
-		031F95562B5C7FF20069C244 /* InstanceStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceStatsView.swift; sourceTree = "<group>"; };
+		031F95562B5C7FF20069C244 /* InstanceDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceDetailsView.swift; sourceTree = "<group>"; };
 		032109462AA7C3FC00912DFC /* CommunityLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityLabelView.swift; sourceTree = "<group>"; };
 		032109482AA7C41800912DFC /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		032DD2FC2AC3594B00F1B33D /* LinkAttatchmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkAttatchmentView.swift; sourceTree = "<group>"; };
@@ -1344,7 +1344,7 @@
 			isa = PBXGroup;
 			children = (
 				03A54C312B5331F30064CCDE /* InstanceView.swift */,
-				031F95562B5C7FF20069C244 /* InstanceStatsView.swift */,
+				031F95562B5C7FF20069C244 /* InstanceDetailsView.swift */,
 			);
 			path = Instance;
 			sourceTree = "<group>";
@@ -3379,7 +3379,7 @@
 				CDC1C93C2A7AA76000072E3D /* InternetSpeed.swift in Sources */,
 				50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */,
 				63F0C7BF2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift in Sources */,
-				031F95572B5C7FF20069C244 /* InstanceStatsView.swift in Sources */,
+				031F95572B5C7FF20069C244 /* InstanceDetailsView.swift in Sources */,
 				632E8EE827EE63DB007E8D75 /* DownvoteButtonView.swift in Sources */,
 				50D61E5B2AA32B9400A926EC /* APISession.swift in Sources */,
 				CDCBD72B2A8EC0A800387A2C /* Instance Summary.swift in Sources */,
