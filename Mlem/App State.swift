@@ -14,7 +14,7 @@ class AppState: ObservableObject {
     @Dependency(\.apiClient) var apiClient
     
     @AppStorage("defaultAccountId") var defaultAccountId: Int?
-    @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .username
+    @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .nickname
     @AppStorage("showUserAvatarOnProfileTab") var showUserAvatar: Bool = true
     
     @Published private(set) var currentActiveAccount: SavedAccount?
@@ -26,8 +26,6 @@ class AppState: ObservableObject {
         }
         
         switch profileTabLabel {
-        case .username:
-            return currentActiveAccount.username
         case .instance:
             return currentActiveAccount.hostName ?? "Instance"
         case .nickname:
