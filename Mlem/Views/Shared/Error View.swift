@@ -5,9 +5,9 @@
 //  Created by David Bureš on 19.06.2022.
 //
 
+import Combine
 import SwiftUI
 import UniformTypeIdentifiers
-import Combine
 
 struct ErrorView: View {
     @AppStorage("developerMode") var developerMode: Bool = false
@@ -81,14 +81,13 @@ struct ErrorView: View {
                 }
             }
             
-            if errorDetails.error != nil && (errorDetails.title == nil || developerMode) {
+            if errorDetails.error != nil, errorDetails.title == nil || developerMode {
                 Button("Show details") {
                     showingFullError.toggle()
                 }
                 .buttonStyle(.plain)
                 .foregroundStyle(.tertiary)
             }
-            
         }
         .padding()
         .foregroundColor(.secondary)
@@ -118,8 +117,10 @@ struct ErrorView: View {
                 .foregroundStyle(.red)
             Divider()
             Button {
-                UIPasteboard.general.setValue(errorText,
-                                              forPasteboardType: UTType.plainText.identifier)
+                UIPasteboard.general.setValue(
+                    errorText,
+                    forPasteboardType: UTType.plainText.identifier
+                )
             } label: {
                 Label("Copy", systemImage: "square.on.square")
             }
