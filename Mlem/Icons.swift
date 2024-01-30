@@ -188,7 +188,6 @@ enum Icons {
     static let leftRight: String = "arrow.left.arrow.right"
     static let developerMode: String = "wrench.adjustable.fill"
     static let limitImageHeightSetting: String = "rectangle.compress.vertical"
-    static let swipeUpGestureSetting: String = "arrow.up.to.line.alt"
     static let collapseComments: String = "arrow.down.and.line.horizontal.and.arrow.up"
     
     // misc

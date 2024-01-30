@@ -51,6 +51,8 @@ struct AccountGeneralSettingsView: View {
                         }
                     }
                 }
+            } footer: {
+                Text("Show content flagged as Not Safe For Work.")
             }
             Section {
                 SwitchableSettingsItem(

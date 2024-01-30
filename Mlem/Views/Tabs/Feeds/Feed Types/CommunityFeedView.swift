@@ -15,7 +15,7 @@ import SwiftUI
 struct CommunityFeedView: View {
     enum Tab: String, Identifiable, CaseIterable {
         var id: Self { self }
-        case posts, about, moderators, statistics
+        case posts, about, moderators, details
     }
     
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = true
@@ -52,7 +52,7 @@ struct CommunityFeedView: View {
     }
     
     var availableTabs: [Tab] {
-        var output: [Tab] = [.posts, .moderators, .statistics]
+        var output: [Tab] = [.posts, .moderators, .details]
         if communityModel.description != nil {
             output.insert(.about, at: 1)
         }
@@ -144,7 +144,7 @@ struct CommunityFeedView: View {
                 case .posts: posts()
                 case .about: about()
                 case .moderators: moderators()
-                case .statistics: statistics()
+                case .details: details()
                 }
             }
         }
@@ -175,9 +175,9 @@ struct CommunityFeedView: View {
         }
     }
     
-    func statistics() -> some View {
+    func details() -> some View {
         VStack(spacing: 0) {
-            CommunityStatsView(community: communityModel)
+            CommunityDetailsView(community: communityModel)
                 .padding(.vertical, 16)
                 .background(Color(uiColor: .systemGroupedBackground))
             

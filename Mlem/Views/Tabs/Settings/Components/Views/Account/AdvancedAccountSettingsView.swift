@@ -45,6 +45,8 @@ struct AdvancedAccountSettingsView: View {
                         }
                     }
                 }
+            } footer: {
+                Text("Bot accounts cannot vote on posts.")
             }
         }
         .navigationTitle("Advanced")
