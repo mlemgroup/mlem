@@ -48,7 +48,7 @@ struct AggregateFeedView: View {
             internetSpeed: internetSpeed,
             sortType: defaultPostSorting,
             showReadPosts: showReadPosts,
-            feedType: feedType
+            feedType: feedType == .saved ? .all : feedType
         ))
         
         // StateObject can't be optional so we initialize with a dummy user

@@ -111,6 +111,7 @@ struct PostFeedView: View {
             NavigationLink(.postLinkWithContext(.init(post: post, community: nil, postTracker: postTracker))) {
                 FeedPost(
                     post: post,
+                    postTracker: postTracker,
                     community: communityContext,
                     showPostCreator: shouldShowPostCreator,
                     showCommunity: showCommunity
