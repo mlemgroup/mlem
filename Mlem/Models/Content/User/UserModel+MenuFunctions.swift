@@ -9,7 +9,7 @@ import Foundation
 
 extension UserModel {
     func blockMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> MenuFunction {
-        return .standardMenuFunction(
+        .standardMenuFunction(
             text: blocked ? "Unblock" : "Block",
             imageName: blocked ? Icons.show : Icons.hide,
             destructiveActionPrompt: blocked ? nil : AppConstants.blockUserPrompt,

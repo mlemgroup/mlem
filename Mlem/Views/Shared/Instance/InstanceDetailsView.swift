@@ -7,9 +7,7 @@
 
 import SwiftUI
 
-struct InstanceStatsView: View {
-    @AppStorage("developerMode") var developerMode: Bool = false
-    
+struct InstanceDetailsView: View {
     @State var showingSlurRegex: Bool = false
     
     let instance: InstanceModel
@@ -92,14 +90,6 @@ struct InstanceStatsView: View {
                     systemImage: Icons.federation,
                     value: instance.federates ?? false
                 )
-                if developerMode, let signedFetch = instance.federationSignedFetch {
-                    Divider()
-                    settingRow(
-                        "Federation Signed Fetch",
-                        systemImage: Icons.developerMode,
-                        value: signedFetch
-                    )
-                }
             }
             .frame(maxWidth: .infinity)
             .background(Color(uiColor: .secondarySystemGroupedBackground))
@@ -156,23 +146,36 @@ struct InstanceStatsView: View {
                     systemImage: Icons.filterFill,
                     value: instance.slurFilterRegex != nil
                 )
-                if developerMode, let regex = instance.slurFilterString {
+                if let regex = instance.slurFilterString {
                     Divider()
-                    Text(showingSlurRegex ? regex : "Tap to show slur filter regex")
-                        .textSelection(.enabled)
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                        .padding(12)
-                        .onTapGesture {
-                            withAnimation {
-                                showingSlurRegex.toggle()
-                            }
+                    VStack(alignment: .leading, spacing: 2) {
+                        if showingSlurRegex {
+                            Text(regex)
+                            .foregroundStyle(.secondary)
+                            .textSelection(.enabled)
+                        } else {
+                            Text("Tap to slow slur filter regex.")
+                            Label(
+                                "This probably contains foul language.",
+                                systemImage: Icons.warning
+                            )
+                                .foregroundStyle(.orange)
                         }
+                    }
+                    .font(.footnote)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(12)
+                    .contentShape(.rect)
+                    .onTapGesture {
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            showingSlurRegex.toggle()
+                        }
+                    }
                 }
-                if developerMode, let feedType = instance.defaultFeedType {
+                if let feedType = instance.defaultFeedType {
                     Divider()
                     settingRow(
-                        "Default Feed Type",
+                        "Default Feed Type (Desktop)",
                         systemImage: Icons.feeds,
                         value: feedType.rawValue
                     )

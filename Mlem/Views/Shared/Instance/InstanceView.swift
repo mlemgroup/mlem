@@ -5,9 +5,9 @@
 //  Created by Sjmarf on 13/01/2024.
 //
 
-import SwiftUI
 import Charts
 import Dependencies
+import SwiftUI
 
 enum InstanceViewTab: String, Identifiable, CaseIterable {
     case about, administrators, details, uptime, safety
@@ -133,7 +133,7 @@ struct InstanceView: View {
                             }
                             Divider()
                         }
-                        switch self.selectedTab {
+                        switch selectedTab {
                         case .about:
                             if let description = instance.description {
                                 MarkdownView(text: description, isNsfw: false)
@@ -157,7 +157,7 @@ struct InstanceView: View {
                         case .details:
                             if instance.userCount != nil {
                                 VStack(spacing: 0) {
-                                    InstanceStatsView(instance: instance)
+                                    InstanceDetailsView(instance: instance)
                                         .padding(.vertical, 16)
                                         .background(Color(uiColor: .systemGroupedBackground))
                                     if colorScheme == .light {
@@ -213,7 +213,7 @@ struct InstanceView: View {
                     } else {
                         errorDetails = ErrorDetails(title: "\"\(instance.name)\" is an invalid URL.")
                     }
-                } catch APIClientError.decoding(let data, let error) {
+                } catch let APIClientError.decoding(data, error) {
                     withAnimation(.easeOut(duration: 0.2)) {
                         if let content = String(data: data, encoding: .utf8),
                            content.contains("<div class=\"kbin-container\">" ) {

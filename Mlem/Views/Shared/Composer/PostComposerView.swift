@@ -77,9 +77,9 @@ struct PostComposerView: View {
                 VStack(spacing: 0) {
                     // Community Row
                     headerView
-                    .padding(.bottom, 15)
-                    .padding(.horizontal)
-                    .zIndex(1)
+                        .padding(.bottom, 15)
+                        .padding(.horizontal)
+                        .zIndex(1)
                     
                     VStack(spacing: 15) {
                         TextField("Title", text: $postTitle, axis: .vertical)
