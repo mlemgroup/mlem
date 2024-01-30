@@ -21,7 +21,6 @@ class SiteInformationTracker: ObservableObject {
     @Published var myUserInfo: APIMyUserInfo?
     
     func load(account: SavedAccount) {
-
         version = account.siteVersion
         Task {
             do {
