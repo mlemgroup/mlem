@@ -5,11 +5,10 @@
 //  Created by Sjmarf on 27/12/2023.
 //
 
-import SwiftUI
 import NukeUI
+import SwiftUI
 
 struct AvatarBannerView: View {
-    
     let type: AvatarType
     
     let avatar: URL?
@@ -23,9 +22,9 @@ struct AvatarBannerView: View {
         self.type = .user
         self.avatar = user?.avatar
         self.banner = user?.banner
-        @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
+        @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders = true
         self.showBanner = shouldShowUserHeaders
-        @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
+        @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars = true
         self.showAvatar = shouldShowUserAvatars
     }
     
@@ -33,9 +32,9 @@ struct AvatarBannerView: View {
         self.type = .community
         self.avatar = community?.avatar
         self.banner = community?.banner
-        @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = true
+        @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders = true
         self.showBanner = shouldShowCommunityHeaders
-        @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
+        @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons = true
         self.showAvatar = shouldShowCommunityIcons
     }
     
@@ -63,7 +62,7 @@ struct AvatarBannerView: View {
     
     var body: some View {
         Group {
-            if (banner != nil || showEmptyBanner) && showBanner {
+            if banner != nil || showEmptyBanner, showBanner {
                 ZStack(alignment: .bottom) {
                     VStack {
                         LazyImage(url: banner) { state in
@@ -96,7 +95,6 @@ struct AvatarBannerView: View {
                                 }
                                 .compositingGroup()
                             }
-                            
                         }
                         Spacer()
                     }

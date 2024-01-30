@@ -82,7 +82,9 @@ struct ExpandedPost: View {
                 ToolbarItemGroup(placement: .navigationBarTrailing) { toolbarMenu }
             }
             .task {
-                await loadComments()
+                if commentTracker.comments.isEmpty {
+                    await loadComments()
+                }
                 await post.markRead(true)
             }
             .refreshable { await refreshComments() }
@@ -225,7 +227,8 @@ struct ExpandedPost: View {
                     
                     Spacer()
                     
-                    EllipsisMenu(size: 24, menuFunctions: genMenuFunctions())
+                    let functions = post.menuFunctions(editorTracker: editorTracker, postTracker: postTracker)
+                    EllipsisMenu(size: 24, menuFunctions: functions)
                 }
                 
                 LargePost(
@@ -256,9 +259,9 @@ struct ExpandedPost: View {
                 saved: post.saved,
                 accessibilityContext: "post",
                 widgets: layoutWidgetTracker.groups.post,
-                upvote: upvotePost,
-                downvote: downvotePost,
-                save: savePost,
+                upvote: post.toggleUpvote,
+                downvote: post.toggleDownvote,
+                save: post.toggleSave,
                 reply: replyToPost,
                 shareURL: URL(string: post.post.apId),
                 shouldShowScore: shouldShowScoreInPostBar,

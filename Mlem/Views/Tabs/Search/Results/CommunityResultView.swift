@@ -12,7 +12,7 @@ enum CommunityComplication: CaseIterable {
     case type, instance, subscribers
 }
 
-extension Array where Element == CommunityComplication {
+extension [CommunityComplication] {
     static let withTypeLabel: [CommunityComplication] = [.type, .instance, .subscribers]
     static let withoutTypeLabel: [CommunityComplication] = [.instance, .subscribers]
     static let instanceOnly: [CommunityComplication] = [.instance]

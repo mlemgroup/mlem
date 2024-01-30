@@ -5,9 +5,9 @@
 //  Created by Sjmarf on 13/01/2024.
 //
 
-import SwiftUI
 import Charts
 import Dependencies
+import SwiftUI
 
 enum InstanceViewTab: String, Identifiable, CaseIterable {
     case about, administrators, statistics, uptime, safety
@@ -101,7 +101,7 @@ struct InstanceView: View {
                             }
                             Divider()
                         }
-                        switch self.selectedTab {
+                        switch selectedTab {
                         case .about:
                             if let description = instance.description {
                                 MarkdownView(text: description, isNsfw: false)
@@ -152,17 +152,17 @@ struct InstanceView: View {
                                     instance.update(with: info)
                                     self.instance = instance
                                 } else {
-                                    self.instance = InstanceModel(from: info)
+                                    instance = InstanceModel(from: info)
                                 }
                             }
                         }
                     } else {
                         errorDetails = ErrorDetails(title: "\"\(domainName)\" is an invalid URL.")
                     }
-                } catch APIClientError.decoding(let data, let error) {
+                } catch let APIClientError.decoding(data, error) {
                     withAnimation(.easeOut(duration: 0.2)) {
                         if let content = String(data: data, encoding: .utf8),
-                           content.contains("<title>Error 404 - \(domainName)</title>" ) {
+                           content.contains("<title>Error 404 - \(domainName)</title>") {
                             errorDetails = ErrorDetails(
                                 title: "KBin Instance",
                                 body: "We can't yet display KBin details.",

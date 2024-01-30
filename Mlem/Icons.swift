@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 /// SFSymbol names for icons
-struct Icons {
+enum Icons {
     // votes
     static let votes: String = "arrow.up.arrow.down.square"
     static let upvote: String = "arrow.up"

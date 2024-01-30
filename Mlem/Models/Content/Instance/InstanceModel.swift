@@ -17,23 +17,36 @@ struct InstanceModel {
     var url: URL!
     var version: SiteVersion?
     
+    var slurFilterRegex: Regex<AnyRegexOutput>?
+    
     init(from response: SiteResponse) {
-        self.update(with: response)
+        update(with: response)
     }
     
     init(from site: APISite) {
-        self.update(with: site)
+        update(with: site)
     }
     
     mutating func update(with response: SiteResponse) {
-        self.administrators = response.admins.map {
+        administrators = response.admins.map {
             var user = UserModel(from: $0)
             user.usesExternalData = true
             user.isAdmin = true
             return user
         }
-        self.version = SiteVersion(response.version)
-        self.update(with: response.siteView.site)
+        version = SiteVersion(response.version)
+        
+        let localSite = response.siteView.localSite
+        
+        do {
+            if let regex = localSite.slurFilterRegex {
+                slurFilterRegex = try .init(regex)
+            }
+        } catch {
+            print("Invalid slur filter regex")
+        }
+
+        update(with: response.siteView.site)
     }
     
     mutating func update(with site: APISite) {
@@ -48,6 +61,19 @@ struct InstanceModel {
             url = components.url
         }
     }
+    
+    func firstSlurFilterMatch(_ input: String) -> String? {
+        do {
+            if let slurFilterRegex {
+                if let output = try slurFilterRegex.firstMatch(in: input.lowercased()) {
+                    return String(input[output.range])
+                }
+            }
+        } catch {
+            print("REGEX FAILED")
+        }
+        return nil
+    }
 }
 
 extension InstanceModel: Identifiable {
@@ -56,7 +82,7 @@ extension InstanceModel: Identifiable {
 
 extension InstanceModel: Hashable {
     static func == (lhs: InstanceModel, rhs: InstanceModel) -> Bool {
-        return lhs.hashValue == rhs.hashValue
+        lhs.hashValue == rhs.hashValue
     }
     
     /// Hashes all fields for which state changes should trigger view updates.

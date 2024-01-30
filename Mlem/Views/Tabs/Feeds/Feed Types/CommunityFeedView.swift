@@ -15,7 +15,7 @@ import SwiftUI
 struct CommunityFeedView: View {
     enum Tab: String, Identifiable, CaseIterable {
         var id: Self { self }
-        case posts, about, moderators, statistics
+        case posts, about, moderators, details
     }
     
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = true
@@ -25,9 +25,8 @@ struct CommunityFeedView: View {
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.communityRepository) var communityRepository
     
-    @EnvironmentObject var editorTracker: EditorTracker
-    
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var editorTracker: EditorTracker
     
     @StateObject var postTracker: StandardPostTracker
     
@@ -53,7 +52,7 @@ struct CommunityFeedView: View {
     }
     
     var availableTabs: [Tab] {
-        var output: [Tab] = [.posts, .moderators, .statistics]
+        var output: [Tab] = [.posts, .moderators, .details]
         if communityModel.description != nil {
             output.insert(.about, at: 1)
         }
@@ -145,17 +144,7 @@ struct CommunityFeedView: View {
                 case .posts: posts()
                 case .about: about()
                 case .moderators: moderators()
-                case .statistics: statistics()
-                }
-            }
-        }
-        .background {
-            VStack(spacing: 0) {
-                Color.systemBackground
-                    .frame(height: 200)
-                
-                if selectedTab == .statistics || selectedTab == .moderators {
-                    Color(uiColor: .systemGroupedBackground)
+                case .details: details()
                 }
             }
         }
@@ -179,26 +168,22 @@ struct CommunityFeedView: View {
     @ViewBuilder
     func moderators() -> some View {
         if let moderators = communityModel.moderators {
-            Divider()
-                .padding(.top, 15)
-                .background(Color.secondarySystemBackground)
             ForEach(moderators, id: \.id) { user in
                 UserResultView(user, communityContext: communityModel)
                 Divider()
             }
-            Color.secondarySystemBackground
-                .frame(height: 100)
         }
     }
     
-    func statistics() -> some View {
+    func details() -> some View {
         VStack(spacing: 0) {
-            CommunityStatsView(community: communityModel)
-                .padding(.top, AppConstants.postAndCommentSpacing)
+            CommunityDetailsView(community: communityModel)
+                .padding(.vertical, 16)
                 .background(Color(uiColor: .systemGroupedBackground))
             
-            Color(uiColor: .systemGroupedBackground)
-                .frame(maxHeight: .infinity)
+            if colorScheme == .light {
+                Divider()
+            }
         }
         .frame(maxHeight: .infinity)
     }

@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 22/11/2023.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct AccountSettingsView: View {
     @Dependency(\.siteInformation) var siteInformation: SiteInformationTracker
@@ -24,13 +24,12 @@ struct AccountSettingsView: View {
     
     init() {
         if let info = siteInformation.myUserInfo {
-            displayName = info.localUserView.person.displayName ?? ""
-            showNsfw = info.localUserView.localUser.showNsfw
+            self.displayName = info.localUserView.person.displayName ?? ""
+            self.showNsfw = info.localUserView.localUser.showNsfw
         }
     }
     
     var body: some View {
-        
         Form {
             if let info = siteInformation.myUserInfo {
                 Section {
@@ -70,11 +69,11 @@ struct AccountSettingsView: View {
                     }
                     NavigationLink(.settings(.accountGeneral)) {
                         Label("Content & Notifications", systemImage: "list.bullet.rectangle.fill")
-                        .labelStyle(SquircleLabelStyle(color: .orange))
+                            .labelStyle(SquircleLabelStyle(color: .orange))
                     }
                     NavigationLink(.settings(.accountAdvanced)) {
                         Label("Advanced", systemImage: "gearshape.2.fill")
-                        .labelStyle(SquircleLabelStyle(color: .gray))
+                            .labelStyle(SquircleLabelStyle(color: .gray))
                     }
                 } footer: {
                     if settingsDisabled {
@@ -107,7 +106,6 @@ struct AccountSettingsView: View {
                 Section {
                     Button("Sign Out", role: .destructive) {
                         showingSignOutConfirmation = true
-                        
                     }
                     .frame(maxWidth: .infinity)
                     .confirmationDialog("Really sign out?", isPresented: $showingSignOutConfirmation) {

@@ -36,6 +36,7 @@ class SiteInformationTracker: ObservableObject {
                 }
                 myUserInfo = response.myUser
                 allLanguages = response.allLanguages
+                
             } catch {
                 errorHandler.handle(error)
             }

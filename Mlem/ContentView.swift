@@ -68,18 +68,18 @@ struct ContentView: View {
                 }
                     
                 ProfileView()
-                .fancyTabItem(tag: TabSelection.profile) {
-                    FancyTabBarLabel(
-                        tag: TabSelection.profile,
-                        customText: appState.tabDisplayName,
-                        symbolConfiguration: .init(
-                            symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
-                            activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
-                            remoteSymbolUrl: appState.profileTabRemoteSymbolUrl
+                    .fancyTabItem(tag: TabSelection.profile) {
+                        FancyTabBarLabel(
+                            tag: TabSelection.profile,
+                            customText: appState.tabDisplayName,
+                            symbolConfiguration: .init(
+                                symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
+                                activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
+                                remoteSymbolUrl: appState.profileTabRemoteSymbolUrl
+                            )
                         )
-                    )
-                    .simultaneousGesture(accountSwitchLongPress)
-                }
+                        .simultaneousGesture(accountSwitchLongPress)
+                    }
                 
                 SearchRoot()
                     .fancyTabItem(tag: TabSelection.search) {
