@@ -177,7 +177,7 @@ struct UserView: View {
         .onChange(of: siteInformation.myUserInfo?.localUserView.person) { newValue in
             if isOwnProfile {
                 if let newValue {
-                    self.user.update(with: newValue)
+                    user.update(with: newValue)
                 }
             }
         }

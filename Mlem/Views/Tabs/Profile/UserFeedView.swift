@@ -116,7 +116,8 @@ struct UserFeedView: View {
                 postContext: nil,
                 indentBehaviour: .never,
                 showPostContext: true,
-                showCommentCreator: false
+                showCommentCreator: false,
+                pageContext: .profile
             )
             
             Divider()

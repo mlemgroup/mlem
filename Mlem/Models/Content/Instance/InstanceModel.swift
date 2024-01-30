@@ -43,7 +43,7 @@ struct InstanceModel {
     var reportsEmailAdmins: Bool?
     
     init(from response: SiteResponse) {
-        self.update(with: response)
+        update(with: response)
     }
     
     init(from siteView: APISiteView) {
@@ -51,17 +51,17 @@ struct InstanceModel {
     }
     
     init(from site: APISite) {
-        self.update(with: site)
+        update(with: site)
     }
     
     mutating func update(with response: SiteResponse) {
-        self.administrators = response.admins.map {
+        administrators = response.admins.map {
             var user = UserModel(from: $0)
             user.usesExternalData = true
             user.isAdmin = true
             return user
         }
-        self.version = SiteVersion(response.version)
+        version = SiteVersion(response.version)
         
         let localSite = response.siteView.localSite
         self.allowsDownvotes = localSite.enableDownvotes
@@ -140,7 +140,7 @@ extension InstanceModel: Identifiable {
 
 extension InstanceModel: Hashable {
     static func == (lhs: InstanceModel, rhs: InstanceModel) -> Bool {
-        return lhs.hashValue == rhs.hashValue
+        lhs.hashValue == rhs.hashValue
     }
     
     /// Hashes all fields for which state changes should trigger view updates.
