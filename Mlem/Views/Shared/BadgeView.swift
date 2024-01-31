@@ -76,22 +76,24 @@ struct BadgeView: View {
         self.label = "Unsupported Badge"
         if let host = url.host(), host == "img.shields.io" {
             let path = url.pathComponents
-            decodeBadgeType(path)
-            decodeLabel(path[2])
-            if let components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
-                if let parameters = components.queryItems {
-                    for parameter in parameters {
-                        switch parameter.name {
-                        case "logo":
-                            if let value = parameter.value {
-                                decodeLogo(name: value)
+            if path.count >= 3 {
+                decodeBadgeType(path)
+                decodeLabel(path[2])
+                if let components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
+                    if let parameters = components.queryItems {
+                        for parameter in parameters {
+                            switch parameter.name {
+                            case "logo":
+                                if let value = parameter.value {
+                                    decodeLogo(name: value)
+                                }
+                            case "color":
+                                if let value = parameter.value {
+                                    decodeColor(value)
+                                }
+                            default:
+                                break
                             }
-                        case "color":
-                            if let value = parameter.value {
-                                decodeColor(value)
-                            }
-                        default:
-                            break
                         }
                     }
                 }
