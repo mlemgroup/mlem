@@ -154,7 +154,7 @@ struct InstanceDetailsView: View {
                             .foregroundStyle(.secondary)
                             .textSelection(.enabled)
                         } else {
-                            Text("Tap to slow slur filter regex.")
+                            Text("Tap to show slur filter regex.")
                             Label(
                                 "This probably contains foul language.",
                                 systemImage: Icons.warning

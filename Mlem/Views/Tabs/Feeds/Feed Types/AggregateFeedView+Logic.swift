@@ -10,8 +10,8 @@ import Foundation
 extension AggregateFeedView {
     func genFeedSwitchingFunctions() -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
-        FeedType.allAggregateFeedCases.forEach { type in
-            let (imageName, enabled) = type != postTracker.feedType
+        availableFeeds.forEach { type in
+            let (imageName, enabled) = type != selectedFeed
                 ? (type.iconName, true)
                 : (type.iconNameFill, false)
             ret.append(MenuFunction.standardMenuFunction(
@@ -20,9 +20,12 @@ extension AggregateFeedView {
                 destructiveActionPrompt: nil,
                 enabled: enabled,
                 callback: {
-                    Task {
-                        await postTracker.changeFeedType(to: type)
+                    // when switching back from the saved feed, stale items are sometimes present in the post tracker; this ensures that those are not displayed
+                    if selectedFeed == .saved, type != postTracker.feedType {
+                        postTracker.isStale = true
                     }
+                    
+                    selectedFeed = type
                 }
             ))
         }

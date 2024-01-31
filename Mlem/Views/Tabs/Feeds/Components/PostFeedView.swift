@@ -76,9 +76,8 @@ struct PostFeedView: View {
             }
             .toolbar {
                 if versionSafePostSort != nil {
-                    if postTracker.feedType != .saved {
-                        ToolbarItem(placement: .primaryAction) { sortMenu }
-                    }
+                    ToolbarItem(placement: .primaryAction) { sortMenu }
+                    
                     ToolbarItemGroup(placement: .secondaryAction) {
                         ForEach(genEllipsisMenuFunctions()) { menuFunction in
                             MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
@@ -97,7 +96,7 @@ struct PostFeedView: View {
     
     var content: some View {
         LazyVStack(spacing: 0) {
-            if postTracker.items.isEmpty || versionSafePostSort == nil {
+            if postTracker.items.isEmpty || versionSafePostSort == nil || postTracker.isStale {
                 noPostsView()
             } else {
                 ForEach(postTracker.items, id: \.uid) { feedPost(for: $0) }
@@ -109,10 +108,10 @@ struct PostFeedView: View {
     @ViewBuilder
     private func feedPost(for post: PostModel) -> some View {
         VStack(spacing: 0) {
-            // TODO: reenable nav
             NavigationLink(.postLinkWithContext(.init(post: post, community: nil, postTracker: postTracker))) {
                 FeedPost(
                     post: post,
+                    postTracker: postTracker,
                     community: communityContext,
                     showPostCreator: shouldShowPostCreator,
                     showCommunity: showCommunity
@@ -129,7 +128,7 @@ struct PostFeedView: View {
     private func noPostsView() -> some View {
         VStack {
             // don't show posts until site information loads to avoid jarring redraw
-            if postTracker.loadingState == .loading || versionSafePostSort == nil || suppressNoPostsView {
+            if postTracker.loadingState == .loading || versionSafePostSort == nil || suppressNoPostsView || postTracker.isStale {
                 LoadingView(whatIsLoading: .posts)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .transition(.opacity)
