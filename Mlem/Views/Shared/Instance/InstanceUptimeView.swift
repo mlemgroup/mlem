@@ -33,12 +33,17 @@ struct InstanceUptimeView: View {
                     .padding(.vertical, 15)
             }
             .padding(.top, 20)
+            .padding(.bottom, 30)
             section("Response Time") {
-                responseTimeChart
-                    .padding(.top, 17)
-                    .padding(.bottom, 13)
+                VStack(alignment: .leading, spacing: 4) {
+                    responseTimeChart
+                        .padding(.horizontal, 20)
+                    footnote("Mean average: \(uptimeData.results.map(\.durationMs).reduce(0, +) / uptimeData.results.count)ms")
+                        .padding(.leading, 20)
+                }
+                .padding(.top, 17)
+                .padding(.bottom, 8)
             }
-            .padding(.top, 30)
             section("Incidents", spacing: 0) {
                 ForEach(uptimeData.downtimes) { event in
                     if event.id != uptimeData.downtimes.first?.id {
@@ -157,7 +162,6 @@ struct InstanceUptimeView: View {
             }
         }
         .frame(height: 200)
-        .padding(.horizontal, 20)
         .chartXAxis {
             let marks = [uptimeData.results.first?.timestamp ?? .distantPast, uptimeData.results.last?.timestamp ?? .distantFuture]
             AxisMarks(format: .dateTime.hour(.defaultDigits(amPM: .abbreviated)).minute(.twoDigits), values: marks)
