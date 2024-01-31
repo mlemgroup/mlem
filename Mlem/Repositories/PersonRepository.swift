@@ -47,8 +47,31 @@ class PersonRepository {
     ///   - limit: max number of content items to fetch
     ///   - savedOnly: if present, whether to fetch saved items; calling user must be the requested user
     /// - Returns: GetPersonDetailsResponse for the given user
+    @available(*, deprecated, message: "This method is deprecated, use loadUser or loadUserContent instead")
     func loadUserDetails(for id: Int, limit: Int, savedOnly: Bool = false) async throws -> GetPersonDetailsResponse {
         try await apiClient.getPersonDetails(for: id, limit: limit, savedOnly: savedOnly)
+    }
+    
+    /// Gets full user details for the given user
+    /// - Parameters:
+    ///   - id: user id to get for
+    ///   - page: page to fetch
+    ///   - limit: max number of content items to fetch
+    ///   - savedOnly: if present, whether to fetch saved items; calling user must be the requested user
+    /// - Returns: GetPersonDetailsResponse for the given user
+    func loadUserContent(for id: Int, page: Int, limit: Int, saved: Bool) async throws -> [UserContentModel] {
+        let personDetails = try await apiClient.getPersonDetails(for: id, sort: .new, page: page, limit: limit, savedOnly: saved)
+        
+        let posts = personDetails.posts.map { UserContentModel.post(PostModel(from: $0)) }
+        let comments = personDetails.comments.map { UserContentModel.comment(HierarchicalComment(
+            comment: $0,
+            children: .init(),
+            parentCollapsed: false,
+            collapsed: false
+        )) }
+        
+        // TODO: support more sort types--API support is present
+        return (posts + comments).sorted { $0.sortVal(sortType: .published) > $1.sortVal(sortType: .published) }
     }
     
     func loadUserDetails(for url: URL, limit: Int, savedOnly: Bool = false) async throws -> GetPersonDetailsResponse {

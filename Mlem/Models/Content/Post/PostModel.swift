@@ -177,7 +177,7 @@ class PostModel: ContentIdentifiable, ObservableObject {
     }
     
     func toggleSave() async {
-        hapticManager.play(haptic: .lightSuccess, priority: .low)
+        hapticManager.play(haptic: .success, priority: .low)
         
         let shouldSave: Bool = !saved
         let upvoteOnSave = UserDefaults.standard.bool(forKey: "upvoteOnSave")

@@ -99,6 +99,7 @@ struct UserFeedView: View {
             VStack(spacing: 0) {
                 FeedPost(
                     post: post,
+                    postTracker: privatePostTracker,
                     showPostCreator: false,
                     showCommunity: true
                 )
