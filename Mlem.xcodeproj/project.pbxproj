@@ -2533,7 +2533,7 @@
 		CD4BAD392B4C6C2500A1E726 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				03EF1D0B2B434CB10056175C /* CommunityStatsView.swift */,
+				03EF1D0B2B434CB10056175C /* CommunityDetailsView.swift */,
 				CD4BAD3A2B4C6C3200A1E726 /* FeedRowView.swift */,
 				CDBCBA232B54A5F40070F60D /* NoPostsView.swift */,
 				CDBCBA1F2B537A4B0070F60D /* PostFeedView.swift */,
@@ -3492,7 +3492,7 @@
 				5064D0412A6E63E000B22EE3 /* Task+Notifiable.swift in Sources */,
 				63F0C7BD2A058CD200A18C5D /* Check if Endpoint Exists.swift in Sources */,
 				E4D4DBA02A7C7B9D00C4F3DE /* Comments.swift in Sources */,
-				03EF1D0C2B434CB10056175C /* CommunityStatsView.swift in Sources */,
+				03EF1D0C2B434CB10056175C /* CommunityDetailsView.swift in Sources */,
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
 				03F4DC9D2B193F4C00556C67 /* MatrixLinkView.swift in Sources */,
 				03A54C322B5331F30064CCDE /* InstanceView.swift in Sources */,
