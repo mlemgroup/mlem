@@ -12,56 +12,45 @@ struct CommunityDetailsView: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            VStack(spacing: 5) {
+            box {
+                HStack {
+                    Label(community.creationDate.dateString, systemImage: Icons.cakeDay)
+                    Text("•")
+                    Label(community.creationDate.getRelativeTime(date: Date.now, unitsStyle: .abbreviated), systemImage: Icons.time)
+                }
+                .foregroundStyle(.secondary)
+                .font(.footnote)
+            }
+            box {
                 Text("Subscribers")
                     .foregroundStyle(.secondary)
                 Text("\(community.subscriberCount ?? 0)")
                     .fontWeight(.semibold)
                     .font(.title)
             }
-            .padding(.vertical)
-            .frame(maxWidth: .infinity)
-            .background(Color(uiColor: .secondarySystemGroupedBackground))
-            .cornerRadius(AppConstants.largeItemCornerRadius)
             HStack(spacing: 16) {
-                VStack(spacing: 5) {
-                    HStack {
-                        Text("Posts")
-                            .foregroundStyle(.secondary)
-                    }
-                    HStack {
-                        Text("\(abbreviateNumber(community.postCount ?? 0))")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.pink)
-                    }
+                box {
+                    Text("Posts")
+                        .foregroundStyle(.secondary)
+                    Text("\(abbreviateNumber(community.postCount ?? 0))")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.pink)
                 }
-                .padding(10)
-                .frame(maxWidth: .infinity)
-                .background(Color(uiColor: .secondarySystemGroupedBackground))
-                .cornerRadius(AppConstants.largeItemCornerRadius)
                 
-                VStack(spacing: 5) {
-                    HStack {
-                        Text("Comments")
-                            .foregroundStyle(.secondary)
-                    }
-                    HStack {
-                        Text("\(abbreviateNumber(community.commentCount ?? 0))")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.orange)
-                    }
+                box {
+                    Text("Comments")
+                        .foregroundStyle(.secondary)
+                    Text("\(abbreviateNumber(community.commentCount ?? 0))")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.orange)
                 }
-                .padding(10)
-                .frame(maxWidth: .infinity)
-                .background(Color(uiColor: .secondarySystemGroupedBackground))
-                .cornerRadius(AppConstants.largeItemCornerRadius)
             }
             .frame(maxWidth: .infinity)
             
             if let activeUserCount = community.activeUserCount {
-                VStack(spacing: 8) {
+                box(spacing: 8) {
                     Text("Active Users")
                         .foregroundStyle(.secondary)
                     HStack(spacing: 16) {
@@ -71,13 +60,19 @@ struct CommunityDetailsView: View {
                         activeUserBox("1d", value: activeUserCount.day)
                     }
                 }
-                .padding(.vertical, 10)
-                .frame(maxWidth: .infinity)
-                .background(Color(uiColor: .secondarySystemGroupedBackground))
-                .cornerRadius(AppConstants.largeItemCornerRadius)
             }
         }
         .padding(.horizontal, 16)
+    }
+    
+    @ViewBuilder func box(spacing: CGFloat = 5, @ViewBuilder content: () -> some View) -> some View {
+        VStack(spacing: spacing) {
+            content()
+        }
+        .padding(.vertical, 10)
+        .frame(maxWidth: .infinity)
+        .background(Color(uiColor: .secondarySystemGroupedBackground))
+        .cornerRadius(AppConstants.largeItemCornerRadius)
     }
     
     @ViewBuilder
