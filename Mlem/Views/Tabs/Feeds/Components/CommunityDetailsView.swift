@@ -1,5 +1,5 @@
 //
-//  CommunityStatsView.swift
+//  CommunityDetailsView.swift
 //  Mlem
 //
 //  Created by Sjmarf on 01/01/2024.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CommunityStatsView: View {
+struct CommunityDetailsView: View {
     let community: CommunityModel
     
     var body: some View {
@@ -96,7 +96,7 @@ struct CommunityStatsView: View {
 #Preview {
     VStack(spacing: 0) {
         Divider()
-        CommunityStatsView(community: .mock())
+        CommunityDetailsView(community: .mock())
             .padding(.top, 10)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)

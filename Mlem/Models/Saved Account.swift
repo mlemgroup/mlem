@@ -13,7 +13,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
     let accessToken: String
     var siteVersion: SiteVersion?
     let username: String
-    let storedNickname: String?
+    var storedNickname: String?
     let avatarUrl: URL?
     var lastUsed: Date? // nil when loading SavedAccounts from before this was added
     
