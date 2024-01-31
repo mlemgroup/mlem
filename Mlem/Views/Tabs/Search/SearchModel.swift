@@ -79,7 +79,6 @@ class SearchModel: ObservableObject {
             }
             return try await searchUsers(page: page)
         case .instances:
-            print("SHORTCUT", SearchModel.allInstances.count)
             return searchInstances(page: page)
         }
     }
