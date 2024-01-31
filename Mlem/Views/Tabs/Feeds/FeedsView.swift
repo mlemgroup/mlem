@@ -82,19 +82,29 @@ struct FeedsView: View {
                 }
             } detail: {
                 NavigationStack(path: $feedTabNavigation.path) {
-                    Group {
-                        switch selectedFeed {
-                        case .all, .local, .subscribed, .saved:
-                            AggregateFeedView(selectedFeed: $selectedFeed)
-                        case let .community(communityModel):
-                            CommunityFeedView(communityModel: communityModel)
-                        case .none:
-                            Text("Please select a feed")
-                        }
+                    ScrollViewReader { scrollProxy in
+                        navStackView
+                            .environmentObject(feedTabNavigation)
+                            .environment(\.scrollViewProxy, scrollProxy)
+                            .tabBarNavigationEnabled(.feeds, navigation)
+                            .handleLemmyViews()
                     }
-                    .handleLemmyViews()
                 }
             }
+            .environment(\.navigationPathWithRoutes, $feedTabNavigation.path)
+            .environment(\.navigation, navigation)
+        }
+    }
+    
+    @ViewBuilder
+    private var navStackView: some View {
+        switch selectedFeed {
+        case .all, .local, .subscribed, .saved:
+            AggregateFeedView(selectedFeed: $selectedFeed)
+        case let .community(communityModel):
+            CommunityFeedView(communityModel: communityModel)
+        case .none:
+            Text("Please select a feed")
         }
     }
     
