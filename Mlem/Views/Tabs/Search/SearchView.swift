@@ -76,27 +76,25 @@ struct SearchView: View {
             .navigationSearchBarHiddenWhenScrolling(false)
             .autocorrectionDisabled(true)
             .textInputAutocapitalization(.never)
-            .onAppear {
+            .task(priority: .background) {
                 if SearchModel.allInstances.isEmpty {
-                    Task(priority: .background) {
-                        var instances: [InstanceModel] = []
-                        do {
-                            instances = try await apiClient.fetchInstanceList().map { InstanceModel(from: $0) }
-                            DispatchQueue.main.async {
-                                SearchModel.allInstances = instances
-                            }
-                        } catch {
-                            print("Error while loading instance stubs: \(error.localizedDescription)")
-                            errorHandler.handle(error)
+                    var instances: [InstanceModel] = []
+                    do {
+                        instances = try await apiClient.fetchInstanceList().map { InstanceModel(from: $0) }
+                        DispatchQueue.main.async {
+                            SearchModel.allInstances = instances
                         }
-                        do {
-                            try await recentSearchesTracker.reloadRecentSearches(
-                                accountId: appState.currentActiveAccount?.stableIdString,
-                                instances: instances
-                            )
-                        } catch {
-                            print("Error while loading recent searches: \(error.localizedDescription)")
-                        }
+                    } catch {
+                        print("Error while loading instance stubs: \(error.localizedDescription)")
+                        errorHandler.handle(error)
+                    }
+                    do {
+                        try await recentSearchesTracker.reloadRecentSearches(
+                            accountId: appState.currentActiveAccount?.stableIdString,
+                            instances: instances
+                        )
+                    } catch {
+                        print("Error while loading recent searches: \(error.localizedDescription)")
                     }
                 }
             }

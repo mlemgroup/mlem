@@ -68,7 +68,7 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
         }
         currentTask = Task(priority: .userInitiated) { [self] in
             do {
-                let items = try await self.loadItems(page)
+                let items = try await self.loadItems(1)
                 RunLoop.main.perform { [self] in
                     self.replaceAll(with: items)
                 }
