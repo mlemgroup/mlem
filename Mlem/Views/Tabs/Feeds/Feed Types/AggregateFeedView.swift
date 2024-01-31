@@ -13,6 +13,10 @@ import SwiftUI
 struct AggregateFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
     
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.scrollViewProxy) var scrollProxy
+    @Environment(\.navigationPathWithRoutes) private var navigationPath
+    
     @EnvironmentObject var appState: AppState
     
     @StateObject var postTracker: StandardPostTracker
@@ -83,23 +87,34 @@ struct AggregateFeedView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarColor(visibility: .automatic)
+            .hoistNavigation(
+                dismiss: dismiss,
+                auxiliaryAction: {
+                    if scrollToTopAppeared {
+                        return false
+                    } else {
+                        withAnimation {
+                            scrollProxy?.scrollTo(scrollToTop, anchor: .bottom)
+                        }
+                        return true
+                    }
+                }
+            )
     }
     
     @ViewBuilder
     var content: some View {
-        VStack(spacing: 0) {
-            ScrollView {
+        ScrollView {
+            VStack(spacing: 0) {
                 VStack(spacing: 0) {
-                    VStack(spacing: 0) {
-                        ScrollToView(appeared: $scrollToTopAppeared)
-                            .id(scrollToTop)
-                        headerView
-                            .padding(.top, -1)
-                    }
-                    
-                    PostFeedView(postSortType: $postSortType, showCommunity: true)
-                        .environmentObject(postTracker)
+                    ScrollToView(appeared: $scrollToTopAppeared)
+                        .id(scrollToTop)
+                    headerView
+                        .padding(.top, -1)
                 }
+                
+                PostFeedView(postSortType: $postSortType, showCommunity: true)
+                    .environmentObject(postTracker)
             }
         }
     }

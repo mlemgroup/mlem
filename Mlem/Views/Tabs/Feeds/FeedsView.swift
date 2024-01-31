@@ -82,24 +82,31 @@ struct FeedsView: View {
                 }
             } detail: {
                 NavigationStack(path: $feedTabNavigation.path) {
-                    Group {
-                        switch selectedFeed {
-                        case .all:
-                            AggregateFeedView(feedType: .all)
-                        case .local:
-                            AggregateFeedView(feedType: .local)
-                        case .subscribed:
-                            AggregateFeedView(feedType: .subscribed)
-                        case .saved:
-                            SavedFeedView()
-                        case let .community(communityModel):
-                            CommunityFeedView(communityModel: communityModel)
-                        case .none:
-                            Text("Please select a feed")
+                    ScrollViewReader { scrollProxy in
+                        Group {
+                            switch selectedFeed {
+                            case .all:
+                                AggregateFeedView(feedType: .all)
+                            case .local:
+                                AggregateFeedView(feedType: .local)
+                            case .subscribed:
+                                AggregateFeedView(feedType: .subscribed)
+                            case .saved:
+                                SavedFeedView()
+                            case let .community(communityModel):
+                                CommunityFeedView(communityModel: communityModel)
+                            case .none:
+                                Text("Please select a feed")
+                            }
                         }
+                        .environmentObject(feedTabNavigation)
+                        .environment(\.scrollViewProxy, scrollProxy)
+                        .tabBarNavigationEnabled(.feeds, navigation)
+                        .handleLemmyViews()
                     }
-                    .handleLemmyViews()
                 }
+                .environment(\.navigationPathWithRoutes, $feedTabNavigation.path)
+                .environment(\.navigation, navigation)
             }
         }
     }
