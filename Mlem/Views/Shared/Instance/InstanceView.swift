@@ -70,6 +70,7 @@ struct InstanceView: View {
         if instance.canFetchUptime {
             tabs.append(.uptime)
         }
+        tabs.append(.safety)
         return tabs
     }
     
