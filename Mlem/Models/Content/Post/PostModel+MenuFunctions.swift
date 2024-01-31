@@ -9,7 +9,7 @@ import Foundation
 
 extension PostModel {
     // swiftlint:disable function_body_length
-    func menuFunctions(editorTracker: EditorTracker, postTracker: StandardPostTracker) -> [MenuFunction] {
+    func menuFunctions(editorTracker: EditorTracker, postTracker: StandardPostTracker?) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         
         // Upvote
@@ -102,41 +102,43 @@ extension PostModel {
                 )
             })
             
-            // Block User
-            functions.append(MenuFunction.standardMenuFunction(
-                text: "Block User",
-                imageName: Icons.userBlock,
-                destructiveActionPrompt: AppConstants.blockUserPrompt,
-                enabled: true
-            ) {
-                Task(priority: .userInitiated) {
-                    await self.creator.toggleBlock { self.creator = $0 }
-                    if self.creator.blocked {
-                        await postTracker.applyFilter(.blockedUser(self.creator.userId))
-                        await self.notifier.add(.failure("Blocked \(self.creator.name)"))
-                    } else {
-                        await self.notifier.add(.failure("Failed to block user"))
+            if let postTracker {
+                // Block User
+                functions.append(MenuFunction.standardMenuFunction(
+                    text: "Block User",
+                    imageName: Icons.userBlock,
+                    destructiveActionPrompt: AppConstants.blockUserPrompt,
+                    enabled: true
+                ) {
+                    Task(priority: .userInitiated) {
+                        await self.creator.toggleBlock { self.creator = $0 }
+                        if self.creator.blocked {
+                            await postTracker.applyFilter(.blockedUser(self.creator.userId))
+                            await self.notifier.add(.failure("Blocked \(self.creator.name)"))
+                        } else {
+                            await self.notifier.add(.failure("Failed to block user"))
+                        }
                     }
-                }
-            })
-            
-            // Block Community
-            functions.append(MenuFunction.standardMenuFunction(
-                text: "Block Community",
-                imageName: Icons.hide,
-                destructiveActionPrompt: AppConstants.blockCommunityPrompt,
-                enabled: true
-            ) {
-                Task(priority: .userInitiated) {
-                    try await self.community.toggleBlock { self.community = $0 }
-                    if self.community.blocked ?? false {
-                        await postTracker.applyFilter(.blockedCommunity(self.community.communityId))
-                        await self.notifier.add(.failure("Blocked \(self.creator.name)"))
-                    } else {
-                        await self.notifier.add(.failure("Failed to block community"))
+                })
+                
+                // Block Community
+                functions.append(MenuFunction.standardMenuFunction(
+                    text: "Block Community",
+                    imageName: Icons.hide,
+                    destructiveActionPrompt: AppConstants.blockCommunityPrompt,
+                    enabled: true
+                ) {
+                    Task(priority: .userInitiated) {
+                        try await self.community.toggleBlock { self.community = $0 }
+                        if self.community.blocked ?? false {
+                            await postTracker.applyFilter(.blockedCommunity(self.community.communityId))
+                            await self.notifier.add(.failure("Blocked \(self.creator.name)"))
+                        } else {
+                            await self.notifier.add(.failure("Failed to block community"))
+                        }
                     }
-                }
-            })
+                })
+            }
         }
 
         return functions

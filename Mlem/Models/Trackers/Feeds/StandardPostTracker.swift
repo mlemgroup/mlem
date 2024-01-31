@@ -54,6 +54,9 @@ class StandardPostTracker: StandardTracker<PostModel> {
     private(set) var postSortType: PostSortType
     private var filters: [PostFilter: Int]
     
+    // true when the items in the tracker are stale and should not be displayed
+    @Published var isStale: Bool = false
+    
     // prefetching
     private let prefetcher = ImagePrefetcher(
         pipeline: ImagePipeline.shared,
@@ -63,6 +66,8 @@ class StandardPostTracker: StandardTracker<PostModel> {
     
     init(internetSpeed: InternetSpeed, sortType: PostSortType, showReadPosts: Bool, feedType: FeedType) {
         @Dependency(\.persistenceRepository) var persistenceRepository
+        
+        assert(feedType != .saved, "Cannot create StandardPostTracker for saved feed!")
         
         self.feedType = feedType
         self.postSortType = sortType
@@ -84,7 +89,14 @@ class StandardPostTracker: StandardTracker<PostModel> {
     // MARK: StandardTracker Loading Methods
     
     override func fetchPage(page: Int) async throws -> FetchResponse<PostModel> {
-        let (items, cursor) = try await loadPageHelper(page: page)
+        let (items, cursor) = try await postRepository.loadPage(
+            communityId: feedType.communityId,
+            page: page,
+            cursor: nil,
+            sort: postSortType,
+            type: feedType.toApiListingType,
+            limit: internetSpeed.pageSize
+        )
         
         let filteredItems = filter(items)
         preloadImages(filteredItems)
@@ -104,36 +116,6 @@ class StandardPostTracker: StandardTracker<PostModel> {
         let filteredItems = filter(items)
         preloadImages(filteredItems)
         return .init(items: filteredItems, cursor: cursor, numFiltered: items.count - filteredItems.count)
-    }
-    
-    /// Helper function to make loading saved items and feed items look the same to `fetchPage`
-    func loadPageHelper(page: Int) async throws -> (items: [PostModel], cursor: String?) {
-        if feedType == .saved {
-            guard let userId = siteInformation.myUserInfo?.localUserView.person.id else {
-                assertionFailure("Called loadPageHelper with no valid user!")
-                return (items: .init(), cursor: nil)
-            }
-            
-            if page > 1 {
-                return (items: .init(), cursor: nil)
-            }
-            
-            let savedContentData = try await personRepository.loadUserDetails(
-                for: userId,
-                limit: internetSpeed.pageSize,
-                savedOnly: true
-            )
-            return (items: savedContentData.posts.map { PostModel(from: $0) }, cursor: nil)
-        } else {
-            return try await postRepository.loadPage(
-                communityId: feedType.communityId,
-                page: page,
-                cursor: nil,
-                sort: postSortType,
-                type: feedType.toApiListingType,
-                limit: internetSpeed.pageSize
-            )
-        }
     }
     
     // MARK: Custom Behavior
