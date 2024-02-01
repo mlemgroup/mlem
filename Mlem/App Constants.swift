@@ -66,4 +66,8 @@ enum AppConstants {
     static let reportPostPrompt: String = "Really report this post?"
     static let reportCommentPrompt: String = "Really report this comment?"
     static let reportMessagePrompt: String = "Really report this message?"
+    
+    // MARK: - Logger
+    
+    static let loggerSubSystem = "com.hanners.Mlem"
 }

@@ -19,22 +19,24 @@ class HapticManager {
     let notificationGenerator: UINotificationFeedbackGenerator = .init()
     var hapticEngine: CHHapticEngine?
     
+    let logger = MlemLogger()
+    
     // singleton to use in app
     static let shared = HapticManager()
     
     init() {
         // create and start the engine if this device supports haptics
-        print("Initialized haptic engine")
+        logger.log(level: .debug, message: "Initialized haptic engine")
         self.hapticEngine = initEngine()
         
         // if the engine stops, tell us why
         hapticEngine?.stoppedHandler = { reason in
-            print("The engine stopped: \(reason)")
+            self.logger.log(level: .debug, message: "The engine stopped: \(reason)")
         }
         
         // if the engine fails, attempt to restart
         hapticEngine?.resetHandler = { [weak self] in
-            print("The engine reset")
+            self?.logger.log(level: .debug, message: "The engine reset")
             self?.handleEngineFailure()
         }
     }

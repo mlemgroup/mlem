@@ -50,6 +50,8 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
     private(set) var loadingCursor: String?
     private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
     
+    private let logger = MlemLogger()
+    
     // MARK: - Main actor methods
     
     @MainActor
@@ -113,13 +115,13 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
             print("[\(Item.self) tracker] clearing")
             await clearHelper()
         case let .refresh(clearBeforeRefresh):
-            print("[\(Item.self) tracker] refreshing")
+            logger.log(level: .info, message: "[\(Item.self) tracker] refreshing")
             try await refreshHelper(clearBeforeRefresh: clearBeforeRefresh)
         case let .loadPage(pageToLoad):
-            print("[\(Item.self) tracker] loading page \(pageToLoad)")
+            logger.log(level: .info, message: "[\(Item.self) tracker] loading page \(pageToLoad)")
             try await loadPageHelper(pageToLoad)
         case let .loadCursor(cursorToLoad):
-            print("[\(Item.self) tracker] loading cursor")
+            logger.log(level: .info, message: "[\(Item.self) tracker] loading cursor")
             try await loadCursorHelper(cursorToLoad)
         }
     }
