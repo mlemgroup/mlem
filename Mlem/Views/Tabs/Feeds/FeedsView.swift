@@ -12,6 +12,7 @@ struct FeedsView: View {
     @AppStorage("defaultFeed") var defaultFeed: DefaultFeedType = .subscribed
     
     @Environment(\.scenePhase) var scenePhase
+    @Environment(\.tabReselectionHashValue) var tabReselectionHashValue
     
     @EnvironmentObject var appState: AppState
     
@@ -22,6 +23,8 @@ struct FeedsView: View {
     
     @StateObject private var feedTabNavigation: AnyNavigationPath<AppRoute> = .init()
     @StateObject private var navigation: Navigation = .init()
+    
+    @Namespace var scrollToTop
     
     var body: some View {
         content
@@ -55,6 +58,7 @@ struct FeedsView: View {
                                 FeedRowView(feedType: feedType)
                             }
                         }
+                        .id(scrollToTop) // using this instead of ScrollToView because ScrollToView renders as an empty list item
                         .padding(.trailing, 10)
                         
                         ForEach(communityListModel.visibleSections) { section in
@@ -79,6 +83,16 @@ struct FeedsView: View {
                     .fancyTabScrollCompatible()
                     
                     SectionIndexTitles(proxy: scrollProxy, communitySections: communityListModel.allSections())
+                }
+                .onChange(of: tabReselectionHashValue) { newValue in
+                    // due to NavigationSplitView weirdness, the normal .hoistNavigation doesn't work here, so we do it manually
+                    // only scroll to top if the selected feed is nil (i.e., detail view is not presented)
+                    // this has the side effect of disabling tap tab to scroll to top on iPad, which I'm going to say is a feature not a bug [Eric 2024.01.31]
+                    if newValue == TabSelection.feeds.hashValue, selectedFeed == nil {
+                        withAnimation {
+                            scrollProxy.scrollTo(scrollToTop)
+                        }
+                    }
                 }
             } detail: {
                 NavigationStack(path: $feedTabNavigation.path) {
