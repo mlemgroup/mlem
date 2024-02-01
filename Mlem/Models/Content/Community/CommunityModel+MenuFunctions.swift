@@ -34,9 +34,8 @@ extension CommunityModel {
             enabled: true,
             callback: {
                 Task {
-                    var new = self
                     do {
-                        try await new.toggleSubscribe(callback)
+                        try await self.toggleSubscribe(callback)
                     } catch {
                         errorHandler.handle(error)
                     }
@@ -54,8 +53,7 @@ extension CommunityModel {
         ) {
             Task {
                 do {
-                    var new = self
-                    try await new.toggleFavorite(callback)
+                    try await self.toggleFavorite(callback)
                 } catch {
                     errorHandler.handle(error)
                 }
@@ -74,9 +72,8 @@ extension CommunityModel {
             enabled: true,
             callback: {
                 Task {
-                    var new = self
                     do {
-                        try await new.toggleBlock(callback)
+                        try await self.toggleBlock(callback)
                     } catch {
                         errorHandler.handle(error)
                     }

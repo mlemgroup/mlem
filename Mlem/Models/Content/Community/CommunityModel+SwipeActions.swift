@@ -8,7 +8,6 @@
 import Foundation
 
 extension CommunityModel {
-    
     func subscribeSwipeAction(
         _ callback: @escaping (_ item: Self) -> Void = { _ in },
         confirmDestructive: ((StandardMenuFunction) -> Void)? = nil
@@ -16,9 +15,9 @@ extension CommunityModel {
         guard let subscribed else {
             throw CommunityError.noData
         }
-        let (emptySymbolName, fullSymbolName) = (subscribed)
-        ? (Icons.unsubscribePerson, Icons.unsubscribePersonFill)
-        : (Icons.subscribePerson, Icons.subscribePersonFill)
+        let (emptySymbolName, fullSymbolName) = subscribed
+            ? (Icons.unsubscribePerson, Icons.unsubscribePersonFill)
+            : (Icons.subscribePerson, Icons.subscribePersonFill)
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: subscribed ? .red : .green,
@@ -31,9 +30,8 @@ extension CommunityModel {
                             confirmDestructive(function)
                         }
                     } else {
-                        var new = self
                         do {
-                            try await new.toggleSubscribe(callback)
+                            try await self.toggleSubscribe(callback)
                         } catch {
                             errorHandler.handle(error)
                         }
@@ -47,9 +45,9 @@ extension CommunityModel {
         _ callback: @escaping (_ item: Self) -> Void = { _ in },
         confirmDestructive: ((StandardMenuFunction) -> Void)? = nil
     ) -> SwipeAction {
-        let (emptySymbolName, fullSymbolName) = (favorited)
-        ? (Icons.unfavorite, Icons.unfavoriteFill)
-        : (Icons.favorite, Icons.favoriteFill)
+        let (emptySymbolName, fullSymbolName) = favorited
+            ? (Icons.unfavorite, Icons.unfavoriteFill)
+            : (Icons.favorite, Icons.favoriteFill)
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: favorited ? .red : .blue,
@@ -60,8 +58,7 @@ extension CommunityModel {
                     if favorited, let confirmDestructive {
                         confirmDestructive(favoriteMenuFunction(callback))
                     } else {
-                        var new = self
-                        try await new.toggleFavorite(callback)
+                        try await self.toggleFavorite(callback)
                     }
                 }
             }
