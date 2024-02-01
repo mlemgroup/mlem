@@ -48,7 +48,7 @@ extension CommunityModel {
         .init(
             text: favorited ? "Unfavorite" : "Favorite",
             imageName: favorited ? Icons.unfavorite : Icons.favorite,
-            destructiveActionPrompt: favorited ? "Really unfavorite \(community.name)?" : nil,
+            destructiveActionPrompt: favorited ? "Really unfavorite \(name ?? "this community")?" : nil,
             enabled: true
         ) {
             Task {
