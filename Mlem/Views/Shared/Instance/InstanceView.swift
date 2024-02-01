@@ -43,8 +43,8 @@ struct InstanceView: View {
     
     @State var selectedTab: InstanceViewTab = .about
     
-    init(domainName: String, instance: InstanceModel? = nil) {
-        _domainName = State(wrappedValue: domainName)
+    init(domainName: String? = nil, instance: InstanceModel? = nil) {
+        _domainName = State(wrappedValue: domainName ?? instance?.name ?? "")
         var instance = instance
         if domainName == siteInformation.instance?.url.host() {
             instance = siteInformation.instance ?? instance
@@ -71,7 +71,7 @@ struct InstanceView: View {
                 VStack(spacing: 5) {
                     if errorDetails == nil {
                         if let instance {
-                            Text(instance.name)
+                            Text(instance.displayName)
                                 .font(.title)
                                 .fontWeight(.semibold)
                                 .lineLimit(1)
@@ -94,7 +94,7 @@ struct InstanceView: View {
                 .padding(.bottom, 5)
                 if let errorDetails {
                     ErrorView(errorDetails)
-                } else if let instance {
+                } else if let instance, instance.creationDate != nil {
                     VStack(spacing: 0) {
                         VStack(spacing: 4) {
                             Divider()
@@ -112,6 +112,7 @@ struct InstanceView: View {
                             } else {
                                 Text("No Description")
                                     .foregroundStyle(.secondary)
+                                    .padding(.top)
                             }
                         case .administrators:
                             if let administrators = instance.administrators {
@@ -215,7 +216,7 @@ struct InstanceView: View {
             }
         }
         .navigationBarColor()
-        .navigationTitle(instance?.name ?? domainName)
+        .navigationTitle(instance?.displayName ?? domainName)
         .navigationBarTitleDisplayMode(.inline)
     }
 }
