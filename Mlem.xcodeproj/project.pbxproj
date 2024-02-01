@@ -287,7 +287,6 @@
 		6D7782362A48EED8008AC1BF /* APIPrivateMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7782352A48EED8008AC1BF /* APIPrivateMessage.swift */; };
 		6D8003792A45FD1300363206 /* Bundle+VersionNumbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D8003782A45FD1300363206 /* Bundle+VersionNumbers.swift */; };
 		6D80037B2A46458800363206 /* Lazy Load Expanded Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D80037A2A46458800363206 /* Lazy Load Expanded Post.swift */; };
-		6D8F08FF2A4029AE003EB4FD /* CommunityListSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D8F08FE2A4029AE003EB4FD /* CommunityListSection.swift */; };
 		6D91D4552A415994006B8F9A /* CommunityListSidebarEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D91D4542A415994006B8F9A /* CommunityListSidebarEntry.swift */; };
 		6D91D4582A4159D8006B8F9A /* FavoriteStarButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D91D4572A4159D8006B8F9A /* FavoriteStarButtonStyle.swift */; };
 		6DA61F812A55B83F001EA633 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA61F802A55B83F001EA633 /* SearchView.swift */; };
@@ -462,6 +461,7 @@
 		CDA217EE2A630F3300BDA173 /* ReportPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA217ED2A630F3300BDA173 /* ReportPost.swift */; };
 		CDA217F32A63202600BDA173 /* View+NsfwOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA217F22A63202600BDA173 /* View+NsfwOverlay.swift */; };
 		CDA2C5262A705D6000649D5A /* PostEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA2C5252A705D6000649D5A /* PostEditor.swift */; };
+		CDA77C322B6BD74400B8B8B4 /* CommunityListSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D8F08FE2A4029AE003EB4FD /* CommunityListSection.swift */; };
 		CDB0117D2A6F703800D043EB /* CommentEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB0117C2A6F703800D043EB /* CommentEditor.swift */; };
 		CDB0117F2A6F70A000D043EB /* Editor Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB0117E2A6F70A000D043EB /* Editor Tracker.swift */; };
 		CDB45C5A2AF0AEFE00A1FF08 /* AlternativeIconLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB45C592AF0AEFE00A1FF08 /* AlternativeIconLabel.swift */; };
@@ -2544,7 +2544,7 @@
 		CD4BAD392B4C6C2500A1E726 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				03EF1D0B2B434CB10056175C /* CommunityStatsView.swift */,
+				03EF1D0B2B434CB10056175C /* CommunityDetailsView.swift */,
 				CD4BAD3A2B4C6C3200A1E726 /* FeedRowView.swift */,
 				CDBCBA232B54A5F40070F60D /* NoPostsView.swift */,
 				CDBCBA1F2B537A4B0070F60D /* PostFeedView.swift */,
@@ -3005,7 +3005,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1330;
-				LastUpgradeCheck = 1330;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					6363D5C027EE196700E34822 = {
 						CreatedOnToolsVersion = 13.3;
@@ -3113,6 +3113,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDA77C322B6BD74400B8B8B4 /* CommunityListSection.swift in Sources */,
 				CD16A0622B66F7FC000312D2 /* UserContentModel.swift in Sources */,
 				6DEB0FFB2A4F87BF007CAB99 /* User Moderator View.swift in Sources */,
 				CDDB2EDE2A85C2F1001D4B16 /* HapticPriority.swift in Sources */,
@@ -3505,13 +3506,10 @@
 				5064D0412A6E63E000B22EE3 /* Task+Notifiable.swift in Sources */,
 				63F0C7BD2A058CD200A18C5D /* Check if Endpoint Exists.swift in Sources */,
 				E4D4DBA02A7C7B9D00C4F3DE /* Comments.swift in Sources */,
-				03EF1D0C2B434CB10056175C /* CommunityStatsView.swift in Sources */,
+				03EF1D0C2B434CB10056175C /* CommunityDetailsView.swift in Sources */,
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
 				03F4DC9D2B193F4C00556C67 /* MatrixLinkView.swift in Sources */,
 				03A54C322B5331F30064CCDE /* InstanceView.swift in Sources */,
-				6D8F08FF2A4029AE003EB4FD /* CommunityListSection.swift in Sources */,
-				6D8F08FF2A4029AE003EB4FD /* CommunityListSection.swift in Sources */,
-				6D8F08FF2A4029AE003EB4FD /* CommunityListSection.swift in Sources */,
 				035EB0CA2A8687C200227859 /* JumpButtonView.swift in Sources */,
 				5016A2B12A67EB8600B257E8 /* UIViewController+TopMostViewController.swift in Sources */,
 				6372184C2A3A2AAD008C4816 /* APIPostView.swift in Sources */,
