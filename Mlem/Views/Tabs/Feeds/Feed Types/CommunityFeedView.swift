@@ -25,6 +25,10 @@ struct CommunityFeedView: View {
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.communityRepository) var communityRepository
     
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.scrollViewProxy) var scrollProxy
+    @Environment(\.navigationPathWithRoutes) private var navigationPath
+    
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var editorTracker: EditorTracker
     
@@ -125,6 +129,14 @@ struct CommunityFeedView: View {
                         confirmationMenuFunction: confirmationMenuFunction
                     )
                 }
+            }
+            .hoistNavigation {
+                if let scrollProxy {
+                    withAnimation {
+                        scrollProxy.scrollTo(scrollToTop)
+                    }
+                }
+                return !scrollToTopAppeared
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarColor(visibility: .automatic)
