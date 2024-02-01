@@ -27,7 +27,7 @@ struct AppLockView: View {
         ZStack {
             LogoView()
                 .frame(width: 150, height: 150)
-                .animation(.spring, value: isAuthenticating)
+                .opacity(isAuthenticating && !hasDynamicIsland ? 0 : 1)
                 .offset(y: isAuthenticating && !hasDynamicIsland ? -250 : 0)
             Group {
                 Button {
