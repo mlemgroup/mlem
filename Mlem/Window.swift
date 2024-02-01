@@ -90,7 +90,6 @@ struct Window: View {
             .environmentObject(layoutWidgetTracker)
     }
     
-    @MainActor
     private func setFlow(_ flow: AppFlow) {
         transition(flow)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
