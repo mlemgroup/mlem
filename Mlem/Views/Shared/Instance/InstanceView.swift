@@ -109,10 +109,10 @@ struct InstanceView: View {
                             VStack(alignment: .leading) {
                                 Text("We couldn't connect to \(instance.name). Perhaps the instance is offline?")
                                     .foregroundStyle(.secondary)
+                                    .padding(.horizontal, 16)
                                 Divider()
                                 InstanceUptimeView(instance: instance, uptimeData: uptimeData)
                             }
-                            .background(Color(uiColor: .systemGroupedBackground))
                         case .failure:
                             ErrorView(errorDetails)
                                 .padding(.top, 5)
