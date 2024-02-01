@@ -19,6 +19,7 @@ private struct ViewOffsetKey: PreferenceKey {
 }
 
 struct SearchView: View {
+    @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     
     enum Page {
@@ -31,9 +32,10 @@ struct SearchView: View {
     @Environment(\.tabSelectionHashValue) var tabSelectionHashValue
     @EnvironmentObject var appState: AppState
     @EnvironmentObject private var recentSearchesTracker: RecentSearchesTracker
-    @StateObject var searchModel: SearchModel
     
+    @StateObject var searchModel: SearchModel
     @StateObject var homeSearchModel: SearchModel
+    
     @StateObject var homeContentTracker: ContentTracker<AnyContentModel> = .init()
     
     @State var searchBarFocused: Bool = false
@@ -74,13 +76,25 @@ struct SearchView: View {
             .navigationSearchBarHiddenWhenScrolling(false)
             .autocorrectionDisabled(true)
             .textInputAutocapitalization(.never)
-            .onAppear {
-                Task(priority: .background) {
+            .task(priority: .background) {
+                if SearchModel.allInstances.isEmpty {
+                    var instances: [InstanceModel] = []
                     do {
-                        try await recentSearchesTracker.reloadRecentSearches(accountId: appState.currentActiveAccount?.stableIdString)
+                        instances = try await apiClient.fetchInstanceList().map { InstanceModel(from: $0) }
+                        DispatchQueue.main.async {
+                            SearchModel.allInstances = instances
+                        }
+                    } catch {
+                        print("Error while loading instance stubs: \(error.localizedDescription)")
+                        errorHandler.handle(error)
+                    }
+                    do {
+                        try await recentSearchesTracker.reloadRecentSearches(
+                            accountId: appState.currentActiveAccount?.stableIdString,
+                            instances: instances
+                        )
                     } catch {
                         print("Error while loading recent searches: \(error.localizedDescription)")
-                        errorHandler.handle(error)
                     }
                 }
             }

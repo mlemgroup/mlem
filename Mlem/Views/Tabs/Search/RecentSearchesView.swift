@@ -89,6 +89,12 @@ struct RecentSearchesView: View {
                             contentTracker.update(with: AnyContentModel($0))
                         }
                     )
+                } else if let instance = contentModel.wrappedValue as? InstanceModel {
+                    InstanceResultView(
+                        instance,
+                        complications: .withTypeLabel,
+                        swipeActions: .init(trailingActions: [deleteSwipeAction(contentModel)])
+                    )
                 }
             }
             .simultaneousGesture(TapGesture().onEnded {

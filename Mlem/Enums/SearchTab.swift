@@ -6,7 +6,7 @@
 //
 
 enum SearchTab: String, CaseIterable, Identifiable {
-    case topResults, communities, users
+    case topResults, communities, users, instances
     
     var id: Self { self }
     
@@ -19,5 +19,5 @@ enum SearchTab: String, CaseIterable, Identifiable {
         }
     }
     
-    static var homePageCases: [SearchTab] = [.communities, .users]
+    static var homePageCases: [SearchTab] = [.communities, .users, .instances]
 }

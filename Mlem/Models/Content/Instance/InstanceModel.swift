@@ -8,15 +8,14 @@
 import SwiftUI
 
 struct InstanceModel {
-    var instanceId: Int!
-    var name: String!
+    var displayName: String!
     var description: String?
     var avatar: URL?
     var banner: URL?
     var administrators: [UserModel]?
     var url: URL!
     var version: SiteVersion?
-    var creationDate: Date!
+    var creationDate: Date?
     
     // From APISiteView
     var userCount: Int?
@@ -53,6 +52,12 @@ struct InstanceModel {
     init(from site: APISite) {
         update(with: site)
     }
+    
+    init(from stub: InstanceStub) {
+        self.update(with: stub)
+    }
+    
+    var name: String { url.host() ?? displayName }
     
     mutating func update(with response: SiteResponse) {
         administrators = response.admins.map {
@@ -107,8 +112,7 @@ struct InstanceModel {
     }
     
     mutating func update(with site: APISite) {
-        instanceId = site.id
-        name = site.name
+        displayName = site.name
         description = site.sidebar
         avatar = site.iconUrl
         banner = site.bannerUrl
@@ -117,6 +121,16 @@ struct InstanceModel {
         if var components = URLComponents(string: site.inboxUrl) {
             components.path = ""
             url = components.url
+        }
+    }
+    
+    mutating func update(with stub: InstanceStub) {
+        displayName = stub.name
+        url = URL(string: "https://\(stub.host)")
+        version = stub.version
+        userCount = stub.userCount
+        if let avatar = stub.avatar {
+            self.avatar = URL(string: avatar)
         }
     }
     
@@ -145,6 +159,7 @@ extension InstanceModel: Hashable {
     
     /// Hashes all fields for which state changes should trigger view updates.
     func hash(into hasher: inout Hasher) {
-        hasher.combine(instanceId)
+        hasher.combine(url)
+        hasher.combine(creationDate)
     }
 }
