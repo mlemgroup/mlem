@@ -298,6 +298,7 @@
 		6DFF50432A48DED3001E648D /* Inbox View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFF50422A48DED3001E648D /* Inbox View.swift */; };
 		6DFF50452A48E373001E648D /* GetPrivateMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFF50442A48E373001E648D /* GetPrivateMessages.swift */; };
 		6FB4A4DE2B47860B00A7CD82 /* CollapsedCommentReplies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB4A4DD2B47860B00A7CD82 /* CollapsedCommentReplies.swift */; };
+		6FF17D0A2B6B74EB007E1814 /* MlemLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF17D092B6B74EB007E1814 /* MlemLogger.swift */; };
 		88B165B82A8643F4007C9115 /* View+NavigationBarColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B165B72A8643F4007C9115 /* View+NavigationBarColor.swift */; };
 		AD1B0D352A5F63F60006F554 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1B0D342A5F63F60006F554 /* AboutView.swift */; };
 		AD1B0D372A5F7A260006F554 /* Licenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1B0D362A5F7A260006F554 /* Licenses.swift */; };
@@ -859,6 +860,7 @@
 		6DFF50422A48DED3001E648D /* Inbox View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox View.swift"; sourceTree = "<group>"; };
 		6DFF50442A48E373001E648D /* GetPrivateMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPrivateMessages.swift; sourceTree = "<group>"; };
 		6FB4A4DD2B47860B00A7CD82 /* CollapsedCommentReplies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsedCommentReplies.swift; sourceTree = "<group>"; };
+		6FF17D092B6B74EB007E1814 /* MlemLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemLogger.swift; sourceTree = "<group>"; };
 		88B165B72A8643F4007C9115 /* View+NavigationBarColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+NavigationBarColor.swift"; sourceTree = "<group>"; };
 		AD1B0D342A5F63F60006F554 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		AD1B0D362A5F7A260006F554 /* Licenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Licenses.swift; sourceTree = "<group>"; };
@@ -1629,6 +1631,7 @@
 				50EC39B12A346DDC00E014C2 /* URLHandler.swift */,
 				CD3FBCE82A4B482700B2063F /* Generic Merge.swift */,
 				50CC4A7E2AA0D3A90074C845 /* InstanceMetadataParser.swift */,
+				6FF17D092B6B74EB007E1814 /* MlemLogger.swift */,
 			);
 			path = Logic;
 			sourceTree = "<group>";
@@ -2515,7 +2518,7 @@
 		CD4BAD392B4C6C2500A1E726 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				03EF1D0B2B434CB10056175C /* CommunityStatsView.swift */,
+				03EF1D0B2B434CB10056175C /* CommunityDetailsView.swift */,
 				CD4BAD3A2B4C6C3200A1E726 /* FeedRowView.swift */,
 				CDBCBA232B54A5F40070F60D /* NoPostsView.swift */,
 				CDBCBA1F2B537A4B0070F60D /* PostFeedView.swift */,
@@ -3427,6 +3430,7 @@
 				6332FDC327EFCB5F0009A98A /* Color+Colors.swift in Sources */,
 				E46AF9942B29AB270087FDF3 /* EnvironmentValues+ScrollViewReaderProxy.swift in Sources */,
 				637218432A3A2AAD008C4816 /* APIClient.swift in Sources */,
+				6FF17D0A2B6B74EB007E1814 /* MlemLogger.swift in Sources */,
 				CD82A2572A716D7C00111034 /* PersonRepository+Dependency.swift in Sources */,
 				63DF71F12A02999C002AC14E /* App Constants.swift in Sources */,
 				CD82A2532A716B8100111034 /* PersonRepository.swift in Sources */,
@@ -3470,7 +3474,7 @@
 				5064D0412A6E63E000B22EE3 /* Task+Notifiable.swift in Sources */,
 				63F0C7BD2A058CD200A18C5D /* Check if Endpoint Exists.swift in Sources */,
 				E4D4DBA02A7C7B9D00C4F3DE /* Comments.swift in Sources */,
-				03EF1D0C2B434CB10056175C /* CommunityStatsView.swift in Sources */,
+				03EF1D0C2B434CB10056175C /* CommunityDetailsView.swift in Sources */,
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
 				03F4DC9D2B193F4C00556C67 /* MatrixLinkView.swift in Sources */,
 				03A54C322B5331F30064CCDE /* InstanceView.swift in Sources */,

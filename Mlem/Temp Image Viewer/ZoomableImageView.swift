@@ -17,6 +17,8 @@ struct ZoomableImageView: View {
     
     let url: URL
     
+    let logger = MlemLogger()
+    
     @State var quickLookUrl: URL?
 
     @GestureState private var zoom = 1.0
@@ -58,7 +60,7 @@ struct ZoomableImageView: View {
             try data.write(to: quicklook)
             quickLookUrl = quicklook
         } catch {
-            print(String(describing: error))
+            logger.log(level: .error, message: "\(error)")
         }
     }
     
@@ -69,7 +71,7 @@ struct ZoomableImageView: View {
             imageSaver.writeToPhotoAlbum(imageData: data)
             await notifier.add(.success("Image saved"))
         } catch {
-            print(String(describing: error))
+            logger.log(level: .error, message: "\(error)")
         }
     }
     
