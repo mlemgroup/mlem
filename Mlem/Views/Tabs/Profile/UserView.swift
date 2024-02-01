@@ -93,7 +93,7 @@ struct UserView: View {
                         MarkdownView(text: bio, isNsfw: false, alignment: bioAlignment).padding(AppConstants.postAndCommentSpacing)
                     }
                     HStack {
-                        Label(cakeDayFormatter.string(from: user.creationDate), systemImage: Icons.cakeDay)
+                        Label(user.creationDate.dateString, systemImage: Icons.cakeDay)
                         Text("•")
                         Label(user.creationDate.getRelativeTime(date: Date.now, unitsStyle: .abbreviated), systemImage: Icons.time)
                         if bioAlignment == .leading {
@@ -210,49 +210,28 @@ struct UserView: View {
             if !flairs.isEmpty {
                 VStack(spacing: AppConstants.postAndCommentSpacing) {
                     ForEach(flairs, id: \.self) { flair in
-                        switch flair {
-                        case .developer:
-                            flairBackground(color: flair.color) {
-                                HStack {
-                                    Image(systemName: Icons.developerFlair)
-                                    Text("Mlem Developer")
-                                }
-                            }
-                        case .banned:
-                            flairBackground(color: flair.color) {
-                                HStack {
+                        flairBackground(color: flair.color) {
+                            HStack {
+                                switch flair {
+                                case .banned:
                                     Image(systemName: Icons.bannedFlair)
                                     if let expirationDate = user.banExpirationDate {
-                                        Text("Banned Until \(cakeDayFormatter.string(from: expirationDate))")
+                                        Text("Banned Until \(expirationDate.dateString)")
                                     } else {
                                         Text("Permanently Banned")
                                     }
-                                }
-                            }
-                        case .bot:
-                            flairBackground(color: flair.color) {
-                                HStack {
-                                    Image(systemName: Icons.botFlair)
-                                    Text("Bot Account")
-                                }
-                            }
-                        case .admin:
-                            flairBackground(color: flair.color) {
-                                HStack {
+                                case .admin:
                                     Image(systemName: Icons.adminFlair)
                                     let host = user.profileUrl.host()
                                     Text("\(host ?? "Instance") Administrator")
-                                }
-                            }
-                        case .moderator:
-                            flairBackground(color: flair.color) {
-                                HStack {
+                                case .moderator:
                                     Image(systemName: Icons.moderationFill)
                                     Text("\(communityContext?.displayName ?? "Community") Moderator")
+                                default:
+                                    Image(systemName: flair.icon)
+                                    Text(flair.label)
                                 }
                             }
-                        default:
-                            EmptyView()
                         }
                     }
                 }

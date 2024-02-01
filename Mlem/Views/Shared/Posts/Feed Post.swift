@@ -23,6 +23,8 @@ struct FeedPost: View {
     // MARK: Environment
 
     @Environment(\.accessibilityDifferentiateWithoutColor) var diffWithoutColor: Bool
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @Environment(\.feedType) var feedType
     
     @AppStorage("postSize") var postSize: PostSize = .large
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
@@ -39,15 +41,15 @@ struct FeedPost: View {
     @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
 
-    @EnvironmentObject var postTracker: StandardPostTracker
+    // @EnvironmentObject var postTracker: StandardPostTracker
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
     // MARK: Parameters
 
     @ObservedObject var postModel: PostModel
+    var postTracker: StandardPostTracker?
     let community: CommunityModel?
     let showPostCreator: Bool
     let showCommunity: Bool
@@ -55,12 +57,14 @@ struct FeedPost: View {
     
     init(
         post: PostModel,
+        postTracker: StandardPostTracker?,
         community: CommunityModel? = nil,
         showPostCreator: Bool = true,
         showCommunity: Bool = true,
         enableSwipeActions: Bool = true
     ) {
         self.postModel = post
+        self.postTracker = postTracker
         self.community = community
         self.showPostCreator = showPostCreator
         self.showCommunity = showCommunity
@@ -112,7 +116,10 @@ struct FeedPost: View {
                         ]
                     )
                     .contextMenu {
-                        let functions = postModel.menuFunctions(editorTracker: editorTracker, postTracker: postTracker)
+                        let functions = postModel.menuFunctions(
+                            editorTracker: editorTracker,
+                            postTracker: postTracker
+                        )
                         ForEach(functions) { item in
                             MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
                         }
@@ -172,7 +179,10 @@ struct FeedPost: View {
                             ReadCheck()
                         }
                         
-                        let functions = postModel.menuFunctions(editorTracker: editorTracker, postTracker: postTracker)
+                        let functions = postModel.menuFunctions(
+                            editorTracker: editorTracker,
+                            postTracker: postTracker
+                        )
                         EllipsisMenu(size: 24, menuFunctions: functions)
                     }
 

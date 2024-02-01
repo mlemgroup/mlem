@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 02/12/2023.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct AdvancedAccountSettingsView: View {
     @Dependency(\.siteInformation) var siteInformation: SiteInformationTracker
@@ -45,6 +45,8 @@ struct AdvancedAccountSettingsView: View {
                         }
                     }
                 }
+            } footer: {
+                Text("Bot accounts cannot vote on posts.")
             }
         }
         .navigationTitle("Advanced")

@@ -8,6 +8,13 @@
 import Dependencies
 import SwiftUI
 
+struct ActiveUserCount {
+    let sixMonths: Int
+    let month: Int
+    let week: Int
+    let day: Int
+}
+
 struct CommunityModel {
     @Dependency(\.apiClient) private var apiClient
     @Dependency(\.errorHandler) var errorHandler
@@ -18,13 +25,6 @@ struct CommunityModel {
     
     enum CommunityError: Error {
         case noData
-    }
-    
-    struct ActiveUserCount {
-        let sixMonths: Int
-        let month: Int
-        let week: Int
-        let day: Int
     }
     
     @available(*, deprecated, message: "Use attributes of the CommunityModel directly instead.")
@@ -63,6 +63,7 @@ struct CommunityModel {
     var blocked: Bool?
     var subscribed: Bool?
     var subscriberCount: Int?
+    var localSubscriberCount: Int?
     var postCount: Int?
     var commentCount: Int?
     var activeUserCount: ActiveUserCount?
@@ -108,8 +109,8 @@ struct CommunityModel {
     mutating func update(with communityView: APICommunityView) {
         subscribed = communityView.subscribed.isSubscribed
         blocked = communityView.blocked
-        
         subscriberCount = communityView.counts.subscribers
+        localSubscriberCount = communityView.counts.subscribersLocal
         postCount = communityView.counts.posts
         commentCount = communityView.counts.comments
         activeUserCount = .init(

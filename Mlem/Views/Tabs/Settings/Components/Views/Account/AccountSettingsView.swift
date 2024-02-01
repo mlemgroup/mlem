@@ -85,6 +85,15 @@ struct AccountSettingsView: View {
                 }
                 .disabled(settingsDisabled)
                 
+                Section {
+                    NavigationLink(.settings(.accountLocal)) {
+                        Label("Local Options", systemImage: "iphone.gen3")
+                            .labelStyle(SquircleLabelStyle(color: .blue))
+                    }
+                } footer: {
+                    Text("These options are stored locally in Mlem and not on your Lemmy account.")
+                }
+                
 //                Section {
 //                    NavigationLink { EmptyView() } label: {
 //                        Label("Blocked Commuities", systemImage: "house.fill").labelStyle(SquircleLabelStyle(color: .gray))
@@ -122,6 +131,9 @@ struct AccountSettingsView: View {
                         accountForDeletion = appState.currentActiveAccount
                     }
                     .frame(maxWidth: .infinity)
+                    .sheet(item: $accountForDeletion) { account in
+                        DeleteAccountView(account: account)
+                    }
                 }
                 
             } else {
@@ -131,8 +143,5 @@ struct AccountSettingsView: View {
         .navigationTitle("Account Settings")
         .fancyTabScrollCompatible()
         .hoistNavigation()
-        .sheet(item: $accountForDeletion) { account in
-            DeleteAccountView(account: account)
-        }
     }
 }

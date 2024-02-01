@@ -73,30 +73,18 @@ struct SelectableSettingsItem<T: SettingsOptions>: View {
 
 struct SquircleLabelStyle: LabelStyle {
     var color: Color
-    var fontSize: CGFloat = 14
-    let ios16FontSize: CGFloat = 17
-    
-    /**
-     This computed property handles the fact that on iOS 17, the font size of 17 makes the icons too large. The code will not compile if fontSize itself is either absent or computed, so we define it above, compute an adjusted value here, and use the computed value.
-     */
-    var adjustedFontSize: CGFloat {
-        if #available(iOS 17.0, *) {
-            return fontSize
-        } else {
-            return ios16FontSize
-        }
-    }
+    var fontSize: CGFloat = 17
     
     func makeBody(configuration: Configuration) -> some View {
-        Label {
-            configuration.title
-        } icon: {
+        HStack(alignment: .center, spacing: 16) {
             configuration.icon
-                .font(.system(size: adjustedFontSize))
+                .font(.system(size: fontSize))
                 .foregroundColor(.white)
                 .frame(width: AppConstants.settingsIconSize, height: AppConstants.settingsIconSize)
                 .background(color)
                 .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
+                .accessibilityHidden(true)
+            configuration.title
         }
     }
 }
@@ -106,6 +94,55 @@ struct SettingsButtonStyle: ButtonStyle {
         configuration.label
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
+    }
+}
+
+struct FooterLinkView: View {
+    let title: String
+    let destination: AppRoute
+    
+    var body: some View {
+        NavigationLink(destination) {
+            HStack(spacing: 3) {
+                Text(title)
+                Image(systemName: Icons.forward)
+                    .fontWeight(.semibold)
+                    .imageScale(.small)
+            }
+            .font(.footnote)
+        }
+    }
+}
+
+struct CheckboxToggleStyle: ToggleStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        HStack {
+            configuration.label
+            Spacer()
+            Checkbox(isOn: configuration.isOn)
+                .animation(.default, value: configuration.isOn)
+        }
+        .onTapGesture {
+            configuration.isOn.toggle()
+        }
+    }
+}
+
+struct Checkbox: View {
+    let isOn: Bool
+    
+    var body: some View {
+        VStack {
+            if isOn {
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundStyle(.white, .blue)
+                    .imageScale(.large)
+            } else {
+                Image(systemName: "circle")
+                    .foregroundStyle(Color(uiColor: .tertiaryLabel))
+                    .imageScale(.large)
+            }
+        }
     }
 }
 

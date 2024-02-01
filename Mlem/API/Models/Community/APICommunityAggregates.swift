@@ -12,6 +12,7 @@ struct APICommunityAggregates: Decodable {
     let id: Int? // TODO: 0.18 Deprecation remove this field
     let communityId: Int
     let subscribers: Int
+    let subscribersLocal: Int?
     let posts: Int
     let comments: Int
     let published: Date

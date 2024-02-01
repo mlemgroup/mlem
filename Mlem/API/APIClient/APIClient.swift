@@ -215,12 +215,29 @@ extension APIClient {
         return try await perform(request: request, overrideToken: session.token)
     }
     
+    @available(*, deprecated, message: "This method is deprecated, use getPersonDetails with pagination parameter instead")
     func getPersonDetails(for personId: Int, limit: Int?, savedOnly: Bool) async throws -> GetPersonDetailsResponse {
-        // this call is made by the `UserView` to load this user, or other Lemmy users details
-        // TODO: currently only the first page is loaded, with the passed in limit - we should instead be loading on
-        // demand as the user scrolls through this feed similar to what we do elsewhere
         let request = try GetPersonDetailsRequest(
             session: session,
+            limit: limit,
+            savedOnly: savedOnly,
+            personId: personId
+        )
+        
+        return try await perform(request: request)
+    }
+    
+    func getPersonDetails(
+        for personId: Int,
+        sort: PostSortType?,
+        page: Int,
+        limit: Int,
+        savedOnly: Bool
+    ) async throws -> GetPersonDetailsResponse {
+        let request = try GetPersonDetailsRequest(
+            session: session,
+            sort: sort,
+            page: page,
             limit: limit,
             savedOnly: savedOnly,
             personId: personId
@@ -340,6 +357,16 @@ extension APIClient {
             oldPassword: currentPassword
         )
         return try await perform(request: request)
+    }
+    
+    @discardableResult
+    func fetchInstanceList() async throws -> [InstanceStub] {
+        if let url = URL(string: "https://raw.githubusercontent.com/mlemgroup/mlem-stats/master/output/instances_by_score.json") {
+            if let data = try? await urlSession.data(from: url).0 {
+                return try decode([InstanceStub].self, from: data)
+            }
+        }
+        return []
     }
 }
 

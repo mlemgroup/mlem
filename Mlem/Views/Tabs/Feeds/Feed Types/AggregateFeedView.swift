@@ -13,11 +13,19 @@ import SwiftUI
 struct AggregateFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
     
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.scrollViewProxy) var scrollProxy
+    @Environment(\.navigationPathWithRoutes) private var navigationPath
+    
     @EnvironmentObject var appState: AppState
     
     @StateObject var postTracker: StandardPostTracker
+    @StateObject var savedContentTracker: UserContentTracker
     
     @State var postSortType: PostSortType
+    @State var availableFeeds: [FeedType] = [.all, .local, .subscribed]
+    
+    @Binding var selectedFeed: FeedType?
     
     @Namespace var scrollToTop
     @State private var scrollToTopAppeared = false
@@ -25,7 +33,14 @@ struct AggregateFeedView: View {
         postTracker.items.first?.id
     }
     
-    init(feedType: FeedType) {
+    init(selectedFeed: Binding<FeedType?>) {
+        var feedType: FeedType = .all
+        if let selectedFeed = selectedFeed.wrappedValue {
+            feedType = selectedFeed
+        } else {
+            assertionFailure("nil feedType passed in to AggregateFeedView!")
+        }
+        
         // need to grab some stuff from app storage to initialize with
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
@@ -37,30 +52,38 @@ struct AggregateFeedView: View {
             internetSpeed: internetSpeed,
             sortType: defaultPostSorting,
             showReadPosts: showReadPosts,
-            feedType: feedType
+            feedType: feedType == .saved ? .all : feedType
         ))
-    }
-    
-    var subtitle: String {
-        switch postTracker.feedType {
-        case .all:
-            return "Posts from all federated instances"
-        case .local:
-            return "Posts from \(appState.currentActiveAccount?.instanceLink.host() ?? "your instance's") communities"
-        case .subscribed:
-            return "Posts from all subscribed communities"
-        case .saved:
-            return "Your saved posts"
-        default:
-            assertionFailure("We shouldn't be here...")
-            return ""
-        }
+        
+        // StateObject can't be optional so we initialize with a dummy user
+        self._savedContentTracker = .init(wrappedValue: .init(internetSpeed: internetSpeed, userId: nil, saved: true))
+        
+        self._selectedFeed = selectedFeed
     }
     
     var body: some View {
         content
-            .environment(\.feedType, postTracker.feedType)
-            .environmentObject(postTracker)
+            .environment(\.feedType, selectedFeed)
+            .task(id: appState.currentActiveAccount) {
+                // ensure that .saved isn't an available feed until user id resolved
+                if let userId = appState.currentActiveAccount?.id {
+                    do {
+                        try await savedContentTracker.updateUserId(to: userId)
+                        
+                        if availableFeeds.count < 4 {
+                            availableFeeds.append(.saved)
+                        }
+                    } catch {
+                        errorHandler.handle(error)
+                    }
+                }
+            }
+            .task(id: selectedFeed) {
+                if let selectedFeed, selectedFeed != .saved {
+                    await postTracker.changeFeedType(to: selectedFeed)
+                    postTracker.isStale = false
+                }
+            }
             .refreshable {
                 await Task {
                     do {
@@ -81,24 +104,38 @@ struct AggregateFeedView: View {
                         .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
                 }
             }
+            .hoistNavigation {
+                if let scrollProxy {
+                    withAnimation {
+                        scrollProxy.scrollTo(scrollToTop)
+                    }
+                }
+                return !scrollToTopAppeared
+            }
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarColor(visibility: .automatic)
     }
     
     @ViewBuilder
     var content: some View {
-        VStack(spacing: 0) {
-            ScrollView {
+        ScrollView {
+            VStack(spacing: 0) {
                 VStack(spacing: 0) {
-                    VStack(spacing: 0) {
-                        ScrollToView(appeared: $scrollToTopAppeared)
-                            .id(scrollToTop)
-                        headerView
-                            .padding(.top, -1)
-                    }
-                    
+                    ScrollToView(appeared: $scrollToTopAppeared)
+                        .id(scrollToTop)
+                    headerView
+                        .padding(.top, -1)
+                }
+                
+                switch selectedFeed {
+                case .all, .local, .subscribed:
                     PostFeedView(postSortType: $postSortType, showCommunity: true)
                         .environmentObject(postTracker)
+                case .saved:
+                    UserContentFeedView()
+                        .environmentObject(savedContentTracker)
+                default:
+                    EmptyView() // shouldn't be possible
                 }
             }
         }
@@ -111,35 +148,10 @@ struct AggregateFeedView: View {
                 MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
             }
         } label: {
-            VStack(spacing: 0) {
-                HStack(alignment: .center, spacing: AppConstants.postAndCommentSpacing) {
-                    Image(systemName: postTracker.feedType.iconNameCircle)
-                        .resizable()
-                        .frame(width: 44, height: 44)
-                        .foregroundStyle(postTracker.feedType.color ?? .primary)
-                        .padding(.leading, AppConstants.postAndCommentSpacing)
-                        
-                    VStack(alignment: .leading, spacing: 0) {
-                        HStack(spacing: 5) {
-                            Text(postTracker.feedType.label)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.01)
-                                .fontWeight(.semibold)
-                            Image(systemName: Icons.dropdown)
-                                .foregroundStyle(.secondary)
-                        }
-                        .font(.title2)
-                            
-                        Text(subtitle)
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
-                    }
-                    .frame(height: 44)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .padding(.vertical, 5)
-                .padding(.bottom, 3)
-                Divider()
+            if let selectedFeed {
+                FeedHeaderView(feedType: selectedFeed)
+            } else {
+                EmptyView() // shouldn't be possible
             }
         }
         .buttonStyle(.plain)
@@ -153,7 +165,7 @@ struct AggregateFeedView: View {
             }
         } label: {
             HStack(alignment: .center, spacing: 0) {
-                Text(postTracker.feedType.label)
+                Text(selectedFeed?.label ?? "")
                     .font(.headline)
                 Image(systemName: Icons.dropdown)
                     .scaleEffect(0.7)

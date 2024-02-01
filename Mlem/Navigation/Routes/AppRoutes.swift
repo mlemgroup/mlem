@@ -13,7 +13,7 @@ import Foundation
 ///
 enum AppRoute: Routable {
     case community(CommunityModel)
-    case instance(String, InstanceModel? = nil)
+    case instance(String? = nil, InstanceModel? = nil)
     
     @available(*, deprecated, message: "Use .userProfile instead.")
     case apiPerson(APIPerson)
