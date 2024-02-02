@@ -37,23 +37,20 @@ class InboxRepository {
         // no haptics here as we defer to the `voteOnComment` method which will produce them if necessary
         do {
             let updatedCommentView = try await commentRepository.voteOnComment(id: reply.comment.id, vote: vote)
-            let updatedCommentReplyView = APICommentReplyView(
+            return ReplyModel(
                 commentReply: reply.commentReply,
                 comment: updatedCommentView.comment,
-                creator: updatedCommentView.creator,
+                creator: UserModel(from: updatedCommentView.creator),
                 post: updatedCommentView.post,
-                community: updatedCommentView.community,
+                community: CommunityModel(from: updatedCommentView.community),
                 recipient: reply.recipient,
-                counts: updatedCommentView.counts,
+                numReplies: updatedCommentView.counts.childCount,
+                votes: VotesModel(from: updatedCommentView.counts, myVote: updatedCommentView.myVote),
                 creatorBannedFromCommunity: updatedCommentView.creatorBannedFromCommunity,
-                creatorIsModerator: false,
-                creatorIsAdmin: false,
                 subscribed: updatedCommentView.subscribed,
                 saved: updatedCommentView.saved,
-                creatorBlocked: updatedCommentView.creatorBlocked,
-                myVote: updatedCommentView.myVote
+                creatorBlocked: updatedCommentView.creatorBlocked
             )
-            return ReplyModel(from: updatedCommentReplyView)
         } catch {
             throw error
         }

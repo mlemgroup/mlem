@@ -46,8 +46,7 @@ class MentionModel: ContentIdentifiable, ObservableObject {
         creatorBannedFromCommunity: Bool,
         subscribed: APISubscribedStatus,
         saved: Bool,
-        creatorBlocked: Bool,
-        voting: Bool = false
+        creatorBlocked: Bool
     ) {
         self.personMention = personMention
         self.comment = comment
@@ -61,7 +60,6 @@ class MentionModel: ContentIdentifiable, ObservableObject {
         self.subscribed = subscribed
         self.saved = saved
         self.creatorBlocked = creatorBlocked
-        self.voting = voting
     }
     
     init(from personMentionView: APIPersonMentionView) {

@@ -21,7 +21,7 @@ class ReplyModel: ObservableObject, ContentIdentifiable {
     var creator: UserModel
     var post: APIPost
     var community: CommunityModel
-    var recipient: APIPerson
+    var recipient: UserModel
     @Published var numReplies: Int
     @Published var votes: VotesModel
     @Published var creatorBannedFromCommunity: Bool
@@ -33,6 +33,34 @@ class ReplyModel: ObservableObject, ContentIdentifiable {
     
     // prevents a voting operation from ocurring while another is ocurring
     var voting: Bool = false
+    
+    init(
+        commentReply: APICommentReply,
+        comment: APIComment,
+        creator: UserModel,
+        post: APIPost,
+        community: CommunityModel,
+        recipient: UserModel,
+        numReplies: Int,
+        votes: VotesModel,
+        creatorBannedFromCommunity: Bool,
+        subscribed: APISubscribedStatus,
+        saved: Bool,
+        creatorBlocked: Bool
+    ) {
+        self.commentReply = commentReply
+        self.comment = comment
+        self.creator = creator
+        self.post = post
+        self.community = community
+        self.recipient = recipient
+        self.numReplies = numReplies
+        self.votes = votes
+        self.creatorBannedFromCommunity = creatorBannedFromCommunity
+        self.subscribed = subscribed
+        self.saved = saved
+        self.creatorBlocked = creatorBlocked
+    }
 
     init(from replyView: APICommentReplyView) {
         self.commentReply = replyView.commentReply
@@ -40,7 +68,7 @@ class ReplyModel: ObservableObject, ContentIdentifiable {
         self.creator = UserModel(from: replyView.creator)
         self.post = replyView.post
         self.community = CommunityModel(from: replyView.community)
-        self.recipient = replyView.recipient
+        self.recipient = UserModel(from: replyView.recipient)
         self.numReplies = replyView.counts.childCount
         self.votes = VotesModel(from: replyView.counts, myVote: replyView.myVote)
         self.creatorBannedFromCommunity = replyView.creatorBannedFromCommunity
@@ -56,7 +84,7 @@ class ReplyModel: ObservableObject, ContentIdentifiable {
         creator: UserModel? = nil,
         post: APIPost? = nil,
         community: CommunityModel? = nil,
-        recipient: APIPerson? = nil,
+        recipient: UserModel? = nil,
         numReplies: Int? = nil,
         votes: VotesModel? = nil,
         creatorBannedFromCommunity: Bool? = nil,
