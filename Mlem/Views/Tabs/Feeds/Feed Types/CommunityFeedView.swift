@@ -291,7 +291,6 @@ struct CommunityFeedView: View {
                 hapticManager.play(haptic: .lightSuccess, priority: .low)
                 print("tapped subscribe")
                 Task {
-                    var community = communityModel
                     do {
                         if communityModel.favorited {
                             print("favorited")
@@ -301,7 +300,7 @@ struct CommunityFeedView: View {
                             try confirmDestructive(destructiveFunction: communityModel.subscribeMenuFunction { communityModel = $0 })
                         } else {
                             print("not subscribed")
-                            try await community.toggleSubscribe { item in
+                            try await communityModel.toggleSubscribe { item in
                                 DispatchQueue.main.async { communityModel = item }
                             }
                         }
@@ -313,7 +312,6 @@ struct CommunityFeedView: View {
             .simultaneousGesture(LongPressGesture().onEnded { _ in
                 hapticManager.play(haptic: .lightSuccess, priority: .low)
                 Task {
-                    var community = communityModel
                     do {
                         // TODO: this doesn't update view state when favoriting, but it does when unfavoriting
                         try await communityModel.toggleFavorite { item in

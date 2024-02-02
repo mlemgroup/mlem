@@ -18,10 +18,10 @@ class ReplyModel: ObservableObject, ContentIdentifiable {
     
     @Published var commentReply: APICommentReply
     @Published var comment: APIComment
-    var creator: APIPerson
+    var creator: UserModel
     var post: APIPost
-    var community: APICommunity
-    var recipient: APIPerson
+    var community: CommunityModel
+    var recipient: UserModel
     @Published var numReplies: Int
     @Published var votes: VotesModel
     @Published var creatorBannedFromCommunity: Bool
@@ -33,14 +33,42 @@ class ReplyModel: ObservableObject, ContentIdentifiable {
     
     // prevents a voting operation from ocurring while another is ocurring
     var voting: Bool = false
+    
+    init(
+        commentReply: APICommentReply,
+        comment: APIComment,
+        creator: UserModel,
+        post: APIPost,
+        community: CommunityModel,
+        recipient: UserModel,
+        numReplies: Int,
+        votes: VotesModel,
+        creatorBannedFromCommunity: Bool,
+        subscribed: APISubscribedStatus,
+        saved: Bool,
+        creatorBlocked: Bool
+    ) {
+        self.commentReply = commentReply
+        self.comment = comment
+        self.creator = creator
+        self.post = post
+        self.community = community
+        self.recipient = recipient
+        self.numReplies = numReplies
+        self.votes = votes
+        self.creatorBannedFromCommunity = creatorBannedFromCommunity
+        self.subscribed = subscribed
+        self.saved = saved
+        self.creatorBlocked = creatorBlocked
+    }
 
     init(from replyView: APICommentReplyView) {
         self.commentReply = replyView.commentReply
         self.comment = replyView.comment
-        self.creator = replyView.creator
+        self.creator = UserModel(from: replyView.creator)
         self.post = replyView.post
-        self.community = replyView.community
-        self.recipient = replyView.recipient
+        self.community = CommunityModel(from: replyView.community)
+        self.recipient = UserModel(from: replyView.recipient)
         self.numReplies = replyView.counts.childCount
         self.votes = VotesModel(from: replyView.counts, myVote: replyView.myVote)
         self.creatorBannedFromCommunity = replyView.creatorBannedFromCommunity
@@ -53,10 +81,10 @@ class ReplyModel: ObservableObject, ContentIdentifiable {
         from replyModel: ReplyModel,
         commentReply: APICommentReply? = nil,
         comment: APIComment? = nil,
-        creator: APIPerson? = nil,
+        creator: UserModel? = nil,
         post: APIPost? = nil,
-        community: APICommunity? = nil,
-        recipient: APIPerson? = nil,
+        community: CommunityModel? = nil,
+        recipient: UserModel? = nil,
         numReplies: Int? = nil,
         votes: VotesModel? = nil,
         creatorBannedFromCommunity: Bool? = nil,

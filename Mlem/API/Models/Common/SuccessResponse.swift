@@ -16,7 +16,7 @@ struct SuccessResponse: Decodable {
     init(from compatibilityResponse: MarkReadCompatibilityResponse) {
         if let success = compatibilityResponse.success {
             self.success = success
-        } else if let postView = compatibilityResponse.postView {
+        } else if compatibilityResponse.postView != nil {
             self.success = true
         } else {
             self.success = false

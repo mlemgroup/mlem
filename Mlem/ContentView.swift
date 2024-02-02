@@ -62,7 +62,7 @@ struct ContentView: View {
                 // wrapping these two behind a check for an active user, as of now we'll always have one
                 // but when guest mode arrives we'll either omit these entirely, or replace them with a
                 // guest mode specific tab for sign in / change instance screen.
-                if let account = appState.currentActiveAccount {
+                if appState.currentActiveAccount != nil {
                     InboxView()
                         .fancyTabItem(tag: TabSelection.inbox) {
                             FancyTabBarLabel(

@@ -15,8 +15,6 @@ enum AppRoute: Routable {
     case community(CommunityModel)
     case instance(String? = nil, InstanceModel? = nil)
     
-    @available(*, deprecated, message: "Use .userProfile instead.")
-    case apiPerson(APIPerson)
     case userProfile(UserModel, communityContext: CommunityModel? = nil)
     
     case postLinkWithContext(PostLinkWithContext)
@@ -37,8 +35,6 @@ enum AppRoute: Routable {
         switch value {
         case let value as CommunityModel:
             return .community(value)
-        case let value as APIPerson:
-            return .apiPerson(value)
         case let value as UserModel:
             return .userProfile(value)
         case let value as PostLinkWithContext:
