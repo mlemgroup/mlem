@@ -10,7 +10,7 @@ import SwiftUI
 import Observation
 
 @Observable
-class CommunityModel1 {
+final class CommunityModel1: CommunityModelProto {
     // Constant values
     let communityId: Int
     let creationDate: Date
@@ -18,7 +18,7 @@ class CommunityModel1 {
     let local: Bool
 
     // These aren't settable from outside
-    let updatedDate: Date?
+    private(set) var updatedDate: Date?
 
     // These will be settable in future
     private(set) var name: String
@@ -37,10 +37,21 @@ extension CommunityModel1: NewContentModel {
     typealias APIType = APICommunity
 
     required init(from community: APICommunity) {
-        self.communityId = community.id
-        self.creationDate = community.published
-        self.actorId = community.actorId
-        self.local = community.local
-        self.updatedDate = community.updatedDate
+        communityId = community.id
+        creationDate = community.published
+        actorId = community.actorId
+        local = community.local
+
+        updatedDate = community.updatedDate
+        
+        name = community.name
+        displayName = community.displayName
+        removed = community.removed
+        deleted = community.deleted
+        nsfw = community.nsfw
+        avatarURL = community.avatarURL
+        bannerURL = community.bannerURL
+        onlyModeratorsCanPost = community.postingRestrictedToMods
+        hidden = community.hidden
     }
 }
