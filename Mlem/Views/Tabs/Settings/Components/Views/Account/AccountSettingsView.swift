@@ -88,7 +88,7 @@ struct AccountSettingsView: View {
                 Section {
                     NavigationLink(.settings(.accountLocal)) {
                         Label("Local Options", systemImage: "iphone.gen3")
-                        .labelStyle(SquircleLabelStyle(color: .blue))
+                            .labelStyle(SquircleLabelStyle(color: .blue))
                     }
                 } footer: {
                     Text("These options are stored locally in Mlem and not on your Lemmy account.")

@@ -46,7 +46,7 @@ struct InstanceModel {
     }
     
     init(from siteView: APISiteView) {
-        self.update(with: siteView)
+        update(with: siteView)
     }
     
     init(from site: APISite) {
@@ -54,7 +54,7 @@ struct InstanceModel {
     }
     
     init(from stub: InstanceStub) {
-        self.update(with: stub)
+        update(with: stub)
     }
     
     var name: String { url.host() ?? displayName }
@@ -69,30 +69,30 @@ struct InstanceModel {
         version = SiteVersion(response.version)
         
         let localSite = response.siteView.localSite
-        self.allowsDownvotes = localSite.enableDownvotes
-        self.allowsNSFW = localSite.enableNsfw
-        self.allowsCommunityCreation = !localSite.communityCreationAdminOnly
-        self.requiresEmailVerification = localSite.requireEmailVerification
-        self.captchaDifficulty = localSite.captchaEnabled ? localSite.captchaDifficulty : nil
+        allowsDownvotes = localSite.enableDownvotes
+        allowsNSFW = localSite.enableNsfw
+        allowsCommunityCreation = !localSite.communityCreationAdminOnly
+        requiresEmailVerification = localSite.requireEmailVerification
+        captchaDifficulty = localSite.captchaEnabled ? localSite.captchaDifficulty : nil
         self.private = localSite.privateInstance
-        self.federates = localSite.federationEnabled
-        self.federationSignedFetch = localSite.federationSignedFetch
-        self.defaultFeedType = localSite.defaultPostListingType
-        self.hideModlogModNames = localSite.hideModlogModNames
-        self.applicationsEmailAdmins = localSite.applicationEmailAdmins
-        self.reportsEmailAdmins = localSite.reportsEmailAdmins
+        federates = localSite.federationEnabled
+        federationSignedFetch = localSite.federationSignedFetch
+        defaultFeedType = localSite.defaultPostListingType
+        hideModlogModNames = localSite.hideModlogModNames
+        applicationsEmailAdmins = localSite.applicationEmailAdmins
+        reportsEmailAdmins = localSite.reportsEmailAdmins
 
-        self.registrationMode = localSite.registrationMode
+        registrationMode = localSite.registrationMode
         do {
             if let regex = localSite.slurFilterRegex {
-                self.slurFilterString = regex
-                self.slurFilterRegex = try .init(regex)
+                slurFilterString = regex
+                slurFilterRegex = try .init(regex)
             }
         } catch {
             print("Invalid slur filter regex")
         }
         
-        self.update(with: response.siteView)
+        update(with: response.siteView)
     }
     
     mutating func update(with siteView: APISiteView) {
@@ -101,14 +101,14 @@ struct InstanceModel {
         postCount = siteView.counts.posts
         commentCount = siteView.counts.comments
         
-        self.activeUserCount = .init(
+        activeUserCount = .init(
             sixMonths: siteView.counts.usersActiveHalfYear,
             month: siteView.counts.usersActiveMonth,
             week: siteView.counts.usersActiveWeek,
             day: siteView.counts.usersActiveDay
         )
         
-        self.update(with: siteView.site)
+        update(with: siteView.site)
     }
     
     mutating func update(with site: APISite) {

@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 01/12/2023.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct AccountGeneralSettingsView: View {
     @Dependency(\.siteInformation) var siteInformation: SiteInformationTracker

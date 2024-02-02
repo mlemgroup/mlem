@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct SearchResultsView: View {
-    
     @EnvironmentObject var recentSearchesTracker: RecentSearchesTracker
     @EnvironmentObject var searchModel: SearchModel
     @StateObject var contentTracker: ContentTracker<AnyContentModel> = .init()
@@ -53,7 +52,6 @@ struct SearchResultsView: View {
 }
 
 struct SearchResultsViewPreview: View {
-    
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
     @StateObject var searchModel: SearchModel = .init()
     @StateObject var contentTracker: ContentTracker<AnyContentModel> = .init()

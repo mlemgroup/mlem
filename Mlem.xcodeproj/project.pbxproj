@@ -301,6 +301,10 @@
 		6DFF50432A48DED3001E648D /* Inbox View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFF50422A48DED3001E648D /* Inbox View.swift */; };
 		6DFF50452A48E373001E648D /* GetPrivateMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFF50442A48E373001E648D /* GetPrivateMessages.swift */; };
 		6FB4A4DE2B47860B00A7CD82 /* CollapsedCommentReplies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB4A4DD2B47860B00A7CD82 /* CollapsedCommentReplies.swift */; };
+		6FF17D012B685C16007E1814 /* AppLockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF17D002B685C16007E1814 /* AppLockView.swift */; };
+		6FF17D032B685C55007E1814 /* AppLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF17D022B685C55007E1814 /* AppLock.swift */; };
+		6FF17D062B685CF6007E1814 /* UIDevice+DynamicIsland.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF17D052B685CF5007E1814 /* UIDevice+DynamicIsland.swift */; };
+		6FF17D082B685D0D007E1814 /* BiometricUnlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF17D072B685D0D007E1814 /* BiometricUnlock.swift */; };
 		88B165B82A8643F4007C9115 /* View+NavigationBarColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B165B72A8643F4007C9115 /* View+NavigationBarColor.swift */; };
 		AD1B0D352A5F63F60006F554 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1B0D342A5F63F60006F554 /* AboutView.swift */; };
 		AD1B0D372A5F7A260006F554 /* Licenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1B0D362A5F7A260006F554 /* Licenses.swift */; };
@@ -865,6 +869,10 @@
 		6DFF50422A48DED3001E648D /* Inbox View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox View.swift"; sourceTree = "<group>"; };
 		6DFF50442A48E373001E648D /* GetPrivateMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPrivateMessages.swift; sourceTree = "<group>"; };
 		6FB4A4DD2B47860B00A7CD82 /* CollapsedCommentReplies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsedCommentReplies.swift; sourceTree = "<group>"; };
+		6FF17D002B685C16007E1814 /* AppLockView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLockView.swift; sourceTree = "<group>"; };
+		6FF17D022B685C55007E1814 /* AppLock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLock.swift; sourceTree = "<group>"; };
+		6FF17D052B685CF5007E1814 /* UIDevice+DynamicIsland.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIDevice+DynamicIsland.swift"; path = "Mlem/Extensions/UIDevice/UIDevice+DynamicIsland.swift"; sourceTree = SOURCE_ROOT; };
+		6FF17D072B685D0D007E1814 /* BiometricUnlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BiometricUnlock.swift; sourceTree = "<group>"; };
 		88B165B72A8643F4007C9115 /* View+NavigationBarColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+NavigationBarColor.swift"; sourceTree = "<group>"; };
 		AD1B0D342A5F63F60006F554 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		AD1B0D362A5F7A260006F554 /* Licenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Licenses.swift; sourceTree = "<group>"; };
@@ -1631,6 +1639,7 @@
 		6318EDC527EE4E0B00BFCAE8 /* Logic */ = {
 			isa = PBXGroup;
 			children = (
+				6FF17D072B685D0D007E1814 /* BiometricUnlock.swift */,
 				B1955A1B2A606B810056CF99 /* Easter */,
 				630049EB27EF390900D5105B /* Networking */,
 				6322A5D127F88CFD00135D4F /* Time Parser.swift */,
@@ -1695,6 +1704,7 @@
 				CD29ED452B2E8716006937CE /* TimeInterval */,
 				CD4368D32AE2462A00BD8BD1 /* Tracker Items */,
 				CD29ED3F2B2E8668006937CE /* UIApplication */,
+				6FF17D042B685C7D007E1814 /* UIDevice */,
 				CD29ED422B2E86CD006937CE /* UIUserInterfaceStyle */,
 				CD29ED432B2E86E1006937CE /* UIViewController */,
 				CD29ED442B2E86F0006937CE /* URL */,
@@ -2081,6 +2091,7 @@
 		6386E03E2A04570F006B3C1D /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				6FF17D002B685C16007E1814 /* AppLockView.swift */,
 				CD2053152ACBBB490000AA38 /* Avatars */,
 				CD2E147B2A6B2891004198DE /* Components */,
 				6332FDCD27EFDD0A0009A98A /* Accounts */,
@@ -2183,6 +2194,15 @@
 				CD4368DC2AE24E1A00BD8BD1 /* InboxView+Logic.swift */,
 			);
 			path = Inbox;
+			sourceTree = "<group>";
+		};
+		6FF17D042B685C7D007E1814 /* UIDevice */ = {
+			isa = PBXGroup;
+			children = (
+				6FF17D052B685CF5007E1814 /* UIDevice+DynamicIsland.swift */,
+			);
+			name = UIDevice;
+			path = UIApplication/UIDevice;
 			sourceTree = "<group>";
 		};
 		ADF266932A4E89F800EBA648 /* Composer */ = {
@@ -2569,6 +2589,7 @@
 		CD64832B2A38CE4200EE6CA3 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				6FF17D022B685C55007E1814 /* AppLock.swift */,
 				CDE6A80A2A43E9F00062D161 /* CommentSortType.swift */,
 				63F0C7A12A0519BA00A18C5D /* PostSortType.swift */,
 				03E90FB02B3703ED00E5A802 /* AccountSortMode.swift */,
@@ -3191,6 +3212,7 @@
 				CD1446252A5B357900610EF1 /* Document.swift in Sources */,
 				CDEBC32C2A9A582500518D9D /* Votes Model.swift in Sources */,
 				CDEBC3282A9A57F200518D9D /* Content Model Identifier.swift in Sources */,
+				6FF17D012B685C16007E1814 /* AppLockView.swift in Sources */,
 				B1955A1D2A606B950056CF99 /* Easter Rewards.swift in Sources */,
 				CD16A0642B66F81A000312D2 /* UserContentModel+TrackerItem.swift in Sources */,
 				CDB0117F2A6F70A000D043EB /* Editor Tracker.swift in Sources */,
@@ -3286,6 +3308,7 @@
 				CDA217E42A62FB3300BDA173 /* ReplyToMessage.swift in Sources */,
 				038A16DF2A75172C0087987E /* LayoutWidgetEditView.swift in Sources */,
 				CD69F5732A4239D70028D4F7 /* Comment Item.swift in Sources */,
+				6FF17D062B685CF6007E1814 /* UIDevice+DynamicIsland.swift in Sources */,
 				CD29ED412B2E867C006937CE /* UIApplication+TopMostViewController.swift in Sources */,
 				CDB45C622AF1AF9B00A1FF08 /* ReplyModel+TrackerItem.swift in Sources */,
 				6318EDC327EE4D7F00BFCAE8 /* Feed Post.swift in Sources */,
@@ -3341,6 +3364,7 @@
 				CD9A03C82B389F7000C16276 /* EnvironmentValues+FeedType.swift in Sources */,
 				50811B2E2A92046D006BA3F2 /* URL+Mock.swift in Sources */,
 				03C905CC2B3C88F700B9082F /* SearchTab.swift in Sources */,
+				6FF17D032B685C55007E1814 /* AppLock.swift in Sources */,
 				E409E16E2AFEFB8C0026FDC2 /* ImageDetailSheetState.swift in Sources */,
 				CD3FBCE52A4A89B900B2063F /* Mentions Feed View.swift in Sources */,
 				CD391F962A535F5400E213B5 /* ResponseEditorView.swift in Sources */,
@@ -3457,6 +3481,7 @@
 				CDF1EF182A6C40C9003594B6 /* Menu Button.swift in Sources */,
 				6D91D4552A415994006B8F9A /* CommunityListSidebarEntry.swift in Sources */,
 				50A8812A2A72D6BD003E3661 /* CommunityRepository.swift in Sources */,
+				6FF17D082B685D0D007E1814 /* BiometricUnlock.swift in Sources */,
 				038A16E72A7A9C430087987E /* LayoutWidgetCollection.swift in Sources */,
 				6322A5D227F88CFD00135D4F /* Time Parser.swift in Sources */,
 				AD1B0D352A5F63F60006F554 /* AboutView.swift in Sources */,

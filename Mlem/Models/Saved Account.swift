@@ -99,11 +99,11 @@ extension SavedAccount {
     
     /// Sort by instance and then by username
     var instanceSortKey: String {
-        return "\(instanceLink.host() ?? "unknown")\(nickname)"
+        "\(instanceLink.host() ?? "unknown")\(nickname)"
     }
     
     // Sort by nickname and then by instance
     var nicknameSortKey: String {
-        return "\(nickname)\(instanceLink.host() ?? "unknown")"
+        "\(nickname)\(instanceLink.host() ?? "unknown")"
     }
 }

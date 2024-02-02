@@ -39,9 +39,9 @@ struct APILocalSite: Decodable {
 
 // lemmy_db_schema::source::local_site::RegistrationMode
 enum APIRegistrationMode: String, Codable {
-    case closed = "closed"
+    case closed
     case requireApplication = "requireapplication"
-    case open = "open"
+    case open
     
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()

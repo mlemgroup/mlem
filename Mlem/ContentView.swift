@@ -37,10 +37,16 @@ struct ContentView: View {
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
     @AppStorage("allowTabBarSwipeUpGesture") var allowTabBarSwipeUpGesture: Bool = true
-    
+    @AppStorage("appLock") var appLock: AppLock = .disabled
+
     @StateObject private var quickLookState: ImageDetailSheetState = .init()
-    
+    @StateObject var biometricUnlock = BiometricUnlock()
+
     var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
+
+    var isAppLocked: Bool {
+        appLock != .disabled && !biometricUnlock.isUnlocked
+    }
     
     var body: some View {
         FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
@@ -160,6 +166,12 @@ struct ContentView: View {
             if phase != .active {
                 isPresentingAccountSwitcher = false
             }
+            if phase == .background || phase == .inactive, appLock != .disabled {
+                biometricUnlock.isUnlocked = false
+            }
+        }
+        .fullScreenCover(isPresented: .constant(isAppLocked)) {
+            AppLockView(biometricUnlock: biometricUnlock)
         }
     }
     

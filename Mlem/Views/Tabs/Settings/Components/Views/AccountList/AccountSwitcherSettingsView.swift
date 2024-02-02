@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 22/12/2023.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct AccountSwitcherSettingsView: View {
     @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
@@ -47,5 +47,4 @@ struct AccountSwitcherSettingsView: View {
         }
         .fancyTabScrollCompatible()
     }
-    
 }
