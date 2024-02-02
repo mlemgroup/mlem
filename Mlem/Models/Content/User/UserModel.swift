@@ -16,9 +16,6 @@ struct UserModel {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     
-    @available(*, deprecated, message: "Use attributes of the UserModel directly instead.")
-    var person: APIPerson!
-    
     // Ids
     var userId: Int!
     var instanceId: Int!
@@ -108,8 +105,6 @@ struct UserModel {
     }
     
     mutating func update(with person: APIPerson) {
-        self.person = person
-        
         userId = person.id
         name = person.name
         displayName = person.displayName ?? person.name

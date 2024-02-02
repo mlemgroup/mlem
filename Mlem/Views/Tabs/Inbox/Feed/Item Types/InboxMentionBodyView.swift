@@ -44,7 +44,7 @@ struct InboxMentionBodyView: View {
                 .padding(.bottom, AppConstants.postAndCommentSpacing)
             
             UserLinkView(
-                person: mention.creator,
+                user: mention.creator,
                 serverInstanceLocation: .bottom,
                 overrideShowAvatar: true
             )
