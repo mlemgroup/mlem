@@ -23,4 +23,9 @@ protocol CommunityModelProto: AnyObject {
     var bannerURL: URL? { get }
     var onlyModeratorsCanPost: Bool { get }
     var hidden: Bool { get }
+
+    func menuFunctions(editorTracker: EditorTracker?) -> [MenuFunction]
+
+    var fullyQualifiedName: String? { get }
+    func copyFullyQualifiedName()
 }

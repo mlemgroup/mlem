@@ -21,7 +21,6 @@ final class CommunityModel2 {
     // MARK: - Unsettable properties
     
     let community1: CommunityModel1
-    let published: Date
 
     private(set) var subscriberCount: Int
     private(set) var postCount: Int
@@ -82,6 +81,15 @@ extension CommunityModel2: CommunityModelProto {
     var bannerURL: URL? { community1.bannerURL }
     var onlyModeratorsCanPost: Bool { community1.onlyModeratorsCanPost }
     var hidden: Bool { community1.hidden }
+
+    var fullyQualifiedName: String? { community1.fullyQualifiedName }
+    func copyFullyQualifiedName() { community1.copyFullyQualifiedName() }
+
+    func menuFunctions(editorTracker: EditorTracker?) -> [MenuFunction] {
+        var functions: [MenuFunction] = .init()
+        functions.append(contentsOf: community1.menuFunctions(editorTracker: editorTracker))
+        return functions
+    }
 }
 
 extension CommunityModel2: NewContentModel {

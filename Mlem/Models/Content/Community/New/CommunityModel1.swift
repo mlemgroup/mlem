@@ -31,6 +31,40 @@ final class CommunityModel1: CommunityModelProto {
     private(set) var bannerURL: URL?
     private(set) var onlyModeratorsCanPost: Bool
     private(set) var hidden: Bool
+
+    var fullyQualifiedName: String? {
+        if let host = communityUrl.host() {
+            return "\(name!)@\(host)"
+        }
+        return nil
+    }
+    
+    func copyFullyQualifiedName() {
+        let pasteboard = UIPasteboard.general
+        if let fullyQualifiedName {
+            pasteboard.string = "!\(fullyQualifiedName)"
+            Task { await notifier.add(.success("Community Name Copied")) }
+        } else {
+            Task { await notifier.add(.failure("Failed to copy")) }
+        }
+    }
+
+    func menuFunctions(editorTracker: EditorTracker?) -> [MenuFunction] {
+        var functions: [MenuFunction] = .init()
+        
+        functions.append(
+            .standardMenuFunction(
+                text: "Copy Name",
+                imageName: Icons.copy,
+                destructiveActionPrompt: nil,
+                enabled: true,
+                callback: copyFullyQualifiedName
+            )
+        )
+        functions.append(.shareMenuFunction(url: communityUrl))
+
+        return functions
+    }
 }
 
 extension CommunityModel1: NewContentModel {
@@ -43,6 +77,20 @@ extension CommunityModel1: NewContentModel {
         actorId = community.actorId
         local = community.local
 
+        updatedDate = community.updatedDate
+        
+        name = community.name
+        displayName = community.displayName
+        removed = community.removed
+        deleted = community.deleted
+        nsfw = community.nsfw
+        avatarURL = community.avatarURL
+        bannerURL = community.bannerURL
+        onlyModeratorsCanPost = community.postingRestrictedToMods
+        hidden = community.hidden
+    }
+
+    func update(with community: APICommunity) {
         updatedDate = community.updatedDate
         
         name = community.name
