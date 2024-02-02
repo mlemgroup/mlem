@@ -15,22 +15,54 @@ enum SubscriptionStatus {
 
 @Observable
 final class CommunityModel2 {
+    @Dependency(\.apiClient) var apiClient
+    @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
+    
+    // MARK: - Unsettable properties
+    
     let community1: CommunityModel1
     let published: Date
 
-    // These aren't settable from outside
     private(set) var subscriberCount: Int
     private(set) var postCount: Int
     private(set) var commentCount: Int
     private(set) var activeUserCount: ActiveUserCount
 
-    // These will be settable in future
-    private(set) var subscriptionStatus: SubscriptionStatus
-    private(set) var blocked: Bool
+    // MARK: - Settable properties
 
-    // Computed
-    var subscribed: Bool { subscriptionStatus == .subscribed }
-    var favorited: Bool { subscriptionStatus != .unsubscribed }
+    private var _subscribed: Bool
+    var subscribed: Bool {
+        get { _subscribed }
+        set async throws { newValue in 
+            if newValue != _subscribed {
+                _subscribed = newValue
+                do {
+                    let response = try await apiClient.followCommunity(id: communityId, shouldFollow: newValue)
+                    update(with: response.communityView)
+                } catch {
+                    _subscribed = !newValue
+                    throw error
+                }
+            }
+        }
+    }
+
+    private var _blocked: Bool
+    var blocked: Bool {
+        get { _blocked }
+        set async throws { newValue in
+            if newValue != _blocked {
+                _blocked = newValue
+                do {
+                    let response = try await apiClient.blockCommunity(id: communityId, shouldBlock: newValue)
+                    update(with: response.communityView)
+                } catch {
+                    _blocked = !newValue
+                    throw error
+                }
+            }
+        }
+    }
 }
 
 extension CommunityModel2: CommunityModelProto {
@@ -67,9 +99,24 @@ extension CommunityModel2: NewContentModel {
             day: communityView.counts.usersActiveDay
         )
 
-        subscriptionStatus = communityView.subscribed ? .subscribed : .unsubscribed
+        _subscribed = communityView.subscribed
         blocked = communityView.blocked
 
         community1 = CommunityModel1.cache.createModel(for: communityView.community)
+    }
+
+    func update(with communityView: APICommunityView) {
+        subscriberCount = communityView.counts.subscriberCount
+        postCount = communityView.counts.postCount
+        commentCount = communityView.counts.commentCount
+        activeUserCount = .init(
+            sixMonths: communityView.counts.usersActiveHalfYear,
+            month: communityView.counts.usersActiveMonth,
+            week: communityView.counts.usersActiveWeek,
+            day: communityView.counts.usersActiveDay
+        )
+
+        _subscribed = communityView.subscribed
+        blocked = communityView.blocked
     }
 }

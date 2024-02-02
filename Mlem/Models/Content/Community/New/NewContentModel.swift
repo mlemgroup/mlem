@@ -16,6 +16,7 @@ protocol NewContentModel: AnyObject {
     var contentId: Int { get }
     static var cache: ContentCache<Self> { get }
     init(from: APIType)
+    func update(with: APIType)
 }
 
 private struct WeakReference<Content: ContentModel> {

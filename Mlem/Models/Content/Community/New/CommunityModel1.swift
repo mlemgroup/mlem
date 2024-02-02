@@ -11,16 +11,17 @@ import Observation
 
 @Observable
 final class CommunityModel1: CommunityModelProto {
-    // Constant values
+    
+    // MARK: - Unsettable properties
     let communityId: Int
     let creationDate: Date
     let actorId: URL
     let local: Bool
 
-    // These aren't settable from outside
     private(set) var updatedDate: Date?
 
-    // These will be settable in future
+    // MARK: - Settable properties
+    
     private(set) var name: String
     private(set) var displayName: String
     private(set) var removed: Bool
