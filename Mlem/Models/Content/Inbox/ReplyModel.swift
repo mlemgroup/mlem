@@ -18,9 +18,9 @@ class ReplyModel: ObservableObject, ContentIdentifiable {
     
     @Published var commentReply: APICommentReply
     @Published var comment: APIComment
-    var creator: APIPerson
+    var creator: UserModel
     var post: APIPost
-    var community: APICommunity
+    var community: CommunityModel
     var recipient: APIPerson
     @Published var numReplies: Int
     @Published var votes: VotesModel
@@ -37,9 +37,9 @@ class ReplyModel: ObservableObject, ContentIdentifiable {
     init(from replyView: APICommentReplyView) {
         self.commentReply = replyView.commentReply
         self.comment = replyView.comment
-        self.creator = replyView.creator
+        self.creator = UserModel(from: replyView.creator)
         self.post = replyView.post
-        self.community = replyView.community
+        self.community = CommunityModel(from: replyView.community)
         self.recipient = replyView.recipient
         self.numReplies = replyView.counts.childCount
         self.votes = VotesModel(from: replyView.counts, myVote: replyView.myVote)
@@ -53,9 +53,9 @@ class ReplyModel: ObservableObject, ContentIdentifiable {
         from replyModel: ReplyModel,
         commentReply: APICommentReply? = nil,
         comment: APIComment? = nil,
-        creator: APIPerson? = nil,
+        creator: UserModel? = nil,
         post: APIPost? = nil,
-        community: APICommunity? = nil,
+        community: CommunityModel? = nil,
         recipient: APIPerson? = nil,
         numReplies: Int? = nil,
         votes: VotesModel? = nil,
