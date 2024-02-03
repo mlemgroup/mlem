@@ -98,7 +98,7 @@ struct InstanceView: View {
                                 MarkdownView(text: description, isNsfw: false)
                                     .padding(.horizontal, AppConstants.postAndCommentSpacing)
                                     .padding(.top)
-                            } else if instance.userCount != nil {
+                            } else if instance.administrators != nil {
                                 Text("No Description")
                                     .foregroundStyle(.secondary)
                                     .padding(.top)
@@ -117,7 +117,7 @@ struct InstanceView: View {
                                     .padding(.top, 30)
                             }
                         case .details:
-                            if instance.userCount != nil {
+                            if instance.administrators != nil {
                                 VStack(spacing: 0) {
                                     InstanceDetailsView(instance: instance)
                                         .padding(.vertical, 16)
