@@ -108,13 +108,14 @@ struct InstanceView: View {
                     if instance.canFetchUptime {
                         switch uptimeData {
                         case .success(let uptimeData):
-                            VStack(alignment: .leading) {
+                            VStack(alignment: .leading, spacing: 0) {
                                 Text("We couldn't connect to \(instance.name). Perhaps the instance is offline?")
                                     .foregroundStyle(.secondary)
+                                    .padding(.horizontal, 16)
+                                    .padding(.bottom, AppConstants.postAndCommentSpacing)
                                 Divider()
                                 InstanceUptimeView(instance: instance, uptimeData: uptimeData)
                             }
-                            .background(Color(uiColor: .systemGroupedBackground))
                         case .failure:
                             ErrorView(errorDetails)
                                 .padding(.top, 5)
@@ -226,7 +227,7 @@ struct InstanceView: View {
                 } catch let APIClientError.decoding(data, error) {
                     withAnimation(.easeOut(duration: 0.2)) {
                         if let content = String(data: data, encoding: .utf8),
-                           content.contains("<div class=\"kbin-container\">" ) {
+                           content.contains("<div class=\"kbin-container\">") {
                             errorDetails = ErrorDetails(
                                 title: "KBin Instance",
                                 body: "We can't yet display KBin details.",
@@ -274,7 +275,12 @@ struct InstanceView: View {
             Task {
                 do {
                     let data = try await URLSession.shared.data(from: url).0
-                    uptimeData = .success(try JSONDecoder.defaultDecoder.decode(UptimeData.self, from: data))
+                    let uptimeData = try JSONDecoder.defaultDecoder.decode(UptimeData.self, from: data)
+                    DispatchQueue.main.async {
+                        withAnimation(.easeOut(duration: 0.2)) {
+                            self.uptimeData = .success(uptimeData)
+                        }
+                    }
                 } catch {
                     errorHandler.handle(error)
                 }

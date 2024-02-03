@@ -34,9 +34,8 @@ extension CommunityModel {
             enabled: true,
             callback: {
                 Task {
-                    var new = self
                     do {
-                        try await new.toggleSubscribe(callback)
+                        try await self.toggleSubscribe(callback)
                     } catch {
                         errorHandler.handle(error)
                     }
@@ -49,13 +48,12 @@ extension CommunityModel {
         .init(
             text: favorited ? "Unfavorite" : "Favorite",
             imageName: favorited ? Icons.unfavorite : Icons.favorite,
-            destructiveActionPrompt: favorited ? "Really unfavorite \(community.name)?" : nil,
+            destructiveActionPrompt: favorited ? "Really unfavorite \(name ?? "this community")?" : nil,
             enabled: true
         ) {
             Task {
                 do {
-                    var new = self
-                    try await new.toggleFavorite(callback)
+                    try await self.toggleFavorite(callback)
                 } catch {
                     errorHandler.handle(error)
                 }
@@ -74,9 +72,8 @@ extension CommunityModel {
             enabled: true,
             callback: {
                 Task {
-                    var new = self
                     do {
-                        try await new.toggleBlock(callback)
+                        try await self.toggleBlock(callback)
                     } catch {
                         errorHandler.handle(error)
                     }

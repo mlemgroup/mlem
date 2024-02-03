@@ -15,5 +15,6 @@ extension InstanceModel: ContentModel {
         }
         return []
     }
-    var searchResultScore: Int { self.userCount ?? 0 }
+
+    var searchResultScore: Int { userCount ?? 0 }
 }

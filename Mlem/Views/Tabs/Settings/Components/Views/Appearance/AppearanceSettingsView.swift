@@ -26,7 +26,7 @@ struct AppearanceSettingsView: View {
                     }
                 }
                 #if !os(macOS) && !targetEnvironment(macCatalyst)
-                NavigationLink(.appearanceSettings(.appIcon)) {
+                    NavigationLink(.appearanceSettings(.appIcon)) {
                         Label {
                             Text("App Icon")
                         } icon: {

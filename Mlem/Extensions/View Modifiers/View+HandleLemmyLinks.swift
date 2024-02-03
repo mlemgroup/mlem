@@ -32,10 +32,6 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                         .environmentObject(appState)
                         .environmentObject(filtersTracker)
                         .environmentObject(quickLookState)
-                case let .apiPerson(user):
-                    UserView(user: UserModel(from: user))
-                        .environmentObject(appState)
-                        .environmentObject(quickLookState)
                 case let .userProfile(user, communityContext):
                     UserView(user: user, communityContext: communityContext)
                         .environmentObject(appState)

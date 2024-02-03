@@ -40,7 +40,8 @@ class SearchModel: ObservableObject {
                     with: combineResults(
                         communities: communities,
                         users: users,
-                        instances: searchInstances(page: 1))
+                        instances: searchInstances(page: 1)
+                    )
                 )
                 return
             }
@@ -62,7 +63,7 @@ class SearchModel: ObservableObject {
     
     func performSearch(page: Int) async throws -> [AnyContentModel] {
         defer { previousSearchText = searchText }
-        switch self.searchTab {
+        switch searchTab {
         case .topResults:
             async let communities = try await searchCommunities(page: page)
             async let users = try await searchUsers(page: page)
@@ -91,7 +92,7 @@ class SearchModel: ObservableObject {
             limit: internetSpeed.pageSize
         ).map { AnyContentModel($0) }
         if page == 1 {
-            self.firstPageCommunities = communities
+            firstPageCommunities = communities
         }
         return communities
     }
@@ -104,7 +105,7 @@ class SearchModel: ObservableObject {
             limit: internetSpeed.pageSize
         ).map { AnyContentModel($0) }
         if page == 1 {
-            self.firstPageUsers = users
+            firstPageUsers = users
         }
         return users
     }
@@ -129,7 +130,7 @@ class SearchModel: ObservableObject {
             }
         }
         let instances = results
-            .dropFirst((page-1) * internetSpeed.pageSize)
+            .dropFirst((page - 1) * internetSpeed.pageSize)
             .map { AnyContentModel($0) }
         return instances
     }
@@ -145,5 +146,4 @@ class SearchModel: ObservableObject {
         results.append(contentsOf: instances)
         return results.sorted { $0.searchResultScore > $1.searchResultScore }
     }
-    
 }

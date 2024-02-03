@@ -57,7 +57,6 @@ struct Window: View {
             appState.clearActiveAccount()
             favoriteCommunitiesTracker.clearStoredAccount()
         case let .account(account):
-            var account = account
             siteInformation.myUserInfo = nil
             appState.setActiveAccount(account, saveChanges: false)
             siteInformation.load(account: account)

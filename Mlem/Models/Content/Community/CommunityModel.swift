@@ -160,7 +160,7 @@ struct CommunityModel {
         if subscribed {
             new.subscriberCount = subscriberCount - 1
             if new.favorited {
-                favoriteCommunitiesTracker.unfavorite(community)
+                favoriteCommunitiesTracker.unfavorite(communityId)
             }
         } else {
             new.subscriberCount = subscriberCount + 1
@@ -194,7 +194,7 @@ struct CommunityModel {
                     if !(community.subscribed ?? true) {
                         print("Subscribe failed, unfavoriting...")
                         community.favorited = false
-                        favoriteCommunitiesTracker.unfavorite(community.community)
+                        favoriteCommunitiesTracker.unfavorite(communityId)
                     }
                     callback(community)
                 }
@@ -204,7 +204,7 @@ struct CommunityModel {
                 }
             }
         } else {
-            favoriteCommunitiesTracker.unfavorite(community)
+            favoriteCommunitiesTracker.unfavorite(communityId)
             RunLoop.main.perform { [new] in
                 callback(new)
             }

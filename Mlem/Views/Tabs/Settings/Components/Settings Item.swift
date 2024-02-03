@@ -115,17 +115,17 @@ struct FooterLinkView: View {
 }
 
 struct CheckboxToggleStyle: ToggleStyle {
-   func makeBody(configuration: Configuration) -> some View {
-       HStack {
-           configuration.label
-           Spacer()
-           Checkbox(isOn: configuration.isOn)
-           .animation(.default, value: configuration.isOn)
-       }
-       .onTapGesture {
+    func makeBody(configuration: Configuration) -> some View {
+        HStack {
+            configuration.label
+            Spacer()
+            Checkbox(isOn: configuration.isOn)
+                .animation(.default, value: configuration.isOn)
+        }
+        .onTapGesture {
             configuration.isOn.toggle()
-       }
-   }
+        }
+    }
 }
 
 struct Checkbox: View {

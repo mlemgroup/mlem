@@ -20,8 +20,8 @@ class MessageModel: ContentIdentifiable, ObservableObject {
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
     
-    @Published var creator: APIPerson
-    @Published var recipient: APIPerson
+    @Published var creator: UserModel
+    @Published var recipient: UserModel
     @Published var privateMessage: APIPrivateMessage
 
     var uid: ContentModelIdentifier { .init(contentType: .message, contentId: privateMessage.id) }
@@ -29,8 +29,8 @@ class MessageModel: ContentIdentifiable, ObservableObject {
     /// Creates a MessageModel from the raw APIPrivateMessageView returned by the Lemmy API
     /// - Parameter from: APIPrivateMessageView returned by the Lemmy API
     init(from apiPrivateMessageView: APIPrivateMessageView) {
-        self.creator = apiPrivateMessageView.creator
-        self.recipient = apiPrivateMessageView.recipient
+        self.creator = UserModel(from: apiPrivateMessageView.creator)
+        self.recipient = UserModel(from: apiPrivateMessageView.recipient)
         self.privateMessage = apiPrivateMessageView.privateMessage
     }
     
