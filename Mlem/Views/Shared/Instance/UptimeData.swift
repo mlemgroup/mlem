@@ -65,7 +65,6 @@ struct DowntimePeriod: Codable, Identifiable {
     }
     
     func differenceTitle(unitsStyle: DateComponentsFormatter.UnitsStyle = .short) -> String {
-        let endTime = endTime ?? .now
         let formatter = DateComponentsFormatter()
         formatter.unitsStyle = unitsStyle
         formatter.maximumUnitCount = 2

@@ -41,12 +41,13 @@ struct InstanceView: View {
     
     @State var instance: InstanceModel
     @State var uptimeData: UptimeDataStatus?
+    @State var fediseerData: FediseerInstance?
     @State var errorDetails: ErrorDetails?
     
     @Namespace var scrollToTop
     @State private var scrollToTopAppeared = false
     
-    @State var selectedTab: InstanceViewTab = .about
+    @State var selectedTab: InstanceViewTab = .safety
     
     init(instance: InstanceModel) {
         var instance = instance
@@ -182,8 +183,16 @@ struct InstanceView: View {
                                 }
                             }
                             .onAppear(perform: attemptToLoadUptimeData)
-                        default:
-                            EmptyView()
+                        case .safety:
+                            Group {
+                                if let fediseerData {
+                                    InstanceSafetyView(instance: instance)
+                                } else {
+                                    ProgressView()
+                                        .padding(.top, 30)
+                                }
+                            }
+                            .onAppear(perform: attemptToLoadFediseerData)
                         }
                         Spacer()
                             .frame(height: 100)
@@ -266,6 +275,19 @@ struct InstanceView: View {
                 do {
                     let data = try await URLSession.shared.data(from: url).0
                     uptimeData = .success(try JSONDecoder.defaultDecoder.decode(UptimeData.self, from: data))
+                } catch {
+                    errorHandler.handle(error)
+                }
+            }
+        }
+    }
+    
+    func attemptToLoadFediseerData() {
+        if fediseerData == nil, let url = instance.fediseerDataUrl {
+            Task {
+                do {
+                    let data = try await URLSession.shared.data(from: url).0
+                    fediseerData = try JSONDecoder.defaultDecoder.decode(FediseerInstance.self, from: data)
                 } catch {
                     errorHandler.handle(error)
                 }

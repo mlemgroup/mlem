@@ -167,6 +167,10 @@ struct InstanceModel {
     static func mock() -> InstanceModel {
         return .init(from: SiteResponse.mock())
     }
+    
+    var fediseerDataUrl: URL? {
+        return URL(string: "https://fediseer.com/api/v1/whitelist/\(name)")
+    }
 }
 
 extension InstanceModel: Identifiable {
