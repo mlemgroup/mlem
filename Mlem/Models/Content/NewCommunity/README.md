@@ -1,4 +1,4 @@
-This is my initial idea of how we could create a long-term solution to the modelling problem. It uses iOS 17's `@Observable`. I've only implemented the definitions so far as a proof-of-concept - the app doesn't actually *use* the proposed system on this branch yet. Let me know what you think.
+This is my initial idea of how we could create a long-term solution to the modelling problem. It uses iOS 17's `@Observable`. I've only implemented the definitions for community-related models so far as a proof-of-concept, and the app doesn't actually *use* the proposed system on this branch yet. Let me know what you think of this system.
 
 # How it works
 
@@ -12,7 +12,7 @@ Instead of there being a single `CommunityModel`, there are three separate "tier
 
 ## Tier Protocols
 
-`CommunityTier1` and `CommunityTier2` have a corresponding protocol that describes their properties. These protocols are called `CommunityTier1Providing` and `CommunityTier2Providing` respectively. 
+`CommunityTier1` and `CommunityTier2` have corresponding protocols that describe their properties. These protocols are called `CommunityTier1Providing` and `CommunityTier2Providing` respectively. 
 
 Each tier of community model conforms to the protocols of all of the tiers below it. They do this by using computed properties to forward the properties of an instance of the preceding tier.
 
