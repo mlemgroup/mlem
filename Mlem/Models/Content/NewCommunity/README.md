@@ -66,7 +66,7 @@ let response = try await apiClient.loadCommunityDetails(id: communityId)
 communityModel = CommunityTier3.createModel(from: response)
 ```
 
-Using protocols, I've implemented some syntax to make this less verbose. API types that can be converted to a community model have a `toModel` function, which calls `createModel` and returns the result:
+Using a protocol, I've implemented some syntax to make this less verbose. API types that can be converted to a community model have a `toModel` function, which calls `createModel` and returns the result:
 
 ```swift
 let response = try await apiClient.loadCommunityDetails(id: communityId)
@@ -91,12 +91,12 @@ Previously, the subscribed indicator on the post's community link would not appe
 
 ## Upgrading tiers
 
-If you want to upgrade a tier to a higher level, you can use the `upgrade()` method. This method sends a `GetCommunityRequest` and returns an instance of `CommunityTier3`. This is useful in places like `CommunityFeedView`, where we need to expand whatever community model we are provided with to contain all of the needed information.
+If you want to upgrade a tier to a higher level, you can use the `upgrade()` method. This method sends a `GetCommunityRequest` and returns an instance of `CommunityTier3` that it creates from the response. This is useful in places like `CommunityFeedView`, where we need to expand whatever community model we are provided with to contain all of the needed information.
 
 
 ```swift
 struct CommunityFeedView: View {
-    let community: any CommunityTier1Providing
+    @State var community: any CommunityTier1Providing
 
     var body: some View {
         content
