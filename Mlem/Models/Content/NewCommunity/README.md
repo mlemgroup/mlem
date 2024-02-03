@@ -73,7 +73,7 @@ let response = try await apiClient.loadCommunityDetails(id: communityId)
 communityModel = response.toModel()
 ```
 
-Each tier of community model wraps an instance of the tier below it. When an instance of a community model is created, it calls `createModel` for the next tier down. This means that modifying 
+Each tier of community model wraps an instance of the tier below it. When an instance of a community model is created, it calls `createModel` for the next tier down.
 
 
 ### Why is this needed?
