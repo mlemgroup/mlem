@@ -120,11 +120,11 @@ Consider the following scenario:
 - A `GetPersonDetailsRequest` is sent, and the `nil` properties of the corresponding `UserModel` are populated with the incoming data. A new `CommunityModel` is created for each community that the user moderates.
 - The user taps "back" twice to return to the feeds page. 
 
-After doing this, we are now storing way too much unnecessary data. The intial `CommunityModel` now stores a list of all of it's moderators. One of those `UserModel` instances also stores a list of `CommunityModel` instances (the communities that the user moderates). This datac will continue to be kept in memory until the user leaves the feed. This is unideal.
+After doing this, we are now storing way too much unnecessary data. The intial `CommunityModel` now stores a list of all of it's moderators. One of those `UserModel` instances also stores a list of `CommunityModel` instances (the communities that the user moderates). This data will continue to be kept in memory until the user leaves the feed. This is unideal.
 
 One way of resolving this would be to set the `moderators` array to `nil` again when the user leaves the `CommunityFeedView` via a `.onDisppear` modifier. However, this solution isn't perfect - if the user has the community open in two different tabs (unlikely, but possible) they would delete the data still needed by the second tab when they navigate away from the community on the first tab.
 
-This could of course be fixed using a reference-counting system... but that requires extra frontend logic, which I'd rather avoid.
+This could of course be fixed using some sort of reference-counting system... but that requires extra frontend logic, which I'd rather avoid.
 
 ### It means we have to unwrap optionals everywhere
 
