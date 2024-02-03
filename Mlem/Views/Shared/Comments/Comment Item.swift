@@ -203,17 +203,17 @@ struct CommentItem: View {
                    hierarchicalComment.children.count > 0,
                    !isCommentReplyHidden {
                     Divider()
-                    HStack {
                         CollapsedCommentReplies(numberOfReplies: .constant(hierarchicalComment.commentView.counts.childCount))
-                            .onTapGesture {
-                                isCommentReplyHidden = true
-                                uncollapseComment()
-                            }
-                    }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .contentShape(.rect)
+                        .onTapGesture {
+                            isCommentReplyHidden = true
+                            uncollapseComment()
+                        }
                 }
             }
         }
-        .contentShape(Rectangle()) // allow taps in blank space to register
+        .contentShape(.rect) // allow taps in blank space to register
         .onTapGesture {
             if tapCommentToCollapse {
                 toggleCollapsed()
