@@ -26,6 +26,7 @@ final class CommunityTier2: CommunityTier2Providing {
     
     // etc ...
 }
+```
 
 If a view needs access to a specific tier of community model or higher, you can use `any ...`. An example would be `CommunityLabelView`, which needs to know the name of a community. The name of a community is stored within `CommunityTier1`, so we need to provide `CommunityLabelView` with a community of tier 1 or higher.
 
