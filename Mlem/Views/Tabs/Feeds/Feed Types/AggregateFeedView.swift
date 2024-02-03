@@ -13,6 +13,10 @@ import SwiftUI
 struct AggregateFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
     
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.scrollViewProxy) var scrollProxy
+    @Environment(\.navigationPathWithRoutes) private var navigationPath
+    
     @EnvironmentObject var appState: AppState
     
     @StateObject var postTracker: StandardPostTracker
@@ -100,32 +104,38 @@ struct AggregateFeedView: View {
                         .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
                 }
             }
+            .hoistNavigation {
+                if let scrollProxy {
+                    withAnimation {
+                        scrollProxy.scrollTo(scrollToTop)
+                    }
+                }
+                return !scrollToTopAppeared
+            }
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarColor(visibility: .automatic)
     }
     
     @ViewBuilder
     var content: some View {
-        VStack(spacing: 0) {
-            ScrollView {
+        ScrollView {
+            VStack(spacing: 0) {
                 VStack(spacing: 0) {
-                    VStack(spacing: 0) {
-                        ScrollToView(appeared: $scrollToTopAppeared)
-                            .id(scrollToTop)
-                        headerView
-                            .padding(.top, -1)
-                    }
-                    
-                    switch selectedFeed {
-                    case .all, .local, .subscribed:
-                        PostFeedView(postSortType: $postSortType, showCommunity: true)
-                            .environmentObject(postTracker)
-                    case .saved:
-                        UserContentFeedView()
-                            .environmentObject(savedContentTracker)
-                    default:
-                        EmptyView() // shouldn't be possible
-                    }
+                    ScrollToView(appeared: $scrollToTopAppeared)
+                        .id(scrollToTop)
+                    headerView
+                        .padding(.top, -1)
+                }
+                
+                switch selectedFeed {
+                case .all, .local, .subscribed:
+                    PostFeedView(postSortType: $postSortType, showCommunity: true)
+                        .environmentObject(postTracker)
+                case .saved:
+                    UserContentFeedView()
+                        .environmentObject(savedContentTracker)
+                default:
+                    EmptyView() // shouldn't be possible
                 }
             }
         }

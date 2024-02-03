@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 21/01/2024.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct LocalAccountSettingsView: View {
     @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker

@@ -5,14 +5,14 @@
 //  Created by Sjmarf on 22/01/2024.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 enum InstanceComplication: CaseIterable {
     case type, version, users
 }
 
-extension Array where Element == InstanceComplication {
+extension [InstanceComplication] {
     static let withTypeLabel: [InstanceComplication] = [.type, .version, .users]
     static let withoutTypeLabel: [InstanceComplication] = [.version, .users]
 }

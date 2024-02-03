@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 21/01/2024.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct QuickSwitcherSettingsView: View {
     @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
@@ -45,8 +45,8 @@ struct QuickSwitcherSettingsView: View {
                 HStack(alignment: .center, spacing: 24) {
                     SwipeUpAnimationView(animationTrigger: animationTrigger)
                     let text = (accountsTracker.savedAccounts.count == 2
-                                ? "Swipe up from the tab bar to open the quick switcher"
-                                : "Swiping up from the tab bar"
+                        ? "Swipe up from the tab bar to open the quick switcher"
+                        : "Swiping up from the tab bar"
                     )
                     Toggle(
                         text,
@@ -90,12 +90,11 @@ struct IPhoneWithSheetView: View {
             Spacer()
             Color(colorScheme == .light ? .systemGray5 : .systemGray4)
                 .frame(height: 20)
-            
         }
         .overlay(alignment: .bottom) {
             RoundedRectangle(cornerRadius: 6)
                 .fill(Color(.secondarySystemGroupedBackground))
-            .frame(height: showingSheet ? 35 : 0)
+                .frame(height: showingSheet ? 35 : 0)
         }
         .frame(width: 43, height: 80)
         .background(Color(.tertiarySystemGroupedBackground))
@@ -105,7 +104,6 @@ struct IPhoneWithSheetView: View {
 }
 
 private struct LongPressAnimationView: View {
-
     enum AnimationPhase: CaseIterable {
         case sheetClosed, fadeInTap, tap, slideInSheet, sheetTap, slideOutSheet
     }
@@ -116,28 +114,28 @@ private struct LongPressAnimationView: View {
         if #available(iOS 17.0, *) {
             PhaseAnimator(AnimationPhase.allCases, trigger: animationTrigger) { phase in
                 IPhoneWithSheetView(showingSheet: [.slideInSheet, .sheetTap, .slideOutSheet].contains(phase))
-                .overlay(alignment: .bottom) {
-                    Circle()
-                        .fill(.blue)
-                        .frame(width: 12, height: 12)
-                        .background {
-                            if [.fadeInTap, .tap].contains(phase) {
-                                Circle()
-                                    .fill(.blue)
-                                    .opacity(phase == .tap ? 0 : 0.8)
-                                    .scaleEffect(phase == .tap ? 2 : 1)
-                                    .transition(.identity)
+                    .overlay(alignment: .bottom) {
+                        Circle()
+                            .fill(.blue)
+                            .frame(width: 12, height: 12)
+                            .background {
+                                if [.fadeInTap, .tap].contains(phase) {
+                                    Circle()
+                                        .fill(.blue)
+                                        .opacity(phase == .tap ? 0 : 0.8)
+                                        .scaleEffect(phase == .tap ? 2 : 1)
+                                        .transition(.identity)
+                                }
                             }
-                        }
-                        .padding(.bottom, 4)
-                        .opacity([.fadeInTap, .tap].contains(phase) ? 1 : 0)
-                    Circle()
-                        .fill(.blue)
-                        .frame(width: 12, height: 12)
-                        .opacity(phase == .sheetTap ? 1 : 0)
-                        .padding(.top, 8)
-                        .offset(y: -17)
-                }
+                            .padding(.bottom, 4)
+                            .opacity([.fadeInTap, .tap].contains(phase) ? 1 : 0)
+                        Circle()
+                            .fill(.blue)
+                            .frame(width: 12, height: 12)
+                            .opacity(phase == .sheetTap ? 1 : 0)
+                            .padding(.top, 8)
+                            .offset(y: -17)
+                    }
             } animation: { phase in
                 switch phase {
                 case .fadeInTap:
@@ -160,7 +158,6 @@ private struct LongPressAnimationView: View {
 }
 
 private struct SwipeUpAnimationView: View {
-    
     enum AnimationPhase: CaseIterable {
         case sheetClosed, fadeInTap, slideInSheet, sheetTap, slideOutSheet
     }
@@ -171,20 +168,20 @@ private struct SwipeUpAnimationView: View {
         if #available(iOS 17.0, *) {
             PhaseAnimator(AnimationPhase.allCases, trigger: animationTrigger) { phase in
                 IPhoneWithSheetView(showingSheet: [.slideInSheet, .sheetTap, .slideOutSheet].contains(phase))
-                .overlay(alignment: .bottom) {
-                    Circle()
-                        .fill(.blue)
-                        .frame(width: 12, height: 12)
-                        .padding(.bottom, 4)
-                        .opacity([.fadeInTap].contains(phase) ? 1 : 0)
-                        .offset(y: phase == .slideInSheet ? -30 : 0)
-                    Circle()
-                        .fill(.blue)
-                        .frame(width: 12, height: 12)
-                        .opacity(phase == .sheetTap ? 1 : 0)
-                        .padding(.top, 8)
-                        .offset(y: -17)
-                }
+                    .overlay(alignment: .bottom) {
+                        Circle()
+                            .fill(.blue)
+                            .frame(width: 12, height: 12)
+                            .padding(.bottom, 4)
+                            .opacity([.fadeInTap].contains(phase) ? 1 : 0)
+                            .offset(y: phase == .slideInSheet ? -30 : 0)
+                        Circle()
+                            .fill(.blue)
+                            .frame(width: 12, height: 12)
+                            .opacity(phase == .sheetTap ? 1 : 0)
+                            .padding(.top, 8)
+                            .offset(y: -17)
+                    }
             } animation: { phase in
                 switch phase {
                 case .fadeInTap:
@@ -204,7 +201,6 @@ private struct SwipeUpAnimationView: View {
 }
 
 private struct TwoAccountSwitchView: View {
-
     enum AnimationPhase: CaseIterable {
         case none, fadeInTap, tap, none2, fadeInTap2, tap2
         
@@ -236,23 +232,23 @@ private struct TwoAccountSwitchView: View {
                                 .padding(.bottom, 4)
                                 .opacity([.fadeInTap, .tap, .fadeInTap2, .tap2].contains(phase) ? 1 : 0)
                             
-                                if [.none, .fadeInTap, .tap2].contains(phase) {
-                                    AvatarView(
-                                        url: accountsTracker.savedAccounts[0].avatarUrl,
-                                        type: .user,
-                                        avatarSize: 28,
-                                        iconResolution: .unrestricted
-                                    )
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                } else {
-                                    AvatarView(
-                                        url: accountsTracker.savedAccounts[1].avatarUrl,
-                                        type: .user,
-                                        avatarSize: 28,
-                                        iconResolution: .unrestricted
-                                    )
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                }
+                            if [.none, .fadeInTap, .tap2].contains(phase) {
+                                AvatarView(
+                                    url: accountsTracker.savedAccounts[0].avatarUrl,
+                                    type: .user,
+                                    avatarSize: 28,
+                                    iconResolution: .unrestricted
+                                )
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            } else {
+                                AvatarView(
+                                    url: accountsTracker.savedAccounts[1].avatarUrl,
+                                    type: .user,
+                                    avatarSize: 28,
+                                    iconResolution: .unrestricted
+                                )
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            }
                         }
                     }
             } animation: { phase in

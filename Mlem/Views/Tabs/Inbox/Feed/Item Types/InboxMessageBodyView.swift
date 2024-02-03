@@ -50,7 +50,7 @@ struct InboxMessageBodyView: View {
             }
             
             UserLinkView(
-                person: message.creator,
+                user: message.creator,
                 serverInstanceLocation: .bottom,
                 overrideShowAvatar: true
             )

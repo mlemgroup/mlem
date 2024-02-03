@@ -151,15 +151,15 @@ struct InstanceDetailsView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         if showingSlurRegex {
                             Text(regex)
-                            .foregroundStyle(.secondary)
-                            .textSelection(.enabled)
+                                .foregroundStyle(.secondary)
+                                .textSelection(.enabled)
                         } else {
                             Text("Tap to show slur filter regex.")
                             Label(
                                 "This probably contains foul language.",
                                 systemImage: Icons.warning
                             )
-                                .foregroundStyle(.orange)
+                            .foregroundStyle(.orange)
                         }
                     }
                     .font(.footnote)
@@ -269,6 +269,5 @@ struct InstanceDetailsView: View {
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity)
-        
     }
 }

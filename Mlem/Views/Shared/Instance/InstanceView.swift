@@ -217,7 +217,7 @@ struct InstanceView: View {
                 } catch let APIClientError.decoding(data, error) {
                     withAnimation(.easeOut(duration: 0.2)) {
                         if let content = String(data: data, encoding: .utf8),
-                           content.contains("<div class=\"kbin-container\">" ) {
+                           content.contains("<div class=\"kbin-container\">") {
                             errorDetails = ErrorDetails(
                                 title: "KBin Instance",
                                 body: "We can't yet display KBin details.",

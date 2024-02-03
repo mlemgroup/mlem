@@ -54,13 +54,13 @@ class FavoriteCommunitiesTracker: ObservableObject {
         favoriteCommunities.append(newFavorite)
     }
     
-    func unfavorite(_ community: APICommunity) {
+    func unfavorite(_ communityId: Int) {
         guard let account else {
             assertionFailure("Attempted to unfavorite community while no account is present")
             return
         }
         
-        favoriteCommunities.removeAll(where: { $0.community.id == community.id && $0.forAccountID == account.id })
+        favoriteCommunities.removeAll(where: { $0.community.id == communityId && $0.forAccountID == account.id })
     }
     
     func isFavorited(_ community: APICommunity) -> Bool {
