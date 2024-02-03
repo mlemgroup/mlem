@@ -115,7 +115,11 @@ struct AggregateFeedView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarColor(visibility: .automatic)
-            .onOffsetChange { _, edge in
+            .onOffsetChange { frame, edge in
+                /// No-op if frame of scroll view content is the same or less than device viewport frame size (i.e. it will always bounce).
+                guard frame.size.height >= UIScreen.main.bounds.size.height else {
+                    return
+                }
                 if let edge {
                     if edge == .top {
                         if tabBarVisibility.visibility != .automatic {
