@@ -110,7 +110,7 @@ struct CommunityFeedView: View {
 
 A potential alternative option would be to have a single-class system closer to what we have now. Instead of creating a higher tier of model when more data becomes available, we could simply populate the properties of the existing `CommunityModel`. This would lead to much less middleware code. However, it has a couple of drawbacks:
 
-### It could lead to extra data being stored unecessarily
+### It could lead to extra data being stored unnecessarily
 
 Consider the following scenario:
 
