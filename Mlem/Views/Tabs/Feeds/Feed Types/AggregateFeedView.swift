@@ -18,6 +18,7 @@ struct AggregateFeedView: View {
     @Environment(\.navigationPathWithRoutes) private var navigationPath
     
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject private var tabBarVisibility: TabBarVisibility
     
     @StateObject var postTracker: StandardPostTracker
     @StateObject var savedContentTracker: UserContentTracker
@@ -60,7 +61,7 @@ struct AggregateFeedView: View {
         
         self._selectedFeed = selectedFeed
     }
-    
+        
     var body: some View {
         content
             .environment(\.feedType, selectedFeed)
@@ -114,11 +115,31 @@ struct AggregateFeedView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarColor(visibility: .automatic)
+            .onOffsetChange { _, edge in
+                if let edge {
+                    if edge == .top {
+                        if tabBarVisibility.visibility != .automatic {
+                            tabBarVisibility.visibility = .automatic
+                        }
+                    } else {
+                        if tabBarVisibility.visibility != .hidden {
+                            tabBarVisibility.visibility = .hidden
+                        }
+                    }
+                }
+            } bounce: { edge in
+                if edge.contains(.top) || edge.contains(.bottom) || edge.contains(.vertical) {
+                    if tabBarVisibility.visibility != .automatic {
+                        tabBarVisibility.visibility = .automatic
+                    }
+                    
+                }
+            }
     }
     
     @ViewBuilder
     var content: some View {
-        ScrollView {
+        ScrollViewOffset {
             VStack(spacing: 0) {
                 VStack(spacing: 0) {
                     ScrollToView(appeared: $scrollToTopAppeared)
@@ -140,7 +161,7 @@ struct AggregateFeedView: View {
             }
         }
     }
-    
+        
     @ViewBuilder
     var headerView: some View {
         Menu {

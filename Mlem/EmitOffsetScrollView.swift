@@ -38,7 +38,7 @@ struct ScrollViewOffset<Content: View>: View {
                                     key: FramePreferenceKey.self,
                                     value: geometry.frame(in: .named(geometryPreferences))
                                 )
-                                .onChange(of: geometry.frame(in: .named(geometryPreferences)), perform: { value in
+                                .onChange(of: geometry.frame(in: .named(geometryPreferences)), perform: { _ in
                                     if let bounds = geometry.bounds(of: .named(geometryPreferences)) {
                                         print(" bounds -> \(bounds)")
                                     }
@@ -211,8 +211,8 @@ private struct OffsetChangeModifier: ViewModifier {
         return Edge.Set(edges)
     }
     
+    /// Read scroll view's viewport geometry (i.e. bounds). On iOS 17, we can use `.bounds(...)` API instead. [2024.01]
     func body(content: Content) -> some View {
-        /// Read scroll view's viewport geometry (i.e. bounds). On iOS 17, we can use `.bounds(...)` API instead. [2024.01]
         // TODO: Check for performance or weird layout issues.
         GeometryReader { geometry in
             content
@@ -225,7 +225,7 @@ private struct OffsetChangeModifier: ViewModifier {
                     }
                     
                     let localFrame = geometry.frame(in: .local)
-                    let _ = print(" localFrame -> \(localFrame)")
+                    print(" localFrame -> \(localFrame)")
 
                     let edges = self.edges(frame: frame)
                     if edges.isEmpty == false {
