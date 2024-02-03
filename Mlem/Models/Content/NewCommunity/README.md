@@ -91,8 +91,7 @@ Previously, the subscribed indicator on the post's community link would not appe
 
 ## Upgrading tiers
 
-If you want to upgrade a tier to a higher level, you can use the `upgrade()` method. This method sends a `GetCommunityRequest` and returns an instance of `CommunityTier3` that it creates from the response. This is useful in places like `CommunityFeedView`, where we need to expand whatever community model we are provided with to contain all of the needed information.
-
+If you want to upgrade a tier to a higher level, you can use the `upgrade()` method. This method sends a `GetCommunityRequest` and returns an instance of `CommunityTier3` that it creates from the response. This is useful in places like `CommunityFeedView`, where we need to expand whatever community model we are provided with to contain all of the needed information. 
 
 ```swift
 struct CommunityFeedView: View {
@@ -105,6 +104,7 @@ struct CommunityFeedView: View {
             }
     }
 }
+```
 
 # Why have tiers? Why not just have a single class with optional properties, like we do now?
 
