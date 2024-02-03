@@ -94,12 +94,6 @@ struct CachedImage: View {
                     .blur(radius: blurRadius)
                     .clipped()
                     .allowsHitTesting(false)
-                    .overlay(alignment: .top) {
-                        // weeps in janky hack but this lets us tap the image only in the area we want
-                        Rectangle()
-                            .frame(maxHeight: size.height)
-                            .opacity(0.00000000001)
-                    }
                     .onAppear {
                         // if the image appears and its size isn't cached, compute its size and cache it
                         if shouldRecomputeSize {
@@ -118,6 +112,7 @@ struct CachedImage: View {
                             imageDetailSheetState.url = url // show image detail
                             onTapCallback?()
                         }
+                        .frame(idealWidth: size.width, maxHeight: size.height)
                 } else {
                     imageView
                 }
