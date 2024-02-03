@@ -117,7 +117,7 @@ Consider the following scenario:
 - The user enters a feed. A new `CommunityModel` would be created to represent each community.
 - The user navigates to a community. A `GetCommunityRequest` is sent, and the `nil` properties of the corresponding `CommunityModel` are populated with the incoming data. A new `UserModel` is created for each moderator of the community, and stored inside of the `CommunityModel`.
 - The user clicks on the "moderators" tab, and navigates to the profile of one of the moderators.
-- A `GetPersonDetailsRequest` is sent, and the `nil` properties of the corresponding `UserModel` are populated with the incoming data. a new `CommunityModel` is created for each community that the user moderates.
+- A `GetPersonDetailsRequest` is sent, and the `nil` properties of the corresponding `UserModel` are populated with the incoming data. A new `CommunityModel` is created for each community that the user moderates.
 - The user taps "back" twice to return to the feeds page. 
 
 After doing this, we are now storing way too much unnecessary data. The intial `CommunityModel` now stores a list of all of it's moderators. One of those `UserModel` instances also stores a list of `CommunityModel` instances (the communities that the user moderates). This datac will continue to be kept in memory until the user leaves the feed. This is unideal.
