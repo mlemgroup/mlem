@@ -37,6 +37,14 @@ extension InstanceView {
                         from: URL(string: "https://fediseer.com/api/v1/endorsements/\(instance.name)")!
                     ).0
                     
+                    async let hesitationsData = try await URLSession.shared.data(
+                        from: URL(string: "https://fediseer.com/api/v1/hesitations/\(instance.name)")!
+                    ).0
+                    
+                    async let censuresData = try await URLSession.shared.data(
+                        from: URL(string: "https://fediseer.com/api/v1/censures/\(instance.name)")!
+                    ).0
+                    
                     fediseerData = .init(
                         instance: try JSONDecoder.defaultDecoder.decode(
                             FediseerInstance.self,
@@ -45,6 +53,14 @@ extension InstanceView {
                         endorsements: try JSONDecoder.defaultDecoder.decode(
                             FediseerEndorsements.self,
                             from: await endorsementsData
+                        ).instances,
+                        hesitations: try JSONDecoder.defaultDecoder.decode(
+                            FediseerHesitations.self,
+                            from: await hesitationsData
+                        ).instances,
+                        censures: try JSONDecoder.defaultDecoder.decode(
+                            FediseerCensures.self,
+                            from: await censuresData
                         ).instances
                     )
                 } catch {

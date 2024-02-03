@@ -6,19 +6,33 @@
 //
 
 import Foundation
+import SwiftUI
 
 // https://fediseer.com/api/v1/whitelist/lemmy.world
 
 struct FediseerData {
     var instance: FediseerInstance
     var endorsements: [FediseerEndorsement]?
+    var hesitations: [FediseerHesitation]?
+    var censures: [FediseerCensure]?
     
     var topEndorsements: [FediseerEndorsement] {
         if var endorsements {
-            endorsements = endorsements.sorted { $0.hasReason && !$1.hasReason }
+            endorsements = endorsements.sorted { $0.reason != nil && $1.reason == nil }
             return endorsements
         }
         return []
+    }
+    
+    func numberOf(_ opinionType: FediseerOpinionType) -> Int {
+        switch opinionType {
+        case .endorsement:
+            endorsements?.count ?? 0
+        case .hesitation:
+            hesitations?.count ?? 0
+        case .censure:
+            censures?.count ?? 0
+        }
     }
 }
 
@@ -40,19 +54,30 @@ struct FediseerEndorsements: Codable {
     let instances: [FediseerEndorsement]
 }
 
-struct FediseerEndorsement: Codable {
-    let domain: String
-    let endorsementReasons: [String]?
+struct FediseerHesitations: Codable {
+    let instances: [FediseerHesitation]
+}
+
+struct FediseerCensures: Codable {
+    let instances: [FediseerCensure]
+}
+
+enum FediseerOpinionType: CaseIterable, Identifiable {
+    case endorsement, hesitation, censure
     
-    var hasReason: Bool { !(endorsementReasons?.isEmpty ?? true) }
+    var id: FediseerOpinionType { self }
+}
+
+protocol FediseerOpinion {
+    var domain: String { get }
+    var reason: String? { get }
+    var evidence: String? { get }
     
-    var formattedReason: String? {
-        if let reason = endorsementReasons?.first {
-            return "- \(reason.split(separator: ",").joined(separator: "\n- "))"
-        }
-        return nil
-    }
-    
+    static var systemImage: String { get }
+    static var color: Color { get }
+}
+
+extension FediseerOpinion {
     var instanceModel: InstanceModel? {
         do {
             return try .init(domainName: domain)
@@ -60,4 +85,52 @@ struct FediseerEndorsement: Codable {
             return nil
         }
     }
+    
+    var formattedReason: String? {
+        if let reason {
+            return "- \(reason.split(separator: ",").joined(separator: "\n- "))"
+        }
+        return nil
+    }
+}
+
+struct FediseerEndorsement: Codable {
+    let domain: String
+    let endorsementReasons: [String]?
+}
+
+extension FediseerEndorsement: FediseerOpinion {
+    static var systemImage: String = Icons.fediseerEndorsement
+    static var color: Color = .teal
+    
+    var reason: String? { endorsementReasons?.first }
+    var evidence: String? { nil }
+}
+
+struct FediseerHesitation: Codable {
+    let domain: String
+    let hesitationReasons: [String]?
+    let hesitationEvidence: [String]?
+}
+
+extension FediseerHesitation: FediseerOpinion {
+    static var systemImage: String = Icons.fediseerHesitation
+    static var color: Color = .orange
+    
+    var reason: String? { hesitationReasons?.first }
+    var evidence: String? { hesitationEvidence?.first }
+}
+
+struct FediseerCensure: Codable {
+    let domain: String
+    let censureReasons: [String]?
+    let censureEvidence: [String]?
+}
+
+extension FediseerCensure: FediseerOpinion {
+    static var systemImage: String = Icons.fediseerCensure
+    static var color: Color = .red
+    
+    var reason: String? { censureReasons?.first }
+    var evidence: String? { censureEvidence?.first }
 }

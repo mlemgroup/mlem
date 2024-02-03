@@ -80,75 +80,31 @@ struct InstanceView: View {
             ScrollToView(appeared: $scrollToTopAppeared)
                 .id(scrollToTop)
             VStack(spacing: AppConstants.postAndCommentSpacing) {
-                AvatarBannerView(instance: instance)
-                    .padding(.horizontal, AppConstants.postAndCommentSpacing)
-                    .padding(.top, 10)
-                VStack(spacing: 5) {
-                    if errorDetails == nil {
-                        Text(instance.displayName)
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.01)
-                            .transition(.opacity)
-                            .id("Title" + instance.displayName) // https://stackoverflow.com/a/60136737/17629371
-                        Text(subtitleText)
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
-                            .transition(.opacity)
-                            .id("Subtitle" + subtitleText)
-                    } else {
-                        Text(instance.name)
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.01)
-                            .padding(.bottom, 5)
+                headerView
+                VStack(spacing: 0) {
+                    VStack(spacing: 4) {
+                        Divider()
+                        BubblePicker(availableTabs, selected: $selectedTab) { tab in
+                            Text(tab.label)
+                        }
                         Divider()
                     }
-                }
-                if let errorDetails {
-                    if instance.canFetchUptime {
-                        switch uptimeData {
-                        case .success(let uptimeData):
-                            VStack(alignment: .leading, spacing: 0) {
-                                Text("We couldn't connect to \(instance.name). Perhaps the instance is offline?")
-                                    .foregroundStyle(.secondary)
-                                    .padding(.horizontal, 16)
-                                    .padding(.bottom, AppConstants.postAndCommentSpacing)
-                                Divider()
-                                InstanceUptimeView(instance: instance, uptimeData: uptimeData)
-                            }
-                        case .failure:
-                            ErrorView(errorDetails)
-                                .padding(.top, 5)
-                        default:
-                            ProgressView()
-                                .padding(.top, 30)
-                        }
-                    } else {
+                    if let errorDetails, [.about, .administrators, .details].contains(selectedTab) {
                         ErrorView(errorDetails)
-                            .padding(.top, 5)
-                    }
-                } else if instance.creationDate != nil {
-                    VStack(spacing: 0) {
-                        VStack(spacing: 4) {
-                            Divider()
-                            BubblePicker(availableTabs, selected: $selectedTab) { tab in
-                                Text(tab.label)
-                            }
-                            Divider()
-                        }
+                    } else {
                         switch selectedTab {
                         case .about:
                             if let description = instance.description {
                                 MarkdownView(text: description, isNsfw: false)
                                     .padding(.horizontal, AppConstants.postAndCommentSpacing)
                                     .padding(.top)
-                            } else {
+                            } else if instance.userCount != nil {
                                 Text("No Description")
                                     .foregroundStyle(.secondary)
                                     .padding(.top)
+                            } else {
+                                ProgressView()
+                                    .padding(.top, 30)
                             }
                         case .administrators:
                             if let administrators = instance.administrators {
@@ -181,6 +137,7 @@ struct InstanceView: View {
                                     InstanceUptimeView(instance: instance, uptimeData: uptimeData)
                                 case .failure(let error):
                                     ErrorView(.init(error: error))
+                                        .padding(.top, 5)
                                 default:
                                     ProgressView()
                                         .padding(.top, 30)
@@ -201,10 +158,8 @@ struct InstanceView: View {
                         Spacer()
                             .frame(height: 100)
                     }
-                    .padding(.top, 5)
-                } else {
-                    LoadingView(whatIsLoading: .instanceDetails)
                 }
+                .padding(.top, 5)
             }
         }
         .toolbar {
@@ -270,6 +225,36 @@ struct InstanceView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: errorDetails == nil) { _ in
             attemptToLoadUptimeData()
+        }
+    }
+    
+    @ViewBuilder
+    var headerView: some View {
+        AvatarBannerView(instance: instance)
+            .padding(.horizontal, AppConstants.postAndCommentSpacing)
+            .padding(.top, 10)
+        VStack(spacing: 5) {
+            if errorDetails == nil {
+                Text(instance.displayName)
+                    .font(.title)
+                    .fontWeight(.semibold)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.01)
+                    .transition(.opacity)
+                    .id("Title" + instance.displayName) // https://stackoverflow.com/a/60136737/17629371
+                Text(subtitleText)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .transition(.opacity)
+                    .id("Subtitle" + subtitleText)
+            } else {
+                Text(instance.displayName)
+                    .font(.title)
+                    .fontWeight(.semibold)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.01)
+                    .padding(.bottom, 5)
+            }
         }
     }
 }

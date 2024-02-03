@@ -191,6 +191,13 @@ enum Icons {
     static let appLockSettings: String = "lock.app.dashed"
     static let collapseComments: String = "arrow.down.and.line.horizontal.and.arrow.up"
     
+    // fediseer
+    static let fediseerGuarantee: String = "checkmark.seal.fill"
+    static let fediseerUnguarantee: String = "xmark.seal.fill"
+    static let fediseerEndorsement: String = "signature"
+    static let fediseerHesitation: String = "exclamationmark.triangle.fill"
+    static let fediseerCensure: String = "exclamationmark.octagon.fill"
+    
     // misc
     static let `private`: String = "lock"
     static let email: String = "envelope"
