@@ -128,7 +128,7 @@ extension CommentItem {
                 shouldSave: dirtySaved
             )
             
-            commentTracker.comments.update(with: response.commentView)
+            hierarchicalComment.commentView = response.commentView
         } catch {
             errorHandler.handle(error)
         }

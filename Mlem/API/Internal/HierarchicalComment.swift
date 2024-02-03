@@ -9,7 +9,7 @@ import Foundation
 
 /// A model which represents a comment and it's child relationships
 class HierarchicalComment: ObservableObject {
-    let commentView: APICommentView
+    var commentView: APICommentView
     var children: [HierarchicalComment]
     /// Indicates comment's position in a post's parent/child comment thread.
     /// Values range from `0...Int.max`, where 0 indicates the parent comment.
