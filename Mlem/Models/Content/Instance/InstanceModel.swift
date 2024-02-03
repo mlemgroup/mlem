@@ -163,6 +163,10 @@ struct InstanceModel {
         }
         return nil
     }
+    
+    static func mock() -> InstanceModel {
+        return .init(from: SiteResponse.mock())
+    }
 }
 
 extension InstanceModel: Identifiable {

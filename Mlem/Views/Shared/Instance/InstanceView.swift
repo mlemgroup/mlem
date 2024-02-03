@@ -273,3 +273,7 @@ struct InstanceView: View {
         }
     }
 }
+
+#Preview {
+    InstanceView(instance: .mock())
+}

@@ -72,6 +72,13 @@
 		03A54C322B5331F30064CCDE /* InstanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A54C312B5331F30064CCDE /* InstanceView.swift */; };
 		03A54C352B533BC50064CCDE /* InstanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A54C342B533BC50064CCDE /* InstanceModel.swift */; };
 		03A54C372B545A430064CCDE /* InstanceModel+MenuFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A54C362B545A430064CCDE /* InstanceModel+MenuFunctions.swift */; };
+		03AFBEA32B6EA86B00F01F3C /* SiteResponse+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFBEA22B6EA86B00F01F3C /* SiteResponse+Mock.swift */; };
+		03AFBEA52B6EA90400F01F3C /* APIPersonView+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFBEA42B6EA90400F01F3C /* APIPersonView+Mock.swift */; };
+		03AFBEA72B6EA94900F01F3C /* APIPersonAggregates+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFBEA62B6EA94900F01F3C /* APIPersonAggregates+Mock.swift */; };
+		03AFBEA92B6EA9BC00F01F3C /* APISiteView+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFBEA82B6EA9BC00F01F3C /* APISiteView+Mock.swift */; };
+		03AFBEAB2B6EAA0C00F01F3C /* APILocalSite+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFBEAA2B6EAA0C00F01F3C /* APILocalSite+Mock.swift */; };
+		03AFBEAD2B6EAAF000F01F3C /* APILocalSiteRateLimit+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFBEAC2B6EAAF000F01F3C /* APILocalSiteRateLimit+Mock.swift */; };
+		03AFBEAF2B6EAB9C00F01F3C /* APISiteAggregates+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFBEAE2B6EAB9C00F01F3C /* APISiteAggregates+Mock.swift */; };
 		03B15BED2B55CBBB00E7C30A /* MarkdownTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B15BEC2B55CBBB00E7C30A /* MarkdownTheme.swift */; };
 		03B643572A6864CD00F65700 /* TabBarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B643562A6864CD00F65700 /* TabBarSettingsView.swift */; };
 		03B7AAEF2ABCB9DC00068B23 /* ContentTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B7AAEE2ABCB9DC00068B23 /* ContentTracker.swift */; };
@@ -638,6 +645,13 @@
 		03A54C312B5331F30064CCDE /* InstanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceView.swift; sourceTree = "<group>"; };
 		03A54C342B533BC50064CCDE /* InstanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceModel.swift; sourceTree = "<group>"; };
 		03A54C362B545A430064CCDE /* InstanceModel+MenuFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InstanceModel+MenuFunctions.swift"; sourceTree = "<group>"; };
+		03AFBEA22B6EA86B00F01F3C /* SiteResponse+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SiteResponse+Mock.swift"; sourceTree = "<group>"; };
+		03AFBEA42B6EA90400F01F3C /* APIPersonView+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIPersonView+Mock.swift"; sourceTree = "<group>"; };
+		03AFBEA62B6EA94900F01F3C /* APIPersonAggregates+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIPersonAggregates+Mock.swift"; sourceTree = "<group>"; };
+		03AFBEA82B6EA9BC00F01F3C /* APISiteView+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APISiteView+Mock.swift"; sourceTree = "<group>"; };
+		03AFBEAA2B6EAA0C00F01F3C /* APILocalSite+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APILocalSite+Mock.swift"; sourceTree = "<group>"; };
+		03AFBEAC2B6EAAF000F01F3C /* APILocalSiteRateLimit+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APILocalSiteRateLimit+Mock.swift"; sourceTree = "<group>"; };
+		03AFBEAE2B6EAB9C00F01F3C /* APISiteAggregates+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APISiteAggregates+Mock.swift"; sourceTree = "<group>"; };
 		03B15BEC2B55CBBB00E7C30A /* MarkdownTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownTheme.swift; sourceTree = "<group>"; };
 		03B643562A6864CD00F65700 /* TabBarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarSettingsView.swift; sourceTree = "<group>"; };
 		03B7AAEE2ABCB9DC00068B23 /* ContentTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTracker.swift; sourceTree = "<group>"; };
@@ -1492,11 +1506,18 @@
 				0394398E2A98EB2300463032 /* APIComment+Mock.swift */,
 				50811B312A9204C1006BA3F2 /* APICommunity+Mock.swift */,
 				50811B332A9204EB006BA3F2 /* APICommunityAggregates+Mock.swift */,
+				03AFBEAE2B6EAB9C00F01F3C /* APISiteAggregates+Mock.swift */,
 				50811B372A920545006BA3F2 /* APICommunityModeratorView+Mock.swift */,
 				50811B2F2A92049B006BA3F2 /* APICommunityView+Mock.swift */,
 				50811B392A920569006BA3F2 /* APIPerson+Mock.swift */,
+				03AFBEA42B6EA90400F01F3C /* APIPersonView+Mock.swift */,
+				03AFBEA62B6EA94900F01F3C /* APIPersonAggregates+Mock.swift */,
 				50811B432A920945006BA3F2 /* APIPost+Mock.swift */,
 				50811B352A920519006BA3F2 /* APISite+Mock.swift */,
+				03AFBEA82B6EA9BC00F01F3C /* APISiteView+Mock.swift */,
+				03AFBEAC2B6EAAF000F01F3C /* APILocalSiteRateLimit+Mock.swift */,
+				03AFBEAA2B6EAA0C00F01F3C /* APILocalSite+Mock.swift */,
+				03AFBEA22B6EA86B00F01F3C /* SiteResponse+Mock.swift */,
 				50811B3B2A92059C006BA3F2 /* BlockCommunityResponse+Mock.swift */,
 				50811B3F2A9205EE006BA3F2 /* CommunityResponse+Mock.swift */,
 				50811B2B2A920443006BA3F2 /* Date+Mock.swift */,
@@ -3137,6 +3158,7 @@
 				63F0C7A22A0519BA00A18C5D /* PostSortType.swift in Sources */,
 				034C724F2A82B61200B8A4B8 /* LayoutWidgetTracker.swift in Sources */,
 				030D00852AD1B94F00953B1D /* UserFlair.swift in Sources */,
+				03AFBEAF2B6EAB9C00F01F3C /* APISiteAggregates+Mock.swift in Sources */,
 				637218682A3A2AAD008C4816 /* CreateComment.swift in Sources */,
 				637218722A3A2AAD008C4816 /* HideCommunity.swift in Sources */,
 				03EEEAF32AB8DCDF0087F8D8 /* CommunityResultView.swift in Sources */,
@@ -3169,6 +3191,7 @@
 				03A54C352B533BC50064CCDE /* InstanceModel.swift in Sources */,
 				637218702A3A2AAD008C4816 /* ResolveObject.swift in Sources */,
 				CDE6A8162A490AE00062D161 /* InboxMessageBodyView.swift in Sources */,
+				03AFBEA52B6EA90400F01F3C /* APIPersonView+Mock.swift in Sources */,
 				CD04D5DD2A361564008EF95B /* ReplyButtonView.swift in Sources */,
 				CD4368D22AE2460100BD8BD1 /* ReplyTracker.swift in Sources */,
 				CD9A49D32B045B81001E18A0 /* ZoomableImageView.swift in Sources */,
@@ -3332,6 +3355,7 @@
 				CDF8426B2A4A2AB600723DA0 /* InboxItem.swift in Sources */,
 				637218572A3A2AAD008C4816 /* APISiteView.swift in Sources */,
 				B14E93C02A45CA3400D6DA93 /* Post Link.swift in Sources */,
+				03AFBEA72B6EA94900F01F3C /* APIPersonAggregates+Mock.swift in Sources */,
 				CD2BD6782A79F55800ECFF89 /* ImageSize.swift in Sources */,
 				50785F712A98C4F600117245 /* SiteInformationTracker.swift in Sources */,
 				CD46C1F82B0D0A8A00065953 /* View+ReselectAction.swift in Sources */,
@@ -3384,6 +3408,7 @@
 				CD29ED3D2B2E863C006937CE /* String+WithEscapedCharacters.swift in Sources */,
 				CD0BE42F2A65A73600314B24 /* Haptic Manager.swift in Sources */,
 				50811B422A92061E006BA3F2 /* SavedAccount+Mock.swift in Sources */,
+				03AFBEAB2B6EAA0C00F01F3C /* APILocalSite+Mock.swift in Sources */,
 				CD29ED392B2E860C006937CE /* String+Trimmed.swift in Sources */,
 				03C897F62ABF49BD005F3403 /* Abbreviate Numbers.swift in Sources */,
 				637218522A3A2AAD008C4816 /* APIFederatedInstances.swift in Sources */,
@@ -3436,6 +3461,7 @@
 				03E90FB12B3703ED00E5A802 /* AccountSortMode.swift in Sources */,
 				CDC1C93C2A7AA76000072E3D /* InternetSpeed.swift in Sources */,
 				50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */,
+				03AFBEAD2B6EAAF000F01F3C /* APILocalSiteRateLimit+Mock.swift in Sources */,
 				63F0C7BF2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift in Sources */,
 				031F95572B5C7FF20069C244 /* InstanceDetailsView.swift in Sources */,
 				632E8EE827EE63DB007E8D75 /* DownvoteButtonView.swift in Sources */,
@@ -3495,6 +3521,7 @@
 				03EF1D0C2B434CB10056175C /* CommunityDetailsView.swift in Sources */,
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
 				03F4DC9D2B193F4C00556C67 /* MatrixLinkView.swift in Sources */,
+				03AFBEA92B6EA9BC00F01F3C /* APISiteView+Mock.swift in Sources */,
 				03A54C322B5331F30064CCDE /* InstanceView.swift in Sources */,
 				6D8F08FF2A4029AE003EB4FD /* CommunityListSection.swift in Sources */,
 				6D8F08FF2A4029AE003EB4FD /* CommunityListSection.swift in Sources */,
@@ -3514,6 +3541,7 @@
 				CD6A2A792B1A553500003E23 /* SuccessResponse.swift in Sources */,
 				031A61802B1CEA7300ABF23B /* ChangePassword.swift in Sources */,
 				CD4368B42AE23F3500BD8BD1 /* ChildTrackerProtocol.swift in Sources */,
+				03AFBEA32B6EA86B00F01F3C /* SiteResponse+Mock.swift in Sources */,
 				0355DA512B5EB87700CDF5A5 /* InstanceResultView.swift in Sources */,
 				CD4368D92AE2478300BD8BD1 /* MentionModel+InboxItem.swift in Sources */,
 				CDB45C5A2AF0AEFE00A1FF08 /* AlternativeIconLabel.swift in Sources */,
