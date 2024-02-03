@@ -85,15 +85,18 @@ struct InstanceView: View {
                     .padding(.top, 10)
                 VStack(spacing: 5) {
                     if errorDetails == nil {
-                        Text(instance.displayName ?? instance.name)
+                        Text(instance.displayName)
                             .font(.title)
                             .fontWeight(.semibold)
                             .lineLimit(1)
                             .minimumScaleFactor(0.01)
-
+                            .transition(.opacity)
+                            .id("Title" + instance.displayName) // https://stackoverflow.com/a/60136737/17629371
                         Text(subtitleText)
                             .font(.footnote)
                             .foregroundStyle(.secondary)
+                            .transition(.opacity)
+                            .id("Subtitle" + subtitleText)
                     } else {
                         Text(instance.name)
                             .font(.title)
