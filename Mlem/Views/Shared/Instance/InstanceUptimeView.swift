@@ -95,7 +95,7 @@ struct InstanceUptimeView: View {
                                 .font(.title2)
                                 .fontWeight(.semibold)
                             Image(systemName: "exclamationmark.circle.fill")
-                                .foregroundStyle(.orange)
+                                .foregroundStyle(.red)
                         }
                         footnote("\(instance.name) has been unresponsive recently.")
                     }
