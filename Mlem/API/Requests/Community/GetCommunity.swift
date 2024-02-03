@@ -43,3 +43,7 @@ struct GetCommunityResponse: Decodable {
     let discussionLanguages: [Int]
     let defaultPostLanguage: Int?
 }
+
+extension GetCommunityResponse: APIContentType {
+    var contentId: Int { communityView.community.id }
+}
