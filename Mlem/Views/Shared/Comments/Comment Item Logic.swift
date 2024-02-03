@@ -137,7 +137,7 @@ extension CommentItem {
     func toggleCollapsed() {
         withAnimation(.showHideComment(!hierarchicalComment.isCollapsed)) {
             // Perhaps we want an explict flag for this in the future?
-            if collapseComments, !isCommentReplyHidden, pageContext == .posts {
+            if collapseComments, !isCommentReplyHidden, pageContext == .posts, hierarchicalComment.depth == 0 {
                 toggleTopLevelCommentCollapse(isCollapsed: !hierarchicalComment.isCollapsed)
             } else if !showPostContext {
                 commentTracker.setCollapsed(!hierarchicalComment.isCollapsed, comment: hierarchicalComment)
