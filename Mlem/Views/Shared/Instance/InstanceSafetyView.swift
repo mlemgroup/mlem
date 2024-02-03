@@ -11,7 +11,7 @@ struct InstanceSafetyView: View {
     @Environment(\.colorScheme) var colorScheme
     
     let instance: InstanceModel
-    let fediseerData: FediseerInstance
+    let fediseerData: FediseerData
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -22,47 +22,34 @@ struct InstanceSafetyView: View {
                 .font(.footnote)
                 .foregroundStyle(.blue)
                 .padding(.leading, 6)
-                .padding(.top, 5)
+                .padding(.top, 7)
                 .padding(.bottom, 30)
             
-            HStack(spacing: 0) {
-                subHeading("Endorsements")
-                Spacer()
-                Button("See All") { }
-                    .foregroundStyle(.blue)
-                    .buttonStyle(.plain)
-                    .padding(.trailing, 6)
-            }
-            footnote("\(instance.name) received 5 endorsements from other instances.")
-                .padding(.top, 3)
-                .padding(.leading, 6)
-                .padding(.bottom, 6)
-            
-            section {
-                VStack(alignment: .leading, spacing: 0) {
-                    HStack {
-                        Image(systemName: "signature")
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.secondary)
-                        Text("lemmy.ml")
-                            .fontWeight(.semibold)
-                        Spacer()
+            let endorsements = fediseerData.topEndorsements.prefix(5)
+            if !endorsements.isEmpty {
+                
+                HStack(spacing: 0) {
+                    subHeading("Endorsements")
+                    Spacer()
+                    if fediseerData.instance.endorsements > 5 {
+                        Button("See All") { }
+                            .foregroundStyle(.blue)
+                            .buttonStyle(.plain)
+                            .padding(.trailing, 6)
                     }
-                    .foregroundStyle(.teal)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 10)
-                    Line()
-                        .stroke(style: StrokeStyle(lineWidth: 2, dash: [5]))
-                        .frame(height: 2)
-                        .foregroundStyle(Color(uiColor: .systemGroupedBackground))
-                    Text("Well moderated, friendly")
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 10)
                 }
-                .frame(maxWidth: .infinity)
-                .font(.callout)
+                
+                footnote("\(instance.name) received \(fediseerData.instance.endorsements) endorsements.")
+                    .padding(.top, 3)
+                    .padding(.leading, 6)
+                    .padding(.bottom, 8)
+                
+                ForEach(endorsements, id: \.domain) { endorsement in
+                    section { EndorsementView(endorsement: endorsement) }
+                        .padding(.bottom, 16)
+                }
             }
-        
+            
             if colorScheme == .light {
                 Divider()
                     .padding(.top, 16)
@@ -77,12 +64,13 @@ struct InstanceSafetyView: View {
     var guarantorView: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
-                if fediseerData.guarantor != nil {
+                if fediseerData.instance.guarantor != nil {
                     Label("Guaranteed", systemImage: "checkmark.seal.fill")
-                        .foregroundStyle(.indigo)
+                        .foregroundStyle(.green)
                 } else {
-                    Label("Unguaranteed", systemImage: "xmark.seal.fill")
+                    Label("Not Guaranteed", systemImage: "xmark.seal.fill")
                 }
+                Spacer()
             }
             .fontWeight(.semibold)
             .font(.title2)
@@ -91,11 +79,12 @@ struct InstanceSafetyView: View {
                 .font(.footnote)
         }
         .frame(maxWidth: .infinity)
-        .padding(10)
+        .padding(.vertical, 10)
+        .padding(.horizontal)
     }
-    
+
     var summaryCaption: String {
-        if let guarantor = fediseerData.guarantor {
+        if let guarantor = fediseerData.instance.guarantor {
             return "\(instance.name) was admitted to the Fediseer Chain of Trust by \(guarantor)."
         } else {
             return "This instance is not part of the Fediseer Chain of Trust."

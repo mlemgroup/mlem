@@ -9,6 +9,19 @@ import Foundation
 
 // https://fediseer.com/api/v1/whitelist/lemmy.world
 
+struct FediseerData {
+    var instance: FediseerInstance
+    var endorsements: [FediseerEndorsement]?
+    
+    var topEndorsements: [FediseerEndorsement] {
+        if var endorsements {
+            endorsements = endorsements.sorted { $0.hasReason && !$1.hasReason }
+            return endorsements
+        }
+        return []
+    }
+}
+
 struct FediseerInstance: Codable {
     let id: Int
     // let domain: String
@@ -19,6 +32,32 @@ struct FediseerInstance: Codable {
     let guarantor: String?
     
     // Fediseer lets instances admins self-report these values
-    let sysadmins: Int
-    let moderators: Int
+    let sysadmins: Int?
+    let moderators: Int?
+}
+
+struct FediseerEndorsements: Codable {
+    let instances: [FediseerEndorsement]
+}
+
+struct FediseerEndorsement: Codable {
+    let domain: String
+    let endorsementReasons: [String]?
+    
+    var hasReason: Bool { !(endorsementReasons?.isEmpty ?? true) }
+    
+    var formattedReason: String? {
+        if let reason = endorsementReasons?.first {
+            return "- \(reason.split(separator: ",").joined(separator: "\n- "))"
+        }
+        return nil
+    }
+    
+    var instanceModel: InstanceModel? {
+        do {
+            return try .init(domainName: domain)
+        } catch {
+            return nil
+        }
+    }
 }

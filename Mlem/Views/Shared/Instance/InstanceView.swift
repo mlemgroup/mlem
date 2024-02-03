@@ -41,13 +41,13 @@ struct InstanceView: View {
     
     @State var instance: InstanceModel
     @State var uptimeData: UptimeDataStatus?
-    @State var fediseerData: FediseerInstance?
+    @State var fediseerData: FediseerData?
     @State var errorDetails: ErrorDetails?
     
     @Namespace var scrollToTop
     @State private var scrollToTopAppeared = false
     
-    @State var selectedTab: InstanceViewTab = .safety
+    @State var selectedTab: InstanceViewTab = .about
     
     init(instance: InstanceModel) {
         var instance = instance
@@ -187,7 +187,7 @@ struct InstanceView: View {
                         case .safety:
                             Group {
                                 if let fediseerData {
-                                    InstanceSafetyView(instance: instance)
+                                    InstanceSafetyView(instance: instance, fediseerData: fediseerData)
                                 } else {
                                     ProgressView()
                                         .padding(.top, 30)
@@ -267,37 +267,6 @@ struct InstanceView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: errorDetails == nil) { _ in
             attemptToLoadUptimeData()
-        }
-    }
-    
-    func attemptToLoadUptimeData() {
-        if uptimeData == nil, let url = instance.uptimeDataUrl {
-            Task {
-                do {
-                    let data = try await URLSession.shared.data(from: url).0
-                    let uptimeData = try JSONDecoder.defaultDecoder.decode(UptimeData.self, from: data)
-                    DispatchQueue.main.async {
-                        withAnimation(.easeOut(duration: 0.2)) {
-                            self.uptimeData = .success(uptimeData)
-                        }
-                    }
-                } catch {
-                    errorHandler.handle(error)
-                }
-            }
-        }
-    }
-    
-    func attemptToLoadFediseerData() {
-        if fediseerData == nil, let url = instance.fediseerDataUrl {
-            Task {
-                do {
-                    let data = try await URLSession.shared.data(from: url).0
-                    fediseerData = try JSONDecoder.defaultDecoder.decode(FediseerInstance.self, from: data)
-                } catch {
-                    errorHandler.handle(error)
-                }
-            }
         }
     }
 }

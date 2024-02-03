@@ -98,6 +98,8 @@
 		03C905CE2B3C8DC400B9082F /* UserView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C905CD2B3C8DC400B9082F /* UserView+Logic.swift */; };
 		03CB329E2A6D8E910021EF27 /* PostComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CB329D2A6D8E910021EF27 /* PostComposerView.swift */; };
 		03CEE04B2B6EB9CD00D65B1B /* Fediseer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CEE04A2B6EB9CD00D65B1B /* Fediseer.swift */; };
+		03CEE04D2B6EBEA800D65B1B /* InstanceView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CEE04C2B6EBEA800D65B1B /* InstanceView+Logic.swift */; };
+		03CEE04F2B6ECFFC00D65B1B /* EndorsementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CEE04E2B6ECFFC00D65B1B /* EndorsementView.swift */; };
 		03E0B9C82A61F0F400FED265 /* AdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */; };
 		03E0B9CA2A62B4A400FED265 /* ContributorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9C92A62B4A400FED265 /* ContributorsView.swift */; };
 		03E0B9CC2A62CD5800FED265 /* ThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9CB2A62CD5800FED265 /* ThemeSettingsView.swift */; };
@@ -677,6 +679,8 @@
 		03C905CD2B3C8DC400B9082F /* UserView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserView+Logic.swift"; sourceTree = "<group>"; };
 		03CB329D2A6D8E910021EF27 /* PostComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComposerView.swift; sourceTree = "<group>"; };
 		03CEE04A2B6EB9CD00D65B1B /* Fediseer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fediseer.swift; sourceTree = "<group>"; };
+		03CEE04C2B6EBEA800D65B1B /* InstanceView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InstanceView+Logic.swift"; sourceTree = "<group>"; };
+		03CEE04E2B6ECFFC00D65B1B /* EndorsementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndorsementView.swift; sourceTree = "<group>"; };
 		03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsView.swift; sourceTree = "<group>"; };
 		03E0B9C92A62B4A400FED265 /* ContributorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorsView.swift; sourceTree = "<group>"; };
 		03E0B9CB2A62CD5800FED265 /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
@@ -1407,8 +1411,10 @@
 			isa = PBXGroup;
 			children = (
 				03A54C312B5331F30064CCDE /* InstanceView.swift */,
+				03CEE04C2B6EBEA800D65B1B /* InstanceView+Logic.swift */,
 				03E47AEC2B66BC0000A3E4DB /* InstanceUptimeView.swift */,
 				03AFBEB02B6EAD5B00F01F3C /* InstanceSafetyView.swift */,
+				03CEE04E2B6ECFFC00D65B1B /* EndorsementView.swift */,
 				03CEE04A2B6EB9CD00D65B1B /* Fediseer.swift */,
 				03E47AEA2B66BADC00A3E4DB /* UptimeData.swift */,
 				031F95562B5C7FF20069C244 /* InstanceDetailsView.swift */,
@@ -3160,6 +3166,7 @@
 				03F76FA42B2F5F3500E2B54A /* UploadProgressView.swift in Sources */,
 				03EC92972AC069CE007BBE7E /* SearchResultListView.swift in Sources */,
 				637218472A3A2AAD008C4816 /* APICommentView.swift in Sources */,
+				03CEE04F2B6ECFFC00D65B1B /* EndorsementView.swift in Sources */,
 				CDD55D1D2B23BA41002020C7 /* EasyTapLinkView.swift in Sources */,
 				CDDCF6492A6641F0003DA3AC /* FancyTabItemLabelBuilder.swift in Sources */,
 				63344C542A07D193001BC616 /* FiltersSettingsView.swift in Sources */,
@@ -3535,6 +3542,7 @@
 				030E86462AC6FC1B000283A6 /* DefaultTextInputType.swift in Sources */,
 				50811B3A2A920569006BA3F2 /* APIPerson+Mock.swift in Sources */,
 				03C897F82ABF652D005F3403 /* SearchRoot.swift in Sources */,
+				03CEE04D2B6EBEA800D65B1B /* InstanceView+Logic.swift in Sources */,
 				637218612A3A2AAD008C4816 /* CreatePostLike.swift in Sources */,
 				CD69F5712A422EDD0028D4F7 /* InteractionBarView.swift in Sources */,
 				50C99B5C2A61F5EB005D57DD /* CommentRepository.swift in Sources */,
