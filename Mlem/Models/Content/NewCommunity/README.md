@@ -108,7 +108,7 @@ struct CommunityFeedView: View {
 
 # Why have tiers? Why not just have a single class with optional properties, like we do now?
 
-A potential option would be to have a single-class system closer to what we have now. Instead of creating a higher tier of model when more data becomes available, we could simply populate the properties of the existing `CommunityModel`. This would lead to much less middleware code. However, it has a couple of drawbacks:
+A potential alternative option would be to have a single-class system closer to what we have now. Instead of creating a higher tier of model when more data becomes available, we could simply populate the properties of the existing `CommunityModel`. This would lead to much less middleware code. However, it has a couple of drawbacks:
 
 ### It could lead to extra data being stored unecessarily
 
