@@ -193,7 +193,7 @@ struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
                     var altLookup: String?
                     
                     // anything with an @ gets parsed to mailto: by Markdown
-                    if lookup.starts(with: /mailto:|\/c\/|\/u\//) {
+                    if lookup.starts(with: "mailto:") {
                         // SUS I think this might be a community or user link
                         let processedLookup = lookup
                             .replacing(/.*\/c\//, with: "")
@@ -203,6 +203,12 @@ struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
                         // the mailto: strips the ! and @, so we have to try both
                         lookup = "!\(processedLookup)" // community
                         altLookup = "@\(processedLookup)" // user
+                        
+                    } else if lookup.starts(with: "/u/") {
+                        lookup = "@\(lookup.trimmingPrefix("/u/"))"
+                        
+                    } else if lookup.starts(with: "/c/") {
+                        lookup = "!\(lookup.trimmingPrefix("/c/"))"
                     }
                     
                     print("lookup: \(lookup), altLookup: \(String(describing: altLookup)) (original: \(url.absoluteString))")
