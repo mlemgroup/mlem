@@ -12,6 +12,7 @@ struct CommentBodyView: View {
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
     @AppStorage("compactComments") var compactComments: Bool = false
     @AppStorage("showCommentDownvotesSeparately") var showCommentDownvotesSeparately: Bool = false
+    @AppStorage("easyTapLinkDisplayMode") var easyTapLinkDisplayMode: EasyTapLinkDisplayMode = .contextual
     
     @Binding var isParentCollapsed: Bool
     @Binding var isCollapsed: Bool
@@ -32,6 +33,10 @@ struct CommentBodyView: View {
         } else {
             return .bottom
         }
+    }
+    
+    var showLinkCaptions: Bool {
+        easyTapLinkDisplayMode == .large ? true : !compactComments
     }
     
     var spacing: CGFloat { compactComments ? AppConstants.compactSpacing : AppConstants.postAndCommentSpacing }
@@ -94,8 +99,10 @@ struct CommentBodyView: View {
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                         .transition(.markdownView())
                     
-                    ForEach(links) { link in
-                        EasyTapLinkView(linkType: link)
+                    if easyTapLinkDisplayMode != .none {
+                        ForEach(links) { link in
+                            EasyTapLinkView(linkType: link, showCaption: showLinkCaptions)
+                        }
                     }
                 }
             }
