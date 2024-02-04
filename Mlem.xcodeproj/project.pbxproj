@@ -69,6 +69,8 @@
 		03A276792AFD903600C0D66B /* CommunityModel+MenuFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A276782AFD903600C0D66B /* CommunityModel+MenuFunctions.swift */; };
 		03A2767B2AFE560000C0D66B /* CommunityModel+SwipeActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A2767A2AFE560000C0D66B /* CommunityModel+SwipeActions.swift */; };
 		03A2767D2AFE656700C0D66B /* UserModel+MenuFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A2767C2AFE656700C0D66B /* UserModel+MenuFunctions.swift */; };
+		03A4330B2B6FB2C10004E743 /* FediseerOpinionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A4330A2B6FB2C10004E743 /* FediseerOpinionListView.swift */; };
+		03A4330D2B6FC0940004E743 /* FediseerInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A4330C2B6FC0940004E743 /* FediseerInfoView.swift */; };
 		03A54C322B5331F30064CCDE /* InstanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A54C312B5331F30064CCDE /* InstanceView.swift */; };
 		03A54C352B533BC50064CCDE /* InstanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A54C342B533BC50064CCDE /* InstanceModel.swift */; };
 		03A54C372B545A430064CCDE /* InstanceModel+MenuFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A54C362B545A430064CCDE /* InstanceModel+MenuFunctions.swift */; };
@@ -651,6 +653,8 @@
 		03A276782AFD903600C0D66B /* CommunityModel+MenuFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunityModel+MenuFunctions.swift"; sourceTree = "<group>"; };
 		03A2767A2AFE560000C0D66B /* CommunityModel+SwipeActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunityModel+SwipeActions.swift"; sourceTree = "<group>"; };
 		03A2767C2AFE656700C0D66B /* UserModel+MenuFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserModel+MenuFunctions.swift"; sourceTree = "<group>"; };
+		03A4330A2B6FB2C10004E743 /* FediseerOpinionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FediseerOpinionListView.swift; sourceTree = "<group>"; };
+		03A4330C2B6FC0940004E743 /* FediseerInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FediseerInfoView.swift; sourceTree = "<group>"; };
 		03A54C312B5331F30064CCDE /* InstanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceView.swift; sourceTree = "<group>"; };
 		03A54C342B533BC50064CCDE /* InstanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceModel.swift; sourceTree = "<group>"; };
 		03A54C362B545A430064CCDE /* InstanceModel+MenuFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InstanceModel+MenuFunctions.swift"; sourceTree = "<group>"; };
@@ -1414,8 +1418,10 @@
 			children = (
 				03A54C312B5331F30064CCDE /* InstanceView.swift */,
 				03CEE04C2B6EBEA800D65B1B /* InstanceView+Logic.swift */,
+				03A4330A2B6FB2C10004E743 /* FediseerOpinionListView.swift */,
 				03E47AEC2B66BC0000A3E4DB /* InstanceUptimeView.swift */,
 				03AFBEB02B6EAD5B00F01F3C /* InstanceSafetyView.swift */,
+				03A4330C2B6FC0940004E743 /* FediseerInfoView.swift */,
 				03CEE04E2B6ECFFC00D65B1B /* FediseerOpinionView.swift */,
 				03CEE04A2B6EB9CD00D65B1B /* Fediseer.swift */,
 				03E47AEA2B66BADC00A3E4DB /* UptimeData.swift */,
@@ -3221,6 +3227,7 @@
 				63A09B69285F53E9004F0032 /* Error View.swift in Sources */,
 				CD2053172ACBBB5A0000AA38 /* DefaultAvatarView.swift in Sources */,
 				CD3FBCE72A4A8CE300B2063F /* Messages Feed View.swift in Sources */,
+				03A4330D2B6FC0940004E743 /* FediseerInfoView.swift in Sources */,
 				63344C582A07DB9A001BC616 /* Array+MoveElements.swift in Sources */,
 				03A18CBD2B1005A400BA69D2 /* SaveUserSettings.swift in Sources */,
 				03E0B9C82A61F0F400FED265 /* AdvancedSettingsView.swift in Sources */,
@@ -3297,6 +3304,7 @@
 				CD391F9C2A53980900E213B5 /* ReplyToCommentReply.swift in Sources */,
 				030E863D2AC6C49E000283A6 /* PictrsRepository+Dependency.swift in Sources */,
 				50811B402A9205EE006BA3F2 /* CommunityResponse+Mock.swift in Sources */,
+				03A4330B2B6FB2C10004E743 /* FediseerOpinionListView.swift in Sources */,
 				03E0B9CC2A62CD5800FED265 /* ThemeSettingsView.swift in Sources */,
 				637218532A3A2AAD008C4816 /* APIMyUserInfo.swift in Sources */,
 				0317D46F2B558CB500EEE72C /* BadgeView.swift in Sources */,

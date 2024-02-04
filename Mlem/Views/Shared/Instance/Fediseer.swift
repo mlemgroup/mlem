@@ -10,7 +10,7 @@ import SwiftUI
 
 // https://fediseer.com/api/v1/whitelist/lemmy.world
 
-struct FediseerData {
+struct FediseerData: Hashable, Equatable {
     var instance: FediseerInstance
     var endorsements: [FediseerEndorsement]?
     var hesitations: [FediseerHesitation]?
@@ -24,21 +24,25 @@ struct FediseerData {
         return []
     }
     
-    func numberOf(_ opinionType: FediseerOpinionType) -> Int {
-        switch opinionType {
+    func opinions(ofType type: FediseerOpinionType) -> [any FediseerOpinion] {
+        switch type {
         case .endorsement:
-            endorsements?.count ?? 0
+            endorsements ?? []
         case .hesitation:
-            hesitations?.count ?? 0
+            hesitations ?? []
         case .censure:
-            censures?.count ?? 0
+            censures ?? []
         }
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(instance.domain)
     }
 }
 
-struct FediseerInstance: Codable {
+struct FediseerInstance: Codable, Equatable {
     let id: Int
-    // let domain: String
+    let domain: String
     // let software: String
     let claimed: Int
     let approvals: Int // This is the number of endorsements given
@@ -66,6 +70,17 @@ enum FediseerOpinionType: CaseIterable, Identifiable {
     case endorsement, hesitation, censure
     
     var id: FediseerOpinionType { self }
+    
+    var label: String {
+        switch self {
+        case .endorsement:
+            "Endorsements"
+        case .hesitation:
+            "Hesitations"
+        case .censure:
+            "Censures"
+        }
+    }
 }
 
 protocol FediseerOpinion {
@@ -99,7 +114,7 @@ struct FediseerEndorsement: Codable {
     let endorsementReasons: [String]?
 }
 
-extension FediseerEndorsement: FediseerOpinion {
+extension FediseerEndorsement: FediseerOpinion, Equatable {
     static var systemImage: String = Icons.fediseerEndorsement
     static var color: Color = .teal
     
@@ -113,7 +128,7 @@ struct FediseerHesitation: Codable {
     let hesitationEvidence: [String]?
 }
 
-extension FediseerHesitation: FediseerOpinion {
+extension FediseerHesitation: FediseerOpinion, Equatable {
     static var systemImage: String = Icons.fediseerHesitation
     static var color: Color = .orange
     
@@ -127,7 +142,7 @@ struct FediseerCensure: Codable {
     let censureEvidence: [String]?
 }
 
-extension FediseerCensure: FediseerOpinion {
+extension FediseerCensure: FediseerOpinion, Equatable {
     static var systemImage: String = Icons.fediseerCensure
     static var color: Color = .red
     

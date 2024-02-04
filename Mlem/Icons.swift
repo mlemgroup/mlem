@@ -192,6 +192,7 @@ enum Icons {
     static let collapseComments: String = "arrow.down.and.line.horizontal.and.arrow.up"
     
     // fediseer
+    static let fediseer: String = "shield.checkered"
     static let fediseerGuarantee: String = "checkmark.seal.fill"
     static let fediseerUnguarantee: String = "xmark.seal.fill"
     static let fediseerEndorsement: String = "signature"

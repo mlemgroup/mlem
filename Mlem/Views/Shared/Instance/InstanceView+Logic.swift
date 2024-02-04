@@ -45,7 +45,7 @@ extension InstanceView {
                         from: URL(string: "https://fediseer.com/api/v1/censures/\(instance.name)")!
                     ).0
                     
-                    fediseerData = .init(
+                    let fediseerData = FediseerData(
                         instance: try JSONDecoder.defaultDecoder.decode(
                             FediseerInstance.self,
                             from: await instanceData
@@ -63,6 +63,12 @@ extension InstanceView {
                             from: await censuresData
                         ).instances
                     )
+                    
+                    DispatchQueue.main.async {
+                        withAnimation(.easeOut(duration: 0.2)) {
+                            self.fediseerData = fediseerData
+                        }
+                    }
                 } catch {
                     errorHandler.handle(error)
                 }
