@@ -60,7 +60,7 @@ struct ThumbnailImageView: View {
                 .ifLet(url) { url, content in
                     content
                         .contextMenu {
-                            Button("Open", systemImage: "safari") {
+                            Button("Open", systemImage: Icons.browser) {
                                 openURL(url)
                                 markPostAsRead()
                             }

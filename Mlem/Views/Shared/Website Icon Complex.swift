@@ -125,7 +125,7 @@ struct WebsiteIconComplex: View {
             content
                 .contextMenu {
                     if let url = post.linkUrl {
-                        Button("Open", systemImage: "safari") {
+                        Button("Open", systemImage: Icons.browser) {
                             openURL(url)
                             if let onTapActions {
                                 onTapActions()
