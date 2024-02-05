@@ -16,6 +16,7 @@ struct GeneralSettingsView: View {
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     @AppStorage("appLock") var appLock: AppLock = .disabled
     @AppStorage("tapCommentToCollapse") var tapCommentToCollapse: Bool = true
+    @AppStorage("easyTapLinkDisplayMode") var easyTapLinkDisplayMode: EasyTapLinkDisplayMode = .contextual
     
     @AppStorage("defaultFeed") var defaultFeed: DefaultFeedType = .subscribed
     
@@ -51,6 +52,12 @@ struct GeneralSettingsView: View {
                     settingPictureSystemName: Icons.upvoteOnSave,
                     settingName: "Upvote on Save",
                     isTicked: $upvoteOnSave
+                )
+                SelectableSettingsItem(
+                    settingIconSystemName: Icons.websiteAddress,
+                    settingName: "Tappable Links",
+                    currentValue: $easyTapLinkDisplayMode,
+                    options: EasyTapLinkDisplayMode.allCases
                 )
             }
             
