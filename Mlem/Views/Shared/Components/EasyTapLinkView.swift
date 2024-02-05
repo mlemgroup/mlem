@@ -77,7 +77,7 @@ extension LinkType: Hashable, Identifiable {
 }
 
 enum EasyTapLinkDisplayMode: String, SettingsOptions {
-    case none, compact, large, contextual
+    case disabled, compact, large, contextual
     
     var label: String { rawValue.capitalized }
     

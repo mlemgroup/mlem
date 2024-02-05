@@ -99,7 +99,7 @@ struct CommentBodyView: View {
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                         .transition(.markdownView())
                     
-                    if easyTapLinkDisplayMode != .none {
+                    if easyTapLinkDisplayMode != .disabled {
                         ForEach(links) { link in
                             EasyTapLinkView(linkType: link, showCaption: showLinkCaptions)
                         }

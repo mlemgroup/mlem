@@ -246,7 +246,7 @@ struct LargePost: View {
                 .font(.subheadline)
                 .lineLimit(layoutMode.lineLimit)
                 
-                if layoutMode == .maximize, easyTapLinkDisplayMode != .none {
+                if layoutMode == .maximize, easyTapLinkDisplayMode != .disabled {
                     ForEach(post.links) { link in
                         EasyTapLinkView(linkType: link, showCaption: easyTapLinkDisplayMode != .compact)
                     }

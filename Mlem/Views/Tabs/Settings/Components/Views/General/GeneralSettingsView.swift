@@ -54,8 +54,8 @@ struct GeneralSettingsView: View {
                     isTicked: $upvoteOnSave
                 )
                 SelectableSettingsItem(
-                    settingIconSystemName: "link", // TODO: icons
-                    settingName: "Easy-Tap Link Display Mode",
+                    settingIconSystemName: Icons.websiteAddress,
+                    settingName: "Tappable Links",
                     currentValue: $easyTapLinkDisplayMode,
                     options: EasyTapLinkDisplayMode.allCases
                 )
