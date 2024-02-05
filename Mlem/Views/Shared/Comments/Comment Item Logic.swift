@@ -16,7 +16,7 @@ extension CommentItem {
                 id: hierarchicalComment.commentView.id,
                 vote: operation
             )
-            commentTracker.comments.update(with: updatedComment)
+            hierarchicalComment.commentView = updatedComment
         } catch {
             errorHandler.handle(error)
         }
@@ -31,7 +31,7 @@ extension CommentItem {
                 // TODO: the UI for this only allows delete, but the operation can be undone it appears...
                 shouldDelete: true
             )
-            commentTracker.comments.update(with: updatedComment.commentView)
+            hierarchicalComment.commentView = updatedComment.commentView
         } catch {
             errorHandler.handle(error)
         }
@@ -128,7 +128,7 @@ extension CommentItem {
                 shouldSave: dirtySaved
             )
             
-            commentTracker.comments.update(with: response.commentView)
+            hierarchicalComment.commentView = response.commentView
         } catch {
             errorHandler.handle(error)
         }
@@ -139,7 +139,7 @@ extension CommentItem {
             // Perhaps we want an explict flag for this in the future?
             if collapseComments, !isCommentReplyHidden, pageContext == .posts, hierarchicalComment.depth == 0 {
                 toggleTopLevelCommentCollapse(isCollapsed: !hierarchicalComment.isCollapsed)
-            } else if !showPostContext {
+            } else if !showPostContext, let commentTracker {
                 commentTracker.setCollapsed(!hierarchicalComment.isCollapsed, comment: hierarchicalComment)
             }
         }
@@ -147,10 +147,12 @@ extension CommentItem {
     
     /// Uncollapses HierarchicalComment and children at depth level 1
     func uncollapseComment() {
-        commentTracker.setCollapsed(false, comment: hierarchicalComment)
-        
-        for comment in hierarchicalComment.children where comment.depth == 1 {
-            commentTracker.setCollapsed(false, comment: comment)
+        if let commentTracker {
+            commentTracker.setCollapsed(false, comment: hierarchicalComment)
+            
+            for comment in hierarchicalComment.children where comment.depth == 1 {
+                commentTracker.setCollapsed(false, comment: comment)
+            }
         }
     }
     
@@ -166,9 +168,11 @@ extension CommentItem {
     
     /// Collapses HierarchicalComment and children at depth level 1
     func collapseComment() {
-        for comment in hierarchicalComment.children where comment.depth == 1 {
-            commentTracker.setCollapsed(true, comment: comment)
-            comment.isParentCollapsed = true
+        if let commentTracker {
+            for comment in hierarchicalComment.children where comment.depth == 1 {
+                commentTracker.setCollapsed(true, comment: comment)
+                comment.isParentCollapsed = true
+            }
         }
     }
     
@@ -300,8 +304,11 @@ extension CommentItem {
             
             if response.blocked {
                 await notifier.add(.success("Blocked user"))
-                commentTracker.filter { comment in
-                    comment.commentView.creator.id != userId
+                
+                if let commentTracker {
+                    commentTracker.filter { comment in
+                        comment.commentView.creator.id != userId
+                    }
                 }
             }
         } catch {

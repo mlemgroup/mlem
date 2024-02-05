@@ -93,6 +93,7 @@ struct UserContentFeedView: View {
                 scrollTarget: hierarchicalComment.id
             ))) {
                 CommentItem(
+                    commentTracker: nil,
                     hierarchicalComment: hierarchicalComment,
                     postContext: nil,
                     indentBehaviour: .never,
