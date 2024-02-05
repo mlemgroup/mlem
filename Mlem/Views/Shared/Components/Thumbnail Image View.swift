@@ -36,7 +36,7 @@ struct ThumbnailImageView: View {
                     onTapCallback: markPostAsRead
                 )
             case let .link(url):
-                let imageView = CachedImage(
+                CachedImage(
                     url: url,
                     shouldExpand: false,
                     fixedSize: size,
@@ -57,8 +57,8 @@ struct ThumbnailImageView: View {
                     }
                     .frame(width: size.width, height: size.height, alignment: .topLeading)
                 }
-                if let url = post.post.linkUrl {
-                    imageView
+                .ifLet(url) { url, content in
+                    content
                         .contextMenu {
                             Button("Open", systemImage: "safari") {
                                 openURL(url)
@@ -70,8 +70,6 @@ struct ThumbnailImageView: View {
                             }
                             ShareLink(item: url)
                         } preview: { WebView(url: url) }
-                } else {
-                    imageView
                 }
                 
             case .text:
