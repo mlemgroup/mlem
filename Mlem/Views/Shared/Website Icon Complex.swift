@@ -121,14 +121,25 @@ struct WebsiteIconComplex: View {
                 }
             }
         }
-        .contextMenu {
-            if let url = post.linkUrl {
-                Button("Copy", systemImage: Icons.copy) {
-                    let pasteboard = UIPasteboard.general
-                    pasteboard.url = url
+        .ifLet(post.linkUrl) { url, content in
+            content
+                .contextMenu {
+                    if let url = post.linkUrl {
+                        Button("Open", systemImage: "safari") {
+                            openURL(url)
+                            if let onTapActions {
+                                onTapActions()
+                            }
+                        }
+                        Button("Copy", systemImage: Icons.copy) {
+                            let pasteboard = UIPasteboard.general
+                            pasteboard.url = url
+                        }
+                        ShareLink(item: url)
+                    }
+                } preview: {
+                    if let url = post.linkUrl { WebView(url: url) }
                 }
-                ShareLink(item: url)
-            }
         }
     }
 }

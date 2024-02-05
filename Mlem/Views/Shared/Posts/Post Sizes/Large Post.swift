@@ -202,6 +202,7 @@ struct LargePost: View {
                 if layoutMode != .minimize {
                     CachedImage(
                         url: url,
+                        hasContextMenu: true,
                         maxHeight: layoutMode.getMaxHeight(limitHeight),
                         onTapCallback: markPostAsRead,
                         cornerRadius: AppConstants.largeItemCornerRadius

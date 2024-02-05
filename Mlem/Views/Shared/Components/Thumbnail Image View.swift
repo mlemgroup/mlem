@@ -29,13 +29,14 @@ struct ThumbnailImageView: View {
                 // just blur, no need for the whole filter viewModifier since this is just a thumbnail
                 CachedImage(
                     url: url,
+                    hasContextMenu: true,
                     fixedSize: size,
                     blurRadius: showNsfwFilter ? 8 : 0,
                     contentMode: .fill,
                     onTapCallback: markPostAsRead
                 )
             case let .link(url):
-                CachedImage(
+                let imageView = CachedImage(
                     url: url,
                     shouldExpand: false,
                     fixedSize: size,
@@ -56,6 +57,23 @@ struct ThumbnailImageView: View {
                     }
                     .frame(width: size.width, height: size.height, alignment: .topLeading)
                 }
+                if let url = post.post.linkUrl {
+                    imageView
+                        .contextMenu {
+                            Button("Open", systemImage: "safari") {
+                                openURL(url)
+                                markPostAsRead()
+                            }
+                            Button("Copy", systemImage: Icons.copy) {
+                                let pasteboard = UIPasteboard.general
+                                pasteboard.url = url
+                            }
+                            ShareLink(item: url)
+                        } preview: { WebView(url: url) }
+                } else {
+                    imageView
+                }
+                
             case .text:
                 Image(systemName: Icons.textPost)
             case .titleOnly:
