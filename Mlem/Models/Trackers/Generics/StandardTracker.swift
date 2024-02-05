@@ -203,6 +203,8 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
         
         await setLoading(.loading)
         
+        var newState: LoadingState = .idle
+        
         var newItems: [Item] = .init()
         while newItems.count < internetSpeed.pageSize {
             let fetched = try await fetchPage(page: page + 1)
@@ -211,7 +213,7 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
             
             if !fetched.hasContent {
                 print("[\(Item.self) tracker] fetch returned no items, setting loading state to done")
-                await setLoading(.done)
+                newState = .done
                 break
             }
             
@@ -227,9 +229,7 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
             await addItems(allowedItems)
         }
 
-        if loadingState != .done {
-            await setLoading(.idle)
-        }
+        await setLoading(newState)
     }
     
     private func loadCursorHelper(_ cursor: String) async throws {
@@ -247,13 +247,14 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
         
         await setLoading(.loading)
         
+        var newState: LoadingState = .idle
+        
         var newItems: [Item] = .init()
         while newItems.count < internetSpeed.pageSize {
             let fetched = try await fetchCursor(cursor: cursor)
-            
             if !fetched.hasContent || fetched.cursor == loadingCursor {
                 print("[\(Item.self) tracker] fetch returned no items or EOF cursor, setting loading state to done")
-                await setLoading(.done)
+                newState = .done
                 break
             }
             
@@ -264,11 +265,7 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
         }
         
         let allowedItems = storeIdsAndDedupe(newItems: newItems)
-        
         await addItems(allowedItems)
-        
-        if loadingState != .done {
-            await setLoading(.idle)
-        }
+        await setLoading(newState)
     }
 }
