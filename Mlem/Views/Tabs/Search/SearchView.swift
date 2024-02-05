@@ -63,7 +63,7 @@ struct SearchView: View {
             .navigationBarColor()
             .navigationTitle("Search")
             .navigationSearchBar {
-                SearchBar("Search for communities & users", text: $searchModel.searchText, isEditing: $isSearching)
+                SearchBar("Communities, Users & Instances", text: $searchModel.searchText, isEditing: $isSearching)
                     .showsCancelButton(page != .home)
                     .onCancel {
                         page = .home
