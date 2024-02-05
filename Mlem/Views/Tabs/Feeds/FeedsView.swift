@@ -117,6 +117,7 @@ struct FeedsView: View {
             AggregateFeedView(selectedFeed: $selectedFeed)
         case let .community(communityModel):
             CommunityFeedView(communityModel: communityModel)
+                .id(communityModel.uid) // explicit id forces redraw on change of community model
         case .none:
             Text("Please select a feed")
         }
