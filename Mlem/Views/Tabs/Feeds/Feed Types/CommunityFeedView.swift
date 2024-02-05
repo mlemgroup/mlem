@@ -64,7 +64,6 @@ struct CommunityFeedView: View {
     }
     
     init(communityModel: CommunityModel) {
-        print("DEBUG initializing with \(communityModel.name)")
         // need to grab some stuff from app storage to initialize post tracker with
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
