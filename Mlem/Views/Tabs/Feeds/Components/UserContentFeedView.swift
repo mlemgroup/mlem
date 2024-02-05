@@ -93,6 +93,7 @@ struct UserContentFeedView: View {
                 scrollTarget: hierarchicalComment.id
             ))) {
                 CommentItem(
+                    commentTracker: nil,
                     hierarchicalComment: hierarchicalComment,
                     postContext: nil,
                     indentBehaviour: .never,
@@ -119,7 +120,8 @@ struct UserContentFeedView: View {
                     .frame(maxWidth: .infinity)
             } else if userContentTracker.loadingState == .done {
                 // NoPostsView(loadingState: postTracker.loadingState)
-                Text("no items :(")
+                Text("No items :(")
+                    .padding(.top, 20)
                     .transition(.scale(scale: 0.9).combined(with: .opacity))
             }
         }

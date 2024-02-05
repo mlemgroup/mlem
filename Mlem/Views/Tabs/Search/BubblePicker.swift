@@ -26,45 +26,52 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
     }
     
     var body: some View {
-        ScrollView(.horizontal) {
-            HStack(spacing: 0) {
-                ForEach(tabs, id: \.self) { type in
-                    Button {
-                        selected = type
-                        hapticManager.play(haptic: .gentleInfo, priority: .low)
-                    } label: {
-                        AnyView(labelBuilder(type))
-                            .padding(.vertical, 6)
-                            .padding(.horizontal, 12)
-                            .foregroundStyle(selected == type ? .white : .primary)
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .background(
-                                Group {
-                                    if selected == type {
-                                        Capsule()
-                                            .fill(.blue)
-                                            .transition(.scale.combined(with: .opacity))
+        ScrollViewReader { proxy in
+            ScrollView(.horizontal) {
+                // Use negative spacing as well as padding the HStack's children so that scrollTo leaves extra space around each tab
+                HStack(spacing: -2*AppConstants.postAndCommentSpacing) {
+                    ForEach(Array(zip(tabs.indices, tabs)), id: \.0) { index, tab in
+                        Button {
+                            selected = tab
+                            hapticManager.play(haptic: .gentleInfo, priority: .low)
+                            withAnimation {
+                                proxy.scrollTo(index)
+                            }
+                        } label: {
+                            AnyView(labelBuilder(tab))
+                                .padding(.vertical, 6)
+                                .padding(.horizontal, 12)
+                                .foregroundStyle(selected == tab ? .white : .primary)
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                                .background(
+                                    Group {
+                                        if selected == tab {
+                                            Capsule()
+                                                .fill(.blue)
+                                                .transition(.scale.combined(with: .opacity))
+                                        }
                                     }
-                                }
-                            )
-                            .animation(.spring(response: 0.15, dampingFraction: 0.7), value: selected)
-                            .padding(.vertical, 4)
-                            .contentShape(Rectangle())
+                                )
+                                .animation(.spring(response: 0.15, dampingFraction: 0.7), value: selected)
+                                .padding(.vertical, 4)
+                                .contentShape(Rectangle())
+                        }
+                        .buttonStyle(EmptyButtonStyle())
+                        .padding(.horizontal, AppConstants.postAndCommentSpacing)
+                        .id(index)
                     }
-                    .buttonStyle(EmptyButtonStyle())
                 }
             }
-            .padding(.horizontal, AppConstants.postAndCommentSpacing)
+            .scrollIndicators(.hidden)
         }
-        .scrollIndicators(.hidden)
     }
 }
 
 #Preview {
     BubblePicker(
-        SearchTab.allCases,
-        selected: .constant(.communities)
+        InstanceViewTab.allCases,
+        selected: .constant(.about)
     ) {
         Text($0.label)
     }
