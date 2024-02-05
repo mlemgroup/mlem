@@ -200,11 +200,18 @@ struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
                         // SUS I think this might be a community or user link
                         let processedLookup = lookup
                             .replacing(/.*\/c\//, with: "")
+                            .replacing(/.*\/u\//, with: "")
                             .replacingOccurrences(of: "mailto:", with: "")
                         
                         // the mailto: strips the ! and @, so we have to try both
                         lookup = "!\(processedLookup)" // community
                         altLookup = "@\(processedLookup)" // user
+                        
+                    } else if lookup.starts(with: "/u/") {
+                        lookup = "@\(lookup.trimmingPrefix("/u/"))"
+                        
+                    } else if lookup.starts(with: "/c/") {
+                        lookup = "!\(lookup.trimmingPrefix("/c/"))"
                     }
                     
                     print("lookup: \(lookup), altLookup: \(String(describing: altLookup)) (original: \(url.absoluteString))")
@@ -226,7 +233,7 @@ struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
                             return
                         }
                     } catch {
-                        print("Error whilst attempting to resolve URL!")
+                        print("Error whilst attempting to resolve URL!\n\(error.localizedDescription)")
                     }
                     
                     // if all else fails fallback!
@@ -263,7 +270,7 @@ struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
                     try navigationPath.wrappedValue.append(Path.makeRoute(object))
                     return true
                 case let .person(object):
-                    try navigationPath.wrappedValue.append(Path.makeRoute(object.person))
+                    try navigationPath.wrappedValue.append(Path.makeRoute(UserModel(from: object.person)))
                     return true
                 case let .community(object):
                     // TODO: routes should all be based on middleware models, and the resolution should return a middleware model

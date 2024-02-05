@@ -53,7 +53,6 @@ struct CommentItem: View {
     
     // MARK: Environment
 
-    @EnvironmentObject var commentTracker: CommentTracker
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
@@ -65,6 +64,7 @@ struct CommentItem: View {
 
     // MARK: Parameters
 
+    let commentTracker: CommentTracker?
     @ObservedObject var hierarchicalComment: HierarchicalComment
     let postContext: PostModel? // TODO: redundant with comment.post?
     let indentBehaviour: IndentBehaviour
@@ -104,6 +104,7 @@ struct CommentItem: View {
 
     // init needed to get dirty and clean aligned
     init(
+        commentTracker: CommentTracker?,
         hierarchicalComment: HierarchicalComment,
         postContext: PostModel?,
         indentBehaviour: IndentBehaviour = .standard,
@@ -112,6 +113,7 @@ struct CommentItem: View {
         enableSwipeActions: Bool = true,
         pageContext: PageContext = .posts
     ) {
+        self.commentTracker = commentTracker
         self.hierarchicalComment = hierarchicalComment
         self.postContext = postContext
         self.indentBehaviour = indentBehaviour
@@ -203,17 +205,17 @@ struct CommentItem: View {
                    hierarchicalComment.children.count > 0,
                    !isCommentReplyHidden {
                     Divider()
-                    HStack {
                         CollapsedCommentReplies(numberOfReplies: .constant(hierarchicalComment.commentView.counts.childCount))
-                            .onTapGesture {
-                                isCommentReplyHidden = true
-                                uncollapseComment()
-                            }
-                    }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .contentShape(.rect)
+                        .onTapGesture {
+                            isCommentReplyHidden = true
+                            uncollapseComment()
+                        }
                 }
             }
         }
-        .contentShape(Rectangle()) // allow taps in blank space to register
+        .contentShape(.rect) // allow taps in blank space to register
         .onTapGesture {
             if tapCommentToCollapse {
                 toggleCollapsed()
