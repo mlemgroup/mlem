@@ -10,30 +10,11 @@ import Foundation
 extension ExpandedPost {
     // MARK: Interaction callbacks
     
-    func upvotePost() async {
-        await post.vote(inputOp: .upvote)
-    }
-    
-    func downvotePost() async {
-        await post.vote(inputOp: .downvote)
-    }
-    
-    func savePost() async {
-        await post.toggleSave(upvoteOnSave: upvoteOnSave)
-    }
-    
     func replyToPost() {
         editorTracker.openEditor(with: ConcreteEditorModel(
             post: post,
             commentTracker: commentTracker,
             operation: PostOperation.replyToPost
-        ))
-    }
-    
-    func reportPost() {
-        editorTracker.openEditor(with: ConcreteEditorModel(
-            post: post,
-            operation: PostOperation.reportPost
         ))
     }
     

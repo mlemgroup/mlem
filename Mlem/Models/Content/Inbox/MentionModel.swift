@@ -18,9 +18,9 @@ class MentionModel: ContentIdentifiable, ObservableObject {
     
     @Published var personMention: APIPersonMention
     @Published var comment: APIComment
-    var creator: APIPerson
+    var creator: UserModel
     var post: APIPost
-    var community: APICommunity
+    var community: CommunityModel
     var recipient: APIPerson
     @Published var numReplies: Int
     @Published var votes: VotesModel
@@ -34,12 +34,40 @@ class MentionModel: ContentIdentifiable, ObservableObject {
     
     var uid: ContentModelIdentifier { .init(contentType: .mention, contentId: personMention.id) }
     
+    init(
+        personMention: APIPersonMention,
+        comment: APIComment,
+        creator: UserModel,
+        post: APIPost,
+        community: CommunityModel,
+        recipient: APIPerson,
+        numReplies: Int,
+        votes: VotesModel,
+        creatorBannedFromCommunity: Bool,
+        subscribed: APISubscribedStatus,
+        saved: Bool,
+        creatorBlocked: Bool
+    ) {
+        self.personMention = personMention
+        self.comment = comment
+        self.creator = creator
+        self.post = post
+        self.community = community
+        self.recipient = recipient
+        self.numReplies = numReplies
+        self.votes = votes
+        self.creatorBannedFromCommunity = creatorBannedFromCommunity
+        self.subscribed = subscribed
+        self.saved = saved
+        self.creatorBlocked = creatorBlocked
+    }
+    
     init(from personMentionView: APIPersonMentionView) {
         self.personMention = personMentionView.personMention
         self.comment = personMentionView.comment
-        self.creator = personMentionView.creator
+        self.creator = UserModel(from: personMentionView.creator)
         self.post = personMentionView.post
-        self.community = personMentionView.community
+        self.community = CommunityModel(from: personMentionView.community)
         self.recipient = personMentionView.recipient
         self.numReplies = personMentionView.counts.childCount
         self.votes = VotesModel(from: personMentionView.counts, myVote: personMentionView.myVote)
@@ -53,9 +81,9 @@ class MentionModel: ContentIdentifiable, ObservableObject {
         from mentionModel: MentionModel,
         personMention: APIPersonMention? = nil,
         comment: APIComment? = nil,
-        creator: APIPerson? = nil,
+        creator: UserModel? = nil,
         post: APIPost? = nil,
-        community: APICommunity? = nil,
+        community: CommunityModel? = nil,
         recipient: APIPerson? = nil,
         numReplies: Int? = nil,
         votes: VotesModel? = nil,

@@ -17,9 +17,6 @@ struct UserModel {
     @Dependency(\.notifier) var notifier
     @Dependency(\.apiClient) var apiClient
     
-    @available(*, deprecated, message: "Use attributes of the UserModel directly instead.")
-    var person: APIPerson!
-    
     // Ids
     var userId: Int!
     var instanceId: Int!
@@ -74,13 +71,13 @@ struct UserModel {
     /// Creates a UserModel from an GetPersonDetailsResponse
     /// - Parameter response: GetPersonDetailsResponse to create a UserModel representation of
     init(from response: GetPersonDetailsResponse) {
-        self.update(with: response)
+        update(with: response)
     }
     
     /// Creates a UserModel from an APIPersonView
     /// - Parameter apiPersonView: APIPersonView to create a UserModel representation of
     init(from personView: APIPersonView) {
-        self.update(with: personView)
+        update(with: personView)
     }
     
     /// Creates a UserModel from an APIPerson. Note that using this initialiser nullifies count values, since
@@ -91,57 +88,54 @@ struct UserModel {
     }
     
     mutating func update(with response: GetPersonDetailsResponse) {
-        self.moderatedCommunities = response.moderates.map { CommunityModel(from: $0.community) }
-        self.update(with: response.personView)
+        moderatedCommunities = response.moderates.map { CommunityModel(from: $0.community) }
+        update(with: response.personView)
     }
     
     mutating func update(with personView: APIPersonView) {
-        self.postCount = personView.counts.postCount
-        self.commentCount = personView.counts.commentCount
+        postCount = personView.counts.postCount
+        commentCount = personView.counts.commentCount
              
         // TODO: 0.18 Deprecation
         @Dependency(\.siteInformation) var siteInformation
         if (siteInformation.version ?? .infinity) > .init("0.19.0") {
-            self.isAdmin = personView.isAdmin
+            isAdmin = personView.isAdmin
         }
         
-        self.update(with: personView.person)
+        update(with: personView.person)
     }
     
     mutating func update(with person: APIPerson) {
-        self.person = person
+        userId = person.id
+        name = person.name
+        displayName = person.displayName ?? person.name
+        bio = person.bio
         
-        self.userId = person.id
-        self.name = person.name
-        self.displayName = person.displayName ?? person.name
-        self.bio = person.bio
+        avatar = person.avatarUrl
+        banner = person.bannerUrl
         
-        self.avatar = person.avatarUrl
-        self.banner = person.bannerUrl
-        
-        self.banned = person.banned
-        self.local = person.local
-        self.deleted = person.deleted
-        self.isBot = person.botAccount
+        banned = person.banned
+        local = person.local
+        deleted = person.deleted
+        isBot = person.botAccount
         
         if let admin = person.admin {
             self.isAdmin = person.admin
         }
+        creationDate = person.published
+        updatedDate = person.updated
+        banExpirationDate = person.banExpires
         
-        self.creationDate = person.published
-        self.updatedDate = person.updated
-        self.banExpirationDate = person.banExpires
+        instanceId = person.instanceId
+        matrixUserId = person.matrixUserId
         
-        self.instanceId = person.instanceId
-        self.matrixUserId = person.matrixUserId
-        
-        self.profileUrl = person.actorId
-        self.sharedInboxUrl = person.sharedInboxLink
+        profileUrl = person.actorId
+        sharedInboxUrl = person.sharedInboxLink
         
         // Annoyingly, PersonView doesn't include whether the user is blocked so we can't
         // actually determine this without making extra requests...
-        if self.blocked == nil {
-            self.blocked = false
+        if blocked == nil {
+            blocked = false
         }
     }
     
@@ -184,7 +178,7 @@ struct UserModel {
         }
         do {
             let response = try await personRepository.updateBlocked(for: userId, blocked: blocked)
-            self.blocked = response.blocked
+            blocked = response.blocked
             RunLoop.main.perform { [self] in
                 callback(self)
             }
@@ -230,11 +224,15 @@ struct UserModel {
     }
     
     static func mock() -> UserModel {
-        return self.init(from: APIPerson.mock())
+        self.init(from: APIPerson.mock())
+    }
+    
+    var isActiveAccount: Bool {
+        siteInformation.myUserInfo?.localUserView.person.id == userId
     }
     
     var fullyQualifiedUsername: String? {
-        if let host = self.profileUrl.host() {
+        if let host = profileUrl.host() {
             return "\(name!)@\(host)"
         }
         return nil
@@ -261,7 +259,7 @@ extension UserModel: Identifiable {
 
 extension UserModel: Hashable {
     static func == (lhs: UserModel, rhs: UserModel) -> Bool {
-        return lhs.hashValue == rhs.hashValue
+        lhs.hashValue == rhs.hashValue
     }
     
     /// Hashes all fields for which state changes should trigger view updates.

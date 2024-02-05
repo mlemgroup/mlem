@@ -1,18 +1,18 @@
 <!-- 
-Thank you for making a pull request! 
-Since we are very busy with getting Mlem into a releaseable state, we had to introduce this short questionnaire to help us review PRs.
-Before you submit your PR, please take a few minutes to fill out all the needed information.
+Thank you for opening a pull request! 
 
-Please note that if you do not fill out the checklist, your PR will be automatically rejected unless you are an approved contributor. 
-We apologize, as we would love to dedicate the time it deserves to every PR, but at present, we are under considerable time pressure.
+We assume you have read CONTRIBUTING.md. If you have not, do not be surprised if your PR is rejected for reasons listed therein.
+
+Please note that if your PR does not address an issue that was assigned to you, you are still welcome to open it; however, it will not receive merge priority and may be rejected for scope reasons.
 -->
 
 # Checklist
-- [ ] I have read [CONTRIBUTING.md](./CONTRIBUTING.md)
+- [ ] I have read CONTRIBUTING.md
 - [ ] I have described what this PR contains
-- [ ] This PR addresses one or more open issues that were assigned to me:
-      - *list issue(s) here*
 - [ ] If this PR alters the UI, I have attached pictures/videos
+- [ ] This PR addresses one or more open issues that were assigned to me:
+      - closes #issue
+      - progress towards #issue
 
 # Pull Request Information
 

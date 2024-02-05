@@ -19,7 +19,7 @@ class RecentSearchesTracker: ObservableObject {
     @Published var recentSearches: [AnyContentModel] = .init()
     
     /// clears recentSearches and loads new values based on the current account
-    func reloadRecentSearches(accountId: String?) async throws {
+    func reloadRecentSearches(accountId: String?, instances: [InstanceModel]) async throws {
         defer { hasLoaded = true }
         
         if let accountId {
@@ -36,6 +36,12 @@ class RecentSearchesTracker: ObservableObject {
                 case .user:
                     let user = try await personRepository.loadUser(for: id.contentId)
                     newSearches.append(AnyContentModel(user))
+                case .instance:
+                    if let instance = instances.first(where: { $0.name.hash == id.contentId }) {
+                        newSearches.append(AnyContentModel(instance))
+                    } else {
+                        print("Recent search error: cannot find instance sub")
+                    }
                 default:
                     assertionFailure("Received unexpected content type in recent searches \(id.contentType)")
                     return

@@ -12,7 +12,7 @@ enum UserComplication: CaseIterable {
     case type, instance, date, posts, comments
 }
 
-extension Array where Element == UserComplication {
+extension [UserComplication] {
     static let withTypeLabel: [UserComplication] = [.type, .instance, .comments]
     static let withoutTypeLabel: [UserComplication] = [.instance, .date, .posts, .comments]
     static let instanceOnly: [UserComplication] = [.instance]

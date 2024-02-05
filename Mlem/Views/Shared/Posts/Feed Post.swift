@@ -9,9 +9,6 @@
 // Since padding varies depending on compact/large view, it is handled *entirely* in those components. No padding should
 // appear anywhere in this file.
 
-// swiftlint:disable file_length
-// swiftlint:disable type_body_length
-
 import Dependencies
 import SwiftUI
 
@@ -26,6 +23,8 @@ struct FeedPost: View {
     // MARK: Environment
 
     @Environment(\.accessibilityDifferentiateWithoutColor) var diffWithoutColor: Bool
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @Environment(\.feedType) var feedType
     
     @AppStorage("postSize") var postSize: PostSize = .large
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
@@ -41,18 +40,16 @@ struct FeedPost: View {
     
     @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
-    
-    @AppStorage("upvoteOnSave") var upvoteOnSave: Bool = false
 
-    @EnvironmentObject var postTracker: StandardPostTracker
+    // @EnvironmentObject var postTracker: StandardPostTracker
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
     // MARK: Parameters
 
     @ObservedObject var postModel: PostModel
+    var postTracker: StandardPostTracker?
     let community: CommunityModel?
     let showPostCreator: Bool
     let showCommunity: Bool
@@ -60,12 +57,14 @@ struct FeedPost: View {
     
     init(
         post: PostModel,
+        postTracker: StandardPostTracker?,
         community: CommunityModel? = nil,
         showPostCreator: Bool = true,
         showCommunity: Bool = true,
         enableSwipeActions: Bool = true
     ) {
         self.postModel = post
+        self.postTracker = postTracker
         self.community = community
         self.showPostCreator = showPostCreator
         self.showCommunity = showCommunity
@@ -102,9 +101,6 @@ struct FeedPost: View {
                 postItem
                     .border(width: barThickness, edges: [.leading], color: .secondary)
                     .background(Color.systemBackground)
-                    //                .background(horizontalSizeClass == .regular ? Color.secondarySystemBackground : Color.systemBackground)
-                    //                .clipShape(RoundedRectangle(cornerRadius: horizontalSizeClass == .regular ? 16 : 0))
-                    //                .padding(.all, horizontalSizeClass == .regular ? nil : 0)
                     .destructiveConfirmation(
                         isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
                         confirmationMenuFunction: confirmationMenuFunction
@@ -120,7 +116,11 @@ struct FeedPost: View {
                         ]
                     )
                     .contextMenu {
-                        ForEach(genMenuFunctions()) { item in
+                        let functions = postModel.menuFunctions(
+                            editorTracker: editorTracker,
+                            postTracker: postTracker
+                        )
+                        ForEach(functions) { item in
                             MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
                         }
                     }
@@ -143,14 +143,21 @@ struct FeedPost: View {
             return .bottom
         }
     }
+    
+    func replyToPost() {
+        editorTracker.openEditor(
+            with: ConcreteEditorModel(post: postModel, operation: PostOperation.replyToPost)
+        )
+    }
 
     @ViewBuilder
     var postItem: some View {
         if postSize == .compact {
+            let functions = postModel.menuFunctions(editorTracker: editorTracker, postTracker: postTracker)
             CompactPost(
                 post: postModel,
                 showCommunity: showCommunity,
-                menuFunctions: genMenuFunctions()
+                menuFunctions: functions
             )
         } else {
             VStack(spacing: 0) {
@@ -172,7 +179,11 @@ struct FeedPost: View {
                             ReadCheck()
                         }
                         
-                        EllipsisMenu(size: 24, menuFunctions: genMenuFunctions())
+                        let functions = postModel.menuFunctions(
+                            editorTracker: editorTracker,
+                            postTracker: postTracker
+                        )
+                        EllipsisMenu(size: 24, menuFunctions: functions)
                     }
 
                     if postSize == .headline {
@@ -205,9 +216,9 @@ struct FeedPost: View {
                     saved: postModel.saved,
                     accessibilityContext: "post",
                     widgets: layoutWidgetTracker.groups.post,
-                    upvote: upvotePost,
-                    downvote: downvotePost,
-                    save: savePost,
+                    upvote: postModel.toggleUpvote,
+                    downvote: postModel.toggleDownvote,
+                    save: postModel.toggleSave,
                     reply: replyToPost,
                     shareURL: URL(string: postModel.post.apId),
                     shouldShowScore: shouldShowScoreInPostBar,
@@ -219,208 +230,6 @@ struct FeedPost: View {
             }
         }
     }
-
-    func upvotePost() async {
-        await voteOnPost(inputOp: .upvote)
-    }
-
-    func downvotePost() async {
-        await voteOnPost(inputOp: .downvote)
-    }
-
-    func deletePost() async {
-        await postModel.delete()
-    }
-
-    func blockUser() async {
-        // TODO: migrate to personRepository
-        do {
-            let response = try await apiClient.blockPerson(id: postModel.creator.userId, shouldBlock: true)
-            if response.blocked {
-                await postTracker.applyFilter(.blockedUser(postModel.creator.userId))
-                hapticManager.play(haptic: .violentSuccess, priority: .high)
-                await notifier.add(.success("Blocked \(postModel.creator.name)"))
-            }
-        } catch {
-            errorHandler.handle(
-                .init(
-                    message: "Unable to block \(postModel.creator.name)",
-                    style: .toast,
-                    underlyingError: error
-                )
-            )
-        }
-    }
-    
-    func blockCommunity() async {
-        // TODO: migrate to communityRepository
-        do {
-            let response = try await apiClient.blockCommunity(id: postModel.community.communityId, shouldBlock: true)
-            if response.blocked {
-                await postTracker.applyFilter(.blockedCommunity(postModel.community.communityId))
-                await notifier.add(.success("Blocked \(postModel.community.name)"))
-            }
-        } catch {
-            errorHandler.handle(
-                .init(
-                    message: "Unable to block \(postModel.community.name)",
-                    style: .toast,
-                    underlyingError: error
-                )
-            )
-        }
-    }
-
-    func replyToPost() {
-        editorTracker.openEditor(with: ConcreteEditorModel(
-            post: postModel,
-            operation: PostOperation.replyToPost
-        ))
-    }
-    
-    func editPost() {
-        editorTracker.openEditor(with: PostEditorModel(
-            post: postModel
-        ))
-    }
-
-    /// Votes on a post
-    /// - Parameter inputOp: The vote operation to perform
-    func voteOnPost(inputOp: ScoringOperation) async {
-        await postModel.vote(inputOp: inputOp)
-    }
-
-    func savePost() async {
-        await postModel.toggleSave(upvoteOnSave: upvoteOnSave)
-    }
-    
-    func reportPost() {
-        editorTracker.openEditor(with: ConcreteEditorModel(post: postModel, operation: PostOperation.reportPost))
-    }
-
-    // swiftlint:disable function_body_length
-    func genMenuFunctions() -> [MenuFunction] {
-        var ret: [MenuFunction] = .init()
-
-        // upvote
-        let (upvoteText, upvoteImg) = postModel.votes.myVote == .upvote ?
-            ("Undo Upvote", Icons.upvoteSquareFill) :
-            ("Upvote", Icons.upvoteSquare)
-        ret.append(MenuFunction.standardMenuFunction(
-            text: upvoteText,
-            imageName: upvoteImg,
-            role: nil,
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                await upvotePost()
-            }
-        })
-
-        // downvote
-        let (downvoteText, downvoteImg) = postModel.votes.myVote == .downvote ?
-            ("Undo Downvote", Icons.downvoteSquareFill) :
-            ("Downvote", Icons.downvoteSquare)
-        ret.append(MenuFunction.standardMenuFunction(
-            text: downvoteText,
-            imageName: downvoteImg,
-            role: nil,
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                await downvotePost()
-            }
-        })
-
-        // save
-        let (saveText, saveImg) = postModel.saved ? ("Unsave", "bookmark.slash") : ("Save", "bookmark")
-        ret.append(MenuFunction.standardMenuFunction(
-            text: saveText,
-            imageName: saveImg,
-            role: nil,
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                await savePost()
-            }
-        })
-
-        // reply
-        ret.append(MenuFunction.standardMenuFunction(
-            text: "Reply",
-            imageName: Icons.reply,
-            role: nil,
-            enabled: true
-        ) {
-            replyToPost()
-        })
-
-        if appState.isCurrentAccountId(postModel.creator.userId) {
-            // edit
-            ret.append(MenuFunction.standardMenuFunction(
-                text: "Edit",
-                imageName: Icons.edit,
-                role: nil,
-                enabled: true
-            ) {
-                editPost()
-            })
-            
-            // delete
-            ret.append(MenuFunction.standardMenuFunction(
-                text: "Delete",
-                imageName: Icons.delete,
-                role: .destructive(prompt: "Are you sure you want to delete this post? This cannot be undone."),
-                enabled: !postModel.post.deleted
-            ) {
-                Task(priority: .userInitiated) {
-                    await deletePost()
-                }
-            })
-        }
-
-        // share
-        if let url = URL(string: postModel.post.apId) {
-            ret.append(MenuFunction.shareMenuFunction(url: url))
-        }
-
-        // report
-        ret.append(MenuFunction.standardMenuFunction(
-            text: "Report Post",
-            imageName: Icons.moderationReport,
-            role: .destructive(prompt: AppConstants.reportPostPrompt),
-            enabled: true
-        ) {
-            reportPost()
-        })
-
-        // block user
-        ret.append(MenuFunction.standardMenuFunction(
-            text: "Block User",
-            imageName: Icons.userBlock,
-            role: .destructive(prompt: AppConstants.blockUserPrompt),
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                await blockUser()
-            }
-        })
-        
-        // block community
-        ret.append(MenuFunction.standardMenuFunction(
-            text: "Block Community",
-            imageName: Icons.hide,
-            role: .destructive(prompt: AppConstants.blockCommunityPrompt),
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                await blockCommunity()
-            }
-        })
-
-        return ret
-    }
-    // swiftlint:enable function_body_length
 }
 
 // MARK: - Swipe Actions
@@ -439,7 +248,7 @@ extension FeedPost {
             color: .upvoteColor,
             action: {
                 Task {
-                    await upvotePost()
+                    await postModel.toggleUpvote()
                 }
             }
         )
@@ -456,7 +265,7 @@ extension FeedPost {
             color: .downvoteColor,
             action: {
                 Task {
-                    await downvotePost()
+                    await postModel.toggleDownvote()
                 }
             }
         )
@@ -471,7 +280,7 @@ extension FeedPost {
             color: .saveColor,
             action: {
                 Task {
-                    await savePost()
+                    await postModel.toggleSave()
                 }
             }
         )
@@ -485,6 +294,3 @@ extension FeedPost {
         )
     }
 }
-
-// swiftlint:enable type_body_length
-// swiftlint:enable file_length

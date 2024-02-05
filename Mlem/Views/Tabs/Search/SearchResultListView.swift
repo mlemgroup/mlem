@@ -36,6 +36,11 @@ struct SearchResultListView: View {
                                 contentTracker.update(with: AnyContentModel($0))
                             }
                         )
+                    } else if let instance = contentModel.wrappedValue as? InstanceModel {
+                        InstanceResultView(
+                            instance,
+                            complications: showTypeLabel ? .withTypeLabel : .withoutTypeLabel
+                        )
                     }
                 }
                 .simultaneousGesture(TapGesture().onEnded {
@@ -83,7 +88,6 @@ struct SearchResultListView: View {
 }
 
 struct SearchResultsListViewPreview: View {
-
     @StateObject var searchModel: SearchModel = .init()
     @StateObject var contentTracker: ContentTracker<AnyContentModel> = .init()
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()

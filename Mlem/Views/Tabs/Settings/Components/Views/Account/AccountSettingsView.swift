@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 22/11/2023.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct AccountSettingsView: View {
     @Dependency(\.siteInformation) var siteInformation: SiteInformationTracker
@@ -24,13 +24,12 @@ struct AccountSettingsView: View {
     
     init() {
         if let info = siteInformation.myUserInfo {
-            displayName = info.localUserView.person.displayName ?? ""
-            showNsfw = info.localUserView.localUser.showNsfw
+            self.displayName = info.localUserView.person.displayName ?? ""
+            self.showNsfw = info.localUserView.localUser.showNsfw
         }
     }
     
     var body: some View {
-        
         Form {
             if let info = siteInformation.myUserInfo {
                 Section {
@@ -70,11 +69,11 @@ struct AccountSettingsView: View {
                     }
                     NavigationLink(.settings(.accountGeneral)) {
                         Label("Content & Notifications", systemImage: "list.bullet.rectangle.fill")
-                        .labelStyle(SquircleLabelStyle(color: .orange))
+                            .labelStyle(SquircleLabelStyle(color: .orange))
                     }
                     NavigationLink(.settings(.accountAdvanced)) {
                         Label("Advanced", systemImage: "gearshape.2.fill")
-                        .labelStyle(SquircleLabelStyle(color: .gray))
+                            .labelStyle(SquircleLabelStyle(color: .gray))
                     }
                 } footer: {
                     if settingsDisabled {
@@ -85,6 +84,15 @@ struct AccountSettingsView: View {
                     }
                 }
                 .disabled(settingsDisabled)
+                
+                Section {
+                    NavigationLink(.settings(.accountLocal)) {
+                        Label("Local Options", systemImage: "iphone.gen3")
+                            .labelStyle(SquircleLabelStyle(color: .blue))
+                    }
+                } footer: {
+                    Text("These options are stored locally in Mlem and not on your Lemmy account.")
+                }
                 
 //                Section {
 //                    NavigationLink { EmptyView() } label: {
@@ -98,7 +106,6 @@ struct AccountSettingsView: View {
                 Section {
                     Button("Sign Out", role: .destructive) {
                         showingSignOutConfirmation = true
-                        
                     }
                     .frame(maxWidth: .infinity)
                     .confirmationDialog("Really sign out?", isPresented: $showingSignOutConfirmation) {
@@ -123,7 +130,10 @@ struct AccountSettingsView: View {
                     Button("Delete Account", role: .destructive) {
                         accountForDeletion = appState.currentActiveAccount
                     }
-                        .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity)
+                    .sheet(item: $accountForDeletion) { account in
+                        DeleteAccountView(account: account)
+                    }
                 }
                 
             } else {
@@ -133,8 +143,5 @@ struct AccountSettingsView: View {
         .navigationTitle("Account Settings")
         .fancyTabScrollCompatible()
         .hoistNavigation()
-        .sheet(item: $accountForDeletion) { account in
-            DeleteAccountView(account: account)
-        }
     }
 }

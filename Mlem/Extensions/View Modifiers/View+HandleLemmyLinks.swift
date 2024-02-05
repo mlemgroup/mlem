@@ -32,10 +32,6 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                         .environmentObject(appState)
                         .environmentObject(filtersTracker)
                         .environmentObject(quickLookState)
-                case let .apiPerson(user):
-                    UserView(user: UserModel(from: user))
-                        .environmentObject(appState)
-                        .environmentObject(quickLookState)
                 case let .userProfile(user, communityContext):
                     UserView(user: user, communityContext: communityContext)
                         .environmentObject(appState)
@@ -79,6 +75,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             SignInAndSecuritySettingsView()
         case .accountGeneral:
             AccountGeneralSettingsView()
+        case .accountLocal:
+            LocalAccountSettingsView()
         case .accountAdvanced:
             AdvancedAccountSettingsView()
         case .accountDiscussionLanguages:
@@ -87,6 +85,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             MatrixLinkView()
         case .accounts:
             AccountSwitcherSettingsView()
+        case .quickSwitcher:
+            QuickSwitcherSettingsView()
         case .general:
             GeneralSettingsView()
         case .sorting:
@@ -197,11 +197,18 @@ struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
                         // SUS I think this might be a community or user link
                         let processedLookup = lookup
                             .replacing(/.*\/c\//, with: "")
+                            .replacing(/.*\/u\//, with: "")
                             .replacingOccurrences(of: "mailto:", with: "")
                         
                         // the mailto: strips the ! and @, so we have to try both
                         lookup = "!\(processedLookup)" // community
                         altLookup = "@\(processedLookup)" // user
+                        
+                    } else if lookup.starts(with: "/u/") {
+                        lookup = "@\(lookup.trimmingPrefix("/u/"))"
+                        
+                    } else if lookup.starts(with: "/c/") {
+                        lookup = "!\(lookup.trimmingPrefix("/c/"))"
                     }
                     
                     print("lookup: \(lookup), altLookup: \(String(describing: altLookup)) (original: \(url.absoluteString))")
@@ -223,13 +230,7 @@ struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
                             return
                         }
                     } catch {
-                        guard case let APIClientError.response(apiError, _) = error,
-                              apiError.error == "couldnt_find_object",
-                              url.scheme == "https" else {
-                            errorHandler.handle(error)
-                            
-                            return
-                        }
+                        print("Error whilst attempting to resolve URL!\n\(error.localizedDescription)")
                     }
                     
                     // if all else fails fallback!
@@ -266,7 +267,7 @@ struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
                     try navigationPath.wrappedValue.append(Path.makeRoute(object))
                     return true
                 case let .person(object):
-                    try navigationPath.wrappedValue.append(Path.makeRoute(object.person))
+                    try navigationPath.wrappedValue.append(Path.makeRoute(UserModel(from: object.person)))
                     return true
                 case let .community(object):
                     // TODO: routes should all be based on middleware models, and the resolution should return a middleware model

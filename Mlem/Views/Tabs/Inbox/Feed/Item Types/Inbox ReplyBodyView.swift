@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-// /user/replies
-
 struct InboxReplyBodyView: View {
     @ObservedObject var reply: ReplyModel
     @EnvironmentObject var inboxTracker: InboxTracker
@@ -45,7 +43,7 @@ struct InboxReplyBodyView: View {
                 .font(.headline)
                 .padding(.bottom, AppConstants.postAndCommentSpacing)
             
-            UserLinkView(person: reply.creator, serverInstanceLocation: ServerInstanceLocation.bottom, overrideShowAvatar: true)
+            UserLinkView(user: reply.creator, serverInstanceLocation: ServerInstanceLocation.bottom, overrideShowAvatar: true)
                 .font(.subheadline)
             
             HStack(alignment: .top, spacing: AppConstants.postAndCommentSpacing) {

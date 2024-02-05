@@ -9,12 +9,12 @@ import Dependencies
 import SwiftUI
 
 struct GeneralSettingsView: View {
-    @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
     @Dependency(\.siteInformation) var siteInformation: SiteInformationTracker
     
     @AppStorage("confirmImageUploads") var confirmImageUploads: Bool = true
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+    @AppStorage("appLock") var appLock: AppLock = .disabled
     @AppStorage("tapCommentToCollapse") var tapCommentToCollapse: Bool = true
     
     @AppStorage("defaultFeed") var defaultFeed: DefaultFeedType = .subscribed
@@ -22,13 +22,12 @@ struct GeneralSettingsView: View {
     @AppStorage("hapticLevel") var hapticLevel: HapticPriority = .low
     @AppStorage("upvoteOnSave") var upvoteOnSave: Bool = false
     
-    @AppStorage("showSettingsIcons") var showSettingsIcons: Bool = false
     @AppStorage("openLinksInBrowser") var openLinksInBrowser: Bool = false
 
     @EnvironmentObject var appState: AppState
 
-    @State private var isShowingFavoritesDeletionConfirmation: Bool = false
-
+    @State var showErrorAlert: Bool = false
+    @State var alertMessage: String = ""
     var body: some View {
         List {
             Section {
@@ -68,15 +67,7 @@ struct GeneralSettingsView: View {
                     
                     // TODO: 0.17 deprecation remove this check
                     if (siteInformation.version ?? .zero) >= .init("0.18.0") {
-                        NavigationLink(.settings(.accountGeneral)) {
-                            HStack(spacing: 3) {
-                                Text("Account Settings")
-                                Image(systemName: "chevron.right")
-                                    .fontWeight(.semibold)
-                                    .imageScale(.small)
-                            }
-                            .font(.footnote)
-                        }
+                        FooterLinkView(title: "Account Settings", destination: .settings(.accountGeneral))
                     }
                 }
             }
@@ -114,50 +105,39 @@ struct GeneralSettingsView: View {
             } footer: {
                 Text("Optimizes performance for your internet speed. You may need to restart the app for all optimizations to take effect.")
             }
-
+            
             Section {
-                Button(role: .destructive) {
-                    isShowingFavoritesDeletionConfirmation.toggle()
-                } label: {
-                    Label {
-                        Text("Delete Community Favorites")
-                    } icon: {
-                        if showSettingsIcons {
-                            Image(systemName: Icons.delete)
+                SwitchableSettingsItem(
+                    settingPictureSystemName: Icons.appLockSettings,
+                    settingName: "Lock with Face ID",
+                    isTicked: Binding(
+                        get: { appLock == .instant },
+                        set: { selected in
+                            appLock = selected ? .instant : .disabled
                         }
-                    }
-                    .foregroundColor(.red)
-                    .opacity(favoriteCommunitiesTracker.favoritesForCurrentAccount.isEmpty ? 0.6 : 1)
-                }
-                .disabled(favoriteCommunitiesTracker.favoritesForCurrentAccount.isEmpty)
-                .confirmationDialog(
-                    "Delete community favorites for this account?",
-                    isPresented: $isShowingFavoritesDeletionConfirmation,
-                    titleVisibility: .visible
-                ) {
-                    Button(role: .destructive) {
-                        favoriteCommunitiesTracker.clearCurrentFavourites()
-                    } label: {
-                        Text("Delete all favorites")
-                    }
-                    
-                    Button(role: .cancel) {
-                        isShowingFavoritesDeletionConfirmation.toggle()
-                    } label: {
-                        Text("Cancel")
-                    }
-
-                } message: {
-                    Text("You cannot undo this action.")
-                }
-
-            } footer: {
-                Text("Community favorites are stored on-device and are not tied to your Lemmy account.")
+                    )
+                )
+            } header: {
+                Text("Privacy")
             }
         }
         .fancyTabScrollCompatible()
         .navigationTitle("General")
         .navigationBarColor()
         .hoistNavigation()
+        .onChange(of: appLock) { _ in
+            if appLock != .disabled, !BiometricUnlock().requestBiometricPermissions() {
+                showErrorAlert = true
+                alertMessage = "Please allow Mlem to use Face ID in Settings."
+                appLock = .disabled
+            }
+        }
+        .alert(isPresented: $showErrorAlert, content: {
+            Alert(
+                title: Text("Error"),
+                message: Text(alertMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        })
     }
 }

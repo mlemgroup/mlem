@@ -5,9 +5,9 @@
 //  Created by Sjmarf on 21/09/2023.
 //
 
-import SwiftUI
 import Dependencies
 import Nuke
+import SwiftUI
 
 class ContentTracker<Content: ContentModel>: ObservableObject {
     // dependencies
@@ -35,7 +35,7 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
     )
     
     init(
-        _ loadItems: @escaping (_ page: Int) async throws -> [Content] = {_ in []},
+        _ loadItems: @escaping (_ page: Int) async throws -> [Content] = { _ in [] },
         internetSpeed: InternetSpeed = .fast,
         initialItems: [Content] = .init()
     ) {
@@ -54,9 +54,9 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
             isLoading = true
         }
         if clearImmediately {
-            self.items.removeAll()
+            items.removeAll()
         }
-        if let loadItems = loadItems {
+        if let loadItems {
             self.loadItems = loadItems
         }
         
@@ -68,9 +68,9 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
         }
         currentTask = Task(priority: .userInitiated) { [self] in
             do {
-                let items = try await self.loadItems(page)
+                let items = try await self.loadItems(1)
                 RunLoop.main.perform { [self] in
-                    self.replaceAll(with: items)
+                    replaceAll(with: items)
                 }
             } catch is CancellationError {
                 print("Search cancelled")
@@ -85,25 +85,25 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
         ids.removeAll()
         isLoading = false
         hasReachedEnd = false
-        self.items = self.loadItems(items)
+        self.items = loadItems(items)
     }
     
     /// Load the next page of results. Calls the `loadItems` attribute of the tracker, which returns an array of ContentType items.
     func loadNextPage() async throws {
-        let newPage = self.page + 1
+        let newPage = page + 1
         RunLoop.main.perform { [self] in
             isLoading = true
         }
         currentTask = Task(priority: .userInitiated) { [self] in
             do {
-                let newItems = try await self.loadItems(newPage)
+                let newItems = try await loadItems(newPage)
                 RunLoop.main.perform { [self] in
-                    self.items.append(contentsOf: loadItems(newItems))
-                    self.isLoading = false
+                    items.append(contentsOf: loadItems(newItems))
+                    isLoading = false
                     if newItems.isEmpty {
                         hasReachedEnd = true
                     }
-                    self.page = newPage
+                    page = newPage
                 }
             } catch is CancellationError {
                 print("Page loading cancelled")

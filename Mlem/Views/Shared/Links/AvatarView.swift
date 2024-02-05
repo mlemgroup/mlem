@@ -39,8 +39,7 @@ struct AvatarView: View {
         self.lineWidth = lineWidth
         self.blurAvatar = shouldBlurNsfw && blurAvatar
         switch iconResolution {
-            
-        case .fixed(let pixels):
+        case let .fixed(pixels):
             self.url = url?.withIconSize(pixels)
         case .unrestricted:
             self.url = url

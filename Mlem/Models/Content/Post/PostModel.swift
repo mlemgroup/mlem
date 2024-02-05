@@ -14,6 +14,8 @@ class PostModel: ContentIdentifiable, ObservableObject {
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.postRepository) var postRepository
+    @Dependency(\.siteInformation) var siteInformation
+    @Dependency(\.notifier) var notifier
     
     var postId: Int
     var post: APIPost
@@ -40,7 +42,9 @@ class PostModel: ContentIdentifiable, ObservableObject {
         self.postId = apiPostView.post.id
         self.post = apiPostView.post
         self.creator = UserModel(from: apiPostView.creator)
+        self.creator.blocked = apiPostView.creatorBlocked
         self.community = CommunityModel(from: apiPostView.community, subscribed: apiPostView.subscribed.isSubscribed)
+        self.community.blocked = false
         self.votes = VotesModel(from: apiPostView.counts, myVote: apiPostView.myVote)
         self.commentCount = apiPostView.counts.comments
         self.unreadCommentCount = apiPostView.unreadComments
@@ -155,6 +159,9 @@ class PostModel: ContentIdentifiable, ObservableObject {
         }
     }
     
+    func toggleUpvote() async { await vote(inputOp: .upvote) }
+    func toggleDownvote() async { await vote(inputOp: .downvote) }
+    
     func markRead(_ newRead: Bool) async {
         // state fake
         let original: PostModel = .init(from: self)
@@ -171,9 +178,11 @@ class PostModel: ContentIdentifiable, ObservableObject {
         }
     }
     
-    func toggleSave(upvoteOnSave: Bool) async {
-        hapticManager.play(haptic: .success, priority: .high)
+    func toggleSave() async {
+        hapticManager.play(haptic: .success, priority: .low)
+        
         let shouldSave: Bool = !saved
+        let upvoteOnSave = UserDefaults.standard.bool(forKey: "upvoteOnSave")
         
         // state fake
         let original: PostModel = .init(from: self)

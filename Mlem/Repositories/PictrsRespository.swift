@@ -33,7 +33,7 @@ class PictrsRespository {
                         imageModel.state = .uploaded(file: firstFile)
                         updateCallback(imageModel)
                     } else {
-                        print("Upload failed (1): \(response.msg)")
+                        print("Upload failed (1): \(String(describing: response.msg))")
                         imageModel.state = .failed(response.msg)
                         updateCallback(imageModel)
                     }
@@ -72,6 +72,6 @@ class PictrsRespository {
         // associated with it, possibly via an intermediate APIRequestWithResponse protocol
         do {
             try await apiClient.deleteImage(file: file)
-        } catch APIClientError.decoding(_) {}
+        } catch APIClientError.decoding(_, _) {}
     }
 }

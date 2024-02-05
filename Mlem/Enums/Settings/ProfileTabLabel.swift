@@ -8,7 +8,7 @@
 import Foundation
 
 enum ProfileTabLabel: String {
-    case username, instance, nickname, anonymous
+    case nickname, instance, anonymous
 }
 
 extension ProfileTabLabel: SettingsOptions {

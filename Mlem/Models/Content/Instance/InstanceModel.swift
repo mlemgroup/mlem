@@ -8,57 +8,129 @@
 import SwiftUI
 
 struct InstanceModel {
-    var instanceId: Int!
-    var name: String!
+    var displayName: String!
     var description: String?
     var avatar: URL?
     var banner: URL?
     var administrators: [UserModel]?
     var url: URL!
     var version: SiteVersion?
+    var creationDate: Date?
     
+    // From APISiteView
+    var userCount: Int?
+    var communityCount: Int?
+    var postCount: Int?
+    var commentCount: Int?
+    var activeUserCount: ActiveUserCount?
+    
+    // From APILocalSite (only accessible via SiteResponse)
+    var `private`: Bool?
+    var federates: Bool?
+    var federationSignedFetch: Bool?
+    var allowsDownvotes: Bool?
+    var allowsNSFW: Bool?
+    var allowsCommunityCreation: Bool?
+    var requiresEmailVerification: Bool?
     var slurFilterRegex: Regex<AnyRegexOutput>?
+    var slurFilterString: String?
+    var captchaDifficulty: APICaptchaDifficulty?
+    var registrationMode: APIRegistrationMode?
+    var defaultFeedType: APIListingType?
+    var hideModlogModNames: Bool?
+    var applicationsEmailAdmins: Bool?
+    var reportsEmailAdmins: Bool?
     
     init(from response: SiteResponse) {
-        self.update(with: response)
+        update(with: response)
+    }
+    
+    init(from siteView: APISiteView) {
+        update(with: siteView)
     }
     
     init(from site: APISite) {
-        self.update(with: site)
+        update(with: site)
     }
     
+    init(from stub: InstanceStub) {
+        update(with: stub)
+    }
+    
+    var name: String { url.host() ?? displayName }
+    
     mutating func update(with response: SiteResponse) {
-        self.administrators = response.admins.map {
+        administrators = response.admins.map {
             var user = UserModel(from: $0)
             user.usesExternalData = true
             user.isAdmin = true
             return user
         }
-        self.version = SiteVersion(response.version)
+        version = SiteVersion(response.version)
         
         let localSite = response.siteView.localSite
-        
+        allowsDownvotes = localSite.enableDownvotes
+        allowsNSFW = localSite.enableNsfw
+        allowsCommunityCreation = !localSite.communityCreationAdminOnly
+        requiresEmailVerification = localSite.requireEmailVerification
+        captchaDifficulty = localSite.captchaEnabled ? localSite.captchaDifficulty : nil
+        self.private = localSite.privateInstance
+        federates = localSite.federationEnabled
+        federationSignedFetch = localSite.federationSignedFetch
+        defaultFeedType = localSite.defaultPostListingType
+        hideModlogModNames = localSite.hideModlogModNames
+        applicationsEmailAdmins = localSite.applicationEmailAdmins
+        reportsEmailAdmins = localSite.reportsEmailAdmins
+
+        registrationMode = localSite.registrationMode
         do {
             if let regex = localSite.slurFilterRegex {
-                self.slurFilterRegex = try .init(regex)
+                slurFilterString = regex
+                slurFilterRegex = try .init(regex)
             }
         } catch {
             print("Invalid slur filter regex")
         }
-
-        self.update(with: response.siteView.site)
+        
+        update(with: response.siteView)
+    }
+    
+    mutating func update(with siteView: APISiteView) {
+        userCount = siteView.counts.users
+        communityCount = siteView.counts.communities
+        postCount = siteView.counts.posts
+        commentCount = siteView.counts.comments
+        
+        activeUserCount = .init(
+            sixMonths: siteView.counts.usersActiveHalfYear,
+            month: siteView.counts.usersActiveMonth,
+            week: siteView.counts.usersActiveWeek,
+            day: siteView.counts.usersActiveDay
+        )
+        
+        update(with: siteView.site)
     }
     
     mutating func update(with site: APISite) {
-        instanceId = site.id
-        name = site.name
+        displayName = site.name
         description = site.sidebar
         avatar = site.iconUrl
         banner = site.bannerUrl
+        creationDate = site.published
         
         if var components = URLComponents(string: site.inboxUrl) {
             components.path = ""
             url = components.url
+        }
+    }
+    
+    mutating func update(with stub: InstanceStub) {
+        displayName = stub.name
+        url = URL(string: "https://\(stub.host)")
+        version = stub.version
+        userCount = stub.userCount
+        if let avatar = stub.avatar {
+            self.avatar = URL(string: avatar)
         }
     }
     
@@ -82,11 +154,12 @@ extension InstanceModel: Identifiable {
 
 extension InstanceModel: Hashable {
     static func == (lhs: InstanceModel, rhs: InstanceModel) -> Bool {
-        return lhs.hashValue == rhs.hashValue
+        lhs.hashValue == rhs.hashValue
     }
     
     /// Hashes all fields for which state changes should trigger view updates.
     func hash(into hasher: inout Hasher) {
-        hasher.combine(instanceId)
+        hasher.combine(url)
+        hasher.combine(creationDate)
     }
 }

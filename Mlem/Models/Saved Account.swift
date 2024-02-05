@@ -13,7 +13,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
     let accessToken: String
     var siteVersion: SiteVersion?
     let username: String
-    let storedNickname: String?
+    var storedNickname: String?
     let avatarUrl: URL?
     var lastUsed: Date? // nil when loading SavedAccounts from before this was added
     
@@ -99,11 +99,11 @@ extension SavedAccount {
     
     /// Sort by instance and then by username
     var instanceSortKey: String {
-        return "\(instanceLink.host() ?? "unknown")\(nickname)"
+        "\(instanceLink.host() ?? "unknown")\(nickname)"
     }
     
     // Sort by nickname and then by instance
     var nicknameSortKey: String {
-        return "\(nickname)\(instanceLink.host() ?? "unknown")"
+        "\(nickname)\(instanceLink.host() ?? "unknown")"
     }
 }

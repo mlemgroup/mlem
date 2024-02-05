@@ -99,6 +99,7 @@ struct UserFeedView: View {
             VStack(spacing: 0) {
                 FeedPost(
                     post: post,
+                    postTracker: privatePostTracker,
                     showPostCreator: false,
                     showCommunity: true
                 )
@@ -112,11 +113,13 @@ struct UserFeedView: View {
     private func commentEntry(for comment: HierarchicalComment) -> some View {
         VStack(spacing: 0) {
             CommentItem(
+                commentTracker: privateCommentTracker,
                 hierarchicalComment: comment,
                 postContext: nil,
                 indentBehaviour: .never,
                 showPostContext: true,
-                showCommentCreator: false
+                showCommentCreator: false,
+                pageContext: .profile
             )
             
             Divider()

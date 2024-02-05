@@ -37,10 +37,16 @@ struct ContentView: View {
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
     @AppStorage("allowTabBarSwipeUpGesture") var allowTabBarSwipeUpGesture: Bool = true
-    
+    @AppStorage("appLock") var appLock: AppLock = .disabled
+
     @StateObject private var quickLookState: ImageDetailSheetState = .init()
-    
+    @StateObject var biometricUnlock = BiometricUnlock()
+
     var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
+
+    var isAppLocked: Bool {
+        appLock != .disabled && !biometricUnlock.isUnlocked
+    }
     
     var body: some View {
         FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
@@ -56,7 +62,7 @@ struct ContentView: View {
                 // wrapping these two behind a check for an active user, as of now we'll always have one
                 // but when guest mode arrives we'll either omit these entirely, or replace them with a
                 // guest mode specific tab for sign in / change instance screen.
-                if let account = appState.currentActiveAccount {
+                if appState.currentActiveAccount != nil {
                     InboxView()
                         .fancyTabItem(tag: TabSelection.inbox) {
                             FancyTabBarLabel(
@@ -68,18 +74,18 @@ struct ContentView: View {
                 }
                     
                 ProfileView()
-                .fancyTabItem(tag: TabSelection.profile) {
-                    FancyTabBarLabel(
-                        tag: TabSelection.profile,
-                        customText: appState.tabDisplayName,
-                        symbolConfiguration: .init(
-                            symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
-                            activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
-                            remoteSymbolUrl: appState.profileTabRemoteSymbolUrl
+                    .fancyTabItem(tag: TabSelection.profile) {
+                        FancyTabBarLabel(
+                            tag: TabSelection.profile,
+                            customText: appState.tabDisplayName,
+                            symbolConfiguration: .init(
+                                symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
+                                activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
+                                remoteSymbolUrl: appState.profileTabRemoteSymbolUrl
+                            )
                         )
-                    )
-                    .simultaneousGesture(accountSwitchLongPress)
-                }
+                        .simultaneousGesture(accountSwitchLongPress)
+                    }
                 
                 SearchRoot()
                     .fancyTabItem(tag: TabSelection.search) {
@@ -124,8 +130,12 @@ struct ContentView: View {
             )
         }
         .sheet(isPresented: $isPresentingAccountSwitcher) {
-            QuickSwitcherView()
-                .presentationDetents([.medium, .large])
+            if accountsTracker.savedAccounts.count == 1 {
+                AddSavedInstanceView(onboarding: false)
+            } else {
+                QuickSwitcherView()
+                    .presentationDetents([.medium, .large])
+            }
         }
         .sheet(item: $editorTracker.editResponse) { editing in
             NavigationStack {
@@ -164,6 +174,12 @@ struct ContentView: View {
             if phase != .active {
                 isPresentingAccountSwitcher = false
             }
+            if phase == .background || phase == .inactive, appLock != .disabled {
+                biometricUnlock.isUnlocked = false
+            }
+        }
+        .fullScreenCover(isPresented: .constant(isAppLocked)) {
+            AppLockView(biometricUnlock: biometricUnlock)
         }
     }
     
@@ -183,7 +199,7 @@ struct ContentView: View {
     }
     
     func showAccountSwitcherDragCallback() {
-        if !homeButtonExists, allowTabBarSwipeUpGesture, accountsTracker.savedAccounts.count > 2 {
+        if !homeButtonExists, allowTabBarSwipeUpGesture, accountsTracker.savedAccounts.count > 1 {
             isPresentingAccountSwitcher = true
         }
     }
@@ -193,14 +209,16 @@ struct ContentView: View {
             .onEnded { _ in
                 // disable long press in accessibility mode to prevent conflict with HUD
                 if !accessibilityFont {
-                    if accountsTracker.savedAccounts.count > 2 {
+                    if UserDefaults.standard.bool(forKey: "allowQuickSwitcherLongPressGesture") {
                         hapticManager.play(haptic: .rigidInfo, priority: .high)
-                        isPresentingAccountSwitcher = true
-                    } else if accountsTracker.savedAccounts.count == 2 {
-                        hapticManager.play(haptic: .rigidInfo, priority: .high)
-                        for account in accountsTracker.savedAccounts where account != appState.currentActiveAccount {
-                            setFlow(.account(account))
-                            break
+                        if accountsTracker.savedAccounts.count == 2 {
+                            hapticManager.play(haptic: .rigidInfo, priority: .high)
+                            for account in accountsTracker.savedAccounts where account != appState.currentActiveAccount {
+                                setFlow(.account(account))
+                                break
+                            }
+                        } else {
+                            isPresentingAccountSwitcher = true
                         }
                     }
                 }

@@ -51,6 +51,7 @@ struct CommentSettingsView: View {
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
     
     @AppStorage("showCommentJumpButton") var showCommentJumpButton: Bool = true
+    @AppStorage("collapseChildComments") var collapseChildComments: Bool = false
     @AppStorage("commentJumpButtonSide") var commentJumpButtonSide: JumpButtonLocation = .bottomTrailing
     
     var body: some View {
@@ -60,6 +61,11 @@ struct CommentSettingsView: View {
                     settingPictureSystemName: Icons.compactPost,
                     settingName: "Compact Comments",
                     isTicked: $compactComments
+                )
+                SwitchableSettingsItem(
+                    settingPictureSystemName: Icons.collapseComments,
+                    settingName: "Collapse Comments",
+                    isTicked: $collapseChildComments
                 )
                 
                 NavigationLink(.commentSettings(.layoutWidget)) {

@@ -21,6 +21,8 @@ struct AdvancedSettingsView: View {
                     settingName: "Developer Mode",
                     isTicked: $developerMode
                 )
+            } footer: {
+                Text("Shows additional technical information.")
             }
             
             Section {

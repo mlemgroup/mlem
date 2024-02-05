@@ -15,7 +15,7 @@ import SwiftUI
 struct CommunityFeedView: View {
     enum Tab: String, Identifiable, CaseIterable {
         var id: Self { self }
-        case posts, about, moderators, statistics
+        case posts, about, moderators, details
     }
     
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = true
@@ -24,6 +24,10 @@ struct CommunityFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.communityRepository) var communityRepository
+    
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.scrollViewProxy) var scrollProxy
+    @Environment(\.navigationPathWithRoutes) private var navigationPath
     
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var editorTracker: EditorTracker
@@ -52,7 +56,7 @@ struct CommunityFeedView: View {
     }
     
     var availableTabs: [Tab] {
-        var output: [Tab] = [.posts, .moderators, .statistics]
+        var output: [Tab] = [.posts, .moderators, .details]
         if communityModel.description != nil {
             output.insert(.about, at: 1)
         }
@@ -126,6 +130,14 @@ struct CommunityFeedView: View {
                     )
                 }
             }
+            .hoistNavigation {
+                if let scrollProxy {
+                    withAnimation {
+                        scrollProxy.scrollTo(scrollToTop)
+                    }
+                }
+                return !scrollToTopAppeared
+            }
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarColor(visibility: .automatic)
     }
@@ -144,7 +156,7 @@ struct CommunityFeedView: View {
                 case .posts: posts()
                 case .about: about()
                 case .moderators: moderators()
-                case .statistics: statistics()
+                case .details: details()
                 }
             }
         }
@@ -175,9 +187,9 @@ struct CommunityFeedView: View {
         }
     }
     
-    func statistics() -> some View {
+    func details() -> some View {
         VStack(spacing: 0) {
-            CommunityStatsView(community: communityModel)
+            CommunityDetailsView(community: communityModel)
                 .padding(.vertical, 16)
                 .background(Color(uiColor: .systemGroupedBackground))
             
@@ -279,7 +291,6 @@ struct CommunityFeedView: View {
                 hapticManager.play(haptic: .lightSuccess, priority: .low)
                 print("tapped subscribe")
                 Task {
-                    var community = communityModel
                     do {
                         if communityModel.favorited {
                             print("favorited")
@@ -289,7 +300,7 @@ struct CommunityFeedView: View {
                             try confirmDestructive(destructiveFunction: communityModel.subscribeMenuFunction { communityModel = $0 })
                         } else {
                             print("not subscribed")
-                            try await community.toggleSubscribe { item in
+                            try await communityModel.toggleSubscribe { item in
                                 DispatchQueue.main.async { communityModel = item }
                             }
                         }
@@ -301,7 +312,6 @@ struct CommunityFeedView: View {
             .simultaneousGesture(LongPressGesture().onEnded { _ in
                 hapticManager.play(haptic: .lightSuccess, priority: .low)
                 Task {
-                    var community = communityModel
                     do {
                         // TODO: this doesn't update view state when favoriting, but it does when unfavoriting
                         try await communityModel.toggleFavorite { item in

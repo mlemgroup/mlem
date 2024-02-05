@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 22/12/2023.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct AccountSwitcherSettingsView: View {
     @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
@@ -31,8 +31,20 @@ struct AccountSwitcherSettingsView: View {
                 .listRowBackground(Color(.systemGroupedBackground))
             }
             AccountListView()
+            NavigationLink(.settings(.quickSwitcher)) {
+                Label {
+                    VStack(alignment: .leading) {
+                        Text("Quick Switcher")
+                        Text("Switch accounts quickly from anywhere.")
+                            .foregroundStyle(.secondary)
+                            .font(.footnote)
+                    }
+                } icon: {
+                    Image(systemName: "platter.filled.bottom.iphone")
+                }
+                .labelStyle(SquircleLabelStyle(color: .teal))
+            }
         }
         .fancyTabScrollCompatible()
     }
-    
 }

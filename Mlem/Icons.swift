@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 /// SFSymbol names for icons
-struct Icons {
+enum Icons {
     // votes
     static let votes: String = "arrow.up.arrow.down.square"
     static let upvote: String = "arrow.up"
@@ -108,6 +108,7 @@ struct Icons {
     static let bannedFlair: String = "multiply.circle"
     
     // entities/general Lemmy concepts
+    static let federation: String = "point.3.filled.connected.trianglepath.dotted"
     static let instance: String = "server.rack"
     static let user: String = "person.crop.circle"
     static let userFill: String = "person.crop.circle.fill"
@@ -143,6 +144,7 @@ struct Icons {
     static let favoriteFill: String = "star.fill"
     static let unfavorite: String = "star.slash"
     static let unfavoriteFill: String = "star.slash.fill"
+    static let person: String = "person"
     static let personFill: String = "person.fill"
     static let close: String = "multiply"
     static let cakeDay: String = "birthday.cake"
@@ -186,11 +188,14 @@ struct Icons {
     static let leftRight: String = "arrow.left.arrow.right"
     static let developerMode: String = "wrench.adjustable.fill"
     static let limitImageHeightSetting: String = "rectangle.compress.vertical"
-    static let swipeUpGestureSetting: String = "arrow.up.to.line.alt"
+    static let appLockSettings: String = "lock.app.dashed"
     static let collapseComments: String = "arrow.down.and.line.horizontal.and.arrow.up"
     static let ban: String = "xmark.circle"
     
     // misc
+    static let `private`: String = "lock"
+    static let email: String = "envelope"
+    static let photo: String = "photo"
     static let switchUser: String = "person.crop.circle.badge.plus"
     static let missing: String = "questionmark.square.dashed"
     static let connection: String = "antenna.radiowaves.left.and.right"

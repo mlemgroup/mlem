@@ -13,7 +13,7 @@ struct RecentSearchesView: View {
     @StateObject var contentTracker: ContentTracker<AnyContentModel> = .init()
     
     func deleteSwipeAction(_ item: AnyContentModel) -> SwipeAction {
-        return SwipeAction(
+        SwipeAction(
             symbol: .init(emptyName: Icons.close, fillName: Icons.close),
             color: .red,
             action: {
@@ -89,6 +89,12 @@ struct RecentSearchesView: View {
                             contentTracker.update(with: AnyContentModel($0))
                         }
                     )
+                } else if let instance = contentModel.wrappedValue as? InstanceModel {
+                    InstanceResultView(
+                        instance,
+                        complications: .withTypeLabel,
+                        swipeActions: .init(trailingActions: [deleteSwipeAction(contentModel)])
+                    )
                 }
             }
             .simultaneousGesture(TapGesture().onEnded {
@@ -120,7 +126,6 @@ struct RecentSearchesView: View {
 }
 
 struct RecentSearchesViewPreview: View {
-    
     @StateObject var appState: AppState = .init()
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
 
