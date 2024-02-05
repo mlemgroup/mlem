@@ -133,34 +133,23 @@ struct CachedImage: View {
                                 onTapCallback?()
                             }
                     }
-                    .if(hasContextMenu) { content in
+                    .if(hasContextMenu && fixedSize == nil) { content in
                         content
-                            .contextMenu {
-                                if hasContextMenu, let url {
-                                    Button("Save", systemImage: Icons.import) {
-                                        Task {
-                                            do {
-                                                let (data, _) = try await ImagePipeline.shared.data(for: url)
-                                                let imageSaver = ImageSaver()
-                                                imageSaver.writeToPhotoAlbum(imageData: data)
-                                                await notifier.add(.success("Image saved"))
-                                            } catch {
-                                                print(String(describing: error))
-                                            }
-                                        }
-                                    }
-                                    
-                                }
-                                ShareLink(item: image, preview: .init("photo", image: image))
-                            } preview: {
+                            .contextMenu { contextMenuActions(image: image) }
+                    }
+                    .if(hasContextMenu && fixedSize != nil) { content in
+                        content
+                            .contextMenu { contextMenuActions(image: image) } preview: {
                                 image
                                     .resizable()
                                     .onTapGesture {
                                         imageDetailSheetState.url = url
                                         onTapCallback?()
                                     }
+                                    .transition(.identity)
                             }
                     }
+    
             } else if state.error != nil {
                 // Indicates an error
                 imageNotFound()
@@ -188,6 +177,26 @@ struct CachedImage: View {
                 shouldRecomputeSize = false
             }
         }
+    }
+    
+    @ViewBuilder
+    func contextMenuActions(image: Image) -> some View {
+        if hasContextMenu, let url {
+            Button("Save", systemImage: Icons.import) {
+                Task {
+                    do {
+                        let (data, _) = try await ImagePipeline.shared.data(for: url)
+                        let imageSaver = ImageSaver()
+                        imageSaver.writeToPhotoAlbum(imageData: data)
+                        await notifier.add(.success("Image saved"))
+                    } catch {
+                        print(String(describing: error))
+                    }
+                }
+            }
+            
+        }
+        ShareLink(item: image, preview: .init("photo", image: image))
     }
     
     static func imageNotFoundDefault() -> AnyView {
