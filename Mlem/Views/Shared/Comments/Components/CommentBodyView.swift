@@ -36,7 +36,12 @@ struct CommentBodyView: View {
     }
     
     var showLinkCaptions: Bool {
-        easyTapLinkDisplayMode == .large ? true : !compactComments
+        switch easyTapLinkDisplayMode {
+        case .large: true
+        case .compact: false
+        case .contextual: !compactComments
+        case .disabled: true // doesn't matter, just needs some value
+        }
     }
     
     var spacing: CGFloat { compactComments ? AppConstants.compactSpacing : AppConstants.postAndCommentSpacing }
