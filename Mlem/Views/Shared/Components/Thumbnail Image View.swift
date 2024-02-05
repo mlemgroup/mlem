@@ -57,7 +57,7 @@ struct ThumbnailImageView: View {
                     }
                     .frame(width: size.width, height: size.height, alignment: .topLeading)
                 }
-                .ifLet(post.linkUrl) { url, content in
+                .ifLet(post.post.linkUrl) { url, content in
                     content
                         .contextMenu {
                             Button("Open", systemImage: Icons.browser) {
