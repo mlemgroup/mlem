@@ -299,6 +299,7 @@ struct ExpandedPost: View {
         LazyVStack(alignment: .leading, spacing: 0) {
             ForEach(commentTracker.commentsView, id: \.commentView.comment.id) { comment in
                 CommentItem(
+                    commentTracker: commentTracker,
                     hierarchicalComment: comment,
                     postContext: post,
                     showPostContext: false,
