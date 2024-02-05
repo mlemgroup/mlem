@@ -81,7 +81,7 @@ struct AggregateFeedView: View {
             .task(id: selectedFeed) {
                 if let selectedFeed {
                     switch selectedFeed {
-                    case .all, .local:
+                    case .all, .local, .subscribed:
                         await postTracker.changeFeedType(to: selectedFeed)
                         postTracker.isStale = false
                     default:
