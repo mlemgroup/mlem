@@ -92,7 +92,14 @@ struct AggregateFeedView: View {
             .refreshable {
                 await Task {
                     do {
-                        _ = try await postTracker.refresh(clearBeforeRefresh: false)
+                        switch selectedFeed {
+                        case .all, .local, .subscribed:
+                            _ = try await postTracker.refresh(clearBeforeRefresh: false)
+                        case .saved:
+                            _ = try await savedContentTracker.refresh(clearBeforeRefresh: false)
+                        default:
+                            assertionFailure("Tried to refresh with invalid feed type \(String(describing: selectedFeed))")
+                        }
                     } catch {
                         errorHandler.handle(error)
                     }
