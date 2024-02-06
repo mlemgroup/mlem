@@ -74,6 +74,13 @@ extension LinkType: Hashable, Identifiable {
     }
     
     var id: Int { hashValue }
+    
+    var isWebsite: Bool {
+        if case .website = self {
+            return true
+        }
+        return false
+    }
 }
 
 enum EasyTapLinkDisplayMode: String, SettingsOptions {
@@ -113,12 +120,18 @@ struct EasyTapLinkView: View {
         .padding(AppConstants.postAndCommentSpacing)
         .background(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
             .foregroundColor(Color(UIColor.secondarySystemBackground)))
-        .contextMenu {
-            Button("Copy", systemImage: Icons.copy) {
-                let pasteboard = UIPasteboard.general
-                pasteboard.url = linkType.url
-            }
-            ShareLink(item: linkType.url)
+        .if(linkType.isWebsite) { content in
+            content
+                .contextMenu {
+                    Button("Open", systemImage: Icons.browser) {
+                        openURL(linkType.url)
+                    }
+                    Button("Copy", systemImage: Icons.copy) {
+                        let pasteboard = UIPasteboard.general
+                        pasteboard.url = linkType.url
+                    }
+                    ShareLink(item: linkType.url)
+                } preview: { WebView(url: linkType.url) }
         }
     }
     
