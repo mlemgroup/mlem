@@ -93,62 +93,50 @@ struct CachedImage: View {
     var body: some View {
         LazyImage(url: url) { state in
             if let imageContainer = state.imageContainer {
-                let image = Image(uiImage: imageContainer.image)
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: contentMode)
-                    .cornerRadius(cornerRadius)
-                    .frame(idealWidth: size.width, maxHeight: size.height)
-                    .if(fixedSize == nil) { content in
-                        content.frame(idealWidth: size.width, maxHeight: size.height)
-                    }
-                    .ifLet(fixedSize) { fixedSize, content in
-                        content.frame(width: fixedSize.width, height: fixedSize.height)
-                    }
-                    .blur(radius: blurRadius)
-                    .clipped()
-                    .allowsHitTesting(false)
-                    .overlay(alignment: .top) {
-                        // weeps in janky hack but this lets us tap the image only in the area we want
-                        Rectangle()
-                            .frame(maxHeight: size.height)
-                            .opacity(0.00000000001)
-                    }
-                    .onAppear {
-                        // if the image appears and its size isn't cached, compute its size and cache it
-                        if shouldRecomputeSize {
-                            let ratio = screenWidth / imageContainer.image.size.width
-                            size = CGSize(
-                                width: screenWidth,
-                                height: min(maxHeight, imageContainer.image.size.height * ratio)
-                            )
-                            cacheImageSize()
-                            shouldRecomputeSize = false
+                let baseImage = Image(uiImage: imageContainer.image)
+                let coreImage = coreImage(imageContainer: imageContainer)
+                
+                imageWithTapGestures(image: coreImage)
+                    .contextMenu {
+                        if hasContextMenu {
+                            contextMenuActions(image: Image(uiImage: imageContainer.image))
+                        }
+                    } preview: {
+                        if fixedSize != nil {
+                            baseImage
+                                .resizable()
+                                .onTapGesture {
+                                    imageDetailSheetState.url = url
+                                    onTapCallback?()
+                                }
+                                .transition(.identity)
+                        } else {
+                            EmptyView()
                         }
                     }
-                    .if(shouldExpand) { content in
-                        content
-                            .onTapGesture {
-                                imageDetailSheetState.url = url // show image detail
-                                onTapCallback?()
-                            }
-                    }
-                    .if(hasContextMenu && fixedSize == nil) { content in
-                        content
-                            .contextMenu { contextMenuActions(image: image) }
-                    }
-                    .if(hasContextMenu && fixedSize != nil) { content in
-                        content
-                            .contextMenu { contextMenuActions(image: image) } preview: {
-                                image
-                                    .resizable()
-                                    .onTapGesture {
-                                        imageDetailSheetState.url = url
-                                        onTapCallback?()
-                                    }
-                                    .transition(.identity)
-                            }
-                    }
+//                    .if(shouldExpand) { content in
+//                        content
+//                            .onTapGesture {
+//                                imageDetailSheetState.url = url // show image detail
+//                                onTapCallback?()
+//                            }
+//                    }
+//                    .if(hasContextMenu && fixedSize == nil) { content in
+//                        content
+//                            .contextMenu { contextMenuActions(image: image) }
+//                    }
+//                    .if(hasContextMenu && fixedSize != nil) { content in
+//                        content
+//                            .contextMenu { contextMenuActions(image: image) } preview: {
+//                                image
+//                                    .resizable()
+//                                    .onTapGesture {
+//                                        imageDetailSheetState.url = url
+//                                        onTapCallback?()
+//                                    }
+//                                    .transition(.identity)
+//                            }
+//                    }
     
             } else if state.error != nil {
                 // Indicates an error
@@ -179,6 +167,55 @@ struct CachedImage: View {
         }
     }
     
+    @ViewBuilder func coreImage(imageContainer: ImageContainer) -> some View {
+        Image(uiImage: imageContainer.image)
+            .resizable()
+            .aspectRatio(contentMode: contentMode)
+            .cornerRadius(cornerRadius)
+            .frame(idealWidth: size.width, maxHeight: size.height)
+            .if(fixedSize == nil) { content in
+                content.frame(idealWidth: size.width, maxHeight: size.height)
+            }
+            .ifLet(fixedSize) { fixedSize, content in
+                content.frame(width: fixedSize.width, height: fixedSize.height)
+            }
+            .blur(radius: blurRadius)
+            .clipped()
+            .allowsHitTesting(false)
+            .overlay(alignment: .top) {
+                // weeps in janky hack but this lets us tap the image only in the area we want
+                Rectangle()
+                    .frame(maxHeight: size.height)
+                    .opacity(0.00000000001)
+            }
+            .onAppear {
+                // if the image appears and its size isn't cached, compute its size and cache it
+                if shouldRecomputeSize {
+                    let ratio = screenWidth / imageContainer.image.size.width
+                    size = CGSize(
+                        width: screenWidth,
+                        height: min(maxHeight, imageContainer.image.size.height * ratio)
+                    )
+                    cacheImageSize()
+                    shouldRecomputeSize = false
+                }
+            }
+    }
+    
+    @ViewBuilder func imageWithTapGestures(image: some View) -> some View {
+        if shouldExpand {
+            image
+                .onTapGesture {
+                    if shouldExpand {
+                        imageDetailSheetState.url = url // show image detail
+                        onTapCallback?()
+                    }
+                }
+        } else {
+            image
+        }
+    }
+    
     @ViewBuilder
     func contextMenuActions(image: Image) -> some View {
         if hasContextMenu, let url {
@@ -194,7 +231,6 @@ struct CachedImage: View {
                     }
                 }
             }
-            
         }
         ShareLink(item: image, preview: .init("photo", image: image))
     }
