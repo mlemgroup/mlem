@@ -104,41 +104,7 @@ struct CachedImage: View {
                     } preview: {
                         baseImage
                             .resizable()
-//                        if fixedSize != nil {
-//                            baseImage
-//                                .resizable()
-//                                .onTapGesture {
-//                                    imageDetailSheetState.url = url
-//                                    onTapCallback?()
-//                                }
-//                                .transition(.identity)
-//                        } else {
-//                            baseImage
-//                        }
                     }
-//                    .if(shouldExpand) { content in
-//                        content
-//                            .onTapGesture {
-//                                imageDetailSheetState.url = url // show image detail
-//                                onTapCallback?()
-//                            }
-//                    }
-//                    .if(hasContextMenu && fixedSize == nil) { content in
-//                        content
-//                            .contextMenu { contextMenuActions(image: image) }
-//                    }
-//                    .if(hasContextMenu && fixedSize != nil) { content in
-//                        content
-//                            .contextMenu { contextMenuActions(image: image) } preview: {
-//                                image
-//                                    .resizable()
-//                                    .onTapGesture {
-//                                        imageDetailSheetState.url = url
-//                                        onTapCallback?()
-//                                    }
-//                                    .transition(.identity)
-//                            }
-//                    }
     
             } else if state.error != nil {
                 // Indicates an error
