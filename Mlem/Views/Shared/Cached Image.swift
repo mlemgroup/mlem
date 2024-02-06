@@ -136,18 +136,12 @@ struct CachedImage: View {
     }
     
     @ViewBuilder func coreImage(baseImage: Image, containerSize: CGSize) -> some View {
-        // Image(uiImage: imageContainer.image)
         baseImage
             .resizable()
             .aspectRatio(contentMode: contentMode)
             .cornerRadius(cornerRadius)
             .frame(idealWidth: size.width, maxHeight: size.height)
-            .if(fixedSize == nil) { content in
-                content.frame(idealWidth: size.width, maxHeight: size.height)
-            }
-            .ifLet(fixedSize) { fixedSize, content in
-                content.frame(width: fixedSize.width, height: fixedSize.height)
-            }
+            .fixSize(fixedSize: fixedSize, fallbackSize: size)
             .blur(radius: blurRadius)
             .clipped()
             .allowsHitTesting(false)
@@ -220,5 +214,24 @@ struct CachedImage: View {
         if let url {
             AppConstants.imageSizeCache.setObject(ImageSize(size: size), forKey: NSString(string: url.description))
         }
+    }
+}
+
+private struct OptionalFixedSizeImage: ViewModifier {
+    let fixedSize: CGSize?
+    let fallbackSize: CGSize
+    
+    func body(content: Content) -> some View {
+        if let fixedSize {
+            content.frame(width: fixedSize.width, height: fixedSize.height)
+        } else {
+            content.frame(idealWidth: fallbackSize.width, maxHeight: fallbackSize.height)
+        }
+    }
+}
+
+private extension View {
+    func fixSize(fixedSize: CGSize?, fallbackSize: CGSize) -> some View {
+        modifier(OptionalFixedSizeImage(fixedSize: fixedSize, fallbackSize: fallbackSize))
     }
 }
