@@ -94,7 +94,7 @@ struct CachedImage: View {
         LazyImage(url: url) { state in
             if let imageContainer = state.imageContainer {
                 let baseImage = Image(uiImage: imageContainer.image)
-                let coreImage = coreImage(imageContainer: imageContainer)
+                let coreImage = coreImage(baseImage: baseImage, containerSize: imageContainer.image.size)
                 
                 imageWithTapGestures(image: coreImage)
                     .contextMenu {
@@ -135,8 +135,9 @@ struct CachedImage: View {
         }
     }
     
-    @ViewBuilder func coreImage(imageContainer: ImageContainer) -> some View {
-        Image(uiImage: imageContainer.image)
+    @ViewBuilder func coreImage(baseImage: Image, containerSize: CGSize) -> some View {
+        // Image(uiImage: imageContainer.image)
+        baseImage
             .resizable()
             .aspectRatio(contentMode: contentMode)
             .cornerRadius(cornerRadius)
@@ -159,10 +160,10 @@ struct CachedImage: View {
             .onAppear {
                 // if the image appears and its size isn't cached, compute its size and cache it
                 if shouldRecomputeSize {
-                    let ratio = screenWidth / imageContainer.image.size.width
+                    let ratio = screenWidth / containerSize.width
                     size = CGSize(
                         width: screenWidth,
-                        height: min(maxHeight, imageContainer.image.size.height * ratio)
+                        height: min(maxHeight, containerSize.height * ratio)
                     )
                     cacheImageSize()
                     shouldRecomputeSize = false
