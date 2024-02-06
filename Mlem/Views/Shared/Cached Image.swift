@@ -102,17 +102,19 @@ struct CachedImage: View {
                             contextMenuActions(image: Image(uiImage: imageContainer.image))
                         }
                     } preview: {
-                        if fixedSize != nil {
-                            baseImage
-                                .resizable()
-                                .onTapGesture {
-                                    imageDetailSheetState.url = url
-                                    onTapCallback?()
-                                }
-                                .transition(.identity)
-                        } else {
-                            EmptyView()
-                        }
+                        baseImage
+                            .resizable()
+//                        if fixedSize != nil {
+//                            baseImage
+//                                .resizable()
+//                                .onTapGesture {
+//                                    imageDetailSheetState.url = url
+//                                    onTapCallback?()
+//                                }
+//                                .transition(.identity)
+//                        } else {
+//                            baseImage
+//                        }
                     }
 //                    .if(shouldExpand) { content in
 //                        content
