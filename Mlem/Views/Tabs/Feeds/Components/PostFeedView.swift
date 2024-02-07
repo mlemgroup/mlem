@@ -99,7 +99,20 @@ struct PostFeedView: View {
             if postTracker.items.isEmpty || versionSafePostSort == nil || postTracker.isStale {
                 noPostsView()
             } else {
-                ForEach(postTracker.items, id: \.uid) { feedPost(for: $0) }
+                ForEach(Array(postTracker.items.enumerated()), id: \.element.uid) { index, element in
+                    feedPost(for: element)
+                        .onAppear {
+                            if index >= postSize.markReadThreshold {
+                                Task {
+                                    await postTracker.items[index - postSize.markReadThreshold].markRead(true)
+                                }
+                            } else {
+                                Task {
+                                    await element.markRead(true)
+                                }
+                            }
+                        }
+                }
                 EndOfFeedView(loadingState: postTracker.loadingState, viewType: .hobbit)
             }
         }
@@ -120,7 +133,9 @@ struct PostFeedView: View {
             
             Divider()
         }
-        .onAppear { postTracker.loadIfThreshold(post) }
+        .onAppear {
+            postTracker.loadIfThreshold(post)
+        }
         .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
     }
     
