@@ -7,6 +7,7 @@
 
 import Charts
 import Dependencies
+import Foundation
 import SwiftUI
 
 enum InstanceViewTab: String, Identifiable, CaseIterable {
@@ -173,39 +174,7 @@ struct InstanceView: View {
                 }
             }
         }
-        .task {
-            if instance.administrators == nil {
-                do {
-                    if let url = URL(string: "https://\(instance.name)") {
-                        let info = try await apiClient.loadSiteInformation(instanceURL: url)
-                        DispatchQueue.main.async {
-                            withAnimation(.easeOut(duration: 0.2)) {
-                                instance.update(with: info)
-                            }
-                        }
-                    } else {
-                        errorDetails = ErrorDetails(title: "\"\(instance.name)\" is an invalid URL.")
-                    }
-                } catch let APIClientError.decoding(data, error) {
-                    withAnimation(.easeOut(duration: 0.2)) {
-                        if let content = String(data: data, encoding: .utf8),
-                           content.contains("<div class=\"kbin-container\">") {
-                            errorDetails = ErrorDetails(
-                                title: "KBin Instance",
-                                body: "We can't yet display KBin details.",
-                                icon: Icons.federation
-                            )
-                        } else {
-                            errorDetails = ErrorDetails(error: APIClientError.decoding(data, error))
-                        }
-                    }
-                } catch {
-                    withAnimation(.easeOut(duration: 0.2)) {
-                        errorDetails = ErrorDetails(error: error)
-                    }
-                }
-            }
-        }
+        .onAppear(perform: attemptToLoadInstanceData)
         .fancyTabScrollCompatible()
         .hoistNavigation {
             if navigationPath.isEmpty {
@@ -238,27 +207,18 @@ struct InstanceView: View {
             .padding(.horizontal, AppConstants.postAndCommentSpacing)
             .padding(.top, 10)
         VStack(spacing: 5) {
-            if errorDetails == nil {
-                Text(instance.displayName)
-                    .font(.title)
-                    .fontWeight(.semibold)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.01)
-                    .transition(.opacity)
-                    .id("Title" + instance.displayName) // https://stackoverflow.com/a/60136737/17629371
-                Text(subtitleText)
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-                    .transition(.opacity)
-                    .id("Subtitle" + subtitleText)
-            } else {
-                Text(instance.displayName)
-                    .font(.title)
-                    .fontWeight(.semibold)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.01)
-                    .padding(.bottom, 5)
-            }
+            Text(instance.displayName)
+                .font(.title)
+                .fontWeight(.semibold)
+                .lineLimit(1)
+                .minimumScaleFactor(0.01)
+                .transition(.opacity)
+                .id("Title" + instance.displayName) // https://stackoverflow.com/a/60136737/17629371
+            Text(subtitleText)
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+                .transition(.opacity)
+                .id("Subtitle" + subtitleText)
         }
     }
 }

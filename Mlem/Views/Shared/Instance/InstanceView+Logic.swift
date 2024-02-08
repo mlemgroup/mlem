@@ -8,6 +8,55 @@
 import SwiftUI
 
 extension InstanceView {
+    
+    func attemptToLoadInstanceData() {
+        if instance.administrators == nil {
+            Task {
+                do {
+                    if let url = URL(string: "https://\(instance.name)") {
+                        let info = try await apiClient.loadSiteInformation(instanceURL: url)
+                        DispatchQueue.main.async {
+                            withAnimation(.easeOut(duration: 0.2)) {
+                                instance.update(with: info)
+                            }
+                        }
+                    } else {
+                        errorDetails = ErrorDetails(title: "\"\(instance.name)\" is an invalid URL.")
+                    }
+                } catch let APIClientError.decoding(data, error) {
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        if let content = String(data: data, encoding: .utf8),
+                           content.contains("<div class=\"kbin-container\">") {
+                            errorDetails = ErrorDetails(
+                                title: "KBin Instance",
+                                body: "We can't yet display KBin details.",
+                                icon: Icons.federation
+                            )
+                        } else {
+                            errorDetails = ErrorDetails(error: APIClientError.decoding(data, error))
+                        }
+                    }
+                } catch let APIClientError.networking(error) {
+                    if let urlError = error as? URLError {
+                        if urlError.code.rawValue == -1202 {
+                            errorDetails = ErrorDetails(
+                                title: "Cannot reach instance",
+                                body: "It's possible that access to this instance is disallowed by your network.",
+                                error: error
+                            )
+                            return
+                        }
+                    }
+                    errorDetails = ErrorDetails(error: APIClientError.networking(error))
+                } catch {
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        errorDetails = ErrorDetails(error: error)
+                    }
+                }
+            }
+        }
+    }
+    
     func attemptToLoadUptimeData() {
         print("Fetching uptime data...")
         if let url = instance.uptimeDataUrl {

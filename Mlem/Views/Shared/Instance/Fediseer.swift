@@ -55,15 +55,15 @@ struct FediseerInstance: Codable, Equatable {
 }
 
 struct FediseerEndorsements: Codable {
-    let instances: [FediseerEndorsement]
+    var instances: [FediseerEndorsement] = .init()
 }
 
 struct FediseerHesitations: Codable {
-    let instances: [FediseerHesitation]
+    var instances: [FediseerHesitation] = .init()
 }
 
 struct FediseerCensures: Codable {
-    let instances: [FediseerCensure]
+    var instances: [FediseerCensure] = .init()
 }
 
 enum FediseerOpinionType: CaseIterable, Identifiable {
