@@ -227,13 +227,13 @@ private struct IncidentRow: View {
         VStack(alignment: .leading) {
             HStack {
                 if event.duration < 60 * 5 {
-                    Image(systemName: Icons.shortOutage)
+                    Image(systemName: Icons.uptimeShortOutage)
                         .foregroundStyle(.secondary)
                 } else if event.duration < 60 * 30 {
-                    Image(systemName: Icons.uptimeLongOutage)
+                    Image(systemName: Icons.uptimeOutage)
                         .foregroundStyle(.orange)
                 } else {
-                    Image(systemName: Icons.uptimeLongOutage)
+                    Image(systemName: Icons.uptimeOutage)
                         .foregroundStyle(.red)
                 }
                 Text("Unhealthy for \(event.differenceTitle())")
