@@ -88,7 +88,7 @@ struct InstanceUptimeView: View {
                             (Text("\(instance.name) is ") + Text("offline").foregroundColor(.red))
                                 .font(.title2)
                                 .fontWeight(.semibold)
-                            Image(systemName: "xmark.circle.fill")
+                            Image(systemName: Icons.uptimeOffline)
                                 .foregroundStyle(.red)
                         }
                         footnote("Outage started \(mostRecentOutage.startTime.getRelativeTime()).")
@@ -97,7 +97,7 @@ struct InstanceUptimeView: View {
                             (Text("\(instance.name) is ") + Text("unhealthy").foregroundColor(.red))
                                 .font(.title2)
                                 .fontWeight(.semibold)
-                            Image(systemName: "exclamationmark.circle.fill")
+                            Image(systemName: Icons.uptimeOutage)
                                 .foregroundStyle(.red)
                         }
                         footnote("\(instance.name) has been unresponsive recently.")
@@ -107,7 +107,7 @@ struct InstanceUptimeView: View {
                         (Text("\(instance.name) is ") + Text("online").foregroundColor(.green))
                             .font(.title2)
                             .fontWeight(.semibold)
-                        Image(systemName: "checkmark.circle.fill")
+                        Image(systemName: Icons.uptimeOnline)
                             .foregroundStyle(.green)
                     }
                     if mostRecentOutage.endTime != nil {
@@ -129,7 +129,7 @@ struct InstanceUptimeView: View {
             HStack(spacing: 3) {
                 ForEach(uptimeData.results) { result in
                     if diffWithoutColor {
-                        Image(systemName: result.success ? "checkmark.circle.fill" : "xmark.circle.fill")
+                        Image(systemName: result.success ? Icons.uptimeOnline : Icons.uptimeOffline)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .foregroundStyle(result.success ? .green : .red)
@@ -227,13 +227,13 @@ private struct IncidentRow: View {
         VStack(alignment: .leading) {
             HStack {
                 if event.duration < 60 * 5 {
-                    Image(systemName: "ellipsis.circle.fill")
+                    Image(systemName: Icons.shortOutage)
                         .foregroundStyle(.secondary)
                 } else if event.duration < 60 * 30 {
-                    Image(systemName: "exclamationmark.circle.fill")
+                    Image(systemName: Icons.uptimeLongOutage)
                         .foregroundStyle(.orange)
                 } else {
-                    Image(systemName: "exclamationmark.circle.fill")
+                    Image(systemName: Icons.uptimeLongOutage)
                         .foregroundStyle(.red)
                 }
                 Text("Unhealthy for \(event.differenceTitle())")
