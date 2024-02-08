@@ -33,7 +33,7 @@ extension InstanceView {
                                     body: "We can't display KBin instance details.",
                                     icon: Icons.federation
                                 )
-                            } else if content.contains("<body class=\"app-body theme-default no-reduce-motion layout-single-column\">") {
+                            } else if content.contains("- Mastodon</title>") {
                                 errorDetails = ErrorDetails(
                                     title: "Mastodon Instance",
                                     body: "We can't display Mastodon instance details.",
