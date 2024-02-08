@@ -49,7 +49,7 @@ struct InstanceModel {
     init(domainName: String) throws {
         var components = URLComponents()
         components.scheme = "https"
-        components.host = domainName
+        components.host = "mastodon.social"
         if let url = components.url {
             self.url = url
             displayName = name

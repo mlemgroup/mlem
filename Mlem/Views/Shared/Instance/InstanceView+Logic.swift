@@ -25,13 +25,22 @@ extension InstanceView {
                     }
                 } catch let APIClientError.decoding(data, error) {
                     withAnimation(.easeOut(duration: 0.2)) {
-                        if let content = String(data: data, encoding: .utf8),
-                           content.contains("<div class=\"kbin-container\">") {
-                            errorDetails = ErrorDetails(
-                                title: "KBin Instance",
-                                body: "We can't yet display KBin details.",
-                                icon: Icons.federation
-                            )
+                        if let content = String(data: data, encoding: .utf8) {
+                            if content.contains("<div class=\"kbin-container\">") {
+                                errorDetails = ErrorDetails(
+                                    title: "KBin Instance",
+                                    body: "We can't display KBin instance details.",
+                                    icon: Icons.federation
+                                )
+                            } else if content.contains("<body class=\"app-body theme-default no-reduce-motion layout-single-column\">") {
+                                errorDetails = ErrorDetails(
+                                    title: "Mastodon Instance",
+                                    body: "We can't display Mastodon instance details.",
+                                    icon: Icons.federation
+                                )
+                            } else {
+                                errorDetails = ErrorDetails(error: APIClientError.decoding(data, error))
+                            }
                         } else {
                             errorDetails = ErrorDetails(error: APIClientError.decoding(data, error))
                         }
