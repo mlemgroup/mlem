@@ -112,7 +112,7 @@ struct RecentSearchesView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 100)
                 .fontWeight(.thin)
-            Text("Search for communities and users.")
+            Text("Search for communities, users and instances.")
                 .multilineTextAlignment(.center)
         }
         .foregroundStyle(.secondary)

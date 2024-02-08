@@ -79,15 +79,27 @@ struct AggregateFeedView: View {
                 }
             }
             .task(id: selectedFeed) {
-                if let selectedFeed, selectedFeed != .saved {
-                    await postTracker.changeFeedType(to: selectedFeed)
-                    postTracker.isStale = false
+                if let selectedFeed {
+                    switch selectedFeed {
+                    case .all, .local, .subscribed:
+                        await postTracker.changeFeedType(to: selectedFeed)
+                        postTracker.isStale = false
+                    default:
+                        return
+                    }
                 }
             }
             .refreshable {
                 await Task {
                     do {
-                        _ = try await postTracker.refresh(clearBeforeRefresh: false)
+                        switch selectedFeed {
+                        case .all, .local, .subscribed:
+                            _ = try await postTracker.refresh(clearBeforeRefresh: false)
+                        case .saved:
+                            _ = try await savedContentTracker.refresh(clearBeforeRefresh: false)
+                        default:
+                            assertionFailure("Tried to refresh with invalid feed type \(String(describing: selectedFeed))")
+                        }
                     } catch {
                         errorHandler.handle(error)
                     }
@@ -148,7 +160,7 @@ struct AggregateFeedView: View {
                 MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
             }
         } label: {
-            if let selectedFeed {
+            if let selectedFeed, FeedType.allAggregateFeedCases.contains(selectedFeed) {
                 FeedHeaderView(feedType: selectedFeed)
             } else {
                 EmptyView() // shouldn't be possible
