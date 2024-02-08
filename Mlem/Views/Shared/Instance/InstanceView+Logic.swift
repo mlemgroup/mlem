@@ -9,6 +9,7 @@ import SwiftUI
 
 extension InstanceView {
     
+    // swiftlint:disable:next function_body_length
     func attemptToLoadInstanceData() {
         if instance.administrators == nil {
             Task {
