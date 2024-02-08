@@ -199,9 +199,11 @@ struct ContentView: View {
     var accountSwitchLongPress: some Gesture {
         LongPressGesture()
             .onEnded { _ in
+                @AppStorage("allowQuickSwitcherLongPressGesture") var allowQuickSwitcherLongPressGesture: Bool = true
+                
                 // disable long press in accessibility mode to prevent conflict with HUD
                 if !accessibilityFont {
-                    if UserDefaults.standard.bool(forKey: "allowQuickSwitcherLongPressGesture") {
+                    if allowQuickSwitcherLongPressGesture {
                         hapticManager.play(haptic: .rigidInfo, priority: .high)
                         if accountsTracker.savedAccounts.count == 2 {
                             hapticManager.play(haptic: .rigidInfo, priority: .high)

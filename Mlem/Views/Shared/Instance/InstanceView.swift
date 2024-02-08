@@ -49,6 +49,9 @@ struct InstanceView: View {
     
     @State var selectedTab: InstanceViewTab = .about
     
+    var uptimeRefreshTimer = Timer.publish(every: 30, tolerance: 0.5, on: .main, in: .common)
+        .autoconnect()
+    
     init(instance: InstanceModel) {
         var instance = instance
         @Dependency(\.siteInformation) var siteInformation

@@ -33,6 +33,9 @@ struct InstanceUptimeView: View {
                     .padding(.vertical, 15)
             }
             .padding(.top, 20)
+            footnote("Mlem will refresh this automatically every 30 seconds.")
+            .padding(.top, 8)
+            .padding(.leading, 6)
             .padding(.bottom, 30)
             section("Response Time") {
                 VStack(alignment: .leading, spacing: 4) {

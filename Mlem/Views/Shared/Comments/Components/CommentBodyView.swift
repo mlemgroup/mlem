@@ -12,6 +12,7 @@ struct CommentBodyView: View {
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
     @AppStorage("compactComments") var compactComments: Bool = false
     @AppStorage("showCommentDownvotesSeparately") var showCommentDownvotesSeparately: Bool = false
+    @AppStorage("easyTapLinkDisplayMode") var easyTapLinkDisplayMode: EasyTapLinkDisplayMode = .contextual
     
     @Binding var isParentCollapsed: Bool
     @Binding var isCollapsed: Bool
@@ -31,6 +32,15 @@ struct CommentBodyView: View {
             return .trailing
         } else {
             return .bottom
+        }
+    }
+    
+    var showLinkCaptions: Bool {
+        switch easyTapLinkDisplayMode {
+        case .large: true
+        case .compact: false
+        case .contextual: !compactComments
+        case .disabled: true // doesn't matter, just needs some value
         }
     }
     
@@ -94,8 +104,10 @@ struct CommentBodyView: View {
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                         .transition(.markdownView())
                     
-                    ForEach(links) { link in
-                        EasyTapLinkView(linkType: link)
+                    if easyTapLinkDisplayMode != .disabled {
+                        ForEach(links) { link in
+                            EasyTapLinkView(linkType: link, showCaption: showLinkCaptions)
+                        }
                     }
                 }
             }
