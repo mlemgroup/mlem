@@ -48,6 +48,9 @@ struct InstanceView: View {
     
     @State var selectedTab: InstanceViewTab = .about
     
+    var uptimeRefreshTimer = Timer.publish(every: 30, tolerance: 0.5, on: .main, in: .common)
+        .autoconnect()
+    
     init(instance: InstanceModel) {
         var instance = instance
         @Dependency(\.siteInformation) var siteInformation
@@ -185,6 +188,7 @@ struct InstanceView: View {
                                 }
                             }
                             .onAppear(perform: attemptToLoadUptimeData)
+                            .onReceive(uptimeRefreshTimer) { _ in attemptToLoadUptimeData() }
                         default:
                             EmptyView()
                         }
@@ -264,7 +268,8 @@ struct InstanceView: View {
     }
     
     func attemptToLoadUptimeData() {
-        if uptimeData == nil, let url = instance.uptimeDataUrl {
+        print("Fetching uptime data...")
+        if let url = instance.uptimeDataUrl {
             Task {
                 do {
                     let data = try await URLSession.shared.data(from: url).0
