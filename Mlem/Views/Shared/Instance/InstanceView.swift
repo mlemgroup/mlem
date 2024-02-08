@@ -147,6 +147,7 @@ struct InstanceView: View {
                                 }
                             }
                             .onAppear(perform: attemptToLoadUptimeData)
+                            .onReceive(uptimeRefreshTimer) { _ in attemptToLoadUptimeData() }
                         case .safety:
                             Group {
                                 if let fediseerData {
