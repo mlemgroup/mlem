@@ -9,7 +9,8 @@ import SwiftUI
 
 extension InstanceView {
     func attemptToLoadUptimeData() {
-        if uptimeData == nil, let url = instance.uptimeDataUrl {
+        print("Fetching uptime data...")
+        if let url = instance.uptimeDataUrl {
             Task {
                 do {
                     let data = try await URLSession.shared.data(from: url).0
