@@ -119,20 +119,19 @@ struct EasyTapLinkView: View {
         }
         .padding(AppConstants.postAndCommentSpacing)
         .background(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
-            .foregroundColor(Color(UIColor.secondarySystemBackground)))
-        .if(linkType.isWebsite) { content in
-            content
-                .contextMenu {
-                    Button("Open", systemImage: Icons.browser) {
-                        openURL(linkType.url)
-                    }
-                    Button("Copy", systemImage: Icons.copy) {
-                        let pasteboard = UIPasteboard.general
-                        pasteboard.url = linkType.url
-                    }
-                    ShareLink(item: linkType.url)
-                } preview: { WebView(url: linkType.url) }
-        }
+        .foregroundColor(Color(UIColor.secondarySystemBackground)))
+        .contextMenu {
+            if linkType.isWebsite {
+                Button("Open", systemImage: Icons.browser) {
+                    openURL(linkType.url)
+                }
+                Button("Copy", systemImage: Icons.copy) {
+                    let pasteboard = UIPasteboard.general
+                    pasteboard.url = linkType.url
+                }
+                ShareLink(item: linkType.url)
+            }
+        } preview: { WebView(url: linkType.url) }
     }
     
     @ViewBuilder

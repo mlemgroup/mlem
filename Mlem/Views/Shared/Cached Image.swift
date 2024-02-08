@@ -96,16 +96,24 @@ struct CachedImage: View {
                 let baseImage = Image(uiImage: imageContainer.image)
                 let coreImage = coreImage(baseImage: baseImage, containerSize: imageContainer.image.size)
                 
-                imageWithTapGestures(image: coreImage)
-                    .contextMenu {
-                        if hasContextMenu {
-                            contextMenuActions(image: Image(uiImage: imageContainer.image))
+                if fixedSize == nil {
+                    imageWithTapGestures(image: coreImage)
+                        .contextMenu {
+                            if hasContextMenu {
+                                contextMenuActions(image: Image(uiImage: imageContainer.image))
+                            }
                         }
-                    } preview: {
-                        baseImage
-                            .resizable()
-                    }
-    
+                } else {
+                    imageWithTapGestures(image: coreImage)
+                        .contextMenu {
+                            if hasContextMenu {
+                                contextMenuActions(image: Image(uiImage: imageContainer.image))
+                            }
+                        } preview: {
+                            baseImage
+                                .resizable()
+                        }
+                }
             } else if state.error != nil {
                 // Indicates an error
                 imageNotFound()
