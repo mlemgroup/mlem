@@ -34,8 +34,8 @@ struct ExpandedPost: View {
     @Dependency(\.postRepository) var postRepository
     
     // appstorage
-    @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
-    @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = false
+    @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
+    @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = true
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = false
     
     @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = false
