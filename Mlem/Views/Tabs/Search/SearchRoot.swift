@@ -9,14 +9,19 @@ import SwiftUI
 
 struct SearchRoot: View {
     @StateObject private var searchRouter: AnyNavigationPath<AppRoute> = .init()
+    @StateObject private var navigation: Navigation = .init()
     
     var body: some View {
-        NavigationStack(path: $searchRouter.path) {
-            SearchView()
-        }
-        .handleLemmyLinkResolution(navigationPath: .constant(searchRouter))
-        .reselectAction(tab: TabSelection.search) {
-            print("re-selected search")
+        ScrollViewReader { proxy in
+            NavigationStack(path: $searchRouter.path) {
+                SearchView()
+                    .environmentObject(searchRouter)
+                    .tabBarNavigationEnabled(.search, navigation)
+            }
+            .environment(\.scrollViewProxy, proxy)
+            .environment(\.navigationPathWithRoutes, $searchRouter.path)
+            .environment(\.navigation, navigation)
+            .handleLemmyLinkResolution(navigationPath: .constant(searchRouter))
         }
     }
 }

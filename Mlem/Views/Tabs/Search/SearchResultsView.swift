@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct SearchResultsView: View {
-    
     @EnvironmentObject var recentSearchesTracker: RecentSearchesTracker
     @EnvironmentObject var searchModel: SearchModel
     @StateObject var contentTracker: ContentTracker<AnyContentModel> = .init()
@@ -41,21 +40,10 @@ struct SearchResultsView: View {
     @ViewBuilder
     private var tabs: some View {
         HStack {
-            ScrollView(.horizontal) {
-                SearchTabPicker(selected: $searchModel.searchTab)
-                    .padding(.horizontal)
+            BubblePicker(SearchTab.allCases, selected: $searchModel.searchTab) {
+                Text($0.label)
             }
-            .scrollIndicators(.hidden)
-            Group {
-                if contentTracker.isLoading && contentTracker.page == 1 && !shouldLoad {
-                    ProgressView()
-                        .padding(.trailing)
-                        .transition(.opacity)
-                }
-            }
-            .animation(.default, value: contentTracker.isLoading)
         }
-        .padding(.vertical, 4)
     }
 }
 
@@ -64,7 +52,6 @@ struct SearchResultsView: View {
 }
 
 struct SearchResultsViewPreview: View {
-    
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
     @StateObject var searchModel: SearchModel = .init()
     @StateObject var contentTracker: ContentTracker<AnyContentModel> = .init()

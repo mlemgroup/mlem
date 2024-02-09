@@ -10,24 +10,19 @@ import Foundation
 /// Possible routes for navigation links in `Mlem.app`.
 ///
 /// For simple (i.e. linear) navigation flows, you may wish to define a separate set of routes. For example, see `OnboardingRoutes`.
+///
 enum AppRoute: Routable {
-    case communityLinkWithContext(CommunityLinkWithContext)
-    case communitySidebarLinkWithContext(CommunitySidebarLinkWithContext)
-    
-    case apiPostView(APIPostView)
-    case apiPost(APIPost)
-    
     case community(CommunityModel)
+    case instance(String? = nil, InstanceModel? = nil)
     
-    @available(*, deprecated, message: "Use .userProfile instead.")
-    case apiPerson(APIPerson)
-    case userProfile(UserModel)
+    case userProfile(UserModel, communityContext: CommunityModel? = nil)
     
     case postLinkWithContext(PostLinkWithContext)
+    // case newPostLinkWithContext(NewPostLinkWithContext)
     case lazyLoadPostLinkWithContext(LazyLoadPostLinkWithContext)
-    case userModeratorLink(UserModeratorLink)
     
     // MARK: - Settings
+
     case settings(SettingsPage)
     case aboutSettings(AboutSettingsPage)
     case appearanceSettings(AppearanceSettingsPage)
@@ -36,28 +31,16 @@ enum AppRoute: Routable {
     case licenseSettings(LicensesSettingsPage)
     
     // swiftlint:disable cyclomatic_complexity
-    static func makeRoute<V>(_ value: V) throws -> AppRoute where V: Hashable {
+    static func makeRoute(_ value: some Hashable) throws -> AppRoute {
         switch value {
-        case let value as CommunityLinkWithContext:
-            return .communityLinkWithContext(value)
-        case let value as CommunitySidebarLinkWithContext:
-            return .communitySidebarLinkWithContext(value)
-        case let value as APIPostView:
-            return .apiPostView(value)
-        case let value as APIPost:
-            return .apiPost(value)
         case let value as CommunityModel:
             return .community(value)
-        case let value as APIPerson:
-            return .apiPerson(value)
         case let value as UserModel:
             return .userProfile(value)
         case let value as PostLinkWithContext:
             return .postLinkWithContext(value)
         case let value as LazyLoadPostLinkWithContext:
             return .lazyLoadPostLinkWithContext(value)
-        case let value as UserModeratorLink:
-            return .userModeratorLink(value)
         case let value as SettingsPage:
             return .settings(value)
         case let value as AboutSettingsPage:

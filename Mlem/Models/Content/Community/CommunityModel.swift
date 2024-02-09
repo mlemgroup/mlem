@@ -6,140 +6,219 @@
 //
 
 import Dependencies
-import Foundation
+import SwiftUI
+
+struct ActiveUserCount {
+    let sixMonths: Int
+    let month: Int
+    let week: Int
+    let day: Int
+}
 
 struct CommunityModel {
     @Dependency(\.apiClient) private var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.communityRepository) var communityRepository
+    @Dependency(\.notifier) var notifier
+    @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
     
     enum CommunityError: Error {
         case noData
     }
     
     @available(*, deprecated, message: "Use attributes of the CommunityModel directly instead.")
-    var community: APICommunity
+    var community: APICommunity!
     
     // Ids
-    let communityId: Int
-    let instanceId: Int
+    var communityId: Int!
+    var instanceId: Int!
     
     // Text
-    let name: String
-    let displayName: String
-    let description: String?
+    var name: String!
+    var displayName: String!
+    var description: String?
     
     // Images
-    let avatar: URL?
-    let banner: URL?
+    var avatar: URL?
+    var banner: URL?
     
     // State
-    var nsfw: Bool
-    var local: Bool
-    var removed: Bool
-    var deleted: Bool
-    var hidden: Bool
-    var postingRestrictedToMods: Bool
+    var nsfw: Bool!
+    var local: Bool!
+    var removed: Bool!
+    var deleted: Bool!
+    var hidden: Bool!
+    var postingRestrictedToMods: Bool!
+    var favorited: Bool!
+    
+    // Dates
+    var creationDate: Date!
+    var updatedDate: Date?
+    
+    // URLs
+    var communityUrl: URL!
     
     // From APICommunityView
     var blocked: Bool?
     var subscribed: Bool?
     var subscriberCount: Int?
+    var localSubscriberCount: Int?
+    var postCount: Int?
+    var commentCount: Int?
+    var activeUserCount: ActiveUserCount?
     
-    // Dates
-    let creationDate: Date
-    let updatedDate: Date?
-    
-    // URLs
-    let communityUrl: URL
-    
-    // These values are only available via GetCommunityResponse
+    // From GetCommunityResponse
     var site: APISite?
-    var moderators: [APICommunityModeratorView]?
+    var moderators: [UserModel]?
     var discussionLanguages: [Int]?
     var defaultPostLanguage: Int?
     
     init(from response: GetCommunityResponse) {
-        self.init(from: response.communityView)
-        self.site = response.site
-        self.moderators = response.moderators
-        self.discussionLanguages = response.discussionLanguages
-        self.defaultPostLanguage = response.defaultPostLanguage
+        update(with: response)
     }
     
     init(from response: CommunityResponse) {
-        self.init(from: response.communityView)
-        self.discussionLanguages = response.discussionLanguages
+        update(with: response)
     }
     
     init(from communityView: APICommunityView) {
-        self.init(from: communityView.community)
-        self.subscriberCount = communityView.counts.subscribers
-        self.subscribed = communityView.subscribed != .notSubscribed ? true : false
-        self.blocked = communityView.blocked
+        update(with: communityView)
     }
     
-    init(from community: APICommunity) {
+    init(from community: APICommunity, subscribed: Bool? = nil) {
+        update(with: community)
+        if let subscribed {
+            self.subscribed = subscribed
+        }
+    }
+    
+    mutating func update(with response: CommunityResponse) {
+        discussionLanguages = response.discussionLanguages
+        update(with: response.communityView)
+    }
+    
+    mutating func update(with response: GetCommunityResponse) {
+        site = response.site
+        moderators = response.moderators.map { UserModel(from: $0.moderator) }
+        discussionLanguages = response.discussionLanguages
+        defaultPostLanguage = response.defaultPostLanguage
+        update(with: response.communityView)
+    }
+    
+    mutating func update(with communityView: APICommunityView) {
+        subscribed = communityView.subscribed.isSubscribed
+        blocked = communityView.blocked
+        subscriberCount = communityView.counts.subscribers
+        localSubscriberCount = communityView.counts.subscribersLocal
+        postCount = communityView.counts.posts
+        commentCount = communityView.counts.comments
+        activeUserCount = .init(
+            sixMonths: communityView.counts.usersActiveHalfYear,
+            month: communityView.counts.usersActiveMonth,
+            week: communityView.counts.usersActiveWeek,
+            day: communityView.counts.usersActiveDay
+        )
+        update(with: communityView.community)
+    }
+    
+    mutating func update(with community: APICommunity) {
         self.community = community
         
-        self.communityId = community.id
-        self.instanceId = community.instanceId
+        communityId = community.id
+        instanceId = community.instanceId
         
-        self.name = community.name
-        self.displayName = community.title
-        self.description = community.description
+        name = community.name
+        displayName = community.title
+        description = community.description
         
-        self.avatar = community.iconUrl
-        self.banner = community.bannerUrl
+        avatar = community.iconUrl
+        banner = community.bannerUrl
         
-        self.nsfw = community.nsfw
-        self.local = community.local
-        self.removed = community.removed
-        self.deleted = community.deleted
-        self.hidden = community.hidden
-        self.postingRestrictedToMods = community.postingRestrictedToMods
+        nsfw = community.nsfw
+        local = community.local
+        removed = community.removed
+        deleted = community.deleted
+        hidden = community.hidden
+        postingRestrictedToMods = community.postingRestrictedToMods
         
-        self.creationDate = community.published
-        self.updatedDate = community.updated
+        creationDate = community.published
+        updatedDate = community.updated
         
-        self.communityUrl = community.actorId
+        communityUrl = community.actorId
+        
+        @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
+        favorited = favoriteCommunitiesTracker.isFavorited(community)
     }
     
-    mutating func toggleSubscribe(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async throws {
+    func toggleSubscribe(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async throws {
+        var new = self
         guard let subscribed, let subscriberCount else {
             throw CommunityError.noData
         }
-        self.subscribed = !subscribed
+        new.subscribed = !subscribed
         if subscribed {
-            self.subscriberCount = subscriberCount + 1
+            new.subscriberCount = subscriberCount - 1
+            if new.favorited {
+                favoriteCommunitiesTracker.unfavorite(communityId)
+            }
         } else {
-            self.subscriberCount = subscriberCount - 1
+            new.subscriberCount = subscriberCount + 1
         }
-        RunLoop.main.perform { [self] in
-            callback(self)
+        RunLoop.main.perform { [new] in
+            callback(new)
         }
         do {
             let response = try await apiClient.followCommunity(id: communityId, shouldFollow: !subscribed)
-            RunLoop.main.perform {
-                callback(CommunityModel(from: response))
+            new.update(with: response)
+            RunLoop.main.perform { [new] in
+                callback(new)
             }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
-            let phrase = (self.subscribed ?? false) ? "unsubscribe from" : "subscribe to"
+            let phrase = (new.subscribed ?? false) ? "unsubscribe from" : "subscribe to"
             errorHandler.handle(
                 .init(title: "Failed to \(phrase) community", style: .toast, underlyingError: error)
             )
         }
     }
     
-    mutating func toggleBlock(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async throws {
+    func toggleFavorite(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async throws {
+        var new = self
+        new.favorited.toggle()
+        if new.favorited {
+            favoriteCommunitiesTracker.favorite(community)
+            if let subscribed, !subscribed {
+                try await new.toggleSubscribe { community in
+                    var community = community
+                    if !(community.subscribed ?? true) {
+                        print("Subscribe failed, unfavoriting...")
+                        community.favorited = false
+                        favoriteCommunitiesTracker.unfavorite(communityId)
+                    }
+                    callback(community)
+                }
+            } else {
+                RunLoop.main.perform { [new] in
+                    callback(new)
+                }
+            }
+        } else {
+            favoriteCommunitiesTracker.unfavorite(communityId)
+            RunLoop.main.perform { [new] in
+                callback(new)
+            }
+        }
+    }
+    
+    func toggleBlock(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async throws {
+        var new = self
         guard let blocked else {
             throw CommunityError.noData
         }
-        self.blocked = !blocked
-        RunLoop.main.perform { [self] in
-            callback(self)
+        new.blocked = !blocked
+        RunLoop.main.perform { [new] in
+            callback(new)
         }
         do {
             let response: BlockCommunityResponse
@@ -148,8 +227,9 @@ struct CommunityModel {
             } else {
                 response = try await communityRepository.unblockCommunity(id: communityId)
             }
-            RunLoop.main.perform {
-                callback(CommunityModel(from: response.communityView))
+            new.update(with: response.communityView)
+            RunLoop.main.perform { [new] in
+                callback(new)
             }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
@@ -160,6 +240,31 @@ struct CommunityModel {
             )
         }
     }
+    
+    var fullyQualifiedName: String? {
+        if let host = communityUrl.host() {
+            return "\(name!)@\(host)"
+        }
+        return nil
+    }
+    
+    func copyFullyQualifiedName() {
+        let pasteboard = UIPasteboard.general
+        if let fullyQualifiedName {
+            pasteboard.string = "!\(fullyQualifiedName)"
+            Task {
+                await notifier.add(.success("Community Name Copied"))
+            }
+        } else {
+            Task {
+                await notifier.add(.failure("Failed to copy"))
+            }
+        }
+    }
+    
+    static func mock() -> CommunityModel {
+        .init(from: GetCommunityResponse.mock())
+    }
 }
 
 extension CommunityModel: Identifiable {
@@ -168,15 +273,16 @@ extension CommunityModel: Identifiable {
 
 extension CommunityModel: Hashable {
     static func == (lhs: CommunityModel, rhs: CommunityModel) -> Bool {
-        return lhs.hashValue == rhs.hashValue
+        lhs.hashValue == rhs.hashValue
     }
     
     /// Hashes all fields for which state changes should trigger view updates.
     func hash(into hasher: inout Hasher) {
         hasher.combine(uid)
         hasher.combine(subscribed)
+        hasher.combine(favorited)
         hasher.combine(subscriberCount)
         hasher.combine(blocked)
-        hasher.combine(moderators?.map { $0.moderator.id } ?? [])
+        hasher.combine(moderators?.map(\.id) ?? [])
     }
 }

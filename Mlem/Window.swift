@@ -11,6 +11,7 @@ import SwiftUI
 struct Window: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
+    @Dependency(\.accountsTracker) var accountsTracker
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.siteInformation) var siteInformation
@@ -22,12 +23,28 @@ struct Window: View {
     @StateObject var appState: AppState = .init()
 
     @State var flow: AppFlow
+    @State var loadedInitialFlow: Bool = false
 
     var body: some View {
         content
             .id(appState.currentActiveAccount?.id ?? 0)
-            .onChange(of: flow) { _ in flowDidChange() }
-            .onAppear(perform: flowDidChange)
+            .onChange(of: flow) { [flow] _ in
+                switch flow {
+                case let .account(account):
+                    if accountsTracker.savedAccounts.contains(account) {
+                        accountsTracker.update(with: SavedAccount(from: account, lastUsed: .now))
+                    }
+                default:
+                    break
+                }
+                flowDidChange()
+            }
+            .onAppear {
+                if !loadedInitialFlow {
+                    flowDidChange()
+                    loadedInitialFlow = true
+                }
+            }
             .environment(\.setAppFlow, setFlow)
     }
 
@@ -40,9 +57,10 @@ struct Window: View {
             appState.clearActiveAccount()
             favoriteCommunitiesTracker.clearStoredAccount()
         case let .account(account):
-            appState.setActiveAccount(account)
+            siteInformation.myUserInfo = nil
+            appState.setActiveAccount(account, saveChanges: false)
+            siteInformation.load(account: account)
             favoriteCommunitiesTracker.configure(for: account)
-            siteInformation.load()
             
             if let host = account.instanceLink.host(),
                let instance = RecognizedLemmyInstances(rawValue: host) {

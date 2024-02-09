@@ -18,5 +18,6 @@ struct DocumentView: View {
                 .padding()
         }
         .fancyTabScrollCompatible()
+        .hoistNavigation()
     }
 }

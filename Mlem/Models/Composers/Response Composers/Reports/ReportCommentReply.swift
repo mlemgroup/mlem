@@ -14,12 +14,13 @@ struct ReportCommentReply: ResponseEditorModel {
     
     var id: Int { commentReply.id }
     let canUpload: Bool = false
+    let showSlurWarning: Bool = false
     let modalName: String = "Report Comment"
     let prefillContents: String? = nil
     let commentReply: ReplyModel
     
     func embeddedView() -> AnyView {
-        AnyView(InboxReplyView(reply: commentReply)
+        AnyView(InboxReplyBodyView(reply: commentReply)
             .padding(.horizontal))
     }
     

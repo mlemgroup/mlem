@@ -13,7 +13,7 @@ struct RecentSearchesView: View {
     @StateObject var contentTracker: ContentTracker<AnyContentModel> = .init()
     
     func deleteSwipeAction(_ item: AnyContentModel) -> SwipeAction {
-        return SwipeAction(
+        SwipeAction(
             symbol: .init(emptyName: Icons.close, fillName: Icons.close),
             color: .red,
             action: {
@@ -73,14 +73,26 @@ struct RecentSearchesView: View {
             Group {
                 if let community = contentModel.wrappedValue as? CommunityModel {
                     CommunityResultView(
-                        community: community,
-                        showTypeLabel: true,
-                        swipeActions: .init(trailingActions: [deleteSwipeAction(contentModel)])
+                        community,
+                        complications: .withTypeLabel,
+                        swipeActions: .init(trailingActions: [deleteSwipeAction(contentModel)]),
+                        trackerCallback: {
+                            contentTracker.update(with: AnyContentModel($0))
+                        }
                     )
                 } else if let user = contentModel.wrappedValue as? UserModel {
                     UserResultView(
-                        user: user,
-                        showTypeLabel: true,
+                        user,
+                        complications: [.type, .instance, .comments],
+                        swipeActions: .init(trailingActions: [deleteSwipeAction(contentModel)]),
+                        trackerCallback: {
+                            contentTracker.update(with: AnyContentModel($0))
+                        }
+                    )
+                } else if let instance = contentModel.wrappedValue as? InstanceModel {
+                    InstanceResultView(
+                        instance,
+                        complications: .withTypeLabel,
                         swipeActions: .init(trailingActions: [deleteSwipeAction(contentModel)])
                     )
                 }
@@ -100,7 +112,7 @@ struct RecentSearchesView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 100)
                 .fontWeight(.thin)
-            Text("Search for communities and users.")
+            Text("Search for communities, users and instances.")
                 .multilineTextAlignment(.center)
         }
         .foregroundStyle(.secondary)
@@ -114,7 +126,6 @@ struct RecentSearchesView: View {
 }
 
 struct RecentSearchesViewPreview: View {
-    
     @StateObject var appState: AppState = .init()
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
 

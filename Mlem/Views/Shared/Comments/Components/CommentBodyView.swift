@@ -12,6 +12,7 @@ struct CommentBodyView: View {
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
     @AppStorage("compactComments") var compactComments: Bool = false
     @AppStorage("showCommentDownvotesSeparately") var showCommentDownvotesSeparately: Bool = false
+    @AppStorage("easyTapLinkDisplayMode") var easyTapLinkDisplayMode: EasyTapLinkDisplayMode = .contextual
     
     @Binding var isParentCollapsed: Bool
     @Binding var isCollapsed: Bool
@@ -20,6 +21,7 @@ struct CommentBodyView: View {
     let showPostContext: Bool
     let commentorLabel: String
     let menuFunctions: [MenuFunction]
+    let links: [LinkType]
     
     var myVote: ScoringOperation { commentView.myVote ?? .resetVote }
     
@@ -33,6 +35,15 @@ struct CommentBodyView: View {
         }
     }
     
+    var showLinkCaptions: Bool {
+        switch easyTapLinkDisplayMode {
+        case .large: true
+        case .compact: false
+        case .contextual: !compactComments
+        case .disabled: true // doesn't matter, just needs some value
+        }
+    }
+    
     var spacing: CGFloat { compactComments ? AppConstants.compactSpacing : AppConstants.postAndCommentSpacing }
     
     init(
@@ -40,7 +51,8 @@ struct CommentBodyView: View {
         isParentCollapsed: Binding<Bool>,
         isCollapsed: Binding<Bool>,
         showPostContext: Bool,
-        menuFunctions: [MenuFunction]
+        menuFunctions: [MenuFunction],
+        links: [LinkType]
     ) {
         self._isParentCollapsed = isParentCollapsed
         self._isCollapsed = isCollapsed
@@ -48,6 +60,7 @@ struct CommentBodyView: View {
         self.commentView = commentView
         self.showPostContext = showPostContext
         self.menuFunctions = menuFunctions
+        self.links = links
         
         let commentor = commentView.creator
         let publishedAgo: String = getTimeIntervalFromNow(date: commentView.comment.published)
@@ -90,6 +103,12 @@ struct CommentBodyView: View {
                     MarkdownView(text: commentView.comment.content, isNsfw: commentView.post.nsfw)
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                         .transition(.markdownView())
+                    
+                    if easyTapLinkDisplayMode != .disabled {
+                        ForEach(links) { link in
+                            EasyTapLinkView(linkType: link, showCaption: showLinkCaptions)
+                        }
+                    }
                 }
             }
             
@@ -120,17 +139,19 @@ struct CommentBodyView: View {
                     Image(systemName: myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvoteSquare)
                     Text(String(commentView.counts.upvotes))
                 }
+                .foregroundColor(myVote == .upvote ? .upvoteColor : .secondary)
                 
                 HStack(spacing: AppConstants.iconToTextSpacing) {
                     Image(systemName: myVote == .downvote ? Icons.downvoteSquareFill : Icons.downvoteSquare)
                     Text(String(commentView.counts.downvotes))
                 }
+                .foregroundColor(myVote == .downvote ? .downvoteColor : .secondary)
             } else {
                 HStack(spacing: AppConstants.iconToTextSpacing) {
                     Image(systemName: myVote == .resetVote ? Icons.upvoteSquare : myVote.iconNameFill)
                     Text(String(commentView.counts.score))
                 }
-                .foregroundColor(.secondary)
+                .foregroundColor(myVote.color ?? .secondary)
                 .font(.footnote)
             }
         }

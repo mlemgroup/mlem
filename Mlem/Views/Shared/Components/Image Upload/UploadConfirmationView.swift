@@ -14,9 +14,10 @@ struct UploadConfirmationView: View {
     @AppStorage("confirmImageUploads") var confirmImageUploads: Bool = false
     
     @Binding var isPresented: Bool
+    @Binding var imageModel: PictrsImageModel?
+    
     let onUpload: () -> Void
     let onCancel: () -> Void
-    let imageModel: PictrsImageModel?
     
     var instanceName: String {
         do {
@@ -48,6 +49,7 @@ struct UploadConfirmationView: View {
                     endPoint: .top
                 )
                 .frame(height: 100)
+                .allowsHitTesting(false)
             }
             switch imageModel?.state {
             case .readyToUpload:
@@ -82,6 +84,7 @@ struct UploadConfirmationView: View {
                     .padding(.bottom, 20)
                     .background(Color.systemBackground)
                 }
+                .interactiveDismissDisabled()
             
             default:
                 Text("Something went wrong.")

@@ -13,6 +13,10 @@ struct CommentItem: View {
         case standard, never
     }
     
+    enum PageContext {
+        case posts, profile
+    }
+    
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.commentRepository) var commentRepository
     @Dependency(\.errorHandler) var errorHandler
@@ -21,12 +25,14 @@ struct CommentItem: View {
     @Dependency(\.hapticManager) var hapticManager
     
     // appstorage
-    @AppStorage("shouldShowScoreInCommentBar") var shouldShowScoreInCommentBar: Bool = true
+    @AppStorage("shouldShowScoreInCommentBar") var shouldShowScoreInCommentBar: Bool = false
     @AppStorage("showCommentDownvotesSeparately") var showCommentDownvotesSeparately: Bool = false
     @AppStorage("shouldShowTimeInCommentBar") var shouldShowTimeInCommentBar: Bool = true
     @AppStorage("shouldShowSavedInCommentBar") var shouldShowSavedInCommentBar: Bool = false
     @AppStorage("shouldShowRepliesInCommentBar") var shouldShowRepliesInCommentBar: Bool = true
     @AppStorage("compactComments") var compactComments: Bool = false
+    @AppStorage("collapseChildComments") var collapseComments: Bool = false
+    @AppStorage("tapCommentToCollapse") var tapCommentToCollapse: Bool = true
 
     // MARK: Temporary
 
@@ -35,6 +41,8 @@ struct CommentItem: View {
     @State var dirtyScore: Int // = 0
     @State var dirtySaved: Bool // = false
     @State var dirty: Bool = false
+    
+    @State var isCommentReplyHidden: Bool = false
 
     @State var isComposingReport: Bool = false
 
@@ -45,7 +53,6 @@ struct CommentItem: View {
     
     // MARK: Environment
 
-    @EnvironmentObject var commentTracker: CommentTracker
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
@@ -57,6 +64,7 @@ struct CommentItem: View {
 
     // MARK: Parameters
 
+    let commentTracker: CommentTracker?
     @ObservedObject var hierarchicalComment: HierarchicalComment
     let postContext: PostModel? // TODO: redundant with comment.post?
     let indentBehaviour: IndentBehaviour
@@ -64,6 +72,7 @@ struct CommentItem: View {
     let showPostContext: Bool
     let showCommentCreator: Bool
     let enableSwipeActions: Bool
+    let pageContext: PageContext
     
     // MARK: Destructive confirmation
     
@@ -95,19 +104,23 @@ struct CommentItem: View {
 
     // init needed to get dirty and clean aligned
     init(
+        commentTracker: CommentTracker?,
         hierarchicalComment: HierarchicalComment,
         postContext: PostModel?,
         indentBehaviour: IndentBehaviour = .standard,
         showPostContext: Bool,
         showCommentCreator: Bool,
-        enableSwipeActions: Bool = true
+        enableSwipeActions: Bool = true,
+        pageContext: PageContext = .posts
     ) {
+        self.commentTracker = commentTracker
         self.hierarchicalComment = hierarchicalComment
         self.postContext = postContext
         self.indentBehaviour = indentBehaviour
         self.showPostContext = showPostContext
         self.showCommentCreator = showCommentCreator
         self.enableSwipeActions = enableSwipeActions
+        self.pageContext = pageContext
 
         _dirtyVote = State(initialValue: hierarchicalComment.commentView.myVote ?? .resetVote)
         _dirtyScore = State(initialValue: hierarchicalComment.commentView.counts.score)
@@ -153,7 +166,8 @@ struct CommentItem: View {
                     isParentCollapsed: $hierarchicalComment.isParentCollapsed,
                     isCollapsed: $hierarchicalComment.isCollapsed,
                     showPostContext: showPostContext,
-                    menuFunctions: genMenuFunctions()
+                    menuFunctions: genMenuFunctions(),
+                    links: hierarchicalComment.links
                 )
                 // top and bottom spacing uses default even when compact--it's *too* compact otherwise
                 .padding(.top, AppConstants.postAndCommentSpacing)
@@ -164,7 +178,7 @@ struct CommentItem: View {
                         votes: VotesModel(from: hierarchicalComment.commentView.counts, myVote: hierarchicalComment.commentView.myVote),
                         published: hierarchicalComment.commentView.comment.published,
                         updated: hierarchicalComment.commentView.comment.updated,
-                        numReplies: hierarchicalComment.commentView.counts.childCount,
+                        commentCount: hierarchicalComment.commentView.counts.childCount,
                         saved: hierarchicalComment.commentView.saved,
                         accessibilityContext: "comment",
                         widgets: layoutWidgetTracker.groups.comment,
@@ -183,11 +197,29 @@ struct CommentItem: View {
                     Spacer()
                         .frame(height: AppConstants.postAndCommentSpacing)
                 }
+                
+                if collapseComments,
+                   pageContext == .posts,
+                   !hierarchicalComment.isCollapsed,
+                   hierarchicalComment.depth == 0,
+                   hierarchicalComment.children.count > 0,
+                   !isCommentReplyHidden {
+                    Divider()
+                        CollapsedCommentReplies(numberOfReplies: .constant(hierarchicalComment.commentView.counts.childCount))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .contentShape(.rect)
+                        .onTapGesture {
+                            isCommentReplyHidden = true
+                            uncollapseComment()
+                        }
+                }
             }
         }
-        .contentShape(Rectangle()) // allow taps in blank space to register
+        .contentShape(.rect) // allow taps in blank space to register
         .onTapGesture {
-            toggleCollapsed()
+            if tapCommentToCollapse {
+                toggleCollapsed()
+            }
         }
         .destructiveConfirmation(
             isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
@@ -202,6 +234,15 @@ struct CommentItem: View {
         .contextMenu {
             ForEach(genMenuFunctions()) { item in
                 MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+            }
+        }
+        .onChange(of: collapseComments) { newValue in
+            if pageContext == .posts {
+                if newValue == false {
+                    uncollapseComment()
+                } else {
+                    collapseComment()
+                }
             }
         }
     }

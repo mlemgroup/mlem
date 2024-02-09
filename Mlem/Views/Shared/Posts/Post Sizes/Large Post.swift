@@ -43,13 +43,13 @@ struct LargePost: View {
     @Dependency(\.errorHandler) var errorHandler
     
     // global state
-    @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("limitImageHeightInFeed") var limitImageHeightInFeed: Bool = true
+    @AppStorage("easyTapLinkDisplayMode") var easyTapLinkDisplayMode: EasyTapLinkDisplayMode = .contextual
 
     // parameters
-    let post: PostModel
+    @ObservedObject var post: PostModel
     
     @Binding var layoutMode: LayoutMode
     private var isExpanded: Bool {
@@ -235,22 +235,30 @@ struct LargePost: View {
     @ViewBuilder
     var postBodyView: some View {
         if let bodyText = post.post.body, !bodyText.isEmpty {
-            MarkdownView(
-                text: postBodyText(bodyText, layoutMode: layoutMode),
-                isNsfw: post.post.nsfw,
-                replaceImagesWithEmoji: isExpanded ? false : true,
-                isInline: isExpanded ? false : true
-            )
-            .id(post.id)
-            .font(.subheadline)
-            .lineLimit(layoutMode.lineLimit)
+            VStack {
+                MarkdownView(
+                    text: postBodyText(bodyText, layoutMode: layoutMode),
+                    isNsfw: post.post.nsfw,
+                    replaceImagesWithEmoji: isExpanded ? false : true,
+                    isInline: isExpanded ? false : true
+                )
+                .id(post.id)
+                .font(.subheadline)
+                .lineLimit(layoutMode.lineLimit)
+                
+                if layoutMode == .maximize, easyTapLinkDisplayMode != .disabled {
+                    ForEach(post.links) { link in
+                        EasyTapLinkView(linkType: link, showCaption: easyTapLinkDisplayMode != .compact)
+                    }
+                }
+            }
         }
     }
     
     /// Synchronous void wrapper for apiClient.markPostAsRead to pass into CachedImage as dismiss callback
     func markPostAsRead() {
         Task(priority: .userInitiated) {
-            await postTracker.markRead(post: post)
+            await post.markRead(true)
         }
     }
 }

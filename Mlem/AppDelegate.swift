@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import UIKit
 
 // TODO: we need to do a bit of work to ensure we also switch tab when responding to these
 // as currently it launches you into the app, but if the app was already running you're left

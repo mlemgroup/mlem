@@ -133,19 +133,34 @@ import SwiftUI
             (uiView as? _UISearchBar)?.isFirstResponderBinding = isFocused
 
             do {
-                if let uiView = uiView as? _UISearchBar, environment.isEnabled {
-                    DispatchQueue.main.async {
-                        if let isFocused, uiView.window != nil {
-                            uiView.isFirstResponderBinding = isFocused
-
-                            if isFocused.wrappedValue, !uiView.isFirstResponder {
-                                uiView.becomeFirstResponder()
-                            } else if !isFocused.wrappedValue, uiView.isFirstResponder {
-                                uiView.resignFirstResponder()
-                            }
+                // version of below with no responder binding. it's not a pretty hack but it does work
+                // note that switching tabs with search selected will result in search still displaying "search for communities and users,"
+                // but since the keyboard hides the tab bar that probably won't come up for 99% of users
+                if let isFocused, environment.isEnabled {
+                    if isFocused.wrappedValue, !uiView.isFirstResponder {
+                        DispatchQueue.main.async {
+                            uiView.becomeFirstResponder()
+                        }
+                    } else if !isFocused.wrappedValue, uiView.isFirstResponder {
+                        DispatchQueue.main.async {
+                            uiView.resignFirstResponder()
                         }
                     }
                 }
+                
+//                if let uiView = uiView as? _UISearchBar, environment.isEnabled {
+//                    DispatchQueue.main.async {
+//                        if let isFocused, uiView.window != nil {
+//                            uiView.isFirstResponderBinding = isFocused
+//
+//                            if isFocused.wrappedValue, !uiView.isFirstResponder {
+//                                uiView.becomeFirstResponder()
+//                            } else if !isFocused.wrappedValue, uiView.isFirstResponder {
+//                                uiView.resignFirstResponder()
+//                            }
+//                        }
+//                    }
+//                }
             }
         }
     

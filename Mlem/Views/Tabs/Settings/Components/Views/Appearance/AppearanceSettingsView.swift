@@ -26,7 +26,7 @@ struct AppearanceSettingsView: View {
                     }
                 }
                 #if !os(macOS) && !targetEnvironment(macCatalyst)
-                NavigationLink(.appearanceSettings(.appIcon)) {
+                    NavigationLink(.appearanceSettings(.appIcon)) {
                         Label {
                             Text("App Icon")
                         } icon: {
@@ -54,7 +54,7 @@ struct AppearanceSettingsView: View {
                 }
                 
                 NavigationLink(.appearanceSettings(.communities)) {
-                    Label("Communities", systemImage: "house.fill").labelStyle(SquircleLabelStyle(color: .green, fontSize: 15))
+                    Label("Communities", systemImage: "house.fill").labelStyle(SquircleLabelStyle(color: .green, fontSize: 18))
                 }
                 
                 NavigationLink(.appearanceSettings(.users)) {
@@ -71,5 +71,6 @@ struct AppearanceSettingsView: View {
         .navigationTitle("Appearance")
         .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
+        .hoistNavigation()
     }
 }

@@ -7,6 +7,8 @@
 
 import Foundation
 
+// swiftlint:disable file_length
+
 enum HTTPMethod {
     case get
     case post(Data)
@@ -56,7 +58,7 @@ class APIClient {
     let decoder: JSONDecoder
     let transport: (URLSession, URLRequest) async throws -> (Data, URLResponse)
     
-    private(set) var session: APISession = .undefined
+    var session: APISession = .undefined
     
     // MARK: - Initialisation
     
@@ -88,8 +90,8 @@ class APIClient {
     }
     
     @discardableResult
-    func perform<Request: APIRequest>(request: Request) async throws -> Request.Response {
-        let urlRequest = try urlRequest(from: request)
+    func perform<Request: APIRequest>(request: Request, overrideToken: String? = nil) async throws -> Request.Response {
+        let urlRequest = try urlRequest(from: request, overrideToken: overrideToken)
 
         let (data, response) = try await execute(urlRequest)
         
@@ -151,22 +153,24 @@ class APIClient {
         }
     }
 
-    private func urlRequest(from defintion: any APIRequest) throws -> URLRequest {
-        var urlRequest = URLRequest(url: defintion.endpoint)
-        defintion.headers.forEach { header in
+    private func urlRequest(from definition: any APIRequest, overrideToken: String?) throws -> URLRequest {
+        var urlRequest = URLRequest(url: definition.endpoint)
+        definition.headers.forEach { header in
             urlRequest.setValue(header.value, forHTTPHeaderField: header.key)
         }
-        
-        if case let .authenticated(_, token) = session {
+    
+        if let overrideToken {
+            urlRequest.setValue("Bearer \(overrideToken)", forHTTPHeaderField: "Authorization")
+        } else if case let .authenticated(_, token) = session, try session.instanceUrl == definition.instanceURL {
             urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
-
-        if defintion as? any APIGetRequest != nil {
+        
+        if definition as? any APIGetRequest != nil {
             urlRequest.httpMethod = "GET"
-        } else if let postDefinition = defintion as? any APIPostRequest {
+        } else if let postDefinition = definition as? any APIPostRequest {
             urlRequest.httpMethod = "POST"
             urlRequest.httpBody = try createBodyData(for: postDefinition)
-        } else if let putDefinition = defintion as? any APIPutRequest {
+        } else if let putDefinition = definition as? any APIPutRequest {
             urlRequest.httpMethod = "PUT"
             urlRequest.httpBody = try createBodyData(for: putDefinition)
         }
@@ -176,7 +180,7 @@ class APIClient {
 
     private func createBodyData(for defintion: any APIRequestBodyProviding) throws -> Data {
         do {
-            var encoder = JSONEncoder()
+            let encoder = JSONEncoder()
             encoder.keyEncodingStrategy = .convertToSnakeCase
             return try encoder.encode(defintion.body)
         } catch {
@@ -208,15 +212,32 @@ extension APIClient {
         // so an external session is required, as the expectation is the client will not yet have a session or
         // the session will be for another account.
         let request = try GetPersonDetailsRequest(session: session, username: username)
+        return try await perform(request: request, overrideToken: session.token)
+    }
+    
+    @available(*, deprecated, message: "This method is deprecated, use getPersonDetails with pagination parameter instead")
+    func getPersonDetails(for personId: Int, limit: Int?, savedOnly: Bool) async throws -> GetPersonDetailsResponse {
+        let request = try GetPersonDetailsRequest(
+            session: session,
+            limit: limit,
+            savedOnly: savedOnly,
+            personId: personId
+        )
+        
         return try await perform(request: request)
     }
     
-    func getPersonDetails(for personId: Int, limit: Int?, savedOnly: Bool) async throws -> GetPersonDetailsResponse {
-        // this call is made by the `UserView` to load this user, or other Lemmy users details
-        // TODO: currently only the first page is loaded, with the passed in limit - we should instead be loading on
-        // demand as the user scrolls through this feed similar to what we do elsewhere
+    func getPersonDetails(
+        for personId: Int,
+        sort: PostSortType?,
+        page: Int,
+        limit: Int,
+        savedOnly: Bool
+    ) async throws -> GetPersonDetailsResponse {
         let request = try GetPersonDetailsRequest(
             session: session,
+            sort: sort,
+            page: page,
             limit: limit,
             savedOnly: savedOnly,
             personId: personId
@@ -285,6 +306,68 @@ extension APIClient {
         let request = DeleteAccountRequest(account: user, password: password, deleteContent: deleteContent)
         try await perform(request: request)
     }
+    
+    @discardableResult
+    func saveUserSettings(
+        myUserInfo info: APIMyUserInfo
+    ) async throws -> SuccessResponse {
+        // Despite all values being optional, we actually have to provide all values
+        // here otherwise Lemmy returns 'user_already_exists'. Possibly fixed >0.19.0
+        // https://github.com/LemmyNet/lemmy/issues/4076
+        
+        let person = info.localUserView.person
+        let localUser = info.localUserView.localUser
+        
+        let request = try SaveUserSettingsRequest(
+            session: session,
+            body: .init(
+                avatar: person.avatar,
+                banner: person.banner,
+                bio: person.bio,
+                botAccount: person.botAccount,
+                defaultListingType: localUser.defaultListingType,
+                defaultSortType: localUser.defaultSortType,
+                discussionLanguages: info.discussionLanguages,
+                displayName: person.displayName,
+                email: localUser.email,
+                generateTotp2fa: nil,
+                interfaceLanguage: localUser.interfaceLanguage,
+                matrixUserId: person.matrixUserId,
+                openLinksInNewTab: localUser.openLinksInNewTab,
+                sendNotificationsToEmail: localUser.sendNotificationsToEmail,
+                showAvatars: localUser.showAvatars,
+                showBotAccounts: localUser.showBotAccounts,
+                showNewPostNotifs: localUser.showNewPostNotifs,
+                showNsfw: localUser.showNsfw,
+                showReadPosts: localUser.showReadPosts,
+                showScores: localUser.showScores,
+                theme: localUser.theme,
+                auth: session.token
+            )
+        )
+        return try await SuccessResponse(from: perform(request: request))
+    }
+    
+    @discardableResult
+    func changePassword(newPassword: String, confirmNewPassword: String, currentPassword: String) async throws -> LoginResponse {
+        let request = try ChangePasswordRequest(
+            session: session,
+            newPassword: newPassword,
+            newPasswordVerify: confirmNewPassword,
+            oldPassword: currentPassword
+        )
+        return try await perform(request: request)
+    }
+    
+    @discardableResult
+    func fetchInstanceList() async throws -> [InstanceStub] {
+        if let url = URL(string: "https://raw.githubusercontent.com/mlemgroup/mlem-stats/master/output/instances_by_score.json") {
+            if let data = try? await urlSession.data(from: url).0 {
+                return try decode([InstanceStub].self, from: data)
+            }
+        }
+        return []
+    }
 }
 
 // MARK: - Object Resolving methods
@@ -328,12 +411,17 @@ extension APIClient {
         return try await perform(request: request)
     }
     
+    func loadSiteInformation(instanceURL: URL) async throws -> SiteResponse {
+        let request = GetSiteRequest(instanceURL: instanceURL.appendingPathComponent("api/v3/"))
+        return try await perform(request: request)
+    }
+    
     // swiftlint:disable function_parameter_count
     func performSearch(
         query: String,
         searchType: SearchType,
         sortOption: PostSortType,
-        listingType: FeedType,
+        listingType: APIListingType,
         page: Int?,
         limit: Int?
     ) async throws -> SearchResponse {
@@ -368,7 +456,7 @@ extension APIClient {
             totpToken: totpToken
         )
         
-        return try await perform(request: request)
+        return try await perform(request: request, overrideToken: "")
     }
     
     @discardableResult
@@ -395,3 +483,5 @@ extension APIClient {
         return try await perform(request: request).privateMessageView
     }
 }
+
+// swiftlint:enable file_length

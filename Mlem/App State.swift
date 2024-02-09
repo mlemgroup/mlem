@@ -14,7 +14,7 @@ class AppState: ObservableObject {
     @Dependency(\.apiClient) var apiClient
     
     @AppStorage("defaultAccountId") var defaultAccountId: Int?
-    @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .username
+    @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .nickname
     @AppStorage("showUserAvatarOnProfileTab") var showUserAvatar: Bool = true
     
     @Published private(set) var currentActiveAccount: SavedAccount?
@@ -26,8 +26,6 @@ class AppState: ObservableObject {
         }
         
         switch profileTabLabel {
-        case .username:
-            return currentActiveAccount.username
         case .instance:
             return currentActiveAccount.hostName ?? "Instance"
         case .nickname:
@@ -49,13 +47,15 @@ class AppState: ObservableObject {
     /// A method to set the current active account, any changes to the account will be propogated to the persistence layer
     /// - Important: If you wish to _clear_ the current active account please use the `\.setAppFlow` method available via the environment to reset to our `.onboarding` flow
     /// - Parameter account: The `SavedAccount` which should become the active account
-    func setActiveAccount(_ account: SavedAccount) {
+    func setActiveAccount(_ account: SavedAccount, saveChanges: Bool = true) {
         AppConstants.keychain["\(account.id)_accessToken"] = account.accessToken
         // we configure the client here to ensure any updated session tokens are updated
         apiClient.configure(for: .account(account))
         currentActiveAccount = account
         defaultAccountId = account.id
-        accountsTracker.update(with: account)
+        if saveChanges {
+            accountsTracker.update(with: account)
+        }
     }
     
     /// A method to clear the currentlly active account

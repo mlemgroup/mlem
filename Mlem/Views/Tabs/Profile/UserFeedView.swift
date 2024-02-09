@@ -5,12 +5,19 @@
 //  Created by Sjmarf on 25/08/2023.
 //
 
+import Dependencies
 import SwiftUI
 
 struct UserFeedView: View {
-    var userID: Int
-    @StateObject var privatePostTracker: PostTracker
-    @StateObject var privateCommentTracker: CommentTracker
+    @Dependency(\.siteInformation) var siteInformation
+    @EnvironmentObject var editorTracker: EditorTracker
+    
+    var user: UserModel
+    
+    // TODO: this private post tracker feels super ugly
+    @ObservedObject var privatePostTracker: StandardPostTracker
+    @ObservedObject var privateCommentTracker: CommentTracker
+    @ObservedObject var communityTracker: ContentTracker<CommunityModel>
     
     @Binding var selectedTab: UserViewTab
     
@@ -27,34 +34,44 @@ struct UserFeedView: View {
         let hashValue: Int
     }
     
-    var body: some View {
-        let feed = generateFeed()
-            .sorted(by: {
-                $0.published > $1.published
-            })
-        
-        if feed.isEmpty {
-            emptyFeed
-        } else {
-            if selectedTab == .posts {
-                VStack(spacing: 0) {
-                    content(feed)
-                }
-            } else {
-                LazyVStack(spacing: 0) {
-                    content(feed)
-                }
-            }
-        }
+    var isOwnProfile: Bool {
+        siteInformation.myUserInfo?.localUserView.person.id == user.userId
     }
     
-    func content(_ feed: [FeedItem]) -> some View {
-        ForEach(feed, id: \.uid) { feedItem in
-            if let post = feedItem.post {
-                postEntry(for: post)
-            }
-            if let comment = feedItem.comment {
-                commentEntry(for: comment)
+    var body: some View {
+        LazyVStack(spacing: 0) {
+            switch selectedTab {
+            case .communities:
+                Label(
+                    "\(user.displayName) moderates ^[\(communityTracker.items.count) communities](inflect: true).",
+                    systemImage: Icons.moderationFill
+                )
+                .foregroundStyle(.secondary)
+                .font(.footnote)
+                .padding(.vertical, 4)
+                Divider()
+                ForEach(communityTracker.items, id: \.uid) { community in
+                    CommunityResultView(community, complications: .instanceOnly, trackerCallback: {
+                        communityTracker.update(with: $0)
+                    })
+
+                    Divider()
+                }
+                .environmentObject(communityTracker)
+            default:
+                let feedItems = generateFeed()
+                if feedItems.isEmpty {
+                    emptyFeed
+                } else {
+                    ForEach(feedItems, id: \.uid) { feedItem in
+                        if let post = feedItem.post {
+                            postEntry(for: post)
+                        }
+                        if let comment = feedItem.comment {
+                            commentEntry(for: comment)
+                        }
+                    }
+                }
             }
         }
     }
@@ -63,16 +80,18 @@ struct UserFeedView: View {
         let feed: [FeedItem]
         switch selectedTab {
         case .overview:
-            feed = generateMixedFeed(savedItems: false)
-        case .saved:
-            feed = generateMixedFeed(savedItems: true)
+            feed = generateOverviewFeed()
         case .comments:
             feed = generateCommentFeed()
         case .posts:
             feed = generatePostFeed()
+        default:
+            feed = []
         }
         
-        return feed
+        return feed.sorted(by: {
+            $0.published > $1.published
+        })
     }
     
     private func postEntry(for post: PostModel) -> some View {
@@ -80,6 +99,7 @@ struct UserFeedView: View {
             VStack(spacing: 0) {
                 FeedPost(
                     post: post,
+                    postTracker: privatePostTracker,
                     showPostCreator: false,
                     showCommunity: true
                 )
@@ -93,41 +113,41 @@ struct UserFeedView: View {
     private func commentEntry(for comment: HierarchicalComment) -> some View {
         VStack(spacing: 0) {
             CommentItem(
+                commentTracker: privateCommentTracker,
                 hierarchicalComment: comment,
                 postContext: nil,
                 indentBehaviour: .never,
                 showPostContext: true,
-                showCommentCreator: false
+                showCommentCreator: false,
+                pageContext: .profile
             )
             
             Divider()
         }
     }
     
+    var emptyFeedText: String {
+        if isOwnProfile {
+            return "Nothing to see here, get out there and make some stuff!"
+        } else {
+            return "Nothing to see here."
+        }
+    }
+    
     @ViewBuilder
     private var emptyFeed: some View {
-        HStack {
-            Spacer()
-            Text("Nothing to see here, get out there and make some stuff!")
-                .padding()
-                .font(.headline)
-                .opacity(0.5)
-            Spacer()
-        }
-        .background()
+        Text(emptyFeedText)
+            .padding()
+            .font(.headline)
+            .opacity(0.5)
+            .multilineTextAlignment(.center)
     }
     
     private func generateCommentFeed(savedItems: Bool = false) -> [FeedItem] {
         privateCommentTracker.comments
             // Matched saved state
             .filter {
-                if savedItems {
-                    return $0.commentView.saved
-                } else {
-                    // If we unfavorited something while
-                    // here we don't want it showing up in our feed
-                    return $0.commentView.creator.id == userID
-                }
+                $0.commentView.creator.id == user.userId
             }
         
             // Create Feed Items
@@ -142,17 +162,10 @@ struct UserFeedView: View {
             }
     }
     
-    private func generatePostFeed(savedItems: Bool = false) -> [FeedItem] {
+    private func generatePostFeed() -> [FeedItem] {
         privatePostTracker.items
-            // Matched saved state
             .filter {
-                if savedItems {
-                    return $0.saved
-                } else {
-                    // If we unfavorited something while
-                    // here we don't want it showing up in our feed
-                    return $0.creator.userId == userID
-                }
+                $0.creator.userId == user.userId
             }
         
             // Create Feed Items
@@ -167,11 +180,11 @@ struct UserFeedView: View {
             }
     }
     
-    private func generateMixedFeed(savedItems: Bool) -> [FeedItem] {
+    private func generateOverviewFeed() -> [FeedItem] {
         var result: [FeedItem] = []
         
-        result.append(contentsOf: generatePostFeed(savedItems: savedItems))
-        result.append(contentsOf: generateCommentFeed(savedItems: savedItems))
+        result.append(contentsOf: generatePostFeed())
+        result.append(contentsOf: generateCommentFeed())
         
         return result
     }

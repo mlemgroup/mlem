@@ -14,13 +14,14 @@ struct ReportMention: ResponseEditorModel {
     
     var id: Int { mention.id }
     let canUpload: Bool = false
+    let showSlurWarning: Bool = false
     let modalName: String = "Report Comment"
     let prefillContents: String? = nil
     let mention: MentionModel
     
     func embeddedView() -> AnyView {
         AnyView(
-            InboxMentionView(mention: mention)
+            InboxMentionBodyView(mention: mention)
                 .padding(.horizontal)
         )
     }

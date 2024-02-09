@@ -35,9 +35,3 @@ struct GetPrivateMessagesRequest: APIGetRequest {
 struct GetPrivateMessagesResponse: Decodable {
     let privateMessages: [APIPrivateMessageView]
 }
-
-// MARK: - FeedTrackerItemProviding
-
-extension GetPrivateMessagesResponse: FeedTrackerItemProviding {
-    var items: [APIPrivateMessageView] { privateMessages }
-}

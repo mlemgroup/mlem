@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 /// SFSymbol names for icons
-struct Icons {
+enum Icons {
     // votes
     static let votes: String = "arrow.up.arrow.down.square"
     static let upvote: String = "arrow.up"
@@ -46,7 +46,8 @@ struct Icons {
     
     // misc post
     static let posts: String = "doc.plaintext"
-    static let replies: String = "bubble.right"
+    static let replies: String = "bubble.left"
+    static let unreadReplies: String = "text.bubble"
     static let textPost: String = "text.book.closed"
     static let titleOnlyPost: String = "character.bubble"
     static let pinned: String = "pin.fill"
@@ -63,12 +64,18 @@ struct Icons {
     static let largePostFill: String = "text.below.photo.fill"
     
     // feeds
-    static let federatedFeed: String = "circle.hexagongrid.circle"
-    static let federatedFeedFill: String = "circle.hexagongrid.circle.fill"
-    static let localFeed: String = "house.circle"
-    static let localFeedFill: String = "house.circle.fill"
-    static let subscribedFeed: String = "newspaper.circle"
-    static let subscribedFeedFill: String = "newspaper.circle.fill"
+    static let federatedFeed: String = "circle.hexagongrid"
+    static let federatedFeedFill: String = "circle.hexagongrid.fill"
+    static let federatedFeedCircle: String = "circle.hexagongrid.circle.fill"
+    static let localFeed: String = "house"
+    static let localFeedFill: String = "house.fill"
+    static let localFeedCircle: String = "house.circle.fill"
+    static let subscribedFeed: String = "newspaper"
+    static let subscribedFeedFill: String = "newspaper.fill"
+    static let subscribedFeedCircle: String = "newspaper.circle.fill"
+    static let savedFeed: String = "bookmark"
+    static let savedFeedFill: String = "bookmark.fill"
+    static let savedFeedCircle: String = "bookmark.circle.fill"
     
     // sort types
     static let activeSort: String = "popcorn"
@@ -101,6 +108,7 @@ struct Icons {
     static let bannedFlair: String = "multiply.circle"
     
     // entities/general Lemmy concepts
+    static let federation: String = "point.3.filled.connected.trianglepath.dotted"
     static let instance: String = "server.rack"
     static let user: String = "person.crop.circle"
     static let userFill: String = "person.crop.circle.fill"
@@ -134,8 +142,12 @@ struct Icons {
     static let updated: String = "clock.arrow.2.circlepath"
     static let favorite: String = "star"
     static let favoriteFill: String = "star.fill"
+    static let unfavorite: String = "star.slash"
+    static let unfavoriteFill: String = "star.slash.fill"
+    static let person: String = "person"
     static let personFill: String = "person.fill"
     static let close: String = "multiply"
+    static let cakeDay: String = "birthday.cake"
     
     // end of feed
     static let endOfFeedHobbit: String = "figure.climbing"
@@ -153,10 +165,12 @@ struct Icons {
     static let filter: String = "line.3.horizontal.decrease.circle"
     static let filterFill: String = "line.3.horizontal.decrease.circle.fill"
     static let menu: String = "ellipsis"
+    static let menuCircle: String = "ellipsis.circle"
     static let `import`: String = "square.and.arrow.down"
     static let attachment: String = "paperclip"
     static let edit: String = "pencil"
     static let delete: String = "trash"
+    static let copy: String = "doc.on.doc"
     
     // settings
     static let upvoteOnSave: String = "arrow.up.heart"
@@ -174,9 +188,13 @@ struct Icons {
     static let leftRight: String = "arrow.left.arrow.right"
     static let developerMode: String = "wrench.adjustable.fill"
     static let limitImageHeightSetting: String = "rectangle.compress.vertical"
-    static let swipeUpGestureSetting: String = "arrow.up.to.line.alt"
+    static let appLockSettings: String = "lock.app.dashed"
+    static let collapseComments: String = "arrow.down.and.line.horizontal.and.arrow.up"
     
     // misc
+    static let `private`: String = "lock"
+    static let email: String = "envelope"
+    static let photo: String = "photo"
     static let switchUser: String = "person.crop.circle.badge.plus"
     static let missing: String = "questionmark.square.dashed"
     static let connection: String = "antenna.radiowaves.left.and.right"

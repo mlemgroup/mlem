@@ -92,5 +92,6 @@ struct AccessibilitySettingsView: View {
         .fancyTabScrollCompatible()
         .navigationTitle("Accessibility")
         .navigationBarColor()
+        .hoistNavigation()
     }
 }

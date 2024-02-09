@@ -28,6 +28,9 @@ struct InboxView: View {
     @Dependency(\.personRepository) var personRepository
     
     // MARK: Global
+    
+    @Namespace var scrollToTop
+    @State private var scrollToTopAppeared = false
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var editorTracker: EditorTracker
@@ -59,7 +62,6 @@ struct InboxView: View {
     @StateObject var replyTracker: ReplyTracker
     @StateObject var mentionTracker: MentionTracker
     @StateObject var messageTracker: MessageTracker
-    @StateObject var dummyPostTracker: PostTracker // used for navigation
     
     init() {
         // TODO: once the post tracker is changed we won't need this here...
@@ -89,8 +91,6 @@ struct InboxView: View {
         self._replyTracker = StateObject(wrappedValue: newReplyTracker)
         self._mentionTracker = StateObject(wrappedValue: newMentionTracker)
         self._messageTracker = StateObject(wrappedValue: newMessageTracker)
-        
-        self._dummyPostTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed, upvoteOnSave: upvoteOnSave))
     }
     
     // input state handling
@@ -99,29 +99,38 @@ struct InboxView: View {
     
     // utility
     @StateObject private var inboxTabNavigation: AnyNavigationPath<AppRoute> = .init()
+    @StateObject private var navigation: Navigation = .init()
     
     var body: some View {
-        // NOTE: there appears to be a SwiftUI issue with segmented pickers stacked on top of ScrollViews which causes the tab bar to appear fully transparent. The internet suggests that this may be a bug that only manifests in dev mode, so, unless this pops up in a build, don't worry about it. If it does manifest, we can either put the Picker *in* the ScrollView (bad because then you can't access it without scrolling to the top) or put a Divider() at the bottom of the VStack (bad because then the material tab bar doesn't show)
-        NavigationStack(path: $inboxTabNavigation.path) {
-            contentView
-                .navigationTitle("Inbox")
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarColor()
-                .toolbar {
-                    ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
-                }
-                .listStyle(PlainListStyle())
-                .handleLemmyViews()
-                .environmentObject(inboxTracker)
-                .onChange(of: shouldFilterRead) { newValue in
-                    Task(priority: .userInitiated) {
-                        await handleShouldFilterReadChange(newShouldFilterRead: newValue)
+        ScrollViewReader { scrollProxy in
+            // NOTE: there appears to be a SwiftUI issue with segmented pickers stacked on top of ScrollViews which causes the tab bar to appear fully transparent. The internet suggests that this may be a bug that only manifests in dev mode, so, unless this pops up in a build, don't worry about it. If it does manifest, we can either put the Picker *in* the ScrollView (bad because then you can't access it without scrolling to the top) or put a Divider() at the bottom of the VStack (bad because then the material tab bar doesn't show)
+            NavigationStack(path: $inboxTabNavigation.path) {
+                contentView(scrollProxy: scrollProxy)
+                    .navigationTitle("Inbox")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationBarColor()
+                    .toolbar {
+                        ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
                     }
-                }
+                    .listStyle(PlainListStyle())
+                    .tabBarNavigationEnabled(.inbox, navigation)
+                    .handleLemmyViews()
+                    .environmentObject(inboxTabNavigation)
+                    .environmentObject(inboxTracker)
+            }
+            .handleLemmyLinkResolution(navigationPath: .constant(inboxTabNavigation))
+            .environment(\.navigationPathWithRoutes, $inboxTabNavigation.path)
+            .environment(\.navigation, navigation)
+            .environment(\.scrollViewProxy, scrollProxy)
+        }
+        .onChange(of: shouldFilterRead) { newValue in
+            Task(priority: .userInitiated) {
+                await handleShouldFilterReadChange(newShouldFilterRead: newValue)
+            }
         }
     }
     
-    @ViewBuilder var contentView: some View {
+    @ViewBuilder private func contentView(scrollProxy: ScrollViewProxy) -> some View {
         VStack(spacing: AppConstants.postAndCommentSpacing) {
             Picker(selection: $curTab, label: Text("Inbox tab")) {
                 ForEach(InboxTab.allCases) { tab in
@@ -132,37 +141,38 @@ struct InboxView: View {
             .padding(.horizontal, AppConstants.postAndCommentSpacing)
             .padding(.top, AppConstants.postAndCommentSpacing)
             
-            ScrollViewReader { scrollProxy in
-                ScrollView {
-                    if errorOccurred {
-                        errorView()
-                    } else {
-                        switch curTab {
-                        case .all:
-                            AllItemsFeedView(inboxTracker: inboxTracker)
-                        case .replies:
-                            RepliesFeedView(replyTracker: replyTracker)
-                        case .mentions:
-                            MentionsFeedView(mentionTracker: mentionTracker)
-                        case .messages:
-                            MessagesFeedView(messageTracker: messageTracker)
-                        }
+            ScrollView {
+                ScrollToView(appeared: $scrollToTopAppeared)
+                    .id(scrollToTop)
+                
+                if errorOccurred {
+                    errorView()
+                } else {
+                    switch curTab {
+                    case .all:
+                        AllItemsFeedView(inboxTracker: inboxTracker)
+                    case .replies:
+                        RepliesFeedView(replyTracker: replyTracker)
+                    case .mentions:
+                        MentionsFeedView(mentionTracker: mentionTracker)
+                    case .messages:
+                        MessagesFeedView(messageTracker: messageTracker)
                     }
                 }
-                .reselectAction(tab: .inbox) {
-                    withAnimation {
-                        // note that the actual "top" views live within the tabs themselves so they get placed correctly within the LazyVStacks
-                        scrollProxy.scrollTo("top")
-                    }
+            }
+            .fancyTabScrollCompatible()
+            .refreshable {
+                // wrapping in task so view redraws don't cancel
+                // awaiting the value makes the refreshable indicator properly wait for the call to finish
+                await Task {
+                    await refresh()
+                }.value
+            }
+            .hoistNavigation {
+                withAnimation {
+                    scrollProxy.scrollTo(scrollToTop)
                 }
-                .fancyTabScrollCompatible()
-                .refreshable {
-                    // wrapping in task so view redraws don't cancel
-                    // awaiting the value makes the refreshable indicator properly wait for the call to finish
-                    await Task {
-                        await refresh()
-                    }.value
-                }
+                return true
             }
         }
         .task {
@@ -194,7 +204,7 @@ struct InboxView: View {
                 MenuButton(menuFunction: menuFunction, confirmDestructive: nil) // no destructive functions
             }
         } label: {
-            Label("More", systemImage: "ellipsis")
+            Label("More", systemImage: Icons.menuCircle)
                 .frame(height: AppConstants.barIconHitbox)
                 .contentShape(Rectangle())
         }

@@ -16,7 +16,7 @@ extension CommentItem {
                 id: hierarchicalComment.commentView.id,
                 vote: operation
             )
-            commentTracker.comments.update(with: updatedComment)
+            hierarchicalComment.commentView = updatedComment
         } catch {
             errorHandler.handle(error)
         }
@@ -31,7 +31,7 @@ extension CommentItem {
                 // TODO: the UI for this only allows delete, but the operation can be undone it appears...
                 shouldDelete: true
             )
-            commentTracker.comments.update(with: updatedComment.commentView)
+            hierarchicalComment.commentView = updatedComment.commentView
         } catch {
             errorHandler.handle(error)
         }
@@ -128,7 +128,7 @@ extension CommentItem {
                 shouldSave: dirtySaved
             )
             
-            commentTracker.comments.update(with: response.commentView)
+            hierarchicalComment.commentView = response.commentView
         } catch {
             errorHandler.handle(error)
         }
@@ -137,8 +137,41 @@ extension CommentItem {
     func toggleCollapsed() {
         withAnimation(.showHideComment(!hierarchicalComment.isCollapsed)) {
             // Perhaps we want an explict flag for this in the future?
-            if !showPostContext {
+            if collapseComments, !isCommentReplyHidden, pageContext == .posts, hierarchicalComment.depth == 0 {
+                toggleTopLevelCommentCollapse(isCollapsed: !hierarchicalComment.isCollapsed)
+            } else if !showPostContext, let commentTracker {
                 commentTracker.setCollapsed(!hierarchicalComment.isCollapsed, comment: hierarchicalComment)
+            }
+        }
+    }
+    
+    /// Uncollapses HierarchicalComment and children at depth level 1
+    func uncollapseComment() {
+        if let commentTracker {
+            commentTracker.setCollapsed(false, comment: hierarchicalComment)
+            
+            for comment in hierarchicalComment.children where comment.depth == 1 {
+                commentTracker.setCollapsed(false, comment: comment)
+            }
+        }
+    }
+    
+    // Collapses the top level comment and retains the child comment collapse state
+    // If a user views all child comments, then collapses top level comment, the children will be uncollapsed along side top level
+    func toggleTopLevelCommentCollapse(isCollapsed: Bool) {
+        hierarchicalComment.isCollapsed = isCollapsed
+        
+        if !isCollapsed {
+            isCommentReplyHidden = false
+        }
+    }
+    
+    /// Collapses HierarchicalComment and children at depth level 1
+    func collapseComment() {
+        if let commentTracker {
+            for comment in hierarchicalComment.children where comment.depth == 1 {
+                commentTracker.setCollapsed(true, comment: comment)
+                comment.isParentCollapsed = true
             }
         }
     }
@@ -151,7 +184,7 @@ extension CommentItem {
         
         // upvote
         let (upvoteText, upvoteImg) = hierarchicalComment.commentView.myVote == .upvote ?
-            ("Undo upvote", Icons.upvoteSquareFill) :
+            ("Undo Upvote", Icons.upvoteSquareFill) :
             ("Upvote", Icons.upvoteSquare)
         ret.append(MenuFunction.standardMenuFunction(
             text: upvoteText,
@@ -166,7 +199,7 @@ extension CommentItem {
         
         // downvote
         let (downvoteText, downvoteImg) = hierarchicalComment.commentView.myVote == .downvote ?
-            ("Undo downvote", Icons.downvoteSquareFill) :
+            ("Undo Downvote", Icons.downvoteSquareFill) :
             ("Downvote", Icons.downvoteSquare)
         ret.append(MenuFunction.standardMenuFunction(
             text: downvoteText,
@@ -271,8 +304,11 @@ extension CommentItem {
             
             if response.blocked {
                 await notifier.add(.success("Blocked user"))
-                commentTracker.filter { comment in
-                    comment.commentView.creator.id != userId
+                
+                if let commentTracker {
+                    commentTracker.filter { comment in
+                        comment.commentView.creator.id != userId
+                    }
                 }
             }
         } catch {

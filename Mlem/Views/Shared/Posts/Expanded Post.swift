@@ -34,11 +34,11 @@ struct ExpandedPost: View {
     @Dependency(\.postRepository) var postRepository
     
     // appstorage
-    @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
-    @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = false
+    @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
+    @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = true
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = false
     
-    @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = true
+    @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = false
     @AppStorage("showDownvotesSeparately") var showPostDownvotesSeparately: Bool = false
     @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
     @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
@@ -54,8 +54,9 @@ struct ExpandedPost: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
 
     @StateObject var commentTracker: CommentTracker = .init()
-    @EnvironmentObject var postTracker: PostTracker
-    @State var post: PostModel
+    @EnvironmentObject var postTracker: StandardPostTracker
+    @StateObject var post: PostModel
+    var community: CommunityModel?
     
     @State var commentErrorDetails: ErrorDetails?
     
@@ -70,6 +71,9 @@ struct ExpandedPost: View {
     @State var commentSortingType: CommentSortType = .appStorageValue()
     @State private var postLayoutMode: LargePost.LayoutMode = .maximize
     
+    @State private var scrollToTopAppeared = false
+    @Namespace var scrollToTop
+    
     var body: some View {
         contentView
             .environmentObject(commentTracker)
@@ -77,8 +81,12 @@ struct ExpandedPost: View {
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) { toolbarMenu }
             }
-            .task { await loadComments() }
-            .task { await postTracker.markRead(post: post) }
+            .task {
+                if commentTracker.comments.isEmpty {
+                    await loadComments()
+                }
+                await post.markRead(true)
+            }
             .refreshable { await refreshComments() }
             .onChange(of: commentSortingType) { newSortingType in
                 withAnimation(.easeIn(duration: 0.4)) {
@@ -91,6 +99,9 @@ struct ExpandedPost: View {
         GeometryReader { proxy in
             ScrollViewReader { (scrollProxy: ScrollViewProxy) in
                 ScrollView {
+                    ScrollToView(appeared: $scrollToTopAppeared)
+                        .id(scrollToTop)
+
                     VStack(spacing: 0) {
                         postView
                             .id(0)
@@ -126,6 +137,16 @@ struct ExpandedPost: View {
                 }
                 .onPreferenceChange(AnchorsKey.self) { anchors in
                     topVisibleCommentId = topCommentRow(of: anchors, in: proxy)
+                }
+                .hoistNavigation {
+                    if scrollToTopAppeared {
+                        return false
+                    } else {
+                        withAnimation {
+                            scrollProxy.scrollTo(scrollToTop)
+                        }
+                        return true
+                    }
                 }
             }
         }
@@ -206,7 +227,8 @@ struct ExpandedPost: View {
                     
                     Spacer()
                     
-                    EllipsisMenu(size: 24, menuFunctions: genMenuFunctions())
+                    let functions = post.menuFunctions(editorTracker: editorTracker, postTracker: postTracker)
+                    EllipsisMenu(size: 24, menuFunctions: functions)
                 }
                 
                 LargePost(
@@ -221,7 +243,8 @@ struct ExpandedPost: View {
                 
                 UserLinkView(
                     user: post.creator,
-                    serverInstanceLocation: userServerInstanceLocation
+                    serverInstanceLocation: userServerInstanceLocation,
+                    communityContext: community
                 )
             }
             .padding(.top, AppConstants.postAndCommentSpacing)
@@ -231,13 +254,14 @@ struct ExpandedPost: View {
                 votes: post.votes,
                 published: post.published,
                 updated: post.updated,
-                numReplies: post.numReplies,
+                commentCount: post.commentCount,
+                unreadCommentCount: post.unreadCommentCount,
                 saved: post.saved,
                 accessibilityContext: "post",
                 widgets: layoutWidgetTracker.groups.post,
-                upvote: upvotePost,
-                downvote: downvotePost,
-                save: savePost,
+                upvote: post.toggleUpvote,
+                downvote: post.toggleDownvote,
+                save: post.toggleSave,
                 reply: replyToPost,
                 shareURL: URL(string: post.post.apId),
                 shouldShowScore: shouldShowScoreInPostBar,
@@ -275,6 +299,7 @@ struct ExpandedPost: View {
         LazyVStack(alignment: .leading, spacing: 0) {
             ForEach(commentTracker.commentsView, id: \.commentView.comment.id) { comment in
                 CommentItem(
+                    commentTracker: commentTracker,
                     hierarchicalComment: comment,
                     postContext: post,
                     showPostContext: false,

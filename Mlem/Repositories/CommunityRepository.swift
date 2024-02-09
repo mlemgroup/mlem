@@ -35,7 +35,7 @@ struct CommunityRepository {
         var communities = [APICommunityView]()
         
         repeat {
-            let response = try await client.loadCommunityList(sort: nil, page: page, limit: limit, type: FeedType.subscribed.rawValue)
+            let response = try await client.loadCommunityList(sort: nil, page: page, limit: limit, type: APIListingType.subscribed.rawValue)
             communities.append(contentsOf: response.communities)
             hasMorePages = response.communities.count >= limit
             page += 1
@@ -78,7 +78,7 @@ struct CommunityRepository {
     }
     
     func loadDetails(for id: Int) async throws -> CommunityModel {
-        CommunityModel(from: try await details(apiClient, id).communityView)
+        try await CommunityModel(from: details(apiClient, id))
     }
     
     @discardableResult

@@ -9,28 +9,42 @@ import Foundation
 
 /// A model which represents a comment and it's child relationships
 class HierarchicalComment: ObservableObject {
-    let commentView: APICommentView
+    @Published var commentView: APICommentView
     var children: [HierarchicalComment]
     /// Indicates comment's position in a post's parent/child comment thread.
     /// Values range from `0...Int.max`, where 0 indicates the parent comment.
     let depth: Int
+    let links: [LinkType]
     
     /// The *closest* parent's collapsed state.
     @Published var isParentCollapsed: Bool = false
     /// Indicates whether the *current* comment is collapsed.
     @Published var isCollapsed: Bool = false
 
-    init(comment: APICommentView, children: [HierarchicalComment], parentCollapsed: Bool, collapsed: Bool) {
+    init(
+        comment: APICommentView,
+        children: [HierarchicalComment],
+        parentCollapsed: Bool,
+        collapsed: Bool,
+        shouldCollapseChildren: Bool = false
+    ) {
+        let depth = max(0, comment.comment.path.split(separator: ".").count - 2)
+        
         self.commentView = comment
         self.children = children
-        self.depth = max(0, commentView.comment.path.split(separator: ".").count - 2)
-        self.isParentCollapsed = parentCollapsed
-        self.isCollapsed = collapsed
+        self.depth = depth
+        self.isParentCollapsed = shouldCollapseChildren && depth >= 1 || parentCollapsed
+        self.isCollapsed = shouldCollapseChildren && depth == 1 || collapsed
+        self.links = comment.comment.content.parseLinks()
     }
 }
 
 extension HierarchicalComment: Identifiable {
     var id: Int { commentView.id }
+}
+
+extension HierarchicalComment: ContentIdentifiable {
+    var uid: ContentModelIdentifier { .init(contentType: .comment, contentId: commentView.id) }
 }
 
 extension HierarchicalComment: Equatable {
@@ -159,7 +173,8 @@ extension [APICommentView] {
         }
         
         let identifiedComments = Dictionary(uniqueKeysWithValues: allComments.lazy.map { ($0.id, $0) })
-        
+        let collapseChildComments = UserDefaults.standard.bool(forKey: "collapseChildComments")
+
         /// Recursively populates child comments by looking up IDs from `childrenById`
         func populateChildren(_ comment: APICommentView) -> HierarchicalComment {
             guard let childIds = childrenById[comment.id] else {
@@ -167,7 +182,8 @@ extension [APICommentView] {
                     comment: comment,
                     children: [],
                     parentCollapsed: false,
-                    collapsed: false
+                    collapsed: false,
+                    shouldCollapseChildren: collapseChildComments
                 )
             }
             
@@ -175,7 +191,8 @@ extension [APICommentView] {
                 comment: comment,
                 children: [],
                 parentCollapsed: false,
-                collapsed: false
+                collapsed: false,
+                shouldCollapseChildren: collapseChildComments
             )
             commentWithChildren.children = childIds
                 .compactMap { id -> HierarchicalComment? in

@@ -21,6 +21,7 @@ struct PostSettingsView: View {
     
     // Community
     @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = true
+    @AppStorage("shouldShowSubscribedStatus") var shouldShowSubscribedStatus: Bool = true
     
     // Author
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
@@ -83,6 +84,12 @@ struct PostSettingsView: View {
                 )
                 
                 SwitchableSettingsItem(
+                    settingPictureSystemName: Icons.subscribed,
+                    settingName: "Show Subscribed Status",
+                    isTicked: $shouldShowSubscribedStatus
+                )
+                
+                SwitchableSettingsItem(
                     settingPictureSystemName: Icons.author,
                     settingName: "Show Post Creator",
                     isTicked: $shouldShowPostCreator
@@ -101,7 +108,7 @@ struct PostSettingsView: View {
                 )
             }
             
-            Section("Interactions and Info") {
+            Section {
                 SwitchableSettingsItem(
                     settingPictureSystemName: Icons.upvoteSquare,
                     settingName: "Show Score In Info",
@@ -127,6 +134,11 @@ struct PostSettingsView: View {
                     settingName: "Show Replies In Info",
                     isTicked: $shouldShowRepliesInPostBar
                 )
+            } header: {
+                Text("Interactions and Info")
+            } footer: {
+                // swiftlint:disable:next line_length
+                Text("Choose which information is shown when using Large or Headline mode. In Compact mode, all info stack widgets are shown.")
             }
             
             Section("Website Previews") {
@@ -180,5 +192,6 @@ struct PostSettingsView: View {
         .navigationTitle("Posts")
         .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
+        .hoistNavigation()
     }
 }

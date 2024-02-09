@@ -21,6 +21,8 @@ struct AdvancedSettingsView: View {
                     settingName: "Developer Mode",
                     isTicked: $developerMode
                 )
+            } footer: {
+                Text("Shows additional technical information.")
             }
             
             Section {
@@ -53,5 +55,6 @@ struct AdvancedSettingsView: View {
         }
         .navigationTitle("Advanced")
         .navigationBarColor()
+        .hoistNavigation()
     }
 }

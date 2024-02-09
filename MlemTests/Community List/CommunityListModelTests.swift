@@ -228,7 +228,7 @@ final class CommunityListModelTests: XCTestCase {
         XCTAssert(model.visibleSections.contains(where: { $0.viewId == "favorites" }))
         XCTAssert(model.communities.first! == favoriteCommunity)
         // now unfavorite the community
-        tracker.unfavorite(favoriteCommunity)
+        tracker.unfavorite(favoriteCommunity.id)
         // assert that the favorites section is no longer included
         XCTAssertFalse(model.visibleSections.contains(where: { $0.viewId == "favorites" }))
     }

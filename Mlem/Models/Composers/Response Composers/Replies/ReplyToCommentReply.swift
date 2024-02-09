@@ -13,6 +13,7 @@ struct ReplyToCommentReply: ResponseEditorModel {
     @Dependency(\.commentRepository) var commentRepository
     
     let canUpload: Bool = true
+    let showSlurWarning: Bool = true
     let modalName: String = "New Comment"
     let prefillContents: String? = nil
     let commentReply: ReplyModel
@@ -20,7 +21,7 @@ struct ReplyToCommentReply: ResponseEditorModel {
     var id: Int { commentReply.id }
     
     func embeddedView() -> AnyView {
-        AnyView(InboxReplyView(reply: commentReply)
+        AnyView(InboxReplyBodyView(reply: commentReply)
             .padding(.horizontal))
     }
     

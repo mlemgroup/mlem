@@ -14,6 +14,7 @@ struct ReportComment: ResponseEditorModel {
     
     var id: Int { comment.id }
     let canUpload: Bool = false
+    let showSlurWarning: Bool = false
     let modalName: String = "Report Comment"
     let prefillContents: String? = nil
     let comment: APICommentView
@@ -24,7 +25,8 @@ struct ReportComment: ResponseEditorModel {
             isParentCollapsed: .constant(false),
             isCollapsed: .constant(false),
             showPostContext: true,
-            menuFunctions: []
+            menuFunctions: [],
+            links: []
         )
         .padding(.horizontal, AppConstants.postAndCommentSpacing))
     }

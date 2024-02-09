@@ -21,7 +21,7 @@ struct GetPostsRequest: APIGetRequest {
         page: Int,
         cursor: String?,
         sort: PostSortType?,
-        type: FeedType,
+        type: APIListingType,
         limit: Int? = nil,
         savedOnly: Bool? = nil,
         communityName: String? = nil
@@ -60,10 +60,4 @@ struct GetPostsRequest: APIGetRequest {
 struct GetPostsResponse: Decodable {
     let posts: [APIPostView]
     let nextPage: String?
-}
-
-// MARK: - FeedTrackerItemProviding
-
-extension GetPostsResponse: FeedTrackerItemProviding {
-    var items: [APIPostView] { posts }
 }

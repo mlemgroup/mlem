@@ -8,31 +8,25 @@
 import Foundation
 
 // lemmy_db_schema::source::person::PersonSafe
-struct APIPerson: Decodable, Identifiable, Hashable {
+struct APIPerson: Decodable, Identifiable, Hashable, Equatable {
     let id: Int
     let name: String
-    let displayName: String?
-    let avatar: String?
+    var displayName: String?
+    var avatar: String?
     let banned: Bool
     let published: Date
     let updated: Date?
     let actorId: URL
-    let bio: String?
+    var bio: String?
     let local: Bool
-    let banner: String?
+    var banner: String?
     let deleted: Bool
     let sharedInboxUrl: String?
-    let matrixUserId: String?
+    var matrixUserId: String?
     let admin: Bool? // TODO: 0.18 deprecation remove this field
-    let botAccount: Bool
+    var botAccount: Bool
     let banExpires: Date?
     let instanceId: Int
-}
-
-extension APIPerson: Equatable {
-    static func == (lhs: APIPerson, rhs: APIPerson) -> Bool {
-        lhs.actorId == rhs.actorId
-    }
 }
 
 extension APIPerson {

@@ -8,16 +8,14 @@
 import Dependencies
 import Nuke
 import SwiftUI
-import UIKit
 import XCTestDynamicOverlay
 
 @main
 struct MlemApp: App {
     @Dependency(\.accountsTracker) var accountsTracker
-    
     @AppStorage("lightOrDarkMode") var lightOrDarkMode: UIUserInterfaceStyle = .unspecified
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
-    
+
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     var body: some Scene {
@@ -74,42 +72,17 @@ struct MlemApp: App {
 
     private func setupAppShortcuts() {
         guard accountsTracker.savedAccounts.first != nil else { return }
-
-        // Subscribed Feed
-        let homeIcon = UIApplicationShortcutIcon(systemImageName: "house")
-        let subscribedFeedItem = UIApplicationShortcutItem(
-            type: FeedType.subscribed.rawValue,
-            localizedTitle: "Subscribed",
-            localizedSubtitle: nil,
-            icon: homeIcon,
-            userInfo: nil
-        )
-
-        // Local Feed
-        let officeIcon = UIApplicationShortcutIcon(systemImageName: "building.2")
-        let localFeedItem = UIApplicationShortcutItem(
-            type: FeedType.local.rawValue,
-            localizedTitle: "Local",
-            localizedSubtitle: nil,
-            icon: officeIcon,
-            userInfo: nil
-        )
-
-        // All Feed
-        let cloudIcon = UIApplicationShortcutIcon(systemImageName: "cloud")
-        let allFeedItem = UIApplicationShortcutItem(
-            type: FeedType.all.rawValue,
-            localizedTitle: "All",
-            localizedSubtitle: nil,
-            icon: cloudIcon,
-            userInfo: nil
-        )
-
-        UIApplication.shared.shortcutItems = [
-            subscribedFeedItem,
-            localFeedItem,
-            allFeedItem
-        ]
+        
+        UIApplication.shared.shortcutItems = FeedType.allAggregateFeedCases.map { feedType in
+            let icon = UIApplicationShortcutIcon(systemImageName: feedType.iconName)
+            return UIApplicationShortcutItem(
+                type: feedType.toShortcutString,
+                localizedTitle: feedType.label,
+                localizedSubtitle: nil,
+                icon: icon,
+                userInfo: nil
+            )
+        }
     }
     
     /// A variable describing the initial flow the application should run after start-up

@@ -16,10 +16,3 @@ struct APIPrivateMessageView: Decodable {
 extension APIPrivateMessageView: Identifiable {
     var id: Int { privateMessage.id }
 }
-
-// MARK: - FeedTrackerItem
-
-extension APIPrivateMessageView: FeedTrackerItem {
-    var uniqueIdentifier: Int { id }
-    var published: Date { privateMessage.published }
-}

@@ -13,6 +13,7 @@ struct ReplyToMention: ResponseEditorModel {
     @Dependency(\.commentRepository) var commentRepository
     
     let canUpload: Bool = true
+    let showSlurWarning: Bool = true
     let modalName: String = "New Comment"
     let prefillContents: String? = nil
     let mention: MentionModel
@@ -21,7 +22,7 @@ struct ReplyToMention: ResponseEditorModel {
     
     func embeddedView() -> AnyView {
         AnyView(
-            InboxMentionView(mention: mention)
+            InboxMentionBodyView(mention: mention)
                 .padding(.horizontal)
         )
     }

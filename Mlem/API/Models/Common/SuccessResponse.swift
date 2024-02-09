@@ -16,15 +16,23 @@ struct SuccessResponse: Decodable {
     init(from compatibilityResponse: MarkReadCompatibilityResponse) {
         if let success = compatibilityResponse.success {
             self.success = success
-        } else if let postView = compatibilityResponse.postView {
+        } else if compatibilityResponse.postView != nil {
             self.success = true
         } else {
             self.success = false
         }
+    }
+    
+    init(from compatibilityResponse: SaveUserSettingsCompatibilityResponse) {
+        self.success = compatibilityResponse.success ?? true
     }
 }
 
 struct MarkReadCompatibilityResponse: Decodable {
     let success: Bool?
     let postView: APIPostView?
+}
+
+struct SaveUserSettingsCompatibilityResponse: Decodable {
+    let success: Bool?
 }

@@ -12,19 +12,21 @@ extension APICommunityAggregates {
     static func mock(
         id: Int = 0,
         communityId: Int = 0,
-        subscribers: Int = 0,
-        posts: Int = 0,
-        comments: Int = 0,
+        subscribers: Int = 42349,
+        subscribersLocal: Int = 2043,
+        posts: Int = 300,
+        comments: Int = 5000,
         published: Date = .mock,
-        usersActiveDay: Int = 0,
-        usersActiveWeek: Int = 0,
-        usersActiveMonth: Int = 0,
-        usersActiveHalfYear: Int = 0
+        usersActiveDay: Int = 3040,
+        usersActiveWeek: Int = 20044,
+        usersActiveMonth: Int = 50403,
+        usersActiveHalfYear: Int = 73032
     ) -> APICommunityAggregates {
         .init(
             id: id,
             communityId: communityId,
             subscribers: subscribers,
+            subscribersLocal: subscribersLocal,
             posts: posts,
             comments: comments,
             published: published,

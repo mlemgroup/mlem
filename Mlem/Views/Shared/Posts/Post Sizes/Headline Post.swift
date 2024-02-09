@@ -20,19 +20,7 @@ struct HeadlinePost: View {
     private let spacing: CGFloat = 10 // constant for readability, ease of modification
 
     // arguments
-    let post: PostModel
-
-    // computed
-    var usernameColor: Color {
-        if post.creator.isAdmin {
-            return .red
-        }
-        if post.creator.isBot {
-            return .indigo
-        }
-
-        return .secondary
-    }
+    @ObservedObject var post: PostModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {

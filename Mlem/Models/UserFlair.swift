@@ -48,4 +48,21 @@ enum UserFlair {
             return Icons.developerFlair
         }
     }
+    
+    var label: String {
+        switch self {
+        case .admin:
+            return "Administrator"
+        case .bot:
+            return "Bot Account"
+        case .banned:
+            return "Banned"
+        case .moderator:
+            return "Moderator"
+        case .developer:
+            return "Mlem Developer"
+        case .op:
+            return "Original Poster"
+        }
+    }
 }

@@ -20,7 +20,8 @@ struct InteractionBarView: View {
     let votes: VotesModel
     let published: Date
     let updated: Date?
-    let numReplies: Int
+    let commentCount: Int
+    var unreadCommentCount: Int = 0
     let saved: Bool
     
     let accessibilityContext: String
@@ -111,9 +112,11 @@ struct InteractionBarView: View {
                             : nil,
                         published: shouldShowTime ? published : nil,
                         updated: shouldShowTime ? updated : nil,
-                        commentCount: shouldShowReplies ? numReplies : nil,
+                        commentCount: shouldShowReplies ? commentCount : nil,
+                        unreadCommentCount: unreadCommentCount,
                         saved: shouldShowSaved ? saved : nil,
-                        alignment: infoStackAlignment(offset)
+                        alignment: infoStackAlignment(offset),
+                        colorizeVotes: false
                     )
                     .padding(AppConstants.postAndCommentSpacing)
                     .frame(minWidth: 0, maxWidth: .infinity)

@@ -15,12 +15,13 @@ struct ReplyToMessage: ResponseEditorModel {
     
     var id: Int { message.id }
     let canUpload: Bool = true
+    let showSlurWarning: Bool = true
     let modalName: String = "New Message"
     let prefillContents: String? = nil
     let message: MessageModel
     
     func embeddedView() -> AnyView {
-        AnyView(InboxMessageView(message: message)
+        AnyView(InboxMessageBodyView(message: message)
             .padding(.horizontal, AppConstants.postAndCommentSpacing))
     }
     

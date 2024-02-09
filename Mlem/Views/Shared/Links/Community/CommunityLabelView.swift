@@ -9,6 +9,9 @@ import SwiftUI
 struct CommunityLabelView: View {
     // settings
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
+    @AppStorage("shouldShowSubscribedStatus") var shouldShowSubscribedStatus: Bool = true
+    
+    @Environment(\.feedType) var feedType
 
     // parameters
     let community: CommunityModel
@@ -26,6 +29,14 @@ struct CommunityLabelView: View {
         } else {
             return shouldShowCommunityIcons
         }
+    }
+    
+    var showSubscribed: Bool {
+        if let feedType, feedType != .subscribed {
+            return shouldShowSubscribedStatus &&
+                community.subscribed ?? false
+        }
+        return false
     }
     
     @available(*, deprecated, message: "Provide a CommunityModel rather than an APICommunity.")
@@ -58,34 +69,57 @@ struct CommunityLabelView: View {
                     AvatarView(community: community, avatarSize: avatarSize)
                         .accessibilityHidden(true)
                 }
-
-                switch serverInstanceLocation {
-                case .disabled:
-                    communityName
-                case .trailing:
-                    HStack(spacing: 0) {
-                        communityName
-                        communityInstance
-                    }
-                    .foregroundColor(.secondary)
-                case .bottom:
-                    VStack(alignment: .leading) {
-                        communityName
-                        communityInstance
-                    }
-                }
+                
+                communityLabel
             }
             .accessibilityElement(children: .combine)
+        }
+    }
+    
+    @ViewBuilder
+    private var communityLabel: some View {
+        HStack(spacing: 4) {
+            switch serverInstanceLocation {
+            case .disabled:
+                communityName
+            case .trailing:
+                HStack(spacing: 0) {
+                    communityName
+                    communityInstance
+                }
+                .foregroundColor(.secondary)
+            case .bottom:
+                VStack(alignment: .leading) {
+                    communityName
+                    communityInstance
+                }
+            }
         }
     }
 
     @ViewBuilder
     private var communityName: some View {
-        Text(community.name)
-            .dynamicTypeSize(.small ... .accessibility1)
-            .font(.footnote)
-            .bold()
-            .foregroundColor(.secondary)
+        HStack(spacing: 4) {
+            if showSubscribed, serverInstanceLocation != .bottom {
+                Image(systemName: Icons.present)
+                    .font(.system(size: 8.0))
+                    .imageScale(.small)
+                    .foregroundColor(.secondary)
+            }
+            
+            Text(community.name)
+                .dynamicTypeSize(.small ... .accessibility1)
+                .font(.footnote)
+                .bold()
+                .foregroundColor(.secondary)
+            
+            if showSubscribed, serverInstanceLocation == .bottom {
+                Image(systemName: Icons.present)
+                    .font(.system(size: 8.0))
+                    .imageScale(.small)
+                    .foregroundColor(.secondary)
+            }
+        }
     }
 
     @ViewBuilder
@@ -101,5 +135,4 @@ struct CommunityLabelView: View {
             EmptyView()
         }
     }
-
 }

@@ -22,8 +22,11 @@ struct InfoStackView: View {
     let published: Date?
     let updated: Date?
     let commentCount: Int?
+    let unreadCommentCount: Int?
+    
     let saved: Bool?
     let alignment: HorizontalAlignment
+    let colorizeVotes: Bool
     
     var body: some View {
         HStack {
@@ -51,7 +54,11 @@ struct InfoStackView: View {
                 }
                 
                 if let commentCount {
-                    repliesView(numReplies: commentCount)
+                    if let unreadCommentCount, unreadCommentCount > 0, unreadCommentCount != commentCount {
+                        unreadRepliesView(commentCount: commentCount, unreadCommentCount: unreadCommentCount)
+                    } else {
+                        repliesView(commentCount: commentCount)
+                    }
                 }
             }
             .fixedSize()
@@ -70,6 +77,7 @@ struct InfoStackView: View {
             Image(systemName: votes.myVote == .resetVote ? Icons.upvoteSquare : votes.myVote.iconNameFill)
             Text(String(votes.score))
         }
+        .foregroundColor(colorizeVotes ? votes.myVote.color ?? .secondary : .secondary)
         .accessibilityAddTraits(.isStaticText)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(votes.score) net votes")
@@ -81,6 +89,7 @@ struct InfoStackView: View {
             Image(systemName: votes.myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvoteSquare)
             Text(String(votes.upvotes))
         }
+        .foregroundColor(colorizeVotes && votes.myVote == .upvote ? .upvoteColor : .secondary)
         .accessibilityAddTraits(.isStaticText)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(votes.upvotes) upvotes")
@@ -94,6 +103,7 @@ struct InfoStackView: View {
                 : Icons.downvoteSquare)
             Text(String(votes.downvotes))
         }
+        .foregroundColor(colorizeVotes && votes.myVote == .downvote ? .downvoteColor : .secondary)
         .accessibilityAddTraits(.isStaticText)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(votes.downvotes) downvotes")
@@ -108,13 +118,25 @@ struct InfoStackView: View {
     }
     
     @ViewBuilder
-    func repliesView(numReplies: Int) -> some View {
+    func repliesView(commentCount: Int) -> some View {
         HStack(spacing: AppConstants.iconToTextSpacing) {
             Image(systemName: Icons.replies)
-            Text(numReplies.description)
+            Text(String(describing: commentCount))
         }
         .accessibilityAddTraits(.isStaticText)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(numReplies) comments")
+        .accessibilityLabel("\(commentCount) comments")
+    }
+    
+    @ViewBuilder
+    func unreadRepliesView(commentCount: Int, unreadCommentCount: Int) -> some View {
+        HStack(spacing: AppConstants.iconToTextSpacing) {
+            Image(systemName: Icons.unreadReplies)
+            Text("\(commentCount)")
+                + Text(" +\(unreadCommentCount)").foregroundColor(.green)
+        }
+        .accessibilityAddTraits(.isStaticText)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(commentCount) comments, \(unreadCommentCount) new")
     }
 }

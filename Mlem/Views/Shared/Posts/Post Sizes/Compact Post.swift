@@ -24,23 +24,23 @@ struct CompactPost: View {
     @Dependency(\.errorHandler) var errorHandler
     
     @Environment(\.accessibilityDifferentiateWithoutColor) var diffWithoutColor: Bool
-    
-    @EnvironmentObject var postTracker: PostTracker
 
     // constants
     let thumbnailSize: CGFloat = 60
     private let spacing: CGFloat = 10 // constant for readability, ease of modification
     
     // arguments
-    let post: PostModel
+    @ObservedObject var post: PostModel
+    let community: CommunityModel?
     let showCommunity: Bool // true to show community name, false to show username
     let menuFunctions: [MenuFunction]
     
     // computed
     var showReadCheck: Bool { post.read && diffWithoutColor && readMarkStyle == .check }
     
-    init(post: PostModel, showCommunity: Bool, menuFunctions: [MenuFunction]) {
+    init(post: PostModel, community: CommunityModel? = nil, showCommunity: Bool, menuFunctions: [MenuFunction]) {
         self.post = post
+        self.community = community
         self.showCommunity = showCommunity
         self.menuFunctions = menuFunctions
     }
@@ -59,7 +59,8 @@ struct CompactPost: View {
                         } else {
                             UserLinkView(
                                 user: post.creator,
-                                serverInstanceLocation: .trailing
+                                serverInstanceLocation: .trailing,
+                                communityContext: community
                             )
                         }
                     }
@@ -113,9 +114,11 @@ struct CompactPost: View {
                 ),
                 published: post.published,
                 updated: post.updated,
-                commentCount: post.numReplies,
+                commentCount: post.commentCount,
+                unreadCommentCount: post.unreadCommentCount,
                 saved: post.saved,
-                alignment: .center
+                alignment: .center,
+                colorizeVotes: true
             )
         }
         .frame(maxWidth: .infinity, alignment: .leading)

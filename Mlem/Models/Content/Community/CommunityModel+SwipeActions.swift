@@ -8,7 +8,6 @@
 import Foundation
 
 extension CommunityModel {
-    
     func subscribeSwipeAction(
         _ callback: @escaping (_ item: Self) -> Void = { _ in },
         confirmDestructive: ((StandardMenuFunction) -> Void)? = nil
@@ -16,9 +15,9 @@ extension CommunityModel {
         guard let subscribed else {
             throw CommunityError.noData
         }
-        let (emptySymbolName, fullSymbolName) = (subscribed)
-        ? (Icons.unsubscribePerson, Icons.unsubscribePersonFill)
-        : (Icons.subscribePerson, Icons.subscribePersonFill)
+        let (emptySymbolName, fullSymbolName) = subscribed
+            ? (Icons.unsubscribePerson, Icons.unsubscribePersonFill)
+            : (Icons.subscribePerson, Icons.subscribePersonFill)
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: subscribed ? .red : .green,
@@ -27,13 +26,12 @@ extension CommunityModel {
                     hapticManager.play(haptic: .lightSuccess, priority: .low)
                     
                     if subscribed, let confirmDestructive {
-                        if case .standard(let function) = try? subscribeMenuFunction(callback) {
+                        if let function = try? subscribeMenuFunction(callback) {
                             confirmDestructive(function)
                         }
                     } else {
-                        var new = self
                         do {
-                            try await new.toggleSubscribe(callback)
+                            try await self.toggleSubscribe(callback)
                         } catch {
                             errorHandler.handle(error)
                         }
@@ -43,14 +41,43 @@ extension CommunityModel {
         )
     }
     
+    func favoriteSwipeAction(
+        _ callback: @escaping (_ item: Self) -> Void = { _ in },
+        confirmDestructive: ((StandardMenuFunction) -> Void)? = nil
+    ) -> SwipeAction {
+        let (emptySymbolName, fullSymbolName) = favorited
+            ? (Icons.unfavorite, Icons.unfavoriteFill)
+            : (Icons.favorite, Icons.favoriteFill)
+        return SwipeAction(
+            symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
+            color: favorited ? .red : .blue,
+            action: {
+                Task {
+                    hapticManager.play(haptic: .lightSuccess, priority: .low)
+                    
+                    if favorited, let confirmDestructive {
+                        confirmDestructive(favoriteMenuFunction(callback))
+                    } else {
+                        try await self.toggleFavorite(callback)
+                    }
+                }
+            }
+        )
+    }
+        
     func swipeActions(
         _ callback: @escaping (_ item: Self) -> Void = { _ in },
         confirmDestructive: ((StandardMenuFunction) -> Void)? = nil
     ) -> SwipeConfiguration {
         var trailingActions: [SwipeAction] = []
-        if let action = try? subscribeSwipeAction(callback, confirmDestructive: confirmDestructive) {
-            trailingActions.append(action)
+        let subscribeAction = try? subscribeSwipeAction(callback, confirmDestructive: confirmDestructive)
+        let favoriteAction = favoriteSwipeAction(callback, confirmDestructive: confirmDestructive)
+        
+        if let subscribeAction {
+            trailingActions.append(subscribeAction)
+            trailingActions.append(favoriteAction)
         }
+       
         return SwipeConfiguration(leadingActions: [], trailingActions: trailingActions)
     }
 }

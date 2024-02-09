@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct ImageUploadResponse: Codable {
     public let msg: String?

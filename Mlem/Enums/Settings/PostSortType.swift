@@ -85,9 +85,9 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
         case .topHour:
             return "Top of the last hour"
         case .topSixHour:
-            return "Top of the last six hours"
+            return "Top of the last 6 hours"
         case .topTwelveHour:
-            return "Top of the last twelve hours"
+            return "Top of the last 12 hours"
         case .topDay:
             return "Top of today"
         case .topWeek:
@@ -108,21 +108,65 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
             return label
         }
     }
+    
+    // Pre 0.18.0 it appears that they used integers instead of strings to represent sort types. We can remove this intialiser once we drop support for old versions. To fully support both systems, we'd also need to *encode* back into the correct integer or string format. I'd rather not go through the effort for instance versions that most people don't use any more, so I've disabled the option to edit account settings on instances running <0.18.0
+    // - sjmarf
+    
+    // TODO: 0.17 deprecation remove this initialiser
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        if let stringValue = try? container.decode(String.self) {
+            guard let value = PostSortType(rawValue: stringValue) else {
+                throw DecodingError.dataCorruptedError(
+                    in: container,
+                    debugDescription: "Invalid value"
+                )
+            }
+            self = value
+        } else if let intValue = try? container.decode(Int.self) {
+            guard 0...10 ~= intValue else {
+                throw DecodingError.dataCorruptedError(
+                    in: container,
+                    debugDescription: "Must be an integer in range 0...10."
+                )
+            }
+            let modes: [PostSortType] = [
+                .hot,
+                .active,
+                .new,
+                .old,
+                .mostComments,
+                .newComments,
+                .topDay,
+                .topWeek,
+                .topMonth,
+                .topYear,
+                .topAll
+            ]
+            self = modes[intValue]
+        } else {
+            throw DecodingError.dataCorruptedError(
+                in: container,
+                debugDescription: "Invalid value"
+            )
+        }
+    }
 }
 
 extension PostSortType: SettingsOptions {
     var label: String {
         switch self {
         case .newComments:
-            return "New comments"
+            return "New Comments"
         case .mostComments:
-            return "Most comments"
+            return "Most Comments"
         case .topHour:
             return "Hour"
         case .topSixHour:
-            return "Six hours"
+            return "6 Hours"
         case .topTwelveHour:
-            return "Twelve hours"
+            return "12 Hours"
         case .topDay:
             return "Day"
         case .topWeek:
@@ -138,7 +182,7 @@ extension PostSortType: SettingsOptions {
         case .topYear:
             return "Year"
         case .topAll:
-            return "All time"
+            return "All Time"
         default:
             return rawValue
         }

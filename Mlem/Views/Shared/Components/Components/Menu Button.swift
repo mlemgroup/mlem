@@ -30,6 +30,10 @@ struct MenuButton: View {
                 Label(standardMenuFunction.text, systemImage: standardMenuFunction.imageName)
             }
             .disabled(!standardMenuFunction.enabled)
+        case let .navigation(navigationMenuFunction):
+            NavigationLink(navigationMenuFunction.destination) {
+                Label(navigationMenuFunction.text, systemImage: navigationMenuFunction.imageName)
+            }
         }
     }
 }

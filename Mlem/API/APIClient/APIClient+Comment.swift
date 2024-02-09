@@ -12,7 +12,7 @@ extension APIClient {
     func loadComments(
         for postId: Int,
         maxDepth: Int = 15,
-        type: FeedType = .all,
+        type: APIListingType = .all,
         sort: CommentSortType? = nil,
         page: Int? = nil,
         limit: Int? = nil,

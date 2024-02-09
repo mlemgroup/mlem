@@ -8,18 +8,42 @@
 import Dependencies
 import SwiftUI
 
+enum UserComplication: CaseIterable {
+    case type, instance, date, posts, comments
+}
+
+extension [UserComplication] {
+    static let withTypeLabel: [UserComplication] = [.type, .instance, .comments]
+    static let withoutTypeLabel: [UserComplication] = [.instance, .date, .posts, .comments]
+    static let instanceOnly: [UserComplication] = [.instance]
+}
+
 struct UserResultView: View {
     @Dependency(\.apiClient) private var apiClient
     @Dependency(\.hapticManager) var hapticManager
     
-    @EnvironmentObject var contentTracker: ContentTracker<AnyContentModel>
-    
     let user: UserModel
-    let showTypeLabel: Bool
-    var swipeActions: SwipeConfiguration?
+    let communityContext: CommunityModel?
+    let trackerCallback: (_ item: UserModel) -> Void
+    let swipeActions: SwipeConfiguration?
+    let complications: [UserComplication]
     
     @State private var isPresentingConfirmDestructive: Bool = false
     @State private var confirmationMenuFunction: StandardMenuFunction?
+    
+    init(
+        _ user: UserModel,
+        complications: [UserComplication] = .withoutTypeLabel,
+        communityContext: CommunityModel? = nil,
+        swipeActions: SwipeConfiguration? = nil,
+        trackerCallback: @escaping (_ item: UserModel) -> Void = { _ in }
+    ) {
+        self.user = user
+        self.complications = complications
+        self.communityContext = communityContext
+        self.swipeActions = swipeActions
+        self.trackerCallback = trackerCallback
+    }
     
     func confirmDestructive(destructiveFunction: StandardMenuFunction) {
         confirmationMenuFunction = destructiveFunction
@@ -28,27 +52,30 @@ struct UserResultView: View {
     
     var title: String {
         if user.blocked {
-            return "\(user.name) ∙ Blocked"
+            return "\(user.displayName!) ∙ Blocked"
         } else {
-            return user.name
+            return user.displayName
         }
     }
     
     var caption: String {
-        if let host = user.profileUrl.host {
-            if showTypeLabel {
-                return "User ∙ @\(host)"
-            } else {
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy"
-                return "@\(host) ∙ \(dateFormatter.string(from: user.creationDate))"
-            }
+        var parts: [String] = []
+        if complications.contains(.type) {
+            parts.append("User")
         }
-        return "Unknown instance"
+        if complications.contains(.instance), let host = user.profileUrl.host {
+            parts.append("@\(host)")
+        }
+        if complications.contains(.date) {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy"
+            parts.append(dateFormatter.string(from: user.creationDate))
+        }
+        return parts.joined(separator: " ∙ ")
     }
     
     var body: some View {
-        NavigationLink(value: AppRoute.userProfile(user)) {
+        NavigationLink(value: AppRoute.userProfile(user, communityContext: communityContext)) {
             HStack(spacing: 10) {
                 if user.blocked {
                     Image(systemName: Icons.hide)
@@ -57,9 +84,9 @@ struct UserResultView: View {
                         .frame(width: 30, height: 30)
                         .padding(9)
                 } else {
-                    AvatarView(user: user, avatarSize: 48, iconResolution: 128)
+                    AvatarView(user: user, avatarSize: 48, iconResolution: .fixed(128))
                 }
-                let flairs = user.getFlairs()
+                let flairs = user.getFlairs(communityContext: communityContext)
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 4) {
                         ForEach(flairs, id: \.self) { flair in
@@ -68,6 +95,7 @@ struct UserResultView: View {
                                 .foregroundStyle(flair.color)
                         }
                         Text(title)
+                            .lineLimit(1)
                     }
                     Text(caption)
                         .font(.footnote)
@@ -75,37 +103,7 @@ struct UserResultView: View {
                         .lineLimit(1)
                 }
                 Spacer()
-                if showTypeLabel {
-                    HStack(spacing: 5) {
-                        if let commentCount = user.commentCount {
-                            Text(abbreviateNumber(commentCount))
-                                .monospacedDigit()
-                            Image(systemName: Icons.replies)
-                        }
-                    }
-                    .foregroundStyle(.secondary)
-                } else {
-                    if let commentCount = user.commentCount, let postCount = user.postCount {
-                        HStack(spacing: 5) {
-                            VStack(alignment: .trailing, spacing: 6) {
-                                Text(abbreviateNumber(postCount))
-                                    .font(.subheadline)
-                                    .monospacedDigit()
-                                Text(abbreviateNumber(commentCount))
-                                    .font(.subheadline)
-                                    .monospacedDigit()
-                            }
-                            .foregroundStyle(.secondary)
-                            VStack(spacing: 10) {
-                                Image(systemName: Icons.posts)
-                                    .imageScale(.small)
-                                Image(systemName: Icons.replies)
-                                    .imageScale(.small)
-                            }
-                        }
-                        .foregroundStyle(.secondary)
-                    }
-                }
+                trailingInfo
                 Image(systemName: Icons.forward)
                     .imageScale(.small)
                     .foregroundStyle(.tertiary)
@@ -132,10 +130,50 @@ struct UserResultView: View {
         )
         .addSwipeyActions(swipeActions ?? .init())
         .contextMenu {
-            ForEach(user.menuFunctions {
-                contentTracker.update(with: AnyContentModel($0))
-            }) { item in
+            ForEach(user.menuFunctions(trackerCallback)) { item in
                 MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var trailingInfo: some View {
+        Group {
+            if complications.contains(.posts), let postCount = user.postCount {
+                if complications.contains(.comments), let commentCount = user.commentCount {
+                    HStack(spacing: 5) {
+                        VStack(alignment: .trailing, spacing: 6) {
+                            Text(abbreviateNumber(postCount))
+                                .font(.subheadline)
+                                .monospacedDigit()
+                            Text(abbreviateNumber(commentCount))
+                                .font(.subheadline)
+                                .monospacedDigit()
+                        }
+                        .foregroundStyle(.secondary)
+                        VStack(spacing: 10) {
+                            Image(systemName: Icons.posts)
+                                .imageScale(.small)
+                            Image(systemName: Icons.replies)
+                                .imageScale(.small)
+                        }
+                    }
+                    .foregroundStyle(.secondary)
+                } else {
+                    HStack(spacing: 5) {
+                        Text(abbreviateNumber(postCount))
+                            .monospacedDigit()
+                        Image(systemName: Icons.posts)
+                    }
+                    .foregroundStyle(.secondary)
+                }
+            } else if complications.contains(.comments), let commentCount = user.commentCount {
+                HStack(spacing: 5) {
+                    Text(abbreviateNumber(commentCount))
+                        .monospacedDigit()
+                    Image(systemName: Icons.replies)
+                }
+                .foregroundStyle(.secondary)
             }
         }
     }
@@ -143,7 +181,6 @@ struct UserResultView: View {
 
 #Preview {
     UserResultView(
-        user: .init(from: .mock()),
-        showTypeLabel: true
+        .init(from: .mock())
     )
 }
