@@ -9,18 +9,18 @@ import Dependencies
 import SwiftUI
 
 protocol InstanceStubProviding {
-    var domainName: String { get }
+    var name: String { get }
     var apiClient: APIClient { get }
-    var postRepository: PostRepository { get }
-    var commentRepository: CommentRepository { get }
-    var communityRepository: CommunityRepository { get }
-    var personRepository: PersonRepository { get }
 }
 
-struct InstanceStub {
-    let domainName: String
+class InstanceStub: InstanceStubProviding {
+    let name: String
 
     lazy var apiClient: APIClient = {
-        apiClient = 
+        let apiClient = APIClient(transport: { urlSession, urlRequest in try await urlSession.data(for: urlRequest) })
+        if let url = URL(string: "https://\(name)/api/v3") {
+            apiClient.session = .unauthenticated(url: url)
+        }
+        return apiClient
     }()
 }

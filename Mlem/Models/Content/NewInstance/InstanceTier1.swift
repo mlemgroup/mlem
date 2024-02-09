@@ -8,9 +8,8 @@
 import Observation
 import SwiftUI
 
-protocol InstanceTier1Providing {
+protocol InstanceTier1Providing: InstanceStubProviding {
     var id: Int { get }
-    var name: String { get }
     var displayName: String { get }
     var description: String { get }
     var avatar: URL? { get }
@@ -21,12 +20,15 @@ protocol InstanceTier1Providing {
 }
 
 @Observable
-final class CommunityTier1: InstanceTier1Providing, NewContentModel {
+final class InstanceTier1: InstanceTier1Providing, NewContentModel {
     // NewContentModel conformance
     typealias APIType = APISite
     
+    let stub: InstanceStub
+    var name: String { stub.name }
+    var apiClient: APIClient { stub.apiClient }
+
     let id: Int
-    let name: String
     let creationDate: Date
     
     private(set) var displayName: String
