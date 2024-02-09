@@ -8,6 +8,11 @@ inputs:
   xcodebuild_action:
     required: true
 
+permissions:
+  # This workflow needs write access to the checks to publish
+  # the results of the tests via xcresulttool.
+  checks: write
+
 runs:
   using: "composite"
   steps:
