@@ -12,14 +12,14 @@ class MarkReadBatcher: Batcher {
     private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
     
     private(set) var enabled: Bool = false
-    var batch: [Int] = .init()
+    private var batch: [Int] = .init()
     
     func resolveSiteVersion(to siteVersion: SiteVersion) {
         enabled = siteVersion >= .init("0.19.0")
     }
     
     func flush() async {
-        // only one thread may execute this function at a time
+        // only one thread may execute this function at a time to avoid duplicate requests
         await loadingSemaphore.wait()
         defer { loadingSemaphore.signal() }
         
@@ -36,6 +36,11 @@ class MarkReadBatcher: Batcher {
     }
   
     func add(_ postId: Int) async {
+        guard enabled else {
+            assertionFailure("Cannot add to disabled batcher!")
+            return
+        }
+        
         if batch.count >= 25 {
             await flush()
         }
