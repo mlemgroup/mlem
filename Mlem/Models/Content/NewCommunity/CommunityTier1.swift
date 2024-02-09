@@ -29,8 +29,8 @@ protocol CommunityTier1Providing: CommunityStubProviding {
 @Observable
 final class CommunityTier1: CommunityTier1Providing, NewContentModel {
     // NewContentModel conformance
-    static let cache: ContentCache<CommunityTier1> = .init()
     typealias APIType = APICommunity
+    let parentInstance: InstanceModel
     var contentId: Int { communityId }
     
     let communityId: Int
@@ -50,7 +50,9 @@ final class CommunityTier1: CommunityTier1Providing, NewContentModel {
     private(set) var hidden: Bool
     private(set) var onlyModeratorsCanPost: Bool
     
-    required init(from community: APICommunity) {
+    required init(parent instance: InstanceModel, from community: APICommunity) {
+        self.parentInstance = instance
+
         self.communityId = community.id
         self.name = community.name
         self.creationDate = community.published

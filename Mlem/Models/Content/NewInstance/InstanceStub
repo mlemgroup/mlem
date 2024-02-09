@@ -1,0 +1,26 @@
+//
+//  InstanceStub.swift
+//  Mlem
+//
+//  Created by Sjmarf on 09/02/2024.
+//
+
+import Dependencies
+import SwiftUI
+
+protocol InstanceStubProviding {
+    var domainName: String { get }
+    var apiClient: APIClient { get }
+    var postRepository: PostRepository { get }
+    var commentRepository: CommentRepository { get }
+    var communityRepository: CommunityRepository { get }
+    var personRepository: PersonRepository { get }
+}
+
+struct InstanceStub {
+    let domainName: String
+
+    lazy var apiClient: APIClient = {
+        apiClient = 
+    }()
+}

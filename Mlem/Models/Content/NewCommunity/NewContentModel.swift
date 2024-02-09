@@ -20,11 +20,20 @@ extension APIContentType {
 
 protocol NewContentModel: AnyObject {
     associatedtype APIType: APIContentType
-    
+
     var contentId: Int { get }
-    static var cache: ContentCache<Self> { get }
-    init(from: APIType)
     func update(with: APIType)
+}
+
+protocol InstanceDependentContentModel: NewContentModel {
+    /// The instance from which the ContentModel was fetched
+    var parentInstance: InstanceModel { get }
+    
+    init(parent: InstanceModel, from: APIType)
+}
+
+protocol InstanceContentModel: NewContentModel {
+    init(from: APIType)
 }
 
 private struct WeakReference<Content: NewContentModel> {

@@ -34,6 +34,7 @@ final class CommunityTier2: CommunityTier2Providing, NewContentModel {
     var contentId: Int { community1.contentId }
     
     // Forward properties from CommunityTier1
+    var parentInstance: InstanceModel { community1.parentInstance }
     var communityId: Int { community1.communityId }
     var name: String { community1.name }
     var creationDate: Date { community1.creationDate }
@@ -59,7 +60,7 @@ final class CommunityTier2: CommunityTier2Providing, NewContentModel {
     private(set) var blocked: Bool
     private(set) var subscribed: Bool
     
-    required init(from communityView: APICommunityView) {
+    required init(parent instance: InstanceModel, from communityView: APICommunityView) {
         subscriberCount = communityView.counts.subscribers
         postCount = communityView.counts.posts
         commentCount = communityView.counts.comments

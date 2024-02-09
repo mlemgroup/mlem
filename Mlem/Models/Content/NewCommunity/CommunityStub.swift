@@ -8,12 +8,12 @@
 import Dependencies
 import SwiftUI
 
-struct CommunityStub: CommunityStubProviding {
-    let communityId: Int
-}
-
 protocol CommunityStubProviding {
     var communityId: Int { get }
+}
+
+struct CommunityStub: CommunityStubProviding {
+    let communityId: Int
 }
 
 extension CommunityStubProviding {
