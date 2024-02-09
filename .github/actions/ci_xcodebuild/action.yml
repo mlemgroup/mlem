@@ -8,13 +8,14 @@ inputs:
   xcodebuild_action:
     required: true
 
-permissions:
-  # This workflow needs write access to the checks to publish
-  # the results of the tests via xcresulttool.
-  checks: write
-
 runs:
   using: "composite"
+  
+  permissions:
+    # This workflow needs write access to the checks to publish
+    # the results of the tests via xcresulttool.
+    checks: write
+
   steps:
   - uses: maxim-lobanov/setup-xcode@v1
     name: Set Xcode Version
