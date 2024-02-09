@@ -2,18 +2,23 @@ name: CI - Build & Test - Xcode 15
 
 on:
     push:
-        branches:
-        - master
-        - dev
+      branches:
+      - master
+      - dev
 
     pull_request:
-        branches:
-        - master
-        - dev
+      branches:
+      - master
+      - dev
 
 jobs:
   Build:
-    permissions: write-all
+    permissions:
+      pull-requests: 'write'
+      # This workflow needs write access to the checks to publish
+      # the results of the tests via xcresulttool.
+      checks: write
+        
     runs-on: macos-13
     steps:
     - name: Checkout
@@ -27,7 +32,10 @@ jobs:
         xcodebuild_action: "build"
 
   Test:
-    permissions: write-all
+    permissions:
+      # This workflow needs write access to the checks to publish
+      # the results of the tests via xcresulttool.
+      checks: write
     runs-on: macos-13
     steps:
     - name: Checkout
