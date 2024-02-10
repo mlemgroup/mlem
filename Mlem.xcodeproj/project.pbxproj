@@ -444,6 +444,7 @@
 		CD8461662A96F9EB0026A627 /* Website Indicator View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8461652A96F9EB0026A627 /* Website Indicator View.swift */; };
 		CD863FBA2A6AEB5900A31ED9 /* View+FancyTabScrollCompatible.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863FB92A6AEB5900A31ED9 /* View+FancyTabScrollCompatible.swift */; };
 		CD863FBC2A6B026400A31ED9 /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863FBB2A6B026400A31ED9 /* DocumentView.swift */; };
+		CD876EC72B7736370075DC15 /* MarkReadBatcher+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD876EC62B7736370075DC15 /* MarkReadBatcher+Dependency.swift */; };
 		CD8C55342A95515C0060B75B /* Onboarding Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8C55332A95515C0060B75B /* Onboarding Text.swift */; };
 		CD8CF2092AF3F131009FFC23 /* Firm Info.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CD8CF2082AF3F131009FFC23 /* Firm Info.ahap */; };
 		CD963FCB2B5F0388002352FD /* DefaultFeedType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD963FCA2B5F0388002352FD /* DefaultFeedType.swift */; };
@@ -1013,6 +1014,7 @@
 		CD8461652A96F9EB0026A627 /* Website Indicator View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Website Indicator View.swift"; sourceTree = "<group>"; };
 		CD863FB92A6AEB5900A31ED9 /* View+FancyTabScrollCompatible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+FancyTabScrollCompatible.swift"; sourceTree = "<group>"; };
 		CD863FBB2A6B026400A31ED9 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
+		CD876EC62B7736370075DC15 /* MarkReadBatcher+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MarkReadBatcher+Dependency.swift"; sourceTree = "<group>"; };
 		CD8C55332A95515C0060B75B /* Onboarding Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Onboarding Text.swift"; sourceTree = "<group>"; };
 		CD8CF2082AF3F131009FFC23 /* Firm Info.ahap */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Firm Info.ahap"; sourceTree = "<group>"; };
 		CD963FCA2B5F0388002352FD /* DefaultFeedType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultFeedType.swift; sourceTree = "<group>"; };
@@ -1542,6 +1544,7 @@
 				5064D03E2A6DE0DB00B22EE3 /* Notifier+Dependency.swift */,
 				50785F722A98E03F00117245 /* SiteInformationTracker+Dependency.swift */,
 				CD4368CD2AE242C900BD8BD1 /* InboxRepository+Dependency.swift */,
+				CD876EC62B7736370075DC15 /* MarkReadBatcher+Dependency.swift */,
 			);
 			path = Dependency;
 			sourceTree = "<group>";
@@ -3437,6 +3440,7 @@
 				6322A5D027F8629700135D4F /* UserLinkView.swift in Sources */,
 				030E864C2AC7037F000283A6 /* SearchBarExtensions.swift in Sources */,
 				6372184B2A3A2AAD008C4816 /* APIPostAggregates.swift in Sources */,
+				CD876EC72B7736370075DC15 /* MarkReadBatcher+Dependency.swift in Sources */,
 				50A8812C2A72D727003E3661 /* CommunityRepository+Dependency.swift in Sources */,
 				0394398F2A98EB2300463032 /* APIComment+Mock.swift in Sources */,
 				E453477E2A9DE37300D1B46F /* Array+SafeIndexing.swift in Sources */,

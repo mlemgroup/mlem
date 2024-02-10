@@ -13,6 +13,7 @@ class SiteInformationTracker: ObservableObject {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.accountsTracker) var accountsTracker
+    @Dependency(\.markReadBatcher) var markReadBatcher
     
     @Published private(set) var instance: InstanceModel?
     @Published private(set) var enableDownvotes = true
@@ -36,7 +37,9 @@ class SiteInformationTracker: ObservableObject {
                 }
                 myUserInfo = response.myUser
                 allLanguages = response.allLanguages
-                
+                if let version {
+                    markReadBatcher.resolveSiteVersion(to: version)
+                }
             } catch {
                 errorHandler.handle(error)
             }

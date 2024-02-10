@@ -5,17 +5,24 @@
 //  Created by Eric Andrews on 2024-02-08.
 //
 
+import Dependencies
 import Foundation
 import Semaphore
 
 class MarkReadBatcher: Batcher {
+    @Dependency(\.notifier) var notifier
+    @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.postRepository) var postRepository
+    
     private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
     
     private(set) var enabled: Bool = false
-    private var batch: [Int] = .init()
+    private var pending: [Int] = .init()
+    private var sending: [Int] = .init()
     
     func resolveSiteVersion(to siteVersion: SiteVersion) {
         enabled = siteVersion >= .init("0.19.0")
+        print("DEBUG received site version, enabled: \(enabled)")
     }
     
     func flush() async {
@@ -23,25 +30,45 @@ class MarkReadBatcher: Batcher {
         await loadingSemaphore.wait()
         defer { loadingSemaphore.signal() }
         
-        await sendBatch()
-        batch = .init()
+        print("DEBUG flushing")
+        
+        sending = pending
+        pending = .init()
+        
+        // perform this on background thread to return ASAP
+        Task {
+            await sendBatch()
+        }
+        
+        print("DEBUG flush complete")
     }
     
     func sendBatch() async {
-        guard batch.count > 0 else {
+        guard sending.count > 0 else {
             return
         }
         
-        print("sending batch of size \(batch.count)")
+        print("DEBUG sending batch of size \(sending.count)")
+        do {
+            try await postRepository.markRead(postIds: sending, read: true)
+        } catch {
+            errorHandler.handle(error)
+        }
+        
+        sending = .init()
+        print("DEBUG sent batch")
     }
   
     func add(_ postId: Int) async {
+        // FUTURE DEV: wouldn't it be nicer to pass in a PostModel and perform the mark read state fake here?
+        // PAST DEV: no, that causes nasty little memory errors.
+        
         guard enabled else {
             assertionFailure("Cannot add to disabled batcher!")
             return
         }
         
-        if batch.count >= 25 {
+        if pending.count >= 5 {
             await flush()
         }
         
@@ -50,6 +77,6 @@ class MarkReadBatcher: Batcher {
         // - Thread 0's sends the batch
         // - Thread 1 adds its id to pending
         // - Thread 0's flush() call resets the batch, and thread 1's id is lost forever!
-        batch.append(postId)
+        pending.append(postId)
     }
 }

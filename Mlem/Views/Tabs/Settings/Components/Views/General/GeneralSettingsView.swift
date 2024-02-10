@@ -17,6 +17,7 @@ struct GeneralSettingsView: View {
     @AppStorage("appLock") var appLock: AppLock = .disabled
     @AppStorage("tapCommentToCollapse") var tapCommentToCollapse: Bool = true
     @AppStorage("easyTapLinkDisplayMode") var easyTapLinkDisplayMode: EasyTapLinkDisplayMode = .contextual
+    @AppStorage("markReadOnScroll") var markReadOnScroll: Bool = false
     
     @AppStorage("defaultFeed") var defaultFeed: DefaultFeedType = .subscribed
     
@@ -58,6 +59,11 @@ struct GeneralSettingsView: View {
                     settingName: "Tappable Links",
                     currentValue: $easyTapLinkDisplayMode,
                     options: EasyTapLinkDisplayMode.allCases
+                )
+                SwitchableSettingsItem(
+                    settingPictureSystemName: Icons.read,
+                    settingName: "Mark Read on Scroll",
+                    isTicked: $markReadOnScroll
                 )
             }
             

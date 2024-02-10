@@ -12,6 +12,7 @@ import SwiftUI
 struct PostFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.siteInformation) var siteInformation
+    @Dependency(\.markReadBatcher) var markReadBatcher
     
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
     @AppStorage("showReadPosts") var showReadPosts: Bool = true
@@ -19,6 +20,7 @@ struct PostFeedView: View {
     @AppStorage("postSize") var postSize: PostSize = .large
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
     @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
+    @AppStorage("markReadOnScroll") var markReadOnScroll: Bool = false
     
     @EnvironmentObject var postTracker: StandardPostTracker
     @EnvironmentObject var appState: AppState
@@ -101,14 +103,20 @@ struct PostFeedView: View {
             } else {
                 ForEach(Array(postTracker.items.enumerated()), id: \.element.uid) { index, element in
                     feedPost(for: element)
-                        .onAppear {
-                            if index >= postSize.markReadThreshold {
-                                Task {
-                                    await postTracker.items[index - postSize.markReadThreshold].markRead(true)
-                                }
-                            } else {
-                                Task {
-                                    await element.markRead(true)
+                        .task {
+                            if markReadOnScroll, markReadBatcher.enabled {
+                                // mark the post above (or several posts above) read when this post appears. This lets us get a rough "post crossed the middle of the screen" trigger without GeometryReader or timers or any of that
+                                let indexToMark = index >= postSize.markReadThreshold ? index - postSize.markReadThreshold : index
+
+                                if let postToMark = postTracker.items[safeIndex: indexToMark] {
+                                    postToMark.setRead(true)
+                                    await markReadBatcher.add(postToMark.postId)
+                                    
+                                    // handle posts at end of feed
+                                    if postTracker.items.count - index <= postSize.markReadThreshold {
+                                        element.setRead(true)
+                                        await markReadBatcher.add(element.postId)
+                                    }
                                 }
                             }
                         }
