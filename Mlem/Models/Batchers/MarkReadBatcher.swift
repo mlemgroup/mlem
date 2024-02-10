@@ -68,7 +68,7 @@ class MarkReadBatcher: Batcher {
             return
         }
         
-        if pending.count >= 5 {
+        if pending.count >= 50 {
             await flush()
         }
         
