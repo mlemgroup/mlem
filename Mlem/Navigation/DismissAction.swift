@@ -20,6 +20,7 @@ final class Navigation: ObservableObject {
     typealias AuxiliaryAction = () -> Bool
     
     /// Specify behaviour to use when user triggers a navigation action.
+    @AppStorage("tabBarActionBehaviour") 
     var behaviour: Behaviour = .primary
     
     /// Actions associated with specific locations along a navigation path.
@@ -39,7 +40,7 @@ final class Navigation: ObservableObject {
 
 extension Navigation {
     ///
-    enum Behaviour {
+    enum Behaviour: Int, CaseIterable {
         /// Mimics Apple platforms tab bar navigation behaviour (i.e. pop to root regardless of navigation stack size, then scroll to top).
         case system
         /// Only perform the primary action for navigation (this defaults to dismiss action).
@@ -334,4 +335,24 @@ struct PerformTabBarNavigation: ViewModifier {
             #endif
         }
     }
+}
+
+extension Navigation.Behaviour: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case .system:
+            "system"
+        case .primary:
+            "primary"
+        case .primaryAuxiliary:
+            "primary auxiliary"
+        case .none:
+            "none"
+        }
+    }
+}
+
+extension Navigation.Behaviour: SettingsOptions {
+    var label: String { description.capitalized }
+    var id: Self { self }
 }

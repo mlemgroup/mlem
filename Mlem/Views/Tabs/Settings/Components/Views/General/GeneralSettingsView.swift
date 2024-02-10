@@ -26,6 +26,8 @@ struct GeneralSettingsView: View {
     
     @AppStorage("openLinksInBrowser") var openLinksInBrowser: Bool = false
 
+    @AppStorage("tabBarActionBehaviour") private var tabBarActionBehaviour: Navigation.Behaviour = .primary
+
     @EnvironmentObject var appState: AppState
 
     @State var showErrorAlert: Bool = false
@@ -137,6 +139,14 @@ struct GeneralSettingsView: View {
                 )
             } header: {
                 Text("Privacy")
+            }
+            
+            Section {
+                Picker("Tab Bar Action", selection: $tabBarActionBehaviour) {
+                    ForEach(Navigation.Behaviour.allCases) { behaviour in
+                        Text(behaviour.label).tag(behaviour.id)
+                    }
+                }
             }
         }
         .fancyTabScrollCompatible()
