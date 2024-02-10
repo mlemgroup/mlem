@@ -70,6 +70,8 @@ struct PostFeedView: View {
                 defer { suppressNoPostsView = false }
                 
                 if let versionSafePostSort {
+                    await markReadBatcher.flush()
+                    
                     await postTracker.changeSortType(
                         to: versionSafePostSort,
                         forceRefresh: postTracker.items.isEmpty

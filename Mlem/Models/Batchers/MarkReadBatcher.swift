@@ -9,7 +9,7 @@ import Dependencies
 import Foundation
 import Semaphore
 
-class MarkReadBatcher: Batcher {
+class MarkReadBatcher {
     @Dependency(\.notifier) var notifier
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.postRepository) var postRepository
