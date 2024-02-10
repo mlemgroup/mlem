@@ -22,15 +22,12 @@ class MarkReadBatcher {
     
     func resolveSiteVersion(to siteVersion: SiteVersion) {
         enabled = siteVersion >= .init("0.19.0")
-        print("DEBUG received site version, enabled: \(enabled)")
     }
     
     func flush() async {
         // only one thread may execute this function at a time to avoid duplicate requests
         await loadingSemaphore.wait()
         defer { loadingSemaphore.signal() }
-        
-        print("DEBUG flushing")
         
         sending = pending
         pending = .init()
@@ -39,8 +36,6 @@ class MarkReadBatcher {
         Task {
             await sendBatch()
         }
-        
-        print("DEBUG flush complete")
     }
     
     func sendBatch() async {
@@ -48,7 +43,6 @@ class MarkReadBatcher {
             return
         }
         
-        print("DEBUG sending batch of size \(sending.count)")
         do {
             try await postRepository.markRead(postIds: sending, read: true)
         } catch {
@@ -56,7 +50,6 @@ class MarkReadBatcher {
         }
         
         sending = .init()
-        print("DEBUG sent batch")
     }
   
     func add(_ postId: Int) async {
@@ -74,9 +67,9 @@ class MarkReadBatcher {
         
         // This call is deliberately placed *after* the flush check to avoid the potential data race:
         // - Threads 0 and 1 call add() at the same time
-        // - Thread 0's sends the batch
+        // - Thread 0 calls flush() and performs sending = pending
         // - Thread 1 adds its id to pending
-        // - Thread 0's flush() call resets the batch, and thread 1's id is lost forever!
+        // - Thread 0 performs pending = .init(), and thread 1's id is lost forever!
         pending.append(postId)
     }
 }
