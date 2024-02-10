@@ -20,7 +20,7 @@ final class Navigation: ObservableObject {
     typealias AuxiliaryAction = () -> Bool
     
     /// Specify behaviour to use when user triggers a navigation action.
-    var behaviour: Behaviour = .system
+    var behaviour: Behaviour = .primary
     
     /// Actions associated with specific locations along a navigation path.
     var pathActions: [Int: (dismiss: DismissAction?, auxiliaryAction: AuxiliaryAction?)] = [:]
@@ -267,7 +267,35 @@ struct PerformTabBarNavigation: ViewModifier {
     }
     
     private func performPrimaryOnly() {
+#if DEBUG
+        print("perform action on path index -> \(navigationPath.count)")
+#endif
+        guard let pathAction = navigator.pathActions[navigationPath.count] else {
+#if DEBUG
+            print("path action not found at index -> \(navigationPath.count)")
+#endif
+            return
+        }
         
+        if navigationPath.isEmpty {
+            /// Users most likely expect scroll-to-top action:
+            /// Perform auxiliary action first, then perform dismiss.
+            let performed = pathAction.auxiliaryAction?() ?? false
+            if !performed, let dismiss = pathAction.dismiss {
+                dismiss()
+            }
+        } else {
+            if let dismiss = pathAction.dismiss {
+#if DEBUG
+                print("perform dismiss action via tab navigation on \(tab) tab")
+#endif
+                dismiss()
+            } else {
+#if DEBUG
+                print("attempted tab navigation -> action(s) not found")
+#endif
+            }
+        }
     }
     
     /// Runs all auxiliary actions before calling system dismiss action.
