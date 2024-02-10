@@ -15,8 +15,8 @@ struct APICommunityView: Decodable {
     let counts: APICommunityAggregates
 }
 
-extension APICommunityView: APIContentType {
-    var contentId: Int { community.id }
+extension APICommunityView: ActorIdentifiable {
+    var actorId: URL { community.actorId }
 }
 
 extension APICommunityView: Hashable, Equatable, Identifiable {

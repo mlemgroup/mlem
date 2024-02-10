@@ -8,34 +8,15 @@
 import Observation
 import SwiftUI
 
-protocol CommunityTier1Providing: CommunityStubProviding {
-    var name: String { get }
-    var creationDate: Date { get }
-    var actorID: URL { get }
-    var local: Bool { get }
-    var updatedDate: Date? { get }
-    
-    var displayName: String { get }
-    var description: String? { get }
-    var removed: Bool { get }
-    var deleted: Bool { get }
-    var nsfw: Bool { get }
-    var avatar: URL? { get }
-    var banner: URL? { get }
-    var hidden: Bool { get }
-    var onlyModeratorsCanPost: Bool { get }
-}
-
 @Observable
-final class CommunityTier1: CommunityTier1Providing, DependentContentModel {
+final class CommunityCore1: CoreModel {
+    static var cache: CoreContentCache<CommunityCore1> = .init()
     typealias APIType = APICommunity
-    var source: any APISource
+
+    let actorId: URL
     
-    let id: Int
     let name: String
     let creationDate: Date
-    let actorID: URL
-    let local: Bool
     
     private(set) var updatedDate: Date?
     private(set) var displayName: String
@@ -48,15 +29,10 @@ final class CommunityTier1: CommunityTier1Providing, DependentContentModel {
     private(set) var hidden: Bool
     private(set) var onlyModeratorsCanPost: Bool
     
-    required init(source: any APISource, from community: APICommunity) {
-        self.source = source
-
-        self.id = community.id
+    required init(from community: APICommunity) {
+        self.actorId = community.actorId
         self.name = community.name
         self.creationDate = community.published
-        self.actorID = community.actorId
-        self.local = community.local
-        
         self.updatedDate = community.updated
         
         self.displayName = community.title

@@ -7,29 +7,42 @@
 
 import Foundation
 
-protocol NewContentModel {
-    associatedtype APIType: Identifiable
-    var id: APIType.ID { get }
+protocol ActorIdentifiable: Hashable, Equatable {
+    var actorId: URL { get }
+}
+
+extension ActorIdentifiable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(actorId)
+    }
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.actorId == rhs.actorId
+    }
+}
+
+protocol NewContentModel: ActorIdentifiable {
+    associatedtype APIType: ActorIdentifiable
     func update(with: APIType)
 }
 
 protocol ContentStub: Hashable { }
 
-protocol IndependentContentModel: NewContentModel, AnyObject {
-    static var cache: IndepenentContentCache<Self> { get }
+protocol CoreModel: NewContentModel, AnyObject {
+    static var cache: CoreContentCache<Self> { get }
     init(from: APIType)
 }
 
-extension IndependentContentModel {
+extension CoreModel {
     static func create(from apiType: APIType) -> Self {
         return cache.createModel(for: apiType)
     }
 }
 
-protocol DependentContentModel: NewContentModel {
+protocol BaseModel: NewContentModel, Identifiable where APIType: Identifiable, ID == APIType.ID {
     /// The instance from which the ContentModel was fetched
-    var source: any APISource { get set }
-    init(source: any APISource, from: APIType)
+    var sourceInstance: NewInstanceStub { get }
+    init(sourceInstance: NewInstanceStub, from: APIType)
 }
 
 enum SourceRetargetError: Error {
@@ -42,7 +55,7 @@ protocol InstanceContentModel: NewContentModel {
 
 protocol APISource {
     associatedtype Client: NewAPIClient
-    var caches: DependentContentCacheGroup { get }
+    var caches: BaseCacheGroup { get }
     var api: Client { get }
     var instance: NewInstanceStub { get }
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 // lemmy_db_schema::source::community::CommunitySafe
-struct APICommunity: Codable, Identifiable {
+struct APICommunity: Codable, Identifiable, ActorIdentifiable {
     let id: Int
     let name: String
     let title: String
@@ -25,10 +25,6 @@ struct APICommunity: Codable, Identifiable {
     let hidden: Bool
     let postingRestrictedToMods: Bool
     let instanceId: Int
-}
-
-extension APICommunity: APIContentType {
-    var contentId: Int { id }
 }
 
 extension APICommunity: Equatable, Hashable {

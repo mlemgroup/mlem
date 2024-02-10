@@ -13,30 +13,27 @@ enum PermissionError: Error {
     case notLoggedIn, notAModerator, notAnAdministrator
 }
 
-protocol InstanceTier1Providing: InstanceStubProviding {
-    var id: Int { get }
+protocol Instance1Providing: InstanceStubProviding {
     var displayName: String { get }
     var description: String? { get }
     var avatar: URL? { get }
     var banner: URL? { get }
     var creationDate: Date { get }
-    var lastRefreshDate: Date { get }
     var publicKey: String { get }
 }
 
 @Observable
-final class InstanceTier1: InstanceTier1Providing, IndependentContentModel {
-    static let cache: IndepenentContentCache<InstanceTier1> = .init()
+final class InstanceCore1: CoreModel {
+    static let cache: CoreContentCache<InstanceCore1> = .init()
     var instance: NewInstanceStub { stub }
     typealias APIType = APISite
     
     let stub: NewInstanceStub
     
-    var name: String { stub.name }
+    var actorId: URL { stub.actorId }
     var api: NewAPIClient { stub.api }
-    var caches: DependentContentCacheGroup { stub.caches }
+    var caches: BaseCacheGroup { stub.caches }
 
-    let id: Int
     let creationDate: Date
     let publicKey: String
 
@@ -44,10 +41,8 @@ final class InstanceTier1: InstanceTier1Providing, IndependentContentModel {
     private(set) var description: String?
     private(set) var avatar: URL?
     private(set) var banner: URL?
-    private(set) var lastRefreshDate: Date
 
     required init(from site: APISite) {
-        self.id = site.id
         self.creationDate = site.published
         self.publicKey = site.publicKey
 
@@ -55,17 +50,8 @@ final class InstanceTier1: InstanceTier1Providing, IndependentContentModel {
         self.description = site.description
         self.avatar = site.iconUrl
         self.banner = site.bannerUrl
-        self.lastRefreshDate = site.lastRefreshedAt
         
-        if var components = URLComponents(string: site.inboxUrl) {
-            components.path = ""
-            if let name = components.url?.host() {
-                self.stub = .create(name: name)
-                return
-            }
-        }
-        print("WARNING: Failed to resolve site URL!")
-        self.stub = .create(name: "lemmy.world")
+        self.stub = .create(url: site.actorId)
     }
 
     func update(with site: APISite) {
@@ -73,6 +59,5 @@ final class InstanceTier1: InstanceTier1Providing, IndependentContentModel {
         self.description = site.sidebar
         self.avatar = site.iconUrl
         self.banner = site.bannerUrl
-        self.lastRefreshDate = site.lastRefreshedAt
     }
 }

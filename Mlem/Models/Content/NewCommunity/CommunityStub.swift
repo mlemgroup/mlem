@@ -30,10 +30,3 @@ struct CommunityStub: CommunityStubProviding, Hashable {
         hasher.combine(id)
     }
 }
-
-extension CommunityStubProviding {
-    func upgrade() async throws -> CommunityTier3 {
-        let response = try await source.api.getCommunity(id: id)
-        return source.caches.community3.createModel(source: source, for: response)
-    }
-}

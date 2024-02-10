@@ -7,10 +7,9 @@
 
 import Foundation
 
-struct DependentContentCacheGroup {
-    var community1: DependentContentCache<CommunityTier1> = .init()
-    var community2: DependentContentCache<CommunityTier2> = .init()
-    var community3: DependentContentCache<CommunityTier3> = .init()
+struct BaseCacheGroup {
+    var community1: BaseCacheGroup<CommunityMantle1> = .init()
+    var community2: BaseCacheGroup<CommunityMantle2> = .init()
 }
 
 private struct WeakReference<Content: AnyObject> {
@@ -24,31 +23,31 @@ class ContentStubCache<Content: ContentStub & AnyObject> {
     }
 }
 
-class IndepenentContentCache<Content: IndependentContentModel> {
+class CoreContentCache<Content: CoreModel> {
     private var cachedItems: [WeakReference<Content>] = .init()
     
     func createModel(for apiType: Content.APIType) -> Content {
-        if let item = cachedItems.first(where: { $0.content?.id == apiType.id }) {
-            print("Using existing item for id \(apiType.id)")
+        if let item = cachedItems.first(where: { $0.content?.actorId == apiType.actorId }) {
+            print("Using existing item for id \(apiType.actorId)")
             return item.content!
         }
-        print("Creating new item for id \(apiType.id)")
+        print("Creating new item for id \(apiType.actorId)")
         let newItem = Content(from: apiType)
         cachedItems.append(.init(content: newItem))
         return newItem
     }
 }
 
-class DependentContentCache<Content: DependentContentModel & AnyObject> {
+class MantleContentCache<Content: BaseModel & AnyObject> {
     private var cachedItems: [WeakReference<Content>] = .init()
     
-    func createModel(source: any APISource, for apiType: Content.APIType) -> Content {
+    func createModel(sourceInstance: NewInstanceStub, for apiType: Content.APIType) -> Content {
         if let item = cachedItems.first(where: { $0.content?.id == apiType.id }) {
             print("Using existing item for id \(apiType.id)")
             return item.content!
         }
         print("Creating new item for id \(apiType.id)")
-        let newItem = Content(source: source, from: apiType)
+        let newItem = Content(sourceInstance: sourceInstance, from: apiType)
         cachedItems.append(.init(content: newItem))
         return newItem
     }
