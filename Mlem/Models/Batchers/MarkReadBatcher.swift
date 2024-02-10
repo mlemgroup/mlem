@@ -61,7 +61,7 @@ class MarkReadBatcher: Batcher {
   
     func add(_ postId: Int) async {
         // FUTURE DEV: wouldn't it be nicer to pass in a PostModel and perform the mark read state fake here?
-        // PAST DEV: no, that causes nasty little memory errors.
+        // PAST DEV: no, that causes nasty little memory errors in fringe cases thanks to pass-by-reference. Trust in the safety of pass-by-value, future dev.
         
         guard enabled else {
             assertionFailure("Cannot add to disabled batcher!")
