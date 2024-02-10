@@ -27,13 +27,11 @@ protocol CommunityTier1Providing: CommunityStubProviding {
 }
 
 @Observable
-final class CommunityTier1: CommunityTier1Providing, NewContentModel {
-    // NewContentModel conformance
+final class CommunityTier1: CommunityTier1Providing, DependentContentModel {
     typealias APIType = APICommunity
-    let parentInstance: InstanceModel
-    var contentId: Int { communityId }
+    var source: any APISource
     
-    let communityId: Int
+    let id: Int
     let name: String
     let creationDate: Date
     let actorID: URL
@@ -50,10 +48,10 @@ final class CommunityTier1: CommunityTier1Providing, NewContentModel {
     private(set) var hidden: Bool
     private(set) var onlyModeratorsCanPost: Bool
     
-    required init(parent instance: InstanceModel, from community: APICommunity) {
-        self.parentInstance = instance
+    required init(source: any APISource, from community: APICommunity) {
+        self.source = source
 
-        self.communityId = community.id
+        self.id = community.id
         self.name = community.name
         self.creationDate = community.published
         self.actorID = community.actorId

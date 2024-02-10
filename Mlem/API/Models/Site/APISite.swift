@@ -8,7 +8,7 @@
 import Foundation
 
 // lemmy_db_schema::source::site::Site
-struct APISite: Decodable {
+struct APISite: Decodable, Identifiable {
     let id: Int
     let name: String
     let sidebar: String?

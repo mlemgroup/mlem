@@ -11,25 +11,13 @@ import Foundation
 struct GetCommunityRequest: APIGetRequest {
     typealias Response = GetCommunityResponse
 
-    let instanceURL: URL
     let path = "community"
     let queryItems: [URLQueryItem]
 
-    init(
-        session: APISession,
-        communityId: Int
-    ) throws {
-        self.instanceURL = try session.instanceUrl
+    init(communityId: Int) {
         var queryItems: [URLQueryItem] = [
             .init(name: "id", value: "\(communityId)")
         ]
-        
-        if let token = try? session.token {
-            queryItems.append(
-                .init(name: "auth", value: token)
-            )
-        }
-        
         self.queryItems = queryItems
     }
 }
@@ -44,6 +32,6 @@ struct GetCommunityResponse: Decodable {
     let defaultPostLanguage: Int?
 }
 
-extension GetCommunityResponse: APIContentType {
-    var contentId: Int { communityView.community.id }
+extension GetCommunityResponse: Identifiable {
+    var id: Int { communityView.community.id }
 }

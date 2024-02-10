@@ -14,28 +14,15 @@ protocol CommunityTier2Providing: CommunityTier1Providing {
     var postCount: Int { get }
     var commentCount: Int { get }
     var activeUserCount: ActiveUserCount { get }
-    var subscribed: Bool { get }
-    var blocked: Bool { get }
-    
-    func toggleSubscribed() async throws
-    func toggleBlocked() async throws
 }
 
 @Observable
-final class CommunityTier2: CommunityTier2Providing, NewContentModel {
-    @ObservationIgnored @Dependency(\.apiClient) var apiClient
-    @ObservationIgnored @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
-    
-    // NewContentModel conformance
-    static var cache: ContentCache<CommunityTier2> = .init()
+final class CommunityTier2: CommunityTier2Providing, DependentContentModel {
     typealias APIType = APICommunityView
-    
-    // Forward properties from CommunityStub
-    var contentId: Int { community1.contentId }
+    var source: any APISource
     
     // Forward properties from CommunityTier1
-    var parentInstance: InstanceModel { community1.parentInstance }
-    var communityId: Int { community1.communityId }
+    var id: Int { community1.id }
     var name: String { community1.name }
     var creationDate: Date { community1.creationDate }
     var actorID: URL { community1.actorID }
@@ -57,10 +44,10 @@ final class CommunityTier2: CommunityTier2Providing, NewContentModel {
     private(set) var postCount: Int
     private(set) var commentCount: Int
     private(set) var activeUserCount: ActiveUserCount
-    private(set) var blocked: Bool
-    private(set) var subscribed: Bool
-    
-    required init(parent instance: InstanceModel, from communityView: APICommunityView) {
+
+    required init(source: any APISource, from communityView: APICommunityView) {
+        self.source = source
+        
         subscriberCount = communityView.counts.subscribers
         postCount = communityView.counts.posts
         commentCount = communityView.counts.comments
@@ -71,10 +58,7 @@ final class CommunityTier2: CommunityTier2Providing, NewContentModel {
             day: communityView.counts.usersActiveDay
         )
 
-        subscribed = communityView.subscribed.isSubscribed
-        blocked = communityView.blocked
-
-        community1 = CommunityTier1.cache.createModel(for: communityView.community)
+        community1 = source.caches.community1.createModel(source: source, for: communityView.community)
     }
     
     func update(with communityView: APICommunityView) {
@@ -87,31 +71,6 @@ final class CommunityTier2: CommunityTier2Providing, NewContentModel {
             week: communityView.counts.usersActiveWeek,
             day: communityView.counts.usersActiveDay
         )
-
-        subscribed = communityView.subscribed.isSubscribed
-        blocked = communityView.blocked
         community1.update(with: communityView.community)
-    }
-    
-    func toggleSubscribed() async throws {
-        subscribed.toggle()
-        do {
-            let response = try await apiClient.followCommunity(id: communityId, shouldFollow: subscribed)
-            update(with: response.communityView)
-        } catch {
-            subscribed.toggle()
-            throw error
-        }
-    }
-    
-    func toggleBlocked() async throws {
-        blocked.toggle()
-        do {
-            let response = try await apiClient.blockCommunity(id: communityId, shouldBlock: blocked)
-            update(with: response.communityView)
-        } catch {
-            blocked.toggle()
-            throw error
-        }
     }
 }

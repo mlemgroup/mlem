@@ -9,21 +9,31 @@ import Dependencies
 import SwiftUI
 
 protocol CommunityStubProviding {
-    var communityId: Int { get }
+    var source: any APISource { get }
+    var id: Int { get }
 }
 
-struct CommunityStub: CommunityStubProviding {
-    let communityId: Int
+struct CommunityStub: CommunityStubProviding, Hashable {
+    var source: any APISource
+    let id: Int
+    
+    init(source: any APISource, id: Int) {
+        self.source = source
+        self.id = id
+    }
+    
+    static func == (lhs: CommunityStub, rhs: CommunityStub) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
 
 extension CommunityStubProviding {
-    func loadPosts(page: Int) -> [Int] {
-        return [1, 2, 3]
-    }
-    
     func upgrade() async throws -> CommunityTier3 {
-        @Dependency(\.apiClient) var apiClient
-        let response = try await apiClient.loadCommunityDetails(id: communityId)
-        return CommunityTier3.cache.createModel(for: response)
+        let response = try await source.api.getCommunity(id: id)
+        return source.caches.community3.createModel(source: source, for: response)
     }
 }
