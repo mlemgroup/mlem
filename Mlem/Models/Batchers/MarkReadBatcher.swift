@@ -34,11 +34,11 @@ class MarkReadBatcher {
         
         // perform this on background thread to return ASAP
         Task {
-            await sendBatch()
+            await dispatchSending()
         }
     }
     
-    func sendBatch() async {
+    func dispatchSending() async {
         guard sending.count > 0 else {
             return
         }
