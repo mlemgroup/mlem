@@ -20,7 +20,7 @@ final class Navigation: ObservableObject {
     typealias AuxiliaryAction = () -> Bool
     
     /// Specify behaviour to use when user triggers a navigation action.
-    var behaviour: Behaviour = .primaryAuxiliary
+    var behaviour: Behaviour = .system
     
     /// Actions associated with specific locations along a navigation path.
     var pathActions: [Int: (dismiss: DismissAction?, auxiliaryAction: AuxiliaryAction?)] = [:]
@@ -229,17 +229,45 @@ struct PerformTabBarNavigation: ViewModifier {
         // Customization based on user preference should occur here, for example:
         switch behaviour {
         case .system:
-            // performSystemPopToRootBehaviour()
-            break
+             performSystemPopToRoot()
         case .primary:
-            // performDimsissOnly()
-            break
+             performPrimaryOnly()
         case .primaryAuxiliary:
             performDismissAfterAuxiliary()
         case .none:
             // noOp()
             break
         }
+    }
+    
+    private func performSystemPopToRoot() {
+        if navigationPath.isEmpty {
+            guard let pathAction = navigator.pathActions[0] else {
+#if DEBUG
+                print(#function, "path action not found after popping to root")
+#endif
+                return
+            }
+            
+            let performed = pathAction.auxiliaryAction?() ?? false
+            if !performed, let dismiss = pathAction.dismiss {
+#if DEBUG
+                print("found auxiliary action, but that logic has been exhausted...perform standard dismiss action")
+                print("perform tab navigation on \(tab) tab")
+#endif
+                dismiss()
+            } else {
+#if DEBUG
+                print("performed auxiliary action")
+#endif
+            }
+        } else {
+            routesNavigationPath.wrappedValue = []
+        }
+    }
+    
+    private func performPrimaryOnly() {
+        
     }
     
     /// Runs all auxiliary actions before calling system dismiss action.
