@@ -46,6 +46,7 @@ struct LargePost: View {
     @EnvironmentObject var appState: AppState
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("limitImageHeightInFeed") var limitImageHeightInFeed: Bool = true
+    @AppStorage("easyTapLinkDisplayMode") var easyTapLinkDisplayMode: EasyTapLinkDisplayMode = .contextual
 
     // parameters
     @ObservedObject var post: PostModel
@@ -245,9 +246,9 @@ struct LargePost: View {
                 .font(.subheadline)
                 .lineLimit(layoutMode.lineLimit)
                 
-                if layoutMode == .maximize {
+                if layoutMode == .maximize, easyTapLinkDisplayMode != .disabled {
                     ForEach(post.links) { link in
-                        EasyTapLinkView(linkType: link)
+                        EasyTapLinkView(linkType: link, showCaption: easyTapLinkDisplayMode != .compact)
                     }
                 }
             }

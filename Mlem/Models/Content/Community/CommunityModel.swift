@@ -217,8 +217,8 @@ struct CommunityModel {
             throw CommunityError.noData
         }
         new.blocked = !blocked
-        RunLoop.main.perform { [self] in
-            callback(self)
+        RunLoop.main.perform { [new] in
+            callback(new)
         }
         do {
             let response: BlockCommunityResponse

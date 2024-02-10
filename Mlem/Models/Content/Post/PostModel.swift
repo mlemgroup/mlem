@@ -42,7 +42,9 @@ class PostModel: ContentIdentifiable, ObservableObject {
         self.postId = apiPostView.post.id
         self.post = apiPostView.post
         self.creator = UserModel(from: apiPostView.creator)
+        self.creator.blocked = apiPostView.creatorBlocked
         self.community = CommunityModel(from: apiPostView.community, subscribed: apiPostView.subscribed.isSubscribed)
+        self.community.blocked = false
         self.votes = VotesModel(from: apiPostView.counts, myVote: apiPostView.myVote)
         self.commentCount = apiPostView.counts.comments
         self.unreadCommentCount = apiPostView.unreadComments

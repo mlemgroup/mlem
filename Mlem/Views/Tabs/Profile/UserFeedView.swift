@@ -113,6 +113,7 @@ struct UserFeedView: View {
     private func commentEntry(for comment: HierarchicalComment) -> some View {
         VStack(spacing: 0) {
             CommentItem(
+                commentTracker: privateCommentTracker,
                 hierarchicalComment: comment,
                 postContext: nil,
                 indentBehaviour: .never,
