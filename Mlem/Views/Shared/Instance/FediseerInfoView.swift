@@ -26,19 +26,18 @@ struct FediseerInfoView: View {
             subHeading("Hesitations", systemImage: Icons.fediseerHesitation, color: .yellow)
             Text("A hesitation signifies that an instance mistrusts another instance. It is a milder version of a censure.")
                 .padding(.horizontal, AppConstants.postAndCommentSpacing)
-            subHeading("More Info", systemImage: "book.fill", color: .blue)
-            Link(destination: URL(string: "https://fediseer.com/faq/eng")!) {
-                Label("Fediseer FAQ", systemImage: "questionmark.circle.fill")
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.bordered)
-            .padding(.horizontal, AppConstants.postAndCommentSpacing)
-            Link(destination: URL(string: "https://liberapay.com/Fediseer/")!) {
-                Label("Donate to the Fediseer", systemImage: "dollarsign.circle.fill")
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.bordered)
-            .padding(.horizontal, AppConstants.postAndCommentSpacing)
+            Divider()
+                .padding(.top, 20)
+            linkButton(
+                "Fediseer FAQ",
+                systemImage: "questionmark.circle.fill",
+                destination: URL(string: "https://fediseer.com/faq/eng")!
+            )
+            linkButton(
+                "Donate to the Fediseer",
+                systemImage: "dollarsign.circle.fill",
+                destination: URL(string: "https://liberapay.com/Fediseer/")!
+            )
             .padding(.bottom, 50)
         }
         .frame(maxWidth: .infinity)
@@ -58,6 +57,21 @@ struct FediseerInfoView: View {
             Divider()
         }
         .padding(.top, 20)
+    }
+    
+    @ViewBuilder
+    func linkButton(_ title: String, systemImage: String, destination: URL) -> some View {
+        Link(destination: destination) {
+            Label(title, systemImage: systemImage)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 10)
+                .background(
+                    RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
+                        .fill(Color(uiColor: .secondarySystemFill))
+                )
+        }
+        .buttonStyle(.plain)
+        .padding(.horizontal, AppConstants.postAndCommentSpacing)
     }
 }
 // swiftlint:enable line_length
