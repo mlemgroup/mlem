@@ -41,8 +41,4 @@ class NewInstanceStub: InstanceStubProviding, ContentStub {
     static func == (lhs: NewInstanceStub, rhs: NewInstanceStub) -> Bool {
         lhs.url == rhs.url
     }
-    
-    func upgrade() async -> InstanceTier1? {
-        
-    }
 }

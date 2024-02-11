@@ -17,7 +17,7 @@ final class UserCore3: CoreModel {
     let core2: UserCore2
 
     var instance: InstanceCore1?
-    var moderatedCommunities: [CommunityCore1]
+    var moderatedCommunities: [CommunityCore1] = .init()
     
     init(from response: GetPersonDetailsResponse) {
         if let site = response.site {
@@ -25,12 +25,15 @@ final class UserCore3: CoreModel {
         } else {
             self.instance = nil
         }
-        self.moderatedCommunities = response.moderates.map { CommunityCore1.create(from: $0.community) }
-        
+
         self.core2 = .create(from: response.personView)
+        self.update(with: response, cascade: false)
     }
     
-    func update(with response: GetPersonDetailsResponse) {
+    func update(with response: GetPersonDetailsResponse, cascade: Bool = true) {
         self.moderatedCommunities = response.moderates.map { CommunityCore1.create(from: $0.community) }
+        if cascade {
+            self.core2.update(with: response.personView)
+        }
     }
 }

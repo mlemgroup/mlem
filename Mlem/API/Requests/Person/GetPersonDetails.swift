@@ -83,6 +83,7 @@ struct GetPersonDetailsResponse: Decodable {
     let moderates: [APICommunityModeratorView]
 }
 
-extension GetPersonDetailsResponse: ActorIdentifiable {
+extension GetPersonDetailsResponse: ActorIdentifiable, Identifiable {
     var actorId: URL { personView.person.actorId }
+    var id: Int { personView.person.id }
 }

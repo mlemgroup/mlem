@@ -14,6 +14,7 @@ struct APIPersonView: Decodable {
     let isAdmin: Bool? // TODO: 0.18 deprecation make this field non-optional
 }
 
-extension APIPersonView: ActorIdentifiable {
+extension APIPersonView: ActorIdentifiable, Identifiable {
+    var id: Int { person.id }
     var actorId: URL { person.actorId }
 }

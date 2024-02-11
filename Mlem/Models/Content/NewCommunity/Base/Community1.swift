@@ -8,31 +8,15 @@
 import Foundation
 import SwiftUI
 
-protocol Community1Providing {
+protocol Community1Providing: CommunityCore1Providing {
     var id: Int { get }
-    
-    var name: String { get }
-    var creationDate: Date { get }
-    var actorId: URL { get }
-    var updatedDate: Date? { get }
-    
-    var displayName: String { get }
-    var description: String? { get }
-    var removed: Bool { get }
-    var deleted: Bool { get }
-    var nsfw: Bool { get }
-    var avatar: URL? { get }
-    var banner: URL? { get }
-    var hidden: Bool { get }
-    var onlyModeratorsCanPost: Bool { get }
-    
     func highestCachedTier() -> any Community1Providing
 }
 
 typealias Community = Community1Providing
 
 @Observable
-class Community1: Community1Providing, BaseModel {
+final class Community1: Community1Providing, BaseModel {
     // Conformance
     typealias APIType = APICommunity
     var sourceInstance: NewInstanceStub
@@ -40,7 +24,6 @@ class Community1: Community1Providing, BaseModel {
     // Wrapped layers
     let core1: CommunityCore1
     
-    // Mantle properties
     let id: Int
     
     // Forwarded properties from CommunityCore1
@@ -65,11 +48,17 @@ class Community1: Community1Providing, BaseModel {
         self.id = community.id
     }
     
-    func update(with community: APICommunity) {
-        core1.update(with: community)
+    func update(with community: APICommunity, cascade: Bool = true) {
+        if cascade {
+            core1.update(with: community)
+        }
     }
     
     func highestCachedTier() -> any Community1Providing {
         return sourceInstance.caches.community2.retrieveModel(id: id) ?? self
+    }
+    
+    static func getCache(for sourceInstance: NewInstanceStub) -> BaseContentCache<Community1> {
+        return sourceInstance.caches.community1
     }
 }

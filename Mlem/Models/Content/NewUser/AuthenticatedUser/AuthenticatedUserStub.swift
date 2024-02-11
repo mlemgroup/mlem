@@ -8,10 +8,10 @@
 import Foundation
 import SwiftUI
 
-protocol SavedUserProviding: AuthenticatedAPISource { }
+protocol AuthenticatedUserProviding: AuthenticatedAPISource { }
 
 @Observable
-final class SavedUserStub: SavedUserProviding {
+final class AuthenticatedUserStub: AuthenticatedUserProviding {
     let instance: NewInstanceStub
     var caches: BaseCacheGroup { instance.caches }
     let accessToken: String

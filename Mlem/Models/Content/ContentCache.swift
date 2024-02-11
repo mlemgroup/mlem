@@ -10,6 +10,10 @@ import Foundation
 struct BaseCacheGroup {
     var community1: BaseContentCache<Community1> = .init()
     var community2: BaseContentCache<Community2> = .init()
+    
+    var user1: BaseContentCache<User1> = .init()
+    var user2: BaseContentCache<User2> = .init()
+    var user3: BaseContentCache<User3> = .init()
 }
 
 private struct WeakReference<Content: AnyObject> {
@@ -25,6 +29,10 @@ class ContentStubCache<Content: ContentStub & AnyObject> {
 
 class CoreContentCache<Content: CoreModel> {
     private var cachedItems: [WeakReference<Content>] = .init()
+    
+    func retrieveModel(actorId: URL) -> Content? {
+        cachedItems.first(where: { $0.content?.actorId == actorId })?.content!
+    }
     
     func createModel(for apiType: Content.APIType) -> Content {
         if let item = cachedItems.first(where: { $0.content?.actorId == apiType.actorId }) {
@@ -43,6 +51,12 @@ class BaseContentCache<Content: BaseModel & AnyObject> {
     
     func retrieveModel(id: Content.APIType.ID) -> Content? {
         cachedItems.first(where: { $0.content?.id == id })?.content!
+    }
+    
+    func retrieveModel(sourceInstance: NewInstanceStub, actorId: URL) -> Content? {
+        cachedItems.first(
+            where: { $0.content?.sourceInstance == sourceInstance && $0.content?.actorId == actorId }
+        )?.content!
     }
     
     func createModel(sourceInstance: NewInstanceStub, for apiType: Content.APIType) -> Content {

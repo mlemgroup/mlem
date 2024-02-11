@@ -13,6 +13,8 @@ struct ActiveUserCount {
     let month: Int
     let week: Int
     let day: Int
+    
+    static var zero: ActiveUserCount = .init(sixMonths: 0, month: 0, week: 0, day: 0)
 }
 
 struct CommunityModel {
