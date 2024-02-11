@@ -13,3 +13,7 @@ struct APIPersonView: Decodable {
     let counts: APIPersonAggregates
     let isAdmin: Bool? // TODO: 0.18 deprecation make this field non-optional
 }
+
+extension APIPersonView: ActorIdentifiable {
+    var actorId: URL { person.actorId }
+}

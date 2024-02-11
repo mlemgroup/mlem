@@ -36,15 +36,15 @@ final class UserCore1: CoreModel {
     let name: String
     let creationDate: Date
     
-    private(set) var updatedDate: Date?
-    private(set) var displayName: String?
-    private(set) var description: String?
-    private(set) var matrixId: String?
-    private(set) var avatar: URL?
-    private(set) var banner: URL?
+    var updatedDate: Date?
+    var displayName: String?
+    var description: String?
+    var matrixId: String?
+    var avatar: URL?
+    var banner: URL?
     
-    private(set) var deleted: Bool
-    private(set) var isBot: Bool
+    var deleted: Bool
+    var isBot: Bool
     
     init(from person: APIPerson) {
         self.actorId = person.actorId

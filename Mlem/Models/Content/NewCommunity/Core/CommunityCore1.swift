@@ -18,16 +18,16 @@ final class CommunityCore1: CoreModel {
     let name: String
     let creationDate: Date
     
-    private(set) var updatedDate: Date?
-    private(set) var displayName: String
-    private(set) var description: String?
-    private(set) var removed: Bool
-    private(set) var deleted: Bool
-    private(set) var nsfw: Bool
-    private(set) var avatar: URL?
-    private(set) var banner: URL?
-    private(set) var hidden: Bool
-    private(set) var onlyModeratorsCanPost: Bool
+    var updatedDate: Date?
+    var displayName: String
+    var description: String?
+    var removed: Bool
+    var deleted: Bool
+    var nsfw: Bool
+    var avatar: URL?
+    var banner: URL?
+    var hidden: Bool
+    var onlyModeratorsCanPost: Bool
     
     required init(from community: APICommunity) {
         self.actorId = community.actorId

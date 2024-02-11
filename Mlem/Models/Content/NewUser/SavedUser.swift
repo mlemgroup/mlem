@@ -13,24 +13,17 @@ protocol SavedUserProviding: AuthenticatedAPISource { }
 @Observable
 final class SavedUserStub: SavedUserProviding {
     let instance: NewInstanceStub
-    var caches: DependentContentCacheGroup { instance.caches }
+    var caches: BaseCacheGroup { instance.caches }
     let accessToken: String
     
     @ObservationIgnored lazy var api: AuthenticatedAPIClient = {
-        if let url = URL(string: "https://\(instance.name)") {
-            return .init(baseUrl: url, token: accessToken)
-        }
-        print("ERROR: Cannot resolve APIClient url!")
-        return .init(baseUrl: URL(string: "https://lemmy.world!")!, token: "0")
+        return .init(baseUrl: instance.url, token: accessToken)
     }()
     
     init(from account: SavedAccount) {
-        if let hostName = account.hostName {
-            self.instance = .create(name: hostName)
-        } else {
-            print("ERROR: Cannot resolve account hostname!")
-            self.instance = .create(name: "lemmy.world")
-        }
+        var components = URLComponents(url: account.instanceLink, resolvingAgainstBaseURL: false)!
+        components.path = ""
+        self.instance = .create(url: components.url!)
         self.accessToken = account.accessToken
     }
 }

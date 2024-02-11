@@ -22,14 +22,14 @@ class Community2: Community2Providing, BaseModel {
     var sourceInstance: NewInstanceStub
     
     // Wrapped layers
-    let core2: CommunityCore2
-    let base1: Community1
+    private let core2: CommunityCore2
+    private let base1: Community1
     
     // Forwarded properties from Community1
     var id: Int { base1.id }
     
     // Forwarded properties from CommunityCore1
-    var actorId: URL { core2.core1.actorId }
+    var actorId: URL { core2.actorId }
     var name: String { core2.core1.name }
     var creationDate: Date { core2.core1.creationDate }
     var updatedDate: Date? { core2.core1.updatedDate }
@@ -62,4 +62,6 @@ class Community2: Community2Providing, BaseModel {
         self.core2.update(with: communityView)
         self.base1.update(with: communityView.community)
     }
+    
+    func highestCachedTier() -> any Community1Providing { self }
 }

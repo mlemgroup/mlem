@@ -8,8 +8,8 @@
 import Foundation
 
 struct BaseCacheGroup {
-    var community1: BaseCacheGroup<CommunityMantle1> = .init()
-    var community2: BaseCacheGroup<CommunityMantle2> = .init()
+    var community1: BaseContentCache<Community1> = .init()
+    var community2: BaseContentCache<Community2> = .init()
 }
 
 private struct WeakReference<Content: AnyObject> {
@@ -38,13 +38,17 @@ class CoreContentCache<Content: CoreModel> {
     }
 }
 
-class MantleContentCache<Content: BaseModel & AnyObject> {
+class BaseContentCache<Content: BaseModel & AnyObject> {
     private var cachedItems: [WeakReference<Content>] = .init()
     
+    func retrieveModel(id: Content.APIType.ID) -> Content? {
+        cachedItems.first(where: { $0.content?.id == id })?.content!
+    }
+    
     func createModel(sourceInstance: NewInstanceStub, for apiType: Content.APIType) -> Content {
-        if let item = cachedItems.first(where: { $0.content?.id == apiType.id }) {
+        if let item = retrieveModel(id: apiType.id) {
             print("Using existing item for id \(apiType.id)")
-            return item.content!
+            return item
         }
         print("Creating new item for id \(apiType.id)")
         let newItem = Content(sourceInstance: sourceInstance, from: apiType)

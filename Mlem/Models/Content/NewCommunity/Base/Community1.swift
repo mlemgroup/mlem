@@ -25,6 +25,8 @@ protocol Community1Providing {
     var banner: URL? { get }
     var hidden: Bool { get }
     var onlyModeratorsCanPost: Bool { get }
+    
+    func highestCachedTier() -> any Community1Providing
 }
 
 typealias Community = Community1Providing
@@ -65,5 +67,9 @@ class Community1: Community1Providing, BaseModel {
     
     func update(with community: APICommunity) {
         core1.update(with: community)
+    }
+    
+    func highestCachedTier() -> any Community1Providing {
+        return sourceInstance.caches.community2.retrieveModel(id: id) ?? self
     }
 }

@@ -106,6 +106,8 @@
 		03E1E0562B77B4920009DF9F /* ContentCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E0552B77B4920009DF9F /* ContentCache.swift */; };
 		03E1E05A2B77CCF10009DF9F /* Community1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E0592B77CCF10009DF9F /* Community1.swift */; };
 		03E1E05C2B77CFB90009DF9F /* Community2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E05B2B77CFB90009DF9F /* Community2.swift */; };
+		03E1E0602B781C860009DF9F /* UserCore2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E05F2B781C860009DF9F /* UserCore2.swift */; };
+		03E1E0622B7822610009DF9F /* UserCore3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E0612B7822610009DF9F /* UserCore3.swift */; };
 		03E79F3F2AE3E7100006700D /* SortingSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E79F3E2AE3E7100006700D /* SortingSettingsView.swift */; };
 		03E90FB12B3703ED00E5A802 /* AccountSortMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E90FB02B3703ED00E5A802 /* AccountSortMode.swift */; };
 		03EA79C42AC0D92C00BCDC91 /* PostComposerView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EA79C32AC0D92C00BCDC91 /* PostComposerView+Logic.swift */; };
@@ -688,6 +690,8 @@
 		03E1E0552B77B4920009DF9F /* ContentCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCache.swift; sourceTree = "<group>"; };
 		03E1E0592B77CCF10009DF9F /* Community1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Community1.swift; sourceTree = "<group>"; };
 		03E1E05B2B77CFB90009DF9F /* Community2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Community2.swift; sourceTree = "<group>"; };
+		03E1E05F2B781C860009DF9F /* UserCore2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCore2.swift; sourceTree = "<group>"; };
+		03E1E0612B7822610009DF9F /* UserCore3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCore3.swift; sourceTree = "<group>"; };
 		03E79F3E2AE3E7100006700D /* SortingSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingSettingsView.swift; sourceTree = "<group>"; };
 		03E90FB02B3703ED00E5A802 /* AccountSortMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSortMode.swift; sourceTree = "<group>"; };
 		03EA79C32AC0D92C00BCDC91 /* PostComposerView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostComposerView+Logic.swift"; sourceTree = "<group>"; };
@@ -1459,8 +1463,8 @@
 		03E1E04A2B7771630009DF9F /* NewUser */ = {
 			isa = PBXGroup;
 			children = (
-				03E1E05E2B7817C20009DF9F /* Core */,
 				03E1E04D2B779A180009DF9F /* SavedUser.swift */,
+				03E1E05E2B7817C20009DF9F /* Core */,
 			);
 			path = NewUser;
 			sourceTree = "<group>";
@@ -1496,6 +1500,8 @@
 			isa = PBXGroup;
 			children = (
 				03E1E04B2B7771710009DF9F /* UserCore1.swift */,
+				03E1E05F2B781C860009DF9F /* UserCore2.swift */,
+				03E1E0612B7822610009DF9F /* UserCore3.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -3249,6 +3255,7 @@
 				CD2053122ACB72190000AA38 /* AccountTransitionView.swift in Sources */,
 				03B7AAF32ABEF85300068B23 /* UserModel.swift in Sources */,
 				CDC1C9432A7AC24600072E3D /* ReadCheck.swift in Sources */,
+				03E1E0622B7822610009DF9F /* UserCore3.swift in Sources */,
 				63F0C7A22A0519BA00A18C5D /* PostSortType.swift in Sources */,
 				034C724F2A82B61200B8A4B8 /* LayoutWidgetTracker.swift in Sources */,
 				030D00852AD1B94F00953B1D /* UserFlair.swift in Sources */,
@@ -3329,6 +3336,7 @@
 				6372186C2A3A2AAD008C4816 /* SaveComment.swift in Sources */,
 				CD4368B62AE23F4700BD8BD1 /* ParentTracker.swift in Sources */,
 				03C898032AC04F61005F3403 /* RecentSearchesView.swift in Sources */,
+				03E1E0602B781C860009DF9F /* UserCore2.swift in Sources */,
 				50811B382A920545006BA3F2 /* APICommunityModeratorView+Mock.swift in Sources */,
 				50F2851C2A5C5C1500CF8865 /* TokenRefreshView.swift in Sources */,
 				03F4DCA32B1A8B0400556C67 /* AccountGeneralSettingsView.swift in Sources */,

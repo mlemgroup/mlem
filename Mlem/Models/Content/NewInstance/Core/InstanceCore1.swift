@@ -37,10 +37,10 @@ final class InstanceCore1: CoreModel {
     let creationDate: Date
     let publicKey: String
 
-    private(set) var displayName: String
-    private(set) var description: String?
-    private(set) var avatar: URL?
-    private(set) var banner: URL?
+    var displayName: String
+    var description: String?
+    var avatar: URL?
+    var banner: URL?
 
     required init(from site: APISite) {
         self.creationDate = site.published
