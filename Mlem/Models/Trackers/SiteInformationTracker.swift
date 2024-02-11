@@ -29,8 +29,8 @@ class SiteInformationTracker: ObservableObject {
                 instance = .init(from: response)
                 enableDownvotes = response.siteView.localSite.enableDownvotes
                 version = SiteVersion(response.version)
-                if version != account.siteVersion {
-                    let avatarUrl = response.myUser?.localUserView.person.avatarUrl
+                let avatarUrl = response.myUser?.localUserView.person.avatarUrl
+                if version != account.siteVersion || avatarUrl != account.avatarUrl {
                     DispatchQueue.main.async {
                         self.accountsTracker.update(with: .init(from: account, avatarUrl: avatarUrl, siteVersion: self.version))
                     }
