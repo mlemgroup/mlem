@@ -47,31 +47,12 @@ extension UserView {
             
             communityTracker.replaceAll(with: user.moderatedCommunities ?? [])
             
-            var savedContentData: GetPersonDetailsResponse?
-            if isOwnProfile {
-                savedContentData = try await personRepository.loadUserDetails(
-                    for: user.userId,
-                    limit: internetSpeed.pageSize,
-                    savedOnly: true
-                )
-            }
-            
             // accumulate comments and posts so we don't update state more than we need to
             var newComments = authoredContent.comments
                 .sorted(by: { $0.comment.published > $1.comment.published })
                 .map { HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false) }
             
             var newPosts = authoredContent.posts.map { PostModel(from: $0) }
-            
-            // add saved content, if present
-            if let savedContent = savedContentData {
-                newComments.append(contentsOf:
-                    savedContent.comments
-                        .sorted(by: { $0.comment.published > $1.comment.published })
-                        .map { HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false) })
-                
-                newPosts.append(contentsOf: savedContent.posts.map { PostModel(from: $0) })
-            }
             
             privateCommentTracker.comments = newComments
             await privatePostTracker.reset(with: newPosts)

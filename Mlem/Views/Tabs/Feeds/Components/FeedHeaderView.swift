@@ -22,7 +22,7 @@ struct FeedHeaderView: View {
         case .subscribed:
             return "Posts from all subscribed communities"
         case .saved:
-            return "Your saved posts"
+            return "Your saved posts and comments"
         default:
             assertionFailure("We shouldn't be here...")
             return ""

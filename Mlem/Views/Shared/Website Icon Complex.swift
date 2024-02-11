@@ -63,6 +63,24 @@ struct WebsiteIconComplex: View {
     var imageHeight: CGFloat { horizontalSizeClass == .regular ? 400 : screenWidth * 0.66 }
 
     var body: some View {
+        if let url = post.linkUrl {
+            content
+                .contextMenu {
+                    Button("Open", systemImage: Icons.browser) {
+                        openURL(url)
+                    }
+                    Button("Copy", systemImage: Icons.copy) {
+                        let pasteboard = UIPasteboard.general
+                        pasteboard.url = url
+                    }
+                    ShareLink(item: url)
+                } preview: { WebView(url: url) }
+        } else {
+            content
+        }
+    }
+    
+    var content: some View {
         LazyVStack(spacing: 0) {
             if shouldShowWebsitePreviews, let thumbnailURL = post.thumbnailImageUrl {
                 CachedImage(
@@ -119,15 +137,6 @@ struct WebsiteIconComplex: View {
                 if let onTapActions {
                     onTapActions()
                 }
-            }
-        }
-        .contextMenu {
-            if let url = post.linkUrl {
-                Button("Copy", systemImage: Icons.copy) {
-                    let pasteboard = UIPasteboard.general
-                    pasteboard.url = url
-                }
-                ShareLink(item: url)
             }
         }
     }
