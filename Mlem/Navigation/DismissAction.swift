@@ -19,6 +19,10 @@ final class Navigation: ObservableObject {
     /// Return `true` to indicate that an auxiliary action was performed.
     typealias AuxiliaryAction = () -> Bool
     
+    /// Specify behaviour to use when user triggers a navigation action.
+    var behaviour: Behaviour = .primaryAuxiliary
+    
+    /// Actions associated with specific locations along a navigation path.
     var pathActions: [Int: (dismiss: DismissAction?, auxiliaryAction: AuxiliaryAction?)] = [:]
     
     /// Navigation always performs dismiss action (if available), but may choose to perform an auxiliary action first.
@@ -34,6 +38,7 @@ final class Navigation: ObservableObject {
 // MARK: - Navigation Behaviour
 
 extension Navigation {
+    ///
     enum Behaviour {
         /// Mimics Apple platforms tab bar navigation behaviour (i.e. pop to root regardless of navigation stack size, then scroll to top).
         case system
@@ -41,6 +46,8 @@ extension Navigation {
         case primary
         /// Perform the auxiliary action(s) first, if specified, before proceeding with the primary action.
         case primaryAuxiliary
+        /// Do nothing, tyvm =)
+        case none
     }
 }
 
@@ -212,13 +219,26 @@ struct PerformTabBarNavigation: ViewModifier {
     func body(content: Content) -> some View {
         content.onChange(of: selectedNavigationTabHashValue) { newValue in
             if newValue == tab.hashValue {
-                hapticManager.play(haptic: .gentleInfo, priority: .high)
-                // Customization based  on user preference should occur here, for example:
-                // performSystemPopToRootBehaviour()
-                // noOp()
-                // performDimsissOnly()
-                performDismissAfterAuxiliary()
+                hapticManager.play(haptic: .gentleInfo, priority: .low)
+                performNavigation(behaviour: navigator.behaviour)
             }
+        }
+    }
+    
+    private func performNavigation(behaviour: Navigation.Behaviour) {
+        // Customization based on user preference should occur here, for example:
+        switch behaviour {
+        case .system:
+            // performSystemPopToRootBehaviour()
+            break
+        case .primary:
+            // performDimsissOnly()
+            break
+        case .primaryAuxiliary:
+            performDismissAfterAuxiliary()
+        case .none:
+            // noOp()
+            break
         }
     }
     
