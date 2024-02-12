@@ -53,11 +53,13 @@ struct InstanceUptimeView: View {
                 .padding(.bottom, 3)
             let todayDowntimes = uptimeData.downtimes.filter { abs($0.endTime.timeIntervalSinceNow) < 60 * 60 * 24 }
             
-            footnote(
+            Text(
                 todayDowntimes.count == 0
                 ? "There were no recorded incidents today."
-                : "There were \(todayDowntimes.count) recorded incidents today."
+                : "There ^[were \(todayDowntimes.count)](inflect: true) recorded incidents today."
             )
+            .font(.footnote)
+            .foregroundStyle(.secondary)
             .padding(.leading, 6)
             .padding(.bottom, 7)
             
@@ -86,6 +88,7 @@ struct InstanceUptimeView: View {
                 }
             } label: {
                 Text("\(showingAllDowntimes ? "Hide" : "Show") Older Incidents")
+                    .foregroundStyle(.blue)
                     .padding(.leading, 12)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical, 10)
@@ -98,7 +101,6 @@ struct InstanceUptimeView: View {
             
             if let url = instance.uptimeFrontendUrl {
                 Text("Uptime data fetched from [lemmy-status.org](\(url))")
-                    .foregroundStyle(.blue)
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                     .padding(.vertical, 8)
@@ -121,11 +123,9 @@ struct InstanceUptimeView: View {
                     footnote("\(instance.name) has been unresponsive recently.")
                 } else {
                     summaryHeader(statusText: "online", systemImage: Icons.uptimeOnline, color: .green)
-                    if mostRecentOutage.endTime != nil {
-                        let relTime = mostRecentOutage.relativeTimeCaption
-                        let length = mostRecentOutage.differenceTitle(unitsStyle: .full)
-                        footnote("The most recent outage was \(relTime), and lasted for \(length).")
-                    }
+                    let relTime = mostRecentOutage.relativeTimeCaption
+                    let length = mostRecentOutage.differenceTitle(unitsStyle: .full)
+                    footnote("The most recent outage was \(relTime), and lasted for \(length).")
                 }
             }
         }
