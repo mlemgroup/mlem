@@ -7,15 +7,10 @@
 
 import SwiftUI
 
-protocol User2Providing: User1Providing {
-    var postCount: Int { get }
-    var postScore: Int { get }
-    var commentCount: Int { get }
-    var commentScore: Int { get }
-}
+protocol UserBase2Providing: UserBase1Providing, UserCore2Providing { }
 
 @Observable
-class User2: User2Providing, BaseModel {
+final class UserBase2: UserBase2Providing, BaseModel {
     // Conformance
     typealias APIType = APIPersonView
     var sourceInstance: NewInstanceStub
@@ -29,6 +24,7 @@ class User2: User2Providing, BaseModel {
     var ban: BanType? { base1.ban }
     var isAdmin: Bool { base1.isAdmin }
     
+    // Forwarded properties from UserCore1
     var actorId: URL { base1.actorId }
     var name: String { base1.name }
     var creationDate: Date { base1.creationDate }
@@ -61,5 +57,9 @@ class User2: User2Providing, BaseModel {
             self.core2.update(with: personView, cascade: false)
             self.base1.update(with: personView.person)
         }
+    }
+    
+    static func getCache(for sourceInstance: NewInstanceStub) -> BaseContentCache<UserBase2> {
+        return sourceInstance.caches.user2
     }
 }

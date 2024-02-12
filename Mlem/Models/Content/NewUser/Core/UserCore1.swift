@@ -23,10 +23,14 @@ protocol UserCore1Providing: ActorIdentifiable {
     var isBot: Bool { get }
 }
 
+protocol UserCore: CoreModel {
+    /// Returns the highest tier of UserCore model that is already cached.
+    var highestCachedTier: any UserCore1Providing { get }
+}
 
 @Observable
-final class UserCore1: UserCore1Providing, CoreModel {
-    typealias BaseEquivalent = User1
+final class UserCore1: UserCore1Providing, UserCore {
+    typealias BaseEquivalent = UserBase1
     static var cache: CoreContentCache<UserCore1> = .init()
     typealias APIType = APIPerson
 
@@ -61,5 +65,9 @@ final class UserCore1: UserCore1Providing, CoreModel {
         
         self.deleted = person.deleted
         self.isBot = person.botAccount
+    }
+    
+    var highestCachedTier: any UserCore1Providing {
+        UserCore2.cache.retrieveModel(actorId: actorId) ?? self
     }
 }

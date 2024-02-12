@@ -24,6 +24,41 @@ protocol CommunityCore1Providing: ActorIdentifiable {
     var onlyModeratorsCanPost: Bool { get }
 }
 
+extension CommunityCore1Providing {
+    
+    func highestCachedLayer(for instance: any InstanceStubProviding) -> any CommunityCore1Providing {
+        if let community3 = instance.caches.community3.retrieveModel(sourceInstance: instance, actorId: actorId) {
+            return community3
+        }
+        if let community2 = instance.caches.community2.retrieveModel(sourceInstance: instance, actorId: actorId) {
+            return community2
+        }
+        if let community1 = instance.caches.community1.retrieveModel(sourceInstance: instance, actorId: actorId) {
+            return community1
+        }
+    }
+    
+    @discardableResult
+    func upgrade(
+        minimumTier: any CommunityCore1Providing.Type,
+        using source: (any APISource)?,
+        callback: (any CommunityCore1Providing) -> Void = { _ in }
+    ) async throws -> any CommunityCore1Providing {
+        if let source {
+            let baseCaches = source.instance.caches
+            if let existing = baseCaches.community3.retrieveModel(sourceInstance: source.instance, actorId: actorId) {
+                return existing
+            } else if let existing = baseCaches.community2.retrieveModel(sourceInstance: source.instance, actorId: actorId) {
+                return existing
+            }
+            
+//            } else if let communityView = try await source.api.getCommunity(actorId: actorId) {
+//                
+//            }
+        }
+    }
+}
+
 protocol CommunityCore: CoreModel {
     /// Returns the highest tier of CommunityCore model that is already cached.
     var highestCachedTier: any CommunityCore1Providing { get }
@@ -31,7 +66,7 @@ protocol CommunityCore: CoreModel {
 
 @Observable
 final class CommunityCore1: CommunityCore1Providing, CommunityCore {
-    typealias BaseEquivalent = Community1
+    typealias BaseEquivalent = CommunityBase1
     static var cache: CoreContentCache<CommunityCore1> = .init()
     typealias APIType = APICommunity
 
@@ -73,6 +108,12 @@ final class CommunityCore1: CommunityCore1Providing, CommunityCore {
     }
     
     var highestCachedTier: any CommunityCore1Providing {
-        CommunityCore2.cache.retrieveModel(actorId: actorId) ?? self
+        if let community3 = CommunityCore3.cache.retrieveModel(actorId: actorId) {
+            return community3
+        }
+        if let community2 = CommunityCore2.cache.retrieveModel(actorId: actorId) {
+            return community2
+        }
+        return self
     }
 }

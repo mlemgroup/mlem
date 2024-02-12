@@ -25,7 +25,6 @@ struct SearchRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        session: APISession,
         query: String,
         searchType: SearchType,
         sortOption: PostSortType,
@@ -35,9 +34,8 @@ struct SearchRequest: APIGetRequest {
         communityName: String?,
         creatorId: Int?,
         limit: Int?
-    ) throws {
-        self.instanceURL = try session.instanceUrl
-        var queryItems: [URLQueryItem] = [
+    ) {
+        self.queryItems = [
             .init(name: "type_", value: searchType.rawValue),
             .init(name: "sort", value: sortOption.rawValue),
             .init(name: "listing_type", value: listingType.rawValue),
@@ -48,14 +46,6 @@ struct SearchRequest: APIGetRequest {
             .init(name: "creator_id", value: creatorId.map(String.init)),
             .init(name: "limit", value: limit.map(String.init))
         ]
-        
-        if let token = try? session.token {
-            queryItems.append(
-                .init(name: "auth", value: token)
-            )
-        }
-        
-        self.queryItems = queryItems
     }
 }
 

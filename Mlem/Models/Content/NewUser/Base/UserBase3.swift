@@ -7,16 +7,10 @@
 
 import SwiftUI
 
-protocol User3Providing: User2Providing {
-    /// The instance that the user is registered on.
-    var instance: InstanceCore1? { get }
-    
-    /// Is probably an array of Community1 instances. The array can occasionally also contain CommunityCore1 instances, if the community list was modified from the context of another instance since the User BaseModel was last refreshed. If this is the case, you might consider refreshing the user via the `.refresh()` method to update all of the communities.
-    var moderatedCommunities: [any CommunityCore1Providing] { get }
-}
+protocol UserBase3Providing: UserBase2Providing, UserCore3Providing { }
 
 @Observable
-final class User3: User3Providing, BaseModel {
+final class UserBase3: UserBase3Providing, BaseModel {
     // Conformance
     typealias APIType = GetPersonDetailsResponse
     typealias CommunityType = any CommunityCore1Providing
@@ -24,7 +18,7 @@ final class User3: User3Providing, BaseModel {
     
     // Wrapped layers
     let core3: UserCore3
-    let base2: User2
+    let base2: UserBase2
     
     var cachedModeratedCommunities: [Community1] = .init()
     
@@ -33,6 +27,7 @@ final class User3: User3Providing, BaseModel {
     var ban: BanType? { base2.ban }
     var isAdmin: Bool { base2.isAdmin }
     
+    // Forwarded properties from UserCore1
     var actorId: URL { base2.actorId }
     var name: String { base2.name }
     var creationDate: Date { base2.creationDate }
@@ -45,6 +40,7 @@ final class User3: User3Providing, BaseModel {
     var deleted: Bool { base2.deleted }
     var isBot: Bool { base2.isBot }
     
+    // Forwarded properties from UserCore2
     var postCount: Int { base2.postCount }
     var postScore: Int { base2.postScore }
     var commentCount: Int { base2.commentCount }
@@ -54,13 +50,13 @@ final class User3: User3Providing, BaseModel {
     var instance: InstanceCore1? { core3.instance }
     
     var moderatedCommunities: [any CommunityCore1Providing] {
-        if cachedModeratedCommunities.hashValue == core3.moderatedCommunities.hashValue {
+        if cachedModeratedCommunities.hashValue == core3.coreModeratedCommunities.hashValue {
             return cachedModeratedCommunities
         }
         
         // Cached communities are outdated, so we need to merge with the core model to provide the best representation possible
         var communities: [any CommunityCore1Providing] = .init()
-        for coreCommunity in core3.moderatedCommunities {
+        for coreCommunity in core3.coreModeratedCommunities {
             if let baseCommunity = cachedModeratedCommunities.first(where: { coreCommunity.actorId == $0.actorId }) {
                 communities.append(baseCommunity)
             } else {
@@ -90,7 +86,7 @@ final class User3: User3Providing, BaseModel {
         }
     }
     
-    static func getCache(for sourceInstance: NewInstanceStub) -> BaseContentCache<User3> {
+    static func getCache(for sourceInstance: NewInstanceStub) -> BaseContentCache<UserBase3> {
         sourceInstance.caches.user3
     }
 }

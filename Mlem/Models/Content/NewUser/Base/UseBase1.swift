@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-protocol User1Providing: UserCore1Providing {
+protocol UserBase1Providing: UserCore1Providing {
     var id: Int { get }
     var ban: BanType? { get }
     var isAdmin: Bool { get }
@@ -20,7 +20,7 @@ enum BanType {
 }
 
 @Observable
-final class User1: User1Providing, BaseModel {
+final class UserBase1: UserBase1Providing, BaseModel {
     // Conformance
     typealias APIType = APIPerson
     var sourceInstance: NewInstanceStub
@@ -70,7 +70,7 @@ final class User1: User1Providing, BaseModel {
         }
     }
     
-    static func getCache(for sourceInstance: NewInstanceStub) -> BaseContentCache<User1> {
+    static func getCache(for sourceInstance: NewInstanceStub) -> BaseContentCache<UserBase1> {
         sourceInstance.caches.user1
     }
 }

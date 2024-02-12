@@ -39,7 +39,7 @@ extension CoreModel {
         return cache.createModel(for: apiType)
     }
     
-    func fromInstance(_ instance: NewInstanceStub) -> BaseEquivalent? {
+    func getCachedBase(instance: NewInstanceStub) -> BaseEquivalent? {
         BaseEquivalent.getCache(for: instance).retrieveModel(sourceInstance: instance, actorId: actorId)
     }
 }

@@ -7,10 +7,10 @@
 
 import Foundation
 
-protocol Community2Providing: Community1Providing, CommunityCore2Providing { }
+protocol CommunityBase2Providing: CommunityBase1Providing, CommunityCore2Providing { }
 
 @Observable
-final class Community2: Community2Providing, BaseModel {
+final class CommunityBase2: CommunityBase2Providing, BaseModel {
     typealias APIType = APICommunityView
     
     // Conformance
@@ -18,7 +18,7 @@ final class Community2: Community2Providing, BaseModel {
     
     // Wrapped layers
     private let core2: CommunityCore2
-    private let base1: Community1
+    private let base1: CommunityBase1
     
     // Forwarded properties from Community1
     var id: Int { base1.id }
@@ -60,7 +60,7 @@ final class Community2: Community2Providing, BaseModel {
         }
     }
     
-    static func getCache(for sourceInstance: NewInstanceStub) -> BaseContentCache<Community2> {
+    static func getCache(for sourceInstance: NewInstanceStub) -> BaseContentCache<CommunityBase2> {
         return sourceInstance.caches.community2
     }
 }

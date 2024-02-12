@@ -7,10 +7,10 @@
 
 import Foundation
 
-protocol Community3Providing: Community2Providing, CommunityCore3Providing { }
+protocol CommunityBase3Providing: CommunityBase2Providing, CommunityCore3Providing { }
 
 @Observable
-final class Community3: Community3Providing, BaseModel {
+final class CommunityBase3: CommunityBase3Providing, BaseModel {
     typealias APIType = GetCommunityResponse
     
     // Conformance
@@ -18,9 +18,9 @@ final class Community3: Community3Providing, BaseModel {
     
     // Wrapped layers
     private let core3: CommunityCore3
-    private let base2: Community2
+    private let base2: CommunityBase2
     
-    var cachedModerators: [User1] = .init()
+    var cachedModerators: [UserBase1] = .init()
     
     // Forwarded properties from Community1
     var id: Int { base2.id }
@@ -52,13 +52,13 @@ final class Community3: Community3Providing, BaseModel {
     var defaultPostLanguage: Int? { core3.defaultPostLanguage }
     
     var moderators: [any UserCore1Providing] {
-        if cachedModerators.hashValue == core3._moderators.hashValue {
+        if cachedModerators.hashValue == core3.coreModerators.hashValue {
             return cachedModerators
         }
         
         // Cached communities are outdated, so we need to merge with the core model to provide the best representation possible
         var users: [any UserCore1Providing] = .init()
-        for coreUser in core3._moderators {
+        for coreUser in core3.coreModerators {
             if let baseUser = cachedModerators.first(where: { coreUser.actorId == $0.actorId }) {
                 users.append(baseUser)
             } else {
@@ -83,10 +83,8 @@ final class Community3: Community3Providing, BaseModel {
             self.base2.update(with: response.communityView)
         }
     }
-    
-    func highestCachedTier() -> any Community1Providing { self }
-    
-    static func getCache(for sourceInstance: NewInstanceStub) -> BaseContentCache<Community3> {
+
+    static func getCache(for sourceInstance: NewInstanceStub) -> BaseContentCache<CommunityBase3> {
         return sourceInstance.caches.community3
     }
 }

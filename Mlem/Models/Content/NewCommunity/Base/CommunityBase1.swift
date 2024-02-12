@@ -8,14 +8,14 @@
 import Foundation
 import SwiftUI
 
-protocol Community1Providing: CommunityCore1Providing {
+protocol CommunityBase1Providing: CommunityCore1Providing {
     var id: Int { get }
 }
 
-typealias Community = Community1Providing
+typealias CommunityBase = CommunityBase1Providing
 
 @Observable
-final class Community1: Community1Providing, BaseModel {
+final class CommunityBase1: CommunityBase1Providing, BaseModel {
     // Conformance
     typealias APIType = APICommunity
     var sourceInstance: NewInstanceStub
@@ -53,7 +53,7 @@ final class Community1: Community1Providing, BaseModel {
         }
     }
     
-    static func getCache(for sourceInstance: NewInstanceStub) -> BaseContentCache<Community1> {
+    static func getCache(for sourceInstance: NewInstanceStub) -> BaseContentCache<CommunityBase1> {
         return sourceInstance.caches.community1
     }
 }

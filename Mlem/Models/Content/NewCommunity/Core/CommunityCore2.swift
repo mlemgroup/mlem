@@ -18,7 +18,7 @@ protocol CommunityCore2Providing: CommunityCore1Providing {
 
 @Observable
 final class CommunityCore2: CommunityCore2Providing, CommunityCore {
-    typealias BaseEquivalent = Community2
+    typealias BaseEquivalent = CommunityBase2
     static var cache: CoreContentCache<CommunityCore2> = .init()
     typealias APIType = APICommunityView
 
