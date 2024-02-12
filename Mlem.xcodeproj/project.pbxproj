@@ -41,6 +41,7 @@
 		0321453F2B7943B3001AE07E /* User1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321453E2B7943B3001AE07E /* User1.swift */; };
 		032145412B7949C8001AE07E /* User2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145402B7949C8001AE07E /* User2.swift */; };
 		032145432B795619001AE07E /* User3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145422B795619001AE07E /* User3.swift */; };
+		032145452B796E6C001AE07E /* Community3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145442B796E6C001AE07E /* Community3.swift */; };
 		032C1E042B5D7DAC00FB4F23 /* QuickSwitcherSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032C1E032B5D7DAC00FB4F23 /* QuickSwitcherSettingsView.swift */; };
 		032C1E062B5DBDB100FB4F23 /* LocalAccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032C1E052B5DBDB100FB4F23 /* LocalAccountSettingsView.swift */; };
 		032DD2FD2AC3594B00F1B33D /* LinkAttatchmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032DD2FC2AC3594B00F1B33D /* LinkAttatchmentView.swift */; };
@@ -628,6 +629,7 @@
 		0321453E2B7943B3001AE07E /* User1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User1.swift; sourceTree = "<group>"; };
 		032145402B7949C8001AE07E /* User2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User2.swift; sourceTree = "<group>"; };
 		032145422B795619001AE07E /* User3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User3.swift; sourceTree = "<group>"; };
+		032145442B796E6C001AE07E /* Community3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Community3.swift; sourceTree = "<group>"; };
 		032C1E032B5D7DAC00FB4F23 /* QuickSwitcherSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSwitcherSettingsView.swift; sourceTree = "<group>"; };
 		032C1E052B5DBDB100FB4F23 /* LocalAccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAccountSettingsView.swift; sourceTree = "<group>"; };
 		032DD2FC2AC3594B00F1B33D /* LinkAttatchmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkAttatchmentView.swift; sourceTree = "<group>"; };
@@ -1512,6 +1514,7 @@
 			children = (
 				03E1E0592B77CCF10009DF9F /* Community1.swift */,
 				03E1E05B2B77CFB90009DF9F /* Community2.swift */,
+				032145442B796E6C001AE07E /* Community3.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -3388,6 +3391,7 @@
 				CD391F9C2A53980900E213B5 /* ReplyToCommentReply.swift in Sources */,
 				030E863D2AC6C49E000283A6 /* PictrsRepository+Dependency.swift in Sources */,
 				50811B402A9205EE006BA3F2 /* CommunityResponse+Mock.swift in Sources */,
+				032145452B796E6C001AE07E /* Community3.swift in Sources */,
 				03E0B9CC2A62CD5800FED265 /* ThemeSettingsView.swift in Sources */,
 				637218532A3A2AAD008C4816 /* APIMyUserInfo.swift in Sources */,
 				0317D46F2B558CB500EEE72C /* BadgeView.swift in Sources */,

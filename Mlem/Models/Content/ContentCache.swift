@@ -10,6 +10,7 @@ import Foundation
 struct BaseCacheGroup {
     var community1: BaseContentCache<Community1> = .init()
     var community2: BaseContentCache<Community2> = .init()
+    var community3: BaseContentCache<Community3> = .init()
     
     var user1: BaseContentCache<User1> = .init()
     var user2: BaseContentCache<User2> = .init()
@@ -35,9 +36,10 @@ class CoreContentCache<Content: CoreModel> {
     }
     
     func createModel(for apiType: Content.APIType) -> Content {
-        if let item = cachedItems.first(where: { $0.content?.actorId == apiType.actorId }) {
+        if let item = retrieveModel(actorId: apiType.actorId) {
             print("Using existing item for id \(apiType.actorId)")
-            return item.content!
+            item.update(with: apiType, cascade: false)
+            return item
         }
         print("Creating new item for id \(apiType.actorId)")
         let newItem = Content(from: apiType)
@@ -61,6 +63,7 @@ class BaseContentCache<Content: BaseModel & AnyObject> {
     
     func createModel(sourceInstance: NewInstanceStub, for apiType: Content.APIType) -> Content {
         if let item = retrieveModel(id: apiType.id) {
+            item.update(with: apiType, cascade: false)
             print("Using existing item for id \(apiType.id)")
             return item
         }

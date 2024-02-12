@@ -8,24 +8,10 @@
 import Foundation
 import SwiftUI
 
-protocol User1Providing {
+protocol User1Providing: UserCore1Providing {
     var id: Int { get }
     var ban: BanType? { get }
     var isAdmin: Bool { get }
-    
-    var name: String { get }
-    var creationDate: Date { get }
-  
-    var updatedDate: Date? { get }
-    
-    var displayName: String? { get }
-    var description: String? { get }
-    var matrixId: String? { get }
-    var avatar: URL? { get }
-    var banner: URL? { get }
-    
-    var deleted: Bool { get }
-    var isBot: Bool { get }
 }
 
 enum BanType {
@@ -34,7 +20,7 @@ enum BanType {
 }
 
 @Observable
-class User1: User1Providing, BaseModel {
+final class User1: User1Providing, BaseModel {
     // Conformance
     typealias APIType = APIPerson
     var sourceInstance: NewInstanceStub
@@ -82,5 +68,9 @@ class User1: User1Providing, BaseModel {
         if cascade {
             self.core1.update(with: person)
         }
+    }
+    
+    static func getCache(for sourceInstance: NewInstanceStub) -> BaseContentCache<User1> {
+        sourceInstance.caches.user1
     }
 }

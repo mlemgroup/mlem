@@ -8,10 +8,9 @@
 import Observation
 import SwiftUI
 
-protocol CommunityCore1Providing {
+protocol CommunityCore1Providing: ActorIdentifiable {
     var name: String { get }
     var creationDate: Date { get }
-    var actorId: URL { get }
     var updatedDate: Date? { get }
     
     var displayName: String { get }

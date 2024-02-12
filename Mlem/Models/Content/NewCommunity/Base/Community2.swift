@@ -60,8 +60,6 @@ final class Community2: Community2Providing, BaseModel {
         }
     }
     
-    func highestCachedTier() -> any Community1Providing { self }
-    
     static func getCache(for sourceInstance: NewInstanceStub) -> BaseContentCache<Community2> {
         return sourceInstance.caches.community2
     }

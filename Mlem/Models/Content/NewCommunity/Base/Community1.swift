@@ -10,7 +10,6 @@ import SwiftUI
 
 protocol Community1Providing: CommunityCore1Providing {
     var id: Int { get }
-    func highestCachedTier() -> any Community1Providing
 }
 
 typealias Community = Community1Providing
@@ -52,10 +51,6 @@ final class Community1: Community1Providing, BaseModel {
         if cascade {
             core1.update(with: community)
         }
-    }
-    
-    func highestCachedTier() -> any Community1Providing {
-        return sourceInstance.caches.community2.retrieveModel(id: id) ?? self
     }
     
     static func getCache(for sourceInstance: NewInstanceStub) -> BaseContentCache<Community1> {

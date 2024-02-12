@@ -9,6 +9,7 @@ import SwiftUI
 
 @Observable
 final class UserCore3: CoreModel {
+    typealias BaseEquivalent = User3
     static var cache: CoreContentCache<UserCore3> = .init()
     typealias APIType = GetPersonDetailsResponse
     

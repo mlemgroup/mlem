@@ -32,7 +32,8 @@ struct GetCommunityResponse: Decodable {
     let defaultPostLanguage: Int?
 }
 
-extension GetCommunityResponse: ActorIdentifiable {
+extension GetCommunityResponse: ActorIdentifiable, Identifiable {
     var actorId: URL { communityView.community.actorId }
+    var id: Int { communityView.community.id }
 }
 

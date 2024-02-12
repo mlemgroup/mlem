@@ -7,8 +7,26 @@
 
 import SwiftUI
 
+protocol UserCore1Providing: ActorIdentifiable {
+    var name: String { get }
+    var creationDate: Date { get }
+  
+    var updatedDate: Date? { get }
+    
+    var displayName: String? { get }
+    var description: String? { get }
+    var matrixId: String? { get }
+    var avatar: URL? { get }
+    var banner: URL? { get }
+    
+    var deleted: Bool { get }
+    var isBot: Bool { get }
+}
+
+
 @Observable
-final class UserCore1: CoreModel {
+final class UserCore1: UserCore1Providing, CoreModel {
+    typealias BaseEquivalent = User1
     static var cache: CoreContentCache<UserCore1> = .init()
     typealias APIType = APIPerson
 

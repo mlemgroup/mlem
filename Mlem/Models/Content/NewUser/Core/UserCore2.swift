@@ -9,6 +9,7 @@ import SwiftUI
 
 @Observable
 final class UserCore2: CoreModel {
+    typealias BaseEquivalent = User2
     static var cache: CoreContentCache<UserCore2> = .init()
     typealias APIType = APIPersonView
     

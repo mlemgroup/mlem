@@ -10,7 +10,7 @@ import SwiftUI
 
 protocol CommunityCore3Providing: CommunityCore2Providing {
     var instance: InstanceCore1? { get }
-    var moderators: [UserCore1] { get }
+    var moderators: [any UserCore1Providing] { get }
     var discussionLanguages: [Int] { get }
     var defaultPostLanguage: Int? { get }
 }
@@ -24,7 +24,8 @@ final class CommunityCore3: CommunityCore3Providing, CommunityCore {
     let core2: CommunityCore2
 
     let instance: InstanceCore1?
-    var moderators: [UserCore1] = .init()
+    var _moderators: [UserCore1] = .init()
+    var moderators: [any UserCore1Providing] { _moderators }
     var discussionLanguages: [Int] = .init()
     var defaultPostLanguage: Int? = nil
     
@@ -60,7 +61,7 @@ final class CommunityCore3: CommunityCore3Providing, CommunityCore {
     }
     
     func update(with response: GetCommunityResponse, cascade: Bool = true) {
-        self.moderators = response.moderators.map { UserCore1.create(from: $0.moderator) }
+        self._moderators = response.moderators.map { UserCore1.create(from: $0.moderator) }
         self.discussionLanguages = response.discussionLanguages
         self.defaultPostLanguage = response.defaultPostLanguage
         if cascade {
