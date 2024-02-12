@@ -6,34 +6,17 @@
 //
 
 import Foundation
-import Observation
 import SwiftUI
-
-enum PermissionError: Error {
-    case notLoggedIn, notAModerator, notAnAdministrator
-}
-
-protocol Instance1Providing: InstanceStubProviding {
-    var displayName: String { get }
-    var description: String? { get }
-    var avatar: URL? { get }
-    var banner: URL? { get }
-    var creationDate: Date { get }
-    var publicKey: String { get }
-}
 
 @Observable
 final class Instance1: Instance1Providing, CoreModel {
     static var cache: CoreContentCache<Instance1> = .init()
-    
-    var url: URL
-
     typealias APIType = APISite
+    var instance1: Instance1 { self }
     
     let stub: NewInstanceStub
     
-    var actorId: URL { stub.actorId }
-
+    let id: Int
     let creationDate: Date
     let publicKey: String
 
@@ -41,8 +24,10 @@ final class Instance1: Instance1Providing, CoreModel {
     var description: String? = nil
     var avatar: URL? = nil
     var banner: URL? = nil
+    var lastRefreshDate: Date = .distantPast
 
     required init(from site: APISite) {
+        self.id = site.id
         self.creationDate = site.published
         self.publicKey = site.publicKey
         self.stub = .create(url: site.actorId)
@@ -54,5 +39,6 @@ final class Instance1: Instance1Providing, CoreModel {
         self.description = site.sidebar
         self.avatar = site.iconUrl
         self.banner = site.bannerUrl
+        self.lastRefreshDate = site.lastRefreshedAt
     }
 }

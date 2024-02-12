@@ -10,7 +10,6 @@ import Foundation
 struct LoginRequest: APIPostRequest {
     typealias Response = LoginResponse
 
-    let instanceURL: URL
     let path = "user/login"
     let body: Body
 
@@ -21,8 +20,7 @@ struct LoginRequest: APIPostRequest {
         let totp_2fa_token: String?
     }
 
-    init(instanceURL: URL, username: String, password: String, totpToken: String?) {
-        self.instanceURL = instanceURL
+    init(username: String, password: String, totpToken: String?) {
         self.body = .init(username_or_email: username, password: password, totp_2fa_token: totpToken)
     }
 }

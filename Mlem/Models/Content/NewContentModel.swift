@@ -49,11 +49,9 @@ protocol InstanceContentModel: NewContentModel {
     init(from: APIType)
 }
 
-protocol APISource {
+protocol APISource: ActorIdentifiable {
     associatedtype Client: NewAPIClient
     var caches: BaseCacheGroup { get }
     var api: Client { get }
     var instance: NewInstanceStub { get }
 }
-
-protocol AuthenticatedAPISource: APISource where Client: AuthenticatedAPIClient { }

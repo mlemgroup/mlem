@@ -8,13 +8,10 @@
 import Dependencies
 import SwiftUI
 
-protocol InstanceStubProviding {
-    var url: URL { get }
-}
-
 @Observable
 class NewInstanceStub: InstanceStubProviding, APISource {
     static let cache: ContentStubCache<NewInstanceStub> = .init()
+    var stub: InstanceStub { self }
     var instance: NewInstanceStub { self }
     let caches: BaseCacheGroup = .init()
     
@@ -41,5 +38,10 @@ class NewInstanceStub: InstanceStubProviding, APISource {
     
     static func == (lhs: NewInstanceStub, rhs: NewInstanceStub) -> Bool {
         lhs.url == rhs.url
+    }
+    
+    func upgrade() async throws -> Instance3 {
+        let response = try await api.getSite()
+        return .create(from: response)
     }
 }

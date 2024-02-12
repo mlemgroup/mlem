@@ -11,30 +11,10 @@ import Foundation
 struct GetSiteRequest: APIGetRequest {
     typealias Response = SiteResponse
 
-    let instanceURL: URL
     let path = "site"
     let queryItems: [URLQueryItem]
 
-    init(
-        session: APISession
-    ) throws {
-        self.instanceURL = try session.instanceUrl
-        var queryItems: [URLQueryItem] = []
-        
-        if let token = try? session.token {
-            queryItems.append(
-                .init(name: "auth", value: token)
-            )
-        }
-        
-        self.queryItems = queryItems
-    }
-
-    init(
-        instanceURL: URL
-    ) {
-        self.instanceURL = instanceURL
-
+    init() {
         self.queryItems = []
     }
 }

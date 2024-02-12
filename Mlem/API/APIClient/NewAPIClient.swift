@@ -14,10 +14,12 @@ class NewAPIClient {
     
     let baseUrl: URL
     let endpointUrl: URL
+    let token: String?
     
-    init(baseUrl: URL) {
+    init(baseUrl: URL, token: String? = nil) {
         self.baseUrl = baseUrl
         self.endpointUrl = baseUrl.appendingPathComponent("api/v3")
+        self.token = token
     }
     
     @discardableResult
@@ -80,6 +82,13 @@ class NewAPIClient {
             urlRequest.httpBody = try createBodyData(for: putDefinition)
         }
 
+        if let token {
+            // TODO: 0.18 deprecation remove this
+            urlRequest.url?.append(queryItems: [.init(name: "auth", value: token)])
+            
+            urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+        
         return urlRequest
     }
     

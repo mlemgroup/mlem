@@ -10,8 +10,6 @@ import Dependencies
 import SwiftUI
 
 struct TokenRefreshView: View {
-    @Dependency(\.apiClient) var apiClient
-    
     enum ViewState {
         case initial
         case refreshing
@@ -26,8 +24,7 @@ struct TokenRefreshView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    let account: SavedAccount
-    let refreshedAccount: (SavedAccount) -> Void
+    let user: AuthenticatedUserStub
     
     @State private var password = ""
     @State private var twoFactorCode = ""
@@ -110,7 +107,7 @@ struct TokenRefreshView: View {
             Text("Please enter the password for")
                 .font(.body)
                 .dynamicTypeSize(.small ... .xxxLarge)
-            Text("\(account.username)@\(account.instanceLink.host ?? "")")
+            Text("\(user.username)@\(user.instanceLink.host ?? "")")
                 .font(.subheadline)
                 .dynamicTypeSize(.small ... .xxxLarge)
         case .refreshing:

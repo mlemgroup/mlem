@@ -24,6 +24,8 @@ protocol Community1Providing: ActorIdentifiable {
     var onlyModeratorsCanPost: Bool { get }
 }
 
+typealias Community = Community1Providing
+
 extension Community1Providing {
     var actorId: URL { community1.actorId }
     var id: Int { community1.id }

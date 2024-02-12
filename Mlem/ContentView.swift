@@ -17,9 +17,7 @@ struct ContentView: View {
     @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.accountsTracker) var accountsTracker
     
-    @Environment(\.setAppFlow) private var setFlow
-    
-    @EnvironmentObject var appState: AppState
+    @Environment(\.apiSource) var apiSource: any APISource
     
     @StateObject var editorTracker: EditorTracker = .init()
     @StateObject var unreadTracker: UnreadTracker = .init()
@@ -32,12 +30,15 @@ struct ContentView: View {
     @GestureState private var isDetectingLongPress = false
     
     @State private var isPresentingAccountSwitcher: Bool = false
-    @State private var tokenRefreshAccount: SavedAccount?
+    @State private var tokenRefreshAccount: AuthenticatedUserStub?
     
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
     @AppStorage("allowTabBarSwipeUpGesture") var allowTabBarSwipeUpGesture: Bool = true
     @AppStorage("appLock") var appLock: AppLock = .disabled
+    
+    @AppStorage("profileTabLabel") var profileTabLabelMode: ProfileTabLabel = .nickname
+    @AppStorage("showUserAvatarOnProfileTab") var showProfileTabAvatar: Bool = true
 
     @StateObject private var quickLookState: ImageDetailSheetState = .init()
     @StateObject var biometricUnlock = BiometricUnlock()
@@ -46,6 +47,27 @@ struct ContentView: View {
 
     var isAppLocked: Bool {
         appLock != .disabled && !biometricUnlock.isUnlocked
+    }
+    
+    var profileTabLabel: String {
+        if let user = apiSource as? AuthenticatedUserStub {
+            switch profileTabLabelMode {
+            case .instance:
+                return user?.instance.url.host() ?? "Instance"
+            case .nickname:
+                return user.nickname ?? user.username
+            case .anonymous:
+                return "Profile"
+            }
+        }
+        return "Profile"
+    }
+        
+    var profileTabAvatar: URL? {
+        if showProfileTabAvatar, let user = apiSource as? AuthenticatedUserStub {
+            return user.avatarUrl
+        }
+        return nil
     }
     
     var body: some View {
@@ -59,29 +81,24 @@ struct ContentView: View {
                         )
                     }
                 
-                // wrapping these two behind a check for an active user, as of now we'll always have one
-                // but when guest mode arrives we'll either omit these entirely, or replace them with a
-                // guest mode specific tab for sign in / change instance screen.
-                if appState.currentActiveAccount != nil {
-                    InboxView()
-                        .fancyTabItem(tag: TabSelection.inbox) {
-                            FancyTabBarLabel(
-                                tag: TabSelection.inbox,
-                                symbolConfiguration: .inbox,
-                                badgeCount: showInboxUnreadBadge ? unreadTracker.total : 0
-                            )
-                        }
-                }
+                InboxView()
+                    .fancyTabItem(tag: TabSelection.inbox) {
+                        FancyTabBarLabel(
+                            tag: TabSelection.inbox,
+                            symbolConfiguration: .inbox,
+                            badgeCount: showInboxUnreadBadge ? unreadTracker.total : 0
+                        )
+                    }
                     
                 ProfileView()
                     .fancyTabItem(tag: TabSelection.profile) {
                         FancyTabBarLabel(
                             tag: TabSelection.profile,
-                            customText: appState.tabDisplayName,
+                            customText: profileTabLabel,
                             symbolConfiguration: .init(
                                 symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
                                 activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
-                                remoteSymbolUrl: appState.profileTabRemoteSymbolUrl
+                                remoteSymbolUrl: profileTabAvatar
                             )
                         )
                         .simultaneousGesture(accountSwitchLongPress)
@@ -104,20 +121,18 @@ struct ContentView: View {
                     }
             }
         }
-        .task(id: appState.currentActiveAccount) {
+        .task(id: apiSource.actorId, priority: .background) {
             accountChanged()
         }
         .onReceive(errorHandler.$sessionExpired) { expired in
-            if expired {
-                tokenRefreshAccount = appState.currentActiveAccount
+            if expired, let user = apiSource as? AuthenticatedUserStub {
+                tokenRefreshAccount = user
             }
         }
         .sheet(item: $tokenRefreshAccount) {
             errorHandler.clearExpiredSession()
-        } content: { account in
-            TokenRefreshView(account: account) { updatedAccount in
-                appState.setActiveAccount(updatedAccount)
-            }
+        } content: { user in
+            TokenRefreshView(user: user)
         }
         .alert(using: $errorAlert) { content in
             Alert(
@@ -178,15 +193,12 @@ struct ContentView: View {
     // MARK: Helpers
     
     /// Function that executes whenever the account changes to handle any state updates that need to happen
-    func accountChanged() {
-        // refresh unread count
-        Task(priority: .background) {
-            do {
-                let unreadCounts = try await personRepository.getUnreadCounts()
-                unreadTracker.update(with: unreadCounts)
-            } catch {
-                errorHandler.handle(error)
-            }
+    func accountChanged() async {
+        do {
+            let unreadCounts = try await personRepository.getUnreadCounts()
+            unreadTracker.update(with: unreadCounts)
+        } catch {
+            errorHandler.handle(error)
         }
     }
     
