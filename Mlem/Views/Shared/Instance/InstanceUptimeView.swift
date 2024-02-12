@@ -41,7 +41,7 @@ struct InstanceUptimeView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     responseTimeChart
                         .padding(.horizontal, 20)
-                    footnote("Mean average: \(uptimeData.results.map(\.durationMs).reduce(0, +) / uptimeData.results.count)ms")
+                    footnote("Average: \(uptimeData.results.map(\.durationMs).reduce(0, +) / uptimeData.results.count)ms")
                         .padding(.leading, 20)
                 }
                 .padding(.top, 17)
