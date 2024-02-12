@@ -17,6 +17,7 @@ struct InstanceUptimeView: View {
     @Environment(\.colorScheme) var colorScheme
     
     @State var showingExactTime: Bool = false
+    @State var showingAllDowntimes: Bool = false
     
     let instance: InstanceModel
     let uptimeData: UptimeData
@@ -47,24 +48,57 @@ struct InstanceUptimeView: View {
                 .padding(.top, 17)
                 .padding(.bottom, 8)
             }
-            section("Incidents", spacing: 0) {
-                ForEach(uptimeData.downtimes) { event in
-                    if event.id != uptimeData.downtimes.first?.id {
-                        Divider()
+            subHeading("Incidents")
+                .padding(.top, 30)
+                .padding(.bottom, 3)
+            let todayDowntimes = uptimeData.downtimes.filter { abs($0.endTime.timeIntervalSinceNow) < 60 * 60 * 24 }
+            
+            footnote(
+                todayDowntimes.count == 0
+                ? "There were no recorded incidents today."
+                : "There were \(todayDowntimes.count) recorded incidents today."
+            )
+            .padding(.leading, 6)
+            .padding(.bottom, 7)
+            
+            let displayedIncidents = showingAllDowntimes ? uptimeData.downtimes : todayDowntimes
+            if !displayedIncidents.isEmpty {
+                section(spacing: 0) {
+                    ForEach(displayedIncidents) { event in
+                        if event.id != uptimeData.downtimes.first?.id {
+                            Divider()
+                        }
+                        IncidentRow(event: event, showingExactTime: showingExactTime)
+                            .padding(.vertical, 10)
+                            .padding(.leading)
                     }
-                    IncidentRow(event: event, showingExactTime: showingExactTime)
-                    .padding(.vertical, 10)
-                    .padding(.leading)
-                }
-                .onTapGesture {
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        showingExactTime.toggle()
+                    .onTapGesture {
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            showingExactTime.toggle()
+                        }
                     }
                 }
+                .padding(.bottom, 30)
             }
-            .padding(.top, 30)
+            Button {
+                withAnimation {
+                    showingAllDowntimes.toggle()
+                }
+            } label: {
+                Text("\(showingAllDowntimes ? "Hide" : "Show") Older Incidents")
+                    .padding(.leading, 12)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, 10)
+                    .background(
+                        RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
+                            .fill(Color(uiColor: .secondarySystemGroupedBackground))
+                    )
+            }
+            .buttonStyle(EmptyButtonStyle())
+            
             if let url = instance.uptimeFrontendUrl {
                 Text("Uptime data fetched from [lemmy-status.org](\(url))")
+                    .foregroundStyle(.blue)
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                     .padding(.vertical, 8)
@@ -83,13 +117,8 @@ struct InstanceUptimeView: View {
         VStack(alignment: .leading) {
             if let mostRecentOutage = uptimeData.downtimes.first {
                 if uptimeData.results.filter(\.success).count < 15 {
-                    if mostRecentOutage.endTime == nil {
-                        summaryHeader(statusText: "offline", systemImage: Icons.uptimeOffline, color: .red)
-                        footnote("Outage started \(mostRecentOutage.startTime.getRelativeTime()).")
-                    } else {
-                        summaryHeader(statusText: "unhealthy", systemImage: Icons.uptimeOutage, color: .red)
-                        footnote("\(instance.name) has been unresponsive recently.")
-                    }
+                    summaryHeader(statusText: "unhealthy", systemImage: Icons.uptimeOutage, color: .red)
+                    footnote("\(instance.name) has been unresponsive recently.")
                 } else {
                     summaryHeader(statusText: "online", systemImage: Icons.uptimeOnline, color: .green)
                     if mostRecentOutage.endTime != nil {
