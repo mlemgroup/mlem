@@ -23,13 +23,14 @@ extension ActorIdentifiable {
 
 protocol NewContentModel: ActorIdentifiable {
     associatedtype APIType: ActorIdentifiable
-    func update(with: APIType, cascade: Bool)
+    
+    var source: any APISource { get }
+    init(source: any APISource, from: APIType)
+    func update(with: APIType)
+    
 }
 
-protocol ContentStub: Hashable { }
-
-protocol CoreModel: NewContentModel, AnyObject {
-    associatedtype BaseEquivalent: BaseModel
+protocol CoreModel: AnyObject {
     static var cache: CoreContentCache<Self> { get }
     init(from: APIType)
 }
@@ -38,18 +39,6 @@ extension CoreModel {
     static func create(from apiType: APIType) -> Self {
         return cache.createModel(for: apiType)
     }
-    
-    func getCachedBase(instance: NewInstanceStub) -> BaseEquivalent? {
-        BaseEquivalent.getCache(for: instance).retrieveModel(sourceInstance: instance, actorId: actorId)
-    }
-}
-
-protocol BaseModel: NewContentModel, AnyObject, Identifiable where APIType: Identifiable, ID == APIType.ID {
-    /// The instance from which the ContentModel was fetched
-    var sourceInstance: NewInstanceStub { get }
-    init(sourceInstance: NewInstanceStub, from: APIType)
-    
-    static func getCache(for: NewInstanceStub) -> BaseContentCache<Self>
 }
 
 enum SourceRetargetError: Error {

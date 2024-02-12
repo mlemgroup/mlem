@@ -21,12 +21,6 @@ private struct WeakReference<Content: AnyObject> {
     weak var content: Content?
 }
 
-class ContentStubCache<Content: ContentStub & AnyObject> {
-    private var cachedItems: [WeakReference<Content>] = .init()
-    func createModel(for hashValue: Int) -> Content? {
-        return cachedItems.first(where: { $0.content.hashValue == hashValue })?.content!
-    }
-}
 
 class CoreContentCache<Content: CoreModel> {
     private var cachedItems: [WeakReference<Content>] = .init()

@@ -23,35 +23,30 @@ protocol Instance1Providing: InstanceStubProviding {
 }
 
 @Observable
-final class InstanceCore1: CoreModel {
-    static let cache: CoreContentCache<InstanceCore1> = .init()
-    var instance: NewInstanceStub { stub }
+final class Instance1: Instance1Providing, CoreModel {
+    static var cache: CoreContentCache<Instance1> = .init()
+    
+    var url: URL
+
     typealias APIType = APISite
     
     let stub: NewInstanceStub
     
     var actorId: URL { stub.actorId }
-    var api: NewAPIClient { stub.api }
-    var caches: BaseCacheGroup { stub.caches }
 
     let creationDate: Date
     let publicKey: String
 
-    var displayName: String
-    var description: String?
-    var avatar: URL?
-    var banner: URL?
+    var displayName: String = ""
+    var description: String? = nil
+    var avatar: URL? = nil
+    var banner: URL? = nil
 
     required init(from site: APISite) {
         self.creationDate = site.published
         self.publicKey = site.publicKey
-
-        self.displayName = site.name
-        self.description = site.description
-        self.avatar = site.iconUrl
-        self.banner = site.bannerUrl
-        
         self.stub = .create(url: site.actorId)
+        self.update(with: site)
     }
 
     func update(with site: APISite) {

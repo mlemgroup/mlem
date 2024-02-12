@@ -8,12 +8,12 @@
 import Dependencies
 import SwiftUI
 
-protocol InstanceStubProviding: APISource {
+protocol InstanceStubProviding {
     var url: URL { get }
 }
 
 @Observable
-class NewInstanceStub: InstanceStubProviding, ContentStub {
+class NewInstanceStub: InstanceStubProviding, APISource {
     static let cache: ContentStubCache<NewInstanceStub> = .init()
     var instance: NewInstanceStub { self }
     let caches: BaseCacheGroup = .init()
@@ -25,17 +25,18 @@ class NewInstanceStub: InstanceStubProviding, ContentStub {
         return NewAPIClient(baseUrl: url)
     }()
     
-    /// Return a cached InstanceStub if available, or create and return a new InstanceStub otherwise.
-    static func create(url: URL) -> NewInstanceStub {
-        return cache.createModel(for: url.hashValue) ?? .init(url: url)
+    static var cachedItems: [WeakReference<Content>] = .init()
+    
+    static func createModel(url: URL) -> NewInstanceStub {
+        if let existing = cachedItems.first(where: { $0.content.url == url })?.content! {
+            return existing
+        }
+        let newItem = .init(url: url)
+        cachedItems.append(.init(content: newItem))
     }
     
     private init(url: URL) {
         self.url = url
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(url)
     }
     
     static func == (lhs: NewInstanceStub, rhs: NewInstanceStub) -> Bool {
