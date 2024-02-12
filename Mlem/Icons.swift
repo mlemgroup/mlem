@@ -152,7 +152,6 @@ enum Icons {
     // uptime
     static let uptimeOffline: String = "xmark.circle.fill"
     static let uptimeOnline: String = "checkmark.circle.fill"
-    static let uptimeShortOutage: String = "ellipsis.circle.fill"
     static let uptimeOutage: String = "exclamationmark.circle.fill"
     
     // end of feed

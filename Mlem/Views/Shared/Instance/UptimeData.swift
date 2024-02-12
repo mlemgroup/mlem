@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct UptimeData: Codable {
     let results: [UptimeResponseTime]
@@ -62,6 +63,16 @@ struct DowntimePeriod: Codable, Identifiable {
     var duration: TimeInterval {
         let endTime = endTime ?? .now
         return endTime.timeIntervalSince(startTime)
+    }
+    
+    var severityColor: Color {
+        if duration < 60 * 5 {
+            .secondary
+        } else if duration < 60 * 30 {
+            .orange
+        } else {
+            .red
+        }
     }
     
     func differenceTitle(unitsStyle: DateComponentsFormatter.UnitsStyle = .short) -> String {

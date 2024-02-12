@@ -84,32 +84,14 @@ struct InstanceUptimeView: View {
             if let mostRecentOutage = uptimeData.downtimes.first {
                 if uptimeData.results.filter(\.success).count < 15 {
                     if mostRecentOutage.endTime == nil {
-                        HStack(spacing: 5) {
-                            (Text("\(instance.name) is ") + Text("offline").foregroundColor(.red))
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                            Image(systemName: Icons.uptimeOffline)
-                                .foregroundStyle(.red)
-                        }
+                        summaryHeader(statusText: "offline", systemImage: Icons.uptimeOffline, color: .red)
                         footnote("Outage started \(mostRecentOutage.startTime.getRelativeTime()).")
                     } else {
-                        HStack(spacing: 5) {
-                            (Text("\(instance.name) is ") + Text("unhealthy").foregroundColor(.red))
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                            Image(systemName: Icons.uptimeOutage)
-                                .foregroundStyle(.red)
-                        }
+                        summaryHeader(statusText: "unhealthy", systemImage: Icons.uptimeOutage, color: .red)
                         footnote("\(instance.name) has been unresponsive recently.")
                     }
                 } else {
-                    HStack(spacing: 5) {
-                        (Text("\(instance.name) is ") + Text("online").foregroundColor(.green))
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                        Image(systemName: Icons.uptimeOnline)
-                            .foregroundStyle(.green)
-                    }
+                    summaryHeader(statusText: "online", systemImage: Icons.uptimeOnline, color: .green)
                     if mostRecentOutage.endTime != nil {
                         let relTime = mostRecentOutage.relativeTimeCaption
                         let length = mostRecentOutage.differenceTitle(unitsStyle: .full)
@@ -121,6 +103,17 @@ struct InstanceUptimeView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 10)
         .padding(.horizontal)
+    }
+    
+    @ViewBuilder
+    func summaryHeader(statusText: String, systemImage: String, color: Color) -> some View {
+        HStack(spacing: 5) {
+            (Text("\(instance.name) is ") + Text(statusText).foregroundColor(color))
+                .font(.title2)
+                .fontWeight(.semibold)
+            Image(systemName: systemImage)
+                .foregroundStyle(color)
+        }
     }
     
     @ViewBuilder
@@ -226,16 +219,9 @@ private struct IncidentRow: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                if event.duration < 60 * 5 {
-                    Image(systemName: Icons.uptimeShortOutage)
-                        .foregroundStyle(.secondary)
-                } else if event.duration < 60 * 30 {
-                    Image(systemName: Icons.uptimeOutage)
-                        .foregroundStyle(.orange)
-                } else {
-                    Image(systemName: Icons.uptimeOutage)
-                        .foregroundStyle(.red)
-                }
+                Image(systemName: Icons.uptimeOutage)
+                    .foregroundStyle(event.severityColor)
+                    .foregroundStyle(.secondary)
                 Text("Unhealthy for \(event.differenceTitle())")
             }
             Text(showingExactTime ? event.differenceCaption : event.relativeTimeCaption)
