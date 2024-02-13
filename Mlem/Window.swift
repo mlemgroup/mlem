@@ -46,6 +46,8 @@ struct Window: View {
     @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.errorHandler) var errorHandler
     
+    @Dependency(\.markReadBatcher) var markReadBatcher
+
     @StateObject var easterFlagsTracker: EasterFlagsTracker = .init()
     @StateObject var filtersTracker: FiltersTracker = .init()
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
@@ -69,6 +71,13 @@ struct Window: View {
                         appState.myInstance = try await appState.instanceStub?.upgrade()
                     } catch {
                         errorHandler.handle(error)
+                    }
+                }
+            }
+            .onChange(of: appState.apiSource?.actorId) {
+                DispatchQueue.main.async {
+                    Task {
+                        await markReadBatcher.flush()
                     }
                 }
             }

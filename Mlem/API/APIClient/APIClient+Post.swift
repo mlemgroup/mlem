@@ -43,6 +43,13 @@ extension APIClient {
         return SuccessResponse(from: compatibilityResponse)
     }
     
+    func markPostsAsRead(for postIds: [Int], read: Bool) async throws -> SuccessResponse {
+        let request = try MarkPostReadRequest(session: session, postIds: postIds, read: read)
+        // TODO: 0.18 deprecation simply return result of perform
+        let compatibilityResponse = try await perform(request: request)
+        return SuccessResponse(from: compatibilityResponse)
+    }
+    
     func loadPost(id: Int, commentId: Int? = nil) async throws -> APIPostView {
         let request = try GetPostRequest(session: session, id: id, commentId: commentId)
         return try await perform(request: request).postView

@@ -16,6 +16,7 @@ struct ContentView: View {
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.accountsTracker) var accountsTracker
+    @Dependency(\.markReadBatcher) var markReadBatcher
     
     @Environment(NewAppState.self) var appState
     
@@ -178,7 +179,13 @@ struct ContentView: View {
             if scenePhase != .active {
                 isPresentingAccountSwitcher = false
             }
-            if scenePhase == .background || scenePhase == .inactive, appLock != .disabled {
+            // flush batcher(s) to avoid batches being lost on quit
+            Task {
+                await markReadBatcher.flush()
+            }
+            
+            // activate biometric lock
+            if appLock != .disabled {
                 biometricUnlock.isUnlocked = false
             }
         }
