@@ -152,7 +152,15 @@ struct FeedPost: View {
 
     @ViewBuilder
     var postItem: some View {
-        if postSize == .compact {
+        if postModel.read && postModel.post.featuredLocal || postModel.post.featuredCommunity {
+            /// Render read pinned posts in less "in-your-face" way.
+            let functions = postModel.menuFunctions(editorTracker: editorTracker, postTracker: postTracker)
+            CompactPost(
+                post: postModel,
+                showCommunity: showCommunity,
+                menuFunctions: functions
+            )
+        } else if postSize == .compact {
             let functions = postModel.menuFunctions(editorTracker: editorTracker, postTracker: postTracker)
             CompactPost(
                 post: postModel,
