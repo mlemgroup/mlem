@@ -103,10 +103,6 @@ struct PostFeedView: View {
             if postTracker.items.isEmpty || versionSafePostSort == nil || postTracker.isStale {
                 noPostsView()
             } else {
-                ForEach(postTracker.featuredItems(), id: \.uid) { element in
-                    feedPost(for: element)
-                }
-                
                 ForEach(Array(postTracker.enumeratedItems(.excludeFeatured)), id: \.element.uid) { index, element in
                     feedPost(for: element)
                         .task {

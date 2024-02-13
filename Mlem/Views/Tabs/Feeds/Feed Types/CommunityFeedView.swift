@@ -152,6 +152,15 @@ struct CommunityFeedView: View {
                     .padding(.top, 5)
                     .background(Color.systemBackground)
                 
+                ScrollView(.horizontal) {
+                    LazyHStack {
+                        ForEach(postTracker.featuredItems(), id: \.uid) { element in
+                            feedPost(for: element)
+                                .frame(maxWidth: 320, maxHeight: 240)
+                        }
+                    }
+                }
+                
                 switch selectedTab {
                 case .posts: posts()
                 case .about: about()
@@ -160,6 +169,27 @@ struct CommunityFeedView: View {
                 }
             }
         }
+    }
+    
+    @ViewBuilder
+    private func feedPost(for post: PostModel) -> some View {
+        VStack(spacing: 0) {
+            NavigationLink(.postLinkWithContext(.init(post: post, community: nil, postTracker: postTracker))) {
+                FeedPost(
+                    post: post,
+                    postTracker: postTracker,
+                    community: communityModel,
+                    showPostCreator: true,
+                    showCommunity: false
+                )
+            }
+            
+            Divider()
+        }
+        .onAppear {
+            postTracker.loadIfThreshold(post)
+        }
+        .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
     }
     
     func posts() -> some View {
