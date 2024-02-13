@@ -12,13 +12,13 @@ import Foundation
 /// For simple (i.e. linear) navigation flows, you may wish to define a separate set of routes. For example, see `OnboardingRoutes`.
 ///
 enum AppRoute: Routable {
+    case moderateCommunity(ModerateCommunityLink)
     case community(CommunityModel)
     case instance(String? = nil, InstanceModel? = nil)
     
     case userProfile(UserModel, communityContext: CommunityModel? = nil)
     
     case postLinkWithContext(PostLinkWithContext)
-    // case newPostLinkWithContext(NewPostLinkWithContext)
     case lazyLoadPostLinkWithContext(LazyLoadPostLinkWithContext)
     
     // MARK: - Settings
@@ -33,6 +33,8 @@ enum AppRoute: Routable {
     // swiftlint:disable cyclomatic_complexity
     static func makeRoute(_ value: some Hashable) throws -> AppRoute {
         switch value {
+        case let value as ModerateCommunityLink:
+            return .moderateCommunity(value)
         case let value as CommunityModel:
             return .community(value)
         case let value as UserModel:

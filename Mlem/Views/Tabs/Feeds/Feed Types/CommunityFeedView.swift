@@ -24,6 +24,7 @@ struct CommunityFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.communityRepository) var communityRepository
+    @Dependency(\.siteInformation) var siteInformation
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.scrollViewProxy) var scrollProxy
@@ -61,6 +62,15 @@ struct CommunityFeedView: View {
             output.insert(.about, at: 1)
         }
         return output
+    }
+    
+    var isModerator: Bool {
+        if let communityModerators = communityModel.moderators, let userId = siteInformation.myUserInfo?.localUserView.person.id {
+            return communityModerators.contains(where: { userModel in
+                userModel.userId == userId
+            })
+        }
+        return false
     }
     
     init(communityModel: CommunityModel) {
@@ -228,7 +238,12 @@ struct CommunityFeedView: View {
                     }
                     .buttonStyle(.plain)
                     Spacer()
-                    subscribeButton
+                    
+                    if isModerator {
+                        moderateButton
+                    } else {
+                        subscribeButton
+                    }
                 }
                 .padding(.horizontal, AppConstants.postAndCommentSpacing)
                 .padding(.bottom, 3)
@@ -268,24 +283,29 @@ struct CommunityFeedView: View {
         return Icons.personFill
     }
     
+    var subscriberCountText: String? {
+        if let subscriberCount = communityModel.subscriberCount {
+            abbreviateNumber(subscriberCount)
+        } else {
+            nil
+        }
+    }
+    
+    @ViewBuilder
+    var moderateButton: some View {
+        NavigationLink(.moderateCommunity(.init(communityModel: communityModel))) {
+            capsuleButton(text: "Moderate", imageName: Icons.moderation, foregroundColor: .green, backgroundColor: .green.opacity(0.1))
+        }
+    }
+    
     @ViewBuilder
     var subscribeButton: some View {
-        let foregroundColor = subscribeButtonForegroundColor
         if let subscribed = communityModel.subscribed {
-            HStack(spacing: 4) {
-                if let subscriberCount = communityModel.subscriberCount {
-                    Text(abbreviateNumber(subscriberCount))
-                }
-                Image(systemName: subscribeButtonIcon)
-                    .aspectRatio(contentMode: .fit)
-            }
-            .foregroundStyle(foregroundColor)
-            .padding(.vertical, 5)
-            .padding(.horizontal, 10)
-            .background(
-                Capsule()
-                    .strokeBorder(foregroundColor, style: .init(lineWidth: 1))
-                    .background(Capsule().fill(subscribeButtonBackgroundColor))
+            capsuleButton(
+                text: subscriberCountText,
+                imageName: subscribeButtonIcon,
+                foregroundColor: subscribeButtonForegroundColor,
+                backgroundColor: subscribeButtonBackgroundColor
             )
             .gesture(TapGesture().onEnded { _ in
                 hapticManager.play(haptic: .lightSuccess, priority: .low)
@@ -322,6 +342,26 @@ struct CommunityFeedView: View {
                     }
                 }
             })
+        }
+    }
+    
+    func capsuleButton(text: String?, imageName: String, foregroundColor: Color, backgroundColor: Color) -> some View {
+        HStack(spacing: 4) {
+            if let text {
+                Text(text)
+            }
+            
+            Image(systemName: imageName)
+        }
+        .foregroundStyle(foregroundColor)
+        .padding(.vertical, 5)
+        .padding(.horizontal, 10)
+        .background {
+            Capsule()
+                .strokeBorder(foregroundColor, style: .init(lineWidth: 1))
+                .background {
+                    Capsule().fill(backgroundColor)
+                }
         }
     }
 }
