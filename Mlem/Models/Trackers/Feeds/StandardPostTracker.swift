@@ -275,3 +275,35 @@ class StandardPostTracker: StandardTracker<PostModel> {
         prefetcher.startPrefetching(with: imageRequests)
     }
 }
+
+extension StandardPostTracker {
+    
+    struct EnumerationOptions: OptionSet {
+        let rawValue: Int
+        
+        static let excludeFeatured = EnumerationOptions(rawValue: 1 << 0)
+        
+        static let all: EnumerationOptions = [.excludeFeatured]
+    }
+    
+    func featuredItems() -> [PostModel] {
+        self.items.filter { $0.post.featuredLocal || $0.post.featuredCommunity }
+    }
+    
+    func enumeratedItems(_ options: EnumerationOptions) -> EnumeratedSequence<[PostModel]> {
+        guard options.isEmpty == false else {
+            return self.items.enumerated()
+        }
+        
+        return self.items
+            .filter { item in
+                if options.contains(.excludeFeatured) {
+                    if item.post.featuredLocal || item.post.featuredCommunity {
+                        return false
+                    }
+                }
+                return true
+            }
+            .enumerated()
+    }
+}
