@@ -10,10 +10,10 @@ import Dependencies
 import NukeUI
 
 struct AccountButtonView: View {
-    @EnvironmentObject var appState: AppState
     @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
-    @Environment(\.setAppFlow) private var setFlow
     @Environment(\.dismiss) var dismiss
+    
+    @Environment(NewAppState.self) var appState
     
     @State var showingSignOutConfirmation: Bool = false
     @Binding var isSwitching: Bool
@@ -22,20 +22,20 @@ struct AccountButtonView: View {
         case instanceOnly, timeOnly, instanceAndTime
     }
     
-    let account: SavedAccount
+    let account: MyUserStub
     let caption: CaptionState
     
-    init(account: SavedAccount, caption: CaptionState = .instanceAndTime, isSwitching: Binding<Bool>) {
+    init(account: MyUserStub, caption: CaptionState = .instanceAndTime, isSwitching: Binding<Bool>) {
         self.account = account
         self.caption = caption
         self._isSwitching = isSwitching
     }
     
     var timeText: String? {
-        if account == appState.currentActiveAccount {
+        if account.actorId == appState.actorId {
             return "Now"
         }
-        if let time = account.lastUsed {
+        if let time = account.lastLoggedIn {
             let formatter = RelativeDateTimeFormatter()
             formatter.unitsStyle = .short
             return formatter.localizedString(for: time, relativeTo: Date.now)
@@ -44,7 +44,7 @@ struct AccountButtonView: View {
     }
     
     var captionText: String? {
-        let host = account.instanceLink.host()
+        let host = account.instance.url.host()
         var caption = caption
         let timeText = timeText
         if timeText == nil {
@@ -62,8 +62,9 @@ struct AccountButtonView: View {
     
     var body: some View {
         Button {
-            if appState.currentActiveAccount != account {
-                setFlow(using: account)
+            if appState.actorId != account.actorId {
+                appState.apiSource = first
+                dismiss()
             }
         } label: {
             HStack(alignment: .center, spacing: 10) {
@@ -114,10 +115,11 @@ struct AccountButtonView: View {
                         accountsTracker.removeAccount(account: account)
                         if currentActiveAccount == account {
                             if let first = accountsTracker.savedAccounts.first {
-                                setFlow(.account(first))
+                                appState.apiSource = first
                             } else {
-                                setFlow(.onboarding)
+                                appState.isOnboarding = true
                             }
+                            dismiss()
                         }
                     }
                 }
@@ -125,15 +127,5 @@ struct AccountButtonView: View {
         } message: {
             Text("Really sign out?")
         }
-    }
-    
-    private func setFlow(using account: SavedAccount?) {
-        if let account {
-            isSwitching = true
-            setFlow(.account(account))
-            return
-        }
-        
-        setFlow(.onboarding)
     }
 }

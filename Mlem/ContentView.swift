@@ -17,7 +17,7 @@ struct ContentView: View {
     @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.accountsTracker) var accountsTracker
     
-    @Environment(\.apiSource) var apiSource: any APISource
+    @Environment(NewAppState.self) var appState
     
     @StateObject var editorTracker: EditorTracker = .init()
     @StateObject var unreadTracker: UnreadTracker = .init()
@@ -30,7 +30,7 @@ struct ContentView: View {
     @GestureState private var isDetectingLongPress = false
     
     @State private var isPresentingAccountSwitcher: Bool = false
-    @State private var tokenRefreshAccount: AuthenticatedUserStub?
+    @State private var tokenRefreshAccount: MyUserStub?
     
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
@@ -50,22 +50,19 @@ struct ContentView: View {
     }
     
     var profileTabLabel: String {
-        if let user = apiSource as? AuthenticatedUserStub {
-            switch profileTabLabelMode {
-            case .instance:
-                return user?.instance.url.host() ?? "Instance"
-            case .nickname:
-                return user.nickname ?? user.username
-            case .anonymous:
-                return "Profile"
-            }
+        switch profileTabLabelMode {
+        case .instance:
+            return appState.myInstance?.url.host() ?? "Instance"
+        case .nickname:
+            return appState.myUser?.nickname ?? appState.myUser?.username ?? "Guest"
+        case .anonymous:
+            return "Profile"
         }
-        return "Profile"
     }
         
     var profileTabAvatar: URL? {
-        if showProfileTabAvatar, let user = apiSource as? AuthenticatedUserStub {
-            return user.avatarUrl
+        if showProfileTabAvatar {
+            return appState.myUser?.avatarUrl
         }
         return nil
     }
@@ -121,12 +118,12 @@ struct ContentView: View {
                     }
             }
         }
-        .task(id: apiSource.actorId, priority: .background) {
-            accountChanged()
+        .task(id: appState.actorId, priority: .background) {
+            await accountChanged()
         }
         .onReceive(errorHandler.$sessionExpired) { expired in
-            if expired, let user = apiSource as? AuthenticatedUserStub {
-                tokenRefreshAccount = user
+            if expired {
+                tokenRefreshAccount = appState.myUser?.stub
             }
         }
         .sheet(item: $tokenRefreshAccount) {
@@ -176,12 +173,12 @@ struct ContentView: View {
         .environmentObject(editorTracker)
         .environmentObject(unreadTracker)
         .environmentObject(quickLookState)
-        .onChange(of: scenePhase) { phase in
+        .onChange(of: scenePhase) {
             // when app moves into background, hide the account switcher. This prevents the app from reopening with the switcher enabled.
-            if phase != .active {
+            if scenePhase != .active {
                 isPresentingAccountSwitcher = false
             }
-            if phase == .background || phase == .inactive, appLock != .disabled {
+            if scenePhase == .background || scenePhase == .inactive, appLock != .disabled {
                 biometricUnlock.isUnlocked = false
             }
         }
@@ -219,8 +216,8 @@ struct ContentView: View {
                         hapticManager.play(haptic: .rigidInfo, priority: .high)
                         if accountsTracker.savedAccounts.count == 2 {
                             hapticManager.play(haptic: .rigidInfo, priority: .high)
-                            for account in accountsTracker.savedAccounts where account != appState.currentActiveAccount {
-                                setFlow(.account(account))
+                            for account in accountsTracker.savedAccounts where account.actorId != appState.apiSource?.actorId {
+                                appState.apiSource = account
                                 break
                             }
                         } else {

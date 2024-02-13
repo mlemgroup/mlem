@@ -24,7 +24,7 @@ struct TokenRefreshView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    let user: AuthenticatedUserStub
+    let user: MyUserStub
     
     @State private var password = ""
     @State private var twoFactorCode = ""
@@ -107,7 +107,7 @@ struct TokenRefreshView: View {
             Text("Please enter the password for")
                 .font(.body)
                 .dynamicTypeSize(.small ... .xxxLarge)
-            Text("\(user.username)@\(user.instanceLink.host ?? "")")
+            Text("\(user.username)@\(user.instance.url.host ?? "")")
                 .font(.subheadline)
                 .dynamicTypeSize(.small ... .xxxLarge)
         case .refreshing:
@@ -188,9 +188,9 @@ struct TokenRefreshView: View {
     
     private func refreshTokenFlow() async {
         do {
-            let token = try await refreshToken(with: password)
+            try await user.login(password: password)
             updateViewState(.success)
-            await didReceive(token)
+            await didReceive()
         } catch {
             HapticManager.shared.play(haptic: .failure, priority: .high)
             
@@ -211,37 +211,28 @@ struct TokenRefreshView: View {
         }
     }
     
-    private func refreshToken(with newPassword: String, twoFactorToken: String? = nil) async throws -> String {
-        let response = try await apiClient.login(
-            instanceURL: account.instanceLink,
-            username: account.username,
-            password: password,
-            totpToken: twoFactorToken
-        )
-        
-        return response.jwt
-    }
-    
     private func refreshTokenUsing2FA() {
         updateViewState(.refreshing)
         Task {
             do {
-                let token = try await refreshToken(with: password, twoFactorToken: twoFactorCode)
+                try await user.login(
+                    password: password,
+                    twoFactorToken: twoFactorCode
+                )
                 updateViewState(.success)
-                await didReceive(token)
+                await didReceive()
             } catch {
                 updateViewState(.initial)
             }
         }
     }
     
-    private func didReceive(_ newToken: String) async {
+    private func didReceive() async {
         // small artifical delay so the user sees confirmation of success
         HapticManager.shared.play(haptic: .success, priority: .high)
         try? await Task.sleep(for: .seconds(0.5))
         
         await MainActor.run {
-            refreshedAccount(.init(from: account, accessToken: newToken, avatarUrl: account.avatarUrl))
             dismiss()
         }
     }
@@ -259,14 +250,6 @@ struct TokenRefreshView: View {
             return true
         case .initial, .incorrectLogin:
             return false
-        }
-    }
-}
-
-struct TokenRefreshViewPreview: PreviewProvider {
-    static var previews: some View {
-        TokenRefreshView(account: .mock()) { _ in
-            print("Refreshed")
         }
     }
 }

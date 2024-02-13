@@ -1,5 +1,5 @@
 //
-//  AuthenticatedUserProviding.swift
+//  MyUserProviding.swift
 //  Mlem
 //
 //  Created by Sjmarf on 12/02/2024.
@@ -7,8 +7,9 @@
 
 import Foundation
 
-protocol AuthenticatedUserProviding: APISource, Identifiable {
-    var stub: AuthenticatedUserStub { get }
+protocol MyUserProviding: AnyObject, Identifiable {
+    var stub: MyUserStub { get }
+    var source: any APISource { get }
     
     var id: Int { get }
     var username: String { get }
@@ -20,7 +21,7 @@ protocol AuthenticatedUserProviding: APISource, Identifiable {
     var avatarUrl: URL? { get set }
 }
 
-extension AuthenticatedUserProviding {
+extension MyUserProviding {
     var id: Int { stub.id }
     var username: String { stub.username }
     
@@ -31,9 +32,9 @@ extension AuthenticatedUserProviding {
     var avatarUrl: URL? { get { stub.avatarUrl } set { stub.avatarUrl = newValue } }
 }
 
-extension AuthenticatedUserProviding {
-    func login(password: String, totpToken: String) throws {
-        let response = try await api.login(username: username, password: password, totpToken: totpToken)
-        self.accessToken = response.jwt
+extension MyUserProviding {
+    func login(password: String, twoFactorToken: String? = nil) async throws {
+        let response = try await source.api.login(username: username, password: password, totpToken: twoFactorToken)
+        accessToken = response.jwt
     }
 }

@@ -17,7 +17,7 @@ protocol Community3Providing: Community2Providing {
 }
 
 extension Community3Providing {
-    var instance: Instance1 { get }
+    var instance: Instance1 { community3.instance }
     var moderators: [User1] { community3.moderators }
     var discussionLanguages: [Int] { community3.discussionLanguages }
     var defaultPostLanguage: Int? { community3.defaultPostLanguage }

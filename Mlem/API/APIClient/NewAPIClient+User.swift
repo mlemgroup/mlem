@@ -8,7 +8,7 @@
 import Foundation
 
 extension NewAPIClient {
-    func login(username: String, password: String, totpToken: String) -> LoginResponse {
+    func login(username: String, password: String, totpToken: String?) async throws -> LoginResponse {
         let request = LoginRequest(
             username: username,
             password: password,

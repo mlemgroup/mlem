@@ -8,6 +8,35 @@
 import Dependencies
 import SwiftUI
 
+@Observable
+class NewAppState {
+    var isOnboarding: Bool = false
+    
+    var apiSource: (any APISource)? {
+        didSet {
+            myInstance = apiSource?.instance
+            myUser = apiSource as? MyUserStub
+        }
+    }
+    var myInstance: (any InstanceStubProviding)?
+    var myUser: (any MyUserProviding)?
+    
+    var api: NewAPIClient? { apiSource?.api }
+    var actorId: URL? { apiSource?.actorId }
+    var instanceStub: NewInstanceStub? { apiSource?.instance }
+    
+    init(apiSource: (any APISource)?) {
+        self.apiSource = apiSource
+        if apiSource == nil {
+            self.isOnboarding = true
+        }
+    }
+    
+    func setApiSource(_ source: any APISource) {
+        self.apiSource = source
+    }
+}
+
 struct Window: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
@@ -15,30 +44,32 @@ struct Window: View {
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.siteInformation) var siteInformation
+    @Dependency(\.errorHandler) var errorHandler
     
     @StateObject var easterFlagsTracker: EasterFlagsTracker = .init()
     @StateObject var filtersTracker: FiltersTracker = .init()
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
     @StateObject var layoutWidgetTracker: LayoutWidgetTracker = .init()
     
-    @State var apiSource: any APISource
-    @State var myInstance: Instance3?
-    @State var myUser: User3?
+    var appState: NewAppState
     
-    @State var isOnboarding: Bool = false
     @State var loadedInitialFlow: Bool = false
     
     var body: some View {
         content
-            .id(apiSource.actorId)
-            .task(id: apiSource.actorId) {
-                if apiSource is any AuthenticatedUserProviding {
-                    if let host = account.actorId.host(),
+            .id(appState.actorId)
+            .task(id: appState.actorId) {
+                if appState.apiSource is any MyUserProviding {
+                    if let host = appState.actorId?.host(),
                        let instance = RecognizedLemmyInstances(rawValue: host) {
                         easterFlagsTracker.setEasterFlag(.login(host: instance))
                     }
                 } else {
-                    self.myInstance = try await apiSource.instance.upgrade()
+                    do {
+                        appState.myInstance = try await appState.instanceStub?.upgrade()
+                    } catch {
+                        errorHandler.handle(error)
+                    }
                 }
             }
             .onAppear {
@@ -47,20 +78,16 @@ struct Window: View {
                     loadedInitialFlow = true
                 }
             }
-            .environment(\.setAppFlow, setFlow)
-            .environment(\.apiSource, apiSource)
+            .environment(appState)
     }
     
     @ViewBuilder
     private var content: some View {
-        if isOnboarding {
+        if appState.isOnboarding {
             LandingPage()
         } else {
             ContentView()
-                .environment(\.myUser, myUser)
-                .environment(\.myInstance, myInstance)
                 .environmentObject(filtersTracker)
-                .environmentObject(appState)
                 .environmentObject(recentSearchesTracker)
                 .environmentObject(easterFlagsTracker)
                 .environmentObject(layoutWidgetTracker)

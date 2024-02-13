@@ -14,3 +14,8 @@ struct APISiteView: Decodable {
     let localSiteRateLimit: APILocalSiteRateLimit
     let counts: APISiteAggregates
 }
+
+extension APISiteView: ActorIdentifiable, Identifiable {
+    var actorId: URL { site.actorId }
+    var id: Int { site.id }
+}

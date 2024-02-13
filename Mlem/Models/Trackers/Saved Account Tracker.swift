@@ -14,13 +14,12 @@ private let defaultInstanceGroupKey = "Other"
 
 @Observable
 class SavedAccountTracker {
-    @Dependency(\.persistenceRepository) private var persistenceRepository
+    @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
+    @ObservationIgnored @AppStorage("defaultAccountId") var defaultAccountId: Int?
     
-    @AppStorage("defaultAccountId") var defaultAccountId: Int?
+    var savedAccounts = [MyUserStub]()
     
-    var savedAccounts = [AuthenticatedUserStub]()
-    
-    var defaultAccount: AuthenticatedUserStub? {
+    var defaultAccount: MyUserStub? {
         savedAccounts.first(where: { $0.id == defaultAccountId })
     }
     
@@ -30,7 +29,7 @@ class SavedAccountTracker {
         savedAccounts = persistenceRepository.loadAccounts()
     }
     
-    func addAccount(account: AuthenticatedUserStub) {
+    func addAccount(account: MyUserStub) {
         guard !savedAccounts.contains(where: { account.id == $0.id }) else {
             assertionFailure("Tried to add a duplicate account to the tracker")
             return
@@ -38,7 +37,7 @@ class SavedAccountTracker {
         savedAccounts.append(account)
     }
 
-    func removeAccount(account: AuthenticatedUserStub) {
+    func removeAccount(account: MyUserStub) {
         guard let index = savedAccounts.firstIndex(where: { account.id == $0.id }) else {
             assertionFailure("Tried to remove an account that does not exist")
             return

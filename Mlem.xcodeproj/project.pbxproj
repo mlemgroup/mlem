@@ -50,8 +50,9 @@
 		032145602B7A79E7001AE07E /* Instance3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321455F2B7A79E7001AE07E /* Instance3.swift */; };
 		032145622B7A7A18001AE07E /* Instance3Providing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145612B7A7A18001AE07E /* Instance3Providing.swift */; };
 		032145642B7A7A9D001AE07E /* NewAPIClient+Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145632B7A7A9D001AE07E /* NewAPIClient+Site.swift */; };
-		032145662B7A8721001AE07E /* AuthenticatedUserProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145652B7A8721001AE07E /* AuthenticatedUserProviding.swift */; };
+		032145662B7A8721001AE07E /* MyUserProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145652B7A8721001AE07E /* MyUserProviding.swift */; };
 		032145682B7A8878001AE07E /* NewAPIClient+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145672B7A8878001AE07E /* NewAPIClient+User.swift */; };
+		0321456A2B7B8C82001AE07E /* MyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145692B7B8C82001AE07E /* MyUser.swift */; };
 		032C1E042B5D7DAC00FB4F23 /* QuickSwitcherSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032C1E032B5D7DAC00FB4F23 /* QuickSwitcherSettingsView.swift */; };
 		032C1E062B5DBDB100FB4F23 /* LocalAccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032C1E052B5DBDB100FB4F23 /* LocalAccountSettingsView.swift */; };
 		032DD2FD2AC3594B00F1B33D /* LinkAttatchmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032DD2FC2AC3594B00F1B33D /* LinkAttatchmentView.swift */; };
@@ -111,10 +112,10 @@
 		03E0B9C82A61F0F400FED265 /* AdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */; };
 		03E0B9CA2A62B4A400FED265 /* ContributorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9C92A62B4A400FED265 /* ContributorsView.swift */; };
 		03E0B9CC2A62CD5800FED265 /* ThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9CB2A62CD5800FED265 /* ThemeSettingsView.swift */; };
-		03E1E0472B76BF660009DF9F /* InstanceStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E0462B76BF660009DF9F /* InstanceStub.swift */; };
+		03E1E0472B76BF660009DF9F /* NewInstanceStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E0462B76BF660009DF9F /* NewInstanceStub.swift */; };
 		03E1E0492B76BFC20009DF9F /* Instance1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E0482B76BFC20009DF9F /* Instance1.swift */; };
 		03E1E04C2B7771710009DF9F /* User1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E04B2B7771710009DF9F /* User1.swift */; };
-		03E1E04E2B779A180009DF9F /* AuthenticatedUserStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E04D2B779A180009DF9F /* AuthenticatedUserStub.swift */; };
+		03E1E04E2B779A180009DF9F /* MyUserStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E04D2B779A180009DF9F /* MyUserStub.swift */; };
 		03E1E0502B779E630009DF9F /* NewAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E04F2B779E630009DF9F /* NewAPIClient.swift */; };
 		03E1E0522B77A2470009DF9F /* NewAPIClient+Community.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E0512B77A2470009DF9F /* NewAPIClient+Community.swift */; };
 		03E1E0562B77B4920009DF9F /* ContentCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E0552B77B4920009DF9F /* ContentCache.swift */; };
@@ -645,8 +646,9 @@
 		0321455F2B7A79E7001AE07E /* Instance3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instance3.swift; sourceTree = "<group>"; };
 		032145612B7A7A18001AE07E /* Instance3Providing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instance3Providing.swift; sourceTree = "<group>"; };
 		032145632B7A7A9D001AE07E /* NewAPIClient+Site.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewAPIClient+Site.swift"; sourceTree = "<group>"; };
-		032145652B7A8721001AE07E /* AuthenticatedUserProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedUserProviding.swift; sourceTree = "<group>"; };
+		032145652B7A8721001AE07E /* MyUserProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyUserProviding.swift; sourceTree = "<group>"; };
 		032145672B7A8878001AE07E /* NewAPIClient+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewAPIClient+User.swift"; sourceTree = "<group>"; };
+		032145692B7B8C82001AE07E /* MyUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyUser.swift; sourceTree = "<group>"; };
 		032C1E032B5D7DAC00FB4F23 /* QuickSwitcherSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSwitcherSettingsView.swift; sourceTree = "<group>"; };
 		032C1E052B5DBDB100FB4F23 /* LocalAccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAccountSettingsView.swift; sourceTree = "<group>"; };
 		032DD2FC2AC3594B00F1B33D /* LinkAttatchmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkAttatchmentView.swift; sourceTree = "<group>"; };
@@ -706,10 +708,10 @@
 		03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsView.swift; sourceTree = "<group>"; };
 		03E0B9C92A62B4A400FED265 /* ContributorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorsView.swift; sourceTree = "<group>"; };
 		03E0B9CB2A62CD5800FED265 /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
-		03E1E0462B76BF660009DF9F /* InstanceStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceStub.swift; sourceTree = "<group>"; };
+		03E1E0462B76BF660009DF9F /* NewInstanceStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewInstanceStub.swift; sourceTree = "<group>"; };
 		03E1E0482B76BFC20009DF9F /* Instance1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instance1.swift; sourceTree = "<group>"; };
 		03E1E04B2B7771710009DF9F /* User1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User1.swift; sourceTree = "<group>"; };
-		03E1E04D2B779A180009DF9F /* AuthenticatedUserStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedUserStub.swift; sourceTree = "<group>"; };
+		03E1E04D2B779A180009DF9F /* MyUserStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyUserStub.swift; sourceTree = "<group>"; };
 		03E1E04F2B779E630009DF9F /* NewAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAPIClient.swift; sourceTree = "<group>"; };
 		03E1E0512B77A2470009DF9F /* NewAPIClient+Community.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewAPIClient+Community.swift"; sourceTree = "<group>"; };
 		03E1E0552B77B4920009DF9F /* ContentCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCache.swift; sourceTree = "<group>"; };
@@ -1484,7 +1486,7 @@
 				032145592B7A6ED8001AE07E /* Instance1Providing.swift */,
 				0321455D2B7A76BC001AE07E /* Instance2Providing.swift */,
 				032145612B7A7A18001AE07E /* Instance3Providing.swift */,
-				03E1E0462B76BF660009DF9F /* InstanceStub.swift */,
+				03E1E0462B76BF660009DF9F /* NewInstanceStub.swift */,
 				03E1E0482B76BFC20009DF9F /* Instance1.swift */,
 				0321455B2B7A767C001AE07E /* Instance2.swift */,
 				0321455F2B7A79E7001AE07E /* Instance3.swift */,
@@ -1501,8 +1503,9 @@
 				03E1E04B2B7771710009DF9F /* User1.swift */,
 				03E1E05F2B781C860009DF9F /* User2.swift */,
 				03E1E0612B7822610009DF9F /* User3.swift */,
-				03E1E04D2B779A180009DF9F /* AuthenticatedUserStub.swift */,
-				032145652B7A8721001AE07E /* AuthenticatedUserProviding.swift */,
+				032145652B7A8721001AE07E /* MyUserProviding.swift */,
+				03E1E04D2B779A180009DF9F /* MyUserStub.swift */,
+				032145692B7B8C82001AE07E /* MyUser.swift */,
 			);
 			path = NewUser;
 			sourceTree = "<group>";
@@ -3231,7 +3234,7 @@
 				6372186A2A3A2AAD008C4816 /* GetComment.swift in Sources */,
 				032145522B7A67B5001AE07E /* Community1Providing.swift in Sources */,
 				03C905CA2B3C834C00B9082F /* AvatarBannerView.swift in Sources */,
-				03E1E0472B76BF660009DF9F /* InstanceStub.swift in Sources */,
+				03E1E0472B76BF660009DF9F /* NewInstanceStub.swift in Sources */,
 				03F76FA42B2F5F3500E2B54A /* UploadProgressView.swift in Sources */,
 				03EC92972AC069CE007BBE7E /* SearchResultListView.swift in Sources */,
 				637218472A3A2AAD008C4816 /* APICommentView.swift in Sources */,
@@ -3243,7 +3246,7 @@
 				0321455A2B7A6ED8001AE07E /* Instance1Providing.swift in Sources */,
 				6372185D2A3A2AAD008C4816 /* APICommunityAggregates.swift in Sources */,
 				03B7AAF52ABEFA7A00068B23 /* UserResultView.swift in Sources */,
-				032145662B7A8721001AE07E /* AuthenticatedUserProviding.swift in Sources */,
+				032145662B7A8721001AE07E /* MyUserProviding.swift in Sources */,
 				E47478152AAC3C19001CB1AC /* NavigationContext.swift in Sources */,
 				032145622B7A7A18001AE07E /* Instance3Providing.swift in Sources */,
 				03C898012AC04EF9005F3403 /* SearchResultsView.swift in Sources */,
@@ -3455,6 +3458,7 @@
 				63344C672A08D4E3001BC616 /* AppearanceSettingsView.swift in Sources */,
 				E49F0E762A90395400BC4EE3 /* NavigationPath+Helpers.swift in Sources */,
 				B1955A1F2A606F010056CF99 /* EasterFlagsTracker.swift in Sources */,
+				0321456A2B7B8C82001AE07E /* MyUser.swift in Sources */,
 				63D24ED92A169A5F005CCA81 /* UIApplication+FirstKeyWindow.swift in Sources */,
 				039439912A98FA6100463032 /* UserFeedView.swift in Sources */,
 				03EA79C42AC0D92C00BCDC91 /* PostComposerView+Logic.swift in Sources */,
@@ -3603,7 +3607,7 @@
 				CD6483362A39F20800EE6CA3 /* Post Type.swift in Sources */,
 				507573912A5AD53C00AA7ABD /* Error+Equatable.swift in Sources */,
 				50811B322A9204C1006BA3F2 /* APICommunity+Mock.swift in Sources */,
-				03E1E04E2B779A180009DF9F /* AuthenticatedUserStub.swift in Sources */,
+				03E1E04E2B779A180009DF9F /* MyUserStub.swift in Sources */,
 				6D693A482A51B904009E2D76 /* CreateCommentReport.swift in Sources */,
 				CD2E182B2A3B708500224F8A /* Settings Options.swift in Sources */,
 				03AFBE962B6E613200F01F3C /* CommunityStub.swift in Sources */,

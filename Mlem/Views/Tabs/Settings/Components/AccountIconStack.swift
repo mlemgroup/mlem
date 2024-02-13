@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AccountIconStack: View {
-    let accounts: [SavedAccount]
+    let accounts: [MyUserStub]
     
     let avatarSize: CGFloat
     let spacing: CGFloat

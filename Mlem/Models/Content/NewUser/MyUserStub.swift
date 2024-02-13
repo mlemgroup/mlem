@@ -10,21 +10,23 @@ import SwiftUI
 import Dependencies
 
 @Observable
-final class AuthenticatedUserStub: AuthenticatedUserProviding, Codable {
-    @Dependency(\.savedAccountTracker) var savedAccountTracker
+final class MyUserStub: MyUserProviding, APISource, Codable {
+    @ObservationIgnored @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
     
     let instance: NewInstanceStub
     var caches: BaseCacheGroup { instance.caches }
     var actorId: URL { instance.actorId }
+    var stub: MyUserStub { self }
+    var source: any APISource { self }
     
-    @ObservationIgnored lazy var api: APIClient = {
+    @ObservationIgnored lazy var api: NewAPIClient = {
         return .init(baseUrl: instance.url, token: accessToken)
     }()
     
     let id: Int
     let username: String
     
-    let accessToken: String
+    var accessToken: String
     var nickname: String?
     var cachedSiteVersion: SiteVersion?
     var avatarUrl: URL?
@@ -50,25 +52,25 @@ final class AuthenticatedUserStub: AuthenticatedUserProviding, Codable {
         
         let instanceLink = try values.decode(URL.self, forKey: .instanceLink)
         // Remove the "api/v3" path that we attached to the instanceLink pre-1.3
-        var components = URLComponents(url: account.instanceLink, resolvingAgainstBaseURL: false)!
+        var components = URLComponents(url: instanceLink, resolvingAgainstBaseURL: false)!
         components.path = ""
         self.instance = .createModel(url: components.url!)
         
-        guard let token = AppConstants.keychain["\(account.id)_accessToken"] else {
+        guard let token = AppConstants.keychain["\(id)_accessToken"] else {
             throw DecodingError.noTokenInKeychain
         }
         self.accessToken = token
    }
     
     func encode(to encoder: Encoder) throws {
-        AppConstants.keychain["\(account.id)_accessToken"] = accessToken
+        AppConstants.keychain["\(id)_accessToken"] = accessToken
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
         try container.encode(username, forKey: .username)
         try container.encode(nickname, forKey: .storedNickname)
         try container.encode(cachedSiteVersion, forKey: .siteVersion)
-        try container.encode(cachedAvatarUrl, forKey: .avatarUrl)
+        try container.encode(avatarUrl, forKey: .avatarUrl)
         try container.encode(lastLoggedIn, forKey: .lastUsed)
-        try container.encode(instanceLink, forKey: .instanceLink)
+        try container.encode(instance.url, forKey: .instanceLink)
     }
 }

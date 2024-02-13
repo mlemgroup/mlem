@@ -21,8 +21,8 @@ extension ActorIdentifiable {
     }
 }
 
-protocol NewContentModel: ActorIdentifiable {
-    associatedtype APIType: ActorIdentifiable
+protocol NewContentModel: ActorIdentifiable, Identifiable {
+    associatedtype APIType: ActorIdentifiable & Identifiable where APIType.ID == ID
     
     var source: any APISource { get }
     init(source: any APISource, from: APIType)
@@ -30,9 +30,11 @@ protocol NewContentModel: ActorIdentifiable {
     
 }
 
-protocol CoreModel: AnyObject {
+protocol CoreModel: AnyObject, ActorIdentifiable {
+    associatedtype APIType: ActorIdentifiable
     static var cache: CoreContentCache<Self> { get }
     init(from: APIType)
+    func update(with: APIType)
 }
 
 extension CoreModel {
@@ -49,9 +51,15 @@ protocol InstanceContentModel: NewContentModel {
     init(from: APIType)
 }
 
-protocol APISource: ActorIdentifiable {
+protocol APISource: AnyObject, ActorIdentifiable, Equatable {
     associatedtype Client: NewAPIClient
     var caches: BaseCacheGroup { get }
     var api: Client { get }
     var instance: NewInstanceStub { get }
+}
+
+extension APISource {
+    static func == (lhs: any APISource, rhs: any APISource) -> Bool {
+        return lhs.actorId == rhs.actorId
+    }
 }

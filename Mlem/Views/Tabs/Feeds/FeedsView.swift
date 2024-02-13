@@ -14,8 +14,6 @@ struct FeedsView: View {
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.tabReselectionHashValue) var tabReselectionHashValue
     
-    @EnvironmentObject var appState: AppState
-    
     @State private var selectedFeed: FeedType?
     @State var appeared: Bool = false // tracks whether this is the view's first appearance
     
@@ -39,8 +37,8 @@ struct FeedsView: View {
                     await communityListModel.load()
                 }
             }
-            .onChange(of: scenePhase) { newPhase in
-                if newPhase == .active, let shortcutItem = FeedType.fromShortcutString(shortcut: shortcutItemToProcess?.type) {
+            .onChange(of: scenePhase) {
+                if scenePhase == .active, let shortcutItem = FeedType.fromShortcutString(shortcut: shortcutItemToProcess?.type) {
                     selectedFeed = shortcutItem
                 }
             }
@@ -84,11 +82,11 @@ struct FeedsView: View {
                     
                     SectionIndexTitles(proxy: scrollProxy, communitySections: communityListModel.allSections())
                 }
-                .onChange(of: tabReselectionHashValue) { newValue in
+                .onChange(of: tabReselectionHashValue) {
                     // due to NavigationSplitView weirdness, the normal .hoistNavigation doesn't work here, so we do it manually
                     // only scroll to top if the selected feed is nil (i.e., detail view is not presented)
                     // this has the side effect of disabling tap tab to scroll to top on iPad, which I'm going to say is a feature not a bug [Eric 2024.01.31]
-                    if newValue == TabSelection.feeds.hashValue, selectedFeed == nil {
+                    if tabReselectionHashValue == TabSelection.feeds.hashValue, selectedFeed == nil {
                         withAnimation {
                             scrollProxy.scrollTo(scrollToTop)
                         }
