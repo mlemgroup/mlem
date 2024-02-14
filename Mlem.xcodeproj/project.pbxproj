@@ -489,6 +489,7 @@
 		CDCBD72B2A8EC0A800387A2C /* Instance Summary.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCBD72A2A8EC0A800387A2C /* Instance Summary.swift */; };
 		CDD0EF942B7A959000CA3504 /* ModeratorToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EF932B7A959000CA3504 /* ModeratorToolsView.swift */; };
 		CDD0EF962B7AAE4B00CA3504 /* ModerateCommunityLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EF952B7AAE4B00CA3504 /* ModerateCommunityLink.swift */; };
+		CDD0EF9A2B7C068100CA3504 /* ToolButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EF992B7C068100CA3504 /* ToolButton.swift */; };
 		CDD55D1D2B23BA41002020C7 /* EasyTapLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD55D1C2B23BA41002020C7 /* EasyTapLinkView.swift */; };
 		CDD55D222B2674BD002020C7 /* String+ParseLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD55D212B2674BD002020C7 /* String+ParseLinks.swift */; };
 		CDDB08782A5DF1330075BFEE /* CommentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDB08772A5DF1330075BFEE /* CommentSettingsView.swift */; };
@@ -1058,6 +1059,7 @@
 		CDCBD72A2A8EC0A800387A2C /* Instance Summary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Instance Summary.swift"; sourceTree = "<group>"; };
 		CDD0EF932B7A959000CA3504 /* ModeratorToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeratorToolsView.swift; sourceTree = "<group>"; };
 		CDD0EF952B7AAE4B00CA3504 /* ModerateCommunityLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModerateCommunityLink.swift; sourceTree = "<group>"; };
+		CDD0EF992B7C068100CA3504 /* ToolButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolButton.swift; sourceTree = "<group>"; };
 		CDD55D1C2B23BA41002020C7 /* EasyTapLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyTapLinkView.swift; sourceTree = "<group>"; };
 		CDD55D212B2674BD002020C7 /* String+ParseLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ParseLinks.swift"; sourceTree = "<group>"; };
 		CDDB08772A5DF1330075BFEE /* CommentSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentSettingsView.swift; sourceTree = "<group>"; };
@@ -2744,6 +2746,7 @@
 			isa = PBXGroup;
 			children = (
 				CDD0EF932B7A959000CA3504 /* ModeratorToolsView.swift */,
+				CDD0EF992B7C068100CA3504 /* ToolButton.swift */,
 			);
 			path = Moderation;
 			sourceTree = "<group>";
@@ -3232,6 +3235,7 @@
 				50811B3C2A92059C006BA3F2 /* BlockCommunityResponse+Mock.swift in Sources */,
 				CD12627A2B4759BC007549F9 /* StandardPostTracker.swift in Sources */,
 				CD391F9E2A539F1800E213B5 /* ReplyToMention.swift in Sources */,
+				CDD0EF9A2B7C068100CA3504 /* ToolButton.swift in Sources */,
 				CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */,
 				500C168E2A66FAAB006F243B /* HapticManager+Dependency.swift in Sources */,
 				038A16E52A7A97380087987E /* LayoutWidgetView.swift in Sources */,

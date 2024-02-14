@@ -191,6 +191,9 @@ enum Icons {
     static let appLockSettings: String = "lock.app.dashed"
     static let collapseComments: String = "arrow.down.and.line.horizontal.and.arrow.up"
     
+    // mod tools
+    static let auditUser: String = "person.and.background.striped.horizontal"
+    
     // misc
     static let `private`: String = "lock"
     static let email: String = "envelope"
