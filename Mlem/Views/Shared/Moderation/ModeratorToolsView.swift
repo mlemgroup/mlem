@@ -51,10 +51,13 @@ struct ModeratorToolsView: View {
     
     var content: some View {
         ScrollView {
-            VStack(spacing: AppConstants.standardSpacing) {
+            VStack(spacing: 0) {
                 header
+                    .padding(.bottom, AppConstants.standardSpacing)
                 Divider()
                 tools
+                    .padding(.vertical, AppConstants.standardSpacing)
+                    .background(Color(uiColor: .systemGroupedBackground))
             }
         }
     }
@@ -79,10 +82,12 @@ struct ModeratorToolsView: View {
     var tools: some View {
         Grid(horizontalSpacing: AppConstants.doubleSpacing, verticalSpacing: AppConstants.doubleSpacing) {
             GridRow {
-                ToolButton(text: "Mod Team", icon: Icons.moderationFill, color: .green)
+                ToolButton(text: "Moderators", icon: Icons.moderationFill, color: .green)
                 
                 ToolButton(text: "Edit", icon: Icons.edit, color: .blue)
-                
+            }
+            
+            GridRow {
                 ToolButton(text: "Audit User", icon: Icons.auditUser, color: .purple)
             }
         }
