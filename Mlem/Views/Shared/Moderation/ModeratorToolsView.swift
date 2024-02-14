@@ -84,11 +84,11 @@ struct ModeratorToolsView: View {
             GridRow {
                 ToolButton(text: "Moderators", icon: Icons.moderationFill, color: .green)
                 
-                ToolButton(text: "Edit", icon: Icons.edit, color: .blue)
+                ToolButton(text: "Edit", icon: "pencil.circle.fill", color: .blue)
             }
             
             GridRow {
-                ToolButton(text: "Audit User", icon: Icons.auditUser, color: .purple)
+                ToolButton(text: "Audit User", icon: "person.crop.circle.badge.questionmark.fill", color: .purple)
             }
         }
         .padding(.horizontal, AppConstants.doubleSpacing)

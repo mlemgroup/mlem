@@ -14,26 +14,23 @@ struct ToolButton: View {
     let color: Color
     
     var body: some View {
-        VStack {
-            Spacer()
+        VStack(alignment: .leading, spacing: 12) {
             Image(systemName: icon)
                 .resizable()
                 .scaledToFill()
-                .frame(width: 30, height: 30)
-            Spacer()
+                .frame(width: 25, height: 25)
+                .foregroundStyle(color)
             
             Text(text)
                 .fontWeight(.semibold)
                 .lineLimit(1)
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(.vertical, AppConstants.standardSpacing)
-        .foregroundColor(Color(uiColor: .systemBackground))
+        .padding(15)
         .frame(maxWidth: .infinity)
-        .frame(height: 80)
         .background {
             RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
-                .fill(color.gradient)
+                .fill(.white)
         }
     }
 }
