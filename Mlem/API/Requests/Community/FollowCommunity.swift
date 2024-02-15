@@ -37,6 +37,18 @@ struct FollowCommunityRequest: APIPostRequest {
 
 // lemmy_api_common::community::CommunityResponse
 struct CommunityResponse: Decodable {
+    internal init(
+        communityView: APICommunityView = .mock,
+        discussionLanguages: [Int] = []
+    ) {
+        self.communityView = communityView
+        self.discussionLanguages = discussionLanguages
+    }
+    
     let communityView: APICommunityView
     let discussionLanguages: [Int]
+}
+
+extension CommunityResponse: Mockable {
+    static var mock: CommunityResponse = .init()
 }

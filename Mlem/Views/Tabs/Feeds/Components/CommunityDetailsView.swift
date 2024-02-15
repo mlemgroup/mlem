@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CommunityDetailsView: View {
-    let community: CommunityModel
+    let community: any Community2Providing
     
     var body: some View {
         VStack(spacing: 16) {
@@ -24,7 +24,7 @@ struct CommunityDetailsView: View {
             box {
                 Text("Subscribers")
                     .foregroundStyle(.secondary)
-                Text("\(community.subscriberCount ?? 0)")
+                Text("\(community.subscriberCount)")
                     .fontWeight(.semibold)
                     .font(.title)
             }
@@ -32,7 +32,7 @@ struct CommunityDetailsView: View {
                 box {
                     Text("Posts")
                         .foregroundStyle(.secondary)
-                    Text("\(abbreviateNumber(community.postCount ?? 0))")
+                    Text("\(abbreviateNumber(community.postCount))")
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundStyle(.pink)
@@ -41,7 +41,7 @@ struct CommunityDetailsView: View {
                 box {
                     Text("Comments")
                         .foregroundStyle(.secondary)
-                    Text("\(abbreviateNumber(community.commentCount ?? 0))")
+                    Text("\(abbreviateNumber(community.commentCount))")
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundStyle(.orange)
@@ -49,16 +49,15 @@ struct CommunityDetailsView: View {
             }
             .frame(maxWidth: .infinity)
             
-            if let activeUserCount = community.activeUserCount {
-                box(spacing: 8) {
-                    Text("Active Users")
-                        .foregroundStyle(.secondary)
-                    HStack(spacing: 16) {
-                        activeUserBox("6mo", value: activeUserCount.sixMonths)
-                        activeUserBox("1mo", value: activeUserCount.month)
-                        activeUserBox("1w", value: activeUserCount.week)
-                        activeUserBox("1d", value: activeUserCount.day)
-                    }
+            let activeUserCount = community.activeUserCount
+            box(spacing: 8) {
+                Text("Active Users")
+                    .foregroundStyle(.secondary)
+                HStack(spacing: 16) {
+                    activeUserBox("6mo", value: activeUserCount.sixMonths)
+                    activeUserBox("1mo", value: activeUserCount.month)
+                    activeUserBox("1w", value: activeUserCount.week)
+                    activeUserBox("1d", value: activeUserCount.day)
                 }
             }
         }
@@ -91,7 +90,7 @@ struct CommunityDetailsView: View {
 #Preview {
     VStack(spacing: 0) {
         Divider()
-        CommunityDetailsView(community: .mock())
+        CommunityDetailsView(community: Community3.mock())
             .padding(.top, 10)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)

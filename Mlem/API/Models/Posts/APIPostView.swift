@@ -9,6 +9,36 @@ import Foundation
 
 // lemmy_db_views::structs::PostView
 struct APIPostView: Decodable, APIContentViewProtocol {
+    internal init(
+        post: APIPost = .mock,
+        creator: APIPerson = .mock,
+        community: APICommunity = .mock,
+        creatorBannedFromCommunity: Bool = false,
+        creatorIsModerator: Bool? = nil,
+        creatorIsAdmin: Bool? = nil,
+        counts: APIPostAggregates = .mock,
+        subscribed: APISubscribedStatus = .notSubscribed,
+        saved: Bool = false,
+        read: Bool = false,
+        creatorBlocked: Bool = false,
+        myVote: ScoringOperation? = nil,
+        unreadComments: Int = 0
+    ) {
+        self.post = post
+        self.creator = creator
+        self.community = community
+        self.creatorBannedFromCommunity = creatorBannedFromCommunity
+        self.creatorIsModerator = creatorIsModerator
+        self.creatorIsAdmin = creatorIsAdmin
+        self.counts = counts
+        self.subscribed = subscribed
+        self.saved = saved
+        self.read = read
+        self.creatorBlocked = creatorBlocked
+        self.myVote = myVote
+        self.unreadComments = unreadComments
+    }
+    
     let post: APIPost
     let creator: APIPerson
     let community: APICommunity
@@ -22,6 +52,10 @@ struct APIPostView: Decodable, APIContentViewProtocol {
     let creatorBlocked: Bool
     var myVote: ScoringOperation?
     let unreadComments: Int
+}
+
+extension APIPostView: Mockable {
+    static var mock: APIPostView { .init() }
 }
 
 extension APIPostView: Identifiable {

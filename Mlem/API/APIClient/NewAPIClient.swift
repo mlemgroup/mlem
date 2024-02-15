@@ -14,7 +14,7 @@ class NewAPIClient {
     
     let baseUrl: URL
     let endpointUrl: URL
-    let token: String?
+    var token: String?
     
     init(baseUrl: URL, token: String? = nil) {
         self.baseUrl = baseUrl

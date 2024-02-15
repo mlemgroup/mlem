@@ -22,10 +22,10 @@ protocol CommunityStubProviding: ActorIdentifiable {
     var banner: URL? { get }
     var hidden: Bool? { get }
     var onlyModeratorsCanPost: Bool? { get }
+    var blocked: Bool? { get }
     
     // From Community2Providing. These are defined as nil in the extension below
     var subscribed: Bool? { get }
-    var blocked: Bool? { get }
     var favorited: Bool? { get }
     var subscriberCount: Int? { get }
     var postCount: Int? { get }
@@ -53,11 +53,15 @@ extension CommunityStubProviding {
     var banner: URL? { nil }
     var hidden: Bool? { nil }
     var onlyModeratorsCanPost: Bool? { nil }
+    var blocked: Bool? { nil }
     
+    var subscribed: Bool? { nil }
+    var favorited: Bool? { nil }
     var subscriberCount: Int? { nil }
     var postCount: Int? { nil }
     var commentCount: Int? { nil }
     var activeUserCount: ActiveUserCount? { nil }
+    var subscriptionStatus: SubscriptionTier? { nil }
     
     var instance: Instance1? { nil }
     var moderators: [User1]? { nil }
@@ -72,7 +76,7 @@ enum UpgradeError: Error {
 extension CommunityStubProviding {
     var name: String { actorId.lastPathComponent }
     var host: String? { actorId.host() }
-    
+
     var fullyQualifiedName: String? {
         guard let host else { return nil }
         return "@\(name)@\(host)"

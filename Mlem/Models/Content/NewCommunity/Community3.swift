@@ -45,9 +45,5 @@ final class Community3: Community3Providing, NewContentModel {
         self.community2.update(with: response.communityView)
     }
     
-    static func == (lhs: Community3, rhs: Community3) -> Bool {
-        lhs.actorId == rhs.actorId
-    }
-    
     func upgrade() async throws -> Community3 { self }
 }

@@ -18,7 +18,7 @@ struct AggregateFeedView: View {
     @Environment(\.scrollViewProxy) var scrollProxy
     @Environment(\.navigationPathWithRoutes) private var navigationPath
     
-    @EnvironmentObject var appState: AppState
+    @Environment(NewAppState.self) var appState
     
     @StateObject var postTracker: StandardPostTracker
     @StateObject var savedContentTracker: UserContentTracker
@@ -65,7 +65,7 @@ struct AggregateFeedView: View {
     var body: some View {
         content
             .environment(\.feedType, selectedFeed)
-            .task(id: appState.currentActiveAccount) {
+            .task(id: appState.apiSource?.actorId) {
                 // ensure that .saved isn't an available feed until user id resolved
                 if let userId = appState.currentActiveAccount?.id {
                     do {

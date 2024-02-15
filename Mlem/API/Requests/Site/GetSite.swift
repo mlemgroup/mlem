@@ -30,3 +30,8 @@ struct SiteResponse: Decodable {
     let discussionLanguages: [Int]
     let tagLines: [APITagline]?
 }
+
+extension SiteResponse: ActorIdentifiable, Identifiable {
+    var actorId: URL { siteView.site.actorId }
+    var id: Int { siteView.site.id }
+}

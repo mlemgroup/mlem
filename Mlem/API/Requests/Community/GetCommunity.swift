@@ -24,12 +24,30 @@ struct GetCommunityRequest: APIGetRequest {
 
 // lemmy_api_common::community::GetCommunityResponse
 struct GetCommunityResponse: Decodable {
+    internal init(
+        communityView: APICommunityView = .mock,
+        site: APISite? = nil,
+        moderators: [APICommunityModeratorView] = [],
+        discussionLanguages: [Int] = [],
+        defaultPostLanguage: Int? = nil
+    ) {
+        self.communityView = communityView
+        self.site = site
+        self.moderators = moderators
+        self.discussionLanguages = discussionLanguages
+        self.defaultPostLanguage = defaultPostLanguage
+    }
+    
     var communityView: APICommunityView
     // only appears if it is remote
     let site: APISite?
     let moderators: [APICommunityModeratorView]
     let discussionLanguages: [Int]
     let defaultPostLanguage: Int?
+}
+
+extension GetCommunityResponse: Mockable {
+    static var mock: GetCommunityResponse = .init()
 }
 
 extension GetCommunityResponse: ActorIdentifiable, Identifiable {

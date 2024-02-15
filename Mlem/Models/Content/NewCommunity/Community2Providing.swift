@@ -12,7 +12,6 @@ protocol Community2Providing: Community1Providing {
     var community2: Community2 { get }
     
     var subscribed: Bool { get }
-    var blocked: Bool { get }
     var favorited: Bool { get }
     
     var subscriberCount: Int { get }
@@ -22,47 +21,12 @@ protocol Community2Providing: Community1Providing {
 }
 
 extension Community2Providing {
+    var subscribed: Bool { community2.subscribed }
+    var favorited: Bool { community2.favorited }
     var subscriberCount: Int { community2.subscriberCount }
     var postCount: Int { community2.postCount }
     var commentCount: Int { community2.commentCount }
     var activeUserCount: ActiveUserCount { community2.activeUserCount }
-}
-
-enum SubscriptionTier {
-    case unsubscribed, subscribed, favorited
-    
-    var foregroundColor: Color {
-        switch self {
-        case .unsubscribed:
-            return .secondary
-        case .subscribed:
-            return .green
-        case .favorited:
-            return .blue
-        }
-    }
-    
-    var backgroundColor: Color {
-        switch self {
-        case .unsubscribed:
-            return .secondary
-        case .subscribed:
-            return .green
-        case .favorited:
-            return .clear
-        }        
-    }
-    
-    var systemImage: String {
-        switch self {
-        case .unsubscribed:
-            return Icons.personFill
-        case .subscribed:
-            return Icons.successCircle
-        case .favorited:
-            return Icons.favoriteFill
-        }
-    }
 }
 
 extension Community2Providing {

@@ -15,6 +15,8 @@ final class User1: User1Providing, NewContentModel {
     var source: any APISource
     
     let actorId: URL
+    let id: Int
+    
     let name: String
     let creationDate: Date
     
@@ -25,6 +27,9 @@ final class User1: User1Providing, NewContentModel {
     var avatar: URL? = nil
     var banner: URL? = nil
     
+    // This isn't included in the APIPerson (or any higher-tier API types)
+    var blocked: Bool = false
+    
     var deleted: Bool = false
     var isBot: Bool = false
     
@@ -33,6 +38,7 @@ final class User1: User1Providing, NewContentModel {
         self.actorId = person.actorId
         self.name = person.name
         self.creationDate = person.published
+        
         self.update(with: person)
     }
     

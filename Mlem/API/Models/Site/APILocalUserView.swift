@@ -8,7 +8,7 @@
 import Foundation
 
 // lemmy_api_common::site::LocalUserView
-struct APILocalUserView: Decodable {
+struct APILocalUserView: APIPersonViewLike, Decodable {
     var localUser: APILocalUser
     var person: APIPerson
     let counts: APIPersonAggregates

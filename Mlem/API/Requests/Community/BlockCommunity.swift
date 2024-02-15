@@ -38,6 +38,18 @@ struct BlockCommunityRequest: APIPostRequest {
 
 // lemmy_api_common::community::BlockCommunityResponse
 struct BlockCommunityResponse: Decodable {
+    internal init(
+        communityView: APICommunityView = .mock,
+        blocked: Bool = false
+    ) {
+        self.communityView = communityView
+        self.blocked = blocked
+    }
+    
     let communityView: APICommunityView
     let blocked: Bool
+}
+
+extension BlockCommunityResponse: Mockable {
+    static var mock: BlockCommunityResponse = .init()
 }

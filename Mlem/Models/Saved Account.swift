@@ -67,6 +67,11 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
     /// If there is a nickname stored, returns that; otherwise returns the username
     var nickname: String { storedNickname ?? username }
     
+    enum CodingKeys: CodingKey {
+        case id, instanceLink, accessToken, username, storedNickname, avatarUrl, siteVersion, lastUsed
+    }
+    
+    
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         

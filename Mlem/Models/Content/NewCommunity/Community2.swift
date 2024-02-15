@@ -20,7 +20,6 @@ final class Community2: Community2Providing, NewContentModel {
     let community1: Community1
     
     var subscribed: Bool = false
-    var blocked: Bool = false
     var favorited: Bool = false
 
     var subscriberCount: Int = 0
@@ -36,7 +35,6 @@ final class Community2: Community2Providing, NewContentModel {
     
     func update(with communityView: APICommunityView) {
         subscribed = communityView.subscribed.isSubscribed
-        blocked = communityView.blocked
         subscriberCount = communityView.counts.subscribers
         postCount = communityView.counts.posts
         commentCount = communityView.counts.comments
@@ -47,9 +45,5 @@ final class Community2: Community2Providing, NewContentModel {
             day: communityView.counts.usersActiveDay
         )
         community1.update(with: communityView.community)
-    }
-    
-    static func == (lhs: Community2, rhs: Community2) -> Bool {
-        lhs.actorId == rhs.actorId
     }
 }

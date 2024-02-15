@@ -83,7 +83,7 @@ struct CommunityFeedView: View {
     var body: some View {
         content
             .onAppear {
-                if !(community is Community3Providing) {
+                if !(community is any Community3Providing) {
                     Task(priority: .userInitiated) {
                         do {
                             community = try await community.upgrade()
@@ -152,22 +152,23 @@ struct CommunityFeedView: View {
                     .background(Color.systemBackground)
                 
                 switch selectedTab {
-                case .posts: posts()
-                case .about: about()
-                case .moderators: moderators()
-                case .details: details()
+                case .posts: posts
+                case .about: about
+                case .moderators: moderators
+                case .details: details
                 }
             }
         }
     }
     
-    func posts() -> some View {
+    @ViewBuilder
+    var posts: some View {
         PostFeedView(postSortType: $postSortType, showCommunity: false, communityContext: community)
             .environmentObject(postTracker)
     }
     
     @ViewBuilder
-    func about() -> some View {
+    var about: some View {
         if let community = community as? any Community1Providing {
             VStack(spacing: AppConstants.postAndCommentSpacing) {
                 if shouldShowCommunityHeaders, let banner = community.banner {
@@ -182,7 +183,7 @@ struct CommunityFeedView: View {
     }
     
     @ViewBuilder
-    func moderators() -> some View {
+    var moderators: some View {
         if let moderators = (community as? any Community3Providing)?.moderators {
             ForEach(moderators, id: \.id) { user in
                 UserResultView(user, communityContext: community)
@@ -191,17 +192,20 @@ struct CommunityFeedView: View {
         }
     }
     
-    func details() -> some View {
-        VStack(spacing: 0) {
-            CommunityDetailsView(community: community)
-                .padding(.vertical, 16)
-                .background(Color(uiColor: .systemGroupedBackground))
-            
-            if colorScheme == .light {
-                Divider()
+    @ViewBuilder
+    var details: some View {
+        if let community = community as? any Community2Providing {
+            VStack(spacing: 0) {
+                CommunityDetailsView(community: community)
+                    .padding(.vertical, 16)
+                    .background(Color(uiColor: .systemGroupedBackground))
+                
+                if colorScheme == .light {
+                    Divider()
+                }
             }
+            .frame(maxHeight: .infinity)
         }
-        .frame(maxHeight: .infinity)
     }
     
     // MARK: Header

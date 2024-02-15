@@ -32,6 +32,9 @@ final class Community1: Community1Providing, NewContentModel {
     var hidden: Bool = false
     var onlyModeratorsCanPost: Bool = false
     
+    // This isn't included in the APICommunity - it's included in APICommunityView, but defined here to maintain similarity with User models. User models don't have the `blocked` property defined in any of the API types, annoyingly, so we instead request a list of all blocked users and cache the result in `MyUserStub`.
+    var blocked: Bool = false
+    
     required init(source: any APISource, from community: APICommunity) {
         self.source = source
         
@@ -39,7 +42,7 @@ final class Community1: Community1Providing, NewContentModel {
         self.id = community.id
         self.name = community.name
         self.creationDate = community.published
-        
+
         self.update(with: community)
     }
     
@@ -54,9 +57,5 @@ final class Community1: Community1Providing, NewContentModel {
         self.banner = community.bannerUrl
         self.hidden = community.hidden
         self.onlyModeratorsCanPost = community.postingRestrictedToMods
-    }
-    
-    static func == (lhs: Community1, rhs: Community1) -> Bool {
-        lhs.actorId == rhs.actorId
     }
 }

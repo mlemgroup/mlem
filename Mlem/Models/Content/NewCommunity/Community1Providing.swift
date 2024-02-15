@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol Community1Providing: CommunityStubProviding, ActorIdentifiable, Identifiable {
+protocol Community1Providing: CommunityStubProviding, Identifiable {
     var community1: Community1 { get }
     
     var creationDate: Date { get }
@@ -21,6 +21,7 @@ protocol Community1Providing: CommunityStubProviding, ActorIdentifiable, Identif
     var banner: URL? { get }
     var hidden: Bool { get }
     var onlyModeratorsCanPost: Bool { get }
+    var blocked: Bool { get }
 }
 
 typealias Community = Community1Providing
@@ -40,6 +41,7 @@ extension Community1Providing {
     var banner: URL? { community1.banner }
     var hidden: Bool { community1.hidden }
     var onlyModeratorsCanPost: Bool { community1.onlyModeratorsCanPost }
+    var blocked: Bool { community1.blocked }
 }
 
 // Overwrite the `upgrade()` method from CommunityStubProviding

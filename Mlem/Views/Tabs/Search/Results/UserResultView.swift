@@ -22,8 +22,8 @@ struct UserResultView: View {
     @Dependency(\.apiClient) private var apiClient
     @Dependency(\.hapticManager) var hapticManager
     
-    let user: UserModel
-    let communityContext: CommunityModel?
+    let user: any User
+    let communityContext: (any CommunityStubProviding)?
     let trackerCallback: (_ item: UserModel) -> Void
     let swipeActions: SwipeConfiguration?
     let complications: [UserComplication]
@@ -32,9 +32,9 @@ struct UserResultView: View {
     @State private var confirmationMenuFunction: StandardMenuFunction?
     
     init(
-        _ user: UserModel,
+        _ user: any User,
         complications: [UserComplication] = .withoutTypeLabel,
-        communityContext: CommunityModel? = nil,
+        communityContext: (any CommunityStubProviding)? = nil,
         swipeActions: SwipeConfiguration? = nil,
         trackerCallback: @escaping (_ item: UserModel) -> Void = { _ in }
     ) {
@@ -54,7 +54,7 @@ struct UserResultView: View {
         if user.blocked {
             return "\(user.displayName!) ∙ Blocked"
         } else {
-            return user.displayName
+            return user.displayName ?? user.name
         }
     }
     
@@ -63,7 +63,7 @@ struct UserResultView: View {
         if complications.contains(.type) {
             parts.append("User")
         }
-        if complications.contains(.instance), let host = user.profileUrl.host {
+        if complications.contains(.instance), let host = user.actorId.host {
             parts.append("@\(host)")
         }
         if complications.contains(.date) {
@@ -86,14 +86,14 @@ struct UserResultView: View {
                 } else {
                     AvatarView(user: user, avatarSize: 48, iconResolution: .fixed(128))
                 }
-                let flairs = user.getFlairs(communityContext: communityContext)
+                // let flairs = user.getFlairs(communityContext: communityContext)
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 4) {
-                        ForEach(flairs, id: \.self) { flair in
-                            Image(systemName: flair.icon)
-                                .imageScale(.small)
-                                .foregroundStyle(flair.color)
-                        }
+//                        ForEach(flairs, id: \.self) { flair in
+//                            Image(systemName: flair.icon)
+//                                .imageScale(.small)
+//                                .foregroundStyle(flair.color)
+//                        }
                         Text(title)
                             .lineLimit(1)
                     }
@@ -115,7 +115,7 @@ struct UserResultView: View {
         .buttonStyle(.plain)
         .padding(.vertical, 8)
         .background(.background)
-        .draggable(user.profileUrl) {
+        .draggable(user.actorId) {
             HStack {
                 AvatarView(user: user, avatarSize: 24)
                 Text(user.name)
@@ -129,11 +129,11 @@ struct UserResultView: View {
             confirmationMenuFunction: confirmationMenuFunction
         )
         .addSwipeyActions(swipeActions ?? .init())
-        .contextMenu {
-            ForEach(user.menuFunctions(trackerCallback)) { item in
-                MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
-            }
-        }
+//        .contextMenu {
+//            ForEach(user.menuFunctions(trackerCallback)) { item in
+//                MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+//            }
+//        }
     }
     
     @ViewBuilder
@@ -180,7 +180,5 @@ struct UserResultView: View {
 }
 
 #Preview {
-    UserResultView(
-        .init(from: .mock())
-    )
+    UserResultView(User3.mock())
 }

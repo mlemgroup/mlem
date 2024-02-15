@@ -71,6 +71,20 @@ struct GetPersonDetailsRequest: APIGetRequest {
 
 // lemmy_api_common::person::GetPersonDetailsResponse
 struct GetPersonDetailsResponse: Decodable {
+    internal init(
+        personView: APIPersonView = .mock,
+        site: APISite? = nil,
+        comments: [APICommentView] = [.mock],
+        posts: [APIPostView] = [.mock],
+        moderates: [APICommunityModeratorView] = [.mock]
+    ) {
+        self.personView = personView
+        self.site = site
+        self.comments = comments
+        self.posts = posts
+        self.moderates = moderates
+    }
+    
     let personView: APIPersonView
     
     // At the time of writing this has been merged into
@@ -81,6 +95,10 @@ struct GetPersonDetailsResponse: Decodable {
     let comments: [APICommentView]
     let posts: [APIPostView]
     let moderates: [APICommunityModeratorView]
+}
+
+extension GetPersonDetailsResponse: Mockable {
+    static var mock: GetPersonDetailsResponse { .init() }
 }
 
 extension GetPersonDetailsResponse: ActorIdentifiable, Identifiable {

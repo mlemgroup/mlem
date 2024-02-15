@@ -7,7 +7,9 @@
 
 import Foundation
 
-extension APIComment {
+extension APIComment: Mockable {
+    static var mock: APIComment { mock() }
+    
     static func mock(
         id: Int = 0,
         creatorId: Int = 0,

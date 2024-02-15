@@ -9,10 +9,26 @@ import Foundation
 
 // lemmy_db_views_actor::structs::CommunityView
 struct APICommunityView: Decodable {
+    internal init(
+        community: APICommunity = .mock,
+        subscribed: APISubscribedStatus = .notSubscribed,
+        blocked: Bool = false,
+        counts: APICommunityAggregates = .mock
+    ) {
+        self.community = community
+        self.subscribed = subscribed
+        self.blocked = blocked
+        self.counts = counts
+    }
+    
     let community: APICommunity
     let subscribed: APISubscribedStatus
     let blocked: Bool
     let counts: APICommunityAggregates
+}
+
+extension APICommunityView: Mockable {
+    static var mock: APICommunityView = .init()
 }
 
 extension APICommunityView: ActorIdentifiable {

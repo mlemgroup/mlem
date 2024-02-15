@@ -7,20 +7,18 @@
 
 import Foundation
 import SwiftUI
-import Dependencies
 
 @Observable
 final class MyUserStub: MyUserProviding, APISource, Codable {
-    @ObservationIgnored @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
-    
     let instance: NewInstanceStub
     var caches: BaseCacheGroup { instance.caches }
+    
     var actorId: URL { instance.actorId }
     var stub: MyUserStub { self }
     var source: any APISource { self }
     
     @ObservationIgnored lazy var api: NewAPIClient = {
-        return .init(baseUrl: instance.url, token: accessToken)
+        return .init(baseUrl: instance.url)
     }()
     
     let id: Int
@@ -31,6 +29,17 @@ final class MyUserStub: MyUserProviding, APISource, Codable {
     var cachedSiteVersion: SiteVersion?
     var avatarUrl: URL?
     var lastLoggedIn: Date?
+    
+    // This should be called when the MyUser becomes the active account
+    func makeActive() {
+        self.api.token = accessToken
+    }
+    
+    // This should be called when the MyUser becomes the inactive account
+    func makeInactive() {
+        // Clear the token to stop us accidentally calling this for whatever reason
+        self.api.token = nil
+    }
     
     enum CodingKeys: String, CodingKey {
         // These key names don't match the identifiers of their corresponding properties - this is because these key names must match the property names used in SavedAccount pre-1.3 in order to maintain compatibility

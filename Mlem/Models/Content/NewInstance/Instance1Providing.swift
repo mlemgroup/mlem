@@ -20,6 +20,8 @@ protocol Instance1Providing: InstanceStubProviding, Identifiable {
     var lastRefreshDate: Date { get }
 }
 
+typealias Instance = Instance1Providing
+
 extension Instance1Providing {
     var id: Int { instance1.id }
     var displayName: String { instance1.displayName }

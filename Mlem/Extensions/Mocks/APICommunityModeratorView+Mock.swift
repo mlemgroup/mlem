@@ -8,8 +8,8 @@
 
 import Foundation
 
-extension APICommunityModeratorView {
-    static func mock() -> APICommunityModeratorView {
+extension APICommunityModeratorView: Mockable {
+    static var mock: APICommunityModeratorView {
         .init(
             community: .mock(),
             moderator: .mock()

@@ -29,14 +29,38 @@ final class User3: User3Providing, NewContentModel {
             self.instance = nil
         }
         
-        self.user2 = source.caches.user3.createModel(sourceInstance: source, for: response.personView)
+        self.user2 = source.caches.user2.createModel(source: source, for: response.personView)
         self.update(with: response)
+    }
+    
+    init(source: any APISource, from response: SiteResponse) {
+        self.source = source
+        
+        self.instance = .create(from: response.siteView.site)
+        
+        guard let myUser = response.myUser else { fatalError() }
+        
+        if let existing = source.caches.user2.retrieveModel(id: myUser.localUserView.localUser.id) {
+            self.user2 = existing
+            existing.update(with: myUser.localUserView)
+        } else {
+            self.user2 = .init(source: source, from: myUser.localUserView)
+        }
+        
+        self.update(with: myUser)
     }
     
     func update(with response: GetPersonDetailsResponse) {
         self.moderatedCommunities = response.moderates.map { moderatorView in
-            source.caches.community1.createModel(sourceInstance: source, for: moderatorView.community)
+            source.caches.community1.createModel(source: source, for: moderatorView.community)
         }
         self.user2.update(with: response.personView)
+    }
+    
+    func update(with myUser: APIMyUserInfo) {
+        self.moderatedCommunities = myUser.moderates.map { moderatorView in
+            source.caches.community1.createModel(source: source, for: moderatorView.community)
+        }
+        self.user2.update(with: myUser.localUserView)
     }
 }

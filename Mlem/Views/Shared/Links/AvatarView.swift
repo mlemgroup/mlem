@@ -49,7 +49,7 @@ struct AvatarView: View {
     }
     
     init(
-        community: CommunityModel,
+        community: any Community,
         avatarSize: CGFloat,
         lineColor: Color? = nil,
         lineWidth: CGFloat = 1,
@@ -67,7 +67,7 @@ struct AvatarView: View {
     }
     
     init(
-        user: UserModel,
+        user: any User,
         avatarSize: CGFloat,
         blurAvatar: Bool = false,
         lineColor: Color? = nil,
@@ -86,7 +86,7 @@ struct AvatarView: View {
     }
     
     init(
-        instance: InstanceModel,
+        instance: any Instance,
         avatarSize: CGFloat,
         blurAvatar: Bool = false,
         lineColor: Color? = nil,
