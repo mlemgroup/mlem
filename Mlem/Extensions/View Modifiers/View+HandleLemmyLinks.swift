@@ -28,7 +28,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             .navigationDestination(for: AppRoute.self) { route in
                 switch route {
                 case let .moderateCommunity(community):
-                    ModeratorToolsView(community: community.communityModel)
+                    ModToolsView(community: community.communityModel)
                 case let .community(community):
                     CommunityFeedView(communityModel: community)
                         .environmentObject(appState)

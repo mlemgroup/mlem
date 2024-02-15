@@ -169,6 +169,7 @@ enum Icons {
     static let `import`: String = "square.and.arrow.down"
     static let attachment: String = "paperclip"
     static let edit: String = "pencil"
+    static let editCircleFill: String = "pencil.circle.fill"
     static let delete: String = "trash"
     static let copy: String = "doc.on.doc"
     
@@ -192,7 +193,7 @@ enum Icons {
     static let collapseComments: String = "arrow.down.and.line.horizontal.and.arrow.up"
     
     // mod tools
-    static let auditUser: String = "person.and.background.striped.horizontal"
+    static let auditUser: String = "person.crop.circle.badge.questionmark.fill"
     
     // misc
     static let `private`: String = "lock"

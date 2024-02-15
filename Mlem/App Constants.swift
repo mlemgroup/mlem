@@ -41,7 +41,7 @@ enum AppConstants {
     static let doubleSpacing: CGFloat = 20
     static let standardSpacing: CGFloat = 10 // standard spacing for the app
     static let halfSpacing: CGFloat = 5
-    @available(*, deprecated, message: "prefer postAndCommentSpacing")
+    @available(*, deprecated, message: "prefer standardSpacing")
     static let postAndCommentSpacing: CGFloat = 10
     static let compactSpacing: CGFloat = 6 // standard spacing for compact things
     static let appIconCornerRadius: CGFloat = 10

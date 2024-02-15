@@ -487,9 +487,12 @@
 		CDCBD7262A8D69A200387A2C /* Instance Picker View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCBD7252A8D69A200387A2C /* Instance Picker View.swift */; };
 		CDCBD7282A8D6B7700387A2C /* Instance Picker View Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCBD7272A8D6B7700387A2C /* Instance Picker View Logic.swift */; };
 		CDCBD72B2A8EC0A800387A2C /* Instance Summary.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCBD72A2A8EC0A800387A2C /* Instance Summary.swift */; };
-		CDD0EF942B7A959000CA3504 /* ModeratorToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EF932B7A959000CA3504 /* ModeratorToolsView.swift */; };
+		CDD0EF942B7A959000CA3504 /* ModToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EF932B7A959000CA3504 /* ModToolsView.swift */; };
 		CDD0EF962B7AAE4B00CA3504 /* ModerateCommunityLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EF952B7AAE4B00CA3504 /* ModerateCommunityLink.swift */; };
 		CDD0EF9A2B7C068100CA3504 /* ToolButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EF992B7C068100CA3504 /* ToolButton.swift */; };
+		CDD0EF9C2B7D6B9100CA3504 /* ModToolTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EF9B2B7D6B9100CA3504 /* ModToolTracker.swift */; };
+		CDD0EF9E2B7D6F3E00CA3504 /* ModToolSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EF9D2B7D6F3E00CA3504 /* ModToolSheet.swift */; };
+		CDD0EFA22B7D9E5800CA3504 /* UserRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EFA12B7D9E5800CA3504 /* UserRow.swift */; };
 		CDD55D1D2B23BA41002020C7 /* EasyTapLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD55D1C2B23BA41002020C7 /* EasyTapLinkView.swift */; };
 		CDD55D222B2674BD002020C7 /* String+ParseLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD55D212B2674BD002020C7 /* String+ParseLinks.swift */; };
 		CDDB08782A5DF1330075BFEE /* CommentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDB08772A5DF1330075BFEE /* CommentSettingsView.swift */; };
@@ -1057,9 +1060,12 @@
 		CDCBD7252A8D69A200387A2C /* Instance Picker View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Instance Picker View.swift"; sourceTree = "<group>"; };
 		CDCBD7272A8D6B7700387A2C /* Instance Picker View Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Instance Picker View Logic.swift"; sourceTree = "<group>"; };
 		CDCBD72A2A8EC0A800387A2C /* Instance Summary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Instance Summary.swift"; sourceTree = "<group>"; };
-		CDD0EF932B7A959000CA3504 /* ModeratorToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeratorToolsView.swift; sourceTree = "<group>"; };
+		CDD0EF932B7A959000CA3504 /* ModToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModToolsView.swift; sourceTree = "<group>"; };
 		CDD0EF952B7AAE4B00CA3504 /* ModerateCommunityLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModerateCommunityLink.swift; sourceTree = "<group>"; };
 		CDD0EF992B7C068100CA3504 /* ToolButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolButton.swift; sourceTree = "<group>"; };
+		CDD0EF9B2B7D6B9100CA3504 /* ModToolTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModToolTracker.swift; sourceTree = "<group>"; };
+		CDD0EF9D2B7D6F3E00CA3504 /* ModToolSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModToolSheet.swift; sourceTree = "<group>"; };
+		CDD0EFA12B7D9E5800CA3504 /* UserRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRow.swift; sourceTree = "<group>"; };
 		CDD55D1C2B23BA41002020C7 /* EasyTapLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyTapLinkView.swift; sourceTree = "<group>"; };
 		CDD55D212B2674BD002020C7 /* String+ParseLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ParseLinks.swift"; sourceTree = "<group>"; };
 		CDDB08772A5DF1330075BFEE /* CommentSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentSettingsView.swift; sourceTree = "<group>"; };
@@ -2096,6 +2102,7 @@
 				CDB0117E2A6F70A000D043EB /* Editor Tracker.swift */,
 				50785F702A98C4F600117245 /* SiteInformationTracker.swift */,
 				03B7AAEE2ABCB9DC00068B23 /* ContentTracker.swift */,
+				CDD0EF9B2B7D6B9100CA3504 /* ModToolTracker.swift */,
 			);
 			path = Trackers;
 			sourceTree = "<group>";
@@ -2130,6 +2137,7 @@
 				030E86422AC6F6CB000283A6 /* Search Bar */,
 				CD20530F2AC878B50000AA38 /* UpdatedTimestampView.swift */,
 				E46AF9912B29AA340087FDF3 /* ScrollToView.swift */,
+				CDD0EFA12B7D9E5800CA3504 /* UserRow.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -2745,8 +2753,9 @@
 		CDD0EF922B7A957B00CA3504 /* Moderation */ = {
 			isa = PBXGroup;
 			children = (
-				CDD0EF932B7A959000CA3504 /* ModeratorToolsView.swift */,
+				CDD0EF932B7A959000CA3504 /* ModToolsView.swift */,
 				CDD0EF992B7C068100CA3504 /* ToolButton.swift */,
+				CDD0EF9D2B7D6F3E00CA3504 /* ModToolSheet.swift */,
 			);
 			path = Moderation;
 			sourceTree = "<group>";
@@ -3365,7 +3374,7 @@
 				03A18CBF2B1252BD00BA69D2 /* ListingType.swift in Sources */,
 				637218482A3A2AAD008C4816 /* APICommentReply.swift in Sources */,
 				CD3720EC2B2E8F96004D7103 /* AlternativeIconCell.swift in Sources */,
-				CDD0EF942B7A959000CA3504 /* ModeratorToolsView.swift in Sources */,
+				CDD0EF942B7A959000CA3504 /* ModToolsView.swift in Sources */,
 				032109472AA7C3FC00912DFC /* CommunityLabelView.swift in Sources */,
 				637218502A3A2AAD008C4816 /* APIPersonAggregates.swift in Sources */,
 				CD4368D72AE2464D00BD8BD1 /* ReplyModel+InboxItem.swift in Sources */,
@@ -3446,6 +3455,7 @@
 				6372184F2A3A2AAD008C4816 /* APIPerson.swift in Sources */,
 				CD4368BC2AE23F6F00BD8BD1 /* TrackerSort.swift in Sources */,
 				E46AF98E2B29A4AA0087FDF3 /* DismissAction.swift in Sources */,
+				CDD0EFA22B7D9E5800CA3504 /* UserRow.swift in Sources */,
 				CD45BCEE2A75CA7200A2899C /* Thumbnail Image View.swift in Sources */,
 				E4A7BFD32B35913F00B95F56 /* InboxMentionView.swift in Sources */,
 				03A1B3F92A8400DD00AB0DE0 /* APIContentViewProtocol.swift in Sources */,
@@ -3484,6 +3494,7 @@
 				CDC1C93C2A7AA76000072E3D /* InternetSpeed.swift in Sources */,
 				50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */,
 				63F0C7BF2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift in Sources */,
+				CDD0EF9E2B7D6F3E00CA3504 /* ModToolSheet.swift in Sources */,
 				031F95572B5C7FF20069C244 /* InstanceDetailsView.swift in Sources */,
 				632E8EE827EE63DB007E8D75 /* DownvoteButtonView.swift in Sources */,
 				50D61E5B2AA32B9400A926EC /* APISession.swift in Sources */,
@@ -3636,6 +3647,7 @@
 				6363D5C527EE196700E34822 /* MlemApp.swift in Sources */,
 				CDF1EF162A6C3BC2003594B6 /* End Of Feed View.swift in Sources */,
 				637218542A3A2AAD008C4816 /* APILanguage.swift in Sources */,
+				CDD0EF9C2B7D6B9100CA3504 /* ModToolTracker.swift in Sources */,
 				CD963FCB2B5F0388002352FD /* DefaultFeedType.swift in Sources */,
 				CDD0EF962B7AAE4B00CA3504 /* ModerateCommunityLink.swift in Sources */,
 				50CC4A722A9CB07F0074C845 /* TimeInterval+Period.swift in Sources */,

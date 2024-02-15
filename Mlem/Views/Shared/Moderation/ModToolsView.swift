@@ -1,5 +1,5 @@
 //
-//  ModeratorToolsView.swift
+//  ModToolsView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-02-12.
@@ -38,8 +38,10 @@ import SwiftUI
 // investigate further
 // - get banned users(?) (GET /user/banned)
 
-struct ModeratorToolsView: View {
+struct ModToolsView: View {
     @Environment(\.dismiss) var dismiss
+    
+    @EnvironmentObject var modToolTracker: ModToolTracker
     
     let community: CommunityModel
     
@@ -77,18 +79,28 @@ struct ModeratorToolsView: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
+        
+        Button {
+            modToolTracker.edit(community)
+        } label: {
+            HStack(spacing: AppConstants.halfSpacing) {
+                Image(systemName: Icons.edit)
+                Text("Edit")
+            }
+        }
+        .buttonStyle(.bordered)
     }
     
     var tools: some View {
         Grid(horizontalSpacing: AppConstants.doubleSpacing, verticalSpacing: AppConstants.doubleSpacing) {
             GridRow {
-                ToolButton(text: "Moderators", icon: Icons.moderationFill, color: .green)
+                ToolButton(text: "Moderators", icon: Icons.moderationFill, color: .green) {
+                    modToolTracker.showModerators(for: community)
+                }
                 
-                ToolButton(text: "Edit", icon: "pencil.circle.fill", color: .blue)
-            }
-            
-            GridRow {
-                ToolButton(text: "Audit User", icon: "person.crop.circle.badge.questionmark.fill", color: .purple)
+                ToolButton(text: "Audit User", icon: Icons.auditUser, color: .indigo) {
+                    modToolTracker.audit(in: community)
+                }
             }
         }
         .padding(.horizontal, AppConstants.doubleSpacing)
@@ -96,8 +108,6 @@ struct ModeratorToolsView: View {
     }
 }
 
-struct ModeratorToolsViewPreview: PreviewProvider {
-    static var previews: some View {
-        ModeratorToolsView(community: .mock())
-    }
+#Preview {
+    ModToolsView(community: .mock())
 }

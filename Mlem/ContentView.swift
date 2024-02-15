@@ -23,6 +23,7 @@ struct ContentView: View {
     @EnvironmentObject var appState: AppState
     
     @StateObject var editorTracker: EditorTracker = .init()
+    @StateObject var modToolTracker: ModToolTracker = .init()
     @StateObject var unreadTracker: UnreadTracker = .init()
     
     @State private var errorAlert: ErrorAlert?
@@ -158,10 +159,14 @@ struct ContentView: View {
                 ImageDetailView(url: url)
             }
         }
+        .sheet(item: $modToolTracker.openTool) { tool in
+            ModToolSheet(tool: tool)
+        }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(editorTracker)
         .environmentObject(unreadTracker)
         .environmentObject(quickLookState)
+        .environmentObject(modToolTracker)
         .onChange(of: scenePhase) { phase in
             if phase != .active {
                 // prevents the app from reopening with the switcher enabled.

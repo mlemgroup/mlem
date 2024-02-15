@@ -50,70 +50,12 @@ struct UserResultView: View {
         isPresentingConfirmDestructive = true
     }
     
-    var title: String {
-        if user.blocked {
-            return "\(user.displayName!) ∙ Blocked"
-        } else {
-            return user.displayName
-        }
-    }
-    
-    var caption: String {
-        var parts: [String] = []
-        if complications.contains(.type) {
-            parts.append("User")
-        }
-        if complications.contains(.instance), let host = user.profileUrl.host {
-            parts.append("@\(host)")
-        }
-        if complications.contains(.date) {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy"
-            parts.append(dateFormatter.string(from: user.creationDate))
-        }
-        return parts.joined(separator: " ∙ ")
-    }
-    
     var body: some View {
         NavigationLink(value: AppRoute.userProfile(user, communityContext: communityContext)) {
-            HStack(spacing: 10) {
-                if user.blocked {
-                    Image(systemName: Icons.hide)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 30, height: 30)
-                        .padding(9)
-                } else {
-                    AvatarView(user: user, avatarSize: 48, iconResolution: .fixed(128))
-                }
-                let flairs = user.getFlairs(communityContext: communityContext)
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack(spacing: 4) {
-                        ForEach(flairs, id: \.self) { flair in
-                            Image(systemName: flair.icon)
-                                .imageScale(.small)
-                                .foregroundStyle(flair.color)
-                        }
-                        Text(title)
-                            .lineLimit(1)
-                    }
-                    Text(caption)
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
-                }
-                Spacer()
-                trailingInfo
-                Image(systemName: Icons.forward)
-                    .imageScale(.small)
-                    .foregroundStyle(.tertiary)
-            }
-            .padding(.horizontal)
-            .contentShape(Rectangle())
+            UserRow(user: user, communityContext: communityContext, complications: complications)
         }
         .opacity(user.blocked ? 0.5 : 1)
         .buttonStyle(.plain)
-        .padding(.vertical, 8)
         .background(.background)
         .draggable(user.profileUrl) {
             HStack {
@@ -132,48 +74,6 @@ struct UserResultView: View {
         .contextMenu {
             ForEach(user.menuFunctions(trackerCallback)) { item in
                 MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
-            }
-        }
-    }
-    
-    @ViewBuilder
-    var trailingInfo: some View {
-        Group {
-            if complications.contains(.posts), let postCount = user.postCount {
-                if complications.contains(.comments), let commentCount = user.commentCount {
-                    HStack(spacing: 5) {
-                        VStack(alignment: .trailing, spacing: 6) {
-                            Text(abbreviateNumber(postCount))
-                                .font(.subheadline)
-                                .monospacedDigit()
-                            Text(abbreviateNumber(commentCount))
-                                .font(.subheadline)
-                                .monospacedDigit()
-                        }
-                        .foregroundStyle(.secondary)
-                        VStack(spacing: 10) {
-                            Image(systemName: Icons.posts)
-                                .imageScale(.small)
-                            Image(systemName: Icons.replies)
-                                .imageScale(.small)
-                        }
-                    }
-                    .foregroundStyle(.secondary)
-                } else {
-                    HStack(spacing: 5) {
-                        Text(abbreviateNumber(postCount))
-                            .monospacedDigit()
-                        Image(systemName: Icons.posts)
-                    }
-                    .foregroundStyle(.secondary)
-                }
-            } else if complications.contains(.comments), let commentCount = user.commentCount {
-                HStack(spacing: 5) {
-                    Text(abbreviateNumber(commentCount))
-                        .monospacedDigit()
-                    Image(systemName: Icons.replies)
-                }
-                .foregroundStyle(.secondary)
             }
         }
     }

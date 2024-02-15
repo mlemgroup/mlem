@@ -12,25 +12,31 @@ struct ToolButton: View {
     let text: String
     let icon: String
     let color: Color
+    let callback: () -> Void
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Image(systemName: icon)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 25, height: 25)
-                .foregroundStyle(color)
-            
-            Text(text)
-                .fontWeight(.semibold)
-                .lineLimit(1)
-                .frame(maxWidth: .infinity, alignment: .leading)
+        Button {
+            callback()
+        } label: {
+            VStack(alignment: .leading, spacing: 12) {
+                Image(systemName: icon)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 25, height: 25)
+                    .foregroundStyle(color)
+                
+                Text(text)
+                    .fontWeight(.semibold)
+                    .lineLimit(1)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding(15)
+            .frame(maxWidth: .infinity)
+            .background {
+                RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
+                    .fill(.white)
+            }
         }
-        .padding(15)
-        .frame(maxWidth: .infinity)
-        .background {
-            RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
-                .fill(.white)
-        }
+        .buttonStyle(.plain)
     }
 }
