@@ -55,4 +55,8 @@ final class Community1: Community1Providing, NewContentModel {
         self.hidden = community.hidden
         self.onlyModeratorsCanPost = community.postingRestrictedToMods
     }
+    
+    static func == (lhs: Community1, rhs: Community1) -> Bool {
+        lhs.actorId == rhs.actorId
+    }
 }

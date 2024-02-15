@@ -8,16 +8,13 @@
 import Foundation
 
 protocol ActorIdentifiable: Hashable, Equatable {
+    /// The URL of the entity on it's host instance. For example, "https://lemmy.ml/c/mlemapp". Useful for identifying entities across instances.
     var actorId: URL { get }
 }
 
 extension ActorIdentifiable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(actorId)
-    }
-    
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.actorId == rhs.actorId
     }
 }
 
@@ -56,10 +53,4 @@ protocol APISource: AnyObject, ActorIdentifiable, Equatable {
     var caches: BaseCacheGroup { get }
     var api: Client { get }
     var instance: NewInstanceStub { get }
-}
-
-extension APISource {
-    static func == (lhs: any APISource, rhs: any APISource) -> Bool {
-        return lhs.actorId == rhs.actorId
-    }
 }

@@ -8,25 +8,20 @@
 import Dependencies
 import SwiftUI
 
-protocol CommunityStubProviding {
-    var source: any APISource { get }
-    var id: Int { get }
-}
-
 struct CommunityStub: CommunityStubProviding, Hashable {
     var source: any APISource
-    let id: Int
+    let actorId: URL
     
-    init(source: any APISource, id: Int) {
+    init(source: any APISource, actorId: URL) {
         self.source = source
-        self.id = id
+        self.actorId = actorId
     }
     
     static func == (lhs: CommunityStub, rhs: CommunityStub) -> Bool {
-        lhs.id == rhs.id
+        lhs.actorId == rhs.actorId
     }
     
     func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
+        hasher.combine(actorId)
     }
 }

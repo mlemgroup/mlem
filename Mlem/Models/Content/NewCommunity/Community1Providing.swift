@@ -7,10 +7,9 @@
 
 import Foundation
 
-protocol Community1Providing: ActorIdentifiable {
+protocol Community1Providing: CommunityStubProviding, ActorIdentifiable, Identifiable {
     var community1: Community1 { get }
     
-    var name: String { get }
     var creationDate: Date { get }
     var updatedDate: Date? { get }
     var displayName: String { get }
@@ -41,4 +40,12 @@ extension Community1Providing {
     var banner: URL? { community1.banner }
     var hidden: Bool { community1.hidden }
     var onlyModeratorsCanPost: Bool { community1.onlyModeratorsCanPost }
+}
+
+// Overwrite the `upgrade()` method from CommunityStubProviding
+extension Community1Providing {
+    func upgrade() async throws -> Community3 {
+        let response = try await source.api.getCommunity(id: id)
+        return source.caches.community3.createModel(source: source, for: response)
+    }
 }

@@ -32,16 +32,22 @@ final class Community3: Community3Providing, NewContentModel {
             self.instance = nil
         }
         
-        self.community2 = source.caches.community2.createModel(sourceInstance: source, for: response.communityView)
+        self.community2 = source.caches.community2.createModel(source: source, for: response.communityView)
         self.update(with: response)
     }
     
     func update(with response: GetCommunityResponse) {
         self.moderators = response.moderators.map { moderatorView in
-            source.caches.user1.createModel(sourceInstance: source, for: moderatorView.moderator)
+            source.caches.user1.createModel(source: source, for: moderatorView.moderator)
         }
         self.discussionLanguages = response.discussionLanguages
         self.defaultPostLanguage = response.defaultPostLanguage
         self.community2.update(with: response.communityView)
     }
+    
+    static func == (lhs: Community3, rhs: Community3) -> Bool {
+        lhs.actorId == rhs.actorId
+    }
+    
+    func upgrade() async throws -> Community3 { self }
 }

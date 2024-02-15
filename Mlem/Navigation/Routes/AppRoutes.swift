@@ -11,8 +11,25 @@ import Foundation
 ///
 /// For simple (i.e. linear) navigation flows, you may wish to define a separate set of routes. For example, see `OnboardingRoutes`.
 ///
+
+struct RouteWrapper: Equatable, Hashable {
+    let wrappedValue: any ActorIdentifiable
+    
+    static func == (lhs: RouteWrapper, rhs: RouteWrapper) -> Bool {
+        return lhs.wrappedValue.actorId == rhs.wrappedValue.actorId
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(wrappedValue.actorId)
+    }
+    
+    init(_ wrappedValue: any ActorIdentifiable) {
+        self.wrappedValue = wrappedValue
+    }
+}
+
+
 enum AppRoute: Routable {
-    case community(CommunityModel)
     case instance(String? = nil, InstanceModel? = nil)
     
     case userProfile(UserModel, communityContext: CommunityModel? = nil)
@@ -30,11 +47,10 @@ enum AppRoute: Routable {
     case postSettings(PostSettingsPage)
     case licenseSettings(LicensesSettingsPage)
     
+    
     // swiftlint:disable cyclomatic_complexity
     static func makeRoute(_ value: some Hashable) throws -> AppRoute {
         switch value {
-        case let value as CommunityModel:
-            return .community(value)
         case let value as UserModel:
             return .userProfile(value)
         case let value as PostLinkWithContext:

@@ -25,13 +25,14 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     // swiftlint:disable:next cyclomatic_complexity
     func body(content: Content) -> some View {
         content
+            .navigationDestination(for: RouteWrapper.self) { route in
+                if let community = route.wrappedValue as? any Community {
+                    
+                }
+                EmptyView()
+            }
             .navigationDestination(for: AppRoute.self) { route in
                 switch route {
-                case let .community(community):
-                    CommunityFeedView(communityModel: community)
-                        .environmentObject(appState)
-                        .environmentObject(filtersTracker)
-                        .environmentObject(quickLookState)
                 case let .userProfile(user, communityContext):
                     UserView(user: user, communityContext: communityContext)
                         .environmentObject(appState)
