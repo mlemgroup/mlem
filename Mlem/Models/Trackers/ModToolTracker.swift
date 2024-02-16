@@ -8,10 +8,11 @@
 import Foundation
 
 enum ModTool: Hashable, Identifiable {
-    case auditUser(UserModel?, CommunityModel)
-    case moderators(CommunityModel)
-    case editCommunity(CommunityModel)
-    case instanceBan(UserModel?)
+    case auditUser(UserModel?, CommunityModel) // user to audit, community to audit in
+    case moderators(CommunityModel) // community to list moderators of
+    case editCommunity(CommunityModel) // community to edit
+    case instanceBan(UserModel, Bool) // user to ban, should ban
+    case communityBan(UserModel, CommunityModel, Bool) // user to ban, community to ban from, should ban
     
     var id: Int { hashValue }
     
@@ -27,9 +28,15 @@ enum ModTool: Hashable, Identifiable {
         case let .editCommunity(community):
             hasher.combine("edit")
             hasher.combine(community.uid)
-        case let .instanceBan(user):
+        case let .instanceBan(user, shouldBan):
             hasher.combine("instanceBan")
-            hasher.combine(user?.uid ?? .init(contentType: .user, contentId: 0))
+            hasher.combine(user.uid)
+            hasher.combine(shouldBan)
+        case let .communityBan(user, community, shouldBan):
+            hasher.combine("communityBan")
+            hasher.combine(user.uid)
+            hasher.combine(community.uid)
+            hasher.combine(shouldBan)
         }
     }
 }
@@ -54,7 +61,11 @@ class ModToolTracker: ObservableObject {
         openTool = .auditUser(user, community)
     }
     
-    func banUserFromInstance(_ user: UserModel) {
-        openTool = .instanceBan(user)
+    func banUserFromInstance(_ user: UserModel, shouldBan: Bool) {
+        openTool = .instanceBan(user, shouldBan)
+    }
+    
+    func banUserFromCommunity(_ user: UserModel, from community: CommunityModel, shouldBan: Bool) {
+        openTool = .communityBan(user, community, shouldBan)
     }
 }

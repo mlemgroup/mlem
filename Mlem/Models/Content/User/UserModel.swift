@@ -193,27 +193,20 @@ struct UserModel {
     }
     
     mutating func toggleBan(
-        expires: Date? = nil,
+        expires: Int? = nil,
         reason: String? = nil,
         removeData: Bool = false,
         _ callback: @escaping (_ item: Self) -> Void = { _ in }
     ) async {
         banned.toggle()
-        if banned {
-            banExpirationDate = expires
-        }
         RunLoop.main.perform { [self] in
             callback(self)
-        }
-        var expirationDate: Int?
-        if let expires {
-            expirationDate = Int(expires.timeIntervalSince1970)
         }
         do {
             let response = try await apiClient.banPerson(
                 id: userId,
                 shouldBan: banned,
-                expires: expirationDate,
+                expires: expires,
                 reason: reason,
                 removeData: removeData
             )

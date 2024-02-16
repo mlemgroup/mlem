@@ -41,8 +41,8 @@ struct FeedPost: View {
     @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
 
-    // @EnvironmentObject var postTracker: StandardPostTracker
     @EnvironmentObject var editorTracker: EditorTracker
+    @EnvironmentObject var modToolTracker: ModToolTracker
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
@@ -127,7 +127,7 @@ struct FeedPost: View {
                         // TODO: ERIC check if moderator using SiteInformation UserModel mod list
                         if let community, community.isModerator(siteInformation.userId) {
                             Menu("Community Moderation") {
-                                ForEach(postModel.modMenuFunctions(community: community)) { function in
+                                ForEach(postModel.modMenuFunctions(community: community, modToolTracker: modToolTracker)) { function in
                                     MenuButton(menuFunction: function, confirmDestructive: confirmDestructive)
                                 }
                             }

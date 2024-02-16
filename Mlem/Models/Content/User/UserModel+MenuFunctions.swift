@@ -29,18 +29,9 @@ extension UserModel {
         .standardMenuFunction(
             text: banned ? "Unban" : "Ban",
             imageName: Icons.instanceBan,
-            role: .destructive(prompt: banned ? "Really unban this user?" : nil),
+            role: .destructive(prompt: nil),
             callback: {
-                if banned {
-                    // TODO: ERIC unban reason
-                    Task {
-                        var new = self
-                        await new.toggleBan(callback)
-                    }
-                } else {
-                    // editorTracker.banUser = BanUserEditorModel(user: self, callback: callback)
-                    modToolTracker.banUserFromInstance(self)
-                }
+                modToolTracker.banUserFromInstance(self, shouldBan: !banned)
             }
         )
     }

@@ -156,20 +156,11 @@ struct CommunityModel {
     // MARK: - Convenience
     
     func isModerator(_ userId: Int?) -> Bool {
-        print("DEBUG num mods: \(moderators?.count)")
-        print("DEBUG user id: \(userId)")
         if let moderators, let userId {
-            let ret = moderators.contains(where: { userModel in
+            return moderators.contains(where: { userModel in
                 userModel.userId == userId
             })
-            if ret {
-                print("DEBUG is mod")
-            } else {
-                print("DEBUG not a mod")
-            }
-            return ret
         }
-        print("DEBUG not a mod")
         return false
     }
     
@@ -264,6 +255,33 @@ struct CommunityModel {
             )
         }
     }
+    
+    // MARK: - Moderation
+    
+    func banUser(
+        userId: Int,
+        ban: Bool,
+        removeData: Bool? = nil,
+        reason: String? = nil,
+        expires: Int? = nil
+    ) async -> Bool {
+        do {
+            let updatedBannedStatus = try await apiClient.banFromCommunity(
+                userId: userId,
+                communityId: communityId,
+                ban: ban,
+                removeData: removeData,
+                reason: reason,
+                expires: expires
+            )
+            return updatedBannedStatus
+        } catch {
+            errorHandler.handle(error)
+            return !ban
+        }
+    }
+    
+    // MARK: - Misc
     
     var fullyQualifiedName: String? {
         if let host = communityUrl.host() {

@@ -15,12 +15,10 @@ struct ModToolSheet: View {
         switch tool {
         case let .moderators(community):
             moderators(for: community)
-        case let .instanceBan(user):
-            if let user {
-                BanUserView(user: user)
-            } else {
-                Text("IMPLEMENT ME")
-            }
+        case let .instanceBan(user, shouldBan):
+            BanUserView(user: user, community: nil, shouldBan: shouldBan)
+        case let .communityBan(user, community, shouldBan):
+            BanUserView(user: user, community: community, shouldBan: shouldBan)
         default:
             Text("TODO: implement")
         }

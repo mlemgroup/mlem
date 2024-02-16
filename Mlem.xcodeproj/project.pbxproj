@@ -418,6 +418,7 @@
 		CD4BAD3D2B4C6C8E00A1E726 /* FeedType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BAD3C2B4C6C8E00A1E726 /* FeedType.swift */; };
 		CD4BAD432B507F2B00A1E726 /* AggregateFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BAD422B507F2B00A1E726 /* AggregateFeedView.swift */; };
 		CD4DBC032A6F803C001A1E61 /* ReplyToPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4DBC022A6F803C001A1E61 /* ReplyToPost.swift */; };
+		CD50504D2B80065300632C56 /* Date+DaysFromNow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD50504C2B80065300632C56 /* Date+DaysFromNow.swift */; };
 		CD525F652A4B6D8F00BCA794 /* CommunityLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD525F642A4B6D8F00BCA794 /* CommunityLinkView.swift */; };
 		CD59E8A52A72C943005757F4 /* MarkAllAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD59E8A42A72C943005757F4 /* MarkAllAsReadRequest.swift */; };
 		CD5F76BC2B75BE700013A827 /* MarkReadBatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5F76BB2B75BE700013A827 /* MarkReadBatcher.swift */; };
@@ -1001,6 +1002,7 @@
 		CD4BAD3C2B4C6C8E00A1E726 /* FeedType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedType.swift; sourceTree = "<group>"; };
 		CD4BAD422B507F2B00A1E726 /* AggregateFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AggregateFeedView.swift; sourceTree = "<group>"; };
 		CD4DBC022A6F803C001A1E61 /* ReplyToPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToPost.swift; sourceTree = "<group>"; };
+		CD50504C2B80065300632C56 /* Date+DaysFromNow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+DaysFromNow.swift"; sourceTree = "<group>"; };
 		CD525F642A4B6D8F00BCA794 /* CommunityLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityLinkView.swift; sourceTree = "<group>"; };
 		CD59E8A42A72C943005757F4 /* MarkAllAsReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkAllAsReadRequest.swift; sourceTree = "<group>"; };
 		CD5F76BB2B75BE700013A827 /* MarkReadBatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkReadBatcher.swift; sourceTree = "<group>"; };
@@ -2260,7 +2262,6 @@
 			isa = PBXGroup;
 			children = (
 				CD391F952A535F5400E213B5 /* ResponseEditorView.swift */,
-				03C942932B64596B002068A4 /* BanUserView.swift */,
 				03CB329D2A6D8E910021EF27 /* PostComposerView.swift */,
 				03EA79C32AC0D92C00BCDC91 /* PostComposerView+Logic.swift */,
 			);
@@ -2378,6 +2379,7 @@
 			isa = PBXGroup;
 			children = (
 				6D15D74B2A44DC240061B5CB /* Date+Formatter.swift */,
+				CD50504C2B80065300632C56 /* Date+DaysFromNow.swift */,
 			);
 			path = Date;
 			sourceTree = "<group>";
@@ -2611,6 +2613,14 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		CD50504E2B80098F00632C56 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				03C942932B64596B002068A4 /* BanUserView.swift */,
+			);
+			path = Tools;
+			sourceTree = "<group>";
+		};
 		CD525F662A4B892900BCA794 /* Links */ = {
 			isa = PBXGroup;
 			children = (
@@ -2786,6 +2796,7 @@
 		CDD0EF922B7A957B00CA3504 /* Moderation */ = {
 			isa = PBXGroup;
 			children = (
+				CD50504E2B80098F00632C56 /* Tools */,
 				CDD0EFAE2B7EF34D00CA3504 /* Components */,
 				CDD0EF932B7A959000CA3504 /* ModToolsView.swift */,
 				CDD0EF9D2B7D6F3E00CA3504 /* ModToolSheet.swift */,
@@ -3716,6 +3727,7 @@
 				CDB45C5C2AF1A1D800A1FF08 /* CoreTracker.swift in Sources */,
 				507573982A5AD60100AA7ABD /* ErrorAlert.swift in Sources */,
 				CD4368AE2AE23ED400BD8BD1 /* StandardTracker.swift in Sources */,
+				CD50504D2B80065300632C56 /* Date+DaysFromNow.swift in Sources */,
 				CDE6A8182A490AF20062D161 /* InboxMentionBodyView.swift in Sources */,
 				CD3FBCDD2A4A6F0600B2063F /* GetReplies.swift in Sources */,
 				CD4368DB2AE247B700BD8BD1 /* MentionTracker.swift in Sources */,

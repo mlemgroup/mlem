@@ -141,39 +141,29 @@ extension PostModel {
 
     // swiftlint:enable function_body_length
     
-    func modMenuFunctions(community: CommunityModel) -> [MenuFunction] {
+    func modMenuFunctions(community: CommunityModel, modToolTracker: ModToolTracker) -> [MenuFunction] {
         assert(community.isModerator(siteInformation.userId), "modMenuFunctions called but user is not a mod!")
         
         var functions: [MenuFunction] = .init()
-        
-        let banVerb: String, banIcon: String
-        if creatorBannedFromCommunity {
-            banVerb = "unban"
-            banIcon = Icons.communityUnban
-        } else {
-            banVerb = "ban"
-            banIcon = Icons.communityBan
-        }
-        functions.append(MenuFunction.standardMenuFunction(
-            text: "\(banVerb.capitalized) User",
-            imageName: banIcon,
-            role: .destructive(prompt: "Really \(banVerb) \(creator.name ?? "this user")?"),
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                do {
-                    let updatedBannedStatus = try await self.apiClient.banFromCommunity(
-                        userId: self.post.creatorId,
-                        communityId: community.communityId,
-                        ban: !self.creatorBannedFromCommunity
-                    )
-                        
-                    await self.setCreatorBannedFromCommunity(updatedBannedStatus)
-                } catch {
-                    self.errorHandler.handle(error)
-                }
+
+        if creator.userId != siteInformation.userId {
+            let banVerb: String, banIcon: String
+            if creatorBannedFromCommunity {
+                banVerb = "Unban"
+                banIcon = Icons.communityUnban
+            } else {
+                banVerb = "Ban"
+                banIcon = Icons.communityBan
             }
-        })
+            functions.append(MenuFunction.standardMenuFunction(
+                text: "\(banVerb) User",
+                imageName: banIcon,
+                role: .destructive(prompt: nil),
+                enabled: true
+            ) {
+                modToolTracker.banUserFromCommunity(self.creator, from: community, shouldBan: !self.creatorBannedFromCommunity)
+            })
+        }
         
         return functions
     }
