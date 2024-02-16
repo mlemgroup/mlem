@@ -55,7 +55,7 @@ extension InboxView {
         ret.append(MenuFunction.standardMenuFunction(
             text: filterReadText,
             imageName: filterReadSymbol,
-            destructiveActionPrompt: nil,
+            role: nil,
             enabled: true
         ) {
             toggleFilterRead()
@@ -64,7 +64,7 @@ extension InboxView {
         ret.append(MenuFunction.standardMenuFunction(
             text: "Mark All as Read",
             imageName: "envelope.open",
-            destructiveActionPrompt: nil,
+            role: nil,
             enabled: true
         ) {
             Task(priority: .userInitiated) {

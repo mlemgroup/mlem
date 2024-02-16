@@ -13,7 +13,7 @@ import Foundation
 ///
 enum AppRoute: Routable {
     case community(CommunityModel)
-    case instance(String? = nil, InstanceModel? = nil)
+    case instance(InstanceModel)
     
     case userProfile(UserModel, communityContext: CommunityModel? = nil)
     

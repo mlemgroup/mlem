@@ -189,7 +189,7 @@ extension CommentItem {
         ret.append(MenuFunction.standardMenuFunction(
             text: upvoteText,
             imageName: upvoteImg,
-            destructiveActionPrompt: nil,
+            role: nil,
             enabled: true
         ) {
             Task(priority: .userInitiated) {
@@ -204,7 +204,7 @@ extension CommentItem {
         ret.append(MenuFunction.standardMenuFunction(
             text: downvoteText,
             imageName: downvoteImg,
-            destructiveActionPrompt: nil,
+            role: nil,
             enabled: true
         ) {
             Task(priority: .userInitiated) {
@@ -219,7 +219,7 @@ extension CommentItem {
         ret.append(MenuFunction.standardMenuFunction(
             text: saveText,
             imageName: saveImg,
-            destructiveActionPrompt: nil,
+            role: nil,
             enabled: true
         ) {
             Task(priority: .userInitiated) {
@@ -231,7 +231,7 @@ extension CommentItem {
         ret.append(MenuFunction.standardMenuFunction(
             text: "Reply",
             imageName: Icons.reply,
-            destructiveActionPrompt: nil,
+            role: nil,
             enabled: true
         ) {
             replyToComment()
@@ -242,7 +242,7 @@ extension CommentItem {
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Edit",
                 imageName: Icons.edit,
-                destructiveActionPrompt: nil,
+                role: nil,
                 enabled: true
             ) {
                 editComment()
@@ -254,7 +254,7 @@ extension CommentItem {
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Delete",
                 imageName: Icons.delete,
-                destructiveActionPrompt: "Are you sure you want to delete this comment?  This cannot be undone.",
+                role: .destructive(prompt: "Are you sure you want to delete this comment?  This cannot be undone."),
                 enabled: !hierarchicalComment.commentView.comment.deleted
             ) {
                 Task(priority: .userInitiated) {
@@ -272,7 +272,7 @@ extension CommentItem {
         ret.append(MenuFunction.standardMenuFunction(
             text: "Report",
             imageName: Icons.moderationReport,
-            destructiveActionPrompt: "Really report?",
+            role: .destructive(prompt: "Really report?"),
             enabled: true
         ) {
             editorTracker.openEditor(with: ConcreteEditorModel(
@@ -285,7 +285,7 @@ extension CommentItem {
         ret.append(MenuFunction.standardMenuFunction(
             text: "Block User",
             imageName: Icons.userBlock,
-            destructiveActionPrompt: AppConstants.blockUserPrompt,
+            role: .destructive(prompt: AppConstants.blockUserPrompt),
             enabled: true
         ) {
             Task(priority: .userInitiated) {
