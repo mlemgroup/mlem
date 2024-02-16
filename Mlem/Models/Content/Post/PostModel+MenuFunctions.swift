@@ -157,7 +157,7 @@ extension PostModel {
         functions.append(MenuFunction.standardMenuFunction(
             text: "\(banVerb.capitalized) User",
             imageName: banIcon,
-            destructiveActionPrompt: "Really \(banVerb) \(creator.name ?? "this user")?",
+            role: .destructive(prompt: "Really \(banVerb) \(creator.name ?? "this user")?"),
             enabled: true
         ) {
             Task(priority: .userInitiated) {
