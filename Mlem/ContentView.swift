@@ -16,6 +16,7 @@ struct ContentView: View {
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.accountsTracker) var accountsTracker
+    @Dependency(\.markReadBatcher) var markReadBatcher
     
     @Environment(\.setAppFlow) private var setFlow
     
@@ -162,12 +163,19 @@ struct ContentView: View {
         .environmentObject(unreadTracker)
         .environmentObject(quickLookState)
         .onChange(of: scenePhase) { phase in
-            // when app moves into background, hide the account switcher. This prevents the app from reopening with the switcher enabled.
             if phase != .active {
+                // prevents the app from reopening with the switcher enabled.
                 isPresentingAccountSwitcher = false
-            }
-            if phase == .background || phase == .inactive, appLock != .disabled {
-                biometricUnlock.isUnlocked = false
+                
+                // flush batcher(s) to avoid batches being lost on quit
+                Task {
+                    await markReadBatcher.flush()
+                }
+                
+                // activate biometric lock
+                if appLock != .disabled {
+                    biometricUnlock.isUnlocked = false
+                }
             }
         }
         .fullScreenCover(isPresented: .constant(isAppLocked)) {
