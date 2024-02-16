@@ -13,7 +13,6 @@ final class Instance2: Instance2Providing, CoreModel {
     static var cache: CoreContentCache<Instance2> = .init()
     typealias APIType = APISiteView
     var instance2: Instance2 { self }
-    var stub: NewInstanceStub { instance1.stub }
     
     let instance1: Instance1
     

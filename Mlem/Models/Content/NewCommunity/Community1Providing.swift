@@ -44,10 +44,32 @@ extension Community1Providing {
     var blocked: Bool { community1.blocked }
 }
 
-// Overwrite the `upgrade()` method from CommunityStubProviding
 extension Community1Providing {
+    
+    // Overwrite the `upgrade()` method from CommunityStubProviding
     func upgrade() async throws -> Community3 {
         let response = try await source.api.getCommunity(id: id)
         return source.caches.community3.createModel(source: source, for: response)
+    }
+    
+    func getPosts(
+        sort: PostSortType,
+        page: Int = 1,
+        cursor: String? = nil,
+        limit: Int,
+        savedOnly: Bool = false
+    ) async throws -> (posts: [Post2], cursor: String?) {
+        let response = try await source.api.getPosts(
+            communityId: id,
+            sort: sort,
+            page: page,
+            cursor: cursor,
+            limit: limit,
+            savedOnly: savedOnly
+        )
+        return (
+            posts: response.posts.map { source.caches.post2.createModel(source: source, for: $0) },
+            cursor: response.nextPage
+        )
     }
 }

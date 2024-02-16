@@ -7,6 +7,10 @@
 
 import Foundation
 
-protocol Instance3Providing: Instance1Providing {
+protocol Instance3Providing: Instance2Providing {
     var instance3: Instance3 { get }
+}
+
+extension Instance3Providing {
+    var instance2: Instance2 { instance3.instance2 }
 }

@@ -23,6 +23,8 @@ protocol Instance1Providing: InstanceStubProviding, Identifiable {
 typealias Instance = Instance1Providing
 
 extension Instance1Providing {
+    var stub: NewInstanceStub { instance1.stub }
+    
     var id: Int { instance1.id }
     var displayName: String { instance1.displayName }
     var description: String? { instance1.description }

@@ -45,3 +45,7 @@ class NewInstanceStub: InstanceStubProviding, APISource {
         return .create(from: response)
     }
 }
+
+extension NewInstanceStub: Mockable {
+    static let mock: NewInstanceStub = .init(url: URL("https://lemmy.world")!)
+}

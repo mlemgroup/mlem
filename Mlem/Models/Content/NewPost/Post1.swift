@@ -72,4 +72,3 @@ final class Post1: Post1Providing, NewContentModel {
         self.thumbnailUrl = post.thumbnailImageUrl
     }
 }
-

@@ -12,7 +12,7 @@ import SwiftUI
 enum ScoringOperation: Int, Decodable {
     case upvote = 1
     case downvote = -1
-    case resetVote = 0
+    case none = 0
 }
 
 extension ScoringOperation: AssociatedColor {
@@ -20,7 +20,7 @@ extension ScoringOperation: AssociatedColor {
         switch self {
         case .upvote: return .upvoteColor
         case .downvote: return .downvoteColor
-        case .resetVote: return nil
+        case .none: return nil
         }
     }
 }
@@ -30,7 +30,7 @@ extension ScoringOperation: AssociatedIcon {
         switch self {
         case .upvote: return Icons.upvoteSquare
         case .downvote: return Icons.downvoteSquare
-        case .resetVote: return Icons.resetVoteSquare
+        case .none: return Icons.resetVoteSquare
         }
     }
     
@@ -38,7 +38,7 @@ extension ScoringOperation: AssociatedIcon {
         switch self {
         case .upvote: return Icons.upvoteSquareFill
         case .downvote: return Icons.downvoteSquareFill
-        case .resetVote: return Icons.resetVoteSquareFill
+        case .none: return Icons.resetVoteSquareFill
         }
     }
 }

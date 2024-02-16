@@ -24,6 +24,7 @@
 		030E7EDA2B7F97E400E9A1AD /* Post1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E7ED92B7F97E400E9A1AD /* Post1.swift */; };
 		030E7EDC2B7FADE100E9A1AD /* Post2Providing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E7EDB2B7FADE100E9A1AD /* Post2Providing.swift */; };
 		030E7EDE2B7FADFE00E9A1AD /* Post2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E7EDD2B7FADFE00E9A1AD /* Post2.swift */; };
+		030E7EE02B7FBDF100E9A1AD /* NewAPIClient+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E7EDF2B7FBDF100E9A1AD /* NewAPIClient+Post.swift */; };
 		030E86392AC6B44B000283A6 /* DeletePictrsFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E86382AC6B44B000283A6 /* DeletePictrsFile.swift */; };
 		030E863B2AC6C3B1000283A6 /* PictrsRespository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E863A2AC6C3B1000283A6 /* PictrsRespository.swift */; };
 		030E863D2AC6C49E000283A6 /* PictrsRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E863C2AC6C49E000283A6 /* PictrsRepository+Dependency.swift */; };
@@ -632,6 +633,7 @@
 		030E7ED92B7F97E400E9A1AD /* Post1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post1.swift; sourceTree = "<group>"; };
 		030E7EDB2B7FADE100E9A1AD /* Post2Providing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post2Providing.swift; sourceTree = "<group>"; };
 		030E7EDD2B7FADFE00E9A1AD /* Post2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post2.swift; sourceTree = "<group>"; };
+		030E7EDF2B7FBDF100E9A1AD /* NewAPIClient+Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewAPIClient+Post.swift"; sourceTree = "<group>"; };
 		030E86382AC6B44B000283A6 /* DeletePictrsFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePictrsFile.swift; sourceTree = "<group>"; };
 		030E863A2AC6C3B1000283A6 /* PictrsRespository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictrsRespository.swift; sourceTree = "<group>"; };
 		030E863C2AC6C49E000283A6 /* PictrsRepository+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PictrsRepository+Dependency.swift"; sourceTree = "<group>"; };
@@ -2388,6 +2390,7 @@
 				032145632B7A7A9D001AE07E /* NewAPIClient+Site.swift */,
 				032145672B7A8878001AE07E /* NewAPIClient+User.swift */,
 				03E1E0512B77A2470009DF9F /* NewAPIClient+Community.swift */,
+				030E7EDF2B7FBDF100E9A1AD /* NewAPIClient+Post.swift */,
 				50A881272A71D66B003E3661 /* APIClient+Community.swift */,
 				50A8812D2A72D76C003E3661 /* APIClient+Comment.swift */,
 				03EC92982AC0BF8A007BBE7E /* APIClient+Pictrs.swift */,
@@ -3823,6 +3826,7 @@
 				CDE6A8182A490AF20062D161 /* InboxMentionBodyView.swift in Sources */,
 				CD3FBCDD2A4A6F0600B2063F /* GetReplies.swift in Sources */,
 				CD4368DB2AE247B700BD8BD1 /* MentionTracker.swift in Sources */,
+				030E7EE02B7FBDF100E9A1AD /* NewAPIClient+Post.swift in Sources */,
 				E49E01F42ABD99D300E42BB3 /* Routable.swift in Sources */,
 				03F4DC9F2B1A8AD500556C67 /* SignInAndSecuritySettingsView.swift in Sources */,
 				03F76FA62B2F5F4700E2B54A /* LinkUploadOptionsView.swift in Sources */,

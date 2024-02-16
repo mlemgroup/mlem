@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol Post1Providing: PostStubProviding {
+protocol Post1Providing: PostStubProviding, Identifiable {
     var post1: Post1 { get }
     
     var id: Int { get }

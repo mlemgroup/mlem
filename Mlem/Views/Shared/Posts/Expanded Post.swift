@@ -49,14 +49,12 @@ struct ExpandedPost: View {
     @AppStorage("showCommentJumpButton") var showCommentJumpButton: Bool = true
     @AppStorage("commentJumpButtonSide") var commentJumpButtonSide: JumpButtonLocation = .bottomTrailing
 
-    @EnvironmentObject var appState: AppState
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
 
     @StateObject var commentTracker: CommentTracker = .init()
     @EnvironmentObject var postTracker: StandardPostTracker
-    @StateObject var post: PostModel
-    var community: CommunityModel?
+    @State var post: any PostStubProviding
     
     @State var commentErrorDetails: ErrorDetails?
     
@@ -77,20 +75,20 @@ struct ExpandedPost: View {
     var body: some View {
         contentView
             .environmentObject(commentTracker)
-            .navigationBarTitle(post.community.name, displayMode: .inline)
+            .navigationBarTitle(post.community?.name ?? "Loading", displayMode: .inline)
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) { toolbarMenu }
             }
-            .task {
-                if commentTracker.comments.isEmpty {
-                    await loadComments()
-                }
-                await post.markRead(true)
-            }
+//            .task {
+//                if commentTracker.comments.isEmpty {
+//                    await loadComments()
+//                }
+//                await post.markRead(true)
+//            }
             .refreshable { await refreshComments() }
-            .onChange(of: commentSortingType) { newSortingType in
+            .onChange(of: commentSortingType) {
                 withAnimation(.easeIn(duration: 0.4)) {
-                    commentTracker.comments = sortComments(commentTracker.comments, by: newSortingType)
+                    commentTracker.comments = sortComments(commentTracker.comments, by: commentSortingType)
                 }
             }
     }
@@ -127,11 +125,11 @@ struct ExpandedPost: View {
                     }
                     .padding(.bottom, AppConstants.expandedPostOverscroll)
                 }
-                .onChange(of: scrollTarget) { target in
-                    if let target {
-                        scrollTarget = nil
+                .onChange(of: scrollTarget) {
+                    if let scrollTarget {
+                        self.scrollTarget = nil
                         withAnimation {
-                            scrollProxy.scrollTo(target, anchor: .top)
+                            scrollProxy.scrollTo(scrollTarget, anchor: .top)
                         }
                     }
                 }
@@ -244,7 +242,7 @@ struct ExpandedPost: View {
                 UserLinkView(
                     user: post.creator,
                     serverInstanceLocation: userServerInstanceLocation,
-                    communityContext: community
+                    communityContext: post.community
                 )
             }
             .padding(.top, AppConstants.postAndCommentSpacing)

@@ -15,6 +15,9 @@ struct BaseCacheGroup {
     var user1: BaseContentCache<User1> = .init()
     var user2: BaseContentCache<User2> = .init()
     var user3: BaseContentCache<User3> = .init()
+    
+    var post1: BaseContentCache<Post1> = .init()
+    var post2: BaseContentCache<Post2> = .init()
 }
 
 private struct WeakReference<Content: AnyObject> {

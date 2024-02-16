@@ -9,7 +9,7 @@ import Foundation
 
 extension NewAPIClient {
     func getSite() async throws -> SiteResponse {
-        let request = try GetSiteRequest()
+        let request = GetSiteRequest()
         return try await perform(request: request)
     }
 }

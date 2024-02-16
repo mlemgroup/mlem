@@ -22,6 +22,17 @@ protocol PostStubProviding: ContentStub {
     var removed: Bool? { get }
     var thumbnailUrl: URL? { get }
     var updatedDate: Date? { get }
+    
+    // From Post2Providing. These are defined as nil in the extension below
+    var creator: User1? { get }
+    var community: Community1? { get }
+    var commentCount: Int? { get }
+    var upvoteCount: Int? { get }
+    var downvoteCount: Int? { get }
+    var unreadCommentsCount: Int? { get }
+    var isSaved: Bool? { get }
+    var isRead: Bool? { get }
+    var myVote: ScoringOperation? { get }
 }
 
 extension PostStubProviding {
@@ -38,4 +49,14 @@ extension PostStubProviding {
     var removed: Bool? { nil }
     var thumbnailUrl: URL? { nil }
     var updatedDate: Date? { nil }
+    
+    var creator: User1? { nil }
+    var community: Community1? { nil }
+    var commentCount: Int? { nil }
+    var upvoteCount: Int? { nil }
+    var downvoteCount: Int? { nil }
+    var unreadCommentsCount: Int? { nil }
+    var isSaved: Bool? { nil }
+    var isRead: Bool? { nil }
+    var myVote: ScoringOperation? { nil }
 }

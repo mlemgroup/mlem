@@ -11,9 +11,8 @@ import SwiftUI
 @Observable
 final class Instance3: Instance3Providing, CoreModel {
     static var cache: CoreContentCache<Instance3> = .init()
-    typealias APIType = APISiteView
+    typealias APIType = SiteResponse
     var instance3: Instance3 { self }
-    var instance1: Instance1 { self }
     
     let instance2: Instance2
     
