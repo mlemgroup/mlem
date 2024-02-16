@@ -21,7 +21,7 @@ struct UserView: View {
     let internetSpeed: InternetSpeed
     let communityContext: CommunityModel?
     
-    @State var user: UserModel
+    @State var user: any UserStubProviding
     @State var selectedTab: UserViewTab = .overview
     @State var isLoadingContent: Bool = true
     

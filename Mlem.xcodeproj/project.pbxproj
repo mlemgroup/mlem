@@ -1396,6 +1396,13 @@
 			path = Community;
 			sourceTree = "<group>";
 		};
+		032145772B7EC9B9001AE07E /* NewPost */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = NewPost;
+			sourceTree = "<group>";
+		};
 		032C1E022B5D7D9C00FB4F23 /* AccountList */ = {
 			isa = PBXGroup;
 			children = (
@@ -2924,6 +2931,7 @@
 				032145752B7E77BC001AE07E /* APISource.swift */,
 				032145732B7E77AB001AE07E /* CoreModel.swift */,
 				03E1E0552B77B4920009DF9F /* ContentCache.swift */,
+				032145772B7EC9B9001AE07E /* NewPost */,
 				03E1E04A2B7771630009DF9F /* NewUser */,
 				03E1E0452B76BF580009DF9F /* NewInstance */,
 				03AFBE942B6E612600F01F3C /* NewCommunity */,
