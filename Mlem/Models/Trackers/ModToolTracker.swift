@@ -10,7 +10,8 @@ import Foundation
 enum ModTool: Hashable, Identifiable {
     case auditUser(UserModel?, CommunityModel)
     case moderators(CommunityModel)
-    case edit(CommunityModel)
+    case editCommunity(CommunityModel)
+    case instanceBan(UserModel?)
     
     var id: Int { hashValue }
     
@@ -23,9 +24,12 @@ enum ModTool: Hashable, Identifiable {
         case let .moderators(community):
             hasher.combine("moderators")
             hasher.combine(community.uid)
-        case let .edit(community):
+        case let .editCommunity(community):
             hasher.combine("edit")
             hasher.combine(community.uid)
+        case let .instanceBan(user):
+            hasher.combine("instanceBan")
+            hasher.combine(user?.uid ?? .init(contentType: .user, contentId: 0))
         }
     }
 }
@@ -33,6 +37,14 @@ enum ModTool: Hashable, Identifiable {
 /// Tracker for opening mod tools
 class ModToolTracker: ObservableObject {
     @Published var openTool: ModTool?
+    
+    func editCommunity(_ community: CommunityModel) {
+        openTool = .editCommunity(community)
+    }
+    
+    func showModerators(for community: CommunityModel) {
+        openTool = .moderators(community)
+    }
     
     func audit(in community: CommunityModel) {
         openTool = .auditUser(nil, community)
@@ -42,11 +54,7 @@ class ModToolTracker: ObservableObject {
         openTool = .auditUser(user, community)
     }
     
-    func edit(_ community: CommunityModel) {
-        openTool = .edit(community)
-    }
-    
-    func showModerators(for community: CommunityModel) {
-        openTool = .moderators(community)
+    func banUserFromInstance(_ user: UserModel) {
+        openTool = .instanceBan(user)
     }
 }

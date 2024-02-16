@@ -33,7 +33,7 @@ struct BanUserView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    let editModel: BanUserEditorModel
+    let user: UserModel
     
     @State var reason: String = ""
     @State var days: Int = 1
@@ -132,8 +132,8 @@ struct BanUserView: View {
                 Toggle("Remove Content", isOn: $removeContent)
                     .tint(.red)
             } footer: {
-                let posts = editModel.user.postCount ?? 0
-                let comments = editModel.user.commentCount ?? 0
+                let posts = user.postCount ?? 0
+                let comments = user.commentCount ?? 0
                 Text("Remove all \(posts) posts and \(comments) comments created by this user.")
             }
         }
@@ -159,7 +159,7 @@ struct BanUserView: View {
                 }
             }
         }
-        .navigationTitle("Ban \(editModel.user.displayName)")
+        .navigationTitle("Ban \(user.displayName)")
         .navigationBarTitleDisplayMode(.inline)
         .allowsHitTesting(!isWaiting)
         .opacity(isWaiting ? 0.5 : 1)
@@ -189,8 +189,8 @@ struct BanUserView: View {
         Task {
             let expires: Date? = isPermanent ? nil : .now.advanced(by: .days(Double(days)))
             let reason = reason.isEmpty ? nil : reason
-            var user = editModel.user
-            await user.toggleBan(expires: expires, reason: reason, removeData: removeContent) { editModel.callback($0) }
+            var user = user
+            await user.toggleBan(expires: expires, reason: reason, removeData: removeContent) // { editModel.callback($0) }
             DispatchQueue.main.async {
                 isWaiting = false
             }
@@ -207,5 +207,5 @@ struct BanUserView: View {
 }
 
 #Preview {
-    BanUserView(editModel: .init(user: .mock()))
+    BanUserView(user: .mock())
 }

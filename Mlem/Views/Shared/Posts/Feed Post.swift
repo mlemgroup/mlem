@@ -124,6 +124,7 @@ struct FeedPost: View {
                             MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
                         }
                         
+                        // TODO: ERIC check if moderator using SiteInformation UserModel mod list
                         if let community, community.isModerator(siteInformation.userId) {
                             Menu("Community Moderation") {
                                 ForEach(postModel.modMenuFunctions(community: community)) { function in

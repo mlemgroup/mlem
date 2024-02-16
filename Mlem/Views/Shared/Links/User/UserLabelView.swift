@@ -7,6 +7,18 @@
 
 import SwiftUI
 
+enum FlairSize {
+    case small, medium, large
+    
+    var width: CGFloat {
+        switch self {
+        case .small: 10
+        case .medium: 12
+        case .large: 14
+        }
+    }
+}
+
 struct UserLabelView: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     
@@ -100,19 +112,16 @@ struct UserLabelView: View {
         HStack(spacing: 4) {
             if serverInstanceLocation == .bottom {
                 if flairs.count == 1, let first = flairs.first {
-                    userFlairIcon(with: first)
-                        .imageScale(.large)
+                    userFlairIcon(with: first, size: .large)
                 } else if !flairs.isEmpty {
                     HStack(spacing: 2) {
-                        LazyHGrid(rows: [GridItem(), GridItem()], alignment: .center, spacing: 2) {
+                        LazyHGrid(rows: [GridItem(spacing: 2), GridItem()], alignment: .center, spacing: 2) {
                             ForEach(flairs.dropLast(flairs.count % 2), id: \.self) { flair in
-                                userFlairIcon(with: flair)
-                                    .imageScale(.medium)
+                                userFlairIcon(with: flair, size: .medium)
                             }
                         }
                         if flairs.count % 2 != 0 {
-                            userFlairIcon(with: flairs.last!)
-                                .imageScale(.medium)
+                            userFlairIcon(with: flairs.last!, size: .medium)
                         }
                     }
                     .padding(.trailing, 4)
@@ -120,12 +129,10 @@ struct UserLabelView: View {
         
             } else {
                 if flairs.count == 1, let first = flairs.first {
-                    userFlairIcon(with: first)
-                        .imageScale(.small)
+                    userFlairIcon(with: first, size: .small)
                 } else if !flairs.isEmpty {
                     ForEach(flairs, id: \.self) { flair in
-                        userFlairIcon(with: flair)
-                            .imageScale(.small)
+                        userFlairIcon(with: flair, size: .small)
                     }
                     .padding(.trailing, 4)
                 }
@@ -149,10 +156,11 @@ struct UserLabelView: View {
     }
     
     @ViewBuilder
-    private func userFlairIcon(with flair: UserFlair) -> some View {
+    private func userFlairIcon(with flair: UserFlair, size: FlairSize) -> some View {
         Image(systemName: flair.icon)
-            .bold()
-            .font(.footnote)
+            .resizable()
+            .scaledToFit()
+            .frame(height: size.width, alignment: .center)
             .foregroundColor(flair.color)
     }
     
@@ -316,11 +324,13 @@ struct UserLinkViewPreview: PreviewProvider {
     }
     
     static var previews: some View {
-        VStack {
-            ForEach(ServerInstanceLocation.allCases, id: \.rawValue) { serverInstanceLocation in
-                Spacer()
-                ForEach(PreviewUserType.allCases, id: \.rawValue) { userType in
-                    generateUserLinkView(name: "\(userType)User", userType: userType, serverInstanceLocation: serverInstanceLocation)
+        NavigationStack {
+            VStack {
+                ForEach(ServerInstanceLocation.allCases, id: \.rawValue) { serverInstanceLocation in
+                    Spacer()
+                    ForEach(PreviewUserType.allCases, id: \.rawValue) { userType in
+                        generateUserLinkView(name: "\(userType)User", userType: userType, serverInstanceLocation: serverInstanceLocation)
+                    }
                 }
             }
         }

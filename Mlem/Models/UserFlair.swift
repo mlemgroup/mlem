@@ -44,9 +44,9 @@ enum UserFlair {
         case .bot:
             return Icons.botFlair
         case .bannedFromInstance:
-            return Icons.bannedFlair
+            return Icons.instanceBannedFlair
         case .bannedFromCommunity:
-            return Icons.communityBan
+            return Icons.communityBannedFlair
         case .developer:
             return Icons.developerFlair
         }

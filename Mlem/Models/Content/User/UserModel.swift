@@ -147,6 +147,12 @@ struct UserModel {
         bannedFromCommunity: Bool? = false
     ) -> [UserFlair] {
         var ret: [UserFlair] = .init()
+        if banned {
+            ret.append(.bannedFromInstance)
+        }
+        if bannedFromCommunity ?? false {
+            ret.append(.bannedFromCommunity)
+        }
         if let post = postContext, post.creatorId == self.userId {
             ret.append(.op)
         }
@@ -165,12 +171,6 @@ struct UserModel {
         }
         if isBot {
             ret.append(.bot)
-        }
-        if bannedFromCommunity ?? false {
-            ret.append(.bannedFromCommunity)
-        }
-        if banned {
-            ret.append(.bannedFromInstance)
         }
         return ret
     }

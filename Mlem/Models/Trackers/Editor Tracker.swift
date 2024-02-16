@@ -9,7 +9,6 @@ import Foundation
 class EditorTracker: ObservableObject {
     @Published var editResponse: ConcreteEditorModel?
     @Published var editPost: PostEditorModel?
-    @Published var banUser: BanUserEditorModel?
 
     func openEditor(with editResponse: ConcreteEditorModel) {
         self.editResponse = editResponse

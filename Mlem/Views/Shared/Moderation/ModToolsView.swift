@@ -80,7 +80,7 @@ struct ModToolsView: View {
         }
         
         Button {
-            modToolTracker.edit(community)
+            modToolTracker.editCommunity(community)
         } label: {
             HStack(spacing: AppConstants.halfSpacing) {
                 Image(systemName: Icons.edit)

@@ -24,20 +24,22 @@ extension UserModel {
     
     func banMenuFunction(
         _ callback: @escaping (_ item: Self) -> Void = { _ in },
-        editorTracker: EditorTracker
+        modToolTracker: ModToolTracker
     ) -> MenuFunction {
         .standardMenuFunction(
             text: banned ? "Unban" : "Ban",
-            imageName: Icons.bannedFlair,
+            imageName: Icons.instanceBan,
             role: .destructive(prompt: banned ? "Really unban this user?" : nil),
             callback: {
                 if banned {
+                    // TODO: ERIC unban reason
                     Task {
                         var new = self
                         await new.toggleBan(callback)
                     }
                 } else {
-                    editorTracker.banUser = BanUserEditorModel(user: self, callback: callback)
+                    // editorTracker.banUser = BanUserEditorModel(user: self, callback: callback)
+                    modToolTracker.banUserFromInstance(self)
                 }
             }
         )
@@ -45,7 +47,7 @@ extension UserModel {
     
     func menuFunctions(
         _ callback: @escaping (_ item: Self) -> Void = { _ in },
-        editorTracker: EditorTracker? = nil
+        modToolTracker: ModToolTracker? = nil
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         do {
@@ -80,8 +82,8 @@ extension UserModel {
         
         if !isOwnUser {
             functions.append(blockMenuFunction(callback))
-            if siteInformation.myUser?.isAdmin ?? false, !(isAdmin ?? false), let editorTracker {
-                functions.append(banMenuFunction(callback, editorTracker: editorTracker))
+            if siteInformation.myUser?.isAdmin ?? false, !(isAdmin ?? false), let modToolTracker {
+                functions.append(banMenuFunction(callback, modToolTracker: modToolTracker))
             }
         }
         return functions
