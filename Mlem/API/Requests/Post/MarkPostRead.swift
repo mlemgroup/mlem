@@ -15,12 +15,13 @@ struct MarkPostReadRequest: APIPostRequest {
     let body: Body
 
     struct Body: Encodable {
-        let post_id: Int
+        let post_id: Int?
+        let post_ids: [Int]?
         let read: Bool
         let auth: String
-        // TODO: 0.19 support add post_ids? field
     }
 
+    /// Create a request to mark a single post as read
     init(
         session: APISession,
         postId: Int,
@@ -30,6 +31,23 @@ struct MarkPostReadRequest: APIPostRequest {
 
         self.body = try .init(
             post_id: postId,
+            post_ids: nil,
+            read: read,
+            auth: session.token
+        )
+    }
+    
+    /// Create a request to mark multiple posts as read
+    init(
+        session: APISession,
+        postIds: [Int],
+        read: Bool
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        
+        self.body = try .init(
+            post_id: nil,
+            post_ids: postIds,
             read: read,
             auth: session.token
         )

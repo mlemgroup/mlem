@@ -8,6 +8,10 @@
 import Dependencies
 import Foundation
 
+enum PostError: Error {
+    case failure
+}
+
 class PostRepository {
     @Dependency(\.apiClient) private var apiClient
     
@@ -54,6 +58,17 @@ class PostRepository {
     func markRead(post: PostModel, read: Bool) async throws -> PostModel {
         let success = try await apiClient.markPostAsRead(for: post.postId, read: read).success
         return PostModel(from: post, read: success ? read : post.read)
+    }
+    
+    /// Attempts to mark the given posts as read.
+    /// - Parameters:
+    ///   - postIds: postIds to mark as read
+    ///   - read: Intended read state of the posts (true to mark read, false to mark unread)
+    func markRead(postIds: [Int], read: Bool) async throws {
+        let success = try await apiClient.markPostsAsRead(for: postIds, read: read).success
+        if !success {
+            throw PostError.failure
+        }
     }
 
     /// Rates a given post. Does not care what the current vote state is; sends the given request no matter what (i.e., calling this with operation `.upvote` on an already upvoted post will not send a `.resetVote`, but will instead send a second idempotent `.upvote`)

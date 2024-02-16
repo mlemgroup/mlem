@@ -52,7 +52,7 @@ enum Icons {
     static let titleOnlyPost: String = "character.bubble"
     static let pinned: String = "pin.fill"
     static let websiteIcon: String = "globe"
-    static let hideRead: String = "book"
+    static let read: String = "book"
     
     // post sizes
     static let postSizeSetting: String = "rectangle.expand.vertical"

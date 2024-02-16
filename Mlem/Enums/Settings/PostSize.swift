@@ -17,6 +17,14 @@ extension PostSize: SettingsOptions {
     }
     
     var id: Self { self }
+    
+    var markReadThreshold: Int {
+        switch self {
+        case .compact: 4
+        case .headline: 2
+        case .large: 1
+        }
+    }
 }
 
 extension PostSize: AssociatedIcon {

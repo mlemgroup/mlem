@@ -13,6 +13,7 @@ class SiteInformationTracker: ObservableObject {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.accountsTracker) var accountsTracker
+    @Dependency(\.markReadBatcher) var markReadBatcher
     
     @Published private(set) var instance: InstanceModel?
     @Published private(set) var enableDownvotes = true
@@ -42,6 +43,9 @@ class SiteInformationTracker: ObservableObject {
                     myUser?.isAdmin = response.admins.contains { $0.person.id == myUser?.userId }
                 }
                 
+                if let version {
+                    markReadBatcher.resolveSiteVersion(to: version)
+                }
             } catch {
                 errorHandler.handle(error)
             }
