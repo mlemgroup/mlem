@@ -19,9 +19,9 @@ struct MenuButton: View {
         case let .shareImage(shareImageFunction):
             ShareLink(item: shareImageFunction.image, preview: .init("photo", image: shareImageFunction.image))
         case let .standard(standardMenuFunction):
-            let role: ButtonRole? = standardMenuFunction.destructiveActionPrompt != nil ? .destructive : nil
+            let role: ButtonRole? = standardMenuFunction.role != nil ? .destructive : nil
             Button(role: role) {
-                if standardMenuFunction.destructiveActionPrompt != nil, let confirmDestructive {
+                if case let .destructive(prompt: prompt) = standardMenuFunction.role, prompt != nil, let confirmDestructive {
                     confirmDestructive(standardMenuFunction)
                 } else {
                     standardMenuFunction.callback()

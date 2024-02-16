@@ -12,6 +12,7 @@ import SwiftUI
 /// View for post feeds aggregating multiple communities (all, local, subscribed, saved)
 struct AggregateFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.markReadBatcher) var markReadBatcher
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.scrollViewProxy) var scrollProxy
@@ -82,6 +83,7 @@ struct AggregateFeedView: View {
                 if let selectedFeed {
                     switch selectedFeed {
                     case .all, .local, .subscribed:
+                        await markReadBatcher.flush()
                         await postTracker.changeFeedType(to: selectedFeed)
                         postTracker.isStale = false
                     default:
@@ -94,6 +96,7 @@ struct AggregateFeedView: View {
                     do {
                         switch selectedFeed {
                         case .all, .local, .subscribed:
+                            await markReadBatcher.flush()
                             _ = try await postTracker.refresh(clearBeforeRefresh: false)
                         case .saved:
                             _ = try await savedContentTracker.refresh(clearBeforeRefresh: false)

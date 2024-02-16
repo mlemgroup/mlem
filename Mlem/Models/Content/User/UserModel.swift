@@ -15,6 +15,7 @@ struct UserModel {
     @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
+    @Dependency(\.apiClient) var apiClient
     
     // Ids
     var userId: Int!
@@ -118,8 +119,9 @@ struct UserModel {
         deleted = person.deleted
         isBot = person.botAccount
         
-        isAdmin = person.admin
-        
+        if let admin = person.admin {
+            self.isAdmin = person.admin
+        }
         creationDate = person.published
         updatedDate = person.updated
         banExpirationDate = person.banExpires
@@ -186,6 +188,41 @@ struct UserModel {
         }
     }
     
+    mutating func toggleBan(
+        expires: Date? = nil,
+        reason: String? = nil,
+        removeData: Bool = false,
+        _ callback: @escaping (_ item: Self) -> Void = { _ in }
+    ) async {
+        banned.toggle()
+        if banned {
+            banExpirationDate = expires
+        }
+        RunLoop.main.perform { [self] in
+            callback(self)
+        }
+        var expirationDate: Int?
+        if let expires {
+            expirationDate = Int(expires.timeIntervalSince1970)
+        }
+        do {
+            let response = try await apiClient.banPerson(
+                id: userId,
+                shouldBan: banned,
+                expires: expirationDate,
+                reason: reason,
+                removeData: removeData
+            )
+            self.banned = response.banned
+            RunLoop.main.perform { [self] in
+                callback(self)
+            }
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+        }
+    }
+    
     static func mock() -> UserModel {
         self.init(from: APIPerson.mock())
     }
@@ -229,6 +266,7 @@ extension UserModel: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(uid)
         hasher.combine(blocked)
+        hasher.combine(banned)
         hasher.combine(postCount)
         hasher.combine(commentCount)
         hasher.combine(displayName)
