@@ -31,6 +31,8 @@ struct UserResultView: View {
     @State private var isPresentingConfirmDestructive: Bool = false
     @State private var confirmationMenuFunction: StandardMenuFunction?
     
+    @EnvironmentObject var editorTracker: EditorTracker
+    
     init(
         _ user: any User,
         complications: [UserComplication] = .withoutTypeLabel,
@@ -129,11 +131,11 @@ struct UserResultView: View {
             confirmationMenuFunction: confirmationMenuFunction
         )
         .addSwipeyActions(swipeActions ?? .init())
-//        .contextMenu {
-//            ForEach(user.menuFunctions(trackerCallback)) { item in
-//                MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
-//            }
-//        }
+        // .contextMenu {
+        //     ForEach(user.menuFunctions(trackerCallback, editorTracker: editorTracker)) { item in
+        //         MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+        //     }
+        // }
     }
     
     @ViewBuilder

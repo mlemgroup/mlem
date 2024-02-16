@@ -18,6 +18,8 @@ struct UserView: View {
     @Environment(\.navigationPathWithRoutes) private var navigationPath
     @Environment(\.scrollViewProxy) private var scrollViewProxy
     
+    @EnvironmentObject var editorTracker: EditorTracker
+    
     let internetSpeed: InternetSpeed
     let communityContext: CommunityModel?
     
@@ -151,7 +153,7 @@ struct UserView: View {
         )
         .toolbar {
             ToolbarItemGroup(placement: .secondaryAction) {
-                let functions = user.menuFunctions { user = $0 }
+                let functions = user.menuFunctions({ user = $0 }, editorTracker: editorTracker)
                 ForEach(functions) { item in
                     MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
                 }

@@ -10,17 +10,17 @@ import SwiftUI
 
 extension CommunityModel {
     func newPostMenuFunction(editorTracker: EditorTracker, postTracker: StandardPostTracker? = nil) -> MenuFunction {
-        .standardMenuFunction(
-            text: "New Post",
-            imageName: Icons.sendFill,
-            destructiveActionPrompt: nil,
-            enabled: true
-        ) {
-            editorTracker.openEditor(with: PostEditorModel(
-                community: self,
-                postTracker: postTracker
-            ))
-        }
+        return .standardMenuFunction(
+                text: "New Post",
+                imageName: Icons.sendFill,
+                role: nil,
+                enabled: true
+            ) {
+                editorTracker.openEditor(with: PostEditorModel(
+                    community: self,
+                    postTracker: postTracker
+                ))
+            }
     }
     
     func subscribeMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) throws -> StandardMenuFunction {
@@ -30,7 +30,7 @@ extension CommunityModel {
         return .init(
             text: subscribed ? "Unsubscribe" : "Subscribe",
             imageName: subscribed ? Icons.unsubscribe : Icons.subscribe,
-            destructiveActionPrompt: subscribed ? "Are you sure you want to unsubscribe from \(name!)?" : nil,
+            role: subscribed ? .destructive(prompt: "Are you sure you want to unsubscribe from \(name!)?") : nil,
             enabled: true,
             callback: {
                 Task {
@@ -48,7 +48,7 @@ extension CommunityModel {
         .init(
             text: favorited ? "Unfavorite" : "Favorite",
             imageName: favorited ? Icons.unfavorite : Icons.favorite,
-            destructiveActionPrompt: favorited ? "Really unfavorite \(name ?? "this community")?" : nil,
+            role: favorited ? .destructive(prompt: "Really unfavorite \(name ?? "this community")?") : nil,
             enabled: true
         ) {
             Task {
@@ -68,7 +68,7 @@ extension CommunityModel {
         return .standardMenuFunction(
             text: blocked ? "Unblock" : "Block",
             imageName: blocked ? Icons.show : Icons.hide,
-            destructiveActionPrompt: blocked ? nil : AppConstants.blockCommunityPrompt,
+            role: blocked ? nil : .destructive(prompt: AppConstants.blockCommunityPrompt),
             enabled: true,
             callback: {
                 Task {
@@ -114,7 +114,7 @@ extension CommunityModel {
             .standardMenuFunction(
                 text: "Copy Name",
                 imageName: Icons.copy,
-                destructiveActionPrompt: nil,
+                role: nil,
                 enabled: true,
                 callback: copyFullyQualifiedName
             )
