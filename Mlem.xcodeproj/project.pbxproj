@@ -88,10 +88,16 @@
 		03C905CA2B3C834C00B9082F /* AvatarBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C905C92B3C834C00B9082F /* AvatarBannerView.swift */; };
 		03C905CC2B3C88F700B9082F /* SearchTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C905CB2B3C88F700B9082F /* SearchTab.swift */; };
 		03C905CE2B3C8DC400B9082F /* UserView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C905CD2B3C8DC400B9082F /* UserView+Logic.swift */; };
+		03C942922B6457B4002068A4 /* BanUserEditorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C942912B6457B4002068A4 /* BanUserEditorModel.swift */; };
+		03C942942B64596B002068A4 /* BanUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C942932B64596B002068A4 /* BanUserView.swift */; };
+		03C942962B648252002068A4 /* BanPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C942952B648252002068A4 /* BanPerson.swift */; };
 		03CB329E2A6D8E910021EF27 /* PostComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CB329D2A6D8E910021EF27 /* PostComposerView.swift */; };
 		03E0B9C82A61F0F400FED265 /* AdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */; };
 		03E0B9CA2A62B4A400FED265 /* ContributorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9C92A62B4A400FED265 /* ContributorsView.swift */; };
 		03E0B9CC2A62CD5800FED265 /* ThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9CB2A62CD5800FED265 /* ThemeSettingsView.swift */; };
+		03E47AEB2B66BADC00A3E4DB /* UptimeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E47AEA2B66BADC00A3E4DB /* UptimeData.swift */; };
+		03E47AED2B66BC0000A3E4DB /* InstanceUptimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E47AEC2B66BC0000A3E4DB /* InstanceUptimeView.swift */; };
+		03E47AEF2B66BD3C00A3E4DB /* InstanceModel+Uptime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E47AEE2B66BD3C00A3E4DB /* InstanceModel+Uptime.swift */; };
 		03E79F3F2AE3E7100006700D /* SortingSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E79F3E2AE3E7100006700D /* SortingSettingsView.swift */; };
 		03E90FB12B3703ED00E5A802 /* AccountSortMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E90FB02B3703ED00E5A802 /* AccountSortMode.swift */; };
 		03EA79C42AC0D92C00BCDC91 /* PostComposerView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EA79C32AC0D92C00BCDC91 /* PostComposerView+Logic.swift */; };
@@ -666,10 +672,16 @@
 		03C905C92B3C834C00B9082F /* AvatarBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarBannerView.swift; sourceTree = "<group>"; };
 		03C905CB2B3C88F700B9082F /* SearchTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTab.swift; sourceTree = "<group>"; };
 		03C905CD2B3C8DC400B9082F /* UserView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserView+Logic.swift"; sourceTree = "<group>"; };
+		03C942912B6457B4002068A4 /* BanUserEditorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BanUserEditorModel.swift; sourceTree = "<group>"; };
+		03C942932B64596B002068A4 /* BanUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BanUserView.swift; sourceTree = "<group>"; };
+		03C942952B648252002068A4 /* BanPerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BanPerson.swift; sourceTree = "<group>"; };
 		03CB329D2A6D8E910021EF27 /* PostComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComposerView.swift; sourceTree = "<group>"; };
 		03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsView.swift; sourceTree = "<group>"; };
 		03E0B9C92A62B4A400FED265 /* ContributorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorsView.swift; sourceTree = "<group>"; };
 		03E0B9CB2A62CD5800FED265 /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
+		03E47AEA2B66BADC00A3E4DB /* UptimeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UptimeData.swift; sourceTree = "<group>"; };
+		03E47AEC2B66BC0000A3E4DB /* InstanceUptimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceUptimeView.swift; sourceTree = "<group>"; };
+		03E47AEE2B66BD3C00A3E4DB /* InstanceModel+Uptime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InstanceModel+Uptime.swift"; sourceTree = "<group>"; };
 		03E79F3E2AE3E7100006700D /* SortingSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingSettingsView.swift; sourceTree = "<group>"; };
 		03E90FB02B3703ED00E5A802 /* AccountSortMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSortMode.swift; sourceTree = "<group>"; };
 		03EA79C32AC0D92C00BCDC91 /* PostComposerView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostComposerView+Logic.swift"; sourceTree = "<group>"; };
@@ -1404,6 +1416,8 @@
 			isa = PBXGroup;
 			children = (
 				03A54C312B5331F30064CCDE /* InstanceView.swift */,
+				03E47AEC2B66BC0000A3E4DB /* InstanceUptimeView.swift */,
+				03E47AEA2B66BADC00A3E4DB /* UptimeData.swift */,
 				031F95562B5C7FF20069C244 /* InstanceDetailsView.swift */,
 			);
 			path = Instance;
@@ -1413,6 +1427,7 @@
 			isa = PBXGroup;
 			children = (
 				03A54C342B533BC50064CCDE /* InstanceModel.swift */,
+				03E47AEE2B66BD3C00A3E4DB /* InstanceModel+Uptime.swift */,
 				0355DA4E2B5EB63600CDF5A5 /* InstanceStub.swift */,
 				0355DA4C2B5EB51900CDF5A5 /* InstanceModel+ContentModel.swift */,
 				03A54C362B545A430064CCDE /* InstanceModel+MenuFunctions.swift */,
@@ -1426,6 +1441,14 @@
 				03B643562A6864CD00F65700 /* TabBarSettingsView.swift */,
 			);
 			path = TabBar;
+			sourceTree = "<group>";
+		};
+		03C942902B6457A3002068A4 /* Administration */ = {
+			isa = PBXGroup;
+			children = (
+				03C942912B6457B4002068A4 /* BanUserEditorModel.swift */,
+			);
+			path = Administration;
 			sourceTree = "<group>";
 		};
 		03E79F3D2AE3E6FF0006700D /* Sorting */ = {
@@ -2041,6 +2064,7 @@
 		6372182E2A3A2AAD008C4816 /* Person */ = {
 			isa = PBXGroup;
 			children = (
+				03C942952B648252002068A4 /* BanPerson.swift */,
 				6372182F2A3A2AAD008C4816 /* GetPersonDetails.swift */,
 				CDF842632A49EAFA00723DA0 /* GetPersonMentions.swift */,
 				CD3FBCDC2A4A6F0600B2063F /* GetReplies.swift */,
@@ -2236,6 +2260,7 @@
 			isa = PBXGroup;
 			children = (
 				CD391F952A535F5400E213B5 /* ResponseEditorView.swift */,
+				03C942932B64596B002068A4 /* BanUserView.swift */,
 				03CB329D2A6D8E910021EF27 /* PostComposerView.swift */,
 				03EA79C32AC0D92C00BCDC91 /* PostComposerView+Logic.swift */,
 			);
@@ -2675,6 +2700,7 @@
 		CDA2C5242A705D3100649D5A /* Composers */ = {
 			isa = PBXGroup;
 			children = (
+				03C942902B6457A3002068A4 /* Administration */,
 				CD391F922A533B6C00E213B5 /* Response Composers */,
 				CDA2C5252A705D6000649D5A /* PostEditor.swift */,
 			);
@@ -3206,6 +3232,7 @@
 				637218442A3A2AAD008C4816 /* HierarchicalComment.swift in Sources */,
 				CDDCF6472A663849003DA3AC /* EnvironmentValues+TabSelectionHashValue.swift in Sources */,
 				63D24EDE2A169F2A005CCA81 /* Markdown View.swift in Sources */,
+				03C942962B648252002068A4 /* BanPerson.swift in Sources */,
 				E453A1D02A81C2140004BB8A /* QuickLookPreviewController.swift in Sources */,
 				B104A6E02A59C19400B3E725 /* OperationQueue+ConvenienceInit.swift in Sources */,
 				CD2053122ACB72190000AA38 /* AccountTransitionView.swift in Sources */,
@@ -3278,6 +3305,7 @@
 				039C8DBB2B35B2EB0096BAAF /* AccountListView.swift in Sources */,
 				CD1446252A5B357900610EF1 /* Document.swift in Sources */,
 				CDEBC32C2A9A582500518D9D /* Votes Model.swift in Sources */,
+				03E47AED2B66BC0000A3E4DB /* InstanceUptimeView.swift in Sources */,
 				CDEBC3282A9A57F200518D9D /* Content Model Identifier.swift in Sources */,
 				6FF17D012B685C16007E1814 /* AppLockView.swift in Sources */,
 				B1955A1D2A606B950056CF99 /* Easter Rewards.swift in Sources */,
@@ -3399,11 +3427,13 @@
 				039439912A98FA6100463032 /* UserFeedView.swift in Sources */,
 				03EA79C42AC0D92C00BCDC91 /* PostComposerView+Logic.swift in Sources */,
 				03A18CBF2B1252BD00BA69D2 /* ListingType.swift in Sources */,
+				03E47AEF2B66BD3C00A3E4DB /* InstanceModel+Uptime.swift in Sources */,
 				637218482A3A2AAD008C4816 /* APICommentReply.swift in Sources */,
 				CD3720EC2B2E8F96004D7103 /* AlternativeIconCell.swift in Sources */,
 				CDD0EF942B7A959000CA3504 /* ModToolsView.swift in Sources */,
 				032109472AA7C3FC00912DFC /* CommunityLabelView.swift in Sources */,
 				637218502A3A2AAD008C4816 /* APIPersonAggregates.swift in Sources */,
+				03E47AEB2B66BADC00A3E4DB /* UptimeData.swift in Sources */,
 				CD4368D72AE2464D00BD8BD1 /* ReplyModel+InboxItem.swift in Sources */,
 				6D693A422A5114DF009E2D76 /* APIPostReport.swift in Sources */,
 				5064D03F2A6DE0DB00B22EE3 /* Notifier+Dependency.swift in Sources */,
@@ -3452,6 +3482,7 @@
 				030D00882AD1BB2600953B1D /* UserModel+ContentModel.swift in Sources */,
 				CD82A24C2A70A26900111034 /* View+CustomBadge.swift in Sources */,
 				B1CB6E752A4C729D00DA9675 /* Bundle+IconFileName.swift in Sources */,
+				03C942922B6457B4002068A4 /* BanUserEditorModel.swift in Sources */,
 				030D4AE82AA1278400A3393D /* ErrorDetails+Mock.swift in Sources */,
 				CD4368C62AE240BF00BD8BD1 /* MessageModel.swift in Sources */,
 				6363D60427EE20A200E34822 /* Expanded Post.swift in Sources */,
@@ -3532,6 +3563,7 @@
 				637218622A3A2AAD008C4816 /* DeletePost.swift in Sources */,
 				505240E32A86916500EA4558 /* FavoriteCommunitiesTracker+Dependency.swift in Sources */,
 				6332FDC327EFCB5F0009A98A /* Color+Colors.swift in Sources */,
+				03C942942B64596B002068A4 /* BanUserView.swift in Sources */,
 				E46AF9942B29AB270087FDF3 /* EnvironmentValues+ScrollViewReaderProxy.swift in Sources */,
 				637218432A3A2AAD008C4816 /* APIClient.swift in Sources */,
 				CD82A2572A716D7C00111034 /* PersonRepository+Dependency.swift in Sources */,

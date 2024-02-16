@@ -149,6 +149,11 @@ enum Icons {
     static let close: String = "multiply"
     static let cakeDay: String = "birthday.cake"
     
+    // uptime
+    static let uptimeOffline: String = "xmark.circle.fill"
+    static let uptimeOnline: String = "checkmark.circle.fill"
+    static let uptimeOutage: String = "exclamationmark.circle.fill"
+    
     // end of feed
     static let endOfFeedHobbit: String = "figure.climbing"
     static let endOfFeedCartoon: String = "figure.wave"
@@ -191,6 +196,7 @@ enum Icons {
     static let limitImageHeightSetting: String = "rectangle.compress.vertical"
     static let appLockSettings: String = "lock.app.dashed"
     static let collapseComments: String = "arrow.down.and.line.horizontal.and.arrow.up"
+    static let ban: String = "xmark.circle"
     
     // mod tools
     static let auditUser: String = "person.crop.circle.badge.questionmark.fill"

@@ -240,7 +240,7 @@ extension MentionModel {
         ret.append(MenuFunction.standardMenuFunction(
             text: votes.myVote == .upvote ? "Undo Upvote" : "Upvote",
             imageName: votes.myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvoteSquare,
-            destructiveActionPrompt: nil,
+            role: nil,
             enabled: true
         ) {
             Task(priority: .userInitiated) {
@@ -252,7 +252,7 @@ extension MentionModel {
         ret.append(MenuFunction.standardMenuFunction(
             text: votes.myVote == .downvote ? "Undo Downvote" : "Downvote",
             imageName: votes.myVote == .downvote ? Icons.downvoteSquareFill : Icons.downvoteSquare,
-            destructiveActionPrompt: nil,
+            role: nil,
             enabled: true
         ) {
             Task(priority: .userInitiated) {
@@ -264,7 +264,7 @@ extension MentionModel {
         ret.append(MenuFunction.standardMenuFunction(
             text: personMention.read ? "Mark Unread" : "Mark Read",
             imageName: personMention.read ? Icons.markUnread : Icons.markRead,
-            destructiveActionPrompt: nil,
+            role: nil,
             enabled: true
         ) {
             Task(priority: .userInitiated) {
@@ -276,7 +276,7 @@ extension MentionModel {
         ret.append(MenuFunction.standardMenuFunction(
             text: "Reply",
             imageName: Icons.reply,
-            destructiveActionPrompt: nil,
+            role: nil,
             enabled: true
         ) {
             Task(priority: .userInitiated) {
@@ -288,7 +288,7 @@ extension MentionModel {
         ret.append(MenuFunction.standardMenuFunction(
             text: "Report",
             imageName: Icons.moderationReport,
-            destructiveActionPrompt: AppConstants.reportCommentPrompt,
+            role: .destructive(prompt: AppConstants.reportCommentPrompt),
             enabled: true
         ) {
             Task(priority: .userInitiated) {
@@ -300,7 +300,7 @@ extension MentionModel {
         ret.append(MenuFunction.standardMenuFunction(
             text: "Block",
             imageName: Icons.userBlock,
-            destructiveActionPrompt: AppConstants.blockUserPrompt,
+            role: .destructive(prompt: AppConstants.blockUserPrompt),
             enabled: true
         ) {
             Task(priority: .userInitiated) {

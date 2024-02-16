@@ -15,7 +15,6 @@ extension UserContentFeedView {
         ret.append(MenuFunction.standardMenuFunction(
             text: blurNsfwText,
             imageName: Icons.blurNsfw,
-            destructiveActionPrompt: nil,
             enabled: true
         ) {
             shouldBlurNsfw.toggle()
@@ -33,7 +32,6 @@ extension UserContentFeedView {
             return MenuFunction.standardMenuFunction(
                 text: size.label,
                 imageName: imageName,
-                destructiveActionPrompt: nil,
                 enabled: enabled,
                 callback: { postSize = size }
             )
