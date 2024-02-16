@@ -160,7 +160,10 @@ struct ContentView: View {
             }
         }
         .sheet(item: $modToolTracker.openTool) { tool in
-            ModToolSheet(tool: tool)
+            NavigationStack {
+                ModToolSheet(tool: tool)
+            }
+            .handleLemmyViews()
         }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(editorTracker)

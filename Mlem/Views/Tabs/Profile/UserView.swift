@@ -213,7 +213,7 @@ struct UserView: View {
                         flairBackground(color: flair.color) {
                             HStack {
                                 switch flair {
-                                case .banned:
+                                case .bannedFromInstance:
                                     Image(systemName: Icons.bannedFlair)
                                     if let expirationDate = user.banExpirationDate {
                                         Text("Banned Until \(expirationDate.dateString)")

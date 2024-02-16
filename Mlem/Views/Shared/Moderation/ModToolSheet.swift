@@ -25,14 +25,10 @@ struct ModToolSheet: View {
         VStack(spacing: 0) {
             Divider()
             
-            if let moderators = community.moderators {
-                ForEach(moderators, id: \.id) { user in
-                    UserRow(user: user, communityContext: community, complications: [])
-                    Divider()
-                }
-            }
+            ModeratorListView(community: community, navigationEnabled: false)
             
             Spacer()
         }
+        .navigationTitle("Moderators")
     }
 }

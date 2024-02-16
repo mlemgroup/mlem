@@ -8,10 +8,11 @@
 import Foundation
 import SwiftUI
 
-struct UserRow: View {
+struct UserListRowBody: View {
     let user: UserModel
     let communityContext: CommunityModel?
     let complications: [UserComplication]
+    let navigationEnabled: Bool
     
     var title: String {
         if user.blocked {
@@ -73,9 +74,12 @@ struct UserRow: View {
             }
             Spacer()
             trailingInfo
-            Image(systemName: Icons.forward)
-                .imageScale(.small)
-                .foregroundStyle(.tertiary)
+            
+            if navigationEnabled {
+                Image(systemName: Icons.forward)
+                    .imageScale(.small)
+                    .foregroundStyle(.tertiary)
+            }
         }
     }
     

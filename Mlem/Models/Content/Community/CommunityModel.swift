@@ -16,6 +16,8 @@ struct ActiveUserCount {
 }
 
 struct CommunityModel {
+    // MARK: - Members and Init
+    
     @Dependency(\.apiClient) private var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
@@ -150,6 +152,28 @@ struct CommunityModel {
         @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
         favorited = favoriteCommunitiesTracker.isFavorited(community)
     }
+    
+    // MARK: - Convenience
+    
+    func isModerator(_ userId: Int?) -> Bool {
+        print("DEBUG num mods: \(moderators?.count)")
+        print("DEBUG user id: \(userId)")
+        if let moderators, let userId {
+            let ret = moderators.contains(where: { userModel in
+                userModel.userId == userId
+            })
+            if ret {
+                print("DEBUG is mod")
+            } else {
+                print("DEBUG not a mod")
+            }
+            return ret
+        }
+        print("DEBUG not a mod")
+        return false
+    }
+    
+    // MARK: - Interactions
     
     func toggleSubscribe(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async throws {
         var new = self

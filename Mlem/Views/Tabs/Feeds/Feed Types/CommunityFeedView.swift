@@ -64,15 +64,6 @@ struct CommunityFeedView: View {
         return output
     }
     
-    var isModerator: Bool {
-        if let communityModerators = communityModel.moderators, let userId = siteInformation.myUserInfo?.localUserView.person.id {
-            return communityModerators.contains(where: { userModel in
-                userModel.userId == userId
-            })
-        }
-        return false
-    }
-    
     init(communityModel: CommunityModel) {
         // need to grab some stuff from app storage to initialize post tracker with
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
@@ -165,7 +156,7 @@ struct CommunityFeedView: View {
                 switch selectedTab {
                 case .posts: posts()
                 case .about: about()
-                case .moderators: moderators()
+                case .moderators: ModeratorListView(community: communityModel) // moderators()
                 case .details: details()
                 }
             }
@@ -178,23 +169,13 @@ struct CommunityFeedView: View {
     }
     
     func about() -> some View {
-        VStack(spacing: AppConstants.postAndCommentSpacing) {
+        VStack(spacing: AppConstants.standardSpacing) {
             if shouldShowCommunityHeaders, let banner = communityModel.banner {
                 CachedImage(url: banner, cornerRadius: AppConstants.largeItemCornerRadius)
             }
             MarkdownView(text: communityModel.description ?? "", isNsfw: false)
         }
-        .padding(AppConstants.postAndCommentSpacing)
-    }
-    
-    @ViewBuilder
-    func moderators() -> some View {
-        if let moderators = communityModel.moderators {
-            ForEach(moderators, id: \.id) { user in
-                UserResultView(user, communityContext: communityModel)
-                Divider()
-            }
-        }
+        .padding(AppConstants.standardSpacing)
     }
     
     func details() -> some View {
@@ -239,13 +220,13 @@ struct CommunityFeedView: View {
                     .buttonStyle(.plain)
                     Spacer()
                     
-                    if isModerator {
+                    if communityModel.isModerator(siteInformation.userId) {
                         moderateButton
                     } else {
                         subscribeButton
                     }
                 }
-                .padding(.horizontal, AppConstants.postAndCommentSpacing)
+                .padding(.horizontal, AppConstants.standardSpacing)
                 .padding(.bottom, 3)
                 Divider()
                 BubblePicker(availableTabs, selected: $selectedTab) {
@@ -354,8 +335,8 @@ struct CommunityFeedView: View {
             Image(systemName: imageName)
         }
         .foregroundStyle(foregroundColor)
-        .padding(.vertical, 5)
-        .padding(.horizontal, 10)
+        .padding(.vertical, AppConstants.halfSpacing)
+        .padding(.horizontal, AppConstants.standardSpacing)
         .background {
             Capsule()
                 .strokeBorder(foregroundColor, style: .init(lineWidth: 1))

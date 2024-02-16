@@ -10,14 +10,12 @@ import SwiftUI
 
 // TOOLS TO ADD
 //
-// inline only
+// inline
 // - remove post (POST /post/remove)
 // - lock post (POST /post/lock)
 // - feature post (POST /post/feature)
 // - distinguish comment (POST /comment/distinguish)
-//
-// inline and tools
-// - ban user (POST /community/ban_user) (context menu, plus explicit user lookup tool)
+// - ban user (POST /community/ban_user)
 //
 // tools
 // - edit community (PUT /community)
@@ -28,6 +26,7 @@ import SwiftUI
 // - moderate user
 //   - get report count (GET /user/report_count)
 //   - get post history on your community (person details + filter)
+//   - ban user (POST /community/ban_user)
 //
 // inbox
 // - get post reports (GET /post/report/list)

@@ -140,8 +140,46 @@ extension PostModel {
                 })
             }
         }
-
+        
         return functions
     }
+
     // swiftlint:enable function_body_length
+    
+    func modMenuFunctions(community: CommunityModel) -> [MenuFunction] {
+        assert(community.isModerator(siteInformation.userId), "modMenuFunctions called but user is not a mod!")
+        
+        var functions: [MenuFunction] = .init()
+        
+        let banVerb: String, banIcon: String
+        if creatorBannedFromCommunity {
+            banVerb = "unban"
+            banIcon = Icons.communityUnban
+        } else {
+            banVerb = "ban"
+            banIcon = Icons.communityBan
+        }
+        functions.append(MenuFunction.standardMenuFunction(
+            text: "\(banVerb.capitalized) User",
+            imageName: banIcon,
+            destructiveActionPrompt: "Really \(banVerb) \(creator.name ?? "this user")?",
+            enabled: true
+        ) {
+            Task(priority: .userInitiated) {
+                do {
+                    let updatedBannedStatus = try await self.apiClient.banFromCommunity(
+                        userId: self.post.creatorId,
+                        communityId: community.communityId,
+                        ban: !self.creatorBannedFromCommunity
+                    )
+                        
+                    await self.setCreatorBannedFromCommunity(updatedBannedStatus)
+                } catch {
+                    self.errorHandler.handle(error)
+                }
+            }
+        })
+        
+        return functions
+    }
 }

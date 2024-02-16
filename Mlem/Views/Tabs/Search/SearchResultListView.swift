@@ -29,7 +29,7 @@ struct SearchResultListView: View {
                             }
                         )
                     } else if let user = contentModel.wrappedValue as? UserModel {
-                        UserResultView(
+                        UserListRow(
                             user,
                             complications: showTypeLabel ? .withTypeLabel : .withoutTypeLabel,
                             trackerCallback: {

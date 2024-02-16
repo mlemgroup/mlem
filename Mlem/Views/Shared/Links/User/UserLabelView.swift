@@ -12,6 +12,7 @@ struct UserLabelView: View {
     
     var user: UserModel
     let serverInstanceLocation: ServerInstanceLocation
+    let bannedFromCommunity: Bool
     let overrideShowAvatar: Bool? // if present, shows or hides avatar according to value; otherwise uses system settings
     
     // Extra context about where the link is being displayed
@@ -29,6 +30,7 @@ struct UserLabelView: View {
         person: APIPerson,
         serverInstanceLocation: ServerInstanceLocation,
         overrideShowAvatar: Bool? = nil,
+        bannedFromCommunity: Bool,
         postContext: APIPost? = nil,
         commentContext: APIComment? = nil,
         communityContext: CommunityModel? = nil
@@ -36,6 +38,7 @@ struct UserLabelView: View {
         self.init(
             user: UserModel(from: person),
             serverInstanceLocation: serverInstanceLocation,
+            bannedFromCommunity: bannedFromCommunity,
             overrideShowAvatar: overrideShowAvatar,
             postContext: postContext,
             commentContext: commentContext,
@@ -46,6 +49,7 @@ struct UserLabelView: View {
     init(
         user: UserModel,
         serverInstanceLocation: ServerInstanceLocation,
+        bannedFromCommunity: Bool,
         overrideShowAvatar: Bool? = nil,
         postContext: APIPost? = nil,
         commentContext: APIComment? = nil,
@@ -54,6 +58,7 @@ struct UserLabelView: View {
         self.user = user
         self.serverInstanceLocation = serverInstanceLocation
         self.overrideShowAvatar = overrideShowAvatar
+        self.bannedFromCommunity = bannedFromCommunity
         
         _postContext = State(initialValue: postContext)
         _commentContext = State(initialValue: commentContext)
@@ -88,7 +93,8 @@ struct UserLabelView: View {
         let flairs = user.getFlairs(
             postContext: postContext,
             commentContext: commentContext,
-            communityContext: communityContext
+            communityContext: communityContext,
+            bannedFromCommunity: bannedFromCommunity
         )
         
         HStack(spacing: 4) {
@@ -303,6 +309,7 @@ struct UserLinkViewPreview: PreviewProvider {
         return UserLinkView(
             user: UserModel(from: previewUser),
             serverInstanceLocation: serverInstanceLocation,
+            bannedFromCommunity: false,
             postContext: postContext,
             commentContext: commentContext
         )

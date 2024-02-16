@@ -1,5 +1,5 @@
 //
-//  UserResultView.swift
+//  UserListRow.swift
 //  Mlem
 //
 //  Created by Sjmarf on 23/09/2023.
@@ -18,7 +18,7 @@ extension [UserComplication] {
     static let instanceOnly: [UserComplication] = [.instance]
 }
 
-struct UserResultView: View {
+struct UserListRow: View {
     @Dependency(\.apiClient) private var apiClient
     @Dependency(\.hapticManager) var hapticManager
     
@@ -27,6 +27,7 @@ struct UserResultView: View {
     let trackerCallback: (_ item: UserModel) -> Void
     let swipeActions: SwipeConfiguration?
     let complications: [UserComplication]
+    let navigationEnabled: Bool
     
     @State private var isPresentingConfirmDestructive: Bool = false
     @State private var confirmationMenuFunction: StandardMenuFunction?
@@ -36,12 +37,14 @@ struct UserResultView: View {
         complications: [UserComplication] = .withoutTypeLabel,
         communityContext: CommunityModel? = nil,
         swipeActions: SwipeConfiguration? = nil,
+        navigationEnabled: Bool = true,
         trackerCallback: @escaping (_ item: UserModel) -> Void = { _ in }
     ) {
         self.user = user
         self.complications = complications
         self.communityContext = communityContext
         self.swipeActions = swipeActions
+        self.navigationEnabled = navigationEnabled
         self.trackerCallback = trackerCallback
     }
     
@@ -51,36 +54,45 @@ struct UserResultView: View {
     }
     
     var body: some View {
-        NavigationLink(value: AppRoute.userProfile(user, communityContext: communityContext)) {
-            UserRow(user: user, communityContext: communityContext, complications: complications)
-        }
-        .opacity(user.blocked ? 0.5 : 1)
-        .buttonStyle(.plain)
-        .background(.background)
-        .draggable(user.profileUrl) {
-            HStack {
-                AvatarView(user: user, avatarSize: 24)
-                Text(user.name)
-            }
-            .padding(8)
+        userRow
+            .opacity(user.blocked ? 0.5 : 1)
+            .buttonStyle(.plain)
             .background(.background)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
-        }
-        .destructiveConfirmation(
-            isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
-            confirmationMenuFunction: confirmationMenuFunction
-        )
-        .addSwipeyActions(swipeActions ?? .init())
-        .contextMenu {
-            ForEach(user.menuFunctions(trackerCallback)) { item in
-                MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+            .draggable(user.profileUrl) {
+                HStack {
+                    AvatarView(user: user, avatarSize: 24)
+                    Text(user.name)
+                }
+                .padding(8)
+                .background(.background)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
             }
+            .destructiveConfirmation(
+                isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
+                confirmationMenuFunction: confirmationMenuFunction
+            )
+            .addSwipeyActions(swipeActions ?? .init())
+            .contextMenu {
+                ForEach(user.menuFunctions(trackerCallback)) { item in
+                    MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+                }
+            }
+    }
+    
+    @ViewBuilder
+    var userRow: some View {
+        if navigationEnabled {
+            NavigationLink(value: AppRoute.userProfile(user, communityContext: communityContext)) {
+                UserListRowBody(user: user, communityContext: communityContext, complications: complications, navigationEnabled: true)
+            }
+        } else {
+            UserListRowBody(user: user, communityContext: communityContext, complications: complications, navigationEnabled: false)
         }
     }
 }
 
 #Preview {
-    UserResultView(
+    UserListRow(
         .init(from: .mock())
     )
 }

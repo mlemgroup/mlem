@@ -21,6 +21,8 @@ class SiteInformationTracker: ObservableObject {
     @Published private(set) var allLanguages: [APILanguage] = .init()
     @Published var myUserInfo: APIMyUserInfo?
     
+    var userId: Int? { myUserInfo?.localUserView.person.id }
+    
     func load(account: SavedAccount) {
         version = account.siteVersion
         Task {

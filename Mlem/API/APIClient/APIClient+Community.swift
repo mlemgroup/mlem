@@ -57,4 +57,36 @@ extension APIClient {
         
         return try await perform(request: request)
     }
+    
+    /// Bans the given user from the given community, provided the current user has permissions to do so
+    /// - Parameters:
+    ///   - userId: id of the user to ban
+    ///   - communityId: id of the community to ban the user from
+    ///   - ban: true if user should be banned, false if unbanned
+    ///   - removeData: true if user data should be removed from community, false or nil otherwise
+    ///   - reason: reason for ban
+    ///   - expires: expiration date of ban (unit???)
+    /// - Returns: updated ban status of user (true if banned, false otherwise)
+    func banFromCommunity(
+        userId: Int,
+        communityId: Int,
+        ban: Bool,
+        removeData: Bool? = nil,
+        reason: String? = nil,
+        expires: Int? = nil
+    ) async throws -> Bool {
+        let request = try BanFromCommunityRequest(
+            session: session,
+            communityId: communityId,
+            personId: userId,
+            ban: ban,
+            removeData: removeData,
+            reason: reason,
+            expires: expires
+        )
+            
+        let response = try await perform(request: request)
+            
+        return response.banned
+    }
 }

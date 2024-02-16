@@ -81,7 +81,7 @@ struct RecentSearchesView: View {
                         }
                     )
                 } else if let user = contentModel.wrappedValue as? UserModel {
-                    UserResultView(
+                    UserListRow(
                         user,
                         complications: [.type, .instance, .comments],
                         swipeActions: .init(trailingActions: [deleteSwipeAction(contentModel)]),

@@ -141,7 +141,8 @@ struct UserModel {
     func getFlairs(
         postContext: APIPost? = nil,
         commentContext: APIComment? = nil,
-        communityContext: CommunityModel? = nil
+        communityContext: CommunityModel? = nil,
+        bannedFromCommunity: Bool? = false
     ) -> [UserFlair] {
         var ret: [UserFlair] = .init()
         if let post = postContext, post.creatorId == self.userId {
@@ -163,8 +164,11 @@ struct UserModel {
         if isBot {
             ret.append(.bot)
         }
+        if bannedFromCommunity ?? false {
+            ret.append(.bannedFromCommunity)
+        }
         if banned {
-            ret.append(.banned)
+            ret.append(.bannedFromInstance)
         }
         return ret
     }

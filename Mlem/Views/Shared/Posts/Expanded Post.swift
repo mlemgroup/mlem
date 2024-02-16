@@ -244,6 +244,7 @@ struct ExpandedPost: View {
                 UserLinkView(
                     user: post.creator,
                     serverInstanceLocation: userServerInstanceLocation,
+                    bannedFromCommunity: post.creatorBannedFromCommunity,
                     communityContext: community
                 )
             }

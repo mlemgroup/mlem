@@ -123,6 +123,14 @@ struct FeedPost: View {
                         ForEach(functions) { item in
                             MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
                         }
+                        
+                        if let community, community.isModerator(siteInformation.userId) {
+                            Menu("Community Moderation") {
+                                ForEach(postModel.modMenuFunctions(community: community)) { function in
+                                    MenuButton(menuFunction: function, confirmDestructive: confirmDestructive)
+                                }
+                            }
+                        }
                     }
             }
         }
@@ -200,6 +208,7 @@ struct FeedPost: View {
                         UserLinkView(
                             user: postModel.creator,
                             serverInstanceLocation: userServerInstanceLocation,
+                            bannedFromCommunity: postModel.creatorBannedFromCommunity,
                             communityContext: community
                         )
                     }

@@ -73,6 +73,7 @@ struct CommentBodyView: View {
                 UserLinkView(
                     person: commentView.creator,
                     serverInstanceLocation: serverInstanceLocation,
+                    bannedFromCommunity: commentView.creatorBannedFromCommunity,
                     postContext: commentView.post,
                     commentContext: commentView.comment
                 )
