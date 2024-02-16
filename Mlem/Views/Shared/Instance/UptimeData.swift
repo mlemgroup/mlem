@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct UptimeData: Codable {
     let results: [UptimeResponseTime]
@@ -21,9 +22,6 @@ struct UptimeData: Codable {
                 }
             }
             previous = event
-        }
-        if let previous, previous.type == .unhealthy {
-            ret.append(.init(startTime: previous.timestamp, endTime: nil))
         }
         return ret.reversed()
     }
@@ -55,13 +53,22 @@ struct UptimeEvent: Codable, Identifiable {
 
 struct DowntimePeriod: Codable, Identifiable {
     let startTime: Date
-    let endTime: Date?
+    let endTime: Date
     
     var id: Int { Int(startTime.timeIntervalSince1970) }
     
     var duration: TimeInterval {
-        let endTime = endTime ?? .now
-        return endTime.timeIntervalSince(startTime)
+        endTime.timeIntervalSince(startTime)
+    }
+    
+    var severityColor: Color {
+        if duration < 60 * 5 {
+            .secondary
+        } else if duration < 60 * 30 {
+            .orange
+        } else {
+            .red
+        }
     }
     
     func differenceTitle(unitsStyle: DateComponentsFormatter.UnitsStyle = .short) -> String {
@@ -72,7 +79,7 @@ struct DowntimePeriod: Codable, Identifiable {
     }
     
     var relativeTimeCaption: String {
-        endTime?.getRelativeTime() ?? "Started \(startTime.getRelativeTime())"
+        endTime.getRelativeTime()
     }
     
     private var timeOnlyFormatter: DateFormatter {
@@ -90,13 +97,6 @@ struct DowntimePeriod: Codable, Identifiable {
     }
     
     var differenceCaption: String {
-        guard let endTime else {
-            let onSameDay = Calendar.current.isDate(startTime, equalTo: .now, toGranularity: .day)
-            if onSameDay {
-                return "\(timeOnlyFormatter.string(from: startTime)) to now"
-            }
-            return "\(dateAndTimeFormatter.string(from: startTime)) to now"
-        }
         if duration < 60 {
             let formatter = DateFormatter()
             formatter.dateStyle = .short

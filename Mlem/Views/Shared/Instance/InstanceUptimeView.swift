@@ -17,6 +17,7 @@ struct InstanceUptimeView: View {
     @Environment(\.colorScheme) var colorScheme
     
     @State var showingExactTime: Bool = false
+    @State var showingAllDowntimes: Bool = false
     
     let instance: InstanceModel
     let uptimeData: UptimeData
@@ -41,28 +42,63 @@ struct InstanceUptimeView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     responseTimeChart
                         .padding(.horizontal, 20)
-                    footnote("Mean average: \(uptimeData.results.map(\.durationMs).reduce(0, +) / uptimeData.results.count)ms")
+                    footnote("Average: \(uptimeData.results.map(\.durationMs).reduce(0, +) / uptimeData.results.count)ms")
                         .padding(.leading, 20)
                 }
                 .padding(.top, 17)
                 .padding(.bottom, 8)
             }
-            section("Incidents", spacing: 0) {
-                ForEach(uptimeData.downtimes) { event in
-                    if event.id != uptimeData.downtimes.first?.id {
-                        Divider()
+            subHeading("Incidents")
+                .padding(.top, 30)
+                .padding(.bottom, 3)
+            let todayDowntimes = uptimeData.downtimes.filter { abs($0.endTime.timeIntervalSinceNow) < 60 * 60 * 24 }
+            
+            Text(
+                todayDowntimes.count == 0
+                ? "There were no recorded incidents today."
+                : "There ^[were \(todayDowntimes.count)](inflect: true) recorded incidents today."
+            )
+            .font(.footnote)
+            .foregroundStyle(.secondary)
+            .padding(.leading, 6)
+            .padding(.bottom, 7)
+            
+            let displayedIncidents = showingAllDowntimes ? uptimeData.downtimes : todayDowntimes
+            if !displayedIncidents.isEmpty {
+                section(spacing: 0) {
+                    ForEach(displayedIncidents) { event in
+                        if event.id != uptimeData.downtimes.first?.id {
+                            Divider()
+                        }
+                        IncidentRow(event: event, showingExactTime: showingExactTime)
+                            .padding(.vertical, 10)
+                            .padding(.leading)
                     }
-                    IncidentRow(event: event, showingExactTime: showingExactTime)
-                    .padding(.vertical, 10)
-                    .padding(.leading)
-                }
-                .onTapGesture {
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        showingExactTime.toggle()
+                    .onTapGesture {
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            showingExactTime.toggle()
+                        }
                     }
                 }
+                .padding(.bottom, 30)
             }
-            .padding(.top, 30)
+            Button {
+                withAnimation {
+                    showingAllDowntimes.toggle()
+                }
+            } label: {
+                Text("\(showingAllDowntimes ? "Hide" : "Show") Older Incidents")
+                    .foregroundStyle(.blue)
+                    .padding(.leading, 12)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, 10)
+                    .background(
+                        RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
+                            .fill(Color(uiColor: .secondarySystemGroupedBackground))
+                    )
+            }
+            .buttonStyle(EmptyButtonStyle())
+            
             if let url = instance.uptimeFrontendUrl {
                 Text("Uptime data fetched from [lemmy-status.org](\(url))")
                     .font(.footnote)
@@ -83,44 +119,30 @@ struct InstanceUptimeView: View {
         VStack(alignment: .leading) {
             if let mostRecentOutage = uptimeData.downtimes.first {
                 if uptimeData.results.filter(\.success).count < 15 {
-                    if mostRecentOutage.endTime == nil {
-                        HStack(spacing: 5) {
-                            (Text("\(instance.name) is ") + Text("offline").foregroundColor(.red))
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                            Image(systemName: Icons.uptimeOffline)
-                                .foregroundStyle(.red)
-                        }
-                        footnote("Outage started \(mostRecentOutage.startTime.getRelativeTime()).")
-                    } else {
-                        HStack(spacing: 5) {
-                            (Text("\(instance.name) is ") + Text("unhealthy").foregroundColor(.red))
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                            Image(systemName: Icons.uptimeOutage)
-                                .foregroundStyle(.red)
-                        }
-                        footnote("\(instance.name) has been unresponsive recently.")
-                    }
+                    summaryHeader(statusText: "unhealthy", systemImage: Icons.uptimeOutage, color: .red)
+                    footnote("\(instance.name) has been unresponsive recently.")
                 } else {
-                    HStack(spacing: 5) {
-                        (Text("\(instance.name) is ") + Text("online").foregroundColor(.green))
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                        Image(systemName: Icons.uptimeOnline)
-                            .foregroundStyle(.green)
-                    }
-                    if mostRecentOutage.endTime != nil {
-                        let relTime = mostRecentOutage.relativeTimeCaption
-                        let length = mostRecentOutage.differenceTitle(unitsStyle: .full)
-                        footnote("The most recent outage was \(relTime), and lasted for \(length).")
-                    }
+                    summaryHeader(statusText: "online", systemImage: Icons.uptimeOnline, color: .green)
+                    let relTime = mostRecentOutage.relativeTimeCaption
+                    let length = mostRecentOutage.differenceTitle(unitsStyle: .full)
+                    footnote("The most recent outage was \(relTime), and lasted for \(length).")
                 }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 10)
         .padding(.horizontal)
+    }
+    
+    @ViewBuilder
+    func summaryHeader(statusText: String, systemImage: String, color: Color) -> some View {
+        HStack(spacing: 5) {
+            (Text("\(instance.name) is ") + Text(statusText).foregroundColor(color))
+                .font(.title2)
+                .fontWeight(.semibold)
+            Image(systemName: systemImage)
+                .foregroundStyle(color)
+        }
     }
     
     @ViewBuilder
@@ -226,16 +248,9 @@ private struct IncidentRow: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                if event.duration < 60 * 5 {
-                    Image(systemName: Icons.uptimeShortOutage)
-                        .foregroundStyle(.secondary)
-                } else if event.duration < 60 * 30 {
-                    Image(systemName: Icons.uptimeOutage)
-                        .foregroundStyle(.orange)
-                } else {
-                    Image(systemName: Icons.uptimeOutage)
-                        .foregroundStyle(.red)
-                }
+                Image(systemName: Icons.uptimeOutage)
+                    .foregroundStyle(event.severityColor)
+                    .foregroundStyle(.secondary)
                 Text("Unhealthy for \(event.differenceTitle())")
             }
             Text(showingExactTime ? event.differenceCaption : event.relativeTimeCaption)
