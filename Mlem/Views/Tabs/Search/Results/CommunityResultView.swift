@@ -22,8 +22,7 @@ struct CommunityResultView: View {
     @Dependency(\.apiClient) private var apiClient
     @Dependency(\.hapticManager) var hapticManager
     
-    let community: CommunityModel
-    let trackerCallback: (_ item: CommunityModel) -> Void
+    let community: any Community
     let swipeActions: SwipeConfiguration?
     let complications: [CommunityComplication]
 
@@ -33,15 +32,13 @@ struct CommunityResultView: View {
     @EnvironmentObject var editorTracker: EditorTracker
     
     init(
-        _ community: CommunityModel,
+        _ community: any Community,
         complications: [CommunityComplication] = .withoutTypeLabel,
-        swipeActions: SwipeConfiguration? = nil,
-        trackerCallback: @escaping (_ item: CommunityModel) -> Void = { _ in }
+        swipeActions: SwipeConfiguration? = nil
     ) {
         self.community = community
         self.complications = complications
         self.swipeActions = swipeActions
-        self.trackerCallback = trackerCallback
     }
     
     func confirmDestructive(destructiveFunction: StandardMenuFunction) {
@@ -65,30 +62,10 @@ struct CommunityResultView: View {
         if complications.contains(.type) {
             parts.append("Community")
         }
-        if complications.contains(.instance), let host = community.communityUrl.host {
+        if complications.contains(.instance), let host = community.host {
             parts.append("@\(host)")
         }
         return parts.joined(separator: " ∙ ")
-    }
-    
-    var subscriberCountColor: Color {
-        if community.favorited {
-            return .blue
-        }
-        if community.subscribed ?? false {
-            return .green
-        }
-        return .secondary
-    }
-    
-    var subscriberCountIcon: String {
-        if community.favorited {
-            return Icons.favoriteFill
-        }
-        if community.subscribed ?? false {
-            return Icons.subscribed
-        }
-        return Icons.personFill
     }
     
     var body: some View {
@@ -114,13 +91,13 @@ struct CommunityResultView: View {
                         .lineLimit(1)
                 }
                 Spacer()
-                if complications.contains(.subscribers), let subscriberCount = community.subscriberCount {
+                if complications.contains(.subscribers), let community = community as? any Community2Providing {
                     HStack(spacing: 5) {
-                        Text(abbreviateNumber(subscriberCount))
+                        Text(abbreviateNumber(community.subscriberCount))
                             .monospacedDigit()
-                        Image(systemName: subscriberCountIcon)
+                        Image(systemName: community.subscriptionTier.systemImage)
                     }
-                    .foregroundStyle(subscriberCountColor)
+                    .foregroundStyle(community.subscriptionTier.foregroundColor)
                 }
                 Image(systemName: Icons.forward)
                     .imageScale(.small)
@@ -133,7 +110,7 @@ struct CommunityResultView: View {
         .buttonStyle(.plain)
         .padding(.vertical, 8)
         .background(.background)
-        .draggable(community.communityUrl) {
+        .draggable(community.actorId) {
             HStack {
                 AvatarView(community: community, avatarSize: 24)
                 Text(community.name)
@@ -146,13 +123,9 @@ struct CommunityResultView: View {
             isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
             confirmationMenuFunction: confirmationMenuFunction
         )
-        .addSwipeyActions(swipeActions ?? community.swipeActions(trackerCallback, confirmDestructive: confirmDestructive))
+        .addSwipeyActions(swipeActions ?? community.swipeActions(confirmDestructive: confirmDestructive))
         .contextMenu {
-            ForEach(
-                community.menuFunctions(
-                    editorTracker: editorTracker,
-                    trackerCallback
-                )
+            ForEach(community.menuFunctions(editorTracker: editorTracker)
             ) { item in
                 MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
             }
@@ -161,7 +134,5 @@ struct CommunityResultView: View {
 }
 
 #Preview {
-    CommunityResultView(
-        .init(from: .mock())
-    )
+    CommunityResultView(Community3.mock)
 }

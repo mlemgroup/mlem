@@ -37,7 +37,7 @@ enum SubscriptionTier {
         case .unsubscribed:
             return Icons.personFill
         case .subscribed:
-            return Icons.successCircle
+            return Icons.subscribed
         case .favorited:
             return Icons.favoriteFill
         }

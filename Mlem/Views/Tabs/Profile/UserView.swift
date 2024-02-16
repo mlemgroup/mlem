@@ -21,7 +21,7 @@ struct UserView: View {
     @EnvironmentObject var editorTracker: EditorTracker
     
     let internetSpeed: InternetSpeed
-    let communityContext: CommunityModel?
+    let communityContext: (any CommunityStubProviding)?
     
     @State var user: any UserStubProviding
     @State var selectedTab: UserViewTab = .overview
@@ -45,7 +45,7 @@ struct UserView: View {
         isPresentingConfirmDestructive = true
     }
     
-    init(user: UserModel, communityContext: CommunityModel? = nil) {
+    init(user: any UserStubProviding, communityContext: (any CommunityStubProviding)? = nil) {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
         
@@ -70,14 +70,14 @@ struct UserView: View {
                 AvatarBannerView(user: user)
                     .padding(.horizontal, AppConstants.postAndCommentSpacing)
                     .padding(.top, 10)
-                Button(action: user.copyFullyQualifiedUsername) {
+                Button(action: user.copyFullNameWithPrefix) {
                     VStack(spacing: 5) {
                         Text(user.displayName)
                             .font(.title)
                             .fontWeight(.semibold)
                             .lineLimit(1)
                             .minimumScaleFactor(0.01)
-                        Text(user.fullyQualifiedUsername ?? user.name)
+                        Text(user.fullName ?? user.name)
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -89,7 +89,7 @@ struct UserView: View {
                 
                 VStack(spacing: 0) {
                     let bioAlignment = bioAlignment
-                    if let bio = user.bio {
+                    if let bio = user.description {
                         Divider()
                             .padding(.bottom, AppConstants.postAndCommentSpacing)
                         MarkdownView(text: bio, isNsfw: false, alignment: bioAlignment).padding(AppConstants.postAndCommentSpacing)
@@ -151,14 +151,14 @@ struct UserView: View {
             isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
             confirmationMenuFunction: confirmationMenuFunction
         )
-        .toolbar {
-            ToolbarItemGroup(placement: .secondaryAction) {
-                let functions = user.menuFunctions({ user = $0 }, editorTracker: editorTracker)
-                ForEach(functions) { item in
-                    MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
-                }
-            }
-        }
+//        .toolbar {
+//            ToolbarItemGroup(placement: .secondaryAction) {
+//                let functions = user.menuFunctions({ user = $0 }, editorTracker: editorTracker)
+//                ForEach(functions) { item in
+//                    MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+//                }
+//            }
+//        }
         .task(priority: .userInitiated) {
             if isLoadingContent {
                 Task {
@@ -202,7 +202,7 @@ struct UserView: View {
         }
         .fancyTabScrollCompatible()
         .navigationBarColor()
-        .navigationTitle(user.displayName)
+        .navigationTitle(user.displayName ?? user.name)
         .navigationBarTitleDisplayMode(.inline)
     }
     
@@ -217,15 +217,15 @@ struct UserView: View {
                                 switch flair {
                                 case .banned:
                                     Image(systemName: Icons.bannedFlair)
-                                    if let expirationDate = user.banExpirationDate {
-                                        Text("Banned Until \(expirationDate.dateString)")
-                                    } else {
+                                    switch user.instanceBan {
+                                    case let .temporarilyBanned(expires: date):
+                                        Text("Banned Until \(date.dateString)")
+                                    default:
                                         Text("Permanently Banned")
                                     }
                                 case .admin:
                                     Image(systemName: Icons.adminFlair)
-                                    let host = user.profileUrl.host()
-                                    Text("\(host ?? "Instance") Administrator")
+                                    Text("\(user.host ?? "Instance") Administrator")
                                 case .moderator:
                                     Image(systemName: Icons.moderationFill)
                                     Text("\(communityContext?.displayName ?? "Community") Moderator")

@@ -30,7 +30,7 @@ extension Community2Providing {
 }
 
 extension Community2Providing {
-    var subscriptionStatus: SubscriptionTier {
+    var subscriptionTier: SubscriptionTier {
         if favorited { return .favorited }
         if subscribed { return .subscribed }
         return .unsubscribed

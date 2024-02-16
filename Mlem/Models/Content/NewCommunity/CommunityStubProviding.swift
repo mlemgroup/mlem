@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol CommunityStubProviding: ActorIdentifiable {
+protocol CommunityStubProviding: CommunityOrUserStub {
     var source: any APISource { get }
     
     // From Community1Providing. These are defined as nil in the extension below
@@ -41,6 +41,8 @@ protocol CommunityStubProviding: ActorIdentifiable {
 }
 
 extension CommunityStubProviding {
+    static var identifierPrefix: String { "!" }
+    
     var id: Int? { nil }
     var creationDate: Date? { nil }
     var updatedDate: Date? { nil }
@@ -61,7 +63,7 @@ extension CommunityStubProviding {
     var postCount: Int? { nil }
     var commentCount: Int? { nil }
     var activeUserCount: ActiveUserCount? { nil }
-    var subscriptionStatus: SubscriptionTier? { nil }
+    var subscriptionTier: SubscriptionTier? { nil }
     
     var instance: Instance1? { nil }
     var moderators: [User1]? { nil }
@@ -73,15 +75,7 @@ enum UpgradeError: Error {
     case entityNotFound
 }
 
-extension CommunityStubProviding {
-    var name: String { actorId.lastPathComponent }
-    var host: String? { actorId.host() }
-
-    var fullyQualifiedName: String? {
-        guard let host else { return nil }
-        return "@\(name)@\(host)"
-    }
-    
+extension CommunityStubProviding {    
     func upgrade() async throws -> Community3 {
         guard let communityView = try await source.api.getCommunity(actorId: actorId) else {
             throw UpgradeError.entityNotFound

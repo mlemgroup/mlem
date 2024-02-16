@@ -30,6 +30,8 @@ final class MyUserStub: MyUserProviding, APISource, Codable {
     var avatarUrl: URL?
     var lastLoggedIn: Date?
     
+    private var keychainId: String { "\(id)_accessToken" }
+    
     // This should be called when the MyUser becomes the active account
     func makeActive() {
         self.api.token = accessToken
@@ -37,7 +39,7 @@ final class MyUserStub: MyUserProviding, APISource, Codable {
     
     // This should be called when the MyUser becomes the inactive account
     func makeInactive() {
-        // Clear the token to stop us accidentally calling this for whatever reason
+        // Clear the token to stop us accidentally making damaging API calls for whatever reason
         self.api.token = nil
     }
     
@@ -65,14 +67,14 @@ final class MyUserStub: MyUserProviding, APISource, Codable {
         components.path = ""
         self.instance = .createModel(url: components.url!)
         
-        guard let token = AppConstants.keychain["\(id)_accessToken"] else {
+        guard let token = AppConstants.keychain[keychainId] else {
             throw DecodingError.noTokenInKeychain
         }
         self.accessToken = token
    }
     
     func encode(to encoder: Encoder) throws {
-        AppConstants.keychain["\(id)_accessToken"] = accessToken
+        AppConstants.keychain[keychainId] = accessToken
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
         try container.encode(username, forKey: .username)

@@ -27,11 +27,13 @@ final class User1: User1Providing, NewContentModel {
     var avatar: URL? = nil
     var banner: URL? = nil
     
-    // This isn't included in the APIPerson (or any higher-tier API types)
-    var blocked: Bool = false
-    
     var deleted: Bool = false
     var isBot: Bool = false
+    
+    var instanceBan: InstanceBanType = .notBanned
+    
+    // These aren't included in the APIPerson, and so are set externally by Post2 instead
+    var blocked: Bool = false
     
     init(source: any APISource, from person: APIPerson) {
         self.source = source
@@ -51,5 +53,15 @@ final class User1: User1Providing, NewContentModel {
         
         self.deleted = person.deleted
         self.isBot = person.botAccount
+        
+        if person.banned {
+            if let expires = person.banExpires {
+                instanceBan = .temporarilyBanned(expires: expires)
+            } else {
+                instanceBan = .permanentlyBanned
+            }
+        } else {
+            instanceBan = .notBanned
+        }
     }
 }
