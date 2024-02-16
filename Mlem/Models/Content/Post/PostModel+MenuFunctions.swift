@@ -164,7 +164,7 @@ extension PostModel {
             children: [
                 .standardMenuFunction(
                     text: "Toggle Read State",
-                    imageName: "",
+                    imageName: "book.and.wrench",
                     destructiveActionPrompt: nil,
                     enabled: true,
                     callback: {
