@@ -25,6 +25,8 @@ extension ExpandedPost {
             operation: CommentOperation.replyToComment
         ))
     }
+    
+    // MARK: Helper functions
 
     @discardableResult
     func loadComments() async -> Bool {

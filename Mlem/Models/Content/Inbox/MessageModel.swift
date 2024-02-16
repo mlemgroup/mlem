@@ -123,7 +123,7 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         ret.append(MenuFunction.standardMenuFunction(
             text: privateMessage.read ? "Mark unread" : "Mark read",
             imageName: privateMessage.read ? Icons.markUnread : Icons.markRead,
-            destructiveActionPrompt: nil,
+            role: nil,
             enabled: true
         ) {
             Task(priority: .userInitiated) {
@@ -135,7 +135,7 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         ret.append(MenuFunction.standardMenuFunction(
             text: "Reply",
             imageName: Icons.reply,
-            destructiveActionPrompt: nil,
+            role: nil,
             enabled: true
         ) {
             Task(priority: .userInitiated) {
@@ -147,7 +147,7 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         ret.append(MenuFunction.standardMenuFunction(
             text: "Report",
             imageName: Icons.moderationReport,
-            destructiveActionPrompt: AppConstants.reportMessagePrompt,
+            role: .destructive(prompt: AppConstants.reportMessagePrompt),
             enabled: true
         ) {
             Task(priority: .userInitiated) {
@@ -159,7 +159,7 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         ret.append(MenuFunction.standardMenuFunction(
             text: "Block User",
             imageName: Icons.userBlock,
-            destructiveActionPrompt: AppConstants.blockUserPrompt,
+            role: .destructive(prompt: AppConstants.blockUserPrompt),
             enabled: true
         ) {
             Task(priority: .userInitiated) {

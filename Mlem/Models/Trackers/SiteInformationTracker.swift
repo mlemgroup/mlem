@@ -20,6 +20,7 @@ class SiteInformationTracker: ObservableObject {
     @Published var version: SiteVersion?
     @Published private(set) var allLanguages: [APILanguage] = .init()
     @Published var myUserInfo: APIMyUserInfo?
+    @Published var myUser: UserModel?
     
     func load(account: SavedAccount) {
         version = account.siteVersion
@@ -37,6 +38,11 @@ class SiteInformationTracker: ObservableObject {
                 }
                 myUserInfo = response.myUser
                 allLanguages = response.allLanguages
+                if let userInfo = response.myUser {
+                    myUser = UserModel(from: userInfo.localUserView.person)
+                    myUser?.isAdmin = response.admins.contains { $0.person.id == myUser?.userId }
+                }
+                
                 if let version {
                     markReadBatcher.resolveSiteVersion(to: version)
                 }
