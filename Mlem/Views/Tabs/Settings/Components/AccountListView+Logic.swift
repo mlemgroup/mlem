@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension AccountListView {
-    var accounts: [SavedAccount] {
+    var accounts: [UserStub] {
         let accountSort = accountsTracker.savedAccounts.count == 2 ? .custom : accountSort
         switch accountSort {
         case .custom:
@@ -18,19 +18,19 @@ extension AccountListView {
         case .instance:
             return accountsTracker.savedAccounts.sorted { $0.instanceSortKey < $1.instanceSortKey }
         case .mostRecent:
-            return accountsTracker.savedAccounts.sorted {
-                if appState.currentActiveAccount == $0 {
+            return accountsTracker.savedAccounts.sorted { left, right in
+                if appState.apiSource?.actorId == left.actorId {
                     return true
-                } else if appState.currentActiveAccount == $1 {
+                } else if appState.apiSource?.actorId == right.actorId {
                     return false
                 }
-                return $0.lastUsed ?? .distantPast > $1.lastUsed ?? .distantPast
+                return left.lastLoggedIn ?? .distantPast > right.lastLoggedIn ?? .distantPast
             }
         }
     }
     
-    func getNameCategory(account: SavedAccount) -> String {
-        guard let first = account.nickname.first else { return "Unknown" }
+    func getNameCategory(account: UserStub) -> String {
+        guard let first = (account.nickname ?? account.name).first else { return "Unknown" }
         if first.isLetter {
             return String(first.lowercased())
         }
@@ -50,7 +50,7 @@ extension AccountListView {
         case .instance:
             let dict = Dictionary(
                 grouping: accountsTracker.savedAccounts,
-                by: { $0.instanceLink.host() ?? "Unknown" }
+                by: { $0.host ?? "Unknown" }
             )
             let uniqueInstances = dict.filter { $1.count == 1 }.values.map { $0.first! }
             var array = dict
@@ -65,11 +65,11 @@ extension AccountListView {
             )
             return array
         case .mostRecent:
-            var today = [SavedAccount]()
-            var last30Days = [SavedAccount]()
-            var older = [SavedAccount]()
+            var today = [UserStub]()
+            var last30Days = [UserStub]()
+            var older = [UserStub]()
             for account in accountsTracker.savedAccounts {
-                if account == appState.currentActiveAccount {
+                if account.actorId == appState.actorId {
                     continue
                 }
                 
@@ -79,7 +79,7 @@ extension AccountListView {
                 dateComponents.second = 0
                 let todayDate = Calendar.current.date(from: dateComponents) ?? .distantFuture
                 
-                if let date = account.lastUsed {
+                if let date = account.lastLoggedIn {
                     if date > todayDate {
                         today.append(account)
                     } else if date.timeIntervalSinceNow <= 60 * 60 * 24 * 7 {
@@ -93,9 +93,9 @@ extension AccountListView {
             }
             var groups = [AccountGroup]()
             
-            today.sort { $0.lastUsed ?? .distantPast > $1.lastUsed ?? .distantPast }
-            if let currentActiveAccount = appState.currentActiveAccount {
-                today.prepend(currentActiveAccount)
+            today.sort { $0.lastLoggedIn ?? .distantPast > $1.lastLoggedIn ?? .distantPast }
+            if let apiSource = appState.apiSource as? UserStub {
+                today.prepend(apiSource)
             }
             
             if !today.isEmpty {
@@ -110,7 +110,7 @@ extension AccountListView {
                 groups.append(
                     AccountGroup(
                         header: "Last 30 days",
-                        accounts: last30Days.sorted { $0.lastUsed ?? .distantPast > $1.lastUsed ?? .distantPast }
+                        accounts: last30Days.sorted { $0.lastLoggedIn ?? .distantPast > $1.lastLoggedIn ?? .distantPast }
                     )
                 )
             }
@@ -118,7 +118,7 @@ extension AccountListView {
                 groups.append(
                     AccountGroup(
                         header: "Older",
-                        accounts: older.sorted { $0.lastUsed ?? .distantPast > $1.lastUsed ?? .distantPast }
+                        accounts: older.sorted { $0.lastLoggedIn ?? .distantPast > $1.lastLoggedIn ?? .distantPast }
                     )
                 )
             }

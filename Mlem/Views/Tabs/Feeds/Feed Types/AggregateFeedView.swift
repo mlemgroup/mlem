@@ -14,14 +14,17 @@ struct AggregateFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.markReadBatcher) var markReadBatcher
     
+    @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+    @AppStorage("showReadPosts") var showReadPosts = true
+    
     @Environment(\.dismiss) var dismiss
     @Environment(\.scrollViewProxy) var scrollProxy
     @Environment(\.navigationPathWithRoutes) private var navigationPath
     
-    @Environment(NewAppState.self) var appState
+    @Environment(AppState.self) var appState
     
-    @StateObject var postTracker: StandardPostTracker
-    @StateObject var savedContentTracker: UserContentTracker
+    @State var postTracker: StandardPostTracker?
+    // @State var savedContentTracker: UserContentTracker?
     
     @State var postSortType: PostSortType
     @State var availableFeeds: [FeedType] = [.all, .local, .subscribed]
@@ -30,11 +33,10 @@ struct AggregateFeedView: View {
     
     @Namespace var scrollToTop
     @State private var scrollToTopAppeared = false
-    private var scrollToTopId: Int? {
-        postTracker.items.first?.id
-    }
     
-    init(selectedFeed: Binding<FeedType?>) {
+    private var scrollToTopId: Int? { postTracker?.items.first?.id }
+    
+    init(appState: AppState, selectedFeed: Binding<FeedType?>) {
         var feedType: FeedType = .all
         if let selectedFeed = selectedFeed.wrappedValue {
             feedType = selectedFeed
@@ -48,47 +50,47 @@ struct AggregateFeedView: View {
         @AppStorage("showReadPosts") var showReadPosts = true
         @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
         
+        self._selectedFeed = selectedFeed
+        
         self._postSortType = .init(wrappedValue: defaultPostSorting)
-        self._postTracker = .init(wrappedValue: .init(
-            internetSpeed: internetSpeed,
-            sortType: defaultPostSorting,
-            showReadPosts: showReadPosts,
-            feedType: feedType == .saved ? .all : feedType
-        ))
+        if let apiSource = appState.apiSource {
+            self._postTracker = .init(wrappedValue: .init(
+                internetSpeed: internetSpeed,
+                sortType: defaultPostSorting,
+                showReadPosts: showReadPosts,
+                feedType: .aggregateFeed(apiSource, type: feedType.toApiListingType))
+            )
+        } else {
+            self._postTracker = .init(wrappedValue: nil)
+        }
         
         // StateObject can't be optional so we initialize with a dummy user
-        self._savedContentTracker = .init(wrappedValue: .init(internetSpeed: internetSpeed, userId: nil, saved: true))
-        
-        self._selectedFeed = selectedFeed
+        // self.savedContentTracker = .init(internetSpeed: internetSpeed, userId: nil, saved: true)
     }
     
     var body: some View {
         content
             .environment(\.feedType, selectedFeed)
-            .task(id: appState.apiSource?.actorId) {
-                // ensure that .saved isn't an available feed until user id resolved
-                if let userId = appState.currentActiveAccount?.id {
-                    do {
-                        try await savedContentTracker.updateUserId(to: userId)
-                        
-                        if availableFeeds.count < 4 {
-                            availableFeeds.append(.saved)
-                        }
-                    } catch {
-                        errorHandler.handle(error)
-                    }
-                }
-            }
             .task(id: selectedFeed) {
-                if let selectedFeed {
+                if let selectedFeed, let apiSource = appState.apiSource {
                     switch selectedFeed {
                     case .all, .local, .subscribed:
                         await markReadBatcher.flush()
-                        await postTracker.changeFeedType(to: selectedFeed)
-                        postTracker.isStale = false
+                        await postTracker?.changeFeedType(to: .aggregateFeed(apiSource, type: selectedFeed.toApiListingType))
+                        postTracker?.isStale = false
                     default:
                         return
                     }
+                }
+            }
+            .onChange(of: appState.apiSource?.actorId) { oldValue, _ in
+                if oldValue == nil, let apiSource = appState.apiSource {
+                    self.postTracker = .init(
+                        internetSpeed: internetSpeed,
+                        sortType: postSortType,
+                        showReadPosts: showReadPosts,
+                        feedType: postTracker?.feedType ?? .aggregateFeed(apiSource, type: selectedFeed?.toApiListingType ?? .all)
+                    )
                 }
             }
             .refreshable {
@@ -97,9 +99,10 @@ struct AggregateFeedView: View {
                         switch selectedFeed {
                         case .all, .local, .subscribed:
                             await markReadBatcher.flush()
-                            _ = try await postTracker.refresh(clearBeforeRefresh: false)
+                            _ = try await postTracker?.refresh(clearBeforeRefresh: false)
                         case .saved:
-                            _ = try await savedContentTracker.refresh(clearBeforeRefresh: false)
+                            break
+                            // _ = try await savedContentTracker?.refresh(clearBeforeRefresh: false)
                         default:
                             assertionFailure("Tried to refresh with invalid feed type \(String(describing: selectedFeed))")
                         }
@@ -144,11 +147,20 @@ struct AggregateFeedView: View {
                 
                 switch selectedFeed {
                 case .all, .local, .subscribed:
-                    PostFeedView(postSortType: $postSortType, showCommunity: true)
-                        .environmentObject(postTracker)
+                    if let postTracker {
+                        PostFeedView(appState: appState, postSortType: $postSortType, showCommunity: true)
+                            .environment(postTracker)
+                    } else {
+                        Text(appState.apiSource?.actorId.absoluteString ?? "No tracker")
+                        LoadingView(whatIsLoading: .posts)
+                    }
                 case .saved:
-                    UserContentFeedView()
-                        .environmentObject(savedContentTracker)
+//                    if let savedContentTracker {
+//                        UserContentFeedView()
+//                            .environment(savedContentTracker)
+//                    } else {
+                    LoadingView(whatIsLoading: .content)
+                    // }
                 default:
                     EmptyView() // shouldn't be possible
                 }

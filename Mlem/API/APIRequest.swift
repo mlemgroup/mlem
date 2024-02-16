@@ -18,6 +18,8 @@ protocol APIRequest {
     associatedtype Response: Decodable
     var path: String { get }
     var headers: [String: String] { get }
+    
+    func endpoint(base: URL) -> URL
 }
 
 extension APIRequest {

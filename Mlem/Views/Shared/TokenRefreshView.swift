@@ -24,7 +24,7 @@ struct TokenRefreshView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    let user: MyUserStub
+    let user: UserStub
     
     @State private var password = ""
     @State private var twoFactorCode = ""
@@ -107,7 +107,7 @@ struct TokenRefreshView: View {
             Text("Please enter the password for")
                 .font(.body)
                 .dynamicTypeSize(.small ... .xxxLarge)
-            Text("\(user.username)@\(user.instance.url.host ?? "")")
+            Text(user.fullName ?? user.name)
                 .font(.subheadline)
                 .dynamicTypeSize(.small ... .xxxLarge)
         case .refreshing:

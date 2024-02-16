@@ -12,31 +12,12 @@ import Foundation
 /// For simple (i.e. linear) navigation flows, you may wish to define a separate set of routes. For example, see `OnboardingRoutes`.
 ///
 
-struct RouteWrapper: Equatable, Hashable {
-    let wrappedValue: any ActorIdentifiable
-    
-    static func == (lhs: RouteWrapper, rhs: RouteWrapper) -> Bool {
-        return lhs.wrappedValue.actorId == rhs.wrappedValue.actorId
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(wrappedValue.actorId)
-    }
-    
-    init(_ wrappedValue: any ActorIdentifiable) {
-        self.wrappedValue = wrappedValue
-    }
-}
-
-
 enum AppRoute: Routable {
-    case instance(String? = nil, InstanceModel? = nil)
     
-    case userProfile(UserModel, communityContext: CommunityModel? = nil)
-    
-    case postLinkWithContext(PostLinkWithContext)
-    // case newPostLinkWithContext(NewPostLinkWithContext)
-    case lazyLoadPostLinkWithContext(LazyLoadPostLinkWithContext)
+    case instance(any InstanceStubProviding)
+    case community(any CommunityStubProviding)
+    case person(any PersonStubProviding, communityContext: (any Community)? = nil)
+    case post(any PostStubProviding)
     
     // MARK: - Settings
 
@@ -47,16 +28,17 @@ enum AppRoute: Routable {
     case postSettings(PostSettingsPage)
     case licenseSettings(LicensesSettingsPage)
     
-    
     // swiftlint:disable cyclomatic_complexity
     static func makeRoute(_ value: some Hashable) throws -> AppRoute {
         switch value {
-        case let value as UserModel:
-            return .userProfile(value)
-        case let value as PostLinkWithContext:
-            return .postLinkWithContext(value)
-        case let value as LazyLoadPostLinkWithContext:
-            return .lazyLoadPostLinkWithContext(value)
+        case let value as any InstanceStubProviding:
+            return .instance(value)
+        case let value as any CommunityStubProviding:
+            return .community(value)
+        case let value as any PersonStubProviding:
+            return .person(value)
+        case let value as any PostStubProviding:
+            return .post(value)
         case let value as SettingsPage:
             return .settings(value)
         case let value as AboutSettingsPage:
@@ -77,4 +59,57 @@ enum AppRoute: Routable {
         }
     }
     // swiftlint:enable cyclomatic_complexity
+}
+
+extension AppRoute: Equatable, Hashable {
+    static func == (lhs: AppRoute, rhs: AppRoute) -> Bool {
+        switch (lhs, rhs) {
+        case let (.community(comm1), .community(comm2)):
+            return comm1.actorId == comm2.actorId
+        case let (.person(comm1, community1), .person(comm2, community2)):
+            return comm1.actorId == comm2.actorId && community1?.actorId == community2?.actorId
+        case let (.post(post1), .post(post2)):
+            return post1.actorId == post2.actorId
+        case let (.settings(value1), .settings(value2)):
+            return value1 == value2
+        case let (.aboutSettings(value1), .aboutSettings(value2)):
+            return value1 == value2
+        case let (.appearanceSettings(value1), .appearanceSettings(value2)):
+            return value1 == value2
+        case let (.commentSettings(value1), .commentSettings(value2)):
+            return value1 == value2
+        case let (.postSettings(value1), .postSettings(value2)):
+            return value1 == value2
+        case let (.licenseSettings(value1), .licenseSettings(value2)):
+            return value1 == value2
+        default:
+            return false
+        }
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        switch self {
+        case .instance(let instance):
+            hasher.combine(instance.actorId)
+        case .community(let community):
+            hasher.combine(community.actorId)
+        case .person(let person, let communityContext):
+            hasher.combine(person.actorId)
+            hasher.combine(communityContext?.actorId)
+        case .post(let post):
+            hasher.combine(post.actorId)
+        case .settings(let value):
+            hasher.combine(value)
+        case .aboutSettings(let value):
+            hasher.combine(value)
+        case .appearanceSettings(let value):
+            hasher.combine(value)
+        case .commentSettings(let value):
+            hasher.combine(value)
+        case .postSettings(let value):
+            hasher.combine(value)
+        case .licenseSettings(let value):
+            hasher.combine(value)
+        }
+    }
 }

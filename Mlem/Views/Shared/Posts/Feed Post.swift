@@ -14,11 +14,9 @@ import SwiftUI
 
 /// Displays a single post in the feed
 struct FeedPost: View {
-    @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
-    @Dependency(\.siteInformation) var siteInformation
     
     // MARK: Environment
 
@@ -42,30 +40,25 @@ struct FeedPost: View {
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
 
     // @EnvironmentObject var postTracker: StandardPostTracker
-    @EnvironmentObject var editorTracker: EditorTracker
-    @EnvironmentObject var appState: AppState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
     // MARK: Parameters
 
-    @ObservedObject var postModel: PostModel
+    let post: any Post2Providing
     var postTracker: StandardPostTracker?
-    let community: CommunityModel?
     let showPostCreator: Bool
     let showCommunity: Bool
     let enableSwipeActions: Bool
     
     init(
-        post: PostModel,
+        post: any Post2Providing,
         postTracker: StandardPostTracker?,
-        community: CommunityModel? = nil,
         showPostCreator: Bool = true,
         showCommunity: Bool = true,
         enableSwipeActions: Bool = true
     ) {
-        self.postModel = post
+        self.post = post
         self.postTracker = postTracker
-        self.community = community
         self.showPostCreator = showPostCreator
         self.showCommunity = showCommunity
         self.enableSwipeActions = enableSwipeActions
@@ -89,12 +82,12 @@ struct FeedPost: View {
     
     // MARK: Computed
     
-    var barThickness: CGFloat { !postModel.read && diffWithoutColor && readMarkStyle == .bar ? CGFloat(readBarThickness) : .zero }
-    var showCheck: Bool { postModel.read && diffWithoutColor && readMarkStyle == .check }
+    var barThickness: CGFloat { !post.isRead && diffWithoutColor && readMarkStyle == .bar ? CGFloat(readBarThickness) : .zero }
+    var showCheck: Bool { post.isRead && diffWithoutColor && readMarkStyle == .check }
 
     var body: some View {
         // this allows post deletion to not require tracker updates
-        if postModel.post.deleted {
+        if post.deleted || post.creator.blocked || post.community.blocked {
             EmptyView()
         } else {
             VStack(spacing: 0) {
@@ -115,15 +108,15 @@ struct FeedPost: View {
                             enableSwipeActions ? replySwipeAction : nil
                         ]
                     )
-                    .contextMenu {
-                        let functions = postModel.menuFunctions(
-                            editorTracker: editorTracker,
-                            postTracker: postTracker
-                        )
-                        ForEach(functions) { item in
-                            MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
-                        }
-                    }
+//                    .contextMenu {
+//                        let functions = post.menuFunctions(
+//                            editorTracker: editorTracker,
+//                            postTracker: postTracker
+//                        )
+//                        ForEach(functions) { item in
+//                            MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+//                        }
+//                    }
             }
         }
     }
@@ -145,17 +138,18 @@ struct FeedPost: View {
     }
     
     func replyToPost() {
-        editorTracker.openEditor(
-            with: ConcreteEditorModel(post: postModel, operation: PostOperation.replyToPost)
-        )
+//        editorTracker.openEditor(
+//            with: ConcreteEditorModel(post: post, operation: PostOperation.replyToPost)
+//        )
     }
 
     @ViewBuilder
     var postItem: some View {
         if postSize == .compact {
-            let functions = postModel.menuFunctions(editorTracker: editorTracker, postTracker: postTracker)
+            // let functions = post.menuFunctions(editorTracker: editorTracker, postTracker: postTracker)
+            let functions = [MenuFunction]()
             CompactPost(
-                post: postModel,
+                post: post,
                 showCommunity: showCommunity,
                 menuFunctions: functions
             )
@@ -169,7 +163,7 @@ struct FeedPost: View {
                     // }
                     HStack {
                         CommunityLinkView(
-                            community: postModel.community,
+                            community: post.community,
                             serverInstanceLocation: communityServerInstanceLocation
                         )
 
@@ -178,29 +172,29 @@ struct FeedPost: View {
                         if showCheck {
                             ReadCheck()
                         }
-                        
-                        let functions = postModel.menuFunctions(
-                            editorTracker: editorTracker,
-                            postTracker: postTracker
-                        )
-                        EllipsisMenu(size: 24, menuFunctions: functions)
+//                        
+//                        let functions = post.menuFunctions(
+//                            editorTracker: editorTracker,
+//                            postTracker: postTracker
+//                        )
+//                        EllipsisMenu(size: 24, menuFunctions: functions)
                     }
 
                     if postSize == .headline {
-                        HeadlinePost(post: postModel)
+                        HeadlinePost(post: post)
                     } else {
                         LargePost(
-                            post: postModel,
+                            post: post,
                             layoutMode: .constant(.preferredSize)
                         )
                     }
 
                     // posting user
                     if showPostCreator {
-                        UserLinkView(
-                            user: postModel.creator,
+                        PersonLinkView(
+                            person: post.creator,
                             serverInstanceLocation: userServerInstanceLocation,
-                            communityContext: community
+                            communityContext: post.community
                         )
                     }
                 }
@@ -208,19 +202,10 @@ struct FeedPost: View {
                 .padding(.horizontal, AppConstants.postAndCommentSpacing)
                 
                 InteractionBarView(
-                    votes: postModel.votes,
-                    published: postModel.published,
-                    updated: postModel.updated,
-                    commentCount: postModel.commentCount,
-                    unreadCommentCount: postModel.unreadCommentCount,
-                    saved: postModel.saved,
+                    content: post,
                     accessibilityContext: "post",
                     widgets: layoutWidgetTracker.groups.post,
-                    upvote: postModel.toggleUpvote,
-                    downvote: postModel.toggleDownvote,
-                    save: postModel.toggleSave,
                     reply: replyToPost,
-                    shareURL: URL(string: postModel.post.apId),
                     shouldShowScore: shouldShowScoreInPostBar,
                     showDownvotesSeparately: showPostDownvotesSeparately,
                     shouldShowTime: shouldShowTimeInPostBar,
@@ -240,48 +225,48 @@ extension FeedPost {
     // this may need to wait until we complete https://github.com/mormaer/Mlem/issues/117
 
     var upvoteSwipeAction: SwipeAction {
-        let (emptySymbolName, fullSymbolName) = postModel.votes.myVote == .upvote ?
+        let (emptySymbolName, fullSymbolName) = post.myVote == .upvote ?
             (Icons.resetVoteSquare, Icons.resetVoteSquareFill) :
             (Icons.upvoteSquare, Icons.upvoteSquareFill)
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .upvoteColor,
             action: {
-                Task {
-                    await postModel.toggleUpvote()
-                }
+//                Task {
+//                    await postModel.toggleUpvote()
+//                }
             }
         )
     }
 
     var downvoteSwipeAction: SwipeAction? {
-        guard siteInformation.enableDownvotes else { return nil }
+        // guard siteInformation.enableDownvotes else { return nil }
 
-        let (emptySymbolName, fullSymbolName) = postModel.votes.myVote == .downvote ?
+        let (emptySymbolName, fullSymbolName) = post.myVote == .downvote ?
             (Icons.resetVoteSquare, Icons.resetVoteSquareFill) :
             (Icons.downvoteSquare, Icons.downvoteSquareFill)
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .downvoteColor,
             action: {
-                Task {
-                    await postModel.toggleDownvote()
-                }
+//                Task {
+//                    await postModel.toggleDownvote()
+//                }
             }
         )
     }
 
     var saveSwipeAction: SwipeAction {
-        let (emptySymbolName, fullSymbolName) = postModel.saved
+        let (emptySymbolName, fullSymbolName) = post.isSaved
             ? (Icons.unsave, Icons.unsaveFill)
             : (Icons.save, Icons.saveFill)
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .saveColor,
             action: {
-                Task {
-                    await postModel.toggleSave()
-                }
+//                Task {
+//                    await postModel.toggleSave()
+//                }
             }
         )
     }

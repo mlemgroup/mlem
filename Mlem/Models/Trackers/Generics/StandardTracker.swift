@@ -8,6 +8,7 @@
 import Dependencies
 import Foundation
 import Semaphore
+import SwiftUI
 
 /// Enumeration of loading actions
 enum LoadAction {
@@ -39,8 +40,9 @@ struct FetchResponse<Item: TrackerItem> {
     var hasContent: Bool { items.count + numFiltered > 0 }
 }
 
+@Observable
 class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
-    @Dependency(\.errorHandler) var errorHandler
+    @ObservationIgnored @Dependency(\.errorHandler) var errorHandler
     
     /// loading state
     private var ids: Set<ContentModelIdentifier> = .init(minimumCapacity: 1000)
@@ -49,17 +51,6 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
     /// cursor of the most recently loaded page. nil indicates no content.
     private(set) var loadingCursor: String?
     private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
-    
-    // MARK: - Main actor methods
-    
-    @MainActor
-    func update(with item: Item) {
-        guard let index = items.firstIndex(where: { $0.uid == item.uid }) else {
-            return
-        }
-
-        items[index] = item
-    }
 
     // MARK: - External methods
     

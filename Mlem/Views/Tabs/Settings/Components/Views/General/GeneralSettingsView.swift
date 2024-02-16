@@ -9,8 +9,6 @@ import Dependencies
 import SwiftUI
 
 struct GeneralSettingsView: View {
-    @Dependency(\.siteInformation) var siteInformation: SiteInformationTracker
-    
     @AppStorage("confirmImageUploads") var confirmImageUploads: Bool = true
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
@@ -26,7 +24,7 @@ struct GeneralSettingsView: View {
     
     @AppStorage("openLinksInBrowser") var openLinksInBrowser: Bool = false
 
-    @EnvironmentObject var appState: AppState
+    @Environment(AppState.self) var appState
 
     @State var showErrorAlert: Bool = false
     @State var alertMessage: String = ""
@@ -65,9 +63,9 @@ struct GeneralSettingsView: View {
                     settingName: "Mark Read on Scroll",
                     isTicked: $markReadOnScroll
                 )
-                .disabled(siteInformation.version ?? .infinity <= .init("0.19.0"))
+                .disabled(appState.lemmyVersion ?? .infinity <= .init("0.19.0"))
             } footer: {
-                if siteInformation.version ?? .infinity <= .init("0.19.0") {
+                if appState.lemmyVersion ?? .infinity <= .init("0.19.0") {
                     Text("Mark read on scroll is only available on instances running v0.19.0 or greater.")
                 }
             }
@@ -84,7 +82,7 @@ struct GeneralSettingsView: View {
                     Text("Blurs content flagged as Not Safe For Work until tapped. You can disable NSFW content completely in Account Settings.")
                     
                     // TODO: 0.17 deprecation remove this check
-                    if (siteInformation.version ?? .zero) >= .init("0.18.0") {
+                    if (appState.lemmyVersion ?? .zero) >= .init("0.18.0") {
                         FooterLinkView(title: "Account Settings", destination: .settings(.accountGeneral))
                     }
                 }
@@ -143,7 +141,7 @@ struct GeneralSettingsView: View {
         .navigationTitle("General")
         .navigationBarColor()
         .hoistNavigation()
-        .onChange(of: appLock) { _ in
+        .onChange(of: appLock) {
             if appLock != .disabled, !BiometricUnlock().requestBiometricPermissions() {
                 showErrorAlert = true
                 alertMessage = "Please allow Mlem to use Face ID in Settings."

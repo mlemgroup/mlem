@@ -6,11 +6,13 @@
 //
 
 import Foundation
+import SwiftUI
 
 /// Class providing common tracker functionality for StandardTracker and ParentTracker
-class CoreTracker<Item: TrackerItem>: ObservableObject {
-    @Published var items: [Item] = .init()
-    @Published private(set) var loadingState: LoadingState = .idle
+@Observable
+class CoreTracker<Item: TrackerItem> {
+    var items: [Item] = .init()
+    private(set) var loadingState: LoadingState = .idle
     
     // uids of items that should trigger loading. threshold is several items before the end, to give the illusion of infinite loading. fallbackThreshold is the last item in feed, and exists to catch loading if the user scrolled too fast to trigger threshold
     private(set) var threshold: ContentModelIdentifier?

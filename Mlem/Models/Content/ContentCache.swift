@@ -12,21 +12,34 @@ struct BaseCacheGroup {
     var community2: BaseContentCache<Community2> = .init()
     var community3: BaseContentCache<Community3> = .init()
     
-    var user1: BaseContentCache<User1> = .init()
-    var user2: BaseContentCache<User2> = .init()
-    var user3: BaseContentCache<User3> = .init()
+    var person1: BaseContentCache<Person1> = .init()
+    var person2: BaseContentCache<Person2> = .init()
+    var person3: BaseContentCache<Person3> = .init()
+    
+    var post1: BaseContentCache<Post1> = .init()
+    var post2: BaseContentCache<Post2> = .init()
+    
+    func clean() {
+        community1.clean()
+        community2.clean()
+        community3.clean()
+        person1.clean()
+        person2.clean()
+        person3.clean()
+        post1.clean()
+        post2.clean()
+    }
 }
 
-private struct WeakReference<Content: AnyObject> {
+struct WeakReference<Content: AnyObject> {
     weak var content: Content?
 }
 
-
 class CoreContentCache<Content: CoreModel> {
-    private var cachedItems: [WeakReference<Content>] = .init()
+    private var cachedItems: [URL: WeakReference<Content>] = .init()
     
     func retrieveModel(actorId: URL) -> Content? {
-        cachedItems.first(where: { $0.content?.actorId == actorId })?.content!
+        cachedItems[actorId]?.content
     }
     
     func createModel(for apiType: Content.APIType) -> Content {
@@ -37,16 +50,24 @@ class CoreContentCache<Content: CoreModel> {
         }
         print("Creating new item for id \(apiType.actorId)")
         let newItem = Content(from: apiType)
-        cachedItems.append(.init(content: newItem))
+        cachedItems[apiType.actorId] = .init(content: newItem)
         return newItem
+    }
+    
+    /// Remove dead references
+    func clean() {
+        for (key, value) in cachedItems where value.content == nil {
+            print("Removed value with id \(key)")
+            cachedItems[key] = nil
+        }
     }
 }
 
 class BaseContentCache<Content: NewContentModel & AnyObject> {
-    private var cachedItems: [WeakReference<Content>] = .init()
+    private var cachedItems: [Content.ID: WeakReference<Content>] = .init()
     
     func retrieveModel(id: Content.APIType.ID) -> Content? {
-        cachedItems.first(where: { $0.content?.id == id })?.content!
+        cachedItems[id]?.content
     }
     
     func createModel(source: any APISource, for apiType: Content.APIType) -> Content {
@@ -57,7 +78,15 @@ class BaseContentCache<Content: NewContentModel & AnyObject> {
         }
         print("Creating new item for id \(apiType.id)")
         let newItem = Content(source: source, from: apiType)
-        cachedItems.append(.init(content: newItem))
+        cachedItems[apiType.id] = .init(content: newItem)
         return newItem
+    }
+    
+    /// Remove dead references
+    func clean() {
+        for (key, value) in cachedItems where value.content == nil {
+            print("Removed value with id \(key)")
+            cachedItems[key] = nil
+        }
     }
 }

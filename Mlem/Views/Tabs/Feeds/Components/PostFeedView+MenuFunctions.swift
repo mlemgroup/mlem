@@ -9,7 +9,7 @@ import Foundation
 
 extension PostFeedView {
     func genOuterSortMenuFunctions() -> [MenuFunction] {
-        PostSortType.availableOuterTypes.map { type in
+        PostSortType.availableOuterTypes(siteVersion: appState.lemmyVersion ?? .zero).map { type in
             let isSelected = postSortType == type
             let imageName = isSelected ? type.iconNameFill : type.iconName
             return MenuFunction.standardMenuFunction(
@@ -24,7 +24,7 @@ extension PostFeedView {
     }
     
     func genTopSortMenuFunctions() -> [MenuFunction] {
-        PostSortType.availableTopTypes.map { type in
+        PostSortType.availableTopTypes(siteVersion: appState.lemmyVersion ?? .zero).map { type in
             let isSelected = postSortType == type
             return MenuFunction.standardMenuFunction(
                 text: type.label,

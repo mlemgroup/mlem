@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NoPostsView: View {
-    @EnvironmentObject var postTracker: StandardPostTracker
+    @Environment(StandardPostTracker.self) var postTracker
     
     let loadingState: LoadingState
     let postSortType: PostSortType

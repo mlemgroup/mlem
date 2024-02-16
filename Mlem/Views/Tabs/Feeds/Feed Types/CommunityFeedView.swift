@@ -9,8 +9,6 @@ import Dependencies
 import Foundation
 import SwiftUI
 
-// swiftlint:disable type_body_length
-
 /// View for a single community
 struct CommunityFeedView: View {
     enum Tab: String, Identifiable, CaseIterable {
@@ -23,16 +21,17 @@ struct CommunityFeedView: View {
     
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
-    @Dependency(\.communityRepository) var communityRepository
+    @Dependency(\.notifier) var notifier
+    
+    @Environment(AppState.self) var appState
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.scrollViewProxy) var scrollProxy
     @Environment(\.navigationPathWithRoutes) private var navigationPath
     
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var editorTracker: EditorTracker
     
-    @StateObject var postTracker: StandardPostTracker
+    @State var postTracker: StandardPostTracker?
     
     @State var postSortType: PostSortType
     @State var selectedTab: Tab = .posts
@@ -52,7 +51,7 @@ struct CommunityFeedView: View {
     @Namespace var scrollToTop
     @State private var scrollToTopAppeared = false
     private var scrollToTopId: Int? {
-        postTracker.items.first?.id
+        postTracker?.items.first?.id
     }
     
     var availableTabs: [Tab] {
@@ -72,12 +71,17 @@ struct CommunityFeedView: View {
         
         self._community = .init(wrappedValue: community)
         self._postSortType = .init(wrappedValue: defaultPostSorting)
-        self._postTracker = .init(wrappedValue: .init(
-            internetSpeed: internetSpeed,
-            sortType: defaultPostSorting,
-            showReadPosts: showReadPosts,
-            feedType: .community(community)
-        ))
+        
+        if let community = community as? any Community {
+            self._postTracker = .init(wrappedValue: .init(
+                internetSpeed: internetSpeed,
+                sortType: defaultPostSorting,
+                showReadPosts: showReadPosts,
+                feedType: .community(community)
+            ))
+        } else {
+            self._postTracker = .init(wrappedValue: nil)
+        }
     }
     
     var body: some View {
@@ -86,7 +90,9 @@ struct CommunityFeedView: View {
                 if !(community is any Community3Providing) {
                     Task(priority: .userInitiated) {
                         do {
+                            print("START COMM")
                             community = try await community.upgrade()
+                            print("END COMM")
                         } catch {
                             errorHandler.handle(error)
                         }
@@ -96,7 +102,7 @@ struct CommunityFeedView: View {
             .refreshable {
                 await Task {
                     do {
-                        _ = try await postTracker.refresh(clearBeforeRefresh: false)
+                        _ = try await postTracker?.refresh(clearBeforeRefresh: false)
                     } catch {
                         errorHandler.handle(error)
                     }
@@ -163,8 +169,10 @@ struct CommunityFeedView: View {
     
     @ViewBuilder
     var posts: some View {
-        PostFeedView(postSortType: $postSortType, showCommunity: false, communityContext: community)
-            .environmentObject(postTracker)
+        if let postTracker, let community = community as? any Community1Providing {
+            PostFeedView(appState: appState, postSortType: $postSortType, showCommunity: false, communityContext: community)
+                .environment(postTracker)
+        }
     }
     
     @ViewBuilder
@@ -184,7 +192,7 @@ struct CommunityFeedView: View {
     
     @ViewBuilder
     var moderators: some View {
-        if let moderators = (community as? any Community3Providing)?.moderators {
+        if let moderators = community.moderators_ {
             ForEach(moderators, id: \.id) { user in
                 UserResultView(user, communityContext: community)
                 Divider()
@@ -218,15 +226,17 @@ struct CommunityFeedView: View {
                     if shouldShowCommunityIcons {
                         AvatarView(community: community, avatarSize: 44, iconResolution: .unrestricted)
                     }
-                    Button(action: community.copyFullyQualifiedName) {
+                    Button {
+                        community.copyFullNameWithPrefix(notifier: notifier)
+                    } label: {
                         VStack(alignment: .leading, spacing: 0) {
-                            Text(community.displayName ?? "Loading...")
+                            Text(community.displayName_ ?? community.name)
                                 .font(.title2)
                                 .fontWeight(.semibold)
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.01)
-                            if let fullyQualifiedName = community.fullyQualifiedName {
-                                Text(fullyQualifiedName)
+                            if let fullName = community.fullName {
+                                Text(fullName)
                                     .font(.footnote)
                                     .foregroundStyle(.secondary)
                                     .lineLimit(1)
@@ -251,21 +261,21 @@ struct CommunityFeedView: View {
     
     @ViewBuilder
     var subscribeButton: some View {
-        if let subscriptionStatus = community.subscriptionStatus {
+        if let subscriptionTier = community.subscriptionTier_ {
             HStack(spacing: 4) {
-                if let subscriberCount = community.subscriberCount {
+                if let subscriberCount = community.subscriberCount_ {
                     Text(abbreviateNumber(subscriberCount))
                 }
-                Image(systemName: subscriptionStatus.systemImage)
+                Image(systemName: subscriptionTier.systemImage)
                     .aspectRatio(contentMode: .fit)
             }
-            .foregroundStyle(subscriptionStatus.foregroundColor)
+            .foregroundStyle(subscriptionTier.foregroundColor)
             .padding(.vertical, 5)
             .padding(.horizontal, 10)
             .background(
                 Capsule()
-                    .strokeBorder(subscriptionStatus.foregroundColor, style: .init(lineWidth: 1))
-                    .background(Capsule().fill(subscriptionStatus.backgroundColor.opacity(0.1)))
+                    .strokeBorder(subscriptionTier.foregroundColor, style: .init(lineWidth: 1))
+                    .background(Capsule().fill(subscriptionTier.backgroundColor.opacity(0.1)))
             )
             .gesture(TapGesture().onEnded { _ in
                 hapticManager.play(haptic: .lightSuccess, priority: .low)
@@ -305,5 +315,3 @@ struct CommunityFeedView: View {
         }
     }
 }
-
-// swiftlint:enable type_body_length

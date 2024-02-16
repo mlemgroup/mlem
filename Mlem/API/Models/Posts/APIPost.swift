@@ -8,7 +8,7 @@
 import Foundation
 
 // lemmy_db_schema::source::post::Post
-struct APIPost: Decodable {
+struct APIPost: Decodable, Identifiable {
     internal init(
         id: Int = 0,
         name: String = "Mock Post",
@@ -19,11 +19,11 @@ struct APIPost: Decodable {
         deleted: Bool = false,
         embedDescription: String? = nil,
         embedTitle: String? = nil,
-        embedVideoUrl: String? = nil,
+        embedVideoUrl: URL? = nil,
         featuredCommunity: Bool = false,
         featuredLocal: Bool = false,
         languageId: Int = 0,
-        apId: String = "mock.apId",
+        apId: URL = URL(string: "https://lemmy.world/post/1000")!,
         local: Bool = false,
         locked: Bool = false,
         nsfw: Bool = false,
@@ -64,11 +64,11 @@ struct APIPost: Decodable {
     let deleted: Bool
     let embedDescription: String?
     let embedTitle: String?
-    let embedVideoUrl: String?
+    let embedVideoUrl: URL?
     let featuredCommunity: Bool
     let featuredLocal: Bool
     let languageId: Int
-    let apId: String
+    let apId: URL
     let local: Bool
     let locked: Bool
     let nsfw: Bool
@@ -76,6 +76,10 @@ struct APIPost: Decodable {
     let removed: Bool
     let thumbnailUrl: String?
     let updated: Date?
+}
+
+extension APIPost: ActorIdentifiable {
+    var actorId: URL { apId }
 }
 
 extension APIPost: Mockable {

@@ -10,9 +10,8 @@ import SwiftUI
 
 struct SettingsView: View {
     @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
-    @Dependency(\.siteInformation) var siteInformation: SiteInformationTracker
     
-    @EnvironmentObject var appState: AppState
+    @Environment(AppState.self) var appState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
     @StateObject private var settingsTabNavigation: AnyNavigationPath<AppRoute> = .init()
@@ -32,18 +31,18 @@ struct SettingsView: View {
                         NavigationLink(.settings(.currentAccount)) {
                             HStack(spacing: 23) {
                                 AvatarView(
-                                    url: appState.profileTabRemoteSymbolUrl,
-                                    type: .user,
+                                    url: appState.myUser?.avatarUrl,
+                                    type: .person,
                                     avatarSize: 54,
                                     iconResolution: .unrestricted
                                 )
                                 .padding(.vertical, -6)
                                 .padding(.leading, 3)
-                                if let person = siteInformation.myUserInfo?.localUserView.person {
+                                if let user = appState.myUser as? User {
                                     VStack(alignment: .leading, spacing: 3) {
-                                        Text(appState.currentActiveAccount?.nickname ?? person.name)
+                                        Text(user.nickname ?? user.name)
                                             .font(.title2)
-                                        if let hostName = person.actorId.host() {
+                                        if let hostName = user.host {
                                             Text("@\(hostName)")
                                                 .foregroundStyle(.secondary)
                                                 .font(.caption)
@@ -78,9 +77,9 @@ struct SettingsView: View {
                             } label: {
                                 Label("Add Another Account", systemImage: "plus")
                             }
-                            .sheet(isPresented: $isShowingInstanceAdditionSheet) {
-                                AddSavedInstanceView(onboarding: false)
-                            }
+//                            .sheet(isPresented: $isShowingInstanceAdditionSheet) {
+//                                AddSavedInstanceView(onboarding: false)
+//                            }
                         }
                     }
                     Section {

@@ -1,121 +1,55 @@
 //
-//  APIClient+Post.swift
+//  NewAPIClient+Post.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2023-08-26.
+//  Created by Sjmarf on 16/02/2024.
 //
 
 import Foundation
 
 extension APIClient {
-    // swiftlint:disable function_parameter_count
-    func loadPosts(
-        communityId: Int?,
+    // swiftlint:disable:next function_parameter_count
+    func getPosts(
+        communityId: Int,
+        sort: PostSortType,
         page: Int,
         cursor: String?,
-        sort: PostSortType?,
-        type: APIListingType,
-        limit: Int?,
-        savedOnly: Bool?,
-        communityName: String?
+        limit: Int,
+        savedOnly: Bool
     ) async throws -> GetPostsResponse {
-        let request = try GetPostsRequest(
-            session: session,
+        let request = GetPostsRequest(
             communityId: communityId,
             page: page,
             cursor: cursor,
             sort: sort,
-            type: type,
+            type: .all,
             limit: limit,
-            savedOnly: savedOnly,
-            communityName: communityName
+            savedOnly: savedOnly
         )
-        
-        return try await perform(request: request)
-    }
-
-    // swiftlint:enable function_parameter_count
-    
-    func markPostAsRead(for postId: Int, read: Bool) async throws -> SuccessResponse {
-        let request = try MarkPostReadRequest(session: session, postId: postId, read: read)
-        // TODO: 0.18 deprecation simply return result of perform
-        let compatibilityResponse = try await perform(request: request)
-        return SuccessResponse(from: compatibilityResponse)
-    }
-    
-    func markPostsAsRead(for postIds: [Int], read: Bool) async throws -> SuccessResponse {
-        let request = try MarkPostReadRequest(session: session, postIds: postIds, read: read)
-        // TODO: 0.18 deprecation simply return result of perform
-        let compatibilityResponse = try await perform(request: request)
-        return SuccessResponse(from: compatibilityResponse)
-    }
-    
-    func loadPost(id: Int, commentId: Int? = nil) async throws -> APIPostView {
-        let request = try GetPostRequest(session: session, id: id, commentId: commentId)
-        return try await perform(request: request).postView
-    }
-    
-    func createPost(
-        communityId: Int,
-        name: String,
-        nsfw: Bool?,
-        body: String?,
-        url: String?
-    ) async throws -> PostResponse {
-        let request = try CreatePostRequest(
-            session: session,
-            communityId: communityId,
-            name: name,
-            nsfw: nsfw,
-            body: body,
-            url: url
-        )
-        
         return try await perform(request: request)
     }
     
-    // swiftlint:disable function_parameter_count
-    func editPost(
-        postId: Int,
-        name: String?,
-        url: String?,
-        body: String?,
-        nsfw: Bool?,
-        languageId: Int?
-    ) async throws -> PostResponse {
-        let request = try EditPostRequest(
-            session: session,
-            postId: postId,
-            name: name,
-            url: url,
-            body: body,
-            nsfw: nsfw,
-            languageId: languageId
+    // swiftlint:disable:next function_parameter_count
+    func getPosts(
+        feedType: APIListingType,
+        sort: PostSortType,
+        page: Int,
+        cursor: String?,
+        limit: Int,
+        savedOnly: Bool
+    ) async throws -> GetPostsResponse {
+        print("REQUEST", feedType, sort, endpointUrl, token)
+        let request = GetPostsRequest(
+            communityId: nil,
+            page: page,
+            cursor: cursor,
+            sort: sort,
+            type: feedType,
+            limit: limit,
+            savedOnly: savedOnly
         )
-        
-        return try await perform(request: request)
-    }
-
-    // swiftlint:enable function_parameter_count
-    
-    func ratePost(id: Int, score: ScoringOperation) async throws -> APIPostView {
-        let request = try CreatePostLikeRequest(session: session, postId: id, score: score)
-        return try await perform(request: request).postView
-    }
-    
-    func deletePost(id: Int, shouldDelete: Bool) async throws -> APIPostView {
-        let request = try DeletePostRequest(session: session, postId: id, deleted: shouldDelete)
-        return try await perform(request: request).postView
-    }
-    
-    @discardableResult
-    func reportPost(id: Int, reason: String) async throws -> APIPostReportView {
-        let request = try CreatePostReportRequest(session: session, postId: id, reason: reason)
-        return try await perform(request: request).postReportView
-    }
-    
-    func savePost(id: Int, shouldSave: Bool) async throws -> APIPostView {
-        let request = try SavePostRequest(session: session, postId: id, save: shouldSave)
-        return try await perform(request: request).postView
+        let response = try await perform(request: request)
+        print("RESPONSE", response.posts.first?.post.name)
+        return response
     }
 }

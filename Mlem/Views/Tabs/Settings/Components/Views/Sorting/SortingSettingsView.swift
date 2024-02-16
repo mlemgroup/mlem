@@ -9,9 +9,7 @@ import Dependencies
 import SwiftUI
 
 struct SortingSettingsView: View {
-    @Dependency(\.siteInformation) var siteInformation
-    
-    @EnvironmentObject var appState: AppState
+    @Environment(AppState.self) var appState
     
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
     @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
@@ -42,7 +40,7 @@ struct SortingSettingsView: View {
                     Text("The sort mode that is selected by default when you open a feed.")
                 } else {
                     // swiftlint:disable line_length
-                    Text("You've selected the '\(defaultPostSorting.label)' sort mode, which is only available on instances running v\(String(describing: defaultPostSorting.minimumVersion)) or later. \(appState.currentActiveAccount?.instanceLink.host ?? "your instance") is running v\(String(describing: siteInformation.version ?? .zero)).\n\nWhen using an instance older than v\(String(describing: defaultPostSorting.minimumVersion)), the 'fallback' sort mode will be used instead."
+                    Text("You've selected the '\(defaultPostSorting.label)' sort mode, which is only available on instances running v\(String(describing: defaultPostSorting.minimumVersion)) or later. \(appState.myInstance?.host ?? "your instance") is running v\(String(describing: appState.lemmyVersion ?? .zero)).\n\nWhen using an instance older than v\(String(describing: defaultPostSorting.minimumVersion)), the 'fallback' sort mode will be used instead."
                     )
                     // swiftlint:enable line_length
                 }

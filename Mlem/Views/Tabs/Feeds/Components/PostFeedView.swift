@@ -11,7 +11,6 @@ import SwiftUI
 
 struct PostFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
-    @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.markReadBatcher) var markReadBatcher
     
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
@@ -22,8 +21,8 @@ struct PostFeedView: View {
     @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
     @AppStorage("markReadOnScroll") var markReadOnScroll: Bool = false
     
-    @EnvironmentObject var postTracker: StandardPostTracker
-    @EnvironmentObject var appState: AppState
+    @Environment(StandardPostTracker.self) var postTracker
+    @Environment(AppState.self) var appState
     
     // used to actually drive post loading; when nil, indicates that the site version is unresolved and it is not safe to load posts
     @State var versionSafePostSort: PostSortType?
@@ -37,14 +36,12 @@ struct PostFeedView: View {
     @State var suppressNoPostsView: Bool = true
 
     let showCommunity: Bool
-    let communityContext: CommunityModel?
+    let communityContext: (any Community)?
 
     @State var errorDetails: ErrorDetails?
     
-    init(postSortType: Binding<PostSortType>, showCommunity: Bool, communityContext: CommunityModel? = nil) {
-        @Dependency(\.siteInformation) var siteInformation
-        
-        if let siteVersion = siteInformation.version, postSortType.wrappedValue.minimumVersion <= siteVersion {
+    init(appState: AppState, postSortType: Binding<PostSortType>, showCommunity: Bool, communityContext: (any Community)? = nil) {
+        if let siteVersion = appState.lemmyVersion, postSortType.wrappedValue.minimumVersion <= siteVersion {
             self._versionSafePostSort = .init(wrappedValue: postSortType.wrappedValue)
         }
         
@@ -56,14 +53,20 @@ struct PostFeedView: View {
     var body: some View {
         content
             .animation(.easeOut(duration: 0.2), value: postTracker.items.isEmpty)
-            .onChange(of: showReadPosts) { newValue in
-                if newValue {
+            .onChange(of: showReadPosts) {
+                if showReadPosts {
                     Task { await postTracker.removeFilter(.read) }
                 } else {
                     Task { await postTracker.addFilter(.read) }
                 }
             }
-            .task(id: siteInformation.version) {
+            .onChange(of: postSortType) {
+                print("CHANGE SORT")
+                Task {
+                    await postTracker.changeSortType(to: postSortType, forceRefresh: true)
+                }
+            }
+            .task(id: appState.lemmyVersion) {
                 await setDefaultSortMode()
             }
             .task(id: versionSafePostSort) {
@@ -111,13 +114,13 @@ struct PostFeedView: View {
                                 let indexToMark = index >= postSize.markReadThreshold ? index - postSize.markReadThreshold : index
 
                                 if let postToMark = postTracker.items[safeIndex: indexToMark] {
-                                    postToMark.setRead(true)
-                                    await markReadBatcher.add(postToMark.postId)
+                                    // postToMark.setRead(true)
+                                    await markReadBatcher.add(postToMark.id)
                                     
                                     // handle posts at end of feed
                                     if postTracker.items.count - index <= postSize.markReadThreshold {
-                                        element.setRead(true)
-                                        await markReadBatcher.add(element.postId)
+                                        // element.setRead(true)
+                                        await markReadBatcher.add(element.id)
                                     }
                                 }
                             }
@@ -129,13 +132,12 @@ struct PostFeedView: View {
     }
     
     @ViewBuilder
-    private func feedPost(for post: PostModel) -> some View {
+    private func feedPost(for post: Post2) -> some View {
         VStack(spacing: 0) {
-            NavigationLink(.postLinkWithContext(.init(post: post, community: nil, postTracker: postTracker))) {
+            NavigationLink(.post(post)) {
                 FeedPost(
                     post: post,
                     postTracker: postTracker,
-                    community: communityContext,
                     showPostCreator: shouldShowPostCreator,
                     showCommunity: showCommunity
                 )

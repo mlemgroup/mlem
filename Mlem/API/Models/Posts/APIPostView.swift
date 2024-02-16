@@ -58,8 +58,9 @@ extension APIPostView: Mockable {
     static var mock: APIPostView { .init() }
 }
 
-extension APIPostView: Identifiable {
-    var id: Int { hashValue }
+extension APIPostView: Identifiable, ActorIdentifiable {
+    var id: Int { post.id }
+    var actorId: URL { post.apId }
 }
 
 extension APIPostView: Equatable {

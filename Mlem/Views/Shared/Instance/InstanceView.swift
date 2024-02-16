@@ -25,17 +25,14 @@ enum InstanceViewTab: String, Identifiable, CaseIterable {
 }
 
 struct InstanceView: View {
-    @Dependency(\.apiClient) var apiClient: APIClient
     @Dependency(\.errorHandler) var errorHandler
-    @Dependency(\.siteInformation) var siteInformation
     
     @Environment(\.colorScheme) var colorScheme
     
     @Environment(\.navigationPathWithRoutes) private var navigationPath
     @Environment(\.scrollViewProxy) private var scrollViewProxy
     
-    @State var domainName: String
-    @State var instance: InstanceModel?
+    @State var instance: any InstanceStubProviding
     @State var errorDetails: ErrorDetails?
     
     @Namespace var scrollToTop
@@ -43,20 +40,15 @@ struct InstanceView: View {
     
     @State var selectedTab: InstanceViewTab = .about
     
-    init(domainName: String? = nil, instance: InstanceModel? = nil) {
-        _domainName = State(wrappedValue: domainName ?? instance?.name ?? "")
-        var instance = instance
-        if domainName == siteInformation.instance?.url.host() {
-            instance = siteInformation.instance ?? instance
-        }
+    init(instance: any InstanceStubProviding) {
         _instance = State(wrappedValue: instance)
     }
     
     var subtitleText: String {
-        if let version = instance?.version {
-            "\(domainName) • \(String(describing: version))"
+        if let version = instance.version_ {
+            "\(instance.host ?? "unknown") • \(String(describing: version))"
         } else {
-            domainName
+            instance.host ?? "unknown"
         }
     }
     
@@ -65,24 +57,22 @@ struct InstanceView: View {
             ScrollToView(appeared: $scrollToTopAppeared)
                 .id(scrollToTop)
             VStack(spacing: AppConstants.postAndCommentSpacing) {
-                AvatarBannerView(instance: instance)
+                AvatarBannerView(instance: instance as? any Instance)
                     .padding(.horizontal, AppConstants.postAndCommentSpacing)
                     .padding(.top, 10)
                 VStack(spacing: 5) {
                     if errorDetails == nil {
-                        if let instance {
-                            Text(instance.displayName)
-                                .font(.title)
-                                .fontWeight(.semibold)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.01)
+                        Text(instance.displayName_ ?? instance.host ?? "Instance")
+                            .font(.title)
+                            .fontWeight(.semibold)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.01)
 
-                            Text(subtitleText)
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
-                        }
+                        Text(subtitleText)
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
                     } else {
-                        Text(domainName)
+                        Text(instance.host ?? "Instance")
                             .font(.title)
                             .fontWeight(.semibold)
                             .lineLimit(1)
@@ -94,7 +84,7 @@ struct InstanceView: View {
                 .padding(.bottom, 5)
                 if let errorDetails {
                     ErrorView(errorDetails)
-                } else if let instance, instance.creationDate != nil {
+                } else if instance.creationDate_ != nil {
                     VStack(spacing: 0) {
                         VStack(spacing: 4) {
                             Divider()
@@ -105,7 +95,7 @@ struct InstanceView: View {
                         }
                         switch selectedTab {
                         case .about:
-                            if let description = instance.description {
+                            if let description = instance.description_ {
                                 MarkdownView(text: description, isNsfw: false)
                                     .padding(.horizontal, AppConstants.postAndCommentSpacing)
                                     .padding(.top)
@@ -115,29 +105,29 @@ struct InstanceView: View {
                                     .padding(.top)
                             }
                         case .administrators:
-                            if let administrators = instance.administrators {
-                                ForEach(administrators, id: \.self) { user in
-                                    UserResultView(user, complications: [.date])
-                                    Divider()
-                                }
-                            } else {
+//                            if let administrators = instance.administrators {
+//                                ForEach(administrators, id: \.self) { user in
+//                                    UserResultView(user, complications: [.date])
+//                                    Divider()
+//                                }
+//                            } else {
                                 ProgressView()
                                     .padding(.top)
-                            }
+                            // }
                         case .details:
-                            if instance.userCount != nil {
-                                VStack(spacing: 0) {
-                                    InstanceDetailsView(instance: instance)
-                                        .padding(.vertical, 16)
-                                        .background(Color(uiColor: .systemGroupedBackground))
-                                    if colorScheme == .light {
-                                        Divider()
-                                    }
-                                }
-                            } else {
-                                ProgressView()
-                                    .padding(.top)
-                            }
+//                            if instance.userCount != nil {
+//                                VStack(spacing: 0) {
+//                                    InstanceDetailsView(instance: instance)
+//                                        .padding(.vertical, 16)
+//                                        .background(Color(uiColor: .systemGroupedBackground))
+//                                    if colorScheme == .light {
+//                                        Divider()
+//                                    }
+//                                }
+//                            } else {
+                            ProgressView()
+                                .padding(.top)
+                            // }
                         default:
                             EmptyView()
                         }
@@ -151,51 +141,49 @@ struct InstanceView: View {
             }
         }
         .toolbar {
-            if let instance {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Link(destination: instance.url) {
-                        Label("Open in Browser", systemImage: Icons.browser)
-                    }
+            ToolbarItem(placement: .topBarTrailing) {
+                Link(destination: instance.url) {
+                    Label("Open in Browser", systemImage: Icons.browser)
                 }
             }
         }
         .task {
-            if instance?.administrators == nil {
-                do {
-                    if let url = URL(string: "https://\(domainName)") {
-                        let info = try await apiClient.loadSiteInformation(instanceURL: url)
-                        DispatchQueue.main.async {
-                            withAnimation(.easeOut(duration: 0.2)) {
-                                if var instance {
-                                    instance.update(with: info)
-                                    self.instance = instance
-                                } else {
-                                    instance = InstanceModel(from: info)
-                                }
-                            }
-                        }
-                    } else {
-                        errorDetails = ErrorDetails(title: "\"\(domainName)\" is an invalid URL.")
-                    }
-                } catch let APIClientError.decoding(data, error) {
-                    withAnimation(.easeOut(duration: 0.2)) {
-                        if let content = String(data: data, encoding: .utf8),
-                           content.contains("<div class=\"kbin-container\">") {
-                            errorDetails = ErrorDetails(
-                                title: "KBin Instance",
-                                body: "We can't yet display KBin details.",
-                                icon: Icons.federation
-                            )
-                        } else {
-                            errorDetails = ErrorDetails(error: APIClientError.decoding(data, error))
-                        }
-                    }
-                } catch {
-                    withAnimation(.easeOut(duration: 0.2)) {
-                        errorDetails = ErrorDetails(error: error)
-                    }
-                }
-            }
+//            if instance?.administrators == nil {
+//                do {
+//                   if let url = URL(string: "https://\(domainName)") {
+//                        let info = try await apiClient.loadSiteInformation(instanceURL: url)
+//                        DispatchQueue.main.async {
+//                            withAnimation(.easeOut(duration: 0.2)) {
+//                               if var instance {
+//                                    instance.update(with: info)
+//                                    self.instance = instance
+//                                } else {
+//                                    instance = InstanceModel(from: info)
+//                                }
+//                            }
+//                        }
+//                    } else {
+//                        errorDetails = ErrorDetails(title: "\"\(domainName)\" is an invalid URL.")
+//                    }
+//                } catch let APIClientError.decoding(data, error) {
+//                    withAnimation(.easeOut(duration: 0.2)) {
+//                        if let content = String(data: data, encoding: .utf8),
+//                           content.contains("<div class=\"kbin-container\">") {
+//                            errorDetails = ErrorDetails(
+//                                title: "KBin Instance",
+//                                body: "We can't yet display KBin details.",
+//                                icon: Icons.federation
+//                            )
+//                        } else {
+//                            errorDetails = ErrorDetails(error: APIClientError.decoding(data, error))
+//                        }
+//                    }
+//                } catch {
+//                    withAnimation(.easeOut(duration: 0.2)) {
+//                        errorDetails = ErrorDetails(error: error)
+//                    }
+//                }
+//            }
         }
         .fancyTabScrollCompatible()
         .hoistNavigation {
@@ -216,7 +204,7 @@ struct InstanceView: View {
             }
         }
         .navigationBarColor()
-        .navigationTitle(instance?.displayName ?? domainName)
+        // .navigationTitle(instance?.displayName ?? domainName)
         .navigationBarTitleDisplayMode(.inline)
     }
 }

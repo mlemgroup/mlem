@@ -11,27 +11,14 @@ import SwiftUI
 
 /// View grouping post interactions--upvote, downvote, save, reply, plus post info
 struct InteractionBarView: View {
-    @Dependency(\.siteInformation) var siteInformation
+    @Environment(AppState.self) var appState
     
-    // environment
-    @EnvironmentObject var commentTracker: CommentTracker
-    
-    // metadata
-    let votes: VotesModel
-    let published: Date
-    let updated: Date?
-    let commentCount: Int
-    var unreadCommentCount: Int = 0
-    let saved: Bool
+    let content: any InteractableContent
     
     let accessibilityContext: String
     let widgets: [LayoutWidgetType]
 
-    let upvote: () async -> Void
-    let downvote: () async -> Void
-    let save: () async -> Void
     let reply: () -> Void
-    let shareURL: URL?
     
     var shouldShowScore: Bool = true
     var showDownvotesSeparately: Bool = false
@@ -54,67 +41,68 @@ struct InteractionBarView: View {
                 switch widget {
                 case .scoreCounter:
                     ScoreCounterView(
-                        vote: votes.myVote,
-                        score: votes.total,
-                        upvote: upvote,
-                        downvote: downvote
+                        vote: content.myVote,
+                        score: content.score,
+                        upvote: { },
+                        downvote: { }
                     )
                 
                 case .upvoteCounter:
                     if offset == widgets.count - 1 {
-                        UpvoteCounterView(vote: votes.myVote, score: votes.upvotes, upvote: upvote)
+                        UpvoteCounterView(vote: content.myVote, score: content.upvoteCount, upvote: { })
                     } else {
-                        UpvoteCounterView(vote: votes.myVote, score: votes.upvotes, upvote: upvote)
+                        UpvoteCounterView(vote: content.myVote, score: content.downvoteCount, upvote: { })
                             .padding(.trailing, -AppConstants.postAndCommentSpacing)
                     }
                     
                 case .downvoteCounter:
-                    if siteInformation.enableDownvotes {
-                        if offset == widgets.count - 1 {
-                            DownvoteCounterView(vote: votes.myVote, score: votes.downvotes, downvote: downvote)
-                        } else {
-                            DownvoteCounterView(vote: votes.myVote, score: votes.downvotes, downvote: downvote)
-                                .padding(.trailing, -AppConstants.postAndCommentSpacing)
-                        }
+                    // if appState.myInstance?.enableDownvotes ?? false {
+                    if offset == widgets.count - 1 {
+                        DownvoteCounterView(vote: content.myVote, score: content.downvoteCount, downvote: { })
+                    } else {
+                        DownvoteCounterView(vote: content.myVote, score: content.downvoteCount, downvote: { })
+                            .padding(.trailing, -AppConstants.postAndCommentSpacing)
                     }
+                    // }
                     
                 case .upvote:
-                    UpvoteButtonView(vote: votes.myVote, upvote: upvote)
+                    UpvoteButtonView(vote: content.myVote, upvote: { })
                     
                 case .downvote:
-                    if siteInformation.enableDownvotes {
-                        DownvoteButtonView(vote: votes.myVote, downvote: downvote)
-                    }
+                    // if appState.myInstance?.enableDownvotes ?? false {
+                    DownvoteButtonView(vote: content.myVote, downvote: { })
+                    // }
                     
                 case .save:
-                    SaveButtonView(isSaved: saved, accessibilityContext: accessibilityContext, save: {
-                        Task(priority: .userInitiated) {
-                            await save()
-                        }
-                    })
+                     SaveButtonView(isSaved: content.isSaved, accessibilityContext: accessibilityContext, save: {
+//                        Task(priority: .userInitiated) {
+//                            await save()
+//                        }
+                     })
                     
                 case .reply:
                     ReplyButtonView(accessibilityContext: accessibilityContext, reply: reply)
                     
                 case .share:
-                    ShareButtonView(accessibilityContext: accessibilityContext, url: shareURL)
+                    ShareButtonView(accessibilityContext: accessibilityContext, url: content.actorId)
                     
                 case .infoStack:
+                    EmptyView()
                     InfoStackView(
                         votes: shouldShowScore
                             ? DetailedVotes(
-                                score: votes.total,
-                                upvotes: votes.upvotes,
-                                downvotes: votes.downvotes,
-                                myVote: votes.myVote,
+                                score: content.score,
+                                upvotes: content.upvoteCount,
+                                downvotes: content.downvoteCount,
+                                myVote: content.myVote,
                                 showDownvotes: showDownvotesSeparately
                             )
                             : nil,
-                        published: shouldShowTime ? published : nil,
-                        updated: shouldShowTime ? updated : nil,
-                        commentCount: shouldShowReplies ? commentCount : nil,
-                        unreadCommentCount: unreadCommentCount,
-                        saved: shouldShowSaved ? saved : nil,
+                        published: shouldShowTime ? content.creationDate : nil,
+                        updated: shouldShowTime ? content.updatedDate : nil,
+                        commentCount: shouldShowReplies ? content.commentCount : nil,
+                        unreadCommentCount: (content as? any Post2Providing)?.unreadCommentCount ?? 0,
+                        saved: shouldShowSaved ? content.isSaved : nil,
                         alignment: infoStackAlignment(offset),
                         colorizeVotes: false
                     )

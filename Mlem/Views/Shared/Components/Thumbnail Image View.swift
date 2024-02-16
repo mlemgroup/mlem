@@ -13,12 +13,11 @@ struct ThumbnailImageView: View {
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     
     @Dependency(\.errorHandler) var errorHandler
-    @Dependency(\.postRepository) var postRepository
     @Environment(\.openURL) private var openURL
     
-    @ObservedObject var post: PostModel
+    let post: any Post
     
-    var showNsfwFilter: Bool { (post.post.nsfw || post.community.nsfw) && shouldBlurNsfw }
+    var showNsfwFilter: Bool { (post.nsfw || post.community_?.nsfw ?? false) && shouldBlurNsfw }
     
     let size = CGSize(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
     
@@ -37,7 +36,7 @@ struct ThumbnailImageView: View {
                 )
             case let .link(url):
                 VStack {
-                    if let linkUrl = post.post.linkUrl {
+                    if let linkUrl = post.linkUrl {
                         websiteView(url: url)
                             .contextMenu {
                                 Button("Open", systemImage: Icons.browser) {
@@ -80,7 +79,7 @@ struct ThumbnailImageView: View {
             contentMode: .fill
         )
         .onTapGesture {
-            if let url = post.post.linkUrl {
+            if let url = post.linkUrl {
                 openURL(url)
                 markPostAsRead()
             }
@@ -97,8 +96,8 @@ struct ThumbnailImageView: View {
     
     /// Synchronous void wrapper for postTracker.markRead to pass into CachedImage as dismiss callback
     func markPostAsRead() {
-        Task(priority: .userInitiated) {
-            await post.markRead(true)
-        }
+//        Task(priority: .userInitiated) {
+//            await post.markRead(true)
+//        }
     }
 }

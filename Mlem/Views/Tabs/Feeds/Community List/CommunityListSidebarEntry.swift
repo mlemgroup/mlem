@@ -42,13 +42,14 @@ struct RegexCommunityNameSidebarEntry: SidebarEntry {
 
 // Filters to favorited communities
 struct FavoritesSidebarEntry: SidebarEntry {
-    @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
+    // @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
     
     var sidebarLabel: String?
     var sidebarIcon: String?
 
     @MainActor
     func contains(community: APICommunity, isSubscribed: Bool) -> Bool {
-        favoriteCommunitiesTracker.isFavorited(community)
+        return false
+        // favoriteCommunitiesTracker.isFavorited(community)
     }
 }

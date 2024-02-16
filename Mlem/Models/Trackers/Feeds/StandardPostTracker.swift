@@ -8,6 +8,7 @@
 import Dependencies
 import Foundation
 import Nuke
+import SwiftUI
 
 /// Enumeration of criteria on which to filter a post
 enum PostFilter: Hashable {
@@ -17,45 +18,61 @@ enum PostFilter: Hashable {
     /// Post is filtered because it contains a blocked keyword
     case keyword
     
-    /// Post is filtered because the user is blocked (associated value is user id)
-    case blockedUser(Int)
-    
-    /// Post is filtered because community is blocked (associated value is community id)
-    case blockedCommunity(Int)
-    
     func hash(into hasher: inout Hasher) {
         switch self {
         case .read:
             hasher.combine("read")
         case .keyword:
             hasher.combine("keyword")
-        case let .blockedUser(userId):
-            hasher.combine("blockedUser")
-            hasher.combine(userId)
-        case let .blockedCommunity(communityId):
-            hasher.combine("blockedCommunity")
-            hasher.combine(communityId)
+        }
+    }
+}
+
+enum TrackerFeedType: Equatable {
+    case aggregateFeed(any APISource, type: APIListingType)
+    case community(any Community)
+    
+    static func == (lhs: TrackerFeedType, rhs: TrackerFeedType) -> Bool {
+        switch (lhs, rhs) {
+        case (.aggregateFeed(let source1, type: let type1), .aggregateFeed(let source2, type: let type2)):
+            return source1.actorId == source2.actorId && type1 == type2
+        case (.community(let comm1), .community(let comm2)):
+            return comm1.actorId == comm2.actorId
+        default:
+            return false
+        }
+    }
+    
+    func getPosts(
+        sort: PostSortType,
+        page: Int = 1,
+        cursor: String? = nil,
+        limit: Int,
+        savedOnly: Bool = false
+    ) async throws -> (posts: [Post2], cursor: String?) {
+        switch self {
+        case .aggregateFeed(let apiSource, let type):
+            return try await apiSource.getPosts(feed: type, sort: sort, page: page, cursor: cursor, limit: limit, savedOnly: savedOnly)
+        case .community(let community):
+            return try await community.getPosts(sort: sort, page: page, cursor: cursor, limit: limit, savedOnly: savedOnly)
         }
     }
 }
 
 /// Post tracker for use with single feeds. Supports all post sorting types, but is not suitable for multi-feed use.
-class StandardPostTracker: StandardTracker<PostModel> {
-    @Dependency(\.postRepository) var postRepository
-    @Dependency(\.personRepository) var personRepository
-    @Dependency(\.persistenceRepository) var persistenceRepository
-    @Dependency(\.siteInformation) var siteInformation
-    @Dependency(\.apiClient) var apiClient
+@Observable
+class StandardPostTracker: StandardTracker<Post2> {
+    @ObservationIgnored @Dependency(\.persistenceRepository) var persistenceRepository
     
     // TODO: ERIC keyword filters could be more elegant
     var filteredKeywords: [String]
     
-    var feedType: FeedType
+    var feedType: TrackerFeedType
     private(set) var postSortType: PostSortType
     private var filters: [PostFilter: Int]
     
     // true when the items in the tracker are stale and should not be displayed
-    @Published var isStale: Bool = false
+    var isStale: Bool = false
     
     // prefetching
     private let prefetcher = ImagePrefetcher(
@@ -64,21 +81,25 @@ class StandardPostTracker: StandardTracker<PostModel> {
         maxConcurrentRequestCount: 40
     )
     
-    init(internetSpeed: InternetSpeed, sortType: PostSortType, showReadPosts: Bool, feedType: FeedType) {
+    init(
+        internetSpeed: InternetSpeed,
+        sortType: PostSortType,
+        showReadPosts: Bool,
+        feedType: TrackerFeedType
+    ) {
         @Dependency(\.persistenceRepository) var persistenceRepository
-        
-        assert(feedType != .saved, "Cannot create StandardPostTracker for saved feed!")
-        
+                
         self.feedType = feedType
         self.postSortType = sortType
         
         self.filteredKeywords = persistenceRepository.loadFilteredKeywords()
         self.filters = [.keyword: 0]
+        
+        super.init(internetSpeed: internetSpeed)
+        
         if !showReadPosts {
             filters[.read] = 0
         }
-        
-        super.init(internetSpeed: internetSpeed)
     }
     
     override func refresh(clearBeforeRefresh: Bool) async throws {
@@ -88,34 +109,20 @@ class StandardPostTracker: StandardTracker<PostModel> {
     
     // MARK: StandardTracker Loading Methods
     
-    override func fetchPage(page: Int) async throws -> FetchResponse<PostModel> {
-        let (items, cursor) = try await postRepository.loadPage(
-            communityId: feedType.communityId,
-            page: page,
-            cursor: nil,
-            sort: postSortType,
-            type: feedType.toApiListingType,
-            limit: internetSpeed.pageSize
-        )
+    override func fetchPage(page: Int) async throws -> FetchResponse<Post2> {
+        let result = try await feedType.getPosts(sort: postSortType, page: page, cursor: nil, limit: internetSpeed.pageSize)
         
-        let filteredItems = filter(items)
-        preloadImages(filteredItems)
-        return .init(items: filteredItems, cursor: cursor, numFiltered: items.count - filteredItems.count)
+        let filteredPosts = filter(result.posts)
+        preloadImages(filteredPosts)
+        return .init(items: filteredPosts, cursor: result.cursor, numFiltered: result.posts.count - filteredPosts.count)
     }
     
-    override func fetchCursor(cursor: String?) async throws -> FetchResponse<PostModel> {
-        let (items, cursor) = try await postRepository.loadPage(
-            communityId: feedType.communityId,
-            page: page,
-            cursor: cursor,
-            sort: postSortType,
-            type: feedType.toApiListingType,
-            limit: internetSpeed.pageSize
-        )
+    override func fetchCursor(cursor: String?) async throws -> FetchResponse<Post2> {
+        let result = try await feedType.getPosts(sort: postSortType, page: page, cursor: cursor, limit: internetSpeed.pageSize)
         
-        let filteredItems = filter(items)
-        preloadImages(filteredItems)
-        return .init(items: filteredItems, cursor: cursor, numFiltered: items.count - filteredItems.count)
+        let filteredPosts = filter(result.posts)
+        preloadImages(filteredPosts)
+        return .init(items: filteredPosts, cursor: result.cursor, numFiltered: result.posts.count - filteredPosts.count)
     }
     
     // MARK: Custom Behavior
@@ -136,7 +143,7 @@ class StandardPostTracker: StandardTracker<PostModel> {
     }
     
     @MainActor
-    func changeFeedType(to newFeedType: FeedType) async {
+    func changeFeedType(to newFeedType: TrackerFeedType) async {
         // don't do anything if feed type not changed
         guard feedType != newFeedType else {
             return
@@ -155,7 +162,7 @@ class StandardPostTracker: StandardTracker<PostModel> {
         deprecated,
         message: "Compatibility function for UserView. Should be removed and UserView refactored to use new multi-trackers."
     )
-    func reset(with newPosts: [PostModel]) async {
+    func reset(with newPosts: [Post2]) async {
         await setItems(newPosts)
     }
     
@@ -208,8 +215,8 @@ class StandardPostTracker: StandardTracker<PostModel> {
     /// Filters a given list of posts. Updates the counts of filtered posts in `filters`
     /// - Parameter posts: list of posts to filter
     /// - Returns: list of posts with filtered posts removed
-    private func filter(_ posts: [PostModel]) -> [PostModel] {
-        var ret: [PostModel] = .init()
+    private func filter(_ posts: [Post2]) -> [Post2] {
+        var ret: [Post2] = .init()
         
         for post in posts {
             if let filterReason = shouldFilterPost(post, filters: Array(filters.keys)) {
@@ -224,23 +231,19 @@ class StandardPostTracker: StandardTracker<PostModel> {
     
     /// Given a post, determines whether it should be filtered
     /// - Returns: the first reason according to which the post should be filtered, if applicable, or nil if the post should not be filtered
-    private func shouldFilterPost(_ postModel: PostModel, filters: [PostFilter]) -> PostFilter? {
+    private func shouldFilterPost(_ post: Post2, filters: [PostFilter]) -> PostFilter? {
         for filter in filters {
             switch filter {
             case .read:
-                if postModel.read { return filter }
+                if post.isRead { return filter }
             case .keyword:
-                if postModel.post.name.lowercased().contains(filteredKeywords) { return filter }
-            case let .blockedUser(userId):
-                if postModel.creator.userId == userId { return filter }
-            case let .blockedCommunity(communityId):
-                if postModel.community.communityId == communityId { return filter }
+                if post.title.lowercased().contains(filteredKeywords) { return filter }
             }
         }
         return nil
     }
     
-    private func preloadImages(_ newPosts: [PostModel]) {
+    private func preloadImages(_ newPosts: [Post2]) {
         URLSession.shared.configuration.urlCache = AppConstants.urlCache
         var imageRequests: [ImageRequest] = []
         for post in newPosts {
@@ -260,7 +263,7 @@ class StandardPostTracker: StandardTracker<PostModel> {
                 imageRequests.append(ImageRequest(url: url, priority: .high))
             case let .link(url):
                 // websites: load image and favicon
-                if let baseURL = post.post.linkUrl?.host,
+                if let baseURL = post.linkUrl?.host,
                    let favIconURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)") {
                     imageRequests.append(ImageRequest(url: favIconURL))
                 }

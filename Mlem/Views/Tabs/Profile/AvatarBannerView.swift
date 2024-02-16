@@ -18,17 +18,17 @@ struct AvatarBannerView: View {
     var showBanner: Bool = true
     var showAvatar: Bool = true
     
-    init(user: UserModel?) {
-        self.type = .user
-        self.avatar = user?.avatar
-        self.banner = user?.banner
+    init(person: (any Person)?) {
+        self.type = .person
+        self.avatar = person?.avatar
+        self.banner = person?.banner
         @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders = true
         self.showBanner = shouldShowUserHeaders
         @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars = true
         self.showAvatar = shouldShowUserAvatars
     }
     
-    init(community: CommunityModel?) {
+    init(community: (any Community)?) {
         self.type = .community
         self.avatar = community?.avatar
         self.banner = community?.banner
@@ -38,7 +38,7 @@ struct AvatarBannerView: View {
         self.showAvatar = shouldShowCommunityIcons
     }
     
-    init(instance: InstanceModel?) {
+    init(instance: (any Instance)?) {
         self.type = .instance
         self.avatar = instance?.avatar
         self.banner = instance?.banner

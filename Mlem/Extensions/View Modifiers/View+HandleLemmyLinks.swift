@@ -10,11 +10,10 @@ import Foundation
 import SwiftUI
 
 struct HandleLemmyLinksDisplay: ViewModifier {
-    @Dependency(\.siteInformation) var siteInformation
     
     @Environment(\.navigationPath) private var navigationPath
     @EnvironmentObject private var layoutWidgetTracker: LayoutWidgetTracker
-    @EnvironmentObject var appState: AppState
+    @Environment(AppState.self) var appState
     @EnvironmentObject var filtersTracker: FiltersTracker
     @EnvironmentObject private var quickLookState: ImageDetailSheetState
     
@@ -22,32 +21,23 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     
     @AppStorage("upvoteOnSave") var upvoteOnSave = false
     
-    // swiftlint:disable:next cyclomatic_complexity
     func body(content: Content) -> some View {
         content
-            .navigationDestination(for: RouteWrapper.self) { route in
-                if let community = route.wrappedValue as? any Community {
-                    
-                }
-                EmptyView()
-            }
             .navigationDestination(for: AppRoute.self) { route in
                 switch route {
-                case let .userProfile(user, communityContext):
-                    UserView(user: user, communityContext: communityContext)
-                        .environmentObject(appState)
+                case let .person(person, communityContext: communityContext):
+                    PersonView(person: person, communityContext: communityContext)
+                        .environment(appState)
                         .environmentObject(quickLookState)
-                case let .instance(domainName, instance):
-                    InstanceView(domainName: domainName, instance: instance)
-                case let .postLinkWithContext(postLink):
-                    ExpandedPost(post: postLink.post, community: postLink.community, scrollTarget: postLink.scrollTarget)
-                        .environmentObject(postLink.postTracker)
-                        .environmentObject(appState)
+                case let .community(community):
+                    CommunityFeedView(community: community)
+                case let .instance(instance):
+                    InstanceView(instance: instance)
+                case let .post(post):
+                    ExpandedPost(post: post)
+                        .environment(appState)
                         .environmentObject(quickLookState)
                         .environmentObject(layoutWidgetTracker)
-                case let .lazyLoadPostLinkWithContext(post):
-                    LazyLoadExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
-                        .environmentObject(quickLookState)
                 case let .settings(page):
                     settingsDestination(for: page)
                 case let .aboutSettings(page):
@@ -69,25 +59,35 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     private func settingsDestination(for page: SettingsPage) -> some View {
         switch page {
         case .currentAccount:
-            AccountSettingsView()
+            AccountSettingsView(appState: appState)
+                .environment(appState)
         case .editProfile:
             ProfileSettingsView()
+                .environment(appState)
         case .signInAndSecurity:
             SignInAndSecuritySettingsView()
+                .environment(appState)
         case .accountGeneral:
             AccountGeneralSettingsView()
+                .environment(appState)
         case .accountLocal:
             LocalAccountSettingsView()
+                .environment(appState)
         case .accountAdvanced:
             AdvancedAccountSettingsView()
+                .environment(appState)
         case .accountDiscussionLanguages:
             AccountDiscussionLanguagesView()
+                .environment(appState)
         case .linkMatrixAccount:
             MatrixLinkView()
+                .environment(appState)
         case .accounts:
             AccountSwitcherSettingsView()
+                .environment(appState)
         case .quickSwitcher:
             QuickSwitcherSettingsView()
+                .environment(appState)
         case .general:
             GeneralSettingsView()
         case .sorting:
@@ -170,7 +170,6 @@ struct HandleLemmyLinksDisplay: ViewModifier {
 }
 
 struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
-    @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     
@@ -257,31 +256,32 @@ struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
     }
     
     private func resolve(query: String) async throws -> Bool {
-        guard let resolution = try await apiClient.resolve(query: query) else {
-            return false
-        }
-        
-        return await MainActor.run {
-            do {
-                switch resolution {
-                case let .post(object):
-                    try navigationPath.wrappedValue.append(Path.makeRoute(object))
-                    return true
-                case let .person(object):
-                    try navigationPath.wrappedValue.append(Path.makeRoute(UserModel(from: object.person)))
-                    return true
-                case let .community(object):
-                    // TODO: routes should all be based on middleware models, and the resolution should return a middleware model
-                    try navigationPath.wrappedValue.append(Path.makeRoute(CommunityModel(from: object)))
-                    return true
-                case .comment:
-                    return false
-                }
-            } catch {
-                errorHandler.handle(error)
-                return false
-            }
-        }
+        return false
+//        guard let resolution = try await apiClient.resolve(query: query) else {
+//            return false
+//        }
+//        
+//        return await MainActor.run {
+//            do {
+//                switch resolution {
+//                case let .post(object):
+//                    try navigationPath.wrappedValue.append(Path.makeRoute(object))
+//                    return true
+//                case let .person(object):
+//                    try navigationPath.wrappedValue.append(Path.makeRoute(UserModel(from: object.person)))
+//                    return true
+//                case let .community(object):
+//                    // TODO: routes should all be based on middleware models, and the resolution should return a middleware model
+//                    try navigationPath.wrappedValue.append(Path.makeRoute(CommunityModel(from: object)))
+//                    return true
+//                case .comment:
+//                    return false
+//                }
+//            } catch {
+//                errorHandler.handle(error)
+//                return false
+//            }
+//        }
     }
 }
 

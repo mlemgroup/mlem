@@ -39,17 +39,14 @@ struct LargePost: View {
     // constants
     private let spacing: CGFloat = 10 // constant for readability, ease of modification
 
-    @Dependency(\.postRepository) var postRepository
     @Dependency(\.errorHandler) var errorHandler
     
     // global state
-    @EnvironmentObject var appState: AppState
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("limitImageHeightInFeed") var limitImageHeightInFeed: Bool = true
     @AppStorage("easyTapLinkDisplayMode") var easyTapLinkDisplayMode: EasyTapLinkDisplayMode = .contextual
 
-    // parameters
-    @ObservedObject var post: PostModel
+    let post: any Post2Providing
     
     @Binding var layoutMode: LayoutMode
     private var isExpanded: Bool {
@@ -57,7 +54,7 @@ struct LargePost: View {
     }
     
     // computed
-    var titleColor: Color { !isExpanded && post.read ? .secondary : .primary }
+    var titleColor: Color { !isExpanded && post.isRead ? .secondary : .primary }
     
     @ViewBuilder
     private var postBodyBackground: some View {
@@ -94,7 +91,7 @@ struct LargePost: View {
     
     // initializer--used so we can set showNsfwFilterToggle to false when expanded or true when not
     init(
-        post: PostModel,
+        post: any Post2Providing,
         layoutMode: Binding<LayoutMode>
     ) {
         self.post = post
@@ -162,27 +159,27 @@ struct LargePost: View {
     @ViewBuilder
     private var postHeaderView: some View {
         HStack {
-            if post.post.featuredLocal {
+            if post.pinnedInstance {
                 StickiedTag(tagType: .local)
-            } else if post.post.featuredCommunity {
+            } else if post.pinnedCommunity {
                 StickiedTag(tagType: .community)
             }
             
-            Text("\(post.post.name)\(post.post.deleted ? " (Deleted)" : "")")
+            Text("\(post.title)\(post.deleted ? " (Deleted)" : "")")
                 .font(.headline)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .italic(post.post.deleted)
+                .italic(post.deleted)
                 .foregroundColor(titleColor)
             
             Spacer()
-            if post.post.nsfw {
+            if post.nsfw {
                 NSFWTag(compact: false)
             }
         }
         .scaleEffect(x: scaleX, y: scaleY)
-        .onChange(of: layoutMode) { newValue in
+        .onChange(of: layoutMode) {
             withAnimation(.easeOut(duration: 0.25)) {
-                if newValue == .minimize {
+                if layoutMode == .minimize {
                     scaleX = 0.95
                     scaleY = 0.95
                 } else {
@@ -212,7 +209,7 @@ struct LargePost: View {
                         maxHeight: layoutMode.getMaxHeight(limitHeight),
                         alignment: .top
                     )
-                    .applyNsfwOverlay(post.post.nsfw || post.community.nsfw, canTapFullImage: isExpanded)
+                    .applyNsfwOverlay(post.nsfw || post.community.nsfw, canTapFullImage: isExpanded)
                     .clipped()
                 }
                 postBodyView
@@ -220,7 +217,7 @@ struct LargePost: View {
         case .link:
             VStack(spacing: AppConstants.postAndCommentSpacing) {
                 if layoutMode != .minimize {
-                    WebsiteIconComplex(post: post.post, onTapActions: markPostAsRead)
+                    WebsiteIconComplex(post: post, onTapActions: markPostAsRead)
                 }
                 postBodyView
             }
@@ -235,11 +232,11 @@ struct LargePost: View {
     
     @ViewBuilder
     var postBodyView: some View {
-        if let bodyText = post.post.body, !bodyText.isEmpty {
+        if let bodyText = post.content, !bodyText.isEmpty {
             VStack {
                 MarkdownView(
                     text: postBodyText(bodyText, layoutMode: layoutMode),
-                    isNsfw: post.post.nsfw,
+                    isNsfw: post.nsfw,
                     replaceImagesWithEmoji: isExpanded ? false : true,
                     isInline: isExpanded ? false : true
                 )
@@ -258,8 +255,8 @@ struct LargePost: View {
     
     /// Synchronous void wrapper for apiClient.markPostAsRead to pass into CachedImage as dismiss callback
     func markPostAsRead() {
-        Task(priority: .userInitiated) {
-            await post.markRead(true)
-        }
+//        Task(priority: .userInitiated) {
+//            await post.markRead(true)
+//        }
     }
 }

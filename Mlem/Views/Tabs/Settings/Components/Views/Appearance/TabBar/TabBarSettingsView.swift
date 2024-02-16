@@ -15,7 +15,7 @@ struct TabBarSettingsView: View {
     @AppStorage("showUserAvatarOnProfileTab") var showUserAvatar: Bool = true
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
     
-    @EnvironmentObject var appState: AppState
+    @Environment(AppState.self) var appState
     
     var body: some View {
         Form {
@@ -39,9 +39,8 @@ struct TabBarSettingsView: View {
                 HStack {
                     ForEach(ProfileTabLabel.allCases, id: \.self) { item in
                         VStack(spacing: 10) {
-                            let account = appState.currentActiveAccount
-                            if let avatar = account?.avatarUrl, item != .anonymous, showUserAvatar {
-                                AvatarView(url: avatar, type: .user, avatarSize: 42, iconResolution: .unrestricted)
+                            if let avatar = appState.myUser?.avatarUrl, item != .anonymous, showUserAvatar {
+                                AvatarView(url: avatar, type: .person, avatarSize: 42, iconResolution: .unrestricted)
                             } else {
                                 Image(systemName: Icons.user)
                                     .resizable()
@@ -50,9 +49,9 @@ struct TabBarSettingsView: View {
                             Group {
                                 switch item {
                                 case .nickname:
-                                    Text(account?.nickname ?? "Nickname")
+                                    Text(appState.myUser?.nickname ?? "Nickname")
                                 case .instance:
-                                    Text(account?.instanceLink.host() ?? "Instance")
+                                    Text(appState.myInstance?.host ?? "Instance")
                                 case .anonymous:
                                     Text("Profile")
                                 }
