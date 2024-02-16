@@ -12,7 +12,6 @@ import SwiftUI
 final class Community1: Community1Providing, NewContentModel {
     typealias APIType = APICommunity
     var community1: Community1 { self }
-    
     var source: any APISource
 
     let actorId: URL

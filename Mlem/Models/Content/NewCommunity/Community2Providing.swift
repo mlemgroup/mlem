@@ -21,6 +21,8 @@ protocol Community2Providing: Community1Providing {
 }
 
 extension Community2Providing {
+    var community1: Community1 { community2.community1 }
+    
     var subscribed: Bool { community2.subscribed }
     var favorited: Bool { community2.favorited }
     var subscriberCount: Int { community2.subscriberCount }

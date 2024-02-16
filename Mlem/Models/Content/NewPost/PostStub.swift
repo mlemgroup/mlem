@@ -1,5 +1,5 @@
 //
-//  UserStub.swift
+//  PostStub.swift
 //  Mlem
 //
 //  Created by Sjmarf on 16/02/2024.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct UserStub: UserStubProviding {
+struct PostStub: PostStubProviding {
     var source: any APISource
     let actorId: URL
     
@@ -16,8 +16,7 @@ struct UserStub: UserStubProviding {
         self.actorId = actorId
     }
     
-    static func == (lhs: UserStub, rhs: UserStub) -> Bool {
+    static func == (lhs: PostStub, rhs: PostStub) -> Bool {
         lhs.actorId == rhs.actorId
     }
 }
-

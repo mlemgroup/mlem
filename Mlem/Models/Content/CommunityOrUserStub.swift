@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-protocol CommunityOrUserStub: ActorIdentifiable {
+protocol CommunityOrUserStub: ContentStub {
     static var identifierPrefix: String { get }
     
     var name: String { get }
@@ -16,7 +16,6 @@ protocol CommunityOrUserStub: ActorIdentifiable {
 
 extension CommunityOrUserStub {
     var name: String { actorId.lastPathComponent }
-    var host: String? { actorId.host() }
 
     var fullName: String? {
         guard let host else { return nil }

@@ -7,10 +7,9 @@
 
 import Foundation
 
-protocol UserStubProviding: CommunityOrUserStub {
-    var source: any APISource { get }
-    
+protocol UserStubProviding: CommunityOrUserStub {    
     // From User1Providing. These are defined as nil in the extension below
+    var id: Int? { get }
     var creationDate: Date? { get }
     var updatedDate: Date? { get }
     var displayName: String? { get }

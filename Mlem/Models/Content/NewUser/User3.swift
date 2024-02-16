@@ -11,7 +11,6 @@ import SwiftUI
 final class User3: User3Providing, NewContentModel {
     typealias APIType = GetPersonDetailsResponse
     var user3: User3 { self }
-    var user1: User1 { user2.user1 }
     
     var source: any APISource
 

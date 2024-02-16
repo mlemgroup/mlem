@@ -29,7 +29,7 @@ protocol User1Providing: UserStubProviding, Identifiable {
 
 typealias User = User1Providing
 
-extension User1Providing {
+extension User1Providing {  
     var actorId: URL { user1.actorId }
     var id: Int { user1.id }
     var name: String { user1.name }

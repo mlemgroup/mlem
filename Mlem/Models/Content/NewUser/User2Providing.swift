@@ -17,6 +17,8 @@ protocol User2Providing: User1Providing {
 }
 
 extension User2Providing {
+    var user1: User1 { user2.user1 }
+    
     var postCount: Int { user2.postCount }
     var postScore: Int { user2.postScore }
     var commentCount: Int { user2.commentCount }

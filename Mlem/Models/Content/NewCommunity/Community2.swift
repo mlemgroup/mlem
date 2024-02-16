@@ -12,9 +12,7 @@ import SwiftUI
 @Observable
 final class Community2: Community2Providing, NewContentModel {
     typealias APIType = APICommunityView
-    
     var community2: Community2 { self }
-    
     var source: any APISource
 
     let community1: Community1

@@ -5,7 +5,6 @@
 //  Created by Sjmarf on 03/02/2024.
 //
 
-import Dependencies
 import SwiftUI
 
 struct CommunityStub: CommunityStubProviding, Hashable {
@@ -19,9 +18,5 @@ struct CommunityStub: CommunityStubProviding, Hashable {
     
     static func == (lhs: CommunityStub, rhs: CommunityStub) -> Bool {
         lhs.actorId == rhs.actorId
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(actorId)
     }
 }

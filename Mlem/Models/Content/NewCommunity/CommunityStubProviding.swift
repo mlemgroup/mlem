@@ -8,8 +8,6 @@
 import Foundation
 
 protocol CommunityStubProviding: CommunityOrUserStub {
-    var source: any APISource { get }
-    
     // From Community1Providing. These are defined as nil in the extension below
     var creationDate: Date? { get }
     var updatedDate: Date? { get }
@@ -31,7 +29,7 @@ protocol CommunityStubProviding: CommunityOrUserStub {
     var postCount: Int? { get }
     var commentCount: Int? { get }
     var activeUserCount: ActiveUserCount? { get }
-    var subscriptionStatus: SubscriptionTier? { get }
+    var subscriptionTier: SubscriptionTier? { get }
     
     // From Community3Providing. These are defined as nil in the extension below
     var instance: Instance1? { get }
