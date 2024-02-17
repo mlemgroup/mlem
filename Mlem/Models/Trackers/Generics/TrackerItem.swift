@@ -6,7 +6,7 @@
 //
 import Foundation
 
-protocol TrackerItem: Equatable {
+protocol TrackerItem: Equatable, AnyObject {
     var uid: ContentModelIdentifier { get }
     func sortVal(sortType: TrackerSortType) -> TrackerSortVal
     

@@ -11,14 +11,30 @@ protocol APISource: AnyObject, ActorIdentifiable, Equatable {
     var caches: BaseCacheGroup { get }
     var api: NewAPIClient { get }
     var instance: NewInstanceStub { get }
-    
+}
+
+extension APISource {
     func getPosts(
+        feed: APIListingType,
         sort: PostSortType,
-        page: Int,
-        cursor: String?,
+        page: Int = 1,
+        cursor: String? = nil,
         limit: Int,
-        savedOnly: Bool
-    ) async throws -> (posts: [Post2], cursor: String?)
+        savedOnly: Bool = false
+    ) async throws -> (posts: [Post2], cursor: String?) {
+        let response = try await api.getPosts(
+            feedType: feed,
+            sort: sort,
+            page: page,
+            cursor: cursor,
+            limit: limit,
+            savedOnly: savedOnly
+        )
+        return (
+            posts: response.posts.map { caches.post2.createModel(source: self, for: $0)},
+            cursor: cursor
+        )
+    }
 }
 
 class MockAPISource: APISource {
@@ -27,15 +43,5 @@ class MockAPISource: APISource {
     let actorId: URL = .init(string: "https://lemmy.world")!
     let instance: NewInstanceStub = .mock
     var api: NewAPIClient { fatalError("You cannot access the 'api' property of MockAPISource.") }
-    
-    func getPosts(
-        sort: PostSortType,
-        page: Int,
-        cursor: String?,
-        limit: Int,
-        savedOnly: Bool
-    ) async throws -> (posts: [Post2], cursor: String?) {
-        return (posts: [], cursor: nil)
-    }
-    
+
 }

@@ -35,6 +35,8 @@ class NewAppState {
     func setApiSource(_ source: any APISource) {
         self.apiSource = source
     }
+    
+    var lemmyVersion: SiteVersion? { myInstance?.version ?? myUser?.cachedSiteVersion }
 }
 
 struct Window: View {

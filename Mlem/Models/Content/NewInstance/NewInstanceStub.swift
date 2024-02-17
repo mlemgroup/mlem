@@ -9,10 +9,9 @@ import Dependencies
 import SwiftUI
 
 @Observable
-class NewInstanceStub: InstanceStubProviding, APISource {
+class NewInstanceStub: InstanceStubProviding {
     static let cache: ContentStubCache<NewInstanceStub> = .init()
     var stub: InstanceStub { self }
-    var instance: NewInstanceStub { self }
     let caches: BaseCacheGroup = .init()
     
     let url: URL

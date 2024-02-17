@@ -49,7 +49,7 @@ struct AvatarView: View {
     }
     
     init(
-        community: any Community,
+        community: any CommunityStubProviding,
         avatarSize: CGFloat,
         lineColor: Color? = nil,
         lineWidth: CGFloat = 1,
@@ -59,7 +59,7 @@ struct AvatarView: View {
             url: community.avatar,
             type: .community,
             avatarSize: avatarSize,
-            blurAvatar: community.nsfw,
+            blurAvatar: community.nsfw ?? false,
             lineColor: lineColor,
             lineWidth: AvatarView.shouldShowCommunityAvatarOutline(url: community.avatar) ? lineWidth : 0,
             iconResolution: iconResolution
@@ -67,7 +67,7 @@ struct AvatarView: View {
     }
     
     init(
-        user: any User,
+        user: any UserStubProviding,
         avatarSize: CGFloat,
         blurAvatar: Bool = false,
         lineColor: Color? = nil,
@@ -86,7 +86,7 @@ struct AvatarView: View {
     }
     
     init(
-        instance: any Instance,
+        instance: any InstanceStubProviding,
         avatarSize: CGFloat,
         blurAvatar: Bool = false,
         lineColor: Color? = nil,

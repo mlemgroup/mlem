@@ -11,7 +11,6 @@ import SwiftUI
 
 struct PostFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
-    @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.markReadBatcher) var markReadBatcher
     
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
@@ -22,8 +21,8 @@ struct PostFeedView: View {
     @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
     @AppStorage("markReadOnScroll") var markReadOnScroll: Bool = false
     
-    @EnvironmentObject var postTracker: StandardPostTracker
-    @EnvironmentObject var appState: AppState
+    @Environment(StandardPostTracker.self) var postTracker
+    @Environment(NewAppState.self) var appState
     
     // used to actually drive post loading; when nil, indicates that the site version is unresolved and it is not safe to load posts
     @State var versionSafePostSort: PostSortType?
@@ -42,9 +41,8 @@ struct PostFeedView: View {
     @State var errorDetails: ErrorDetails?
     
     init(postSortType: Binding<PostSortType>, showCommunity: Bool, communityContext: CommunityModel? = nil) {
-        @Dependency(\.siteInformation) var siteInformation
         
-        if let siteVersion = siteInformation.version, postSortType.wrappedValue.minimumVersion <= siteVersion {
+        if let siteVersion = appState.lemmyVersion, postSortType.wrappedValue.minimumVersion <= siteVersion {
             self._versionSafePostSort = .init(wrappedValue: postSortType.wrappedValue)
         }
         
@@ -56,8 +54,8 @@ struct PostFeedView: View {
     var body: some View {
         content
             .animation(.easeOut(duration: 0.2), value: postTracker.items.isEmpty)
-            .onChange(of: showReadPosts) { newValue in
-                if newValue {
+            .onChange(of: showReadPosts) {
+                if showReadPosts {
                     Task { await postTracker.removeFilter(.read) }
                 } else {
                     Task { await postTracker.addFilter(.read) }

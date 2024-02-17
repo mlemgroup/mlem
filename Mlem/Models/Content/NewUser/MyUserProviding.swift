@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol MyUserProviding: AnyObject, Identifiable {
+protocol MyUserProviding: APISource, AnyObject, Identifiable {
     var stub: MyUserStub { get }
     var source: any APISource { get }
     
@@ -22,6 +22,12 @@ protocol MyUserProviding: AnyObject, Identifiable {
 }
 
 extension MyUserProviding {
+    var source: any APISource { stub }
+    
+    var caches: BaseCacheGroup { source.caches }
+    var api: NewAPIClient { source.api }
+    var instance: NewInstanceStub { stub.instance }
+    
     var id: Int { stub.id }
     var username: String { stub.username }
     

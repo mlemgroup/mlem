@@ -19,7 +19,7 @@ struct APIPost: Decodable, Identifiable {
         deleted: Bool = false,
         embedDescription: String? = nil,
         embedTitle: String? = nil,
-        embedVideoUrl: String? = nil,
+        embedVideoUrl: URL? = nil,
         featuredCommunity: Bool = false,
         featuredLocal: Bool = false,
         languageId: Int = 0,

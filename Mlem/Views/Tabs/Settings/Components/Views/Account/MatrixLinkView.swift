@@ -74,7 +74,7 @@ struct MatrixLinkView: View {
             } footer: {
                 Text("Everyone will be able to see your Matrix ID.")
             }
-            Link("What is matrix?", destination: URL(string: "https://matrix.org/")!)
+            Link("What is Matrix?", destination: URL(string: "https://matrix.org/")!)
         }
         .navigationBarBackButtonHidden(hasEdited != .unedited)
         .toolbar {

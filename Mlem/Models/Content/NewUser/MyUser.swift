@@ -5,17 +5,13 @@
 //  Created by Sjmarf on 13/02/2024.
 //
 
-import Dependencies
 import Foundation
 import SwiftUI
 
 @Observable
 class MyUser: User3Providing, MyUserProviding {
-    @ObservationIgnored @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
-    
     typealias APIType = SiteResponse
     
-    var source: any APISource { stub }
     var user2: User2 { user3.user2 }
     var user1: User1 { user3.user1 }
     
@@ -35,6 +31,8 @@ class MyUser: User3Providing, MyUserProviding {
         } else {
             self.user3 = .init(source: source, from: response)
         }
+        
+        self.instance = .create(from: response)
     }
     
     var id: Int { user3.id }

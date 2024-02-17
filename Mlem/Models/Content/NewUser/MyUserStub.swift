@@ -9,13 +9,12 @@ import Foundation
 import SwiftUI
 
 @Observable
-final class MyUserStub: MyUserProviding, APISource, Codable {
+final class MyUserStub: MyUserProviding, Codable {
     let instance: NewInstanceStub
     var caches: BaseCacheGroup { instance.caches }
     
     var actorId: URL { instance.actorId }
     var stub: MyUserStub { self }
-    var source: any APISource { self }
     
     @ObservationIgnored lazy var api: NewAPIClient = {
         return .init(baseUrl: instance.url)

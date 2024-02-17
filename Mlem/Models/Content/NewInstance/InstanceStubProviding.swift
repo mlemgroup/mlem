@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol InstanceStubProviding: ActorIdentifiable {
+protocol InstanceStubProviding: ActorIdentifiable, APISource {
     var stub: NewInstanceStub { get }
     
     var url: URL { get }
@@ -21,9 +21,16 @@ protocol InstanceStubProviding: ActorIdentifiable {
     var creationDate: Date? { get }
     var publicKey: String? { get }
     var lastRefreshDate: Date? { get }
+    
+    // From Instance3Providing. These are defined as nil in the extension below
+    var version: SiteVersion? { get }
 }
 
 extension InstanceStubProviding {
+    var instance: NewInstanceStub { stub }
+    var caches: BaseCacheGroup { stub.caches }
+    var api: NewAPIClient { stub.api }
+    
     var url: URL { stub.url }
     var actorId: URL { stub.actorId }
     
@@ -35,4 +42,6 @@ extension InstanceStubProviding {
     var creationDate: Date? { nil }
     var publicKey: String? { nil }
     var lastRefreshDate: Date? { nil }
+    
+    var version: SiteVersion? { nil }
 }

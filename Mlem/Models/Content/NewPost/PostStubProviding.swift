@@ -12,6 +12,7 @@ protocol PostStubProviding: ContentStub {
     var id: Int? { get }
     var title: String? { get }
     var content: String? { get }
+    var linkUrl: URL? { get }
     var deleted: Bool? { get }
     var embed: PostEmbed? { get }
     var pinnedCommunity: Bool? { get }
@@ -39,6 +40,7 @@ extension PostStubProviding {
     var id: Int? { nil }
     var title: String? { nil }
     var content: String? { nil }
+    var linkUrl: URL? { nil }
     var deleted: Bool? { nil }
     var embed: PostEmbed? { nil }
     var pinnedCommunity: Bool? { nil }

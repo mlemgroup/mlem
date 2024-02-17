@@ -7,12 +7,13 @@
 
 import Foundation
 
-protocol Post1Providing: PostStubProviding, Identifiable {
+protocol Post1Providing: PostStubProviding, TrackerItem, Identifiable {
     var post1: Post1 { get }
     
     var id: Int { get }
     var title: String { get }
     var content: String? { get }
+    var linkUrl: URL? { get }
     var deleted: Bool { get }
     var embed: PostEmbed? { get }
     var pinnedCommunity: Bool { get }
@@ -24,6 +25,17 @@ protocol Post1Providing: PostStubProviding, Identifiable {
     var thumbnailUrl: URL? { get }
     var updatedDate: Date? { get }
 }
+
+extension Post1Providing {
+    var uid: ContentModelIdentifier { .init(contentType: .post, contentId: id) }
+    func sortVal(sortType: TrackerSortType) -> TrackerSortVal {
+        switch sortType {
+        case .published:
+            return .published(creationDate)
+        }
+    }
+}
+
 
 typealias Post = Post1Providing
 
@@ -42,4 +54,21 @@ extension Post1Providing {
     var removed: Bool { post1.removed }
     var thumbnailUrl: URL? { post1.thumbnailUrl }
     var updatedDate: Date? { post1.updatedDate }
+}
+
+extension Post1Providing {
+    var postType: PostType {
+        // post with URL: either image or link
+        if let postUrl = post.linkUrl {
+            // if image, return image link, otherwise return thumbnail
+            return postUrl.isImage ? .image(postUrl) : .link(post.thumbnailImageUrl)
+        }
+
+        // otherwise text, but post.body needs to be present, even if it's an empty string
+        if let postBody = post.body {
+            return .text(postBody)
+        }
+
+        return .titleOnly
+    }
 }
