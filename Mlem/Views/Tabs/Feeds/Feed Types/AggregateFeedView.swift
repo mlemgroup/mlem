@@ -20,8 +20,8 @@ struct AggregateFeedView: View {
     
     @Environment(NewAppState.self) var appState
     
-    @StateObject var postTracker: StandardPostTracker
-    @StateObject var savedContentTracker: UserContentTracker
+    @State var postTracker: StandardPostTracker?
+    @State var savedContentTracker: UserContentTracker?
     
     @State var postSortType: PostSortType
     @State var availableFeeds: [FeedType] = [.all, .local, .subscribed]
@@ -30,9 +30,8 @@ struct AggregateFeedView: View {
     
     @Namespace var scrollToTop
     @State private var scrollToTopAppeared = false
-    private var scrollToTopId: Int? {
-        postTracker.items.first?.id
-    }
+    
+    private var scrollToTopId: Int? { postTracker?.items.first?.id }
     
     init(selectedFeed: Binding<FeedType?>) {
         var feedType: FeedType = .all
@@ -49,15 +48,19 @@ struct AggregateFeedView: View {
         @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
         
         self._postSortType = .init(wrappedValue: defaultPostSorting)
-        self._postTracker = .init(wrappedValue: .init(
-            internetSpeed: internetSpeed,
-            sortType: defaultPostSorting,
-            showReadPosts: showReadPosts,
-            feedType: feedType == .saved ? .all : feedType
-        ))
+        if let apiSource = appState.apiSource {
+            self.postTracker = .init(
+                internetSpeed: internetSpeed,
+                sortType: defaultPostSorting,
+                showReadPosts: showReadPosts,
+                feedType: .aggregateFeed(apiSource, type: feedType.toApiListingType)
+            )
+        } else {
+            self.postTracker = nil
+        }
         
         // StateObject can't be optional so we initialize with a dummy user
-        self._savedContentTracker = .init(wrappedValue: .init(internetSpeed: internetSpeed, userId: nil, saved: true))
+        self.savedContentTracker = .init(internetSpeed: internetSpeed, userId: nil, saved: true)
         
         self._selectedFeed = selectedFeed
     }
@@ -65,27 +68,13 @@ struct AggregateFeedView: View {
     var body: some View {
         content
             .environment(\.feedType, selectedFeed)
-            .task(id: appState.apiSource?.actorId) {
-                // ensure that .saved isn't an available feed until user id resolved
-                if let userId = appState.currentActiveAccount?.id {
-                    do {
-                        try await savedContentTracker.updateUserId(to: userId)
-                        
-                        if availableFeeds.count < 4 {
-                            availableFeeds.append(.saved)
-                        }
-                    } catch {
-                        errorHandler.handle(error)
-                    }
-                }
-            }
             .task(id: selectedFeed) {
-                if let selectedFeed {
+                if let selectedFeed, let apiSource = appState.apiSource {
                     switch selectedFeed {
                     case .all, .local, .subscribed:
                         await markReadBatcher.flush()
-                        await postTracker.changeFeedType(to: selectedFeed)
-                        postTracker.isStale = false
+                        await postTracker?.changeFeedType(to: .aggregateFeed(apiSource, type: selectedFeed.toApiListingType))
+                        postTracker?.isStale = false
                     default:
                         return
                     }
@@ -97,9 +86,9 @@ struct AggregateFeedView: View {
                         switch selectedFeed {
                         case .all, .local, .subscribed:
                             await markReadBatcher.flush()
-                            _ = try await postTracker.refresh(clearBeforeRefresh: false)
+                            _ = try await postTracker?.refresh(clearBeforeRefresh: false)
                         case .saved:
-                            _ = try await savedContentTracker.refresh(clearBeforeRefresh: false)
+                            _ = try await savedContentTracker?.refresh(clearBeforeRefresh: false)
                         default:
                             assertionFailure("Tried to refresh with invalid feed type \(String(describing: selectedFeed))")
                         }
@@ -144,11 +133,19 @@ struct AggregateFeedView: View {
                 
                 switch selectedFeed {
                 case .all, .local, .subscribed:
-                    PostFeedView(postSortType: $postSortType, showCommunity: true)
-                        .environmentObject(postTracker)
+                    if let postTracker {
+                        PostFeedView(postSortType: $postSortType, showCommunity: true)
+                            .environment(postTracker)
+                    } else {
+                        LoadingView(whatIsLoading: .posts)
+                    }
                 case .saved:
-                    UserContentFeedView()
-                        .environmentObject(savedContentTracker)
+                    if let savedContentTracker {
+                        UserContentFeedView()
+                            .environment(savedContentTracker)
+                    } else {
+                        LoadingView(whatIsLoading: .content)
+                    }
                 default:
                     EmptyView() // shouldn't be possible
                 }

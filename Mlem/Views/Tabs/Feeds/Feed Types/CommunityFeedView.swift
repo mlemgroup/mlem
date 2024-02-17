@@ -169,7 +169,7 @@ struct CommunityFeedView: View {
     
     @ViewBuilder
     var posts: some View {
-        if let postTracker {
+        if let postTracker, let community = community as? any Community1Providing {
             PostFeedView(postSortType: $postSortType, showCommunity: false, communityContext: community)
                 .environment(postTracker)
         }

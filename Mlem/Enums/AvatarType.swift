@@ -9,13 +9,13 @@ import Foundation
 
 /// Enum of things that can have avatars
 enum AvatarType {
-    case user, community, instance
+    case person, community, instance
 }
 
 extension AvatarType: AssociatedIcon {
     var iconName: String {
         switch self {
-        case .user:
+        case .person:
             return Icons.user
         case .community:
             return Icons.community
@@ -26,7 +26,7 @@ extension AvatarType: AssociatedIcon {
     
     var iconNameFill: String {
         switch self {
-        case .user:
+        case .person:
             return Icons.userFill
         case .community:
             return Icons.communityFill

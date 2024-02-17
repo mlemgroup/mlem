@@ -7,46 +7,27 @@
 
 import SwiftUI
 
-struct UserLinkView: View {
-    var user: UserModel
+struct PersonLinkView: View {
+    var person: any Person
     let serverInstanceLocation: ServerInstanceLocation
     var overrideShowAvatar: Bool? // shows or hides the avatar according to value. If not set, uses system setting.
 
     // Extra context about where the link is being displayed
     // to pick the correct flair
-    var postContext: APIPost?
+    var postContext: (any Post)?
     var commentContext: APIComment?
-    var communityContext: CommunityModel?
-    
-    @available(*, deprecated, message: "Provide a UserModel rather than an APIPerson.")
-    init(
-        person: APIPerson,
-        serverInstanceLocation: ServerInstanceLocation,
-        overrideShowAvatar: Bool? = nil,
-        postContext: APIPost? = nil,
-        commentContext: APIComment? = nil,
-        communityContext: CommunityModel? = nil
-    ) {
-        self.init(
-            user: UserModel(from: person),
-            serverInstanceLocation: serverInstanceLocation,
-            overrideShowAvatar: overrideShowAvatar,
-            postContext: postContext,
-            commentContext: commentContext,
-            communityContext: communityContext
-        )
-    }
+    var communityContext: (any Community)?
     
     init(
-        user: UserModel,
+        person: any Person,
         serverInstanceLocation: ServerInstanceLocation,
         overrideShowAvatar: Bool? = nil,
-        postContext: APIPost? = nil,
+        postContext: (any Post)? = nil,
         commentContext: APIComment? = nil,
-        communityContext: CommunityModel? = nil
+        communityContext: (any Community)? = nil
 
     ) {
-        self.user = user
+        self.person = person
         self.serverInstanceLocation = serverInstanceLocation
         self.overrideShowAvatar = overrideShowAvatar
         self.postContext = postContext
@@ -55,9 +36,9 @@ struct UserLinkView: View {
     }
 
     var body: some View {
-        NavigationLink(.userProfile(user, communityContext: communityContext)) {
-            UserLabelView(
-                user: user,
+        NavigationLink(.person(person, communityContext: communityContext)) {
+            PersonLabelView(
+                person: person,
                 serverInstanceLocation: serverInstanceLocation,
                 overrideShowAvatar: overrideShowAvatar,
                 postContext: postContext,

@@ -7,11 +7,11 @@
 
 import Dependencies
 import Foundation
+import SwiftUI
 
 /// Class that tracks user content (i.e., posts and comments). This is a `StandardTracker` and not a multi-tracker because both posts and comments come from a single API call
-class UserContentTracker: StandardTracker<UserContentModel> {
-    @Dependency(\.personRepository) var personRepository
-    
+@Observable
+class UserContentTracker: StandardTracker<UserContentModel> {    
     /// Optional because userId is not guaranteed to be resolved, so we need a dummy state. Trying to use the tracker will cause assertionFailures; it is the responsibility of the views using this class to ensure that it is not used with no user id.
     private var userId: Int?
     /// True when this is tracking saved items, false otherwise

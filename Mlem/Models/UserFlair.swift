@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum UserFlair {
+enum PersonFlair {
     case admin
     case bot
     case banned

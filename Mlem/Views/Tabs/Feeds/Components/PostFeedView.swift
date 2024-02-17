@@ -110,12 +110,12 @@ struct PostFeedView: View {
 
                                 if let postToMark = postTracker.items[safeIndex: indexToMark] {
                                     // postToMark.setRead(true)
-                                    await markReadBatcher.add(postToMark.postId)
+                                    await markReadBatcher.add(postToMark.id)
                                     
                                     // handle posts at end of feed
                                     if postTracker.items.count - index <= postSize.markReadThreshold {
                                         // element.setRead(true)
-                                        await markReadBatcher.add(element.postId)
+                                        await markReadBatcher.add(element.id)
                                     }
                                 }
                             }
@@ -129,7 +129,7 @@ struct PostFeedView: View {
     @ViewBuilder
     private func feedPost(for post: Post2) -> some View {
         VStack(spacing: 0) {
-            NavigationLink(.postLinkWithContext(.init(post: post, community: nil, postTracker: postTracker))) {
+            NavigationLink(.post(post)) {
                 FeedPost(
                     post: post,
                     postTracker: postTracker,

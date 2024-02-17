@@ -67,7 +67,7 @@ struct AvatarView: View {
     }
     
     init(
-        user: any PersonStubProviding,
+        person: any PersonStubProviding,
         avatarSize: CGFloat,
         blurAvatar: Bool = false,
         lineColor: Color? = nil,
@@ -75,8 +75,8 @@ struct AvatarView: View {
         iconResolution: AvatarIconResolution? = nil
     ) {
         self.init(
-            url: user.avatar,
-            type: .user,
+            url: person.avatar,
+            type: .person,
             avatarSize: avatarSize,
             blurAvatar: blurAvatar,
             lineColor: lineColor,

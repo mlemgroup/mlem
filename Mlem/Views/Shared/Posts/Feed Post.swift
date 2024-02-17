@@ -50,7 +50,6 @@ struct FeedPost: View {
 
     let post: any Post2Providing
     var postTracker: StandardPostTracker?
-    let community: CommunityModel?
     let showPostCreator: Bool
     let showCommunity: Bool
     let enableSwipeActions: Bool
@@ -58,14 +57,12 @@ struct FeedPost: View {
     init(
         post: any Post2Providing,
         postTracker: StandardPostTracker?,
-        community: CommunityModel? = nil,
         showPostCreator: Bool = true,
         showCommunity: Bool = true,
         enableSwipeActions: Bool = true
     ) {
         self.post = post
         self.postTracker = postTracker
-        self.community = community
         self.showPostCreator = showPostCreator
         self.showCommunity = showCommunity
         self.enableSwipeActions = enableSwipeActions
@@ -179,12 +176,12 @@ struct FeedPost: View {
                         if showCheck {
                             ReadCheck()
                         }
-                        
-                        let functions = post.menuFunctions(
-                            editorTracker: editorTracker,
-                            postTracker: postTracker
-                        )
-                        EllipsisMenu(size: 24, menuFunctions: functions)
+//                        
+//                        let functions = post.menuFunctions(
+//                            editorTracker: editorTracker,
+//                            postTracker: postTracker
+//                        )
+//                        EllipsisMenu(size: 24, menuFunctions: functions)
                     }
 
                     if postSize == .headline {
@@ -198,10 +195,10 @@ struct FeedPost: View {
 
                     // posting user
                     if showPostCreator {
-                        UserLinkView(
-                            user: post.creator,
+                        PersonLinkView(
+                            person: post.creator,
                             serverInstanceLocation: userServerInstanceLocation,
-                            communityContext: community
+                            communityContext: post.community
                         )
                     }
                 }
@@ -211,6 +208,7 @@ struct FeedPost: View {
                 InteractionBarView(
                     content: post,
                     accessibilityContext: "post",
+                    widgets: layoutWidgetTracker.groups.post,
                     reply: replyToPost,
                     shouldShowScore: shouldShowScoreInPostBar,
                     showDownvotesSeparately: showPostDownvotesSeparately,

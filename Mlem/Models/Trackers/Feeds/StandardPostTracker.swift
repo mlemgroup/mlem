@@ -62,10 +62,9 @@ enum TrackerFeedType: Equatable {
 /// Post tracker for use with single feeds. Supports all post sorting types, but is not suitable for multi-feed use.
 @Observable
 class StandardPostTracker: StandardTracker<Post2> {
-    @Dependency(\.postRepository) var postRepository
-    @Dependency(\.personRepository) var personRepository
-    @Dependency(\.persistenceRepository) var persistenceRepository
-    @Dependency(\.siteInformation) var siteInformation
+    @ObservationIgnored @Dependency(\.postRepository) var postRepository
+    @ObservationIgnored @Dependency(\.personRepository) var personRepository
+    @ObservationIgnored @Dependency(\.persistenceRepository) var persistenceRepository
     
     // TODO: ERIC keyword filters could be more elegant
     var filteredKeywords: [String]
@@ -75,7 +74,7 @@ class StandardPostTracker: StandardTracker<Post2> {
     private var filters: [PostFilter: Int]
     
     // true when the items in the tracker are stale and should not be displayed
-    @Published var isStale: Bool = false
+    var isStale: Bool = false
     
     // prefetching
     private let prefetcher = ImagePrefetcher(
@@ -97,11 +96,12 @@ class StandardPostTracker: StandardTracker<Post2> {
         
         self.filteredKeywords = persistenceRepository.loadFilteredKeywords()
         self.filters = [.keyword: 0]
+        
+        super.init(internetSpeed: internetSpeed)
+        
         if !showReadPosts {
             filters[.read] = 0
         }
-        
-        super.init(internetSpeed: internetSpeed)
     }
     
     override func refresh(clearBeforeRefresh: Bool) async throws {

@@ -38,6 +38,7 @@ final class Person1: Person1Providing, NewContentModel {
     init(source: any APISource, from person: APIPerson) {
         self.source = source
         self.actorId = person.actorId
+        self.id = person.id
         self.name = person.name
         self.creationDate = person.published
         

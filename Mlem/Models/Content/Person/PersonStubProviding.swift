@@ -7,6 +7,15 @@
 
 import Foundation
 
+let developerNames = [
+    "https://lemmy.tespia.org/u/navi",
+    "https://beehaw.org/u/jojo",
+    "https://beehaw.org/u/kronusdark",
+    "https://lemmy.ml/u/ericbandrews",
+    "https://programming.dev/u/tht7",
+    "https://lemmy.ml/u/sjmarf"
+]
+
 protocol PersonStubProviding: CommunityOrPersonStub {    
     // From User1Providing. These are defined as nil in the extension below
     var id: Int? { get }
@@ -31,6 +40,8 @@ protocol PersonStubProviding: CommunityOrPersonStub {
     // From User3Providing. These are defined as nil in the extension below
     var instance: Instance1? { get }
     var moderatedCommunities: [Community1]? { get }
+    
+    func getFlairs(postContext: (any Post)?, communityContext: (any Community)?) -> [PersonFlair]
 }
 
 extension PersonStubProviding {
@@ -56,4 +67,11 @@ extension PersonStubProviding {
     
     var instance: Instance1? { nil }
     var moderatedCommunities: [Community1]? { nil }
+    
+    var isMlemDeveloper: Bool { developerNames.contains(actorId.absoluteString) }
+    
+    func getFlairs(
+        postContext: (any Post)? = nil,
+        communityContext: (any Community)? = nil
+    ) -> [PersonFlair] { isMlemDeveloper ? [.developer] : [] }
 }

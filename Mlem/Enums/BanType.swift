@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum InstanceBanType {
+enum InstanceBanType: Equatable {
     case notBanned
     case permanentlyBanned
     case temporarilyBanned(expires: Date)
