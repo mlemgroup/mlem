@@ -337,8 +337,21 @@ struct PerformTabBarNavigation: ViewModifier {
     }
 }
 
-extension Navigation.Behaviour: CustomStringConvertible {
+extension Navigation.Behaviour: CustomStringConvertible, CustomDebugStringConvertible {
     var description: String {
+        switch self {
+        case .system:
+            "System"
+        case .primary:
+            "Dismiss"
+        case .primaryAuxiliary:
+            "Dismiss after Scroll"
+        case .none:
+            "none"
+        }
+    }
+    
+    var debugDescription: String {
         switch self {
         case .system:
             "system"
@@ -348,6 +361,21 @@ extension Navigation.Behaviour: CustomStringConvertible {
             "primary auxiliary"
         case .none:
             "none"
+        }
+    }
+}
+
+extension Navigation.Behaviour {
+    var explanation: String {
+        switch self {
+        case .system:
+            "Go back to the first page, then scroll to top."
+        case .primary:
+            "Go back to previous page until the first page, then scroll to top."
+        case .primaryAuxiliary:
+            "Always scroll to top before going back to previous page."
+        case .none:
+            ""
         }
     }
 }

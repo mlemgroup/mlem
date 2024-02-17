@@ -142,11 +142,16 @@ struct GeneralSettingsView: View {
             }
             
             Section {
-                Picker("Tab Bar Action", selection: $tabBarActionBehaviour) {
-                    ForEach(Navigation.Behaviour.allCases) { behaviour in
-                        Text(behaviour.label).tag(behaviour.id)
-                    }
-                }
+                SelectableSettingsItem(
+                    settingIconSystemName: Icons.tabBarNavigation,
+                    settingName: "Behaviour",
+                    currentValue: $tabBarActionBehaviour,
+                    options: Navigation.Behaviour.allCases
+                )
+            } header: {
+                Text("Tab Bar Actions")
+            } footer: {
+                Text(tabBarActionBehaviour.explanation)
             }
         }
         .fancyTabScrollCompatible()
