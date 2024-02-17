@@ -67,7 +67,7 @@ struct AvatarView: View {
     }
     
     init(
-        user: any UserStubProviding,
+        user: any PersonStubProviding,
         avatarSize: CGFloat,
         blurAvatar: Bool = false,
         lineColor: Color? = nil,

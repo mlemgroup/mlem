@@ -9,12 +9,12 @@ import Foundation
 import SwiftUI
 
 @Observable
-final class MyUserStub: MyUserProviding, Codable {
+final class UserStub: UserProviding, Codable {
     let instance: NewInstanceStub
     var caches: BaseCacheGroup { instance.caches }
     
     var actorId: URL { instance.actorId }
-    var stub: MyUserStub { self }
+    var stub: UserStub { self }
     
     @ObservationIgnored lazy var api: NewAPIClient = {
         return .init(baseUrl: instance.url)
@@ -66,6 +66,7 @@ final class MyUserStub: MyUserProviding, Codable {
         components.path = ""
         self.instance = .createModel(url: components.url!)
         
+        self.accessToken = ""
         guard let token = AppConstants.keychain[keychainId] else {
             throw DecodingError.noTokenInKeychain
         }

@@ -22,7 +22,7 @@ struct UserResultView: View {
     @Dependency(\.apiClient) private var apiClient
     @Dependency(\.hapticManager) var hapticManager
     
-    let user: any User
+    let user: any Person
     let communityContext: (any CommunityStubProviding)?
     let trackerCallback: (_ item: UserModel) -> Void
     let swipeActions: SwipeConfiguration?
@@ -34,7 +34,7 @@ struct UserResultView: View {
     @EnvironmentObject var editorTracker: EditorTracker
     
     init(
-        _ user: any User,
+        _ user: any Person,
         complications: [UserComplication] = .withoutTypeLabel,
         communityContext: (any CommunityStubProviding)? = nil,
         swipeActions: SwipeConfiguration? = nil,

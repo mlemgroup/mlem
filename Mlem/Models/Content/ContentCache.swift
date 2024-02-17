@@ -12,9 +12,9 @@ struct BaseCacheGroup {
     var community2: BaseContentCache<Community2> = .init()
     var community3: BaseContentCache<Community3> = .init()
     
-    var user1: BaseContentCache<User1> = .init()
-    var user2: BaseContentCache<User2> = .init()
-    var user3: BaseContentCache<User3> = .init()
+    var person1: BaseContentCache<Person1> = .init()
+    var person2: BaseContentCache<Person2> = .init()
+    var person3: BaseContentCache<Person3> = .init()
     
     var post1: BaseContentCache<Post1> = .init()
     var post2: BaseContentCache<Post2> = .init()

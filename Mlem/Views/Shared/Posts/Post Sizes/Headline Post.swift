@@ -20,7 +20,7 @@ struct HeadlinePost: View {
     private let spacing: CGFloat = 10 // constant for readability, ease of modification
 
     // arguments
-    @ObservedObject var post: PostModel
+    let post: any Post
 
     var body: some View {
         VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
@@ -31,19 +31,19 @@ struct HeadlinePost: View {
 
                 VStack(spacing: 2) {
                     HStack(alignment: .top, spacing: 4) {
-                        if post.post.featuredLocal {
+                        if post.pinnedInstance {
                             StickiedTag(tagType: .local)
-                        } else if post.post.featuredCommunity {
+                        } else if post.pinnedCommunity {
                             StickiedTag(tagType: .community)
                         }
                         
-                        Text(post.post.name)
+                        Text(post.title)
                             .font(.headline)
                             .padding(.trailing)
-                            .foregroundColor(post.read ? .secondary : .primary)
+                            .foregroundColor((post.isRead ?? false) ? .secondary : .primary)
                         
                         Spacer()
-                        if post.post.nsfw {
+                        if post.nsfw {
                             NSFWTag(compact: true)
                         }
                     }

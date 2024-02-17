@@ -8,9 +8,9 @@
 import SwiftUI
 
 @Observable
-final class User1: User1Providing, NewContentModel {
+final class Person1: Person1Providing, NewContentModel {
     typealias APIType = APIPerson
-    var user1: User1 { self }
+    var person1: Person1 { self }
     
     var source: any APISource
     

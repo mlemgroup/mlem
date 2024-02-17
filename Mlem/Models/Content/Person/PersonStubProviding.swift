@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol UserStubProviding: CommunityOrUserStub {    
+protocol PersonStubProviding: CommunityOrPersonStub {    
     // From User1Providing. These are defined as nil in the extension below
     var id: Int? { get }
     var creationDate: Date? { get }
@@ -33,7 +33,7 @@ protocol UserStubProviding: CommunityOrUserStub {
     var moderatedCommunities: [Community1]? { get }
 }
 
-extension UserStubProviding {
+extension PersonStubProviding {
     static var identifierPrefix: String { "@" }
     
     var id: Int? { nil }

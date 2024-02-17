@@ -13,6 +13,7 @@ protocol Post1Providing: PostStubProviding, TrackerItem, Identifiable {
     var id: Int { get }
     var title: String { get }
     var content: String? { get }
+    var links: [LinkType] { get }
     var linkUrl: URL? { get }
     var deleted: Bool { get }
     var embed: PostEmbed? { get }
@@ -44,6 +45,7 @@ extension Post1Providing {
     var id: Int { post1.id }
     var title: String { post1.title }
     var content: String? { post1.content }
+    var links: [LinkType] { post1.links }
     var deleted: Bool { post1.deleted }
     var embed: PostEmbed? { post1.embed }
     var pinnedCommunity: Bool { post1.pinnedCommunity }
@@ -59,13 +61,13 @@ extension Post1Providing {
 extension Post1Providing {
     var postType: PostType {
         // post with URL: either image or link
-        if let postUrl = post.linkUrl {
+        if let postUrl = linkUrl {
             // if image, return image link, otherwise return thumbnail
-            return postUrl.isImage ? .image(postUrl) : .link(post.thumbnailImageUrl)
+            return postUrl.isImage ? .image(postUrl) : .link(thumbnailUrl)
         }
 
         // otherwise text, but post.body needs to be present, even if it's an empty string
-        if let postBody = post.body {
+        if let postBody = content {
             return .text(postBody)
         }
 

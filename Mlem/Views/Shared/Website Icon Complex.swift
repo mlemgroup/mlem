@@ -15,11 +15,11 @@ struct WebsiteIconComplex: View {
 
     @AppStorage("shouldShowWebsiteIcon") var shouldShowWebsiteIcon: Bool = true
 
-    let post: APIPost
+    let post: any Post
     var onTapActions: (() -> Void)?
     
     init(
-        post: APIPost,
+        post: any Post,
         onTapActions: (() -> Void)? = nil
     ) {
         self.post = post
@@ -42,10 +42,10 @@ struct WebsiteIconComplex: View {
     }
     
     var linkLabel: String {
-        if let embedTitle = post.embedTitle {
+        if let embedTitle = post.embed?.title {
             return embedTitle
         } else {
-            return post.name
+            return post.title
         }
     }
     
@@ -82,9 +82,9 @@ struct WebsiteIconComplex: View {
     
     var content: some View {
         LazyVStack(spacing: 0) {
-            if shouldShowWebsitePreviews, let thumbnailURL = post.thumbnailImageUrl {
+            if shouldShowWebsitePreviews, let thumbnailUrl = post.thumbnailUrl {
                 CachedImage(
-                    url: thumbnailURL,
+                    url: thumbnailUrl,
                     shouldExpand: false,
                     // CHANGEME: hack for TF release
                     fixedSize: CGSize(width: imageWidth, height: imageHeight)

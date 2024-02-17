@@ -7,8 +7,8 @@
 
 import Foundation
 
-protocol MyUserProviding: APISource, AnyObject, Identifiable {
-    var stub: MyUserStub { get }
+protocol UserProviding: APISource, AnyObject, Identifiable {
+    var stub: UserStub { get }
     var source: any APISource { get }
     
     var id: Int { get }
@@ -21,7 +21,7 @@ protocol MyUserProviding: APISource, AnyObject, Identifiable {
     var avatarUrl: URL? { get set }
 }
 
-extension MyUserProviding {
+extension UserProviding {
     var source: any APISource { stub }
     
     var caches: BaseCacheGroup { source.caches }
@@ -38,7 +38,7 @@ extension MyUserProviding {
     var avatarUrl: URL? { get { stub.avatarUrl } set { stub.avatarUrl = newValue } }
 }
 
-extension MyUserProviding {
+extension UserProviding {
     func login(password: String, twoFactorToken: String? = nil) async throws {
         let response = try await source.api.login(username: username, password: password, totpToken: twoFactorToken)
         accessToken = response.jwt

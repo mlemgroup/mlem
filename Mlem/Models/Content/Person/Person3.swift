@@ -8,13 +8,13 @@
 import SwiftUI
 
 @Observable
-final class User3: User3Providing, NewContentModel {
+final class Person3: Person3Providing, NewContentModel {
     typealias APIType = GetPersonDetailsResponse
-    var user3: User3 { self }
+    var person3: Person3 { self }
     
     var source: any APISource
 
-    let user2: User2
+    let person2: Person2
 
     var instance: Instance1!
     var moderatedCommunities: [Community1] = .init()
@@ -28,7 +28,7 @@ final class User3: User3Providing, NewContentModel {
             self.instance = nil
         }
         
-        self.user2 = source.caches.user2.createModel(source: source, for: response.personView)
+        self.person2 = source.caches.user2.createModel(source: source, for: response.personView)
         self.update(with: response)
     }
     
@@ -40,10 +40,10 @@ final class User3: User3Providing, NewContentModel {
         guard let myUser = response.myUser else { fatalError() }
         
         if let existing = source.caches.user2.retrieveModel(id: myUser.localUserView.localUser.id) {
-            self.user2 = existing
+            self.person2 = existing
             existing.update(with: myUser.localUserView)
         } else {
-            self.user2 = .init(source: source, from: myUser.localUserView)
+            self.person2 = .init(source: source, from: myUser.localUserView)
         }
         
         self.update(with: myUser)

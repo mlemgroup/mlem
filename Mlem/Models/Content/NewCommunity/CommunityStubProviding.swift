@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol CommunityStubProviding: CommunityOrUserStub {
+protocol CommunityStubProviding: CommunityOrPersonStub {
     // From Community1Providing. These are defined as nil in the extension below
     var creationDate: Date? { get }
     var updatedDate: Date? { get }

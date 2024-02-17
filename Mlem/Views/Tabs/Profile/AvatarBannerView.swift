@@ -18,7 +18,7 @@ struct AvatarBannerView: View {
     var showBanner: Bool = true
     var showAvatar: Bool = true
     
-    init(user: (any User)?) {
+    init(user: (any Person)?) {
         self.type = .user
         self.avatar = user?.avatar
         self.banner = user?.banner

@@ -24,23 +24,17 @@ struct CompactPost: View {
     @Dependency(\.errorHandler) var errorHandler
     
     @Environment(\.accessibilityDifferentiateWithoutColor) var diffWithoutColor: Bool
-
-    // constants
-    let thumbnailSize: CGFloat = 60
-    private let spacing: CGFloat = 10 // constant for readability, ease of modification
     
     // arguments
-    @ObservedObject var post: PostModel
-    let community: CommunityModel?
+    let post: any Post2Providing
     let showCommunity: Bool // true to show community name, false to show username
     let menuFunctions: [MenuFunction]
     
     // computed
-    var showReadCheck: Bool { post.read && diffWithoutColor && readMarkStyle == .check }
+    var showReadCheck: Bool { post.isRead && diffWithoutColor && readMarkStyle == .check }
     
-    init(post: PostModel, community: CommunityModel? = nil, showCommunity: Bool, menuFunctions: [MenuFunction]) {
+    init(post: any Post2Providing, showCommunity: Bool, menuFunctions: [MenuFunction]) {
         self.post = post
-        self.community = community
         self.showCommunity = showCommunity
         self.menuFunctions = menuFunctions
     }
@@ -60,7 +54,7 @@ struct CompactPost: View {
                             UserLinkView(
                                 user: post.creator,
                                 serverInstanceLocation: .trailing,
-                                communityContext: community
+                                communityContext: post.community
                             )
                         }
                     }
@@ -92,31 +86,29 @@ struct CompactPost: View {
     @ViewBuilder
     private var compactInfo: some View {
         HStack(spacing: 8) {
-            if post.post.featuredCommunity {
-                if post.post.featuredLocal {
-                    StickiedTag(tagType: .local, compact: true)
-                } else if post.post.featuredCommunity {
-                    StickiedTag(tagType: .community, compact: true)
-                }
+            if post.pinnedInstance {
+                StickiedTag(tagType: .local, compact: true)
+            } else if post.pinnedCommunity {
+                StickiedTag(tagType: .community, compact: true)
             }
             
-            if post.post.nsfw || post.community.nsfw {
+            if post.nsfw || post.community.nsfw {
                 NSFWTag(compact: true)
             }
             
             InfoStackView(
                 votes: DetailedVotes(
-                    score: post.votes.total,
-                    upvotes: post.votes.upvotes,
-                    downvotes: post.votes.downvotes,
-                    myVote: post.votes.myVote,
+                    score: post.score,
+                    upvotes: post.upvoteCount,
+                    downvotes: post.downvoteCount,
+                    myVote: post.myVote,
                     showDownvotes: showDownvotesSeparately
                 ),
-                published: post.published,
-                updated: post.updated,
+                published: post.creationDate,
+                updated: post.updatedDate,
                 commentCount: post.commentCount,
                 unreadCommentCount: post.unreadCommentCount,
-                saved: post.saved,
+                saved: post.isSaved,
                 alignment: .center,
                 colorizeVotes: true
             )

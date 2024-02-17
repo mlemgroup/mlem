@@ -27,6 +27,7 @@ final class Post1: Post1Providing, NewContentModel {
     
     var title: String = ""
     var content: String? = ""
+    var links: [LinkType] = []
     var linkUrl: URL? = nil
     var deleted: Bool = false
     var embed: PostEmbed? = nil
@@ -54,6 +55,7 @@ final class Post1: Post1Providing, NewContentModel {
         
         // We can't name this 'body' because @Observable uses that property name already
         self.content = post.body
+        self.links = post.body?.parseLinks() ?? []
         
         self.linkUrl = post.linkUrl
         

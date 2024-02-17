@@ -23,7 +23,7 @@ struct UserView: View {
     let internetSpeed: InternetSpeed
     let communityContext: (any CommunityStubProviding)?
     
-    @State var user: any UserStubProviding
+    @State var user: any PersonStubProviding
     @State var selectedTab: UserViewTab = .overview
     @State var isLoadingContent: Bool = true
     
@@ -45,7 +45,7 @@ struct UserView: View {
         isPresentingConfirmDestructive = true
     }
     
-    init(user: any UserStubProviding, communityContext: (any CommunityStubProviding)? = nil) {
+    init(user: any PersonStubProviding, communityContext: (any CommunityStubProviding)? = nil) {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
         

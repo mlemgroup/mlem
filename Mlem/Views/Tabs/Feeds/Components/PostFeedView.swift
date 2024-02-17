@@ -36,11 +36,11 @@ struct PostFeedView: View {
     @State var suppressNoPostsView: Bool = true
 
     let showCommunity: Bool
-    let communityContext: CommunityModel?
+    let communityContext: (any Community)?
 
     @State var errorDetails: ErrorDetails?
     
-    init(postSortType: Binding<PostSortType>, showCommunity: Bool, communityContext: CommunityModel? = nil) {
+    init(postSortType: Binding<PostSortType>, showCommunity: Bool, communityContext: (any Community)? = nil) {
         
         if let siteVersion = appState.lemmyVersion, postSortType.wrappedValue.minimumVersion <= siteVersion {
             self._versionSafePostSort = .init(wrappedValue: postSortType.wrappedValue)
@@ -61,7 +61,7 @@ struct PostFeedView: View {
                     Task { await postTracker.addFilter(.read) }
                 }
             }
-            .task(id: siteInformation.version) {
+            .task(id: appState.lemmyVersion) {
                 await setDefaultSortMode()
             }
             .task(id: versionSafePostSort) {
@@ -109,12 +109,12 @@ struct PostFeedView: View {
                                 let indexToMark = index >= postSize.markReadThreshold ? index - postSize.markReadThreshold : index
 
                                 if let postToMark = postTracker.items[safeIndex: indexToMark] {
-                                    postToMark.setRead(true)
+                                    // postToMark.setRead(true)
                                     await markReadBatcher.add(postToMark.postId)
                                     
                                     // handle posts at end of feed
                                     if postTracker.items.count - index <= postSize.markReadThreshold {
-                                        element.setRead(true)
+                                        // element.setRead(true)
                                         await markReadBatcher.add(element.postId)
                                     }
                                 }
@@ -127,7 +127,7 @@ struct PostFeedView: View {
     }
     
     @ViewBuilder
-    private func feedPost(for post: PostModel) -> some View {
+    private func feedPost(for post: Post2) -> some View {
         VStack(spacing: 0) {
             NavigationLink(.postLinkWithContext(.init(post: post, community: nil, postTracker: postTracker))) {
                 FeedPost(

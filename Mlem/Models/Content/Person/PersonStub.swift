@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct UserStub: UserStubProviding {
+struct PersonStub: PersonStubProviding {
     var source: any APISource
     let actorId: URL
     
@@ -16,7 +16,7 @@ struct UserStub: UserStubProviding {
         self.actorId = actorId
     }
     
-    static func == (lhs: UserStub, rhs: UserStub) -> Bool {
+    static func == (lhs: PersonStub, rhs: PersonStub) -> Bool {
         lhs.actorId == rhs.actorId
     }
 }
