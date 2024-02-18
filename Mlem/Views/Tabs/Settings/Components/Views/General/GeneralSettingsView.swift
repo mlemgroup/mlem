@@ -142,14 +142,22 @@ struct GeneralSettingsView: View {
             }
             
             Section {
-                SelectableSettingsItem(
-                    settingIconSystemName: Icons.tabBarNavigation,
-                    settingName: "Behaviour",
-                    currentValue: $tabBarActionBehaviour,
-                    options: Navigation.Behaviour.allCases
-                )
+                Picker(selection: $tabBarActionBehaviour) {
+                    ForEach(Navigation.Behaviour.allCases) { value in
+                        Label {
+                            Text(value.label)
+                        } icon: {
+                            Image(systemName: value.systemImage)
+                                .foregroundColor(.pink)
+                        }
+                    }
+                } label: {
+                    EmptyView()
+                }
+                .pickerStyle(.inline)
+                .accentColor(.pink)
             } header: {
-                Text("Tab Bar Actions")
+                Text("Tap tab bar icon to...")
             } footer: {
                 Text(tabBarActionBehaviour.explanation)
             }

@@ -341,13 +341,13 @@ extension Navigation.Behaviour: CustomStringConvertible, CustomDebugStringConver
     var description: String {
         switch self {
         case .system:
-            "System"
+            "Return to first page..."
         case .primary:
-            "Dismiss"
+            "Return to previous page..."
         case .primaryAuxiliary:
-            "Dismiss after Scroll"
+            "Scroll to top..."
         case .none:
-            "none"
+            "Do nothing"
         }
     }
     
@@ -366,14 +366,28 @@ extension Navigation.Behaviour: CustomStringConvertible, CustomDebugStringConver
 }
 
 extension Navigation.Behaviour {
+    
+    var systemImage: String {
+        switch self {
+        case .system:
+            "arrow.backward.to.line.circle"
+        case .primary:
+            "arrow.backward.circle"
+        case .primaryAuxiliary:
+            "arrow.up.to.line.circle"
+        case .none:
+            "circle.slash"
+        }
+    }
+    
     var explanation: String {
         switch self {
         case .system:
-            "Go back to the first page, then scroll to top."
+            "Return to first page, then scroll to top."
         case .primary:
-            "Go back to previous page until the first page, then scroll to top."
+            "Return to previous page until the first page, then scroll to top."
         case .primaryAuxiliary:
-            "Always scroll to top before going back to previous page."
+            "Always scroll to top before returning to previous page."
         case .none:
             ""
         }
@@ -381,6 +395,6 @@ extension Navigation.Behaviour {
 }
 
 extension Navigation.Behaviour: SettingsOptions {
-    var label: String { description.capitalized }
+    var label: String { description }
     var id: Self { self }
 }
