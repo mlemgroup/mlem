@@ -12,8 +12,7 @@ extension UserModel {
         .standardMenuFunction(
             text: blocked ? "Unblock" : "Block",
             imageName: blocked ? Icons.show : Icons.hide,
-            destructiveActionPrompt: blocked ? nil : AppConstants.blockUserPrompt,
-            enabled: true,
+            role: blocked ? nil : .destructive(prompt: AppConstants.blockUserPrompt),
             callback: {
                 Task {
                     var new = self
@@ -23,35 +22,60 @@ extension UserModel {
         )
     }
     
-    func menuFunctions(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> [MenuFunction] {
-        var functions: [MenuFunction] = .init()
-        if let instanceHost = profileUrl.host() {
-            let instance: InstanceModel?
-            if let site {
-                instance = .init(from: site)
-            } else {
-                instance = nil
+    func banMenuFunction(
+        _ callback: @escaping (_ item: Self) -> Void = { _ in },
+        modToolTracker: ModToolTracker
+    ) -> MenuFunction {
+        .standardMenuFunction(
+            text: banned ? "Unban" : "Ban",
+            imageName: Icons.instanceBan,
+            role: .destructive(prompt: nil),
+            callback: {
+                modToolTracker.banUserFromInstance(self, shouldBan: !banned)
             }
-            functions.append(
-                .navigationMenuFunction(
-                    text: instanceHost,
-                    imageName: Icons.instance,
-                    destination: .instance(instanceHost, instance)
+        )
+    }
+    
+    func menuFunctions(
+        _ callback: @escaping (_ item: Self) -> Void = { _ in },
+        modToolTracker: ModToolTracker? = nil
+    ) -> [MenuFunction] {
+        var functions: [MenuFunction] = .init()
+        do {
+            if let instanceHost = profileUrl.host() {
+                let instance: InstanceModel
+                if let site {
+                    instance = .init(from: site)
+                } else {
+                    instance = try .init(domainName: instanceHost)
+                }
+                functions.append(
+                    .navigationMenuFunction(
+                        text: instanceHost,
+                        imageName: Icons.instance,
+                        destination: .instance(instance)
+                    )
                 )
-            )
+            }
+        } catch {
+            print("Failed to add instance menu function!")
         }
         functions.append(
             .standardMenuFunction(
                 text: "Copy Username",
                 imageName: Icons.copy,
-                destructiveActionPrompt: nil,
-                enabled: true,
                 callback: copyFullyQualifiedUsername
             )
         )
         functions.append(.shareMenuFunction(url: profileUrl))
-        if siteInformation.myUserInfo?.localUserView.person.id != userId {
+        
+        let isOwnUser = (siteInformation.myUser?.userId ?? -1) == userId
+        
+        if !isOwnUser {
             functions.append(blockMenuFunction(callback))
+            if siteInformation.myUser?.isAdmin ?? false, !(isAdmin ?? false), let modToolTracker {
+                functions.append(banMenuFunction(callback, modToolTracker: modToolTracker))
+            }
         }
         return functions
     }

@@ -105,7 +105,8 @@ enum Icons {
     static let adminFlair: String = "crown.fill"
     static let botFlair: String = "terminal.fill"
     static let opFlair: String = "person.fill"
-    static let bannedFlair: String = "multiply.circle"
+    static let instanceBannedFlair: String = "xmark.circle.fill"
+    static let communityBannedFlair: String = "xmark.shield.fill"
     
     // entities/general Lemmy concepts
     static let federation: String = "point.3.filled.connected.trianglepath.dotted"
@@ -149,6 +150,11 @@ enum Icons {
     static let close: String = "multiply"
     static let cakeDay: String = "birthday.cake"
     
+    // uptime
+    static let uptimeOffline: String = "xmark.circle.fill"
+    static let uptimeOnline: String = "checkmark.circle.fill"
+    static let uptimeOutage: String = "exclamationmark.circle.fill"
+    
     // end of feed
     static let endOfFeedHobbit: String = "figure.climbing"
     static let endOfFeedCartoon: String = "figure.wave"
@@ -169,6 +175,7 @@ enum Icons {
     static let `import`: String = "square.and.arrow.down"
     static let attachment: String = "paperclip"
     static let edit: String = "pencil"
+    static let editCircleFill: String = "pencil.circle.fill"
     static let delete: String = "trash"
     static let copy: String = "doc.on.doc"
     
@@ -190,6 +197,12 @@ enum Icons {
     static let limitImageHeightSetting: String = "rectangle.compress.vertical"
     static let appLockSettings: String = "lock.app.dashed"
     static let collapseComments: String = "arrow.down.and.line.horizontal.and.arrow.up"
+    static let instanceBan: String = "xmark.circle"
+    
+    // mod tools
+    static let auditUser: String = "person.crop.circle.badge.questionmark.fill"
+    static let communityBan: String = "xmark.shield"
+    static let communityUnban: String = "checkmark.shield"
     
     // misc
     static let `private`: String = "lock"

@@ -271,7 +271,8 @@ struct PostComposerView: View {
                 UserLabelView(
                     person: person,
                     serverInstanceLocation: .bottom,
-                    overrideShowAvatar: true
+                    overrideShowAvatar: true,
+                    bannedFromCommunity: false
                 )
                 .environment(\.layoutDirection, layoutDirection == .leftToRight ? .rightToLeft : .leftToRight)
             }

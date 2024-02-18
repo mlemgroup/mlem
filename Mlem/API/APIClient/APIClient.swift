@@ -21,6 +21,7 @@ enum APIClientError: Error {
     case cancelled
     case invalidSession
     case decoding(Data, Error?)
+    case unexpectedResponse
 }
 
 extension APIClientError: CustomStringConvertible {
@@ -49,6 +50,8 @@ extension APIClientError: CustomStringConvertible {
             }
             
             return "Unable to decode: \(string)"
+        case .unexpectedResponse:
+            return "Unexpected response"
         }
     }
 }
@@ -253,6 +256,18 @@ extension APIClient {
     
     func blockPerson(id: Int, shouldBlock: Bool) async throws -> BlockPersonResponse {
         let request = try BlockPersonRequest(session: session, personId: id, block: shouldBlock)
+        return try await perform(request: request)
+    }
+    
+    func banPerson(id: Int, shouldBan: Bool, expires: Int?, reason: String?, removeData: Bool) async throws -> BanPersonResponse {
+        let request = try BanPersonRequest(
+            session: session,
+            personId: id,
+            ban: shouldBan,
+            expires: expires,
+            reason: reason,
+            removeData: removeData
+        )
         return try await perform(request: request)
     }
     

@@ -18,6 +18,8 @@ struct UserView: View {
     @Environment(\.navigationPathWithRoutes) private var navigationPath
     @Environment(\.scrollViewProxy) private var scrollViewProxy
     
+    @EnvironmentObject var modToolTracker: ModToolTracker
+    
     let internetSpeed: InternetSpeed
     let communityContext: CommunityModel?
     
@@ -61,147 +63,110 @@ struct UserView: View {
     }
     
     var body: some View {
-        ScrollView {
-            ScrollToView(appeared: $scrollToTopAppeared)
-                .id(scrollToTop)
-            VStack(spacing: AppConstants.postAndCommentSpacing) {
-                AvatarBannerView(user: user)
-                    .padding(.horizontal, AppConstants.postAndCommentSpacing)
-                    .padding(.top, 10)
-                Button(action: user.copyFullyQualifiedUsername) {
-                    VStack(spacing: 5) {
-                        Text(user.displayName)
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.01)
-                        Text(user.fullyQualifiedUsername ?? user.name)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+        content
+            .environmentObject(privatePostTracker)
+            .environmentObject(privateCommentTracker)
+            .destructiveConfirmation(
+                isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
+                confirmationMenuFunction: confirmationMenuFunction
+            )
+            .toolbar {
+                ToolbarItemGroup(placement: .secondaryAction) {
+                    let functions = user.menuFunctions({ user = $0 }, modToolTracker: modToolTracker)
+                    ForEach(functions) { item in
+                        MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
                     }
-                }
-                .padding(.horizontal, AppConstants.postAndCommentSpacing)
-                .buttonStyle(.plain)
-                
-                flairs
-                
-                VStack(spacing: 0) {
-                    let bioAlignment = bioAlignment
-                    if let bio = user.bio {
-                        Divider()
-                            .padding(.bottom, AppConstants.postAndCommentSpacing)
-                        MarkdownView(text: bio, isNsfw: false, alignment: bioAlignment).padding(AppConstants.postAndCommentSpacing)
-                    }
-                    HStack {
-                        Label(user.creationDate.dateString, systemImage: Icons.cakeDay)
-                        Text("•")
-                        Label(user.creationDate.getRelativeTime(date: Date.now, unitsStyle: .abbreviated), systemImage: Icons.time)
-                        if bioAlignment == .leading {
-                            Spacer()
-                        }
-                    }
-                    .foregroundStyle(.secondary)
-                    .font(.footnote)
-                    .padding(.horizontal, AppConstants.postAndCommentSpacing)
-                    .padding(.top, 2)
-                    
-                    Divider()
-                        .padding(.top, AppConstants.postAndCommentSpacing * 2)
-                    
-                    if isLoadingContent {
-                        VStack(spacing: 0) {
-                            LoadingView(whatIsLoading: .content)
-                        }
-                        .transition(.opacity)
-                    } else {
-                        VStack(spacing: 0) {
-                            BubblePicker(tabs, selected: $selectedTab) { tab in
-                                switch tab {
-                                case .posts:
-                                    Text("Posts (\(abbreviateNumber(user.postCount ?? 0)))")
-                                case .comments:
-                                    Text("Comments (\(abbreviateNumber(user.commentCount ?? 0)))")
-                                case .communities:
-                                    Text("Communities (\(abbreviateNumber(user.moderatedCommunities?.count ?? 0)))")
-                                default:
-                                    Text(tab.label)
-                                }
-                            }
-                            .padding(.vertical, 4)
-                            Divider()
-                            UserFeedView(
-                                user: user,
-                                privatePostTracker: privatePostTracker,
-                                privateCommentTracker: privateCommentTracker,
-                                communityTracker: communityTracker,
-                                selectedTab: $selectedTab
-                            )
-                        }
-                        .transition(.opacity)
-                    }
-                }
-                .animation(.easeOut(duration: 0.2), value: isLoadingContent)
-            }
-        }
-        .environmentObject(privatePostTracker)
-        .environmentObject(privateCommentTracker)
-        .destructiveConfirmation(
-            isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
-            confirmationMenuFunction: confirmationMenuFunction
-        )
-        .toolbar {
-            ToolbarItemGroup(placement: .secondaryAction) {
-                let functions = user.menuFunctions { user = $0 }
-                ForEach(functions) { item in
-                    MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
                 }
             }
-        }
-        .task(priority: .userInitiated) {
-            if isLoadingContent {
+            .task(priority: .userInitiated) {
+                if isLoadingContent {
+                    Task {
+                        await tryReloadUser()
+                    }
+                }
+            }
+            .onChange(of: user.userId) { _ in
                 Task {
                     await tryReloadUser()
                 }
             }
-        }
-        .onChange(of: user.userId) { _ in
-            Task {
-                await tryReloadUser()
-            }
-        }
-        .refreshable {
-            Task {
-                await tryReloadUser()
-            }
-        }
-        .onChange(of: siteInformation.myUserInfo?.localUserView.person) { newValue in
-            if isOwnProfile {
-                if let newValue {
-                    user.update(with: newValue)
+            .refreshable {
+                Task {
+                    await tryReloadUser()
                 }
             }
-        }
-        .hoistNavigation {
-            if navigationPath.isEmpty {
-                withAnimation {
-                    scrollViewProxy?.scrollTo(scrollToTop)
+            .onChange(of: siteInformation.myUserInfo?.localUserView.person) { newValue in
+                if isOwnProfile {
+                    if let newValue {
+                        user.update(with: newValue)
+                    }
                 }
-                return true
-            } else {
-                if scrollToTopAppeared {
-                    return false
-                } else {
+            }
+            .hoistNavigation {
+                if navigationPath.isEmpty {
                     withAnimation {
                         scrollViewProxy?.scrollTo(scrollToTop)
                     }
                     return true
+                } else {
+                    if scrollToTopAppeared {
+                        return false
+                    } else {
+                        withAnimation {
+                            scrollViewProxy?.scrollTo(scrollToTop)
+                        }
+                        return true
+                    }
                 }
             }
+            .fancyTabScrollCompatible()
+            .navigationBarColor()
+            .navigationTitle(user.displayName)
+            .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    var content: some View {
+        ScrollView {
+            ScrollToView(appeared: $scrollToTopAppeared)
+                .id(scrollToTop)
+            
+            VStack(spacing: AppConstants.postAndCommentSpacing) {
+                header
+                
+                flairs
+                
+                VStack(spacing: 0) {
+                    bio
+                    
+                    Divider()
+                        .padding(.top, AppConstants.postAndCommentSpacing * 2)
+                    
+                    userContent
+                }
+                .animation(.easeOut(duration: 0.2), value: isLoadingContent)
+            }
         }
-        .fancyTabScrollCompatible()
-        .navigationBarColor()
-        .navigationTitle(user.displayName)
-        .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    @ViewBuilder
+    var header: some View {
+        AvatarBannerView(user: user)
+            .padding(.horizontal, AppConstants.postAndCommentSpacing)
+            .padding(.top, 10)
+        Button(action: user.copyFullyQualifiedUsername) {
+            VStack(spacing: 5) {
+                Text(user.displayName)
+                    .font(.title)
+                    .fontWeight(.semibold)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.01)
+                Text(user.fullyQualifiedUsername ?? user.name)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .padding(.horizontal, AppConstants.postAndCommentSpacing)
+        .buttonStyle(.plain)
     }
     
     var flairs: some View {
@@ -213,8 +178,8 @@ struct UserView: View {
                         flairBackground(color: flair.color) {
                             HStack {
                                 switch flair {
-                                case .banned:
-                                    Image(systemName: Icons.bannedFlair)
+                                case .bannedFromInstance:
+                                    Image(systemName: Icons.instanceBannedFlair)
                                     if let expirationDate = user.banExpirationDate {
                                         Text("Banned Until \(expirationDate.dateString)")
                                     } else {
@@ -237,6 +202,63 @@ struct UserView: View {
                 }
                 .padding(.bottom, AppConstants.postAndCommentSpacing)
             }
+        }
+    }
+    
+    @ViewBuilder
+    var bio: some View {
+        let bioAlignment = bioAlignment
+        if let userBio = user.bio {
+            Divider()
+                .padding(.bottom, AppConstants.postAndCommentSpacing)
+            MarkdownView(text: userBio, isNsfw: false, alignment: bioAlignment).padding(AppConstants.postAndCommentSpacing)
+        }
+        HStack {
+            Label(user.creationDate.dateString, systemImage: Icons.cakeDay)
+            Text("•")
+            Label(user.creationDate.getRelativeTime(date: Date.now, unitsStyle: .abbreviated), systemImage: Icons.time)
+            if bioAlignment == .leading {
+                Spacer()
+            }
+        }
+        .foregroundStyle(.secondary)
+        .font(.footnote)
+        .padding(.horizontal, AppConstants.postAndCommentSpacing)
+        .padding(.top, 2)
+    }
+    
+    @ViewBuilder
+    var userContent: some View {
+        if isLoadingContent {
+            VStack(spacing: 0) {
+                LoadingView(whatIsLoading: .content)
+            }
+            .transition(.opacity)
+        } else {
+            VStack(spacing: 0) {
+                BubblePicker(tabs, selected: $selectedTab) { tab in
+                    switch tab {
+                    case .posts:
+                        Text("Posts (\(abbreviateNumber(user.postCount ?? 0)))")
+                    case .comments:
+                        Text("Comments (\(abbreviateNumber(user.commentCount ?? 0)))")
+                    case .communities:
+                        Text("Communities (\(abbreviateNumber(user.moderatedCommunities?.count ?? 0)))")
+                    default:
+                        Text(tab.label)
+                    }
+                }
+                .padding(.vertical, 4)
+                Divider()
+                UserFeedView(
+                    user: user,
+                    privatePostTracker: privatePostTracker,
+                    privateCommentTracker: privateCommentTracker,
+                    communityTracker: communityTracker,
+                    selectedTab: $selectedTab
+                )
+            }
+            .transition(.opacity)
         }
     }
     

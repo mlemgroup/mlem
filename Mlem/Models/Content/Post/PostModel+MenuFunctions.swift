@@ -16,7 +16,6 @@ extension PostModel {
         functions.append(MenuFunction.standardMenuFunction(
             text: votes.myVote == .upvote ? "Undo Upvote" : "Upvote",
             imageName: votes.myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvoteSquare,
-            destructiveActionPrompt: nil,
             enabled: true
         ) {
             Task(priority: .userInitiated) {
@@ -28,7 +27,6 @@ extension PostModel {
         functions.append(MenuFunction.standardMenuFunction(
             text: votes.myVote == .downvote ? "Undo Downvote" : "Downvote",
             imageName: votes.myVote == .downvote ? Icons.downvoteSquareFill : Icons.downvoteSquare,
-            destructiveActionPrompt: nil,
             enabled: true
         ) {
             Task(priority: .userInitiated) {
@@ -40,7 +38,6 @@ extension PostModel {
         functions.append(MenuFunction.standardMenuFunction(
             text: saved ? "Unsave" : "Save",
             imageName: saved ? Icons.unsave : Icons.save,
-            destructiveActionPrompt: nil,
             enabled: true
         ) {
             Task(priority: .userInitiated) {
@@ -52,7 +49,6 @@ extension PostModel {
         functions.append(MenuFunction.standardMenuFunction(
             text: "Reply",
             imageName: Icons.reply,
-            destructiveActionPrompt: nil,
             enabled: true
         ) {
             editorTracker.openEditor(
@@ -65,7 +61,6 @@ extension PostModel {
             functions.append(MenuFunction.standardMenuFunction(
                 text: "Edit",
                 imageName: Icons.edit,
-                destructiveActionPrompt: nil,
                 enabled: true
             ) {
                 editorTracker.openEditor(with: PostEditorModel(post: self))
@@ -75,7 +70,7 @@ extension PostModel {
             functions.append(MenuFunction.standardMenuFunction(
                 text: "Delete",
                 imageName: Icons.delete,
-                destructiveActionPrompt: "Are you sure you want to delete this post? This cannot be undone.",
+                role: .destructive(prompt: "Are you sure you want to delete this post? This cannot be undone."),
                 enabled: !post.deleted
             ) {
                 Task(priority: .userInitiated) {
@@ -94,7 +89,7 @@ extension PostModel {
             functions.append(MenuFunction.standardMenuFunction(
                 text: "Report",
                 imageName: Icons.moderationReport,
-                destructiveActionPrompt: AppConstants.reportPostPrompt,
+                role: .destructive(prompt: AppConstants.reportPostPrompt),
                 enabled: true
             ) {
                 editorTracker.openEditor(
@@ -107,7 +102,7 @@ extension PostModel {
                 functions.append(MenuFunction.standardMenuFunction(
                     text: "Block User",
                     imageName: Icons.userBlock,
-                    destructiveActionPrompt: AppConstants.blockUserPrompt,
+                    role: .destructive(prompt: AppConstants.blockUserPrompt),
                     enabled: true
                 ) {
                     Task(priority: .userInitiated) {
@@ -125,7 +120,7 @@ extension PostModel {
                 functions.append(MenuFunction.standardMenuFunction(
                     text: "Block Community",
                     imageName: Icons.hide,
-                    destructiveActionPrompt: AppConstants.blockCommunityPrompt,
+                    role: .destructive(prompt: AppConstants.blockCommunityPrompt),
                     enabled: true
                 ) {
                     Task(priority: .userInitiated) {
@@ -140,8 +135,36 @@ extension PostModel {
                 })
             }
         }
-
+        
         return functions
     }
+
     // swiftlint:enable function_body_length
+    
+    func modMenuFunctions(community: CommunityModel, modToolTracker: ModToolTracker) -> [MenuFunction] {
+        assert(community.isModerator(siteInformation.userId), "modMenuFunctions called but user is not a mod!")
+        
+        var functions: [MenuFunction] = .init()
+
+        if creator.userId != siteInformation.userId {
+            let banVerb: String, banIcon: String
+            if creatorBannedFromCommunity {
+                banVerb = "Unban"
+                banIcon = Icons.communityUnban
+            } else {
+                banVerb = "Ban"
+                banIcon = Icons.communityBan
+            }
+            functions.append(MenuFunction.standardMenuFunction(
+                text: "\(banVerb) User",
+                imageName: banIcon,
+                role: .destructive(prompt: nil),
+                enabled: true
+            ) {
+                modToolTracker.banUserFromCommunity(self.creator, from: community, shouldBan: !self.creatorBannedFromCommunity)
+            })
+        }
+        
+        return functions
+    }
 }

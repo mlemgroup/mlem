@@ -15,7 +15,7 @@ extension PostFeedView {
             return MenuFunction.standardMenuFunction(
                 text: type.label,
                 imageName: imageName,
-                destructiveActionPrompt: nil,
+                role: nil,
                 enabled: !isSelected
             ) {
                 postSortType = type
@@ -29,7 +29,7 @@ extension PostFeedView {
             return MenuFunction.standardMenuFunction(
                 text: type.label,
                 imageName: isSelected ? Icons.timeSortFill : Icons.timeSort,
-                destructiveActionPrompt: nil,
+                role: nil,
                 enabled: !isSelected
             ) {
                 postSortType = type
@@ -44,7 +44,6 @@ extension PostFeedView {
         ret.append(MenuFunction.standardMenuFunction(
             text: blurNsfwText,
             imageName: Icons.blurNsfw,
-            destructiveActionPrompt: nil,
             enabled: true
         ) {
             shouldBlurNsfw.toggle()
@@ -54,7 +53,6 @@ extension PostFeedView {
         ret.append(MenuFunction.standardMenuFunction(
             text: showReadPostsText,
             imageName: "book",
-            destructiveActionPrompt: nil,
             enabled: true
         ) {
             showReadPosts.toggle()
@@ -72,7 +70,7 @@ extension PostFeedView {
             return MenuFunction.standardMenuFunction(
                 text: size.label,
                 imageName: imageName,
-                destructiveActionPrompt: nil,
+                role: nil,
                 enabled: enabled,
                 callback: { postSize = size }
             )

@@ -16,6 +16,8 @@ struct ActiveUserCount {
 }
 
 struct CommunityModel {
+    // MARK: - Members and Init
+    
     @Dependency(\.apiClient) private var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
@@ -151,6 +153,19 @@ struct CommunityModel {
         favorited = favoriteCommunitiesTracker.isFavorited(community)
     }
     
+    // MARK: - Convenience
+    
+    func isModerator(_ userId: Int?) -> Bool {
+        if let moderators, let userId {
+            return moderators.contains(where: { userModel in
+                userModel.userId == userId
+            })
+        }
+        return false
+    }
+    
+    // MARK: - Interactions
+    
     func toggleSubscribe(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async throws {
         var new = self
         guard let subscribed, let subscriberCount else {
@@ -240,6 +255,46 @@ struct CommunityModel {
             )
         }
     }
+    
+    // MARK: - Moderation
+    
+    func banUser(
+        userId: Int,
+        ban: Bool,
+        removeData: Bool? = nil,
+        reason: String? = nil,
+        expires: Int? = nil
+    ) async -> Bool {
+        do {
+            let updatedBannedStatus = try await apiClient.banFromCommunity(
+                userId: userId,
+                communityId: communityId,
+                ban: ban,
+                removeData: removeData,
+                reason: reason,
+                expires: expires
+            )
+            return updatedBannedStatus
+        } catch {
+            errorHandler.handle(error)
+            return !ban
+        }
+    }
+    
+    /// Updates mod status of the given user in this community and updates the mod list
+    /// - Parameters:
+    ///   - of: id of the user to change mod status of
+    ///   - to: new mod status
+    mutating func updateModStatus(of userId: Int, to status: Bool) async {
+        do {
+            let newModerators = try await apiClient.updateModStatus(of: userId, in: communityId, status: status)
+            moderators = newModerators
+        } catch {
+            errorHandler.handle(error)
+        }
+    }
+    
+    // MARK: - Misc
     
     var fullyQualifiedName: String? {
         if let host = communityUrl.host() {

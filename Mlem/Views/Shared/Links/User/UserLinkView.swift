@@ -10,6 +10,7 @@ import SwiftUI
 struct UserLinkView: View {
     var user: UserModel
     let serverInstanceLocation: ServerInstanceLocation
+    let bannedFromCommunity: Bool
     var overrideShowAvatar: Bool? // shows or hides the avatar according to value. If not set, uses system setting.
 
     // Extra context about where the link is being displayed
@@ -23,6 +24,7 @@ struct UserLinkView: View {
         person: APIPerson,
         serverInstanceLocation: ServerInstanceLocation,
         overrideShowAvatar: Bool? = nil,
+        bannedFromCommunity: Bool,
         postContext: APIPost? = nil,
         commentContext: APIComment? = nil,
         communityContext: CommunityModel? = nil
@@ -30,6 +32,7 @@ struct UserLinkView: View {
         self.init(
             user: UserModel(from: person),
             serverInstanceLocation: serverInstanceLocation,
+            bannedFromCommunity: bannedFromCommunity,
             overrideShowAvatar: overrideShowAvatar,
             postContext: postContext,
             commentContext: commentContext,
@@ -40,6 +43,7 @@ struct UserLinkView: View {
     init(
         user: UserModel,
         serverInstanceLocation: ServerInstanceLocation,
+        bannedFromCommunity: Bool,
         overrideShowAvatar: Bool? = nil,
         postContext: APIPost? = nil,
         commentContext: APIComment? = nil,
@@ -52,6 +56,7 @@ struct UserLinkView: View {
         self.postContext = postContext
         self.commentContext = commentContext
         self.communityContext = communityContext
+        self.bannedFromCommunity = bannedFromCommunity
     }
 
     var body: some View {
@@ -59,6 +64,7 @@ struct UserLinkView: View {
             UserLabelView(
                 user: user,
                 serverInstanceLocation: serverInstanceLocation,
+                bannedFromCommunity: bannedFromCommunity,
                 overrideShowAvatar: overrideShowAvatar,
                 postContext: postContext,
                 commentContext: commentContext,

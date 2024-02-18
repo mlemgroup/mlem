@@ -23,6 +23,7 @@ struct ContentView: View {
     @EnvironmentObject var appState: AppState
     
     @StateObject var editorTracker: EditorTracker = .init()
+    @StateObject var modToolTracker: ModToolTracker = .init()
     @StateObject var unreadTracker: UnreadTracker = .init()
     
     @State private var errorAlert: ErrorAlert?
@@ -153,15 +154,30 @@ struct ContentView: View {
             .presentationDragIndicator(.hidden)
             ._presentationBackgroundInteraction(enabledUpThrough: .medium)
         }
+//        .sheet(item: $editorTracker.banUser) { editing in
+//            NavigationStack {
+//                BanUserView(editModel: editing)
+//            }
+//            .presentationDetents([.medium, .large], selection: .constant(.large))
+//            .presentationDragIndicator(.hidden)
+//            ._presentationBackgroundInteraction(enabledUpThrough: .medium)
+//        }
         .sheet(item: $quickLookState.url) { url in
             NavigationStack {
                 ImageDetailView(url: url)
             }
         }
+        .sheet(item: $modToolTracker.openTool) { tool in
+            NavigationStack {
+                ModToolSheet(tool: tool)
+            }
+            .handleLemmyViews()
+        }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(editorTracker)
         .environmentObject(unreadTracker)
         .environmentObject(quickLookState)
+        .environmentObject(modToolTracker)
         .onChange(of: scenePhase) { phase in
             if phase != .active {
                 // prevents the app from reopening with the switcher enabled.

@@ -46,6 +46,7 @@ struct InboxMentionBodyView: View {
             UserLinkView(
                 user: mention.creator,
                 serverInstanceLocation: .bottom,
+                bannedFromCommunity: mention.creatorBannedFromCommunity,
                 overrideShowAvatar: true
             )
             .font(.subheadline)

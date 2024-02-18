@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct InstanceModel {
+    enum InstanceError: Error {
+        case invalidUrl
+    }
+    
     var displayName: String!
     var description: String?
     var avatar: URL?
@@ -40,6 +44,18 @@ struct InstanceModel {
     var hideModlogModNames: Bool?
     var applicationsEmailAdmins: Bool?
     var reportsEmailAdmins: Bool?
+    
+    init(domainName: String) throws {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = domainName
+        if let url = components.url {
+            self.url = url
+            self.displayName = name
+        } else {
+            throw InstanceError.invalidUrl
+        }
+    }
     
     init(from response: SiteResponse) {
         update(with: response)
