@@ -22,10 +22,10 @@ struct LegacyDeleteAccountRequest: APIPostRequest {
     }
 
     init(
-        account: SavedAccount,
+        account: UserStub,
         password: String
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = account.instance.url
         self.body = .init(
             password: password,
             auth: account.accessToken
@@ -47,11 +47,11 @@ struct DeleteAccountRequest: APIPostRequest {
     }
     
     init(
-        account: SavedAccount,
+        account: UserStub,
         password: String,
         deleteContent: Bool
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = account.instance.url
         self.body = .init(
             password: password,
             delete_content: deleteContent

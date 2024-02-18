@@ -14,11 +14,9 @@ import SwiftUI
 
 /// Displays a single post in the feed
 struct FeedPost: View {
-    @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
-    @Dependency(\.siteInformation) var siteInformation
     
     // MARK: Environment
 
@@ -42,8 +40,6 @@ struct FeedPost: View {
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
 
     // @EnvironmentObject var postTracker: StandardPostTracker
-    @EnvironmentObject var editorTracker: EditorTracker
-    @EnvironmentObject var appState: AppState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
     // MARK: Parameters
@@ -142,9 +138,9 @@ struct FeedPost: View {
     }
     
     func replyToPost() {
-        editorTracker.openEditor(
-            with: ConcreteEditorModel(post: post, operation: PostOperation.replyToPost)
-        )
+//        editorTracker.openEditor(
+//            with: ConcreteEditorModel(post: post, operation: PostOperation.replyToPost)
+//        )
     }
 
     @ViewBuilder
@@ -244,7 +240,7 @@ extension FeedPost {
     }
 
     var downvoteSwipeAction: SwipeAction? {
-        guard siteInformation.enableDownvotes else { return nil }
+        // guard siteInformation.enableDownvotes else { return nil }
 
         let (emptySymbolName, fullSymbolName) = post.myVote == .downvote ?
             (Icons.resetVoteSquare, Icons.resetVoteSquareFill) :

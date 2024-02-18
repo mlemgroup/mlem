@@ -62,8 +62,6 @@ enum TrackerFeedType: Equatable {
 /// Post tracker for use with single feeds. Supports all post sorting types, but is not suitable for multi-feed use.
 @Observable
 class StandardPostTracker: StandardTracker<Post2> {
-    @ObservationIgnored @Dependency(\.postRepository) var postRepository
-    @ObservationIgnored @Dependency(\.personRepository) var personRepository
     @ObservationIgnored @Dependency(\.persistenceRepository) var persistenceRepository
     
     // TODO: ERIC keyword filters could be more elegant

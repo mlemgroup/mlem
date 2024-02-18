@@ -9,8 +9,6 @@ import Dependencies
 import Foundation
 import SwiftUI
 
-// swiftlint:disable type_body_length
-
 /// View for a single community
 struct CommunityFeedView: View {
     enum Tab: String, Identifiable, CaseIterable {
@@ -23,15 +21,15 @@ struct CommunityFeedView: View {
     
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
-    @Dependency(\.communityRepository) var communityRepository
     @Dependency(\.notifier) var notifier
+    
+    @Environment(AppState.self) var appState
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.scrollViewProxy) var scrollProxy
     @Environment(\.navigationPathWithRoutes) private var navigationPath
     
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var editorTracker: EditorTracker
     
     @State var postTracker: StandardPostTracker?
     
@@ -170,7 +168,7 @@ struct CommunityFeedView: View {
     @ViewBuilder
     var posts: some View {
         if let postTracker, let community = community as? any Community1Providing {
-            PostFeedView(postSortType: $postSortType, showCommunity: false, communityContext: community)
+            PostFeedView(appState: appState, postSortType: $postSortType, showCommunity: false, communityContext: community)
                 .environment(postTracker)
         }
     }
@@ -230,7 +228,7 @@ struct CommunityFeedView: View {
                         community.copyFullNameWithPrefix(notifier: notifier)
                     } label: {
                         VStack(alignment: .leading, spacing: 0) {
-                            Text(community.displayName ?? "Loading...")
+                            Text(community.displayName ?? community.name)
                                 .font(.title2)
                                 .fontWeight(.semibold)
                                 .lineLimit(1)
@@ -315,5 +313,3 @@ struct CommunityFeedView: View {
         }
     }
 }
-
-// swiftlint:enable type_body_length

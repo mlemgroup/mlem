@@ -9,7 +9,8 @@ import Foundation
 import SwiftUI
 
 @Observable
-class User: Person3Providing, UserProviding {
+final class User: Person3Providing, UserProviding {
+    static let identifierPrefix: String = "@"
     typealias APIType = SiteResponse
     
     let stub: UserStub
@@ -33,4 +34,6 @@ class User: Person3Providing, UserProviding {
     }
     
     var id: Int { person3.id }
+    
+    var name: String { stub.name }
 }

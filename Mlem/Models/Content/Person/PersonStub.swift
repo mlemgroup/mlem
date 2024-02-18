@@ -20,4 +20,3 @@ struct PersonStub: PersonStubProviding {
         lhs.actorId == rhs.actorId
     }
 }
-

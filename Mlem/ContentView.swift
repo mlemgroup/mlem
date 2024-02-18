@@ -12,16 +12,14 @@ struct ContentView: View {
     @Environment(\.scenePhase) var scenePhase
     
     @Dependency(\.errorHandler) var errorHandler
-    @Dependency(\.personRepository) var personRepository
     @Dependency(\.hapticManager) var hapticManager
-    @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.accountsTracker) var accountsTracker
     @Dependency(\.markReadBatcher) var markReadBatcher
     
-    @Environment(NewAppState.self) var appState
+    @Environment(AppState.self) var appState
     
-    @StateObject var editorTracker: EditorTracker = .init()
-    @StateObject var unreadTracker: UnreadTracker = .init()
+//    @StateObject var editorTracker: EditorTracker = .init()
+//    @StateObject var unreadTracker: UnreadTracker = .init()
     
     @State private var errorAlert: ErrorAlert?
     
@@ -31,7 +29,7 @@ struct ContentView: View {
     @GestureState private var isDetectingLongPress = false
     
     @State private var isPresentingAccountSwitcher: Bool = false
-    @State private var tokenRefreshAccount: MyUserStub?
+    // @State private var tokenRefreshAccount: MyUserStub?
     
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
@@ -55,7 +53,7 @@ struct ContentView: View {
         case .instance:
             return appState.myInstance?.url.host() ?? "Instance"
         case .nickname:
-            return appState.myUser?.nickname ?? appState.myUser?.username ?? "Guest"
+            return appState.myUser?.nickname ?? appState.myUser?.name ?? "Guest"
         case .anonymous:
             return "Profile"
         }
@@ -79,14 +77,14 @@ struct ContentView: View {
                         )
                     }
                 
-                InboxView()
-                    .fancyTabItem(tag: TabSelection.inbox) {
-                        FancyTabBarLabel(
-                            tag: TabSelection.inbox,
-                            symbolConfiguration: .inbox,
-                            badgeCount: showInboxUnreadBadge ? unreadTracker.total : 0
-                        )
-                    }
+//                InboxView()
+//                    .fancyTabItem(tag: TabSelection.inbox) {
+//                        FancyTabBarLabel(
+//                            tag: TabSelection.inbox,
+//                            symbolConfiguration: .inbox,
+//                            badgeCount: showInboxUnreadBadge ? unreadTracker.total : 0
+//                        )
+//                    }
                     
                 ProfileView()
                     .fancyTabItem(tag: TabSelection.profile) {
@@ -102,13 +100,13 @@ struct ContentView: View {
                         .simultaneousGesture(accountSwitchLongPress)
                     }
                 
-                SearchRoot()
-                    .fancyTabItem(tag: TabSelection.search) {
-                        FancyTabBarLabel(
-                            tag: TabSelection.search,
-                            symbolConfiguration: .search
-                        )
-                    }
+//                SearchRoot()
+//                    .fancyTabItem(tag: TabSelection.search) {
+//                        FancyTabBarLabel(
+//                            tag: TabSelection.search,
+//                            symbolConfiguration: .search
+//                        )
+//                    }
                 
                 SettingsView()
                     .fancyTabItem(tag: TabSelection.settings) {
@@ -122,16 +120,16 @@ struct ContentView: View {
         .task(id: appState.actorId, priority: .background) {
             await accountChanged()
         }
-        .onReceive(errorHandler.$sessionExpired) { expired in
-            if expired {
-                tokenRefreshAccount = appState.myUser?.stub
-            }
-        }
-        .sheet(item: $tokenRefreshAccount) {
-            errorHandler.clearExpiredSession()
-        } content: { user in
-            TokenRefreshView(user: user)
-        }
+//        .onReceive(errorHandler.$sessionExpired) { expired in
+//            if expired {
+//                tokenRefreshAccount = appState.myUser?.stub
+//            }
+//        }
+//        .sheet(item: $tokenRefreshAccount) {
+//            errorHandler.clearExpiredSession()
+//        } content: { user in
+//            TokenRefreshView(user: user)
+//        }
         .alert(using: $errorAlert) { content in
             Alert(
                 title: Text(content.title),
@@ -144,43 +142,44 @@ struct ContentView: View {
         }
         .sheet(isPresented: $isPresentingAccountSwitcher) {
             if accountsTracker.savedAccounts.count == 1 {
-                AddSavedInstanceView(onboarding: false)
+                EmptyView()
+                // AddSavedInstanceView(onboarding: false)
             } else {
                 QuickSwitcherView()
                     .presentationDetents([.medium, .large])
             }
         }
-        .sheet(item: $editorTracker.editResponse) { editing in
-            NavigationStack {
-                ResponseEditorView(concreteEditorModel: editing)
-            }
-            .presentationDetents([.medium, .large], selection: .constant(.large))
-            ._presentationBackgroundInteraction(enabledUpThrough: .medium)
-        }
-        .sheet(item: $editorTracker.editPost) { editing in
-            NavigationStack {
-                PostComposerView(editModel: editing)
-            }
-            .presentationDetents([.medium, .large], selection: .constant(.large))
-            .presentationDragIndicator(.hidden)
-            ._presentationBackgroundInteraction(enabledUpThrough: .medium)
-        }
-        .sheet(item: $editorTracker.banUser) { editing in
-            NavigationStack {
-                BanUserView(editModel: editing)
-            }
-            .presentationDetents([.medium, .large], selection: .constant(.large))
-            .presentationDragIndicator(.hidden)
-            ._presentationBackgroundInteraction(enabledUpThrough: .medium)
-        }
+//        .sheet(item: $editorTracker.editResponse) { editing in
+//            NavigationStack {
+//                ResponseEditorView(concreteEditorModel: editing)
+//            }
+//            .presentationDetents([.medium, .large], selection: .constant(.large))
+//            ._presentationBackgroundInteraction(enabledUpThrough: .medium)
+//        }
+//        .sheet(item: $editorTracker.editPost) { editing in
+//            NavigationStack {
+//                PostComposerView(editModel: editing)
+//            }
+//            .presentationDetents([.medium, .large], selection: .constant(.large))
+//            .presentationDragIndicator(.hidden)
+//            ._presentationBackgroundInteraction(enabledUpThrough: .medium)
+//        }
+//        .sheet(item: $editorTracker.banUser) { editing in
+//            NavigationStack {
+//                BanUserView(editModel: editing)
+//            }
+//            .presentationDetents([.medium, .large], selection: .constant(.large))
+//            .presentationDragIndicator(.hidden)
+//            ._presentationBackgroundInteraction(enabledUpThrough: .medium)
+//        }
         .sheet(item: $quickLookState.url) { url in
             NavigationStack {
                 ImageDetailView(url: url)
             }
         }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
-        .environmentObject(editorTracker)
-        .environmentObject(unreadTracker)
+        // .environmentObject(editorTracker)
+        // .environmentObject(unreadTracker)
         .environmentObject(quickLookState)
         .onChange(of: scenePhase) {
             // when app moves into background, hide the account switcher. This prevents the app from reopening with the switcher enabled.
@@ -207,8 +206,8 @@ struct ContentView: View {
     /// Function that executes whenever the account changes to handle any state updates that need to happen
     func accountChanged() async {
         do {
-            let unreadCounts = try await personRepository.getUnreadCounts()
-            unreadTracker.update(with: unreadCounts)
+            // let unreadCounts = try await personRepository.getUnreadCounts()
+            // unreadTracker.update(with: unreadCounts)
         } catch {
             errorHandler.handle(error)
         }

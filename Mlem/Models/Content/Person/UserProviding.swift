@@ -7,12 +7,12 @@
 
 import Foundation
 
-protocol UserProviding: APISource, AnyObject, Identifiable {
+protocol UserProviding: APISource, CommunityOrPersonStub, AnyObject, Identifiable {
     var stub: UserStub { get }
     var source: any APISource { get }
     
     var id: Int { get }
-    var username: String { get }
+    var name: String { get }
     
     var accessToken: String { get set }
     var nickname: String? { get set }
@@ -22,14 +22,16 @@ protocol UserProviding: APISource, AnyObject, Identifiable {
 }
 
 extension UserProviding {
+    static var identifierPrefix: String { "@" }
+    
     var source: any APISource { stub }
     
     var caches: BaseCacheGroup { source.caches }
-    var api: NewAPIClient { source.api }
-    var instance: NewInstanceStub { stub.instance }
+    var api: APIClient { source.api }
+    var instance: InstanceStub { stub.instance }
     
     var id: Int { stub.id }
-    var username: String { stub.username }
+    var name: String { stub.name }
     
     var accessToken: String { get { stub.accessToken } set { stub.accessToken = newValue } }
     var nickname: String? { get { stub.nickname } set { stub.nickname = newValue } }
@@ -40,7 +42,11 @@ extension UserProviding {
 
 extension UserProviding {
     func login(password: String, twoFactorToken: String? = nil) async throws {
-        let response = try await source.api.login(username: username, password: password, totpToken: twoFactorToken)
+        let response = try await source.api.login(username: name, password: password, totpToken: twoFactorToken)
         accessToken = response.jwt
     }
+    
+    var nicknameSortKey: String { "\(nickname ?? name)\(instance.host ?? "")" }
+    
+    var instanceSortKey: String { "\(instance.host ?? "")\(nickname ?? name)" }
 }

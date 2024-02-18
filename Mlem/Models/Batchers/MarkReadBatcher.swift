@@ -12,7 +12,6 @@ import Semaphore
 class MarkReadBatcher {
     @Dependency(\.notifier) var notifier
     @Dependency(\.errorHandler) var errorHandler
-    @Dependency(\.postRepository) var postRepository
     
     private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
     
@@ -44,7 +43,7 @@ class MarkReadBatcher {
         }
         
         do {
-            try await postRepository.markRead(postIds: sending, read: true)
+            // try await postRepository.markRead(postIds: sending, read: true)
         } catch {
             errorHandler.handle(error)
         }

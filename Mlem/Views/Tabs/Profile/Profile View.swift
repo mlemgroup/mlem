@@ -10,8 +10,9 @@ import SwiftUI
 
 struct ProfileView: View {
     // appstorage
-    @Dependency(\.siteInformation) var siteInformation
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
+    
+    @Environment(AppState.self) var appState
     
     @StateObject private var profileTabNavigation: AnyNavigationPath<AppRoute> = .init()
     @StateObject private var editorSheetNavigation: AnyNavigationPath<AppRoute> = .init()
@@ -25,8 +26,8 @@ struct ProfileView: View {
     var body: some View {
         ScrollViewReader { proxy in
             NavigationStack(path: $profileTabNavigation.path) {
-                if let person = siteInformation.myUserInfo?.localUserView.person {
-                    UserView(user: UserModel(from: person))
+                if let person = appState.myUser as? any Person {
+                    PersonView(person: person)
                         .handleLemmyViews()
                         .environmentObject(profileTabNavigation)
                         .tabBarNavigationEnabled(.profile, navigation)
@@ -37,7 +38,7 @@ struct ProfileView: View {
                                 }
                             }
                             // TODO: 0.17 deprecation
-                            if (siteInformation.version ?? .infinity) >= .init("0.18.0") {
+                            if (appState.lemmyVersion ?? .infinity) >= .init("0.18.0") {
                                 ToolbarItem(placement: .secondaryAction) {
                                     Button("Edit", systemImage: Icons.edit) {
                                         isPresentingProfileEditor = true

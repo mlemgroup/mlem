@@ -39,7 +39,6 @@ struct LargePost: View {
     // constants
     private let spacing: CGFloat = 10 // constant for readability, ease of modification
 
-    @Dependency(\.postRepository) var postRepository
     @Dependency(\.errorHandler) var errorHandler
     
     // global state

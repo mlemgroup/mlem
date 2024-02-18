@@ -9,8 +9,8 @@ import Foundation
 
 protocol APISource: AnyObject, ActorIdentifiable, Equatable {
     var caches: BaseCacheGroup { get }
-    var api: NewAPIClient { get }
-    var instance: NewInstanceStub { get }
+    var api: APIClient { get }
+    var instance: InstanceStub { get }
 }
 
 extension APISource {
@@ -41,7 +41,7 @@ class MockAPISource: APISource {
     var caches: BaseCacheGroup = .init()
     
     let actorId: URL = .init(string: "https://lemmy.world")!
-    let instance: NewInstanceStub = .mock
-    var api: NewAPIClient { fatalError("You cannot access the 'api' property of MockAPISource.") }
+    let instance: InstanceStub = .mock
+    var api: APIClient { fatalError("You cannot access the 'api' property of MockAPISource.") }
 
 }

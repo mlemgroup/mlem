@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AccountIconStack: View {
-    let accounts: [MyUserStub]
+    let accounts: [any UserProviding]
     
     let avatarSize: CGFloat
     let spacing: CGFloat
@@ -21,7 +21,7 @@ struct AccountIconStack: View {
                 ForEach(accounts, id: \.id) { account in
                     AvatarView(
                         url: account.avatarUrl,
-                        type: .user,
+                        type: .person,
                         avatarSize: avatarSize,
                         lineWidth: 0,
                         iconResolution: .unrestricted

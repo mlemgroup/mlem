@@ -8,31 +8,23 @@
 import Dependencies
 import SwiftUI
 
-struct UserView: View {
-    @Dependency(\.apiClient) var apiClient
+struct PersonView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
-    @Dependency(\.personRepository) var personRepository
-    @Dependency(\.siteInformation) var siteInformation
     
     @Environment(\.navigationPathWithRoutes) private var navigationPath
     @Environment(\.scrollViewProxy) private var scrollViewProxy
     
-    @EnvironmentObject var editorTracker: EditorTracker
-    
+    @Environment(AppState.self) var appState
+        
     let internetSpeed: InternetSpeed
     let communityContext: (any CommunityStubProviding)?
     
-    @State var user: any PersonStubProviding
+    @State var person: any PersonStubProviding
     @State var selectedTab: UserViewTab = .overview
     @State var isLoadingContent: Bool = true
     
     @State var isPresentingAccountSwitcher: Bool = false
-    
-    @StateObject var privatePostTracker: StandardPostTracker
-    @StateObject var privateCommentTracker: CommentTracker = .init()
-    
-    @StateObject var communityTracker: ContentTracker<CommunityModel> = .init()
     
     @State private var isPresentingConfirmDestructive: Bool = false
     @State private var confirmationMenuFunction: StandardMenuFunction?
@@ -45,20 +37,13 @@ struct UserView: View {
         isPresentingConfirmDestructive = true
     }
     
-    init(user: any PersonStubProviding, communityContext: (any CommunityStubProviding)? = nil) {
+    init(person: any PersonStubProviding, communityContext: (any CommunityStubProviding)? = nil) {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
         
         self.internetSpeed = internetSpeed
-  
-        self._privatePostTracker = .init(wrappedValue: .init(
-            internetSpeed: internetSpeed,
-            sortType: .new,
-            showReadPosts: true,
-            feedType: .all
-        ))
-        
-        self._user = State(wrappedValue: user)
+
+        self._person = State(wrappedValue: person)
         self.communityContext = communityContext
     }
     
@@ -67,17 +52,19 @@ struct UserView: View {
             ScrollToView(appeared: $scrollToTopAppeared)
                 .id(scrollToTop)
             VStack(spacing: AppConstants.postAndCommentSpacing) {
-                AvatarBannerView(user: user)
+                AvatarBannerView(person: person as? any Person)
                     .padding(.horizontal, AppConstants.postAndCommentSpacing)
                     .padding(.top, 10)
-                Button(action: user.copyFullNameWithPrefix) {
+                Button {
+                    person.copyFullNameWithPrefix(notifier: notifier)
+                } label: {
                     VStack(spacing: 5) {
-                        Text(user.displayName)
+                        Text(person.displayName ?? person.name)
                             .font(.title)
                             .fontWeight(.semibold)
                             .lineLimit(1)
                             .minimumScaleFactor(0.01)
-                        Text(user.fullName ?? user.name)
+                        Text(person.fullName ?? person.name)
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -89,23 +76,25 @@ struct UserView: View {
                 
                 VStack(spacing: 0) {
                     let bioAlignment = bioAlignment
-                    if let bio = user.description {
+                    if let bio = person.description {
                         Divider()
                             .padding(.bottom, AppConstants.postAndCommentSpacing)
                         MarkdownView(text: bio, isNsfw: false, alignment: bioAlignment).padding(AppConstants.postAndCommentSpacing)
                     }
-                    HStack {
-                        Label(user.creationDate.dateString, systemImage: Icons.cakeDay)
-                        Text("•")
-                        Label(user.creationDate.getRelativeTime(date: Date.now, unitsStyle: .abbreviated), systemImage: Icons.time)
-                        if bioAlignment == .leading {
-                            Spacer()
+                    if let creationDate = person.creationDate {
+                        HStack {
+                            Label(creationDate.dateString, systemImage: Icons.cakeDay)
+                            Text("•")
+                            Label(creationDate.getRelativeTime(date: Date.now, unitsStyle: .abbreviated), systemImage: Icons.time)
+                            if bioAlignment == .leading {
+                                Spacer()
+                            }
                         }
+                        .foregroundStyle(.secondary)
+                        .font(.footnote)
+                        .padding(.horizontal, AppConstants.postAndCommentSpacing)
+                        .padding(.top, 2)
                     }
-                    .foregroundStyle(.secondary)
-                    .font(.footnote)
-                    .padding(.horizontal, AppConstants.postAndCommentSpacing)
-                    .padding(.top, 2)
                     
                     Divider()
                         .padding(.top, AppConstants.postAndCommentSpacing * 2)
@@ -120,24 +109,24 @@ struct UserView: View {
                             BubblePicker(tabs, selected: $selectedTab) { tab in
                                 switch tab {
                                 case .posts:
-                                    Text("Posts (\(abbreviateNumber(user.postCount ?? 0)))")
+                                    Text("Posts (\(abbreviateNumber(person.postCount ?? 0)))")
                                 case .comments:
-                                    Text("Comments (\(abbreviateNumber(user.commentCount ?? 0)))")
+                                    Text("Comments (\(abbreviateNumber(person.commentCount ?? 0)))")
                                 case .communities:
-                                    Text("Communities (\(abbreviateNumber(user.moderatedCommunities?.count ?? 0)))")
+                                    Text("Communities (\(abbreviateNumber(person.moderatedCommunities?.count ?? 0)))")
                                 default:
                                     Text(tab.label)
                                 }
                             }
                             .padding(.vertical, 4)
                             Divider()
-                            UserFeedView(
-                                user: user,
-                                privatePostTracker: privatePostTracker,
-                                privateCommentTracker: privateCommentTracker,
-                                communityTracker: communityTracker,
-                                selectedTab: $selectedTab
-                            )
+//                            UserFeedView(
+//                                user: user,
+//                                privatePostTracker: privatePostTracker,
+//                                privateCommentTracker: privateCommentTracker,
+//                                communityTracker: communityTracker,
+//                                selectedTab: $selectedTab
+//                            )
                         }
                         .transition(.opacity)
                     }
@@ -145,8 +134,6 @@ struct UserView: View {
                 .animation(.easeOut(duration: 0.2), value: isLoadingContent)
             }
         }
-        .environmentObject(privatePostTracker)
-        .environmentObject(privateCommentTracker)
         .destructiveConfirmation(
             isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
             confirmationMenuFunction: confirmationMenuFunction
@@ -159,30 +146,30 @@ struct UserView: View {
 //                }
 //            }
 //        }
-        .task(priority: .userInitiated) {
-            if isLoadingContent {
-                Task {
-                    await tryReloadUser()
-                }
-            }
-        }
-        .onChange(of: user.userId) { _ in
-            Task {
-                await tryReloadUser()
-            }
-        }
-        .refreshable {
-            Task {
-                await tryReloadUser()
-            }
-        }
-        .onChange(of: siteInformation.myUserInfo?.localUserView.person) { newValue in
-            if isOwnProfile {
-                if let newValue {
-                    user.update(with: newValue)
-                }
-            }
-        }
+//        .task(priority: .userInitiated) {
+//            if isLoadingContent {
+//                Task {
+//                    await tryReloadUser()
+//                }
+//            }
+//        }
+//        .onChange(of: user.userId) { _ in
+//            Task {
+//                await tryReloadUser()
+//            }
+//        }
+//        .refreshable {
+//            Task {
+//                await tryReloadUser()
+//            }
+//        }
+//        .onChange(of: siteInformation.myUserInfo?.localUserView.person) { newValue in
+//            if isOwnProfile {
+//                if let newValue {
+//                    user.update(with: newValue)
+//                }
+//            }
+//        }
         .hoistNavigation {
             if navigationPath.isEmpty {
                 withAnimation {
@@ -202,13 +189,13 @@ struct UserView: View {
         }
         .fancyTabScrollCompatible()
         .navigationBarColor()
-        .navigationTitle(user.displayName ?? user.name)
+        .navigationTitle(person.displayName ?? person.name)
         .navigationBarTitleDisplayMode(.inline)
     }
     
     var flairs: some View {
         Group {
-            let flairs = user.getFlairs(communityContext: communityContext)
+            let flairs = person.getFlairs(communityContext: communityContext as? any Community)
             if !flairs.isEmpty {
                 VStack(spacing: AppConstants.postAndCommentSpacing) {
                     ForEach(flairs, id: \.self) { flair in
@@ -217,7 +204,7 @@ struct UserView: View {
                                 switch flair {
                                 case .banned:
                                     Image(systemName: Icons.bannedFlair)
-                                    switch user.instanceBan {
+                                    switch person.instanceBan {
                                     case let .temporarilyBanned(expires: date):
                                         Text("Banned Until \(date.dateString)")
                                     default:
@@ -225,7 +212,7 @@ struct UserView: View {
                                     }
                                 case .admin:
                                     Image(systemName: Icons.adminFlair)
-                                    Text("\(user.host ?? "Instance") Administrator")
+                                    Text("\(person.host ?? "Instance") Administrator")
                                 case .moderator:
                                     Image(systemName: Icons.moderationFill)
                                     Text("\(communityContext?.displayName ?? "Community") Moderator")

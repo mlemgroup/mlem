@@ -14,10 +14,12 @@ struct FeedsView: View {
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.tabReselectionHashValue) var tabReselectionHashValue
     
+    @Environment(AppState.self) var appState
+    
     @State private var selectedFeed: FeedType?
     @State var appeared: Bool = false // tracks whether this is the view's first appearance
     
-    @StateObject private var communityListModel: CommunityListModel = .init()
+    // @StateObject private var communityListModel: CommunityListModel = .init()
     
     @StateObject private var feedTabNavigation: AnyNavigationPath<AppRoute> = .init()
     @StateObject private var navigation: Navigation = .init()
@@ -32,10 +34,10 @@ struct FeedsView: View {
                     appeared = true
                     selectedFeed = defaultFeed.toFeedType
                 }
-                
-                Task(priority: .high) {
-                    await communityListModel.load()
-                }
+//                
+//                Task(priority: .high) {
+//                    await communityListModel.load()
+//                }
             }
             .onChange(of: scenePhase) {
                 if scenePhase == .active, let shortcutItem = FeedType.fromShortcutString(shortcut: shortcutItemToProcess?.type) {
@@ -59,28 +61,28 @@ struct FeedsView: View {
                         .id(scrollToTop) // using this instead of ScrollToView because ScrollToView renders as an empty list item
                         .padding(.trailing, 10)
                         
-                        ForEach(communityListModel.visibleSections) { section in
-                            Section(header: communitySectionHeaderView(for: section)) {
-                                ForEach(communityListModel.communities(for: section)) { community in
-                                    NavigationLink(value: FeedType.community(.init(from: community, subscribed: true))) {
-                                        CommunityFeedRowView(
-                                            community: community,
-                                            subscribed: communityListModel.isSubscribed(to: community),
-                                            communitySubscriptionChanged: communityListModel.updateSubscriptionStatus,
-                                            navigationContext: .sidebar
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                        .padding(.trailing, 10)
+//                        ForEach(communityListModel.visibleSections) { section in
+//                            Section(header: communitySectionHeaderView(for: section)) {
+//                                ForEach(communityListModel.communities(for: section)) { community in
+//                                    NavigationLink(value: FeedType.community(.init(from: community, subscribed: true))) {
+//                                        CommunityFeedRowView(
+//                                            community: community,
+//                                            subscribed: communityListModel.isSubscribed(to: community),
+//                                            communitySubscriptionChanged: communityListModel.updateSubscriptionStatus,
+//                                            navigationContext: .sidebar
+//                                        )
+//                                    }
+//                                }
+//                            }
+//                        }
+//                        .padding(.trailing, 10)
                     }
                     .scrollIndicators(.hidden)
                     .navigationTitle("Feeds")
                     .listStyle(PlainListStyle())
                     .fancyTabScrollCompatible()
                     
-                    SectionIndexTitles(proxy: scrollProxy, communitySections: communityListModel.allSections())
+                    // SectionIndexTitles(proxy: scrollProxy, communitySections: communityListModel.allSections())
                 }
                 .onChange(of: tabReselectionHashValue) {
                     // due to NavigationSplitView weirdness, the normal .hoistNavigation doesn't work here, so we do it manually
@@ -112,21 +114,21 @@ struct FeedsView: View {
     private var navStackView: some View {
         switch selectedFeed {
         case .all, .local, .subscribed, .saved:
-            AggregateFeedView(selectedFeed: $selectedFeed)
-        case let .community(communityModel):
-            CommunityFeedView(communityModel: communityModel)
-                .id(communityModel.uid) // explicit id forces redraw on change of community model
+            AggregateFeedView(appState: appState, selectedFeed: $selectedFeed)
+        case let .community(community):
+            CommunityFeedView(community: community)
+                .id(community.actorId) // explicit id forces redraw on change of community model
         case .none:
             Text("Please select a feed")
         }
     }
-    
-    private func communitySectionHeaderView(for section: CommunityListSection) -> some View {
-        HStack {
-            Text(section.inlineHeaderLabel!)
-                .accessibilityLabel(section.accessibilityLabel)
-            Spacer()
-        }
-        .id(section.viewId)
-    }
+//    
+//    private func communitySectionHeaderView(for section: CommunityListSection) -> some View {
+//        HStack {
+//            Text(section.inlineHeaderLabel!)
+//                .accessibilityLabel(section.accessibilityLabel)
+//            Spacer()
+//        }
+//        .id(section.viewId)
+//    }
 }

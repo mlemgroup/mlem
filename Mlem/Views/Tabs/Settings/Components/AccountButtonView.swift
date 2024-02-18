@@ -13,7 +13,7 @@ struct AccountButtonView: View {
     @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
     @Environment(\.dismiss) var dismiss
     
-    @Environment(NewAppState.self) var appState
+    @Environment(AppState.self) var appState
     
     @State var showingSignOutConfirmation: Bool = false
     @Binding var isSwitching: Bool
@@ -22,10 +22,10 @@ struct AccountButtonView: View {
         case instanceOnly, timeOnly, instanceAndTime
     }
     
-    let account: MyUserStub
+    let account: UserStub
     let caption: CaptionState
     
-    init(account: MyUserStub, caption: CaptionState = .instanceAndTime, isSwitching: Binding<Bool>) {
+    init(account: UserStub, caption: CaptionState = .instanceAndTime, isSwitching: Binding<Bool>) {
         self.account = account
         self.caption = caption
         self._isSwitching = isSwitching
@@ -63,7 +63,7 @@ struct AccountButtonView: View {
     var body: some View {
         Button {
             if appState.actorId != account.actorId {
-                appState.apiSource = first
+                appState.apiSource = account
                 dismiss()
             }
         } label: {
@@ -75,13 +75,13 @@ struct AccountButtonView: View {
                             .resizable()
                             .clipShape(Circle())
                     } else {
-                        DefaultAvatarView(avatarType: .user)
+                        DefaultAvatarView(avatarType: .person)
                     }
                 }
                 .frame(width: 40, height: 40)
                 .padding(.leading, -5)
                 VStack(alignment: .leading) {
-                    Text(account.nickname)
+                    Text(account.nickname ?? account.name)
                     if let captionText {
                         Text(captionText)
                             .font(.footnote)
@@ -90,7 +90,7 @@ struct AccountButtonView: View {
                 }
                 .padding(.vertical, -2)
                 Spacer()
-                if appState.currentActiveAccount == account {
+                if appState.actorId == account.actorId {
                     Image(systemName: Icons.present)
                         .foregroundStyle(.green)
                         .font(.system(size: 10.0))
@@ -100,7 +100,7 @@ struct AccountButtonView: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(
-            "\(account.nickname)@\(account.instanceLink.host() ?? "unknown")\(appState.currentActiveAccount == account ? ", active" : "")"
+            "\(account.fullName ?? "unknown"))\(appState.apiSource?.actorId == account.actorId ? ", active" : "")"
         )
         .swipeActions {
             Button("Sign Out") {
@@ -108,12 +108,12 @@ struct AccountButtonView: View {
             }
             .tint(.red)
         }
-        .confirmationDialog("Really sign out of \(account.nickname)?", isPresented: $showingSignOutConfirmation) {
+        .confirmationDialog("Really sign out of \(account.nickname ?? account.name)?", isPresented: $showingSignOutConfirmation) {
             Button("Sign Out", role: .destructive) {
                 Task {
-                    if let currentActiveAccount = appState.currentActiveAccount {
+                    if let currentAccount = appState.apiSource {
                         accountsTracker.removeAccount(account: account)
-                        if currentActiveAccount == account {
+                        if currentAccount.actorId == account.actorId {
                             if let first = accountsTracker.savedAccounts.first {
                                 appState.apiSource = first
                             } else {

@@ -18,6 +18,8 @@ protocol APIRequest {
     associatedtype Response: Decodable
     var path: String { get }
     var headers: [String: String] { get }
+    
+    func endpoint(base: URL) -> URL
 }
 
 extension APIRequest {
@@ -36,14 +38,16 @@ protocol APIGetRequest: APIRequest {
 
 extension APIRequest {
     func endpoint(base: URL) -> URL {
-        base
+        print("ORIGINAL")
+        return base
             .appending(path: path)
     }
 }
 
 extension APIGetRequest {
     func endpoint(base: URL) -> URL {
-        base
+        print("APPEND", queryItems.filter { $0.value != nil })
+        return base
             .appending(path: path)
             .appending(queryItems: queryItems.filter { $0.value != nil })
     }

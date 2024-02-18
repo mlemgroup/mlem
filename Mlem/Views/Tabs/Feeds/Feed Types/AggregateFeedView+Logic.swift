@@ -21,8 +21,15 @@ extension AggregateFeedView {
                 enabled: enabled,
                 callback: {
                     // when switching back from the saved feed, stale items are sometimes present in the post tracker; this ensures that those are not displayed
-                    if selectedFeed == .saved, type != postTracker.feedType {
-                        postTracker.isStale = true
+                    let trackerType: APIListingType?
+                    switch postTracker?.feedType {
+                    case .aggregateFeed(_, type: let _type):
+                        trackerType = _type
+                    default:
+                        trackerType = nil
+                    }
+                    if selectedFeed == .saved, type != trackerType?.toFeedType {
+                        postTracker?.isStale = true
                     }
                     
                     selectedFeed = type

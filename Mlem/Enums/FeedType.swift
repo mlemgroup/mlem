@@ -8,9 +8,20 @@
 import Foundation
 import SwiftUI
 
-enum FeedType {
+enum FeedType: Equatable {
     case all, local, subscribed, saved
-    case community(CommunityModel)
+    case community(any CommunityStubProviding)
+    
+    static func == (lhs: FeedType, rhs: FeedType) -> Bool {
+        switch (lhs, rhs) {
+        case let (.community(comm1), .community(comm2)):
+            return comm1.actorId == comm2.actorId
+        case (.all, .all), (.local, .local), (.subscribed, .subscribed), (.saved, .saved):
+            return true
+        default:
+            return false
+        }
+    }
     
     static var allAggregateFeedCases: [FeedType] = [.all, .local, .subscribed, .saved]
     
@@ -63,7 +74,7 @@ enum FeedType {
     
     var communityId: Int? {
         switch self {
-        case let .community(communityModel): communityModel.communityId
+        case let .community(community): community.id
         default: nil
         }
     }
@@ -80,9 +91,9 @@ extension FeedType: Hashable, Identifiable {
             hasher.combine("subscribed")
         case .saved:
             hasher.combine("saved")
-        case let .community(communityModel):
+        case let .community(community):
             hasher.combine("community")
-            hasher.combine(communityModel.communityId)
+            hasher.combine(community.actorId)
         }
     }
     

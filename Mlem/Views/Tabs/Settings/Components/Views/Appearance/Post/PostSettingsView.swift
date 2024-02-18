@@ -41,6 +41,7 @@ struct PostSettingsView: View {
     @AppStorage("shouldShowWebsiteIcon") var shouldShowWebsiteIcon: Bool = true
 
     var body: some View {
+        
         Form {
             Section {
                 SelectableSettingsItem(
@@ -141,52 +142,52 @@ struct PostSettingsView: View {
                 Text("Choose which information is shown when using Large or Headline mode. In Compact mode, all info stack widgets are shown.")
             }
             
-            Section("Website Previews") {
-                WebsiteIconComplex(post:
-                    APIPost(
-                        id: 0,
-                        name: "",
-                        url: "https://lemmy.ml/post/1011734",
-                        body: "",
-                        creatorId: 0,
-                        communityId: 0,
-                        deleted: false,
-                        embedDescription: nil,
-                        embedTitle: "I am an example of a website preview.\nCustomize me!",
-                        embedVideoUrl: nil,
-                        featuredCommunity: false,
-                        featuredLocal: false,
-                        languageId: 0,
-                        apId: "https://lemmy.ml/post/1011068",
-                        local: true,
-                        locked: false,
-                        nsfw: false,
-                        published: .now,
-                        removed: false,
-                        thumbnailUrl: "https://lemmy.ml/pictrs/image/1b759945-6651-497c-bee0-9bdb68f4a829.png",
-                        updated: nil
-                    )
-                )
-    
-                .padding(.horizontal)
-                
-                SwitchableSettingsItem(
-                    settingPictureSystemName: Icons.websiteAddress,
-                    settingName: "Show Website Address",
-                    isTicked: $shouldShowWebsiteHost
-                )
-                SwitchableSettingsItem(
-                    settingPictureSystemName: Icons.websiteIcon,
-                    settingName: "Show Website Icon",
-                    isTicked: $shouldShowWebsiteIcon
-                )
-                .disabled(!shouldShowWebsiteHost)
-                SwitchableSettingsItem(
-                    settingPictureSystemName: Icons.thumbnail,
-                    settingName: "Show Website Preview",
-                    isTicked: $shouldShowWebsitePreviews
-                )
-            }
+//            Section("Website Previews") {
+//                WebsiteIconComplex(post:
+//                    APIPost(
+//                        id: 0,
+//                        name: "",
+//                        url: "https://lemmy.ml/post/1011734",
+//                        body: "",
+//                        creatorId: 0,
+//                        communityId: 0,
+//                        deleted: false,
+//                        embedDescription: nil,
+//                        embedTitle: "I am an example of a website preview.\nCustomize me!",
+//                        embedVideoUrl: nil,
+//                        featuredCommunity: false,
+//                        featuredLocal: false,
+//                        languageId: 0,
+//                        apId: "https://lemmy.ml/post/1011068",
+//                        local: true,
+//                        locked: false,
+//                        nsfw: false,
+//                        published: .now,
+//                        removed: false,
+//                        thumbnailUrl: "https://lemmy.ml/pictrs/image/1b759945-6651-497c-bee0-9bdb68f4a829.png",
+//                        updated: nil
+//                    )
+//                )
+//    
+//                .padding(.horizontal)
+//                
+//                SwitchableSettingsItem(
+//                    settingPictureSystemName: Icons.websiteAddress,
+//                    settingName: "Show Website Address",
+//                    isTicked: $shouldShowWebsiteHost
+//                )
+//                SwitchableSettingsItem(
+//                    settingPictureSystemName: Icons.websiteIcon,
+//                    settingName: "Show Website Icon",
+//                    isTicked: $shouldShowWebsiteIcon
+//                )
+//                .disabled(!shouldShowWebsiteHost)
+//                SwitchableSettingsItem(
+//                    settingPictureSystemName: Icons.thumbnail,
+//                    settingName: "Show Website Preview",
+//                    isTicked: $shouldShowWebsitePreviews
+//                )
+//            }
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Posts")

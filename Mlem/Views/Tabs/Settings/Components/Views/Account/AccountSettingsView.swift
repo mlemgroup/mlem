@@ -9,54 +9,27 @@ import Dependencies
 import SwiftUI
 
 struct AccountSettingsView: View {
-    @Dependency(\.siteInformation) var siteInformation: SiteInformationTracker
-    @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
-    
-    @EnvironmentObject var appState: AppState
-    @Environment(\.setAppFlow) private var setFlow
+    @Environment(AppState.self) var appState
 
     @State var displayName: String = ""
-    @State var showNsfw: Bool = false
     
     @State var showingSignOutConfirmation: Bool = false
     
-    @State var accountForDeletion: SavedAccount?
+    @State var accountForDeletion: (any UserProviding)?
     
-    init() {
-        if let info = siteInformation.myUserInfo {
-            self.displayName = info.localUserView.person.displayName ?? ""
-            self.showNsfw = info.localUserView.localUser.showNsfw
+    init(appState: AppState) {
+        if let myUser = appState.myUser as? any Person3Providing {
+            self.displayName = myUser.displayName ?? ""
         }
     }
     
     var body: some View {
         Form {
-            if let info = siteInformation.myUserInfo {
-                Section {
-                    VStack(spacing: AppConstants.postAndCommentSpacing) {
-                        AvatarBannerView(user: .init(from: info.localUserView.person))
-                        VStack(spacing: 5) {
-                            Text(info.localUserView.person.displayName ?? info.localUserView.person.name)
-                                .font(.title)
-                                .fontWeight(.semibold)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.01)
-                            if let account = appState.currentActiveAccount, let hostName = account.hostName {
-                                Text("@\(info.localUserView.person.name)@\(hostName)")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
-                    .listRowBackground(Color(.systemGroupedBackground))
-                    .padding(.vertical, -12)
-                    .padding(.horizontal, -16)
-                }
-                
+            if let myUser = appState.myUser {
+
                 // See comments under APIListingType for why this is necessary.
                 // TODO: 0.17 deprecation remove this logic
-                let settingsDisabled = (siteInformation.version ?? .infinity) < .init("0.18.0")
+                let settingsDisabled = (appState.lemmyVersion ?? .infinity) < .init("0.18.0")
                 
                 Section {
                     NavigationLink(.settings(.editProfile)) {
@@ -78,7 +51,7 @@ struct AccountSettingsView: View {
                 } footer: {
                     if settingsDisabled {
                         // swiftlint:disable:next line_length
-                        Text("Account settings are only available on instances running 0.18.0 or above. Your instance is running version \(String(describing: siteInformation.version ?? .zero)).")
+                        Text("Account settings are only available on instances running 0.18.0 or above. Your instance is running version \(String(describing: appState.lemmyVersion ?? .zero)).")
                             .foregroundStyle(.red)
                             .textCase(.none)
                     }
@@ -103,38 +76,9 @@ struct AccountSettingsView: View {
 //                    }
 //                }
                 
-                Section {
-                    Button("Sign Out", role: .destructive) {
-                        showingSignOutConfirmation = true
-                    }
-                    .frame(maxWidth: .infinity)
-                    .confirmationDialog("Really sign out?", isPresented: $showingSignOutConfirmation) {
-                        Button("Sign Out", role: .destructive) {
-                            Task {
-                                if let currentActiveAccount = appState.currentActiveAccount {
-                                    accountsTracker.removeAccount(account: currentActiveAccount)
-                                    if let first = accountsTracker.savedAccounts.first {
-                                        setFlow(.account(first))
-                                    } else {
-                                        setFlow(.onboarding)
-                                    }
-                                }
-                            }
-                        }
-                    } message: {
-                        Text("Really sign out?")
-                    }
-                }
+                Section { signOutButton }
                 
-                Section {
-                    Button("Delete Account", role: .destructive) {
-                        accountForDeletion = appState.currentActiveAccount
-                    }
-                    .frame(maxWidth: .infinity)
-                    .sheet(item: $accountForDeletion) { account in
-                        DeleteAccountView(account: account)
-                    }
-                }
+                Section { deleteButton }
                 
             } else {
                 Text("No user info")
@@ -143,5 +87,40 @@ struct AccountSettingsView: View {
         .navigationTitle("Account Settings")
         .fancyTabScrollCompatible()
         .hoistNavigation()
+    }
+    
+    @ViewBuilder
+    var signOutButton: some View {
+        Button("Sign Out", role: .destructive) {
+            showingSignOutConfirmation = true
+        }
+        .frame(maxWidth: .infinity)
+        .confirmationDialog("Really sign out?", isPresented: $showingSignOutConfirmation) {
+            Button("Sign Out", role: .destructive) {
+//                Task {
+//                    if let currentActiveAccount = appState.currentActiveAccount {
+//                        accountsTracker.removeAccount(account: currentActiveAccount)
+//                        if let first = accountsTracker.savedAccounts.first {
+//                            setFlow(.account(first))
+//                        } else {
+//                            setFlow(.onboarding)
+//                        }
+//                    }
+//                }
+            }
+        } message: {
+            Text("Really sign out?")
+        }
+    }
+    
+    @ViewBuilder
+    var deleteButton: some View {
+        Button("Delete Account", role: .destructive) {
+            accountForDeletion = appState.myUser
+        }
+        .frame(maxWidth: .infinity)
+        .sheet(item: Binding(get: { accountForDeletion?.actorId }, set: { _ in accountForDeletion = nil })) { _ in
+            // DeleteAccountView(account: account)
+        }
     }
 }

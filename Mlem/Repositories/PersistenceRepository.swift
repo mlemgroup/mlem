@@ -68,11 +68,11 @@ class PersistenceRepository {
     
     // MARK: - Public methods
     
-    func loadAccounts() -> [MyUserStub] {
-        return load([MyUserStub].self, from: Path.savedAccounts) ?? []
+    func loadAccounts() -> [UserStub] {
+        return load([UserStub].self, from: Path.savedAccounts) ?? []
     }
     
-    func saveAccounts(_ value: [SavedAccount]) async throws {
+    func saveAccounts(_ value: [UserStub]) async throws {
         try await save(value, to: Path.savedAccounts)
     }
     

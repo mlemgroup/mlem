@@ -9,12 +9,10 @@ import Dependencies
 import SwiftUI
 
 struct LocalAccountSettingsView: View {
-    @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
-    
     @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .nickname
     @AppStorage("showSettingsIcons") var showSettingsIcons: Bool = false
     
-    @EnvironmentObject var appState: AppState
+    @Environment(AppState.self) var appState
     
     @State var nickname: String = ""
     @State private var isShowingFavoritesDeletionConfirmation: Bool = false
@@ -22,30 +20,30 @@ struct LocalAccountSettingsView: View {
     var body: some View {
         Form {
             Section {
-                TextField("Nickname", text: $nickname, prompt: Text(appState.currentActiveAccount?.username ?? "Nickname"))
+                TextField("Nickname", text: $nickname, prompt: Text(appState.myUser?.name ?? "Nickname"))
                     .autocorrectionDisabled(true)
                     .textInputAutocapitalization(.never)
-                    .onSubmit {
-                        guard var existingAccount = appState.currentActiveAccount else {
-                            return
-                        }
-                        
-                        let acceptedNickname = nickname.trimmed.isEmpty ? nil : nickname
-                        existingAccount.storedNickname = nil
-                        
-                        let newAccount = SavedAccount(
-                            from: existingAccount,
-                            storedNickname: acceptedNickname,
-                            avatarUrl: existingAccount.avatarUrl
-                        )
-                        appState.setActiveAccount(newAccount)
-                    }
-                    .onAppear {
-                        nickname = appState.currentActiveAccount?.storedNickname ?? ""
-                    }
-                    .onChange(of: appState.currentActiveAccount?.nickname) { nickname in
-                        self.nickname = nickname ?? ""
-                    }
+//                    .onSubmit {
+//                        guard var existingAccount = appState.currentActiveAccount else {
+//                            return
+//                        }
+//                        
+//                        let acceptedNickname = nickname.trimmed.isEmpty ? nil : nickname
+//                        existingAccount.storedNickname = nil
+//                        
+//                        let newAccount = SavedAccount(
+//                            from: existingAccount,
+//                            storedNickname: acceptedNickname,
+//                            avatarUrl: existingAccount.avatarUrl
+//                        )
+//                        appState.setActiveAccount(newAccount)
+//                    }
+//                    .onAppear {
+//                        nickname = appState.currentActiveAccount?.storedNickname ?? ""
+//                    }
+//                    .onChange(of: appState.currentActiveAccount?.nickname) { nickname in
+//                        self.nickname = nickname ?? ""
+//                    }
             } header: {
                 Text("Nickname")
             } footer: {
@@ -67,16 +65,16 @@ struct LocalAccountSettingsView: View {
                         }
                     }
                     .foregroundColor(.red)
-                    .opacity(favoriteCommunitiesTracker.favoritesForCurrentAccount.isEmpty ? 0.6 : 1)
+                    // .opacity(favoriteCommunitiesTracker.favoritesForCurrentAccount.isEmpty ? 0.6 : 1)
                 }
-                .disabled(favoriteCommunitiesTracker.favoritesForCurrentAccount.isEmpty)
+                // .disabled(favoriteCommunitiesTracker.favoritesForCurrentAccount.isEmpty)
                 .confirmationDialog(
                     "Delete community favorites for this account?",
                     isPresented: $isShowingFavoritesDeletionConfirmation,
                     titleVisibility: .visible
                 ) {
                     Button(role: .destructive) {
-                        favoriteCommunitiesTracker.clearCurrentFavourites()
+                        // favoriteCommunitiesTracker.clearCurrentFavourites()
                     } label: {
                         Text("Delete all favorites")
                     }
@@ -91,12 +89,12 @@ struct LocalAccountSettingsView: View {
                     Text("You cannot undo this action.")
                 }
             } footer: {
-                let favorites = favoriteCommunitiesTracker.favoritesForCurrentAccount
-                if favorites.isEmpty {
-                    Text("You haven't favorited any communities on this account.")
-                } else {
-                    Text("You've favorited ^[\(favorites.count) community](inflect:true) on this account.")
-                }
+                // let favorites = favoriteCommunitiesTracker.favoritesForCurrentAccount
+//                if favorites.isEmpty {
+//                    Text("You haven't favorited any communities on this account.")
+//                } else {
+//                    Text("You've favorited ^[\(favorites.count) community](inflect:true) on this account.")
+//                }
             }
         }
         .navigationTitle("Local Options")

@@ -21,7 +21,7 @@ struct MlemApp: App {
     var body: some Scene {
         WindowGroup {
             if !_XCTIsTesting {
-                Window(appState: .init(apiSource: accountsTracker.defaultAccount))
+                Window()
                     .onAppear {
                         var imageConfig = ImagePipeline.Configuration.withDataCache(name: "main", sizeLimit: AppConstants.cacheSize)
                         imageConfig.dataLoadingQueue = OperationQueue(maxConcurrentCount: 8)

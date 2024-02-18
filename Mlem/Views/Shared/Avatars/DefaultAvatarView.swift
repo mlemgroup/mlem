@@ -38,7 +38,7 @@ struct DefaultAvatarView: View {
 
 #Preview {
     VStack(spacing: 50) {
-        DefaultAvatarView(avatarType: .user)
+        DefaultAvatarView(avatarType: .person)
             .frame(width: 100, height: 100)
         DefaultAvatarView(avatarType: .community)
             .frame(width: 100, height: 100)

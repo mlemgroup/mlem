@@ -13,7 +13,6 @@ struct ThumbnailImageView: View {
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     
     @Dependency(\.errorHandler) var errorHandler
-    @Dependency(\.postRepository) var postRepository
     @Environment(\.openURL) private var openURL
     
     let post: any Post

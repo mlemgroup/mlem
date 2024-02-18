@@ -11,7 +11,7 @@ import SwiftUI
 
 /// View grouping post interactions--upvote, downvote, save, reply, plus post info
 struct InteractionBarView: View {
-    @Environment(NewAppState.self) var appState
+    @Environment(AppState.self) var appState
     
     let content: any InteractableContent
     
@@ -56,29 +56,29 @@ struct InteractionBarView: View {
                     }
                     
                 case .downvoteCounter:
-                    if appState.myInstance?.enableDownvotes ?? false {
-                        if offset == widgets.count - 1 {
-                            DownvoteCounterView(vote: content.myVote, score: content.downvoteCount, downvote: { })
-                        } else {
-                            DownvoteCounterView(vote: appState.myVote, score: appState.downvoteCount, downvote: { })
-                                .padding(.trailing, -AppConstants.postAndCommentSpacing)
-                        }
+                    // if appState.myInstance?.enableDownvotes ?? false {
+                    if offset == widgets.count - 1 {
+                        DownvoteCounterView(vote: content.myVote, score: content.downvoteCount, downvote: { })
+                    } else {
+                        DownvoteCounterView(vote: content.myVote, score: content.downvoteCount, downvote: { })
+                            .padding(.trailing, -AppConstants.postAndCommentSpacing)
                     }
+                    // }
                     
                 case .upvote:
                     UpvoteButtonView(vote: content.myVote, upvote: { })
                     
                 case .downvote:
-                    if appState.myInstance?.enableDownvotes ?? false {
-                        DownvoteButtonView(vote: content.myVote, downvote: { })
-                    }
+                    // if appState.myInstance?.enableDownvotes ?? false {
+                    DownvoteButtonView(vote: content.myVote, downvote: { })
+                    // }
                     
                 case .save:
-                    SaveButtonView(isSaved: content.isSaved, accessibilityContext: accessibilityContext, save: {
+                     SaveButtonView(isSaved: content.isSaved, accessibilityContext: accessibilityContext, save: {
 //                        Task(priority: .userInitiated) {
 //                            await save()
 //                        }
-                    })
+                     })
                     
                 case .reply:
                     ReplyButtonView(accessibilityContext: accessibilityContext, reply: reply)
@@ -87,6 +87,7 @@ struct InteractionBarView: View {
                     ShareButtonView(accessibilityContext: accessibilityContext, url: content.actorId)
                     
                 case .infoStack:
+                    EmptyView()
                     InfoStackView(
                         votes: shouldShowScore
                             ? DetailedVotes(
@@ -100,7 +101,7 @@ struct InteractionBarView: View {
                         published: shouldShowTime ? content.creationDate : nil,
                         updated: shouldShowTime ? content.updatedDate : nil,
                         commentCount: shouldShowReplies ? content.commentCount : nil,
-                        unreadCommentCount: content.unreadCommentCount ?? 0,
+                        unreadCommentCount: (content as? any Post2Providing)?.unreadCommentCount ?? 0,
                         saved: shouldShowSaved ? content.isSaved : nil,
                         alignment: infoStackAlignment(offset),
                         colorizeVotes: false

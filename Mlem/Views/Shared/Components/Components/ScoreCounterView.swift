@@ -10,8 +10,6 @@ import Foundation
 import SwiftUI
 
 struct ScoreCounterView: View {
-    @Dependency(\.siteInformation) var siteInformation
-    
     let vote: ScoringOperation
     let score: Int
     let upvote: () async -> Void
@@ -25,10 +23,10 @@ struct ScoreCounterView: View {
             Text(String(score))
                 .foregroundColor(vote.color ?? .primary)
             
-            if siteInformation.enableDownvotes {
-                DownvoteButtonView(vote: vote, downvote: downvote)
-                    .offset(x: -AppConstants.postAndCommentSpacing)
-            }
+            // if siteInformation.enableDownvotes {
+            DownvoteButtonView(vote: vote, downvote: downvote)
+                .offset(x: -AppConstants.postAndCommentSpacing)
+            // }
         }
         .padding(.horizontal, -AppConstants.postAndCommentSpacing)
         .accessibilityElement(children: .ignore)

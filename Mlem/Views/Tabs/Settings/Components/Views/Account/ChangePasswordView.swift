@@ -9,7 +9,6 @@ import SwiftUI
 import Dependencies
 
 struct ChangePasswordView: View {
-    @Dependency(\.apiClient) var apiClient: APIClient
     @Dependency(\.errorHandler) var errorHandler: ErrorHandler
     
     enum ViewState {
@@ -18,7 +17,7 @@ struct ChangePasswordView: View {
         case success
     }
     
-    @EnvironmentObject var appState: AppState
+    @Environment(AppState.self) var appState
     @Environment(\.dismiss) var dismiss
 
     @State private var viewState: ViewState = .initial
@@ -58,20 +57,20 @@ struct ChangePasswordView: View {
                         Task {
                             do {
                                 viewState = .waiting
-                                let response = try await apiClient.changePassword(
-                                    newPassword: newPassword,
-                                    confirmNewPassword: confirmNewPassword,
-                                    currentPassword: currentPassword
-                                )
-                                if let currentActiveAccount = appState.currentActiveAccount {
-                                    appState.setActiveAccount(
-                                        .init(
-                                            from: currentActiveAccount,
-                                            accessToken: response.jwt,
-                                            avatarUrl: currentActiveAccount.avatarUrl
-                                        )
-                                    )
-                                }
+//                                let response = try await apiClient.changePassword(
+//                                    newPassword: newPassword,
+//                                    confirmNewPassword: confirmNewPassword,
+//                                    currentPassword: currentPassword
+//                                )
+//                                if let currentActiveAccount = appState.currentActiveAccount {
+//                                    appState.setActiveAccount(
+//                                        .init(
+//                                            from: currentActiveAccount,
+//                                            accessToken: response.jwt,
+//                                            avatarUrl: currentActiveAccount.avatarUrl
+//                                        )
+//                                    )
+//                                }
                                 viewState = .success
                                 HapticManager.shared.play(haptic: .success, priority: .high)
                                 try? await Task.sleep(for: .seconds(0.5))

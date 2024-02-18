@@ -21,13 +21,12 @@ struct QuickSwitcherView: View {
 }
 
 struct AccountListView: View {
-    @Environment(\.setAppFlow) var setFlow
-    
     @AppStorage("accountSort") var accountSort: AccountSortMode = .custom
     @AppStorage("groupAccountSort") var groupAccountSort: Bool = false
-    @EnvironmentObject var appState: AppState
     
-    @ObservedObject var accountsTracker: SavedAccountTracker
+    @Environment(AppState.self) var appState
+    
+    let accountsTracker: SavedAccountTracker
     
     @State private var isShowingInstanceAdditionSheet: Bool = false
     
@@ -35,7 +34,7 @@ struct AccountListView: View {
     
     struct AccountGroup {
         let header: String
-        let accounts: [SavedAccount]
+        let accounts: [UserStub]
     }
     
     let isQuickSwitcher: Bool
@@ -43,7 +42,7 @@ struct AccountListView: View {
     init(isQuickSwitcher: Bool = false) {
         // We have to create an ObservedObject here so that changes to the accounts list create view updates
         @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
-        self._accountsTracker = ObservedObject(wrappedValue: accountsTracker)
+        self.accountsTracker = accountsTracker
         self.isQuickSwitcher = isQuickSwitcher
     }
     
@@ -90,9 +89,9 @@ struct AccountListView: View {
                 }
             }
         }
-        .sheet(isPresented: $isShowingInstanceAdditionSheet) {
-            AddSavedInstanceView(onboarding: false)
-        }
+//        .sheet(isPresented: $isShowingInstanceAdditionSheet) {
+//            AddSavedInstanceView(onboarding: false)
+//        }
     }
     
     @ViewBuilder
@@ -116,8 +115,8 @@ struct AccountListView: View {
                     Label(sortMode.label, systemImage: sortMode.systemImage).tag(sortMode)
                 }
             }
-            .onChange(of: accountSort) { newValue in
-                if newValue == .custom {
+            .onChange(of: accountSort) {
+                if accountSort == .custom {
                     groupAccountSort = false
                 }
             }

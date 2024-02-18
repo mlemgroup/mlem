@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import SwiftUI
 
 /// Class providing common tracker functionality for StandardTracker and ParentTracker
+@Observable
 class CoreTracker<Item: TrackerItem> {
     var items: [Item] = .init()
     private(set) var loadingState: LoadingState = .idle

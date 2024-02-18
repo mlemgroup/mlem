@@ -9,8 +9,6 @@ import Dependencies
 import Foundation
 
 enum PostSortType: String, Codable, CaseIterable, Identifiable {
-    @Dependency(\.siteInformation) static var siteInformation
-    
     case hot = "Hot"
     case active = "Active"
     case new = "New"
@@ -58,14 +56,17 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
         .topAll
     ] }
     
-    static var availableOuterTypes: [PostSortType] { filterTypes(outerTypes) }
-    static var availableTopTypes: [PostSortType] { filterTypes(topTypes) }
+    static func availableOuterTypes(siteVersion: SiteVersion) -> [PostSortType] {
+        filterTypes(outerTypes, siteVersion: siteVersion)
+    }
+    static func availableTopTypes(siteVersion: SiteVersion) -> [PostSortType] {
+        filterTypes(topTypes, siteVersion: siteVersion)
+    }
     
     /// An array of sort modes that have no minimum version
     static var alwaysAvailableTypes = allCases.filter { $0.minimumVersion == .zero }
     
-    private static func filterTypes(_ types: [PostSortType]) -> [PostSortType] {
-        guard let siteVersion = siteInformation.version else { return types }
+    private static func filterTypes(_ types: [PostSortType], siteVersion: SiteVersion) -> [PostSortType] {
         return types.filter { siteVersion >= $0.minimumVersion }
     }
     

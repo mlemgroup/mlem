@@ -21,11 +21,11 @@ final class Person1: Person1Providing, NewContentModel {
     let creationDate: Date
     
     var updatedDate: Date? = .distantPast
-    var displayName: String? = nil
-    var description: String? = nil
-    var matrixId: String? = nil
-    var avatar: URL? = nil
-    var banner: URL? = nil
+    var displayName: String?
+    var description: String?
+    var matrixId: String?
+    var avatar: URL?
+    var banner: URL?
     
     var deleted: Bool = false
     var isBot: Bool = false

@@ -12,7 +12,6 @@ import Foundation
 /// For simple (i.e. linear) navigation flows, you may wish to define a separate set of routes. For example, see `OnboardingRoutes`.
 ///
 
-
 enum AppRoute: Routable {
     
     case instance(any InstanceStubProviding)
@@ -28,7 +27,6 @@ enum AppRoute: Routable {
     case commentSettings(CommentSettingsPage)
     case postSettings(PostSettingsPage)
     case licenseSettings(LicensesSettingsPage)
-    
     
     // swiftlint:disable cyclomatic_complexity
     static func makeRoute(_ value: some Hashable) throws -> AppRoute {
@@ -62,7 +60,6 @@ enum AppRoute: Routable {
     }
     // swiftlint:enable cyclomatic_complexity
 }
-
 
 extension AppRoute: Equatable, Hashable {
     static func == (lhs: AppRoute, rhs: AppRoute) -> Bool {

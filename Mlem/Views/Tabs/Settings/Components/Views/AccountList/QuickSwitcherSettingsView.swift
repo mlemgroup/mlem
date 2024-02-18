@@ -235,7 +235,7 @@ private struct TwoAccountSwitchView: View {
                             if [.none, .fadeInTap, .tap2].contains(phase) {
                                 AvatarView(
                                     url: accountsTracker.savedAccounts[0].avatarUrl,
-                                    type: .user,
+                                    type: .person,
                                     avatarSize: 28,
                                     iconResolution: .unrestricted
                                 )
@@ -243,7 +243,7 @@ private struct TwoAccountSwitchView: View {
                             } else {
                                 AvatarView(
                                     url: accountsTracker.savedAccounts[1].avatarUrl,
-                                    type: .user,
+                                    type: .person,
                                     avatarSize: 28,
                                     iconResolution: .unrestricted
                                 )

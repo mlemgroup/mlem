@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct FeedHeaderView: View {
-    @EnvironmentObject var appState: AppState
+    @Environment(AppState.self) var appState
     
     let feedType: FeedType
     
@@ -18,7 +18,7 @@ struct FeedHeaderView: View {
         case .all:
             return "Posts from all federated instances"
         case .local:
-            return "Posts from \(appState.currentActiveAccount?.instanceLink.host() ?? "your instance's") communities"
+            return "Posts from \(appState.myInstance?.host ?? "your instance's") communities"
         case .subscribed:
             return "Posts from all subscribed communities"
         case .saved:

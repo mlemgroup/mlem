@@ -20,7 +20,6 @@ struct CompactPost: View {
     @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
     
     // environment and dependencies
-    @Dependency(\.postRepository) var postRepository
     @Dependency(\.errorHandler) var errorHandler
     
     @Environment(\.accessibilityDifferentiateWithoutColor) var diffWithoutColor: Bool
@@ -49,10 +48,14 @@ struct CompactPost: View {
                 HStack {
                     Group {
                         if showCommunity {
-                            CommunityLinkView(community: post.community, serverInstanceLocation: .trailing, overrideShowAvatar: false)
+                            CommunityLinkView(
+                                community: post.community,
+                                serverInstanceLocation: .trailing,
+                                overrideShowAvatar: false
+                            )
                         } else {
-                            UserLinkView(
-                                user: post.creator,
+                            PersonLinkView(
+                                person: post.creator,
                                 serverInstanceLocation: .trailing,
                                 communityContext: post.community
                             )
@@ -68,9 +71,9 @@ struct CompactPost: View {
                 }
                 .padding(.bottom, -2)
                 
-                Text(post.post.name)
+                Text(post.title)
                     .font(.subheadline)
-                    .foregroundColor(post.read ? .secondary : .primary)
+                    .foregroundColor(post.isRead ? .secondary : .primary)
     
                 compactInfo
             }

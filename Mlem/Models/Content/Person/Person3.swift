@@ -28,7 +28,7 @@ final class Person3: Person3Providing, NewContentModel {
             self.instance = nil
         }
         
-        self.person2 = source.caches.user2.createModel(source: source, for: response.personView)
+        self.person2 = source.caches.person2.createModel(source: source, for: response.personView)
         self.update(with: response)
     }
     
@@ -39,7 +39,7 @@ final class Person3: Person3Providing, NewContentModel {
         
         guard let myUser = response.myUser else { fatalError() }
         
-        if let existing = source.caches.user2.retrieveModel(id: myUser.localUserView.localUser.id) {
+        if let existing = source.caches.person2.retrieveModel(id: myUser.localUserView.localUser.id) {
             self.person2 = existing
             existing.update(with: myUser.localUserView)
         } else {
@@ -53,13 +53,13 @@ final class Person3: Person3Providing, NewContentModel {
         self.moderatedCommunities = response.moderates.map { moderatorView in
             source.caches.community1.createModel(source: source, for: moderatorView.community)
         }
-        self.user2.update(with: response.personView)
+        self.person2.update(with: response.personView)
     }
     
     func update(with myUser: APIMyUserInfo) {
         self.moderatedCommunities = myUser.moderates.map { moderatorView in
             source.caches.community1.createModel(source: source, for: moderatorView.community)
         }
-        self.user2.update(with: myUser.localUserView)
+        self.person2.update(with: myUser.localUserView)
     }
 }

@@ -74,7 +74,7 @@ struct InfoStackView: View {
     @ViewBuilder
     func netVotesView(votes: DetailedVotes) -> some View {
         HStack(spacing: AppConstants.iconToTextSpacing) {
-            Image(systemName: votes.myVote == .resetVote ? Icons.upvoteSquare : votes.myVote.iconNameFill)
+            Image(systemName: votes.myVote == .none ? Icons.upvoteSquare : votes.myVote.iconNameFill)
             Text(String(votes.score))
         }
         .foregroundColor(colorizeVotes ? votes.myVote.color ?? .secondary : .secondary)

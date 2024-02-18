@@ -22,7 +22,7 @@ struct PostFeedView: View {
     @AppStorage("markReadOnScroll") var markReadOnScroll: Bool = false
     
     @Environment(StandardPostTracker.self) var postTracker
-    @Environment(NewAppState.self) var appState
+    @Environment(AppState.self) var appState
     
     // used to actually drive post loading; when nil, indicates that the site version is unresolved and it is not safe to load posts
     @State var versionSafePostSort: PostSortType?
@@ -40,8 +40,7 @@ struct PostFeedView: View {
 
     @State var errorDetails: ErrorDetails?
     
-    init(postSortType: Binding<PostSortType>, showCommunity: Bool, communityContext: (any Community)? = nil) {
-        
+    init(appState: AppState, postSortType: Binding<PostSortType>, showCommunity: Bool, communityContext: (any Community)? = nil) {
         if let siteVersion = appState.lemmyVersion, postSortType.wrappedValue.minimumVersion <= siteVersion {
             self._versionSafePostSort = .init(wrappedValue: postSortType.wrappedValue)
         }
@@ -59,6 +58,12 @@ struct PostFeedView: View {
                     Task { await postTracker.removeFilter(.read) }
                 } else {
                     Task { await postTracker.addFilter(.read) }
+                }
+            }
+            .onChange(of: postSortType) {
+                print("CHANGE SORT")
+                Task {
+                    await postTracker.changeSortType(to: postSortType, forceRefresh: true)
                 }
             }
             .task(id: appState.lemmyVersion) {
@@ -133,7 +138,6 @@ struct PostFeedView: View {
                 FeedPost(
                     post: post,
                     postTracker: postTracker,
-                    community: communityContext,
                     showPostCreator: shouldShowPostCreator,
                     showCommunity: showCommunity
                 )

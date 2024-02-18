@@ -10,18 +10,18 @@ import SwiftUI
 
 @Observable
 final class UserStub: UserProviding, Codable {
-    let instance: NewInstanceStub
+    let instance: InstanceStub
     var caches: BaseCacheGroup { instance.caches }
     
-    var actorId: URL { instance.actorId }
     var stub: UserStub { self }
     
-    @ObservationIgnored lazy var api: NewAPIClient = {
+    @ObservationIgnored lazy var api: APIClient = {
         return .init(baseUrl: instance.url)
     }()
     
     let id: Int
-    let username: String
+    let name: String
+    var actorId: URL
     
     var accessToken: String
     var nickname: String?
@@ -54,7 +54,7 @@ final class UserStub: UserProviding, Codable {
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try values.decode(Int.self, forKey: .id)
-        self.username = try values.decode(String.self, forKey: .username)
+        self.name = try values.decode(String.self, forKey: .username)
         self.nickname = try values.decode(String?.self, forKey: .storedNickname)
         self.cachedSiteVersion = try values.decode(SiteVersion?.self, forKey: .siteVersion)
         self.avatarUrl = try values.decode(URL?.self, forKey: .avatarUrl)
@@ -65,6 +65,10 @@ final class UserStub: UserProviding, Codable {
         var components = URLComponents(url: instanceLink, resolvingAgainstBaseURL: false)!
         components.path = ""
         self.instance = .createModel(url: components.url!)
+        
+        var actorComponents = URLComponents(url: instanceLink, resolvingAgainstBaseURL: false)!
+        actorComponents.path = "/u/\(name)"
+        self.actorId = actorComponents.url!
         
         self.accessToken = ""
         guard let token = AppConstants.keychain[keychainId] else {
@@ -77,7 +81,7 @@ final class UserStub: UserProviding, Codable {
         AppConstants.keychain[keychainId] = accessToken
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(username, forKey: .username)
+        try container.encode(name, forKey: .username)
         try container.encode(nickname, forKey: .storedNickname)
         try container.encode(cachedSiteVersion, forKey: .siteVersion)
         try container.encode(avatarUrl, forKey: .avatarUrl)

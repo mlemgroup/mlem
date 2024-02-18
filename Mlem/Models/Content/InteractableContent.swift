@@ -17,13 +17,6 @@ protocol InteractableContent: AnyObject, ContentStub {
     var upvoteCount: Int { get }
     var downvoteCount: Int { get }
     var isSaved: Bool { get }
-    
-    // These don't have to be implemented (are defined as nil in the extension below)
-    var unreadCommentCount: Int? { get }
-}
-
-extension InteractableContent {
-    var unreadCommentCount: Int? { nil }
 }
 
 extension InteractableContent {
