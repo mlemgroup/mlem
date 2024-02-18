@@ -33,4 +33,13 @@ extension Instance1Providing {
     var creationDate: Date { instance1.creationDate }
     var publicKey: String { instance1.publicKey }
     var lastRefreshDate: Date { instance1.lastRefreshDate }
+    
+    var id_: Int? { instance1.id }
+    var displayName_: String? { instance1.displayName }
+    var description_: String? { instance1.description }
+    var avatar_: URL? { instance1.avatar }
+    var banner_: URL? { instance1.banner }
+    var creationDate_: Date? { instance1.creationDate }
+    var publicKey_: String? {  instance1.publicKey }
+    var lastRefreshDate_: Date? { instance1.lastRefreshDate }
 }

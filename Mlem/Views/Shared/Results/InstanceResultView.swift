@@ -39,7 +39,7 @@ struct InstanceResultView: View {
         if complications.contains(.type) {
             parts.append("Instance")
         }
-        if complications.contains(.version), let version = instance.version {
+        if complications.contains(.version), let version = instance.version_ {
             parts.append(String(describing: version))
         }
         return parts.joined(separator: " ∙ ")

@@ -74,7 +74,7 @@ enum FeedType: Equatable {
     
     var communityId: Int? {
         switch self {
-        case let .community(community): community.id
+        case let .community(community): community.id_
         default: nil
         }
     }

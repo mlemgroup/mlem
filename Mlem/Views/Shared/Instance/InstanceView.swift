@@ -45,7 +45,7 @@ struct InstanceView: View {
     }
     
     var subtitleText: String {
-        if let version = instance.version {
+        if let version = instance.version_ {
             "\(instance.host ?? "unknown") • \(String(describing: version))"
         } else {
             instance.host ?? "unknown"
@@ -62,7 +62,7 @@ struct InstanceView: View {
                     .padding(.top, 10)
                 VStack(spacing: 5) {
                     if errorDetails == nil {
-                        Text(instance.displayName ?? instance.host ?? "Instance")
+                        Text(instance.displayName_ ?? instance.host ?? "Instance")
                             .font(.title)
                             .fontWeight(.semibold)
                             .lineLimit(1)
@@ -84,7 +84,7 @@ struct InstanceView: View {
                 .padding(.bottom, 5)
                 if let errorDetails {
                     ErrorView(errorDetails)
-                } else if instance.creationDate != nil {
+                } else if instance.creationDate_ != nil {
                     VStack(spacing: 0) {
                         VStack(spacing: 4) {
                             Divider()
@@ -95,7 +95,7 @@ struct InstanceView: View {
                         }
                         switch selectedTab {
                         case .about:
-                            if let description = instance.description {
+                            if let description = instance.description_ {
                                 MarkdownView(text: description, isNsfw: false)
                                     .padding(.horizontal, AppConstants.postAndCommentSpacing)
                                     .padding(.top)

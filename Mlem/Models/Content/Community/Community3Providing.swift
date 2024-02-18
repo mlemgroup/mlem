@@ -23,4 +23,9 @@ extension Community3Providing {
     var moderators: [Person1] { community3.moderators }
     var discussionLanguages: [Int] { community3.discussionLanguages }
     var defaultPostLanguage: Int? { community3.defaultPostLanguage }
+    
+    var instance_: Instance1? { community3.instance }
+    var moderators_: [Person1]? { community3.moderators }
+    var discussionLanguages_: [Int]? { community3.discussionLanguages }
+    var defaultPostLanguage_: Int? { community3.defaultPostLanguage }
 }

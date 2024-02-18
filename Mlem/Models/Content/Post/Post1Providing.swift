@@ -41,6 +41,7 @@ typealias Post = Post1Providing
 
 extension Post1Providing {
     var actorId: URL { post1.actorId }
+    
     var id: Int { post1.id }
     var title: String { post1.title }
     var content: String? { post1.content }
@@ -56,6 +57,22 @@ extension Post1Providing {
     var removed: Bool { post1.removed }
     var thumbnailUrl: URL? { post1.thumbnailUrl }
     var updatedDate: Date? { post1.updatedDate }
+    
+    var id_: Int? { post1.id }
+    var title_: String? { post1.title }
+    var content_: String? { post1.content }
+    var links_: [LinkType]? { post1.links }
+    var linkUrl_: URL? { post1.linkUrl }
+    var deleted_: Bool? { post1.deleted }
+    var embed_: PostEmbed? { post1.embed }
+    var pinnedCommunity_: Bool? { post1.pinnedCommunity }
+    var pinnedInstance_: Bool? { post1.pinnedInstance }
+    var locked_: Bool? { post1.locked }
+    var nsfw_: Bool? { post1.nsfw }
+    var creationDate_: Date? { post1.creationDate }
+    var removed_: Bool? { post1.removed }
+    var thumbnailUrl_: URL? { post1.thumbnailUrl }
+    var updatedDate_: Date? { post1.updatedDate }
 }
 
 extension Post1Providing {

@@ -9,58 +9,58 @@ import Foundation
 
 protocol PostStubProviding: ContentStub {
     // From Post1Providing. These are defined as nil in the extension below
-    var id: Int? { get }
-    var title: String? { get }
-    var content: String? { get }
-    var links: [LinkType]? { get }
-    var linkUrl: URL? { get }
-    var deleted: Bool? { get }
-    var embed: PostEmbed? { get }
-    var pinnedCommunity: Bool? { get }
-    var pinnedInstance: Bool? { get }
-    var locked: Bool? { get }
-    var nsfw: Bool? { get }
-    var creationDate: Date? { get }
-    var removed: Bool? { get }
-    var thumbnailUrl: URL? { get }
-    var updatedDate: Date? { get }
+    var id_: Int? { get }
+    var title_: String? { get }
+    var content_: String? { get }
+    var links_: [LinkType]? { get }
+    var linkUrl_: URL? { get }
+    var deleted_: Bool? { get }
+    var embed_: PostEmbed? { get }
+    var pinnedCommunity_: Bool? { get }
+    var pinnedInstance_: Bool? { get }
+    var locked_: Bool? { get }
+    var nsfw_: Bool? { get }
+    var creationDate_: Date? { get }
+    var removed_: Bool? { get }
+    var thumbnailUrl_: URL? { get }
+    var updatedDate_: Date? { get }
     
     // From Post2Providing. These are defined as nil in the extension below
-    var creator: Person1? { get }
-    var community: Community1? { get }
-    var commentCount: Int? { get }
-    var upvoteCount: Int? { get }
-    var downvoteCount: Int? { get }
-    var unreadCommentCount: Int? { get }
-    var isSaved: Bool? { get }
-    var isRead: Bool? { get }
-    var myVote: ScoringOperation? { get }
+    var creator_: Person1? { get }
+    var community_: Community1? { get }
+    var commentCount_: Int? { get }
+    var upvoteCount_: Int? { get }
+    var downvoteCount_: Int? { get }
+    var unreadCommentCount_: Int? { get }
+    var isSaved_: Bool? { get }
+    var isRead_: Bool? { get }
+    var myVote_: ScoringOperation? { get }
 }
 
 extension PostStubProviding {
-    var id: Int? { nil }
-    var title: String? { nil }
-    var content: String? { nil }
-    var links: [LinkType]? { nil }
-    var linkUrl: URL? { nil }
-    var deleted: Bool? { nil }
-    var embed: PostEmbed? { nil }
-    var pinnedCommunity: Bool? { nil }
-    var pinnedInstance: Bool? { nil }
-    var locked: Bool? { nil }
-    var nsfw: Bool? { nil }
-    var creationDate: Date? { nil }
-    var removed: Bool? { nil }
-    var thumbnailUrl: URL? { nil }
-    var updatedDate: Date? { nil }
+    var id_: Int? { nil }
+    var title_: String? { nil }
+    var content_: String? { nil }
+    var links_: [LinkType]? { nil }
+    var linkUrl_: URL? { nil }
+    var deleted_: Bool? { nil }
+    var embed_: PostEmbed? { nil }
+    var pinnedCommunity_: Bool? { nil }
+    var pinnedInstance_: Bool? { nil }
+    var locked_: Bool? { nil }
+    var nsfw_: Bool? { nil }
+    var creationDate_: Date? { nil }
+    var removed_: Bool? { nil }
+    var thumbnailUrl_: URL? { nil }
+    var updatedDate_: Date? { nil }
     
-    var creator: Person1? { nil }
-    var community: Community1? { nil }
-    var commentCount: Int? { nil }
-    var upvoteCount: Int? { nil }
-    var downvoteCount: Int? { nil }
-    var unreadCommentCount: Int? { nil }
-    var isSaved: Bool? { nil }
-    var isRead: Bool? { nil }
-    var myVote: ScoringOperation? { nil }
+    var creator_: Person1? { nil }
+    var community_: Community1? { nil }
+    var commentCount_: Int? { nil }
+    var upvoteCount_: Int? { nil }
+    var downvoteCount_: Int? { nil }
+    var unreadCommentCount_: Int? { nil }
+    var isSaved_: Bool? { nil }
+    var isRead_: Bool? { nil }
+    var myVote_: ScoringOperation? { nil }
 }

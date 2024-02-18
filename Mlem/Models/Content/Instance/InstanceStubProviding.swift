@@ -12,18 +12,18 @@ protocol InstanceStubProviding: ActorIdentifiable, APISource {
     
     var url: URL { get }
     
-    // From Instance1Providing. These are defined as nil in the extension below
-    var id: Int? { get }
-    var displayName: String? { get }
-    var description: String? { get }
-    var avatar: URL? { get }
-    var banner: URL? { get }
-    var creationDate: Date? { get }
-    var publicKey: String? { get }
-    var lastRefreshDate: Date? { get }
+    // From Instance1Providing.
+    var id_: Int? { get }
+    var displayName_: String? { get }
+    var description_: String? { get }
+    var avatar_: URL? { get }
+    var banner_: URL? { get }
+    var creationDate_: Date? { get }
+    var publicKey_: String? { get }
+    var lastRefreshDate_: Date? { get }
     
-    // From Instance3Providing. These are defined as nil in the extension below
-    var version: SiteVersion? { get }
+    // From Instance3Providing.
+    var version_: SiteVersion? { get }
 }
 
 extension InstanceStubProviding {
@@ -34,16 +34,16 @@ extension InstanceStubProviding {
     var url: URL { stub.url }
     var actorId: URL { stub.actorId }
     
-    var id: Int? { nil }
-    var displayName: String? { nil }
-    var description: String? { nil }
-    var avatar: URL? { nil }
-    var banner: URL? { nil }
-    var creationDate: Date? { nil }
-    var publicKey: String? { nil }
-    var lastRefreshDate: Date? { nil }
+    var id_: Int? { nil }
+    var displayName_: String? { nil }
+    var description_: String? { nil }
+    var avatar_: URL? { nil }
+    var banner_: URL? { nil }
+    var creationDate_: Date? { nil }
+    var publicKey_: String? { nil }
+    var lastRefreshDate_: Date? { nil }
     
-    var version: SiteVersion? { nil }
+    var version_: SiteVersion? { nil }
 }
 
 extension InstanceStubProviding {

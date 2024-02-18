@@ -19,4 +19,7 @@ extension Person3Providing {
     
     var instance: Instance1! { person3.instance }
     var moderatedCommunities: [Community1] { person3.moderatedCommunities }
+    
+    var instance_: Instance1? { person3.instance }
+    var moderatedCommunities_: [Community1]? { person3.moderatedCommunities }
 }

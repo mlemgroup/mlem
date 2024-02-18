@@ -22,7 +22,6 @@ protocol Community2Providing: Community1Providing {
     
     var subscribed: Bool { get }
     var favorited: Bool { get }
-    
     var subscriberCount: Int { get }
     var postCount: Int { get }
     var commentCount: Int { get }
@@ -38,6 +37,14 @@ extension Community2Providing {
     var postCount: Int { community2.postCount }
     var commentCount: Int { community2.commentCount }
     var activeUserCount: ActiveUserCount { community2.activeUserCount }
+    
+    var subscribed_: Bool? { community2.subscribed }
+    var favorited_: Bool? { community2.favorited }
+    var subscriberCount_: Int? { community2.subscriberCount }
+    var postCount_: Int? { community2.postCount }
+    var commentCount_: Int? { community2.commentCount }
+    var activeUserCount_: ActiveUserCount? { community2.activeUserCount }
+    var subscriptionTier_: SubscriptionTier? { community2.subscriptionTier }
 }
 
 extension Community2Providing {

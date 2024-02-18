@@ -34,7 +34,7 @@ struct CommunityLabelView: View {
     var showSubscribed: Bool {
         if let feedType, feedType != .subscribed {
             return shouldShowSubscribedStatus &&
-                community.subscribed ?? false
+                community.subscribed_ ?? false
         }
         return false
     }

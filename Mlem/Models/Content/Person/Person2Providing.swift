@@ -23,4 +23,9 @@ extension Person2Providing {
     var postScore: Int { person2.postScore }
     var commentCount: Int { person2.commentCount }
     var commentScore: Int { person2.commentScore }
+    
+    var postCount_: Int? { person2.postCount }
+    var postScore_: Int? { person2.postScore }
+    var commentCount_: Int? { person2.commentCount }
+    var commentScore_: Int? { person2.commentScore }
 }

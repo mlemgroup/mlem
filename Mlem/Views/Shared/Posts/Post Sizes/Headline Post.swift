@@ -40,7 +40,7 @@ struct HeadlinePost: View {
                         Text(post.title)
                             .font(.headline)
                             .padding(.trailing)
-                            .foregroundColor((post.isRead ?? false) ? .secondary : .primary)
+                            .foregroundColor((post.isRead_ ?? false) ? .secondary : .primary)
                         
                         Spacer()
                         if post.nsfw {

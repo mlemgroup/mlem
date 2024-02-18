@@ -17,4 +17,6 @@ extension Instance3Providing {
     var instance2: Instance2 { instance3.instance2 }
     
     var version: SiteVersion { instance3.version }
+    
+    var version_: SiteVersion { instance3.version }
 }

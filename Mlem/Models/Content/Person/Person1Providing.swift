@@ -33,6 +33,7 @@ extension Person1Providing {
     var actorId: URL { person1.actorId }
     var id: Int { person1.id }
     var name: String { person1.name }
+    
     var creationDate: Date { person1.creationDate }
     var updatedDate: Date? { person1.updatedDate }
     var displayName: String? { person1.displayName }
@@ -44,6 +45,19 @@ extension Person1Providing {
     var isBot: Bool { person1.isBot }
     var instanceBan: InstanceBanType { person1.instanceBan }
     var blocked: Bool { person1.blocked }
+    
+    var id_: Int? { person1.id }
+    var creationDate_: Date? { person1.creationDate }
+    var updatedDate_: Date? { person1.updatedDate }
+    var displayName_: String? { person1.displayName }
+    var description_: String? { person1.description }
+    var matrixId_: String? { person1.matrixId }
+    var avatar_: URL? { person1.avatar }
+    var banner_: URL? { person1.banner }
+    var deleted_: Bool? { person1.deleted }
+    var isBot_: Bool? { person1.isBot }
+    var instanceBan_: InstanceBanType? { person1.instanceBan }
+    var blocked_: Bool? { person1.blocked }
 }
 
 extension Person1Providing {

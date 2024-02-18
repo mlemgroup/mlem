@@ -135,8 +135,8 @@ struct UserResultView: View {
     @ViewBuilder
     var trailingInfo: some View {
         Group {
-            if complications.contains(.posts), let postCount = user.postCount {
-                if complications.contains(.comments), let commentCount = user.commentCount {
+            if complications.contains(.posts), let postCount = user.postCount_ {
+                if complications.contains(.comments), let commentCount = user.commentCount_ {
                     HStack(spacing: 5) {
                         VStack(alignment: .trailing, spacing: 6) {
                             Text(abbreviateNumber(postCount))
@@ -163,7 +163,7 @@ struct UserResultView: View {
                     }
                     .foregroundStyle(.secondary)
                 }
-            } else if complications.contains(.comments), let commentCount = user.commentCount {
+            } else if complications.contains(.comments), let commentCount = user.commentCount_ {
                 HStack(spacing: 5) {
                     Text(abbreviateNumber(commentCount))
                         .monospacedDigit()

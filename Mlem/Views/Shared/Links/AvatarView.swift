@@ -56,12 +56,12 @@ struct AvatarView: View {
         iconResolution: AvatarIconResolution? = nil
     ) {
         self.init(
-            url: community.avatar,
+            url: community.avatar_,
             type: .community,
             avatarSize: avatarSize,
-            blurAvatar: community.nsfw ?? false,
+            blurAvatar: community.nsfw_ ?? false,
             lineColor: lineColor,
-            lineWidth: AvatarView.shouldShowCommunityAvatarOutline(url: community.avatar) ? lineWidth : 0,
+            lineWidth: AvatarView.shouldShowCommunityAvatarOutline(url: community.avatar_) ? lineWidth : 0,
             iconResolution: iconResolution
         )
     }
@@ -75,7 +75,7 @@ struct AvatarView: View {
         iconResolution: AvatarIconResolution? = nil
     ) {
         self.init(
-            url: person.avatar,
+            url: person.avatar_,
             type: .person,
             avatarSize: avatarSize,
             blurAvatar: blurAvatar,
@@ -94,7 +94,7 @@ struct AvatarView: View {
         iconResolution: AvatarIconResolution? = nil
     ) {
         self.init(
-            url: instance.avatar,
+            url: instance.avatar_,
             type: .instance,
             avatarSize: avatarSize,
             blurAvatar: blurAvatar,

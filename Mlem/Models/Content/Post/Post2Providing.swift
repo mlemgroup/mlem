@@ -29,5 +29,15 @@ extension Post2Providing {
     var isRead: Bool { post2.isRead }
     var myVote: ScoringOperation { post2.myVote }
     
+    var creator_: Person1? { post2.creator }
+    var community_: Community1? { post2.community }
+    var commentCount_: Int? { post2.commentCount }
+    var upvoteCount_: Int? { post2.upvoteCount }
+    var downvoteCount_: Int? { post2.downvoteCount }
+    var unreadCommentCount_: Int? { post2.unreadCommentCount }
+    var isSaved_: Bool? { post2.isSaved }
+    var isRead_: Bool? { post2.isRead }
+    var myVote_: ScoringOperation? { post2.myVote }
+    
     var score: Int { upvoteCount - downvoteCount }
 }

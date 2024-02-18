@@ -17,7 +17,7 @@ struct ThumbnailImageView: View {
     
     let post: any Post
     
-    var showNsfwFilter: Bool { (post.nsfw || post.community?.nsfw ?? false) && shouldBlurNsfw }
+    var showNsfwFilter: Bool { (post.nsfw || post.community_?.nsfw ?? false) && shouldBlurNsfw }
     
     let size = CGSize(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
     

@@ -37,5 +37,5 @@ class AppState {
         }
     }
     
-    var lemmyVersion: SiteVersion? { myInstance?.version ?? myUser?.cachedSiteVersion }
+    var lemmyVersion: SiteVersion? { myInstance?.version_ ?? myUser?.cachedSiteVersion }
 }

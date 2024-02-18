@@ -8,65 +8,71 @@
 import Foundation
 
 protocol CommunityStubProviding: CommunityOrPersonStub {
-    // From Community1Providing. These are defined as nil in the extension below
-    var creationDate: Date? { get }
-    var updatedDate: Date? { get }
-    var displayName: String? { get }
-    var description: String? { get }
-    var removed: Bool? { get }
-    var deleted: Bool? { get }
-    var nsfw: Bool? { get }
-    var avatar: URL? { get }
-    var banner: URL? { get }
-    var hidden: Bool? { get }
-    var onlyModeratorsCanPost: Bool? { get }
-    var blocked: Bool? { get }
+    // From Community1Providing.
+    var id_: Int? { get }
+    var creationDate_: Date? { get }
+    var updatedDate_: Date? { get }
+    var displayName_: String? { get }
+    var description_: String? { get }
+    var removed_: Bool? { get }
+    var deleted_: Bool? { get }
+    var nsfw_: Bool? { get }
+    var avatar_: URL? { get }
+    var banner_: URL? { get }
+    var hidden_: Bool? { get }
+    var onlyModeratorsCanPost_: Bool? { get }
+    var blocked_: Bool? { get }
     
-    // From Community2Providing. These are defined as nil in the extension below
-    var subscribed: Bool? { get }
-    var favorited: Bool? { get }
-    var subscriberCount: Int? { get }
-    var postCount: Int? { get }
-    var commentCount: Int? { get }
-    var activeUserCount: ActiveUserCount? { get }
-    var subscriptionTier: SubscriptionTier? { get }
+    // From Community2Providing.
+    var subscribed_: Bool? { get }
+    var favorited_: Bool? { get }
+    var subscriberCount_: Int? { get }
+    var postCount_: Int? { get }
+    var commentCount_: Int? { get }
+    var activeUserCount_: ActiveUserCount? { get }
+    var subscriptionTier_: SubscriptionTier? { get }
     
-    // From Community3Providing. These are defined as nil in the extension below
-    var instance: Instance1? { get }
-    var moderators: [Person1]? { get }
-    var discussionLanguages: [Int]? { get }
-    var defaultPostLanguage: Int? { get }
+    // From Community3Providing.
+    var instance_: Instance1? { get }
+    var moderators_: [Person1]? { get }
+    var discussionLanguages_: [Int]? { get }
+    var defaultPostLanguage_: Int? { get }
+    
+    func upgrade() async throws -> Community3
 }
 
 extension CommunityStubProviding {
     static var identifierPrefix: String { "!" }
     
-    var id: Int? { nil }
-    var creationDate: Date? { nil }
-    var updatedDate: Date? { nil }
-    var displayName: String? { nil }
-    var description: String? { nil }
-    var removed: Bool? { nil }
-    var deleted: Bool? { nil }
-    var nsfw: Bool? { nil }
-    var avatar: URL? { nil }
-    var banner: URL? { nil }
-    var hidden: Bool? { nil }
-    var onlyModeratorsCanPost: Bool? { nil }
-    var blocked: Bool? { nil }
+    // From Community1Providing.
+    var id_: Int? { nil }
+    var creationDate_: Date? { nil }
+    var updatedDate_: Date? { nil }
+    var displayName_: String? { nil }
+    var description_: String? { nil }
+    var removed_: Bool? { nil }
+    var deleted_: Bool? { nil }
+    var nsfw_: Bool? { nil }
+    var avatar_: URL? { nil }
+    var banner_: URL? { nil }
+    var hidden_: Bool? { nil }
+    var onlyModeratorsCanPost_: Bool? { nil }
+    var blocked_: Bool? { nil }
     
-    var subscribed: Bool? { nil }
-    var favorited: Bool? { nil }
-    var subscriberCount: Int? { nil }
-    var postCount: Int? { nil }
-    var commentCount: Int? { nil }
-    var activeUserCount: ActiveUserCount? { nil }
-    var subscriptionTier: SubscriptionTier? { nil }
+    // From Community2Providing.
+    var subscribed_: Bool? { nil }
+    var favorited_: Bool? { nil }
+    var subscriberCount_: Int? { nil }
+    var postCount_: Int? { nil }
+    var commentCount_: Int? { nil }
+    var activeUserCount_: ActiveUserCount? { nil }
+    var subscriptionTier_: SubscriptionTier? { nil }
     
-    var instance: Instance1? { nil }
-    var moderators: [Person1]? { nil }
-    var discussionLanguages: [Int]? { nil }
-    var defaultPostLanguage: Int? { nil }
+    // From Community3Providing.
+    var instance_: Instance1? { nil }
+    var moderators_: [Person1]? { nil }
+    var discussionLanguages_: [Int]? { nil }
+    var defaultPostLanguage_: Int? { nil }
 }
 
 enum UpgradeError: Error {

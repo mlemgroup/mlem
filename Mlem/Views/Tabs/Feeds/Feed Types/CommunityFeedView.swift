@@ -90,7 +90,9 @@ struct CommunityFeedView: View {
                 if !(community is any Community3Providing) {
                     Task(priority: .userInitiated) {
                         do {
+                            print("START COMM")
                             community = try await community.upgrade()
+                            print("END COMM")
                         } catch {
                             errorHandler.handle(error)
                         }
@@ -190,7 +192,7 @@ struct CommunityFeedView: View {
     
     @ViewBuilder
     var moderators: some View {
-        if let moderators = (community as? any Community3Providing)?.moderators {
+        if let moderators = community.moderators_ {
             ForEach(moderators, id: \.id) { user in
                 UserResultView(user, communityContext: community)
                 Divider()
@@ -228,7 +230,7 @@ struct CommunityFeedView: View {
                         community.copyFullNameWithPrefix(notifier: notifier)
                     } label: {
                         VStack(alignment: .leading, spacing: 0) {
-                            Text(community.displayName ?? community.name)
+                            Text(community.displayName_ ?? community.name)
                                 .font(.title2)
                                 .fontWeight(.semibold)
                                 .lineLimit(1)
@@ -259,9 +261,9 @@ struct CommunityFeedView: View {
     
     @ViewBuilder
     var subscribeButton: some View {
-        if let subscriptionTier = community.subscriptionTier {
+        if let subscriptionTier = community.subscriptionTier_ {
             HStack(spacing: 4) {
-                if let subscriberCount = community.subscriberCount {
+                if let subscriberCount = community.subscriberCount_ {
                     Text(abbreviateNumber(subscriberCount))
                 }
                 Image(systemName: subscriptionTier.systemImage)

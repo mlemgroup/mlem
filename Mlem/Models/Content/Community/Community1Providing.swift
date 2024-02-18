@@ -10,8 +10,8 @@ import Foundation
 protocol Community1Providing: CommunityStubProviding, Identifiable {
     var community1: Community1 { get }
     
-    var creationDate: Date { get }
     var updatedDate: Date? { get }
+    var creationDate: Date { get }
     var displayName: String { get }
     var description: String? { get }
     var removed: Bool { get }
@@ -28,8 +28,9 @@ typealias Community = Community1Providing
 
 extension Community1Providing {
     var actorId: URL { community1.actorId }
-    var id: Int { community1.id }
     var name: String { community1.name }
+    
+    var id: Int { community1.id }
     var creationDate: Date { community1.creationDate }
     var updatedDate: Date? { community1.updatedDate }
     var displayName: String { community1.displayName }
@@ -42,6 +43,20 @@ extension Community1Providing {
     var hidden: Bool { community1.hidden }
     var onlyModeratorsCanPost: Bool { community1.onlyModeratorsCanPost }
     var blocked: Bool { community1.blocked }
+    
+    var id_: Int? { community1.id }
+    var creationDate_: Date? { community1.creationDate }
+    var updatedDate_: Date? { community1.updatedDate }
+    var displayName_: String? { community1.displayName }
+    var description_: String? { community1.description }
+    var removed_: Bool? { community1.removed }
+    var deleted_: Bool? { community1.deleted }
+    var nsfw_: Bool? { community1.nsfw }
+    var avatar_: URL? { community1.avatar }
+    var banner_: URL? { community1.banner }
+    var hidden_: Bool? { community1.hidden }
+    var onlyModeratorsCanPost_: Bool? { community1.onlyModeratorsCanPost }
+    var blocked_: Bool? { community1.blocked }
 }
 
 extension Community1Providing {

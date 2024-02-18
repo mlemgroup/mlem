@@ -65,7 +65,7 @@ struct ExpandedPost: View {
     var body: some View {
         contentView
             // .environmentObject(commentTracker)
-            .navigationBarTitle(post.community?.name ?? "Loading", displayMode: .inline)
+            .navigationBarTitle(post.community_?.name ?? "Loading", displayMode: .inline)
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) { toolbarMenu }
             }

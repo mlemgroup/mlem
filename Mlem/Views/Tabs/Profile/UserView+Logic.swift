@@ -13,7 +13,7 @@ extension PersonView {
     var tabs: [UserViewTab] {
         var tabs: [UserViewTab] = [.overview, .posts, .comments]
         
-        if !(person.moderatedCommunities?.isEmpty ?? true) {
+        if !(person.moderatedCommunities_?.isEmpty ?? true) {
             tabs.append(.communities)
         }
         
@@ -21,7 +21,7 @@ extension PersonView {
     }
     
     var bioAlignment: TextAlignment {
-        if let bio = person.description {
+        if let bio = person.description_ {
             if bio.rangeOfCharacter(from: CharacterSet.newlines) != nil {
                 return .leading
             }

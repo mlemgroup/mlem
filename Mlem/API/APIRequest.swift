@@ -38,16 +38,14 @@ protocol APIGetRequest: APIRequest {
 
 extension APIRequest {
     func endpoint(base: URL) -> URL {
-        print("ORIGINAL")
-        return base
+        base
             .appending(path: path)
     }
 }
 
 extension APIGetRequest {
     func endpoint(base: URL) -> URL {
-        print("APPEND", queryItems.filter { $0.value != nil })
-        return base
+        base
             .appending(path: path)
             .appending(queryItems: queryItems.filter { $0.value != nil })
     }

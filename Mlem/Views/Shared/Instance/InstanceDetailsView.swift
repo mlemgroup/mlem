@@ -14,7 +14,7 @@ struct InstanceDetailsView: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            if let date = instance.creationDate {
+            if let date = instance.creationDate_ {
                 box {
                     HStack {
                         Label(date.dateString, systemImage: Icons.cakeDay)

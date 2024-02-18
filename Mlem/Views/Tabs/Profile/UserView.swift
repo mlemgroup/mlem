@@ -59,7 +59,7 @@ struct PersonView: View {
                     person.copyFullNameWithPrefix(notifier: notifier)
                 } label: {
                     VStack(spacing: 5) {
-                        Text(person.displayName ?? person.name)
+                        Text(person.displayName_ ?? person.name)
                             .font(.title)
                             .fontWeight(.semibold)
                             .lineLimit(1)
@@ -76,12 +76,12 @@ struct PersonView: View {
                 
                 VStack(spacing: 0) {
                     let bioAlignment = bioAlignment
-                    if let bio = person.description {
+                    if let bio = person.description_ {
                         Divider()
                             .padding(.bottom, AppConstants.postAndCommentSpacing)
                         MarkdownView(text: bio, isNsfw: false, alignment: bioAlignment).padding(AppConstants.postAndCommentSpacing)
                     }
-                    if let creationDate = person.creationDate {
+                    if let creationDate = person.creationDate_ {
                         HStack {
                             Label(creationDate.dateString, systemImage: Icons.cakeDay)
                             Text("•")
@@ -109,11 +109,11 @@ struct PersonView: View {
                             BubblePicker(tabs, selected: $selectedTab) { tab in
                                 switch tab {
                                 case .posts:
-                                    Text("Posts (\(abbreviateNumber(person.postCount ?? 0)))")
+                                    Text("Posts (\(abbreviateNumber(person.postCount_ ?? 0)))")
                                 case .comments:
-                                    Text("Comments (\(abbreviateNumber(person.commentCount ?? 0)))")
+                                    Text("Comments (\(abbreviateNumber(person.commentCount_ ?? 0)))")
                                 case .communities:
-                                    Text("Communities (\(abbreviateNumber(person.moderatedCommunities?.count ?? 0)))")
+                                    Text("Communities (\(abbreviateNumber(person.moderatedCommunities_?.count ?? 0)))")
                                 default:
                                     Text(tab.label)
                                 }
@@ -189,7 +189,7 @@ struct PersonView: View {
         }
         .fancyTabScrollCompatible()
         .navigationBarColor()
-        .navigationTitle(person.displayName ?? person.name)
+        .navigationTitle(person.displayName_ ?? person.name)
         .navigationBarTitleDisplayMode(.inline)
     }
     
@@ -204,7 +204,7 @@ struct PersonView: View {
                                 switch flair {
                                 case .banned:
                                     Image(systemName: Icons.bannedFlair)
-                                    switch person.instanceBan {
+                                    switch person.instanceBan_ {
                                     case let .temporarilyBanned(expires: date):
                                         Text("Banned Until \(date.dateString)")
                                     default:
@@ -215,7 +215,7 @@ struct PersonView: View {
                                     Text("\(person.host ?? "Instance") Administrator")
                                 case .moderator:
                                     Image(systemName: Icons.moderationFill)
-                                    Text("\(communityContext?.displayName ?? "Community") Moderator")
+                                    Text("\(communityContext?.displayName_ ?? "Community") Moderator")
                                 default:
                                     Image(systemName: flair.icon)
                                     Text(flair.label)
