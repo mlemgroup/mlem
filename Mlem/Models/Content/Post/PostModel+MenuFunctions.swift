@@ -160,7 +160,6 @@ extension PostModel {
                 .standardMenuFunction(
                     text: "Toggle Read State",
                     imageName: "book.and.wrench",
-                    destructiveActionPrompt: nil,
                     enabled: true,
                     callback: {
                         Task {
