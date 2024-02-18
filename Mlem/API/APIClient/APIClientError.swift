@@ -19,11 +19,14 @@ enum APIClientError: Error {
     case cancelled
     case invalidSession
     case decoding(Data, Error?)
+    case failedToWriteTokenToBody
 }
 
 extension APIClientError: CustomStringConvertible {
     var description: String {
         switch self {
+        case .failedToWriteTokenToBody:
+            return "Failed to write token to body"
         case let .encoding(error):
             return "Unable to encode: \(error)"
         case let .networking(error):

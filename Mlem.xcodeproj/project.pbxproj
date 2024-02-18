@@ -95,7 +95,6 @@
 		03A18CBB2B0FD6F000BA69D2 /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A18CBA2B0FD6F000BA69D2 /* ProfileSettingsView.swift */; };
 		03A18CBD2B1005A400BA69D2 /* SaveUserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A18CBC2B1005A400BA69D2 /* SaveUserSettings.swift */; };
 		03A18CBF2B1252BD00BA69D2 /* ListingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A18CBE2B1252BD00BA69D2 /* ListingType.swift */; };
-		03A1B3F22A83F33900AB0DE0 /* DownvoteCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A1B3F12A83F33900AB0DE0 /* DownvoteCounterView.swift */; };
 		03A1B3F42A83F46200AB0DE0 /* ShareButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A1B3F32A83F46200AB0DE0 /* ShareButtonView.swift */; };
 		03A1B3F72A84000400AB0DE0 /* APIContentAggregatesProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A1B3F62A84000400AB0DE0 /* APIContentAggregatesProtocol.swift */; };
 		03A1B3F92A8400DD00AB0DE0 /* APIContentViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A1B3F82A8400DD00AB0DE0 /* APIContentViewProtocol.swift */; };
@@ -178,8 +177,7 @@
 		6322A5CB27F77A4D00135D4F /* Loading View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6322A5CA27F77A4D00135D4F /* Loading View.swift */; };
 		6322A5D027F8629700135D4F /* PersonLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6322A5CF27F8629700135D4F /* PersonLinkView.swift */; };
 		6322A5D227F88CFD00135D4F /* Time Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6322A5D127F88CFD00135D4F /* Time Parser.swift */; };
-		632E8EE627EE63D3007E8D75 /* UpvoteButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632E8EE527EE63D3007E8D75 /* UpvoteButtonView.swift */; };
-		632E8EE827EE63DB007E8D75 /* DownvoteButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632E8EE727EE63DB007E8D75 /* DownvoteButtonView.swift */; };
+		632E8EE627EE63D3007E8D75 /* VoteButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632E8EE527EE63D3007E8D75 /* VoteButtonView.swift */; };
 		6332FDBD27EFAF7C0009A98A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6332FDBC27EFAF7B0009A98A /* Settings.bundle */; };
 		6332FDC027EFB05F0009A98A /* Settings Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6332FDBF27EFB05F0009A98A /* Settings Item.swift */; };
 		6332FDC327EFCB5F0009A98A /* Color+Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6332FDC227EFCB5F0009A98A /* Color+Colors.swift */; };
@@ -365,7 +363,7 @@
 		CD525F652A4B6D8F00BCA794 /* CommunityLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD525F642A4B6D8F00BCA794 /* CommunityLinkView.swift */; };
 		CD59E8A52A72C943005757F4 /* MarkAllAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD59E8A42A72C943005757F4 /* MarkAllAsReadRequest.swift */; };
 		CD5F76BC2B75BE700013A827 /* MarkReadBatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5F76BB2B75BE700013A827 /* MarkReadBatcher.swift */; };
-		CD6483302A38D31C00EE6CA3 /* UpvoteCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD64832F2A38D31C00EE6CA3 /* UpvoteCounterView.swift */; };
+		CD6483302A38D31C00EE6CA3 /* VoteCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD64832F2A38D31C00EE6CA3 /* VoteCounterView.swift */; };
 		CD6483322A38D3A600EE6CA3 /* ScoreCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483312A38D3A600EE6CA3 /* ScoreCounterView.swift */; };
 		CD6483362A39F20800EE6CA3 /* Post Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483352A39F20800EE6CA3 /* Post Type.swift */; };
 		CD6483382A3A0F2200EE6CA3 /* NSFW Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483372A3A0F2200EE6CA3 /* NSFW Tag.swift */; };
@@ -577,7 +575,6 @@
 		03A18CBA2B0FD6F000BA69D2 /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		03A18CBC2B1005A400BA69D2 /* SaveUserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveUserSettings.swift; sourceTree = "<group>"; };
 		03A18CBE2B1252BD00BA69D2 /* ListingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingType.swift; sourceTree = "<group>"; };
-		03A1B3F12A83F33900AB0DE0 /* DownvoteCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownvoteCounterView.swift; sourceTree = "<group>"; };
 		03A1B3F32A83F46200AB0DE0 /* ShareButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareButtonView.swift; sourceTree = "<group>"; };
 		03A1B3F62A84000400AB0DE0 /* APIContentAggregatesProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContentAggregatesProtocol.swift; sourceTree = "<group>"; };
 		03A1B3F82A8400DD00AB0DE0 /* APIContentViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContentViewProtocol.swift; sourceTree = "<group>"; };
@@ -660,8 +657,7 @@
 		6322A5CA27F77A4D00135D4F /* Loading View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Loading View.swift"; sourceTree = "<group>"; };
 		6322A5CF27F8629700135D4F /* PersonLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonLinkView.swift; sourceTree = "<group>"; };
 		6322A5D127F88CFD00135D4F /* Time Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Time Parser.swift"; sourceTree = "<group>"; };
-		632E8EE527EE63D3007E8D75 /* UpvoteButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpvoteButtonView.swift; sourceTree = "<group>"; };
-		632E8EE727EE63DB007E8D75 /* DownvoteButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownvoteButtonView.swift; sourceTree = "<group>"; };
+		632E8EE527EE63D3007E8D75 /* VoteButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteButtonView.swift; sourceTree = "<group>"; };
 		6332FDBC27EFAF7B0009A98A /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		6332FDBF27EFB05F0009A98A /* Settings Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings Item.swift"; sourceTree = "<group>"; };
 		6332FDC227EFCB5F0009A98A /* Color+Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Colors.swift"; sourceTree = "<group>"; };
@@ -845,7 +841,7 @@
 		CD525F642A4B6D8F00BCA794 /* CommunityLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityLinkView.swift; sourceTree = "<group>"; };
 		CD59E8A42A72C943005757F4 /* MarkAllAsReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkAllAsReadRequest.swift; sourceTree = "<group>"; };
 		CD5F76BB2B75BE700013A827 /* MarkReadBatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkReadBatcher.swift; sourceTree = "<group>"; };
-		CD64832F2A38D31C00EE6CA3 /* UpvoteCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpvoteCounterView.swift; sourceTree = "<group>"; };
+		CD64832F2A38D31C00EE6CA3 /* VoteCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteCounterView.swift; sourceTree = "<group>"; };
 		CD6483312A38D3A600EE6CA3 /* ScoreCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreCounterView.swift; sourceTree = "<group>"; };
 		CD6483352A39F20800EE6CA3 /* Post Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Type.swift"; sourceTree = "<group>"; };
 		CD6483372A3A0F2200EE6CA3 /* NSFW Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSFW Tag.swift"; sourceTree = "<group>"; };
@@ -1465,10 +1461,8 @@
 			isa = PBXGroup;
 			children = (
 				CD6483312A38D3A600EE6CA3 /* ScoreCounterView.swift */,
-				632E8EE527EE63D3007E8D75 /* UpvoteButtonView.swift */,
-				632E8EE727EE63DB007E8D75 /* DownvoteButtonView.swift */,
-				CD64832F2A38D31C00EE6CA3 /* UpvoteCounterView.swift */,
-				03A1B3F12A83F33900AB0DE0 /* DownvoteCounterView.swift */,
+				632E8EE527EE63D3007E8D75 /* VoteButtonView.swift */,
+				CD64832F2A38D31C00EE6CA3 /* VoteCounterView.swift */,
 				CD04D5DA2A36154F008EF95B /* SaveButtonView.swift */,
 				03A1B3F32A83F46200AB0DE0 /* ShareButtonView.swift */,
 				CD04D5DC2A361564008EF95B /* ReplyButtonView.swift */,
@@ -2939,7 +2933,6 @@
 				03C897F62ABF49BD005F3403 /* Abbreviate Numbers.swift in Sources */,
 				637218522A3A2AAD008C4816 /* APIFederatedInstances.swift in Sources */,
 				CD59E8A52A72C943005757F4 /* MarkAllAsReadRequest.swift in Sources */,
-				03A1B3F22A83F33900AB0DE0 /* DownvoteCounterView.swift in Sources */,
 				CDF8425C2A49E4C000723DA0 /* APIPersonMentionView.swift in Sources */,
 				6DCE71292A53C26600CFEB5E /* ServerInstanceLocation.swift in Sources */,
 				036CC3A82B812DA10098B6A1 /* APIClientError.swift in Sources */,
@@ -2981,7 +2974,6 @@
 				50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */,
 				63F0C7BF2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift in Sources */,
 				031F95572B5C7FF20069C244 /* InstanceDetailsView.swift in Sources */,
-				632E8EE827EE63DB007E8D75 /* DownvoteButtonView.swift in Sources */,
 				03AFBE9E2B6E79D200F01F3C /* Community3.swift in Sources */,
 				50D61E5B2AA32B9400A926EC /* APISession.swift in Sources */,
 				CDC1C9412A7ABA9C00072E3D /* ReadMarkStyle.swift in Sources */,
@@ -3038,7 +3030,7 @@
 				6372184C2A3A2AAD008C4816 /* APIPostView.swift in Sources */,
 				0308E1162B0EA42B000CA955 /* APILocalUserView.swift in Sources */,
 				030E863F2AC6C5E9000283A6 /* PictrsImageModel.swift in Sources */,
-				632E8EE627EE63D3007E8D75 /* UpvoteButtonView.swift in Sources */,
+				632E8EE627EE63D3007E8D75 /* VoteButtonView.swift in Sources */,
 				B1A26FE32A45B11800B91A32 /* View+HandleLemmyLinks.swift in Sources */,
 				03B643572A6864CD00F65700 /* TabBarSettingsView.swift in Sources */,
 				CDF842642A49EAFA00723DA0 /* GetPersonMentions.swift in Sources */,
@@ -3069,7 +3061,7 @@
 				6322A5CB27F77A4D00135D4F /* Loading View.swift in Sources */,
 				03A1B3F72A84000400AB0DE0 /* APIContentAggregatesProtocol.swift in Sources */,
 				032C1E042B5D7DAC00FB4F23 /* QuickSwitcherSettingsView.swift in Sources */,
-				CD6483302A38D31C00EE6CA3 /* UpvoteCounterView.swift in Sources */,
+				CD6483302A38D31C00EE6CA3 /* VoteCounterView.swift in Sources */,
 				88B165B82A8643F4007C9115 /* View+NavigationBarColor.swift in Sources */,
 				030AC0522A64666C00037155 /* UserSettingsView.swift in Sources */,
 				E449C5912B2AA8A300E3BCF4 /* AccountDiscussionLanguagesView.swift in Sources */,
@@ -3296,12 +3288,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "local build";
 				DEVELOPMENT_ASSET_PATHS = "\"Mlem/Preview Content\"";
-				DEVELOPMENT_TEAM = 76ULHQGAPN;
+				DEVELOPMENT_TEAM = V4747CQLU2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Mlem/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Mlem;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "$(PRODUCT_NAME) requires Face ID permissions for app locking feature.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

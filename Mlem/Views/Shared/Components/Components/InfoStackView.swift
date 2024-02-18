@@ -69,6 +69,7 @@ struct InfoStackView: View {
         .frame(height: AppConstants.barIconSize)
         .foregroundColor(.secondary)
         .font(.footnote)
+        .monospacedDigit()
     }
     
     @ViewBuilder

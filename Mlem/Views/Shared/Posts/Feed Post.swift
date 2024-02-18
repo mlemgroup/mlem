@@ -212,6 +212,7 @@ struct FeedPost: View {
                     shouldShowSaved: shouldShowSavedInPostBar,
                     shouldShowReplies: shouldShowRepliesInPostBar
                 )
+                .padding(.horizontal, AppConstants.postAndCommentSpacing)
             }
         }
     }

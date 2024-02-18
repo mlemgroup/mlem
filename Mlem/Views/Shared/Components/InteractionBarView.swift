@@ -36,49 +36,30 @@ struct InteractionBarView: View {
     }
     
     var body: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: AppConstants.postAndCommentSpacing) {
             ForEach(Array(widgets.enumerated()), id: \.offset) { offset, widget in
                 switch widget {
                 case .scoreCounter:
-                    ScoreCounterView(
-                        vote: content.myVote,
-                        score: content.score,
-                        upvote: { },
-                        downvote: { }
-                    )
+                    ScoreCounterView(content: content)
                 
                 case .upvoteCounter:
-                    if offset == widgets.count - 1 {
-                        UpvoteCounterView(vote: content.myVote, score: content.upvoteCount, upvote: { })
-                    } else {
-                        UpvoteCounterView(vote: content.myVote, score: content.downvoteCount, upvote: { })
-                            .padding(.trailing, -AppConstants.postAndCommentSpacing)
-                    }
-                    
+                    VoteCounterView(content: content, voteType: .upvote)
+
                 case .downvoteCounter:
                     // if appState.myInstance?.enableDownvotes ?? false {
-                    if offset == widgets.count - 1 {
-                        DownvoteCounterView(vote: content.myVote, score: content.downvoteCount, downvote: { })
-                    } else {
-                        DownvoteCounterView(vote: content.myVote, score: content.downvoteCount, downvote: { })
-                            .padding(.trailing, -AppConstants.postAndCommentSpacing)
-                    }
+                    VoteCounterView(content: content, voteType: .downvote)
                     // }
                     
                 case .upvote:
-                    UpvoteButtonView(vote: content.myVote, upvote: { })
+                    VoteButtonView(content: content, voteType: .upvote)
                     
                 case .downvote:
                     // if appState.myInstance?.enableDownvotes ?? false {
-                    DownvoteButtonView(vote: content.myVote, downvote: { })
+                    VoteButtonView(content: content, voteType: .downvote)
                     // }
                     
                 case .save:
-                     SaveButtonView(isSaved: content.isSaved, accessibilityContext: accessibilityContext, save: {
-//                        Task(priority: .userInitiated) {
-//                            await save()
-//                        }
-                     })
+                    SaveButtonView(content: content, accessibilityContext: accessibilityContext)
                     
                 case .reply:
                     ReplyButtonView(accessibilityContext: accessibilityContext, reply: reply)
@@ -106,12 +87,13 @@ struct InteractionBarView: View {
                         alignment: infoStackAlignment(offset),
                         colorizeVotes: false
                     )
-                    .padding(AppConstants.postAndCommentSpacing)
+                    .padding(.vertical, AppConstants.postAndCommentSpacing)
                     .frame(minWidth: 0, maxWidth: .infinity)
                 }
             }
         }
         .foregroundStyle(.primary)
         .font(.callout)
+        .padding(.vertical, 4)
     }
 }

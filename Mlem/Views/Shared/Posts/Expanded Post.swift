@@ -253,6 +253,7 @@ struct ExpandedPost: View {
                 shouldShowSaved: shouldShowSavedInPostBar,
                 shouldShowReplies: shouldShowRepliesInPostBar
             )
+            .padding(.horizontal, AppConstants.postAndCommentSpacing)
         }
     }
 

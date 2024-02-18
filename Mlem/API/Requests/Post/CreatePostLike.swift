@@ -10,23 +10,19 @@ import Foundation
 struct CreatePostLikeRequest: APIPostRequest {
     typealias Response = PostResponse
 
-    let instanceURL: URL
     let path = "post/like"
     let body: Body
 
     // lemmy_api_common::post::CreatePostLike
     struct Body: Encodable {
-        let auth: String
         let post_id: Int
         let score: Int
     }
 
     init(
-        session: APISession,
         postId: Int,
         score: ScoringOperation
-    ) throws {
-        self.instanceURL = try session.instanceUrl
-        self.body = try .init(auth: session.token, post_id: postId, score: score.rawValue)
+    ) {
+        self.body = .init(post_id: postId, score: score.rawValue)
     }
 }

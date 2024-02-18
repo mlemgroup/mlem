@@ -10,7 +10,6 @@ import Foundation
 struct SavePostRequest: APIPutRequest {
     typealias Response = PostResponse
 
-    let instanceURL: URL
     let path = "post/save"
     let body: Body
 
@@ -18,20 +17,15 @@ struct SavePostRequest: APIPutRequest {
     struct Body: Encodable {
         let post_id: Int
         let save: Bool
-        let auth: String
     }
 
     init(
-        session: APISession,
         postId: Int,
         save: Bool
-    ) throws {
-        self.instanceURL = try session.instanceUrl
-
-        self.body = try .init(
+    ) {
+        self.body = .init(
             post_id: postId,
-            save: save,
-            auth: session.token
+            save: save
         )
     }
 }

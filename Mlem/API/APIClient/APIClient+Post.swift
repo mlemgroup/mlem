@@ -38,7 +38,6 @@ extension APIClient {
         limit: Int,
         savedOnly: Bool
     ) async throws -> GetPostsResponse {
-        print("REQUEST", feedType, sort, endpointUrl, token)
         let request = GetPostsRequest(
             communityId: nil,
             page: page,
@@ -48,8 +47,16 @@ extension APIClient {
             limit: limit,
             savedOnly: savedOnly
         )
-        let response = try await perform(request: request)
-        print("RESPONSE", response.posts.first?.post.name)
-        return response
+        return try await perform(request: request)
+    }
+    
+    func voteOnPost(id: Int, score: ScoringOperation) async throws -> PostResponse {
+        let request = CreatePostLikeRequest(postId: id, score: score)
+        return try await perform(request: request)
+    }
+    
+    func savePost(id: Int, shouldSave: Bool) async throws -> PostResponse {
+        let request = SavePostRequest(postId: id, save: shouldSave)
+        return try await perform(request: request)
     }
 }

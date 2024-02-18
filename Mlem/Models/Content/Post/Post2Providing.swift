@@ -14,6 +14,8 @@ protocol Post2Providing: InteractableContent, Post1Providing {
     var community: Community1 { get }
 
     var unreadCommentCount: Int { get }
+    
+    func update(with post: APIPostView)
 }
 
 extension Post2Providing {
@@ -40,4 +42,47 @@ extension Post2Providing {
     var myVote_: ScoringOperation? { post2.myVote }
     
     var score: Int { upvoteCount - downvoteCount }
+    
+    func vote(_ newVote: ScoringOperation) async throws {
+        if newVote == myVote { return }
+        let oldVote = myVote
+        switch oldVote {
+        case .upvote:
+            upvoteCount -= 1
+        case .downvote:
+            downvoteCount -= 1
+        default:
+            break
+        }
+        switch newVote {
+        case .upvote:
+            upvoteCount += 1
+        case .downvote:
+            downvoteCount += 1
+        default:
+            break
+        }
+        myVote = newVote
+        
+        do {
+            let response = try await source.api.voteOnPost(id: id, score: newVote)
+            update(with: response.postView)
+        } catch {
+            myVote = oldVote
+            throw error
+        }
+    }
+    
+    func toggleSave() async throws {
+        let oldState = isSaved
+        isSaved.toggle()
+        
+        do {
+            let response = try await source.api.savePost(id: id, shouldSave: isSaved)
+            update(with: response.postView)
+        } catch {
+            isSaved = oldState
+            throw error
+        }
+    }
 }

@@ -26,6 +26,15 @@ extension ScoringOperation: AssociatedColor {
 }
 
 extension ScoringOperation: AssociatedIcon {
+    var buttonIconName: String {
+        switch self {
+        case .downvote:
+            return Icons.downvote
+        default:
+            return Icons.upvote
+        }
+    }
+    
     var iconName: String {
         switch self {
         case .upvote: return Icons.upvoteSquare
