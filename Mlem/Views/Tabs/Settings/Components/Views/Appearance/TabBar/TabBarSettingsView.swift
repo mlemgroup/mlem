@@ -49,7 +49,7 @@ struct TabBarSettingsView: View {
                             Group {
                                 switch item {
                                 case .nickname:
-                                    Text(appState.myUser?.nickname ?? "Nickname")
+                                    Text(appState.myUser?.nickname ?? appState.myUser?.name ?? "Nickname")
                                 case .instance:
                                     Text(appState.myInstance?.host ?? "Instance")
                                 case .anonymous:

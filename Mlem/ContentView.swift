@@ -60,7 +60,7 @@ struct ContentView: View {
     }
         
     var profileTabAvatar: URL? {
-        if showProfileTabAvatar {
+        if showProfileTabAvatar && profileTabLabelMode != .anonymous {
             return appState.myUser?.avatarUrl
         }
         return nil
