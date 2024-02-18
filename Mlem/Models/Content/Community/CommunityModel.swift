@@ -258,6 +258,9 @@ struct CommunityModel {
     
     // MARK: - Moderation
     
+    // TODO: ERIC is it nicer to have a toggle-style function or separate?
+    // If toggle-style, what should the return be?
+    
     func banUser(
         userId: Int,
         ban: Bool,
@@ -278,6 +281,34 @@ struct CommunityModel {
         } catch {
             errorHandler.handle(error)
             return !ban
+        }
+    }
+    
+    /// Adds a mod to this community.
+    /// - Parameters:
+    ///   - userId: user to add
+    /// - Returns: true upon successful modding, false otherwise
+    func addMod(userId: Int) async -> Bool {
+        do {
+            let updatedModStatus = try await apiClient.updateModStatus(to: communityId, userId: userId, add: true)
+            return updatedModStatus
+        } catch {
+            errorHandler.handle(error)
+            return false
+        }
+    }
+    
+    /// Removes a mod from this community.
+    /// - Parameters:
+    ///   - userId: user to remove
+    /// - Returns: true upon successful unmodding, false otherwise
+    func removeMod(userId: Int) async -> Bool {
+        do {
+            let updatedModStatus = try await apiClient.updateModStatus(to: communityId, userId: userId, add: false)
+            return !updatedModStatus
+        } catch {
+            errorHandler.handle(error)
+            return false
         }
     }
     

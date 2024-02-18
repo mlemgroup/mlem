@@ -15,6 +15,8 @@ struct ModToolSheet: View {
         switch tool {
         case let .moderators(community):
             moderators(for: community)
+        case let .auditUser(user, community):
+            AuditUserView(user: user, community: community)
         case let .instanceBan(user, shouldBan):
             BanUserView(user: user, community: nil, shouldBan: shouldBan)
         case let .communityBan(user, community, shouldBan):

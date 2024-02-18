@@ -18,16 +18,16 @@ enum ModTool: Hashable, Identifiable {
     
     func hash(into hasher: inout Hasher) {
         switch self {
-        case let .auditUser(userModel, community):
-            hasher.combine("auditUser")
-            hasher.combine(community.uid)
-            hasher.combine(userModel?.uid)
         case let .moderators(community):
             hasher.combine("moderators")
             hasher.combine(community.uid)
         case let .editCommunity(community):
             hasher.combine("edit")
             hasher.combine(community.uid)
+        case let .auditUser(user, community):
+            hasher.combine("auditUser")
+            hasher.combine(community.uid)
+            hasher.combine(user?.uid)
         case let .instanceBan(user, shouldBan):
             hasher.combine("instanceBan")
             hasher.combine(user.uid)

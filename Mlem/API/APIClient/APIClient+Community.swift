@@ -89,4 +89,23 @@ extension APIClient {
             
         return response.banned
     }
+    
+    /// Adds or removes the given user from the mod list of the given community
+    /// - Parameters:
+    ///   - userId: user to add/remove
+    ///   - communityId: id of the community to add/remove to/from
+    ///   - add: whether to add (true) or remove (false)
+    /// - Returns: updated mod status of the user
+    func updateModStatus(of userId: Int, in communityId: Int, status: Bool) async throws -> Bool {
+        let request = try AddModToCommunityRequest(
+            session: session,
+            communityId: communityId,
+            personId: userId,
+            add: status
+        )
+        
+        let response = try await perform(request: request)
+        
+        return response.moderators.contains(where: { $0.moderator.id == userId })
+    }
 }
