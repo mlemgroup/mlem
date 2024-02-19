@@ -14,6 +14,7 @@ protocol Post2Providing: InteractableContent, Post1Providing {
     var community: Community1 { get }
 
     var unreadCommentCount: Int { get }
+    var isRead: Bool { get set }
     
     func update(with post: APIPostView)
 }
@@ -28,7 +29,7 @@ extension Post2Providing {
     var downvoteCount: Int { post2.downvoteCount }
     var unreadCommentCount: Int { post2.unreadCommentCount }
     var isSaved: Bool { post2.isSaved }
-    var isRead: Bool { post2.isRead }
+    var isRead: Bool { get { post2.isRead } set { post2.isRead = newValue } }
     var myVote: ScoringOperation { post2.myVote }
     
     var creator_: Person1? { post2.creator }
@@ -45,7 +46,12 @@ extension Post2Providing {
     
     func vote(_ newVote: ScoringOperation) async throws {
         if newVote == myVote { return }
+        
         let oldVote = myVote
+        let oldUpvoteCount = upvoteCount
+        let oldDownvoteCount = downvoteCount
+        let oldReadStatus = isRead
+        
         switch oldVote {
         case .upvote:
             upvoteCount -= 1
@@ -63,25 +69,32 @@ extension Post2Providing {
             break
         }
         myVote = newVote
+        isRead = true
         
         do {
             let response = try await source.api.voteOnPost(id: id, score: newVote)
             update(with: response.postView)
         } catch {
             myVote = oldVote
+            upvoteCount = oldUpvoteCount
+            downvoteCount = oldDownvoteCount
+            isRead = oldReadStatus
             throw error
         }
     }
     
     func toggleSave() async throws {
-        let oldState = isSaved
+        let oldSavedStatus = isSaved
+        let oldReadStatus = isRead
         isSaved.toggle()
+        isRead = true
         
         do {
             let response = try await source.api.savePost(id: id, shouldSave: isSaved)
             update(with: response.postView)
         } catch {
-            isSaved = oldState
+            isSaved = oldSavedStatus
+            isRead = oldReadStatus
             throw error
         }
     }
