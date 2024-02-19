@@ -16,7 +16,9 @@ struct APIModRemoveCommunityView: Codable {
     let community: APICommunity
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
+
         ]
     }
+
 }

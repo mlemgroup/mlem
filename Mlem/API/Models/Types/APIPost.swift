@@ -34,7 +34,7 @@ struct APIPost: Codable {
     let featured_local: Bool
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
             .init(name: "id", value: String(id)),
             .init(name: "name", value: name),
             .init(name: "url", value: url),
@@ -58,4 +58,5 @@ struct APIPost: Codable {
             .init(name: "featured_local", value: String(featured_local))
         ]
     }
+
 }

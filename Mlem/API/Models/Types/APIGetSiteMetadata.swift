@@ -14,8 +14,9 @@ struct APIGetSiteMetadata: Codable {
     let url: String
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
             .init(name: "url", value: url)
         ]
     }
+
 }

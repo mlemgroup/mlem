@@ -17,7 +17,9 @@ struct APIRegistrationApplicationView: Codable {
     let admin: APIPerson?
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
+
         ]
     }
+
 }

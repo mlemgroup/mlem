@@ -16,7 +16,9 @@ struct APIMarkPostAsRead: Codable {
     let read: Bool
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
+
         ]
     }
+
 }

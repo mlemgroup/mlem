@@ -19,7 +19,7 @@ struct APIModRemoveComment: Codable {
     let when_: String
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
             .init(name: "id", value: String(id)),
             .init(name: "mod_person_id", value: String(mod_person_id)),
             .init(name: "comment_id", value: String(comment_id)),
@@ -28,4 +28,5 @@ struct APIModRemoveComment: Codable {
             .init(name: "when_", value: when_)
         ]
     }
+
 }

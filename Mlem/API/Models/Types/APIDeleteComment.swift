@@ -15,9 +15,10 @@ struct APIDeleteComment: Codable {
     let deleted: Bool
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
             .init(name: "comment_id", value: String(comment_id)),
             .init(name: "deleted", value: String(deleted))
         ]
     }
+
 }

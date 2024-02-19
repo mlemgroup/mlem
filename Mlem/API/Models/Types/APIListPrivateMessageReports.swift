@@ -16,10 +16,11 @@ struct APIListPrivateMessageReports: Codable {
     let unresolved_only: Bool?
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
             .init(name: "page", value: page.map(String.init)),
             .init(name: "limit", value: limit.map(String.init)),
             .init(name: "unresolved_only", value: unresolved_only.map(String.init))
         ]
     }
+
 }

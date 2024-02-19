@@ -18,7 +18,7 @@ struct APIPersonMention: Codable {
     let published: String
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
             .init(name: "id", value: String(id)),
             .init(name: "recipient_id", value: String(recipient_id)),
             .init(name: "comment_id", value: String(comment_id)),
@@ -26,4 +26,5 @@ struct APIPersonMention: Codable {
             .init(name: "published", value: published)
         ]
     }
+
 }

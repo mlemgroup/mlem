@@ -27,7 +27,9 @@ struct APIPersonMentionView: Codable {
     let my_vote: Int?
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
+
         ]
     }
+
 }

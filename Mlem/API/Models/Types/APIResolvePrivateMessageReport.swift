@@ -15,9 +15,10 @@ struct APIResolvePrivateMessageReport: Codable {
     let resolved: Bool
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
             .init(name: "report_id", value: String(report_id)),
             .init(name: "resolved", value: String(resolved))
         ]
     }
+
 }

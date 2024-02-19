@@ -15,9 +15,10 @@ struct APIUpdateTotp: Codable {
     let enabled: Bool
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
             .init(name: "totp_token", value: totp_token),
             .init(name: "enabled", value: String(enabled))
         ]
     }
+
 }

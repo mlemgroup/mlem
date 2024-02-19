@@ -7,4 +7,17 @@
 
 import Foundation
 
-extension APIListingType {}
+extension APIListingType {
+    var toFeedType: FeedType {
+        switch self {
+        case .all:
+            return .all
+        case .local:
+            return .local
+        case .subscribed:
+            return .subscribed
+        default:
+            return .all
+        }
+    }
+}

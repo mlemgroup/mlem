@@ -9,7 +9,7 @@ import Foundation
 
 extension APIClient {
     func getCommunity(id: Int) async throws -> APIGetCommunityResponse {
-        let request = APIGetCommunityRequest(communityId: id)
+        let request = GetCommunityRequest(id: id)
         return try await perform(request: request)
     }
     

@@ -19,7 +19,7 @@ struct APIEditPost: Codable {
     let language_id: Int?
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
             .init(name: "post_id", value: String(post_id)),
             .init(name: "name", value: name),
             .init(name: "url", value: url),
@@ -28,4 +28,5 @@ struct APIEditPost: Codable {
             .init(name: "language_id", value: language_id.map(String.init))
         ]
     }
+
 }

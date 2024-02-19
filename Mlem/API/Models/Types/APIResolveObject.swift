@@ -15,8 +15,9 @@ struct APIResolveObject: Codable {
     let q: String
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
             .init(name: "q", value: q)
         ]
     }
+
 }
