@@ -19,7 +19,7 @@ struct APISaveUserSettings: Codable {
     let default_sort_type: APISortType?
     let default_listing_type: APIListingType?
     let interface_language: String?
-    let avatar: String?
+    let avatar: URL?
     let banner: URL?
     let display_name: String?
     let email: String?

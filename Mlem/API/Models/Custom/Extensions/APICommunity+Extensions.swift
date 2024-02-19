@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension APICommunity: Identifiable, ActorIdentifiable {
+extension APICommunity: ActorIdentifiable, Identifiable {
     var actorId: URL { actor_id }
 }
 

@@ -14,7 +14,7 @@ struct APIPerson: Codable {
     let id: Int
     let name: String
     let display_name: String?
-    let avatar: String?
+    let avatar: URL?
     let banned: Bool
     let published: Date
     let updated: Date?
@@ -25,6 +25,6 @@ struct APIPerson: Codable {
     let deleted: Bool
     let matrix_user_id: String?
     let bot_account: Bool
-    let ban_expires: String?
+    let ban_expires: Date?
     let instance_id: Int
 }

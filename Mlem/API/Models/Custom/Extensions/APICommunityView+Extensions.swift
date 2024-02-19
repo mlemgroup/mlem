@@ -7,6 +7,7 @@
 
 import Foundation
 
-extension APICommunityView: Identifiable {
+extension APICommunityView: ActorIdentifiable, Identifiable {
+    var actorId: URL { community.actorId }
     var id: Int { community.id }
 }

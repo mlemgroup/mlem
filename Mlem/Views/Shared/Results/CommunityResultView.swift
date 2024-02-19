@@ -130,6 +130,6 @@ struct CommunityResultView: View {
     }
 }
 
-#Preview {
-    CommunityResultView(Community3.mock())
-}
+// #Preview {
+//    CommunityResultView(Community3.mock())
+// }

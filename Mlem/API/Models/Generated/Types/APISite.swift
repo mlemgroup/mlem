@@ -20,7 +20,7 @@ struct APISite: Codable {
     let banner: URL?
     let description: String?
     let actor_id: URL
-    let last_refreshed_at: String
+    let last_refreshed_at: Date
     let inbox_url: String
     let private_key: String?
     let public_key: String

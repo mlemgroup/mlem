@@ -25,7 +25,7 @@ struct SaveUserSettingsRequest: APIPutRequest {
         defaultSortType: APISortType?,
         defaultListingType: APIListingType?,
         interfaceLanguage: String?,
-        avatar: String?,
+        avatar: URL?,
         banner: URL?,
         displayName: String?,
         email: String?,

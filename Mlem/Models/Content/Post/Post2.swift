@@ -33,23 +33,23 @@ final class Post2: Post2Providing, NewContentModel {
         self.post1 = source.caches.post1.createModel(source: source, for: post.post)
         self.creator = source.caches.person1.createModel(source: source, for: post.creator)
         self.community = source.caches.community1.createModel(source: source, for: post.community)
-        self.update(with: post)
+        update(with: post)
     }
     
     func update(with post: APIPostView) {
         commentCount = post.counts.comments
         upvoteCount = post.counts.upvotes
         downvoteCount = post.counts.downvotes
-        unreadCommentCount = post.unreadComments
+        unreadCommentCount = post.unread_comments
         isSaved = post.saved
         isRead = post.read
-        myVote = post.myVote ?? .none
+        myVote = .init(rawValue: post.my_vote ?? 0) ?? .none // TODO: this can be nicer
         
-        self.post1.update(with: post.post)
-        self.creator.update(with: post.creator)
-        self.community.update(with: post.community)
+        post1.update(with: post.post)
+        creator.update(with: post.creator)
+        community.update(with: post.community)
         
-        self.creator.blocked = post.creatorBlocked
+        creator.blocked = post.creator_blocked
     }
     
     var score: Int { upvoteCount - downvoteCount }

@@ -17,20 +17,18 @@ final class Person2: Person2Providing, NewContentModel {
     let person1: Person1
     
     var postCount: Int = 0
-    var postScore: Int = 0
     var commentCount: Int = 0
-    var commentScore: Int = 0
     
     init(source: any APISource, from personView: APIPersonView) {
         self.source = source
         self.person1 = source.caches.person1.createModel(source: source, for: personView.person)
-        self.update(with: personView)
+        update(with: personView)
     }
     
     init(source: any APISource, from localUserView: APILocalUserView) {
         self.source = source
         self.person1 = source.caches.person1.createModel(source: source, for: localUserView.person)
-        self.update(with: localUserView)
+        update(with: localUserView)
     }
     
     func update(with personView: APIPersonView) {
@@ -38,10 +36,8 @@ final class Person2: Person2Providing, NewContentModel {
     }
     
     func update(with personView: any APIPersonViewLike) {
-        self.postCount = personView.counts.postCount
-        self.postScore = personView.counts.postScore ?? 0
-        self.commentCount = personView.counts.commentCount
-        self.commentScore = personView.counts.commentScore ?? 0
-        self.person1.update(with: personView.person)
+        postCount = personView.counts.post_count
+        commentCount = personView.counts.comment_count
+        person1.update(with: personView.person)
     }
 }

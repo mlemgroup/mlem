@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension APIPost: ActorIdentifiable {
+extension APIPost: ActorIdentifiable, Identifiable {
     var actorId: URL { ap_id }
 }
 

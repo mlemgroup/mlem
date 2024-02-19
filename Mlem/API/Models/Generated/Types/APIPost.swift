@@ -28,7 +28,7 @@ struct APIPost: Codable {
     let thumbnail_url: URL?
     let ap_id: URL
     let local: Bool
-    let embed_video_url: String?
+    let embed_video_url: URL?
     let language_id: Int
     let featured_community: Bool
     let featured_local: Bool
