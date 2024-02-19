@@ -18,11 +18,11 @@ struct EditPostRequest: APIPutRequest {
 
     init(
         postId: Int,
-        name: String,
-        url: String,
-        body: String,
-        nsfw: Bool,
-        languageId: Int
+        name: String?,
+        url: String?,
+        body: String?,
+        nsfw: Bool?,
+        languageId: Int?
     ) {
         self.body = .init(
             post_id: postId,

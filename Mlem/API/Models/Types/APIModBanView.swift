@@ -16,7 +16,9 @@ struct APIModBanView: Codable {
     let banned_person: APIPerson
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
+
         ]
     }
+
 }

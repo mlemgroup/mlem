@@ -22,7 +22,7 @@ struct APIPrivateMessageReport: Codable {
     let updated: String?
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
             .init(name: "id", value: String(id)),
             .init(name: "creator_id", value: String(creator_id)),
             .init(name: "private_message_id", value: String(private_message_id)),
@@ -34,4 +34,5 @@ struct APIPrivateMessageReport: Codable {
             .init(name: "updated", value: updated)
         ]
     }
+
 }

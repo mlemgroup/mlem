@@ -5,6 +5,8 @@
 //  Created by Eric Andrews on 2024-02-18
 //
 
+import Foundation
+
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 struct ListPostLikesRequest: APIGetRequest {
@@ -15,8 +17,8 @@ struct ListPostLikesRequest: APIGetRequest {
 
     init(
         postId: Int,
-        page: Int,
-        limit: Int
+        page: Int?,
+        limit: Int?
     ) {
         var request: APIListPostLikes = .init(
             post_id: postId,

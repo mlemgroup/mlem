@@ -15,9 +15,10 @@ struct APIPurgePost: Codable {
     let reason: String?
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
             .init(name: "post_id", value: String(post_id)),
             .init(name: "reason", value: reason)
         ]
     }
+
 }

@@ -5,6 +5,8 @@
 //  Created by Eric Andrews on 2024-02-18
 //
 
+import Foundation
+
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 struct ListCommunitiesRequest: APIGetRequest {
@@ -14,11 +16,11 @@ struct ListCommunitiesRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        type_: APIListingType,
-        sort: APISortType,
-        showNsfw: Bool,
-        page: Int,
-        limit: Int
+        type_: APIListingType?,
+        sort: APISortType?,
+        showNsfw: Bool?,
+        page: Int?,
+        limit: Int?
     ) {
         var request: APIListCommunities = .init(
             type_: type_,

@@ -20,9 +20,9 @@ struct BanFromCommunityRequest: APIPostRequest {
         communityId: Int,
         personId: Int,
         ban: Bool,
-        removeData: Bool,
-        reason: String,
-        expires: Int
+        removeData: Bool?,
+        reason: String?,
+        expires: Int?
     ) {
         self.body = .init(
             community_id: communityId,

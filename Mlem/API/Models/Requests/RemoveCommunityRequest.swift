@@ -19,7 +19,7 @@ struct RemoveCommunityRequest: APIPostRequest {
     init(
         communityId: Int,
         removed: Bool,
-        reason: String
+        reason: String?
     ) {
         self.body = .init(
             community_id: communityId,

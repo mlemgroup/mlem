@@ -18,13 +18,13 @@ struct EditCommunityRequest: APIPutRequest {
 
     init(
         communityId: Int,
-        title: String,
-        description: String,
-        icon: String,
-        banner: String,
-        nsfw: Bool,
-        postingRestrictedToMods: Bool,
-        discussionLanguages: [Int]
+        title: String?,
+        description: String?,
+        icon: String?,
+        banner: String?,
+        nsfw: Bool?,
+        postingRestrictedToMods: Bool?,
+        discussionLanguages: [Int]?
     ) {
         self.body = .init(
             community_id: communityId,

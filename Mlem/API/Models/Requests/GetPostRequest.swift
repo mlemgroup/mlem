@@ -5,6 +5,8 @@
 //  Created by Eric Andrews on 2024-02-18
 //
 
+import Foundation
+
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 struct GetPostRequest: APIGetRequest {
@@ -14,8 +16,8 @@ struct GetPostRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        id: Int,
-        commentId: Int
+        id: Int?,
+        commentId: Int?
     ) {
         var request: APIGetPost = .init(
             id: id,

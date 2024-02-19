@@ -19,7 +19,7 @@ struct RemovePostRequest: APIPostRequest {
     init(
         postId: Int,
         removed: Bool,
-        reason: String
+        reason: String?
     ) {
         self.body = .init(
             post_id: postId,

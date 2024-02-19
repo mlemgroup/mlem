@@ -19,11 +19,11 @@ struct CreatePostRequest: APIPostRequest {
     init(
         name: String,
         communityId: Int,
-        url: String,
-        body: String,
-        honeypot: String,
-        nsfw: Bool,
-        languageId: Int
+        url: String?,
+        body: String?,
+        honeypot: String?,
+        nsfw: Bool?,
+        languageId: Int?
     ) {
         self.body = .init(
             name: name,

@@ -19,7 +19,7 @@ struct APIModlogListParams: Codable {
     let hide_modlog_names: Bool
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
             .init(name: "community_id", value: community_id.map(String.init)),
             .init(name: "mod_person_id", value: mod_person_id.map(String.init)),
             .init(name: "other_person_id", value: other_person_id.map(String.init)),
@@ -28,4 +28,5 @@ struct APIModlogListParams: Codable {
             .init(name: "hide_modlog_names", value: String(hide_modlog_names))
         ]
     }
+
 }

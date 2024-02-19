@@ -18,7 +18,7 @@ struct PurgePersonRequest: APIPostRequest {
 
     init(
         personId: Int,
-        reason: String
+        reason: String?
     ) {
         self.body = .init(
             person_id: personId,

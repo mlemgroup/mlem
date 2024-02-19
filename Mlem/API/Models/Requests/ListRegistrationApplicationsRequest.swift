@@ -5,6 +5,8 @@
 //  Created by Eric Andrews on 2024-02-18
 //
 
+import Foundation
+
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 struct ListRegistrationApplicationsRequest: APIGetRequest {
@@ -14,9 +16,9 @@ struct ListRegistrationApplicationsRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        unreadOnly: Bool,
-        page: Int,
-        limit: Int
+        unreadOnly: Bool?,
+        page: Int?,
+        limit: Int?
     ) {
         var request: APIListRegistrationApplications = .init(
             unread_only: unreadOnly,

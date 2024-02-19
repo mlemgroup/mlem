@@ -17,8 +17,8 @@ struct MarkPostAsReadRequest: APIPostRequest {
     let body: Body?
 
     init(
-        postId: Int,
-        postIds: [Int],
+        postId: Int?,
+        postIds: [Int]?,
         read: Bool
     ) {
         self.body = .init(

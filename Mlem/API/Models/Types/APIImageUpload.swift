@@ -17,11 +17,12 @@ struct APIImageUpload: Codable {
     let published: String
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
             .init(name: "local_user_id", value: String(local_user_id)),
             .init(name: "pictrs_alias", value: pictrs_alias),
             .init(name: "pictrs_delete_token", value: pictrs_delete_token),
             .init(name: "published", value: published)
         ]
     }
+
 }

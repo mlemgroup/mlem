@@ -21,11 +21,11 @@ struct RegisterRequest: APIPostRequest {
         password: String,
         passwordVerify: String,
         showNsfw: Bool,
-        email: String,
-        captchaUuid: String,
-        captchaAnswer: String,
-        honeypot: String,
-        answer: String
+        email: String?,
+        captchaUuid: String?,
+        captchaAnswer: String?,
+        honeypot: String?,
+        answer: String?
     ) {
         self.body = .init(
             username: username,

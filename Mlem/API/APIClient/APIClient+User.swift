@@ -8,11 +8,11 @@
 import Foundation
 
 extension APIClient {
-    func login(username: String, password: String, totpToken: String?) async throws -> LoginResponse {
+    func login(username: String, password: String, totpToken: String?) async throws -> APILoginResponse {
         let request = LoginRequest(
-            username: username,
+            usernameOrEmail: username,
             password: password,
-            totpToken: totpToken
+            totp2faToken: totpToken
         )
         
         return try await perform(request: request)

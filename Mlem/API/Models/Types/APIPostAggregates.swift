@@ -20,7 +20,7 @@ struct APIPostAggregates: Codable {
     let newest_comment_time: String
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
             .init(name: "post_id", value: String(post_id)),
             .init(name: "comments", value: String(comments)),
             .init(name: "score", value: String(score)),
@@ -30,4 +30,5 @@ struct APIPostAggregates: Codable {
             .init(name: "newest_comment_time", value: newest_comment_time)
         ]
     }
+
 }

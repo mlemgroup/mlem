@@ -14,8 +14,9 @@ struct APIGetComment: Codable {
     let id: Int
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
             .init(name: "id", value: String(id))
         ]
     }
+
 }

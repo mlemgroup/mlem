@@ -8,7 +8,7 @@
 import Foundation
 
 extension APIClient {
-    func getSite() async throws -> SiteResponse {
+    func getSite() async throws -> APIGetSiteResponse {
         let request = GetSiteRequest()
         return try await perform(request: request)
     }

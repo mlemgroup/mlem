@@ -9,14 +9,12 @@ import Foundation
 
 // lemmy_api_common::post::GetPosts
 struct GetPostsRequest: APIGetRequest {
-    typealias Response = GetPostsResponse
+    typealias Response = APIGetPostsResponse
 
-    let instanceURL: URL
     let path = "post/list"
     let queryItems: [URLQueryItem]
     
     init(
-        session: APISession,
         communityId: Int?,
         page: Int,
         cursor: String?,
@@ -27,7 +25,6 @@ struct GetPostsRequest: APIGetRequest {
         communityName: String? = nil
         // TODO: 0.19 support add liked_only and disliked_only fields
     ) throws {
-        self.instanceURL = try session.instanceUrl
         var queryItems: [URLQueryItem] = [
             .init(name: "type_", value: type.rawValue),
             .init(name: "sort", value: sort.map(\.rawValue)),
@@ -46,18 +43,6 @@ struct GetPostsRequest: APIGetRequest {
         
         queryItems.append(paginationParameter)
         
-        if let token = try? session.token {
-            queryItems.append(
-                .init(name: "auth", value: token)
-            )
-        }
-        
         self.queryItems = queryItems
     }
-}
-
-// lemmy_api_common::post::GetPostsResponse
-struct GetPostsResponse: Decodable {
-    let posts: [APIPostView]
-    let nextPage: String?
 }

@@ -5,6 +5,8 @@
 //  Created by Eric Andrews on 2024-02-18
 //
 
+import Foundation
+
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 struct GetModlogRequest: APIGetRequest {
@@ -14,12 +16,12 @@ struct GetModlogRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        modPersonId: Int,
-        communityId: Int,
-        page: Int,
-        limit: Int,
-        type_: APIModlogActionType,
-        otherPersonId: Int
+        modPersonId: Int?,
+        communityId: Int?,
+        page: Int?,
+        limit: Int?,
+        type_: APIModlogActionType?,
+        otherPersonId: Int?
     ) {
         var request: APIGetModlog = .init(
             mod_person_id: modPersonId,

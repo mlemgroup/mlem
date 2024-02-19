@@ -5,6 +5,8 @@
 //  Created by Eric Andrews on 2024-02-18
 //
 
+import Foundation
+
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 struct GetPersonDetailsRequest: APIGetRequest {
@@ -14,13 +16,13 @@ struct GetPersonDetailsRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        personId: Int,
-        username: String,
-        sort: APISortType,
-        page: Int,
-        limit: Int,
-        communityId: Int,
-        savedOnly: Bool
+        personId: Int?,
+        username: String?,
+        sort: APISortType?,
+        page: Int?,
+        limit: Int?,
+        communityId: Int?,
+        savedOnly: Bool?
     ) {
         var request: APIGetPersonDetails = .init(
             person_id: personId,

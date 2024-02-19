@@ -5,6 +5,8 @@
 //  Created by Eric Andrews on 2024-02-18
 //
 
+import Foundation
+
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 struct SearchRequest: APIGetRequest {
@@ -15,14 +17,14 @@ struct SearchRequest: APIGetRequest {
 
     init(
         q: String,
-        communityId: Int,
-        communityName: String,
-        creatorId: Int,
-        type_: APISearchType,
-        sort: APISortType,
-        listingType: APIListingType,
-        page: Int,
-        limit: Int
+        communityId: Int?,
+        communityName: String?,
+        creatorId: Int?,
+        type_: APISearchType?,
+        sort: APISortType?,
+        listingType: APIListingType?,
+        page: Int?,
+        limit: Int?
     ) {
         var request: APISearch = .init(
             q: q,

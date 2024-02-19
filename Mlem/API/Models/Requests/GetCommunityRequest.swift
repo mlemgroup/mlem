@@ -5,6 +5,8 @@
 //  Created by Eric Andrews on 2024-02-18
 //
 
+import Foundation
+
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 struct GetCommunityRequest: APIGetRequest {
@@ -14,8 +16,8 @@ struct GetCommunityRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        id: Int,
-        name: String
+        id: Int?,
+        name: String?
     ) {
         var request: APIGetCommunity = .init(
             id: id,

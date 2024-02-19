@@ -5,6 +5,8 @@
 //  Created by Eric Andrews on 2024-02-18
 //
 
+import Foundation
+
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 struct GetRepliesRequest: APIGetRequest {
@@ -14,10 +16,10 @@ struct GetRepliesRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        sort: APICommentSortType,
-        page: Int,
-        limit: Int,
-        unreadOnly: Bool
+        sort: APICommentSortType?,
+        page: Int?,
+        limit: Int?,
+        unreadOnly: Bool?
     ) {
         var request: APIGetReplies = .init(
             sort: sort,

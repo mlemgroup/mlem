@@ -19,8 +19,8 @@ struct CreateCommentRequest: APIPostRequest {
     init(
         content: String,
         postId: Int,
-        parentId: Int,
-        languageId: Int
+        parentId: Int?,
+        languageId: Int?
     ) {
         self.body = .init(
             content: content,

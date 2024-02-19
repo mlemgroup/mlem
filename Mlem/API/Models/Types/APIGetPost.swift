@@ -15,9 +15,10 @@ struct APIGetPost: Codable {
     let comment_id: Int?
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
             .init(name: "id", value: id.map(String.init)),
             .init(name: "comment_id", value: comment_id.map(String.init))
         ]
     }
+
 }

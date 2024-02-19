@@ -19,12 +19,12 @@ struct CreateCommunityRequest: APIPostRequest {
     init(
         name: String,
         title: String,
-        description: String,
-        icon: String,
-        banner: String,
-        nsfw: Bool,
-        postingRestrictedToMods: Bool,
-        discussionLanguages: [Int]
+        description: String?,
+        icon: String?,
+        banner: String?,
+        nsfw: Bool?,
+        postingRestrictedToMods: Bool?,
+        discussionLanguages: [Int]?
     ) {
         self.body = .init(
             name: name,

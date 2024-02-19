@@ -18,8 +18,8 @@ struct EditCommentRequest: APIPutRequest {
 
     init(
         commentId: Int,
-        content: String,
-        languageId: Int
+        content: String?,
+        languageId: Int?
     ) {
         self.body = .init(
             comment_id: commentId,

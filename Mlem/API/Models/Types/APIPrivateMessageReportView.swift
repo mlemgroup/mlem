@@ -18,7 +18,9 @@ struct APIPrivateMessageReportView: Codable {
     let resolver: APIPerson?
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
+
         ]
     }
+
 }

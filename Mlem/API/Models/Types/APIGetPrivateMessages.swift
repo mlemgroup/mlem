@@ -17,11 +17,12 @@ struct APIGetPrivateMessages: Codable {
     let creator_id: Int?
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
             .init(name: "unread_only", value: unread_only.map(String.init)),
             .init(name: "page", value: page.map(String.init)),
             .init(name: "limit", value: limit.map(String.init)),
             .init(name: "creator_id", value: creator_id.map(String.init))
         ]
     }
+
 }

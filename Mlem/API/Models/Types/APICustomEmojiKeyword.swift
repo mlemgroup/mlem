@@ -15,9 +15,10 @@ struct APICustomEmojiKeyword: Codable {
     let keyword: String
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
             .init(name: "custom_emoji_id", value: String(custom_emoji_id)),
             .init(name: "keyword", value: keyword)
         ]
     }
+
 }

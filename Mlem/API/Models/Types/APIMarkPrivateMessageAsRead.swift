@@ -15,9 +15,10 @@ struct APIMarkPrivateMessageAsRead: Codable {
     let read: Bool
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
             .init(name: "private_message_id", value: String(private_message_id)),
             .init(name: "read", value: String(read))
         ]
     }
+
 }

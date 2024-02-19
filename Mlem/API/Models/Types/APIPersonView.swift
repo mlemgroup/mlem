@@ -16,7 +16,9 @@ struct APIPersonView: Codable {
     let is_admin: Bool
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
+
         ]
     }
+
 }

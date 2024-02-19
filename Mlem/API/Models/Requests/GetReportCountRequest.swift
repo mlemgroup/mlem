@@ -5,6 +5,8 @@
 //  Created by Eric Andrews on 2024-02-18
 //
 
+import Foundation
+
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 struct GetReportCountRequest: APIGetRequest {
@@ -14,7 +16,7 @@ struct GetReportCountRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        communityId: Int
+        communityId: Int?
     ) {
         var request: APIGetReportCount = .init(
             community_id: communityId

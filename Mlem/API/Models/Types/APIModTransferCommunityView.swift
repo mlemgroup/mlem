@@ -17,7 +17,9 @@ struct APIModTransferCommunityView: Codable {
     let modded_person: APIPerson
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
+
         ]
     }
+
 }

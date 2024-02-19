@@ -9,20 +9,20 @@ import Foundation
 
 extension APIClient {
     func getCommunity(id: Int) async throws -> APIGetCommunityResponse {
-        let request = GetCommunityRequest(id: id)
+        let request = GetCommunityRequest(id: id, name: nil)
         return try await perform(request: request)
     }
     
     func getCommunity(actorId: URL) async throws -> APICommunityView? {
         let request = SearchRequest(
-            query: actorId.absoluteString,
-            searchType: .communities,
-            sortOption: .new,
-            listingType: .all,
-            page: 1,
+            q: actorId.absoluteString,
             communityId: nil,
             communityName: nil,
             creatorId: nil,
+            type_: .communities,
+            sort: .new,
+            listingType: .all,
+            page: 1,
             limit: 1
         )
         let response = try await perform(request: request)

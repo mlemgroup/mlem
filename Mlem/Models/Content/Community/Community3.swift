@@ -10,7 +10,7 @@ import SwiftUI
 
 @Observable
 final class Community3: Community3Providing, NewContentModel {
-    typealias APIType = GetCommunityResponse
+    typealias APIType = APIGetCommunityResponse
     var community3: Community3 { self }
     
     let source: any APISource
@@ -22,7 +22,7 @@ final class Community3: Community3Providing, NewContentModel {
     var discussionLanguages: [Int] = .init()
     var defaultPostLanguage: Int?
     
-    required init(source: any APISource, from response: GetCommunityResponse) {
+    required init(source: any APISource, from response: APIGetCommunityResponse) {
         self.source = source
         
         if let site = response.site {
@@ -31,17 +31,17 @@ final class Community3: Community3Providing, NewContentModel {
             self.instance = nil
         }
         
-        self.community2 = source.caches.community2.createModel(source: source, for: response.communityView)
-        self.update(with: response)
+        self.community2 = source.caches.community2.createModel(source: source, for: response.community_view)
+        update(with: response)
     }
     
-    func update(with response: GetCommunityResponse) {
-        self.moderators = response.moderators.map { moderatorView in
+    func update(with response: APIGetCommunityResponse) {
+        moderators = response.moderators.map { moderatorView in
             source.caches.person1.createModel(source: source, for: moderatorView.moderator)
         }
-        self.discussionLanguages = response.discussionLanguages
-        self.defaultPostLanguage = response.defaultPostLanguage
-        self.community2.update(with: response.communityView)
+        discussionLanguages = response.discussionLanguages
+        defaultPostLanguage = response.defaultPostLanguage
+        community2.update(with: response.communityView)
     }
     
     func upgrade() async throws -> Community3 { self }

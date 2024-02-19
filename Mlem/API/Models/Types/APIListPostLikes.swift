@@ -16,10 +16,11 @@ struct APIListPostLikes: Codable {
     let limit: Int?
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
             .init(name: "post_id", value: String(post_id)),
             .init(name: "page", value: page.map(String.init)),
             .init(name: "limit", value: limit.map(String.init))
         ]
     }
+
 }

@@ -20,7 +20,9 @@ struct APIGetPersonDetails: Codable {
     let saved_only: Bool?
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
+
         ]
     }
+
 }

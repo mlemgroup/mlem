@@ -39,7 +39,9 @@ struct APISaveUserSettings: Codable {
     let collapse_bot_comments: Bool?
 
     func toQueryItems() -> [URLQueryItem] {
-        [
+        return [
+
         ]
     }
+
 }

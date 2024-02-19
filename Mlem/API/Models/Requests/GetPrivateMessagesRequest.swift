@@ -5,6 +5,8 @@
 //  Created by Eric Andrews on 2024-02-18
 //
 
+import Foundation
+
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 struct GetPrivateMessagesRequest: APIGetRequest {
@@ -14,10 +16,10 @@ struct GetPrivateMessagesRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        unreadOnly: Bool,
-        page: Int,
-        limit: Int,
-        creatorId: Int
+        unreadOnly: Bool?,
+        page: Int?,
+        limit: Int?,
+        creatorId: Int?
     ) {
         var request: APIGetPrivateMessages = .init(
             unread_only: unreadOnly,

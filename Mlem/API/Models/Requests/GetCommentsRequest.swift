@@ -5,6 +5,8 @@
 //  Created by Eric Andrews on 2024-02-18
 //
 
+import Foundation
+
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 struct GetCommentsRequest: APIGetRequest {
@@ -14,18 +16,18 @@ struct GetCommentsRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        type_: APIListingType,
-        sort: APICommentSortType,
-        maxDepth: Int,
-        page: Int,
-        limit: Int,
-        communityId: Int,
-        communityName: String,
-        postId: Int,
-        parentId: Int,
-        savedOnly: Bool,
-        likedOnly: Bool,
-        dislikedOnly: Bool
+        type_: APIListingType?,
+        sort: APICommentSortType?,
+        maxDepth: Int?,
+        page: Int?,
+        limit: Int?,
+        communityId: Int?,
+        communityName: String?,
+        postId: Int?,
+        parentId: Int?,
+        savedOnly: Bool?,
+        likedOnly: Bool?,
+        dislikedOnly: Bool?
     ) {
         var request: APIGetComments = .init(
             type_: type_,
