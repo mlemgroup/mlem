@@ -109,6 +109,7 @@ extension Post2Providing {
                 callback: { Task { try await self.toggleSave() } }
             )
         )
+        functions.append(.shareMenuFunction(url: actorId))
         return functions
     }
 }
