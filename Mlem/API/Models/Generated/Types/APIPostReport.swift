@@ -9,9 +9,8 @@
 
 import Foundation
 
-// sources/js/types/PostReport.ts
+// ../sources/js/types/PostReport.ts
 struct APIPostReport: Codable {
-    // swiftlint:disable:next identifier_name
     let id: Int
     let creatorId: Int
     let postId: Int

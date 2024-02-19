@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/LocalSiteRateLimit.ts
+// ../sources/js/types/LocalSiteRateLimit.ts
 struct APILocalSiteRateLimit: Codable {
     let localSiteId: Int
     let message: Int

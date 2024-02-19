@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/InstanceBlockView.ts
+// ../sources/js/types/InstanceBlockView.ts
 struct APIInstanceBlockView: Codable {
     let person: APIPerson
     let instance: APIInstance

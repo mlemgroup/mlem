@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/BanFromCommunity.ts
+// ../sources/js/types/BanFromCommunity.ts
 struct APIBanFromCommunity: Codable {
     let communityId: Int
     let personId: Int

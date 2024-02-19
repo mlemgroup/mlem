@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/SavePost.ts
+// ../sources/js/types/SavePost.ts
 struct APISavePost: Codable {
     let postId: Int
     let save: Bool

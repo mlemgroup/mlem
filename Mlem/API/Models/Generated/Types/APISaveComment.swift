@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/SaveComment.ts
+// ../sources/js/types/SaveComment.ts
 struct APISaveComment: Codable {
     let commentId: Int
     let save: Bool

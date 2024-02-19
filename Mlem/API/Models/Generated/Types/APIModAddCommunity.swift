@@ -9,9 +9,8 @@
 
 import Foundation
 
-// sources/js/types/ModAddCommunity.ts
+// ../sources/js/types/ModAddCommunity.ts
 struct APIModAddCommunity: Codable {
-    // swiftlint:disable:next identifier_name
     let id: Int
     let modPersonId: Int
     let otherPersonId: Int

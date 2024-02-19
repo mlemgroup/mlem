@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/CommunityResponse.ts
+// ../sources/js/types/CommunityResponse.ts
 struct APICommunityResponse: Codable {
     let communityView: APICommunityView
     let discussionLanguages: [Int]

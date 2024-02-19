@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/FollowCommunity.ts
+// ../sources/js/types/FollowCommunity.ts
 struct APIFollowCommunity: Codable {
     let communityId: Int
     let follow: Bool

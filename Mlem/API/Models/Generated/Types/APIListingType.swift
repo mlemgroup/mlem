@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ListingType.ts
+// ../sources/js/types/ListingType.ts
 enum APIListingType: String, Codable {
     case all = "All"
     case local = "Local"

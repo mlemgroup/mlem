@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/PersonMentionView.ts
+// ../sources/js/types/PersonMentionView.ts
 struct APIPersonMentionView: Codable {
     let personMention: APIPersonMention
     let comment: APIComment

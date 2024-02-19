@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ListCommentLikesResponse.ts
+// ../sources/js/types/ListCommentLikesResponse.ts
 struct APIListCommentLikesResponse: Codable {
     let commentLikes: [APIVoteView]
 }

@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/PurgeComment.ts
+// ../sources/js/types/PurgeComment.ts
 struct APIPurgeComment: Codable {
     let commentId: Int
     let reason: String?

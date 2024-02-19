@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/CreatePostReport.ts
+// ../sources/js/types/CreatePostReport.ts
 struct APICreatePostReport: Codable {
     let postId: Int
     let reason: String

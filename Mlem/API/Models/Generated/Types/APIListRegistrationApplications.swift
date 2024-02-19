@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ListRegistrationApplications.ts
+// ../sources/js/types/ListRegistrationApplications.ts
 struct APIListRegistrationApplications: Codable {
     let unreadOnly: Bool?
     let page: Int?

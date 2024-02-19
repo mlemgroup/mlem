@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/SiteAggregates.ts
+// ../sources/js/types/SiteAggregates.ts
 struct APISiteAggregates: Codable {
     let siteId: Int
     let users: Int

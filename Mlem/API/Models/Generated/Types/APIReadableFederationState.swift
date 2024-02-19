@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ReadableFederationState.ts
+// ../sources/js/types/ReadableFederationState.ts
 struct APIReadableFederationState: Codable {
     let instanceId: Int
     let lastSuccessfulId: Int?

@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/FederatedInstances.ts
+// ../sources/js/types/FederatedInstances.ts
 struct APIFederatedInstances: Codable {
     let linked: [APIInstanceWithFederationState]
     let allowed: [APIInstanceWithFederationState]

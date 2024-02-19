@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/CommunityFollowerView.ts
+// ../sources/js/types/CommunityFollowerView.ts
 struct APICommunityFollowerView: Codable {
     let community: APICommunity
     let follower: APIPerson

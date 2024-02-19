@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/CommunityBlockView.ts
+// ../sources/js/types/CommunityBlockView.ts
 struct APICommunityBlockView: Codable {
     let person: APIPerson
     let community: APICommunity

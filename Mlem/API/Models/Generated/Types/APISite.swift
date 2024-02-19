@@ -9,9 +9,8 @@
 
 import Foundation
 
-// sources/js/types/Site.ts
+// ../sources/js/types/Site.ts
 struct APISite: Codable {
-    // swiftlint:disable:next identifier_name
     let id: Int
     let name: String
     let sidebar: String?

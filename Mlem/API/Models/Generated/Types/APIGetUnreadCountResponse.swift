@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/GetUnreadCountResponse.ts
+// ../sources/js/types/GetUnreadCountResponse.ts
 struct APIGetUnreadCountResponse: Codable {
     let replies: Int
     let mentions: Int

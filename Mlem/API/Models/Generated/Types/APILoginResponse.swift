@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/LoginResponse.ts
+// ../sources/js/types/LoginResponse.ts
 struct APILoginResponse: Codable {
     let jwt: String?
     let registrationCreated: Bool

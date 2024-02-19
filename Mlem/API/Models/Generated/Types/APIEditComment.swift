@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/EditComment.ts
+// ../sources/js/types/EditComment.ts
 struct APIEditComment: Codable {
     let commentId: Int
     let content: String?

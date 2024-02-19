@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/PurgePost.ts
+// ../sources/js/types/PurgePost.ts
 struct APIPurgePost: Codable {
     let postId: Int
     let reason: String?

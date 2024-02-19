@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ModAddCommunityView.ts
+// ../sources/js/types/ModAddCommunityView.ts
 struct APIModAddCommunityView: Codable {
     let modAddCommunity: APIModAddCommunity
     let moderator: APIPerson?

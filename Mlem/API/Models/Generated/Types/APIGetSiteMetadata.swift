@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/GetSiteMetadata.ts
+// ../sources/js/types/GetSiteMetadata.ts
 struct APIGetSiteMetadata: Codable {
     let url: String
 }

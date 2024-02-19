@@ -9,9 +9,8 @@
 
 import Foundation
 
-// sources/js/types/PersonMention.ts
+// ../sources/js/types/PersonMention.ts
 struct APIPersonMention: Codable {
-    // swiftlint:disable:next identifier_name
     let id: Int
     let recipientId: Int
     let commentId: Int

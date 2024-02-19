@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/BlockInstanceResponse.ts
+// ../sources/js/types/BlockInstanceResponse.ts
 struct APIBlockInstanceResponse: Codable {
     let blocked: Bool
 }

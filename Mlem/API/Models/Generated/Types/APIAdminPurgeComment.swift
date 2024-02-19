@@ -9,9 +9,8 @@
 
 import Foundation
 
-// sources/js/types/AdminPurgeComment.ts
+// ../sources/js/types/AdminPurgeComment.ts
 struct APIAdminPurgeComment: Codable {
-    // swiftlint:disable:next identifier_name
     let id: Int
     let adminPersonId: Int
     let postId: Int

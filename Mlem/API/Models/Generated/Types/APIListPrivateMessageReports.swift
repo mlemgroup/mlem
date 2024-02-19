@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ListPrivateMessageReports.ts
+// ../sources/js/types/ListPrivateMessageReports.ts
 struct APIListPrivateMessageReports: Codable {
     let page: Int?
     let limit: Int?

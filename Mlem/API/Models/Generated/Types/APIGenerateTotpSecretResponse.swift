@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/GenerateTotpSecretResponse.ts
+// ../sources/js/types/GenerateTotpSecretResponse.ts
 struct APIGenerateTotpSecretResponse: Codable {
     let totpSecretUrl: String
 }

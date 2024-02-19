@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ModlogActionType.ts
+// ../sources/js/types/ModlogActionType.ts
 enum APIModlogActionType: String, Codable {
     case all = "All"
     case modRemovePost = "ModRemovePost"

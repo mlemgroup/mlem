@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/CreateCustomEmoji.ts
+// ../sources/js/types/CreateCustomEmoji.ts
 struct APICreateCustomEmoji: Codable {
     let category: String
     let shortcode: String

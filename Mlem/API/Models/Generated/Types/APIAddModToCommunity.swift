@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/AddModToCommunity.ts
+// ../sources/js/types/AddModToCommunity.ts
 struct APIAddModToCommunity: Codable {
     let communityId: Int
     let personId: Int

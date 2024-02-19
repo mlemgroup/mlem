@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/Register.ts
+// ../sources/js/types/Register.ts
 struct APIRegister: Codable {
     let username: String
     let password: String

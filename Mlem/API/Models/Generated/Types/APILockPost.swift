@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/LockPost.ts
+// ../sources/js/types/LockPost.ts
 struct APILockPost: Codable {
     let postId: Int
     let locked: Bool

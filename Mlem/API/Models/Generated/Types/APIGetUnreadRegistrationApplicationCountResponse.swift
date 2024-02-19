@@ -9,7 +9,8 @@
 
 import Foundation
 
-// sources/js/types/GetUnreadRegistrationApplicationCountResponse.ts
+// ../sources/js/types/GetUnreadRegistrationApplicationCountResponse.ts
+// swiftlint:disable:next type_name
 struct APIGetUnreadRegistrationApplicationCountResponse: Codable {
     let registrationApplications: Int
 }

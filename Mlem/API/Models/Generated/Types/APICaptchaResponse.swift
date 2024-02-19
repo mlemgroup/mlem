@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/CaptchaResponse.ts
+// ../sources/js/types/CaptchaResponse.ts
 struct APICaptchaResponse: Codable {
     let png: String
     let wav: String

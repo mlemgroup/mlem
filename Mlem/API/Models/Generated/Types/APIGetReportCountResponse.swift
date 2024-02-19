@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/GetReportCountResponse.ts
+// ../sources/js/types/GetReportCountResponse.ts
 struct APIGetReportCountResponse: Codable {
     let communityId: Int?
     let commentReports: Int

@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/PostFeatureType.ts
+// ../sources/js/types/PostFeatureType.ts
 enum APIPostFeatureType: String, Codable {
     case local = "Local"
     case community = "Community"

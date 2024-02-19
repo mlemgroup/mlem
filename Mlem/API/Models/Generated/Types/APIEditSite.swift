@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/EditSite.ts
+// ../sources/js/types/EditSite.ts
 struct APIEditSite: Codable {
     let name: String?
     let sidebar: String?

@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/AddModToCommunityResponse.ts
+// ../sources/js/types/AddModToCommunityResponse.ts
 struct APIAddModToCommunityResponse: Codable {
     let moderators: [APICommunityModeratorView]
 }

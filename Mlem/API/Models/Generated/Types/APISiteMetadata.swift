@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/SiteMetadata.ts
+// ../sources/js/types/SiteMetadata.ts
 struct APISiteMetadata: Codable {
     let title: String?
     let description: String?

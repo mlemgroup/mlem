@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/EditCommunity.ts
+// ../sources/js/types/EditCommunity.ts
 struct APIEditCommunity: Codable {
     let communityId: Int
     let title: String?

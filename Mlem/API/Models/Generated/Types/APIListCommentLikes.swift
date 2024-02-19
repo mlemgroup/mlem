@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ListCommentLikes.ts
+// ../sources/js/types/ListCommentLikes.ts
 struct APIListCommentLikes: Codable {
     let commentId: Int
     let page: Int?

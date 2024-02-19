@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/SubscribedType.ts
+// ../sources/js/types/SubscribedType.ts
 enum APISubscribedType: String, Codable {
     case subscribed = "Subscribed"
     case notSubscribed = "NotSubscribed"

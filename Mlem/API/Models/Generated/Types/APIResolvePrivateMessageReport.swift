@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ResolvePrivateMessageReport.ts
+// ../sources/js/types/ResolvePrivateMessageReport.ts
 struct APIResolvePrivateMessageReport: Codable {
     let reportId: Int
     let resolved: Bool

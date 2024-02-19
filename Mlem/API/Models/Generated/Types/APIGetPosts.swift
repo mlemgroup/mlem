@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/GetPosts.ts
+// ../sources/js/types/GetPosts.ts
 struct APIGetPosts: Codable {
     let type_: APIListingType?
     let sort: APISortType?

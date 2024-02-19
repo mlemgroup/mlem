@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/GetPersonDetails.ts
+// ../sources/js/types/GetPersonDetails.ts
 struct APIGetPersonDetails: Codable {
     let personId: Int?
     let username: String?

@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/LoginToken.ts
+// ../sources/js/types/LoginToken.ts
 struct APILoginToken: Codable {
     let userId: Int
     let published: Date

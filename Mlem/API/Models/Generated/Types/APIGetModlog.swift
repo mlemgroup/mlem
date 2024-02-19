@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/GetModlog.ts
+// ../sources/js/types/GetModlog.ts
 struct APIGetModlog: Codable {
     let modPersonId: Int?
     let communityId: Int?

@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/AdminPurgeCommentView.ts
+// ../sources/js/types/AdminPurgeCommentView.ts
 struct APIAdminPurgeCommentView: Codable {
     let adminPurgeComment: APIAdminPurgeComment
     let admin: APIPerson?

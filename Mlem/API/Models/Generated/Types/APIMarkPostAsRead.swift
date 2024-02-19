@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/MarkPostAsRead.ts
+// ../sources/js/types/MarkPostAsRead.ts
 struct APIMarkPostAsRead: Codable {
     let postId: Int?
     let postIds: [Int]?

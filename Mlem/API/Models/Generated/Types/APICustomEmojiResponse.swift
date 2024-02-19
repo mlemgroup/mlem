@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/CustomEmojiResponse.ts
+// ../sources/js/types/CustomEmojiResponse.ts
 struct APICustomEmojiResponse: Codable {
     let customEmoji: APICustomEmojiView
 }

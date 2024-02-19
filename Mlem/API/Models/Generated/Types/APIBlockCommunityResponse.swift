@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/BlockCommunityResponse.ts
+// ../sources/js/types/BlockCommunityResponse.ts
 struct APIBlockCommunityResponse: Codable {
     let communityView: APICommunityView
     let blocked: Bool

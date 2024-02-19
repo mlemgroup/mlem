@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/DistinguishComment.ts
+// ../sources/js/types/DistinguishComment.ts
 struct APIDistinguishComment: Codable {
     let commentId: Int
     let distinguished: Bool

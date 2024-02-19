@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/GetCommunityResponse.ts
+// ../sources/js/types/GetCommunityResponse.ts
 struct APIGetCommunityResponse: Codable {
     let communityView: APICommunityView
     let site: APISite?

@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/GetSiteResponse.ts
+// ../sources/js/types/GetSiteResponse.ts
 struct APIGetSiteResponse: Codable {
     let siteView: APISiteView
     let admins: [APIPersonView]

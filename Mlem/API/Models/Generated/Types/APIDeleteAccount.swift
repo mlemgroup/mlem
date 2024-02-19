@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/DeleteAccount.ts
+// ../sources/js/types/DeleteAccount.ts
 struct APIDeleteAccount: Codable {
     let password: String
     let deleteContent: Bool

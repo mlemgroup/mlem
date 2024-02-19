@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/PasswordChangeAfterReset.ts
+// ../sources/js/types/PasswordChangeAfterReset.ts
 struct APIPasswordChangeAfterReset: Codable {
     let token: String
     let password: String

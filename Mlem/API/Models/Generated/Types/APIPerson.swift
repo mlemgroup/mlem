@@ -9,9 +9,8 @@
 
 import Foundation
 
-// sources/js/types/Person.ts
+// ../sources/js/types/Person.ts
 struct APIPerson: Codable {
-    // swiftlint:disable:next identifier_name
     let id: Int
     let name: String
     let displayName: String?

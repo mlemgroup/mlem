@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/RegistrationMode.ts
+// ../sources/js/types/RegistrationMode.ts
 enum APIRegistrationMode: String, Codable {
     case closed = "Closed"
     case requireApplication = "RequireApplication"

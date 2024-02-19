@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ResolveObject.ts
+// ../sources/js/types/ResolveObject.ts
 struct APIResolveObject: Codable {
     // swiftlint:disable:next identifier_name
     let q: String

@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/SortType.ts
+// ../sources/js/types/SortType.ts
 enum APISortType: String, Codable {
     case active = "Active"
     case hot = "Hot"

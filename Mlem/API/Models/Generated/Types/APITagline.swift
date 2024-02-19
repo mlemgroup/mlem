@@ -9,9 +9,8 @@
 
 import Foundation
 
-// sources/js/types/Tagline.ts
+// ../sources/js/types/Tagline.ts
 struct APITagline: Codable {
-    // swiftlint:disable:next identifier_name
     let id: Int
     let localSiteId: Int
     let content: String

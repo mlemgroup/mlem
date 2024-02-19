@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/VoteView.ts
+// ../sources/js/types/VoteView.ts
 struct APIVoteView: Codable {
     let creator: APIPerson
     let score: Int

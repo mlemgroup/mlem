@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/LocalUserView.ts
+// ../sources/js/types/LocalUserView.ts
 struct APILocalUserView: Codable {
     let localUser: APILocalUser
     let person: APIPerson

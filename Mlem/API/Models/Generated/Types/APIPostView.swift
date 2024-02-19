@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/PostView.ts
+// ../sources/js/types/PostView.ts
 struct APIPostView: Codable {
     let post: APIPost
     let creator: APIPerson

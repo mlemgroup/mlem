@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/MyUserInfo.ts
+// ../sources/js/types/MyUserInfo.ts
 struct APIMyUserInfo: Codable {
     let localUserView: APILocalUserView
     let follows: [APICommunityFollowerView]

@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ResolveObjectResponse.ts
+// ../sources/js/types/ResolveObjectResponse.ts
 struct APIResolveObjectResponse: Codable {
     let comment: APICommentView?
     let post: APIPostView?

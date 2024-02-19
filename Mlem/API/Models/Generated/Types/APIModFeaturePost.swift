@@ -9,9 +9,8 @@
 
 import Foundation
 
-// sources/js/types/ModFeaturePost.ts
+// ../sources/js/types/ModFeaturePost.ts
 struct APIModFeaturePost: Codable {
-    // swiftlint:disable:next identifier_name
     let id: Int
     let modPersonId: Int
     let postId: Int

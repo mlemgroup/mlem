@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/GetReplies.ts
+// ../sources/js/types/GetReplies.ts
 struct APIGetReplies: Codable {
     let sort: APICommentSortType?
     let page: Int?

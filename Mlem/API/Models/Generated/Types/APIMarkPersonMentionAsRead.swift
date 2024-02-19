@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/MarkPersonMentionAsRead.ts
+// ../sources/js/types/MarkPersonMentionAsRead.ts
 struct APIMarkPersonMentionAsRead: Codable {
     let personMentionId: Int
     let read: Bool

@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/CreateCommentLike.ts
+// ../sources/js/types/CreateCommentLike.ts
 struct APICreateCommentLike: Codable {
     let commentId: Int
     let score: Int

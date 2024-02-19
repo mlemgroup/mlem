@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ChangePassword.ts
+// ../sources/js/types/ChangePassword.ts
 struct APIChangePassword: Codable {
     let newPassword: String
     let newPasswordVerify: String

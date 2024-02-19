@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/EditPrivateMessage.ts
+// ../sources/js/types/EditPrivateMessage.ts
 struct APIEditPrivateMessage: Codable {
     let privateMessageId: Int
     let content: String

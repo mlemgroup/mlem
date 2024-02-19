@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/DeletePrivateMessage.ts
+// ../sources/js/types/DeletePrivateMessage.ts
 struct APIDeletePrivateMessage: Codable {
     let privateMessageId: Int
     let deleted: Bool

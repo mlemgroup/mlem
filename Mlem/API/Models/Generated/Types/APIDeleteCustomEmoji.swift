@@ -9,8 +9,7 @@
 
 import Foundation
 
-// sources/js/types/DeleteCustomEmoji.ts
+// ../sources/js/types/DeleteCustomEmoji.ts
 struct APIDeleteCustomEmoji: Codable {
-    // swiftlint:disable:next identifier_name
     let id: Int
 }

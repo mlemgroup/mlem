@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/EditPost.ts
+// ../sources/js/types/EditPost.ts
 struct APIEditPost: Codable {
     let postId: Int
     let name: String?

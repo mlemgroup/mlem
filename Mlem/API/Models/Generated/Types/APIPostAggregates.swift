@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/PostAggregates.ts
+// ../sources/js/types/PostAggregates.ts
 struct APIPostAggregates: Codable {
     let postId: Int
     let comments: Int

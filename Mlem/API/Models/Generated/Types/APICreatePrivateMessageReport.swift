@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/CreatePrivateMessageReport.ts
+// ../sources/js/types/CreatePrivateMessageReport.ts
 struct APICreatePrivateMessageReport: Codable {
     let privateMessageId: Int
     let reason: String

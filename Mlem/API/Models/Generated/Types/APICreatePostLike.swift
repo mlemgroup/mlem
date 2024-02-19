@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/CreatePostLike.ts
+// ../sources/js/types/CreatePostLike.ts
 struct APICreatePostLike: Codable {
     let postId: Int
     let score: Int

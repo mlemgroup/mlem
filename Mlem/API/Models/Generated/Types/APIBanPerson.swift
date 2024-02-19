@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/BanPerson.ts
+// ../sources/js/types/BanPerson.ts
 struct APIBanPerson: Codable {
     let personId: Int
     let ban: Bool

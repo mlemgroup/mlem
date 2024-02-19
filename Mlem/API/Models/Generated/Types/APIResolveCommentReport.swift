@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ResolveCommentReport.ts
+// ../sources/js/types/ResolveCommentReport.ts
 struct APIResolveCommentReport: Codable {
     let reportId: Int
     let resolved: Bool

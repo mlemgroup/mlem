@@ -9,9 +9,8 @@
 
 import Foundation
 
-// sources/js/types/PrivateMessage.ts
+// ../sources/js/types/PrivateMessage.ts
 struct APIPrivateMessage: Codable {
-    // swiftlint:disable:next identifier_name
     let id: Int
     let creatorId: Int
     let recipientId: Int

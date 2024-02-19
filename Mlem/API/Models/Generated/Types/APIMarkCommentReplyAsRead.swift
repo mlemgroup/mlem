@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/MarkCommentReplyAsRead.ts
+// ../sources/js/types/MarkCommentReplyAsRead.ts
 struct APIMarkCommentReplyAsRead: Codable {
     let commentReplyId: Int
     let read: Bool

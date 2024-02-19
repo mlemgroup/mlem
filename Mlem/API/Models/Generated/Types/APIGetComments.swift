@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/GetComments.ts
+// ../sources/js/types/GetComments.ts
 struct APIGetComments: Codable {
     let type_: APIListingType?
     let sort: APICommentSortType?

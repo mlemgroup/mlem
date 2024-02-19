@@ -9,9 +9,8 @@
 
 import Foundation
 
-// sources/js/types/Instance.ts
+// ../sources/js/types/Instance.ts
 struct APIInstance: Codable {
-    // swiftlint:disable:next identifier_name
     let id: Int
     let domain: String
     let published: Date

@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/Search.ts
+// ../sources/js/types/Search.ts
 struct APISearch: Codable {
     // swiftlint:disable:next identifier_name
     let q: String

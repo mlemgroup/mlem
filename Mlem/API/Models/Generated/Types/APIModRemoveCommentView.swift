@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ModRemoveCommentView.ts
+// ../sources/js/types/ModRemoveCommentView.ts
 struct APIModRemoveCommentView: Codable {
     let modRemoveComment: APIModRemoveComment
     let moderator: APIPerson?

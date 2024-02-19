@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/GetFederatedInstancesResponse.ts
+// ../sources/js/types/GetFederatedInstancesResponse.ts
 struct APIGetFederatedInstancesResponse: Codable {
     let federatedInstances: APIFederatedInstances?
 }

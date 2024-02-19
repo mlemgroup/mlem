@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/PurgePerson.ts
+// ../sources/js/types/PurgePerson.ts
 struct APIPurgePerson: Codable {
     let personId: Int
     let reason: String?

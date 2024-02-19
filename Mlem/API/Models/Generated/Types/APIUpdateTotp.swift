@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/UpdateTotp.ts
+// ../sources/js/types/UpdateTotp.ts
 struct APIUpdateTotp: Codable {
     let totpToken: String
     let enabled: Bool

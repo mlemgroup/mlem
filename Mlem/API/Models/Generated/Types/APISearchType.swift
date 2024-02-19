@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/SearchType.ts
+// ../sources/js/types/SearchType.ts
 enum APISearchType: String, Codable {
     case all = "All"
     case comments = "Comments"

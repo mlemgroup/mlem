@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/RemovePost.ts
+// ../sources/js/types/RemovePost.ts
 struct APIRemovePost: Codable {
     let postId: Int
     let removed: Bool

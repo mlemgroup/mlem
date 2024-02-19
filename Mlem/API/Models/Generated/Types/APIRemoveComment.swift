@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/RemoveComment.ts
+// ../sources/js/types/RemoveComment.ts
 struct APIRemoveComment: Codable {
     let commentId: Int
     let removed: Bool

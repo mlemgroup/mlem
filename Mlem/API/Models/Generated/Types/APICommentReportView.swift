@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/CommentReportView.ts
+// ../sources/js/types/CommentReportView.ts
 struct APICommentReportView: Codable {
     let commentReport: APICommentReport
     let comment: APIComment

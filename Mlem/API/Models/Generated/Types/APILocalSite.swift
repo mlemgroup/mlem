@@ -9,9 +9,8 @@
 
 import Foundation
 
-// sources/js/types/LocalSite.ts
+// ../sources/js/types/LocalSite.ts
 struct APILocalSite: Codable {
-    // swiftlint:disable:next identifier_name
     let id: Int
     let siteId: Int
     let siteSetup: Bool

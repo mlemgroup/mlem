@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ListCommentReports.ts
+// ../sources/js/types/ListCommentReports.ts
 struct APIListCommentReports: Codable {
     let page: Int?
     let limit: Int?

@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/CreatePost.ts
+// ../sources/js/types/CreatePost.ts
 struct APICreatePost: Codable {
     let name: String
     let communityId: Int

@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/SiteResponse.ts
+// ../sources/js/types/SiteResponse.ts
 struct APISiteResponse: Codable {
     let siteView: APISiteView
     let taglines: [APITagline]

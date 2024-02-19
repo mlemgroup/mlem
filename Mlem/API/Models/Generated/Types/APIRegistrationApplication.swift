@@ -9,9 +9,8 @@
 
 import Foundation
 
-// sources/js/types/RegistrationApplication.ts
+// ../sources/js/types/RegistrationApplication.ts
 struct APIRegistrationApplication: Codable {
-    // swiftlint:disable:next identifier_name
     let id: Int
     let localUserId: Int
     let answer: String

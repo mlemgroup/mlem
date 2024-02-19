@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/PasswordReset.ts
+// ../sources/js/types/PasswordReset.ts
 struct APIPasswordReset: Codable {
     let email: String
 }

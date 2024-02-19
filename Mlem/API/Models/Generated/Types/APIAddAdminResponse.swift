@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/AddAdminResponse.ts
+// ../sources/js/types/AddAdminResponse.ts
 struct APIAddAdminResponse: Codable {
     let admins: [APIPersonView]
 }

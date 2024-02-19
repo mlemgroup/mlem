@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/CommentSortType.ts
+// ../sources/js/types/CommentSortType.ts
 enum APICommentSortType: String, Codable {
     case hot = "Hot"
     case top = "Top"

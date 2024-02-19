@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/SearchResponse.ts
+// ../sources/js/types/SearchResponse.ts
 struct APISearchResponse: Codable {
     let type_: APISearchType
     let comments: [APICommentView]

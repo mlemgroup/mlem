@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/CommunityAggregates.ts
+// ../sources/js/types/CommunityAggregates.ts
 struct APICommunityAggregates: Codable {
     let communityId: Int
     let subscribers: Int

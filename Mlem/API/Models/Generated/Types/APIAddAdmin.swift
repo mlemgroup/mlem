@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/AddAdmin.ts
+// ../sources/js/types/AddAdmin.ts
 struct APIAddAdmin: Codable {
     let personId: Int
     let added: Bool

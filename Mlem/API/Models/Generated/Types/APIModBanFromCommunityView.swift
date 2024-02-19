@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ModBanFromCommunityView.ts
+// ../sources/js/types/ModBanFromCommunityView.ts
 struct APIModBanFromCommunityView: Codable {
     let modBanFromCommunity: APIModBanFromCommunity
     let moderator: APIPerson?

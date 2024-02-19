@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/VerifyEmail.ts
+// ../sources/js/types/VerifyEmail.ts
 struct APIVerifyEmail: Codable {
     let token: String
 }

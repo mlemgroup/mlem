@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/HideCommunity.ts
+// ../sources/js/types/HideCommunity.ts
 struct APIHideCommunity: Codable {
     let communityId: Int
     let hidden: Bool

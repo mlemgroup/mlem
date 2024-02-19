@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/PrivateMessageReportView.ts
+// ../sources/js/types/PrivateMessageReportView.ts
 struct APIPrivateMessageReportView: Codable {
     let privateMessageReport: APIPrivateMessageReport
     let privateMessage: APIPrivateMessage

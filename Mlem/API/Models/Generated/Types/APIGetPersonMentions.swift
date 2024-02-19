@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/GetPersonMentions.ts
+// ../sources/js/types/GetPersonMentions.ts
 struct APIGetPersonMentions: Codable {
     let sort: APICommentSortType?
     let page: Int?

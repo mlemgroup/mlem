@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/UpdateTotpResponse.ts
+// ../sources/js/types/UpdateTotpResponse.ts
 struct APIUpdateTotpResponse: Codable {
     let enabled: Bool
 }

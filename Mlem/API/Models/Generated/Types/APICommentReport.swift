@@ -9,9 +9,8 @@
 
 import Foundation
 
-// sources/js/types/CommentReport.ts
+// ../sources/js/types/CommentReport.ts
 struct APICommentReport: Codable {
-    // swiftlint:disable:next identifier_name
     let id: Int
     let creatorId: Int
     let commentId: Int

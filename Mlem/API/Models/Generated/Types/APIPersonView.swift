@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/PersonView.ts
+// ../sources/js/types/PersonView.ts
 struct APIPersonView: Codable {
     let person: APIPerson
     let counts: APIPersonAggregates

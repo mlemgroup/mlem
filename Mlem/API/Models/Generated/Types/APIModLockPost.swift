@@ -9,9 +9,8 @@
 
 import Foundation
 
-// sources/js/types/ModLockPost.ts
+// ../sources/js/types/ModLockPost.ts
 struct APIModLockPost: Codable {
-    // swiftlint:disable:next identifier_name
     let id: Int
     let modPersonId: Int
     let postId: Int

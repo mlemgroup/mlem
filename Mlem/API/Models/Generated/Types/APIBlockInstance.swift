@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/BlockInstance.ts
+// ../sources/js/types/BlockInstance.ts
 struct APIBlockInstance: Codable {
     let instanceId: Int
     let block: Bool

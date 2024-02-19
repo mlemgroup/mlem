@@ -9,9 +9,8 @@
 
 import Foundation
 
-// sources/js/types/InstanceWithFederationState.ts
+// ../sources/js/types/InstanceWithFederationState.ts
 struct APIInstanceWithFederationState: Codable {
-    // swiftlint:disable:next identifier_name
     let id: Int
     let domain: String
     let published: Date

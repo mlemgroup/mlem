@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ModLockPostView.ts
+// ../sources/js/types/ModLockPostView.ts
 struct APIModLockPostView: Codable {
     let modLockPost: APIModLockPost
     let moderator: APIPerson?

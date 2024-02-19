@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ImageUpload.ts
+// ../sources/js/types/ImageUpload.ts
 struct APIImageUpload: Codable {
     let localUserId: Int
     let pictrsAlias: String

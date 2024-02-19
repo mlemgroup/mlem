@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/FeaturePost.ts
+// ../sources/js/types/FeaturePost.ts
 struct APIFeaturePost: Codable {
     let postId: Int
     let featured: Bool

@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/CreateSite.ts
+// ../sources/js/types/CreateSite.ts
 struct APICreateSite: Codable {
     let name: String
     let sidebar: String?

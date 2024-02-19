@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/SaveUserSettings.ts
+// ../sources/js/types/SaveUserSettings.ts
 struct APISaveUserSettings: Codable {
     let showNsfw: Bool?
     let blurNsfw: Bool?

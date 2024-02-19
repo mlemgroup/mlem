@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/PostListingMode.ts
+// ../sources/js/types/PostListingMode.ts
 enum APIPostListingMode: String, Codable {
     case list = "List"
     case card = "Card"

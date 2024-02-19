@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/DeletePost.ts
+// ../sources/js/types/DeletePost.ts
 struct APIDeletePost: Codable {
     let postId: Int
     let deleted: Bool

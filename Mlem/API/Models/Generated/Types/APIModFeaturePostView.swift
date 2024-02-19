@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ModFeaturePostView.ts
+// ../sources/js/types/ModFeaturePostView.ts
 struct APIModFeaturePostView: Codable {
     let modFeaturePost: APIModFeaturePost
     let moderator: APIPerson?

@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/GetPrivateMessages.ts
+// ../sources/js/types/GetPrivateMessages.ts
 struct APIGetPrivateMessages: Codable {
     let unreadOnly: Bool?
     let page: Int?

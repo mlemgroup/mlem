@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/PostReportView.ts
+// ../sources/js/types/PostReportView.ts
 struct APIPostReportView: Codable {
     let postReport: APIPostReport
     let post: APIPost

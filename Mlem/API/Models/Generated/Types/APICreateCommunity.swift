@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/CreateCommunity.ts
+// ../sources/js/types/CreateCommunity.ts
 struct APICreateCommunity: Codable {
     let name: String
     let title: String

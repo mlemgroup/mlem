@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/TransferCommunity.ts
+// ../sources/js/types/TransferCommunity.ts
 struct APITransferCommunity: Codable {
     let communityId: Int
     let personId: Int

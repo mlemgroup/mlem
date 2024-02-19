@@ -9,9 +9,8 @@
 
 import Foundation
 
-// sources/js/types/CommentReply.ts
+// ../sources/js/types/CommentReply.ts
 struct APICommentReply: Codable {
-    // swiftlint:disable:next identifier_name
     let id: Int
     let recipientId: Int
     let commentId: Int

@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/GetPersonMentionsResponse.ts
+// ../sources/js/types/GetPersonMentionsResponse.ts
 struct APIGetPersonMentionsResponse: Codable {
     let mentions: [APIPersonMentionView]
 }

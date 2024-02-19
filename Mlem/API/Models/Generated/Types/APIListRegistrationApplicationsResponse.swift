@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ListRegistrationApplicationsResponse.ts
+// ../sources/js/types/ListRegistrationApplicationsResponse.ts
 struct APIListRegistrationApplicationsResponse: Codable {
     let registrationApplications: [APIRegistrationApplicationView]
 }

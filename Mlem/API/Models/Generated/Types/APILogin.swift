@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/Login.ts
+// ../sources/js/types/Login.ts
 struct APILogin: Codable {
     let usernameOrEmail: String
     let password: String

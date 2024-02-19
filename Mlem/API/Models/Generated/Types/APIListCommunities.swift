@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ListCommunities.ts
+// ../sources/js/types/ListCommunities.ts
 struct APIListCommunities: Codable {
     let type_: APIListingType?
     let sort: APISortType?

@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/ModRemovePostView.ts
+// ../sources/js/types/ModRemovePostView.ts
 struct APIModRemovePostView: Codable {
     let modRemovePost: APIModRemovePost
     let moderator: APIPerson?

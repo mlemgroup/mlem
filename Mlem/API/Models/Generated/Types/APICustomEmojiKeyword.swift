@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/CustomEmojiKeyword.ts
+// ../sources/js/types/CustomEmojiKeyword.ts
 struct APICustomEmojiKeyword: Codable {
     let customEmojiId: Int
     let keyword: String

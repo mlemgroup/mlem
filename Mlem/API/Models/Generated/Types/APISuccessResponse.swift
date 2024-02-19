@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/SuccessResponse.ts
+// ../sources/js/types/SuccessResponse.ts
 struct APISuccessResponse: Codable {
     let success: Bool
 }

@@ -9,9 +9,8 @@
 
 import Foundation
 
-// sources/js/types/CustomEmoji.ts
+// ../sources/js/types/CustomEmoji.ts
 struct APICustomEmoji: Codable {
-    // swiftlint:disable:next identifier_name
     let id: Int
     let localSiteId: Int
     let shortcode: String

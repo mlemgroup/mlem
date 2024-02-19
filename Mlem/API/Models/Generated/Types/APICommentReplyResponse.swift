@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/CommentReplyResponse.ts
+// ../sources/js/types/CommentReplyResponse.ts
 struct APICommentReplyResponse: Codable {
     let commentReplyView: APICommentReplyView
 }

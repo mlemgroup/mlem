@@ -9,9 +9,8 @@
 
 import Foundation
 
-// sources/js/types/Post.ts
+// ../sources/js/types/Post.ts
 struct APIPost: Codable {
-    // swiftlint:disable:next identifier_name
     let id: Int
     let name: String
     let url: String?

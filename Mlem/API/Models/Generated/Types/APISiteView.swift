@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/SiteView.ts
+// ../sources/js/types/SiteView.ts
 struct APISiteView: Codable {
     let site: APISite
     let localSite: APILocalSite

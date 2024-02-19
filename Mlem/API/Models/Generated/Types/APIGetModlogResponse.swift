@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/GetModlogResponse.ts
+// ../sources/js/types/GetModlogResponse.ts
 struct APIGetModlogResponse: Codable {
     let removedPosts: [APIModRemovePostView]
     let lockedPosts: [APIModLockPostView]

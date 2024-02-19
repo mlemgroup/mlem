@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/GetPostsResponse.ts
+// ../sources/js/types/GetPostsResponse.ts
 struct APIGetPostsResponse: Codable {
     let posts: [APIPostView]
     let nextPage: String?

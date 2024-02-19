@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/CommentAggregates.ts
+// ../sources/js/types/CommentAggregates.ts
 struct APICommentAggregates: Codable {
     let commentId: Int
     let score: Int

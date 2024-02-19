@@ -9,7 +9,7 @@
 
 import Foundation
 
-// sources/js/types/DeleteCommunity.ts
+// ../sources/js/types/DeleteCommunity.ts
 struct APIDeleteCommunity: Codable {
     let communityId: Int
     let deleted: Bool
