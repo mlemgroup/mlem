@@ -108,15 +108,11 @@ struct FeedPost: View {
                             enableSwipeActions ? replySwipeAction : nil
                         ]
                     )
-//                    .contextMenu {
-//                        let functions = post.menuFunctions(
-//                            editorTracker: editorTracker,
-//                            postTracker: postTracker
-//                        )
-//                        ForEach(functions) { item in
-//                            MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
-//                        }
-//                    }
+                    .contextMenu {
+                        ForEach(post.menuFunctions) { item in
+                            MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+                        }
+                    }
             }
         }
     }
@@ -146,12 +142,9 @@ struct FeedPost: View {
     @ViewBuilder
     var postItem: some View {
         if postSize == .compact {
-            // let functions = post.menuFunctions(editorTracker: editorTracker, postTracker: postTracker)
-            let functions = [MenuFunction]()
             CompactPost(
                 post: post,
-                showCommunity: showCommunity,
-                menuFunctions: functions
+                showCommunity: showCommunity
             )
         } else {
             VStack(spacing: 0) {
@@ -172,12 +165,7 @@ struct FeedPost: View {
                         if showCheck {
                             ReadCheck()
                         }
-//                        
-//                        let functions = post.menuFunctions(
-//                            editorTracker: editorTracker,
-//                            postTracker: postTracker
-//                        )
-//                        EllipsisMenu(size: 24, menuFunctions: functions)
+                        EllipsisMenu(size: 24, menuFunctions: post.menuFunctions)
                     }
 
                     if postSize == .headline {

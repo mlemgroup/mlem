@@ -218,8 +218,7 @@ struct ExpandedPost: View {
                 
                     Spacer()
                     
-//                    let functions = post.menuFunctions(editorTracker: editorTracker, postTracker: postTracker)
-//                    EllipsisMenu(size: 24, menuFunctions: functions)
+                    EllipsisMenu(size: 24, menuFunctions: post.menuFunctions)
                 }
                 
                 LargePost(

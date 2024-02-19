@@ -85,4 +85,30 @@ extension Post2Providing {
             throw error
         }
     }
+    
+    var menuFunctions: [MenuFunction] {
+        var functions = [MenuFunction]()
+        functions.append(
+            .standardMenuFunction(
+                text: myVote == .upvote ? "Undo Upvote" : "Upvote",
+                imageName: myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvoteSquare,
+                callback: { Task { try await self.toggleUpvote() } }
+            )
+        )
+        functions.append(
+            .standardMenuFunction(
+                text: myVote == .downvote ? "Undo Downvote" : "Downvote",
+                imageName: myVote == .downvote ? Icons.downvoteSquareFill : Icons.downvoteSquare,
+                callback: { Task { try await self.toggleDownvote() } }
+            )
+        )
+        functions.append(
+            .standardMenuFunction(
+                text: isSaved ? "Unsave" : "Save",
+                imageName: isSaved ? Icons.saveFill : Icons.save,
+                callback: { Task { try await self.toggleSave() } }
+            )
+        )
+        return functions
+    }
 }
