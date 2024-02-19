@@ -11,29 +11,30 @@ import Foundation
 
 // sources/js/types/LocalUser.ts
 struct APILocalUser: Codable {
+    // swiftlint:disable:next identifier_name
     let id: Int
-    let person_id: Int
+    let personId: Int
     let email: String?
-    let show_nsfw: Bool
+    let showNsfw: Bool
     let theme: String
-    let default_sort_type: APISortType
-    let default_listing_type: APIListingType
-    let interface_language: String
-    let show_avatars: Bool
-    let send_notifications_to_email: Bool
-    let show_scores: Bool
-    let show_bot_accounts: Bool
-    let show_read_posts: Bool
-    let email_verified: Bool
-    let accepted_application: Bool
-    let open_links_in_new_tab: Bool
-    let blur_nsfw: Bool
-    let auto_expand: Bool
-    let infinite_scroll_enabled: Bool
+    let defaultSortType: APISortType
+    let defaultListingType: APIListingType
+    let interfaceLanguage: String
+    let showAvatars: Bool
+    let sendNotificationsToEmail: Bool
+    let showScores: Bool
+    let showBotAccounts: Bool
+    let showReadPosts: Bool
+    let emailVerified: Bool
+    let acceptedApplication: Bool
+    let openLinksInNewTab: Bool
+    let blurNsfw: Bool
+    let autoExpand: Bool
+    let infiniteScrollEnabled: Bool
     let admin: Bool
-    let post_listing_mode: APIPostListingMode
-    let totp_2fa_enabled: Bool
-    let enable_keyboard_navigation: Bool
-    let enable_animated_images: Bool
-    let collapse_bot_comments: Bool
+    let postListingMode: APIPostListingMode
+    let totp2faEnabled: Bool
+    let enableKeyboardNavigation: Bool
+    let enableAnimatedImages: Bool
+    let collapseBotComments: Bool
 }

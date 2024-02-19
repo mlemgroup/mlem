@@ -11,7 +11,7 @@ import Foundation
 
 // sources/js/types/ModAddView.ts
 struct APIModAddView: Codable {
-    let mod_add: APIModAdd
+    let modAdd: APIModAdd
     let moderator: APIPerson?
-    let modded_person: APIPerson
+    let moddedPerson: APIPerson
 }

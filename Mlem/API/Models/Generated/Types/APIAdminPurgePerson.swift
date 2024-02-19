@@ -11,8 +11,9 @@ import Foundation
 
 // sources/js/types/AdminPurgePerson.ts
 struct APIAdminPurgePerson: Codable {
+    // swiftlint:disable:next identifier_name
     let id: Int
-    let admin_person_id: Int
+    let adminPersonId: Int
     let reason: String?
     let when_: String
 }

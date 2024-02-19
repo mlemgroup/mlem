@@ -11,7 +11,7 @@ import Foundation
 
 // sources/js/types/RemoveCommunity.ts
 struct APIRemoveCommunity: Codable {
-    let community_id: Int
+    let communityId: Int
     let removed: Bool
     let reason: String?
 }

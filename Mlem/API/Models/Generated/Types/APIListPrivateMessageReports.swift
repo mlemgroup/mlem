@@ -13,5 +13,5 @@ import Foundation
 struct APIListPrivateMessageReports: Codable {
     let page: Int?
     let limit: Int?
-    let unresolved_only: Bool?
+    let unresolvedOnly: Bool?
 }

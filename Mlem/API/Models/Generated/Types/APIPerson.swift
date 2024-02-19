@@ -11,20 +11,21 @@ import Foundation
 
 // sources/js/types/Person.ts
 struct APIPerson: Codable {
+    // swiftlint:disable:next identifier_name
     let id: Int
     let name: String
-    let display_name: String?
+    let displayName: String?
     let avatar: URL?
     let banned: Bool
     let published: Date
     let updated: Date?
-    let actor_id: URL
+    let actorId: URL
     let bio: String?
     let local: Bool
     let banner: URL?
     let deleted: Bool
-    let matrix_user_id: String?
-    let bot_account: Bool
-    let ban_expires: Date?
-    let instance_id: Int
+    let matrixUserId: String?
+    let botAccount: Bool
+    let banExpires: Date?
+    let instanceId: Int
 }

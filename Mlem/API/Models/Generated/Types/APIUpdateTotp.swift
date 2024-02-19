@@ -11,6 +11,6 @@ import Foundation
 
 // sources/js/types/UpdateTotp.ts
 struct APIUpdateTotp: Codable {
-    let totp_token: String
+    let totpToken: String
     let enabled: Bool
 }

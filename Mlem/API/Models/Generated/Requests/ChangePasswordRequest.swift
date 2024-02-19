@@ -22,9 +22,9 @@ struct ChangePasswordRequest: APIPutRequest {
         oldPassword: String
     ) {
         self.body = .init(
-            new_password: newPassword,
-            new_password_verify: newPasswordVerify,
-            old_password: oldPassword
+            newPassword: newPassword,
+            newPasswordVerify: newPasswordVerify,
+            oldPassword: oldPassword
         )
     }
 }

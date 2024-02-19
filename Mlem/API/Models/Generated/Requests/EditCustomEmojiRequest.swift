@@ -26,8 +26,8 @@ struct EditCustomEmojiRequest: APIPutRequest {
         self.body = .init(
             id: id,
             category: category,
-            image_url: imageUrl,
-            alt_text: altText,
+            imageUrl: imageUrl,
+            altText: altText,
             keywords: keywords
         )
     }

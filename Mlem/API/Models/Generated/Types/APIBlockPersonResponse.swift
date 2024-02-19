@@ -11,6 +11,6 @@ import Foundation
 
 // sources/js/types/BlockPersonResponse.ts
 struct APIBlockPersonResponse: Codable {
-    let person_view: APIPersonView
+    let personView: APIPersonView
     let blocked: Bool
 }

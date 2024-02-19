@@ -21,7 +21,7 @@ struct UpdateTotpRequest: APIPostRequest {
         enabled: Bool
     ) {
         self.body = .init(
-            totp_token: totpToken,
+            totpToken: totpToken,
             enabled: enabled
         )
     }

@@ -14,14 +14,14 @@ struct APIPostView: Codable {
     let post: APIPost
     let creator: APIPerson
     let community: APICommunity
-    let creator_banned_from_community: Bool
-    let creator_is_moderator: Bool
-    let creator_is_admin: Bool
+    let creatorBannedFromCommunity: Bool
+    let creatorIsModerator: Bool
+    let creatorIsAdmin: Bool
     let counts: APIPostAggregates
     let subscribed: APISubscribedType
     let saved: Bool
     let read: Bool
-    let creator_blocked: Bool
-    let my_vote: Int?
-    let unread_comments: Int
+    let creatorBlocked: Bool
+    let myVote: Int?
+    let unreadComments: Int
 }

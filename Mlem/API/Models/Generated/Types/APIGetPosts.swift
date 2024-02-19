@@ -15,10 +15,10 @@ struct APIGetPosts: Codable {
     let sort: APISortType?
     let page: Int?
     let limit: Int?
-    let community_id: Int?
-    let community_name: String?
-    let saved_only: Bool?
-    let liked_only: Bool?
-    let disliked_only: Bool?
-    let page_cursor: String?
+    let communityId: Int?
+    let communityName: String?
+    let savedOnly: Bool?
+    let likedOnly: Bool?
+    let dislikedOnly: Bool?
+    let pageCursor: String?
 }

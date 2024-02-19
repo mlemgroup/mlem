@@ -11,7 +11,7 @@ import Foundation
 
 // sources/js/types/ListRegistrationApplications.ts
 struct APIListRegistrationApplications: Codable {
-    let unread_only: Bool?
+    let unreadOnly: Bool?
     let page: Int?
     let limit: Int?
 }

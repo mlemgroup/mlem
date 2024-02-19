@@ -11,7 +11,8 @@ import Foundation
 
 // sources/js/types/ApproveRegistrationApplication.ts
 struct APIApproveRegistrationApplication: Codable {
+    // swiftlint:disable:next identifier_name
     let id: Int
     let approve: Bool
-    let deny_reason: String?
+    let denyReason: String?
 }

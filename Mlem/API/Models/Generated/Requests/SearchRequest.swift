@@ -16,7 +16,8 @@ struct SearchRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        q: String, // swiftlint:disable:this identifier_name
+        // swiftlint:disable:next identifier_name
+        q: String,
         communityId: Int?,
         communityName: String?,
         creatorId: Int?,

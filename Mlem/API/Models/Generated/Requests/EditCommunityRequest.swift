@@ -27,14 +27,14 @@ struct EditCommunityRequest: APIPutRequest {
         discussionLanguages: [Int]?
     ) {
         self.body = .init(
-            community_id: communityId,
+            communityId: communityId,
             title: title,
             description: description,
             icon: icon,
             banner: banner,
             nsfw: nsfw,
-            posting_restricted_to_mods: postingRestrictedToMods,
-            discussion_languages: discussionLanguages
+            postingRestrictedToMods: postingRestrictedToMods,
+            discussionLanguages: discussionLanguages
         )
     }
 }

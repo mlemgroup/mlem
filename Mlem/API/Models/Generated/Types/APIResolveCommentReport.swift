@@ -11,6 +11,6 @@ import Foundation
 
 // sources/js/types/ResolveCommentReport.ts
 struct APIResolveCommentReport: Codable {
-    let report_id: Int
+    let reportId: Int
     let resolved: Bool
 }

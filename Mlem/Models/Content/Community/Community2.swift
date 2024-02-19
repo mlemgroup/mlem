@@ -37,10 +37,10 @@ final class Community2: Community2Providing, NewContentModel {
         postCount = communityView.counts.posts
         commentCount = communityView.counts.comments
         activeUserCount = .init(
-            sixMonths: communityView.counts.users_active_half_year,
-            month: communityView.counts.users_active_month,
-            week: communityView.counts.users_active_week,
-            day: communityView.counts.users_active_day
+            sixMonths: communityView.counts.usersActiveHalfYear,
+            month: communityView.counts.usersActiveMonth,
+            week: communityView.counts.usersActiveWeek,
+            day: communityView.counts.usersActiveDay
         )
         community1.update(with: communityView.community)
     }

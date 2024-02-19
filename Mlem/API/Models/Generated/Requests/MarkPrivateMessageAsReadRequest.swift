@@ -21,7 +21,7 @@ struct MarkPrivateMessageAsReadRequest: APIPostRequest {
         read: Bool
     ) {
         self.body = .init(
-            private_message_id: privateMessageId,
+            privateMessageId: privateMessageId,
             read: read
         )
     }

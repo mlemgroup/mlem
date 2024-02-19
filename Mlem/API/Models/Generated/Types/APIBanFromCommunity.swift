@@ -11,10 +11,10 @@ import Foundation
 
 // sources/js/types/BanFromCommunity.ts
 struct APIBanFromCommunity: Codable {
-    let community_id: Int
-    let person_id: Int
+    let communityId: Int
+    let personId: Int
     let ban: Bool
-    let remove_data: Bool?
+    let removeData: Bool?
     let reason: String?
     let expires: Int?
 }

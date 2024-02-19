@@ -11,14 +11,14 @@ import Foundation
 
 // sources/js/types/CommentReportView.ts
 struct APICommentReportView: Codable {
-    let comment_report: APICommentReport
+    let commentReport: APICommentReport
     let comment: APIComment
     let post: APIPost
     let community: APICommunity
     let creator: APIPerson
-    let comment_creator: APIPerson
+    let commentCreator: APIPerson
     let counts: APICommentAggregates
-    let creator_banned_from_community: Bool
-    let my_vote: Int?
+    let creatorBannedFromCommunity: Bool
+    let myVote: Int?
     let resolver: APIPerson?
 }

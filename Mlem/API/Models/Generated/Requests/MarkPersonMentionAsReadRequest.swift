@@ -21,7 +21,7 @@ struct MarkPersonMentionAsReadRequest: APIPostRequest {
         read: Bool
     ) {
         self.body = .init(
-            person_mention_id: personMentionId,
+            personMentionId: personMentionId,
             read: read
         )
     }

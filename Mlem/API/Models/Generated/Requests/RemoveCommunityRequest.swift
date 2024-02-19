@@ -22,7 +22,7 @@ struct RemoveCommunityRequest: APIPostRequest {
         reason: String?
     ) {
         self.body = .init(
-            community_id: communityId,
+            communityId: communityId,
             removed: removed,
             reason: reason
         )

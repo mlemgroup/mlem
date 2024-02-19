@@ -24,9 +24,9 @@ struct BanPersonRequest: APIPostRequest {
         expires: Int?
     ) {
         self.body = .init(
-            person_id: personId,
+            personId: personId,
             ban: ban,
-            remove_data: removeData,
+            removeData: removeData,
             reason: reason,
             expires: expires
         )

@@ -22,9 +22,9 @@ struct FeaturePostRequest: APIPostRequest {
         featureType: APIPostFeatureType
     ) {
         self.body = .init(
-            post_id: postId,
+            postId: postId,
             featured: featured,
-            feature_type: featureType
+            featureType: featureType
         )
     }
 }

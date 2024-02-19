@@ -11,7 +11,7 @@ import Foundation
 
 // sources/js/types/HideCommunity.ts
 struct APIHideCommunity: Codable {
-    let community_id: Int
+    let communityId: Int
     let hidden: Bool
     let reason: String?
 }

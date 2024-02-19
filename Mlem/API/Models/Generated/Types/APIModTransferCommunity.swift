@@ -11,9 +11,10 @@ import Foundation
 
 // sources/js/types/ModTransferCommunity.ts
 struct APIModTransferCommunity: Codable {
+    // swiftlint:disable:next identifier_name
     let id: Int
-    let mod_person_id: Int
-    let other_person_id: Int
-    let community_id: Int
+    let modPersonId: Int
+    let otherPersonId: Int
+    let communityId: Int
     let when_: String
 }

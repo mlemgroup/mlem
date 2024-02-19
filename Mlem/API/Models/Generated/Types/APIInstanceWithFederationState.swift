@@ -11,11 +11,12 @@ import Foundation
 
 // sources/js/types/InstanceWithFederationState.ts
 struct APIInstanceWithFederationState: Codable {
+    // swiftlint:disable:next identifier_name
     let id: Int
     let domain: String
     let published: Date
     let updated: Date?
     let software: String?
     let version: String?
-    let federation_state: APIReadableFederationState?
+    let federationState: APIReadableFederationState?
 }

@@ -28,22 +28,22 @@ final class Person3: Person3Providing, NewContentModel {
             self.instance = nil
         }
         
-        self.person2 = source.caches.person2.createModel(source: source, for: response.person_view)
+        self.person2 = source.caches.person2.createModel(source: source, for: response.personView)
         update(with: response)
     }
     
     init(source: any APISource, from response: APIGetSiteResponse) {
         self.source = source
         
-        self.instance = .create(from: response.site_view.site)
+        self.instance = .create(from: response.siteView.site)
         
-        guard let myUser = response.my_user else { fatalError() }
+        guard let myUser = response.myUser else { fatalError() }
         
-        if let existing = source.caches.person2.retrieveModel(id: myUser.local_user_view.local_user.id) {
+        if let existing = source.caches.person2.retrieveModel(id: myUser.localUserView.localUser.id) {
             self.person2 = existing
-            existing.update(with: myUser.local_user_view)
+            existing.update(with: myUser.localUserView)
         } else {
-            self.person2 = .init(source: source, from: myUser.local_user_view)
+            self.person2 = .init(source: source, from: myUser.localUserView)
         }
         
         update(with: myUser)
@@ -53,13 +53,13 @@ final class Person3: Person3Providing, NewContentModel {
         moderatedCommunities = response.moderates.map { moderatorView in
             source.caches.community1.createModel(source: source, for: moderatorView.community)
         }
-        person2.update(with: response.person_view)
+        person2.update(with: response.personView)
     }
     
     func update(with myUser: APIMyUserInfo) {
         moderatedCommunities = myUser.moderates.map { moderatorView in
             source.caches.community1.createModel(source: source, for: moderatorView.community)
         }
-        person2.update(with: myUser.local_user_view)
+        person2.update(with: myUser.localUserView)
     }
 }

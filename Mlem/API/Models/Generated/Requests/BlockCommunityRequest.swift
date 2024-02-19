@@ -21,7 +21,7 @@ struct BlockCommunityRequest: APIPostRequest {
         block: Bool
     ) {
         self.body = .init(
-            community_id: communityId,
+            communityId: communityId,
             block: block
         )
     }

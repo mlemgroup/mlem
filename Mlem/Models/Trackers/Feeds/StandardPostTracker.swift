@@ -34,9 +34,9 @@ enum TrackerFeedType: Equatable {
     
     static func == (lhs: TrackerFeedType, rhs: TrackerFeedType) -> Bool {
         switch (lhs, rhs) {
-        case (.aggregateFeed(let source1, type: let type1), .aggregateFeed(let source2, type: let type2)):
+        case let (.aggregateFeed(source1, type: type1), .aggregateFeed(source2, type: type2)):
             return source1.actorId == source2.actorId && type1 == type2
-        case (.community(let comm1), .community(let comm2)):
+        case let (.community(comm1), .community(comm2)):
             return comm1.actorId == comm2.actorId
         default:
             return false
@@ -51,9 +51,9 @@ enum TrackerFeedType: Equatable {
         savedOnly: Bool = false
     ) async throws -> (posts: [Post2], cursor: String?) {
         switch self {
-        case .aggregateFeed(let apiSource, let type):
+        case let .aggregateFeed(apiSource, type):
             return try await apiSource.getPosts(feed: type, sort: sort, page: page, cursor: cursor, limit: limit, savedOnly: savedOnly)
-        case .community(let community):
+        case let .community(community):
             return try await community.getPosts(sort: sort, page: page, cursor: cursor, limit: limit, savedOnly: savedOnly)
         }
     }
@@ -138,6 +138,7 @@ class StandardPostTracker: StandardTracker<Post2> {
         do {
             try await refresh(clearBeforeRefresh: true)
         } catch {
+            print(error)
             errorHandler.handle(error)
         }
     }

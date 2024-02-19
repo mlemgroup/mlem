@@ -11,10 +11,11 @@ import Foundation
 
 // sources/js/types/RegistrationApplication.ts
 struct APIRegistrationApplication: Codable {
+    // swiftlint:disable:next identifier_name
     let id: Int
-    let local_user_id: Int
+    let localUserId: Int
     let answer: String
-    let admin_id: Int?
-    let deny_reason: String?
+    let adminId: Int?
+    let denyReason: String?
     let published: Date
 }

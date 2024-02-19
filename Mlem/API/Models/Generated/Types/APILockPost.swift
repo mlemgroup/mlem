@@ -11,6 +11,6 @@ import Foundation
 
 // sources/js/types/LockPost.ts
 struct APILockPost: Codable {
-    let post_id: Int
+    let postId: Int
     let locked: Bool
 }

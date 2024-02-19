@@ -37,7 +37,7 @@ final class Person1: Person1Providing, NewContentModel {
     
     init(source: any APISource, from person: APIPerson) {
         self.source = source
-        self.actorId = person.actor_id
+        self.actorId = person.actorId
         self.id = person.id
         self.name = person.name
         self.creationDate = person.published
@@ -47,16 +47,16 @@ final class Person1: Person1Providing, NewContentModel {
     
     func update(with person: APIPerson) {
         updatedDate = person.updated
-        displayName = person.display_name
+        displayName = person.displayName
         description = person.bio
         avatar = person.avatar
         banner = person.banner
         
         deleted = person.deleted
-        isBot = person.bot_account
+        isBot = person.botAccount
         
         if person.banned {
-            if let expires = person.ban_expires {
+            if let expires = person.banExpires {
                 instanceBan = .temporarilyBanned(expires: expires)
             } else {
                 instanceBan = .permanentlyBanned

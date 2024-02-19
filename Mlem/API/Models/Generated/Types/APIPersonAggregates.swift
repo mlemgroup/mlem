@@ -11,7 +11,7 @@ import Foundation
 
 // sources/js/types/PersonAggregates.ts
 struct APIPersonAggregates: Codable {
-    let person_id: Int
-    let post_count: Int
-    let comment_count: Int
+    let personId: Int
+    let postCount: Int
+    let commentCount: Int
 }

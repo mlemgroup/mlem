@@ -11,9 +11,10 @@ import Foundation
 
 // sources/js/types/ModRemoveComment.ts
 struct APIModRemoveComment: Codable {
+    // swiftlint:disable:next identifier_name
     let id: Int
-    let mod_person_id: Int
-    let comment_id: Int
+    let modPersonId: Int
+    let commentId: Int
     let reason: String?
     let removed: Bool
     let when_: String

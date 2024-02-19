@@ -11,13 +11,14 @@ import Foundation
 
 // sources/js/types/PrivateMessageReport.ts
 struct APIPrivateMessageReport: Codable {
+    // swiftlint:disable:next identifier_name
     let id: Int
-    let creator_id: Int
-    let private_message_id: Int
-    let original_pm_text: String
+    let creatorId: Int
+    let privateMessageId: Int
+    let originalPmText: String
     let reason: String
     let resolved: Bool
-    let resolver_id: Int?
+    let resolverId: Int?
     let published: Date
     let updated: Date?
 }

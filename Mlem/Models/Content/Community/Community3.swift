@@ -30,7 +30,7 @@ final class Community3: Community3Providing, NewContentModel {
             self.instance = nil
         }
         
-        self.community2 = source.caches.community2.createModel(source: source, for: response.community_view)
+        self.community2 = source.caches.community2.createModel(source: source, for: response.communityView)
         update(with: response)
     }
     
@@ -38,8 +38,8 @@ final class Community3: Community3Providing, NewContentModel {
         moderators = response.moderators.map { moderatorView in
             source.caches.person1.createModel(source: source, for: moderatorView.moderator)
         }
-        discussionLanguages = response.discussion_languages
-        community2.update(with: response.community_view)
+        discussionLanguages = response.discussionLanguages
+        community2.update(with: response.communityView)
     }
     
     func upgrade() async throws -> Community3 { self }

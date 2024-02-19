@@ -11,7 +11,7 @@ import Foundation
 
 // sources/js/types/ModRemoveCommentView.ts
 struct APIModRemoveCommentView: Codable {
-    let mod_remove_comment: APIModRemoveComment
+    let modRemoveComment: APIModRemoveComment
     let moderator: APIPerson?
     let comment: APIComment
     let commenter: APIPerson

@@ -11,6 +11,6 @@ import Foundation
 
 // sources/js/types/BlockInstance.ts
 struct APIBlockInstance: Codable {
-    let instance_id: Int
+    let instanceId: Int
     let block: Bool
 }

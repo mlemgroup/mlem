@@ -11,6 +11,6 @@ import Foundation
 
 // sources/js/types/CustomEmojiView.ts
 struct APICustomEmojiView: Codable {
-    let custom_emoji: APICustomEmoji
+    let customEmoji: APICustomEmoji
     let keywords: [APICustomEmojiKeyword]
 }

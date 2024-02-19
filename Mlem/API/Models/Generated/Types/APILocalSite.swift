@@ -11,28 +11,29 @@ import Foundation
 
 // sources/js/types/LocalSite.ts
 struct APILocalSite: Codable {
+    // swiftlint:disable:next identifier_name
     let id: Int
-    let site_id: Int
-    let site_setup: Bool
-    let enable_downvotes: Bool
-    let enable_nsfw: Bool
-    let community_creation_admin_only: Bool
-    let require_email_verification: Bool
-    let application_question: String?
-    let private_instance: Bool
-    let default_theme: String
-    let default_post_listing_type: APIListingType
-    let legal_information: String?
-    let hide_modlog_mod_names: Bool
-    let application_email_admins: Bool
-    let slur_filter_regex: String?
-    let actor_name_max_length: Int
-    let federation_enabled: Bool
-    let captcha_enabled: Bool
-    let captcha_difficulty: String
+    let siteId: Int
+    let siteSetup: Bool
+    let enableDownvotes: Bool
+    let enableNsfw: Bool
+    let communityCreationAdminOnly: Bool
+    let requireEmailVerification: Bool
+    let applicationQuestion: String?
+    let privateInstance: Bool
+    let defaultTheme: String
+    let defaultPostListingType: APIListingType
+    let legalInformation: String?
+    let hideModlogModNames: Bool
+    let applicationEmailAdmins: Bool
+    let slurFilterRegex: String?
+    let actorNameMaxLength: Int
+    let federationEnabled: Bool
+    let captchaEnabled: Bool
+    let captchaDifficulty: String
     let published: Date
     let updated: Date?
-    let registration_mode: APIRegistrationMode
-    let reports_email_admins: Bool
-    let federation_signed_fetch: Bool
+    let registrationMode: APIRegistrationMode
+    let reportsEmailAdmins: Bool
+    let federationSignedFetch: Bool
 }

@@ -26,8 +26,8 @@ struct CreateCustomEmojiRequest: APIPostRequest {
         self.body = .init(
             category: category,
             shortcode: shortcode,
-            image_url: imageUrl,
-            alt_text: altText,
+            imageUrl: imageUrl,
+            altText: altText,
             keywords: keywords
         )
     }

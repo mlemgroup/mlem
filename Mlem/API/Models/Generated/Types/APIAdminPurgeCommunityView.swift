@@ -11,6 +11,6 @@ import Foundation
 
 // sources/js/types/AdminPurgeCommunityView.ts
 struct APIAdminPurgeCommunityView: Codable {
-    let admin_purge_community: APIAdminPurgeCommunity
+    let adminPurgeCommunity: APIAdminPurgeCommunity
     let admin: APIPerson?
 }

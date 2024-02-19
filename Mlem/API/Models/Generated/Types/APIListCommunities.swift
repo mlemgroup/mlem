@@ -13,7 +13,7 @@ import Foundation
 struct APIListCommunities: Codable {
     let type_: APIListingType?
     let sort: APISortType?
-    let show_nsfw: Bool?
+    let showNsfw: Bool?
     let page: Int?
     let limit: Int?
 }

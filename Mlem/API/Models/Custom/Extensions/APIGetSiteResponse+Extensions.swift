@@ -8,6 +8,6 @@
 import Foundation
 
 extension APIGetSiteResponse: ActorIdentifiable, Identifiable {
-    var actorId: URL { site_view.site.actorId }
-    var id: Int { site_view.site.id }
+    var actorId: URL { siteView.site.actorId }
+    var id: Int { siteView.site.id }
 }

@@ -11,7 +11,7 @@ import Foundation
 
 // sources/js/types/ModHideCommunityView.ts
 struct APIModHideCommunityView: Codable {
-    let mod_hide_community: APIModHideCommunity
+    let modHideCommunity: APIModHideCommunity
     let admin: APIPerson?
     let community: APICommunity
 }

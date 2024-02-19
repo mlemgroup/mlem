@@ -22,9 +22,9 @@ struct LoginRequest: APIPostRequest {
         totp2faToken: String?
     ) {
         self.body = .init(
-            username_or_email: usernameOrEmail,
+            usernameOrEmail: usernameOrEmail,
             password: password,
-            totp_2fa_token: totp2faToken
+            totp2faToken: totp2faToken
         )
     }
 }

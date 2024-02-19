@@ -11,8 +11,8 @@ import Foundation
 
 // sources/js/types/GetReportCountResponse.ts
 struct APIGetReportCountResponse: Codable {
-    let community_id: Int?
-    let comment_reports: Int
-    let post_reports: Int
-    let private_message_reports: Int?
+    let communityId: Int?
+    let commentReports: Int
+    let postReports: Int
+    let privateMessageReports: Int?
 }

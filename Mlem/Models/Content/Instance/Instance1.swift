@@ -29,8 +29,8 @@ final class Instance1: Instance1Providing, CoreModel {
     required init(from site: APISite) {
         self.id = site.id
         self.creationDate = site.published
-        self.publicKey = site.public_key
-        self.stub = .createModel(url: site.actor_id)
+        self.publicKey = site.publicKey
+        self.stub = .createModel(url: site.actorId)
         update(with: site)
     }
 
@@ -39,6 +39,6 @@ final class Instance1: Instance1Providing, CoreModel {
         description = site.sidebar
         avatar = site.icon
         banner = site.banner
-        lastRefreshDate = site.last_refreshed_at
+        lastRefreshDate = site.lastRefreshedAt
     }
 }

@@ -61,16 +61,16 @@ final class Post1: Post1Providing, NewContentModel {
         
         deleted = post.deleted
         
-        if post.embed_title != nil || post.embed_description != nil || post.embed_video_url != nil {
+        if post.embedTitle != nil || post.embedDescription != nil || post.embedVideoUrl != nil {
             embed = .init(
-                title: post.embed_title,
-                description: post.embed_description,
-                videoUrl: post.embed_video_url
+                title: post.embedTitle,
+                description: post.embedDescription,
+                videoUrl: post.embedVideoUrl
             )
         }
         
-        pinnedCommunity = post.featured_community
-        pinnedInstance = post.featured_local
+        pinnedCommunity = post.featuredCommunity
+        pinnedInstance = post.featuredLocal
         locked = post.locked
         nsfw = post.nsfw
         removed = post.removed

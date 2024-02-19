@@ -11,30 +11,30 @@ import Foundation
 
 // sources/js/types/SaveUserSettings.ts
 struct APISaveUserSettings: Codable {
-    let show_nsfw: Bool?
-    let blur_nsfw: Bool?
-    let auto_expand: Bool?
-    let show_scores: Bool?
+    let showNsfw: Bool?
+    let blurNsfw: Bool?
+    let autoExpand: Bool?
+    let showScores: Bool?
     let theme: String?
-    let default_sort_type: APISortType?
-    let default_listing_type: APIListingType?
-    let interface_language: String?
+    let defaultSortType: APISortType?
+    let defaultListingType: APIListingType?
+    let interfaceLanguage: String?
     let avatar: URL?
     let banner: URL?
-    let display_name: String?
+    let displayName: String?
     let email: String?
     let bio: String?
-    let matrix_user_id: String?
-    let show_avatars: Bool?
-    let send_notifications_to_email: Bool?
-    let bot_account: Bool?
-    let show_bot_accounts: Bool?
-    let show_read_posts: Bool?
-    let discussion_languages: [Int]?
-    let open_links_in_new_tab: Bool?
-    let infinite_scroll_enabled: Bool?
-    let post_listing_mode: APIPostListingMode?
-    let enable_keyboard_navigation: Bool?
-    let enable_animated_images: Bool?
-    let collapse_bot_comments: Bool?
+    let matrixUserId: String?
+    let showAvatars: Bool?
+    let sendNotificationsToEmail: Bool?
+    let botAccount: Bool?
+    let showBotAccounts: Bool?
+    let showReadPosts: Bool?
+    let discussionLanguages: [Int]?
+    let openLinksInNewTab: Bool?
+    let infiniteScrollEnabled: Bool?
+    let postListingMode: APIPostListingMode?
+    let enableKeyboardNavigation: Bool?
+    let enableAnimatedImages: Bool?
+    let collapseBotComments: Bool?
 }

@@ -11,6 +11,7 @@ import Foundation
 
 // sources/js/types/GetPost.ts
 struct APIGetPost: Codable {
+    // swiftlint:disable:next identifier_name
     let id: Int?
-    let comment_id: Int?
+    let commentId: Int?
 }

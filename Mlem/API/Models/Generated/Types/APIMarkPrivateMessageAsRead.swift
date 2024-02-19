@@ -11,6 +11,6 @@ import Foundation
 
 // sources/js/types/MarkPrivateMessageAsRead.ts
 struct APIMarkPrivateMessageAsRead: Codable {
-    let private_message_id: Int
+    let privateMessageId: Int
     let read: Bool
 }

@@ -22,7 +22,7 @@ struct RemovePostRequest: APIPostRequest {
         reason: String?
     ) {
         self.body = .init(
-            post_id: postId,
+            postId: postId,
             removed: removed,
             reason: reason
         )

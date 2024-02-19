@@ -21,9 +21,9 @@ final class User: Person3Providing, UserProviding {
     init(source: UserStub, from response: APIGetSiteResponse) {
         self.stub = source
         
-        guard let myUser = response.my_user else { fatalError() }
+        guard let myUser = response.myUser else { fatalError() }
         
-        if let existing = source.caches.person3.retrieveModel(id: myUser.local_user_view.local_user.id) {
+        if let existing = source.caches.person3.retrieveModel(id: myUser.localUserView.localUser.id) {
             self.person3 = existing
             existing.update(with: myUser)
         } else {

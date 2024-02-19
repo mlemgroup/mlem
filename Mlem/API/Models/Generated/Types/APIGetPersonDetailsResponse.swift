@@ -11,7 +11,7 @@ import Foundation
 
 // sources/js/types/GetPersonDetailsResponse.ts
 struct APIGetPersonDetailsResponse: Codable {
-    let person_view: APIPersonView
+    let personView: APIPersonView
     let site: APISite?
     let comments: [APICommentView]
     let posts: [APIPostView]

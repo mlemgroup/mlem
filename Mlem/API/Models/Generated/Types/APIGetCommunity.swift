@@ -11,6 +11,7 @@ import Foundation
 
 // sources/js/types/GetCommunity.ts
 struct APIGetCommunity: Codable {
+    // swiftlint:disable:next identifier_name
     let id: Int?
     let name: String?
 }

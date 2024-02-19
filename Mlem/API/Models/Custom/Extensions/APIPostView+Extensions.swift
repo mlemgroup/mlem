@@ -8,6 +8,6 @@
 import Foundation
 
 extension APIPostView: ActorIdentifiable, Identifiable {
-    var actorId: URL { post.ap_id }
+    var actorId: URL { post.apId }
     var id: Int { post.id }
 }

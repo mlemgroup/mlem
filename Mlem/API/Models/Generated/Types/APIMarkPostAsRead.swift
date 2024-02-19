@@ -11,7 +11,7 @@ import Foundation
 
 // sources/js/types/MarkPostAsRead.ts
 struct APIMarkPostAsRead: Codable {
-    let post_id: Int?
-    let post_ids: [Int]?
+    let postId: Int?
+    let postIds: [Int]?
     let read: Bool
 }

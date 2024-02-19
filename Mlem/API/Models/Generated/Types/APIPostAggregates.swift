@@ -11,11 +11,11 @@ import Foundation
 
 // sources/js/types/PostAggregates.ts
 struct APIPostAggregates: Codable {
-    let post_id: Int
+    let postId: Int
     let comments: Int
     let score: Int
     let upvotes: Int
     let downvotes: Int
     let published: Date
-    let newest_comment_time: String
+    let newestCommentTime: String
 }

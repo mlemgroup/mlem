@@ -11,6 +11,6 @@ import Foundation
 
 // sources/js/types/DeletePrivateMessage.ts
 struct APIDeletePrivateMessage: Codable {
-    let private_message_id: Int
+    let privateMessageId: Int
     let deleted: Bool
 }

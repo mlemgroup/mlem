@@ -11,5 +11,5 @@ import Foundation
 
 // sources/js/types/ListPostLikesResponse.ts
 struct APIListPostLikesResponse: Codable {
-    let post_likes: [APIVoteView]
+    let postLikes: [APIVoteView]
 }

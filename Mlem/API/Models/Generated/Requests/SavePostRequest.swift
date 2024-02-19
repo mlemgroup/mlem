@@ -21,7 +21,7 @@ struct SavePostRequest: APIPutRequest {
         save: Bool
     ) {
         self.body = .init(
-            post_id: postId,
+            postId: postId,
             save: save
         )
     }

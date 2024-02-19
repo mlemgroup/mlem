@@ -11,5 +11,5 @@ import Foundation
 
 // sources/js/types/GenerateTotpSecretResponse.ts
 struct APIGenerateTotpSecretResponse: Codable {
-    let totp_secret_url: String
+    let totpSecretUrl: String
 }

@@ -21,7 +21,7 @@ struct FollowCommunityRequest: APIPostRequest {
         follow: Bool
     ) {
         self.body = .init(
-            community_id: communityId,
+            communityId: communityId,
             follow: follow
         )
     }

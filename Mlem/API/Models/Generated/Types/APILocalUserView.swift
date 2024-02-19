@@ -11,7 +11,7 @@ import Foundation
 
 // sources/js/types/LocalUserView.ts
 struct APILocalUserView: Codable {
-    let local_user: APILocalUser
+    let localUser: APILocalUser
     let person: APIPerson
     let counts: APIPersonAggregates
 }

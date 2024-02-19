@@ -37,7 +37,7 @@ final class Community1: Community1Providing, NewContentModel {
     required init(source: any APISource, from community: APICommunity) {
         self.source = source
         
-        self.actorId = community.actor_id
+        self.actorId = community.actorId
         self.id = community.id
         self.name = community.name
         self.creationDate = community.published
@@ -55,6 +55,6 @@ final class Community1: Community1Providing, NewContentModel {
         avatar = community.icon
         banner = community.banner
         hidden = community.hidden
-        onlyModeratorsCanPost = community.posting_restricted_to_mods
+        onlyModeratorsCanPost = community.postingRestrictedToMods
     }
 }

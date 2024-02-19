@@ -11,6 +11,7 @@ import Foundation
 
 // sources/js/types/Community.ts
 struct APICommunity: Codable {
+    // swiftlint:disable:next identifier_name
     let id: Int
     let name: String
     let title: String
@@ -20,11 +21,11 @@ struct APICommunity: Codable {
     let updated: Date?
     let deleted: Bool
     let nsfw: Bool
-    let actor_id: URL
+    let actorId: URL
     let local: Bool
     let icon: URL?
     let banner: URL?
     let hidden: Bool
-    let posting_restricted_to_mods: Bool
-    let instance_id: Int
+    let postingRestrictedToMods: Bool
+    let instanceId: Int
 }

@@ -11,10 +11,10 @@ import Foundation
 
 // sources/js/types/CommentAggregates.ts
 struct APICommentAggregates: Codable {
-    let comment_id: Int
+    let commentId: Int
     let score: Int
     let upvotes: Int
     let downvotes: Int
     let published: Date
-    let child_count: Int
+    let childCount: Int
 }

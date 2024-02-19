@@ -11,6 +11,6 @@ import Foundation
 
 // sources/js/types/CustomEmojiKeyword.ts
 struct APICustomEmojiKeyword: Codable {
-    let custom_emoji_id: Int
+    let customEmojiId: Int
     let keyword: String
 }

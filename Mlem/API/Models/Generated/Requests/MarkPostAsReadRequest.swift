@@ -22,8 +22,8 @@ struct MarkPostAsReadRequest: APIPostRequest {
         read: Bool
     ) {
         self.body = .init(
-            post_id: postId,
-            post_ids: postIds,
+            postId: postId,
+            postIds: postIds,
             read: read
         )
     }

@@ -11,6 +11,6 @@ import Foundation
 
 // sources/js/types/CommentResponse.ts
 struct APICommentResponse: Codable {
-    let comment_view: APICommentView
-    let recipient_ids: [Int]
+    let commentView: APICommentView
+    let recipientIds: [Int]
 }

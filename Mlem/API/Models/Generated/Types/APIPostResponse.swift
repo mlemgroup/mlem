@@ -11,5 +11,5 @@ import Foundation
 
 // sources/js/types/PostResponse.ts
 struct APIPostResponse: Codable {
-    let post_view: APIPostView
+    let postView: APIPostView
 }

@@ -21,7 +21,7 @@ struct DeletePrivateMessageRequest: APIPostRequest {
         deleted: Bool
     ) {
         self.body = .init(
-            private_message_id: privateMessageId,
+            privateMessageId: privateMessageId,
             deleted: deleted
         )
     }

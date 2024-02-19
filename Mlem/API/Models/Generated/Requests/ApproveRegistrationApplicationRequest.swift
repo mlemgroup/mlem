@@ -24,7 +24,7 @@ struct ApproveRegistrationApplicationRequest: APIPutRequest {
         self.body = .init(
             id: id,
             approve: approve,
-            deny_reason: denyReason
+            denyReason: denyReason
         )
     }
 }

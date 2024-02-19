@@ -11,6 +11,6 @@ import Foundation
 
 // sources/js/types/SavePost.ts
 struct APISavePost: Codable {
-    let post_id: Int
+    let postId: Int
     let save: Bool
 }

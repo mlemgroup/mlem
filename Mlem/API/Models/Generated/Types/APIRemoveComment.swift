@@ -11,7 +11,7 @@ import Foundation
 
 // sources/js/types/RemoveComment.ts
 struct APIRemoveComment: Codable {
-    let comment_id: Int
+    let commentId: Int
     let removed: Bool
     let reason: String?
 }

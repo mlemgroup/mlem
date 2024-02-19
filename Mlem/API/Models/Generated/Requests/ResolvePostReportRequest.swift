@@ -17,12 +17,12 @@ struct ResolvePostReportRequest: APIPutRequest {
     let body: Body?
 
     init(
-        reportId: Int,
-        resolved: Bool
+      reportId: Int,
+      resolved: Bool
     ) {
         self.body = .init(
-            report_id: reportId,
-            resolved: resolved
-        )
+          reportId: reportId,
+          resolved: resolved
+      )
     }
 }

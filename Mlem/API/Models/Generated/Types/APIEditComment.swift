@@ -11,7 +11,7 @@ import Foundation
 
 // sources/js/types/EditComment.ts
 struct APIEditComment: Codable {
-    let comment_id: Int
+    let commentId: Int
     let content: String?
-    let language_id: Int?
+    let languageId: Int?
 }

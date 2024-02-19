@@ -11,6 +11,6 @@ import Foundation
 
 // sources/js/types/PurgePost.ts
 struct APIPurgePost: Codable {
-    let post_id: Int
+    let postId: Int
     let reason: String?
 }

@@ -21,7 +21,7 @@ struct LikePostRequest: APIPostRequest {
         score: Int
     ) {
         self.body = .init(
-            post_id: postId,
+            postId: postId,
             score: score
         )
     }

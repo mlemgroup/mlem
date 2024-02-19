@@ -11,5 +11,5 @@ import Foundation
 
 // sources/js/types/GetFederatedInstancesResponse.ts
 struct APIGetFederatedInstancesResponse: Codable {
-    let federated_instances: APIFederatedInstances?
+    let federatedInstances: APIFederatedInstances?
 }

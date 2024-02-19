@@ -12,5 +12,5 @@ import Foundation
 // sources/js/types/GetPostsResponse.ts
 struct APIGetPostsResponse: Codable {
     let posts: [APIPostView]
-    let next_page: String?
+    let nextPage: String?
 }

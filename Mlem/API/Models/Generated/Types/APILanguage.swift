@@ -11,6 +11,7 @@ import Foundation
 
 // sources/js/types/Language.ts
 struct APILanguage: Codable {
+    // swiftlint:disable:next identifier_name
     let id: Int
     let code: String
     let name: String

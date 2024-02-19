@@ -11,12 +11,12 @@ import Foundation
 
 // sources/js/types/EditCommunity.ts
 struct APIEditCommunity: Codable {
-    let community_id: Int
+    let communityId: Int
     let title: String?
     let description: String?
     let icon: URL?
     let banner: URL?
     let nsfw: Bool?
-    let posting_restricted_to_mods: Bool?
-    let discussion_languages: [Int]?
+    let postingRestrictedToMods: Bool?
+    let discussionLanguages: [Int]?
 }

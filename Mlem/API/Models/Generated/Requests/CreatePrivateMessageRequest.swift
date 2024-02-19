@@ -22,7 +22,7 @@ struct CreatePrivateMessageRequest: APIPostRequest {
     ) {
         self.body = .init(
             content: content,
-            recipient_id: recipientId
+            recipientId: recipientId
         )
     }
 }

@@ -11,10 +11,11 @@ import Foundation
 
 // sources/js/types/ModBanFromCommunity.ts
 struct APIModBanFromCommunity: Codable {
+    // swiftlint:disable:next identifier_name
     let id: Int
-    let mod_person_id: Int
-    let other_person_id: Int
-    let community_id: Int
+    let modPersonId: Int
+    let otherPersonId: Int
+    let communityId: Int
     let reason: String?
     let banned: Bool
     let expires: String?

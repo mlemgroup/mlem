@@ -19,12 +19,12 @@ final class Instance3: Instance3Providing, CoreModel {
     var version: SiteVersion = .zero
     
     required init(from response: APIGetSiteResponse) {
-        self.instance2 = .create(from: response.site_view)
+        self.instance2 = .create(from: response.siteView)
         update(with: response)
     }
 
     func update(with response: APIGetSiteResponse) {
         version = SiteVersion(response.version)
-        instance2.update(with: response.site_view)
+        instance2.update(with: response.siteView)
     }
 }

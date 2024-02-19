@@ -40,16 +40,16 @@ final class Post2: Post2Providing, NewContentModel {
         commentCount = post.counts.comments
         upvoteCount = post.counts.upvotes
         downvoteCount = post.counts.downvotes
-        unreadCommentCount = post.unread_comments
+        unreadCommentCount = post.unreadComments
         isSaved = post.saved
         isRead = post.read
-        myVote = .init(rawValue: post.my_vote ?? 0) ?? .none // TODO: this can be nicer
+        myVote = .init(rawValue: post.myVote ?? 0) ?? .none // TODO: this can be nicer
         
         post1.update(with: post.post)
         creator.update(with: post.creator)
         community.update(with: post.community)
         
-        creator.blocked = post.creator_blocked
+        creator.blocked = post.creatorBlocked
     }
     
     var score: Int { upvoteCount - downvoteCount }

@@ -13,6 +13,6 @@ import Foundation
 struct APIListPostReports: Codable {
     let page: Int?
     let limit: Int?
-    let unresolved_only: Bool?
-    let community_id: Int?
+    let unresolvedOnly: Bool?
+    let communityId: Int?
 }

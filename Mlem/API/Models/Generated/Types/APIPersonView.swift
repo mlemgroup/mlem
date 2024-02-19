@@ -13,5 +13,5 @@ import Foundation
 struct APIPersonView: Codable {
     let person: APIPerson
     let counts: APIPersonAggregates
-    let is_admin: Bool
+    let isAdmin: Bool
 }

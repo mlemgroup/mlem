@@ -25,12 +25,12 @@ struct EditPostRequest: APIPutRequest {
         languageId: Int?
     ) {
         self.body = .init(
-            post_id: postId,
+            postId: postId,
             name: name,
             url: url,
             body: body,
             nsfw: nsfw,
-            language_id: languageId
+            languageId: languageId
         )
     }
 }

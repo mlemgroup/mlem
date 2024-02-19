@@ -8,6 +8,6 @@
 import Foundation
 
 extension APIGetCommunityResponse: ActorIdentifiable, Identifiable {
-    var actorId: URL { community_view.community.actorId }
-    var id: Int { community_view.community.id }
+    var actorId: URL { communityView.community.actorId }
+    var id: Int { communityView.community.id }
 }

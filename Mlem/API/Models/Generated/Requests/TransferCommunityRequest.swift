@@ -21,8 +21,8 @@ struct TransferCommunityRequest: APIPostRequest {
         personId: Int
     ) {
         self.body = .init(
-            community_id: communityId,
-            person_id: personId
+            communityId: communityId,
+            personId: personId
         )
     }
 }

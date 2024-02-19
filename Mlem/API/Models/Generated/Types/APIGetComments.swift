@@ -13,14 +13,14 @@ import Foundation
 struct APIGetComments: Codable {
     let type_: APIListingType?
     let sort: APICommentSortType?
-    let max_depth: Int?
+    let maxDepth: Int?
     let page: Int?
     let limit: Int?
-    let community_id: Int?
-    let community_name: String?
-    let post_id: Int?
-    let parent_id: Int?
-    let saved_only: Bool?
-    let liked_only: Bool?
-    let disliked_only: Bool?
+    let communityId: Int?
+    let communityName: String?
+    let postId: Int?
+    let parentId: Int?
+    let savedOnly: Bool?
+    let likedOnly: Bool?
+    let dislikedOnly: Bool?
 }

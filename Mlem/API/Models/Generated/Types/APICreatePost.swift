@@ -12,10 +12,10 @@ import Foundation
 // sources/js/types/CreatePost.ts
 struct APICreatePost: Codable {
     let name: String
-    let community_id: Int
+    let communityId: Int
     let url: String?
     let body: String?
     let honeypot: String?
     let nsfw: Bool?
-    let language_id: Int?
+    let languageId: Int?
 }

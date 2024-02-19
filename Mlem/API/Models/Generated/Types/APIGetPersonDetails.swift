@@ -11,11 +11,11 @@ import Foundation
 
 // sources/js/types/GetPersonDetails.ts
 struct APIGetPersonDetails: Codable {
-    let person_id: Int?
+    let personId: Int?
     let username: String?
     let sort: APISortType?
     let page: Int?
     let limit: Int?
-    let community_id: Int?
-    let saved_only: Bool?
+    let communityId: Int?
+    let savedOnly: Bool?
 }

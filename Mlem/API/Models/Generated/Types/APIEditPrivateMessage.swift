@@ -11,6 +11,6 @@ import Foundation
 
 // sources/js/types/EditPrivateMessage.ts
 struct APIEditPrivateMessage: Codable {
-    let private_message_id: Int
+    let privateMessageId: Int
     let content: String
 }

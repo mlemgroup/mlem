@@ -11,7 +11,7 @@ import Foundation
 
 // sources/js/types/ListPostLikes.ts
 struct APIListPostLikes: Codable {
-    let post_id: Int
+    let postId: Int
     let page: Int?
     let limit: Int?
 }

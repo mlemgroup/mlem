@@ -7,6 +7,4 @@
 
 import Foundation
 
-extension APISite: ActorIdentifiable {
-    var actorId: URL { actor_id }
-}
+extension APISite: ActorIdentifiable {}

@@ -11,5 +11,5 @@ import Foundation
 
 // sources/js/types/CustomEmojiResponse.ts
 struct APICustomEmojiResponse: Codable {
-    let custom_emoji: APICustomEmojiView
+    let customEmoji: APICustomEmojiView
 }

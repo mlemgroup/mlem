@@ -11,6 +11,6 @@ import Foundation
 
 // sources/js/types/DistinguishComment.ts
 struct APIDistinguishComment: Codable {
-    let comment_id: Int
+    let commentId: Int
     let distinguished: Bool
 }

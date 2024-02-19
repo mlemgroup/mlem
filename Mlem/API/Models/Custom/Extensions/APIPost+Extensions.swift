@@ -8,11 +8,11 @@
 import Foundation
 
 extension APIPost: ActorIdentifiable, Identifiable {
-    var actorId: URL { ap_id }
+    var actorId: URL { apId }
 }
 
 extension APIPost {
     var linkUrl: URL? { LemmyURL(string: url)?.url }
     // var thumbnailImageUrl: URL? { LemmyURL(string: thumbnail_url)?.url }
-    var thumbnailImageUrl: URL? { thumbnail_url }
+    var thumbnailImageUrl: URL? { thumbnailUrl }
 }

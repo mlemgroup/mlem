@@ -83,7 +83,7 @@ extension Community1Providing {
         )
         return (
             posts: response.posts.map { source.caches.post2.createModel(source: source, for: $0) },
-            cursor: response.next_page
+            cursor: response.nextPage
         )
     }
 }

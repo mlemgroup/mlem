@@ -12,5 +12,5 @@ import Foundation
 // sources/js/types/DeleteAccount.ts
 struct APIDeleteAccount: Codable {
     let password: String
-    let delete_content: Bool
+    let deleteContent: Bool
 }

@@ -11,6 +11,6 @@ import Foundation
 
 // sources/js/types/PurgeComment.ts
 struct APIPurgeComment: Codable {
-    let comment_id: Int
+    let commentId: Int
     let reason: String?
 }

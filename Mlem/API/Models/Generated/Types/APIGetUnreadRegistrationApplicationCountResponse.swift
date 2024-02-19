@@ -11,5 +11,5 @@ import Foundation
 
 // sources/js/types/GetUnreadRegistrationApplicationCountResponse.ts
 struct APIGetUnreadRegistrationApplicationCountResponse: Codable {
-    let registration_applications: Int
+    let registrationApplications: Int
 }

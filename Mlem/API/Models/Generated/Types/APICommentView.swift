@@ -16,11 +16,11 @@ struct APICommentView: Codable {
     let post: APIPost
     let community: APICommunity
     let counts: APICommentAggregates
-    let creator_banned_from_community: Bool
-    let creator_is_moderator: Bool
-    let creator_is_admin: Bool
+    let creatorBannedFromCommunity: Bool
+    let creatorIsModerator: Bool
+    let creatorIsAdmin: Bool
     let subscribed: APISubscribedType
     let saved: Bool
-    let creator_blocked: Bool
-    let my_vote: Int?
+    let creatorBlocked: Bool
+    let myVote: Int?
 }

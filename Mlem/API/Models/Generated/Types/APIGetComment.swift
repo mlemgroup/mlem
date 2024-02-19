@@ -11,5 +11,6 @@ import Foundation
 
 // sources/js/types/GetComment.ts
 struct APIGetComment: Codable {
+    // swiftlint:disable:next identifier_name
     let id: Int
 }

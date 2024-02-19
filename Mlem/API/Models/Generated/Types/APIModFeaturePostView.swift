@@ -11,7 +11,7 @@ import Foundation
 
 // sources/js/types/ModFeaturePostView.ts
 struct APIModFeaturePostView: Codable {
-    let mod_feature_post: APIModFeaturePost
+    let modFeaturePost: APIModFeaturePost
     let moderator: APIPerson?
     let post: APIPost
     let community: APICommunity

@@ -30,11 +30,11 @@ struct RegisterRequest: APIPostRequest {
         self.body = .init(
             username: username,
             password: password,
-            password_verify: passwordVerify,
-            show_nsfw: showNsfw,
+            passwordVerify: passwordVerify,
+            showNsfw: showNsfw,
             email: email,
-            captcha_uuid: captchaUuid,
-            captcha_answer: captchaAnswer,
+            captchaUuid: captchaUuid,
+            captchaAnswer: captchaAnswer,
             honeypot: honeypot,
             answer: answer
         )

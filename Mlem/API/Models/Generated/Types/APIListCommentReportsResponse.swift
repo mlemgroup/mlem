@@ -11,5 +11,5 @@ import Foundation
 
 // sources/js/types/ListCommentReportsResponse.ts
 struct APIListCommentReportsResponse: Codable {
-    let comment_reports: [APICommentReportView]
+    let commentReports: [APICommentReportView]
 }

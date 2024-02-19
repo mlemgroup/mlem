@@ -8,6 +8,6 @@
 import Foundation
 
 extension APIGetPersonDetailsResponse: ActorIdentifiable, Identifiable {
-    var actorId: URL { person_view.person.actorId }
-    var id: Int { person_view.person.id }
+    var actorId: URL { personView.person.actorId }
+    var id: Int { personView.person.id }
 }

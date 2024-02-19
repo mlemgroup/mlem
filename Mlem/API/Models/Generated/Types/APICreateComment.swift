@@ -12,7 +12,7 @@ import Foundation
 // sources/js/types/CreateComment.ts
 struct APICreateComment: Codable {
     let content: String
-    let post_id: Int
-    let parent_id: Int?
-    let language_id: Int?
+    let postId: Int
+    let parentId: Int?
+    let languageId: Int?
 }

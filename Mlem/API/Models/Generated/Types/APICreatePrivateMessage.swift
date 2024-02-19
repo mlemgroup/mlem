@@ -12,5 +12,5 @@ import Foundation
 // sources/js/types/CreatePrivateMessage.ts
 struct APICreatePrivateMessage: Codable {
     let content: String
-    let recipient_id: Int
+    let recipientId: Int
 }

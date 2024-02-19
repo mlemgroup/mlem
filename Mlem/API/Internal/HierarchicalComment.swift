@@ -59,7 +59,7 @@ extension HierarchicalComment: Hashable {
         hasher.combine(commentView.comment.updated)
         hasher.combine(commentView.counts.upvotes)
         hasher.combine(commentView.counts.downvotes)
-        hasher.combine(commentView.my_vote)
+        hasher.combine(commentView.myVote)
     }
 }
 

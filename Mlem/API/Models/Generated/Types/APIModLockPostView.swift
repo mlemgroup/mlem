@@ -11,7 +11,7 @@ import Foundation
 
 // sources/js/types/ModLockPostView.ts
 struct APIModLockPostView: Codable {
-    let mod_lock_post: APIModLockPost
+    let modLockPost: APIModLockPost
     let moderator: APIPerson?
     let post: APIPost
     let community: APICommunity

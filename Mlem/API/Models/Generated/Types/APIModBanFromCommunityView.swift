@@ -11,8 +11,8 @@ import Foundation
 
 // sources/js/types/ModBanFromCommunityView.ts
 struct APIModBanFromCommunityView: Codable {
-    let mod_ban_from_community: APIModBanFromCommunity
+    let modBanFromCommunity: APIModBanFromCommunity
     let moderator: APIPerson?
     let community: APICommunity
-    let banned_person: APIPerson
+    let bannedPerson: APIPerson
 }

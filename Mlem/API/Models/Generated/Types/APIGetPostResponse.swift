@@ -11,8 +11,8 @@ import Foundation
 
 // sources/js/types/GetPostResponse.ts
 struct APIGetPostResponse: Codable {
-    let post_view: APIPostView
-    let community_view: APICommunityView
+    let postView: APIPostView
+    let communityView: APICommunityView
     let moderators: [APICommunityModeratorView]
-    let cross_posts: [APIPostView]
+    let crossPosts: [APIPostView]
 }

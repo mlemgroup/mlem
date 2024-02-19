@@ -21,7 +21,7 @@ struct MarkCommentReplyAsReadRequest: APIPostRequest {
         read: Bool
     ) {
         self.body = .init(
-            comment_reply_id: commentReplyId,
+            commentReplyId: commentReplyId,
             read: read
         )
     }

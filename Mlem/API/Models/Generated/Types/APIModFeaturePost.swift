@@ -11,10 +11,11 @@ import Foundation
 
 // sources/js/types/ModFeaturePost.ts
 struct APIModFeaturePost: Codable {
+    // swiftlint:disable:next identifier_name
     let id: Int
-    let mod_person_id: Int
-    let post_id: Int
+    let modPersonId: Int
+    let postId: Int
     let featured: Bool
     let when_: String
-    let is_featured_community: Bool
+    let isFeaturedCommunity: Bool
 }

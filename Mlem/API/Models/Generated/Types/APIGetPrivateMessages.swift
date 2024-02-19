@@ -11,8 +11,8 @@ import Foundation
 
 // sources/js/types/GetPrivateMessages.ts
 struct APIGetPrivateMessages: Codable {
-    let unread_only: Bool?
+    let unreadOnly: Bool?
     let page: Int?
     let limit: Int?
-    let creator_id: Int?
+    let creatorId: Int?
 }

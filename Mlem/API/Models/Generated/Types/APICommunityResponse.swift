@@ -11,6 +11,6 @@ import Foundation
 
 // sources/js/types/CommunityResponse.ts
 struct APICommunityResponse: Codable {
-    let community_view: APICommunityView
-    let discussion_languages: [Int]
+    let communityView: APICommunityView
+    let discussionLanguages: [Int]
 }

@@ -21,7 +21,7 @@ struct CreateCommentReportRequest: APIPostRequest {
         reason: String
     ) {
         self.body = .init(
-            comment_id: commentId,
+            commentId: commentId,
             reason: reason
         )
     }

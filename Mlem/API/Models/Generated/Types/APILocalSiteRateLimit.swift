@@ -11,21 +11,21 @@ import Foundation
 
 // sources/js/types/LocalSiteRateLimit.ts
 struct APILocalSiteRateLimit: Codable {
-    let local_site_id: Int
+    let localSiteId: Int
     let message: Int
-    let message_per_second: Int
+    let messagePerSecond: Int
     let post: Int
-    let post_per_second: Int
+    let postPerSecond: Int
     let register: Int
-    let register_per_second: Int
+    let registerPerSecond: Int
     let image: Int
-    let image_per_second: Int
+    let imagePerSecond: Int
     let comment: Int
-    let comment_per_second: Int
+    let commentPerSecond: Int
     let search: Int
-    let search_per_second: Int
+    let searchPerSecond: Int
     let published: Date
     let updated: Date?
-    let import_user_settings: Int
-    let import_user_settings_per_second: Int
+    let importUserSettings: Int
+    let importUserSettingsPerSecond: Int
 }

@@ -22,7 +22,7 @@ struct DeleteAccountRequest: APIPostRequest {
     ) {
         self.body = .init(
             password: password,
-            delete_content: deleteContent
+            deleteContent: deleteContent
         )
     }
 }

@@ -16,7 +16,7 @@ struct GetSiteMetadataRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        url: String
+      url: String
     ) {
         self.queryItems = [
             .init(name: "url", value: "\(url)")

@@ -14,5 +14,5 @@ struct APIGetPersonMentions: Codable {
     let sort: APICommentSortType?
     let page: Int?
     let limit: Int?
-    let unread_only: Bool?
+    let unreadOnly: Bool?
 }

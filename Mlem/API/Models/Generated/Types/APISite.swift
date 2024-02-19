@@ -11,6 +11,7 @@ import Foundation
 
 // sources/js/types/Site.ts
 struct APISite: Codable {
+    // swiftlint:disable:next identifier_name
     let id: Int
     let name: String
     let sidebar: String?
@@ -19,10 +20,10 @@ struct APISite: Codable {
     let icon: URL?
     let banner: URL?
     let description: String?
-    let actor_id: URL
-    let last_refreshed_at: Date
-    let inbox_url: String
-    let private_key: String?
-    let public_key: String
-    let instance_id: Int
+    let actorId: URL
+    let lastRefreshedAt: Date
+    let inboxUrl: String
+    let privateKey: String?
+    let publicKey: String
+    let instanceId: Int
 }

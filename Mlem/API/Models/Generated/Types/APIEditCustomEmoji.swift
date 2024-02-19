@@ -11,9 +11,10 @@ import Foundation
 
 // sources/js/types/EditCustomEmoji.ts
 struct APIEditCustomEmoji: Codable {
+    // swiftlint:disable:next identifier_name
     let id: Int
     let category: String
-    let image_url: String
-    let alt_text: String
+    let imageUrl: String
+    let altText: String
     let keywords: [String]
 }

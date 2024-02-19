@@ -11,6 +11,6 @@ import Foundation
 
 // sources/js/types/SaveComment.ts
 struct APISaveComment: Codable {
-    let comment_id: Int
+    let commentId: Int
     let save: Bool
 }

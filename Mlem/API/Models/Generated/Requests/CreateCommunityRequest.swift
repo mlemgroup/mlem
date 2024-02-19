@@ -33,8 +33,8 @@ struct CreateCommunityRequest: APIPostRequest {
             icon: icon,
             banner: banner,
             nsfw: nsfw,
-            posting_restricted_to_mods: postingRestrictedToMods,
-            discussion_languages: discussionLanguages
+            postingRestrictedToMods: postingRestrictedToMods,
+            discussionLanguages: discussionLanguages
         )
     }
 }

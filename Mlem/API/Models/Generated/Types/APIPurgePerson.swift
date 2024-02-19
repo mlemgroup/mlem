@@ -11,6 +11,6 @@ import Foundation
 
 // sources/js/types/PurgePerson.ts
 struct APIPurgePerson: Codable {
-    let person_id: Int
+    let personId: Int
     let reason: String?
 }

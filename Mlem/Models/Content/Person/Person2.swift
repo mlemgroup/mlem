@@ -36,8 +36,8 @@ final class Person2: Person2Providing, NewContentModel {
     }
     
     func update(with personView: any APIPersonViewLike) {
-        postCount = personView.counts.post_count
-        commentCount = personView.counts.comment_count
+        postCount = personView.counts.postCount
+        commentCount = personView.counts.commentCount
         person1.update(with: personView.person)
     }
 }

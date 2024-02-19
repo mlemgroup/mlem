@@ -11,8 +11,9 @@ import Foundation
 
 // sources/js/types/LoginToken.ts
 struct APILoginToken: Codable {
-    let user_id: Int
+    let userId: Int
     let published: Date
+    // swiftlint:disable:next identifier_name
     let ip: String?
-    let user_agent: String?
+    let userAgent: String?
 }

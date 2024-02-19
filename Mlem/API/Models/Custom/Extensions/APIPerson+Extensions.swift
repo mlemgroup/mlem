@@ -7,6 +7,4 @@
 
 import Foundation
 
-extension APIPerson: ActorIdentifiable, Identifiable {
-    var actorId: URL { actor_id }
-}
+extension APIPerson: ActorIdentifiable, Identifiable {}

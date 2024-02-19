@@ -11,5 +11,5 @@ import Foundation
 
 // sources/js/types/ListPrivateMessageReportsResponse.ts
 struct APIListPrivateMessageReportsResponse: Codable {
-    let private_message_reports: [APIPrivateMessageReportView]
+    let privateMessageReports: [APIPrivateMessageReportView]
 }

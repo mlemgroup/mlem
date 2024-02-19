@@ -27,12 +27,12 @@ struct CreatePostRequest: APIPostRequest {
     ) {
         self.body = .init(
             name: name,
-            community_id: communityId,
+            communityId: communityId,
             url: url,
             body: body,
             honeypot: honeypot,
             nsfw: nsfw,
-            language_id: languageId
+            languageId: languageId
         )
     }
 }

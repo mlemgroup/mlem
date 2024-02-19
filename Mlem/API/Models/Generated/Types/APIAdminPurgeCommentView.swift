@@ -11,7 +11,7 @@ import Foundation
 
 // sources/js/types/AdminPurgeCommentView.ts
 struct APIAdminPurgeCommentView: Codable {
-    let admin_purge_comment: APIAdminPurgeComment
+    let adminPurgeComment: APIAdminPurgeComment
     let admin: APIPerson?
     let post: APIPost
 }

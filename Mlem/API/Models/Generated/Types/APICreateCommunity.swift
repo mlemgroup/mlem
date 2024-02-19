@@ -17,6 +17,6 @@ struct APICreateCommunity: Codable {
     let icon: URL?
     let banner: URL?
     let nsfw: Bool?
-    let posting_restricted_to_mods: Bool?
-    let discussion_languages: [Int]?
+    let postingRestrictedToMods: Bool?
+    let discussionLanguages: [Int]?
 }

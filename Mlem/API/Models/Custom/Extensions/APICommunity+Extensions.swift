@@ -7,9 +7,7 @@
 
 import Foundation
 
-extension APICommunity: ActorIdentifiable, Identifiable {
-    var actorId: URL { actor_id }
-}
+extension APICommunity: ActorIdentifiable, Identifiable {}
 
 extension APICommunity: Comparable {
     static func < (lhs: APICommunity, rhs: APICommunity) -> Bool {
