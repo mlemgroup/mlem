@@ -17,14 +17,14 @@ struct PasswordChangeAfterResetRequest: APIPostRequest {
     let body: Body?
 
     init(
-      token: String,
-      password: String,
-      passwordVerify: String
+        token: String,
+        password: String,
+        passwordVerify: String
     ) {
         self.body = .init(
-          token: token,
-          password: password,
-          passwordVerify: passwordVerify
-      )
+            token: token,
+            password: password,
+            passwordVerify: passwordVerify
+        )
     }
 }
