@@ -20,7 +20,6 @@ final class Community3: Community3Providing, NewContentModel {
     var instance: Instance1!
     var moderators: [Person1] = .init()
     var discussionLanguages: [Int] = .init()
-    var defaultPostLanguage: Int?
     
     required init(source: any APISource, from response: APIGetCommunityResponse) {
         self.source = source
@@ -39,9 +38,8 @@ final class Community3: Community3Providing, NewContentModel {
         moderators = response.moderators.map { moderatorView in
             source.caches.person1.createModel(source: source, for: moderatorView.moderator)
         }
-        discussionLanguages = response.discussionLanguages
-        defaultPostLanguage = response.defaultPostLanguage
-        community2.update(with: response.communityView)
+        discussionLanguages = response.discussion_languages
+        community2.update(with: response.community_view)
     }
     
     func upgrade() async throws -> Community3 { self }

@@ -45,35 +45,35 @@ final class Post1: Post1Providing, NewContentModel {
         self.id = post.id
         self.creationDate = post.published
         
-        self.update(with: post)
+        update(with: post)
     }
     
     func update(with post: APIPost) {
-        self.updatedDate = post.updated
+        updatedDate = post.updated
     
-        self.title = post.name
+        title = post.name
         
         // We can't name this 'body' because @Observable uses that property name already
-        self.content = post.body
-        self.links = post.body?.parseLinks() ?? []
+        content = post.body
+        links = post.body?.parseLinks() ?? []
         
-        self.linkUrl = post.linkUrl
+        linkUrl = post.linkUrl
         
-        self.deleted = post.deleted
+        deleted = post.deleted
         
-        if post.embedTitle != nil || post.embedDescription != nil || post.embedVideoUrl != nil {
-            self.embed = .init(
-                title: post.embedTitle,
-                description: post.embedDescription,
-                videoUrl: post.embedVideoUrl
+        if post.embed_title != nil || post.embed_description != nil || post.embed_video_url != nil {
+            embed = .init(
+                title: post.embed_title,
+                description: post.embed_description,
+                videoUrl: post.embed_video_url
             )
         }
         
-        self.pinnedCommunity = post.featuredCommunity
-        self.pinnedInstance = post.featuredLocal
-        self.locked = post.locked
-        self.nsfw = post.nsfw
-        self.removed = post.removed
-        self.thumbnailUrl = post.thumbnailImageUrl
+        pinnedCommunity = post.featured_community
+        pinnedInstance = post.featured_local
+        locked = post.locked
+        nsfw = post.nsfw
+        removed = post.removed
+        thumbnailUrl = post.thumbnailImageUrl
     }
 }

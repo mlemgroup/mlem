@@ -37,24 +37,24 @@ final class Community1: Community1Providing, NewContentModel {
     required init(source: any APISource, from community: APICommunity) {
         self.source = source
         
-        self.actorId = community.actorId
+        self.actorId = community.actor_id
         self.id = community.id
         self.name = community.name
         self.creationDate = community.published
 
-        self.update(with: community)
+        update(with: community)
     }
     
     func update(with community: APICommunity) {
-        self.updatedDate = community.updated
-        self.displayName = community.title
-        self.description = community.description
-        self.removed = community.removed
-        self.deleted = community.deleted
-        self.nsfw = community.nsfw
-        self.avatar = community.iconUrl
-        self.banner = community.bannerUrl
-        self.hidden = community.hidden
-        self.onlyModeratorsCanPost = community.postingRestrictedToMods
+        updatedDate = community.updated
+        displayName = community.title
+        description = community.description
+        removed = community.removed
+        deleted = community.deleted
+        nsfw = community.nsfw
+        avatar = community.icon
+        banner = community.banner
+        hidden = community.hidden
+        onlyModeratorsCanPost = community.posting_restricted_to_mods
     }
 }

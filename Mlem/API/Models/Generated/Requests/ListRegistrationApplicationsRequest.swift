@@ -1,0 +1,29 @@
+//
+//  ListRegistrationApplicationsRequest.swift
+//  Mlem
+//
+//  Created by Eric Andrews on 2024-02-19
+//
+
+// ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
+
+import Foundation
+
+struct ListRegistrationApplicationsRequest: APIGetRequest {
+    typealias Response = APIListRegistrationApplicationsResponse
+
+    let path = "/admin/registration_application/list"
+    let queryItems: [URLQueryItem]
+
+    init(
+        unreadOnly: Bool?,
+        page: Int?,
+        limit: Int?
+    ) {
+        self.queryItems = [
+            .init(name: "unread_only", value: "\(unreadOnly)"),
+            .init(name: "page", value: "\(page)"),
+            .init(name: "limit", value: "\(limit)")
+        ]
+    }
+}

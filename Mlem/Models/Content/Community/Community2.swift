@@ -28,7 +28,7 @@ final class Community2: Community2Providing, NewContentModel {
     required init(source: any APISource, from communityView: APICommunityView) {
         self.source = source
         self.community1 = source.caches.community1.createModel(source: source, for: communityView.community)
-        self.update(with: communityView)
+        update(with: communityView)
     }
     
     func update(with communityView: APICommunityView) {
@@ -37,10 +37,10 @@ final class Community2: Community2Providing, NewContentModel {
         postCount = communityView.counts.posts
         commentCount = communityView.counts.comments
         activeUserCount = .init(
-            sixMonths: communityView.counts.usersActiveHalfYear,
-            month: communityView.counts.usersActiveMonth,
-            week: communityView.counts.usersActiveWeek,
-            day: communityView.counts.usersActiveDay
+            sixMonths: communityView.counts.users_active_half_year,
+            month: communityView.counts.users_active_month,
+            week: communityView.counts.users_active_week,
+            day: communityView.counts.users_active_day
         )
         community1.update(with: communityView.community)
     }

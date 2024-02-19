@@ -43,7 +43,7 @@ extension UserProviding {
 extension UserProviding {
     func login(password: String, twoFactorToken: String? = nil) async throws {
         let response = try await source.api.login(username: name, password: password, totpToken: twoFactorToken)
-        accessToken = response.jwt
+        accessToken = response.jwt ?? "" // TODO: throw nice error
     }
     
     var nicknameSortKey: String { "\(nickname ?? name)\(instance.host ?? "")" }

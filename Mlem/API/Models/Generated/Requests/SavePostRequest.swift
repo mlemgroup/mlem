@@ -1,0 +1,28 @@
+//
+//  SavePostRequest.swift
+//  Mlem
+//
+//  Created by Eric Andrews on 2024-02-19
+//
+
+// ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
+
+import Foundation
+
+struct SavePostRequest: APIPutRequest {
+    typealias Body = APISavePost
+    typealias Response = APIPostResponse
+
+    let path = "/post/save"
+    let body: Body?
+
+    init(
+        postId: Int,
+        save: Bool
+    ) {
+        self.body = .init(
+            post_id: postId,
+            save: save
+        )
+    }
+}

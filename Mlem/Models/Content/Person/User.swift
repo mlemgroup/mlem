@@ -11,19 +11,19 @@ import SwiftUI
 @Observable
 final class User: Person3Providing, UserProviding {
     static let identifierPrefix: String = "@"
-    typealias APIType = SiteResponse
+    typealias APIType = APIGetSiteResponse
     
     let stub: UserStub
     let person3: Person3
     
     let instance: Instance3
     
-    init(source: UserStub, from response: SiteResponse) {
+    init(source: UserStub, from response: APIGetSiteResponse) {
         self.stub = source
         
-        guard let myUser = response.myUser else { fatalError() }
+        guard let myUser = response.my_user else { fatalError() }
         
-        if let existing = source.caches.person3.retrieveModel(id: myUser.localUserView.localUser.id) {
+        if let existing = source.caches.person3.retrieveModel(id: myUser.local_user_view.local_user.id) {
             self.person3 = existing
             existing.update(with: myUser)
         } else {
