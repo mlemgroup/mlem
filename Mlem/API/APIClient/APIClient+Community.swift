@@ -8,8 +8,8 @@
 import Foundation
 
 extension APIClient {
-    func getCommunity(id: Int) async throws -> GetCommunityResponse {
-        let request = GetCommunityRequest(communityId: id)
+    func getCommunity(id: Int) async throws -> APIGetCommunityResponse {
+        let request = APIGetCommunityRequest(communityId: id)
         return try await perform(request: request)
     }
     

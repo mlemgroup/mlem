@@ -55,7 +55,7 @@ extension APIGetRequest {
 
 protocol APIRequestBodyProviding: APIRequest {
     associatedtype Body: Encodable
-    var body: Body { get }
+    var body: Body? { get }
 }
 
 // MARK: - APIPostRequest

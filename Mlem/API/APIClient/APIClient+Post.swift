@@ -16,8 +16,8 @@ extension APIClient {
         cursor: String?,
         limit: Int,
         savedOnly: Bool
-    ) async throws -> GetPostsResponse {
-        let request = GetPostsRequest(
+    ) async throws -> APIGetPostsResponse {
+        let request = APIGetPostsRequest(
             communityId: communityId,
             page: page,
             cursor: cursor,
@@ -37,7 +37,7 @@ extension APIClient {
         cursor: String?,
         limit: Int,
         savedOnly: Bool
-    ) async throws -> GetPostsResponse {
+    ) async throws -> APIGetPostsResponse {
         print("REQUEST", feedType, sort, endpointUrl, token)
         let request = GetPostsRequest(
             communityId: nil,

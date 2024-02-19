@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 10/02/2024.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 class APIClient {
     let decoder: JSONDecoder = .defaultDecoder
@@ -98,7 +98,8 @@ class APIClient {
         do {
             let encoder = JSONEncoder()
             encoder.keyEncodingStrategy = .convertToSnakeCase
-            return try encoder.encode(defintion.body)
+            let body = defintion.body ?? ""
+            return try encoder.encode(body)
         } catch {
             throw APIClientError.encoding(error)
         }

@@ -58,7 +58,8 @@ struct AggregateFeedView: View {
                 internetSpeed: internetSpeed,
                 sortType: defaultPostSorting,
                 showReadPosts: showReadPosts,
-                feedType: .aggregateFeed(apiSource, type: feedType.toApiListingType))
+                feedType: .aggregateFeed(apiSource, type: feedType.toAPIListingType)
+            )
             )
         } else {
             self._postTracker = .init(wrappedValue: nil)
@@ -76,7 +77,7 @@ struct AggregateFeedView: View {
                     switch selectedFeed {
                     case .all, .local, .subscribed:
                         await markReadBatcher.flush()
-                        await postTracker?.changeFeedType(to: .aggregateFeed(apiSource, type: selectedFeed.toApiListingType))
+                        await postTracker?.changeFeedType(to: .aggregateFeed(apiSource, type: selectedFeed.toAPIListingType))
                         postTracker?.isStale = false
                     default:
                         return
@@ -85,11 +86,11 @@ struct AggregateFeedView: View {
             }
             .onChange(of: appState.apiSource?.actorId) { oldValue, _ in
                 if oldValue == nil, let apiSource = appState.apiSource {
-                    self.postTracker = .init(
+                    postTracker = .init(
                         internetSpeed: internetSpeed,
                         sortType: postSortType,
                         showReadPosts: showReadPosts,
-                        feedType: postTracker?.feedType ?? .aggregateFeed(apiSource, type: selectedFeed?.toApiListingType ?? .all)
+                        feedType: postTracker?.feedType ?? .aggregateFeed(apiSource, type: selectedFeed?.toAPIListingType ?? .all)
                     )
                 }
             }
@@ -102,7 +103,7 @@ struct AggregateFeedView: View {
                             _ = try await postTracker?.refresh(clearBeforeRefresh: false)
                         case .saved:
                             break
-                            // _ = try await savedContentTracker?.refresh(clearBeforeRefresh: false)
+                        // _ = try await savedContentTracker?.refresh(clearBeforeRefresh: false)
                         default:
                             assertionFailure("Tried to refresh with invalid feed type \(String(describing: selectedFeed))")
                         }
@@ -160,7 +161,7 @@ struct AggregateFeedView: View {
 //                            .environment(savedContentTracker)
 //                    } else {
                     LoadingView(whatIsLoading: .content)
-                    // }
+                // }
                 default:
                     EmptyView() // shouldn't be possible
                 }
