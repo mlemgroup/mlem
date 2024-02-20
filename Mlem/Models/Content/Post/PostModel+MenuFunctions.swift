@@ -136,7 +136,40 @@ extension PostModel {
             }
         }
 
+#if DEBUG
+        functions.append(
+            buildDeveloperMenu(
+                editorTracker: editorTracker,
+                postTracker: postTracker
+            )
+        )
+#endif
+        
         return functions
     }
     // swiftlint:enable function_body_length
+    
+#if DEBUG
+    private func buildDeveloperMenu(
+        editorTracker: EditorTracker,
+        postTracker: StandardPostTracker?
+    ) -> MenuFunction {
+        MenuFunction.childMenu(
+            titleKey: "Developer Menu",
+            children: [
+                .standardMenuFunction(
+                    text: "Toggle Read State",
+                    imageName: "book.and.wrench",
+                    enabled: true,
+                    callback: {
+                        Task {
+                            let newState = !self.read
+                            await self.markRead(newState)
+                        }
+                    }
+                )
+            ]
+        )
+    }
+#endif
 }
