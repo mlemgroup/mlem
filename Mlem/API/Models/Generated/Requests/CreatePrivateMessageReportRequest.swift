@@ -17,12 +17,12 @@ struct CreatePrivateMessageReportRequest: APIPostRequest {
     let body: Body?
 
     init(
-      privateMessageId: Int,
-      reason: String
+        privateMessageId: Int,
+        reason: String
     ) {
         self.body = .init(
-          privateMessageId: privateMessageId,
-          reason: reason
-      )
+            privateMessageId: privateMessageId,
+            reason: reason
+        )
     }
 }

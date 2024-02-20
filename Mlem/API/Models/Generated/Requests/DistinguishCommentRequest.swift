@@ -17,12 +17,12 @@ struct DistinguishCommentRequest: APIPostRequest {
     let body: Body?
 
     init(
-      commentId: Int,
-      distinguished: Bool
+        commentId: Int,
+        distinguished: Bool
     ) {
         self.body = .init(
-          commentId: commentId,
-          distinguished: distinguished
-      )
+            commentId: commentId,
+            distinguished: distinguished
+        )
     }
 }

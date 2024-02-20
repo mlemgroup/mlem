@@ -16,8 +16,8 @@ struct ResolveObjectRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-      // swiftlint:disable:next identifier_name
-      q: String
+        // swiftlint:disable:next identifier_name
+        q: String
     ) {
         self.queryItems = [
             .init(name: "q", value: "\(q)")

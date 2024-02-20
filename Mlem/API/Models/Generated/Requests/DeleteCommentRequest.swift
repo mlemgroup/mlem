@@ -17,12 +17,12 @@ struct DeleteCommentRequest: APIPostRequest {
     let body: Body?
 
     init(
-      commentId: Int,
-      deleted: Bool
+        commentId: Int,
+        deleted: Bool
     ) {
         self.body = .init(
-          commentId: commentId,
-          deleted: deleted
-      )
+            commentId: commentId,
+            deleted: deleted
+        )
     }
 }
