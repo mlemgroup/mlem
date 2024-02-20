@@ -2,14 +2,14 @@
 //  APISortType.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-// ../sources/js/types/SortType.ts
+// SortType.ts
 enum APISortType: String, Codable {
     case active = "Active"
     case hot = "Hot"
@@ -28,6 +28,4 @@ enum APISortType: String, Codable {
     case topThreeMonths = "TopThreeMonths"
     case topSixMonths = "TopSixMonths"
     case topNineMonths = "TopNineMonths"
-    case controversial = "Controversial"
-    case scaled = "Scaled"
 }

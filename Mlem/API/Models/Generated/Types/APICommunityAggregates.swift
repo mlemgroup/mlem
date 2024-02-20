@@ -2,14 +2,14 @@
 //  APICommunityAggregates.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-// ../sources/js/types/CommunityAggregates.ts
+// CommunityAggregates.ts
 struct APICommunityAggregates: Codable {
     let communityId: Int
     let subscribers: Int
@@ -20,4 +20,6 @@ struct APICommunityAggregates: Codable {
     let usersActiveWeek: Int
     let usersActiveMonth: Int
     let usersActiveHalfYear: Int
+    let id: Int?
+    let hotRank: Int?
 }

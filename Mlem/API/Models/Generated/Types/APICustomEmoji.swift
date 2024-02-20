@@ -2,14 +2,14 @@
 //  APICustomEmoji.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-// ../sources/js/types/CustomEmoji.ts
+// CustomEmoji.ts
 struct APICustomEmoji: Codable {
     let id: Int
     let localSiteId: Int

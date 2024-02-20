@@ -2,7 +2,7 @@
 //  RemoveCommunityRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -19,12 +19,14 @@ struct RemoveCommunityRequest: APIPostRequest {
     init(
         communityId: Int,
         removed: Bool,
-        reason: String?
+        reason: String?,
+        expires: Int?
     ) {
         self.body = .init(
             communityId: communityId,
             removed: removed,
-            reason: reason
+            reason: reason,
+            expires: expires
         )
     }
 }

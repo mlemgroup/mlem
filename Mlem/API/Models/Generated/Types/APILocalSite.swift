@@ -2,14 +2,14 @@
 //  APILocalSite.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-// ../sources/js/types/LocalSite.ts
+// LocalSite.ts
 struct APILocalSite: Codable {
     let id: Int
     let siteId: Int
@@ -34,5 +34,5 @@ struct APILocalSite: Codable {
     let updated: Date?
     let registrationMode: APIRegistrationMode
     let reportsEmailAdmins: Bool
-    let federationSignedFetch: Bool
+    let federationSignedFetch: Bool?
 }

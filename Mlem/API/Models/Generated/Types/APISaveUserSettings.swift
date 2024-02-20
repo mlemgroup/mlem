@@ -2,14 +2,14 @@
 //  APISaveUserSettings.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-// ../sources/js/types/SaveUserSettings.ts
+// SaveUserSettings.ts
 struct APISaveUserSettings: Codable {
     let showNsfw: Bool?
     let blurNsfw: Bool?
@@ -37,4 +37,6 @@ struct APISaveUserSettings: Codable {
     let enableKeyboardNavigation: Bool?
     let enableAnimatedImages: Bool?
     let collapseBotComments: Bool?
+    let showNewPostNotifs: Bool?
+    let generateTotp2fa: Bool?
 }

@@ -2,14 +2,14 @@
 //  APIRegister.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-// ../sources/js/types/Register.ts
+// Register.ts
 struct APIRegister: Codable {
     let username: String
     let password: String

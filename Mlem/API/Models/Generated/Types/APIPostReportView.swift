@@ -2,14 +2,14 @@
 //  APIPostReportView.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-// ../sources/js/types/PostReportView.ts
+// PostReportView.ts
 struct APIPostReportView: Codable {
     let postReport: APIPostReport
     let post: APIPost

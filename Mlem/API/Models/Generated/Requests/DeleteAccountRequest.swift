@@ -2,7 +2,7 @@
 //  DeleteAccountRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -18,7 +18,7 @@ struct DeleteAccountRequest: APIPostRequest {
 
     init(
         password: String,
-        deleteContent: Bool
+        deleteContent: Bool?
     ) {
         self.body = .init(
             password: password,

@@ -2,14 +2,14 @@
 //  APICommunity.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-// ../sources/js/types/Community.ts
+// Community.ts
 struct APICommunity: Codable {
     let id: Int
     let name: String
@@ -27,4 +27,6 @@ struct APICommunity: Codable {
     let hidden: Bool
     let postingRestrictedToMods: Bool
     let instanceId: Int
+    let followersUrl: String?
+    let inboxUrl: String?
 }

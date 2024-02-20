@@ -2,14 +2,14 @@
 //  APILocalUser.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-// ../sources/js/types/LocalUser.ts
+// LocalUser.ts
 struct APILocalUser: Codable {
     let id: Int
     let personId: Int
@@ -27,13 +27,16 @@ struct APILocalUser: Codable {
     let emailVerified: Bool
     let acceptedApplication: Bool
     let openLinksInNewTab: Bool
-    let blurNsfw: Bool
-    let autoExpand: Bool
-    let infiniteScrollEnabled: Bool
-    let admin: Bool
-    let postListingMode: APIPostListingMode
-    let totp2faEnabled: Bool
-    let enableKeyboardNavigation: Bool
-    let enableAnimatedImages: Bool
-    let collapseBotComments: Bool
+    let blurNsfw: Bool?
+    let autoExpand: Bool?
+    let infiniteScrollEnabled: Bool?
+    let admin: Bool?
+    let postListingMode: APIPostListingMode?
+    let totp2faEnabled: Bool?
+    let enableKeyboardNavigation: Bool?
+    let enableAnimatedImages: Bool?
+    let collapseBotComments: Bool?
+    let validatorTime: String?
+    let showNewPostNotifs: Bool?
+    let totp2faUrl: String?
 }

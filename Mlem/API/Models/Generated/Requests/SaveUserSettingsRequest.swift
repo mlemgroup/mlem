@@ -2,7 +2,7 @@
 //  SaveUserSettingsRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -42,7 +42,9 @@ struct SaveUserSettingsRequest: APIPutRequest {
         postListingMode: APIPostListingMode?,
         enableKeyboardNavigation: Bool?,
         enableAnimatedImages: Bool?,
-        collapseBotComments: Bool?
+        collapseBotComments: Bool?,
+        showNewPostNotifs: Bool?,
+        generateTotp2fa: Bool?
     ) {
         self.body = .init(
             showNsfw: showNsfw,
@@ -70,7 +72,9 @@ struct SaveUserSettingsRequest: APIPutRequest {
             postListingMode: postListingMode,
             enableKeyboardNavigation: enableKeyboardNavigation,
             enableAnimatedImages: enableAnimatedImages,
-            collapseBotComments: collapseBotComments
+            collapseBotComments: collapseBotComments,
+            showNewPostNotifs: showNewPostNotifs,
+            generateTotp2fa: generateTotp2fa
         )
     }
 }

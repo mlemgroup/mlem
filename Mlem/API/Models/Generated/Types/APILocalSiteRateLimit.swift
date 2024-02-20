@@ -2,14 +2,14 @@
 //  APILocalSiteRateLimit.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-// ../sources/js/types/LocalSiteRateLimit.ts
+// LocalSiteRateLimit.ts
 struct APILocalSiteRateLimit: Codable {
     let localSiteId: Int
     let message: Int
@@ -26,6 +26,7 @@ struct APILocalSiteRateLimit: Codable {
     let searchPerSecond: Int
     let published: Date
     let updated: Date?
-    let importUserSettings: Int
-    let importUserSettingsPerSecond: Int
+    let importUserSettings: Int?
+    let importUserSettingsPerSecond: Int?
+    let id: Int?
 }

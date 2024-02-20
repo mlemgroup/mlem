@@ -2,7 +2,7 @@
 //  EditCommentRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -19,12 +19,14 @@ struct EditCommentRequest: APIPutRequest {
     init(
         commentId: Int,
         content: String?,
-        languageId: Int?
+        languageId: Int?,
+        formId: String?
     ) {
         self.body = .init(
             commentId: commentId,
             content: content,
-            languageId: languageId
+            languageId: languageId,
+            formId: formId
         )
     }
 }

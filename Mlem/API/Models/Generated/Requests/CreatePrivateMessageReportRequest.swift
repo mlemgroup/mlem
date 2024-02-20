@@ -2,7 +2,7 @@
 //  CreatePrivateMessageReportRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -17,12 +17,12 @@ struct CreatePrivateMessageReportRequest: APIPostRequest {
     let body: Body?
 
     init(
-        privateMessageId: Int,
-        reason: String
+      privateMessageId: Int,
+      reason: String
     ) {
         self.body = .init(
-            privateMessageId: privateMessageId,
-            reason: reason
-        )
+          privateMessageId: privateMessageId,
+          reason: reason
+      )
     }
 }

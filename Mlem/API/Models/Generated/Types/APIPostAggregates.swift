@@ -2,14 +2,14 @@
 //  APIPostAggregates.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-// ../sources/js/types/PostAggregates.ts
+// PostAggregates.ts
 struct APIPostAggregates: Codable {
     let postId: Int
     let comments: Int
@@ -18,4 +18,10 @@ struct APIPostAggregates: Codable {
     let downvotes: Int
     let published: Date
     let newestCommentTime: String
+    let id: Int?
+    let newestCommentTimeNecro: String?
+    let featuredCommunity: Bool?
+    let featuredLocal: Bool?
+    let hotRank: Int?
+    let hotRankActive: Int?
 }

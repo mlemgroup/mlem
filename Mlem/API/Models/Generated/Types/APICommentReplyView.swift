@@ -2,14 +2,14 @@
 //  APICommentReplyView.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-// ../sources/js/types/CommentReplyView.ts
+// CommentReplyView.ts
 struct APICommentReplyView: Codable {
     let commentReply: APICommentReply
     let comment: APIComment
@@ -19,8 +19,8 @@ struct APICommentReplyView: Codable {
     let recipient: APIPerson
     let counts: APICommentAggregates
     let creatorBannedFromCommunity: Bool
-    let creatorIsModerator: Bool
-    let creatorIsAdmin: Bool
+    let creatorIsModerator: Bool?
+    let creatorIsAdmin: Bool?
     let subscribed: APISubscribedType
     let saved: Bool
     let creatorBlocked: Bool

@@ -2,14 +2,14 @@
 //  APIGetPosts.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-// ../sources/js/types/GetPosts.ts
+// GetPosts.ts
 struct APIGetPosts: Codable {
     let type_: APIListingType?
     let sort: APISortType?

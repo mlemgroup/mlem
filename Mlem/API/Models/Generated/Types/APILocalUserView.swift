@@ -2,14 +2,14 @@
 //  APILocalUserView.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-// ../sources/js/types/LocalUserView.ts
+// LocalUserView.ts
 struct APILocalUserView: Codable {
     let localUser: APILocalUser
     let person: APIPerson

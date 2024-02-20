@@ -2,14 +2,14 @@
 //  APIModAdd.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-// ../sources/js/types/ModAdd.ts
+// ModAdd.ts
 struct APIModAdd: Codable {
     let id: Int
     let modPersonId: Int

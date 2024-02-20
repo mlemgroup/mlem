@@ -2,7 +2,7 @@
 //  DeleteCommentRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -17,12 +17,12 @@ struct DeleteCommentRequest: APIPostRequest {
     let body: Body?
 
     init(
-        commentId: Int,
-        deleted: Bool
+      commentId: Int,
+      deleted: Bool
     ) {
         self.body = .init(
-            commentId: commentId,
-            deleted: deleted
-        )
+          commentId: commentId,
+          deleted: deleted
+      )
     }
 }

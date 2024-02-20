@@ -2,14 +2,14 @@
 //  APICommentAggregates.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-// ../sources/js/types/CommentAggregates.ts
+// CommentAggregates.ts
 struct APICommentAggregates: Codable {
     let commentId: Int
     let score: Int
@@ -17,4 +17,6 @@ struct APICommentAggregates: Codable {
     let downvotes: Int
     let published: Date
     let childCount: Int
+    let id: Int?
+    let hotRank: Int?
 }

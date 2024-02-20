@@ -2,14 +2,14 @@
 //  APILoginToken.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-// ../sources/js/types/LoginToken.ts
+// LoginToken.ts
 struct APILoginToken: Codable {
     let userId: Int
     let published: Date

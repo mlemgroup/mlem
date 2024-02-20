@@ -2,7 +2,7 @@
 //  DistinguishCommentRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-19
+//  Created by Eric Andrews on 2024-02-20
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -17,12 +17,12 @@ struct DistinguishCommentRequest: APIPostRequest {
     let body: Body?
 
     init(
-        commentId: Int,
-        distinguished: Bool
+      commentId: Int,
+      distinguished: Bool
     ) {
         self.body = .init(
-            commentId: commentId,
-            distinguished: distinguished
-        )
+          commentId: commentId,
+          distinguished: distinguished
+      )
     }
 }
