@@ -52,22 +52,8 @@ extension Post2Providing {
         let oldDownvoteCount = downvoteCount
         let oldReadStatus = isRead
         
-        switch oldVote {
-        case .upvote:
-            upvoteCount -= 1
-        case .downvote:
-            downvoteCount -= 1
-        default:
-            break
-        }
-        switch newVote {
-        case .upvote:
-            upvoteCount += 1
-        case .downvote:
-            downvoteCount += 1
-        default:
-            break
-        }
+        upvoteCount += newVote.upvoteValue - oldVote.upvoteValue
+        downvoteCount += newVote.downvoteValue - oldVote.downvoteValue
         myVote = newVote
         isRead = true
         

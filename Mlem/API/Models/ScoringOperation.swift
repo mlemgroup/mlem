@@ -13,6 +13,9 @@ enum ScoringOperation: Int, Decodable {
     case upvote = 1
     case downvote = -1
     case none = 0
+    
+    var upvoteValue: Int { self == .upvote ? 1 : 0 }
+    var downvoteValue: Int { self == .downvote ? 1 : 0 }
 }
 
 extension ScoringOperation: AssociatedColor {
