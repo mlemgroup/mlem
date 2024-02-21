@@ -50,12 +50,12 @@ extension ApiClient {
         return try await perform(request: request)
     }
     
-    func voteOnPost(id: Int, score: ScoringOperation) async throws -> PostResponse {
-        let request = CreatePostLikeRequest(postId: id, score: score)
+    func voteOnPost(id: Int, score: ScoringOperation) async throws -> ApiPostResponse {
+        let request = LikePostRequest(postId: id, score: score.rawValue)
         return try await perform(request: request)
     }
     
-    func savePost(id: Int, shouldSave: Bool) async throws -> PostResponse {
+    func savePost(id: Int, shouldSave: Bool) async throws -> ApiPostResponse {
         let request = SavePostRequest(postId: id, save: shouldSave)
         return try await perform(request: request)
     }

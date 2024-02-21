@@ -16,7 +16,7 @@ protocol Post2Providing: InteractableContent, Post1Providing {
     var unreadCommentCount: Int { get }
     var isRead: Bool { get set }
     
-    func update(with post: APIPostView)
+    func update(with post: ApiPostView)
 }
 
 extension Post2Providing {
