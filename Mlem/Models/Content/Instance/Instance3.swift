@@ -11,21 +11,20 @@ import SwiftUI
 @Observable
 final class Instance3: Instance3Providing, CoreModel {
     static var cache: CoreContentCache<Instance3> = .init()
-    typealias APIType = SiteResponse
+    typealias ApiType = ApiGetSiteResponse
     var instance3: Instance3 { self }
     
     let instance2: Instance2
     
     var version: SiteVersion = .zero
     
-    required init(from response: SiteResponse) {
+    required init(from response: ApiGetSiteResponse) {
         self.instance2 = .create(from: response.siteView)
-        self.update(with: response)
+        update(with: response)
     }
 
-    func update(with response: SiteResponse) {
-        
+    func update(with response: ApiGetSiteResponse) {
         version = SiteVersion(response.version)
-        self.instance2.update(with: response.siteView)
+        instance2.update(with: response.siteView)
     }
 }

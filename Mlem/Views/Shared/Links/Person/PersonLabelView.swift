@@ -17,7 +17,7 @@ struct PersonLabelView: View {
     // Extra context about where the link is being displayed
     // to pick the correct flair
     let postContext: (any Post)?
-    let commentContext: APIComment?
+    let commentContext: ApiComment?
     let communityContext: (any Community)?
     
     var blurAvatar: Bool { postContext?.nsfw ?? false ||
@@ -29,7 +29,7 @@ struct PersonLabelView: View {
         serverInstanceLocation: ServerInstanceLocation,
         overrideShowAvatar: Bool? = nil,
         postContext: (any Post)? = nil,
-        commentContext: APIComment? = nil,
+        commentContext: ApiComment? = nil,
         communityContext: (any Community)? = nil
     ) {
         self.person = person

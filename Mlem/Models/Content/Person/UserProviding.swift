@@ -7,9 +7,9 @@
 
 import Foundation
 
-protocol UserProviding: APISource, CommunityOrPersonStub, AnyObject, Identifiable {
+protocol UserProviding: ApiSource, CommunityOrPersonStub, AnyObject, Identifiable {
     var stub: UserStub { get }
-    var source: any APISource { get }
+    var source: any ApiSource { get }
     
     var id: Int { get }
     var name: String { get }
@@ -24,10 +24,10 @@ protocol UserProviding: APISource, CommunityOrPersonStub, AnyObject, Identifiabl
 extension UserProviding {
     static var identifierPrefix: String { "@" }
     
-    var source: any APISource { stub }
+    var source: any ApiSource { stub }
     
     var caches: BaseCacheGroup { source.caches }
-    var api: APIClient { source.api }
+    var api: ApiClient { source.api }
     var instance: InstanceStub { stub.instance }
     
     var id: Int { stub.id }
@@ -43,7 +43,7 @@ extension UserProviding {
 extension UserProviding {
     func login(password: String, twoFactorToken: String? = nil) async throws {
         let response = try await source.api.login(username: name, password: password, totpToken: twoFactorToken)
-        accessToken = response.jwt
+        accessToken = response.jwt ?? "" // TODO: throw nice error
     }
     
     var nicknameSortKey: String { "\(nickname ?? name)\(instance.host ?? "")" }

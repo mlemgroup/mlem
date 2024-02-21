@@ -8,14 +8,14 @@
 import Foundation
 
 protocol CoreModel: AnyObject, ActorIdentifiable {
-    associatedtype APIType: ActorIdentifiable
+    associatedtype ApiType: ActorIdentifiable
     static var cache: CoreContentCache<Self> { get }
-    init(from: APIType)
-    func update(with: APIType)
+    init(from: ApiType)
+    func update(with: ApiType)
 }
 
 extension CoreModel {
-    static func create(from apiType: APIType) -> Self {
-        return cache.createModel(for: apiType)
+    static func create(from apiType: ApiType) -> Self {
+        cache.createModel(for: apiType)
     }
 }

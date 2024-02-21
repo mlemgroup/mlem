@@ -14,7 +14,7 @@ struct VotesModel: Hashable {
     var myVote: ScoringOperation
 
     // init from API type
-    init(from voteCount: any APIContentAggregatesProtocol, myVote: ScoringOperation?) {
+    init(from voteCount: any ApiContentAggregatesProtocol, myVote: ScoringOperation?) {
         self.upvotes = voteCount.upvotes
         self.downvotes = voteCount.downvotes
         self.myVote = myVote ?? .none

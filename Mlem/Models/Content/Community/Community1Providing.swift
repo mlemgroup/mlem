@@ -60,7 +60,6 @@ extension Community1Providing {
 }
 
 extension Community1Providing {
-    
     // Overwrite the `upgrade()` method from CommunityStubProviding
     func upgrade() async throws -> Community3 {
         let response = try await source.api.getCommunity(id: id)

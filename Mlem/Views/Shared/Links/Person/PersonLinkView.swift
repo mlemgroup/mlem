@@ -15,7 +15,7 @@ struct PersonLinkView: View {
     // Extra context about where the link is being displayed
     // to pick the correct flair
     var postContext: (any Post)?
-    var commentContext: APIComment?
+    var commentContext: ApiComment?
     var communityContext: (any Community)?
     
     init(
@@ -23,7 +23,7 @@ struct PersonLinkView: View {
         serverInstanceLocation: ServerInstanceLocation,
         overrideShowAvatar: Bool? = nil,
         postContext: (any Post)? = nil,
-        commentContext: APIComment? = nil,
+        commentContext: ApiComment? = nil,
         communityContext: (any Community)? = nil
 
     ) {

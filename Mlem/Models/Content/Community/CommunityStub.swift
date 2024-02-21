@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CommunityStub: CommunityStubProviding, Hashable {
-    var source: any APISource
+    var source: any ApiSource
     let actorId: URL
     
     static func == (lhs: CommunityStub, rhs: CommunityStub) -> Bool {

@@ -15,10 +15,10 @@ struct PostEmbed {
 
 @Observable
 final class Post1: Post1Providing, NewContentModel {
-    typealias APIType = APIPost
+    typealias ApiType = ApiPost
     var post1: Post1 { self }
     
-    var source: any APISource
+    var source: any ApiSource
     
     let actorId: URL
     let id: Int
@@ -39,41 +39,41 @@ final class Post1: Post1Providing, NewContentModel {
     var thumbnailUrl: URL?
     var updatedDate: Date?
     
-    init(source: any APISource, from post: APIPost) {
+    init(source: any ApiSource, from post: ApiPost) {
         self.source = source
         self.actorId = post.actorId
         self.id = post.id
         self.creationDate = post.published
         
-        self.update(with: post)
+        update(with: post)
     }
     
-    func update(with post: APIPost) {
-        self.updatedDate = post.updated
+    func update(with post: ApiPost) {
+        updatedDate = post.updated
     
-        self.title = post.name
+        title = post.name
         
         // We can't name this 'body' because @Observable uses that property name already
-        self.content = post.body
-        self.links = post.body?.parseLinks() ?? []
+        content = post.body
+        links = post.body?.parseLinks() ?? []
         
-        self.linkUrl = post.linkUrl
+        linkUrl = post.linkUrl
         
-        self.deleted = post.deleted
+        deleted = post.deleted
         
         if post.embedTitle != nil || post.embedDescription != nil || post.embedVideoUrl != nil {
-            self.embed = .init(
+            embed = .init(
                 title: post.embedTitle,
                 description: post.embedDescription,
                 videoUrl: post.embedVideoUrl
             )
         }
         
-        self.pinnedCommunity = post.featuredCommunity
-        self.pinnedInstance = post.featuredLocal
-        self.locked = post.locked
-        self.nsfw = post.nsfw
-        self.removed = post.removed
-        self.thumbnailUrl = post.thumbnailImageUrl
+        pinnedCommunity = post.featuredCommunity
+        pinnedInstance = post.featuredLocal
+        locked = post.locked
+        nsfw = post.nsfw
+        removed = post.removed
+        thumbnailUrl = post.thumbnailImageUrl
     }
 }

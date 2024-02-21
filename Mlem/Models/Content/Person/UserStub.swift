@@ -15,9 +15,7 @@ final class UserStub: UserProviding, Codable {
     
     var stub: UserStub { self }
     
-    @ObservationIgnored lazy var api: APIClient = {
-        return .init(baseUrl: instance.url)
-    }()
+    @ObservationIgnored lazy var api: ApiClient = .init(baseUrl: instance.url)
     
     let id: Int
     let name: String
@@ -33,13 +31,13 @@ final class UserStub: UserProviding, Codable {
     
     // This should be called when the MyUser becomes the active account
     func makeActive() {
-        self.api.token = accessToken
+        api.token = accessToken
     }
     
     // This should be called when the MyUser becomes the inactive account
     func makeInactive() {
         // Clear the token to stop us accidentally making damaging API calls for whatever reason
-        self.api.token = nil
+        api.token = nil
     }
     
     enum CodingKeys: String, CodingKey {
@@ -75,7 +73,7 @@ final class UserStub: UserProviding, Codable {
             throw DecodingError.noTokenInKeychain
         }
         self.accessToken = token
-   }
+    }
     
     func encode(to encoder: Encoder) throws {
         AppConstants.keychain[keychainId] = accessToken

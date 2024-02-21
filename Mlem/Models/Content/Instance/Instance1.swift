@@ -11,7 +11,7 @@ import SwiftUI
 @Observable
 final class Instance1: Instance1Providing, CoreModel {
     static var cache: CoreContentCache<Instance1> = .init()
-    typealias APIType = APISite
+    typealias ApiType = ApiSite
     var instance1: Instance1 { self }
     
     let stub: InstanceStub
@@ -26,19 +26,19 @@ final class Instance1: Instance1Providing, CoreModel {
     var banner: URL?
     var lastRefreshDate: Date = .distantPast
 
-    required init(from site: APISite) {
+    required init(from site: ApiSite) {
         self.id = site.id
         self.creationDate = site.published
         self.publicKey = site.publicKey
         self.stub = .createModel(url: site.actorId)
-        self.update(with: site)
+        update(with: site)
     }
 
-    func update(with site: APISite) {
-        self.displayName = site.name
-        self.description = site.sidebar
-        self.avatar = site.iconUrl
-        self.banner = site.bannerUrl
-        self.lastRefreshDate = site.lastRefreshedAt
+    func update(with site: ApiSite) {
+        displayName = site.name
+        description = site.sidebar
+        avatar = site.icon
+        banner = site.banner
+        lastRefreshDate = site.lastRefreshedAt
     }
 }

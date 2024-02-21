@@ -1,5 +1,5 @@
 //
-//  NewAPIClient+Post.swift
+//  NewApiClient+Post.swift
 //  Mlem
 //
 //  Created by Sjmarf on 16/02/2024.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension APIClient {
+extension ApiClient {
     // swiftlint:disable:next function_parameter_count
     func getPosts(
         communityId: Int,
@@ -16,8 +16,8 @@ extension APIClient {
         cursor: String?,
         limit: Int,
         savedOnly: Bool
-    ) async throws -> GetPostsResponse {
-        let request = GetPostsRequest(
+    ) async throws -> ApiGetPostsResponse {
+        let request = try GetPostsRequest(
             communityId: communityId,
             page: page,
             cursor: cursor,
@@ -31,15 +31,15 @@ extension APIClient {
     
     // swiftlint:disable:next function_parameter_count
     func getPosts(
-        feedType: APIListingType,
+        feedType: ApiListingType,
         sort: PostSortType,
         page: Int,
         cursor: String?,
         limit: Int,
         savedOnly: Bool
-    ) async throws -> GetPostsResponse {
+    ) async throws -> ApiGetPostsResponse {
         print("REQUEST", feedType, sort, endpointUrl, token)
-        let request = GetPostsRequest(
+        let request = try GetPostsRequest(
             communityId: nil,
             page: page,
             cursor: cursor,

@@ -9,7 +9,7 @@ import Foundation
 
 /// A model which represents a comment and it's child relationships
 class HierarchicalComment: ObservableObject {
-    @Published var commentView: APICommentView
+    @Published var commentView: ApiCommentView
     var children: [HierarchicalComment]
     /// Indicates comment's position in a post's parent/child comment thread.
     /// Values range from `0...Int.max`, where 0 indicates the parent comment.
@@ -22,7 +22,7 @@ class HierarchicalComment: ObservableObject {
     @Published var isCollapsed: Bool = false
 
     init(
-        comment: APICommentView,
+        comment: ApiCommentView,
         children: [HierarchicalComment],
         parentCollapsed: Bool,
         collapsed: Bool,
@@ -64,14 +64,14 @@ extension HierarchicalComment: Hashable {
 }
 
 extension [HierarchicalComment] {
-    /// A method to insert an updated `APICommentView` into this array of `HierarchicalComment`
-    /// - Parameter commentView: The `APICommentView` you wish to insert
+    /// A method to insert an updated `ApiCommentView` into this array of `HierarchicalComment`
+    /// - Parameter commentView: The `ApiCommentView` you wish to insert
     /// - Returns: An optional `HierarchicalComment` containing the updated comment and it's original chidren if found
-    @discardableResult mutating func update(with commentView: APICommentView) -> HierarchicalComment? {
+    @discardableResult mutating func update(with commentView: ApiCommentView) -> HierarchicalComment? {
         insert(commentView: commentView)
     }
 
-    private mutating func insert(commentView: APICommentView) -> HierarchicalComment? {
+    private mutating func insert(commentView: ApiCommentView) -> HierarchicalComment? {
         let targetId = commentView.id
 
         for (index, element) in enumerated() {
@@ -99,7 +99,7 @@ extension [HierarchicalComment] {
         return insertReply(commentView: commentView)
     }
 
-    private mutating func insertReply(commentView: APICommentView) -> HierarchicalComment? {
+    private mutating func insertReply(commentView: ApiCommentView) -> HierarchicalComment? {
         guard let parentId = commentView.comment.parentId else {
             // can't be a reply without a parent 🤷
             return nil
@@ -158,15 +158,15 @@ extension HierarchicalComment {
     }
 }
 
-extension [APICommentView] {
-    /// A representation of this array of `APICommentView` in a hierarchy that is suitable for rendering the UI with parent/child relationships
+extension [ApiCommentView] {
+    /// A representation of this array of `ApiCommentView` in a hierarchy that is suitable for rendering the UI with parent/child relationships
     var hierarchicalRepresentation: [HierarchicalComment] {
         var allComments = self
         
         let childrenStartIndex = allComments.partition(by: { $0.comment.parentId != nil })
         let children = allComments[childrenStartIndex...]
         
-        var childrenById = [APICommentView.ID: [APICommentView.ID]]()
+        var childrenById = [ApiCommentView.ID: [ApiCommentView.ID]]()
         children.forEach { child in
             guard let parentId = child.comment.parentId else { return }
             childrenById[parentId] = (childrenById[parentId] ?? []) + [child.id]
@@ -176,7 +176,7 @@ extension [APICommentView] {
         let collapseChildComments = UserDefaults.standard.bool(forKey: "collapseChildComments")
 
         /// Recursively populates child comments by looking up IDs from `childrenById`
-        func populateChildren(_ comment: APICommentView) -> HierarchicalComment {
+        func populateChildren(_ comment: ApiCommentView) -> HierarchicalComment {
             guard let childIds = childrenById[comment.id] else {
                 return .init(
                     comment: comment,
