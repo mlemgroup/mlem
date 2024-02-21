@@ -87,12 +87,12 @@ struct CommunityDetailsView: View {
     }
 }
 
-#Preview {
-    VStack(spacing: 0) {
-        Divider()
-        CommunityDetailsView(community: Community3.mock())
-            .padding(.top, 10)
-    }
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(Color(uiColor: .systemGroupedBackground))
-}
+// #Preview {
+//    VStack(spacing: 0) {
+//        Divider()
+//        CommunityDetailsView(community: Community3.mock())
+//            .padding(.top, 10)
+//    }
+//    .frame(maxWidth: .infinity, maxHeight: .infinity)
+//    .background(Color(uiColor: .systemGroupedBackground))
+// }

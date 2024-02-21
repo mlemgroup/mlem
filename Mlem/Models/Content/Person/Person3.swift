@@ -9,17 +9,17 @@ import SwiftUI
 
 @Observable
 final class Person3: Person3Providing, NewContentModel {
-    typealias APIType = GetPersonDetailsResponse
+    typealias ApiType = ApiGetPersonDetailsResponse
     var person3: Person3 { self }
     
-    var source: any APISource
+    var source: any ApiSource
 
     let person2: Person2
 
     var instance: Instance1!
     var moderatedCommunities: [Community1] = .init()
     
-    init(source: any APISource, from response: GetPersonDetailsResponse) {
+    init(source: any ApiSource, from response: ApiGetPersonDetailsResponse) {
         self.source = source
         
         if let site = response.site {
@@ -29,10 +29,10 @@ final class Person3: Person3Providing, NewContentModel {
         }
         
         self.person2 = source.caches.person2.createModel(source: source, for: response.personView)
-        self.update(with: response)
+        update(with: response)
     }
     
-    init(source: any APISource, from response: SiteResponse) {
+    init(source: any ApiSource, from response: ApiGetSiteResponse) {
         self.source = source
         
         self.instance = .create(from: response.siteView.site)
@@ -46,20 +46,20 @@ final class Person3: Person3Providing, NewContentModel {
             self.person2 = .init(source: source, from: myUser.localUserView)
         }
         
-        self.update(with: myUser)
+        update(with: myUser)
     }
     
-    func update(with response: GetPersonDetailsResponse) {
-        self.moderatedCommunities = response.moderates.map { moderatorView in
+    func update(with response: ApiGetPersonDetailsResponse) {
+        moderatedCommunities = response.moderates.map { moderatorView in
             source.caches.community1.createModel(source: source, for: moderatorView.community)
         }
-        self.person2.update(with: response.personView)
+        person2.update(with: response.personView)
     }
     
-    func update(with myUser: APIMyUserInfo) {
-        self.moderatedCommunities = myUser.moderates.map { moderatorView in
+    func update(with myUser: ApiMyUserInfo) {
+        moderatedCommunities = myUser.moderates.map { moderatorView in
             source.caches.community1.createModel(source: source, for: moderatorView.community)
         }
-        self.person2.update(with: myUser.localUserView)
+        person2.update(with: myUser.localUserView)
     }
 }

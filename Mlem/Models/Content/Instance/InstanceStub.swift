@@ -16,9 +16,7 @@ final class InstanceStub: InstanceStubProviding {
     let url: URL
     var actorId: URL { url }
 
-    @ObservationIgnored lazy var api: APIClient = {
-        return APIClient(baseUrl: url)
-    }()
+    @ObservationIgnored lazy var api: ApiClient = .init(baseUrl: url)
     
     static var cachedItems: [WeakReference<InstanceStub>] = .init()
     

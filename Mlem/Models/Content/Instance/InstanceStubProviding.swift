@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol InstanceStubProviding: ActorIdentifiable, APISource {
+protocol InstanceStubProviding: ActorIdentifiable, ApiSource {
     var stub: InstanceStub { get }
     
     var url: URL { get }
@@ -29,7 +29,7 @@ protocol InstanceStubProviding: ActorIdentifiable, APISource {
 extension InstanceStubProviding {
     var instance: InstanceStub { stub }
     var caches: BaseCacheGroup { stub.caches }
-    var api: APIClient { stub.api }
+    var api: ApiClient { stub.api }
     
     var url: URL { stub.url }
     var actorId: URL { stub.actorId }

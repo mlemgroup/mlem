@@ -8,7 +8,7 @@
 import Foundation
 
 protocol Person1Providing: PersonStubProviding, Identifiable {
-    var source: any APISource { get }
+    var source: any ApiSource { get }
     
     var person1: Person1 { get }
     
@@ -29,7 +29,7 @@ protocol Person1Providing: PersonStubProviding, Identifiable {
 
 typealias Person = Person1Providing
 
-extension Person1Providing {  
+extension Person1Providing {
     var actorId: URL { person1.actorId }
     var id: Int { person1.id }
     var name: String { person1.name }

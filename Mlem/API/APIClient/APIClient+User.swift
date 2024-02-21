@@ -1,5 +1,5 @@
 //
-//  NewAPIClient+User.swift
+//  NewApiClient+User.swift
 //  Mlem
 //
 //  Created by Sjmarf on 12/02/2024.
@@ -7,12 +7,12 @@
 
 import Foundation
 
-extension APIClient {
-    func login(username: String, password: String, totpToken: String?) async throws -> LoginResponse {
+extension ApiClient {
+    func login(username: String, password: String, totpToken: String?) async throws -> ApiLoginResponse {
         let request = LoginRequest(
-            username: username,
+            usernameOrEmail: username,
             password: password,
-            totpToken: totpToken
+            totp2faToken: totpToken
         )
         
         return try await perform(request: request)

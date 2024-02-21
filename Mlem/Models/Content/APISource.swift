@@ -1,5 +1,5 @@
 //
-//  APISource.swift
+//  ApiSource.swift
 //  Mlem
 //
 //  Created by Sjmarf on 15/02/2024.
@@ -7,15 +7,15 @@
 
 import Foundation
 
-protocol APISource: AnyObject, ActorIdentifiable, Equatable {
+protocol ApiSource: AnyObject, ActorIdentifiable, Equatable {
     var caches: BaseCacheGroup { get }
-    var api: APIClient { get }
+    var api: ApiClient { get }
     var instance: InstanceStub { get }
 }
 
-extension APISource {
+extension ApiSource {
     func getPosts(
-        feed: APIListingType,
+        feed: ApiListingType,
         sort: PostSortType,
         page: Int = 1,
         cursor: String? = nil,
@@ -31,17 +31,16 @@ extension APISource {
             savedOnly: savedOnly
         )
         return (
-            posts: response.posts.map { caches.post2.createModel(source: self, for: $0)},
+            posts: response.posts.map { caches.post2.createModel(source: self, for: $0) },
             cursor: cursor
         )
     }
 }
 
-class MockAPISource: APISource {
+class MockApiSource: ApiSource {
     var caches: BaseCacheGroup = .init()
     
     let actorId: URL = .init(string: "https://lemmy.world")!
     let instance: InstanceStub = .mock
-    var api: APIClient { fatalError("You cannot access the 'api' property of MockAPISource.") }
-
+    var api: ApiClient { fatalError("You cannot access the 'api' property of MockApiSource.") }
 }

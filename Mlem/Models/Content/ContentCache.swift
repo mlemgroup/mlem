@@ -42,7 +42,7 @@ class CoreContentCache<Content: CoreModel> {
         cachedItems[actorId]?.content
     }
     
-    func createModel(for apiType: Content.APIType) -> Content {
+    func createModel(for apiType: Content.ApiType) -> Content {
         if let item = retrieveModel(actorId: apiType.actorId) {
             print("Using existing item for id \(apiType.actorId)")
             item.update(with: apiType)
@@ -66,11 +66,11 @@ class CoreContentCache<Content: CoreModel> {
 class BaseContentCache<Content: NewContentModel & AnyObject> {
     private var cachedItems: [Content.ID: WeakReference<Content>] = .init()
     
-    func retrieveModel(id: Content.APIType.ID) -> Content? {
+    func retrieveModel(id: Content.ApiType.ID) -> Content? {
         cachedItems[id]?.content
     }
     
-    func createModel(source: any APISource, for apiType: Content.APIType) -> Content {
+    func createModel(source: any ApiSource, for apiType: Content.ApiType) -> Content {
         if let item = retrieveModel(id: apiType.id) {
             item.update(with: apiType)
             print("Using existing item for id \(apiType.id)")

@@ -1,5 +1,5 @@
 //
-//  APIClientError.swift
+//  ApiClientError.swift
 //  Mlem
 //
 //  Created by Sjmarf on 17/02/2024.
@@ -12,17 +12,17 @@ enum HTTPMethod {
     case post(Data)
 }
 
-enum APIClientError: Error {
+enum ApiClientError: Error {
     case encoding(Error)
     case networking(Error)
-    case response(APIErrorResponse, Int?)
+    case response(ApiErrorResponse, Int?)
     case cancelled
     case invalidSession
     case decoding(Data, Error?)
     case failedToWriteTokenToBody
 }
 
-extension APIClientError: CustomStringConvertible {
+extension ApiClientError: CustomStringConvertible {
     var description: String {
         switch self {
         case .failedToWriteTokenToBody:

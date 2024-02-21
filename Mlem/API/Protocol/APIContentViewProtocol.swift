@@ -1,5 +1,5 @@
 //
-//  APIContentViewProtocol.swift
+//  ApiContentViewProtocol.swift
 //  Mlem
 //
 //  Created by Sam Marfleet on 09/08/2023.
@@ -7,12 +7,12 @@
 
 import Foundation
 
-protocol APIContentViewProtocol {
-    associatedtype AggregatesType: APIContentAggregatesProtocol
+protocol ApiContentViewProtocol {
+    associatedtype AggregatesType: ApiContentAggregatesProtocol
     
-    var post: APIPost { get }
-    var creator: APIPerson { get }
-    var community: APICommunity { get }
+    var post: ApiPost { get }
+    var creator: ApiPerson { get }
+    var community: ApiCommunity { get }
     var counts: AggregatesType { get }
     var saved: Bool { get }
     var myVote: ScoringOperation? { get set }

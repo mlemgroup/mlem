@@ -9,10 +9,10 @@ import SwiftUI
 
 @Observable
 final class Post2: Post2Providing, NewContentModel {
-    typealias APIType = APIPostView
+    typealias ApiType = ApiPostView
     var post2: Post2 { self }
     
-    var source: any APISource
+    var source: any ApiSource
     
     let post1: Post1
     
@@ -27,29 +27,29 @@ final class Post2: Post2Providing, NewContentModel {
     var isRead: Bool = false
     var myVote: ScoringOperation = .none
     
-    init(source: any APISource, from post: APIPostView) {
+    init(source: any ApiSource, from post: ApiPostView) {
         self.source = source
         
         self.post1 = source.caches.post1.createModel(source: source, for: post.post)
         self.creator = source.caches.person1.createModel(source: source, for: post.creator)
         self.community = source.caches.community1.createModel(source: source, for: post.community)
-        self.update(with: post)
+        update(with: post)
     }
     
-    func update(with post: APIPostView) {
+    func update(with post: ApiPostView) {
         commentCount = post.counts.comments
         upvoteCount = post.counts.upvotes
         downvoteCount = post.counts.downvotes
         unreadCommentCount = post.unreadComments
         isSaved = post.saved
         isRead = post.read
-        myVote = post.myVote ?? .none
+        myVote = .init(rawValue: post.myVote ?? 0) ?? .none // TODO: this can be nicer
         
-        self.post1.update(with: post.post)
-        self.creator.update(with: post.creator)
-        self.community.update(with: post.community)
+        post1.update(with: post.post)
+        creator.update(with: post.creator)
+        community.update(with: post.community)
         
-        self.creator.blocked = post.creatorBlocked
+        creator.blocked = post.creatorBlocked
     }
     
     var score: Int { upvoteCount - downvoteCount }

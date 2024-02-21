@@ -37,7 +37,7 @@ struct ErrorView: View {
         VStack(spacing: 15) {
             if showingFullError {
                 if let error = errorDetails.error {
-                    if let error = error as? APIClientError {
+                    if let error = error as? ApiClientError {
                         errorDetails(error.description)
                     } else {
                         errorDetails(error.localizedDescription)

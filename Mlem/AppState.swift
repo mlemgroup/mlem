@@ -11,7 +11,7 @@ import Foundation
 class AppState {
     var isOnboarding: Bool = false
     
-    var apiSource: (any APISource)? {
+    var apiSource: (any ApiSource)? {
         willSet {
             myUser?.stub.makeInactive()
         }
@@ -22,14 +22,15 @@ class AppState {
             myUser?.stub.makeActive()
         }
     }
+
     var myInstance: (any InstanceStubProviding)?
     var myUser: (any UserProviding)?
     
-    var api: APIClient? { apiSource?.api }
+    var api: ApiClient? { apiSource?.api }
     var actorId: URL? { apiSource?.actorId }
     var instanceStub: InstanceStub? { apiSource?.instance }
     
-    init(apiSource: (any APISource)?) {
+    init(apiSource: (any ApiSource)?) {
         print("APPSTATE INIT \(apiSource?.actorId)")
         self.apiSource = apiSource
         if apiSource == nil {

@@ -175,6 +175,6 @@ struct UserResultView: View {
     }
 }
 
-#Preview {
-    UserResultView(Person3.mock())
-}
+// #Preview {
+//    UserResultView(Person3.mock())
+// }

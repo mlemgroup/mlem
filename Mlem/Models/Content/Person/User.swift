@@ -11,14 +11,14 @@ import SwiftUI
 @Observable
 final class User: Person3Providing, UserProviding {
     static let identifierPrefix: String = "@"
-    typealias APIType = SiteResponse
+    typealias ApiType = ApiGetSiteResponse
     
     let stub: UserStub
     let person3: Person3
     
     let instance: Instance3
     
-    init(source: UserStub, from response: SiteResponse) {
+    init(source: UserStub, from response: ApiGetSiteResponse) {
         self.stub = source
         
         guard let myUser = response.myUser else { fatalError() }

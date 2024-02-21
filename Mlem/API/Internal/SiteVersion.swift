@@ -1,5 +1,5 @@
 //
-//  APISiteVersionNumber.swift
+//  ApiSiteVersionNumber.swift
 //  Mlem
 //
 //  Created by Sjmarf on 09/09/2023.
