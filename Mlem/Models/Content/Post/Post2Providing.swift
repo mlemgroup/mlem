@@ -52,14 +52,16 @@ extension Post2Providing {
         let oldDownvoteCount = downvoteCount
         let oldReadStatus = isRead
         
-        upvoteCount += newVote.upvoteValue - oldVote.upvoteValue
-        downvoteCount += newVote.downvoteValue - oldVote.downvoteValue
-        myVote = newVote
-        isRead = true
+        DispatchQueue.main.async {
+            self.upvoteCount += newVote.upvoteValue - oldVote.upvoteValue
+            self.downvoteCount += newVote.downvoteValue - oldVote.downvoteValue
+            self.myVote = newVote
+            self.isRead = true
+        }
         
         do {
             let response = try await source.api.voteOnPost(id: id, score: newVote)
-            update(with: response.postView)
+            DispatchQueue.main.async { self.update(with: response.postView) }
         } catch {
             myVote = oldVote
             upvoteCount = oldUpvoteCount
