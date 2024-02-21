@@ -15,7 +15,7 @@ struct VoteCounterView: View {
     init(content: any InteractableContent, voteType: ScoringOperation) {
         self.content = content
         if voteType == .none {
-            assertionFailure("VoteButtonView cannot accept .none")
+            assertionFailure("VoteCounterView cannot accept .none")
         }
         self.voteType = voteType
     }
