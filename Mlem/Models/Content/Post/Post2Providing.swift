@@ -63,10 +63,12 @@ extension Post2Providing {
             let response = try await source.api.voteOnPost(id: id, score: newVote)
             DispatchQueue.main.async { self.update(with: response.postView) }
         } catch {
-            myVote = oldVote
-            upvoteCount = oldUpvoteCount
-            downvoteCount = oldDownvoteCount
-            isRead = oldReadStatus
+            DispatchQueue.main.async {
+                self.myVote = oldVote
+                self.upvoteCount = oldUpvoteCount
+                self.downvoteCount = oldDownvoteCount
+                self.isRead = oldReadStatus
+            }
             throw error
         }
     }
@@ -74,15 +76,20 @@ extension Post2Providing {
     func toggleSave() async throws {
         let oldSavedStatus = isSaved
         let oldReadStatus = isRead
-        isSaved.toggle()
-        isRead = true
+        
+        DispatchQueue.main.async {
+            self.isSaved.toggle()
+            self.isRead = true
+        }
         
         do {
             let response = try await source.api.savePost(id: id, shouldSave: isSaved)
-            update(with: response.postView)
+            DispatchQueue.main.async { self.update(with: response.postView) }
         } catch {
-            isSaved = oldSavedStatus
-            isRead = oldReadStatus
+            DispatchQueue.main.async {
+                self.isSaved = oldSavedStatus
+                self.isRead = oldReadStatus
+            }
             throw error
         }
     }
