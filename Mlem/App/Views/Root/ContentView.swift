@@ -11,10 +11,8 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.scenePhase) var scenePhase
     
-    @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.accountsTracker) var accountsTracker
-    @Dependency(\.markReadBatcher) var markReadBatcher
     
     @Environment(AppState.self) var appState
     
@@ -26,32 +24,12 @@ struct ContentView: View {
     @GestureState private var isDetectingLongPress = false
     
     @State private var isPresentingAccountSwitcher: Bool = false
-    
-    @AppStorage("profileTabLabel") var profileTabLabelMode: ProfileTabLabel = .nickname
-    @AppStorage("showUserAvatarOnProfileTab") var showProfileTabAvatar: Bool = true
-
-    @StateObject private var quickLookState: ImageDetailSheetState = .init()
-    @StateObject var biometricUnlock = BiometricUnlock()
 
     var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
-    
-    var profileTabLabel: String {
-        switch profileTabLabelMode {
-        case .instance:
-            return appState.myInstance?.url.host() ?? "Instance"
-        case .nickname:
-            return appState.myUser?.nickname ?? appState.myUser?.name ?? "Guest"
-        case .anonymous:
-            return "Profile"
-        }
-    }
         
-    var profileTabAvatar: URL? {
-        if showProfileTabAvatar, profileTabLabelMode != .anonymous {
-            return appState.myUser?.avatarUrl
-        }
-        return nil
-    }
+    var profileTabAvatar: URL? { appState.myUser?.avatarUrl }
+    
+    var profileTabLabel: String { "Profile" }
     
     var body: some View {
         FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
@@ -77,28 +55,10 @@ struct ContentView: View {
                         )
                         .simultaneousGesture(accountSwitchLongPress)
                     }
-                
-                SettingsView()
-                    .fancyTabItem(tag: TabSelection.settings) {
-                        FancyTabBarLabel(
-                            tag: TabSelection.settings,
-                            symbolConfiguration: .settings
-                        )
-                    }
             }
         }
         .task(id: appState.actorId, priority: .background) {
             await accountChanged()
-        }
-        .alert(using: $errorAlert) { content in
-            Alert(
-                title: Text(content.title),
-                message: Text(content.message),
-                dismissButton: .default(
-                    Text("OK"),
-                    action: { errorAlert = nil }
-                )
-            )
         }
         .sheet(isPresented: $isPresentingAccountSwitcher) {
             if accountsTracker.savedAccounts.count == 1 {
@@ -109,21 +69,11 @@ struct ContentView: View {
                     .presentationDetents([.medium, .large])
             }
         }
-        .sheet(item: $quickLookState.url) { url in
-            NavigationStack {
-                ImageDetailView(url: url)
-            }
-        }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
-        .environmentObject(quickLookState)
         .onChange(of: scenePhase) {
             // when app moves into background, hide the account switcher. This prevents the app from reopening with the switcher enabled.
             if scenePhase != .active {
                 isPresentingAccountSwitcher = false
-            }
-            // flush batcher(s) to avoid batches being lost on quit
-            Task {
-                await markReadBatcher.flush()
             }
         }
     }
@@ -167,7 +117,7 @@ struct ContentView: View {
 
 extension ContentView {
     func didReceiveURL(_ url: URL) -> OpenURLAction.Result {
-        let outcome = URLHandler.handle(url)
+        let outcome = UrlHandler.handle(url)
         
         switch outcome.action {
         case let .error(message):

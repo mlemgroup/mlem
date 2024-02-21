@@ -1,5 +1,5 @@
 //
-//  SavedAccountTracker.swift
+//  AccountsTracker.swift
 //  Mlem
 //
 //  Created by David Bureš on 05.05.2023.
@@ -12,42 +12,67 @@ import SwiftUI
 
 private let defaultInstanceGroupKey = "Other"
 
-@Observable
-class SavedAccountTracker {
-    @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
-    @ObservationIgnored @AppStorage("defaultAccountId") var defaultAccountId: Int?
+class AccountsTracker: ObservableObject {
+    @Dependency(\.persistenceRepository) private var persistenceRepository
     
-    var savedAccounts: [UserStub] = .init()
+    @Environment(\.setAppFlow) private var setFlow
     
-    var defaultAccount: UserStub? {
+    @AppStorage("defaultAccountId") var defaultAccountId: Int?
+    
+    @Published var savedAccounts = [SavedAccount]()
+    
+    var defaultAccount: SavedAccount? {
         savedAccounts.first(where: { $0.id == defaultAccountId })
     }
     
     private var cancellables = Set<AnyCancellable>()
     
+    // MARK: - Initialisation
+    
     init() {
-        self.savedAccounts = persistenceRepository.loadAccounts()
+        _savedAccounts = .init(wrappedValue: persistenceRepository.loadAccounts())
+        // observe our saved accounts and trigger internal updates when they change
+        $savedAccounts
+            .sink { [weak self] in self?.accountsDidChange($0) }
+            .store(in: &cancellables)
     }
     
-    func addAccount(account: UserStub) {
-        guard !savedAccounts.contains(where: { account.id == $0.id }) else {
+    // MARK: - Public methods
+    
+    func addAccount(account: SavedAccount) {
+        guard !savedAccounts.contains(account) else {
             assertionFailure("Tried to add a duplicate account to the tracker")
             return
         }
+        
         savedAccounts.append(account)
     }
-
-    func removeAccount(account: UserStub) {
-        guard let index = savedAccounts.firstIndex(where: { account.id == $0.id }) else {
+    
+    /// Replaces an account with another equivalent account. Useful for changing non-identifying properties.
+    /// - Parameter account: an updated `SavedAccount`
+    func update(with account: SavedAccount) {
+        guard let index = savedAccounts.firstIndex(of: account) else {
+            assertionFailure("Tried to update an account that does not exist")
+            return
+        }
+        
+        savedAccounts[index] = account
+    }
+    
+    func removeAccount(account: SavedAccount) {
+        guard let index = savedAccounts.firstIndex(of: account) else {
             assertionFailure("Tried to remove an account that does not exist")
             return
         }
+        
         savedAccounts.remove(at: index)
     }
     
-    func saveAccounts() {
+    // MARK: - Private methods
+    
+    private func accountsDidChange(_ newValue: [SavedAccount]) {
         Task {
-            try await self.persistenceRepository.saveAccounts(savedAccounts)
+            try await self.persistenceRepository.saveAccounts(newValue)
         }
     }
 }

@@ -41,7 +41,7 @@ class ErrorHandler: ObservableObject {
 
         Task { @MainActor in
             
-            if let clientError = error.underlyingError.base as? ApiClientError {
+            if let clientError = error.underlyingError.base as? APIClientError {
                 if case .invalidSession = clientError {
                     sessionExpired = true
                     return
