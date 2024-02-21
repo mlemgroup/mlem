@@ -1,0 +1,7 @@
+project: Mlem.xcodeproj
+schemes:
+- MarkdownUI
+- Mlem
+- Semaphore
+targets:
+- Mlem
