@@ -30,18 +30,18 @@ struct GetCommentsRequest: ApiGetRequest {
         dislikedOnly: Bool?
     ) {
         self.queryItems = [
-            .init(name: "type_", value: "\(type_)"),
-            .init(name: "sort", value: "\(sort)"),
-            .init(name: "max_depth", value: "\(maxDepth)"),
-            .init(name: "page", value: "\(page)"),
-            .init(name: "limit", value: "\(limit)"),
-            .init(name: "community_id", value: "\(communityId)"),
-            .init(name: "community_name", value: "\(communityName)"),
-            .init(name: "post_id", value: "\(postId)"),
-            .init(name: "parent_id", value: "\(parentId)"),
-            .init(name: "saved_only", value: "\(savedOnly)"),
-            .init(name: "liked_only", value: "\(likedOnly)"),
-            .init(name: "disliked_only", value: "\(dislikedOnly)")
+            .init(name: "type_", value: type_?.rawValue),
+            .init(name: "sort", value: sort?.rawValue),
+            .init(name: "max_depth", value: maxDepth.map(String.init)),
+            .init(name: "page", value: page.map(String.init)),
+            .init(name: "limit", value: limit.map(String.init)),
+            .init(name: "community_id", value: communityId.map(String.init)),
+            .init(name: "community_name", value: communityName),
+            .init(name: "post_id", value: postId.map(String.init)),
+            .init(name: "parent_id", value: parentId.map(String.init)),
+            .init(name: "saved_only", value: savedOnly.map(String.init)),
+            .init(name: "liked_only", value: likedOnly.map(String.init)),
+            .init(name: "disliked_only", value: dislikedOnly.map(String.init))
         ]
     }
 }

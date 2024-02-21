@@ -10,7 +10,7 @@
 import Foundation
 
 struct MarkAllAsReadRequest: ApiPostRequest {
-    typealias Body = Int // dummy type for ApiRequestBodyProviding conformance
+    typealias Body = Int // dummy type for APIRequestBodyProviding conformance
     typealias Response = ApiGetRepliesResponse
 
     let path = "/user/mark_all_as_read"

@@ -20,8 +20,8 @@ struct GetPostRequest: ApiGetRequest {
         commentId: Int?
     ) {
         self.queryItems = [
-            .init(name: "id", value: "\(id)"),
-            .init(name: "comment_id", value: "\(commentId)")
+            .init(name: "id", value: id.map(String.init)),
+            .init(name: "comment_id", value: commentId.map(String.init))
         ]
     }
 }

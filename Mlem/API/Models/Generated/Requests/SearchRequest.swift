@@ -28,15 +28,15 @@ struct SearchRequest: ApiGetRequest {
         limit: Int?
     ) {
         self.queryItems = [
-            .init(name: "q", value: "\(q)"),
-            .init(name: "community_id", value: "\(communityId)"),
-            .init(name: "community_name", value: "\(communityName)"),
-            .init(name: "creator_id", value: "\(creatorId)"),
-            .init(name: "type_", value: "\(type_)"),
-            .init(name: "sort", value: "\(sort)"),
-            .init(name: "listing_type", value: "\(listingType)"),
-            .init(name: "page", value: "\(page)"),
-            .init(name: "limit", value: "\(limit)")
+            .init(name: "q", value: q),
+            .init(name: "community_id", value: communityId.map(String.init)),
+            .init(name: "community_name", value: communityName),
+            .init(name: "creator_id", value: creatorId.map(String.init)),
+            .init(name: "type_", value: type_?.rawValue),
+            .init(name: "sort", value: sort?.rawValue),
+            .init(name: "listing_type", value: listingType?.rawValue),
+            .init(name: "page", value: page.map(String.init)),
+            .init(name: "limit", value: limit.map(String.init))
         ]
     }
 }

@@ -19,7 +19,7 @@ struct GetCommentRequest: ApiGetRequest {
         id: Int
     ) {
         self.queryItems = [
-            .init(name: "id", value: "\(id)")
+            .init(name: "id", value: String(id))
         ]
     }
 }

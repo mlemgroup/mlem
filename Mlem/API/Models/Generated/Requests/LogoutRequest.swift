@@ -10,7 +10,7 @@
 import Foundation
 
 struct LogoutRequest: ApiPostRequest {
-    typealias Body = Int // dummy type for ApiRequestBodyProviding conformance
+    typealias Body = Int // dummy type for APIRequestBodyProviding conformance
     typealias Response = ApiSuccessResponse
 
     let path = "/user/logout"

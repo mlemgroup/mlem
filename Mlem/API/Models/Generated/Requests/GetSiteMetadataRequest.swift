@@ -19,7 +19,7 @@ struct GetSiteMetadataRequest: ApiGetRequest {
         url: String
     ) {
         self.queryItems = [
-            .init(name: "url", value: "\(url)")
+            .init(name: "url", value: url)
         ]
     }
 }

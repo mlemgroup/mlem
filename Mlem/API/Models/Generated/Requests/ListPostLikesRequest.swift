@@ -21,9 +21,9 @@ struct ListPostLikesRequest: ApiGetRequest {
         limit: Int?
     ) {
         self.queryItems = [
-            .init(name: "post_id", value: "\(postId)"),
-            .init(name: "page", value: "\(page)"),
-            .init(name: "limit", value: "\(limit)")
+            .init(name: "post_id", value: String(postId)),
+            .init(name: "page", value: page.map(String.init)),
+            .init(name: "limit", value: limit.map(String.init))
         ]
     }
 }

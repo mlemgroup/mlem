@@ -25,13 +25,13 @@ struct GetPersonDetailsRequest: ApiGetRequest {
         savedOnly: Bool?
     ) {
         self.queryItems = [
-            .init(name: "person_id", value: "\(personId)"),
-            .init(name: "username", value: "\(username)"),
-            .init(name: "sort", value: "\(sort)"),
-            .init(name: "page", value: "\(page)"),
-            .init(name: "limit", value: "\(limit)"),
-            .init(name: "community_id", value: "\(communityId)"),
-            .init(name: "saved_only", value: "\(savedOnly)")
+            .init(name: "person_id", value: personId.map(String.init)),
+            .init(name: "username", value: username),
+            .init(name: "sort", value: sort?.rawValue),
+            .init(name: "page", value: page.map(String.init)),
+            .init(name: "limit", value: limit.map(String.init)),
+            .init(name: "community_id", value: communityId.map(String.init)),
+            .init(name: "saved_only", value: savedOnly.map(String.init))
         ]
     }
 }

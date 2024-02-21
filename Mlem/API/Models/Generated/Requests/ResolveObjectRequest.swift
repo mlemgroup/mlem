@@ -20,7 +20,7 @@ struct ResolveObjectRequest: ApiGetRequest {
         q: String
     ) {
         self.queryItems = [
-            .init(name: "q", value: "\(q)")
+            .init(name: "q", value: q)
         ]
     }
 }

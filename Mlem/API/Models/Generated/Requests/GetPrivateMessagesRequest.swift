@@ -22,10 +22,10 @@ struct GetPrivateMessagesRequest: ApiGetRequest {
         creatorId: Int?
     ) {
         self.queryItems = [
-            .init(name: "unread_only", value: "\(unreadOnly)"),
-            .init(name: "page", value: "\(page)"),
-            .init(name: "limit", value: "\(limit)"),
-            .init(name: "creator_id", value: "\(creatorId)")
+            .init(name: "unread_only", value: unreadOnly.map(String.init)),
+            .init(name: "page", value: page.map(String.init)),
+            .init(name: "limit", value: limit.map(String.init)),
+            .init(name: "creator_id", value: creatorId.map(String.init))
         ]
     }
 }

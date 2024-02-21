@@ -10,7 +10,7 @@
 import Foundation
 
 struct LeaveAdminRequest: ApiPostRequest {
-    typealias Body = Int // dummy type for ApiRequestBodyProviding conformance
+    typealias Body = Int // dummy type for APIRequestBodyProviding conformance
     typealias Response = ApiGetSiteResponse
 
     let path = "/user/leave_admin"

@@ -19,7 +19,7 @@ struct GetReportCountRequest: ApiGetRequest {
         communityId: Int?
     ) {
         self.queryItems = [
-            .init(name: "community_id", value: "\(communityId)")
+            .init(name: "community_id", value: communityId.map(String.init))
         ]
     }
 }
