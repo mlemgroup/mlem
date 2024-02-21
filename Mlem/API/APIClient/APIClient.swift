@@ -104,7 +104,7 @@ class ApiClient {
             // TODO: 0.18 deprecation remove all of the following logic and simply return the `data` above
             if let token {
                 let dictionary = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any]
-                guard var dictionary else { throw APIClientError.failedToWriteTokenToBody }
+                guard var dictionary else { throw ApiClientError.failedToWriteTokenToBody }
                 dictionary["auth"] = token
                 return try JSONSerialization.data(withJSONObject: dictionary, options: [])
             } else {

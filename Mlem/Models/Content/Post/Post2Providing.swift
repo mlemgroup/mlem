@@ -44,7 +44,12 @@ extension Post2Providing {
     
     var score: Int { upvoteCount - downvoteCount }
     
-    func vote(_ newVote: ScoringOperation) async throws {
+    func vote(_ newVote: ScoringOperation) {
+        if let oldTask = post2.voteTask, !oldTask.isCancelled { oldTask.cancel() }
+        post2.voteTask = Task(priority: .userInitiated) { await voteTask(newVote) }
+    }
+    
+    func voteTask(_ newVote: ScoringOperation) async {
         if newVote == myVote { return }
         
         let oldVote = myVote
@@ -61,36 +66,61 @@ extension Post2Providing {
         
         do {
             let response = try await source.api.voteOnPost(id: id, score: newVote)
-            DispatchQueue.main.async { self.update(with: response.postView) }
+            if !Task.isCancelled {
+                post2.voteTask = nil
+                DispatchQueue.main.async { self.update(with: response.postView) }
+            } else {
+                print("\(newVote) task cancelled")
+            }
+        } catch ApiClientError.cancelled {
+            print("\(newVote) task cancelled")
+            post2.voteTask = nil
         } catch {
+            print("\(newVote) task error: \(error)")
             DispatchQueue.main.async {
                 self.myVote = oldVote
                 self.upvoteCount = oldUpvoteCount
                 self.downvoteCount = oldDownvoteCount
                 self.isRead = oldReadStatus
             }
-            throw error
+            post2.voteTask = nil
         }
     }
     
-    func toggleSave() async throws {
+    func toggleSave() {
+        if let oldTask = post2.saveTask, !oldTask.isCancelled { oldTask.cancel() }
+        post2.saveTask = Task(priority: .userInitiated) { await toggleSaveTask() }
+    }
+    
+    private func toggleSaveTask() async {
         let oldSavedStatus = isSaved
         let oldReadStatus = isRead
         
+        let newSavedStatus = !isSaved
+        
         DispatchQueue.main.async {
-            self.isSaved.toggle()
+            self.isSaved = newSavedStatus
             self.isRead = true
         }
         
         do {
-            let response = try await source.api.savePost(id: id, shouldSave: isSaved)
-            DispatchQueue.main.async { self.update(with: response.postView) }
+            let response = try await source.api.savePost(id: id, shouldSave: newSavedStatus)
+            if !Task.isCancelled {
+                post2.saveTask = nil
+                DispatchQueue.main.async { self.update(with: response.postView) }
+            } else {
+                print("Save task cancelled")
+            }
+        } catch ApiClientError.cancelled {
+            print("Save task cancelled")
+            post2.saveTask = nil
         } catch {
+            print("Save task error: \(error)")
             DispatchQueue.main.async {
                 self.isSaved = oldSavedStatus
                 self.isRead = oldReadStatus
             }
-            throw error
+            post2.saveTask = nil
         }
     }
     
@@ -100,21 +130,21 @@ extension Post2Providing {
             .standardMenuFunction(
                 text: myVote == .upvote ? "Undo Upvote" : "Upvote",
                 imageName: myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvoteSquare,
-                callback: { Task { try await self.toggleUpvote() } }
+                callback: self.toggleUpvote
             )
         )
         functions.append(
             .standardMenuFunction(
                 text: myVote == .downvote ? "Undo Downvote" : "Downvote",
                 imageName: myVote == .downvote ? Icons.downvoteSquareFill : Icons.downvoteSquare,
-                callback: { Task { try await self.toggleDownvote() } }
+                callback: self.toggleDownvote
             )
         )
         functions.append(
             .standardMenuFunction(
                 text: isSaved ? "Unsave" : "Save",
                 imageName: isSaved ? Icons.saveFill : Icons.save,
-                callback: { Task { try await self.toggleSave() } }
+                callback: self.toggleSave
             )
         )
         functions.append(.shareMenuFunction(url: actorId))

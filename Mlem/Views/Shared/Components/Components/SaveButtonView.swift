@@ -20,9 +20,7 @@ struct SaveButtonView: View {
     var body: some View {
         Button {
             hapticManager.play(haptic: .success, priority: .low)
-            Task(priority: .userInitiated) {
-                try await content.toggleSave()
-            }
+            content.toggleSave()
         } label: {
             Image(systemName: content.isSaved ? Icons.saveFill : Icons.save)
                 .resizable()
@@ -39,9 +37,7 @@ struct SaveButtonView: View {
         .accessibilityLabel(saveButtonText)
         .accessibilityAction(.default) {
             hapticManager.play(haptic: .success, priority: .low)
-            Task(priority: .userInitiated) {
-                try await content.toggleSave()
-            }
+            content.toggleSave()
         }
         .buttonStyle(.plain)
         .transaction { transaction in

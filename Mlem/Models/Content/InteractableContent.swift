@@ -18,19 +18,19 @@ protocol InteractableContent: AnyObject, ContentStub {
     var downvoteCount: Int { get set }
     var isSaved: Bool { get set }
     
-    func vote(_: ScoringOperation) async throws
+    func vote(_: ScoringOperation)
     
-    func toggleSave() async throws
+    func toggleSave()
 }
 
 extension InteractableContent {
     var score: Int { upvoteCount - downvoteCount }
     
-    func toggleUpvote() async throws {
-        try await vote(myVote == .upvote ? .none : .upvote)
+    func toggleUpvote() {
+        vote(myVote == .upvote ? .none : .upvote)
     }
     
-    func toggleDownvote() async throws {
-        try await vote(myVote == .downvote ? .none : .downvote)
+    func toggleDownvote() {
+        vote(myVote == .downvote ? .none : .downvote)
     }
 }

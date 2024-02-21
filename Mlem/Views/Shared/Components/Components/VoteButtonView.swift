@@ -25,9 +25,7 @@ struct VoteButtonView: View {
     var body: some View {
         Button {
             hapticManager.play(haptic: .lightSuccess, priority: .low)
-            Task(priority: .userInitiated) {
-                try await content.vote(voteType == content.myVote ? .none : voteType)
-            }
+            content.vote(voteType == content.myVote ? .none : voteType)
         } label: {
             Image(systemName: voteType.buttonIconName)
                 .resizable()

@@ -27,6 +27,9 @@ final class Post2: Post2Providing, NewContentModel {
     var isRead: Bool = false
     var myVote: ScoringOperation = .none
     
+    var voteTask: Task<Void, Never>?
+    var saveTask: Task<Void, Never>?
+    
     init(source: any ApiSource, from post: ApiPostView) {
         self.source = source
         
@@ -41,9 +44,26 @@ final class Post2: Post2Providing, NewContentModel {
         upvoteCount = post.counts.upvotes
         downvoteCount = post.counts.downvotes
         unreadCommentCount = post.unreadComments
-        isSaved = post.saved
-        isRead = post.read
-        myVote = .init(rawValue: post.myVote ?? 0) ?? .none // TODO: this can be nicer
+        
+        // The following checks exist to ensure that making requests in quick succession doesn't result in incorrect state. For example, if an upvote request is made followed by a save request, the upvote request may come back first and reset the isSaved value to false. This would cause a small flicker before the save request returns with the correct value. - sjmarf 2024-02-21
+        
+        if saveTask == nil {
+            isSaved = post.saved
+        } else {
+            print("Didn't update post save status - task is ongoing")
+        }
+        
+        if saveTask == nil && voteTask == nil {
+            isRead = post.read
+        } else {
+            print("Didn't update post read status - task is ongoing")
+        }
+        
+        if voteTask == nil {
+            myVote = .init(rawValue: post.myVote ?? 0) ?? .none // TODO: this can be nicer
+        } else {
+            print("Didn't update post vote status - task is ongoing")
+        }
         
         post1.update(with: post.post)
         creator.update(with: post.creator)
