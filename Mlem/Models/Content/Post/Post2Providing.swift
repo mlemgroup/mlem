@@ -45,8 +45,8 @@ extension Post2Providing {
     var score: Int { upvoteCount - downvoteCount }
     
     func vote(_ newVote: ScoringOperation) {
-        if let oldTask = post2.voteTask, !oldTask.isCancelled { oldTask.cancel() }
-        post2.voteTask = Task(priority: .userInitiated) { await voteTask(newVote) }
+        if let oldTask = post2.tasks.vote, !oldTask.isCancelled { oldTask.cancel() }
+        post2.tasks.vote = Task(priority: .userInitiated) { await voteTask(newVote) }
     }
     
     func voteTask(_ newVote: ScoringOperation) async {
@@ -67,14 +67,14 @@ extension Post2Providing {
         do {
             let response = try await source.api.voteOnPost(id: id, score: newVote)
             if !Task.isCancelled {
-                post2.voteTask = nil
+                post2.tasks.vote = nil
                 DispatchQueue.main.async { self.update(with: response.postView) }
             } else {
                 print("\(newVote) task cancelled")
             }
         } catch ApiClientError.cancelled {
             print("\(newVote) task cancelled")
-            post2.voteTask = nil
+            post2.tasks.vote = nil
         } catch {
             print("\(newVote) task error: \(error)")
             DispatchQueue.main.async {
@@ -83,13 +83,13 @@ extension Post2Providing {
                 self.downvoteCount = oldDownvoteCount
                 self.isRead = oldReadStatus
             }
-            post2.voteTask = nil
+            post2.tasks.vote = nil
         }
     }
     
     func toggleSave() {
-        if let oldTask = post2.saveTask, !oldTask.isCancelled { oldTask.cancel() }
-        post2.saveTask = Task(priority: .userInitiated) { await toggleSaveTask() }
+        if let oldTask = post2.tasks.save, !oldTask.isCancelled { oldTask.cancel() }
+        post2.tasks.save = Task(priority: .userInitiated) { await toggleSaveTask() }
     }
     
     private func toggleSaveTask() async {
@@ -106,21 +106,21 @@ extension Post2Providing {
         do {
             let response = try await source.api.savePost(id: id, shouldSave: newSavedStatus)
             if !Task.isCancelled {
-                post2.saveTask = nil
+                post2.tasks.save = nil
                 DispatchQueue.main.async { self.update(with: response.postView) }
             } else {
                 print("Save task cancelled")
             }
         } catch ApiClientError.cancelled {
             print("Save task cancelled")
-            post2.saveTask = nil
+            post2.tasks.save = nil
         } catch {
             print("Save task error: \(error)")
             DispatchQueue.main.async {
                 self.isSaved = oldSavedStatus
                 self.isRead = oldReadStatus
             }
-            post2.saveTask = nil
+            post2.tasks.save = nil
         }
     }
     
