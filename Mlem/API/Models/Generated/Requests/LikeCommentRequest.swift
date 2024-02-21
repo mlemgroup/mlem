@@ -2,16 +2,16 @@
 //  LikeCommentRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct LikeCommentRequest: APIPostRequest {
-    typealias Body = APICreateCommentLike
-    typealias Response = APICommentResponse
+struct LikeCommentRequest: ApiPostRequest {
+    typealias Body = ApiCreateCommentLike
+    typealias Response = ApiCommentResponse
 
     let path = "/comment/like"
     let body: Body?

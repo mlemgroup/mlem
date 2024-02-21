@@ -15,10 +15,10 @@ struct PostEmbed {
 
 @Observable
 final class Post1: Post1Providing, NewContentModel {
-    typealias APIType = APIPost
+    typealias ApiType = ApiPost
     var post1: Post1 { self }
     
-    var source: any APISource
+    var source: any ApiSource
     
     let actorId: URL
     let id: Int
@@ -39,7 +39,7 @@ final class Post1: Post1Providing, NewContentModel {
     var thumbnailUrl: URL?
     var updatedDate: Date?
     
-    init(source: any APISource, from post: APIPost) {
+    init(source: any ApiSource, from post: ApiPost) {
         self.source = source
         self.actorId = post.actorId
         self.id = post.id
@@ -48,7 +48,7 @@ final class Post1: Post1Providing, NewContentModel {
         update(with: post)
     }
     
-    func update(with post: APIPost) {
+    func update(with post: ApiPost) {
         updatedDate = post.updated
     
         title = post.name

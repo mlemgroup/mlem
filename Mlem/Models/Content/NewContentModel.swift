@@ -8,16 +8,16 @@
 import Foundation
 
 protocol NewContentModel: ActorIdentifiable, Identifiable {
-    associatedtype APIType: ActorIdentifiable & Identifiable where APIType.ID == ID
+    associatedtype ApiType: ActorIdentifiable & Identifiable where ApiType.ID == ID
     
-    var source: any APISource { get }
-    init(source: any APISource, from: APIType)
-    func update(with: APIType)
+    var source: any ApiSource { get }
+    init(source: any ApiSource, from: ApiType)
+    func update(with: ApiType)
 }
 
-extension NewContentModel where Self.APIType: Mockable {
+extension NewContentModel where Self.ApiType: Mockable {
     /// Returns a version of the
-    static func mock(_ apiItem: APIType = .mock) -> Self {
-        return .init(source: MockAPISource(), from: apiItem)
+    static func mock(_ apiItem: ApiType = .mock) -> Self {
+        .init(source: MockApiSource(), from: apiItem)
     }
 }

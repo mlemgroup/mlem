@@ -2,16 +2,16 @@
 //  ChangePasswordRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct ChangePasswordRequest: APIPutRequest {
-    typealias Body = APIChangePassword
-    typealias Response = APILoginResponse
+struct ChangePasswordRequest: ApiPutRequest {
+    typealias Body = ApiChangePassword
+    typealias Response = ApiLoginResponse
 
     let path = "/user/change_password"
     let body: Body?

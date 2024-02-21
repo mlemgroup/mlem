@@ -2,16 +2,16 @@
 //  RemoveCommentRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct RemoveCommentRequest: APIPostRequest {
-    typealias Body = APIRemoveComment
-    typealias Response = APICommentResponse
+struct RemoveCommentRequest: ApiPostRequest {
+    typealias Body = ApiRemoveComment
+    typealias Response = ApiCommentResponse
 
     let path = "/comment/remove"
     let body: Body?

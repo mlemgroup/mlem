@@ -2,16 +2,16 @@
 //  EditCommunityRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct EditCommunityRequest: APIPutRequest {
-    typealias Body = APIEditCommunity
-    typealias Response = APICommunityResponse
+struct EditCommunityRequest: ApiPutRequest {
+    typealias Body = ApiEditCommunity
+    typealias Response = ApiCommunityResponse
 
     let path = "/community"
     let body: Body?

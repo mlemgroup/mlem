@@ -2,15 +2,15 @@
 //  ResolveObjectRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct ResolveObjectRequest: APIGetRequest {
-    typealias Response = APIResolveObjectResponse
+struct ResolveObjectRequest: ApiGetRequest {
+    typealias Response = ApiResolveObjectResponse
 
     let path = "/resolve_object"
     let queryItems: [URLQueryItem]

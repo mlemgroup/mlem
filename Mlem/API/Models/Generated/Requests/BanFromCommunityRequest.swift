@@ -2,16 +2,16 @@
 //  BanFromCommunityRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct BanFromCommunityRequest: APIPostRequest {
-    typealias Body = APIBanFromCommunity
-    typealias Response = APIBanFromCommunityResponse
+struct BanFromCommunityRequest: ApiPostRequest {
+    typealias Body = ApiBanFromCommunity
+    typealias Response = ApiBanFromCommunityResponse
 
     let path = "/community/ban_user"
     let body: Body?

@@ -2,15 +2,15 @@
 //  ListPostReportsRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct ListPostReportsRequest: APIGetRequest {
-    typealias Response = APIListPostReportsResponse
+struct ListPostReportsRequest: ApiGetRequest {
+    typealias Response = ApiListPostReportsResponse
 
     let path = "/post/report/list"
     let queryItems: [URLQueryItem]

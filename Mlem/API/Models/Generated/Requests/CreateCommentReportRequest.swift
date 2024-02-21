@@ -2,16 +2,16 @@
 //  CreateCommentReportRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct CreateCommentReportRequest: APIPostRequest {
-    typealias Body = APICreateCommentReport
-    typealias Response = APICommentReportResponse
+struct CreateCommentReportRequest: ApiPostRequest {
+    typealias Body = ApiCreateCommentReport
+    typealias Response = ApiCommentReportResponse
 
     let path = "/comment/report"
     let body: Body?

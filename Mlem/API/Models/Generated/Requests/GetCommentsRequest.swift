@@ -2,22 +2,22 @@
 //  GetCommentsRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct GetCommentsRequest: APIGetRequest {
-    typealias Response = APIGetCommentsResponse
+struct GetCommentsRequest: ApiGetRequest {
+    typealias Response = ApiGetCommentsResponse
 
     let path = "/comment/list"
     let queryItems: [URLQueryItem]
 
     init(
-        type_: APIListingType?,
-        sort: APICommentSortType?,
+        type_: ApiListingType?,
+        sort: ApiCommentSortType?,
         maxDepth: Int?,
         page: Int?,
         limit: Int?,

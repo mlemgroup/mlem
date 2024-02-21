@@ -2,16 +2,16 @@
 //  CreateCustomEmojiRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct CreateCustomEmojiRequest: APIPostRequest {
-    typealias Body = APICreateCustomEmoji
-    typealias Response = APICustomEmojiResponse
+struct CreateCustomEmojiRequest: ApiPostRequest {
+    typealias Body = ApiCreateCustomEmoji
+    typealias Response = ApiCustomEmojiResponse
 
     let path = "/custom_emoji"
     let body: Body?

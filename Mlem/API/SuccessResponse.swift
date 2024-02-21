@@ -30,7 +30,7 @@ struct SuccessResponse: Decodable {
 
 struct MarkReadCompatibilityResponse: Decodable {
     let success: Bool? // 0.19+ response
-    let postView: APIPostView? // 0.18- response
+    let postView: ApiPostView? // 0.18- response
 }
 
 struct SaveUserSettingsCompatibilityResponse: Decodable {

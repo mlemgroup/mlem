@@ -2,16 +2,16 @@
 //  AddAdminRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct AddAdminRequest: APIPostRequest {
-    typealias Body = APIAddAdmin
-    typealias Response = APIAddAdminResponse
+struct AddAdminRequest: ApiPostRequest {
+    typealias Body = ApiAddAdmin
+    typealias Response = ApiAddAdminResponse
 
     let path = "/admin/add"
     let body: Body?

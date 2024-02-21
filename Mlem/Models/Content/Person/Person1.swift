@@ -9,10 +9,10 @@ import SwiftUI
 
 @Observable
 final class Person1: Person1Providing, NewContentModel {
-    typealias APIType = APIPerson
+    typealias ApiType = ApiPerson
     var person1: Person1 { self }
     
-    var source: any APISource
+    var source: any ApiSource
     
     let actorId: URL
     let id: Int
@@ -32,10 +32,10 @@ final class Person1: Person1Providing, NewContentModel {
     
     var instanceBan: InstanceBanType = .notBanned
     
-    // These aren't included in the APIPerson, and so are set externally by Post2 instead
+    // These aren't included in the ApiPerson, and so are set externally by Post2 instead
     var blocked: Bool = false
     
-    init(source: any APISource, from person: APIPerson) {
+    init(source: any ApiSource, from person: ApiPerson) {
         self.source = source
         self.actorId = person.actorId
         self.id = person.id
@@ -45,7 +45,7 @@ final class Person1: Person1Providing, NewContentModel {
         update(with: person)
     }
     
-    func update(with person: APIPerson) {
+    func update(with person: ApiPerson) {
         updatedDate = person.updated
         displayName = person.displayName
         description = person.bio

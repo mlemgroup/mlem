@@ -26,8 +26,7 @@ struct AccountSettingsView: View {
     var body: some View {
         Form {
             if let myUser = appState.myUser {
-
-                // See comments under APIListingType for why this is necessary.
+                // See comments under ApiListingType for why this is necessary.
                 // TODO: 0.17 deprecation remove this logic
                 let settingsDisabled = (appState.lemmyVersion ?? .infinity) < .init("0.18.0")
                 

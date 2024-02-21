@@ -2,15 +2,15 @@
 //  GetSiteRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct GetSiteRequest: APIGetRequest {
-    typealias Response = APIGetSiteResponse
+struct GetSiteRequest: ApiGetRequest {
+    typealias Response = ApiGetSiteResponse
 
     let path = "/site"
     let queryItems: [URLQueryItem]

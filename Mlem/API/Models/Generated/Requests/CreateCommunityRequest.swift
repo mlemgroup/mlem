@@ -2,16 +2,16 @@
 //  CreateCommunityRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct CreateCommunityRequest: APIPostRequest {
-    typealias Body = APICreateCommunity
-    typealias Response = APICommunityResponse
+struct CreateCommunityRequest: ApiPostRequest {
+    typealias Body = ApiCreateCommunity
+    typealias Response = ApiCommunityResponse
 
     let path = "/community"
     let body: Body?

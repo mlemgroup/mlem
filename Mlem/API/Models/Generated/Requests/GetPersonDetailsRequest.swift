@@ -2,15 +2,15 @@
 //  GetPersonDetailsRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct GetPersonDetailsRequest: APIGetRequest {
-    typealias Response = APIGetPersonDetailsResponse
+struct GetPersonDetailsRequest: ApiGetRequest {
+    typealias Response = ApiGetPersonDetailsResponse
 
     let path = "/user"
     let queryItems: [URLQueryItem]
@@ -18,7 +18,7 @@ struct GetPersonDetailsRequest: APIGetRequest {
     init(
         personId: Int?,
         username: String?,
-        sort: APISortType?,
+        sort: ApiSortType?,
         page: Int?,
         limit: Int?,
         communityId: Int?,

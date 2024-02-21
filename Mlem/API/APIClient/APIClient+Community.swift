@@ -1,5 +1,5 @@
 //
-//  NewAPIClient+Requests.swift
+//  NewApiClient+Requests.swift
 //  Mlem
 //
 //  Created by Sjmarf on 10/02/2024.
@@ -7,13 +7,13 @@
 
 import Foundation
 
-extension APIClient {
-    func getCommunity(id: Int) async throws -> APIGetCommunityResponse {
+extension ApiClient {
+    func getCommunity(id: Int) async throws -> ApiGetCommunityResponse {
         let request = GetCommunityRequest(id: id, name: nil)
         return try await perform(request: request)
     }
     
-    func getCommunity(actorId: URL) async throws -> APICommunityView? {
+    func getCommunity(actorId: URL) async throws -> ApiCommunityView? {
         let request = SearchRequest(
             q: actorId.absoluteString,
             communityId: nil,

@@ -62,7 +62,7 @@ final class CommunityListModelTests: XCTestCase {
             FavoriteCommunity(forAccountID: account.id, community: .mock(id: 42, name: "favorite community"))
         ])
         
-        let subscription = APICommunityView.mock(community: .mock(id: 0, name: "subscribed community"), subscribed: .subscribed)
+        let subscription = ApiCommunityView.mock(community: .mock(id: 0, name: "subscribed community"), subscribed: .subscribed)
         
         let model = withDependencies {
             $0.mainQueue = .immediate
@@ -85,7 +85,7 @@ final class CommunityListModelTests: XCTestCase {
     }
     
     func testDuplicatesAreHandledCorrectly() async throws {
-        let community: APICommunity = .mock(id: 42)
+        let community: ApiCommunity = .mock(id: 42)
         
         // set the above community as our only favorite
         favoritesData = try JSONEncoder().encode([
@@ -93,7 +93,7 @@ final class CommunityListModelTests: XCTestCase {
         ])
         
         // use the same community as our only subscriptiom
-        let subscription = APICommunityView.mock(community: community, subscribed: .subscribed)
+        let subscription = ApiCommunityView.mock(community: community, subscribed: .subscribed)
         
         let model = withDependencies {
             $0.mainQueue = .immediate
@@ -115,7 +115,7 @@ final class CommunityListModelTests: XCTestCase {
     }
     
     func testSubscribedStatusIsCorrect() async throws {
-        let communityView: APICommunityView = .mock(
+        let communityView: ApiCommunityView = .mock(
             community: .mock(id: 42),
             subscribed: .subscribed
         )
@@ -150,7 +150,7 @@ final class CommunityListModelTests: XCTestCase {
             }
             // when asked to update the remote subscription return successfully
             $0.communityRepository.updateSubscription = { _, communityId, subscribed in
-                APICommunityView.mock(community: .mock(id: communityId), subscribed: subscribed ? .subscribed : .notSubscribed)
+                ApiCommunityView.mock(community: .mock(id: communityId), subscribed: subscribed ? .subscribed : .notSubscribed)
             }
         } operation: {
             CommunityListModel()
@@ -183,7 +183,7 @@ final class CommunityListModelTests: XCTestCase {
             }
             // when asked to update the remote subscription throw an error
             $0.communityRepository.updateSubscription = { _, _, _ in
-                throw APIClientError.cancelled
+                throw ApiClientError.cancelled
             }
         } operation: {
             CommunityListModel()
@@ -222,7 +222,7 @@ final class CommunityListModelTests: XCTestCase {
         // assert the model is not displaying any favorites
         XCTAssertFalse(model.visibleSections.contains(where: { $0.viewId == "favorites" }))
         // add a favorite to the tracker, expectation is the model will observe this change and update itself
-        let favoriteCommunity = APICommunity.mock(id: 42)
+        let favoriteCommunity = ApiCommunity.mock(id: 42)
         tracker.favorite(favoriteCommunity)
         // assert that adding this favorite resulted in the model updating, it should now display a favorites section
         XCTAssert(model.visibleSections.contains(where: { $0.viewId == "favorites" }))
@@ -234,7 +234,7 @@ final class CommunityListModelTests: XCTestCase {
     }
     
     func testCorrectCommunitiesAreReturnedForSections() async throws {
-        let communities: [APICommunityView] = [
+        let communities: [ApiCommunityView] = [
             .mock(community: .mock(id: 0, name: "accordion")),
             .mock(community: .mock(id: 1, name: "harp")),
             .mock(community: .mock(id: 2, name: "harmonica")),

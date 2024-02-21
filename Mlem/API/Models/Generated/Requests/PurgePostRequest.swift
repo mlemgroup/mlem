@@ -2,16 +2,16 @@
 //  PurgePostRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct PurgePostRequest: APIPostRequest {
-    typealias Body = APIPurgePost
-    typealias Response = APISuccessResponse
+struct PurgePostRequest: ApiPostRequest {
+    typealias Body = ApiPurgePost
+    typealias Response = ApiSuccessResponse
 
     let path = "/admin/purge/post"
     let body: Body?

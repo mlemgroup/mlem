@@ -11,9 +11,9 @@ import SwiftUI
 
 @Observable
 final class Community2: Community2Providing, NewContentModel {
-    typealias APIType = APICommunityView
+    typealias ApiType = ApiCommunityView
     var community2: Community2 { self }
-    var source: any APISource
+    var source: any ApiSource
 
     let community1: Community1
     
@@ -25,13 +25,13 @@ final class Community2: Community2Providing, NewContentModel {
     var commentCount: Int = 0
     var activeUserCount: ActiveUserCount = .zero
 
-    required init(source: any APISource, from communityView: APICommunityView) {
+    required init(source: any ApiSource, from communityView: ApiCommunityView) {
         self.source = source
         self.community1 = source.caches.community1.createModel(source: source, for: communityView.community)
         update(with: communityView)
     }
     
-    func update(with communityView: APICommunityView) {
+    func update(with communityView: ApiCommunityView) {
         subscribed = communityView.subscribed.isSubscribed
         subscriberCount = communityView.counts.subscribers
         postCount = communityView.counts.posts

@@ -2,16 +2,16 @@
 //  BlockPersonRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct BlockPersonRequest: APIPostRequest {
-    typealias Body = APIBlockPerson
-    typealias Response = APIBlockPersonResponse
+struct BlockPersonRequest: ApiPostRequest {
+    typealias Body = ApiBlockPerson
+    typealias Response = ApiBlockPersonResponse
 
     let path = "/user/block"
     let body: Body?

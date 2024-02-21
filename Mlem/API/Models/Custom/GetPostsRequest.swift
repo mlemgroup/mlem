@@ -8,8 +8,8 @@
 import Foundation
 
 // lemmy_api_common::post::GetPosts
-struct GetPostsRequest: APIGetRequest {
-    typealias Response = APIGetPostsResponse
+struct GetPostsRequest: ApiGetRequest {
+    typealias Response = ApiGetPostsResponse
 
     let path = "post/list"
     let queryItems: [URLQueryItem]
@@ -19,7 +19,7 @@ struct GetPostsRequest: APIGetRequest {
         page: Int,
         cursor: String?,
         sort: PostSortType?,
-        type: APIListingType,
+        type: ApiListingType,
         limit: Int? = nil,
         savedOnly: Bool? = nil,
         communityName: String? = nil

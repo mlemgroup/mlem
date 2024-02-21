@@ -2,16 +2,16 @@
 //  CreatePrivateMessageReportRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct CreatePrivateMessageReportRequest: APIPostRequest {
-    typealias Body = APICreatePrivateMessageReport
-    typealias Response = APIPrivateMessageReportResponse
+struct CreatePrivateMessageReportRequest: ApiPostRequest {
+    typealias Body = ApiCreatePrivateMessageReport
+    typealias Response = ApiPrivateMessageReportResponse
 
     let path = "/private_message/report"
     let body: Body?

@@ -2,16 +2,16 @@
 //  EditSiteRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct EditSiteRequest: APIPutRequest {
-    typealias Body = APIEditSite
-    typealias Response = APISiteResponse
+struct EditSiteRequest: ApiPutRequest {
+    typealias Body = ApiEditSite
+    typealias Response = ApiSiteResponse
 
     let path = "/site"
     let body: Body?
@@ -29,7 +29,7 @@ struct EditSiteRequest: APIPutRequest {
         applicationQuestion: String?,
         privateInstance: Bool?,
         defaultTheme: String?,
-        defaultPostListingType: APIListingType?,
+        defaultPostListingType: ApiListingType?,
         legalInformation: String?,
         applicationEmailAdmins: Bool?,
         hideModlogModNames: Bool?,
@@ -55,7 +55,7 @@ struct EditSiteRequest: APIPutRequest {
         allowedInstances: [String]?,
         blockedInstances: [String]?,
         taglines: [String]?,
-        registrationMode: APIRegistrationMode?,
+        registrationMode: ApiRegistrationMode?,
         reportsEmailAdmins: Bool?
     ) {
         self.body = .init(

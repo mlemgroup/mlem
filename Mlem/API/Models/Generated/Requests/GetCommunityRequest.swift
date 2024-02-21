@@ -2,15 +2,15 @@
 //  GetCommunityRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct GetCommunityRequest: APIGetRequest {
-    typealias Response = APIGetCommunityResponse
+struct GetCommunityRequest: ApiGetRequest {
+    typealias Response = ApiGetCommunityResponse
 
     let path = "/community"
     let queryItems: [URLQueryItem]

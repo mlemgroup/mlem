@@ -2,15 +2,15 @@
 //  ListCommentReportsRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct ListCommentReportsRequest: APIGetRequest {
-    typealias Response = APIListCommentReportsResponse
+struct ListCommentReportsRequest: ApiGetRequest {
+    typealias Response = ApiListCommentReportsResponse
 
     let path = "/comment/report/list"
     let queryItems: [URLQueryItem]

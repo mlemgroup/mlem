@@ -35,8 +35,8 @@ enum FeedType: Equatable {
         }
     }
     
-    /// Maps FeedType to APIListingType
-    var toAPIListingType: APIListingType {
+    /// Maps FeedType to ApiListingType
+    var toApiListingType: ApiListingType {
         switch self {
         case .all: .all
         case .local: .local

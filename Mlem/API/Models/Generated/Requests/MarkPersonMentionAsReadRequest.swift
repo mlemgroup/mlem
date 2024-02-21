@@ -2,16 +2,16 @@
 //  MarkPersonMentionAsReadRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct MarkPersonMentionAsReadRequest: APIPostRequest {
-    typealias Body = APIMarkPersonMentionAsRead
-    typealias Response = APIPersonMentionResponse
+struct MarkPersonMentionAsReadRequest: ApiPostRequest {
+    typealias Body = ApiMarkPersonMentionAsRead
+    typealias Response = ApiPersonMentionResponse
 
     let path = "/user/mention/mark_as_read"
     let body: Body?

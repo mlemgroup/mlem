@@ -1,5 +1,5 @@
 //
-//  APIPersonViewLike.swift
+//  ApiPersonViewLike.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-02-19.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol APIPersonViewLike {
-    var person: APIPerson { get }
-    var counts: APIPersonAggregates { get }
+protocol ApiPersonViewLike {
+    var person: ApiPerson { get }
+    var counts: ApiPersonAggregates { get }
 }

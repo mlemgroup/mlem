@@ -2,16 +2,16 @@
 //  SavePostRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct SavePostRequest: APIPutRequest {
-    typealias Body = APISavePost
-    typealias Response = APIPostResponse
+struct SavePostRequest: ApiPutRequest {
+    typealias Body = ApiSavePost
+    typealias Response = ApiPostResponse
 
     let path = "/post/save"
     let body: Body?

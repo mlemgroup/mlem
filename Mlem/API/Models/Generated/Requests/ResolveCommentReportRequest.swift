@@ -2,16 +2,16 @@
 //  ResolveCommentReportRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct ResolveCommentReportRequest: APIPutRequest {
-    typealias Body = APIResolveCommentReport
-    typealias Response = APICommentReportResponse
+struct ResolveCommentReportRequest: ApiPutRequest {
+    typealias Body = ApiResolveCommentReport
+    typealias Response = ApiCommentReportResponse
 
     let path = "/comment/report/resolve"
     let body: Body?

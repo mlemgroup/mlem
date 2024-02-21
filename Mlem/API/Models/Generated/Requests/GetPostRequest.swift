@@ -2,15 +2,15 @@
 //  GetPostRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct GetPostRequest: APIGetRequest {
-    typealias Response = APIGetPostResponse
+struct GetPostRequest: ApiGetRequest {
+    typealias Response = ApiGetPostResponse
 
     let path = "/post"
     let queryItems: [URLQueryItem]

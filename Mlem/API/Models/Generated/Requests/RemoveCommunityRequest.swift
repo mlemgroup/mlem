@@ -2,16 +2,16 @@
 //  RemoveCommunityRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct RemoveCommunityRequest: APIPostRequest {
-    typealias Body = APIRemoveCommunity
-    typealias Response = APICommunityResponse
+struct RemoveCommunityRequest: ApiPostRequest {
+    typealias Body = ApiRemoveCommunity
+    typealias Response = ApiCommunityResponse
 
     let path = "/community/remove"
     let body: Body?

@@ -58,7 +58,7 @@ struct AggregateFeedView: View {
                 internetSpeed: internetSpeed,
                 sortType: defaultPostSorting,
                 showReadPosts: showReadPosts,
-                feedType: .aggregateFeed(apiSource, type: feedType.toAPIListingType)
+                feedType: .aggregateFeed(apiSource, type: feedType.toApiListingType)
             )
             )
         } else {
@@ -77,7 +77,7 @@ struct AggregateFeedView: View {
                     switch selectedFeed {
                     case .all, .local, .subscribed:
                         await markReadBatcher.flush()
-                        await postTracker?.changeFeedType(to: .aggregateFeed(apiSource, type: selectedFeed.toAPIListingType))
+                        await postTracker?.changeFeedType(to: .aggregateFeed(apiSource, type: selectedFeed.toApiListingType))
                         postTracker?.isStale = false
                     default:
                         return
@@ -90,7 +90,7 @@ struct AggregateFeedView: View {
                         internetSpeed: internetSpeed,
                         sortType: postSortType,
                         showReadPosts: showReadPosts,
-                        feedType: postTracker?.feedType ?? .aggregateFeed(apiSource, type: selectedFeed?.toAPIListingType ?? .all)
+                        feedType: postTracker?.feedType ?? .aggregateFeed(apiSource, type: selectedFeed?.toApiListingType ?? .all)
                     )
                 }
             }

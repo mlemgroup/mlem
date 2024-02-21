@@ -2,15 +2,15 @@
 //  GetPrivateMessagesRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct GetPrivateMessagesRequest: APIGetRequest {
-    typealias Response = APIPrivateMessagesResponse
+struct GetPrivateMessagesRequest: ApiGetRequest {
+    typealias Response = ApiPrivateMessagesResponse
 
     let path = "/private_message/list"
     let queryItems: [URLQueryItem]

@@ -2,15 +2,15 @@
 //  GetSiteMetadataRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct GetSiteMetadataRequest: APIGetRequest {
-    typealias Response = APIGetSiteMetadataResponse
+struct GetSiteMetadataRequest: ApiGetRequest {
+    typealias Response = ApiGetSiteMetadataResponse
 
     let path = "/post/site_metadata"
     let queryItems: [URLQueryItem]

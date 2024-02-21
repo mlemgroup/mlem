@@ -2,16 +2,16 @@
 //  BanPersonRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct BanPersonRequest: APIPostRequest {
-    typealias Body = APIBanPerson
-    typealias Response = APIBanPersonResponse
+struct BanPersonRequest: ApiPostRequest {
+    typealias Body = ApiBanPerson
+    typealias Response = ApiBanPersonResponse
 
     let path = "/user/ban"
     let body: Body?

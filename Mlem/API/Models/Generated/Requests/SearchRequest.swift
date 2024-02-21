@@ -2,15 +2,15 @@
 //  SearchRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct SearchRequest: APIGetRequest {
-    typealias Response = APISearchResponse
+struct SearchRequest: ApiGetRequest {
+    typealias Response = ApiSearchResponse
 
     let path = "/search"
     let queryItems: [URLQueryItem]
@@ -21,9 +21,9 @@ struct SearchRequest: APIGetRequest {
         communityId: Int?,
         communityName: String?,
         creatorId: Int?,
-        type_: APISearchType?,
-        sort: APISortType?,
-        listingType: APIListingType?,
+        type_: ApiSearchType?,
+        sort: ApiSortType?,
+        listingType: ApiListingType?,
         page: Int?,
         limit: Int?
     ) {

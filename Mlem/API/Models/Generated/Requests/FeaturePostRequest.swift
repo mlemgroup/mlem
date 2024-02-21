@@ -2,16 +2,16 @@
 //  FeaturePostRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct FeaturePostRequest: APIPostRequest {
-    typealias Body = APIFeaturePost
-    typealias Response = APIPostResponse
+struct FeaturePostRequest: ApiPostRequest {
+    typealias Body = ApiFeaturePost
+    typealias Response = ApiPostResponse
 
     let path = "/post/feature"
     let body: Body?
@@ -19,7 +19,7 @@ struct FeaturePostRequest: APIPostRequest {
     init(
         postId: Int,
         featured: Bool,
-        featureType: APIPostFeatureType
+        featureType: ApiPostFeatureType
     ) {
         self.body = .init(
             postId: postId,

@@ -2,15 +2,15 @@
 //  ListPrivateMessageReportsRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct ListPrivateMessageReportsRequest: APIGetRequest {
-    typealias Response = APIListPrivateMessageReportsResponse
+struct ListPrivateMessageReportsRequest: ApiGetRequest {
+    typealias Response = ApiListPrivateMessageReportsResponse
 
     let path = "/private_message/report/list"
     let queryItems: [URLQueryItem]

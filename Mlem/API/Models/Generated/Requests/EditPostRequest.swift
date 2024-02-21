@@ -2,16 +2,16 @@
 //  EditPostRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct EditPostRequest: APIPutRequest {
-    typealias Body = APIEditPost
-    typealias Response = APIPostResponse
+struct EditPostRequest: ApiPutRequest {
+    typealias Body = ApiEditPost
+    typealias Response = ApiPostResponse
 
     let path = "/post"
     let body: Body?

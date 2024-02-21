@@ -2,16 +2,16 @@
 //  UpdateTotpRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct UpdateTotpRequest: APIPostRequest {
-    typealias Body = APIUpdateTotp
-    typealias Response = APIUpdateTotpResponse
+struct UpdateTotpRequest: ApiPostRequest {
+    typealias Body = ApiUpdateTotp
+    typealias Response = ApiUpdateTotpResponse
 
     let path = "/user/totp/update"
     let body: Body?

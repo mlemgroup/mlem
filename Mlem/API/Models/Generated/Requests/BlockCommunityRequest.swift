@@ -2,16 +2,16 @@
 //  BlockCommunityRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct BlockCommunityRequest: APIPostRequest {
-    typealias Body = APIBlockCommunity
-    typealias Response = APIBlockCommunityResponse
+struct BlockCommunityRequest: ApiPostRequest {
+    typealias Body = ApiBlockCommunity
+    typealias Response = ApiBlockCommunityResponse
 
     let path = "/community/block"
     let body: Body?

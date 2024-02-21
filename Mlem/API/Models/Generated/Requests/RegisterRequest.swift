@@ -2,16 +2,16 @@
 //  RegisterRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct RegisterRequest: APIPostRequest {
-    typealias Body = APIRegister
-    typealias Response = APILoginResponse
+struct RegisterRequest: ApiPostRequest {
+    typealias Body = ApiRegister
+    typealias Response = ApiLoginResponse
 
     let path = "/user/register"
     let body: Body?

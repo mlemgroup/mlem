@@ -29,7 +29,7 @@ enum PostFilter: Hashable {
 }
 
 enum TrackerFeedType: Equatable {
-    case aggregateFeed(any APISource, type: APIListingType)
+    case aggregateFeed(any ApiSource, type: ApiListingType)
     case community(any Community)
     
     static func == (lhs: TrackerFeedType, rhs: TrackerFeedType) -> Bool {

@@ -2,16 +2,16 @@
 //  FollowCommunityRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct FollowCommunityRequest: APIPostRequest {
-    typealias Body = APIFollowCommunity
-    typealias Response = APICommunityResponse
+struct FollowCommunityRequest: ApiPostRequest {
+    typealias Body = ApiFollowCommunity
+    typealias Response = ApiCommunityResponse
 
     let path = "/community/follow"
     let body: Body?

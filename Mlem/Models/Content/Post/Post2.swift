@@ -9,10 +9,10 @@ import SwiftUI
 
 @Observable
 final class Post2: Post2Providing, NewContentModel {
-    typealias APIType = APIPostView
+    typealias ApiType = ApiPostView
     var post2: Post2 { self }
     
-    var source: any APISource
+    var source: any ApiSource
     
     let post1: Post1
     
@@ -27,7 +27,7 @@ final class Post2: Post2Providing, NewContentModel {
     var isRead: Bool = false
     var myVote: ScoringOperation = .none
     
-    init(source: any APISource, from post: APIPostView) {
+    init(source: any ApiSource, from post: ApiPostView) {
         self.source = source
         
         self.post1 = source.caches.post1.createModel(source: source, for: post.post)
@@ -36,7 +36,7 @@ final class Post2: Post2Providing, NewContentModel {
         update(with: post)
     }
     
-    func update(with post: APIPostView) {
+    func update(with post: ApiPostView) {
         commentCount = post.counts.comments
         upvoteCount = post.counts.upvotes
         downvoteCount = post.counts.downvotes

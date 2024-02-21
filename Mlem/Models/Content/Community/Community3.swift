@@ -10,10 +10,10 @@ import SwiftUI
 
 @Observable
 final class Community3: Community3Providing, NewContentModel {
-    typealias APIType = APIGetCommunityResponse
+    typealias ApiType = ApiGetCommunityResponse
     var community3: Community3 { self }
     
-    let source: any APISource
+    let source: any ApiSource
     
     let community2: Community2
     
@@ -21,7 +21,7 @@ final class Community3: Community3Providing, NewContentModel {
     var moderators: [Person1] = .init()
     var discussionLanguages: [Int] = .init()
     
-    required init(source: any APISource, from response: APIGetCommunityResponse) {
+    required init(source: any ApiSource, from response: ApiGetCommunityResponse) {
         self.source = source
         
         if let site = response.site {
@@ -34,7 +34,7 @@ final class Community3: Community3Providing, NewContentModel {
         update(with: response)
     }
     
-    func update(with response: APIGetCommunityResponse) {
+    func update(with response: ApiGetCommunityResponse) {
         moderators = response.moderators.map { moderatorView in
             source.caches.person1.createModel(source: source, for: moderatorView.moderator)
         }

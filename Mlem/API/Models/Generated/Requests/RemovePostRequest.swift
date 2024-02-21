@@ -2,16 +2,16 @@
 //  RemovePostRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct RemovePostRequest: APIPostRequest {
-    typealias Body = APIRemovePost
-    typealias Response = APIPostResponse
+struct RemovePostRequest: ApiPostRequest {
+    typealias Body = ApiRemovePost
+    typealias Response = ApiPostResponse
 
     let path = "/post/remove"
     let body: Body?

@@ -1,5 +1,5 @@
 //
-//  APIListingType+ToFeedType.swift
+//  ApiListingType+ToFeedType.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-02-18.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension APIListingType {
+extension ApiListingType {
     var toFeedType: FeedType {
         switch self {
         case .all:

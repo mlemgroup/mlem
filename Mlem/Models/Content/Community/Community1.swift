@@ -10,9 +10,9 @@ import SwiftUI
 
 @Observable
 final class Community1: Community1Providing, NewContentModel {
-    typealias APIType = APICommunity
+    typealias ApiType = ApiCommunity
     var community1: Community1 { self }
-    var source: any APISource
+    var source: any ApiSource
 
     let actorId: URL
     let id: Int
@@ -31,10 +31,10 @@ final class Community1: Community1Providing, NewContentModel {
     var hidden: Bool = false
     var onlyModeratorsCanPost: Bool = false
     
-    // This isn't included in the APICommunity - it's included in APICommunityView, but defined here to maintain similarity with User models. User models don't have the `blocked` property defined in any of the API types, annoyingly, so we instead request a list of all blocked users and cache the result in `MyUserStub`.
+    // This isn't included in the ApiCommunity - it's included in ApiCommunityView, but defined here to maintain similarity with User models. User models don't have the `blocked` property defined in any of the Api types, annoyingly, so we instead request a list of all blocked users and cache the result in `MyUserStub`.
     var blocked: Bool = false
     
-    required init(source: any APISource, from community: APICommunity) {
+    required init(source: any ApiSource, from community: ApiCommunity) {
         self.source = source
         
         self.actorId = community.actorId
@@ -45,7 +45,7 @@ final class Community1: Community1Providing, NewContentModel {
         update(with: community)
     }
     
-    func update(with community: APICommunity) {
+    func update(with community: ApiCommunity) {
         updatedDate = community.updated
         displayName = community.title
         description = community.description

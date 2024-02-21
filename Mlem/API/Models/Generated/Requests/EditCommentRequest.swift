@@ -2,16 +2,16 @@
 //  EditCommentRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct EditCommentRequest: APIPutRequest {
-    typealias Body = APIEditComment
-    typealias Response = APICommentResponse
+struct EditCommentRequest: ApiPutRequest {
+    typealias Body = ApiEditComment
+    typealias Response = ApiCommentResponse
 
     let path = "/comment"
     let body: Body?

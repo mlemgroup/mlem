@@ -2,16 +2,16 @@
 //  PasswordChangeAfterResetRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct PasswordChangeAfterResetRequest: APIPostRequest {
-    typealias Body = APIPasswordChangeAfterReset
-    typealias Response = APISuccessResponse
+struct PasswordChangeAfterResetRequest: ApiPostRequest {
+    typealias Body = ApiPasswordChangeAfterReset
+    typealias Response = ApiSuccessResponse
 
     let path = "/user/password_change"
     let body: Body?

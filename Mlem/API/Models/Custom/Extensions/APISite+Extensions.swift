@@ -1,5 +1,5 @@
 //
-//  APISite+Extensions.swift
+//  ApiSite+Extensions.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-02-19.
@@ -7,4 +7,4 @@
 
 import Foundation
 
-extension APISite: ActorIdentifiable {}
+extension ApiSite: ActorIdentifiable {}

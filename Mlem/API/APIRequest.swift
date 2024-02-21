@@ -1,5 +1,5 @@
 //
-//  APIRequest.swift
+//  ApiRequest.swift
 //  Mlem
 //
 //  Created by Nicholas Lawson on 06/06/2023.
@@ -7,14 +7,14 @@
 
 import Foundation
 
-// MARK: - APIRequest
+// MARK: - ApiRequest
 
-enum APIRequestError: Error {
+enum ApiRequestError: Error {
     case authenticationRequired
     case undefinedSession
 }
 
-protocol APIRequest {
+protocol ApiRequest {
     associatedtype Response: Decodable
     var path: String { get }
     var headers: [String: String] { get }
@@ -22,7 +22,7 @@ protocol APIRequest {
     func endpoint(base: URL) -> URL
 }
 
-extension APIRequest {
+extension ApiRequest {
     var headers: [String: String] { defaultHeaders }
 
     var defaultHeaders: [String: String] {
@@ -30,20 +30,20 @@ extension APIRequest {
     }
 }
 
-// MARK: - APIGetRequest
+// MARK: - ApiGetRequest
 
-protocol APIGetRequest: APIRequest {
+protocol ApiGetRequest: ApiRequest {
     var queryItems: [URLQueryItem] { get }
 }
 
-extension APIRequest {
+extension ApiRequest {
     func endpoint(base: URL) -> URL {
         base
             .appending(path: path)
     }
 }
 
-extension APIGetRequest {
+extension ApiGetRequest {
     func endpoint(base: URL) -> URL {
         base
             .appending(path: path)
@@ -51,17 +51,17 @@ extension APIGetRequest {
     }
 }
 
-// MARK: - APIRequestBodyProviding
+// MARK: - ApiRequestBodyProviding
 
-protocol APIRequestBodyProviding: APIRequest {
+protocol ApiRequestBodyProviding: ApiRequest {
     associatedtype Body: Encodable
     var body: Body? { get }
 }
 
-// MARK: - APIPostRequest
+// MARK: - ApiPostRequest
 
-protocol APIPostRequest: APIRequestBodyProviding {}
+protocol ApiPostRequest: ApiRequestBodyProviding {}
 
-// MARK: - APIPutRequest
+// MARK: - ApiPutRequest
 
-protocol APIPutRequest: APIRequestBodyProviding {}
+protocol ApiPutRequest: ApiRequestBodyProviding {}

@@ -12,7 +12,7 @@ protocol SidebarEntry {
     var sidebarLabel: String? { get }
     var sidebarIcon: String? { get }
     
-    func contains(community: APICommunity, isSubscribed: Bool) -> Bool
+    func contains(community: ApiCommunity, isSubscribed: Bool) -> Bool
 }
 
 // Filters no communities, used for top entry in sidebar
@@ -20,7 +20,7 @@ struct EmptySidebarEntry: SidebarEntry {
     var sidebarLabel: String?
     var sidebarIcon: String?
 
-    func contains(community: APICommunity, isSubscribed: Bool) -> Bool {
+    func contains(community: ApiCommunity, isSubscribed: Bool) -> Bool {
         false
     }
 }
@@ -31,7 +31,7 @@ struct RegexCommunityNameSidebarEntry: SidebarEntry {
     var sidebarLabel: String?
     var sidebarIcon: String?
 
-    func contains(community: APICommunity, isSubscribed: Bool) -> Bool {
+    func contains(community: ApiCommunity, isSubscribed: Bool) -> Bool {
         // Ignore unsubscribed subs from main list
         if !isSubscribed {
             return false
@@ -48,8 +48,8 @@ struct FavoritesSidebarEntry: SidebarEntry {
     var sidebarIcon: String?
 
     @MainActor
-    func contains(community: APICommunity, isSubscribed: Bool) -> Bool {
-        return false
+    func contains(community: ApiCommunity, isSubscribed: Bool) -> Bool {
+        false
         // favoriteCommunitiesTracker.isFavorited(community)
     }
 }

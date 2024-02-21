@@ -2,15 +2,15 @@
 //  GetReportCountRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct GetReportCountRequest: APIGetRequest {
-    typealias Response = APIGetReportCountResponse
+struct GetReportCountRequest: ApiGetRequest {
+    typealias Response = ApiGetReportCountResponse
 
     let path = "/user/report_count"
     let queryItems: [URLQueryItem]

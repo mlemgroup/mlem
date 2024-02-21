@@ -11,7 +11,7 @@ import SwiftUI
 @Observable
 final class Instance1: Instance1Providing, CoreModel {
     static var cache: CoreContentCache<Instance1> = .init()
-    typealias APIType = APISite
+    typealias ApiType = ApiSite
     var instance1: Instance1 { self }
     
     let stub: InstanceStub
@@ -26,7 +26,7 @@ final class Instance1: Instance1Providing, CoreModel {
     var banner: URL?
     var lastRefreshDate: Date = .distantPast
 
-    required init(from site: APISite) {
+    required init(from site: ApiSite) {
         self.id = site.id
         self.creationDate = site.published
         self.publicKey = site.publicKey
@@ -34,7 +34,7 @@ final class Instance1: Instance1Providing, CoreModel {
         update(with: site)
     }
 
-    func update(with site: APISite) {
+    func update(with site: ApiSite) {
         displayName = site.name
         description = site.sidebar
         avatar = site.icon

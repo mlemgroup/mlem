@@ -2,23 +2,23 @@
 //  ListRegistrationApplicationsRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct ListRegistrationApplicationsRequest: APIGetRequest {
-    typealias Response = APIListRegistrationApplicationsResponse
+struct ListRegistrationApplicationsRequest: ApiGetRequest {
+    typealias Response = ApiListRegistrationApplicationsResponse
 
     let path = "/admin/registration_application/list"
     let queryItems: [URLQueryItem]
 
     init(
-        unreadOnly: Bool?,
-        page: Int?,
-        limit: Int?
+      unreadOnly: Bool?,
+      page: Int?,
+      limit: Int?
     ) {
         self.queryItems = [
             .init(name: "unread_only", value: "\(unreadOnly)"),

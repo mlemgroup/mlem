@@ -1,5 +1,5 @@
 //
-//  APIErrorResponse.swift
+//  ApiErrorResponse.swift
 //  Mlem
 //
 //  Created by Nicholas Lawson on 06/06/2023.
@@ -9,7 +9,7 @@ import Foundation
 
 // TODO: 0.19 support add all the error types (https://github.com/LemmyNet/lemmy-js-client/blob/b2edfeeaffd189a51150362cc8ead03c65ee2652/src/types/LemmyErrorType.ts)
 
-struct APIErrorResponse: Decodable {
+struct ApiErrorResponse: Decodable {
     let error: String
 }
 
@@ -37,7 +37,7 @@ private let registrationErrors = [
     "email_not_verified"
 ]
 
-extension APIErrorResponse {
+extension ApiErrorResponse {
     var requires2FA: Bool { possible2FAErrors.contains(error) }
     var isNotLoggedIn: Bool { possibleAuthenticationErrors.contains(error) }
     var userRegistrationPending: Bool { registrationErrors.contains(error) }

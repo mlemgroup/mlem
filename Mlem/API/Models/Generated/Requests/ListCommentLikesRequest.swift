@@ -2,15 +2,15 @@
 //  ListCommentLikesRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct ListCommentLikesRequest: APIGetRequest {
-    typealias Response = APIListCommentLikesResponse
+struct ListCommentLikesRequest: ApiGetRequest {
+    typealias Response = ApiListCommentLikesResponse
 
     let path = "/comment/like/list"
     let queryItems: [URLQueryItem]

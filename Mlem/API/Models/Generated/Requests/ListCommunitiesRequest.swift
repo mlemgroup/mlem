@@ -2,22 +2,22 @@
 //  ListCommunitiesRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct ListCommunitiesRequest: APIGetRequest {
-    typealias Response = APIListCommunitiesResponse
+struct ListCommunitiesRequest: ApiGetRequest {
+    typealias Response = ApiListCommunitiesResponse
 
     let path = "/community/list"
     let queryItems: [URLQueryItem]
 
     init(
-        type_: APIListingType?,
-        sort: APISortType?,
+        type_: ApiListingType?,
+        sort: ApiSortType?,
         showNsfw: Bool?,
         page: Int?,
         limit: Int?

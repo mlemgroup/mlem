@@ -2,15 +2,15 @@
 //  GetModlogRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct GetModlogRequest: APIGetRequest {
-    typealias Response = APIGetModlogResponse
+struct GetModlogRequest: ApiGetRequest {
+    typealias Response = ApiGetModlogResponse
 
     let path = "/modlog"
     let queryItems: [URLQueryItem]
@@ -20,7 +20,7 @@ struct GetModlogRequest: APIGetRequest {
         communityId: Int?,
         page: Int?,
         limit: Int?,
-        type_: APIModlogActionType?,
+        type_: ApiModlogActionType?,
         otherPersonId: Int?
     ) {
         self.queryItems = [

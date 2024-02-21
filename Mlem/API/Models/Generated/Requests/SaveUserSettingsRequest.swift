@@ -2,16 +2,16 @@
 //  SaveUserSettingsRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct SaveUserSettingsRequest: APIPutRequest {
-    typealias Body = APISaveUserSettings
-    typealias Response = APISuccessResponse
+struct SaveUserSettingsRequest: ApiPutRequest {
+    typealias Body = ApiSaveUserSettings
+    typealias Response = ApiSuccessResponse
 
     let path = "/user/save_user_settings"
     let body: Body?
@@ -22,8 +22,8 @@ struct SaveUserSettingsRequest: APIPutRequest {
         autoExpand: Bool?,
         showScores: Bool?,
         theme: String?,
-        defaultSortType: APISortType?,
-        defaultListingType: APIListingType?,
+        defaultSortType: ApiSortType?,
+        defaultListingType: ApiListingType?,
         interfaceLanguage: String?,
         avatar: URL?,
         banner: URL?,
@@ -39,7 +39,7 @@ struct SaveUserSettingsRequest: APIPutRequest {
         discussionLanguages: [Int]?,
         openLinksInNewTab: Bool?,
         infiniteScrollEnabled: Bool?,
-        postListingMode: APIPostListingMode?,
+        postListingMode: ApiPostListingMode?,
         enableKeyboardNavigation: Bool?,
         enableAnimatedImages: Bool?,
         collapseBotComments: Bool?,

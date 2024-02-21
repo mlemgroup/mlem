@@ -2,16 +2,16 @@
 //  SaveCommentRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-20
+//  Created by Eric Andrews on 2024-02-21
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
 
 import Foundation
 
-struct SaveCommentRequest: APIPutRequest {
-    typealias Body = APISaveComment
-    typealias Response = APICommentResponse
+struct SaveCommentRequest: ApiPutRequest {
+    typealias Body = ApiSaveComment
+    typealias Response = ApiCommentResponse
 
     let path = "/comment/save"
     let body: Body?
