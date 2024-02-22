@@ -5,6 +5,7 @@
 //  Created by Eric Andrews on 2024-01-07.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
 
@@ -22,6 +23,8 @@ struct FeedsView: View {
 }
 
 struct MinimalPostFeedView: View {
+    @Dependency(\.errorHandler) var errorHandler
+    
     @State var postTracker: StandardPostTracker?
     
     init(appState: AppState) {
@@ -51,6 +54,13 @@ struct MinimalPostFeedView: View {
                 .fancyTabScrollCompatible()
                 .task {
                     await postTracker?.loadMoreItems()
+                }
+                .refreshable {
+                    do {
+                        try await postTracker?.refresh(clearBeforeRefresh: false)
+                    } catch {
+                        errorHandler.handle(error)
+                    }
                 }
         }
     }
