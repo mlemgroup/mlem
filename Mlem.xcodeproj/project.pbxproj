@@ -440,7 +440,7 @@
 		CD4D58BB2B86DA7D00B82964 /* AccountListView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58BA2B86DA7D00B82964 /* AccountListView+Logic.swift */; };
 		CD4D58BD2B86DABD00B82964 /* View+FancyTabScrollCompatible.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58BC2B86DABD00B82964 /* View+FancyTabScrollCompatible.swift */; };
 		CD4D58C02B86DBD100B82964 /* DefaultAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58BF2B86DBD100B82964 /* DefaultAvatarView.swift */; };
-		CD4D58C42B86DC6000B82964 /* Array+Prepend.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58C32B86DC6000B82964 /* Array+Prepend.swift */; };
+		CD4D58C42B86DC6000B82964 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58C32B86DC6000B82964 /* Array+Extensions.swift */; };
 		CD4D58C82B86DCED00B82964 /* AvatarType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58C72B86DCED00B82964 /* AvatarType.swift */; };
 		CD4D58CB2B86DD3D00B82964 /* AssociatedIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58CA2B86DD3D00B82964 /* AssociatedIcon.swift */; };
 		CD4D58CF2B86DDEC00B82964 /* AccountSortMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58CE2B86DDEC00B82964 /* AccountSortMode.swift */; };
@@ -458,8 +458,29 @@
 		CD4D58E92B86E5F900B82964 /* PostType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58E82B86E5F900B82964 /* PostType.swift */; };
 		CD4D58EB2B86E63300B82964 /* AssociatedColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58EA2B86E63300B82964 /* AssociatedColor.swift */; };
 		CD4D58ED2B86E6BB00B82964 /* ApiPersonViewLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58EC2B86E6BB00B82964 /* ApiPersonViewLike.swift */; };
-		CD4D58EF2B86E6F100B82964 /* URL+Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58EE2B86E6F100B82964 /* URL+Identifiable.swift */; };
+		CD4D58EF2B86E6F100B82964 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58EE2B86E6F100B82964 /* URL+Extensions.swift */; };
 		CD4D58F12B86E71A00B82964 /* String+Contains.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58F02B86E71A00B82964 /* String+Contains.swift */; };
+		CD4D58F42B87B04200B82964 /* CoreFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58F32B87B04200B82964 /* CoreFeedLoader.swift */; };
+		CD4D58F62B87B0B300B82964 /* FeedLoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58F52B87B0B300B82964 /* FeedLoadingState.swift */; };
+		CD4D58F82B87B0D100B82964 /* InternetSpeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58F72B87B0D100B82964 /* InternetSpeed.swift */; };
+		CD4D58FA2B87B10600B82964 /* StandardFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58F92B87B10600B82964 /* StandardFeedLoader.swift */; };
+		CD4D58FD2B87B14D00B82964 /* ContextualError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58FC2B87B14D00B82964 /* ContextualError.swift */; };
+		CD4D58FF2B87B15700B82964 /* EquatableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58FE2B87B15700B82964 /* EquatableError.swift */; };
+		CD4D59012B87B16400B82964 /* ErrorAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59002B87B16400B82964 /* ErrorAlert.swift */; };
+		CD4D59032B87B17000B82964 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59022B87B17000B82964 /* ErrorHandler.swift */; };
+		CD4D59062B87B1A400B82964 /* Notifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59052B87B1A400B82964 /* Notifiable.swift */; };
+		CD4D59082B87B1B400B82964 /* NotificationDisplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59072B87B1B400B82964 /* NotificationDisplayer.swift */; };
+		CD4D590A2B87B1DC00B82964 /* NotificationMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59092B87B1DC00B82964 /* NotificationMessage.swift */; };
+		CD4D590C2B87B1E700B82964 /* Notifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D590B2B87B1E700B82964 /* Notifier.swift */; };
+		CD4D590E2B87B23F00B82964 /* Error+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D590D2B87B23F00B82964 /* Error+Extensions.swift */; };
+		CD4D59102B87B31200B82964 /* Notifier+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D590F2B87B31200B82964 /* Notifier+Dependency.swift */; };
+		CD4D59142B87B36B00B82964 /* InternetConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59132B87B36B00B82964 /* InternetConnectionManager.swift */; };
+		CD4D59162B87B38C00B82964 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */; };
+		CD4D59182B87B3B000B82964 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59172B87B3B000B82964 /* UIViewController+Extensions.swift */; };
+		CD4D591A2B87B3D100B82964 /* ErrorHandler+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59192B87B3D100B82964 /* ErrorHandler+Dependency.swift */; };
+		CD4D591C2B87B43D00B82964 /* Task+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591B2B87B43D00B82964 /* Task+Extensions.swift */; };
+		CD4D591E2B87B4C900B82964 /* StandardPostFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591D2B87B4C900B82964 /* StandardPostFeedLoader.swift */; };
+		CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591F2B87B63300B82964 /* SettingsOptions.swift */; };
 		CDB7AFC22B82FAE60013E0F0 /* GetPostsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7AFC12B82FAE60013E0F0 /* GetPostsRequest.swift */; };
 		CDB7AFC42B82FB210013E0F0 /* APIListingType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7AFC32B82FB210013E0F0 /* APIListingType+Extensions.swift */; };
 		CDB7BEBA2B83C29F0013E0F0 /* APIPost+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7BEB92B83C29F0013E0F0 /* APIPost+Extensions.swift */; };
@@ -935,7 +956,7 @@
 		CD4D58BA2B86DA7D00B82964 /* AccountListView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountListView+Logic.swift"; sourceTree = "<group>"; };
 		CD4D58BC2B86DABD00B82964 /* View+FancyTabScrollCompatible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+FancyTabScrollCompatible.swift"; sourceTree = "<group>"; };
 		CD4D58BF2B86DBD100B82964 /* DefaultAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAvatarView.swift; sourceTree = "<group>"; };
-		CD4D58C32B86DC6000B82964 /* Array+Prepend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Prepend.swift"; sourceTree = "<group>"; };
+		CD4D58C32B86DC6000B82964 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		CD4D58C72B86DCED00B82964 /* AvatarType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarType.swift; sourceTree = "<group>"; };
 		CD4D58CA2B86DD3D00B82964 /* AssociatedIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssociatedIcon.swift; sourceTree = "<group>"; };
 		CD4D58CE2B86DDEC00B82964 /* AccountSortMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AccountSortMode.swift; path = Mlem/App/Protocols/AccountSortMode.swift; sourceTree = SOURCE_ROOT; };
@@ -953,8 +974,29 @@
 		CD4D58E82B86E5F900B82964 /* PostType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostType.swift; sourceTree = "<group>"; };
 		CD4D58EA2B86E63300B82964 /* AssociatedColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssociatedColor.swift; sourceTree = "<group>"; };
 		CD4D58EC2B86E6BB00B82964 /* ApiPersonViewLike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiPersonViewLike.swift; sourceTree = "<group>"; };
-		CD4D58EE2B86E6F100B82964 /* URL+Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Identifiable.swift"; sourceTree = "<group>"; };
+		CD4D58EE2B86E6F100B82964 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		CD4D58F02B86E71A00B82964 /* String+Contains.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Contains.swift"; sourceTree = "<group>"; };
+		CD4D58F32B87B04200B82964 /* CoreFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreFeedLoader.swift; sourceTree = "<group>"; };
+		CD4D58F52B87B0B300B82964 /* FeedLoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoadingState.swift; sourceTree = "<group>"; };
+		CD4D58F72B87B0D100B82964 /* InternetSpeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetSpeed.swift; sourceTree = "<group>"; };
+		CD4D58F92B87B10600B82964 /* StandardFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardFeedLoader.swift; sourceTree = "<group>"; };
+		CD4D58FC2B87B14D00B82964 /* ContextualError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextualError.swift; sourceTree = "<group>"; };
+		CD4D58FE2B87B15700B82964 /* EquatableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquatableError.swift; sourceTree = "<group>"; };
+		CD4D59002B87B16400B82964 /* ErrorAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorAlert.swift; sourceTree = "<group>"; };
+		CD4D59022B87B17000B82964 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
+		CD4D59052B87B1A400B82964 /* Notifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifiable.swift; sourceTree = "<group>"; };
+		CD4D59072B87B1B400B82964 /* NotificationDisplayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDisplayer.swift; sourceTree = "<group>"; };
+		CD4D59092B87B1DC00B82964 /* NotificationMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationMessage.swift; sourceTree = "<group>"; };
+		CD4D590B2B87B1E700B82964 /* Notifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifier.swift; sourceTree = "<group>"; };
+		CD4D590D2B87B23F00B82964 /* Error+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Extensions.swift"; sourceTree = "<group>"; };
+		CD4D590F2B87B31200B82964 /* Notifier+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifier+Dependency.swift"; sourceTree = "<group>"; };
+		CD4D59132B87B36B00B82964 /* InternetConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetConnectionManager.swift; sourceTree = "<group>"; };
+		CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
+		CD4D59172B87B3B000B82964 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		CD4D59192B87B3D100B82964 /* ErrorHandler+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ErrorHandler+Dependency.swift"; sourceTree = "<group>"; };
+		CD4D591B2B87B43D00B82964 /* Task+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+Extensions.swift"; sourceTree = "<group>"; };
+		CD4D591D2B87B4C900B82964 /* StandardPostFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardPostFeedLoader.swift; sourceTree = "<group>"; };
+		CD4D591F2B87B63300B82964 /* SettingsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOptions.swift; sourceTree = "<group>"; };
 		CDB7AFC12B82FAE60013E0F0 /* GetPostsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPostsRequest.swift; sourceTree = "<group>"; };
 		CDB7AFC32B82FB210013E0F0 /* APIListingType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIListingType+Extensions.swift"; sourceTree = "<group>"; };
 		CDB7BEB92B83C29F0013E0F0 /* APIPost+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIPost+Extensions.swift"; sourceTree = "<group>"; };
@@ -1601,6 +1643,9 @@
 		CD4D583B2B867BB300B82964 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				CD4D59112B87B35D00B82964 /* Logic */,
+				CD4D59042B87B19100B82964 /* Notifier */,
+				CD4D58FB2B87B13B00B82964 /* Error Handling */,
 				CD4D58C92B86DD3200B82964 /* Protocols */,
 				CD4D58C62B86DCE500B82964 /* Enums */,
 				CD4D58C22B86DC5800B82964 /* Extensions */,
@@ -1641,6 +1686,8 @@
 			children = (
 				CD4D58B42B86BFFA00B82964 /* PersistenceRepository+Dependency.swift */,
 				CD4D58732B86B4AA00B82964 /* AccountsTracker+Dependency.swift */,
+				CD4D590F2B87B31200B82964 /* Notifier+Dependency.swift */,
+				CD4D59192B87B3D100B82964 /* ErrorHandler+Dependency.swift */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -1675,9 +1722,8 @@
 		CD4D589D2B86BC8300B82964 /* FeedLoaders */ = {
 			isa = PBXGroup;
 			children = (
-				CD4D58D22B86DEB000B82964 /* FeedType.swift */,
-				CD4D58E02B86E4D700B82964 /* FeedLoaderItem.swift */,
-				CD4D58E22B86E4F400B82964 /* FeedLoaderSort.swift */,
+				CD4D58F22B87B03A00B82964 /* Generics */,
+				CD4D591D2B87B4C900B82964 /* StandardPostFeedLoader.swift */,
 			);
 			path = FeedLoaders;
 			sourceTree = "<group>";
@@ -1714,11 +1760,15 @@
 		CD4D58C22B86DC5800B82964 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				CD4D58C32B86DC6000B82964 /* Array+Prepend.swift */,
+				CD4D58C32B86DC6000B82964 /* Array+Extensions.swift */,
 				CD4D58D02B86DE0F00B82964 /* JSONDecoder+Default.swift */,
 				CD4D58E42B86E58200B82964 /* String+ParseLinks.swift */,
-				CD4D58EE2B86E6F100B82964 /* URL+Identifiable.swift */,
+				CD4D58EE2B86E6F100B82964 /* URL+Extensions.swift */,
 				CD4D58F02B86E71A00B82964 /* String+Contains.swift */,
+				CD4D590D2B87B23F00B82964 /* Error+Extensions.swift */,
+				CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */,
+				CD4D59172B87B3B000B82964 /* UIViewController+Extensions.swift */,
+				CD4D591B2B87B43D00B82964 /* Task+Extensions.swift */,
 			);
 			name = Extensions;
 			path = Utility/Extensions;
@@ -1754,6 +1804,8 @@
 			isa = PBXGroup;
 			children = (
 				CD4D58CE2B86DDEC00B82964 /* AccountSortMode.swift */,
+				CD4D58F72B87B0D100B82964 /* InternetSpeed.swift */,
+				CD4D591F2B87B63300B82964 /* SettingsOptions.swift */,
 			);
 			path = Options;
 			sourceTree = "<group>";
@@ -1763,6 +1815,57 @@
 			children = (
 			);
 			path = Accounts;
+			sourceTree = "<group>";
+		};
+		CD4D58F22B87B03A00B82964 /* Generics */ = {
+			isa = PBXGroup;
+			children = (
+				CD4D58D22B86DEB000B82964 /* FeedType.swift */,
+				CD4D58E22B86E4F400B82964 /* FeedLoaderSort.swift */,
+				CD4D58E02B86E4D700B82964 /* FeedLoaderItem.swift */,
+				CD4D58F32B87B04200B82964 /* CoreFeedLoader.swift */,
+				CD4D58F52B87B0B300B82964 /* FeedLoadingState.swift */,
+				CD4D58F92B87B10600B82964 /* StandardFeedLoader.swift */,
+			);
+			path = Generics;
+			sourceTree = "<group>";
+		};
+		CD4D58FB2B87B13B00B82964 /* Error Handling */ = {
+			isa = PBXGroup;
+			children = (
+				CD4D58FC2B87B14D00B82964 /* ContextualError.swift */,
+				CD4D58FE2B87B15700B82964 /* EquatableError.swift */,
+				CD4D59002B87B16400B82964 /* ErrorAlert.swift */,
+				CD4D59022B87B17000B82964 /* ErrorHandler.swift */,
+			);
+			path = "Error Handling";
+			sourceTree = "<group>";
+		};
+		CD4D59042B87B19100B82964 /* Notifier */ = {
+			isa = PBXGroup;
+			children = (
+				CD4D59052B87B1A400B82964 /* Notifiable.swift */,
+				CD4D59072B87B1B400B82964 /* NotificationDisplayer.swift */,
+				CD4D59092B87B1DC00B82964 /* NotificationMessage.swift */,
+				CD4D590B2B87B1E700B82964 /* Notifier.swift */,
+			);
+			path = Notifier;
+			sourceTree = "<group>";
+		};
+		CD4D59112B87B35D00B82964 /* Logic */ = {
+			isa = PBXGroup;
+			children = (
+				CD4D59122B87B36300B82964 /* Networking */,
+			);
+			path = Logic;
+			sourceTree = "<group>";
+		};
+		CD4D59122B87B36300B82964 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				CD4D59132B87B36B00B82964 /* InternetConnectionManager.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 		CDB7AFC02B82FADC0013E0F0 /* Custom */ = {
@@ -2048,6 +2151,7 @@
 				03AFBE982B6E630600F01F3C /* Community1.swift in Sources */,
 				CD4D579D2B86772400B82964 /* ApiPersonBlockView.swift in Sources */,
 				CD4D580A2B86772500B82964 /* ApiModRemoveCommentView.swift in Sources */,
+				CD4D590C2B87B1E700B82964 /* Notifier.swift in Sources */,
 				03E1E0622B7822610009DF9F /* Person3.swift in Sources */,
 				CD4D56ED2B86772400B82964 /* ListCommentLikesRequest.swift in Sources */,
 				CD4D58D82B86E0D100B82964 /* View+CustomBadge.swift in Sources */,
@@ -2062,7 +2166,7 @@
 				032145742B7E77AB001AE07E /* CoreModel.swift in Sources */,
 				CD4D57CA2B86772500B82964 /* ApiCreateComment.swift in Sources */,
 				CD4D58312B86772500B82964 /* ApiPasswordReset.swift in Sources */,
-				CD4D58C42B86DC6000B82964 /* Array+Prepend.swift in Sources */,
+				CD4D58C42B86DC6000B82964 /* Array+Extensions.swift in Sources */,
 				CD4D57CE2B86772500B82964 /* ApiDeleteCustomEmojiResponse.swift in Sources */,
 				CD4D57872B86772400B82964 /* ApiCommentResponse.swift in Sources */,
 				CD4D57762B86772400B82964 /* ApiLanguage.swift in Sources */,
@@ -2070,6 +2174,7 @@
 				CD4D57572B86772400B82964 /* ApiDeleteComment.swift in Sources */,
 				CD4D57832B86772400B82964 /* ApiCreateCustomEmoji.swift in Sources */,
 				032145562B7A691E001AE07E /* Community3Providing.swift in Sources */,
+				CD4D59102B87B31200B82964 /* Notifier+Dependency.swift in Sources */,
 				637218772A3A2AAD008C4816 /* ApiRequest.swift in Sources */,
 				CD4D57932B86772400B82964 /* ApiPurgeComment.swift in Sources */,
 				CD4D589B2B86BBF900B82964 /* ActorIdentifiable.swift in Sources */,
@@ -2088,6 +2193,7 @@
 				030E7ED62B7F946100E9A1AD /* PostStub.swift in Sources */,
 				CD4D58322B86772500B82964 /* ApiCommunityJoinResponse.swift in Sources */,
 				CD4D574D2B86772400B82964 /* ApiBanPersonResponse.swift in Sources */,
+				CD4D59062B87B1A400B82964 /* Notifiable.swift in Sources */,
 				CD4D57B82B86772400B82964 /* ApiCreateCommunity.swift in Sources */,
 				CD4D57AE2B86772400B82964 /* ApiModlogListParams.swift in Sources */,
 				CD4D58E72B86E5B500B82964 /* LinkType.swift in Sources */,
@@ -2112,6 +2218,7 @@
 				CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */,
 				CD4D58DD2B86E2ED00B82964 /* BanType.swift in Sources */,
 				032145502B7A6463001AE07E /* Person3Providing.swift in Sources */,
+				CD4D58FF2B87B15700B82964 /* EquatableError.swift in Sources */,
 				CD4D57AF2B86772400B82964 /* ApiListPrivateMessageReportsResponse.swift in Sources */,
 				CD4D57242B86772400B82964 /* DeleteCommentRequest.swift in Sources */,
 				CD4D57B62B86772400B82964 /* ApiDeletePost.swift in Sources */,
@@ -2152,6 +2259,7 @@
 				032145492B7A629D001AE07E /* Person2Providing.swift in Sources */,
 				CD4D58252B86772500B82964 /* ApiHideCommunity.swift in Sources */,
 				CDB7C3BA2B83C8B50013E0F0 /* APICommunityView+Extensions.swift in Sources */,
+				CD4D591C2B87B43D00B82964 /* Task+Extensions.swift in Sources */,
 				CD4D56FF2B86772400B82964 /* CreatePrivateMessageRequest.swift in Sources */,
 				CD4D57672B86772400B82964 /* ApiSearch.swift in Sources */,
 				CD4D570C2B86772400B82964 /* CreateCommunityRequest.swift in Sources */,
@@ -2186,14 +2294,16 @@
 				CD4D58EB2B86E63300B82964 /* AssociatedColor.swift in Sources */,
 				CD4D570B2B86772400B82964 /* ResolveObjectRequest.swift in Sources */,
 				CD4D57162B86772400B82964 /* TransferCommunityRequest.swift in Sources */,
-				CD4D58EF2B86E6F100B82964 /* URL+Identifiable.swift in Sources */,
+				CD4D58EF2B86E6F100B82964 /* URL+Extensions.swift in Sources */,
 				CD4D57B42B86772400B82964 /* ApiCustomEmojiView.swift in Sources */,
 				504ECBAE2AB45B2A006C0B96 /* LemmyURL.swift in Sources */,
+				CD4D591A2B87B3D100B82964 /* ErrorHandler+Dependency.swift in Sources */,
 				CD4D57C02B86772400B82964 /* ApiAdminPurgeCommentView.swift in Sources */,
 				CD4D57602B86772400B82964 /* ApiGetSiteMetadata.swift in Sources */,
 				CD4D58162B86772500B82964 /* ApiPostJoin.swift in Sources */,
 				CD4D576C2B86772400B82964 /* ApiCreatePostLike.swift in Sources */,
 				0321457F2B7F8971001AE07E /* CommunityOrPersonStub.swift in Sources */,
+				CD4D58FD2B87B14D00B82964 /* ContextualError.swift in Sources */,
 				03E1E04C2B7771710009DF9F /* Person1.swift in Sources */,
 				CD4D58C82B86DCED00B82964 /* AvatarType.swift in Sources */,
 				CD4D57902B86772400B82964 /* ApiGetUnreadCountResponse.swift in Sources */,
@@ -2207,6 +2317,7 @@
 				03AFBE9C2B6E676600F01F3C /* Community2.swift in Sources */,
 				030E7EDA2B7F97E400E9A1AD /* Post1.swift in Sources */,
 				CD4D575B2B86772400B82964 /* ApiPersonMentionResponse.swift in Sources */,
+				CD4D59142B87B36B00B82964 /* InternetConnectionManager.swift in Sources */,
 				030E7EDC2B7FADE100E9A1AD /* Post2Providing.swift in Sources */,
 				CD4D582F2B86772500B82964 /* ApiGetUnreadRegistrationApplicationCount.swift in Sources */,
 				CD4D57AA2B86772400B82964 /* ApiModTransferCommunity.swift in Sources */,
@@ -2218,6 +2329,7 @@
 				CD4D57712B86772400B82964 /* ApiPostResponse.swift in Sources */,
 				CD4D57892B86772400B82964 /* ApiComment.swift in Sources */,
 				032145792B7F866C001AE07E /* PersonStubProviding.swift in Sources */,
+				CD4D58FA2B87B10600B82964 /* StandardFeedLoader.swift in Sources */,
 				032145602B7A79E7001AE07E /* Instance3.swift in Sources */,
 				CD4D571A2B86772400B82964 /* CreateCommentRequest.swift in Sources */,
 				CD4D57822B86772400B82964 /* ApiUpdateTotpResponse.swift in Sources */,
@@ -2246,6 +2358,7 @@
 				CD4D574B2B86772400B82964 /* ApiRegistrationApplication.swift in Sources */,
 				CD4D57DC2B86772500B82964 /* ApiAdminPurgePostView.swift in Sources */,
 				CD4D575D2B86772400B82964 /* ApiCreatePrivateMessageReport.swift in Sources */,
+				CD4D59162B87B38C00B82964 /* UIApplication+Extensions.swift in Sources */,
 				CD4D57852B86772400B82964 /* ApiCommentAggregates.swift in Sources */,
 				CD4D57C72B86772400B82964 /* ApiPersonMention.swift in Sources */,
 				CD4D57BC2B86772400B82964 /* ApiPurgeCommunity.swift in Sources */,
@@ -2258,6 +2371,7 @@
 				CD4D57002B86772400B82964 /* DeletePostRequest.swift in Sources */,
 				CD4D57212B86772400B82964 /* EditSiteRequest.swift in Sources */,
 				CDB7D0342B83D48B0013E0F0 /* APISiteView+Extensions.swift in Sources */,
+				CD4D591E2B87B4C900B82964 /* StandardPostFeedLoader.swift in Sources */,
 				CD4D57D22B86772500B82964 /* ApiSaveComment.swift in Sources */,
 				030E7ED42B7F929900E9A1AD /* ContentStub.swift in Sources */,
 				CD4D581E2B86772500B82964 /* ApiCreateCommentReport.swift in Sources */,
@@ -2282,6 +2396,7 @@
 				CD4D58002B86772500B82964 /* ApiGetFederatedInstances.swift in Sources */,
 				CD4D582E2B86772500B82964 /* ApiLeaveAdmin.swift in Sources */,
 				CD4D56E92B86772400B82964 /* GetPrivateMessagesRequest.swift in Sources */,
+				CD4D59012B87B16400B82964 /* ErrorAlert.swift in Sources */,
 				CD4D570F2B86772400B82964 /* CreateCustomEmojiRequest.swift in Sources */,
 				CD4D57202B86772400B82964 /* ValidateAuthRequest.swift in Sources */,
 				6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */,
@@ -2309,8 +2424,10 @@
 				CD4D580B2B86772500B82964 /* ApiTransferCommunity.swift in Sources */,
 				CD4D56FA2B86772400B82964 /* GetPersonMentionsRequest.swift in Sources */,
 				CD4D56F82B86772400B82964 /* VerifyEmailRequest.swift in Sources */,
+				CD4D590A2B87B1DC00B82964 /* NotificationMessage.swift in Sources */,
 				03A1B3F92A8400DD00AB0DE0 /* APIContentViewProtocol.swift in Sources */,
 				CD4D58012B86772500B82964 /* ApiCreateCommentLike.swift in Sources */,
+				CD4D58F42B87B04200B82964 /* CoreFeedLoader.swift in Sources */,
 				CD4D58092B86772500B82964 /* ApiLocalUserView.swift in Sources */,
 				CD4D581D2B86772500B82964 /* ApiGetModlogResponse.swift in Sources */,
 				CD4D57E32B86772500B82964 /* ApiListPrivateMessageReports.swift in Sources */,
@@ -2327,6 +2444,7 @@
 				CD4D573C2B86772400B82964 /* CreatePostReportRequest.swift in Sources */,
 				CD4D57FC2B86772500B82964 /* ApiCaptchaResponse.swift in Sources */,
 				CD4D57422B86772400B82964 /* GetModlogRequest.swift in Sources */,
+				CD4D59082B87B1B400B82964 /* NotificationDisplayer.swift in Sources */,
 				CD4D57D52B86772500B82964 /* ApiGetComment.swift in Sources */,
 				B157E0C42A507B8000B02C8B /* Window.swift in Sources */,
 				CD4D57C92B86772500B82964 /* ApiAddAdmin.swift in Sources */,
@@ -2343,12 +2461,15 @@
 				CD4D56FD2B86772400B82964 /* LikeCommentRequest.swift in Sources */,
 				036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */,
 				CD4D57032B86772400B82964 /* AddAdminRequest.swift in Sources */,
+				CD4D59032B87B17000B82964 /* ErrorHandler.swift in Sources */,
 				CD4D575E2B86772400B82964 /* ApiModBanView.swift in Sources */,
 				CD4D57E22B86772500B82964 /* ApiBanPerson.swift in Sources */,
 				CD4D57A82B86772400B82964 /* ApiModBan.swift in Sources */,
+				CD4D58F62B87B0B300B82964 /* FeedLoadingState.swift in Sources */,
 				CD4D57222B86772400B82964 /* GetSiteRequest.swift in Sources */,
 				CD4D57182B86772400B82964 /* DeleteCustomEmojiRequest.swift in Sources */,
 				CD4D58042B86772500B82964 /* ApiGetReportCountResponse.swift in Sources */,
+				CD4D59182B87B3B000B82964 /* UIViewController+Extensions.swift in Sources */,
 				CD4D57612B86772400B82964 /* ApiGetSiteMetadataResponse.swift in Sources */,
 				CD4D57B12B86772400B82964 /* ApiGetReportCount.swift in Sources */,
 				CD4D57702B86772400B82964 /* ApiModBanFromCommunity.swift in Sources */,
@@ -2365,6 +2486,7 @@
 				03AFBE9E2B6E79D200F01F3C /* Community3.swift in Sources */,
 				50D61E5B2AA32B9400A926EC /* ApiSession.swift in Sources */,
 				CD4D57752B86772400B82964 /* ApiCustomEmojiResponse.swift in Sources */,
+				CD4D590E2B87B23F00B82964 /* Error+Extensions.swift in Sources */,
 				CD4D58222B86772500B82964 /* ApiGetCaptchaResponse.swift in Sources */,
 				CD4D574A2B86772400B82964 /* ApiFederatedInstances.swift in Sources */,
 				030E7EDE2B7FADFE00E9A1AD /* Post2.swift in Sources */,
@@ -2428,6 +2550,7 @@
 				CD4D57322B86772400B82964 /* PasswordResetRequest.swift in Sources */,
 				CDB7AFC22B82FAE60013E0F0 /* GetPostsRequest.swift in Sources */,
 				CD4D57DB2B86772500B82964 /* ApiPrivateMessage.swift in Sources */,
+				CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */,
 				CD4D58302B86772500B82964 /* ApiListPostLikes.swift in Sources */,
 				CD4D576A2B86772400B82964 /* ApiCommentReport.swift in Sources */,
 				CD4D57F12B86772500B82964 /* ApiGetReplies.swift in Sources */,
@@ -2437,6 +2560,7 @@
 				CD4D58172B86772500B82964 /* ApiPasswordChangeAfterReset.swift in Sources */,
 				CDB7D0382B83D5CE0013E0F0 /* APIPersonView+Extensions.swift in Sources */,
 				CD4D57232B86772400B82964 /* GenerateTotpSecretRequest.swift in Sources */,
+				CD4D58F82B87B0D100B82964 /* InternetSpeed.swift in Sources */,
 				CD4D57C32B86772400B82964 /* ApiGetPersonMentions.swift in Sources */,
 				CD4D58232B86772500B82964 /* ApiGetPersonDetailsResponse.swift in Sources */,
 				0321455C2B7A767C001AE07E /* Instance2.swift in Sources */,

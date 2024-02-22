@@ -9,11 +9,16 @@ import Dependencies
 import SwiftUI
 
 struct ProfileView: View {
+    @Environment(AppState.self) var appState
+    
     var body: some View {
-        content
+        NavigationStack {
+            content
+                .navigationTitle("Profile")
+        }
     }
     
     var content: some View {
-        Text("Profile")
+        Text(appState.myUser?.name ?? "No User!")
     }
 }

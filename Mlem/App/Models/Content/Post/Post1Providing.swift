@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol Post1Providing: PostStubProviding, TrackerItem, Identifiable {
+protocol Post1Providing: PostStubProviding, FeedLoadable, Identifiable {
     var post1: Post1 { get }
     
     var id: Int { get }
@@ -29,7 +29,7 @@ protocol Post1Providing: PostStubProviding, TrackerItem, Identifiable {
 
 extension Post1Providing {
     var uid: ContentModelIdentifier { .init(contentType: .post, contentId: id) }
-    func sortVal(sortType: TrackerSortType) -> TrackerSortVal {
+    func sortVal(sortType: FeedLoaderSortType) -> FeedLoaderSortVal {
         switch sortType {
         case .published:
             return .published(creationDate)

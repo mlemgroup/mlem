@@ -6,14 +6,14 @@
 //
 import Foundation
 
-enum TrackerSortType {
+enum FeedLoaderSortType {
     case published
 }
 
-enum TrackerSortVal: Comparable {
+enum FeedLoaderSortVal: Comparable {
     case published(Date)
     
-    static func typeEquals(lhs: TrackerSortVal, rhs: TrackerSortVal) -> Bool {
+    static func typeEquals(lhs: FeedLoaderSortVal, rhs: FeedLoaderSortVal) -> Bool {
         switch lhs {
         case .published:
             switch rhs {
@@ -23,7 +23,7 @@ enum TrackerSortVal: Comparable {
         }
     }
     
-    static func < (lhs: TrackerSortVal, rhs: TrackerSortVal) -> Bool {
+    static func < (lhs: FeedLoaderSortVal, rhs: FeedLoaderSortVal) -> Bool {
         guard typeEquals(lhs: lhs, rhs: rhs) else {
             assertionFailure("Compare called on trackersortvals with different types")
             return true
