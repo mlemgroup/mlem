@@ -18,9 +18,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     @EnvironmentObject private var quickLookState: ImageDetailSheetState
     
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
-    
-    @AppStorage("upvoteOnSave") var upvoteOnSave = false
-    
+        
     func body(content: Content) -> some View {
         content
             .navigationDestination(for: AppRoute.self) { route in

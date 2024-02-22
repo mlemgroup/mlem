@@ -54,20 +54,14 @@ final class Post2: Post2Providing, NewContentModel {
         
         if tasks.save == nil {
             isSaved = post.saved
-        } else {
-            print("Didn't update post save status - task is ongoing")
         }
         
         if tasks.save == nil && tasks.vote == nil {
             isRead = post.read
-        } else {
-            print("Didn't update post read status - task is ongoing")
         }
         
         if tasks.vote == nil {
             myVote = .init(rawValue: post.myVote ?? 0) ?? .none // TODO: this can be nicer
-        } else {
-            print("Didn't update post vote status - task is ongoing")
         }
         
         post1.update(with: post.post)

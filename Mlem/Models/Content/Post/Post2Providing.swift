@@ -67,13 +67,15 @@ extension Post2Providing {
         do {
             let response = try await source.api.voteOnPost(id: id, score: newVote)
             if !Task.isCancelled {
-                post2.tasks.vote = nil
-                DispatchQueue.main.async { self.update(with: response.postView) }
+                DispatchQueue.main.async {
+                    self.update(with: response.postView)
+                    self.post2.tasks.vote = nil
+                }
             } else {
-                print("\(newVote) task cancelled")
+                print("\(newVote) task cancelled (Request)")
             }
         } catch ApiClientError.cancelled {
-            print("\(newVote) task cancelled")
+            print("\(newVote) task cancelled (APIClient)")
             post2.tasks.vote = nil
         } catch {
             print("\(newVote) task error: \(error)")
@@ -102,17 +104,18 @@ extension Post2Providing {
             self.isSaved = newSavedStatus
             self.isRead = true
         }
-        
         do {
             let response = try await source.api.savePost(id: id, shouldSave: newSavedStatus)
             if !Task.isCancelled {
-                post2.tasks.save = nil
-                DispatchQueue.main.async { self.update(with: response.postView) }
+                DispatchQueue.main.async {
+                    self.update(with: response.postView)
+                    self.post2.tasks.save = nil
+                }
             } else {
-                print("Save task cancelled")
+                print("Save task cancelled (Request)")
             }
         } catch ApiClientError.cancelled {
-            print("Save task cancelled")
+            print("Save task cancelled (APIClient)")
             post2.tasks.save = nil
         } catch {
             print("Save task error: \(error)")
