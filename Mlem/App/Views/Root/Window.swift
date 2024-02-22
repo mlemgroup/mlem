@@ -8,8 +8,9 @@
 import Dependencies
 import SwiftUI
 
-/// This view
 struct Window: View {
+    @Dependency(\.errorHandler) var errorHandler
+    
     @State var appState: AppState = {
         @Dependency(\.accountsTracker) var accountsTracker
         return AppState(apiSource: accountsTracker.defaultAccount)
@@ -25,7 +26,7 @@ struct Window: View {
                 do {
                     appState.myInstance = try await appState.instanceStub?.upgrade()
                 } catch {
-                    print(error)
+                    errorHandler.handle(error)
                 }
             }
             .onAppear {

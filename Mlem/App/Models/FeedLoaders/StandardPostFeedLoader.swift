@@ -138,7 +138,6 @@ class StandardPostTracker: StandardTracker<Post2> {
         do {
             try await refresh(clearBeforeRefresh: true)
         } catch {
-            print(error)
             errorHandler.handle(error)
         }
     }
