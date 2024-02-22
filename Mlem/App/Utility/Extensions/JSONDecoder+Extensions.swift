@@ -1,5 +1,5 @@
 //
-//  JSONDecoder+Default.swift
+//  JSONDecoder+Extensions.swift
 //  Mlem
 //
 //  Created by Nicholas Lawson on 11/06/2023.

@@ -28,7 +28,7 @@ class CoreFeedLoader<Item: FeedLoadable> {
     /// This should be called as an .onAppear of every item in a feed that should support infinite scrolling
     func loadIfThreshold(_ item: Item) {
         if loadingState == .idle, item.uid == threshold || item.uid == fallbackThreshold {
-            // this is a synchronous function that wraps the loading as a task so that the task is attached to the tracker itself, not the view that calls it, and is therefore safe from being cancelled by view redraws
+            // this is a synchronous function that wraps the loading as a task so that the task is attached to the loader itself, not the view that calls it, and is therefore safe from being cancelled by view redraws
             Task(priority: .userInitiated) {
                 await loadMoreItems()
             }

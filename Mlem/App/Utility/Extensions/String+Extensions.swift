@@ -1,5 +1,5 @@
 //
-//  String+ParseLinks.swift
+//  String+Extensions.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-12-10.
@@ -76,5 +76,11 @@ extension String {
         
         // sort links by position in body and return
         return (rawLinks + markdownLinks + userLinks + communityLinks).sorted { $0.position < $1.position }
+    }
+}
+
+extension String {
+    func contains(_ strings: [String]) -> Bool {
+        strings.contains { contains($0) }
     }
 }

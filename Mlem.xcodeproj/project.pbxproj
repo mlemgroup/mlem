@@ -444,7 +444,7 @@
 		CD4D58C82B86DCED00B82964 /* AvatarType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58C72B86DCED00B82964 /* AvatarType.swift */; };
 		CD4D58CB2B86DD3D00B82964 /* AssociatedIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58CA2B86DD3D00B82964 /* AssociatedIcon.swift */; };
 		CD4D58CF2B86DDEC00B82964 /* AccountSortMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58CE2B86DDEC00B82964 /* AccountSortMode.swift */; };
-		CD4D58D12B86DE0F00B82964 /* JSONDecoder+Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58D02B86DE0F00B82964 /* JSONDecoder+Default.swift */; };
+		CD4D58D12B86DE0F00B82964 /* JSONDecoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58D02B86DE0F00B82964 /* JSONDecoder+Extensions.swift */; };
 		CD4D58D32B86DEB000B82964 /* FeedType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58D22B86DEB000B82964 /* FeedType.swift */; };
 		CD4D58D62B86DFA400B82964 /* ContentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58D52B86DFA400B82964 /* ContentType.swift */; };
 		CD4D58D82B86E0D100B82964 /* View+CustomBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58D72B86E0D100B82964 /* View+CustomBadge.swift */; };
@@ -453,13 +453,12 @@
 		CD4D58DF2B86E47500B82964 /* PersonFlair.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58DE2B86E47500B82964 /* PersonFlair.swift */; };
 		CD4D58E12B86E4D700B82964 /* FeedLoaderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58E02B86E4D700B82964 /* FeedLoaderItem.swift */; };
 		CD4D58E32B86E4F400B82964 /* FeedLoaderSort.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58E22B86E4F400B82964 /* FeedLoaderSort.swift */; };
-		CD4D58E52B86E58200B82964 /* String+ParseLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58E42B86E58200B82964 /* String+ParseLinks.swift */; };
+		CD4D58E52B86E58200B82964 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58E42B86E58200B82964 /* String+Extensions.swift */; };
 		CD4D58E72B86E5B500B82964 /* LinkType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58E62B86E5B500B82964 /* LinkType.swift */; };
 		CD4D58E92B86E5F900B82964 /* PostType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58E82B86E5F900B82964 /* PostType.swift */; };
 		CD4D58EB2B86E63300B82964 /* AssociatedColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58EA2B86E63300B82964 /* AssociatedColor.swift */; };
 		CD4D58ED2B86E6BB00B82964 /* ApiPersonViewLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58EC2B86E6BB00B82964 /* ApiPersonViewLike.swift */; };
 		CD4D58EF2B86E6F100B82964 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58EE2B86E6F100B82964 /* URL+Extensions.swift */; };
-		CD4D58F12B86E71A00B82964 /* String+Contains.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58F02B86E71A00B82964 /* String+Contains.swift */; };
 		CD4D58F42B87B04200B82964 /* CoreFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58F32B87B04200B82964 /* CoreFeedLoader.swift */; };
 		CD4D58F62B87B0B300B82964 /* FeedLoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58F52B87B0B300B82964 /* FeedLoadingState.swift */; };
 		CD4D58F82B87B0D100B82964 /* InternetSpeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58F72B87B0D100B82964 /* InternetSpeed.swift */; };
@@ -960,7 +959,7 @@
 		CD4D58C72B86DCED00B82964 /* AvatarType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarType.swift; sourceTree = "<group>"; };
 		CD4D58CA2B86DD3D00B82964 /* AssociatedIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssociatedIcon.swift; sourceTree = "<group>"; };
 		CD4D58CE2B86DDEC00B82964 /* AccountSortMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AccountSortMode.swift; path = Mlem/App/Protocols/AccountSortMode.swift; sourceTree = SOURCE_ROOT; };
-		CD4D58D02B86DE0F00B82964 /* JSONDecoder+Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONDecoder+Default.swift"; sourceTree = "<group>"; };
+		CD4D58D02B86DE0F00B82964 /* JSONDecoder+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONDecoder+Extensions.swift"; sourceTree = "<group>"; };
 		CD4D58D22B86DEB000B82964 /* FeedType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedType.swift; sourceTree = "<group>"; };
 		CD4D58D52B86DFA400B82964 /* ContentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentType.swift; sourceTree = "<group>"; };
 		CD4D58D72B86E0D100B82964 /* View+CustomBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+CustomBadge.swift"; sourceTree = "<group>"; };
@@ -969,13 +968,12 @@
 		CD4D58DE2B86E47500B82964 /* PersonFlair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonFlair.swift; sourceTree = "<group>"; };
 		CD4D58E02B86E4D700B82964 /* FeedLoaderItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderItem.swift; sourceTree = "<group>"; };
 		CD4D58E22B86E4F400B82964 /* FeedLoaderSort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderSort.swift; sourceTree = "<group>"; };
-		CD4D58E42B86E58200B82964 /* String+ParseLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ParseLinks.swift"; sourceTree = "<group>"; };
+		CD4D58E42B86E58200B82964 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		CD4D58E62B86E5B500B82964 /* LinkType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkType.swift; sourceTree = "<group>"; };
 		CD4D58E82B86E5F900B82964 /* PostType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostType.swift; sourceTree = "<group>"; };
 		CD4D58EA2B86E63300B82964 /* AssociatedColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssociatedColor.swift; sourceTree = "<group>"; };
 		CD4D58EC2B86E6BB00B82964 /* ApiPersonViewLike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiPersonViewLike.swift; sourceTree = "<group>"; };
 		CD4D58EE2B86E6F100B82964 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
-		CD4D58F02B86E71A00B82964 /* String+Contains.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Contains.swift"; sourceTree = "<group>"; };
 		CD4D58F32B87B04200B82964 /* CoreFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreFeedLoader.swift; sourceTree = "<group>"; };
 		CD4D58F52B87B0B300B82964 /* FeedLoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoadingState.swift; sourceTree = "<group>"; };
 		CD4D58F72B87B0D100B82964 /* InternetSpeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetSpeed.swift; sourceTree = "<group>"; };
@@ -1133,11 +1131,7 @@
 			isa = PBXGroup;
 			children = (
 				CD4D58CC2B86DDC300B82964 /* Settings */,
-				036CC3AE2B8145C30098B6A1 /* AppState.swift */,
-				CD4D58A42B86BD1B00B82964 /* PersistenceRepository.swift */,
 				CDEBC3262A9A57E900518D9D /* Content */,
-				CD4D589D2B86BC8300B82964 /* FeedLoaders */,
-				CD4D589C2B86BC7D00B82964 /* Trackers */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1643,17 +1637,14 @@
 		CD4D583B2B867BB300B82964 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				CD4D59112B87B35D00B82964 /* Logic */,
-				CD4D59042B87B19100B82964 /* Notifier */,
-				CD4D58FB2B87B13B00B82964 /* Error Handling */,
-				CD4D58C92B86DD3200B82964 /* Protocols */,
+				CD4D583D2B867DA900B82964 /* Constants */,
+				CD14461F2A5B328600610EF1 /* Data */,
 				CD4D58C62B86DCE500B82964 /* Enums */,
 				CD4D58C22B86DC5800B82964 /* Extensions */,
 				CD4D58942B86BA9E00B82964 /* Globals */,
+				CD4D59112B87B35D00B82964 /* Logic */,
 				6318EDC427EE4E0500BFCAE8 /* Models */,
-				CD14461F2A5B328600610EF1 /* Data */,
-				CD4D583D2B867DA900B82964 /* Constants */,
-				637218002A3A2AAD008C4816 /* API */,
+				CD4D58C92B86DD3200B82964 /* Protocols */,
 				6363D5F327EE1BA900E34822 /* Views */,
 			);
 			path = App;
@@ -1695,6 +1686,7 @@
 		CD4D58942B86BA9E00B82964 /* Globals */ = {
 			isa = PBXGroup;
 			children = (
+				CD4D59212B87BD0800B82964 /* Definitions */,
 				CD4D58952B86BAC400B82964 /* EnvironmentValues */,
 				CD4D58672B86B38600B82964 /* Dependencies */,
 			);
@@ -1708,15 +1700,6 @@
 				CD4D58962B86BAD900B82964 /* EnvironmentValues+TabReselectionHashValue.swift */,
 			);
 			path = EnvironmentValues;
-			sourceTree = "<group>";
-		};
-		CD4D589C2B86BC7D00B82964 /* Trackers */ = {
-			isa = PBXGroup;
-			children = (
-				CD4D58D42B86DF4B00B82964 /* Accounts */,
-				CD4D58B22B86BFD400B82964 /* AccountsTracker.swift */,
-			);
-			path = Trackers;
 			sourceTree = "<group>";
 		};
 		CD4D589D2B86BC8300B82964 /* FeedLoaders */ = {
@@ -1761,10 +1744,9 @@
 			isa = PBXGroup;
 			children = (
 				CD4D58C32B86DC6000B82964 /* Array+Extensions.swift */,
-				CD4D58D02B86DE0F00B82964 /* JSONDecoder+Default.swift */,
-				CD4D58E42B86E58200B82964 /* String+ParseLinks.swift */,
+				CD4D58D02B86DE0F00B82964 /* JSONDecoder+Extensions.swift */,
+				CD4D58E42B86E58200B82964 /* String+Extensions.swift */,
 				CD4D58EE2B86E6F100B82964 /* URL+Extensions.swift */,
-				CD4D58F02B86E71A00B82964 /* String+Contains.swift */,
 				CD4D590D2B87B23F00B82964 /* Error+Extensions.swift */,
 				CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */,
 				CD4D59172B87B3B000B82964 /* UIViewController+Extensions.swift */,
@@ -1810,13 +1792,6 @@
 			path = Options;
 			sourceTree = "<group>";
 		};
-		CD4D58D42B86DF4B00B82964 /* Accounts */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Accounts;
-			sourceTree = "<group>";
-		};
 		CD4D58F22B87B03A00B82964 /* Generics */ = {
 			isa = PBXGroup;
 			children = (
@@ -1830,7 +1805,7 @@
 			path = Generics;
 			sourceTree = "<group>";
 		};
-		CD4D58FB2B87B13B00B82964 /* Error Handling */ = {
+		CD4D58FB2B87B13B00B82964 /* ErrorHandler */ = {
 			isa = PBXGroup;
 			children = (
 				CD4D58FC2B87B14D00B82964 /* ContextualError.swift */,
@@ -1838,7 +1813,7 @@
 				CD4D59002B87B16400B82964 /* ErrorAlert.swift */,
 				CD4D59022B87B17000B82964 /* ErrorHandler.swift */,
 			);
-			path = "Error Handling";
+			path = ErrorHandler;
 			sourceTree = "<group>";
 		};
 		CD4D59042B87B19100B82964 /* Notifier */ = {
@@ -1855,6 +1830,8 @@
 		CD4D59112B87B35D00B82964 /* Logic */ = {
 			isa = PBXGroup;
 			children = (
+				637218002A3A2AAD008C4816 /* API */,
+				CD4D589D2B86BC8300B82964 /* FeedLoaders */,
 				CD4D59122B87B36300B82964 /* Networking */,
 			);
 			path = Logic;
@@ -1866,6 +1843,18 @@
 				CD4D59132B87B36B00B82964 /* InternetConnectionManager.swift */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		CD4D59212B87BD0800B82964 /* Definitions */ = {
+			isa = PBXGroup;
+			children = (
+				CD4D58B22B86BFD400B82964 /* AccountsTracker.swift */,
+				036CC3AE2B8145C30098B6A1 /* AppState.swift */,
+				CD4D58A42B86BD1B00B82964 /* PersistenceRepository.swift */,
+				CD4D58FB2B87B13B00B82964 /* ErrorHandler */,
+				CD4D59042B87B19100B82964 /* Notifier */,
+			);
+			path = Definitions;
 			sourceTree = "<group>";
 		};
 		CDB7AFC02B82FADC0013E0F0 /* Custom */ = {
@@ -2352,7 +2341,7 @@
 				03AFBE9A2B6E65A400F01F3C /* NewContentModel.swift in Sources */,
 				CD4D57942B86772400B82964 /* ApiGetPersonDetails.swift in Sources */,
 				CD4D574C2B86772400B82964 /* ApiRemoveCommunity.swift in Sources */,
-				CD4D58D12B86DE0F00B82964 /* JSONDecoder+Default.swift in Sources */,
+				CD4D58D12B86DE0F00B82964 /* JSONDecoder+Extensions.swift in Sources */,
 				CD4D57302B86772400B82964 /* FeaturePostRequest.swift in Sources */,
 				CD4D571E2B86772400B82964 /* FollowCommunityRequest.swift in Sources */,
 				CD4D574B2B86772400B82964 /* ApiRegistrationApplication.swift in Sources */,
@@ -2481,7 +2470,6 @@
 				CD4D56EF2B86772400B82964 /* ListPostReportsRequest.swift in Sources */,
 				CD4D57842B86772400B82964 /* ApiBlockCommunityResponse.swift in Sources */,
 				CD4D573A2B86772400B82964 /* GetCaptchaRequest.swift in Sources */,
-				CD4D58F12B86E71A00B82964 /* String+Contains.swift in Sources */,
 				CD4D58032B86772500B82964 /* ApiReadableFederationState.swift in Sources */,
 				03AFBE9E2B6E79D200F01F3C /* Community3.swift in Sources */,
 				50D61E5B2AA32B9400A926EC /* ApiSession.swift in Sources */,
@@ -2601,7 +2589,7 @@
 				CD4D57CC2B86772500B82964 /* ApiDeleteCustomEmoji.swift in Sources */,
 				CD4D58D32B86DEB000B82964 /* FeedType.swift in Sources */,
 				CD4D56F42B86772400B82964 /* BlockInstanceRequest.swift in Sources */,
-				CD4D58E52B86E58200B82964 /* String+ParseLinks.swift in Sources */,
+				CD4D58E52B86E58200B82964 /* String+Extensions.swift in Sources */,
 				CD4D57332B86772400B82964 /* MarkPrivateMessageAsReadRequest.swift in Sources */,
 				CDB7CDAE2B83CD620013E0F0 /* APICommentView+Extensions.swift in Sources */,
 				030E7EE02B7FBDF100E9A1AD /* ApiClient+Post.swift in Sources */,

@@ -41,7 +41,7 @@ struct FetchResponse<Item: FeedLoadable> {
 }
 
 @Observable
-class StandardTracker<Item: FeedLoadable>: CoreFeedLoader<Item> {
+class StandardFeedLoader<Item: FeedLoadable>: CoreFeedLoader<Item> {
     @ObservationIgnored @Dependency(\.errorHandler) var errorHandler
     
     /// loading state

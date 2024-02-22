@@ -6,7 +6,7 @@
 //
 import Foundation
 
-/// Enum of possible loading states that a tracker can be in.
+/// Enum of possible loading states that a loader can be in.
 /// - idle: not currently loading, but more items available to load
 /// - loading: currently loading more items
 /// - done: no more items available to load
