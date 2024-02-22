@@ -18,7 +18,7 @@ struct GetPostsRequest: ApiGetRequest {
         communityId: Int?,
         page: Int,
         cursor: String?,
-        sort: PostSortType?,
+        sort: ApiSortType?,
         type: ApiListingType,
         limit: Int? = nil,
         savedOnly: Bool? = nil,

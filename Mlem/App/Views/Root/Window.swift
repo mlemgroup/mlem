@@ -10,11 +10,6 @@ import SwiftUI
 
 /// This view
 struct Window: View {
-    @Dependency(\.errorHandler) var errorHandler
-    @Dependency(\.hapticManager) var hapticManager
-    
-    @StateObject var layoutWidgetTracker: LayoutWidgetTracker = .init()
-    
     @State var appState: AppState = {
         @Dependency(\.accountsTracker) var accountsTracker
         return AppState(apiSource: accountsTracker.defaultAccount)
@@ -30,12 +25,12 @@ struct Window: View {
                 do {
                     appState.myInstance = try await appState.instanceStub?.upgrade()
                 } catch {
-                    errorHandler.handle(error)
+                    print(error)
                 }
             }
             .onAppear {
                 if !loadedInitialFlow {
-                    hapticManager.initEngine()
+                    // hapticManager.initEngine()
                     loadedInitialFlow = true
                 }
             }
@@ -56,7 +51,6 @@ struct Window: View {
             // LandingPage()
         } else {
             ContentView()
-                .environmentObject(layoutWidgetTracker)
         }
     }
 }

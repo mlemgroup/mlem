@@ -15,7 +15,6 @@ struct QuickSwitcherView: View {
                 AccountListView(isQuickSwitcher: true)
             }
         }
-        .hoistNavigation(.dismiss)
         .fancyTabScrollCompatible()
     }
 }

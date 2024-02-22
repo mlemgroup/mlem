@@ -11,7 +11,7 @@ extension ApiClient {
     // swiftlint:disable:next function_parameter_count
     func getPosts(
         communityId: Int,
-        sort: PostSortType,
+        sort: ApiSortType,
         page: Int,
         cursor: String?,
         limit: Int,
@@ -32,7 +32,7 @@ extension ApiClient {
     // swiftlint:disable:next function_parameter_count
     func getPosts(
         feedType: ApiListingType,
-        sort: PostSortType,
+        sort: ApiSortType,
         page: Int,
         cursor: String?,
         limit: Int,

@@ -78,27 +78,10 @@ struct FancyTabBarLabel: View {
     @ViewBuilder
     var labelDisplay: some View {
         VStack(spacing: 4) {
-            if let remoteSymbolUrl = symbolConfiguration.remoteSymbolUrl {
-                CachedImage(
-                    url: remoteSymbolUrl,
-                    shouldExpand: false,
-                    fixedSize: .init(width: tabIconSize, height: tabIconSize),
-                    imageNotFound: { defaultTabIcon(for: symbolConfiguration) },
-                    errorBackgroundColor: .clear,
-                    contentMode: .fill
-                )
+            Image(systemName: active ? symbolConfiguration.activeSymbol : symbolConfiguration.symbol)
+                .resizable()
+                .scaledToFit()
                 .frame(width: tabIconSize, height: tabIconSize)
-                .clipShape(Circle())
-                .overlay(Circle()
-                    .stroke(.gray.opacity(0.3), lineWidth: 1))
-                .opacity(active ? 1 : 0.7)
-                .accessibilityHidden(true)
-            } else {
-                Image(systemName: active ? symbolConfiguration.activeSymbol : symbolConfiguration.symbol)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: tabIconSize, height: tabIconSize)
-            }
             
             if showTabNames, let text = labelText {
                 Text(text)

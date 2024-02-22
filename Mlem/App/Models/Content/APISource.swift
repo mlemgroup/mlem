@@ -16,7 +16,7 @@ protocol ApiSource: AnyObject, ActorIdentifiable, Equatable {
 extension ApiSource {
     func getPosts(
         feed: ApiListingType,
-        sort: PostSortType,
+        sort: ApiSortType,
         page: Int = 1,
         cursor: String? = nil,
         limit: Int,

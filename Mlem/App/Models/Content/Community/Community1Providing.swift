@@ -67,7 +67,7 @@ extension Community1Providing {
     }
     
     func getPosts(
-        sort: PostSortType,
+        sort: ApiSortType,
         page: Int = 1,
         cursor: String? = nil,
         limit: Int,

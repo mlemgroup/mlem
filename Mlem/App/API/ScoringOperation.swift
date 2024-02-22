@@ -18,8 +18,8 @@ enum ScoringOperation: Int, Decodable {
 extension ScoringOperation: AssociatedColor {
     var color: Color? {
         switch self {
-        case .upvote: return .upvoteColor
-        case .downvote: return .downvoteColor
+        case .upvote: return Colors.upvoteColor
+        case .downvote: return Colors.downvoteColor
         case .none: return nil
         }
     }

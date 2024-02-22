@@ -47,7 +47,7 @@ private enum DiskAccess {
 
 class PersistenceRepository {
     @Dependency(\.date) private var date
-    @Dependency(\.errorHandler) private var errorHandler
+    // @Dependency(\.errorHandler) private var errorHandler
     
     private var keychainAccess: (String) -> String?
     private var read: (URL) throws -> Data
@@ -68,17 +68,11 @@ class PersistenceRepository {
     
     // MARK: - Public methods
     
-    func loadAccounts() -> [SavedAccount] {
-        let accounts = load([SavedAccount].self, from: Path.savedAccounts) ?? []
-        return accounts.compactMap { account -> SavedAccount? in
-            guard let token = keychainAccess("\(account.id)_accessToken") else {
-                return nil
-            }
-            return SavedAccount(from: account, accessToken: token, avatarUrl: account.avatarUrl)
-        }
+    func loadAccounts() -> [UserStub] {
+        load([UserStub].self, from: Path.savedAccounts) ?? []
     }
     
-    func saveAccounts(_ value: [SavedAccount]) async throws {
+    func saveAccounts(_ value: [UserStub]) async throws {
         try await save(value, to: Path.savedAccounts)
     }
     
@@ -93,21 +87,21 @@ class PersistenceRepository {
         try await save(extant, to: Path.recentSearches)
     }
     
-    func loadFavoriteCommunities() -> [FavoriteCommunity] {
-        load([FavoriteCommunity].self, from: Path.favoriteCommunities) ?? []
-    }
-    
-    func saveFavoriteCommunities(_ value: [FavoriteCommunity]) async throws {
-        try await save(value, to: Path.favoriteCommunities)
-    }
-    
-    func loadEasterFlags() -> Set<EasterFlag> {
-        load(Set<EasterFlag>.self, from: Path.easterFlags) ?? .init()
-    }
-    
-    func saveEasterFlags(_ value: Set<EasterFlag>) async throws {
-        try await save(value, to: Path.easterFlags)
-    }
+//    func loadFavoriteCommunities() -> [FavoriteCommunity] {
+//        load([FavoriteCommunity].self, from: Path.favoriteCommunities) ?? []
+//    }
+//
+//    func saveFavoriteCommunities(_ value: [FavoriteCommunity]) async throws {
+//        try await save(value, to: Path.favoriteCommunities)
+//    }
+//
+//    func loadEasterFlags() -> Set<EasterFlag> {
+//        load(Set<EasterFlag>.self, from: Path.easterFlags) ?? .init()
+//    }
+//
+//    func saveEasterFlags(_ value: Set<EasterFlag>) async throws {
+//        try await save(value, to: Path.easterFlags)
+//    }
     
     func loadFilteredKeywords() -> [String] {
         load([String].self, from: Path.filteredKeywords) ?? []
@@ -121,29 +115,29 @@ class PersistenceRepository {
         Path.filteredKeywords
     }
     
-    func loadLayoutWidgets() -> LayoutWidgetGroups {
-        load(LayoutWidgetGroups.self, from: Path.layoutWidgets) ?? .init()
-    }
-    
-    func saveLayoutWidgets(_ value: LayoutWidgetGroups) async throws {
-        try await save(value, to: Path.layoutWidgets)
-    }
-    
-    func loadInstanceMetadata() -> TimestampedValue<[InstanceMetadata]> {
-        let localFile = load(TimestampedValue<[InstanceMetadata]>.self, from: Path.instanceMetadata)
-        let bundledFile = loadFromBundle(TimestampedValue<[InstanceMetadata]>.self, filename: "instance_metadata")
-        
-        if let localFile, localFile.timestamp > bundledFile.timestamp {
-            return localFile
-        }
-        
-        return bundledFile
-    }
-    
-    func saveInstanceMetadata(_ value: [InstanceMetadata]) async throws {
-        let timestamped = TimestampedValue(value: value, timestamp: date.now, lifespan: .days(1))
-        try await save(timestamped, to: Path.instanceMetadata)
-    }
+//    func loadLayoutWidgets() -> LayoutWidgetGroups {
+//        load(LayoutWidgetGroups.self, from: Path.layoutWidgets) ?? .init()
+//    }
+//
+//    func saveLayoutWidgets(_ value: LayoutWidgetGroups) async throws {
+//        try await save(value, to: Path.layoutWidgets)
+//    }
+//
+//    func loadInstanceMetadata() -> TimestampedValue<[InstanceMetadata]> {
+//        let localFile = load(TimestampedValue<[InstanceMetadata]>.self, from: Path.instanceMetadata)
+//        let bundledFile = loadFromBundle(TimestampedValue<[InstanceMetadata]>.self, filename: "instance_metadata")
+//
+//        if let localFile, localFile.timestamp > bundledFile.timestamp {
+//            return localFile
+//        }
+//
+//        return bundledFile
+//    }
+//
+//    func saveInstanceMetadata(_ value: [InstanceMetadata]) async throws {
+//        let timestamped = TimestampedValue(value: value, timestamp: date.now, lifespan: .days(1))
+//        try await save(timestamped, to: Path.instanceMetadata)
+//    }
     
     // MARK: Private methods
     
@@ -157,7 +151,8 @@ class PersistenceRepository {
             
             return try JSONDecoder().decode(T.self, from: data)
         } catch {
-            errorHandler.handle(error)
+            print(error)
+            // errorHandler.handle(error)
             
             return nil
         }
@@ -179,7 +174,8 @@ class PersistenceRepository {
             let data = try JSONEncoder().encode(value)
             try await write(data, path)
         } catch {
-            errorHandler.handle(error)
+            print(error)
+            // errorHandler.handle(error)
         }
     }
 }

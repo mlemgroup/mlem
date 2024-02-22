@@ -11,12 +11,9 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.scenePhase) var scenePhase
     
-    @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.accountsTracker) var accountsTracker
     
     @Environment(AppState.self) var appState
-    
-    @State private var errorAlert: ErrorAlert?
     
     // tabs
     @State private var tabSelection: TabSelection = .feeds
@@ -69,7 +66,6 @@ struct ContentView: View {
                     .presentationDetents([.medium, .large])
             }
         }
-        .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .onChange(of: scenePhase) {
             // when app moves into background, hide the account switcher. This prevents the app from reopening with the switcher enabled.
             if scenePhase != .active {
@@ -97,9 +93,7 @@ struct ContentView: View {
                 // disable long press in accessibility mode to prevent conflict with HUD
                 if !accessibilityFont {
                     if allowQuickSwitcherLongPressGesture {
-                        hapticManager.play(haptic: .rigidInfo, priority: .high)
                         if accountsTracker.savedAccounts.count == 2 {
-                            hapticManager.play(haptic: .rigidInfo, priority: .high)
                             for account in accountsTracker.savedAccounts where account.actorId != appState.apiSource?.actorId {
                                 appState.apiSource = account
                                 break
@@ -110,25 +104,5 @@ struct ContentView: View {
                     }
                 }
             }
-    }
-}
-
-// MARK: - URL Handling
-
-extension ContentView {
-    func didReceiveURL(_ url: URL) -> OpenURLAction.Result {
-        let outcome = UrlHandler.handle(url)
-        
-        switch outcome.action {
-        case let .error(message):
-            errorAlert = .init(
-                title: "Unsupported link",
-                message: message
-            )
-        default:
-            break
-        }
-        
-        return outcome.result
     }
 }

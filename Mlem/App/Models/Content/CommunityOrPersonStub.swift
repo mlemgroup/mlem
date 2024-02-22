@@ -26,18 +26,4 @@ extension CommunityOrPersonStub {
         guard let host else { return nil }
         return "\(Self.identifierPrefix)\(name)@\(host)"
     }
-    
-    func copyFullNameWithPrefix(notifier: Notifier?) {
-        let pasteboard = UIPasteboard.general
-        if let fullNameWithPrefix {
-            pasteboard.string = fullNameWithPrefix
-            Task {
-                await notifier?.add(.success("Name Copied"))
-            }
-        } else {
-            Task {
-                await notifier?.add(.failure("Failed to copy"))
-            }
-        }
-    }
 }
