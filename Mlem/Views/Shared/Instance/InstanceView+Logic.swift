@@ -51,7 +51,7 @@ extension InstanceView {
                         if urlError.code.rawValue == -1202 {
                             errorDetails = ErrorDetails(
                                 title: "Cannot reach instance",
-                                body: "It's possible that access to this instance is disallowed by your network.",
+                                body: "Access to this instance may be disallowed by your network.",
                                 error: error
                             )
                             return
