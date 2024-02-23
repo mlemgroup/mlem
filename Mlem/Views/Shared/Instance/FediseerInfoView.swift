@@ -17,7 +17,7 @@ struct FediseerInfoView: View {
             subHeading("Guarantees", systemImage: Icons.fediseerGuarantee, color: .green)
             Text("If an instance is \"guaranteed\", it is known as definitely not spam. This doesn't mean that an instance that isn't guaranteed is definitely spam - rather, it is unknown whether an unguaranteed instance is spam or not.\n\nAn instance can be guaranteed by any other guaranteed instance. This forms a chain of instances who guarantee one another, which is known as the \"Chain of Trust\". The Chain of Trust starts at the Fediseer itself, which guarantees several of the largest instances.\n\nA guarantee can be revoked by the guarantor at any time - if this happens, the instance returns to a \"not guaranteed\" state, and any instances it may have guaranteed also return to a \"not guaranteed\" state.\n\nOnce an instance has been guaranteed, they are able to express their approval or disapproval of other instances using endorsements, hesitations and censures.")
                 .padding(.horizontal, AppConstants.postAndCommentSpacing)
-            subHeading("Endoresements", systemImage: Icons.fediseerEndorsement, color: .teal)
+            subHeading("Endorsements", systemImage: Icons.fediseerEndorsement, color: .teal)
             Text("An endorsement signifies that an instance approves of another instance. It is completely subjective, and a reason does not have to be given.")
                 .padding(.horizontal, AppConstants.postAndCommentSpacing)
             subHeading("Censures", systemImage: Icons.fediseerCensure, color: .red)
