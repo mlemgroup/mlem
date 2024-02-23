@@ -33,11 +33,6 @@ struct FediseerInfoView: View {
                 systemImage: "questionmark.circle.fill",
                 destination: URL(string: "https://fediseer.com/faq/eng")!
             )
-            linkButton(
-                "Donate to the Fediseer",
-                systemImage: "dollarsign.circle.fill",
-                destination: URL(string: "https://liberapay.com/Fediseer/")!
-            )
             .padding(.bottom, 50)
         }
         .frame(maxWidth: .infinity)
