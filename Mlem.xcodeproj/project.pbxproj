@@ -424,7 +424,6 @@
 		CD4D583F2B86855F00B82964 /* MlemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D583E2B86855F00B82964 /* MlemTests.swift */; };
 		CD4D58412B86858100B82964 /* MlemUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58402B86858100B82964 /* MlemUITests.swift */; };
 		CD4D58432B86B14400B82964 /* TabSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58422B86B14400B82964 /* TabSelection.swift */; };
-		CD4D58742B86B4AA00B82964 /* AccountsTracker+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58732B86B4AA00B82964 /* AccountsTracker+Dependency.swift */; };
 		CD4D58762B86B4D800B82964 /* View+FancyTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58752B86B4D800B82964 /* View+FancyTabItem.swift */; };
 		CD4D58932B86BA5C00B82964 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58922B86BA5C00B82964 /* Colors.swift */; };
 		CD4D58972B86BAD900B82964 /* EnvironmentValues+TabReselectionHashValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58962B86BAD900B82964 /* EnvironmentValues+TabReselectionHashValue.swift */; };
@@ -435,7 +434,6 @@
 		CD4D58AA2B86BE5900B82964 /* AccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58A92B86BE5900B82964 /* AccountListView.swift */; };
 		CD4D58AD2B86BE7100B82964 /* QuickSwitcherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58AC2B86BE7100B82964 /* QuickSwitcherView.swift */; };
 		CD4D58B32B86BFD400B82964 /* AccountsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58B22B86BFD400B82964 /* AccountsTracker.swift */; };
-		CD4D58B52B86BFFB00B82964 /* PersistenceRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58B42B86BFFA00B82964 /* PersistenceRepository+Dependency.swift */; };
 		CD4D58B92B86D9F800B82964 /* AccountButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58B82B86D9F800B82964 /* AccountButtonView.swift */; };
 		CD4D58BB2B86DA7D00B82964 /* AccountListView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58BA2B86DA7D00B82964 /* AccountListView+Logic.swift */; };
 		CD4D58BD2B86DABD00B82964 /* View+FancyTabScrollCompatible.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58BC2B86DABD00B82964 /* View+FancyTabScrollCompatible.swift */; };
@@ -472,14 +470,16 @@
 		CD4D590A2B87B1DC00B82964 /* NotificationMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59092B87B1DC00B82964 /* NotificationMessage.swift */; };
 		CD4D590C2B87B1E700B82964 /* Notifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D590B2B87B1E700B82964 /* Notifier.swift */; };
 		CD4D590E2B87B23F00B82964 /* Error+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D590D2B87B23F00B82964 /* Error+Extensions.swift */; };
-		CD4D59102B87B31200B82964 /* Notifier+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D590F2B87B31200B82964 /* Notifier+Dependency.swift */; };
 		CD4D59142B87B36B00B82964 /* InternetConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59132B87B36B00B82964 /* InternetConnectionManager.swift */; };
 		CD4D59162B87B38C00B82964 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */; };
 		CD4D59182B87B3B000B82964 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59172B87B3B000B82964 /* UIViewController+Extensions.swift */; };
-		CD4D591A2B87B3D100B82964 /* ErrorHandler+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59192B87B3D100B82964 /* ErrorHandler+Dependency.swift */; };
 		CD4D591C2B87B43D00B82964 /* Task+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591B2B87B43D00B82964 /* Task+Extensions.swift */; };
 		CD4D591E2B87B4C900B82964 /* StandardPostFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591D2B87B4C900B82964 /* StandardPostFeedLoader.swift */; };
 		CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591F2B87B63300B82964 /* SettingsOptions.swift */; };
+		CD7EEFB72B8942EE00187029 /* ErrorHandler+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7EEFB32B8942EE00187029 /* ErrorHandler+Dependency.swift */; };
+		CD7EEFB82B8942EE00187029 /* PersistenceRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7EEFB42B8942EE00187029 /* PersistenceRepository+Dependency.swift */; };
+		CD7EEFB92B8942EE00187029 /* Notifier+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7EEFB52B8942EE00187029 /* Notifier+Dependency.swift */; };
+		CD7EEFBA2B8942EE00187029 /* AccountsTracker+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7EEFB62B8942EE00187029 /* AccountsTracker+Dependency.swift */; };
 		CDB7AFC22B82FAE60013E0F0 /* GetPostsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7AFC12B82FAE60013E0F0 /* GetPostsRequest.swift */; };
 		CDB7AFC42B82FB210013E0F0 /* APIListingType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7AFC32B82FB210013E0F0 /* APIListingType+Extensions.swift */; };
 		CDB7BEBA2B83C29F0013E0F0 /* APIPost+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7BEB92B83C29F0013E0F0 /* APIPost+Extensions.swift */; };
@@ -939,7 +939,6 @@
 		CD4D583E2B86855F00B82964 /* MlemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemTests.swift; sourceTree = "<group>"; };
 		CD4D58402B86858100B82964 /* MlemUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemUITests.swift; sourceTree = "<group>"; };
 		CD4D58422B86B14400B82964 /* TabSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSelection.swift; sourceTree = "<group>"; };
-		CD4D58732B86B4AA00B82964 /* AccountsTracker+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountsTracker+Dependency.swift"; sourceTree = "<group>"; };
 		CD4D58752B86B4D800B82964 /* View+FancyTabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+FancyTabItem.swift"; sourceTree = "<group>"; };
 		CD4D58922B86BA5C00B82964 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		CD4D58962B86BAD900B82964 /* EnvironmentValues+TabReselectionHashValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+TabReselectionHashValue.swift"; sourceTree = "<group>"; };
@@ -950,7 +949,6 @@
 		CD4D58A92B86BE5900B82964 /* AccountListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListView.swift; sourceTree = "<group>"; };
 		CD4D58AC2B86BE7100B82964 /* QuickSwitcherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSwitcherView.swift; sourceTree = "<group>"; };
 		CD4D58B22B86BFD400B82964 /* AccountsTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsTracker.swift; sourceTree = "<group>"; };
-		CD4D58B42B86BFFA00B82964 /* PersistenceRepository+Dependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PersistenceRepository+Dependency.swift"; sourceTree = "<group>"; };
 		CD4D58B82B86D9F800B82964 /* AccountButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountButtonView.swift; sourceTree = "<group>"; };
 		CD4D58BA2B86DA7D00B82964 /* AccountListView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountListView+Logic.swift"; sourceTree = "<group>"; };
 		CD4D58BC2B86DABD00B82964 /* View+FancyTabScrollCompatible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+FancyTabScrollCompatible.swift"; sourceTree = "<group>"; };
@@ -987,14 +985,16 @@
 		CD4D59092B87B1DC00B82964 /* NotificationMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationMessage.swift; sourceTree = "<group>"; };
 		CD4D590B2B87B1E700B82964 /* Notifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifier.swift; sourceTree = "<group>"; };
 		CD4D590D2B87B23F00B82964 /* Error+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Extensions.swift"; sourceTree = "<group>"; };
-		CD4D590F2B87B31200B82964 /* Notifier+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifier+Dependency.swift"; sourceTree = "<group>"; };
 		CD4D59132B87B36B00B82964 /* InternetConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetConnectionManager.swift; sourceTree = "<group>"; };
 		CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		CD4D59172B87B3B000B82964 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
-		CD4D59192B87B3D100B82964 /* ErrorHandler+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ErrorHandler+Dependency.swift"; sourceTree = "<group>"; };
 		CD4D591B2B87B43D00B82964 /* Task+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+Extensions.swift"; sourceTree = "<group>"; };
 		CD4D591D2B87B4C900B82964 /* StandardPostFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardPostFeedLoader.swift; sourceTree = "<group>"; };
 		CD4D591F2B87B63300B82964 /* SettingsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOptions.swift; sourceTree = "<group>"; };
+		CD7EEFB32B8942EE00187029 /* ErrorHandler+Dependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ErrorHandler+Dependency.swift"; sourceTree = "<group>"; };
+		CD7EEFB42B8942EE00187029 /* PersistenceRepository+Dependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PersistenceRepository+Dependency.swift"; sourceTree = "<group>"; };
+		CD7EEFB52B8942EE00187029 /* Notifier+Dependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notifier+Dependency.swift"; sourceTree = "<group>"; };
+		CD7EEFB62B8942EE00187029 /* AccountsTracker+Dependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AccountsTracker+Dependency.swift"; sourceTree = "<group>"; };
 		CDB7AFC12B82FAE60013E0F0 /* GetPostsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPostsRequest.swift; sourceTree = "<group>"; };
 		CDB7AFC32B82FB210013E0F0 /* APIListingType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIListingType+Extensions.swift"; sourceTree = "<group>"; };
 		CDB7BEB92B83C29F0013E0F0 /* APIPost+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIPost+Extensions.swift"; sourceTree = "<group>"; };
@@ -1675,10 +1675,10 @@
 		CD4D58672B86B38600B82964 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
-				CD4D58B42B86BFFA00B82964 /* PersistenceRepository+Dependency.swift */,
-				CD4D58732B86B4AA00B82964 /* AccountsTracker+Dependency.swift */,
-				CD4D590F2B87B31200B82964 /* Notifier+Dependency.swift */,
-				CD4D59192B87B3D100B82964 /* ErrorHandler+Dependency.swift */,
+				CD7EEFB62B8942EE00187029 /* AccountsTracker+Dependency.swift */,
+				CD7EEFB32B8942EE00187029 /* ErrorHandler+Dependency.swift */,
+				CD7EEFB52B8942EE00187029 /* Notifier+Dependency.swift */,
+				CD7EEFB42B8942EE00187029 /* PersistenceRepository+Dependency.swift */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -2163,7 +2163,6 @@
 				CD4D57572B86772400B82964 /* ApiDeleteComment.swift in Sources */,
 				CD4D57832B86772400B82964 /* ApiCreateCustomEmoji.swift in Sources */,
 				032145562B7A691E001AE07E /* Community3Providing.swift in Sources */,
-				CD4D59102B87B31200B82964 /* Notifier+Dependency.swift in Sources */,
 				637218772A3A2AAD008C4816 /* ApiRequest.swift in Sources */,
 				CD4D57932B86772400B82964 /* ApiPurgeComment.swift in Sources */,
 				CD4D589B2B86BBF900B82964 /* ActorIdentifiable.swift in Sources */,
@@ -2276,7 +2275,6 @@
 				CD4D576D2B86772400B82964 /* ApiPrivateMessageView.swift in Sources */,
 				CDDCF6512A677E1B003DA3AC /* FancyTabItemPreferenceKeys.swift in Sources */,
 				CD4D58B32B86BFD400B82964 /* AccountsTracker.swift in Sources */,
-				CD4D58B52B86BFFB00B82964 /* PersistenceRepository+Dependency.swift in Sources */,
 				CD4D57082B86772400B82964 /* LeaveAdminRequest.swift in Sources */,
 				CD4D58BD2B86DABD00B82964 /* View+FancyTabScrollCompatible.swift in Sources */,
 				CD4D58152B86772500B82964 /* ApiRegistrationApplicationView.swift in Sources */,
@@ -2286,7 +2284,6 @@
 				CD4D58EF2B86E6F100B82964 /* URL+Extensions.swift in Sources */,
 				CD4D57B42B86772400B82964 /* ApiCustomEmojiView.swift in Sources */,
 				504ECBAE2AB45B2A006C0B96 /* LemmyURL.swift in Sources */,
-				CD4D591A2B87B3D100B82964 /* ErrorHandler+Dependency.swift in Sources */,
 				CD4D57C02B86772400B82964 /* ApiAdminPurgeCommentView.swift in Sources */,
 				CD4D57602B86772400B82964 /* ApiGetSiteMetadata.swift in Sources */,
 				CD4D58162B86772500B82964 /* ApiPostJoin.swift in Sources */,
@@ -2302,7 +2299,6 @@
 				CD4D58352B86772500B82964 /* ApiGetPosts.swift in Sources */,
 				CD4D58BB2B86DA7D00B82964 /* AccountListView+Logic.swift in Sources */,
 				CD4D578B2B86772400B82964 /* ApiPostReport.swift in Sources */,
-				CD4D58742B86B4AA00B82964 /* AccountsTracker+Dependency.swift in Sources */,
 				03AFBE9C2B6E676600F01F3C /* Community2.swift in Sources */,
 				030E7EDA2B7F97E400E9A1AD /* Post1.swift in Sources */,
 				CD4D575B2B86772400B82964 /* ApiPersonMentionResponse.swift in Sources */,
@@ -2353,6 +2349,7 @@
 				CD4D57BC2B86772400B82964 /* ApiPurgeCommunity.swift in Sources */,
 				CD4D57E72B86772500B82964 /* ApiEditCustomEmoji.swift in Sources */,
 				CD4D57D62B86772500B82964 /* ApiPerson.swift in Sources */,
+				CD7EEFB92B8942EE00187029 /* Notifier+Dependency.swift in Sources */,
 				CD4D57C42B86772400B82964 /* ApiGetSiteResponse.swift in Sources */,
 				CD4D58132B86772500B82964 /* ApiRegistrationMode.swift in Sources */,
 				CD4D57622B86772400B82964 /* ApiAdminPurgeCommunityView.swift in Sources */,
@@ -2377,6 +2374,7 @@
 				CD4D57F82B86772500B82964 /* ApiImageUpload.swift in Sources */,
 				CD4D57502B86772400B82964 /* ApiMyUserInfo.swift in Sources */,
 				CDB7D03E2B83D7050013E0F0 /* APIGetPersonDetailsResponse+Extensions.swift in Sources */,
+				CD7EEFB82B8942EE00187029 /* PersistenceRepository+Dependency.swift in Sources */,
 				CD4D575A2B86772400B82964 /* ApiVoteView.swift in Sources */,
 				CD4D57382B86772400B82964 /* LikePostRequest.swift in Sources */,
 				CD4D57192B86772400B82964 /* CreatePostRequest.swift in Sources */,
@@ -2429,6 +2427,7 @@
 				CDB7CDAC2B83CD1A0013E0F0 /* APIComment+Extensions.swift in Sources */,
 				CD4D58272B86772500B82964 /* ApiSavePost.swift in Sources */,
 				CD4D58142B86772500B82964 /* ApiEditCommunity.swift in Sources */,
+				CD7EEFB72B8942EE00187029 /* ErrorHandler+Dependency.swift in Sources */,
 				CD4D57802B86772400B82964 /* ApiModRemovePost.swift in Sources */,
 				CD4D573C2B86772400B82964 /* CreatePostReportRequest.swift in Sources */,
 				CD4D57FC2B86772500B82964 /* ApiCaptchaResponse.swift in Sources */,
@@ -2518,6 +2517,7 @@
 				CD4D57C82B86772400B82964 /* ApiResolveCommentReport.swift in Sources */,
 				CD4D57862B86772400B82964 /* ApiCustomEmoji.swift in Sources */,
 				CD4D58372B86772500B82964 /* ApiResolvePrivateMessageReport.swift in Sources */,
+				CD7EEFBA2B8942EE00187029 /* AccountsTracker+Dependency.swift in Sources */,
 				CD4D572B2B86772400B82964 /* GetBannedPersonsRequest.swift in Sources */,
 				6372184D2A3A2AAD008C4816 /* ApiErrorResponse.swift in Sources */,
 				CD4D582D2B86772500B82964 /* ApiDeleteAccount.swift in Sources */,
