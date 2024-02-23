@@ -30,7 +30,7 @@ extension InstanceView {
                             if content.contains("<div class=\"kbin-container\">") {
                                 errorDetails = ErrorDetails(
                                     title: "KBin Instance",
-                                    body: "We can't display KBin instance details.",
+                                    body: "KBin instances are not currently supported.",
                                     icon: Icons.federation
                                 )
                             } else if content.contains("- Mastodon</title>") {
