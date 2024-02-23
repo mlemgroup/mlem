@@ -12,7 +12,7 @@ struct FediseerInfoView: View {
     var body: some View {
         ScrollView {
             subHeading("The Fediseer", systemImage: Icons.fediseer, color: .indigo)
-            Text("The Fediseer is a service that instance administrators use to identify spam instances. Additionally, it provides a platform for instance administrators to express their approval or disapproval of other instances.")
+            Text("The Fediseer is a service that instance administrators use to identify spam instances and express their approval or disapproval of other instances.")
                 .padding(.horizontal, AppConstants.postAndCommentSpacing)
             subHeading("Guarantees", systemImage: Icons.fediseerGuarantee, color: .green)
             Text("If an instance is \"guaranteed\", it is known as definitely not spam. Instances without guarantees are not necessarily spam; rather, it is unknown whether an non-guaranteed instance is spam or not.\n\nAn instance can be guaranteed by any other guaranteed instance. This forms a chain of guaranteed instances known as the \"Chain of Trust\". The Chain of Trust starts at the Fediseer itself, which guarantees several of the largest instances.\n\nA guarantee can be revoked by the guarantor at any time. If this happens, the instance, and any instances it guarantees, return to a \"not guaranteed\" state.\n\nOnce an instance has been guaranteed, it is able to express its approval or disapproval of other instances using endorsements, hesitations and censures.")
