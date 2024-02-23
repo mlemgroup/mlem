@@ -36,7 +36,7 @@ extension InstanceView {
                             } else if content.contains("- Mastodon</title>") {
                                 errorDetails = ErrorDetails(
                                     title: "Mastodon Instance",
-                                    body: "We can't display Mastodon instance details.",
+                                    body: "Mastodon instances are not currently supported.",
                                     icon: Icons.federation
                                 )
                             } else {
