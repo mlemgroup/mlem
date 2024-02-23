@@ -476,10 +476,6 @@
 		CD4D591C2B87B43D00B82964 /* Task+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591B2B87B43D00B82964 /* Task+Extensions.swift */; };
 		CD4D591E2B87B4C900B82964 /* StandardPostFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591D2B87B4C900B82964 /* StandardPostFeedLoader.swift */; };
 		CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591F2B87B63300B82964 /* SettingsOptions.swift */; };
-		CD7EEFB72B8942EE00187029 /* ErrorHandler+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7EEFB32B8942EE00187029 /* ErrorHandler+Dependency.swift */; };
-		CD7EEFB82B8942EE00187029 /* PersistenceRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7EEFB42B8942EE00187029 /* PersistenceRepository+Dependency.swift */; };
-		CD7EEFB92B8942EE00187029 /* Notifier+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7EEFB52B8942EE00187029 /* Notifier+Dependency.swift */; };
-		CD7EEFBA2B8942EE00187029 /* AccountsTracker+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7EEFB62B8942EE00187029 /* AccountsTracker+Dependency.swift */; };
 		CDB7AFC22B82FAE60013E0F0 /* GetPostsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7AFC12B82FAE60013E0F0 /* GetPostsRequest.swift */; };
 		CDB7AFC42B82FB210013E0F0 /* APIListingType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7AFC32B82FB210013E0F0 /* APIListingType+Extensions.swift */; };
 		CDB7BEBA2B83C29F0013E0F0 /* APIPost+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7BEB92B83C29F0013E0F0 /* APIPost+Extensions.swift */; };
@@ -502,6 +498,10 @@
 		CDDCF64F2A672C0A003DA3AC /* FancyTabBarLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF64E2A672C0A003DA3AC /* FancyTabBarLabel.swift */; };
 		CDDCF6512A677E1B003DA3AC /* FancyTabItemPreferenceKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF6502A677E1B003DA3AC /* FancyTabItemPreferenceKeys.swift */; };
 		CDDCF6572A678298003DA3AC /* FancyTabBarSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF6562A678298003DA3AC /* FancyTabBarSelection.swift */; };
+		CDDF42A12B8943F70004F46E /* AccountsTracker+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDF429D2B8943F70004F46E /* AccountsTracker+Dependency.swift */; };
+		CDDF42A22B8943F70004F46E /* ErrorHandler+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDF429E2B8943F70004F46E /* ErrorHandler+Dependency.swift */; };
+		CDDF42A32B8943F70004F46E /* Notifier+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDF429F2B8943F70004F46E /* Notifier+Dependency.swift */; };
+		CDDF42A42B8943F70004F46E /* PersistenceRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDF42A02B8943F70004F46E /* PersistenceRepository+Dependency.swift */; };
 		CDEBC3282A9A57F200518D9D /* Content Model Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEBC3272A9A57F200518D9D /* Content Model Identifier.swift */; };
 		CDEBC32C2A9A582500518D9D /* VotesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEBC32B2A9A582500518D9D /* VotesModel.swift */; };
 		CDF9EF332AB2845C003F885B /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF9EF322AB2845C003F885B /* Icons.swift */; };
@@ -991,10 +991,6 @@
 		CD4D591B2B87B43D00B82964 /* Task+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+Extensions.swift"; sourceTree = "<group>"; };
 		CD4D591D2B87B4C900B82964 /* StandardPostFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardPostFeedLoader.swift; sourceTree = "<group>"; };
 		CD4D591F2B87B63300B82964 /* SettingsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOptions.swift; sourceTree = "<group>"; };
-		CD7EEFB32B8942EE00187029 /* ErrorHandler+Dependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ErrorHandler+Dependency.swift"; sourceTree = "<group>"; };
-		CD7EEFB42B8942EE00187029 /* PersistenceRepository+Dependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PersistenceRepository+Dependency.swift"; sourceTree = "<group>"; };
-		CD7EEFB52B8942EE00187029 /* Notifier+Dependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notifier+Dependency.swift"; sourceTree = "<group>"; };
-		CD7EEFB62B8942EE00187029 /* AccountsTracker+Dependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AccountsTracker+Dependency.swift"; sourceTree = "<group>"; };
 		CDB7AFC12B82FAE60013E0F0 /* GetPostsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPostsRequest.swift; sourceTree = "<group>"; };
 		CDB7AFC32B82FB210013E0F0 /* APIListingType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIListingType+Extensions.swift"; sourceTree = "<group>"; };
 		CDB7BEB92B83C29F0013E0F0 /* APIPost+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIPost+Extensions.swift"; sourceTree = "<group>"; };
@@ -1017,6 +1013,10 @@
 		CDDCF64E2A672C0A003DA3AC /* FancyTabBarLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabBarLabel.swift; sourceTree = "<group>"; };
 		CDDCF6502A677E1B003DA3AC /* FancyTabItemPreferenceKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabItemPreferenceKeys.swift; sourceTree = "<group>"; };
 		CDDCF6562A678298003DA3AC /* FancyTabBarSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabBarSelection.swift; sourceTree = "<group>"; };
+		CDDF429D2B8943F70004F46E /* AccountsTracker+Dependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AccountsTracker+Dependency.swift"; sourceTree = "<group>"; };
+		CDDF429E2B8943F70004F46E /* ErrorHandler+Dependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ErrorHandler+Dependency.swift"; sourceTree = "<group>"; };
+		CDDF429F2B8943F70004F46E /* Notifier+Dependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notifier+Dependency.swift"; sourceTree = "<group>"; };
+		CDDF42A02B8943F70004F46E /* PersistenceRepository+Dependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PersistenceRepository+Dependency.swift"; sourceTree = "<group>"; };
 		CDEBC3272A9A57F200518D9D /* Content Model Identifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Content Model Identifier.swift"; sourceTree = "<group>"; };
 		CDEBC32B2A9A582500518D9D /* VotesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotesModel.swift; sourceTree = "<group>"; };
 		CDF9EF322AB2845C003F885B /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
@@ -1675,10 +1675,10 @@
 		CD4D58672B86B38600B82964 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
-				CD7EEFB62B8942EE00187029 /* AccountsTracker+Dependency.swift */,
-				CD7EEFB32B8942EE00187029 /* ErrorHandler+Dependency.swift */,
-				CD7EEFB52B8942EE00187029 /* Notifier+Dependency.swift */,
-				CD7EEFB42B8942EE00187029 /* PersistenceRepository+Dependency.swift */,
+				CDDF429D2B8943F70004F46E /* AccountsTracker+Dependency.swift */,
+				CDDF429E2B8943F70004F46E /* ErrorHandler+Dependency.swift */,
+				CDDF429F2B8943F70004F46E /* Notifier+Dependency.swift */,
+				CDDF42A02B8943F70004F46E /* PersistenceRepository+Dependency.swift */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -2349,7 +2349,6 @@
 				CD4D57BC2B86772400B82964 /* ApiPurgeCommunity.swift in Sources */,
 				CD4D57E72B86772500B82964 /* ApiEditCustomEmoji.swift in Sources */,
 				CD4D57D62B86772500B82964 /* ApiPerson.swift in Sources */,
-				CD7EEFB92B8942EE00187029 /* Notifier+Dependency.swift in Sources */,
 				CD4D57C42B86772400B82964 /* ApiGetSiteResponse.swift in Sources */,
 				CD4D58132B86772500B82964 /* ApiRegistrationMode.swift in Sources */,
 				CD4D57622B86772400B82964 /* ApiAdminPurgeCommunityView.swift in Sources */,
@@ -2371,10 +2370,10 @@
 				CD4D58CB2B86DD3D00B82964 /* AssociatedIcon.swift in Sources */,
 				CD4D57922B86772400B82964 /* ApiLocalUser.swift in Sources */,
 				CD4D57142B86772400B82964 /* EditCommentRequest.swift in Sources */,
+				CDDF42A32B8943F70004F46E /* Notifier+Dependency.swift in Sources */,
 				CD4D57F82B86772500B82964 /* ApiImageUpload.swift in Sources */,
 				CD4D57502B86772400B82964 /* ApiMyUserInfo.swift in Sources */,
 				CDB7D03E2B83D7050013E0F0 /* APIGetPersonDetailsResponse+Extensions.swift in Sources */,
-				CD7EEFB82B8942EE00187029 /* PersistenceRepository+Dependency.swift in Sources */,
 				CD4D575A2B86772400B82964 /* ApiVoteView.swift in Sources */,
 				CD4D57382B86772400B82964 /* LikePostRequest.swift in Sources */,
 				CD4D57192B86772400B82964 /* CreatePostRequest.swift in Sources */,
@@ -2427,13 +2426,13 @@
 				CDB7CDAC2B83CD1A0013E0F0 /* APIComment+Extensions.swift in Sources */,
 				CD4D58272B86772500B82964 /* ApiSavePost.swift in Sources */,
 				CD4D58142B86772500B82964 /* ApiEditCommunity.swift in Sources */,
-				CD7EEFB72B8942EE00187029 /* ErrorHandler+Dependency.swift in Sources */,
 				CD4D57802B86772400B82964 /* ApiModRemovePost.swift in Sources */,
 				CD4D573C2B86772400B82964 /* CreatePostReportRequest.swift in Sources */,
 				CD4D57FC2B86772500B82964 /* ApiCaptchaResponse.swift in Sources */,
 				CD4D57422B86772400B82964 /* GetModlogRequest.swift in Sources */,
 				CD4D59082B87B1B400B82964 /* NotificationDisplayer.swift in Sources */,
 				CD4D57D52B86772500B82964 /* ApiGetComment.swift in Sources */,
+				CDDF42A42B8943F70004F46E /* PersistenceRepository+Dependency.swift in Sources */,
 				B157E0C42A507B8000B02C8B /* Window.swift in Sources */,
 				CD4D57C92B86772500B82964 /* ApiAddAdmin.swift in Sources */,
 				CD4D57442B86772400B82964 /* ListPostLikesRequest.swift in Sources */,
@@ -2517,7 +2516,6 @@
 				CD4D57C82B86772400B82964 /* ApiResolveCommentReport.swift in Sources */,
 				CD4D57862B86772400B82964 /* ApiCustomEmoji.swift in Sources */,
 				CD4D58372B86772500B82964 /* ApiResolvePrivateMessageReport.swift in Sources */,
-				CD7EEFBA2B8942EE00187029 /* AccountsTracker+Dependency.swift in Sources */,
 				CD4D572B2B86772400B82964 /* GetBannedPersonsRequest.swift in Sources */,
 				6372184D2A3A2AAD008C4816 /* ApiErrorResponse.swift in Sources */,
 				CD4D582D2B86772500B82964 /* ApiDeleteAccount.swift in Sources */,
@@ -2527,6 +2525,7 @@
 				03A1B3F72A84000400AB0DE0 /* APIContentAggregatesProtocol.swift in Sources */,
 				CD4D57AB2B86772400B82964 /* ApiListRegistrationApplicationsResponse.swift in Sources */,
 				CD4D57A92B86772400B82964 /* ApiRegister.swift in Sources */,
+				CDDF42A22B8943F70004F46E /* ErrorHandler+Dependency.swift in Sources */,
 				CD4D58DF2B86E47500B82964 /* PersonFlair.swift in Sources */,
 				CD4D580C2B86772500B82964 /* ApiModTransferCommunityView.swift in Sources */,
 				CD4D57EC2B86772500B82964 /* ApiInstance.swift in Sources */,
@@ -2568,6 +2567,7 @@
 				CD4D58AD2B86BE7100B82964 /* QuickSwitcherView.swift in Sources */,
 				CD4D57D72B86772500B82964 /* ApiCreatePost.swift in Sources */,
 				50BC1ABB2A8D6A5A00E3C48B /* ScoringOperation.swift in Sources */,
+				CDDF42A12B8943F70004F46E /* AccountsTracker+Dependency.swift in Sources */,
 				CD4D57FB2B86772500B82964 /* ApiSite.swift in Sources */,
 				CD4D58342B86772500B82964 /* ApiAddAdminResponse.swift in Sources */,
 				CD4D57292B86772400B82964 /* GetCommunityRequest.swift in Sources */,
