@@ -50,6 +50,27 @@ extension ApiClient {
         return try await perform(request: request)
     }
     
+    func getPost(id: Int) async throws -> ApiGetPostResponse {
+        let request = GetPostRequest(id: id, commentId: nil)
+        return try await perform(request: request)
+    }
+    
+    func getPost(actorId: URL) async throws -> ApiPostView? {
+        let request = SearchRequest(
+            q: actorId.absoluteString,
+            communityId: nil,
+            communityName: nil,
+            creatorId: nil,
+            type_: .posts,
+            sort: .new,
+            listingType: .all,
+            page: 1,
+            limit: 1
+        )
+        let response = try await perform(request: request)
+        return response.posts.first
+    }
+    
     func voteOnPost(id: Int, score: ScoringOperation) async throws -> ApiPostResponse {
         let request = LikePostRequest(postId: id, score: score.rawValue)
         return try await perform(request: request)

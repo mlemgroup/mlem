@@ -35,6 +35,8 @@ protocol PostStubProviding: ContentStub {
     var isSaved_: Bool? { get }
     var isRead_: Bool? { get }
     var myVote_: ScoringOperation? { get }
+    
+    func upgrade() async throws -> Post2
 }
 
 extension PostStubProviding {
@@ -63,4 +65,13 @@ extension PostStubProviding {
     var isSaved_: Bool? { nil }
     var isRead_: Bool? { nil }
     var myVote_: ScoringOperation? { nil }
+}
+
+extension PostStubProviding {
+    func upgrade() async throws -> Post2 {
+        guard let postView = try await source.api.getPost(actorId: actorId) else {
+            throw UpgradeError.entityNotFound
+        }
+        return source.caches.post2.createModel(source: source, for: postView)
+    }
 }

@@ -76,6 +76,12 @@ extension Post1Providing {
 }
 
 extension Post1Providing {
+    // Overwrite the `upgrade()` method from PostStubProviding
+    func upgrade() async throws -> Post2 {
+        let response = try await source.api.getPost(id: id)
+        return source.caches.post2.createModel(source: source, for: response.postView)
+    }
+    
     var postType: PostType {
         // post with URL: either image or link
         if let linkUrl {
