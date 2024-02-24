@@ -34,6 +34,12 @@ struct MenuButton: View {
             NavigationLink(navigationMenuFunction.destination) {
                 Label(navigationMenuFunction.text, systemImage: navigationMenuFunction.imageName)
             }
+        case let .childMenu(titleKey, children):
+            Menu(titleKey) {
+                ForEach(children) { child in
+                    MenuButton(menuFunction: child, confirmDestructive: nil)
+                }
+            }
         }
     }
 }

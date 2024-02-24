@@ -19,6 +19,8 @@ enum MenuFunction: Identifiable {
             return shareImageFunction.id
         case let .navigation(navigationMenuFunction):
             return navigationMenuFunction.id
+        case .childMenu:
+            return UUID().uuidString
         }
     }
     
@@ -26,6 +28,10 @@ enum MenuFunction: Identifiable {
     case shareUrl(ShareMenuFunction)
     case shareImage(ShareImageFunction)
     case navigation(NavigationMenuFunction)
+    /// - Parameter titleKey: User-facing title label for menu.
+    /// - Parameter children: Menu items for this child menu.
+    /// - Note: Destructive confirmation is not supported at this time.
+    case childMenu(titleKey: String, children: [MenuFunction])
 }
 
 enum MenuFunctionRole {

@@ -2263,6 +2263,7 @@
 			isa = PBXGroup;
 			children = (
 				CD391F952A535F5400E213B5 /* ResponseEditorView.swift */,
+				03C942932B64596B002068A4 /* BanUserView.swift */,
 				03CB329D2A6D8E910021EF27 /* PostComposerView.swift */,
 				03EA79C32AC0D92C00BCDC91 /* PostComposerView+Logic.swift */,
 			);

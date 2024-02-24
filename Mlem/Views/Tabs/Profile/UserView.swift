@@ -50,7 +50,7 @@ struct UserView: View {
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
         
         self.internetSpeed = internetSpeed
-  
+        
         self._privatePostTracker = .init(wrappedValue: .init(
             internetSpeed: internetSpeed,
             sortType: .new,
@@ -70,14 +70,6 @@ struct UserView: View {
                 isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
                 confirmationMenuFunction: confirmationMenuFunction
             )
-            .toolbar {
-                ToolbarItemGroup(placement: .secondaryAction) {
-                    let functions = user.menuFunctions({ user = $0 }, modToolTracker: modToolTracker)
-                    ForEach(functions) { item in
-                        MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
-                    }
-                }
-            }
             .task(priority: .userInitiated) {
                 if isLoadingContent {
                     Task {
@@ -85,9 +77,12 @@ struct UserView: View {
                     }
                 }
             }
-            .onChange(of: user.userId) { _ in
-                Task {
-                    await tryReloadUser()
+            .toolbar {
+                ToolbarItemGroup(placement: .secondaryAction) {
+                    let functions = user.menuFunctions({ user = $0 }, modToolTracker: modToolTracker)
+                    ForEach(functions) { item in
+                        MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+                    }
                 }
             }
             .refreshable {
