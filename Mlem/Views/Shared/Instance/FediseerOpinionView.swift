@@ -11,7 +11,7 @@ struct FediseerOpinionView: View {
     let opinion: any FediseerOpinion
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .leading, spacing: 10) {
             HStack {
                 if let model = opinion.instanceModel {
                     NavigationLink(value: AppRoute.instance(model)) { title }
@@ -23,21 +23,24 @@ struct FediseerOpinionView: View {
             }
             .foregroundStyle(type(of: opinion).color)
             .padding(.horizontal)
-            .padding(.vertical, 10)
+            divider
             if let reason = opinion.formattedReason {
-                divider
                 MarkdownView(text: reason, isNsfw: false)
                     .padding(.trailing)
-                    .padding(.vertical, 10)
+            } else {
+                Text("No reason given")
+                    .foregroundStyle(.secondary)
+                    .italic()
+                    .padding(.leading)
             }
             if let evidence = opinion.evidence {
                 divider
                 MarkdownView(text: evidence, isNsfw: false)
                     .padding(.horizontal)
-                    .padding(.vertical, 10)
             }
         }
         .frame(maxWidth: .infinity)
+        .padding(.vertical, 10)
         .font(.callout)
     }
     
