@@ -96,7 +96,7 @@ extension CommunityModel {
             functions.append(.standard(favoriteMenuFunction(callback)))
         }
         do {
-            if let instanceHost = self.communityUrl.host() {
+            if let instanceHost = communityUrl.host() {
                 let instance: InstanceModel
                 if let site {
                     instance = .init(from: site)
