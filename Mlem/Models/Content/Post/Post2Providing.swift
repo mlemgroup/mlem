@@ -68,7 +68,7 @@ extension Post2Providing {
             let response = try await source.api.voteOnPost(id: id, score: newVote)
             if !Task.isCancelled {
                 DispatchQueue.main.async {
-                    self.update(with: response.postView)
+                    self.post2.update(with: response.postView, excludeActions: true)
                     self.post2.tasks.vote = nil
                 }
             } else {
@@ -111,7 +111,7 @@ extension Post2Providing {
             let response = try await source.api.savePost(id: id, shouldSave: newSavedStatus)
             if !Task.isCancelled {
                 DispatchQueue.main.async {
-                    self.update(with: response.postView)
+                    self.post2.update(with: response.postView, excludeActions: true)
                     self.post2.tasks.save = nil
                 }
             } else {

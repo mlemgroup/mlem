@@ -45,22 +45,21 @@ final class Post2: Post2Providing, NewContentModel {
     }
     
     func update(with post: ApiPostView) {
-        commentCount = post.counts.comments
-        upvoteCount = post.counts.upvotes
-        downvoteCount = post.counts.downvotes
-        unreadCommentCount = post.unreadComments
+        update(with: post, excludeActions: false)
+    }
+    
+    func update(
+        with post: ApiPostView,
+        excludeActions: Bool = false
+    ) {
         
-        // The following checks exist to ensure that making multiple requests in quick succession doesn't result in incorrect state. For example, if an upvote request is made followed by a save request, the upvote request could come back first and incorrectly reset the isSaved value to false. This would cause a small flicker before the save request returns with the correct value. These `if` statements exist to prevent this. sjmarf 2024-02-21
-        
-        if tasks.save == nil {
+        if !excludeActions {
+            commentCount = post.counts.comments
+            upvoteCount = post.counts.upvotes
+            downvoteCount = post.counts.downvotes
+            unreadCommentCount = post.unreadComments
             isSaved = post.saved
-        }
-        
-        if tasks.save == nil && tasks.vote == nil {
             isRead = post.read
-        }
-        
-        if tasks.vote == nil {
             myVote = .init(rawValue: post.myVote ?? 0) ?? .none // TODO: this can be nicer
         }
         
@@ -72,4 +71,6 @@ final class Post2: Post2Providing, NewContentModel {
     }
     
     var score: Int { upvoteCount - downvoteCount }
+    
+    func upgrade() async throws -> Post2 { self }
 }
