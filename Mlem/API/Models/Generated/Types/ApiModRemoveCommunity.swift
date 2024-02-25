@@ -2,7 +2,7 @@
 //  ApiModRemoveCommunity.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -16,6 +16,6 @@ struct ApiModRemoveCommunity: Codable {
     let communityId: Int
     let reason: String?
     let removed: Bool
-    let when_: String
     let expires: String?
+    let when_: String
 }

@@ -2,7 +2,7 @@
 //  ApiSiteAggregates.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -11,6 +11,7 @@ import Foundation
 
 // SiteAggregates.ts
 struct ApiSiteAggregates: Codable {
+    let id: Int?
     let siteId: Int
     let users: Int
     let posts: Int
@@ -20,5 +21,4 @@ struct ApiSiteAggregates: Codable {
     let usersActiveWeek: Int
     let usersActiveMonth: Int
     let usersActiveHalfYear: Int
-    let id: Int?
 }

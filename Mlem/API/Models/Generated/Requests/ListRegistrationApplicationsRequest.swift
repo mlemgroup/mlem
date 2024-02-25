@@ -2,7 +2,7 @@
 //  ListRegistrationApplicationsRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -16,14 +16,14 @@ struct ListRegistrationApplicationsRequest: ApiGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-      unreadOnly: Bool?,
-      page: Int?,
-      limit: Int?
+        unreadOnly: Bool?,
+        page: Int?,
+        limit: Int?
     ) {
         self.queryItems = [
-            .init(name: "unread_only", value: "\(unreadOnly)"),
-            .init(name: "page", value: "\(page)"),
-            .init(name: "limit", value: "\(limit)")
+            .init(name: "unread_only", value: unreadOnly.map(String.init)),
+            .init(name: "page", value: page.map(String.init)),
+            .init(name: "limit", value: limit.map(String.init))
         ]
     }
 }

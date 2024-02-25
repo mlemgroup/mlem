@@ -2,7 +2,7 @@
 //  GetModlogRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -24,12 +24,12 @@ struct GetModlogRequest: ApiGetRequest {
         otherPersonId: Int?
     ) {
         self.queryItems = [
-            .init(name: "mod_person_id", value: "\(modPersonId)"),
-            .init(name: "community_id", value: "\(communityId)"),
-            .init(name: "page", value: "\(page)"),
-            .init(name: "limit", value: "\(limit)"),
-            .init(name: "type_", value: "\(type_)"),
-            .init(name: "other_person_id", value: "\(otherPersonId)")
+            .init(name: "mod_person_id", value: modPersonId.map(String.init)),
+            .init(name: "community_id", value: communityId.map(String.init)),
+            .init(name: "page", value: page.map(String.init)),
+            .init(name: "limit", value: limit.map(String.init)),
+            .init(name: "type_", value: type_?.rawValue),
+            .init(name: "other_person_id", value: otherPersonId.map(String.init))
         ]
     }
 }

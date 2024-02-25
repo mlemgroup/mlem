@@ -2,7 +2,7 @@
 //  GetCommunityRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -20,8 +20,8 @@ struct GetCommunityRequest: ApiGetRequest {
         name: String?
     ) {
         self.queryItems = [
-            .init(name: "id", value: "\(id)"),
-            .init(name: "name", value: "\(name)")
+            .init(name: "id", value: id.map(String.init)),
+            .init(name: "name", value: name)
         ]
     }
 }

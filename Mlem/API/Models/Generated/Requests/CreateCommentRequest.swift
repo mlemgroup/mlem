@@ -2,7 +2,7 @@
 //  CreateCommentRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -17,18 +17,18 @@ struct CreateCommentRequest: ApiPostRequest {
     let body: Body?
 
     init(
-      content: String,
-      postId: Int,
-      parentId: Int?,
-      languageId: Int?,
-      formId: String?
+        content: String,
+        postId: Int,
+        parentId: Int?,
+        languageId: Int?,
+        formId: String?
     ) {
         self.body = .init(
-          content: content,
-          postId: postId,
-          parentId: parentId,
-          languageId: languageId,
-          formId: formId
-      )
+            content: content,
+            postId: postId,
+            parentId: parentId,
+            languageId: languageId,
+            formId: formId
+        )
     }
 }

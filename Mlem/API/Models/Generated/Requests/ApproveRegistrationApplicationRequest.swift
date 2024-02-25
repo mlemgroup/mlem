@@ -2,7 +2,7 @@
 //  ApproveRegistrationApplicationRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -17,14 +17,14 @@ struct ApproveRegistrationApplicationRequest: ApiPutRequest {
     let body: Body?
 
     init(
-      id: Int,
-      approve: Bool,
-      denyReason: String?
+        id: Int,
+        approve: Bool,
+        denyReason: String?
     ) {
         self.body = .init(
-          id: id,
-          approve: approve,
-          denyReason: denyReason
-      )
+            id: id,
+            approve: approve,
+            denyReason: denyReason
+        )
     }
 }

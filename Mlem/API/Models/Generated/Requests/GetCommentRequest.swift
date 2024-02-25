@@ -2,7 +2,7 @@
 //  GetCommentRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -19,7 +19,7 @@ struct GetCommentRequest: ApiGetRequest {
         id: Int
     ) {
         self.queryItems = [
-            .init(name: "id", value: "\(id)")
+            .init(name: "id", value: String(id))
         ]
     }
 }

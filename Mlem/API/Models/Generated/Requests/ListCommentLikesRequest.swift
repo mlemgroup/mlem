@@ -2,7 +2,7 @@
 //  ListCommentLikesRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -21,9 +21,9 @@ struct ListCommentLikesRequest: ApiGetRequest {
         limit: Int?
     ) {
         self.queryItems = [
-            .init(name: "comment_id", value: "\(commentId)"),
-            .init(name: "page", value: "\(page)"),
-            .init(name: "limit", value: "\(limit)")
+            .init(name: "comment_id", value: String(commentId)),
+            .init(name: "page", value: page.map(String.init)),
+            .init(name: "limit", value: limit.map(String.init))
         ]
     }
 }

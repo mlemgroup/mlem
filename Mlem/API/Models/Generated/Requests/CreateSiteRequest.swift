@@ -2,7 +2,7 @@
 //  CreateSiteRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -55,7 +55,9 @@ struct CreateSiteRequest: ApiPostRequest {
         allowedInstances: [String]?,
         blockedInstances: [String]?,
         taglines: [String]?,
-        registrationMode: ApiRegistrationMode?
+        registrationMode: ApiRegistrationMode?,
+        contentWarning: String?,
+        autoExpandImages: Bool?
     ) {
         self.body = .init(
             name: name,
@@ -96,7 +98,9 @@ struct CreateSiteRequest: ApiPostRequest {
             allowedInstances: allowedInstances,
             blockedInstances: blockedInstances,
             taglines: taglines,
-            registrationMode: registrationMode
+            registrationMode: registrationMode,
+            contentWarning: contentWarning,
+            autoExpandImages: autoExpandImages
         )
     }
 }

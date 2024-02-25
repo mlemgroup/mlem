@@ -2,7 +2,7 @@
 //  ApiCreateSite.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -50,4 +50,6 @@ struct ApiCreateSite: Codable {
     let blockedInstances: [String]?
     let taglines: [String]?
     let registrationMode: ApiRegistrationMode?
+    let contentWarning: String?
+    let autoExpandImages: Bool?
 }
