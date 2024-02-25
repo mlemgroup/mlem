@@ -2,7 +2,7 @@
 //  ApiSortType.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -28,4 +28,6 @@ enum ApiSortType: String, Codable {
     case topThreeMonths = "TopThreeMonths"
     case topSixMonths = "TopSixMonths"
     case topNineMonths = "TopNineMonths"
+    case controversial = "Controversial"
+    case scaled = "Scaled"
 }

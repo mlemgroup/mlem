@@ -2,7 +2,7 @@
 //  CreateCommunityRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -24,7 +24,9 @@ struct CreateCommunityRequest: ApiPostRequest {
         banner: URL?,
         nsfw: Bool?,
         postingRestrictedToMods: Bool?,
-        discussionLanguages: [Int]?
+        discussionLanguages: [Int]?,
+        onlyFollowersCanVote: Bool?,
+        visibility: ApiCommunityVisibility?
     ) {
         self.body = .init(
             name: name,
@@ -34,7 +36,9 @@ struct CreateCommunityRequest: ApiPostRequest {
             banner: banner,
             nsfw: nsfw,
             postingRestrictedToMods: postingRestrictedToMods,
-            discussionLanguages: discussionLanguages
+            discussionLanguages: discussionLanguages,
+            onlyFollowersCanVote: onlyFollowersCanVote,
+            visibility: visibility
         )
     }
 }

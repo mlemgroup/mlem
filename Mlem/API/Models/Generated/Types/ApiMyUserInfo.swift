@@ -2,7 +2,7 @@
 //  ApiMyUserInfo.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -15,7 +15,7 @@ struct ApiMyUserInfo: Codable {
     let follows: [ApiCommunityFollowerView]
     let moderates: [ApiCommunityModeratorView]
     let communityBlocks: [ApiCommunityBlockView]
-    let instanceBlocks: [ApiInstanceBlockView]?
     let personBlocks: [ApiPersonBlockView]
     let discussionLanguages: [Int]
+    let instanceBlocks: [ApiInstanceBlockView]?
 }
