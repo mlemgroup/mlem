@@ -69,6 +69,14 @@ extension PostStubProviding {
 
 extension PostStubProviding {
     func upgrade() async throws -> Post2 {
+        try await self.upgrade(id: nil)
+    }
+    
+    func upgrade(id: Int? = nil) async throws -> Post2 {
+        if let id {
+            let response = try await source.api.getPost(id: id)
+            return source.caches.post2.createModel(source: source, for: response.postView)
+        }
         guard let postView = try await source.api.getPost(actorId: actorId) else {
             throw UpgradeError.entityNotFound
         }

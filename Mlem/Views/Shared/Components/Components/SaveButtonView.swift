@@ -40,6 +40,7 @@ struct SaveButtonView: View {
             content.toggleSave()
         }
         .buttonStyle(.plain)
+        .disabled(content.source.api.token == nil)
         .transaction { transaction in
             transaction.disablesAnimations = true
         }

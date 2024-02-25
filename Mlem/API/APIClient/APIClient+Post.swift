@@ -56,19 +56,10 @@ extension ApiClient {
     }
     
     func getPost(actorId: URL) async throws -> ApiPostView? {
-        let request = SearchRequest(
-            q: actorId.absoluteString,
-            communityId: nil,
-            communityName: nil,
-            creatorId: nil,
-            type_: .posts,
-            sort: .new,
-            listingType: .all,
-            page: 1,
-            limit: 1
-        )
+        let urlString = actorId.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let request = ResolveObjectRequest(q: urlString ?? actorId.absoluteString)
         let response = try await perform(request: request)
-        return response.posts.first
+        return response.post
     }
     
     func voteOnPost(id: Int, score: ScoringOperation) async throws -> ApiPostResponse {

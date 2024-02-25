@@ -11,7 +11,7 @@ import SwiftUI
 struct VoteButtonView: View {
     @Dependency(\.hapticManager) var hapticManager
     
-    let content: any InteractableContent
+    @State var content: any InteractableContent
     let voteType: ScoringOperation
     
     init(content: any InteractableContent, voteType: ScoringOperation) {
@@ -39,6 +39,7 @@ struct VoteButtonView: View {
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .disabled(content.source.api.token == nil)
         .transaction { transaction in
             transaction.disablesAnimations = true
         }

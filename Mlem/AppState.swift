@@ -13,13 +13,14 @@ class AppState {
     
     var apiSource: (any ApiSource)? {
         willSet {
-            myUser?.stub.makeInactive()
+            (apiSource as? UserStub)?.makeInactive()
         }
         didSet {
             print("NEW API SOURCE \(apiSource?.actorId)")
             myInstance = apiSource?.instance
-            myUser = apiSource as? UserStub
-            myUser?.stub.makeActive()
+            let myUser = apiSource as? UserStub
+            myUser?.makeActive()
+            self.myUser = myUser
         }
     }
 
