@@ -19,6 +19,7 @@ struct WebsiteIndicatorView: View {
                     .resizable()
                     .scaledToFit()
                     .foregroundColor(.white)
+                    .fontWeight(.ultraLight)
             }
     }
 }
