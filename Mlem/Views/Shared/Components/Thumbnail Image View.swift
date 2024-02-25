@@ -22,6 +22,14 @@ struct ThumbnailImageView: View {
     
     let size = CGSize(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
     
+    var link: String {
+        if let rawLink = post.post.url, var host = URL(string: rawLink)?.host() {
+            host.trimPrefix("www.")
+            return host
+        }
+        return "website"
+    }
+    
     var body: some View {
         VStack {
             switch post.postType {
@@ -86,12 +94,16 @@ struct ThumbnailImageView: View {
             }
         }
         .overlay {
-            Group {
-                WebsiteIndicatorView()
-                    .frame(width: 16, height: 16)
-                    .padding(6)
+            VStack(spacing: 0) {
+                Spacer()
+                Text(link)
+                    .lineLimit(1)
+                    .font(.system(size: 7))
+                    .padding(.horizontal, 2)
+                    .padding(.vertical, 1)
+                    .frame(width: size.width, alignment: .leading)
+                    .background(.regularMaterial)
             }
-            .frame(width: size.width, height: size.height, alignment: .topLeading)
         }
     }
     
