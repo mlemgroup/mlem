@@ -27,15 +27,13 @@ struct CompactPost: View {
     // arguments
     let post: any Post2Providing
     let showCommunity: Bool // true to show community name, false to show username
-    let menuFunctions: [MenuFunction]
-    
+
     // computed
     var showReadCheck: Bool { post.isRead && diffWithoutColor && readMarkStyle == .check }
     
-    init(post: any Post2Providing, showCommunity: Bool, menuFunctions: [MenuFunction]) {
+    init(post: any Post2Providing, showCommunity: Bool) {
         self.post = post
         self.showCommunity = showCommunity
-        self.menuFunctions = menuFunctions
     }
     
     var body: some View {
@@ -66,7 +64,7 @@ struct CompactPost: View {
                     
                     if showReadCheck { ReadCheck() }
                     
-                    EllipsisMenu(size: 12, menuFunctions: menuFunctions)
+                    EllipsisMenu(size: 12, menuFunctions: post.menuFunctions)
                         .padding(.trailing, 6)
                 }
                 .padding(.bottom, -2)

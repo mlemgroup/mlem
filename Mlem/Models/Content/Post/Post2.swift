@@ -10,6 +10,12 @@ import SwiftUI
 @Observable
 final class Post2: Post2Providing, NewContentModel {
     typealias ApiType = ApiPostView
+    
+    struct Tasks {
+        var vote: Task<Void, Never>?
+        var save: Task<Void, Never>?
+    }
+    
     var post2: Post2 { self }
     
     var source: any ApiSource
@@ -27,6 +33,8 @@ final class Post2: Post2Providing, NewContentModel {
     var isRead: Bool = false
     var myVote: ScoringOperation = .none
     
+    var tasks: Tasks = .init()
+    
     init(source: any ApiSource, from post: ApiPostView) {
         self.source = source
         
@@ -37,13 +45,23 @@ final class Post2: Post2Providing, NewContentModel {
     }
     
     func update(with post: ApiPostView) {
-        commentCount = post.counts.comments
-        upvoteCount = post.counts.upvotes
-        downvoteCount = post.counts.downvotes
-        unreadCommentCount = post.unreadComments
-        isSaved = post.saved
-        isRead = post.read
-        myVote = .init(rawValue: post.myVote ?? 0) ?? .none // TODO: this can be nicer
+        update(with: post, excludeActions: false)
+    }
+    
+    func update(
+        with post: ApiPostView,
+        excludeActions: Bool = false
+    ) {
+        
+        if !excludeActions {
+            commentCount = post.counts.comments
+            upvoteCount = post.counts.upvotes
+            downvoteCount = post.counts.downvotes
+            unreadCommentCount = post.unreadComments
+            isSaved = post.saved
+            isRead = post.read
+            myVote = .init(rawValue: post.myVote ?? 0) ?? .none // TODO: this can be nicer
+        }
         
         post1.update(with: post.post)
         creator.update(with: post.creator)
@@ -53,4 +71,6 @@ final class Post2: Post2Providing, NewContentModel {
     }
     
     var score: Int { upvoteCount - downvoteCount }
+    
+    func upgrade() async throws -> Post2 { self }
 }

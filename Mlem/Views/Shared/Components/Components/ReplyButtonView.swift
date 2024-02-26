@@ -37,7 +37,6 @@ struct ReplyButtonView: View {
                 .scaledToFit()
                 .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)
                 .padding(AppConstants.barIconPadding) // this double padding looks funky but it's for consistency w/ other buttons
-                .padding(AppConstants.postAndCommentSpacing)
                 .contentShape(Rectangle())
                 .fontWeight(.medium) // makes it look a little nicer
         }

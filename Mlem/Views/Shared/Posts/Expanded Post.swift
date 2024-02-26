@@ -35,9 +35,7 @@ struct ExpandedPost: View {
     @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
     @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
     @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
-    
-    @AppStorage("upvoteOnSave") var upvoteOnSave: Bool = false
-    
+        
     @AppStorage("showCommentJumpButton") var showCommentJumpButton: Bool = true
     @AppStorage("commentJumpButtonSide") var commentJumpButtonSide: JumpButtonLocation = .bottomTrailing
 
@@ -218,8 +216,7 @@ struct ExpandedPost: View {
                 
                     Spacer()
                     
-//                    let functions = post.menuFunctions(editorTracker: editorTracker, postTracker: postTracker)
-//                    EllipsisMenu(size: 24, menuFunctions: functions)
+                    EllipsisMenu(size: 24, menuFunctions: post.menuFunctions)
                 }
                 
                 LargePost(
@@ -253,6 +250,7 @@ struct ExpandedPost: View {
                 shouldShowSaved: shouldShowSavedInPostBar,
                 shouldShowReplies: shouldShowRepliesInPostBar
             )
+            .padding(.horizontal, AppConstants.postAndCommentSpacing)
         }
     }
 

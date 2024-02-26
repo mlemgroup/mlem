@@ -9,10 +9,24 @@
 import Foundation
 import SwiftUI
 
-enum ScoringOperation: Int, Decodable {
+enum ScoringOperation: Int, Decodable, CustomStringConvertible {
     case upvote = 1
     case downvote = -1
     case none = 0
+    
+    var upvoteValue: Int { self == .upvote ? 1 : 0 }
+    var downvoteValue: Int { self == .downvote ? 1 : 0 }
+    
+    var description: String {
+        switch self {
+        case .upvote:
+            "Upvote"
+        case .downvote:
+            "Downvote"
+        case .none:
+            "No Vote"
+        }
+    }
 }
 
 extension ScoringOperation: AssociatedColor {
@@ -26,6 +40,15 @@ extension ScoringOperation: AssociatedColor {
 }
 
 extension ScoringOperation: AssociatedIcon {
+    var buttonIconName: String {
+        switch self {
+        case .downvote:
+            return Icons.downvote
+        default:
+            return Icons.upvote
+        }
+    }
+    
     var iconName: String {
         switch self {
         case .upvote: return Icons.upvoteSquare

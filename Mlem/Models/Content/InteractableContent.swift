@@ -13,12 +13,24 @@ protocol InteractableContent: AnyObject, ContentStub {
     var creationDate: Date { get }
     var updatedDate: Date? { get }
     var commentCount: Int { get }
-    var myVote: ScoringOperation { get }
-    var upvoteCount: Int { get }
-    var downvoteCount: Int { get }
-    var isSaved: Bool { get }
+    var myVote: ScoringOperation { get set }
+    var upvoteCount: Int { get set }
+    var downvoteCount: Int { get set }
+    var isSaved: Bool { get set }
+    
+    func vote(_: ScoringOperation)
+    
+    func toggleSave()
 }
 
 extension InteractableContent {
     var score: Int { upvoteCount - downvoteCount }
+    
+    func toggleUpvote() {
+        vote(myVote == .upvote ? .none : .upvote)
+    }
+    
+    func toggleDownvote() {
+        vote(myVote == .downvote ? .none : .downvote)
+    }
 }

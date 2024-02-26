@@ -10,42 +10,40 @@ import Foundation
 import SwiftUI
 
 struct ScoreCounterView: View {
-    let vote: ScoringOperation
-    let score: Int
-    let upvote: () async -> Void
-    let downvote: () async -> Void
+    @Dependency(\.hapticManager) var hapticManager
+    
+    let content: any InteractableContent
 
     var body: some View {
         HStack(spacing: 6) {
-            UpvoteButtonView(vote: vote, upvote: upvote)
-                .offset(x: AppConstants.postAndCommentSpacing)
+            VoteButtonView(content: content, voteType: .upvote)
             
-            Text(String(score))
-                .foregroundColor(vote.color ?? .primary)
+            Text(String(content.score))
+                .foregroundColor(content.myVote.color ?? .primary)
+                .monospacedDigit()
             
             // if siteInformation.enableDownvotes {
-            DownvoteButtonView(vote: vote, downvote: downvote)
-                .offset(x: -AppConstants.postAndCommentSpacing)
+            VoteButtonView(content: content, voteType: .downvote)
             // }
         }
-        .padding(.horizontal, -AppConstants.postAndCommentSpacing)
         .accessibilityElement(children: .ignore)
         .accessibilityAdjustableAction { direction in
             switch direction {
             case .increment:
                 Task(priority: .userInitiated) {
-                    await upvote()
+                    hapticManager.play(haptic: .lightSuccess, priority: .low)
+                    try await content.toggleUpvote()
                 }
             case .decrement:
                 Task(priority: .userInitiated) {
-                    await downvote()
+                    hapticManager.play(haptic: .lightSuccess, priority: .low)
+                    try await content.toggleDownvote()
                 }
             default:
                 // Not sure what to do here.
                 UIAccessibility.post(notification: .announcement, argument: "Unknown Action")
             }
         }
-        .monospacedDigit()
         .fixedSize(horizontal: true, vertical: false)
     }
 }

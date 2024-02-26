@@ -25,7 +25,6 @@ class ApiClient {
     @discardableResult
     func perform<Request: ApiRequest>(request: Request) async throws -> Request.Response {
         let urlRequest = try urlRequest(from: request)
-        print(urlRequest)
 
         let (data, response) = try await execute(urlRequest)
         
@@ -98,8 +97,19 @@ class ApiClient {
         do {
             let encoder = JSONEncoder()
             encoder.keyEncodingStrategy = .convertToSnakeCase
+
             let body = defintion.body ?? ""
-            return try encoder.encode(body)
+            let data = try encoder.encode(body)
+            
+            // TODO: 0.18 deprecation remove all of the following logic and simply return the `data` above
+            if let token {
+                let dictionary = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any]
+                guard var dictionary else { throw ApiClientError.failedToWriteTokenToBody }
+                dictionary["auth"] = token
+                return try JSONSerialization.data(withJSONObject: dictionary, options: [])
+            } else {
+                return data
+            }
         } catch {
             throw ApiClientError.encoding(error)
         }
