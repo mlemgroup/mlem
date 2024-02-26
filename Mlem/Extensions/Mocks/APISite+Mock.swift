@@ -12,14 +12,14 @@ extension APISite {
     static func mock(
         id: Int = 0,
         name: String = "Mock Site",
-        sidebar: String? = nil,
+        sidebar: String? = "Lorem Ipsum",
         published: Date = .mock,
         icon: String? = nil,
         banner: String? = nil,
         description: String? = nil,
         actorId: String? = nil,
         lastRefreshedAt: Date = .mock,
-        inboxUrl: String = "",
+        inboxUrl: String = "https://mock.site",
         publicKey: String = "",
         instanceId: Int = 0
     ) -> APISite {

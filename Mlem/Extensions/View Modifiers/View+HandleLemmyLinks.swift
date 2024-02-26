@@ -38,6 +38,9 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                         .environmentObject(quickLookState)
                 case let .instance(instance):
                     InstanceView(instance: instance)
+                case let .instanceFediseerOpinionList(instance, data: data, type: type):
+                    FediseerOpinionListView(instance: instance, opinionType: type, fediseerData: data)
+                    
                 case let .postLinkWithContext(postLink):
                     ExpandedPost(post: postLink.post, community: postLink.community, scrollTarget: postLink.scrollTarget)
                         .environmentObject(postLink.postTracker)

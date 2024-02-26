@@ -14,6 +14,7 @@ import Foundation
 enum AppRoute: Routable {
     case community(CommunityModel)
     case instance(InstanceModel)
+    case instanceFediseerOpinionList(InstanceModel, data: FediseerData, type: FediseerOpinionType)
     
     case userProfile(UserModel, communityContext: CommunityModel? = nil)
     

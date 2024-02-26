@@ -7,6 +7,7 @@
 
 import Charts
 import Dependencies
+import Foundation
 import SwiftUI
 
 enum InstanceViewTab: String, Identifiable, CaseIterable {
@@ -41,6 +42,7 @@ struct InstanceView: View {
     
     @State var instance: InstanceModel
     @State var uptimeData: UptimeDataStatus?
+    @State var fediseerData: FediseerData?
     @State var errorDetails: ErrorDetails?
     
     @Namespace var scrollToTop
@@ -73,6 +75,7 @@ struct InstanceView: View {
         if instance.canFetchUptime {
             tabs.append(.uptime)
         }
+        tabs.append(.safety)
         return tabs
     }
     
@@ -81,75 +84,31 @@ struct InstanceView: View {
             ScrollToView(appeared: $scrollToTopAppeared)
                 .id(scrollToTop)
             VStack(spacing: AppConstants.postAndCommentSpacing) {
-                AvatarBannerView(instance: instance)
-                    .padding(.horizontal, AppConstants.postAndCommentSpacing)
-                    .padding(.top, 10)
-                VStack(spacing: 5) {
-                    if errorDetails == nil {
-                        Text(instance.displayName)
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.01)
-                            .transition(.opacity)
-                            .id("Title" + instance.displayName) // https://stackoverflow.com/a/60136737/17629371
-                        Text(subtitleText)
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
-                            .transition(.opacity)
-                            .id("Subtitle" + subtitleText)
-                    } else {
-                        Text(instance.name)
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.01)
-                            .padding(.bottom, 5)
+                headerView
+                VStack(spacing: 0) {
+                    VStack(spacing: 4) {
+                        Divider()
+                        BubblePicker(availableTabs, selected: $selectedTab) { tab in
+                            Text(tab.label)
+                        }
                         Divider()
                     }
-                }
-                if let errorDetails {
-                    if instance.canFetchUptime {
-                        switch uptimeData {
-                        case .success(let uptimeData):
-                            VStack(alignment: .leading, spacing: 0) {
-                                Text("We couldn't connect to \(instance.name). Perhaps the instance is offline?")
-                                    .foregroundStyle(.secondary)
-                                    .padding(.horizontal, 16)
-                                    .padding(.bottom, AppConstants.postAndCommentSpacing)
-                                Divider()
-                                InstanceUptimeView(instance: instance, uptimeData: uptimeData)
-                            }
-                        case .failure:
-                            ErrorView(errorDetails)
-                                .padding(.top, 5)
-                        default:
-                            ProgressView()
-                                .padding(.top, 30)
-                        }
-                    } else {
+                    if let errorDetails, [.about, .administrators, .details].contains(selectedTab) {
                         ErrorView(errorDetails)
-                            .padding(.top, 5)
-                    }
-                } else if instance.creationDate != nil {
-                    VStack(spacing: 0) {
-                        VStack(spacing: 4) {
-                            Divider()
-                            BubblePicker(availableTabs, selected: $selectedTab) { tab in
-                                Text(tab.label)
-                            }
-                            Divider()
-                        }
+                    } else {
                         switch selectedTab {
                         case .about:
                             if let description = instance.description {
                                 MarkdownView(text: description, isNsfw: false)
                                     .padding(.horizontal, AppConstants.postAndCommentSpacing)
                                     .padding(.top)
-                            } else {
+                            } else if instance.administrators != nil {
                                 Text("No Description")
                                     .foregroundStyle(.secondary)
                                     .padding(.top)
+                            } else {
+                                ProgressView()
+                                    .padding(.top, 30)
                             }
                         case .administrators:
                             if let administrators = instance.administrators {
@@ -162,7 +121,7 @@ struct InstanceView: View {
                                     .padding(.top, 30)
                             }
                         case .details:
-                            if instance.userCount != nil {
+                            if instance.administrators != nil {
                                 VStack(spacing: 0) {
                                     InstanceDetailsView(instance: instance)
                                         .padding(.vertical, 16)
@@ -182,6 +141,7 @@ struct InstanceView: View {
                                     InstanceUptimeView(instance: instance, uptimeData: uptimeData)
                                 case .failure(let error):
                                     ErrorView(.init(error: error))
+                                        .padding(.top, 5)
                                 default:
                                     ProgressView()
                                         .padding(.top, 30)
@@ -189,16 +149,22 @@ struct InstanceView: View {
                             }
                             .onAppear(perform: attemptToLoadUptimeData)
                             .onReceive(uptimeRefreshTimer) { _ in attemptToLoadUptimeData() }
-                        default:
-                            EmptyView()
+                        case .safety:
+                            Group {
+                                if let fediseerData {
+                                    InstanceSafetyView(instance: instance, fediseerData: fediseerData)
+                                } else {
+                                    ProgressView()
+                                        .padding(.top, 30)
+                                }
+                            }
+                            .onAppear(perform: attemptToLoadFediseerData)
                         }
                         Spacer()
                             .frame(height: 100)
                     }
-                    .padding(.top, 5)
-                } else {
-                    LoadingView(whatIsLoading: .instanceDetails)
                 }
+                .padding(.top, 5)
             }
         }
         .toolbar {
@@ -208,39 +174,7 @@ struct InstanceView: View {
                 }
             }
         }
-        .task {
-            if instance.administrators == nil {
-                do {
-                    if let url = URL(string: "https://\(instance.name)") {
-                        let info = try await apiClient.loadSiteInformation(instanceURL: url)
-                        DispatchQueue.main.async {
-                            withAnimation(.easeOut(duration: 0.2)) {
-                                instance.update(with: info)
-                            }
-                        }
-                    } else {
-                        errorDetails = ErrorDetails(title: "\"\(instance.name)\" is an invalid URL.")
-                    }
-                } catch let APIClientError.decoding(data, error) {
-                    withAnimation(.easeOut(duration: 0.2)) {
-                        if let content = String(data: data, encoding: .utf8),
-                           content.contains("<div class=\"kbin-container\">") {
-                            errorDetails = ErrorDetails(
-                                title: "KBin Instance",
-                                body: "We can't yet display KBin details.",
-                                icon: Icons.federation
-                            )
-                        } else {
-                            errorDetails = ErrorDetails(error: APIClientError.decoding(data, error))
-                        }
-                    }
-                } catch {
-                    withAnimation(.easeOut(duration: 0.2)) {
-                        errorDetails = ErrorDetails(error: error)
-                    }
-                }
-            }
-        }
+        .onAppear(perform: attemptToLoadInstanceData)
         .fancyTabScrollCompatible()
         .hoistNavigation {
             if navigationPath.isEmpty {
@@ -267,22 +201,28 @@ struct InstanceView: View {
         }
     }
     
-    func attemptToLoadUptimeData() {
-        print("Fetching uptime data...")
-        if let url = instance.uptimeDataUrl {
-            Task {
-                do {
-                    let data = try await URLSession.shared.data(from: url).0
-                    let uptimeData = try JSONDecoder.defaultDecoder.decode(UptimeData.self, from: data)
-                    DispatchQueue.main.async {
-                        withAnimation(.easeOut(duration: 0.2)) {
-                            self.uptimeData = .success(uptimeData)
-                        }
-                    }
-                } catch {
-                    errorHandler.handle(error)
-                }
-            }
+    @ViewBuilder
+    var headerView: some View {
+        AvatarBannerView(instance: instance)
+            .padding(.horizontal, AppConstants.postAndCommentSpacing)
+            .padding(.top, 10)
+        VStack(spacing: 5) {
+            Text(instance.displayName)
+                .font(.title)
+                .fontWeight(.semibold)
+                .lineLimit(1)
+                .minimumScaleFactor(0.01)
+                .transition(.opacity)
+                .id("Title" + instance.displayName) // https://stackoverflow.com/a/60136737/17629371
+            Text(subtitleText)
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+                .transition(.opacity)
+                .id("Subtitle" + subtitleText)
         }
     }
+}
+
+#Preview {
+    InstanceView(instance: .mock())
 }
