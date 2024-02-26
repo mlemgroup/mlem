@@ -64,6 +64,7 @@
 		0321457D2B7F8821001AE07E /* PersonStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321457C2B7F8821001AE07E /* PersonStub.swift */; };
 		0321457F2B7F8971001AE07E /* CommunityOrPersonStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321457E2B7F8971001AE07E /* CommunityOrPersonStub.swift */; };
 		032145812B7F8B4C001AE07E /* BanType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145802B7F8B4C001AE07E /* BanType.swift */; };
+		03289FAD2B8D2A9800163EFE /* ServerInstanceLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03289FAC2B8D2A9800163EFE /* ServerInstanceLocation.swift */; };
 		032C1E042B5D7DAC00FB4F23 /* QuickSwitcherSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032C1E032B5D7DAC00FB4F23 /* QuickSwitcherSettingsView.swift */; };
 		032C1E062B5DBDB100FB4F23 /* LocalAccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032C1E052B5DBDB100FB4F23 /* LocalAccountSettingsView.swift */; };
 		034C724F2A82B61200B8A4B8 /* LayoutWidgetTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034C724E2A82B61200B8A4B8 /* LayoutWidgetTracker.swift */; };
@@ -216,7 +217,6 @@
 		6D91D4582A4159D8006B8F9A /* FavoriteStarButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D91D4572A4159D8006B8F9A /* FavoriteStarButtonStyle.swift */; };
 		6DA61F892A575DF1001EA633 /* URL+WithIconSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA61F882A575DF1001EA633 /* URL+WithIconSize.swift */; };
 		6DA7E9A22A50764E0095AB68 /* UserViewTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA7E9A12A50764E0095AB68 /* UserViewTab.swift */; };
-		6DCE71292A53C26600CFEB5E /* ServerInstanceLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DCE71282A53C26600CFEB5E /* ServerInstanceLocation.swift */; };
 		6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE1183B2A4A217400810C7E /* Profile View.swift */; };
 		6FF17D012B685C16007E1814 /* AppLockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF17D002B685C16007E1814 /* AppLockView.swift */; };
 		6FF17D032B685C55007E1814 /* AppLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF17D022B685C55007E1814 /* AppLock.swift */; };
@@ -404,7 +404,6 @@
 		CDB6514E2B8BB7E9007B7797 /* GetCaptchaRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB64FFB2B8BB7E9007B7797 /* GetCaptchaRequest.swift */; };
 		CDB6514F2B8BB7E9007B7797 /* GetCommentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB64FFC2B8BB7E9007B7797 /* GetCommentRequest.swift */; };
 		CDB651502B8BB7E9007B7797 /* CreatePostReportRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB64FFD2B8BB7E9007B7797 /* CreatePostReportRequest.swift */; };
-		CDB651512B8BB7E9007B7797 /* GetReportCountRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB64FFE2B8BB7E9007B7797 /* GetReportCountRequest.swift */; };
 		CDB651522B8BB7E9007B7797 /* GetUnreadRegistrationApplicationCountRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB64FFF2B8BB7E9007B7797 /* GetUnreadRegistrationApplicationCountRequest.swift */; };
 		CDB651532B8BB7E9007B7797 /* PasswordChangeAfterResetRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB650002B8BB7E9007B7797 /* PasswordChangeAfterResetRequest.swift */; };
 		CDB651542B8BB7E9007B7797 /* ListCommentReportsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB650012B8BB7E9007B7797 /* ListCommentReportsRequest.swift */; };
@@ -818,6 +817,7 @@
 		0321457C2B7F8821001AE07E /* PersonStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonStub.swift; sourceTree = "<group>"; };
 		0321457E2B7F8971001AE07E /* CommunityOrPersonStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityOrPersonStub.swift; sourceTree = "<group>"; };
 		032145802B7F8B4C001AE07E /* BanType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BanType.swift; sourceTree = "<group>"; };
+		03289FAC2B8D2A9800163EFE /* ServerInstanceLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerInstanceLocation.swift; sourceTree = "<group>"; };
 		032C1E032B5D7DAC00FB4F23 /* QuickSwitcherSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSwitcherSettingsView.swift; sourceTree = "<group>"; };
 		032C1E052B5DBDB100FB4F23 /* LocalAccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAccountSettingsView.swift; sourceTree = "<group>"; };
 		034C724E2A82B61200B8A4B8 /* LayoutWidgetTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutWidgetTracker.swift; sourceTree = "<group>"; };
@@ -971,7 +971,6 @@
 		6D91D4572A4159D8006B8F9A /* FavoriteStarButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteStarButtonStyle.swift; sourceTree = "<group>"; };
 		6DA61F882A575DF1001EA633 /* URL+WithIconSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+WithIconSize.swift"; sourceTree = "<group>"; };
 		6DA7E9A12A50764E0095AB68 /* UserViewTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewTab.swift; sourceTree = "<group>"; };
-		6DCE71282A53C26600CFEB5E /* ServerInstanceLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerInstanceLocation.swift; sourceTree = "<group>"; };
 		6DE1183B2A4A217400810C7E /* Profile View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile View.swift"; sourceTree = "<group>"; };
 		6FF17D002B685C16007E1814 /* AppLockView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLockView.swift; sourceTree = "<group>"; };
 		6FF17D022B685C55007E1814 /* AppLock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLock.swift; sourceTree = "<group>"; };
@@ -2303,10 +2302,10 @@
 				CD64832B2A38CE4200EE6CA3 /* Settings */,
 				CD6483352A39F20800EE6CA3 /* Post Type.swift */,
 				03C905CB2B3C88F700B9082F /* SearchTab.swift */,
-				6DCE71282A53C26600CFEB5E /* ServerInstanceLocation.swift */,
 				032145802B7F8B4C001AE07E /* BanType.swift */,
 				CDDCF6522A677F45003DA3AC /* TabSelection.swift */,
 				CDE9CE4E2A7B0B1B002B97DD /* Haptic.swift */,
+				03289FAC2B8D2A9800163EFE /* ServerInstanceLocation.swift */,
 				CDEBC3242A9A57D200518D9D /* Content Type.swift */,
 				CD2053132ACBAF150000AA38 /* AvatarType.swift */,
 				CD4368BD2AE23FA600BD8BD1 /* LoadingState.swift */,
@@ -3934,6 +3933,7 @@
 				CDB6516C2B8BB7EA007B7797 /* ApiCommunityFollowerView.swift in Sources */,
 				CDB651792B8BB7EA007B7797 /* ApiPrivateMessageReport.swift in Sources */,
 				CDB652232B8BB7EA007B7797 /* ApiUpdateTotp.swift in Sources */,
+				03289FAD2B8D2A9800163EFE /* ServerInstanceLocation.swift in Sources */,
 				CDB651622B8BB7EA007B7797 /* ApiRemoveComment.swift in Sources */,
 				CDB651032B8BB7E9007B7797 /* ListPostReportsRequest.swift in Sources */,
 				CDB6514E2B8BB7E9007B7797 /* GetCaptchaRequest.swift in Sources */,
@@ -4009,7 +4009,6 @@
 				5016A2B12A67EB8600B257E8 /* UIViewController+TopMostViewController.swift in Sources */,
 				030E863F2AC6C5E9000283A6 /* PictrsImageModel.swift in Sources */,
 				632E8EE627EE63D3007E8D75 /* VoteButtonView.swift in Sources */,
-				CD62BBEC2B86574A0087C6B5 /* GetReportCountRequest.swift in Sources */,
 				B1A26FE32A45B11800B91A32 /* View+HandleLemmyLinks.swift in Sources */,
 				CDB651862B8BB7EA007B7797 /* ApiGetBannedPersons.swift in Sources */,
 				CDB651332B8BB7E9007B7797 /* CreateSiteRequest.swift in Sources */,
@@ -4043,7 +4042,6 @@
 				CDB651BD2B8BB7EA007B7797 /* ApiRegister.swift in Sources */,
 				032C1E042B5D7DAC00FB4F23 /* QuickSwitcherSettingsView.swift in Sources */,
 				CD6483302A38D31C00EE6CA3 /* VoteCounterView.swift in Sources */,
-				CD62BC9B2B86574A0087C6B5 /* ApiInstance.swift in Sources */,
 				CDB652472B8BB7EA007B7797 /* ApiPasswordReset.swift in Sources */,
 				88B165B82A8643F4007C9115 /* View+NavigationBarColor.swift in Sources */,
 				CDB6514B2B8BB7E9007B7797 /* SaveUserSettingsRequest.swift in Sources */,
