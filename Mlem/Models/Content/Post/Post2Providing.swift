@@ -137,6 +137,7 @@ extension Post2Providing {
             .standardMenuFunction(
                 text: myVote == .upvote ? "Undo Upvote" : "Upvote",
                 imageName: myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvoteSquare,
+                enabled: source.api.token != nil,
                 callback: self.toggleUpvote
             )
         )
@@ -144,6 +145,7 @@ extension Post2Providing {
             .standardMenuFunction(
                 text: myVote == .downvote ? "Undo Downvote" : "Downvote",
                 imageName: myVote == .downvote ? Icons.downvoteSquareFill : Icons.downvoteSquare,
+                enabled: source.api.token != nil,
                 callback: self.toggleDownvote
             )
         )
@@ -151,6 +153,7 @@ extension Post2Providing {
             .standardMenuFunction(
                 text: isSaved ? "Unsave" : "Save",
                 imageName: isSaved ? Icons.saveFill : Icons.save,
+                enabled: source.api.token != nil,
                 callback: self.toggleSave
             )
         )
