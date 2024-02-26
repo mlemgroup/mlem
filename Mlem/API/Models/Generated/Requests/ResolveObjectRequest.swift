@@ -2,7 +2,7 @@
 //  ResolveObjectRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -20,7 +20,7 @@ struct ResolveObjectRequest: ApiGetRequest {
         q: String
     ) {
         self.queryItems = [
-            .init(name: "q", value: "\(q)")
+            .init(name: "q", value: q)
         ]
     }
 }

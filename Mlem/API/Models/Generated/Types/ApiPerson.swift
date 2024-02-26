@@ -2,7 +2,7 @@
 //  ApiPerson.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -23,10 +23,10 @@ struct ApiPerson: Codable {
     let local: Bool
     let banner: URL?
     let deleted: Bool
+    let inboxUrl: String?
     let matrixUserId: String?
+    let admin: Bool?
     let botAccount: Bool
     let banExpires: Date?
     let instanceId: Int
-    let inboxUrl: String?
-    let admin: Bool?
 }

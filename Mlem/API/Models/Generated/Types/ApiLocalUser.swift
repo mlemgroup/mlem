@@ -2,7 +2,7 @@
 //  ApiLocalUser.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -21,11 +21,14 @@ struct ApiLocalUser: Codable {
     let interfaceLanguage: String
     let showAvatars: Bool
     let sendNotificationsToEmail: Bool
+    let validatorTime: String?
     let showScores: Bool
     let showBotAccounts: Bool
     let showReadPosts: Bool
+    let showNewPostNotifs: Bool?
     let emailVerified: Bool
     let acceptedApplication: Bool
+    let totp2faUrl: String?
     let openLinksInNewTab: Bool
     let blurNsfw: Bool?
     let autoExpand: Bool?
@@ -36,7 +39,4 @@ struct ApiLocalUser: Codable {
     let enableKeyboardNavigation: Bool?
     let enableAnimatedImages: Bool?
     let collapseBotComments: Bool?
-    let validatorTime: String?
-    let showNewPostNotifs: Bool?
-    let totp2faUrl: String?
 }

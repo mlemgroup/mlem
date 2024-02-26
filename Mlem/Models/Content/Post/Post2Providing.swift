@@ -90,9 +90,10 @@ extension Post2Providing {
     }
     
     func toggleSave() {
+        let wasSaved = isSaved
         if let oldTask = post2.tasks.save, !oldTask.isCancelled { oldTask.cancel() }
         post2.tasks.save = Task(priority: .userInitiated) { await toggleSaveTask() }
-        if myVote != .upvote, UserDefaults.standard.bool(forKey: "upvoteOnSave") {
+        if myVote != .upvote, !wasSaved, UserDefaults.standard.bool(forKey: "upvoteOnSave") {
             vote(.upvote)
         }
     }

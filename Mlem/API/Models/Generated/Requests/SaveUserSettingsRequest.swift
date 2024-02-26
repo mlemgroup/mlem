@@ -2,7 +2,7 @@
 //  SaveUserSettingsRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -18,8 +18,6 @@ struct SaveUserSettingsRequest: ApiPutRequest {
 
     init(
         showNsfw: Bool?,
-        blurNsfw: Bool?,
-        autoExpand: Bool?,
         showScores: Bool?,
         theme: String?,
         defaultSortType: ApiSortType?,
@@ -36,20 +34,20 @@ struct SaveUserSettingsRequest: ApiPutRequest {
         botAccount: Bool?,
         showBotAccounts: Bool?,
         showReadPosts: Bool?,
+        showNewPostNotifs: Bool?,
         discussionLanguages: [Int]?,
+        generateTotp2fa: Bool?,
         openLinksInNewTab: Bool?,
+        blurNsfw: Bool?,
+        autoExpand: Bool?,
         infiniteScrollEnabled: Bool?,
         postListingMode: ApiPostListingMode?,
         enableKeyboardNavigation: Bool?,
         enableAnimatedImages: Bool?,
-        collapseBotComments: Bool?,
-        showNewPostNotifs: Bool?,
-        generateTotp2fa: Bool?
+        collapseBotComments: Bool?
     ) {
         self.body = .init(
             showNsfw: showNsfw,
-            blurNsfw: blurNsfw,
-            autoExpand: autoExpand,
             showScores: showScores,
             theme: theme,
             defaultSortType: defaultSortType,
@@ -66,15 +64,17 @@ struct SaveUserSettingsRequest: ApiPutRequest {
             botAccount: botAccount,
             showBotAccounts: showBotAccounts,
             showReadPosts: showReadPosts,
+            showNewPostNotifs: showNewPostNotifs,
             discussionLanguages: discussionLanguages,
+            generateTotp2fa: generateTotp2fa,
             openLinksInNewTab: openLinksInNewTab,
+            blurNsfw: blurNsfw,
+            autoExpand: autoExpand,
             infiniteScrollEnabled: infiniteScrollEnabled,
             postListingMode: postListingMode,
             enableKeyboardNavigation: enableKeyboardNavigation,
             enableAnimatedImages: enableAnimatedImages,
-            collapseBotComments: collapseBotComments,
-            showNewPostNotifs: showNewPostNotifs,
-            generateTotp2fa: generateTotp2fa
+            collapseBotComments: collapseBotComments
         )
     }
 }

@@ -2,7 +2,7 @@
 //  AddModToCommunityRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -17,14 +17,14 @@ struct AddModToCommunityRequest: ApiPostRequest {
     let body: Body?
 
     init(
-      communityId: Int,
-      personId: Int,
-      added: Bool
+        communityId: Int,
+        personId: Int,
+        added: Bool
     ) {
         self.body = .init(
-          communityId: communityId,
-          personId: personId,
-          added: added
-      )
+            communityId: communityId,
+            personId: personId,
+            added: added
+        )
     }
 }

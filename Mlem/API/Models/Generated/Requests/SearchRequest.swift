@@ -2,7 +2,7 @@
 //  SearchRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -28,14 +28,14 @@ struct SearchRequest: ApiGetRequest {
         limit: Int?
     ) {
         self.queryItems = [
-            .init(name: "type_", value: type_?.rawValue),
-            .init(name: "sort", value: sort?.rawValue),
-            .init(name: "listing_type", value: listingType?.rawValue),
             .init(name: "q", value: q),
-            .init(name: "page", value: page.map(String.init)),
             .init(name: "community_id", value: communityId.map(String.init)),
             .init(name: "community_name", value: communityName),
             .init(name: "creator_id", value: creatorId.map(String.init)),
+            .init(name: "type_", value: type_?.rawValue),
+            .init(name: "sort", value: sort?.rawValue),
+            .init(name: "listing_type", value: listingType?.rawValue),
+            .init(name: "page", value: page.map(String.init)),
             .init(name: "limit", value: limit.map(String.init))
         ]
     }

@@ -2,7 +2,7 @@
 //  EditSiteRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -56,7 +56,9 @@ struct EditSiteRequest: ApiPutRequest {
         blockedInstances: [String]?,
         taglines: [String]?,
         registrationMode: ApiRegistrationMode?,
-        reportsEmailAdmins: Bool?
+        reportsEmailAdmins: Bool?,
+        contentWarning: String?,
+        autoExpandImages: Bool?
     ) {
         self.body = .init(
             name: name,
@@ -98,7 +100,9 @@ struct EditSiteRequest: ApiPutRequest {
             blockedInstances: blockedInstances,
             taglines: taglines,
             registrationMode: registrationMode,
-            reportsEmailAdmins: reportsEmailAdmins
+            reportsEmailAdmins: reportsEmailAdmins,
+            contentWarning: contentWarning,
+            autoExpandImages: autoExpandImages
         )
     }
 }
