@@ -2,7 +2,7 @@
 //  ListCommunitiesRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -23,11 +23,11 @@ struct ListCommunitiesRequest: ApiGetRequest {
         limit: Int?
     ) {
         self.queryItems = [
-            .init(name: "type_", value: "\(type_)"),
-            .init(name: "sort", value: "\(sort)"),
-            .init(name: "show_nsfw", value: "\(showNsfw)"),
-            .init(name: "page", value: "\(page)"),
-            .init(name: "limit", value: "\(limit)")
+            .init(name: "type_", value: type_?.rawValue),
+            .init(name: "sort", value: sort?.rawValue),
+            .init(name: "show_nsfw", value: showNsfw.map(String.init)),
+            .init(name: "page", value: page.map(String.init)),
+            .init(name: "limit", value: limit.map(String.init))
         ]
     }
 }

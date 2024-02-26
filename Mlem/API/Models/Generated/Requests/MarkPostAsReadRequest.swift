@@ -2,7 +2,7 @@
 //  MarkPostAsReadRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -17,14 +17,14 @@ struct MarkPostAsReadRequest: ApiPostRequest {
     let body: Body?
 
     init(
-        postId: Int?,
-        postIds: [Int]?,
-        read: Bool
+        postId: Int,
+        read: Bool,
+        postIds: [Int]?
     ) {
         self.body = .init(
             postId: postId,
-            postIds: postIds,
-            read: read
+            read: read,
+            postIds: postIds
         )
     }
 }

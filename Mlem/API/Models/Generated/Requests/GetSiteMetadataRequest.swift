@@ -2,7 +2,7 @@
 //  GetSiteMetadataRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -19,7 +19,7 @@ struct GetSiteMetadataRequest: ApiGetRequest {
         url: String
     ) {
         self.queryItems = [
-            .init(name: "url", value: "\(url)")
+            .init(name: "url", value: url)
         ]
     }
 }

@@ -2,7 +2,7 @@
 //  ApiSaveUserSettings.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -12,8 +12,6 @@ import Foundation
 // SaveUserSettings.ts
 struct ApiSaveUserSettings: Codable {
     let showNsfw: Bool?
-    let blurNsfw: Bool?
-    let autoExpand: Bool?
     let showScores: Bool?
     let theme: String?
     let defaultSortType: ApiSortType?
@@ -30,13 +28,15 @@ struct ApiSaveUserSettings: Codable {
     let botAccount: Bool?
     let showBotAccounts: Bool?
     let showReadPosts: Bool?
+    let showNewPostNotifs: Bool?
     let discussionLanguages: [Int]?
+    let generateTotp2fa: Bool?
     let openLinksInNewTab: Bool?
+    let blurNsfw: Bool?
+    let autoExpand: Bool?
     let infiniteScrollEnabled: Bool?
     let postListingMode: ApiPostListingMode?
     let enableKeyboardNavigation: Bool?
     let enableAnimatedImages: Bool?
     let collapseBotComments: Bool?
-    let showNewPostNotifs: Bool?
-    let generateTotp2fa: Bool?
 }

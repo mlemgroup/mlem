@@ -2,7 +2,7 @@
 //  ApiCommunity.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -24,9 +24,11 @@ struct ApiCommunity: Codable {
     let local: Bool
     let icon: URL?
     let banner: URL?
+    let followersUrl: String?
+    let inboxUrl: String?
     let hidden: Bool
     let postingRestrictedToMods: Bool
     let instanceId: Int
-    let followersUrl: String?
-    let inboxUrl: String?
+    let onlyFollowersCanVote: Bool?
+    let visibility: ApiCommunityVisibility?
 }

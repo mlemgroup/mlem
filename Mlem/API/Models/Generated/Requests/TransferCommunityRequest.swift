@@ -2,7 +2,7 @@
 //  TransferCommunityRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -17,12 +17,12 @@ struct TransferCommunityRequest: ApiPostRequest {
     let body: Body?
 
     init(
-      communityId: Int,
-      personId: Int
+        communityId: Int,
+        personId: Int
     ) {
         self.body = .init(
-          communityId: communityId,
-          personId: personId
-      )
+            communityId: communityId,
+            personId: personId
+        )
     }
 }

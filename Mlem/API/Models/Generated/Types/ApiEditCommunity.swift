@@ -2,7 +2,7 @@
 //  ApiEditCommunity.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -19,4 +19,6 @@ struct ApiEditCommunity: Codable {
     let nsfw: Bool?
     let postingRestrictedToMods: Bool?
     let discussionLanguages: [Int]?
+    let onlyFollowersCanVote: Bool?
+    let visibility: ApiCommunityVisibility?
 }

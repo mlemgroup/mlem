@@ -2,7 +2,7 @@
 //  ApiLocalSite.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-21
+//  Created by Eric Andrews on 2024-02-25
 //
 
 // ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
@@ -35,4 +35,6 @@ struct ApiLocalSite: Codable {
     let registrationMode: ApiRegistrationMode
     let reportsEmailAdmins: Bool
     let federationSignedFetch: Bool?
+    let contentWarning: String?
+    let autoExpandImages: Bool?
 }
