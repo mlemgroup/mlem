@@ -70,20 +70,16 @@ struct ExpandedPost: View {
                     resolveProgress = .waiting
                     Task {
                         do {
+                            print("Resolving post...")
                             let newPost = PostStub(source: source, actorId: post.actorId)
                             let shouldKeepId = post.source.actorId.host() == newPost.source.actorId.host()
                             let upgraded = try await newPost.upgrade(id: shouldKeepId ? post.id_ : nil)
                             DispatchQueue.main.async {
+                                print("Resolved post!")
                                 self.post = upgraded
                                 self.resolveProgress = nil
                             }
                         } catch {
-                            switch error {
-                            case let ApiClientError.decoding(data, _):
-                                print(String(data: data, encoding: .utf8))
-                            default:
-                                print(error)
-                            }
                             DispatchQueue.main.async {
                                 resolveProgress = .failed
                             }

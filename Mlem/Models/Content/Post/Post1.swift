@@ -14,7 +14,7 @@ struct PostEmbed {
 }
 
 @Observable
-final class Post1: Post1Providing, NewContentModel {
+final class Post1: Post1Providing, ContentModel {
     typealias ApiType = ApiPost
     var post1: Post1 { self }
     

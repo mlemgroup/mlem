@@ -11,7 +11,7 @@ import SwiftUI
 struct VoteButtonView: View {
     @Dependency(\.hapticManager) var hapticManager
     
-    @State var content: any InteractableContent
+    var content: any InteractableContent
     let voteType: ScoringOperation
     
     init(content: any InteractableContent, voteType: ScoringOperation) {

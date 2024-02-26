@@ -41,10 +41,10 @@ struct InteractionBarView: View {
                 switch widget {
                 case .scoreCounter:
                     ScoreCounterView(content: content)
-                
+
                 case .upvoteCounter:
                     VoteCounterView(content: content, voteType: .upvote)
-
+                    
                 case .downvoteCounter:
                     // if appState.myInstance?.enableDownvotes ?? false {
                     VoteCounterView(content: content, voteType: .downvote)
@@ -71,14 +71,14 @@ struct InteractionBarView: View {
                     EmptyView()
                     InfoStackView(
                         votes: shouldShowScore
-                            ? DetailedVotes(
-                                score: content.score,
-                                upvotes: content.upvoteCount,
-                                downvotes: content.downvoteCount,
-                                myVote: content.myVote,
-                                showDownvotes: showDownvotesSeparately
-                            )
-                            : nil,
+                        ? DetailedVotes(
+                            score: content.score,
+                            upvotes: content.upvoteCount,
+                            downvotes: content.downvoteCount,
+                            myVote: content.myVote,
+                            showDownvotes: showDownvotesSeparately
+                        )
+                        : nil,
                         published: shouldShowTime ? content.creationDate : nil,
                         updated: shouldShowTime ? content.updatedDate : nil,
                         commentCount: shouldShowReplies ? content.commentCount : nil,

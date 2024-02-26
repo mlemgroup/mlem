@@ -63,7 +63,7 @@ class CoreContentCache<Content: CoreModel> {
     }
 }
 
-class BaseContentCache<Content: NewContentModel & AnyObject> {
+class BaseContentCache<Content: ContentModel & AnyObject> {
     private var cachedItems: [Content.ID: WeakReference<Content>] = .init()
     
     func retrieveModel(id: Content.ApiType.ID) -> Content? {
