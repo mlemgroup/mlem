@@ -181,7 +181,7 @@ struct LargePost: View {
         }
         .scaleEffect(x: scaleX, y: scaleY)
         .onChange(of: layoutMode) { newValue in
-            withAnimation(.easeOut(duration: 0.25)) {
+            withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .easeOut(duration: 0.25)) {
                 if newValue == .minimize {
                     scaleX = 0.95
                     scaleY = 0.95
