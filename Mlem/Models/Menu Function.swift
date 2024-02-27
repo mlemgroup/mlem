@@ -56,6 +56,37 @@ extension MenuFunction {
         ))
     }
     
+    // swiftlint:disable:next function_parameter_count
+    static func toggleableMenuFunction(
+        toggle: Bool,
+        trueText: String,
+        trueImageName: String,
+        trueRole: MenuFunctionRole? = nil,
+        falseText: String,
+        falseImageName: String,
+        falseRole: MenuFunctionRole? = nil,
+        enabled: Bool = true,
+        callback: @escaping () -> Void
+    ) -> MenuFunction {
+        if toggle {
+            return standardMenuFunction(
+                text: trueText,
+                imageName: trueImageName,
+                role: trueRole,
+                enabled: enabled,
+                callback: callback
+            )
+        } else {
+            return standardMenuFunction(
+                text: falseText,
+                imageName: falseImageName,
+                role: falseRole,
+                enabled: enabled,
+                callback: callback
+            )
+        }
+    }
+    
     static func navigationMenuFunction(
         text: String,
         imageName: String,

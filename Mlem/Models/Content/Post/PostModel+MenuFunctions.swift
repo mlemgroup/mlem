@@ -175,19 +175,13 @@ extension PostModel {
         var functions: [MenuFunction] = .init()
 
         if creator.userId != siteInformation.userId {
-            let banVerb: String, banIcon: String
-            if creatorBannedFromCommunity {
-                banVerb = "Unban"
-                banIcon = Icons.communityUnban
-            } else {
-                banVerb = "Ban"
-                banIcon = Icons.communityBan
-            }
-            functions.append(MenuFunction.standardMenuFunction(
-                text: "\(banVerb) User",
-                imageName: banIcon,
-                role: .destructive(prompt: nil),
-                enabled: true
+            functions.append(MenuFunction.toggleableMenuFunction(
+                toggle: creatorBannedFromCommunity,
+                trueText: "Unban user",
+                trueImageName: Icons.communityUnban,
+                falseText: "Ban user",
+                falseImageName: Icons.communityBan,
+                falseRole: .destructive(prompt: nil)
             ) {
                 modToolTracker.banUserFromCommunity(self.creator, from: community, shouldBan: !self.creatorBannedFromCommunity)
             })

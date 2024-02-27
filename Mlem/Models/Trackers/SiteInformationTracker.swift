@@ -47,7 +47,7 @@ class SiteInformationTracker: ObservableObject {
                     myUser = try await personRepository.loadUser(for: userInfo.localUserView.localUser.personId)
                     myUser?.isAdmin = response.admins.contains { $0.person.id == myUser?.userId }
                     if let communities = myUser?.moderatedCommunities {
-                        moderatedCommunities = Set(communities.map { $0.communityId })
+                        moderatedCommunities = Set(communities.map(\.communityId))
                     } else {
                         moderatedCommunities = .init(minimumCapacity: 1)
                     }
