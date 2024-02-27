@@ -131,7 +131,7 @@ struct PostFeedView: View {
     @ViewBuilder
     private func feedPost(for post: PostModel) -> some View {
         VStack(spacing: 0) {
-            NavigationLink(.postLinkWithContext(.init(post: post, community: nil, postTracker: postTracker))) {
+            NavigationLink(.postLinkWithContext(.init(post: post, community: communityContext, postTracker: postTracker))) {
                 FeedPost(
                     post: post,
                     postTracker: postTracker,

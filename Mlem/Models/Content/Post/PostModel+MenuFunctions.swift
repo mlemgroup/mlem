@@ -9,9 +9,30 @@ import Foundation
 
 extension PostModel {
     // swiftlint:disable function_body_length
-    func menuFunctions(editorTracker: EditorTracker, postTracker: StandardPostTracker?) -> [MenuFunction] {
+    
+    /// Produces menu functions for this post
+    /// - Parameters:
+    ///   - editorTracker: global EditorTracker
+    ///   - postTracker: optional StandardPostTracker. If present, the block function will remove posts from the tracker by the blocked user.
+    ///   - community: optional CommunityModel. If this and modToolTracker are present, moderator functions will be included in the menu.
+    ///   - modToolTracker: optional ModToolTracker. If this and community are present, moderator functions will be included in the menu.
+    /// - Returns: menu functions for this post
+    func menuFunctions(
+        editorTracker: EditorTracker,
+        postTracker: StandardPostTracker?,
+        community: CommunityModel?,
+        modToolTracker: ModToolTracker?
+    ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         
+        if let community, let modToolTracker {
+            functions.append(.childMenu(
+                titleKey: "Community Moderation",
+                children: modMenuFunctions(community: community, modToolTracker: modToolTracker)
+            )
+            )
+        }
+            
         // Upvote
         functions.append(MenuFunction.standardMenuFunction(
             text: votes.myVote == .upvote ? "Undo Upvote" : "Upvote",
@@ -150,9 +171,7 @@ extension PostModel {
 
     // swiftlint:enable function_body_length
     
-    func modMenuFunctions(community: CommunityModel, modToolTracker: ModToolTracker) -> [MenuFunction] {
-        assert(community.isModerator(siteInformation.userId), "modMenuFunctions called but user is not a mod!")
-        
+    private func modMenuFunctions(community: CommunityModel, modToolTracker: ModToolTracker) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
 
         if creator.userId != siteInformation.userId {

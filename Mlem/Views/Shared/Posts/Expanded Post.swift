@@ -32,6 +32,8 @@ struct ExpandedPost: View {
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.notifier) var notifier
     @Dependency(\.postRepository) var postRepository
+    @Dependency(\.communityRepository) var communityRepository
+    @Dependency(\.siteInformation) var siteInformation
     
     // appstorage
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
@@ -52,11 +54,12 @@ struct ExpandedPost: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
+    @EnvironmentObject var modToolTracker: ModToolTracker
 
     @StateObject var commentTracker: CommentTracker = .init()
     @EnvironmentObject var postTracker: StandardPostTracker
     @StateObject var post: PostModel
-    var community: CommunityModel?
+    @State var community: CommunityModel?
     
     @State var commentErrorDetails: ErrorDetails?
     
@@ -85,7 +88,21 @@ struct ExpandedPost: View {
                 if commentTracker.comments.isEmpty {
                     await loadComments()
                 }
+            }
+            .task {
                 await post.markRead(true)
+            }
+            .task {
+                if community == nil {
+                    do {
+                        let communityResponse: CommunityModel = try await communityRepository.loadDetails(for: post.community.communityId)
+                        await MainActor.run {
+                            community = communityResponse
+                        }
+                    } catch {
+                        errorHandler.handle(error)
+                    }
+                }
             }
             .refreshable { await refreshComments() }
             .onChange(of: commentSortingType) { newSortingType in
@@ -227,8 +244,15 @@ struct ExpandedPost: View {
                     
                     Spacer()
                     
-                    let functions = post.menuFunctions(editorTracker: editorTracker, postTracker: postTracker)
-                    EllipsisMenu(size: 24, menuFunctions: functions)
+                    let isMod = community?.isModerator(siteInformation.userId) ?? false
+                    
+                    let menuFunctions = post.menuFunctions(
+                        editorTracker: editorTracker,
+                        postTracker: postTracker,
+                        community: isMod ? community : nil,
+                        modToolTracker: isMod ? modToolTracker : nil
+                    )
+                    EllipsisMenu(size: 24, menuFunctions: menuFunctions)
                 }
                 
                 LargePost(
