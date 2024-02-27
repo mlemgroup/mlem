@@ -9,7 +9,8 @@ import SwiftUI
 
 extension Animation {
     /// Animation for expanding or collapsing a comment and its child comments.
-    static func showHideComment(_ collapse: Bool) -> Animation {
+    static func showHideComment(_ collapse: Bool) -> Animation? {
+        if UIAccessibility.isReduceMotionEnabled { return nil }
         let standard = (0.4, 1.0, collapse ? 0.25 : 0.3)
         let animationValues = standard
         return .interactiveSpring(
@@ -17,6 +18,11 @@ extension Animation {
             dampingFraction: animationValues.1,
             blendDuration: animationValues.2
         )
+    }
+    
+    static var showHidePost: Animation? {
+        if UIAccessibility.isReduceMotionEnabled { return nil }
+        return .interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.25)
     }
 }
 
