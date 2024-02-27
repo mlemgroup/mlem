@@ -28,7 +28,7 @@ extension PostModel {
         if let community, let modToolTracker {
             functions.append(.childMenu(
                 titleKey: "Community Moderation",
-                children: modMenuFunctions(community: community, modToolTracker: modToolTracker)
+                children: modMenuFunctions(community: community, modToolTracker: modToolTracker, postTracker: postTracker)
             )
             )
         }
@@ -171,7 +171,11 @@ extension PostModel {
 
     // swiftlint:enable function_body_length
     
-    private func modMenuFunctions(community: CommunityModel, modToolTracker: ModToolTracker) -> [MenuFunction] {
+    private func modMenuFunctions(
+        community: CommunityModel,
+        modToolTracker: ModToolTracker,
+        postTracker: StandardPostTracker?
+    ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
 
         if creator.userId != siteInformation.userId {
@@ -183,7 +187,12 @@ extension PostModel {
                 falseImageName: Icons.communityBan,
                 falseRole: .destructive(prompt: nil)
             ) {
-                modToolTracker.banUserFromCommunity(self.creator, from: community, shouldBan: !self.creatorBannedFromCommunity)
+                modToolTracker.banUserFromCommunity(
+                    self.creator,
+                    from: community,
+                    shouldBan: !self.creatorBannedFromCommunity,
+                    postTracker: postTracker
+                )
             })
         }
         

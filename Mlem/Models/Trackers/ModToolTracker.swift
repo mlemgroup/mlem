@@ -10,7 +10,11 @@ import Foundation
 enum ModTool: Hashable, Identifiable {
     case editCommunity(CommunityModel) // community to edit
     case instanceBan(UserModel, Bool) // user to ban, should ban
-    case communityBan(UserModel, CommunityModel, Bool) // user to ban, community to ban from, should ban
+    case communityBan(UserModel, CommunityModel, Bool, StandardPostTracker?) // user to ban, community to ban from, should ban
+    
+    static func == (lhs: ModTool, rhs: ModTool) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
     
     var id: Int { hashValue }
     
@@ -23,7 +27,7 @@ enum ModTool: Hashable, Identifiable {
             hasher.combine("instanceBan")
             hasher.combine(user.uid)
             hasher.combine(shouldBan)
-        case let .communityBan(user, community, shouldBan):
+        case let .communityBan(user, community, shouldBan, _):
             hasher.combine("communityBan")
             hasher.combine(user.uid)
             hasher.combine(community.uid)
@@ -44,7 +48,12 @@ class ModToolTracker: ObservableObject {
         openTool = .instanceBan(user, shouldBan)
     }
     
-    func banUserFromCommunity(_ user: UserModel, from community: CommunityModel, shouldBan: Bool) {
-        openTool = .communityBan(user, community, shouldBan)
+    func banUserFromCommunity(
+        _ user: UserModel,
+        from community: CommunityModel,
+        shouldBan: Bool,
+        postTracker: StandardPostTracker?
+    ) {
+        openTool = .communityBan(user, community, shouldBan, postTracker)
     }
 }

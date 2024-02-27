@@ -36,6 +36,7 @@ struct BanUserView: View {
     let user: UserModel
     let community: CommunityModel? // if nil, instance ban; otherwise community ban
     let shouldBan: Bool
+    let postTracker: StandardPostTracker? // if present, will update with new banned status
     
     @State var reason: String = ""
     @State var days: Int = 1
@@ -282,6 +283,15 @@ struct BanUserView: View {
     private func handleResult(_ result: Bool) async {
         if result == shouldBan {
             await notifier.add(.success("\(verb.capitalized)"))
+            
+            await MainActor.run {
+                if let postTracker {
+                    for post in postTracker.items where post.creator.userId == user.userId {
+                        post.creatorBannedFromCommunity = shouldBan
+                    }
+                }
+            }
+            
             DispatchQueue.main.async {
                 dismiss()
             }
@@ -292,5 +302,5 @@ struct BanUserView: View {
 }
 
 #Preview {
-    BanUserView(user: .mock(), community: .mock(), shouldBan: true)
+    BanUserView(user: .mock(), community: .mock(), shouldBan: true, postTracker: nil)
 }
