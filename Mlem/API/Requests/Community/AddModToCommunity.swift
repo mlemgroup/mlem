@@ -17,7 +17,7 @@ struct AddModToCommunityRequest: APIPostRequest {
     struct Body: Encodable {
         let community_id: Int
         let person_id: Int
-        let add: Bool
+        let added: Bool
         let auth: String
     }
 
@@ -25,13 +25,13 @@ struct AddModToCommunityRequest: APIPostRequest {
         session: APISession,
         communityId: Int,
         personId: Int,
-        add: Bool
+        added: Bool
     ) throws {
         self.instanceURL = try session.instanceUrl
         self.body = try .init(
             community_id: communityId,
             person_id: personId,
-            add: add,
+            added: added,
             auth: session.token
         )
     }

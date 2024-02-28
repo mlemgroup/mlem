@@ -19,7 +19,7 @@ struct APIPost: Decodable {
     let embedDescription: String?
     let embedTitle: String?
     let embedVideoUrl: String?
-    let featuredCommunity: Bool
+    var featuredCommunity: Bool
     let featuredLocal: Bool
     let languageId: Int
     let apId: String

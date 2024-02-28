@@ -287,6 +287,8 @@ struct CommunityModel {
     ///   - to: new mod status
     mutating func updateModStatus(of userId: Int, to status: Bool) async {
         do {
+            print(userId)
+            print(communityId)
             let newModerators = try await apiClient.updateModStatus(of: userId, in: communityId, status: status)
             moderators = newModerators
         } catch {

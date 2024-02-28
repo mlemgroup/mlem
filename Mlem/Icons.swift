@@ -51,6 +51,7 @@ enum Icons {
     static let textPost: String = "text.book.closed"
     static let titleOnlyPost: String = "character.bubble"
     static let pinned: String = "pin.fill"
+    static let unpinned: String = "pin.slash.fill"
     static let websiteIcon: String = "globe"
     static let read: String = "book"
     
@@ -203,6 +204,7 @@ enum Icons {
     static let auditUser: String = "person.crop.circle.badge.questionmark.fill"
     static let communityBan: String = "xmark.shield"
     static let communityUnban: String = "checkmark.shield"
+    static let unmod: String = "shield.slash"
     
     // misc
     static let `private`: String = "lock"

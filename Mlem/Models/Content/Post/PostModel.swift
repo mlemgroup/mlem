@@ -15,6 +15,7 @@ class PostModel: ContentIdentifiable, ObservableObject {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.postRepository) var postRepository
+    @Dependency(\.commentRepository) var communityRepository
     @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.notifier) var notifier
     
@@ -232,6 +233,17 @@ class PostModel: ContentIdentifiable, ObservableObject {
             hapticManager.play(haptic: .success, priority: .high)
             let response = try await postRepository.editPost(postId: postId, name: name, url: url, body: body, nsfw: nsfw)
             await reinit(from: response)
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+        }
+    }
+    
+    func toggleFeatured(featureType: ApiPostFeatureType) async {
+        // no state fake because it would be extremely tedious for little value add now but very easy to do post-2.0
+        do {
+            let response = try await apiClient.featurePost(id: postId, shouldFeature: !post.featuredCommunity, featureType: featureType)
+            await reinit(from: PostModel(from: response))
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)

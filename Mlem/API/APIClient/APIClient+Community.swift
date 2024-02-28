@@ -103,8 +103,9 @@ extension APIClient {
             session: session,
             communityId: communityId,
             personId: userId,
-            add: status
+            added: status
         )
+        print(request)
         let response = try await perform(request: request)
         
         // validate response

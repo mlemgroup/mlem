@@ -177,6 +177,18 @@ extension PostModel {
         postTracker: StandardPostTracker?
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
+        
+        functions.append(MenuFunction.toggleableMenuFunction(
+            toggle: post.featuredCommunity,
+            trueText: "Unpin post",
+            trueImageName: Icons.unpinned,
+            falseText: "Pin post",
+            falseImageName: Icons.pinned
+        ) {
+            Task {
+                await self.toggleFeatured(featureType: .community)
+            }
+        })
 
         if creator.userId != siteInformation.userId {
             functions.append(MenuFunction.toggleableMenuFunction(

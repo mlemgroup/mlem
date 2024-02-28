@@ -118,4 +118,14 @@ extension APIClient {
         let request = try SavePostRequest(session: session, postId: id, save: shouldSave)
         return try await perform(request: request).postView
     }
+    
+    func featurePost(id: Int, shouldFeature: Bool, featureType: ApiPostFeatureType) async throws -> APIPostView {
+        let request = try FeaturePostRequest(
+            session: session,
+            postId: id,
+            featured: shouldFeature,
+            featureType: featureType
+        )
+        return try await perform(request: request).postView
+    }
 }
