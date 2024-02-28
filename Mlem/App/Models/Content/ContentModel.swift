@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol NewContentModel: ActorIdentifiable, Identifiable {
+protocol ContentModel: ActorIdentifiable, Identifiable {
     associatedtype ApiType: ActorIdentifiable & Identifiable where ApiType.ID == ID
     
     var source: any ApiSource { get }
@@ -15,7 +15,7 @@ protocol NewContentModel: ActorIdentifiable, Identifiable {
     func update(with: ApiType)
 }
 
-extension NewContentModel where Self.ApiType: Mockable {
+extension ContentModel where Self.ApiType: Mockable {
     /// Returns a version of the
     static func mock(_ apiItem: ApiType = .mock) -> Self {
         .init(source: MockApiSource(), from: apiItem)
