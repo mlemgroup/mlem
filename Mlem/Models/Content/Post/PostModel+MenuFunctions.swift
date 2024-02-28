@@ -181,12 +181,26 @@ extension PostModel {
         functions.append(MenuFunction.toggleableMenuFunction(
             toggle: post.featuredCommunity,
             trueText: "Unpin post",
-            trueImageName: Icons.unpinned,
+            trueImageName: Icons.unpin,
             falseText: "Pin post",
-            falseImageName: Icons.pinned
+            falseImageName: Icons.pin
         ) {
             Task {
                 await self.toggleFeatured(featureType: .community)
+                await self.notifier.add(.success("\(self.post.featuredCommunity ? "P" : "Unp")inned post"))
+            }
+        })
+        
+        functions.append(MenuFunction.toggleableMenuFunction(
+            toggle: post.locked,
+            trueText: "Unlock post",
+            trueImageName: Icons.unlock,
+            falseText: "Lock post",
+            falseImageName: Icons.lock
+        ) {
+            Task {
+                await self.toggleLocked()
+                await self.notifier.add(.success("\(self.post.locked ? "L" : "Unl")ocked post"))
             }
         })
 

@@ -250,6 +250,17 @@ class PostModel: ContentIdentifiable, ObservableObject {
         }
     }
     
+    func toggleLocked() async {
+        // no state fake because it would be extremely tedious for little value add now but very easy to do post-2.0
+        do {
+            let response = try await apiClient.lockPost(id: postId, shouldLock: !post.locked)
+            await reinit(from: PostModel(from: response))
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+        }
+    }
+    
     func delete() async {
         // state fake
         let original: PostModel = .init(from: self)

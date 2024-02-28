@@ -128,4 +128,9 @@ extension APIClient {
         )
         return try await perform(request: request).postView
     }
+    
+    func lockPost(id: Int, shouldLock: Bool) async throws -> APIPostView {
+        let request = try LockPostRequest(session: session, postId: id, locked: shouldLock)
+        return try await perform(request: request).postView
+    }
 }
