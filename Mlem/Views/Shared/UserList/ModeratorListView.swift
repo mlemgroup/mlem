@@ -28,10 +28,6 @@ struct ModeratorListView: View {
                     Divider()
                 }
             }
-            
-            if community.isModerator(siteInformation.userId) {
-                Text("add mod")
-            }
         }
     }
 }
