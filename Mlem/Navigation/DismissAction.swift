@@ -20,7 +20,8 @@ final class Navigation: ObservableObject {
     typealias AuxiliaryAction = () -> Bool
     
     /// Specify behaviour to use when user triggers a navigation action.
-    var behaviour: Behaviour = .primaryAuxiliary
+    @AppStorage("tabBarActionBehaviour") 
+    var behaviour: Behaviour = .primary
     
     /// Actions associated with specific locations along a navigation path.
     var pathActions: [Int: (dismiss: DismissAction?, auxiliaryAction: AuxiliaryAction?)] = [:]
@@ -39,7 +40,7 @@ final class Navigation: ObservableObject {
 
 extension Navigation {
     ///
-    enum Behaviour {
+    enum Behaviour: Int, CaseIterable {
         /// Mimics Apple platforms tab bar navigation behaviour (i.e. pop to root regardless of navigation stack size, then scroll to top).
         case system
         /// Only perform the primary action for navigation (this defaults to dismiss action).
@@ -229,16 +230,72 @@ struct PerformTabBarNavigation: ViewModifier {
         // Customization based on user preference should occur here, for example:
         switch behaviour {
         case .system:
-            // performSystemPopToRootBehaviour()
-            break
+             performSystemPopToRoot()
         case .primary:
-            // performDimsissOnly()
-            break
+             performPrimaryOnly()
         case .primaryAuxiliary:
             performDismissAfterAuxiliary()
         case .none:
             // noOp()
             break
+        }
+    }
+    
+    private func performSystemPopToRoot() {
+        if navigationPath.isEmpty {
+            guard let pathAction = navigator.pathActions[0] else {
+#if DEBUG
+                print(#function, "path action not found after popping to root")
+#endif
+                return
+            }
+            
+            let performed = pathAction.auxiliaryAction?() ?? false
+            if !performed, let dismiss = pathAction.dismiss {
+#if DEBUG
+                print("found auxiliary action, but that logic has been exhausted...perform standard dismiss action")
+                print("perform tab navigation on \(tab) tab")
+#endif
+                dismiss()
+            } else {
+#if DEBUG
+                print("performed auxiliary action")
+#endif
+            }
+        } else {
+            routesNavigationPath.wrappedValue = []
+        }
+    }
+    
+    private func performPrimaryOnly() {
+#if DEBUG
+        print("perform action on path index -> \(navigationPath.count)")
+#endif
+        guard let pathAction = navigator.pathActions[navigationPath.count] else {
+#if DEBUG
+            print("path action not found at index -> \(navigationPath.count)")
+#endif
+            return
+        }
+        
+        if navigationPath.isEmpty {
+            /// Users most likely expect scroll-to-top action:
+            /// Perform auxiliary action first, then perform dismiss.
+            let performed = pathAction.auxiliaryAction?() ?? false
+            if !performed, let dismiss = pathAction.dismiss {
+                dismiss()
+            }
+        } else {
+            if let dismiss = pathAction.dismiss {
+#if DEBUG
+                print("perform dismiss action via tab navigation on \(tab) tab")
+#endif
+                dismiss()
+            } else {
+#if DEBUG
+                print("attempted tab navigation -> action(s) not found")
+#endif
+            }
         }
     }
     
@@ -278,4 +335,66 @@ struct PerformTabBarNavigation: ViewModifier {
             #endif
         }
     }
+}
+
+extension Navigation.Behaviour: CustomStringConvertible, CustomDebugStringConvertible {
+    var description: String {
+        switch self {
+        case .system:
+            "Return to first page..."
+        case .primary:
+            "Return to previous page..."
+        case .primaryAuxiliary:
+            "Scroll to top..."
+        case .none:
+            "Do nothing"
+        }
+    }
+    
+    var debugDescription: String {
+        switch self {
+        case .system:
+            "system"
+        case .primary:
+            "primary"
+        case .primaryAuxiliary:
+            "primary auxiliary"
+        case .none:
+            "none"
+        }
+    }
+}
+
+extension Navigation.Behaviour {
+    
+    var systemImage: String {
+        switch self {
+        case .system:
+            "arrow.backward.to.line.circle"
+        case .primary:
+            "arrow.backward.circle"
+        case .primaryAuxiliary:
+            "arrow.up.to.line.circle"
+        case .none:
+            "circle.slash"
+        }
+    }
+    
+    var explanation: String {
+        switch self {
+        case .system:
+            "Return to first page, then scroll to top."
+        case .primary:
+            "Return to previous page until the first page, then scroll to top."
+        case .primaryAuxiliary:
+            "Always scroll to top before returning to previous page."
+        case .none:
+            ""
+        }
+    }
+}
+
+extension Navigation.Behaviour: SettingsOptions {
+    var label: String { description }
+    var id: Self { self }
 }

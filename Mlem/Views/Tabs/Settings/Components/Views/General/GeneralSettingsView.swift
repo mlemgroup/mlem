@@ -26,6 +26,8 @@ struct GeneralSettingsView: View {
     
     @AppStorage("openLinksInBrowser") var openLinksInBrowser: Bool = false
 
+    @AppStorage("tabBarActionBehaviour") private var tabBarActionBehaviour: Navigation.Behaviour = .primary
+
     @EnvironmentObject var appState: AppState
 
     @State var showErrorAlert: Bool = false
@@ -137,6 +139,27 @@ struct GeneralSettingsView: View {
                 )
             } header: {
                 Text("Privacy")
+            }
+            
+            Section {
+                Picker(selection: $tabBarActionBehaviour) {
+                    ForEach(Navigation.Behaviour.allCases) { value in
+                        Label {
+                            Text(value.label)
+                        } icon: {
+                            Image(systemName: value.systemImage)
+                                .foregroundColor(.pink)
+                        }
+                    }
+                } label: {
+                    EmptyView()
+                }
+                .pickerStyle(.inline)
+                .accentColor(.pink)
+            } header: {
+                Text("Tap tab bar icon to...")
+            } footer: {
+                Text(tabBarActionBehaviour.explanation)
             }
         }
         .fancyTabScrollCompatible()
