@@ -8,7 +8,7 @@
 import Foundation
 
 struct RemovePostRequest: APIPostRequest {
-    typealias Response = ApiPostResponse
+    typealias Response = APIPostResponse
     
     var instanceURL: URL
     let path = "post/remove"

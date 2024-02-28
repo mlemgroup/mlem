@@ -57,7 +57,6 @@ class SiteInformationTracker: ObservableObject {
                     markReadBatcher.resolveSiteVersion(to: version)
                 }
             } catch {
-                print("DEBUG \(error)")
                 errorHandler.handle(error)
             }
         }

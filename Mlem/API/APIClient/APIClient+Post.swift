@@ -119,7 +119,7 @@ extension APIClient {
         return try await perform(request: request).postView
     }
     
-    func featurePost(id: Int, shouldFeature: Bool, featureType: ApiPostFeatureType) async throws -> APIPostView {
+    func featurePost(id: Int, shouldFeature: Bool, featureType: APIPostFeatureType) async throws -> APIPostView {
         let request = try FeaturePostRequest(
             session: session,
             postId: id,

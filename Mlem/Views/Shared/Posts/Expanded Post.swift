@@ -92,18 +92,6 @@ struct ExpandedPost: View {
             .task {
                 await post.markRead(true)
             }
-            .task {
-                if community == nil {
-                    do {
-                        let communityResponse: CommunityModel = try await communityRepository.loadDetails(for: post.community.communityId)
-                        await MainActor.run {
-                            community = communityResponse
-                        }
-                    } catch {
-                        errorHandler.handle(error)
-                    }
-                }
-            }
             .refreshable { await refreshComments() }
             .onChange(of: commentSortingType) { newSortingType in
                 withAnimation(.easeIn(duration: 0.4)) {
@@ -244,12 +232,12 @@ struct ExpandedPost: View {
                     
                     Spacer()
                     
-                    let isMod = community?.isModerator(siteInformation.userId) ?? false
+                    let isMod = siteInformation.moderatedCommunities.contains(post.community.communityId)
                     
                     let menuFunctions = post.menuFunctions(
                         editorTracker: editorTracker,
                         postTracker: postTracker,
-                        community: isMod ? community : nil,
+                        community: isMod ? post.community : nil,
                         modToolTracker: isMod ? modToolTracker : nil
                     )
                     EllipsisMenu(size: 24, menuFunctions: menuFunctions)

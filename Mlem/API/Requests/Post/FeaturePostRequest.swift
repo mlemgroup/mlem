@@ -8,7 +8,7 @@
 import Foundation
 
 struct FeaturePostRequest: APIPostRequest {
-    typealias Response = ApiPostResponse
+    typealias Response = APIPostResponse
     
     var instanceURL: URL
     let path = "post/feature"
@@ -25,7 +25,7 @@ struct FeaturePostRequest: APIPostRequest {
         session: APISession,
         postId: Int,
         featured: Bool,
-        featureType: ApiPostFeatureType
+        featureType: APIPostFeatureType
     ) throws {
         self.instanceURL = try session.instanceUrl
         

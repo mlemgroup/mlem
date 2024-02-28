@@ -5,12 +5,10 @@
 //  Created by Eric Andrews on 2024-02-27
 //
 
-// ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
-
 import Foundation
 
 struct LockPostRequest: APIPostRequest {
-    typealias Response = ApiPostResponse
+    typealias Response = APIPostResponse
     
     var instanceURL: URL
     let path = "post/lock"

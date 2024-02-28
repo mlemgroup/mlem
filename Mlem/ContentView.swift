@@ -154,14 +154,6 @@ struct ContentView: View {
             .presentationDragIndicator(.hidden)
             ._presentationBackgroundInteraction(enabledUpThrough: .medium)
         }
-//        .sheet(item: $editorTracker.banUser) { editing in
-//            NavigationStack {
-//                BanUserView(editModel: editing)
-//            }
-//            .presentationDetents([.medium, .large], selection: .constant(.large))
-//            .presentationDragIndicator(.hidden)
-//            ._presentationBackgroundInteraction(enabledUpThrough: .medium)
-//        }
         .sheet(item: $quickLookState.url) { url in
             NavigationStack {
                 ImageDetailView(url: url)

@@ -239,7 +239,7 @@ class PostModel: ContentIdentifiable, ObservableObject {
         }
     }
     
-    func toggleFeatured(featureType: ApiPostFeatureType) async {
+    func toggleFeatured(featureType: APIPostFeatureType) async {
         // no state fake because it would be extremely tedious for little value add now but very easy to do post-2.0
         do {
             let response = try await apiClient.featurePost(id: postId, shouldFeature: !post.featuredCommunity, featureType: featureType)
