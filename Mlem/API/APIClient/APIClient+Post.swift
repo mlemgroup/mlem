@@ -134,8 +134,9 @@ extension APIClient {
         return try await perform(request: request).postView
     }
     
-    func removePost(id: Int, shouldRemove: Bool, reason: String?) async throws -> APIPostView {
+    func removePost(id: Int, shouldRemove: Bool, reason: String?) async throws -> PostModel {
         let request = try RemovePostRequest(session: session, postId: id, removed: shouldRemove, reason: reason)
-        return try await perform(request: request).postView
+        let response = try await perform(request: request).postView
+        return PostModel(from: response)
     }
 }

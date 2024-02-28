@@ -17,6 +17,7 @@ struct RemovePostView: View {
     
     @State var reason: String = ""
     @FocusState var reasonFocused: FocusedField?
+    @State var isWaiting: Bool = false
     
     let post: PostModel
     let shouldRemove: Bool
@@ -40,16 +41,19 @@ struct RemovePostView: View {
                         dismiss()
                     }
                     .tint(.red)
-                    // .disabled(isWaiting)
+                    .disabled(isWaiting)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-//                    if isWaiting {
-//                        ProgressView()
-//                    } else {
+                    if isWaiting {
+                        ProgressView()
+                    } else {
                         Button("Confirm", systemImage: Icons.send, action: confirm)
-//                     }
+                    }
                 }
             }
+            .allowsHitTesting(!isWaiting)
+            .opacity(isWaiting ? 0.5 : 1)
+            .interactiveDismissDisabled(isWaiting)
             .navigationTitle("\(verb) Post")
             .navigationBarTitleDisplayMode(.inline)
     }
@@ -61,14 +65,20 @@ struct RemovePostView: View {
     }
     
     private func confirm() {
-        // print("Confirmed")
+        isWaiting = true
+        
         Task {
-            do {
-                _ = try await apiClient.removePost(id: post.postId, shouldRemove: shouldRemove, reason: reason)
+            await post.toggleRemove(reason: reason.isEmpty ? nil : reason)
+            
+            if post.post.removed {
                 await notifier.add(.success("\(verb)d post"))
-                dismiss()
-            } catch {
-                errorHandler.handle(error)
+                DispatchQueue.main.async {
+                    dismiss()
+                }
+            } else {
+                DispatchQueue.main.async {
+                    isWaiting = false
+                }
             }
         }
     }

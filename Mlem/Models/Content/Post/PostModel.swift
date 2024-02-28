@@ -277,6 +277,21 @@ class PostModel: ContentIdentifiable, ObservableObject {
         }
     }
     
+    func toggleRemove(reason: String?) async {
+        // no need to state fake because removal masked by sheet
+        do {
+            let response = try await apiClient.removePost(
+                id: postId,
+                shouldRemove: !post.removed,
+                reason: reason
+            )
+            await reinit(from: response)
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+        }
+    }
+    
     // MARK: Utility Methods
     
     var postType: PostType {

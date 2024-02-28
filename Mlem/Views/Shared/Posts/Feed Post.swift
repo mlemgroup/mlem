@@ -104,8 +104,8 @@ struct FeedPost: View {
     }
 
     var body: some View {
-        // this allows post deletion to not require tracker updates
-        if postModel.post.deleted {
+        // this allows post deletion/removal to not require tracker updates
+        if postModel.post.deleted || postModel.post.removed {
             EmptyView()
         } else {
             VStack(spacing: 0) {

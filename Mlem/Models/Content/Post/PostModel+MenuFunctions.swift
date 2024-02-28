@@ -208,10 +208,10 @@ extension PostModel {
         functions.append(MenuFunction.toggleableMenuFunction(
             toggle: post.removed,
             trueText: "Restore post",
-            trueImageName: Icons.remove,
-            trueRole: .destructive(prompt: nil),
+            trueImageName: Icons.restore,
             falseText: "Remove post",
-            falseImageName: Icons.restore
+            falseImageName: Icons.remove,
+            falseRole: .destructive(prompt: nil)
         ) {
             modToolTracker.removePost(self, shouldRemove: !self.post.removed)
         })
