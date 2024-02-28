@@ -43,6 +43,7 @@ class AccountsTracker {
             return
         }
         savedAccounts.remove(at: index)
+        saveAccounts()
     }
     
     func saveAccounts() {

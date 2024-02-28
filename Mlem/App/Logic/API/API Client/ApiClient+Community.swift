@@ -10,7 +10,7 @@ import Foundation
 extension ApiClient {
     func getCommunity(id: Int) async throws -> ApiGetCommunityResponse {
         let request = GetCommunityRequest(id: id, name: nil)
-        return try await perform(request: request)
+        return try await perform(request)
     }
     
     func getCommunity(actorId: URL) async throws -> ApiCommunityView? {
@@ -25,7 +25,7 @@ extension ApiClient {
             page: 1,
             limit: 1
         )
-        let response = try await perform(request: request)
+        let response = try await perform(request)
         return response.communities.first
     }
 }

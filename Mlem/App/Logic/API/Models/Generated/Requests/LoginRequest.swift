@@ -13,7 +13,7 @@ struct LoginRequest: ApiPostRequest {
     typealias Body = ApiLogin
     typealias Response = ApiLoginResponse
 
-    let path = "/user/login"
+    let path = "user/login"
     let body: Body?
 
     init(

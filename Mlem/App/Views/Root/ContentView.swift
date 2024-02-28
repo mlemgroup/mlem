@@ -9,11 +9,18 @@ import Dependencies
 import SwiftUI
 
 struct ContentView: View {
-    @Environment(\.scenePhase) var scenePhase
-    
+    @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.accountsTracker) var accountsTracker
     
-    @Environment(AppState.self) var appState
+    @Environment(\.scenePhase) var scenePhase
+    
+    // app state
+    @State var appState: AppState = {
+        @Dependency(\.accountsTracker) var accountsTracker
+        return AppState(apiSource: accountsTracker.defaultAccount)
+    }()
+
+    let timer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
     
     // tabs
     @State private var tabSelection: TabSelection = .feeds
@@ -29,6 +36,35 @@ struct ContentView: View {
     var profileTabLabel: String { "Profile" }
     
     var body: some View {
+        content
+            .task(id: appState.actorId) {
+                do {
+                    appState.myInstance = try await appState.instanceStub?.upgrade()
+                } catch {
+                    errorHandler.handle(error)
+                }
+            }
+            .onReceive(timer) { _ in
+                print("Clearing caches...")
+                appState.apiSource?.caches.clean()
+                Instance1.cache.clean()
+                Instance2.cache.clean()
+                Instance3.cache.clean()
+            }
+            .sheet(isPresented: $isPresentingAccountSwitcher) {
+                QuickSwitcherView()
+                    .presentationDetents([.medium, .large])
+            }
+            .onChange(of: scenePhase) {
+                // when app moves into background, hide the account switcher. This prevents the app from reopening with the switcher enabled.
+                if scenePhase != .active {
+                    isPresentingAccountSwitcher = false
+                }
+            }
+            .environment(appState)
+    }
+    
+    var content: some View {
         FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
             Group {
                 FeedsView()
@@ -52,24 +88,6 @@ struct ContentView: View {
                         )
                         .simultaneousGesture(accountSwitchLongPress)
                     }
-            }
-        }
-        .task(id: appState.actorId, priority: .background) {
-            await accountChanged()
-        }
-        .sheet(isPresented: $isPresentingAccountSwitcher) {
-            if accountsTracker.savedAccounts.count == 1 {
-                EmptyView()
-                // AddSavedInstanceView(onboarding: false)
-            } else {
-                QuickSwitcherView()
-                    .presentationDetents([.medium, .large])
-            }
-        }
-        .onChange(of: scenePhase) {
-            // when app moves into background, hide the account switcher. This prevents the app from reopening with the switcher enabled.
-            if scenePhase != .active {
-                isPresentingAccountSwitcher = false
             }
         }
     }

@@ -112,6 +112,7 @@ struct AccountButtonView: View {
             Button("Sign Out", role: .destructive) {
                 Task {
                     if let currentAccount = appState.apiSource {
+                        print("DEBUG YES")
                         accountsTracker.removeAccount(account: account)
                         if currentAccount.actorId == account.actorId {
                             if let first = accountsTracker.savedAccounts.first {
@@ -121,6 +122,8 @@ struct AccountButtonView: View {
                             }
                             dismiss()
                         }
+                    } else {
+                        print("DEBUG NO")
                     }
                 }
             }

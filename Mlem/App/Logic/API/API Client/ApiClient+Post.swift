@@ -26,7 +26,7 @@ extension ApiClient {
             limit: limit,
             savedOnly: savedOnly
         )
-        return try await perform(request: request)
+        return try await perform(request)
     }
     
     // swiftlint:disable:next function_parameter_count
@@ -48,7 +48,7 @@ extension ApiClient {
             limit: limit,
             savedOnly: savedOnly
         )
-        let response = try await perform(request: request)
+        let response = try await perform(request)
         print("RESPONSE", response.posts.first?.post.name)
         return response
     }

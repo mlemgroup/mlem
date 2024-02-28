@@ -10,6 +10,6 @@ import Foundation
 extension ApiClient {
     func getSite() async throws -> ApiGetSiteResponse {
         let request = GetSiteRequest()
-        return try await perform(request: request)
+        return try await perform(request)
     }
 }

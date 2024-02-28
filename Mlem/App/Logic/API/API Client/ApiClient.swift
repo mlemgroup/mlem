@@ -18,12 +18,12 @@ class ApiClient {
     
     init(baseUrl: URL, token: String? = nil) {
         self.baseUrl = baseUrl
-        self.endpointUrl = baseUrl.appendingPathComponent("api/v3")
+        self.endpointUrl = baseUrl // baseUrl.appendingPathComponent("api/v3")
         self.token = token
     }
     
     @discardableResult
-    func perform<Request: ApiRequest>(request: Request) async throws -> Request.Response {
+    func perform<Request: ApiRequest>(_ request: Request) async throws -> Request.Response {
         let urlRequest = try urlRequest(from: request)
         print(urlRequest)
 

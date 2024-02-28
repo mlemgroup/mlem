@@ -48,7 +48,6 @@
 		03AFBE9A2B6E65A400F01F3C /* NewContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFBE992B6E65A400F01F3C /* NewContentModel.swift */; };
 		03AFBE9C2B6E676600F01F3C /* Community2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFBE9B2B6E676600F01F3C /* Community2.swift */; };
 		03AFBE9E2B6E79D200F01F3C /* Community3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFBE9D2B6E79D200F01F3C /* Community3.swift */; };
-		03B7AAF12ABE404300068B23 /* ContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B7AAF02ABE404300068B23 /* ContentModel.swift */; };
 		03E1E0472B76BF660009DF9F /* InstanceStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E0462B76BF660009DF9F /* InstanceStub.swift */; };
 		03E1E0492B76BFC20009DF9F /* Instance1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E0482B76BFC20009DF9F /* Instance1.swift */; };
 		03E1E04C2B7771710009DF9F /* Person1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E04B2B7771710009DF9F /* Person1.swift */; };
@@ -480,6 +479,7 @@
 		CD4D591C2B87B43D00B82964 /* Task+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591B2B87B43D00B82964 /* Task+Extensions.swift */; };
 		CD4D591E2B87B4C900B82964 /* StandardPostFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591D2B87B4C900B82964 /* StandardPostFeedLoader.swift */; };
 		CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591F2B87B63300B82964 /* SettingsOptions.swift */; };
+		CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8202B8FC411007953EF /* LandingPage.swift */; };
 		CDB7AFC22B82FAE60013E0F0 /* GetPostsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7AFC12B82FAE60013E0F0 /* GetPostsRequest.swift */; };
 		CDB7AFC42B82FB210013E0F0 /* APIListingType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7AFC32B82FB210013E0F0 /* APIListingType+Extensions.swift */; };
 		CDB7BEBA2B83C29F0013E0F0 /* APIPost+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7BEB92B83C29F0013E0F0 /* APIPost+Extensions.swift */; };
@@ -566,7 +566,6 @@
 		03AFBE992B6E65A400F01F3C /* NewContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewContentModel.swift; sourceTree = "<group>"; };
 		03AFBE9B2B6E676600F01F3C /* Community2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Community2.swift; sourceTree = "<group>"; };
 		03AFBE9D2B6E79D200F01F3C /* Community3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Community3.swift; sourceTree = "<group>"; };
-		03B7AAF02ABE404300068B23 /* ContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentModel.swift; sourceTree = "<group>"; };
 		03E1E0462B76BF660009DF9F /* InstanceStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceStub.swift; sourceTree = "<group>"; };
 		03E1E0482B76BFC20009DF9F /* Instance1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instance1.swift; sourceTree = "<group>"; };
 		03E1E04B2B7771710009DF9F /* Person1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person1.swift; sourceTree = "<group>"; };
@@ -995,6 +994,7 @@
 		CD4D591B2B87B43D00B82964 /* Task+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+Extensions.swift"; sourceTree = "<group>"; };
 		CD4D591D2B87B4C900B82964 /* StandardPostFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardPostFeedLoader.swift; sourceTree = "<group>"; };
 		CD4D591F2B87B63300B82964 /* SettingsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOptions.swift; sourceTree = "<group>"; };
+		CDA1E8202B8FC411007953EF /* LandingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPage.swift; sourceTree = "<group>"; };
 		CDB7AFC12B82FAE60013E0F0 /* GetPostsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPostsRequest.swift; sourceTree = "<group>"; };
 		CDB7AFC32B82FB210013E0F0 /* APIListingType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIListingType+Extensions.swift"; sourceTree = "<group>"; };
 		CDB7BEB92B83C29F0013E0F0 /* APIPost+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIPost+Extensions.swift"; sourceTree = "<group>"; };
@@ -1654,9 +1654,10 @@
 			isa = PBXGroup;
 			children = (
 				B1B78D632A51D53900F72485 /* AppDelegate.swift */,
+				6363D5C627EE196700E34822 /* ContentView.swift */,
 				6363D5C427EE196700E34822 /* MlemApp.swift */,
 				B157E0C32A507B8000B02C8B /* Window.swift */,
-				6363D5C627EE196700E34822 /* ContentView.swift */,
+				CDA1E81A2B8FC39A007953EF /* Onboarding */,
 				6363D5F427EE1BAE00E34822 /* Tabs */,
 			);
 			path = Root;
@@ -1857,6 +1858,14 @@
 			path = Definitions;
 			sourceTree = "<group>";
 		};
+		CDA1E81A2B8FC39A007953EF /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				CDA1E8202B8FC411007953EF /* LandingPage.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		CDB7AFC02B82FADC0013E0F0 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
@@ -1923,7 +1932,6 @@
 				0321457E2B7F8971001AE07E /* CommunityOrPersonStub.swift */,
 				CDEBC3272A9A57F200518D9D /* Content Model Identifier.swift */,
 				03E1E0552B77B4920009DF9F /* ContentCache.swift */,
-				03B7AAF02ABE404300068B23 /* ContentModel.swift */,
 				030E7ED32B7F929900E9A1AD /* ContentStub.swift */,
 				032145732B7E77AB001AE07E /* CoreModel.swift */,
 				03E1E0452B76BF580009DF9F /* Instance */,
@@ -2431,6 +2439,7 @@
 				CD4D58142B86772500B82964 /* ApiEditCommunity.swift in Sources */,
 				CD4D57802B86772400B82964 /* ApiModRemovePost.swift in Sources */,
 				CD4D573C2B86772400B82964 /* CreatePostReportRequest.swift in Sources */,
+				CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */,
 				CD4D57FC2B86772500B82964 /* ApiCaptchaResponse.swift in Sources */,
 				CD4D57422B86772400B82964 /* GetModlogRequest.swift in Sources */,
 				CD4D59082B87B1B400B82964 /* NotificationDisplayer.swift in Sources */,
@@ -2491,7 +2500,6 @@
 				CD4D577B2B86772400B82964 /* ApiLogin.swift in Sources */,
 				0321456C2B7E635C001AE07E /* CommunityStubProviding.swift in Sources */,
 				032145682B7A8878001AE07E /* ApiClient+User.swift in Sources */,
-				03B7AAF12ABE404300068B23 /* ContentModel.swift in Sources */,
 				CD4D578C2B86772400B82964 /* ApiUserJoin.swift in Sources */,
 				CD4D578F2B86772400B82964 /* ApiListCommentLikes.swift in Sources */,
 				CD4D581F2B86772500B82964 /* ApiPostAggregates.swift in Sources */,
