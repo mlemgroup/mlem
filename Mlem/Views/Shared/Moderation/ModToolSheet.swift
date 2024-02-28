@@ -48,6 +48,8 @@ struct ModToolSheet: View {
             BanUserView(user: user, community: community, shouldBan: shouldBan, postTracker: postTracker)
         case .editCommunity:
             Text("Not yet!")
+        case let .removePost(post, shouldRemove):
+            RemovePostView(post: post, shouldRemove: shouldRemove)
         }
     }
     

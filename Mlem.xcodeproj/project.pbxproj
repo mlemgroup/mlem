@@ -682,7 +682,7 @@
 		03C905CB2B3C88F700B9082F /* SearchTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTab.swift; sourceTree = "<group>"; };
 		03C905CD2B3C8DC400B9082F /* UserView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserView+Logic.swift"; sourceTree = "<group>"; };
 		03C942912B6457B4002068A4 /* BanUserEditorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BanUserEditorModel.swift; sourceTree = "<group>"; };
-		03C942932B64596B002068A4 /* BanUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BanUserView.swift; sourceTree = "<group>"; };
+		03C942932B64596B002068A4 /* BanUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BanUserView.swift; path = ../../Composer/BanUserView.swift; sourceTree = "<group>"; };
 		03C942952B648252002068A4 /* BanPerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BanPerson.swift; sourceTree = "<group>"; };
 		03CB329D2A6D8E910021EF27 /* PostComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComposerView.swift; sourceTree = "<group>"; };
 		03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsView.swift; sourceTree = "<group>"; };
@@ -2283,11 +2283,9 @@
 		ADF266932A4E89F800EBA648 /* Composer */ = {
 			isa = PBXGroup;
 			children = (
-				CD0D5A462B8EC6E6005E3365 /* Components */,
-				CD391F952A535F5400E213B5 /* ResponseEditorView.swift */,
-				03C942932B64596B002068A4 /* BanUserView.swift */,
-				03CB329D2A6D8E910021EF27 /* PostComposerView.swift */,
 				03EA79C32AC0D92C00BCDC91 /* PostComposerView+Logic.swift */,
+				CD391F952A535F5400E213B5 /* ResponseEditorView.swift */,
+				03CB329D2A6D8E910021EF27 /* PostComposerView.swift */,
 				CD0D5A442B8EC5D9005E3365 /* RemovePostView.swift */,
 			);
 			path = Composer;
@@ -2324,15 +2322,6 @@
 				CDD0EFAA2B7EA66A00CA3504 /* APIClient+User.swift */,
 			);
 			path = APIClient;
-			sourceTree = "<group>";
-		};
-		CD0D5A462B8EC6E6005E3365 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				CD0D5A472B8EC6F3005E3365 /* ReasonView.swift */,
-				CD0D5A492B8ED320005E3365 /* BanFormButtonStyle.swift */,
-			);
-			path = Components;
 			sourceTree = "<group>";
 		};
 		CD1262782B47597E007549F9 /* Feeds */ = {
@@ -2650,6 +2639,7 @@
 		CD50504E2B80098F00632C56 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				03C942932B64596B002068A4 /* BanUserView.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -2849,6 +2839,8 @@
 		CDD0EFAE2B7EF34D00CA3504 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				CD0D5A492B8ED320005E3365 /* BanFormButtonStyle.swift */,
+				CD0D5A472B8EC6F3005E3365 /* ReasonView.swift */,
 				CDD0EF992B7C068100CA3504 /* ToolButton.swift */,
 			);
 			path = Components;

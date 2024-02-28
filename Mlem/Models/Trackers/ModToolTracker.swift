@@ -8,9 +8,15 @@
 import Foundation
 
 enum ModTool: Hashable, Identifiable {
+    // community
     case editCommunity(CommunityModel) // community to edit
-    case instanceBan(UserModel, Bool) // user to ban, should ban
     case communityBan(UserModel, CommunityModel, Bool, StandardPostTracker?) // user to ban, community to ban from, should ban
+    
+    // instance
+    case instanceBan(UserModel, Bool) // user to ban, should ban
+    
+    // general
+    case removePost(PostModel, Bool) // post to remove, should remove
     
     static func == (lhs: ModTool, rhs: ModTool) -> Bool {
         lhs.hashValue == rhs.hashValue
@@ -23,15 +29,19 @@ enum ModTool: Hashable, Identifiable {
         case let .editCommunity(community):
             hasher.combine("edit")
             hasher.combine(community.uid)
-        case let .instanceBan(user, shouldBan):
-            hasher.combine("instanceBan")
-            hasher.combine(user.uid)
-            hasher.combine(shouldBan)
         case let .communityBan(user, community, shouldBan, _):
             hasher.combine("communityBan")
             hasher.combine(user.uid)
             hasher.combine(community.uid)
             hasher.combine(shouldBan)
+        case let .instanceBan(user, shouldBan):
+            hasher.combine("instanceBan")
+            hasher.combine(user.uid)
+            hasher.combine(shouldBan)
+        case let .removePost(post, shouldRemove):
+            hasher.combine("removePost")
+            hasher.combine(post.uid)
+            hasher.combine(shouldRemove)
         }
     }
 }
@@ -44,10 +54,6 @@ class ModToolTracker: ObservableObject {
         openTool = .editCommunity(community)
     }
     
-    func banUserFromInstance(_ user: UserModel, shouldBan: Bool) {
-        openTool = .instanceBan(user, shouldBan)
-    }
-    
     func banUserFromCommunity(
         _ user: UserModel,
         from community: CommunityModel,
@@ -55,5 +61,13 @@ class ModToolTracker: ObservableObject {
         postTracker: StandardPostTracker?
     ) {
         openTool = .communityBan(user, community, shouldBan, postTracker)
+    }
+    
+    func banUserFromInstance(_ user: UserModel, shouldBan: Bool) {
+        openTool = .instanceBan(user, shouldBan)
+    }
+    
+    func removePost(_ post: PostModel, shouldRemove: Bool) {
+        openTool = .removePost(post, shouldRemove)
     }
 }

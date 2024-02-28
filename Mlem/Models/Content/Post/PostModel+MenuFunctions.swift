@@ -171,6 +171,7 @@ extension PostModel {
 
     // swiftlint:enable function_body_length
     
+    // swiftlint:disable:next function_body_length
     private func modMenuFunctions(
         community: CommunityModel,
         modToolTracker: ModToolTracker,
@@ -202,6 +203,17 @@ extension PostModel {
                 await self.toggleLocked()
                 await self.notifier.add(.success("\(self.post.locked ? "L" : "Unl")ocked post"))
             }
+        })
+        
+        functions.append(MenuFunction.toggleableMenuFunction(
+            toggle: post.removed,
+            trueText: "Restore post",
+            trueImageName: Icons.remove,
+            trueRole: .destructive(prompt: nil),
+            falseText: "Remove post",
+            falseImageName: Icons.restore
+        ) {
+            modToolTracker.removePost(self, shouldRemove: !self.post.removed)
         })
 
         if creator.userId != siteInformation.userId {

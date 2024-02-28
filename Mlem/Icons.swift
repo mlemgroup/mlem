@@ -208,6 +208,8 @@ enum Icons {
     static let unpin: String = "pin.slash"
     static let lock: String = "lock"
     static let unlock: String = "lock.open"
+    static let remove: String = "xmark.bin"
+    static let restore: String = "arrow.up.bin"
     
     // misc
     static let `private`: String = "lock"
