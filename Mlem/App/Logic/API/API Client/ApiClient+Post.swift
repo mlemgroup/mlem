@@ -29,6 +29,7 @@ extension ApiClient {
         return try await perform(request)
     }
     
+    // TODO: this should do caching and return Post2
     // swiftlint:disable:next function_parameter_count
     func getPosts(
         feedType: ApiListingType,

@@ -12,7 +12,7 @@ import SwiftUI
 final class Community1: Community1Providing, ContentModel {
     typealias ApiType = ApiCommunity
     var community1: Community1 { self }
-    var source: any ApiSource
+    var source: ApiClient
 
     let actorId: URL
     let id: Int
@@ -34,7 +34,7 @@ final class Community1: Community1Providing, ContentModel {
     // This isn't included in the ApiCommunity - it's included in ApiCommunityView, but defined here to maintain similarity with User models. User models don't have the `blocked` property defined in any of the Api types, annoyingly, so we instead request a list of all blocked users and cache the result in `MyUserStub`.
     var blocked: Bool = false
     
-    required init(source: any ApiSource, from community: ApiCommunity) {
+    required init(source: ApiClient, from community: ApiCommunity) {
         self.source = source
         
         self.actorId = community.actorId

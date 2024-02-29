@@ -8,7 +8,7 @@
 import Foundation
 
 protocol Person1Providing: PersonStubProviding, Identifiable {
-    var source: any ApiSource { get }
+    var source: ApiClient { get }
     
     var person1: Person1 { get }
     

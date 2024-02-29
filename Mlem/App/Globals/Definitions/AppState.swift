@@ -10,32 +10,29 @@ import Foundation
 @Observable
 class AppState {
     var isOnboarding: Bool = false
-    
-    var apiSource: (any ApiSource)? {
-        willSet {
-            myUser?.stub.makeInactive()
-        }
-        didSet {
-            print("NEW API SOURCE \(apiSource?.actorId)")
-            myInstance = apiSource?.instance
-            myUser = apiSource as? UserStub
-            myUser?.stub.makeActive()
-        }
-    }
 
     var myInstance: (any InstanceStubProviding)?
     var myUser: (any UserProviding)?
     
-    var api: ApiClient? { apiSource?.api }
-    var actorId: URL? { apiSource?.actorId }
-    var instanceStub: InstanceStub? { apiSource?.instance }
+    var api: ApiClient // TODO: is this even needed?
+    var actorId: URL?
+    var instanceStub: InstanceStub
     
-    init(apiSource: (any ApiSource)?) {
-        print("APPSTATE INIT \(apiSource?.actorId)")
-        self.apiSource = apiSource
-        if apiSource == nil {
-            self.isOnboarding = true
-        }
+    /// Initializer for a guest mode app state
+    /// - Parameters:
+    ///   - instance: instance to connect to
+    init(instance: InstanceStub) {
+        self.api = instance.api
+        self.actorId = nil
+        self.instanceStub = instance
+    }
+    
+    /// Initializer for an authenticated app state
+    /// - Parameter user: user to connect with
+    init(user: UserStub) {
+        self.api = user.api
+        self.actorId = user.actorId
+        self.instanceStub = user.instance
     }
     
     var lemmyVersion: SiteVersion? { myInstance?.version_ ?? myUser?.cachedSiteVersion }

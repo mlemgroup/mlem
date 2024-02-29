@@ -480,6 +480,7 @@
 		CD4D591E2B87B4C900B82964 /* StandardPostFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591D2B87B4C900B82964 /* StandardPostFeedLoader.swift */; };
 		CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591F2B87B63300B82964 /* SettingsOptions.swift */; };
 		CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8202B8FC411007953EF /* LandingPage.swift */; };
+		CDA1E8232B8FCECB007953EF /* PostFeedProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8222B8FCECB007953EF /* PostFeedProvider.swift */; };
 		CDB7AFC22B82FAE60013E0F0 /* GetPostsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7AFC12B82FAE60013E0F0 /* GetPostsRequest.swift */; };
 		CDB7AFC42B82FB210013E0F0 /* APIListingType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7AFC32B82FB210013E0F0 /* APIListingType+Extensions.swift */; };
 		CDB7BEBA2B83C29F0013E0F0 /* APIPost+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7BEB92B83C29F0013E0F0 /* APIPost+Extensions.swift */; };
@@ -995,6 +996,7 @@
 		CD4D591D2B87B4C900B82964 /* StandardPostFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardPostFeedLoader.swift; sourceTree = "<group>"; };
 		CD4D591F2B87B63300B82964 /* SettingsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOptions.swift; sourceTree = "<group>"; };
 		CDA1E8202B8FC411007953EF /* LandingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPage.swift; sourceTree = "<group>"; };
+		CDA1E8222B8FCECB007953EF /* PostFeedProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFeedProvider.swift; sourceTree = "<group>"; };
 		CDB7AFC12B82FAE60013E0F0 /* GetPostsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPostsRequest.swift; sourceTree = "<group>"; };
 		CDB7AFC32B82FB210013E0F0 /* APIListingType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIListingType+Extensions.swift"; sourceTree = "<group>"; };
 		CDB7BEB92B83C29F0013E0F0 /* APIPost+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIPost+Extensions.swift"; sourceTree = "<group>"; };
@@ -1927,24 +1929,25 @@
 		CDEBC3262A9A57E900518D9D /* Content */ = {
 			isa = PBXGroup;
 			children = (
+				CD4D589A2B86BBF900B82964 /* ActorIdentifiable.swift */,
 				032145752B7E77BC001AE07E /* APISource.swift */,
-				03AFBE942B6E612600F01F3C /* Community */,
+				CD4D58DC2B86E2ED00B82964 /* BanType.swift */,
 				0321457E2B7F8971001AE07E /* CommunityOrPersonStub.swift */,
 				CDEBC3272A9A57F200518D9D /* Content Model Identifier.swift */,
 				03E1E0552B77B4920009DF9F /* ContentCache.swift */,
-				030E7ED32B7F929900E9A1AD /* ContentStub.swift */,
-				032145732B7E77AB001AE07E /* CoreModel.swift */,
-				03E1E0452B76BF580009DF9F /* Instance */,
-				030E7EE12B80E6EA00E9A1AD /* InteractableContent.swift */,
 				03AFBE992B6E65A400F01F3C /* ContentModel.swift */,
+				030E7ED32B7F929900E9A1AD /* ContentStub.swift */,
+				CD4D58D52B86DFA400B82964 /* ContentType.swift */,
+				032145732B7E77AB001AE07E /* CoreModel.swift */,
+				030E7EE12B80E6EA00E9A1AD /* InteractableContent.swift */,
+				CD4D58E62B86E5B500B82964 /* LinkType.swift */,
+				CDA1E8222B8FCECB007953EF /* PostFeedProvider.swift */,
+				CD4D58E82B86E5F900B82964 /* PostType.swift */,
+				CDEBC32B2A9A582500518D9D /* VotesModel.swift */,
+				03AFBE942B6E612600F01F3C /* Community */,
+				03E1E0452B76BF580009DF9F /* Instance */,
 				03E1E04A2B7771630009DF9F /* Person */,
 				032145772B7EC9B9001AE07E /* Post */,
-				CDEBC32B2A9A582500518D9D /* VotesModel.swift */,
-				CD4D589A2B86BBF900B82964 /* ActorIdentifiable.swift */,
-				CD4D58D52B86DFA400B82964 /* ContentType.swift */,
-				CD4D58DC2B86E2ED00B82964 /* BanType.swift */,
-				CD4D58E62B86E5B500B82964 /* LinkType.swift */,
-				CD4D58E82B86E5F900B82964 /* PostType.swift */,
 			);
 			path = Content;
 			sourceTree = "<group>";
@@ -2221,6 +2224,7 @@
 				CD4D57B62B86772400B82964 /* ApiDeletePost.swift in Sources */,
 				CD4D58A52B86BD1B00B82964 /* PersistenceRepository.swift in Sources */,
 				CD1446252A5B357900610EF1 /* Document.swift in Sources */,
+				CDA1E8232B8FCECB007953EF /* PostFeedProvider.swift in Sources */,
 				CDEBC32C2A9A582500518D9D /* VotesModel.swift in Sources */,
 				CDEBC3282A9A57F200518D9D /* Content Model Identifier.swift in Sources */,
 				CD4D57732B86772400B82964 /* ApiModLockPost.swift in Sources */,

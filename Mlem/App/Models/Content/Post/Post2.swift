@@ -12,7 +12,7 @@ final class Post2: Post2Providing, ContentModel {
     typealias ApiType = ApiPostView
     var post2: Post2 { self }
     
-    var source: any ApiSource
+    var source: ApiClient
     
     let post1: Post1
     
@@ -27,7 +27,7 @@ final class Post2: Post2Providing, ContentModel {
     var isRead: Bool = false
     var myVote: ScoringOperation = .none
     
-    init(source: any ApiSource, from post: ApiPostView) {
+    init(source: ApiClient, from post: ApiPostView) {
         self.source = source
         
         self.post1 = source.caches.post1.createModel(source: source, for: post.post)

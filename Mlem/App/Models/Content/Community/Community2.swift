@@ -13,7 +13,7 @@ import SwiftUI
 final class Community2: Community2Providing, ContentModel {
     typealias ApiType = ApiCommunityView
     var community2: Community2 { self }
-    var source: any ApiSource
+    var source: ApiClient
 
     let community1: Community1
     
@@ -25,7 +25,7 @@ final class Community2: Community2Providing, ContentModel {
     var commentCount: Int = 0
     var activeUserCount: ActiveUserCount = .zero
 
-    required init(source: any ApiSource, from communityView: ApiCommunityView) {
+    required init(source: ApiClient, from communityView: ApiCommunityView) {
         self.source = source
         self.community1 = source.caches.community1.createModel(source: source, for: communityView.community)
         update(with: communityView)

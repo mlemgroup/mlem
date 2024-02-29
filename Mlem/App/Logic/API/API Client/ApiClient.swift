@@ -16,6 +16,8 @@ class ApiClient {
     let endpointUrl: URL
     var token: String?
     
+    var caches: BaseCacheGroup = .init()
+    
     init(baseUrl: URL, token: String? = nil) {
         self.baseUrl = baseUrl
         self.endpointUrl = baseUrl // baseUrl.appendingPathComponent("api/v3")

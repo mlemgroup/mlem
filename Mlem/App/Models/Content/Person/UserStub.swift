@@ -10,6 +10,8 @@ import SwiftUI
 
 @Observable
 final class UserStub: UserProviding, Codable {
+    var source: ApiClient { api }
+    
     let instance: InstanceStub
     var caches: BaseCacheGroup { instance.caches }
     

@@ -70,7 +70,7 @@ class BaseContentCache<Content: ContentModel & AnyObject> {
         cachedItems[id]?.content
     }
     
-    func createModel(source: any ApiSource, for apiType: Content.ApiType) -> Content {
+    func createModel(source: ApiClient, for apiType: Content.ApiType) -> Content {
         if let item = retrieveModel(id: apiType.id) {
             item.update(with: apiType)
             print("Using existing item for id \(apiType.id)")

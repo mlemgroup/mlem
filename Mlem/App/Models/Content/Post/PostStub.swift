@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PostStub: PostStubProviding {
-    var source: any ApiSource
+    var source: ApiClient
     let actorId: URL
     
     static func == (lhs: PostStub, rhs: PostStub) -> Bool {

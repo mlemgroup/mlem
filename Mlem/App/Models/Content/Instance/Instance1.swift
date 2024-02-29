@@ -19,13 +19,13 @@ final class Instance1: Instance1Providing, CoreModel {
     let id: Int
     let creationDate: Date
     let publicKey: String
-
+    
     var displayName: String = ""
     var description: String?
     var avatar: URL?
     var banner: URL?
     var lastRefreshDate: Date = .distantPast
-
+    
     required init(from site: ApiSite) {
         self.id = site.id
         self.creationDate = site.published
@@ -33,7 +33,7 @@ final class Instance1: Instance1Providing, CoreModel {
         self.stub = .createModel(url: site.actorId)
         update(with: site)
     }
-
+    
     func update(with site: ApiSite) {
         displayName = site.name
         description = site.sidebar

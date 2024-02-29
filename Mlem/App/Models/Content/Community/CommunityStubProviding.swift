@@ -81,10 +81,10 @@ enum UpgradeError: Error {
 
 extension CommunityStubProviding {
     func upgrade() async throws -> Community3 {
-        guard let communityView = try await source.api.getCommunity(actorId: actorId) else {
+        guard let communityView = try await source.getCommunity(actorId: actorId) else {
             throw UpgradeError.entityNotFound
         }
-        let communityResponse = try await source.api.getCommunity(id: communityView.id)
+        let communityResponse = try await source.getCommunity(id: communityView.id)
         return source.caches.community3.createModel(source: source, for: communityResponse)
     }
 }

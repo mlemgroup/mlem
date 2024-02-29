@@ -14,13 +14,23 @@ struct ContentView: View {
     
     @Environment(\.scenePhase) var scenePhase
     
-    // app state
-    @State var appState: AppState = {
-        @Dependency(\.accountsTracker) var accountsTracker
-        return AppState(apiSource: accountsTracker.defaultAccount)
-    }()
+    // TODO: pass in user and instance to this view. Everything below here has User? and Instance
+    
+    @State var appState: AppState
 
     let timer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
+    
+    /// Create an authenticated content view
+    /// - Parameter user: user to create content view for
+    init(user: UserStub) {
+        self._appState = .init(initialValue: AppState(user: user))
+    }
+    
+    /// Create a guest content view
+    /// - Parameter user: user to create content view for
+    init(instance: InstanceStub) {
+        self._appState = .init(initialValue: AppState(instance: instance))
+    }
     
     // tabs
     @State private var tabSelection: TabSelection = .feeds
@@ -39,14 +49,14 @@ struct ContentView: View {
         content
             .task(id: appState.actorId) {
                 do {
-                    appState.myInstance = try await appState.instanceStub?.upgrade()
+                    appState.myInstance = try await appState.instanceStub.upgrade()
                 } catch {
                     errorHandler.handle(error)
                 }
             }
             .onReceive(timer) { _ in
                 print("Clearing caches...")
-                appState.apiSource?.caches.clean()
+                appState.api.caches.clean()
                 Instance1.cache.clean()
                 Instance2.cache.clean()
                 Instance3.cache.clean()
@@ -112,8 +122,9 @@ struct ContentView: View {
                 if !accessibilityFont {
                     if allowQuickSwitcherLongPressGesture {
                         if accountsTracker.savedAccounts.count == 2 {
-                            for account in accountsTracker.savedAccounts where account.actorId != appState.apiSource?.actorId {
-                                appState.apiSource = account
+                            for account in accountsTracker.savedAccounts where account.actorId != appState.actorId {
+                                // TODO: ???????
+                                appState.api = account.api
                                 break
                             }
                         } else {

@@ -12,20 +12,20 @@ final class Person2: Person2Providing, ContentModel {
     typealias ApiType = ApiPersonView
     var person2: Person2 { self }
     
-    var source: any ApiSource
+    var source: ApiClient
     
     let person1: Person1
     
     var postCount: Int = 0
     var commentCount: Int = 0
     
-    init(source: any ApiSource, from personView: ApiPersonView) {
+    init(source: ApiClient, from personView: ApiPersonView) {
         self.source = source
         self.person1 = source.caches.person1.createModel(source: source, for: personView.person)
         update(with: personView)
     }
     
-    init(source: any ApiSource, from localUserView: ApiLocalUserView) {
+    init(source: ApiClient, from localUserView: ApiLocalUserView) {
         self.source = source
         self.person1 = source.caches.person1.createModel(source: source, for: localUserView.person)
         update(with: localUserView)

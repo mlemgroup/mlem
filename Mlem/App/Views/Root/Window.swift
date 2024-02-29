@@ -8,12 +8,28 @@
 import Dependencies
 import SwiftUI
 
+enum AppFlow {
+    case onboarding
+    case guest(InstanceStub)
+    case user(UserStub)
+}
+
 struct Window: View {
     @Dependency(\.errorHandler) var errorHandler
     
-    @State var onboarding: Bool = {
+//    @State var onboarding: Bool = {
+//        @Dependency(\.accountsTracker) var accountsTracker
+//        return accountsTracker.savedAccounts.isEmpty
+//    }()
+    
+    @State var appFlow: AppFlow = {
         @Dependency(\.accountsTracker) var accountsTracker
-        return accountsTracker.savedAccounts.isEmpty
+        if let user = accountsTracker.defaultAccount {
+            return .user(user)
+        } else {
+            assert(accountsTracker.savedAccounts.isEmpty, "Accounts saved but no default exists!")
+            return .onboarding
+        }
     }()
     
     var body: some View {
@@ -22,10 +38,13 @@ struct Window: View {
     
     @ViewBuilder
     private var content: some View {
-        if onboarding {
+        switch appFlow {
+        case .onboarding:
             LandingPage()
-        } else {
-            ContentView()
+        case let .user(user):
+            ContentView(user: user)
+        case .guest:
+            Text("Not yet!")
         }
     }
 }

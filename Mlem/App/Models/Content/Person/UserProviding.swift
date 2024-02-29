@@ -7,9 +7,9 @@
 
 import Foundation
 
-protocol UserProviding: ApiSource, CommunityOrPersonStub, AnyObject, Identifiable {
+protocol UserProviding: CommunityOrPersonStub, AnyObject, Identifiable {
     var stub: UserStub { get }
-    var source: any ApiSource { get }
+    var source: ApiClient { get }
     
     var id: Int { get }
     var name: String { get }
@@ -24,10 +24,7 @@ protocol UserProviding: ApiSource, CommunityOrPersonStub, AnyObject, Identifiabl
 extension UserProviding {
     static var identifierPrefix: String { "@" }
     
-    var source: any ApiSource { stub }
-    
     var caches: BaseCacheGroup { source.caches }
-    var api: ApiClient { source.api }
     var instance: InstanceStub { stub.instance }
     
     var id: Int { stub.id }
@@ -41,8 +38,9 @@ extension UserProviding {
 }
 
 extension UserProviding {
+    // TODO: this shouldn't be here--should be on the unauthenticated API
     func login(password: String, twoFactorToken: String? = nil) async throws {
-        let response = try await source.api.login(username: name, password: password, totpToken: twoFactorToken)
+        let response = try await source.login(username: name, password: password, totpToken: twoFactorToken)
         accessToken = response.jwt ?? "" // TODO: throw nice error
     }
     

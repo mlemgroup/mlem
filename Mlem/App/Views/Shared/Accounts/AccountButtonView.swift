@@ -63,7 +63,8 @@ struct AccountButtonView: View {
     var body: some View {
         Button {
             if appState.actorId != account.actorId {
-                appState.apiSource = account
+                // TODO: this crap
+                appState.api = account.api
                 dismiss()
             }
         } label: {
@@ -100,7 +101,7 @@ struct AccountButtonView: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(
-            "\(account.fullName ?? "unknown"))\(appState.apiSource?.actorId == account.actorId ? ", active" : "")"
+            "\(account.fullName ?? "unknown"))\(appState.actorId == account.actorId ? ", active" : "")"
         )
         .swipeActions {
             Button("Sign Out") {
@@ -111,20 +112,21 @@ struct AccountButtonView: View {
         .confirmationDialog("Really sign out of \(account.nickname ?? account.name)?", isPresented: $showingSignOutConfirmation) {
             Button("Sign Out", role: .destructive) {
                 Task {
-                    if let currentAccount = appState.apiSource {
-                        print("DEBUG YES")
-                        accountsTracker.removeAccount(account: account)
-                        if currentAccount.actorId == account.actorId {
-                            if let first = accountsTracker.savedAccounts.first {
-                                appState.apiSource = first
-                            } else {
-                                appState.isOnboarding = true
-                            }
-                            dismiss()
-                        }
-                    } else {
-                        print("DEBUG NO")
-                    }
+                    print("TODO: SIGN OUT")
+//                    if let currentAccount = appState.apiSource {
+//                        print("DEBUG YES")
+//                        accountsTracker.removeAccount(account: account)
+//                        if currentAccount.actorId == account.actorId {
+//                            if let first = accountsTracker.savedAccounts.first {
+//                                appState.apiSource = first
+//                            } else {
+//                                appState.isOnboarding = true
+//                            }
+//                            dismiss()
+//                        }
+//                    } else {
+//                        print("DEBUG NO")
+//                    }
                 }
             }
         } message: {

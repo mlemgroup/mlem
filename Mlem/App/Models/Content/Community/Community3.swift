@@ -13,7 +13,7 @@ final class Community3: Community3Providing, ContentModel {
     typealias ApiType = ApiGetCommunityResponse
     var community3: Community3 { self }
     
-    let source: any ApiSource
+    let source: ApiClient
     
     let community2: Community2
     
@@ -21,7 +21,7 @@ final class Community3: Community3Providing, ContentModel {
     var moderators: [Person1] = .init()
     var discussionLanguages: [Int] = .init()
     
-    required init(source: any ApiSource, from response: ApiGetCommunityResponse) {
+    required init(source: ApiClient, from response: ApiGetCommunityResponse) {
         self.source = source
         
         if let site = response.site {

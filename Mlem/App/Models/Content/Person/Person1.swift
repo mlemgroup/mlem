@@ -12,7 +12,7 @@ final class Person1: Person1Providing, ContentModel {
     typealias ApiType = ApiPerson
     var person1: Person1 { self }
     
-    var source: any ApiSource
+    var source: ApiClient
     
     let actorId: URL
     let id: Int
@@ -35,7 +35,7 @@ final class Person1: Person1Providing, ContentModel {
     // These aren't included in the ApiPerson, and so are set externally by Post2 instead
     var blocked: Bool = false
     
-    init(source: any ApiSource, from person: ApiPerson) {
+    init(source: ApiClient, from person: ApiPerson) {
         self.source = source
         self.actorId = person.actorId
         self.id = person.id

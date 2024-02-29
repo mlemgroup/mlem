@@ -34,7 +34,7 @@ struct MinimalPostFeedView: View {
         @AppStorage("showReadPosts") var showReadPosts = true
         @AppStorage("defaultPostSorting") var defaultPostSorting: ApiSortType = .hot
         
-        if let apiSource = appState.apiSource {
+        if let apiSource = appState.myInstance {
             self._postTracker = .init(wrappedValue: .init(
                 internetSpeed: internetSpeed,
                 sortType: defaultPostSorting,

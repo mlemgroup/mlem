@@ -13,30 +13,6 @@ protocol ApiSource: AnyObject, ActorIdentifiable, Equatable {
     var instance: InstanceStub { get }
 }
 
-extension ApiSource {
-    func getPosts(
-        feed: ApiListingType,
-        sort: ApiSortType,
-        page: Int = 1,
-        cursor: String? = nil,
-        limit: Int,
-        savedOnly: Bool = false
-    ) async throws -> (posts: [Post2], cursor: String?) {
-        let response = try await api.getPosts(
-            feedType: feed,
-            sort: sort,
-            page: page,
-            cursor: cursor,
-            limit: limit,
-            savedOnly: savedOnly
-        )
-        return (
-            posts: response.posts.map { caches.post2.createModel(source: self, for: $0) },
-            cursor: cursor
-        )
-    }
-}
-
 class MockApiSource: ApiSource {
     var caches: BaseCacheGroup = .init()
     

@@ -12,14 +12,14 @@ final class Person3: Person3Providing, ContentModel {
     typealias ApiType = ApiGetPersonDetailsResponse
     var person3: Person3 { self }
     
-    var source: any ApiSource
+    var source: ApiClient
 
     let person2: Person2
 
     var instance: Instance1!
     var moderatedCommunities: [Community1] = .init()
     
-    init(source: any ApiSource, from response: ApiGetPersonDetailsResponse) {
+    init(source: ApiClient, from response: ApiGetPersonDetailsResponse) {
         self.source = source
         
         if let site = response.site {
@@ -32,7 +32,7 @@ final class Person3: Person3Providing, ContentModel {
         update(with: response)
     }
     
-    init(source: any ApiSource, from response: ApiGetSiteResponse) {
+    init(source: ApiClient, from response: ApiGetSiteResponse) {
         self.source = source
         
         self.instance = .create(from: response.siteView.site)

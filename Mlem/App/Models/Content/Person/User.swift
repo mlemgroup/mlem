@@ -10,6 +10,8 @@ import SwiftUI
 
 @Observable
 final class User: Person3Providing, UserProviding {
+    var source: ApiClient
+    
     static let identifierPrefix: String = "@"
     typealias ApiType = ApiGetSiteResponse
     
@@ -27,10 +29,11 @@ final class User: Person3Providing, UserProviding {
             self.person3 = existing
             existing.update(with: myUser)
         } else {
-            self.person3 = .init(source: source, from: response)
+            self.person3 = .init(source: source.api, from: response)
         }
         
         self.instance = .create(from: response)
+        self.source = source.api
     }
     
     var id: Int { person3.id }
