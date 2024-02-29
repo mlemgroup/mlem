@@ -16,6 +16,10 @@ struct SaveButtonView: View {
 
     // this needs to be computed because it changes depending on button state
     var saveButtonText: String { content.isSaved ? "Unsave \(accessibilityContext)" : "Save \(accessibilityContext)" }
+    
+    var isOn: Bool {
+        content.source.api.token != nil && content.isSaved
+    }
 
     var body: some View {
         Button {
@@ -27,10 +31,10 @@ struct SaveButtonView: View {
                 .scaledToFit()
                 .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)
                 .padding(AppConstants.barIconPadding)
-                .foregroundColor(content.isSaved ? .white : .primary)
+                .foregroundColor(isOn ? .white : .primary)
                 .background(RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
                 .aspectRatio(1, contentMode: .fit)
-                .foregroundColor(content.isSaved ? .saveColor : .clear))
+                .foregroundColor(isOn ? .saveColor : .clear))
                 .contentShape(Rectangle())
                 .fontWeight(.medium) // makes it look a little nicer
         }

@@ -14,6 +14,10 @@ struct VoteButtonView: View {
     let content: any InteractableContent
     let voteType: ScoringOperation
     
+    var isOn: Bool {
+        content.source.api.token != nil && voteType == content.myVote
+    }
+    
     init(content: any InteractableContent, voteType: ScoringOperation) {
         self.content = content
         if voteType == .none {
@@ -32,10 +36,10 @@ struct VoteButtonView: View {
                 .scaledToFit()
                 .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)
                 .padding(AppConstants.barIconPadding)
-                .foregroundColor(content.myVote == voteType ? .white : .primary)
+                .foregroundColor(isOn ? .white : .primary)
                 .background(RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
                 .aspectRatio(1, contentMode: .fit)
-                .foregroundColor(content.myVote == voteType ? voteType.color! : .clear))
+                .foregroundColor(isOn ? voteType.color! : .clear))
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
