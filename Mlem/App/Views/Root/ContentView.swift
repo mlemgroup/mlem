@@ -47,15 +47,15 @@ struct ContentView: View {
     
     var body: some View {
         content
-            .task(id: appState.actorId) {
-                do {
-                    appState.myInstance = try await appState.instanceStub.upgrade()
-                } catch {
-                    errorHandler.handle(error)
-                }
-            }
+//            .task(id: appState.actorId) {
+//                do {
+//                    appState.myInstance = try await appState.myInstance.stub.upgrade()
+//                } catch {
+//                    errorHandler.handle(error)
+//                }
+//            }
             .onReceive(timer) { _ in
-                print("Clearing caches...")
+                // print("Clearing caches...")
                 appState.api.caches.clean()
                 Instance1.cache.clean()
                 Instance2.cache.clean()

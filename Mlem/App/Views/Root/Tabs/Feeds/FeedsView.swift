@@ -25,7 +25,7 @@ struct FeedsView: View {
 struct MinimalPostFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
     
-    @State var postTracker: StandardPostTracker?
+    @State var postTracker: StandardPostTracker
     
     init(appState: AppState) {
         // need to grab some stuff from app storage to initialize with
@@ -34,17 +34,12 @@ struct MinimalPostFeedView: View {
         @AppStorage("showReadPosts") var showReadPosts = true
         @AppStorage("defaultPostSorting") var defaultPostSorting: ApiSortType = .hot
         
-        if let apiSource = appState.myInstance {
-            self._postTracker = .init(wrappedValue: .init(
-                internetSpeed: internetSpeed,
-                sortType: defaultPostSorting,
-                showReadPosts: showReadPosts,
-                feedType: .aggregateFeed(apiSource, type: .subscribed)
-            )
-            )
-        } else {
-            self._postTracker = .init(wrappedValue: nil)
-        }
+        self._postTracker = .init(initialValue: .init(
+            internetSpeed: internetSpeed,
+            sortType: defaultPostSorting,
+            showReadPosts: showReadPosts,
+            feedType: .aggregateFeed(appState.myInstance, type: .subscribed)
+        ))
     }
     
     var body: some View {
@@ -53,11 +48,11 @@ struct MinimalPostFeedView: View {
                 .navigationTitle("Feeds")
                 .fancyTabScrollCompatible()
                 .task {
-                    await postTracker?.loadMoreItems()
+                    await postTracker.loadMoreItems()
                 }
                 .refreshable {
                     do {
-                        try await postTracker?.refresh(clearBeforeRefresh: false)
+                        try await postTracker.refresh(clearBeforeRefresh: false)
                     } catch {
                         errorHandler.handle(error)
                     }
@@ -67,30 +62,26 @@ struct MinimalPostFeedView: View {
     
     @ViewBuilder
     var content: some View {
-        if let postTracker {
-            ScrollView {
-                LazyVStack {
-                    ForEach(postTracker.items, id: \.uid) { post in
-                        VStack {
-                            Text(post.title)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.horizontal)
-                            Divider()
-                        }
+        ScrollView {
+            LazyVStack {
+                ForEach(postTracker.items, id: \.uid) { post in
+                    VStack {
+                        Text(post.title)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal)
+                        Divider()
                     }
                 }
-                
-                switch postTracker.loadingState {
-                case .loading:
-                    Text("Loading...")
-                case .done:
-                    Text("Done")
-                case .idle:
-                    Text("Idle")
-                }
             }
-        } else {
-            Text("No post tracker!")
+            
+            switch postTracker.loadingState {
+            case .loading:
+                Text("Loading...")
+            case .done:
+                Text("Done")
+            case .idle:
+                Text("Idle")
+            }
         }
     }
 }

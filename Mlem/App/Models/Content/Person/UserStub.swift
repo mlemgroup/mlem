@@ -17,7 +17,8 @@ final class UserStub: UserProviding, Codable {
     
     var stub: UserStub { self }
     
-    @ObservationIgnored lazy var api: ApiClient = .init(baseUrl: instance.url)
+    // @ObservationIgnored var api: ApiClient
+    @ObservationIgnored lazy var api: ApiClient = .init(baseUrl: instance.url, token: accessToken)
     
     let id: Int
     let name: String
@@ -33,6 +34,7 @@ final class UserStub: UserProviding, Codable {
     
     // This should be called when the MyUser becomes the active account
     func makeActive() {
+        print("MAKING ACTIVE WITH TOKEN \(accessToken)")
         api.token = accessToken
     }
     
@@ -53,28 +55,34 @@ final class UserStub: UserProviding, Codable {
     
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        // copy simple values
         self.id = try values.decode(Int.self, forKey: .id)
         self.name = try values.decode(String.self, forKey: .username)
         self.nickname = try values.decode(String?.self, forKey: .storedNickname)
         self.cachedSiteVersion = try values.decode(SiteVersion?.self, forKey: .siteVersion)
         self.avatarUrl = try values.decode(URL?.self, forKey: .avatarUrl)
         self.lastLoggedIn = try values.decode(Date?.self, forKey: .lastUsed)
-        
+
+        // parse instance link
         let instanceLink = try values.decode(URL.self, forKey: .instanceLink)
         // Remove the "api/v3" path that we attached to the instanceLink pre-1.3
         var components = URLComponents(url: instanceLink, resolvingAgainstBaseURL: false)!
         components.path = ""
         self.instance = .createModel(url: components.url!)
         
+        // parse actor id
         var actorComponents = URLComponents(url: instanceLink, resolvingAgainstBaseURL: false)!
         actorComponents.path = "/u/\(name)"
         self.actorId = actorComponents.url!
         
+        // retrive token and update members
         self.accessToken = ""
         guard let token = AppConstants.keychain[keychainId] else {
             throw DecodingError.noTokenInKeychain
         }
         self.accessToken = token
+        instance.api = api
     }
     
     func encode(to encoder: Encoder) throws {

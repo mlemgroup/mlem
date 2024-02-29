@@ -11,12 +11,11 @@ import Foundation
 class AppState {
     var isOnboarding: Bool = false
 
-    var myInstance: (any InstanceStubProviding)?
+    var myInstance: any InstanceStubProviding
     var myUser: (any UserProviding)?
     
     var api: ApiClient // TODO: is this even needed?
     var actorId: URL?
-    var instanceStub: InstanceStub
     
     /// Initializer for a guest mode app state
     /// - Parameters:
@@ -24,16 +23,17 @@ class AppState {
     init(instance: InstanceStub) {
         self.api = instance.api
         self.actorId = nil
-        self.instanceStub = instance
+        self.myInstance = instance
     }
     
     /// Initializer for an authenticated app state
     /// - Parameter user: user to connect with
     init(user: UserStub) {
+        user.makeActive()
         self.api = user.api
         self.actorId = user.actorId
-        self.instanceStub = user.instance
+        self.myInstance = user.instance
     }
     
-    var lemmyVersion: SiteVersion? { myInstance?.version_ ?? myUser?.cachedSiteVersion }
+    var lemmyVersion: SiteVersion? { myInstance.version_ ?? myUser?.cachedSiteVersion }
 }

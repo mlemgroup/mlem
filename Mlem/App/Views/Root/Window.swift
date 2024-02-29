@@ -17,11 +17,6 @@ enum AppFlow {
 struct Window: View {
     @Dependency(\.errorHandler) var errorHandler
     
-//    @State var onboarding: Bool = {
-//        @Dependency(\.accountsTracker) var accountsTracker
-//        return accountsTracker.savedAccounts.isEmpty
-//    }()
-    
     @State var appFlow: AppFlow = {
         @Dependency(\.accountsTracker) var accountsTracker
         if let user = accountsTracker.defaultAccount {

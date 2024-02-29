@@ -120,7 +120,7 @@ func getCorrectURLtoEndpoint(baseInstanceAddress: String) async throws -> URL {
     for address in possibleInstanceAddresses {
         if await checkIfEndpointExists(at: address) {
             print("\(address) is valid")
-            validAddress = address.deletingLastPathComponent()
+            validAddress = address.deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
             break
         } else {
             print("\(address) is invalid")
