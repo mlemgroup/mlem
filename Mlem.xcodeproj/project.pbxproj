@@ -78,7 +78,7 @@
 		B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = B104A6D92A59BF3C00B3E725 /* NukeExtensions */; };
 		B104A6DC2A59BF3C00B3E725 /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = B104A6DB2A59BF3C00B3E725 /* NukeUI */; };
 		B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */ = {isa = PBXBuildFile; productRef = B104A6DD2A59BF3C00B3E725 /* NukeVideo */; };
-		B157E0C42A507B8000B02C8B /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157E0C32A507B8000B02C8B /* Window.swift */; };
+		B157E0C42A507B8000B02C8B /* FlowRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157E0C32A507B8000B02C8B /* FlowRoot.swift */; };
 		B1B78D642A51D53900F72485 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B78D632A51D53900F72485 /* AppDelegate.swift */; };
 		CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446202A5B328E00610EF1 /* Privacy Policy.swift */; };
 		CD1446252A5B357900610EF1 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446242A5B357900610EF1 /* Document.swift */; };
@@ -597,7 +597,7 @@
 		6DE1183B2A4A217400810C7E /* Profile View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile View.swift"; sourceTree = "<group>"; };
 		AD1B0D362A5F7A260006F554 /* Licenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Licenses.swift; sourceTree = "<group>"; };
 		B104A6E12A5AFC9F00B3E725 /* Mlem.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mlem.entitlements; sourceTree = "<group>"; };
-		B157E0C32A507B8000B02C8B /* Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
+		B157E0C32A507B8000B02C8B /* FlowRoot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowRoot.swift; sourceTree = "<group>"; };
 		B1B78D632A51D53900F72485 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD1446202A5B328E00610EF1 /* Privacy Policy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Privacy Policy.swift"; sourceTree = "<group>"; };
 		CD1446242A5B357900610EF1 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
@@ -1662,7 +1662,7 @@
 				B1B78D632A51D53900F72485 /* AppDelegate.swift */,
 				6363D5C627EE196700E34822 /* ContentView.swift */,
 				6363D5C427EE196700E34822 /* MlemApp.swift */,
-				B157E0C32A507B8000B02C8B /* Window.swift */,
+				B157E0C32A507B8000B02C8B /* FlowRoot.swift */,
 				CDA1E81A2B8FC39A007953EF /* Onboarding */,
 				6363D5F427EE1BAE00E34822 /* Tabs */,
 			);
@@ -2454,7 +2454,7 @@
 				CD4D57422B86772400B82964 /* GetModlogRequest.swift in Sources */,
 				CD4D59082B87B1B400B82964 /* NotificationDisplayer.swift in Sources */,
 				CD4D57D52B86772500B82964 /* ApiGetComment.swift in Sources */,
-				B157E0C42A507B8000B02C8B /* Window.swift in Sources */,
+				B157E0C42A507B8000B02C8B /* FlowRoot.swift in Sources */,
 				CD4D57C92B86772500B82964 /* ApiAddAdmin.swift in Sources */,
 				CD4D57442B86772400B82964 /* ListPostLikesRequest.swift in Sources */,
 				CD4D57CB2B86772500B82964 /* ApiPostJoinResponse.swift in Sources */,

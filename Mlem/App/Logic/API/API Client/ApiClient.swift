@@ -14,11 +14,7 @@ class ApiClient {
     
     let baseUrl: URL
     let endpointUrl: URL
-    var token: String? {
-        didSet {
-            print("DEBUG set api client token to \(token)")
-        }
-    }
+    let token: String?
     
     var caches: BaseCacheGroup = .init()
     

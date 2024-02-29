@@ -21,7 +21,7 @@ final class UserStub: UserProviding, Codable {
     
     var stub: UserStub { self }
     
-    @ObservationIgnored var api: ApiClient
+    var api: ApiClient { instance.api }
     // @ObservationIgnored lazy var api: ApiClient = .init(baseUrl: instance.url, token: accessToken)
     
     let id: Int
@@ -33,20 +33,6 @@ final class UserStub: UserProviding, Codable {
     var cachedSiteVersion: SiteVersion?
     var avatarUrl: URL?
     var lastLoggedIn: Date?
-    
-    private var keychainId: String { "\(id)_accessToken" }
-    
-    // This should be called when the MyUser becomes the active account
-//    func makeActive() {
-//        print("DEBUG making active with token \(accessToken)")
-//        api.token = accessToken
-//    }
-    
-    // This should be called when the MyUser becomes the inactive account
-    func makeInactive() {
-        // Clear the token to stop us accidentally making damaging API calls for whatever reason
-        api.token = nil
-    }
     
     enum CodingKeys: String, CodingKey {
         // These key names don't match the identifiers of their corresponding properties - this is because these key names must match the property names used in SavedAccount pre-1.3 in order to maintain compatibility
@@ -97,26 +83,25 @@ final class UserStub: UserProviding, Codable {
         // parse actor id
         self.actorId = parseActorId(instanceLink: instanceLink, name: name)
         
-        self.api = .init(baseUrl: instanceLink, token: "")
+        // self.api = .init(baseUrl: instanceLink, token: "")
         
         // retrive token and update members
-        self.accessToken = ""
-        guard let token = AppConstants.keychain[keychainId] else {
+        // self.accessToken = ""
+        guard let token = AppConstants.keychain[keychainId(id: id)] else {
             throw DecodingError.noTokenInKeychain
         }
-        self.accessToken = token
-        api.token = token
         
-        print("DEBUG user \(id) has token \(accessToken)")
+        self.accessToken = token
+        self.api = .init(baseUrl: instanceLink, token: token)
         
         // make sure instance uses the same (authenticated) API
         instance.api = api
-        print("DEBUG instance token is \(instance.api.token)")
-        print("DEBUG api token is \(api.token)")
+        
+        // TODO: user api is just instance api?
     }
     
     func encode(to encoder: Encoder) throws {
-        AppConstants.keychain[keychainId] = accessToken
+        AppConstants.keychain[keychainId(id: id)] = accessToken
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
         try container.encode(name, forKey: .username)
@@ -126,6 +111,10 @@ final class UserStub: UserProviding, Codable {
         try container.encode(lastLoggedIn, forKey: .lastUsed)
         try container.encode(instance.url, forKey: .instanceLink)
     }
+}
+
+private func keychainId(id: Int) -> String {
+    "\(id)_accessToken"
 }
 
 private func parseActorId(instanceLink: URL, name: String) -> URL {

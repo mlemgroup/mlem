@@ -12,7 +12,7 @@ import SwiftUI
 struct MlemApp: App {
     var body: some Scene {
         WindowGroup {
-            Window()
+            FlowRoot()
         }
     }
 }

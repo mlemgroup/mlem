@@ -13,19 +13,23 @@ class AppState {
     var myUser: (any UserProviding)?
     
     private var api: ApiClient
-    var actorId: URL?
+    var actorId: URL? { myUser?.actorId }
     
     func cleanCaches() {
         api.caches.clean()
     }
     
     func changeUser(to user: UserStub) {
-        print("DEBUG changed user to \(user.accessToken)")
-        print("DEBUG user instance token is \(user.instance.api.token)")
-        self.api.token = user.accessToken
-        self.actorId = user.actorId
-        self.myInstance = user.instance
-        self.myInstance.stub.setApi(user.api) // TODO: remove me and fix at cache level
+        api = user.api
+        myUser = user
+        myInstance = user.instance
+        myInstance.stub.setApi(user.api) // TODO: remove me and fix at cache level
+    }
+    
+    func enterGuestMode(for instance: InstanceStub) {
+        api = instance.api
+        myUser = nil
+        myInstance = instance
     }
     
     /// Initializer for a guest mode app state
@@ -33,16 +37,15 @@ class AppState {
     ///   - instance: instance to connect to
     init(instance: InstanceStub) {
         self.api = instance.api
-        self.actorId = nil
+        self.myUser = nil
         self.myInstance = instance
     }
     
     /// Initializer for an authenticated app state
     /// - Parameter user: user to connect with
     init(user: UserStub) {
-        // user.makeActive()
         self.api = user.api
-        self.actorId = user.actorId
+        self.myUser = user
         self.myInstance = user.instance
     }
     

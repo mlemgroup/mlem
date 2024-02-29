@@ -19,6 +19,6 @@ struct ProfileView: View {
     }
     
     var content: some View {
-        Text(appState.myUser?.name ?? "No User!")
+        Text("\(appState.myUser?.name ?? "No User")")
     }
 }

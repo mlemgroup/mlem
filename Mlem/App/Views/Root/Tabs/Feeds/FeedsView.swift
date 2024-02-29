@@ -53,7 +53,6 @@ struct MinimalPostFeedView: View {
                     await postTracker.loadMoreItems()
                 }
                 .task(id: appState.actorId) {
-                    // print("DEBUG instance changed \(appState.myInstance.api.token)")
                     await postTracker.changeFeedType(to: .aggregateFeed(appState.myInstance, type: .subscribed))
                 }
                 .refreshable {

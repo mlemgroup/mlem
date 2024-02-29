@@ -54,9 +54,9 @@ struct LandingPage: View {
                 return
             }
             
-            let apiClient = ApiClient(baseUrl: instanceUrl)
+            let unauthenticatedApiClient = ApiClient(baseUrl: instanceUrl)
             
-            let response = try await apiClient.login(
+            let response = try await unauthenticatedApiClient.login(
                 username: username,
                 password: password,
                 totpToken: nil // twoFactorCode.isEmpty ? nil : twoFactorCode
@@ -66,8 +66,9 @@ struct LandingPage: View {
                 return
             }
             
-            apiClient.token = token
-            let siteResponse = try await apiClient.getSite()
+            let authenticatedApiClient = ApiClient(baseUrl: instanceUrl, token: token)
+            
+            let siteResponse = try await authenticatedApiClient.getSite()
             let newAccount = try UserStub(from: siteResponse, instanceLink: instanceUrl, token: token)
 
             // MARK: - Save the account's credentials into the keychain
