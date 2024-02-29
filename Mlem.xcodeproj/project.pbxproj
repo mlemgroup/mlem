@@ -481,6 +481,8 @@
 		CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591F2B87B63300B82964 /* SettingsOptions.swift */; };
 		CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8202B8FC411007953EF /* LandingPage.swift */; };
 		CDA1E8232B8FCECB007953EF /* PostFeedProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8222B8FCECB007953EF /* PostFeedProvider.swift */; };
+		CDA1E8252B90EF18007953EF /* EnvironmentValues+AppFlowSetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8242B90EF18007953EF /* EnvironmentValues+AppFlowSetter.swift */; };
+		CDA1E8272B90EF24007953EF /* AppFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8262B90EF24007953EF /* AppFlow.swift */; };
 		CDB7AFC22B82FAE60013E0F0 /* GetPostsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7AFC12B82FAE60013E0F0 /* GetPostsRequest.swift */; };
 		CDB7AFC42B82FB210013E0F0 /* APIListingType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7AFC32B82FB210013E0F0 /* APIListingType+Extensions.swift */; };
 		CDB7BEBA2B83C29F0013E0F0 /* APIPost+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7BEB92B83C29F0013E0F0 /* APIPost+Extensions.swift */; };
@@ -997,6 +999,8 @@
 		CD4D591F2B87B63300B82964 /* SettingsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOptions.swift; sourceTree = "<group>"; };
 		CDA1E8202B8FC411007953EF /* LandingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPage.swift; sourceTree = "<group>"; };
 		CDA1E8222B8FCECB007953EF /* PostFeedProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFeedProvider.swift; sourceTree = "<group>"; };
+		CDA1E8242B90EF18007953EF /* EnvironmentValues+AppFlowSetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+AppFlowSetter.swift"; sourceTree = "<group>"; };
+		CDA1E8262B90EF24007953EF /* AppFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlow.swift; sourceTree = "<group>"; };
 		CDB7AFC12B82FAE60013E0F0 /* GetPostsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPostsRequest.swift; sourceTree = "<group>"; };
 		CDB7AFC32B82FB210013E0F0 /* APIListingType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIListingType+Extensions.swift"; sourceTree = "<group>"; };
 		CDB7BEB92B83C29F0013E0F0 /* APIPost+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIPost+Extensions.swift"; sourceTree = "<group>"; };
@@ -1701,6 +1705,7 @@
 			children = (
 				CD4D58982B86BB0300B82964 /* EnvironmentValues+TabSelectionHashValue.swift */,
 				CD4D58962B86BAD900B82964 /* EnvironmentValues+TabReselectionHashValue.swift */,
+				CDA1E8242B90EF18007953EF /* EnvironmentValues+AppFlowSetter.swift */,
 			);
 			path = EnvironmentValues;
 			sourceTree = "<group>";
@@ -1856,6 +1861,7 @@
 				CD4D58A42B86BD1B00B82964 /* PersistenceRepository.swift */,
 				CD4D58FB2B87B13B00B82964 /* ErrorHandler */,
 				CD4D59042B87B19100B82964 /* Notifier */,
+				CDA1E8262B90EF24007953EF /* AppFlow.swift */,
 			);
 			path = Definitions;
 			sourceTree = "<group>";
@@ -2471,6 +2477,7 @@
 				CD4D57222B86772400B82964 /* GetSiteRequest.swift in Sources */,
 				CD4D57182B86772400B82964 /* DeleteCustomEmojiRequest.swift in Sources */,
 				CD4D58042B86772500B82964 /* ApiGetReportCountResponse.swift in Sources */,
+				CDA1E8252B90EF18007953EF /* EnvironmentValues+AppFlowSetter.swift in Sources */,
 				CD4D59182B87B3B000B82964 /* UIViewController+Extensions.swift in Sources */,
 				CD4D57612B86772400B82964 /* ApiGetSiteMetadataResponse.swift in Sources */,
 				CD4D57B12B86772400B82964 /* ApiGetReportCount.swift in Sources */,
@@ -2527,6 +2534,7 @@
 				CD4D580E2B86772500B82964 /* ApiModHideCommunity.swift in Sources */,
 				CD4D57D02B86772500B82964 /* ApiEditComment.swift in Sources */,
 				CD4D56F12B86772400B82964 /* LockPostRequest.swift in Sources */,
+				CDA1E8272B90EF24007953EF /* AppFlow.swift in Sources */,
 				CD4D57C82B86772400B82964 /* ApiResolveCommentReport.swift in Sources */,
 				CD4D57862B86772400B82964 /* ApiCustomEmoji.swift in Sources */,
 				CD4D58372B86772500B82964 /* ApiResolvePrivateMessageReport.swift in Sources */,

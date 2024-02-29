@@ -35,6 +35,7 @@ class AccountsTracker {
             return
         }
         savedAccounts.append(account)
+        saveAccounts()
     }
 
     func removeAccount(account: UserStub) {

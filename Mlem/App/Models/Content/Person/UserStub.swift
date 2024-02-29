@@ -8,6 +8,10 @@
 import Foundation
 import SwiftUI
 
+enum UserError: Error {
+    case noUserInResponse
+}
+
 @Observable
 final class UserStub: UserProviding, Codable {
     var source: ApiClient { api }
@@ -17,8 +21,8 @@ final class UserStub: UserProviding, Codable {
     
     var stub: UserStub { self }
     
-    // @ObservationIgnored var api: ApiClient
-    @ObservationIgnored lazy var api: ApiClient = .init(baseUrl: instance.url, token: accessToken)
+    @ObservationIgnored var api: ApiClient
+    // @ObservationIgnored lazy var api: ApiClient = .init(baseUrl: instance.url, token: accessToken)
     
     let id: Int
     let name: String
@@ -33,10 +37,10 @@ final class UserStub: UserProviding, Codable {
     private var keychainId: String { "\(id)_accessToken" }
     
     // This should be called when the MyUser becomes the active account
-    func makeActive() {
-        print("MAKING ACTIVE WITH TOKEN \(accessToken)")
-        api.token = accessToken
-    }
+//    func makeActive() {
+//        print("DEBUG making active with token \(accessToken)")
+//        api.token = accessToken
+//    }
     
     // This should be called when the MyUser becomes the inactive account
     func makeInactive() {
@@ -51,6 +55,25 @@ final class UserStub: UserProviding, Codable {
     
     enum DecodingError: Error {
         case noTokenInKeychain
+    }
+    
+    init(from response: ApiGetSiteResponse, instanceLink: URL, token: String) throws {
+        guard let user = response.myUser else {
+            throw UserError.noUserInResponse
+        }
+        print("DEBUG \(user.localUserView.localUser.id)")
+        self.id = user.localUserView.localUser.id
+        self.name = user.localUserView.person.name
+        self.nickname = user.localUserView.person.displayName
+        self.cachedSiteVersion = .init(response.version)
+        self.avatarUrl = user.localUserView.person.avatar
+        self.lastLoggedIn = Date.now
+        
+        self.instance = .createModel(url: instanceLink)
+        self.actorId = parseActorId(instanceLink: response.actorId, name: name)
+        self.accessToken = token
+        self.api = .init(baseUrl: instanceLink, token: token)
+        instance.api = api
     }
     
     init(from decoder: Decoder) throws {
@@ -72,9 +95,9 @@ final class UserStub: UserProviding, Codable {
         self.instance = .createModel(url: components.url!)
         
         // parse actor id
-        var actorComponents = URLComponents(url: instanceLink, resolvingAgainstBaseURL: false)!
-        actorComponents.path = "/u/\(name)"
-        self.actorId = actorComponents.url!
+        self.actorId = parseActorId(instanceLink: instanceLink, name: name)
+        
+        self.api = .init(baseUrl: instanceLink, token: "")
         
         // retrive token and update members
         self.accessToken = ""
@@ -82,7 +105,14 @@ final class UserStub: UserProviding, Codable {
             throw DecodingError.noTokenInKeychain
         }
         self.accessToken = token
+        api.token = token
+        
+        print("DEBUG user \(id) has token \(accessToken)")
+        
+        // make sure instance uses the same (authenticated) API
         instance.api = api
+        print("DEBUG instance token is \(instance.api.token)")
+        print("DEBUG api token is \(api.token)")
     }
     
     func encode(to encoder: Encoder) throws {
@@ -96,4 +126,10 @@ final class UserStub: UserProviding, Codable {
         try container.encode(lastLoggedIn, forKey: .lastUsed)
         try container.encode(instance.url, forKey: .instanceLink)
     }
+}
+
+private func parseActorId(instanceLink: URL, name: String) -> URL {
+    var actorComponents = URLComponents(url: instanceLink, resolvingAgainstBaseURL: false)!
+    actorComponents.path = "/u/\(name)"
+    return actorComponents.url!
 }

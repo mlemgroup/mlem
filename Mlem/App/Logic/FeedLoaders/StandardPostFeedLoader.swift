@@ -144,16 +144,21 @@ class StandardPostTracker: StandardFeedLoader<Post2> {
     
     @MainActor
     func changeFeedType(to newFeedType: TrackerFeedType) async {
-        // don't do anything if feed type not changed
-        guard feedType != newFeedType else {
-            return
-        }
-        
+//        // don't do anything if feed type not changed
+//        guard feedType != newFeedType else {
+//            return
+//        }
+//
+        // always perform assignment--if account changed, feed type will look unchanged but API will be different
         feedType = newFeedType
-        do {
-            try await refresh(clearBeforeRefresh: true)
-        } catch {
-            errorHandler.handle(error)
+        
+        // if nominal feed type unchanged, don't refresh
+        if feedType != newFeedType {
+            do {
+                try await refresh(clearBeforeRefresh: true)
+            } catch {
+                errorHandler.handle(error)
+            }
         }
     }
     

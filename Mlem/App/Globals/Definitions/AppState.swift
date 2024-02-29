@@ -9,13 +9,24 @@ import Foundation
 
 @Observable
 class AppState {
-    var isOnboarding: Bool = false
-
     var myInstance: any InstanceStubProviding
     var myUser: (any UserProviding)?
     
-    var api: ApiClient // TODO: is this even needed?
+    private var api: ApiClient
     var actorId: URL?
+    
+    func cleanCaches() {
+        api.caches.clean()
+    }
+    
+    func changeUser(to user: UserStub) {
+        print("DEBUG changed user to \(user.accessToken)")
+        print("DEBUG user instance token is \(user.instance.api.token)")
+        self.api.token = user.accessToken
+        self.actorId = user.actorId
+        self.myInstance = user.instance
+        self.myInstance.stub.setApi(user.api) // TODO: remove me and fix at cache level
+    }
     
     /// Initializer for a guest mode app state
     /// - Parameters:
@@ -29,7 +40,7 @@ class AppState {
     /// Initializer for an authenticated app state
     /// - Parameter user: user to connect with
     init(user: UserStub) {
-        user.makeActive()
+        // user.makeActive()
         self.api = user.api
         self.actorId = user.actorId
         self.myInstance = user.instance

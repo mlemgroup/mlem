@@ -16,7 +16,13 @@ final class InstanceStub: InstanceStubProviding {
     let url: URL
     var actorId: URL { url }
 
-    @ObservationIgnored lazy var api: ApiClient = .init(baseUrl: url)
+    // @ObservationIgnored lazy var api: ApiClient = .init(baseUrl: url)
+    var api: ApiClient
+    
+    // TODO: remove me
+    func setApi(_ newApi: ApiClient) {
+        api = newApi
+    }
     
     static var cachedItems: [WeakReference<InstanceStub>] = .init()
     
@@ -31,6 +37,7 @@ final class InstanceStub: InstanceStubProviding {
     
     private init(url: URL) {
         self.url = url
+        self.api = .init(baseUrl: url)
     }
     
     static func == (lhs: InstanceStub, rhs: InstanceStub) -> Bool {

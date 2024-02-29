@@ -18,16 +18,18 @@ struct FeedsView: View {
     }
     
     var content: some View {
-        MinimalPostFeedView(appState: appState)
+        MinimalPostFeedView(initialFeedProvider: appState.myInstance)
     }
 }
 
 struct MinimalPostFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
     
+    @Environment(AppState.self) var appState
+    
     @State var postTracker: StandardPostTracker
     
-    init(appState: AppState) {
+    init(initialFeedProvider: any PostFeedProvider) {
         // need to grab some stuff from app storage to initialize with
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
@@ -38,7 +40,7 @@ struct MinimalPostFeedView: View {
             internetSpeed: internetSpeed,
             sortType: defaultPostSorting,
             showReadPosts: showReadPosts,
-            feedType: .aggregateFeed(appState.myInstance, type: .subscribed)
+            feedType: .aggregateFeed(initialFeedProvider, type: .subscribed)
         ))
     }
     
@@ -49,6 +51,10 @@ struct MinimalPostFeedView: View {
                 .fancyTabScrollCompatible()
                 .task {
                     await postTracker.loadMoreItems()
+                }
+                .task(id: appState.actorId) {
+                    // print("DEBUG instance changed \(appState.myInstance.api.token)")
+                    await postTracker.changeFeedType(to: .aggregateFeed(appState.myInstance, type: .subscribed))
                 }
                 .refreshable {
                     do {

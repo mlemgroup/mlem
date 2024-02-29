@@ -56,7 +56,9 @@ struct ContentView: View {
 //            }
             .onReceive(timer) { _ in
                 // print("Clearing caches...")
-                appState.api.caches.clean()
+                appState.cleanCaches()
+                
+                // TODO: move caches into API client, use shared cache for instances?
                 Instance1.cache.clean()
                 Instance2.cache.clean()
                 Instance3.cache.clean()
@@ -119,19 +121,19 @@ struct ContentView: View {
                 @AppStorage("allowQuickSwitcherLongPressGesture") var allowQuickSwitcherLongPressGesture: Bool = true
                 
                 // disable long press in accessibility mode to prevent conflict with HUD
-                if !accessibilityFont {
-                    if allowQuickSwitcherLongPressGesture {
-                        if accountsTracker.savedAccounts.count == 2 {
-                            for account in accountsTracker.savedAccounts where account.actorId != appState.actorId {
-                                // TODO: ???????
-                                appState.api = account.api
-                                break
-                            }
-                        } else {
-                            isPresentingAccountSwitcher = true
-                        }
-                    }
-                }
+//                if !accessibilityFont {
+//                    if allowQuickSwitcherLongPressGesture {
+//                        if accountsTracker.savedAccounts.count == 2 {
+//                            for account in accountsTracker.savedAccounts where account.actorId != appState.actorId {
+//                                // TODO: ???????
+//                                appState.api = account.api
+//                                break
+//                            }
+//                        } else {
+//                            isPresentingAccountSwitcher = true
+//                        }
+//                    }
+//                }
             }
     }
 }

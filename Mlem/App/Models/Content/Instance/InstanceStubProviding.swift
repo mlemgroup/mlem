@@ -70,6 +70,7 @@ extension InstanceStubProviding {
         limit: Int,
         savedOnly: Bool
     ) async throws -> (posts: [Post2], cursor: String?) {
+        print("DEBUG fetching posts with api token \(api.token)")
         let response = try await api.getPosts(
             feedType: feed,
             sort: sort,

@@ -13,6 +13,7 @@ struct AccountListView: View {
     @AppStorage("groupAccountSort") var groupAccountSort: Bool = false
     
     @Environment(AppState.self) var appState
+    @Environment(\.setAppFlow) var setAppFlow
     
     let accountsTracker: AccountsTracker
     
@@ -69,7 +70,8 @@ struct AccountListView: View {
                 }
                 Section {
                     Button {
-                        isShowingInstanceAdditionSheet = true
+                        // isShowingInstanceAdditionSheet = true
+                        setAppFlow(.onboarding)
                     } label: {
                         Label("Add Account", systemImage: "plus")
                     }

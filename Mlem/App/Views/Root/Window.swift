@@ -8,12 +8,6 @@
 import Dependencies
 import SwiftUI
 
-enum AppFlow {
-    case onboarding
-    case guest(InstanceStub)
-    case user(UserStub)
-}
-
 struct Window: View {
     @Dependency(\.errorHandler) var errorHandler
     
@@ -21,14 +15,17 @@ struct Window: View {
         @Dependency(\.accountsTracker) var accountsTracker
         if let user = accountsTracker.defaultAccount {
             return .user(user)
+        } else if let user = accountsTracker.savedAccounts.first {
+            return .user(user)
         } else {
-            assert(accountsTracker.savedAccounts.isEmpty, "Accounts saved but no default exists!")
+            print("ACCOUNTS TRACKER EMPTY")
             return .onboarding
         }
     }()
     
     var body: some View {
         content
+            .environment(\.setAppFlow) { appFlow = $0 }
     }
     
     @ViewBuilder
