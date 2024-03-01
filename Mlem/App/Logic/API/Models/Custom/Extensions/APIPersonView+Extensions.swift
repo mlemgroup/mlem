@@ -7,7 +7,12 @@
 
 import Foundation
 
-extension ApiPersonView: ActorIdentifiable, Identifiable {
+extension ApiPersonView: ActorIdentifiable, CacheIdentifiable, Identifiable {
+    var cacheId: Int {
+        var hasher: Hasher = .init()
+        hasher.combine(actorId)
+        return hasher.finalize()
+    }
     var id: Int { person.id }
     var actorId: URL { person.actorId }
 }

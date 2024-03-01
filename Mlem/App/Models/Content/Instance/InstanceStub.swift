@@ -15,8 +15,6 @@ final class InstanceStub: InstanceStubProviding {
     
     let url: URL
     var actorId: URL { url }
-
-    // @ObservationIgnored lazy var api: ApiClient = .init(baseUrl: url)
     var api: ApiClient
     
     // TODO: remove me
@@ -46,7 +44,7 @@ final class InstanceStub: InstanceStubProviding {
     
     func upgrade() async throws -> Instance3 {
         let response = try await api.getSite()
-        return .create(from: response)
+        return .init(source: api, from: response)
     }
 }
 

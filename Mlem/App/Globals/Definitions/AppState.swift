@@ -17,6 +17,7 @@ class AppState {
     
     func cleanCaches() {
         api.caches.clean()
+        ApiClient.instanceCaches.clean()
     }
     
     func changeUser(to user: UserStub) {

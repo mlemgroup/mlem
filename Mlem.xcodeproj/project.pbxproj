@@ -1896,22 +1896,22 @@
 		CDB7BEB82B83C2910013E0F0 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				CDB7AFC32B82FB210013E0F0 /* APIListingType+Extensions.swift */,
 				CDB7CDAB2B83CD1A0013E0F0 /* APIComment+Extensions.swift */,
 				CDB7CDAD2B83CD620013E0F0 /* APICommentView+Extensions.swift */,
 				CDB7C3B52B83C7360013E0F0 /* APICommunity+Extensions.swift */,
 				CDB7C3B92B83C8B50013E0F0 /* APICommunityView+Extensions.swift */,
+				CDB7CDB12B83D2BE0013E0F0 /* APIGetCommunityResponse+Extensions.swift */,
+				CDB7D03D2B83D7050013E0F0 /* APIGetPersonDetailsResponse+Extensions.swift */,
+				CDB7D0352B83D59B0013E0F0 /* APIGetSiteResponse+Extensions.swift */,
+				CDB7AFC32B82FB210013E0F0 /* APIListingType+Extensions.swift */,
+				CDB7D0392B83D6150013E0F0 /* APILocalUserView+Extensions.swift */,
+				CDB7D0312B83D3F30013E0F0 /* APIPerson+Extensions.swift */,
+				CDB7D0372B83D5CE0013E0F0 /* APIPersonView+Extensions.swift */,
 				CDB7BEB92B83C29F0013E0F0 /* APIPost+Extensions.swift */,
 				CDB7CDAF2B83D0940013E0F0 /* APIPostView+Extensions.swift */,
-				CDB7C3B72B83C7E80013E0F0 /* APISubscribedType+Extensions.swift */,
-				CDB7CDB12B83D2BE0013E0F0 /* APIGetCommunityResponse+Extensions.swift */,
 				CDB7CDB32B83D36E0013E0F0 /* APISite+Extensions.swift */,
-				CDB7D0312B83D3F30013E0F0 /* APIPerson+Extensions.swift */,
 				CDB7D0332B83D48B0013E0F0 /* APISiteView+Extensions.swift */,
-				CDB7D0352B83D59B0013E0F0 /* APIGetSiteResponse+Extensions.swift */,
-				CDB7D0372B83D5CE0013E0F0 /* APIPersonView+Extensions.swift */,
-				CDB7D0392B83D6150013E0F0 /* APILocalUserView+Extensions.swift */,
-				CDB7D03D2B83D7050013E0F0 /* APIGetPersonDetailsResponse+Extensions.swift */,
+				CDB7C3B72B83C7E80013E0F0 /* APISubscribedType+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";

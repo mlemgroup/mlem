@@ -7,7 +7,13 @@
 
 import Foundation
 
-extension ApiGetSiteResponse: ActorIdentifiable, Identifiable {
+extension ApiGetSiteResponse: ActorIdentifiable, CacheIdentifiable, Identifiable {
+    var cacheId: Int {
+        var hasher: Hasher = .init()
+        hasher.combine(actorId)
+        return hasher.finalize()
+    }
+
     var actorId: URL { siteView.site.actorId }
     var id: Int { siteView.site.id }
 }

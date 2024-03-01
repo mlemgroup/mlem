@@ -24,10 +24,12 @@ final class Community2: Community2Providing, ContentModel {
     var postCount: Int = 0
     var commentCount: Int = 0
     var activeUserCount: ActiveUserCount = .zero
+    
+    var cacheId: Int { community1.cacheId }
 
     required init(source: ApiClient, from communityView: ApiCommunityView) {
         self.source = source
-        self.community1 = source.caches.community1.createModel(source: source, for: communityView.community)
+        self.community1 = source.caches.community1.createModel(api: source, for: communityView.community)
         update(with: communityView)
     }
     

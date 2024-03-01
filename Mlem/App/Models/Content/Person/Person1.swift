@@ -35,6 +35,12 @@ final class Person1: Person1Providing, ContentModel {
     // These aren't included in the ApiPerson, and so are set externally by Post2 instead
     var blocked: Bool = false
     
+    var cacheId: Int {
+        var hasher: Hasher = .init()
+        hasher.combine(actorId)
+        return hasher.finalize()
+    }
+    
     init(source: ApiClient, from person: ApiPerson) {
         self.source = source
         self.actorId = person.actorId

@@ -7,4 +7,10 @@
 
 import Foundation
 
-extension ApiPerson: ActorIdentifiable, Identifiable {}
+extension ApiPerson: ActorIdentifiable, CacheIdentifiable, Identifiable {
+    var cacheId: Int {
+        var hasher: Hasher = .init()
+        hasher.combine(actorId)
+        return hasher.finalize()
+    }
+}

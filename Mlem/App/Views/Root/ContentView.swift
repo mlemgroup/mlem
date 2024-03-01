@@ -57,11 +57,6 @@ struct ContentView: View {
             .onReceive(timer) { _ in
                 // print("Clearing caches...")
                 appState.cleanCaches()
-                
-                // TODO: move caches into API client, use shared cache for instances?
-                Instance1.cache.clean()
-                Instance2.cache.clean()
-                Instance3.cache.clean()
             }
             .sheet(isPresented: $isPresentingAccountSwitcher) {
                 QuickSwitcherView()

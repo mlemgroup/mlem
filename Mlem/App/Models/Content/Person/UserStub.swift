@@ -55,11 +55,11 @@ final class UserStub: UserProviding, Codable {
         self.avatarUrl = user.localUserView.person.avatar
         self.lastLoggedIn = Date.now
         
-        self.instance = .createModel(url: instanceLink)
+        self.instance = .createModel(url: instanceLink) // TODO: make sure this works right--bootstrap?
         self.actorId = parseActorId(instanceLink: response.actorId, name: name)
         self.accessToken = token
-        self.api = .init(baseUrl: instanceLink, token: token)
-        instance.api = api
+        // self.source = .init(baseUrl: instanceLink, token: token)
+        // instance.api = api
     }
     
     init(from decoder: Decoder) throws {
@@ -78,26 +78,16 @@ final class UserStub: UserProviding, Codable {
         // Remove the "api/v3" path that we attached to the instanceLink pre-1.3
         var components = URLComponents(url: instanceLink, resolvingAgainstBaseURL: false)!
         components.path = ""
-        self.instance = .createModel(url: components.url!)
+        self.instance = .createModel(url: components.url!) // TODO: bootstrapping needed here
         
         // parse actor id
         self.actorId = parseActorId(instanceLink: instanceLink, name: name)
         
-        // self.api = .init(baseUrl: instanceLink, token: "")
-        
-        // retrive token and update members
-        // self.accessToken = ""
+        // retrive token
         guard let token = AppConstants.keychain[keychainId(id: id)] else {
             throw DecodingError.noTokenInKeychain
         }
-        
         self.accessToken = token
-        self.api = .init(baseUrl: instanceLink, token: token)
-        
-        // make sure instance uses the same (authenticated) API
-        instance.api = api
-        
-        // TODO: user api is just instance api?
     }
     
     func encode(to encoder: Encoder) throws {

@@ -7,7 +7,13 @@
 
 import Foundation
 
-extension ApiPostView: ActorIdentifiable, Identifiable {
+extension ApiPostView: ActorIdentifiable, CacheIdentifiable, Identifiable {
+    var cacheId: Int {
+        var hasher: Hasher = .init()
+        hasher.combine(actorId)
+        return hasher.finalize()
+    }
+
     var actorId: URL { post.apId }
     var id: Int { post.id }
 }

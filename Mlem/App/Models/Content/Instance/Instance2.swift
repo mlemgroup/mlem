@@ -9,15 +9,18 @@ import Foundation
 import SwiftUI
 
 @Observable
-final class Instance2: Instance2Providing, CoreModel {
-    static var cache: CoreContentCache<Instance2> = .init()
+final class Instance2: Instance2Providing, ContentModel {
     typealias ApiType = ApiSiteView
     var instance2: Instance2 { self }
+    var source: ApiClient
     
     let instance1: Instance1
     
-    required init(from siteView: ApiSiteView) {
-        self.instance1 = .create(from: siteView.site)
+    var cacheId: Int { instance1.cacheId }
+    
+    required init(source: ApiClient, from siteView: ApiSiteView) {
+        self.source = source
+        self.instance1 = .init(source: source, from: siteView.site)
     }
 
     func update(with siteView: ApiSiteView) {

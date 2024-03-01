@@ -39,6 +39,12 @@ final class Post1: Post1Providing, ContentModel {
     var thumbnailUrl: URL?
     var updatedDate: Date?
     
+    var cacheId: Int {
+        var hasher: Hasher = .init()
+        hasher.combine(actorId)
+        return hasher.finalize()
+    }
+    
     init(source: ApiClient, from post: ApiPost) {
         self.source = source
         self.actorId = post.actorId

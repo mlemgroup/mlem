@@ -7,15 +7,15 @@
 
 import Foundation
 
-protocol CoreModel: AnyObject, ActorIdentifiable {
-    associatedtype ApiType: ActorIdentifiable
-    static var cache: CoreContentCache<Self> { get }
-    init(from: ApiType)
-    func update(with: ApiType)
-}
-
-extension CoreModel {
-    static func create(from apiType: ApiType) -> Self {
-        cache.createModel(for: apiType)
-    }
-}
+// protocol CoreModel: AnyObject, ActorIdentifiable, CacheIdentifiable {
+//    associatedtype ApiType: CacheIdentifiable
+//    static var cache: CoreContentCache<Self> { get }
+//    init(api: ApiClient, from: ApiType)
+//    func update(with: ApiType)
+// }
+//
+// extension CoreModel {
+//    static func create(from apiType: ApiType) -> Self {
+//        cache.createModel(for: apiType)
+//    }
+// }

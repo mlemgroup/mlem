@@ -8,15 +8,29 @@
 import Combine
 import Foundation
 
-class ApiClient {
+class ApiClient: Hashable {
     let decoder: JSONDecoder = .defaultDecoder
     let urlSession: URLSession = .init(configuration: .default)
     
+    // url and token MAY NOT be modified! Downstream code expects that a given ApiClient will *always* submit requests from the same user to the same instance.
     let baseUrl: URL
     let endpointUrl: URL
     let token: String?
     
+    // Hashable/Equatable conformance
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(baseUrl)
+        hasher.combine(token)
+    }
+    
+    static func == (lhs: ApiClient, rhs: ApiClient) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
+    
+    /// Caches of objects stored per ApiClient instance
     var caches: BaseCacheGroup = .init()
+    
+    static var instanceCaches: InstanceCacheGroup = .init()
     
     init(baseUrl: URL, token: String? = nil) {
         self.baseUrl = baseUrl

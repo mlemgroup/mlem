@@ -85,6 +85,6 @@ extension CommunityStubProviding {
             throw UpgradeError.entityNotFound
         }
         let communityResponse = try await source.getCommunity(id: communityView.id)
-        return source.caches.community3.createModel(source: source, for: communityResponse)
+        return source.caches.community3.createModel(api: source, for: communityResponse)
     }
 }

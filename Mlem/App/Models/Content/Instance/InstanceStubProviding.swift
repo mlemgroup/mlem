@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol InstanceStubProviding: ActorIdentifiable, ApiSource, PostFeedProvider {
+protocol InstanceStubProviding: ActorIdentifiable, PostFeedProvider {
     var stub: InstanceStub { get }
     
     var url: URL { get }

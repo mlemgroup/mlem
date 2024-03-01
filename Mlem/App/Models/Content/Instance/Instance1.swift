@@ -9,9 +9,10 @@ import Foundation
 import SwiftUI
 
 @Observable
-final class Instance1: Instance1Providing, CoreModel {
-    static var cache: CoreContentCache<Instance1> = .init()
+final class Instance1: Instance1Providing, ContentModel {
     typealias ApiType = ApiSite
+    
+    var source: ApiClient
     var instance1: Instance1 { self }
     
     let stub: InstanceStub
@@ -26,7 +27,11 @@ final class Instance1: Instance1Providing, CoreModel {
     var banner: URL?
     var lastRefreshDate: Date = .distantPast
     
-    required init(from site: ApiSite) {
+    // Instance and ApiClient share equatability properties--two instances are different iff they are different servers and being connected to using a different user. This makes intuitive sense given that instance is the source of things like post feeds, which can vary depending on the calling user (even instance-generics like All and Local will produce varying responses for different calling users, e.g., return an upvoted or neutral post)
+    var cacheId: Int { api.hashValue }
+    
+    required init(source: ApiClient, from site: ApiSite) {
+        self.source = source
         self.id = site.id
         self.creationDate = site.published
         self.publicKey = site.publicKey

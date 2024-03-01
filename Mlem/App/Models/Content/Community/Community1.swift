@@ -34,6 +34,12 @@ final class Community1: Community1Providing, ContentModel {
     // This isn't included in the ApiCommunity - it's included in ApiCommunityView, but defined here to maintain similarity with User models. User models don't have the `blocked` property defined in any of the Api types, annoyingly, so we instead request a list of all blocked users and cache the result in `MyUserStub`.
     var blocked: Bool = false
     
+    var cacheId: Int {
+        var hasher: Hasher = .init()
+        hasher.combine(actorId)
+        return hasher.finalize()
+    }
+    
     required init(source: ApiClient, from community: ApiCommunity) {
         self.source = source
         

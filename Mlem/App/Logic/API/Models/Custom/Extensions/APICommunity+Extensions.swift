@@ -7,7 +7,13 @@
 
 import Foundation
 
-extension ApiCommunity: ActorIdentifiable, Identifiable {}
+extension ApiCommunity: ActorIdentifiable, CacheIdentifiable, Identifiable {
+    var cacheId: Int {
+        var hasher: Hasher = .init()
+        hasher.combine(actorId)
+        return hasher.finalize()
+    }
+}
 
 extension ApiCommunity: Comparable {
     static func < (lhs: ApiCommunity, rhs: ApiCommunity) -> Bool {

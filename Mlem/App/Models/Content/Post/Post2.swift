@@ -27,12 +27,18 @@ final class Post2: Post2Providing, ContentModel {
     var isRead: Bool = false
     var myVote: ScoringOperation = .none
     
+    var cacheId: Int {
+        var hasher: Hasher = .init()
+        hasher.combine(actorId)
+        return hasher.finalize()
+    }
+    
     init(source: ApiClient, from post: ApiPostView) {
         self.source = source
         
-        self.post1 = source.caches.post1.createModel(source: source, for: post.post)
-        self.creator = source.caches.person1.createModel(source: source, for: post.creator)
-        self.community = source.caches.community1.createModel(source: source, for: post.community)
+        self.post1 = source.caches.post1.createModel(api: source, for: post.post)
+        self.creator = source.caches.person1.createModel(api: source, for: post.creator)
+        self.community = source.caches.community1.createModel(api: source, for: post.community)
         update(with: post)
     }
     

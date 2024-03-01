@@ -7,8 +7,8 @@
 
 import Foundation
 
-protocol ContentModel: ActorIdentifiable, Identifiable {
-    associatedtype ApiType: ActorIdentifiable & Identifiable where ApiType.ID == ID
+protocol ContentModel: AnyObject, ActorIdentifiable, CacheIdentifiable, Identifiable {
+    associatedtype ApiType: CacheIdentifiable & ActorIdentifiable & Identifiable where ApiType.ID == ID
     
     var source: ApiClient { get }
     init(source: ApiClient, from: ApiType)

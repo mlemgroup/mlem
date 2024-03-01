@@ -19,15 +19,21 @@ final class Person2: Person2Providing, ContentModel {
     var postCount: Int = 0
     var commentCount: Int = 0
     
+    var cacheId: Int {
+        var hasher: Hasher = .init()
+        hasher.combine(actorId)
+        return hasher.finalize()
+    }
+    
     init(source: ApiClient, from personView: ApiPersonView) {
         self.source = source
-        self.person1 = source.caches.person1.createModel(source: source, for: personView.person)
+        self.person1 = source.caches.person1.createModel(api: source, for: personView.person)
         update(with: personView)
     }
     
     init(source: ApiClient, from localUserView: ApiLocalUserView) {
         self.source = source
-        self.person1 = source.caches.person1.createModel(source: source, for: localUserView.person)
+        self.person1 = source.caches.person1.createModel(api: source, for: localUserView.person)
         update(with: localUserView)
     }
     
