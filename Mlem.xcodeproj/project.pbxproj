@@ -34,8 +34,6 @@
 		032145682B7A8878001AE07E /* ApiClient+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145672B7A8878001AE07E /* ApiClient+User.swift */; };
 		0321456A2B7B8C82001AE07E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145692B7B8C82001AE07E /* User.swift */; };
 		0321456C2B7E635C001AE07E /* CommunityStubProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321456B2B7E635C001AE07E /* CommunityStubProviding.swift */; };
-		032145742B7E77AB001AE07E /* CoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145732B7E77AB001AE07E /* CoreModel.swift */; };
-		032145762B7E77BC001AE07E /* APISource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145752B7E77BC001AE07E /* APISource.swift */; };
 		032145792B7F866C001AE07E /* PersonStubProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145782B7F866C001AE07E /* PersonStubProviding.swift */; };
 		0321457D2B7F8821001AE07E /* PersonStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321457C2B7F8821001AE07E /* PersonStub.swift */; };
 		0321457F2B7F8971001AE07E /* CommunityOrPersonStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321457E2B7F8971001AE07E /* CommunityOrPersonStub.swift */; };
@@ -555,8 +553,6 @@
 		032145672B7A8878001AE07E /* ApiClient+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiClient+User.swift"; sourceTree = "<group>"; };
 		032145692B7B8C82001AE07E /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		0321456B2B7E635C001AE07E /* CommunityStubProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityStubProviding.swift; sourceTree = "<group>"; };
-		032145732B7E77AB001AE07E /* CoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreModel.swift; sourceTree = "<group>"; };
-		032145752B7E77BC001AE07E /* APISource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APISource.swift; sourceTree = "<group>"; };
 		032145782B7F866C001AE07E /* PersonStubProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonStubProviding.swift; sourceTree = "<group>"; };
 		0321457C2B7F8821001AE07E /* PersonStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonStub.swift; sourceTree = "<group>"; };
 		0321457E2B7F8971001AE07E /* CommunityOrPersonStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityOrPersonStub.swift; sourceTree = "<group>"; };
@@ -1936,7 +1932,6 @@
 			isa = PBXGroup;
 			children = (
 				CD4D589A2B86BBF900B82964 /* ActorIdentifiable.swift */,
-				032145752B7E77BC001AE07E /* APISource.swift */,
 				CD4D58DC2B86E2ED00B82964 /* BanType.swift */,
 				0321457E2B7F8971001AE07E /* CommunityOrPersonStub.swift */,
 				CDEBC3272A9A57F200518D9D /* Content Model Identifier.swift */,
@@ -1944,7 +1939,6 @@
 				03AFBE992B6E65A400F01F3C /* ContentModel.swift */,
 				030E7ED32B7F929900E9A1AD /* ContentStub.swift */,
 				CD4D58D52B86DFA400B82964 /* ContentType.swift */,
-				032145732B7E77AB001AE07E /* CoreModel.swift */,
 				030E7EE12B80E6EA00E9A1AD /* InteractableContent.swift */,
 				CD4D58E62B86E5B500B82964 /* LinkType.swift */,
 				CDA1E8222B8FCECB007953EF /* PostFeedProvider.swift */,
@@ -2169,7 +2163,6 @@
 				CD4D57152B86772400B82964 /* GetPostRequest.swift in Sources */,
 				CDB7D0362B83D59B0013E0F0 /* APIGetSiteResponse+Extensions.swift in Sources */,
 				CD4D571D2B86772400B82964 /* DeleteAccountRequest.swift in Sources */,
-				032145742B7E77AB001AE07E /* CoreModel.swift in Sources */,
 				CD4D57CA2B86772500B82964 /* ApiCreateComment.swift in Sources */,
 				CD4D58312B86772500B82964 /* ApiPasswordReset.swift in Sources */,
 				CD4D58C42B86DC6000B82964 /* Array+Extensions.swift in Sources */,
@@ -2287,7 +2280,6 @@
 				CD4D57982B86772400B82964 /* ApiRegistrationApplicationResponse.swift in Sources */,
 				CD4D57E02B86772500B82964 /* ApiModFeaturePost.swift in Sources */,
 				CD4D58762B86B4D800B82964 /* View+FancyTabItem.swift in Sources */,
-				032145762B7E77BC001AE07E /* APISource.swift in Sources */,
 				CD4D57252B86772400B82964 /* SavePostRequest.swift in Sources */,
 				CD4D57662B86772400B82964 /* ApiListCommunities.swift in Sources */,
 				CD4D57912B86772400B82964 /* ApiListCommentReports.swift in Sources */,

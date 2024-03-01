@@ -32,6 +32,7 @@ struct BaseCacheGroup {
 }
 
 struct InstanceCacheGroup {
+    var instanceStub: CoreCache<InstanceStub> = .init()
     var instance1: ContentCache<Instance1> = .init()
     var instance2: ContentCache<Instance2> = .init()
     var instance3: ContentCache<Instance3> = .init()
@@ -47,13 +48,12 @@ struct WeakReference<Content: AnyObject> {
     weak var content: Content?
 }
 
-protocol CacheIdentifiable {
+protocol CacheIdentifiable: AnyObject {
     var cacheId: Int { get }
 }
 
-class ContentCache<Content: ContentModel> {
-    private var cachedItems: [Int: WeakReference<Content>] = .init()
-    
+/// Cache for content models
+class ContentCache<Content: ContentModel>: CoreCache<Content> {
     func createModel(api: ApiClient, for apiType: Content.ApiType) -> Content {
         if let item = retrieveModel(cacheId: apiType.cacheId) {
             item.update(with: apiType)
@@ -65,6 +65,24 @@ class ContentCache<Content: ContentModel> {
         cachedItems[apiType.cacheId] = .init(content: newItem)
         return newItem
     }
+}
+
+/// Cache for instance stub--exception case because there's no ApiType and it may need to perform ApiClient bootstrapping
+class InstanceStubCache: CoreCache<InstanceStub> {
+    func createModel(api: ApiClient, for url: URL) {
+        let cacheId: Int = {
+            var hasher: Hasher = .init()
+            hasher.combine(url)
+            return hasher.finalize()
+        }()
+        
+        if let item = retrieveModel(cacheId: cacheId) {}
+    }
+}
+
+/// Class providing common caching behavior
+class CoreCache<Content: CacheIdentifiable> {
+    var cachedItems: [Int: WeakReference<Content>] = .init()
     
     /// Retrieves the cached model with the given cacheId, if present
     /// - Parameter cacheId: cacheId of the model to retrieve
@@ -81,59 +99,3 @@ class ContentCache<Content: ContentModel> {
         }
     }
 }
-
-// class CoreContentCache<Content: CoreModel> {
-//    private var cachedItems: [URL: WeakReference<Content>] = .init()
-//
-//    func retrieveModel(actorId: URL) -> Content? {
-//        cachedItems[actorId]?.content
-//    }
-//
-//    func createModel(for apiType: Content.ApiType) -> Content {
-//        if let item = retrieveModel(actorId: apiType.actorId) {
-//            print("Using existing item for id \(apiType.actorId)")
-//            item.update(with: apiType)
-//            return item
-//        }
-//        print("Creating new item for id \(apiType.actorId)")
-//        let newItem = Content(from: apiType)
-//        cachedItems[apiType.actorId] = .init(content: newItem)
-//        return newItem
-//    }
-//
-//    /// Remove dead references
-//    func clean() {
-//        for (key, value) in cachedItems where value.content == nil {
-//            print("Removed value with id \(key)")
-//            cachedItems[key] = nil
-//        }
-//    }
-// }
-//
-// class BaseContentCache<Content: ContentModel & AnyObject> {
-//    private var cachedItems: [Content.ID: WeakReference<Content>] = .init()
-//
-//    func retrieveModel(id: Content.ApiType.ID) -> Content? {
-//        cachedItems[id]?.content
-//    }
-//
-//    func createModel(source: ApiClient, for apiType: Content.ApiType) -> Content {
-//        if let item = retrieveModel(id: apiType.id) {
-//            item.update(with: apiType)
-//            print("Using existing item for id \(apiType.id)")
-//            return item
-//        }
-//        print("Creating new item for id \(apiType.id)")
-//        let newItem = Content(source: source, from: apiType)
-//        cachedItems[apiType.id] = .init(content: newItem)
-//        return newItem
-//    }
-//
-//    /// Remove dead references
-//    func clean() {
-//        for (key, value) in cachedItems where value.content == nil {
-//            print("Removed value with id \(key)")
-//            cachedItems[key] = nil
-//        }
-//    }
-// }

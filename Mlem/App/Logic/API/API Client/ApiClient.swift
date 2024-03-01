@@ -27,9 +27,10 @@ class ApiClient: Hashable {
         lhs.hashValue == rhs.hashValue
     }
     
+    // TODO: private
     /// Caches of objects stored per ApiClient instance
     var caches: BaseCacheGroup = .init()
-    
+    /// Caches of Instance objects, shared across all ApiClient instances
     static var instanceCaches: InstanceCacheGroup = .init()
     
     init(baseUrl: URL, token: String? = nil) {

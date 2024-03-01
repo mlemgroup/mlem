@@ -13,6 +13,7 @@ extension ApiPost: ActorIdentifiable, CacheIdentifiable, Identifiable {
         hasher.combine(actorId)
         return hasher.finalize()
     }
+
     var actorId: URL { apId }
 }
 

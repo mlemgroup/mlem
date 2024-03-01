@@ -13,6 +13,7 @@ extension ApiGetPersonDetailsResponse: ActorIdentifiable, CacheIdentifiable, Ide
         hasher.combine(actorId)
         return hasher.finalize()
     }
+
     var actorId: URL { personView.person.actorId }
     var id: Int { personView.person.id }
 }
