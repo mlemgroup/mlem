@@ -10,8 +10,7 @@ import Observation
 import SwiftUI
 
 @Observable
-final class Community2: Community2Providing, ContentModel {
-    typealias ApiType = ApiCommunityView
+final class Community2: Community2Providing {
     var community2: Community2 { self }
     var api: ApiClient
 
@@ -24,8 +23,6 @@ final class Community2: Community2Providing, ContentModel {
     var postCount: Int = 0
     var commentCount: Int = 0
     var activeUserCount: ActiveUserCount = .zero
-    
-    var cacheId: Int { community1.cacheId }
 
     init(
         api: ApiClient,
@@ -45,19 +42,5 @@ final class Community2: Community2Providing, ContentModel {
         self.postCount = postCount
         self.commentCount = commentCount
         self.activeUserCount = activeUserCount
-    }
-    
-    func update(with communityView: ApiCommunityView) {
-        subscribed = communityView.subscribed.isSubscribed
-        subscriberCount = communityView.counts.subscribers
-        postCount = communityView.counts.posts
-        commentCount = communityView.counts.comments
-        activeUserCount = .init(
-            sixMonths: communityView.counts.usersActiveHalfYear,
-            month: communityView.counts.usersActiveMonth,
-            week: communityView.counts.usersActiveWeek,
-            day: communityView.counts.usersActiveDay
-        )
-        community1.update(with: communityView.community)
     }
 }

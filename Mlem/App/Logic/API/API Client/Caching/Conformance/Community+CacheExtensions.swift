@@ -27,3 +27,33 @@ extension Community1: CacheIdentifiable {
         onlyModeratorsCanPost = community.postingRestrictedToMods
     }
 }
+
+extension Community2: CacheIdentifiable {
+    var cacheId: Int { community1.cacheId }
+    
+    func update(with communityView: ApiCommunityView) {
+        subscribed = communityView.subscribed.isSubscribed
+        subscriberCount = communityView.counts.subscribers
+        postCount = communityView.counts.posts
+        commentCount = communityView.counts.comments
+        activeUserCount = .init(
+            sixMonths: communityView.counts.usersActiveHalfYear,
+            month: communityView.counts.usersActiveMonth,
+            week: communityView.counts.usersActiveWeek,
+            day: communityView.counts.usersActiveDay
+        )
+        community1.update(with: communityView.community)
+    }
+}
+
+extension Community3: CacheIdentifiable {
+    var cacheId: Int { community2.cacheId }
+    
+    func update(with response: ApiGetCommunityResponse) {
+        moderators = response.moderators.map { moderatorView in
+            api.caches.person1.createModel(api: api, from: moderatorView.moderator)
+        }
+        discussionLanguages = response.discussionLanguages
+        community2.update(with: response.communityView)
+    }
+}

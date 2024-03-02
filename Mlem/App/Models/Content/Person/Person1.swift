@@ -8,11 +8,9 @@
 import SwiftUI
 
 @Observable
-final class Person1: Person1Providing, ContentModel {
-    typealias ApiType = ApiPerson
-    var person1: Person1 { self }
-    
+final class Person1: Person1Providing {
     var api: ApiClient
+    var person1: Person1 { self }
     
     let actorId: URL
     let id: Int
@@ -34,12 +32,6 @@ final class Person1: Person1Providing, ContentModel {
     
     // These aren't included in the ApiPerson, and so are set externally by Post2 instead
     var blocked: Bool = false
-    
-    var cacheId: Int {
-        var hasher: Hasher = .init()
-        hasher.combine(actorId)
-        return hasher.finalize()
-    }
     
     init(
         api: ApiClient,
@@ -73,26 +65,5 @@ final class Person1: Person1Providing, ContentModel {
         self.isBot = isBot
         self.instanceBan = instanceBan
         self.blocked = blocked
-    }
-    
-    func update(with person: ApiPerson) {
-        updatedDate = person.updated
-        displayName = person.displayName
-        description = person.bio
-        avatar = person.avatar
-        banner = person.banner
-        
-        deleted = person.deleted
-        isBot = person.botAccount
-        
-        if person.banned {
-            if let expires = person.banExpires {
-                instanceBan = .temporarilyBanned(expires: expires)
-            } else {
-                instanceBan = .permanentlyBanned
-            }
-        } else {
-            instanceBan = .notBanned
-        }
     }
 }

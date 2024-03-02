@@ -13,12 +13,12 @@ final class User: Person3Providing, UserProviding {
     var api: ApiClient
     
     static let identifierPrefix: String = "@"
-    typealias ApiType = ApiGetSiteResponse
     
     let stub: UserStub
     let person3: Person3
-    
     let instance: Instance3
+    var id: Int { person3.id }
+    var name: String { stub.name }
   
     init(api: ApiClient, stub: UserStub, person3: Person3, instance: Instance3) {
         self.api = api
@@ -26,8 +26,4 @@ final class User: Person3Providing, UserProviding {
         self.person3 = person3
         self.instance = instance
     }
-    
-    var id: Int { person3.id }
-    
-    var name: String { stub.name }
 }

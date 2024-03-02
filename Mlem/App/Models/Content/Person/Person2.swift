@@ -8,22 +8,14 @@
 import SwiftUI
 
 @Observable
-final class Person2: Person2Providing, ContentModel {
-    typealias ApiType = ApiPersonView
-    var person2: Person2 { self }
-    
+final class Person2: Person2Providing {
     var api: ApiClient
+    var person2: Person2 { self }
     
     let person1: Person1
     
     var postCount: Int = 0
     var commentCount: Int = 0
-    
-    var cacheId: Int {
-        var hasher: Hasher = .init()
-        hasher.combine(actorId)
-        return hasher.finalize()
-    }
     
     init(
         api: ApiClient,
@@ -35,11 +27,5 @@ final class Person2: Person2Providing, ContentModel {
         self.person1 = person1
         self.postCount = postCount
         self.commentCount = commentCount
-    }
-    
-    func update(with apiType: any Person2ApiBacker) {
-        postCount = apiType.counts.postCount
-        commentCount = apiType.counts.commentCount
-        person1.update(with: apiType.person)
     }
 }

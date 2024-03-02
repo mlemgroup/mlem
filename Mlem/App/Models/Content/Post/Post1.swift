@@ -14,11 +14,9 @@ struct PostEmbed {
 }
 
 @Observable
-final class Post1: Post1Providing, ContentModel {
-    typealias ApiType = ApiPost
-    var post1: Post1 { self }
-    
+final class Post1: Post1Providing {
     var api: ApiClient
+    var post1: Post1 { self }
     
     let actorId: URL
     let id: Int
@@ -38,12 +36,6 @@ final class Post1: Post1Providing, ContentModel {
     var removed: Bool = false
     var thumbnailUrl: URL?
     var updatedDate: Date?
-    
-    var cacheId: Int {
-        var hasher: Hasher = .init()
-        hasher.combine(actorId)
-        return hasher.finalize()
-    }
     
     init(
         api: ApiClient,
@@ -81,28 +73,5 @@ final class Post1: Post1Providing, ContentModel {
         self.removed = removed
         self.thumbnailUrl = thumbnailUrl
         self.updatedDate = updatedDate
-    }
-    
-    func update(with post: ApiPost) {
-        updatedDate = post.updated
-    
-        title = post.name
-        
-        // We can't name this 'body' because @Observable uses that property name already
-        content = post.body
-        links = post.body?.parseLinks() ?? []
-        
-        linkUrl = post.linkUrl
-        
-        deleted = post.deleted
-        
-        embed = post.embed
-        
-        pinnedCommunity = post.featuredCommunity
-        pinnedInstance = post.featuredLocal
-        locked = post.locked
-        nsfw = post.nsfw
-        removed = post.removed
-        thumbnailUrl = post.thumbnailImageUrl
     }
 }

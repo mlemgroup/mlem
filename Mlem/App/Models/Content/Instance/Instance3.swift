@@ -9,15 +9,11 @@ import Foundation
 import SwiftUI
 
 @Observable
-final class Instance3: Instance3Providing, ContentModel, CacheIdentifiable {
-    typealias ApiType = ApiGetSiteResponse
-    var instance3: Instance3 { self }
+final class Instance3: Instance3Providing {
     var api: ApiClient
+    var instance3: Instance3 { self }
     
     let instance2: Instance2
-    
-    var cacheId: Int { instance2.cacheId }
-    var actorId: URL { api.actorId }
     
     var version: SiteVersion
   
@@ -25,10 +21,5 @@ final class Instance3: Instance3Providing, ContentModel, CacheIdentifiable {
         self.api = api
         self.instance2 = instance2
         self.version = version
-    }
-
-    func update(with response: ApiGetSiteResponse) {
-        version = SiteVersion(response.version)
-        instance2.update(with: response.siteView)
     }
 }

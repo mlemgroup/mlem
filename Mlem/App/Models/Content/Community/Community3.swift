@@ -9,8 +9,7 @@ import Observation
 import SwiftUI
 
 @Observable
-final class Community3: Community3Providing, ContentModel {
-    typealias ApiType = ApiGetCommunityResponse
+final class Community3: Community3Providing {
     var community3: Community3 { self }
     let api: ApiClient
     
@@ -19,8 +18,6 @@ final class Community3: Community3Providing, ContentModel {
     var instance: Instance1! // TODO: no force unwrapping
     var moderators: [Person1] = .init()
     var discussionLanguages: [Int] = .init()
-    
-    var cacheId: Int { community2.cacheId }
   
     init(
         api: ApiClient,
@@ -34,14 +31,6 @@ final class Community3: Community3Providing, ContentModel {
         self.instance = instance
         self.moderators = moderators
         self.discussionLanguages = discussionLanguages
-    }
-    
-    func update(with response: ApiGetCommunityResponse) {
-        moderators = response.moderators.map { moderatorView in
-            api.caches.person1.createModel(api: api, from: moderatorView.moderator)
-        }
-        discussionLanguages = response.discussionLanguages
-        community2.update(with: response.communityView)
     }
     
     func upgrade() async throws -> Community3 { self }

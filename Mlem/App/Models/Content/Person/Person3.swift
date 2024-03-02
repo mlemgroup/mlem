@@ -8,23 +8,15 @@
 import SwiftUI
 
 @Observable
-final class Person3: Person3Providing, ContentModel {
-    typealias ApiType = ApiGetPersonDetailsResponse
-    var person3: Person3 { self }
-    
+final class Person3: Person3Providing {
     var api: ApiClient
+    var person3: Person3 { self }
 
     let person2: Person2
 
     var instance: Instance1!
     var moderatedCommunities: [Community1] = .init()
     
-    var cacheId: Int {
-        var hasher: Hasher = .init()
-        hasher.combine(actorId)
-        return hasher.finalize()
-    }
-  
     init(
         api: ApiClient,
         person2: Person2,
@@ -35,10 +27,5 @@ final class Person3: Person3Providing, ContentModel {
         self.person2 = person2
         self.instance = instance
         self.moderatedCommunities = moderatedCommunities
-    }
-    
-    func update(moderatedCommunities: [Community1], person2ApiBacker: any Person2ApiBacker) {
-        self.moderatedCommunities = moderatedCommunities
-        person2.update(with: person2ApiBacker)
     }
 }
