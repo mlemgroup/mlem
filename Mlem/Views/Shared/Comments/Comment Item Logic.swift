@@ -242,7 +242,6 @@ extension CommentItem {
         
         let isOwnComment = appState.isCurrentAccountId(hierarchicalComment.commentView.creator.id)
         
-        
         if isOwnComment {
             // edit
             ret.append(MenuFunction.standardMenuFunction(
