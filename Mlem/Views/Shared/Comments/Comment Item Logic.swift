@@ -240,18 +240,19 @@ extension CommentItem {
             })
         }
         
-        // edit
-        if appState.isCurrentAccountId(hierarchicalComment.commentView.creator.id) {
+        let isOwnComment = appState.isCurrentAccountId(hierarchicalComment.commentView.creator.id)
+        
+        
+        if isOwnComment {
+            // edit
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Edit",
                 imageName: Icons.edit
             ) {
                 editComment()
             })
-        }
         
-        // delete
-        if appState.isCurrentAccountId(hierarchicalComment.commentView.creator.id) {
+            // delete
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Delete",
                 imageName: Icons.delete,
@@ -271,28 +272,30 @@ extension CommentItem {
             }
         }
         
-        // report
-        ret.append(MenuFunction.standardMenuFunction(
-            text: "Report",
-            imageName: Icons.moderationReport,
-            confirmationPrompt: AppConstants.reportCommentPrompt
-        ) {
-            editorTracker.openEditor(with: ConcreteEditorModel(
-                comment: hierarchicalComment.commentView,
-                operation: CommentOperation.reportComment
-            ))
-        })
-        
-        // block
-        ret.append(MenuFunction.standardMenuFunction(
-            text: "Block User",
-            imageName: Icons.hide,
-            confirmationPrompt: AppConstants.blockUserPrompt
-        ) {
-            Task(priority: .userInitiated) {
-                await blockUser(userId: hierarchicalComment.commentView.creator.id)
-            }
-        })
+        if !isOwnComment {
+            // report
+            ret.append(MenuFunction.standardMenuFunction(
+                text: "Report",
+                imageName: Icons.moderationReport,
+                confirmationPrompt: AppConstants.reportCommentPrompt
+            ) {
+                editorTracker.openEditor(with: ConcreteEditorModel(
+                    comment: hierarchicalComment.commentView,
+                    operation: CommentOperation.reportComment
+                ))
+            })
+            
+            // block
+            ret.append(MenuFunction.standardMenuFunction(
+                text: "Block User",
+                imageName: Icons.hide,
+                confirmationPrompt: AppConstants.blockUserPrompt
+            ) {
+                Task(priority: .userInitiated) {
+                    await blockUser(userId: hierarchicalComment.commentView.creator.id)
+                }
+            })
+        }
                    
         return ret
     }
