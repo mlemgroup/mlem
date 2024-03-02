@@ -19,22 +19,12 @@ final class User: Person3Providing, UserProviding {
     let person3: Person3
     
     let instance: Instance3
-    
-    // TODO: handle this more elegantly
-    init(source: UserStub, from response: ApiGetSiteResponse) {
-        self.stub = source
-        
-        guard let myUser = response.myUser else { fatalError() }
-        
-        if let existing = source.caches.person3.retrieveModel(cacheId: myUser.localUserView.localUser.id) {
-            self.person3 = existing
-            existing.update(with: myUser)
-        } else {
-            self.person3 = .init(source: source.api, from: response)
-        }
-        
-        self.instance = .init(source: source.api, from: response)
-        self.source = source.api
+  
+    init(source: ApiClient, stub: UserStub, person3: Person3, instance: Instance3) {
+        self.source = source
+        self.stub = stub
+        self.person3 = person3
+        self.instance = instance
     }
     
     var id: Int { person3.id }

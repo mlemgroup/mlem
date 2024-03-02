@@ -41,14 +41,38 @@ final class Person1: Person1Providing, ContentModel {
         return hasher.finalize()
     }
     
-    init(source: ApiClient, from person: ApiPerson) {
+    init(
+        source: ApiClient,
+        actorId: URL,
+        id: Int,
+        name: String,
+        creationDate: Date,
+        updatedDate: Date? = .distantPast,
+        displayName: String? = nil,
+        description: String? = nil,
+        matrixId: String? = nil,
+        avatar: URL? = nil,
+        banner: URL? = nil,
+        deleted: Bool = false,
+        isBot: Bool = false,
+        instanceBan: InstanceBanType = .notBanned,
+        blocked: Bool = false
+    ) {
         self.source = source
-        self.actorId = person.actorId
-        self.id = person.id
-        self.name = person.name
-        self.creationDate = person.published
-        
-        update(with: person)
+        self.actorId = actorId
+        self.id = id
+        self.name = name
+        self.creationDate = creationDate
+        self.updatedDate = updatedDate
+        self.displayName = displayName
+        self.description = description
+        self.matrixId = matrixId
+        self.avatar = avatar
+        self.banner = banner
+        self.deleted = deleted
+        self.isBot = isBot
+        self.instanceBan = instanceBan
+        self.blocked = blocked
     }
     
     func update(with person: ApiPerson) {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol Instance1Providing: InstanceStubProviding, Identifiable {
+protocol Instance1Providing: Identifiable {
     var instance1: Instance1 { get }
     
     var id: Int { get }
@@ -23,8 +23,6 @@ protocol Instance1Providing: InstanceStubProviding, Identifiable {
 typealias Instance = Instance1Providing
 
 extension Instance1Providing {
-    var stub: InstanceStub { instance1.stub }
-    
     var id: Int { instance1.id }
     var displayName: String { instance1.displayName }
     var description: String? { instance1.description }

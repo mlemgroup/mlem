@@ -17,13 +17,14 @@ final class Instance3: Instance3Providing, ContentModel, CacheIdentifiable {
     let instance2: Instance2
     
     var cacheId: Int { instance2.cacheId }
+    var actorId: URL { source.actorId }
     
-    var version: SiteVersion = .zero
-    
-    required init(source: ApiClient, from response: ApiGetSiteResponse) {
+    var version: SiteVersion
+  
+    init(source: ApiClient, instance2: Instance2, version: SiteVersion) {
         self.source = source
-        self.instance2 = .init(source: source, from: response.siteView)
-        update(with: response)
+        self.instance2 = instance2
+        self.version = version
     }
 
     func update(with response: ApiGetSiteResponse) {

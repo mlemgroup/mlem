@@ -8,6 +8,8 @@
 import Foundation
 
 extension ApiClient {
+    // Returns a raw API type :(
+    // Probably OK because it's part of onboarding, which is cursed and bootstrappy
     func login(username: String, password: String, totpToken: String?) async throws -> ApiLoginResponse {
         let request = LoginRequest(
             usernameOrEmail: username,
@@ -22,7 +24,7 @@ extension ApiClient {
         return response
     }
     
-    func loadPerson(username: String) async throws -> ApiGetPersonDetailsResponse {
+    func loadPerson(username: String) async throws -> Person3 {
         let request = GetPersonDetailsRequest(
             personId: nil,
             username: username,
@@ -34,7 +36,34 @@ extension ApiClient {
         )
         let response = try await perform(request)
         
-        // TODO: return middleware
-        return response
+        return caches.person3.getModel(api: self, from: response)
+    }
+    
+    /// Loads the currently authenticated user
+    func loadUser() async throws -> UserStub {
+        // TODO: should this cache? Implicitly via ApiClient?
+        let request = GetSiteRequest()
+        let response = try await perform(request)
+        
+        guard let user = response.myUser else {
+            throw UserError.noUserInResponse
+        }
+        guard let token = self.token else {
+            throw UserError.unauthenticated
+        }
+        
+        let name = user.localUserView.person.name
+        
+        return .init(
+            api: self,
+            id: user.localUserView.localUser.id,
+            name: name,
+            actorId: parseActorId(instanceLink: response.actorId, name: name),
+            accessToken: token,
+            nickname: user.localUserView.person.displayName,
+            cachedSiteVersion: .init(response.version),
+            avatarUrl: user.localUserView.person.avatar,
+            lastLoggedIn: Date.now
+        )
     }
 }

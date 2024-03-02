@@ -17,10 +17,11 @@ final class Instance2: Instance2Providing, ContentModel {
     let instance1: Instance1
     
     var cacheId: Int { instance1.cacheId }
-    
-    required init(source: ApiClient, from siteView: ApiSiteView) {
+    var actorId: URL { source.actorId }
+  
+    init(source: ApiClient, instance1: Instance1) {
         self.source = source
-        self.instance1 = .init(source: source, from: siteView.site)
+        self.instance1 = instance1
     }
 
     func update(with siteView: ApiSiteView) {

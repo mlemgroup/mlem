@@ -14,7 +14,6 @@ protocol UserProviding: CommunityOrPersonStub, AnyObject, Identifiable {
     var id: Int { get }
     var name: String { get }
     
-    var accessToken: String { get set }
     var nickname: String? { get set }
     var cachedSiteVersion: SiteVersion? { get set }
     var lastLoggedIn: Date? { get set }
@@ -24,13 +23,9 @@ protocol UserProviding: CommunityOrPersonStub, AnyObject, Identifiable {
 extension UserProviding {
     static var identifierPrefix: String { "@" }
     
-    var caches: BaseCacheGroup { source.caches }
-    var instance: InstanceStub { stub.instance }
-    
     var id: Int { stub.id }
     var name: String { stub.name }
     
-    var accessToken: String { get { stub.accessToken } set { stub.accessToken = newValue } }
     var nickname: String? { get { stub.nickname } set { stub.nickname = newValue } }
     var cachedSiteVersion: SiteVersion? { get { stub.cachedSiteVersion } set { stub.cachedSiteVersion = newValue } }
     var lastLoggedIn: Date? { get { stub.lastLoggedIn } set { stub.lastLoggedIn = newValue } }
@@ -38,13 +33,7 @@ extension UserProviding {
 }
 
 extension UserProviding {
-    // TODO: this shouldn't be here--should be on the unauthenticated API
-    func login(password: String, twoFactorToken: String? = nil) async throws {
-        let response = try await source.login(username: name, password: password, totpToken: twoFactorToken)
-        accessToken = response.jwt ?? "" // TODO: throw nice error
-    }
+    var nicknameSortKey: String { "\(nickname ?? name)\(source.baseUrl.absoluteString)" }
     
-    var nicknameSortKey: String { "\(nickname ?? name)\(instance.host ?? "")" }
-    
-    var instanceSortKey: String { "\(instance.host ?? "")\(nickname ?? name)" }
+    var instanceSortKey: String { "\(source.baseUrl.absoluteString)\(nickname ?? name)" }
 }

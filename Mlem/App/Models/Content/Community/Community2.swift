@@ -27,10 +27,24 @@ final class Community2: Community2Providing, ContentModel {
     
     var cacheId: Int { community1.cacheId }
 
-    required init(source: ApiClient, from communityView: ApiCommunityView) {
+    init(
+        source: ApiClient,
+        community1: Community1,
+        subscribed: Bool = false,
+        favorited: Bool = false,
+        subscriberCount: Int = 0,
+        postCount: Int = 0,
+        commentCount: Int = 0,
+        activeUserCount: ActiveUserCount = .zero
+    ) {
         self.source = source
-        self.community1 = source.caches.community1.createModel(api: source, for: communityView.community)
-        update(with: communityView)
+        self.community1 = community1
+        self.subscribed = subscribed
+        self.favorited = favorited
+        self.subscriberCount = subscriberCount
+        self.postCount = postCount
+        self.commentCount = commentCount
+        self.activeUserCount = activeUserCount
     }
     
     func update(with communityView: ApiCommunityView) {

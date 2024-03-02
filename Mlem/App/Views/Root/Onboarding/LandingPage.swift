@@ -54,7 +54,7 @@ struct LandingPage: View {
                 return
             }
             
-            let unauthenticatedApiClient = ApiClient(baseUrl: instanceUrl)
+            let unauthenticatedApiClient = try ApiClient.getApiClient(for: instanceUrl, with: nil)
             
             let response = try await unauthenticatedApiClient.login(
                 username: username,
@@ -66,12 +66,11 @@ struct LandingPage: View {
                 return
             }
             
-            let authenticatedApiClient = ApiClient(baseUrl: instanceUrl, token: token)
+            let authenticatedApiClient = try ApiClient.getApiClient(for: instanceUrl, with: token)
             
-            let siteResponse = try await authenticatedApiClient.getSite()
-            let newAccount = try UserStub(from: siteResponse, instanceLink: instanceUrl, token: token)
+            let newAccount = try await authenticatedApiClient.loadUser()
 
-            // MARK: - Save the account's credentials into the keychain
+            // MARK: Save the account's credentials into the keychain
 
             AppConstants.keychain["\(newAccount.id)_accessToken"] = response.jwt
             accountsTracker.addAccount(account: newAccount)

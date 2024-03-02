@@ -28,8 +28,8 @@ struct ContentView: View {
     
     /// Create a guest content view
     /// - Parameter user: user to create content view for
-    init(instance: InstanceStub) {
-        self._appState = .init(initialValue: AppState(instance: instance))
+    init(api: ApiClient) {
+        self._appState = .init(initialValue: .init(api: api))
     }
     
     // tabs
@@ -56,7 +56,7 @@ struct ContentView: View {
 //            }
             .onReceive(timer) { _ in
                 // print("Clearing caches...")
-                appState.cleanCaches()
+                appState.api.cleanCaches()
             }
             .sheet(isPresented: $isPresentingAccountSwitcher) {
                 QuickSwitcherView()

@@ -24,48 +24,21 @@ final class Person3: Person3Providing, ContentModel {
         hasher.combine(actorId)
         return hasher.finalize()
     }
-    
-    init(source: ApiClient, from response: ApiGetPersonDetailsResponse) {
+  
+    internal init(
+        source: ApiClient,
+        person2: Person2,
+        instance: Instance1? = nil,
+        moderatedCommunities: [Community1] = .init()
+    ) {
         self.source = source
-        
-        if let site = response.site {
-            self.instance = .init(source: source, from: site)
-        } else {
-            self.instance = nil
-        }
-        
-        self.person2 = source.caches.person2.createModel(api: source, for: response.personView)
-        update(with: response)
+        self.person2 = person2
+        self.instance = instance
+        self.moderatedCommunities = moderatedCommunities
     }
     
-    init(source: ApiClient, from response: ApiGetSiteResponse) {
-        self.source = source
-        
-        self.instance = .init(source: source, from: response.siteView.site)
-        
-        guard let myUser = response.myUser else { fatalError() }
-        
-        if let existing = source.caches.person2.retrieveModel(cacheId: myUser.localUserView.localUser.id) {
-            self.person2 = existing
-            existing.update(with: myUser.localUserView)
-        } else {
-            self.person2 = .init(source: source, from: myUser.localUserView)
-        }
-        
-        update(with: myUser)
-    }
-    
-    func update(with response: ApiGetPersonDetailsResponse) {
-        moderatedCommunities = response.moderates.map { moderatorView in
-            source.caches.community1.createModel(api: source, for: moderatorView.community)
-        }
-        person2.update(with: response.personView)
-    }
-    
-    func update(with myUser: ApiMyUserInfo) {
-        moderatedCommunities = myUser.moderates.map { moderatorView in
-            source.caches.community1.createModel(api: source, for: moderatorView.community)
-        }
-        person2.update(with: myUser.localUserView)
+    func update(moderatedCommunities: [Community1], person2ApiBacker: any Person2ApiBacker) {
+        self.moderatedCommunities = moderatedCommunities
+        self.person2.update(with: person2ApiBacker)
     }
 }

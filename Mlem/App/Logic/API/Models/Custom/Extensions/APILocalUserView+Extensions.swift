@@ -7,4 +7,4 @@
 
 import Foundation
 
-extension ApiLocalUserView: ApiPersonViewLike {}
+extension ApiLocalUserView: Person2ApiBacker {}

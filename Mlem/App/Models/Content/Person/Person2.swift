@@ -25,25 +25,21 @@ final class Person2: Person2Providing, ContentModel {
         return hasher.finalize()
     }
     
-    init(source: ApiClient, from personView: ApiPersonView) {
+    init(
+        source: ApiClient,
+        person1: Person1,
+        postCount: Int = 0,
+        commentCount: Int = 0
+    ) {
         self.source = source
-        self.person1 = source.caches.person1.createModel(api: source, for: personView.person)
-        update(with: personView)
+        self.person1 = person1
+        self.postCount = postCount
+        self.commentCount = commentCount
     }
     
-    init(source: ApiClient, from localUserView: ApiLocalUserView) {
-        self.source = source
-        self.person1 = source.caches.person1.createModel(api: source, for: localUserView.person)
-        update(with: localUserView)
-    }
-    
-    func update(with personView: ApiPersonView) {
-        person1.update(with: personView.person)
-    }
-    
-    func update(with personView: any ApiPersonViewLike) {
-        postCount = personView.counts.postCount
-        commentCount = personView.counts.commentCount
-        person1.update(with: personView.person)
+    func update(with apiType: any Person2ApiBacker) {
+        postCount = apiType.counts.postCount
+        commentCount = apiType.counts.commentCount
+        person1.update(with: apiType.person)
     }
 }

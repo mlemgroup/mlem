@@ -45,13 +45,42 @@ final class Post1: Post1Providing, ContentModel {
         return hasher.finalize()
     }
     
-    init(source: ApiClient, from post: ApiPost) {
+    init(
+        source: ApiClient,
+        actorId: URL,
+        id: Int,
+        creationDate: Date,
+        title: String = "",
+        content: String? = "",
+        links: [LinkType] = [],
+        linkUrl: URL? = nil,
+        deleted: Bool = false,
+        embed: PostEmbed? = nil,
+        pinnedCommunity: Bool = false,
+        pinnedInstance: Bool = false,
+        locked: Bool = false,
+        nsfw: Bool = false,
+        removed: Bool = false,
+        thumbnailUrl: URL? = nil,
+        updatedDate: Date? = nil
+    ) {
         self.source = source
-        self.actorId = post.actorId
-        self.id = post.id
-        self.creationDate = post.published
-        
-        update(with: post)
+        self.actorId = actorId
+        self.id = id
+        self.creationDate = creationDate
+        self.title = title
+        self.content = content
+        self.links = links
+        self.linkUrl = linkUrl
+        self.deleted = deleted
+        self.embed = embed
+        self.pinnedCommunity = pinnedCommunity
+        self.pinnedInstance = pinnedInstance
+        self.locked = locked
+        self.nsfw = nsfw
+        self.removed = removed
+        self.thumbnailUrl = thumbnailUrl
+        self.updatedDate = updatedDate
     }
     
     func update(with post: ApiPost) {
@@ -67,13 +96,7 @@ final class Post1: Post1Providing, ContentModel {
         
         deleted = post.deleted
         
-        if post.embedTitle != nil || post.embedDescription != nil || post.embedVideoUrl != nil {
-            embed = .init(
-                title: post.embedTitle,
-                description: post.embedDescription,
-                videoUrl: post.embedVideoUrl
-            )
-        }
+        embed = post.embed
         
         pinnedCommunity = post.featuredCommunity
         pinnedInstance = post.featuredLocal

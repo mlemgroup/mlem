@@ -1,5 +1,5 @@
 //
-//  UnauthenticatedApiClient.swift
+//  ApiClient.swift
 //  Mlem
 //
 //  Created by Sjmarf on 10/02/2024.
@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-class ApiClient: Hashable {
+class ApiClient: ActorIdentifiable, CacheIdentifiable {
     let decoder: JSONDecoder = .defaultDecoder
     let urlSession: URLSession = .init(configuration: .default)
     
@@ -16,27 +16,51 @@ class ApiClient: Hashable {
     let baseUrl: URL
     let endpointUrl: URL
     let token: String?
+    var version: SiteVersion?
     
-    // Hashable/Equatable conformance
-    func hash(into hasher: inout Hasher) {
+    // CacheIdentifiable, ActorIdentifiable conformance
+    var cacheId: Int {
+        var hasher: Hasher = .init()
         hasher.combine(baseUrl)
         hasher.combine(token)
+        return hasher.finalize()
     }
+
+    var actorId: URL { baseUrl }
     
-    static func == (lhs: ApiClient, rhs: ApiClient) -> Bool {
-        lhs.hashValue == rhs.hashValue
-    }
+    // MARK: caching
     
-    // TODO: private
     /// Caches of objects stored per ApiClient instance
+    /// - Warning: DO NOT access this outside of ApiClient!
     var caches: BaseCacheGroup = .init()
-    /// Caches of Instance objects, shared across all ApiClient instances
-    static var instanceCaches: InstanceCacheGroup = .init()
     
-    init(baseUrl: URL, token: String? = nil) {
+    /// Caches of Instance objects, shared across all ApiClient instances
+    /// - Warning: DO NOT access this outside of ApiClient!
+    static var apiClientCache: ApiClientCache = .init()
+
+    func cleanCaches() {
+        caches.clean()
+        ApiClient.apiClientCache.clean()
+    }
+    
+    /// Creates or retrieves an API client for the given connection parameters
+    static func getApiClient(for url: URL, with token: String?) throws -> ApiClient {
+        try apiClientCache.createOrRetrieveApiClient(for: url, with: token)
+    }
+    
+    /// Creates a new API Client. Private because it should never be used outside of ApiClientCache, as the caching system depends on one ApiClient existing for any given session
+    private init(baseUrl: URL, token: String? = nil) throws {
         self.baseUrl = baseUrl
         self.endpointUrl = baseUrl.appendingPathComponent("api/v3")
         self.token = token
+        
+        Task {
+            do {
+                self.version = try await .init(getSite().version)
+            } catch {
+                print("Failed to resolve version! \(error)")
+            }
+        }
     }
     
     @discardableResult
@@ -126,6 +150,32 @@ class ApiClient: Hashable {
             return try decoder.decode(model, from: data)
         } catch {
             throw ApiClientError.decoding(data, error)
+        }
+    }
+}
+
+// MARK: ApiClientCache
+
+// This needs to be declared in this file to have access to the private initializer
+
+extension ApiClient {
+    /// Cache for ApiClient--exception case because there's no ApiType and it may need to perform ApiClient bootstrapping
+    class ApiClientCache: CoreCache<ApiClient> {
+        func createOrRetrieveApiClient(for baseUrl: URL, with token: String?) throws -> ApiClient {
+            let cacheId: Int = {
+                var hasher: Hasher = .init()
+                hasher.combine(baseUrl)
+                hasher.combine(token)
+                return hasher.finalize()
+            }()
+            
+            if let client = retrieveModel(cacheId: cacheId) {
+                return client
+            }
+            
+            let ret: ApiClient = try .init(baseUrl: baseUrl, token: token)
+            cachedItems[ret.cacheId] = .init(content: ret)
+            return ret
         }
     }
 }

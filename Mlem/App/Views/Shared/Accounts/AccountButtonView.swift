@@ -44,7 +44,7 @@ struct AccountButtonView: View {
     }
     
     var captionText: String? {
-        let host = account.instance.url.host()
+        let host = account.api.baseUrl.host
         var caption = caption
         let timeText = timeText
         if timeText == nil {
@@ -65,8 +65,8 @@ struct AccountButtonView: View {
             if appState.actorId != account.actorId {
                 // TODO: this crap
                 // appState.api = account.api
-                print("DEBUG changing to account with token: \(account.accessToken)")
-                print("DEBUG new account instance token: \(account.instance.api.token)")
+//                print("DEBUG changing to account with token: \(account.accessToken)")
+//                print("DEBUG new account instance token: \(account.instance.api.token)")
                 appState.changeUser(to: account)
                 dismiss()
             }

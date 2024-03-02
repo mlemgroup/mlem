@@ -39,18 +39,44 @@ final class Community1: Community1Providing, ContentModel {
         hasher.combine(actorId)
         return hasher.finalize()
     }
-    
-    required init(source: ApiClient, from community: ApiCommunity) {
+  
+    init(
+        source: ApiClient,
+        actorId: URL,
+        id: Int,
+        name: String,
+        creationDate: Date,
+        updatedDate: Date? = .distantPast,
+        displayName: String = "",
+        description: String? = nil,
+        removed: Bool = false,
+        deleted: Bool = false,
+        nsfw: Bool = false,
+        avatar: URL? = nil,
+        banner: URL? = nil,
+        hidden: Bool = false,
+        onlyModeratorsCanPost: Bool = false,
+        blocked: Bool = false
+    ) {
         self.source = source
-        
-        self.actorId = community.actorId
-        self.id = community.id
-        self.name = community.name
-        self.creationDate = community.published
-
-        update(with: community)
+        self.actorId = actorId
+        self.id = id
+        self.name = name
+        self.creationDate = creationDate
+        self.updatedDate = updatedDate
+        self.displayName = displayName
+        self.description = description
+        self.removed = removed
+        self.deleted = deleted
+        self.nsfw = nsfw
+        self.avatar = avatar
+        self.banner = banner
+        self.hidden = hidden
+        self.onlyModeratorsCanPost = onlyModeratorsCanPost
+        self.blocked = blocked
     }
-    
+
+    // TODO: memberwise?
     func update(with community: ApiCommunity) {
         updatedDate = community.updated
         displayName = community.title

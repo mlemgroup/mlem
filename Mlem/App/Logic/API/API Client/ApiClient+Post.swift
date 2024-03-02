@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension ApiClient {
+extension ApiClient: PostFeedProvider {
     // swiftlint:disable:next function_parameter_count
     func getPosts(
         communityId: Int,
@@ -16,7 +16,7 @@ extension ApiClient {
         cursor: String?,
         limit: Int,
         savedOnly: Bool
-    ) async throws -> ApiGetPostsResponse {
+    ) async throws -> (posts: [Post2], cursor: String?) {
         let request = try GetPostsRequest(
             communityId: communityId,
             page: page,
@@ -26,31 +26,33 @@ extension ApiClient {
             limit: limit,
             savedOnly: savedOnly
         )
-        return try await perform(request)
+        let response = try await perform(request)
+        let posts = response.posts.map { caches.post2.getModel(api: self, from: $0) }
+        return (posts: posts, cursor: response.nextPage)
     }
     
-    // TODO: this should do caching and return Post2
     // swiftlint:disable:next function_parameter_count
     func getPosts(
-        feedType: ApiListingType,
+        feed: ApiListingType,
         sort: ApiSortType,
         page: Int,
         cursor: String?,
         limit: Int,
         savedOnly: Bool
-    ) async throws -> ApiGetPostsResponse {
-        print("REQUEST", feedType, sort, endpointUrl, token)
+    ) async throws -> (posts: [Post2], cursor: String?) {
+        print("REQUEST", feed, sort, endpointUrl, token)
         let request = try GetPostsRequest(
             communityId: nil,
             page: page,
             cursor: cursor,
             sort: sort,
-            type: feedType,
+            type: feed,
             limit: limit,
             savedOnly: savedOnly
         )
         let response = try await perform(request)
         print("RESPONSE", response.posts.first?.post.name)
-        return response
+        let posts = response.posts.map { caches.post2.getModel(api: self, from: $0) }
+        return (posts: posts, cursor: response.nextPage)
     }
 }

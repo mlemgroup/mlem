@@ -15,8 +15,6 @@ final class Instance1: Instance1Providing, ContentModel {
     var source: ApiClient
     var instance1: Instance1 { self }
     
-    let stub: InstanceStub
-    
     let id: Int
     let creationDate: Date
     let publicKey: String
@@ -28,15 +26,29 @@ final class Instance1: Instance1Providing, ContentModel {
     var lastRefreshDate: Date = .distantPast
     
     // Instance and ApiClient share equatability properties--two instances are different iff they are different servers and being connected to using a different user. This makes intuitive sense given that instance is the source of things like post feeds, which can vary depending on the calling user (even instance-generics like All and Local will produce varying responses for different calling users, e.g., return an upvoted or neutral post)
-    var cacheId: Int { api.hashValue }
+    var cacheId: Int { source.cacheId }
+    var actorId: URL { source.actorId }
     
-    required init(source: ApiClient, from site: ApiSite) {
+    internal init(
+        source: ApiClient,
+        id: Int,
+        creationDate: Date,
+        publicKey: String,
+        displayName: String = "",
+        description: String? = nil,
+        avatar: URL? = nil,
+        banner: URL? = nil,
+        lastRefreshDate: Date = .distantPast
+    ) {
         self.source = source
-        self.id = site.id
-        self.creationDate = site.published
-        self.publicKey = site.publicKey
-        self.stub = .createModel(url: site.actorId)
-        update(with: site)
+        self.id = id
+        self.creationDate = creationDate
+        self.publicKey = publicKey
+        self.displayName = displayName
+        self.description = description
+        self.avatar = avatar
+        self.banner = banner
+        self.lastRefreshDate = lastRefreshDate
     }
     
     func update(with site: ApiSite) {

@@ -15,6 +15,21 @@ enum ScoringOperation: Int, Decodable {
     case none = 0
 }
 
+extension ScoringOperation {
+    /// Non-optional initializer; if int is nil or invalid, returns .none
+    static func guaranteedInit(from int: Int?) -> ScoringOperation {
+        guard let int else {
+            return .none
+        }
+        
+        if let value = ScoringOperation(rawValue: int) {
+            return value
+        } else {
+            return .none
+        }
+    }
+}
+
 extension ScoringOperation: AssociatedColor {
     var color: Color? {
         switch self {

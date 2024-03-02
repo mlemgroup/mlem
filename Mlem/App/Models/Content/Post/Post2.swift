@@ -33,13 +33,30 @@ final class Post2: Post2Providing, ContentModel {
         return hasher.finalize()
     }
     
-    init(source: ApiClient, from post: ApiPostView) {
+    init(
+        source: ApiClient,
+        post1: Post1,
+        creator: Person1,
+        community: Community1,
+        commentCount: Int = 0,
+        upvoteCount: Int = 0,
+        downvoteCount: Int = 0,
+        unreadCommentCount: Int = 0,
+        isSaved: Bool = false,
+        isRead: Bool = false,
+        myVote: ScoringOperation = .none
+    ) {
         self.source = source
-        
-        self.post1 = source.caches.post1.createModel(api: source, for: post.post)
-        self.creator = source.caches.person1.createModel(api: source, for: post.creator)
-        self.community = source.caches.community1.createModel(api: source, for: post.community)
-        update(with: post)
+        self.post1 = post1
+        self.creator = creator
+        self.community = community
+        self.commentCount = commentCount
+        self.upvoteCount = upvoteCount
+        self.downvoteCount = downvoteCount
+        self.unreadCommentCount = unreadCommentCount
+        self.isSaved = isSaved
+        self.isRead = isRead
+        self.myVote = myVote
     }
     
     func update(with post: ApiPostView) {
@@ -49,7 +66,7 @@ final class Post2: Post2Providing, ContentModel {
         unreadCommentCount = post.unreadComments
         isSaved = post.saved
         isRead = post.read
-        myVote = .init(rawValue: post.myVote ?? 0) ?? .none // TODO: this can be nicer
+        myVote = ScoringOperation.guaranteedInit(from: post.myVote)
         
         post1.update(with: post.post)
         creator.update(with: post.creator)

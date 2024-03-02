@@ -8,12 +8,14 @@
 import Foundation
 
 extension ApiClient {
-    func getCommunity(id: Int) async throws -> ApiGetCommunityResponse {
+    func getCommunity(id: Int) async throws -> Community3 {
         let request = GetCommunityRequest(id: id, name: nil)
-        return try await perform(request)
+        let response = try await perform(request)
+        return caches.community3.getModel(api: self, from: response)
     }
     
-    func getCommunity(actorId: URL) async throws -> ApiCommunityView? {
+    func getCommunity(actorId: URL) async throws -> Community3? {
+        // search for community
         let request = SearchRequest(
             q: actorId.absoluteString,
             communityId: nil,
@@ -25,7 +27,11 @@ extension ApiClient {
             page: 1,
             limit: 1
         )
-        let response = try await perform(request)
-        return response.communities.first
+        
+        // if community found, get as Community3--caching performed in call
+        if let response = try await perform(request).communities.first {
+            return try await getCommunity(id: response.id)
+        }
+        return nil
     }
 }

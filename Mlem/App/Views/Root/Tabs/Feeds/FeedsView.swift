@@ -18,7 +18,7 @@ struct FeedsView: View {
     }
     
     var content: some View {
-        MinimalPostFeedView(initialFeedProvider: appState.myInstance)
+        MinimalPostFeedView(initialFeedProvider: appState.api)
     }
 }
 
@@ -53,7 +53,7 @@ struct MinimalPostFeedView: View {
                     await postTracker.loadMoreItems()
                 }
                 .task(id: appState.actorId) {
-                    await postTracker.changeFeedType(to: .aggregateFeed(appState.myInstance, type: .subscribed))
+                    await postTracker.changeFeedType(to: .aggregateFeed(appState.api, type: .subscribed))
                 }
                 .refreshable {
                     do {

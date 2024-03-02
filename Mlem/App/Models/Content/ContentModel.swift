@@ -8,11 +8,10 @@
 import Foundation
 
 protocol ContentModel: AnyObject, ActorIdentifiable, CacheIdentifiable, Identifiable {
-    associatedtype ApiType: CacheIdentifiable & ActorIdentifiable & Identifiable where ApiType.ID == ID
+    // associatedtype ApiType: CacheIdentifiable & ActorIdentifiable & Identifiable where ApiType.ID == ID
     
     var source: ApiClient { get }
-    init(source: ApiClient, from: ApiType)
-    func update(with: ApiType)
+    // func update(with: ApiType)
 }
 
 // extension ContentModel where Self.ApiType: Mockable {

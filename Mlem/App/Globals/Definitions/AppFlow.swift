@@ -7,6 +7,6 @@
 
 enum AppFlow {
     case onboarding
-    case guest(InstanceStub)
+    case guest(ApiClient)
     case user(UserStub)
 }

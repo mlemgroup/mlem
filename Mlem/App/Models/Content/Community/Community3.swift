@@ -12,33 +12,33 @@ import SwiftUI
 final class Community3: Community3Providing, ContentModel {
     typealias ApiType = ApiGetCommunityResponse
     var community3: Community3 { self }
-    
     let source: ApiClient
     
     let community2: Community2
     
-    var instance: Instance1!
+    var instance: Instance1! // TODO: no force unwrapping
     var moderators: [Person1] = .init()
     var discussionLanguages: [Int] = .init()
     
     var cacheId: Int { community2.cacheId }
-    
-    required init(source: ApiClient, from response: ApiGetCommunityResponse) {
+  
+    init(
+        source: ApiClient,
+        community2: Community2,
+        instance: Instance1?,
+        moderators: [Person1] = .init(),
+        discussionLanguages: [Int] = .init()
+    ) {
         self.source = source
-        
-        if let site = response.site {
-            self.instance = .init(source: source, from: site)
-        } else {
-            self.instance = nil
-        }
-        
-        self.community2 = source.caches.community2.createModel(api: source, for: response.communityView)
-        update(with: response)
+        self.community2 = community2
+        self.instance = instance
+        self.moderators = moderators
+        self.discussionLanguages = discussionLanguages
     }
     
     func update(with response: ApiGetCommunityResponse) {
         moderators = response.moderators.map { moderatorView in
-            source.caches.person1.createModel(api: source, for: moderatorView.moderator)
+            source.caches.person1.createModel(api: source, from: moderatorView.moderator)
         }
         discussionLanguages = response.discussionLanguages
         community2.update(with: response.communityView)

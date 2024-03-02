@@ -10,19 +10,16 @@ import SwiftUI
 
 enum UserError: Error {
     case noUserInResponse
+    case unauthenticated
 }
 
 @Observable
 final class UserStub: UserProviding, Codable {
     var source: ApiClient { api }
     
-    let instance: InstanceStub
-    var caches: BaseCacheGroup { instance.caches }
-    
     var stub: UserStub { self }
     
-    var api: ApiClient { instance.api }
-    // @ObservationIgnored lazy var api: ApiClient = .init(baseUrl: instance.url, token: accessToken)
+    var api: ApiClient
     
     let id: Int
     let name: String
@@ -43,23 +40,26 @@ final class UserStub: UserProviding, Codable {
         case noTokenInKeychain
     }
     
-    init(from response: ApiGetSiteResponse, instanceLink: URL, token: String) throws {
-        guard let user = response.myUser else {
-            throw UserError.noUserInResponse
-        }
-        print("DEBUG \(user.localUserView.localUser.id)")
-        self.id = user.localUserView.localUser.id
-        self.name = user.localUserView.person.name
-        self.nickname = user.localUserView.person.displayName
-        self.cachedSiteVersion = .init(response.version)
-        self.avatarUrl = user.localUserView.person.avatar
-        self.lastLoggedIn = Date.now
-        
-        self.instance = .createModel(url: instanceLink) // TODO: make sure this works right--bootstrap?
-        self.actorId = parseActorId(instanceLink: response.actorId, name: name)
-        self.accessToken = token
-        // self.source = .init(baseUrl: instanceLink, token: token)
-        // instance.api = api
+    init(
+        api: ApiClient,
+        id: Int,
+        name: String,
+        actorId: URL,
+        accessToken: String,
+        nickname: String? = nil,
+        cachedSiteVersion: SiteVersion? = nil,
+        avatarUrl: URL? = nil,
+        lastLoggedIn: Date? = nil
+    ) {
+        self.api = api
+        self.id = id
+        self.name = name
+        self.actorId = actorId
+        self.accessToken = accessToken
+        self.nickname = nickname
+        self.cachedSiteVersion = cachedSiteVersion
+        self.avatarUrl = avatarUrl
+        self.lastLoggedIn = lastLoggedIn
     }
     
     init(from decoder: Decoder) throws {
@@ -78,16 +78,16 @@ final class UserStub: UserProviding, Codable {
         // Remove the "api/v3" path that we attached to the instanceLink pre-1.3
         var components = URLComponents(url: instanceLink, resolvingAgainstBaseURL: false)!
         components.path = ""
-        self.instance = .createModel(url: components.url!) // TODO: bootstrapping needed here
         
         // parse actor id
         self.actorId = parseActorId(instanceLink: instanceLink, name: name)
         
-        // retrive token
+        // retrive token and initialize ApiClient
         guard let token = AppConstants.keychain[keychainId(id: id)] else {
             throw DecodingError.noTokenInKeychain
         }
         self.accessToken = token
+        self.api = try ApiClient.getApiClient(for: instanceLink, with: token)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -99,7 +99,7 @@ final class UserStub: UserProviding, Codable {
         try container.encode(cachedSiteVersion, forKey: .siteVersion)
         try container.encode(avatarUrl, forKey: .avatarUrl)
         try container.encode(lastLoggedIn, forKey: .lastUsed)
-        try container.encode(instance.url, forKey: .instanceLink)
+        try container.encode(api.baseUrl, forKey: .instanceLink)
     }
 }
 
@@ -107,7 +107,7 @@ private func keychainId(id: Int) -> String {
     "\(id)_accessToken"
 }
 
-private func parseActorId(instanceLink: URL, name: String) -> URL {
+func parseActorId(instanceLink: URL, name: String) -> URL {
     var actorComponents = URLComponents(url: instanceLink, resolvingAgainstBaseURL: false)!
     actorComponents.path = "/u/\(name)"
     return actorComponents.url!
