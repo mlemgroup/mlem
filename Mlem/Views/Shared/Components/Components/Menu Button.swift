@@ -10,7 +10,7 @@ import SwiftUI
 
 struct MenuButton: View {
     let menuFunction: MenuFunction
-    let confirmDestructive: ((StandardMenuFunction) -> Void)?
+    @Binding var menuFunctionPopup: MenuFunctionPopup?
 
     var body: some View {
         switch menuFunction {
@@ -19,12 +19,12 @@ struct MenuButton: View {
         case let .shareImage(shareImageFunction):
             ShareLink(item: shareImageFunction.image, preview: .init("photo", image: shareImageFunction.image))
         case let .standard(standardMenuFunction):
-            let role: ButtonRole? = standardMenuFunction.role != nil ? .destructive : nil
-            Button(role: role) {
-                if case let .destructive(prompt: prompt) = standardMenuFunction.role, prompt != nil, let confirmDestructive {
-                    confirmDestructive(standardMenuFunction)
-                } else {
-                    standardMenuFunction.callback()
+            Button(role: standardMenuFunction.isDestructive ? .destructive : nil) {
+                switch standardMenuFunction.role {
+                case .standard(let callback):
+                    callback()
+                case .popup(let menuFunctionPopup):
+                    self.menuFunctionPopup = menuFunctionPopup
                 }
             } label: {
                 Label(standardMenuFunction.text, systemImage: standardMenuFunction.imageName)
@@ -34,11 +34,13 @@ struct MenuButton: View {
             NavigationLink(navigationMenuFunction.destination) {
                 Label(navigationMenuFunction.text, systemImage: navigationMenuFunction.imageName)
             }
-        case let .childMenu(titleKey, children):
-            Menu(titleKey) {
-                ForEach(children) { child in
-                    MenuButton(menuFunction: child, confirmDestructive: nil)
+        case let .group(groupMenuFunction):
+            Menu {
+                ForEach(groupMenuFunction.children) { child in
+                    MenuButton(menuFunction: child, menuFunctionPopup: $menuFunctionPopup)
                 }
+            } label: {
+                Label(groupMenuFunction.text, systemImage: groupMenuFunction.imageName)
             }
         }
     }

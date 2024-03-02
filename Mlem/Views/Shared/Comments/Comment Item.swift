@@ -30,6 +30,7 @@ struct CommentItem: View {
     @AppStorage("shouldShowTimeInCommentBar") var shouldShowTimeInCommentBar: Bool = true
     @AppStorage("shouldShowSavedInCommentBar") var shouldShowSavedInCommentBar: Bool = false
     @AppStorage("shouldShowRepliesInCommentBar") var shouldShowRepliesInCommentBar: Bool = true
+    @AppStorage("showExtraContextMenuActions") var showExtraContextMenuActions: Bool = false
     @AppStorage("compactComments") var compactComments: Bool = false
     @AppStorage("collapseChildComments") var collapseComments: Bool = false
     @AppStorage("tapCommentToCollapse") var tapCommentToCollapse: Bool = true
@@ -74,15 +75,7 @@ struct CommentItem: View {
     let enableSwipeActions: Bool
     let pageContext: PageContext
     
-    // MARK: Destructive confirmation
-    
-    @State private var isPresentingConfirmDestructive: Bool = false
-    @State private var confirmationMenuFunction: StandardMenuFunction?
-    
-    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
-        confirmationMenuFunction = destructiveFunction
-        isPresentingConfirmDestructive = true
-    }
+    @State private var menuFunctionPopup: MenuFunctionPopup?
     
     // MARK: Computed
     
@@ -221,10 +214,6 @@ struct CommentItem: View {
                 toggleCollapsed()
             }
         }
-        .destructiveConfirmation(
-            isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
-            confirmationMenuFunction: confirmationMenuFunction
-        )
         .background(Color.systemBackground)
         .addSwipeyActions(
             leading: enableSwipeActions ? [upvoteSwipeAction, downvoteSwipeAction] : [],
@@ -233,7 +222,7 @@ struct CommentItem: View {
         .border(width: borderWidth, edges: [.leading], color: threadingColors[depth % threadingColors.count])
         .contextMenu {
             ForEach(genMenuFunctions()) { item in
-                MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+                MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
             }
         }
         .onChange(of: collapseComments) { newValue in

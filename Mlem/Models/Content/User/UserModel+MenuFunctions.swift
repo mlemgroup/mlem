@@ -12,7 +12,7 @@ extension UserModel {
         .standardMenuFunction(
             text: blocked ? "Unblock" : "Block",
             imageName: blocked ? Icons.show : Icons.hide,
-            role: blocked ? nil : .destructive(prompt: AppConstants.blockUserPrompt),
+            confirmationPrompt: AppConstants.blockUserPrompt,
             callback: {
                 Task {
                     var new = self
@@ -29,7 +29,7 @@ extension UserModel {
         .standardMenuFunction(
             text: banned ? "Unban" : "Ban",
             imageName: Icons.instanceBan,
-            role: .destructive(prompt: nil),
+            isDestructive: true,
             callback: {
                 modToolTracker.banUserFromInstance(self, shouldBan: !banned)
             }

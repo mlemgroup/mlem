@@ -19,8 +19,8 @@ enum MenuFunction: Identifiable {
             return shareImageFunction.id
         case let .navigation(navigationMenuFunction):
             return navigationMenuFunction.id
-        case .childMenu:
-            return UUID().uuidString
+        case let .group(groupMenuFunction):
+            return groupMenuFunction.id
         }
     }
     
@@ -31,11 +31,26 @@ enum MenuFunction: Identifiable {
     /// - Parameter titleKey: User-facing title label for menu.
     /// - Parameter children: Menu items for this child menu.
     /// - Note: Destructive confirmation is not supported at this time.
-    case childMenu(titleKey: String, children: [MenuFunction])
+    case group(GroupMenuFunction)
 }
 
-enum MenuFunctionRole {
-    case destructive(prompt: String?)
+struct MenuFunctionPopup {
+    struct Action {
+        var text: String
+        var callback: () -> Void
+    }
+    
+    let prompt: String?
+    let actions: [Action]
+}
+
+enum MenuFunctionActionType {
+    case standard(callback: () -> Void)
+    case popup(MenuFunctionPopup)
+}
+
+enum MenuFunctionDestructiveCondition {
+    case never, always, whenTrue, whenFalse
 }
 
 // some convenience initializers because MenuFunction.standard(StandardMenuFunction...) is ugly
@@ -43,16 +58,61 @@ extension MenuFunction {
     static func standardMenuFunction(
         text: String,
         imageName: String,
-        role: MenuFunctionRole? = nil,
+        isDestructive: Bool = false,
         enabled: Bool = true,
         callback: @escaping () -> Void
     ) -> MenuFunction {
         MenuFunction.standard(StandardMenuFunction(
             text: text,
             imageName: imageName,
-            role: role,
-            enabled: enabled,
-            callback: callback
+            isDestructive: isDestructive,
+            role: .standard(callback: callback),
+            enabled: enabled
+        ))
+    }
+    
+    static func standardMenuFunction(
+        text: String,
+        imageName: String,
+        confirmationPrompt: String,
+        enabled: Bool = true,
+        callback: @escaping () -> Void
+    ) -> MenuFunction {
+        MenuFunction.standard(StandardMenuFunction(
+            text: text,
+            imageName: imageName,
+            isDestructive: true,
+            role: .popup(.init(prompt: confirmationPrompt, actions: [.init(text: "Yes", callback: callback)])),
+            enabled: enabled
+        ))
+    }
+    
+    static func standardMenuFunction(
+        text: String,
+        imageName: String,
+        isDestructive: Bool = false,
+        enabled: Bool = true,
+        prompt: String,
+        actions: [MenuFunctionPopup.Action]
+    ) -> MenuFunction {
+        MenuFunction.standard(StandardMenuFunction(
+            text: text,
+            imageName: imageName,
+            isDestructive: isDestructive,
+            role: .popup(.init(prompt: prompt, actions: actions)),
+            enabled: enabled
+        ))
+    }
+    
+    static func groupMenuFunction(
+        text: String,
+        imageName: String,
+        children: [MenuFunction]
+    ) -> MenuFunction {
+        MenuFunction.group(GroupMenuFunction(
+            text: text,
+            imageName: imageName,
+            children: children
         ))
     }
     
@@ -61,10 +121,9 @@ extension MenuFunction {
         toggle: Bool,
         trueText: String,
         trueImageName: String,
-        trueRole: MenuFunctionRole? = nil,
         falseText: String,
         falseImageName: String,
-        falseRole: MenuFunctionRole? = nil,
+        isDestructive: MenuFunctionDestructiveCondition = .never,
         enabled: Bool = true,
         callback: @escaping () -> Void
     ) -> MenuFunction {
@@ -72,7 +131,7 @@ extension MenuFunction {
             return standardMenuFunction(
                 text: trueText,
                 imageName: trueImageName,
-                role: trueRole,
+                isDestructive: isDestructive == .whenTrue || isDestructive == .always,
                 enabled: enabled,
                 callback: callback
             )
@@ -80,7 +139,7 @@ extension MenuFunction {
             return standardMenuFunction(
                 text: falseText,
                 imageName: falseImageName,
-                role: falseRole,
+                isDestructive: isDestructive == .whenFalse || isDestructive == .always,
                 enabled: enabled,
                 callback: callback
             )
@@ -131,9 +190,16 @@ struct StandardMenuFunction: Identifiable {
     
     let text: String
     let imageName: String
-    var role: MenuFunctionRole?
+    let isDestructive: Bool
+    var role: MenuFunctionActionType
     let enabled: Bool
-    let callback: () -> Void
+}
+
+struct GroupMenuFunction: Identifiable {
+    var id: String { text }
+    let text: String
+    let imageName: String
+    var children: [MenuFunction]
 }
 
 struct NavigationMenuFunction: Identifiable {

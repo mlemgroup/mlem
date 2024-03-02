@@ -34,16 +34,10 @@ struct UserView: View {
     
     @StateObject var communityTracker: ContentTracker<CommunityModel> = .init()
     
-    @State private var isPresentingConfirmDestructive: Bool = false
-    @State private var confirmationMenuFunction: StandardMenuFunction?
+    @State private var menuFunctionPopup: MenuFunctionPopup?
     
     @Namespace var scrollToTop
     @State private var scrollToTopAppeared = false
-    
-    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
-        confirmationMenuFunction = destructiveFunction
-        isPresentingConfirmDestructive = true
-    }
     
     init(user: UserModel, communityContext: CommunityModel? = nil) {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
@@ -66,10 +60,6 @@ struct UserView: View {
         content
             .environmentObject(privatePostTracker)
             .environmentObject(privateCommentTracker)
-            .destructiveConfirmation(
-                isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
-                confirmationMenuFunction: confirmationMenuFunction
-            )
             .task(priority: .userInitiated) {
                 if isLoadingContent {
                     Task {
@@ -81,7 +71,7 @@ struct UserView: View {
                 ToolbarItemGroup(placement: .secondaryAction) {
                     let functions = user.menuFunctions({ user = $0 }, modToolTracker: modToolTracker)
                     ForEach(functions) { item in
-                        MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+                        MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
                     }
                 }
             }

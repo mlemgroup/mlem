@@ -182,68 +182,69 @@ extension CommentItem {
     func genMenuFunctions() -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         
-        // upvote
-        let (upvoteText, upvoteImg) = hierarchicalComment.commentView.myVote == .upvote ?
+        let showExtraContextMenuActions = self.showExtraContextMenuActions || compactComments
+        let widgets = layoutWidgetTracker.groups.comment
+        
+        if showExtraContextMenuActions || LayoutWidgetType.upvoteContaining.isDisjoint(with: widgets) {
+            // upvote
+            let (upvoteText, upvoteImg) = hierarchicalComment.commentView.myVote == .upvote ?
             ("Undo Upvote", Icons.upvoteSquareFill) :
             ("Upvote", Icons.upvoteSquare)
-        ret.append(MenuFunction.standardMenuFunction(
-            text: upvoteText,
-            imageName: upvoteImg,
-            role: nil,
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                await upvote()
-            }
-        })
+            ret.append(MenuFunction.standardMenuFunction(
+                text: upvoteText,
+                imageName: upvoteImg
+            ) {
+                Task(priority: .userInitiated) {
+                    await upvote()
+                }
+            })
+        }
         
-        // downvote
-        let (downvoteText, downvoteImg) = hierarchicalComment.commentView.myVote == .downvote ?
+        if showExtraContextMenuActions || LayoutWidgetType.downvoteContaining.isDisjoint(with: widgets) {
+            // downvote
+            let (downvoteText, downvoteImg) = hierarchicalComment.commentView.myVote == .downvote ?
             ("Undo Downvote", Icons.downvoteSquareFill) :
             ("Downvote", Icons.downvoteSquare)
-        ret.append(MenuFunction.standardMenuFunction(
-            text: downvoteText,
-            imageName: downvoteImg,
-            role: nil,
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                await downvote()
-            }
-        })
+            ret.append(MenuFunction.standardMenuFunction(
+                text: downvoteText,
+                imageName: downvoteImg
+            ) {
+                Task(priority: .userInitiated) {
+                    await downvote()
+                }
+            })
+        }
         
-        // save
-        let (saveText, saveImg) = hierarchicalComment.commentView.saved ?
+        if showExtraContextMenuActions || !widgets.contains(.save) {
+            // save
+            let (saveText, saveImg) = hierarchicalComment.commentView.saved ?
             ("Unsave", Icons.unsave) :
             ("Save", Icons.save)
-        ret.append(MenuFunction.standardMenuFunction(
-            text: saveText,
-            imageName: saveImg,
-            role: nil,
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                await saveComment()
-            }
-        })
+            ret.append(MenuFunction.standardMenuFunction(
+                text: saveText,
+                imageName: saveImg
+            ) {
+                Task(priority: .userInitiated) {
+                    await saveComment()
+                }
+            })
+        }
         
-        // reply
-        ret.append(MenuFunction.standardMenuFunction(
-            text: "Reply",
-            imageName: Icons.reply,
-            role: nil,
-            enabled: true
-        ) {
-            replyToComment()
-        })
+        if showExtraContextMenuActions || !widgets.contains(.reply) {
+            // reply
+            ret.append(MenuFunction.standardMenuFunction(
+                text: "Reply",
+                imageName: Icons.reply
+            ) {
+                replyToComment()
+            })
+        }
         
         // edit
         if appState.isCurrentAccountId(hierarchicalComment.commentView.creator.id) {
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Edit",
-                imageName: Icons.edit,
-                role: nil,
-                enabled: true
+                imageName: Icons.edit
             ) {
                 editComment()
             })
@@ -254,7 +255,7 @@ extension CommentItem {
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Delete",
                 imageName: Icons.delete,
-                role: .destructive(prompt: "Are you sure you want to delete this comment?  This cannot be undone."),
+                confirmationPrompt: "Are you sure you want to delete this comment?  This cannot be undone.",
                 enabled: !hierarchicalComment.commentView.comment.deleted
             ) {
                 Task(priority: .userInitiated) {
@@ -262,18 +263,19 @@ extension CommentItem {
                 }
             })
         }
-        
-        // share
-        if let url = URL(string: hierarchicalComment.commentView.comment.apId) {
-            ret.append(MenuFunction.shareMenuFunction(url: url))
+                
+        if showExtraContextMenuActions || !widgets.contains(.share) {
+            // share
+            if let url = URL(string: hierarchicalComment.commentView.comment.apId) {
+                ret.append(MenuFunction.shareMenuFunction(url: url))
+            }
         }
         
         // report
         ret.append(MenuFunction.standardMenuFunction(
             text: "Report",
             imageName: Icons.moderationReport,
-            role: .destructive(prompt: "Really report?"),
-            enabled: true
+            confirmationPrompt: AppConstants.reportCommentPrompt
         ) {
             editorTracker.openEditor(with: ConcreteEditorModel(
                 comment: hierarchicalComment.commentView,
@@ -284,9 +286,8 @@ extension CommentItem {
         // block
         ret.append(MenuFunction.standardMenuFunction(
             text: "Block User",
-            imageName: Icons.userBlock,
-            role: .destructive(prompt: AppConstants.blockUserPrompt),
-            enabled: true
+            imageName: Icons.hide,
+            confirmationPrompt: AppConstants.blockUserPrompt
         ) {
             Task(priority: .userInitiated) {
                 await blockUser(userId: hierarchicalComment.commentView.creator.id)

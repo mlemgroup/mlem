@@ -31,11 +31,11 @@ struct UserContentFeedView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .secondaryAction) {
                     ForEach(genEllipsisMenuFunctions()) { menuFunction in
-                        MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
+                        MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
                     }
                     Menu {
                         ForEach(genPostSizeSwitchingFunctions()) { menuFunction in
-                            MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
+                            MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
                         }
                     } label: {
                         Label("Post Size", systemImage: Icons.postSizeSetting)

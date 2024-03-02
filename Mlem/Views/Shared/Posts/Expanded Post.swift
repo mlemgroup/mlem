@@ -50,6 +50,7 @@ struct ExpandedPost: View {
     
     @AppStorage("showCommentJumpButton") var showCommentJumpButton: Bool = true
     @AppStorage("commentJumpButtonSide") var commentJumpButtonSide: JumpButtonLocation = .bottomTrailing
+    @AppStorage("showExtraContextMenuActions") var showExtraContextMenuActions: Bool = false
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var editorTracker: EditorTracker
@@ -236,6 +237,8 @@ struct ExpandedPost: View {
                     
                     let menuFunctions = post.menuFunctions(
                         editorTracker: editorTracker,
+                        showExtraContextMenuActions: showExtraContextMenuActions,
+                        widgetTracker: layoutWidgetTracker,
                         postTracker: postTracker,
                         community: isMod ? post.community : nil,
                         modToolTracker: isMod ? modToolTracker : nil

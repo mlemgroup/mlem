@@ -239,9 +239,7 @@ extension MentionModel {
         // upvote
         ret.append(MenuFunction.standardMenuFunction(
             text: votes.myVote == .upvote ? "Undo Upvote" : "Upvote",
-            imageName: votes.myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvoteSquare,
-            role: nil,
-            enabled: true
+            imageName: votes.myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvoteSquare
         ) {
             Task(priority: .userInitiated) {
                 await self.vote(inputOp: .upvote, unreadTracker: unreadTracker)
@@ -251,9 +249,7 @@ extension MentionModel {
         // downvote
         ret.append(MenuFunction.standardMenuFunction(
             text: votes.myVote == .downvote ? "Undo Downvote" : "Downvote",
-            imageName: votes.myVote == .downvote ? Icons.downvoteSquareFill : Icons.downvoteSquare,
-            role: nil,
-            enabled: true
+            imageName: votes.myVote == .downvote ? Icons.downvoteSquareFill : Icons.downvoteSquare
         ) {
             Task(priority: .userInitiated) {
                 await self.vote(inputOp: .downvote, unreadTracker: unreadTracker)
@@ -263,9 +259,7 @@ extension MentionModel {
         // toggle read
         ret.append(MenuFunction.standardMenuFunction(
             text: personMention.read ? "Mark Unread" : "Mark Read",
-            imageName: personMention.read ? Icons.markUnread : Icons.markRead,
-            role: nil,
-            enabled: true
+            imageName: personMention.read ? Icons.markUnread : Icons.markRead
         ) {
             Task(priority: .userInitiated) {
                 await self.toggleRead(unreadTracker: unreadTracker)
@@ -275,9 +269,7 @@ extension MentionModel {
         // reply
         ret.append(MenuFunction.standardMenuFunction(
             text: "Reply",
-            imageName: Icons.reply,
-            role: nil,
-            enabled: true
+            imageName: Icons.reply
         ) {
             Task(priority: .userInitiated) {
                 await self.reply(editorTracker: editorTracker, unreadTracker: unreadTracker)
@@ -288,8 +280,7 @@ extension MentionModel {
         ret.append(MenuFunction.standardMenuFunction(
             text: "Report",
             imageName: Icons.moderationReport,
-            role: .destructive(prompt: AppConstants.reportCommentPrompt),
-            enabled: true
+            confirmationPrompt: AppConstants.reportCommentPrompt
         ) {
             Task(priority: .userInitiated) {
                 await self.report(editorTracker: editorTracker, unreadTracker: unreadTracker)
@@ -300,8 +291,7 @@ extension MentionModel {
         ret.append(MenuFunction.standardMenuFunction(
             text: "Block",
             imageName: Icons.userBlock,
-            role: .destructive(prompt: AppConstants.blockUserPrompt),
-            enabled: true
+            confirmationPrompt: AppConstants.blockUserPrompt
         ) {
             Task(priority: .userInitiated) {
                 await self.blockUser(userId: self.creator.id)

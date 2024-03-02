@@ -160,7 +160,7 @@ struct AggregateFeedView: View {
     var headerView: some View {
         Menu {
             ForEach(genFeedSwitchingFunctions()) { menuFunction in
-                MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
+                MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
             }
         } label: {
             if let selectedFeed, FeedType.allAggregateFeedCases.contains(selectedFeed) {
@@ -176,7 +176,7 @@ struct AggregateFeedView: View {
     var navBarTitle: some View {
         Menu {
             ForEach(genFeedSwitchingFunctions()) { menuFunction in
-                MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
+                MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
             }
         } label: {
             HStack(alignment: .center, spacing: 0) {

@@ -15,7 +15,6 @@ extension PostFeedView {
             return MenuFunction.standardMenuFunction(
                 text: type.label,
                 imageName: imageName,
-                role: nil,
                 enabled: !isSelected
             ) {
                 postSortType = type
@@ -29,7 +28,6 @@ extension PostFeedView {
             return MenuFunction.standardMenuFunction(
                 text: type.label,
                 imageName: isSelected ? Icons.timeSortFill : Icons.timeSort,
-                role: nil,
                 enabled: !isSelected
             ) {
                 postSortType = type
@@ -70,7 +68,6 @@ extension PostFeedView {
             return MenuFunction.standardMenuFunction(
                 text: size.label,
                 imageName: imageName,
-                role: nil,
                 enabled: enabled,
                 callback: { postSize = size }
             )

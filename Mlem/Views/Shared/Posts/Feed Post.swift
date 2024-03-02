@@ -37,6 +37,7 @@ struct FeedPost: View {
     @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
     @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
     @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
+    @AppStorage("showExtraContextMenuActions") var showExtraContextMenuActions: Bool = false
     
     @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
@@ -77,15 +78,7 @@ struct FeedPost: View {
     @State private var isShowingEnlargedImage: Bool = false
     @State private var isComposingReport: Bool = false
     
-    // MARK: Destructive confirmation
-    
-    @State private var isPresentingConfirmDestructive: Bool = false
-    @State private var confirmationMenuFunction: StandardMenuFunction?
-    
-    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
-        confirmationMenuFunction = destructiveFunction
-        isPresentingConfirmDestructive = true
-    }
+    @State private var menuFunctionPopup: MenuFunctionPopup?
     
     // MARK: Computed
     
@@ -97,6 +90,8 @@ struct FeedPost: View {
         
         return postModel.menuFunctions(
             editorTracker: editorTracker,
+            showExtraContextMenuActions: showExtraContextMenuActions || postSize == .compact,
+            widgetTracker: layoutWidgetTracker,
             postTracker: postTracker,
             community: isMod ? postModel.community : nil,
             modToolTracker: isMod ? modToolTracker : nil
@@ -112,10 +107,7 @@ struct FeedPost: View {
                 postItem
                     .border(width: barThickness, edges: [.leading], color: .secondary)
                     .background(Color.systemBackground)
-                    .destructiveConfirmation(
-                        isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
-                        confirmationMenuFunction: confirmationMenuFunction
-                    )
+                    .destructiveConfirmation(menuFunctionPopup: $menuFunctionPopup)
                     .addSwipeyActions(
                         leading: [
                             enableSwipeActions ? upvoteSwipeAction : nil,
@@ -128,7 +120,7 @@ struct FeedPost: View {
                     )
                     .contextMenu {
                         ForEach(menuFunctions) { item in
-                            MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+                            MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
                         }
                     }
             }
