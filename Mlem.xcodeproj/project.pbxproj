@@ -23,7 +23,6 @@
 		032145522B7A67B5001AE07E /* Community1Providing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145512B7A67B5001AE07E /* Community1Providing.swift */; };
 		032145542B7A6872001AE07E /* Community2Providing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145532B7A6872001AE07E /* Community2Providing.swift */; };
 		032145562B7A691E001AE07E /* Community3Providing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145552B7A691E001AE07E /* Community3Providing.swift */; };
-		032145582B7A6EA9001AE07E /* InstanceStubProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145572B7A6EA9001AE07E /* InstanceStubProviding.swift */; };
 		0321455A2B7A6ED8001AE07E /* Instance1Providing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145592B7A6ED8001AE07E /* Instance1Providing.swift */; };
 		0321455C2B7A767C001AE07E /* Instance2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321455B2B7A767C001AE07E /* Instance2.swift */; };
 		0321455E2B7A76BC001AE07E /* Instance2Providing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321455D2B7A76BC001AE07E /* Instance2Providing.swift */; };
@@ -46,7 +45,6 @@
 		03AFBE9A2B6E65A400F01F3C /* ContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFBE992B6E65A400F01F3C /* ContentModel.swift */; };
 		03AFBE9C2B6E676600F01F3C /* Community2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFBE9B2B6E676600F01F3C /* Community2.swift */; };
 		03AFBE9E2B6E79D200F01F3C /* Community3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFBE9D2B6E79D200F01F3C /* Community3.swift */; };
-		03E1E0472B76BF660009DF9F /* InstanceStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E0462B76BF660009DF9F /* InstanceStub.swift */; };
 		03E1E0492B76BFC20009DF9F /* Instance1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E0482B76BFC20009DF9F /* Instance1.swift */; };
 		03E1E04C2B7771710009DF9F /* Person1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E04B2B7771710009DF9F /* Person1.swift */; };
 		03E1E04E2B779A180009DF9F /* UserStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E04D2B779A180009DF9F /* UserStub.swift */; };
@@ -551,7 +549,6 @@
 		032145512B7A67B5001AE07E /* Community1Providing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Community1Providing.swift; sourceTree = "<group>"; };
 		032145532B7A6872001AE07E /* Community2Providing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Community2Providing.swift; sourceTree = "<group>"; };
 		032145552B7A691E001AE07E /* Community3Providing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Community3Providing.swift; sourceTree = "<group>"; };
-		032145572B7A6EA9001AE07E /* InstanceStubProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceStubProviding.swift; sourceTree = "<group>"; };
 		032145592B7A6ED8001AE07E /* Instance1Providing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instance1Providing.swift; sourceTree = "<group>"; };
 		0321455B2B7A767C001AE07E /* Instance2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instance2.swift; sourceTree = "<group>"; };
 		0321455D2B7A76BC001AE07E /* Instance2Providing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instance2Providing.swift; sourceTree = "<group>"; };
@@ -574,7 +571,6 @@
 		03AFBE992B6E65A400F01F3C /* ContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentModel.swift; sourceTree = "<group>"; };
 		03AFBE9B2B6E676600F01F3C /* Community2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Community2.swift; sourceTree = "<group>"; };
 		03AFBE9D2B6E79D200F01F3C /* Community3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Community3.swift; sourceTree = "<group>"; };
-		03E1E0462B76BF660009DF9F /* InstanceStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceStub.swift; sourceTree = "<group>"; };
 		03E1E0482B76BFC20009DF9F /* Instance1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instance1.swift; sourceTree = "<group>"; };
 		03E1E04B2B7771710009DF9F /* Person1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person1.swift; sourceTree = "<group>"; };
 		03E1E04D2B779A180009DF9F /* UserStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStub.swift; sourceTree = "<group>"; };
@@ -1116,11 +1112,9 @@
 		03E1E0452B76BF580009DF9F /* Instance */ = {
 			isa = PBXGroup;
 			children = (
-				032145572B7A6EA9001AE07E /* InstanceStubProviding.swift */,
 				032145592B7A6ED8001AE07E /* Instance1Providing.swift */,
 				0321455D2B7A76BC001AE07E /* Instance2Providing.swift */,
 				032145612B7A7A18001AE07E /* Instance3Providing.swift */,
-				03E1E0462B76BF660009DF9F /* InstanceStub.swift */,
 				03E1E0482B76BFC20009DF9F /* Instance1.swift */,
 				0321455B2B7A767C001AE07E /* Instance2.swift */,
 				0321455F2B7A79E7001AE07E /* Instance3.swift */,
@@ -2181,7 +2175,6 @@
 				CD4D581A2B86772500B82964 /* ApiChangePassword.swift in Sources */,
 				CD4D57782B86772400B82964 /* ApiModRemovePostView.swift in Sources */,
 				032145522B7A67B5001AE07E /* Community1Providing.swift in Sources */,
-				03E1E0472B76BF660009DF9F /* InstanceStub.swift in Sources */,
 				CD4D573B2B86772400B82964 /* GetCommentRequest.swift in Sources */,
 				CD4D58112B86772500B82964 /* ApiLoginToken.swift in Sources */,
 				CD4D57FA2B86772500B82964 /* ApiGetSite.swift in Sources */,
@@ -2286,7 +2279,6 @@
 				CD4D579F2B86772400B82964 /* ApiListPostLikesResponse.swift in Sources */,
 				CD4D581C2B86772500B82964 /* ApiCommunity.swift in Sources */,
 				03E1E0602B781C860009DF9F /* Person2.swift in Sources */,
-				032145582B7A6EA9001AE07E /* InstanceStubProviding.swift in Sources */,
 				CD4D579E2B86772400B82964 /* ApiGetModlog.swift in Sources */,
 				CD4D577C2B86772400B82964 /* ApiModLockPostView.swift in Sources */,
 				CD4D57992B86772400B82964 /* ApiTagline.swift in Sources */,
