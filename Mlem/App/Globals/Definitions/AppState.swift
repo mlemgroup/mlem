@@ -17,8 +17,6 @@ class AppState {
     func changeUser(to user: UserStub) {
         api = user.api
         myUser = user
-//         myInstance = user.instance
-//        myInstance.stub.setApi(user.api) // TODO: remove me and fix at cache level
     }
     
     func enterGuestMode(with api: ApiClient) {

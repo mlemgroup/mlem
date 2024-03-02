@@ -29,7 +29,7 @@ final class Instance1: Instance1Providing, ContentModel {
     var cacheId: Int { source.cacheId }
     var actorId: URL { source.actorId }
     
-    internal init(
+    init(
         source: ApiClient,
         id: Int,
         creationDate: Date,

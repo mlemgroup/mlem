@@ -48,7 +48,7 @@ extension ApiClient {
         guard let user = response.myUser else {
             throw UserError.noUserInResponse
         }
-        guard let token = self.token else {
+        guard let token else {
             throw UserError.unauthenticated
         }
         

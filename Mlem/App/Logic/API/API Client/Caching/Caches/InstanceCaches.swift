@@ -18,7 +18,8 @@ class Instance1Cache: ApiTypeBackedCache<Instance1, ApiSite> {
             description: apiType.sidebar,
             avatar: apiType.icon,
             banner: apiType.banner,
-            lastRefreshDate: apiType.lastRefreshedAt)
+            lastRefreshDate: apiType.lastRefreshedAt
+        )
     }
     
     override func updateModel(_ item: Instance1, with apiType: ApiSite) {

@@ -63,10 +63,6 @@ struct AccountButtonView: View {
     var body: some View {
         Button {
             if appState.actorId != account.actorId {
-                // TODO: this crap
-                // appState.api = account.api
-//                print("DEBUG changing to account with token: \(account.accessToken)")
-//                print("DEBUG new account instance token: \(account.instance.api.token)")
                 appState.changeUser(to: account)
                 dismiss()
             }

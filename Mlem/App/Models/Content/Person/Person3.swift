@@ -25,7 +25,7 @@ final class Person3: Person3Providing, ContentModel {
         return hasher.finalize()
     }
   
-    internal init(
+    init(
         source: ApiClient,
         person2: Person2,
         instance: Instance1? = nil,
@@ -39,6 +39,6 @@ final class Person3: Person3Providing, ContentModel {
     
     func update(moderatedCommunities: [Community1], person2ApiBacker: any Person2ApiBacker) {
         self.moderatedCommunities = moderatedCommunities
-        self.person2.update(with: person2ApiBacker)
+        person2.update(with: person2ApiBacker)
     }
 }

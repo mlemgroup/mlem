@@ -8,7 +8,7 @@
 import Foundation
 
 /// Class providing caching behavior for models associated with API types
-class ApiTypeBackedCache<Content: ContentModel, ApiType: CacheIdentifiable>: CoreCache<Content> {
+class ApiTypeBackedCache<Content: CacheIdentifiable & AnyObject, ApiType: CacheIdentifiable>: CoreCache<Content> {
     func getModel(api: ApiClient, from apiType: ApiType) -> Content {
         if let item = retrieveModel(cacheId: apiType.cacheId) {
             updateModel(item, with: apiType)
