@@ -71,9 +71,20 @@ struct MinimalPostFeedView: View {
             LazyVStack {
                 ForEach(postTracker.items, id: \.uid) { post in
                     VStack {
-                        Text(post.title)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal)
+                        HStack {
+                            Button {
+                                post.vote(post.myVote == .upvote ? .none : .upvote)
+                            } label: {
+                                Image(systemName: post.myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvote)
+                                    .foregroundColor(post.myVote == .upvote ? .blue : .primary)
+                            }
+                            .buttonStyle(.plain)
+                            
+                            Text(post.title)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.horizontal)
+                        }
+                        .padding(.horizontal)
                         Divider()
                     }
                 }

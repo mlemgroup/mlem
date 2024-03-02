@@ -15,14 +15,15 @@ class ApiTypeBackedCache<Content: CacheIdentifiable & AnyObject, ApiType: CacheI
             return item
         }
         
-        let newItem: Content = createModel(api: api, from: apiType)
+        let newItem: Content = performModelTranslation(api: api, from: apiType)
         cachedItems[newItem.cacheId] = .init(content: newItem)
         return newItem
     }
     
     /// Initializes a new middleware model from the associated API type
     /// - Warning: This method DOES NOT CACHE! You almost certainly want to be using `getModel` instead.
-    func createModel(api: ApiClient, from apiType: ApiType) -> Content {
+    func performModelTranslation(api: ApiClient, from apiType: ApiType) -> Content {
+        // the name of this method is intentionally unwieldy to further discourage accidental use
         preconditionFailure("This method must be overridden by the instantiating class")
     }
     

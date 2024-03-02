@@ -8,7 +8,7 @@
 import Foundation
 
 class Instance1Cache: ApiTypeBackedCache<Instance1, ApiSite> {
-    override func createModel(api: ApiClient, from apiType: ApiSite) -> Instance1 {
+    override func performModelTranslation(api: ApiClient, from apiType: ApiSite) -> Instance1 {
         .init(
             api: api,
             id: apiType.id,
@@ -42,7 +42,7 @@ class Instance2Cache: ApiTypeBackedCache<Instance2, ApiSiteView> {
         self.instance1Cache = instance1Cache
     }
     
-    override func createModel(api: ApiClient, from apiType: ApiSiteView) -> Instance2 {
+    override func performModelTranslation(api: ApiClient, from apiType: ApiSiteView) -> Instance2 {
         .init(api: api, instance1: instance1Cache.getModel(api: api, from: apiType.site))
     }
     
@@ -58,7 +58,7 @@ class Instance3Cache: ApiTypeBackedCache<Instance3, ApiGetSiteResponse> {
         self.instance2Cache = instance2Cache
     }
     
-    override func createModel(api: ApiClient, from apiType: ApiGetSiteResponse) -> Instance3 {
+    override func performModelTranslation(api: ApiClient, from apiType: ApiGetSiteResponse) -> Instance3 {
         .init(
             api: api,
             instance2: instance2Cache.getModel(api: api, from: apiType.siteView),

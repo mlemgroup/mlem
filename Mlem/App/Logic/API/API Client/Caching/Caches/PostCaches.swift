@@ -8,7 +8,7 @@
 import Foundation
 
 class Post1Cache: ApiTypeBackedCache<Post1, ApiPost> {
-    override func createModel(api: ApiClient, from apiType: ApiPost) -> Post1 {
+    override func performModelTranslation(api: ApiClient, from apiType: ApiPost) -> Post1 {
         .init(
             api: api,
             actorId: apiType.actorId,
@@ -46,7 +46,7 @@ class Post2Cache: ApiTypeBackedCache<Post2, ApiPostView> {
         self.community1Cache = community1Cache
     }
     
-    override func createModel(api: ApiClient, from apiType: ApiPostView) -> Post2 {
+    override func performModelTranslation(api: ApiClient, from apiType: ApiPostView) -> Post2 {
         .init(
             api: api,
             post1: post1Cache.getModel(api: api, from: apiType.post),

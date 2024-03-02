@@ -8,7 +8,7 @@
 import Foundation
 
 class Community1Cache: ApiTypeBackedCache<Community1, ApiCommunity> {
-    override func createModel(api: ApiClient, from apiType: ApiCommunity) -> Community1 {
+    override func performModelTranslation(api: ApiClient, from apiType: ApiCommunity) -> Community1 {
         .init(
             api: api,
             actorId: apiType.actorId,
@@ -40,7 +40,7 @@ class Community2Cache: ApiTypeBackedCache<Community2, ApiCommunityView> {
         self.community1Cache = community1Cache
     }
     
-    override func createModel(api: ApiClient, from apiType: ApiCommunityView) -> Community2 {
+    override func performModelTranslation(api: ApiClient, from apiType: ApiCommunityView) -> Community2 {
         .init(
             api: api,
             community1: community1Cache.getModel(api: api, from: apiType.community),
@@ -78,7 +78,7 @@ class Community3Cache: ApiTypeBackedCache<Community3, ApiGetCommunityResponse> {
         self.person1Cache = person1Cache
     }
     
-    override func createModel(api: ApiClient, from apiType: ApiGetCommunityResponse) -> Community3 {
+    override func performModelTranslation(api: ApiClient, from apiType: ApiGetCommunityResponse) -> Community3 {
         .init(
             api: api,
             community2: community2Cache.getModel(api: api, from: apiType.communityView),

@@ -8,7 +8,7 @@
 import Foundation
 
 class Person1Cache: ApiTypeBackedCache<Person1, ApiPerson> {
-    override func createModel(api: ApiClient, from apiType: ApiPerson) -> Person1 {
+    override func performModelTranslation(api: ApiClient, from apiType: ApiPerson) -> Person1 {
         let instanceBan: InstanceBanType
         if apiType.banned {
             if let expires = apiType.banExpires {

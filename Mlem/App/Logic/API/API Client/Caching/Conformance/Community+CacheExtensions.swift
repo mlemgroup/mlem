@@ -51,7 +51,7 @@ extension Community3: CacheIdentifiable {
     
     func update(with response: ApiGetCommunityResponse) {
         moderators = response.moderators.map { moderatorView in
-            api.caches.person1.createModel(api: api, from: moderatorView.moderator)
+            api.caches.person1.performModelTranslation(api: api, from: moderatorView.moderator)
         }
         discussionLanguages = response.discussionLanguages
         community2.update(with: response.communityView)

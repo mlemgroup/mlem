@@ -17,14 +17,21 @@ final class Post2: Post2Providing {
     let creator: Person1
     let community: Community1
     
-    var commentCount: Int = 0
-    var upvoteCount: Int = 0
-    var downvoteCount: Int = 0
-    var unreadCommentCount: Int = 0
-    var isSaved: Bool = false
-    var isRead: Bool = false
-    var myVote: ScoringOperation = .none
+    var commentCount: Int
+    var upvoteCount: Int
+    var downvoteCount: Int
+    var unreadCommentCount: Int
+    var isSaved: Bool
+    var isRead: Bool
+    var myVote: ScoringOperation
     var score: Int { upvoteCount - downvoteCount }
+    
+    var tasks: Tasks = .init()
+    
+    struct Tasks {
+        var vote: Task<Void, Never>?
+        var save: Task<Void, Never>?
+    }
     
     init(
         api: ApiClient,

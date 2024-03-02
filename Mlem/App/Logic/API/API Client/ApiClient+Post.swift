@@ -55,4 +55,11 @@ extension ApiClient: PostFeedProvider {
         let posts = response.posts.map { caches.post2.getModel(api: self, from: $0) }
         return (posts: posts, cursor: response.nextPage)
     }
+    
+    @discardableResult
+    func voteOnPost(id: Int, score: ScoringOperation) async throws -> Post2 {
+        let request = LikePostRequest(postId: id, score: score.rawValue)
+        let response = try await perform(request)
+        return caches.post2.getModel(api: self, from: response.postView)
+    }
 }
