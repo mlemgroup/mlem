@@ -15,11 +15,9 @@ enum UserError: Error {
 
 @Observable
 final class UserStub: UserProviding, Codable {
-    var source: ApiClient { api }
+    var api: ApiClient
     
     var stub: UserStub { self }
-    
-    var api: ApiClient
     
     let id: Int
     let name: String

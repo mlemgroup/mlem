@@ -12,7 +12,7 @@ final class Person2: Person2Providing, ContentModel {
     typealias ApiType = ApiPersonView
     var person2: Person2 { self }
     
-    var source: ApiClient
+    var api: ApiClient
     
     let person1: Person1
     
@@ -26,12 +26,12 @@ final class Person2: Person2Providing, ContentModel {
     }
     
     init(
-        source: ApiClient,
+        api: ApiClient,
         person1: Person1,
         postCount: Int = 0,
         commentCount: Int = 0
     ) {
-        self.source = source
+        self.api = api
         self.person1 = person1
         self.postCount = postCount
         self.commentCount = commentCount

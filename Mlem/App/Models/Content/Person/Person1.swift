@@ -12,7 +12,7 @@ final class Person1: Person1Providing, ContentModel {
     typealias ApiType = ApiPerson
     var person1: Person1 { self }
     
-    var source: ApiClient
+    var api: ApiClient
     
     let actorId: URL
     let id: Int
@@ -42,7 +42,7 @@ final class Person1: Person1Providing, ContentModel {
     }
     
     init(
-        source: ApiClient,
+        api: ApiClient,
         actorId: URL,
         id: Int,
         name: String,
@@ -58,7 +58,7 @@ final class Person1: Person1Providing, ContentModel {
         instanceBan: InstanceBanType = .notBanned,
         blocked: Bool = false
     ) {
-        self.source = source
+        self.api = api
         self.actorId = actorId
         self.id = id
         self.name = name

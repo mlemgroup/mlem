@@ -51,8 +51,8 @@ enum TrackerFeedType: Equatable {
         savedOnly: Bool = false
     ) async throws -> (posts: [Post2], cursor: String?) {
         switch self {
-        case let .aggregateFeed(apiSource, type):
-            return try await apiSource.getPosts(feed: type, sort: sort, page: page, cursor: cursor, limit: limit, savedOnly: savedOnly)
+        case let .aggregateFeed(api, type):
+            return try await api.getPosts(feed: type, sort: sort, page: page, cursor: cursor, limit: limit, savedOnly: savedOnly)
         case let .community(community):
             return try await community.getPosts(sort: sort, page: page, cursor: cursor, limit: limit, savedOnly: savedOnly)
         }

@@ -12,7 +12,7 @@ final class Person3: Person3Providing, ContentModel {
     typealias ApiType = ApiGetPersonDetailsResponse
     var person3: Person3 { self }
     
-    var source: ApiClient
+    var api: ApiClient
 
     let person2: Person2
 
@@ -26,12 +26,12 @@ final class Person3: Person3Providing, ContentModel {
     }
   
     init(
-        source: ApiClient,
+        api: ApiClient,
         person2: Person2,
         instance: Instance1? = nil,
         moderatedCommunities: [Community1] = .init()
     ) {
-        self.source = source
+        self.api = api
         self.person2 = person2
         self.instance = instance
         self.moderatedCommunities = moderatedCommunities

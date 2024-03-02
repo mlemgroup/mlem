@@ -12,7 +12,7 @@ final class Post2: Post2Providing, ContentModel {
     typealias ApiType = ApiPostView
     var post2: Post2 { self }
     
-    var source: ApiClient
+    var api: ApiClient
     
     let post1: Post1
     
@@ -34,7 +34,7 @@ final class Post2: Post2Providing, ContentModel {
     }
     
     init(
-        source: ApiClient,
+        api: ApiClient,
         post1: Post1,
         creator: Person1,
         community: Community1,
@@ -46,7 +46,7 @@ final class Post2: Post2Providing, ContentModel {
         isRead: Bool = false,
         myVote: ScoringOperation = .none
     ) {
-        self.source = source
+        self.api = api
         self.post1 = post1
         self.creator = creator
         self.community = community

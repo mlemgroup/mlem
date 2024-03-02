@@ -12,7 +12,7 @@ import SwiftUI
 final class Community3: Community3Providing, ContentModel {
     typealias ApiType = ApiGetCommunityResponse
     var community3: Community3 { self }
-    let source: ApiClient
+    let api: ApiClient
     
     let community2: Community2
     
@@ -23,13 +23,13 @@ final class Community3: Community3Providing, ContentModel {
     var cacheId: Int { community2.cacheId }
   
     init(
-        source: ApiClient,
+        api: ApiClient,
         community2: Community2,
         instance: Instance1?,
         moderators: [Person1] = .init(),
         discussionLanguages: [Int] = .init()
     ) {
-        self.source = source
+        self.api = api
         self.community2 = community2
         self.instance = instance
         self.moderators = moderators
@@ -38,7 +38,7 @@ final class Community3: Community3Providing, ContentModel {
     
     func update(with response: ApiGetCommunityResponse) {
         moderators = response.moderators.map { moderatorView in
-            source.caches.person1.createModel(api: source, from: moderatorView.moderator)
+            api.caches.person1.createModel(api: api, from: moderatorView.moderator)
         }
         discussionLanguages = response.discussionLanguages
         community2.update(with: response.communityView)

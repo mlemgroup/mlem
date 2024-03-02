@@ -62,7 +62,7 @@ extension Community1Providing {
 extension Community1Providing {
     // Overwrite the `upgrade()` method from CommunityStubProviding
     func upgrade() async throws -> Community3 {
-        try await source.getCommunity(id: id)
+        try await api.getCommunity(id: id)
     }
     
     func getPosts(
@@ -72,7 +72,7 @@ extension Community1Providing {
         limit: Int,
         savedOnly: Bool = false
     ) async throws -> (posts: [Post2], cursor: String?) {
-        try await source.getPosts(
+        try await api.getPosts(
             communityId: id,
             sort: sort,
             page: page,

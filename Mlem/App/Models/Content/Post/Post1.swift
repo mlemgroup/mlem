@@ -18,7 +18,7 @@ final class Post1: Post1Providing, ContentModel {
     typealias ApiType = ApiPost
     var post1: Post1 { self }
     
-    var source: ApiClient
+    var api: ApiClient
     
     let actorId: URL
     let id: Int
@@ -46,7 +46,7 @@ final class Post1: Post1Providing, ContentModel {
     }
     
     init(
-        source: ApiClient,
+        api: ApiClient,
         actorId: URL,
         id: Int,
         creationDate: Date,
@@ -64,7 +64,7 @@ final class Post1: Post1Providing, ContentModel {
         thumbnailUrl: URL? = nil,
         updatedDate: Date? = nil
     ) {
-        self.source = source
+        self.api = api
         self.actorId = actorId
         self.id = id
         self.creationDate = creationDate

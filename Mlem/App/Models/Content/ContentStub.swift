@@ -8,7 +8,7 @@
 import Foundation
 
 protocol ContentStub: ActorIdentifiable {
-    var source: ApiClient { get }
+    var api: ApiClient { get }
 }
 
 extension ContentStub {

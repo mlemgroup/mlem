@@ -9,7 +9,7 @@ import Foundation
 
 protocol UserProviding: CommunityOrPersonStub, AnyObject, Identifiable {
     var stub: UserStub { get }
-    var source: ApiClient { get }
+    var api: ApiClient { get }
     
     var id: Int { get }
     var name: String { get }
@@ -33,7 +33,7 @@ extension UserProviding {
 }
 
 extension UserProviding {
-    var nicknameSortKey: String { "\(nickname ?? name)\(source.baseUrl.absoluteString)" }
+    var nicknameSortKey: String { "\(nickname ?? name)\(api.baseUrl.absoluteString)" }
     
-    var instanceSortKey: String { "\(source.baseUrl.absoluteString)\(nickname ?? name)" }
+    var instanceSortKey: String { "\(api.baseUrl.absoluteString)\(nickname ?? name)" }
 }

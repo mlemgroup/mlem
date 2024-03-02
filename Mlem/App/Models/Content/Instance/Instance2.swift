@@ -12,15 +12,15 @@ import SwiftUI
 final class Instance2: Instance2Providing, ContentModel {
     typealias ApiType = ApiSiteView
     var instance2: Instance2 { self }
-    var source: ApiClient
+    var api: ApiClient
     
     let instance1: Instance1
     
     var cacheId: Int { instance1.cacheId }
-    var actorId: URL { source.actorId }
+    var actorId: URL { api.actorId }
   
-    init(source: ApiClient, instance1: Instance1) {
-        self.source = source
+    init(api: ApiClient, instance1: Instance1) {
+        self.api = api
         self.instance1 = instance1
     }
 

@@ -10,7 +10,7 @@ import Foundation
 class Community1Cache: ApiTypeBackedCache<Community1, ApiCommunity> {
     override func createModel(api: ApiClient, from apiType: ApiCommunity) -> Community1 {
         .init(
-            source: api,
+            api: api,
             actorId: apiType.actorId,
             id: apiType.id,
             name: apiType.name,
@@ -42,7 +42,7 @@ class Community2Cache: ApiTypeBackedCache<Community2, ApiCommunityView> {
     
     override func createModel(api: ApiClient, from apiType: ApiCommunityView) -> Community2 {
         .init(
-            source: api,
+            api: api,
             community1: community1Cache.getModel(api: api, from: apiType.community),
             subscribed: apiType.subscribed.isSubscribed,
             favorited: false, // TODO: get from favorites tracker
@@ -80,7 +80,7 @@ class Community3Cache: ApiTypeBackedCache<Community3, ApiGetCommunityResponse> {
     
     override func createModel(api: ApiClient, from apiType: ApiGetCommunityResponse) -> Community3 {
         .init(
-            source: api,
+            api: api,
             community2: community2Cache.getModel(api: api, from: apiType.communityView),
             instance: instance1Cache.getOptionalModel(api: api, from: apiType.site),
             moderators: apiType.moderators.map { person1Cache.getModel(api: api, from: $0.moderator) },

@@ -12,7 +12,7 @@ import SwiftUI
 final class Instance1: Instance1Providing, ContentModel {
     typealias ApiType = ApiSite
     
-    var source: ApiClient
+    var api: ApiClient
     var instance1: Instance1 { self }
     
     let id: Int
@@ -26,11 +26,11 @@ final class Instance1: Instance1Providing, ContentModel {
     var lastRefreshDate: Date = .distantPast
     
     // Instance and ApiClient share equatability properties--two instances are different iff they are different servers and being connected to using a different user. This makes intuitive sense given that instance is the source of things like post feeds, which can vary depending on the calling user (even instance-generics like All and Local will produce varying responses for different calling users, e.g., return an upvoted or neutral post)
-    var cacheId: Int { source.cacheId }
-    var actorId: URL { source.actorId }
+    var cacheId: Int { api.cacheId }
+    var actorId: URL { api.actorId }
     
     init(
-        source: ApiClient,
+        api: ApiClient,
         id: Int,
         creationDate: Date,
         publicKey: String,
@@ -40,7 +40,7 @@ final class Instance1: Instance1Providing, ContentModel {
         banner: URL? = nil,
         lastRefreshDate: Date = .distantPast
     ) {
-        self.source = source
+        self.api = api
         self.id = id
         self.creationDate = creationDate
         self.publicKey = publicKey

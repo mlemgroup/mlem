@@ -21,7 +21,7 @@ class Person1Cache: ApiTypeBackedCache<Person1, ApiPerson> {
         }
         
         return .init(
-            source: api,
+            api: api,
             actorId: apiType.actorId,
             id: apiType.id,
             name: apiType.name,
@@ -59,7 +59,7 @@ class Person2Cache: CoreCache<Person2> {
         }
         
         let newItem: Person2 = .init(
-            source: api,
+            api: api,
             person1: person1Cache.getModel(api: api, from: apiType.person),
             postCount: apiType.counts.postCount,
             commentCount: apiType.counts.commentCount
@@ -92,7 +92,7 @@ class Person3Cache: CoreCache<Person3> {
         }
         
         let newItem: Person3 = .init(
-            source: api,
+            api: api,
             person2: person2Cache.getModel(api: api, from: apiType.person2ApiBacker),
             instance: instance1Cache.getOptionalModel(api: api, from: apiType.site),
             moderatedCommunities: moderatedCommunities

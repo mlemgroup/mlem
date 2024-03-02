@@ -9,10 +9,9 @@ import Observation
 import SwiftUI
 
 @Observable
-final class Community1: Community1Providing, ContentModel {
-    typealias ApiType = ApiCommunity
+final class Community1: Community1Providing {
     var community1: Community1 { self }
-    var source: ApiClient
+    var api: ApiClient
 
     let actorId: URL
     let id: Int
@@ -33,15 +32,9 @@ final class Community1: Community1Providing, ContentModel {
     
     // This isn't included in the ApiCommunity - it's included in ApiCommunityView, but defined here to maintain similarity with User models. User models don't have the `blocked` property defined in any of the Api types, annoyingly, so we instead request a list of all blocked users and cache the result in `MyUserStub`.
     var blocked: Bool = false
-    
-    var cacheId: Int {
-        var hasher: Hasher = .init()
-        hasher.combine(actorId)
-        return hasher.finalize()
-    }
   
     init(
-        source: ApiClient,
+        api: ApiClient,
         actorId: URL,
         id: Int,
         name: String,
@@ -58,7 +51,7 @@ final class Community1: Community1Providing, ContentModel {
         onlyModeratorsCanPost: Bool = false,
         blocked: Bool = false
     ) {
-        self.source = source
+        self.api = api
         self.actorId = actorId
         self.id = id
         self.name = name
@@ -74,19 +67,5 @@ final class Community1: Community1Providing, ContentModel {
         self.hidden = hidden
         self.onlyModeratorsCanPost = onlyModeratorsCanPost
         self.blocked = blocked
-    }
-
-    // TODO: memberwise?
-    func update(with community: ApiCommunity) {
-        updatedDate = community.updated
-        displayName = community.title
-        description = community.description
-        removed = community.removed
-        deleted = community.deleted
-        nsfw = community.nsfw
-        avatar = community.icon
-        banner = community.banner
-        hidden = community.hidden
-        onlyModeratorsCanPost = community.postingRestrictedToMods
     }
 }

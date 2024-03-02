@@ -12,17 +12,17 @@ import SwiftUI
 final class Instance3: Instance3Providing, ContentModel, CacheIdentifiable {
     typealias ApiType = ApiGetSiteResponse
     var instance3: Instance3 { self }
-    var source: ApiClient
+    var api: ApiClient
     
     let instance2: Instance2
     
     var cacheId: Int { instance2.cacheId }
-    var actorId: URL { source.actorId }
+    var actorId: URL { api.actorId }
     
     var version: SiteVersion
   
-    init(source: ApiClient, instance2: Instance2, version: SiteVersion) {
-        self.source = source
+    init(api: ApiClient, instance2: Instance2, version: SiteVersion) {
+        self.api = api
         self.instance2 = instance2
         self.version = version
     }

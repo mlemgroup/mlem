@@ -489,6 +489,7 @@
 		CDA1E8392B92905C007953EF /* Person3ApiBacker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8382B92905C007953EF /* Person3ApiBacker.swift */; };
 		CDA1E83B2B9291E7007953EF /* ApiMyUserInfo+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E83A2B9291E7007953EF /* ApiMyUserInfo+Extensions.swift */; };
 		CDA1E83D2B9298F4007953EF /* PostCaches.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E83C2B9298F4007953EF /* PostCaches.swift */; };
+		CDA1E8402B938999007953EF /* Community+CacheExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E83F2B938999007953EF /* Community+CacheExtensions.swift */; };
 		CDB7AFC22B82FAE60013E0F0 /* GetPostsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7AFC12B82FAE60013E0F0 /* GetPostsRequest.swift */; };
 		CDB7AFC42B82FB210013E0F0 /* APIListingType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7AFC32B82FB210013E0F0 /* APIListingType+Extensions.swift */; };
 		CDB7BEBA2B83C29F0013E0F0 /* APIPost+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7BEB92B83C29F0013E0F0 /* APIPost+Extensions.swift */; };
@@ -1013,6 +1014,7 @@
 		CDA1E8382B92905C007953EF /* Person3ApiBacker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person3ApiBacker.swift; sourceTree = "<group>"; };
 		CDA1E83A2B9291E7007953EF /* ApiMyUserInfo+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiMyUserInfo+Extensions.swift"; sourceTree = "<group>"; };
 		CDA1E83C2B9298F4007953EF /* PostCaches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCaches.swift; sourceTree = "<group>"; };
+		CDA1E83F2B938999007953EF /* Community+CacheExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community+CacheExtensions.swift"; sourceTree = "<group>"; };
 		CDB7AFC12B82FAE60013E0F0 /* GetPostsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPostsRequest.swift; sourceTree = "<group>"; };
 		CDB7AFC32B82FB210013E0F0 /* APIListingType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIListingType+Extensions.swift"; sourceTree = "<group>"; };
 		CDB7BEB92B83C29F0013E0F0 /* APIPost+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIPost+Extensions.swift"; sourceTree = "<group>"; };
@@ -1891,6 +1893,7 @@
 		CDA1E82A2B926500007953EF /* Caching */ = {
 			isa = PBXGroup;
 			children = (
+				CDA1E83E2B938981007953EF /* Conformance */,
 				CDA1E82F2B9265D7007953EF /* Caches */,
 				CDA1E82D2B926531007953EF /* CoreCache.swift */,
 				CDA1E8322B926C2C007953EF /* ApiTypeBackedCache.swift */,
@@ -1907,6 +1910,14 @@
 				CDA1E83C2B9298F4007953EF /* PostCaches.swift */,
 			);
 			path = Caches;
+			sourceTree = "<group>";
+		};
+		CDA1E83E2B938981007953EF /* Conformance */ = {
+			isa = PBXGroup;
+			children = (
+				CDA1E83F2B938999007953EF /* Community+CacheExtensions.swift */,
+			);
+			path = Conformance;
 			sourceTree = "<group>";
 		};
 		CDB7AFC02B82FADC0013E0F0 /* Custom */ = {
@@ -2626,6 +2637,7 @@
 				CD4D57DA2B86772500B82964 /* ApiAdminPurgePerson.swift in Sources */,
 				CD4D573E2B86772400B82964 /* GetUnreadRegistrationApplicationCountRequest.swift in Sources */,
 				CD4D58AD2B86BE7100B82964 /* QuickSwitcherView.swift in Sources */,
+				CDA1E8402B938999007953EF /* Community+CacheExtensions.swift in Sources */,
 				CD4D57D72B86772500B82964 /* ApiCreatePost.swift in Sources */,
 				50BC1ABB2A8D6A5A00E3C48B /* ScoringOperation.swift in Sources */,
 				CD4D57FB2B86772500B82964 /* ApiSite.swift in Sources */,

@@ -13,7 +13,7 @@ import SwiftUI
 final class Community2: Community2Providing, ContentModel {
     typealias ApiType = ApiCommunityView
     var community2: Community2 { self }
-    var source: ApiClient
+    var api: ApiClient
 
     let community1: Community1
     
@@ -28,7 +28,7 @@ final class Community2: Community2Providing, ContentModel {
     var cacheId: Int { community1.cacheId }
 
     init(
-        source: ApiClient,
+        api: ApiClient,
         community1: Community1,
         subscribed: Bool = false,
         favorited: Bool = false,
@@ -37,7 +37,7 @@ final class Community2: Community2Providing, ContentModel {
         commentCount: Int = 0,
         activeUserCount: ActiveUserCount = .zero
     ) {
-        self.source = source
+        self.api = api
         self.community1 = community1
         self.subscribed = subscribed
         self.favorited = favorited
