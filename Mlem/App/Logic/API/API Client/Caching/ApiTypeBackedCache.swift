@@ -11,6 +11,7 @@ import Foundation
 class ApiTypeBackedCache<Content: CacheIdentifiable & AnyObject, ApiType: CacheIdentifiable>: CoreCache<Content> {
     func getModel(api: ApiClient, from apiType: ApiType) -> Content {
         if let item = retrieveModel(cacheId: apiType.cacheId) {
+            print("DEBUG updating model")
             updateModel(item, with: apiType)
             return item
         }

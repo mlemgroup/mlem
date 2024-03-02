@@ -42,7 +42,11 @@ extension Post2Providing {
     var score: Int { upvoteCount - downvoteCount }
     
     func vote(_ newVote: ScoringOperation) {
-        if let oldTask = post2.tasks.vote, !oldTask.isCancelled { oldTask.cancel() }
+        print("DEBUG starting vote")
+        if let oldTask = post2.tasks.vote, !oldTask.isCancelled {
+            print("DEBUG cancelling old task")
+            oldTask.cancel()
+        }
         post2.tasks.vote = Task(priority: .userInitiated) { await voteTask(newVote) }
     }
 
@@ -63,6 +67,8 @@ extension Post2Providing {
 
         do {
             let response = try await api.voteOnPost(id: id, score: newVote)
+            print("DEBUG vote finished")
+            post2.tasks.vote = nil
             // TODO: necessary? Seems to be working without this O_o
 //            if !Task.isCancelled {
 //                DispatchQueue.main.async {
