@@ -175,7 +175,6 @@ enum Icons {
     static let `import`: String = "square.and.arrow.down"
     static let attachment: String = "paperclip"
     static let edit: String = "pencil"
-    static let editCircleFill: String = "pencil.circle.fill"
     static let delete: String = "trash"
     static let copy: String = "doc.on.doc"
     
