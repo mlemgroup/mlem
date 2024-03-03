@@ -26,7 +26,7 @@ enum MenuFunction: Identifiable {
         }
     }
     
-    case divider
+    case divider // not a menu function per se, but adds a divider to the menu
     case standard(StandardMenuFunction)
     case shareUrl(ShareMenuFunction)
     case shareImage(ShareImageFunction)

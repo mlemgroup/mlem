@@ -44,6 +44,7 @@ class SiteInformationTracker: ObservableObject {
                 allLanguages = response.allLanguages
                 if let userInfo = response.myUser {
                     myUser = UserModel(from: userInfo.localUserView.person)
+                    myUser?.isAdmin = response.admins.contains { $0.person.id == myUser?.userId }
                     
                     if let communities = response.myUser?.moderates {
                         moderatedCommunities = Set(communities.map(\.community.id))

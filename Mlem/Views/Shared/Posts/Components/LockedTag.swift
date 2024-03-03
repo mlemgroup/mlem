@@ -12,7 +12,7 @@ struct LockedTag: View {
     
     var body: some View {
         Image(systemName: Icons.locked)
-            .foregroundColor(.green)
+            .foregroundColor(.orange)
             .font(compact ? .footnote : .subheadline)
             .accessibilityLabel("Post locked")
     }
