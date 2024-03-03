@@ -24,15 +24,4 @@ struct ModToolSheet: View {
         }
     }
     
-    @ViewBuilder
-    func moderators(for community: CommunityModel) -> some View {
-        VStack(spacing: 0) {
-            Divider()
-            
-            ModeratorListView(community: community, navigationEnabled: false)
-            
-            Spacer()
-        }
-        .navigationTitle("Moderators")
-    }
 }
