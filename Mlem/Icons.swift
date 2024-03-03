@@ -53,6 +53,7 @@ enum Icons {
     static let pinned: String = "pin.fill"
     static let websiteIcon: String = "globe"
     static let read: String = "book"
+    static let removed: String = "xmark.bin.fill"
     
     // post sizes
     static let postSizeSetting: String = "rectangle.expand.vertical"

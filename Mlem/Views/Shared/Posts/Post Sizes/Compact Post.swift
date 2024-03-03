@@ -109,6 +109,10 @@ struct CompactPost: View {
                 NSFWTag(compact: true)
             }
             
+            if post.post.removed {
+                RemovedTag(compact: true)
+            }
+            
             InfoStackView(
                 votes: DetailedVotes(
                     score: post.votes.total,
