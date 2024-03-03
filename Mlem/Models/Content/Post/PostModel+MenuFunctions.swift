@@ -209,9 +209,9 @@ extension PostModel {
         if creator.userId != siteInformation.userId {
             functions.append(MenuFunction.toggleableMenuFunction(
                 toggle: creatorBannedFromCommunity,
-                trueText: "Unban User",
+                trueText: "Unban Author",
                 trueImageName: Icons.communityUnban,
-                falseText: "Ban User",
+                falseText: "Ban Author",
                 falseImageName: Icons.communityBan,
                 isDestructive: .whenFalse
             ) {

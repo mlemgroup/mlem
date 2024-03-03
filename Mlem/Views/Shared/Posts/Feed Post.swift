@@ -80,6 +80,10 @@ struct FeedPost: View {
     
     @State private var menuFunctionPopup: MenuFunctionPopup?
     
+    var isMod: Bool {
+        siteInformation.moderatedCommunities.contains(postModel.community.communityId)
+    }
+    
     // MARK: Computed
     
     var barThickness: CGFloat { !postModel.read && diffWithoutColor && readMarkStyle == .bar ? CGFloat(readBarThickness) : .zero }
@@ -100,7 +104,7 @@ struct FeedPost: View {
 
     var body: some View {
         // this allows post deletion/removal to not require tracker updates
-        if postModel.post.deleted || postModel.post.removed {
+        if postModel.post.deleted || (postModel.post.removed && !isMod) {
             EmptyView()
         } else {
             VStack(spacing: 0) {

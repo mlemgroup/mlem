@@ -46,6 +46,12 @@ struct HeadlinePost: View {
                         if post.post.nsfw {
                             NSFWTag(compact: true)
                         }
+                        if post.post.locked {
+                            LockedTag(compact: false)
+                        }
+                        if post.post.removed {
+                            RemovedTag(compact: false)
+                        }
                     }
                 }
                 

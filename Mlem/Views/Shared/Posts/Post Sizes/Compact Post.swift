@@ -108,6 +108,12 @@ struct CompactPost: View {
             if post.post.nsfw || post.community.nsfw {
                 NSFWTag(compact: true)
             }
+            if post.post.locked {
+                LockedTag(compact: true)
+            }
+            if post.post.removed {
+                RemovedTag(compact: true)
+            }
             
             InfoStackView(
                 votes: DetailedVotes(

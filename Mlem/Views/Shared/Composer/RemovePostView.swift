@@ -70,7 +70,7 @@ struct RemovePostView: View {
         Task {
             await post.toggleRemove(reason: reason.isEmpty ? nil : reason)
             
-            if post.post.removed {
+            if post.post.removed == shouldRemove {
                 await notifier.add(.success("\(verb)d post"))
                 DispatchQueue.main.async {
                     dismiss()

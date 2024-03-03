@@ -8,22 +8,6 @@
 import Dependencies
 import SwiftUI
 
-private struct BanFormButton: ButtonStyle {
-    let selected: Bool
-    
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.callout)
-            .foregroundStyle(selected ? .white : .primary)
-            .padding(.vertical, 4)
-            .frame(maxWidth: 150)
-            .background {
-                RoundedRectangle(cornerRadius: 6)
-                    .fill(selected ? .blue : Color(uiColor: .systemGroupedBackground))
-            }
-    }
-}
-
 struct BanUserView: View {
     @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.hapticManager) var hapticManager
@@ -36,16 +20,13 @@ struct BanUserView: View {
     let user: UserModel
     let community: CommunityModel? // if nil, instance ban; otherwise community ban
     let shouldBan: Bool
+    let postTracker: StandardPostTracker? // if present, will update with new banned status
     
     @State var reason: String = ""
     @State var days: Int = 1
     @State var isPermanent: Bool = true
     @State var removeContent: Bool = false
     @State var isWaiting: Bool = false
-    
-    enum FocusedField {
-        case reason, days
-    }
     
     @FocusState var focusedField: FocusedField?
     
@@ -92,7 +73,7 @@ struct BanUserView: View {
                 communitySection(for: community)
             }
             
-            reasonSection
+            ReasonView(reason: $reason, focusedField: $focusedField, showReason: shouldBan)
             
             if shouldBan {
                 durationSections()
@@ -108,45 +89,6 @@ struct BanUserView: View {
     func communitySection(for community: CommunityModel) -> some View {
         Section("\(verb.capitalized)ning From") {
             CommunityLabelView(community: community, serverInstanceLocation: .bottom)
-        }
-    }
-    
-    @ViewBuilder
-    var reasonSection: some View {
-        Section("Reason") {
-            TextField("Optional", text: $reason, axis: .vertical)
-                .lineLimit(8)
-                .focused($focusedField, equals: .reason)
-                .overlay(alignment: .trailing) {
-                    if reason.isNotEmpty, focusedField != .reason {
-                        Button("Clear", systemImage: "xmark.circle.fill") { reason = "" }
-                            .foregroundStyle(.secondary.opacity(0.8))
-                            .labelStyle(.iconOnly)
-                    }
-                }
-            if shouldBan {
-                HStack {
-                    if reason == "Rule #" {
-                        ForEach(1 ..< 9) { value in
-                            Button(String(value)) {
-                                reason = "Rule \(value)"
-                                hapticManager.play(haptic: .gentleInfo, priority: .low)
-                            }
-                            .buttonStyle(BanFormButton(selected: false))
-                        }
-                    } else {
-                        Button("Rule #") {
-                            reason = "Rule #"
-                            hapticManager.play(haptic: .gentleInfo, priority: .low)
-                        }
-                        .buttonStyle(BanFormButton(selected: reason.hasPrefix("Rule")))
-                        reasonPresetButton("Spam")
-                        reasonPresetButton("Troll")
-                        reasonPresetButton("Abuse")
-                    }
-                }
-                .padding(.horizontal, -8)
-            }
         }
     }
     
@@ -216,15 +158,6 @@ struct BanUserView: View {
     // MARK: Components
     
     @ViewBuilder
-    func reasonPresetButton(_ label: String) -> some View {
-        Button(label) {
-            reason = reason == label ? "" : label
-            hapticManager.play(haptic: .gentleInfo, priority: .low)
-        }
-        .buttonStyle(BanFormButton(selected: reason == label))
-    }
-    
-    @ViewBuilder
     func daysPresetButton(_ label: String, value: Int) -> some View {
         Button(label) {
             days = value
@@ -282,6 +215,15 @@ struct BanUserView: View {
     private func handleResult(_ result: Bool) async {
         if result == shouldBan {
             await notifier.add(.success("\(verb.capitalized)"))
+            
+            await MainActor.run {
+                if let postTracker {
+                    for post in postTracker.items where post.creator.userId == user.userId {
+                        post.creatorBannedFromCommunity = shouldBan
+                    }
+                }
+            }
+            
             DispatchQueue.main.async {
                 dismiss()
             }
@@ -292,5 +234,5 @@ struct BanUserView: View {
 }
 
 #Preview {
-    BanUserView(user: .mock(), community: .mock(), shouldBan: true)
+    BanUserView(user: .mock(), community: .mock(), shouldBan: true, postTracker: nil)
 }
