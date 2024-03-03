@@ -31,7 +31,7 @@ struct SelectTextView: View {
                 }
                 .foregroundStyle(.white)
                 .frame(height: 30)
-                .padding(.horizontal, 10)
+                .padding(.horizontal, 12)
                 .background(Capsule().fill(Color.accentColor))
                 Button {
                     dismiss()

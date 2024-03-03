@@ -149,6 +149,7 @@ struct ContentView: View {
         .sheet(item: $editorTracker.selectText) { selectText in
             SelectTextView(text: selectText.text)
             .presentationDetents([.medium])
+            ._presentationCornerRadius(20)
             ._presentationBackgroundInteraction(enabledUpThrough: .medium)
         }
         .sheet(item: $editorTracker.editPost) { editing in
