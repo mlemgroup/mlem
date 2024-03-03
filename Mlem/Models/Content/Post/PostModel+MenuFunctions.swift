@@ -27,7 +27,7 @@ extension PostModel {
         
         if let community, let modToolTracker {
             functions.append(.childMenu(
-                titleKey: "Community Moderation",
+                titleKey: "Moderation",
                 children: modMenuFunctions(community: community, modToolTracker: modToolTracker, postTracker: postTracker)
             )
             )
@@ -219,9 +219,9 @@ extension PostModel {
         if creator.userId != siteInformation.userId {
             functions.append(MenuFunction.toggleableMenuFunction(
                 toggle: creatorBannedFromCommunity,
-                trueText: "Unban author",
+                trueText: "Unban User",
                 trueImageName: Icons.communityUnban,
-                falseText: "Ban author",
+                falseText: "Ban User",
                 falseImageName: Icons.communityBan,
                 falseRole: .destructive(prompt: nil)
             ) {
