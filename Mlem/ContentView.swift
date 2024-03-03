@@ -146,6 +146,7 @@ struct ContentView: View {
             .presentationDetents([.medium, .large], selection: .constant(.large))
             ._presentationBackgroundInteraction(enabledUpThrough: .medium)
         }
+        .sheet(item: $editorTracker.selectText) { selectText in
             SelectTextView(text: selectText.text)
             .presentationDetents([.medium])
             ._presentationBackgroundInteraction(enabledUpThrough: .medium)
