@@ -21,9 +21,12 @@ enum MenuFunction: Identifiable {
             return navigationMenuFunction.id
         case let .group(groupMenuFunction):
             return groupMenuFunction.id
+        case .divider:
+            return UUID().uuidString
         }
     }
     
+    case divider
     case standard(StandardMenuFunction)
     case shareUrl(ShareMenuFunction)
     case shareImage(ShareImageFunction)

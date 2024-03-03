@@ -124,16 +124,18 @@ extension PostModel {
         }
         
         if !creator.isActiveAccount {
-            // Report
-            functions.append(MenuFunction.standardMenuFunction(
-                text: "Report",
-                imageName: Icons.moderationReport,
-                confirmationPrompt: AppConstants.reportPostPrompt
-            ) {
-                editorTracker.openEditor(
-                    with: ConcreteEditorModel(post: self, operation: PostOperation.reportPost)
-                )
-            })
+            if modToolTracker == nil {
+                // Report
+                functions.append(MenuFunction.standardMenuFunction(
+                    text: "Report",
+                    imageName: Icons.moderationReport,
+                    confirmationPrompt: AppConstants.reportPostPrompt
+                ) {
+                    editorTracker.openEditor(
+                        with: ConcreteEditorModel(post: self, operation: PostOperation.reportPost)
+                    )
+                })
+            }
             
             if let postTracker {
                 functions.append(contentsOf: blockMenuFunctions(postTracker: postTracker))
@@ -142,6 +144,7 @@ extension PostModel {
         
         #if DEBUG
             if UserDefaults.standard.bool(forKey: "developerMode") {
+                functions.append(.divider)
                 functions.append(
                     buildDeveloperMenu(
                         editorTracker: editorTracker,
