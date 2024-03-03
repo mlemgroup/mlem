@@ -113,7 +113,7 @@ extension PostModel {
             }
         }
         
-        if modToolTracker == nil, !creator.isActiveAccount {
+        if !creator.isActiveAccount {
             if modToolTracker == nil {
                 // Report
                 functions.append(MenuFunction.standardMenuFunction(
