@@ -71,17 +71,6 @@ extension ApiClient: PostFeedProvider {
             } else {
                 return existing
             }
-//            if existing.voteStatusManager.resetCleanStateIfLastCaller(semaphore: semaphore) {
-//                // if no other vote operations underway, simply update the post and mark as clean
-//                return caches.post2.getModel(api: self, from: response.postView)
-//            } else {
-//                // if another vote is underway, update the clean state but don't touch the post
-//                existing.voteStatusManager.updateCleanState(with: .init(
-//                    from: response.postView.counts,
-//                    myVote: .guaranteedInit(from: response.postView.myVote)
-//                ))
-//                return existing
-//            }
         } else {
             return caches.post2.getModel(api: self, from: response.postView)
         }

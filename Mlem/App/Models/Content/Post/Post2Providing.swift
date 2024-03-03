@@ -47,8 +47,6 @@ extension Post2Providing {
         }
         
         Task {
-            sleep(5)
-            
             do {
                 try await api.voteOnPost(id: id, score: newVote, semaphore: semaphore)
             } catch {
