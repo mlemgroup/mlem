@@ -44,7 +44,7 @@ struct HeadlinePost: View {
                         
                         Spacer()
                         if post.post.nsfw {
-                            NSFWTag(compact: false)
+                            NSFWTag(compact: true)
                         }
                         if post.post.locked {
                             LockedTag(compact: false)
