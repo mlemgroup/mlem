@@ -156,7 +156,7 @@ struct CommunityFeedView: View {
                 switch selectedTab {
                 case .posts: posts()
                 case .about: about()
-                case .moderators: ModeratorListView(community: communityModel) // moderators()
+                case .moderators: ModeratorListView(community: communityModel)
                 case .details: details()
                 }
             }
