@@ -29,16 +29,6 @@ extension PostModel {
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         
-        if let community, let modToolTracker {
-            functions.append(
-                .groupMenuFunction(
-                    text: "Moderation",
-                    imageName: Icons.moderation,
-                    children: modMenuFunctions(community: community, modToolTracker: modToolTracker, postTracker: postTracker)
-                )
-            )
-        }
-        
         let widgets = widgetTracker.groups.post
         
         if showExtraContextMenuActions || LayoutWidgetType.upvoteContaining.isDisjoint(with: widgets) {
@@ -123,7 +113,7 @@ extension PostModel {
             }
         }
         
-        if !creator.isActiveAccount {
+        if modToolTracker == nil, !creator.isActiveAccount {
             if modToolTracker == nil {
                 // Report
                 functions.append(MenuFunction.standardMenuFunction(
@@ -140,6 +130,17 @@ extension PostModel {
             if let postTracker {
                 functions.append(contentsOf: blockMenuFunctions(postTracker: postTracker))
             }
+        }
+        
+        if let community, let modToolTracker {
+            functions.append(.divider)
+            functions.append(
+                contentsOf: modMenuFunctions(
+                    community: community,
+                    modToolTracker: modToolTracker,
+                    postTracker: postTracker
+                )
+            )
         }
         
         #if DEBUG
@@ -209,9 +210,9 @@ extension PostModel {
         if creator.userId != siteInformation.userId {
             functions.append(MenuFunction.toggleableMenuFunction(
                 toggle: creatorBannedFromCommunity,
-                trueText: "Unban Author",
+                trueText: "Unban User",
                 trueImageName: Icons.communityUnban,
-                falseText: "Ban Author",
+                falseText: "Ban User",
                 falseImageName: Icons.communityBan,
                 isDestructive: .whenFalse
             ) {
