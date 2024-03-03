@@ -22,6 +22,7 @@ extension PostModel {
     @MainActor func menuFunctions(
         editorTracker: EditorTracker,
         showExtraContextMenuActions: Bool,
+        showSelectText: Bool = true,
         widgetTracker: LayoutWidgetTracker,
         postTracker: StandardPostTracker?,
         community: CommunityModel?,
@@ -79,7 +80,7 @@ extension PostModel {
             })
         }
         
-        if let body = self.post.body, body.isNotEmpty {
+        if let body = self.post.body, body.isNotEmpty, showSelectText {
             functions.append(MenuFunction.standardMenuFunction(
                 text: "Select Text",
                 imageName: Icons.select

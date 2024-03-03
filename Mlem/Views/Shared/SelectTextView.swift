@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftUIIntrospect
 import Dependencies
 
 struct SelectTextView: View {
@@ -29,9 +30,20 @@ struct SelectTextView: View {
                         .fontWeight(.semibold)
                 }
                 .foregroundStyle(.white)
-                .padding(.vertical, 4)
+                .frame(height: 30)
                 .padding(.horizontal, 10)
                 .background(Capsule().fill(Color.accentColor))
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 30)
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(.secondary, .secondary.opacity(0.2))
+                }
+                .buttonStyle(.plain)
             }
             .padding(.horizontal, 10)
             TextEditor(text: .constant(text))

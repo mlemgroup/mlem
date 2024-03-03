@@ -95,6 +95,7 @@ struct FeedPost: View {
         return postModel.menuFunctions(
             editorTracker: editorTracker,
             showExtraContextMenuActions: showExtraContextMenuActions || postSize == .compact,
+            showSelectText: postSize == .large,
             widgetTracker: layoutWidgetTracker,
             postTracker: postTracker,
             community: isMod ? postModel.community : nil,
