@@ -57,9 +57,33 @@ extension ApiClient: PostFeedProvider {
     }
     
     @discardableResult
-    func voteOnPost(id: Int, score: ScoringOperation) async throws -> Post2 {
+    func voteOnPost(id: Int, score: ScoringOperation, semaphore: Int?) async throws -> Post2 {
         let request = LikePostRequest(postId: id, score: score.rawValue)
         let response = try await perform(request)
-        return caches.post2.getModel(api: self, from: response.postView)
+        
+        if let semaphore, let existing = caches.post2.retrieveModel(cacheId: response.postView.cacheId) {
+            let newVotes: VotesModel = .init(
+                from: response.postView.counts,
+                myVote: .guaranteedInit(from: response.postView.myVote)
+            )
+            if existing.voteStatusManager.finishVotingOperation(semaphore: semaphore, with: newVotes) {
+                return caches.post2.getModel(api: self, from: response.postView)
+            } else {
+                return existing
+            }
+//            if existing.voteStatusManager.resetCleanStateIfLastCaller(semaphore: semaphore) {
+//                // if no other vote operations underway, simply update the post and mark as clean
+//                return caches.post2.getModel(api: self, from: response.postView)
+//            } else {
+//                // if another vote is underway, update the clean state but don't touch the post
+//                existing.voteStatusManager.updateCleanState(with: .init(
+//                    from: response.postView.counts,
+//                    myVote: .guaranteedInit(from: response.postView.myVote)
+//                ))
+//                return existing
+//            }
+        } else {
+            return caches.post2.getModel(api: self, from: response.postView)
+        }
     }
 }

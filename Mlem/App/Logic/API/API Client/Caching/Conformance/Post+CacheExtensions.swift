@@ -47,12 +47,10 @@ extension Post2: CacheIdentifiable {
     
     func update(with post: ApiPostView) {
         commentCount = post.counts.comments
-        upvoteCount = post.counts.upvotes
-        downvoteCount = post.counts.downvotes
+        votes = .init(from: post.counts, myVote: ScoringOperation.guaranteedInit(from: post.myVote))
         unreadCommentCount = post.unreadComments
         isSaved = post.saved
         isRead = post.read
-        myVote = ScoringOperation.guaranteedInit(from: post.myVote)
         
         post1.update(with: post.post)
         creator.update(with: post.creator)

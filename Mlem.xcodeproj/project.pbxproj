@@ -490,6 +490,8 @@
 		CDA1E8422B938E6E007953EF /* Instance+CacheExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8412B938E6E007953EF /* Instance+CacheExtensions.swift */; };
 		CDA1E8452B938F8C007953EF /* Person+CacheExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8442B938F8C007953EF /* Person+CacheExtensions.swift */; };
 		CDA1E8472B9390FD007953EF /* Post+CacheExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8462B9390FD007953EF /* Post+CacheExtensions.swift */; };
+		CDA1E8542B952C3D007953EF /* VoteStatusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8532B952C3D007953EF /* VoteStatusManager.swift */; };
+		CDA1E8562B9531E7007953EF /* ApiPostAggregates+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8552B9531E7007953EF /* ApiPostAggregates+Extensions.swift */; };
 		CDB7AFC22B82FAE60013E0F0 /* GetPostsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7AFC12B82FAE60013E0F0 /* GetPostsRequest.swift */; };
 		CDB7AFC42B82FB210013E0F0 /* APIListingType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7AFC32B82FB210013E0F0 /* APIListingType+Extensions.swift */; };
 		CDB7BEBA2B83C29F0013E0F0 /* APIPost+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7BEB92B83C29F0013E0F0 /* APIPost+Extensions.swift */; };
@@ -1015,6 +1017,8 @@
 		CDA1E8412B938E6E007953EF /* Instance+CacheExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Instance+CacheExtensions.swift"; sourceTree = "<group>"; };
 		CDA1E8442B938F8C007953EF /* Person+CacheExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Person+CacheExtensions.swift"; sourceTree = "<group>"; };
 		CDA1E8462B9390FD007953EF /* Post+CacheExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post+CacheExtensions.swift"; sourceTree = "<group>"; };
+		CDA1E8532B952C3D007953EF /* VoteStatusManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteStatusManager.swift; sourceTree = "<group>"; };
+		CDA1E8552B9531E7007953EF /* ApiPostAggregates+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiPostAggregates+Extensions.swift"; sourceTree = "<group>"; };
 		CDB7AFC12B82FAE60013E0F0 /* GetPostsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPostsRequest.swift; sourceTree = "<group>"; };
 		CDB7AFC32B82FB210013E0F0 /* APIListingType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIListingType+Extensions.swift"; sourceTree = "<group>"; };
 		CDB7BEB92B83C29F0013E0F0 /* APIPost+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIPost+Extensions.swift"; sourceTree = "<group>"; };
@@ -1145,6 +1149,7 @@
 		6318EDC427EE4E0500BFCAE8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				CDA1E8522B952BB1007953EF /* Helpers */,
 				CD4D58CC2B86DDC300B82964 /* Settings */,
 				CDEBC3262A9A57E900518D9D /* Content */,
 			);
@@ -1928,6 +1933,14 @@
 			path = User;
 			sourceTree = "<group>";
 		};
+		CDA1E8522B952BB1007953EF /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				CDA1E8532B952C3D007953EF /* VoteStatusManager.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		CDB7AFC02B82FADC0013E0F0 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
@@ -1968,6 +1981,7 @@
 				CDB7D0332B83D48B0013E0F0 /* APISiteView+Extensions.swift */,
 				CDB7C3B72B83C7E80013E0F0 /* APISubscribedType+Extensions.swift */,
 				CDA1E83A2B9291E7007953EF /* ApiMyUserInfo+Extensions.swift */,
+				CDA1E8552B9531E7007953EF /* ApiPostAggregates+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2445,6 +2459,7 @@
 				CD4D58382B86772500B82964 /* ApiAdminPurgeComment.swift in Sources */,
 				CD4D58072B86772500B82964 /* ApiPostListingMode.swift in Sources */,
 				CD4D582A2B86772500B82964 /* ApiListCommunitiesResponse.swift in Sources */,
+				CDA1E8542B952C3D007953EF /* VoteStatusManager.swift in Sources */,
 				CD4D58CB2B86DD3D00B82964 /* AssociatedIcon.swift in Sources */,
 				CD4D57922B86772400B82964 /* ApiLocalUser.swift in Sources */,
 				CD4D57142B86772400B82964 /* EditCommentRequest.swift in Sources */,
@@ -2674,6 +2689,7 @@
 				CDB7CDAE2B83CD620013E0F0 /* APICommentView+Extensions.swift in Sources */,
 				030E7EE02B7FBDF100E9A1AD /* ApiClient+Post.swift in Sources */,
 				CD4D57F62B86772500B82964 /* ApiSaveUserSettings.swift in Sources */,
+				CDA1E8562B9531E7007953EF /* ApiPostAggregates+Extensions.swift in Sources */,
 				CD4D57EA2B86772500B82964 /* ApiModJoin.swift in Sources */,
 				CD4D57EF2B86772500B82964 /* ApiPurgePost.swift in Sources */,
 				B1B78D642A51D53900F72485 /* AppDelegate.swift in Sources */,

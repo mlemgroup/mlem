@@ -52,13 +52,11 @@ class Post2Cache: ApiTypeBackedCache<Post2, ApiPostView> {
             post1: post1Cache.getModel(api: api, from: apiType.post),
             creator: person1Cache.getModel(api: api, from: apiType.creator),
             community: community1Cache.getModel(api: api, from: apiType.community),
+            votes: .init(from: apiType.counts, myVote: ScoringOperation.guaranteedInit(from: apiType.myVote)),
             commentCount: apiType.counts.comments,
-            upvoteCount: apiType.counts.upvotes,
-            downvoteCount: apiType.counts.downvotes,
             unreadCommentCount: apiType.unreadComments,
             isSaved: apiType.saved,
-            isRead: apiType.read,
-            myVote: ScoringOperation.guaranteedInit(from: apiType.myVote)
+            isRead: apiType.read
         )
     }
     

@@ -73,10 +73,10 @@ struct MinimalPostFeedView: View {
                     VStack {
                         HStack {
                             Button {
-                                post.vote(post.myVote == .upvote ? .none : .upvote)
+                                post.vote(post.votes.myVote == .upvote ? .none : .upvote)
                             } label: {
-                                Image(systemName: post.myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvote)
-                                    .foregroundColor(post.myVote == .upvote ? .blue : .primary)
+                                Image(systemName: post.votes.myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvote)
+                                    .foregroundColor(post.votes.myVote == .upvote ? .blue : .primary)
                             }
                             .buttonStyle(.plain)
                             

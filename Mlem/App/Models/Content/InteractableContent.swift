@@ -13,12 +13,6 @@ protocol InteractableContent: AnyObject, ContentStub {
     var creationDate: Date { get }
     var updatedDate: Date? { get }
     var commentCount: Int { get }
-    var myVote: ScoringOperation { get }
-    var upvoteCount: Int { get }
-    var downvoteCount: Int { get }
+    var votes: VotesModel { get }
     var isSaved: Bool { get }
-}
-
-extension InteractableContent {
-    var score: Int { upvoteCount - downvoteCount }
 }
