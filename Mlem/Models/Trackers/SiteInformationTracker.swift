@@ -43,11 +43,10 @@ class SiteInformationTracker: ObservableObject {
                 myUserInfo = response.myUser
                 allLanguages = response.allLanguages
                 if let userInfo = response.myUser {
-                    // need to fetch full user info to get moderated communities, required to display mod functions from non-community feed
-                    myUser = try await personRepository.loadUser(for: userInfo.localUserView.localUser.personId)
-                    myUser?.isAdmin = response.admins.contains { $0.person.id == myUser?.userId }
-                    if let communities = myUser?.moderatedCommunities {
-                        moderatedCommunities = Set(communities.map(\.communityId))
+                    myUser = UserModel(from: userInfo.localUserView.person)
+                    
+                    if let communities = response.myUser?.moderates {
+                        moderatedCommunities = Set(communities.map(\.community.id))
                     } else {
                         moderatedCommunities = .init(minimumCapacity: 1)
                     }

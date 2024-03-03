@@ -11,5 +11,6 @@ import Foundation
 struct APIMyUserInfo: Decodable {
     // Some properties aren't implemented yet: https://join-lemmy.org/api/interfaces/MyUserInfo.html
     var localUserView: APILocalUserView
+    let moderates: [APICommunityModeratorView]
     var discussionLanguages: [Int]
 }
