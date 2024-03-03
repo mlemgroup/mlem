@@ -240,6 +240,14 @@ extension CommentItem {
             })
         }
         
+        let content = self.hierarchicalComment.commentView.comment.content
+        ret.append(MenuFunction.standardMenuFunction(
+            text: "Select Text",
+            imageName: Icons.select
+        ) {
+            editorTracker.openEditor(with: SelectTextModel(text: content))
+        })
+        
         let isOwnComment = appState.isCurrentAccountId(hierarchicalComment.commentView.creator.id)
         
         if isOwnComment {

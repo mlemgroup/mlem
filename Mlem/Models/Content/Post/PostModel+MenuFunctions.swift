@@ -35,8 +35,7 @@ extension PostModel {
             // Upvote
             functions.append(MenuFunction.standardMenuFunction(
                 text: votes.myVote == .upvote ? "Undo Upvote" : "Upvote",
-                imageName: votes.myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvoteSquare,
-                enabled: true
+                imageName: votes.myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvoteSquare
             ) {
                 Task(priority: .userInitiated) {
                     await self.vote(inputOp: .upvote)
@@ -48,8 +47,7 @@ extension PostModel {
             // Downvote
             functions.append(MenuFunction.standardMenuFunction(
                 text: votes.myVote == .downvote ? "Undo Downvote" : "Downvote",
-                imageName: votes.myVote == .downvote ? Icons.downvoteSquareFill : Icons.downvoteSquare,
-                enabled: true
+                imageName: votes.myVote == .downvote ? Icons.downvoteSquareFill : Icons.downvoteSquare
             ) {
                 Task(priority: .userInitiated) {
                     await self.vote(inputOp: .downvote)
@@ -61,8 +59,7 @@ extension PostModel {
             // Save
             functions.append(MenuFunction.standardMenuFunction(
                 text: saved ? "Unsave" : "Save",
-                imageName: saved ? Icons.unsave : Icons.save,
-                enabled: true
+                imageName: saved ? Icons.unsave : Icons.save
             ) {
                 Task(priority: .userInitiated) {
                     await self.toggleSave()
@@ -74,8 +71,7 @@ extension PostModel {
             // Reply
             functions.append(MenuFunction.standardMenuFunction(
                 text: "Reply",
-                imageName: Icons.reply,
-                enabled: true
+                imageName: Icons.reply
             ) {
                 editorTracker.openEditor(
                     with: ConcreteEditorModel(post: self, operation: PostOperation.replyToPost)
@@ -83,12 +79,20 @@ extension PostModel {
             })
         }
         
+        if let body = self.post.body, body.isNotEmpty {
+            functions.append(MenuFunction.standardMenuFunction(
+                text: "Select Text",
+                imageName: Icons.select
+            ) {
+                editorTracker.openEditor(with: SelectTextModel(text: body))
+            })
+        }
+        
         if creator.isActiveAccount {
             // Edit
             functions.append(MenuFunction.standardMenuFunction(
                 text: "Edit",
-                imageName: Icons.edit,
-                enabled: true
+                imageName: Icons.edit
             ) {
                 editorTracker.openEditor(with: PostEditorModel(post: self))
             })
