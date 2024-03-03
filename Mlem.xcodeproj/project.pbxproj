@@ -484,6 +484,7 @@
 		CDA145ED2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA145EC2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift */; };
 		CDA1E84D2B93FC7C007953EF /* BanUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E84C2B93FC7C007953EF /* BanUserView.swift */; };
 		CDA1E84F2B93FF83007953EF /* RemovedTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E84E2B93FF83007953EF /* RemovedTag.swift */; };
+		CDA1E8512B940390007953EF /* LockedTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8502B940390007953EF /* LockedTag.swift */; };
 		CDA217E42A62FB3300BDA173 /* ReplyToMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA217E32A62FB3300BDA173 /* ReplyToMessage.swift */; };
 		CDA217E62A63016A00BDA173 /* ReportMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA217E52A63016A00BDA173 /* ReportMessage.swift */; };
 		CDA217E82A63029B00BDA173 /* ReportMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA217E72A63029B00BDA173 /* ReportMention.swift */; };
@@ -1089,6 +1090,7 @@
 		CDA145EC2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCommentReplyAsReadRequest.swift; sourceTree = "<group>"; };
 		CDA1E84C2B93FC7C007953EF /* BanUserView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BanUserView.swift; sourceTree = "<group>"; };
 		CDA1E84E2B93FF83007953EF /* RemovedTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemovedTag.swift; sourceTree = "<group>"; };
+		CDA1E8502B940390007953EF /* LockedTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedTag.swift; sourceTree = "<group>"; };
 		CDA217E32A62FB3300BDA173 /* ReplyToMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToMessage.swift; sourceTree = "<group>"; };
 		CDA217E52A63016A00BDA173 /* ReportMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportMessage.swift; sourceTree = "<group>"; };
 		CDA217E72A63029B00BDA173 /* ReportMention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportMention.swift; sourceTree = "<group>"; };
@@ -1712,6 +1714,7 @@
 				6318DE5327FB958800CC2AD6 /* Stickied Tag.swift */,
 				CD6483372A3A0F2200EE6CA3 /* NSFW Tag.swift */,
 				CDA1E84E2B93FF83007953EF /* RemovedTag.swift */,
+				CDA1E8502B940390007953EF /* LockedTag.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -3452,6 +3455,7 @@
 				50811B362A920519006BA3F2 /* APISite+Mock.swift in Sources */,
 				CDD0EFA52B7E8B3200CA3504 /* ModeratorListView.swift in Sources */,
 				503422562AAB784000EFE88D /* EnvironmentValues+AppFlow.swift in Sources */,
+				CDA1E8512B940390007953EF /* LockedTag.swift in Sources */,
 				CDDCF6512A677E1B003DA3AC /* FancyTabItemPreferenceKeys.swift in Sources */,
 				CDEBC32A2A9A580B00518D9D /* PostModel.swift in Sources */,
 				CDC6A8CA2A6F1C8D00CC11AC /* AssociatedIconProtocol.swift in Sources */,

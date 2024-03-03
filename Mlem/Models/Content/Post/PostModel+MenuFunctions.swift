@@ -181,9 +181,9 @@ extension PostModel {
         
         functions.append(MenuFunction.toggleableMenuFunction(
             toggle: post.featuredCommunity,
-            trueText: "Unpin post",
+            trueText: "Unpin",
             trueImageName: Icons.unpin,
-            falseText: "Pin post",
+            falseText: "Pin",
             falseImageName: Icons.pin
         ) {
             Task {
@@ -194,9 +194,9 @@ extension PostModel {
         
         functions.append(MenuFunction.toggleableMenuFunction(
             toggle: post.locked,
-            trueText: "Unlock post",
+            trueText: "Unlock",
             trueImageName: Icons.unlock,
-            falseText: "Lock post",
+            falseText: "Lock",
             falseImageName: Icons.lock
         ) {
             Task {
@@ -207,9 +207,9 @@ extension PostModel {
         
         functions.append(MenuFunction.toggleableMenuFunction(
             toggle: post.removed,
-            trueText: "Restore post",
+            trueText: "Restore",
             trueImageName: Icons.restore,
-            falseText: "Remove post",
+            falseText: "Remove",
             falseImageName: Icons.remove,
             falseRole: .destructive(prompt: nil)
         ) {
@@ -219,9 +219,9 @@ extension PostModel {
         if creator.userId != siteInformation.userId {
             functions.append(MenuFunction.toggleableMenuFunction(
                 toggle: creatorBannedFromCommunity,
-                trueText: "Unban user",
+                trueText: "Unban author",
                 trueImageName: Icons.communityUnban,
-                falseText: "Ban user",
+                falseText: "Ban author",
                 falseImageName: Icons.communityBan,
                 falseRole: .destructive(prompt: nil)
             ) {

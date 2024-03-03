@@ -178,6 +178,12 @@ struct LargePost: View {
             if post.post.nsfw {
                 NSFWTag(compact: false)
             }
+            if post.post.locked {
+                LockedTag(compact: false)
+            }
+            if post.post.removed {
+                RemovedTag(compact: false)
+            }
         }
         .scaleEffect(x: scaleX, y: scaleY)
         .onChange(of: layoutMode) { newValue in

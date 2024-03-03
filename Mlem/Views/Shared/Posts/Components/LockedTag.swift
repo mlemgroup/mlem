@@ -1,5 +1,5 @@
 //
-//  RemovedTag.swift
+//  LockedTag.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-03-02.
@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct RemovedTag: View {
+struct LockedTag: View {
     let compact: Bool
     
     var body: some View {
-        Image(systemName: Icons.removed)
-            .foregroundColor(.red)
+        Image(systemName: Icons.locked)
+            .foregroundColor(.green)
             .font(compact ? .footnote : .subheadline)
-            .accessibilityLabel("Post removed by moderator")
+            .accessibilityLabel("Post locked")
     }
 }
