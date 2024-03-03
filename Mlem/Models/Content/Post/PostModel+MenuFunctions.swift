@@ -196,18 +196,18 @@ extension PostModel {
             }
         })
         
-        functions.append(MenuFunction.toggleableMenuFunction(
-            toggle: post.removed,
-            trueText: "Restore",
-            trueImageName: Icons.restore,
-            falseText: "Remove",
-            falseImageName: Icons.remove,
-            isDestructive: .always
-        ) {
-            modToolTracker.removePost(self, shouldRemove: !self.post.removed)
-        })
-
         if creator.userId != siteInformation.userId {
+            functions.append(MenuFunction.toggleableMenuFunction(
+                toggle: post.removed,
+                trueText: "Restore",
+                trueImageName: Icons.restore,
+                falseText: "Remove",
+                falseImageName: Icons.remove,
+                isDestructive: .always
+            ) {
+                modToolTracker.removePost(self, shouldRemove: !self.post.removed)
+            })
+
             functions.append(MenuFunction.toggleableMenuFunction(
                 toggle: creatorBannedFromCommunity,
                 trueText: "Unban User",
