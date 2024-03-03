@@ -25,13 +25,13 @@ extension PostModel {
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         
-        if let community, let modToolTracker {
-            functions.append(.childMenu(
-                titleKey: "Moderation",
-                children: modMenuFunctions(community: community, modToolTracker: modToolTracker, postTracker: postTracker)
-            )
-            )
-        }
+//        if let community, let modToolTracker {
+//            functions.append(.childMenu(
+//                titleKey: "Moderation",
+//                children: modMenuFunctions(community: community, modToolTracker: modToolTracker, postTracker: postTracker)
+//            )
+//            )
+//        }
             
         // Upvote
         functions.append(MenuFunction.standardMenuFunction(
@@ -155,6 +155,11 @@ extension PostModel {
                     }
                 })
             }
+        }
+        
+        if let community, let modToolTracker {
+            functions.append(.divider)
+            functions.append(contentsOf: modMenuFunctions(community: community, modToolTracker: modToolTracker, postTracker: postTracker))
         }
 
         #if DEBUG

@@ -19,11 +19,12 @@ enum MenuFunction: Identifiable {
             return shareImageFunction.id
         case let .navigation(navigationMenuFunction):
             return navigationMenuFunction.id
-        case .childMenu:
+        case .childMenu, .divider:
             return UUID().uuidString
         }
     }
     
+    case divider // not a menu function per se, but adds a divider to the menu
     case standard(StandardMenuFunction)
     case shareUrl(ShareMenuFunction)
     case shareImage(ShareImageFunction)

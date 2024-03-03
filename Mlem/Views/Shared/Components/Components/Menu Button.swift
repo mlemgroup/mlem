@@ -14,6 +14,8 @@ struct MenuButton: View {
 
     var body: some View {
         switch menuFunction {
+        case .divider:
+            Divider()
         case let .shareUrl(shareMenuFunction):
             ShareLink(item: shareMenuFunction.url)
         case let .shareImage(shareImageFunction):
