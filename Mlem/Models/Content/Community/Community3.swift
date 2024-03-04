@@ -9,7 +9,7 @@ import Observation
 import SwiftUI
 
 @Observable
-final class Community3: Community3Providing, NewContentModel {
+final class Community3: Community3Providing, ContentModel {
     typealias ApiType = ApiGetCommunityResponse
     var community3: Community3 { self }
     

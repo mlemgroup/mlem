@@ -7,7 +7,9 @@
 
 import Combine
 import Foundation
+import SwiftUI
 
+@Observable
 class ApiClient {
     let decoder: JSONDecoder = .defaultDecoder
     let urlSession: URLSession = .init(configuration: .default)

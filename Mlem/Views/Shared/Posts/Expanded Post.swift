@@ -8,16 +8,8 @@
 import Dependencies
 import SwiftUI
 
-private struct AnchorsKey: PreferenceKey {
-    // Each key is a comment id. The corresponding value is the
-    // .center anchor of that row.
-    typealias Value = [Int: Anchor<CGPoint>]
-
-    static var defaultValue: Value { [:] }
-
-    static func reduce(value: inout Value, nextValue: () -> Value) {
-        value.merge(nextValue()) { $1 }
-    }
+enum ResolveProgress {
+    case waiting, failed
 }
 
 struct ExpandedPost: View {
@@ -28,7 +20,6 @@ struct ExpandedPost: View {
     // appstorage
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
     @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = true
-    @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = false
     
     @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = false
     @AppStorage("showDownvotesSeparately") var showPostDownvotesSeparately: Bool = false
@@ -39,20 +30,15 @@ struct ExpandedPost: View {
     @AppStorage("showCommentJumpButton") var showCommentJumpButton: Bool = true
     @AppStorage("commentJumpButtonSide") var commentJumpButtonSide: JumpButtonLocation = .bottomTrailing
 
+    @Environment(AppState.self) var appState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
 
-    // @StateObject var commentTracker: CommentTracker = .init()
     @State var post: any PostStubProviding
+    
+    @State var resolveProgress: ResolveProgress?
     
     @State var commentErrorDetails: ErrorDetails?
     
-    @State var isLoading: Bool = false
-    
-    /// When this is set, the view scrolls to the comment with the given ID, or to the top if set to 0.
-    @State var scrollTarget: Int?
-    /// The id of the top visible comment, or 0 if the post is visible.
-    @State var topVisibleCommentId: Int?
-
     @State private var sortSelection = 0
     @State var commentSortingType: CommentSortType = .appStorageValue()
     @State private var postLayoutMode: LargePost.LayoutMode = .maximize
@@ -62,27 +48,49 @@ struct ExpandedPost: View {
     
     var body: some View {
         contentView
-            // .environmentObject(commentTracker)
-            .navigationBarTitle(post.community_?.name ?? "Loading", displayMode: .inline)
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) { toolbarMenu }
+                ToolbarItem(placement: .principal) {
+                    HStack(spacing: 10) {
+                        switch resolveProgress {
+                        case .failed:
+                            Text("Failed to resolve")
+                                .foregroundStyle(.red)
+                        case nil, .waiting:
+                            Text(post.community_?.name ?? "Loading...")
+                                .opacity(resolveProgress == .waiting ? 0.5 : 1)
+                                .animation(.easeOut(duration: 0.2), value: resolveProgress)
+                        }
+                    }
+                    .font(.headline)
+                }
             }
-//            .task {
-//                if commentTracker.comments.isEmpty {
-//                    await loadComments()
-//                }
-//                await post.markRead(true)
-//            }
-//            .refreshable { await refreshComments() }
-//            .onChange(of: commentSortingType) {
-//                withAnimation(.easeIn(duration: 0.4)) {
-//                    commentTracker.comments = sortComments(commentTracker.comments, by: commentSortingType)
-//                }
-//            }
+            .onChange(of: appState.actorId) {
+                if let source = appState.apiSource {
+                    resolveProgress = .waiting
+                    Task {
+                        do {
+                            print("Resolving post...")
+                            let newPost = PostStub(source: source, actorId: post.actorId)
+                            let shouldKeepId = post.source.actorId.host() == newPost.source.actorId.host()
+                            let upgraded = try await newPost.upgrade(id: shouldKeepId ? post.id_ : nil)
+                            DispatchQueue.main.async {
+                                print("Resolved post!")
+                                self.post = upgraded
+                                self.resolveProgress = nil
+                            }
+                        } catch {
+                            DispatchQueue.main.async {
+                                resolveProgress = .failed
+                            }
+                        }
+                    }
+                }
+            }
     }
     
     private var contentView: some View {
-        GeometryReader { proxy in
+        GeometryReader { _ in
             ScrollViewReader { (scrollProxy: ScrollViewProxy) in
                 ScrollView {
                     ScrollToView(appeared: $scrollToTopAppeared)
@@ -91,40 +99,12 @@ struct ExpandedPost: View {
                     if let post = post as? any Post2Providing {
                         VStack(spacing: 0) {
                             postView(post: post)
-                                .id(0)
-                                .anchorPreference(
-                                    key: AnchorsKey.self,
-                                    value: .center
-                                ) { [0: $0] }
-                            
                             Divider()
                                 .background(.black)
-                            
-                            //                        if commentTracker.comments.isEmpty {
                             noCommentsView()
-                            //                        } else {
-                            //                            commentsView
-                            //                                .onAppear {
-                            //                                    if let target = scrollTarget {
-                            //                                        scrollTarget = nil
-                            //                                        scrollProxy.scrollTo(target, anchor: .top)
-                            //                                    }
-                            //                                }
-                            //                        }
                         }
                         .padding(.bottom, AppConstants.expandedPostOverscroll)
                     }
-                }
-                .onChange(of: scrollTarget) {
-                    if let scrollTarget {
-                        self.scrollTarget = nil
-                        withAnimation {
-                            scrollProxy.scrollTo(scrollTarget, anchor: .top)
-                        }
-                    }
-                }
-                .onPreferenceChange(AnchorsKey.self) { anchors in
-                    topVisibleCommentId = topCommentRow(of: anchors, in: proxy)
                 }
                 .hoistNavigation {
                     if scrollToTopAppeared {
@@ -138,67 +118,16 @@ struct ExpandedPost: View {
                 }
             }
         }
-//        .overlay {
-//            if showCommentJumpButton, commentTracker.comments.count > 1 {
-//                JumpButtonView(onShortPress: scrollToNextComment, onLongPress: scrollToPreviousComment)
-//                    .frame(
-//                        maxWidth: .infinity,
-//                        maxHeight: .infinity,
-//                        alignment: commentJumpButtonSide.alignment
-//                    )
-//            }
-//        }
         .fancyTabScrollCompatible()
         .navigationBarColor()
     }
     
-//    func scrollToNextComment() {
-//        if let topVisibleId = topVisibleCommentId {
-//            if topVisibleId == 0 {
-//                scrollTarget = commentTracker.topLevelIDs.first
-//                return
-//            }
-//            if let topLevelId = commentTracker.topLevelIDMap[topVisibleId] {
-//                if let index = commentTracker.topLevelIDs.firstIndex(of: topLevelId) {
-//                    if index + 1 < commentTracker.comments.count {
-//                        scrollTarget = commentTracker.topLevelIDs[index + 1]
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    
-//    func scrollToPreviousComment() {
-//        if let topVisibleId = topVisibleCommentId {
-//            if topVisibleId == commentTracker.topLevelIDs.first {
-//                scrollTarget = 0
-//                return
-//            }
-//            
-//            if let topLevelId = commentTracker.topLevelIDMap[topVisibleId] {
-//                if let index = commentTracker.topLevelIDs.firstIndex(of: topLevelId) {
-//                    if index - 1 >= 0 {
-//                        scrollTarget = commentTracker.topLevelIDs[index - 1]
-//                    }
-//                }
-//            }
-//        }
-//    }
-    
     var userServerInstanceLocation: ServerInstanceLocation {
-        if !shouldShowUserServerInPost {
-            return .disabled
-        } else {
-            return .bottom
-        }
+        shouldShowUserServerInPost ? .bottom : .disabled
     }
     
     var communityServerInstanceLocation: ServerInstanceLocation {
-        if !shouldShowCommunityServerInPost {
-            return .disabled
-        } else {
-            return .bottom
-        }
+        shouldShowCommunityServerInPost ? .bottom : .disabled
     }
     
     // MARK: Subviews
@@ -259,8 +188,6 @@ struct ExpandedPost: View {
     private func noCommentsView() -> some View {
         if let details = commentErrorDetails {
             ErrorView(details)
-        } else if isLoading {
-            LoadingView(whatIsLoading: .comments)
         } else {
             VStack(spacing: 2) {
                 VStack(spacing: 5) {
@@ -273,39 +200,6 @@ struct ExpandedPost: View {
             .foregroundColor(.secondary)
             .padding()
         }
-    }
-
-    /// Displays the comments
-    private var commentsView: some View {
-        LazyVStack(alignment: .leading, spacing: 0) {
-//            ForEach(commentTracker.commentsView, id: \.commentView.comment.id) { comment in
-//                CommentItem(
-//                    commentTracker: commentTracker,
-//                    hierarchicalComment: comment,
-//                    postContext: post,
-//                    showPostContext: false,
-//                    showCommentCreator: true
-//                )
-//                .anchorPreference(
-//                    key: AnchorsKey.self,
-//                    value: .center
-//                ) { [comment.commentView.comment.id: $0] }
-//                /// [2023.08] Manually set zIndex so child comments don't overlap parent comments on collapse/expand animations. `Int.max` doesn't work, which is why this is set to just some big value.
-//                .zIndex(.maxZIndex - Double(comment.depth))
-//            }
-        }
-    }
-    
-    private func topCommentRow(of anchors: AnchorsKey.Value, in proxy: GeometryProxy) -> Int? {
-        var yBest = CGFloat.infinity
-        var answer: Int?
-        for (row, anchor) in anchors {
-            let y = proxy[anchor].y
-            guard y >= 0, y < yBest else { continue }
-            answer = row
-            yBest = y
-        }
-        return answer
     }
     
     private var toolbarMenu: some View {

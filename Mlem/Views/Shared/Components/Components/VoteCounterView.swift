@@ -12,6 +12,10 @@ struct VoteCounterView: View {
     let content: any InteractableContent
     let voteType: ScoringOperation
     
+    var isOn: Bool {
+        content.source.api.token != nil && content.myVote == voteType
+    }
+    
     init(content: any InteractableContent, voteType: ScoringOperation) {
         self.content = content
         if voteType == .none {
@@ -25,7 +29,7 @@ struct VoteCounterView: View {
             VoteButtonView(content: content, voteType: voteType)
             
             Text(String(voteType == .upvote ? content.upvoteCount : content.downvoteCount))
-                .foregroundColor(content.myVote == voteType ? voteType.color! : .primary)
+                .foregroundColor(isOn ? voteType.color! : .primary)
                 .monospacedDigit()
         }
     }

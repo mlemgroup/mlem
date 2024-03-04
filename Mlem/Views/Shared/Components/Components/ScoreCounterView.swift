@@ -13,13 +13,20 @@ struct ScoreCounterView: View {
     @Dependency(\.hapticManager) var hapticManager
     
     let content: any InteractableContent
+    
+    var labelColor: Color {
+        if content.source.api.token == nil {
+            return .primary
+        }
+        return content.myVote.color ?? .primary
+    }
 
     var body: some View {
         HStack(spacing: 6) {
             VoteButtonView(content: content, voteType: .upvote)
             
             Text(String(content.score))
-                .foregroundColor(content.myVote.color ?? .primary)
+                .foregroundStyle(labelColor)
                 .monospacedDigit()
             
             // if siteInformation.enableDownvotes {
@@ -32,12 +39,12 @@ struct ScoreCounterView: View {
             case .increment:
                 Task(priority: .userInitiated) {
                     hapticManager.play(haptic: .lightSuccess, priority: .low)
-                    try await content.toggleUpvote()
+                    content.toggleUpvote()
                 }
             case .decrement:
                 Task(priority: .userInitiated) {
                     hapticManager.play(haptic: .lightSuccess, priority: .low)
-                    try await content.toggleDownvote()
+                    content.toggleDownvote()
                 }
             default:
                 // Not sure what to do here.

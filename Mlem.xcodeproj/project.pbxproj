@@ -97,12 +97,10 @@
 		03A54C322B5331F30064CCDE /* InstanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A54C312B5331F30064CCDE /* InstanceView.swift */; };
 		03AFBE962B6E613200F01F3C /* CommunityStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFBE952B6E613200F01F3C /* CommunityStub.swift */; };
 		03AFBE982B6E630600F01F3C /* Community1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFBE972B6E630600F01F3C /* Community1.swift */; };
-		03AFBE9A2B6E65A400F01F3C /* NewContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFBE992B6E65A400F01F3C /* NewContentModel.swift */; };
 		03AFBE9C2B6E676600F01F3C /* Community2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFBE9B2B6E676600F01F3C /* Community2.swift */; };
 		03AFBE9E2B6E79D200F01F3C /* Community3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFBE9D2B6E79D200F01F3C /* Community3.swift */; };
 		03B15BED2B55CBBB00E7C30A /* MarkdownTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B15BEC2B55CBBB00E7C30A /* MarkdownTheme.swift */; };
 		03B643572A6864CD00F65700 /* TabBarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B643562A6864CD00F65700 /* TabBarSettingsView.swift */; };
-		03B7AAEF2ABCB9DC00068B23 /* ContentTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B7AAEE2ABCB9DC00068B23 /* ContentTracker.swift */; };
 		03B7AAF12ABE404300068B23 /* ContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B7AAF02ABE404300068B23 /* ContentModel.swift */; };
 		03BAA23A2A57DC1400D48252 /* PublishedTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BAA2392A57DC1400D48252 /* PublishedTimestampView.swift */; };
 		03C897F62ABF49BD005F3403 /* Abbreviate Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C897F52ABF49BD005F3403 /* Abbreviate Numbers.swift */; };
@@ -850,12 +848,10 @@
 		03A54C312B5331F30064CCDE /* InstanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceView.swift; sourceTree = "<group>"; };
 		03AFBE952B6E613200F01F3C /* CommunityStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityStub.swift; sourceTree = "<group>"; };
 		03AFBE972B6E630600F01F3C /* Community1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Community1.swift; sourceTree = "<group>"; };
-		03AFBE992B6E65A400F01F3C /* NewContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewContentModel.swift; sourceTree = "<group>"; };
 		03AFBE9B2B6E676600F01F3C /* Community2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Community2.swift; sourceTree = "<group>"; };
 		03AFBE9D2B6E79D200F01F3C /* Community3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Community3.swift; sourceTree = "<group>"; };
 		03B15BEC2B55CBBB00E7C30A /* MarkdownTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownTheme.swift; sourceTree = "<group>"; };
 		03B643562A6864CD00F65700 /* TabBarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarSettingsView.swift; sourceTree = "<group>"; };
-		03B7AAEE2ABCB9DC00068B23 /* ContentTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTracker.swift; sourceTree = "<group>"; };
 		03B7AAF02ABE404300068B23 /* ContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentModel.swift; sourceTree = "<group>"; };
 		03BAA2392A57DC1400D48252 /* PublishedTimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishedTimestampView.swift; sourceTree = "<group>"; };
 		03C897F52ABF49BD005F3403 /* Abbreviate Numbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Abbreviate Numbers.swift"; sourceTree = "<group>"; };
@@ -2257,7 +2253,6 @@
 				63F0C7A72A0522FC00A18C5D /* Saved Account Tracker.swift */,
 				034C724E2A82B61200B8A4B8 /* LayoutWidgetTracker.swift */,
 				B1955A1E2A606F010056CF99 /* EasterFlagsTracker.swift */,
-				03B7AAEE2ABCB9DC00068B23 /* ContentTracker.swift */,
 			);
 			path = Trackers;
 			sourceTree = "<group>";
@@ -3161,7 +3156,6 @@
 		CDEBC3262A9A57E900518D9D /* Content */ = {
 			isa = PBXGroup;
 			children = (
-				03AFBE992B6E65A400F01F3C /* NewContentModel.swift */,
 				032145752B7E77BC001AE07E /* APISource.swift */,
 				032145732B7E77AB001AE07E /* CoreModel.swift */,
 				03E1E0552B77B4920009DF9F /* ContentCache.swift */,
@@ -3764,7 +3758,6 @@
 				CD3720EC2B2E8F96004D7103 /* AlternativeIconCell.swift in Sources */,
 				CDB652362B8BB7EA007B7797 /* ApiCommunityAggregates.swift in Sources */,
 				CDB651A32B8BB7EA007B7797 /* ApiListingType.swift in Sources */,
-				03AFBE9A2B6E65A400F01F3C /* NewContentModel.swift in Sources */,
 				032109472AA7C3FC00912DFC /* CommunityLabelView.swift in Sources */,
 				5064D03F2A6DE0DB00B22EE3 /* Notifier+Dependency.swift in Sources */,
 				CDB6522B2B8BB7EA007B7797 /* ApiRegistrationApplicationView.swift in Sources */,
@@ -4077,7 +4070,6 @@
 				CDB6514D2B8BB7E9007B7797 /* ImportSettingsRequest.swift in Sources */,
 				CDB6516D2B8BB7EA007B7797 /* ApiPersonMentionView.swift in Sources */,
 				CDB651042B8BB7E9007B7797 /* GetCommentsRequest.swift in Sources */,
-				03B7AAEF2ABCB9DC00068B23 /* ContentTracker.swift in Sources */,
 				CDEC95142B5CBC42004BA288 /* AggregateFeedView+Logic.swift in Sources */,
 				CDB651CB2B8BB7EA007B7797 /* ApiEditPost.swift in Sources */,
 				CDB652292B8BB7EA007B7797 /* ApiRegistrationMode.swift in Sources */,

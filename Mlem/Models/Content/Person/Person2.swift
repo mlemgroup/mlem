@@ -8,7 +8,7 @@
 import SwiftUI
 
 @Observable
-final class Person2: Person2Providing, NewContentModel {
+final class Person2: Person2Providing, ContentModel {
     typealias ApiType = ApiPersonView
     var person2: Person2 { self }
     
