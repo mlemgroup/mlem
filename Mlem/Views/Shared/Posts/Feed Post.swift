@@ -41,8 +41,8 @@ struct FeedPost: View {
     @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
 
-    // @EnvironmentObject var postTracker: StandardPostTracker
     @EnvironmentObject var editorTracker: EditorTracker
+    @EnvironmentObject var modToolTracker: ModToolTracker
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
@@ -87,14 +87,29 @@ struct FeedPost: View {
         isPresentingConfirmDestructive = true
     }
     
+    var isMod: Bool {
+        siteInformation.moderatedCommunities.contains(postModel.community.communityId)
+    }
+    
     // MARK: Computed
     
     var barThickness: CGFloat { !postModel.read && diffWithoutColor && readMarkStyle == .bar ? CGFloat(readBarThickness) : .zero }
     var showCheck: Bool { postModel.read && diffWithoutColor && readMarkStyle == .check }
+    
+    var menuFunctions: [MenuFunction] {
+        let isMod = siteInformation.moderatedCommunities.contains(postModel.community.communityId)
+        
+        return postModel.menuFunctions(
+            editorTracker: editorTracker,
+            postTracker: postTracker,
+            community: isMod ? postModel.community : nil,
+            modToolTracker: isMod ? modToolTracker : nil
+        )
+    }
 
     var body: some View {
-        // this allows post deletion to not require tracker updates
-        if postModel.post.deleted {
+        // this allows post deletion/removal to not require tracker updates
+        if postModel.post.deleted || (postModel.post.removed && !isMod) {
             EmptyView()
         } else {
             VStack(spacing: 0) {
@@ -116,11 +131,7 @@ struct FeedPost: View {
                         ]
                     )
                     .contextMenu {
-                        let functions = postModel.menuFunctions(
-                            editorTracker: editorTracker,
-                            postTracker: postTracker
-                        )
-                        ForEach(functions) { item in
+                        ForEach(menuFunctions) { item in
                             MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
                         }
                     }
@@ -153,11 +164,10 @@ struct FeedPost: View {
     @ViewBuilder
     var postItem: some View {
         if postSize == .compact {
-            let functions = postModel.menuFunctions(editorTracker: editorTracker, postTracker: postTracker)
             CompactPost(
                 post: postModel,
                 showCommunity: showCommunity,
-                menuFunctions: functions
+                menuFunctions: menuFunctions
             )
         } else {
             VStack(spacing: 0) {
@@ -179,11 +189,7 @@ struct FeedPost: View {
                             ReadCheck()
                         }
                         
-                        let functions = postModel.menuFunctions(
-                            editorTracker: editorTracker,
-                            postTracker: postTracker
-                        )
-                        EllipsisMenu(size: 24, menuFunctions: functions)
+                        EllipsisMenu(size: 24, menuFunctions: menuFunctions)
                     }
 
                     if postSize == .headline {
@@ -200,6 +206,7 @@ struct FeedPost: View {
                         UserLinkView(
                             user: postModel.creator,
                             serverInstanceLocation: userServerInstanceLocation,
+                            bannedFromCommunity: postModel.creatorBannedFromCommunity,
                             communityContext: community
                         )
                     }

@@ -55,11 +55,16 @@ struct CompactPost: View {
                 HStack {
                     Group {
                         if showCommunity {
-                            CommunityLinkView(community: post.community, serverInstanceLocation: .trailing, overrideShowAvatar: false)
+                            CommunityLinkView(
+                                community: post.community,
+                                serverInstanceLocation: .trailing,
+                                overrideShowAvatar: false
+                            )
                         } else {
                             UserLinkView(
                                 user: post.creator,
                                 serverInstanceLocation: .trailing,
+                                bannedFromCommunity: post.creatorBannedFromCommunity,
                                 communityContext: community
                             )
                         }
@@ -102,6 +107,12 @@ struct CompactPost: View {
             
             if post.post.nsfw || post.community.nsfw {
                 NSFWTag(compact: true)
+            }
+            if post.post.locked {
+                LockedTag(compact: true)
+            }
+            if post.post.removed {
+                RemovedTag(compact: true)
             }
             
             InfoStackView(

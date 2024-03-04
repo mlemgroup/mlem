@@ -30,8 +30,8 @@ struct FediseerOpinionListView: View {
                 
                 ForEach(items, id: \.domain) { opinion in
                     FediseerOpinionView(opinion: opinion)
-                    .background(Color(uiColor: .secondarySystemGroupedBackground))
-                    .cornerRadius(AppConstants.largeItemCornerRadius)
+                        .background(Color(uiColor: .secondarySystemGroupedBackground))
+                        .cornerRadius(AppConstants.largeItemCornerRadius)
                 }
             }
             .padding(16)

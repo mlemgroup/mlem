@@ -7,11 +7,24 @@
 
 import SwiftUI
 
+enum FlairSize {
+    case small, medium, large
+    
+    var width: CGFloat {
+        switch self {
+        case .small: 10
+        case .medium: 12
+        case .large: 14
+        }
+    }
+}
+
 struct UserLabelView: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     
     var user: UserModel
     let serverInstanceLocation: ServerInstanceLocation
+    let bannedFromCommunity: Bool
     let overrideShowAvatar: Bool? // if present, shows or hides avatar according to value; otherwise uses system settings
     
     // Extra context about where the link is being displayed
@@ -29,6 +42,7 @@ struct UserLabelView: View {
         person: APIPerson,
         serverInstanceLocation: ServerInstanceLocation,
         overrideShowAvatar: Bool? = nil,
+        bannedFromCommunity: Bool,
         postContext: APIPost? = nil,
         commentContext: APIComment? = nil,
         communityContext: CommunityModel? = nil
@@ -36,6 +50,7 @@ struct UserLabelView: View {
         self.init(
             user: UserModel(from: person),
             serverInstanceLocation: serverInstanceLocation,
+            bannedFromCommunity: bannedFromCommunity,
             overrideShowAvatar: overrideShowAvatar,
             postContext: postContext,
             commentContext: commentContext,
@@ -46,6 +61,7 @@ struct UserLabelView: View {
     init(
         user: UserModel,
         serverInstanceLocation: ServerInstanceLocation,
+        bannedFromCommunity: Bool,
         overrideShowAvatar: Bool? = nil,
         postContext: APIPost? = nil,
         commentContext: APIComment? = nil,
@@ -54,6 +70,7 @@ struct UserLabelView: View {
         self.user = user
         self.serverInstanceLocation = serverInstanceLocation
         self.overrideShowAvatar = overrideShowAvatar
+        self.bannedFromCommunity = bannedFromCommunity
         
         _postContext = State(initialValue: postContext)
         _commentContext = State(initialValue: commentContext)
@@ -88,25 +105,23 @@ struct UserLabelView: View {
         let flairs = user.getFlairs(
             postContext: postContext,
             commentContext: commentContext,
-            communityContext: communityContext
+            communityContext: communityContext,
+            bannedFromCommunity: bannedFromCommunity
         )
         
         HStack(spacing: 4) {
             if serverInstanceLocation == .bottom {
                 if flairs.count == 1, let first = flairs.first {
-                    userFlairIcon(with: first)
-                        .imageScale(.large)
+                    userFlairIcon(with: first, size: .large)
                 } else if !flairs.isEmpty {
                     HStack(spacing: 2) {
-                        LazyHGrid(rows: [GridItem(), GridItem()], alignment: .center, spacing: 2) {
+                        LazyHGrid(rows: [GridItem(spacing: 2), GridItem()], alignment: .center, spacing: 2) {
                             ForEach(flairs.dropLast(flairs.count % 2), id: \.self) { flair in
-                                userFlairIcon(with: flair)
-                                    .imageScale(.medium)
+                                userFlairIcon(with: flair, size: .medium)
                             }
                         }
                         if flairs.count % 2 != 0 {
-                            userFlairIcon(with: flairs.last!)
-                                .imageScale(.medium)
+                            userFlairIcon(with: flairs.last!, size: .medium)
                         }
                     }
                     .padding(.trailing, 4)
@@ -114,12 +129,10 @@ struct UserLabelView: View {
         
             } else {
                 if flairs.count == 1, let first = flairs.first {
-                    userFlairIcon(with: first)
-                        .imageScale(.small)
+                    userFlairIcon(with: first, size: .small)
                 } else if !flairs.isEmpty {
                     ForEach(flairs, id: \.self) { flair in
-                        userFlairIcon(with: flair)
-                            .imageScale(.small)
+                        userFlairIcon(with: flair, size: .small)
                     }
                     .padding(.trailing, 4)
                 }
@@ -143,10 +156,11 @@ struct UserLabelView: View {
     }
     
     @ViewBuilder
-    private func userFlairIcon(with flair: UserFlair) -> some View {
+    private func userFlairIcon(with flair: UserFlair, size: FlairSize) -> some View {
         Image(systemName: flair.icon)
-            .bold()
-            .font(.footnote)
+            .resizable()
+            .scaledToFit()
+            .frame(height: size.width, alignment: .center)
             .foregroundColor(flair.color)
     }
     
@@ -303,17 +317,20 @@ struct UserLinkViewPreview: PreviewProvider {
         return UserLinkView(
             user: UserModel(from: previewUser),
             serverInstanceLocation: serverInstanceLocation,
+            bannedFromCommunity: false,
             postContext: postContext,
             commentContext: commentContext
         )
     }
     
     static var previews: some View {
-        VStack {
-            ForEach(ServerInstanceLocation.allCases, id: \.rawValue) { serverInstanceLocation in
-                Spacer()
-                ForEach(PreviewUserType.allCases, id: \.rawValue) { userType in
-                    generateUserLinkView(name: "\(userType)User", userType: userType, serverInstanceLocation: serverInstanceLocation)
+        NavigationStack {
+            VStack {
+                ForEach(ServerInstanceLocation.allCases, id: \.rawValue) { serverInstanceLocation in
+                    Spacer()
+                    ForEach(PreviewUserType.allCases, id: \.rawValue) { userType in
+                        generateUserLinkView(name: "\(userType)User", userType: userType, serverInstanceLocation: serverInstanceLocation)
+                    }
                 }
             }
         }

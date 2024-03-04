@@ -43,8 +43,13 @@ struct InboxReplyBodyView: View {
                 .font(.headline)
                 .padding(.bottom, AppConstants.postAndCommentSpacing)
             
-            UserLinkView(user: reply.creator, serverInstanceLocation: ServerInstanceLocation.bottom, overrideShowAvatar: true)
-                .font(.subheadline)
+            UserLinkView(
+                user: reply.creator,
+                serverInstanceLocation: .bottom,
+                bannedFromCommunity: reply.creatorBannedFromCommunity,
+                overrideShowAvatar: true
+            )
+            .font(.subheadline)
             
             HStack(alignment: .top, spacing: AppConstants.postAndCommentSpacing) {
                 Image(systemName: iconName)

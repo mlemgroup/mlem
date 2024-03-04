@@ -10,17 +10,17 @@ import SwiftUI
 
 extension CommunityModel {
     func newPostMenuFunction(editorTracker: EditorTracker, postTracker: StandardPostTracker? = nil) -> MenuFunction {
-        return .standardMenuFunction(
-                text: "New Post",
-                imageName: Icons.sendFill,
-                role: nil,
-                enabled: true
-            ) {
-                editorTracker.openEditor(with: PostEditorModel(
-                    community: self,
-                    postTracker: postTracker
-                ))
-            }
+        .standardMenuFunction(
+            text: "New Post",
+            imageName: Icons.sendFill,
+            role: nil,
+            enabled: true
+        ) {
+            editorTracker.openEditor(with: PostEditorModel(
+                community: self,
+                postTracker: postTracker
+            ))
+        }
     }
     
     func subscribeMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) throws -> StandardMenuFunction {
@@ -96,7 +96,7 @@ extension CommunityModel {
             functions.append(.standard(favoriteMenuFunction(callback)))
         }
         do {
-            if let instanceHost = self.communityUrl.host() {
+            if let instanceHost = communityUrl.host() {
                 let instance: InstanceModel
                 if let site {
                     instance = .init(from: site)

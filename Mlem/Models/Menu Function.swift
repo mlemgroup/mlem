@@ -19,11 +19,12 @@ enum MenuFunction: Identifiable {
             return shareImageFunction.id
         case let .navigation(navigationMenuFunction):
             return navigationMenuFunction.id
-        case .childMenu:
+        case .childMenu, .divider:
             return UUID().uuidString
         }
     }
     
+    case divider // not a menu function per se, but adds a divider to the menu
     case standard(StandardMenuFunction)
     case shareUrl(ShareMenuFunction)
     case shareImage(ShareImageFunction)
@@ -54,6 +55,37 @@ extension MenuFunction {
             enabled: enabled,
             callback: callback
         ))
+    }
+    
+    // swiftlint:disable:next function_parameter_count
+    static func toggleableMenuFunction(
+        toggle: Bool,
+        trueText: String,
+        trueImageName: String,
+        trueRole: MenuFunctionRole? = nil,
+        falseText: String,
+        falseImageName: String,
+        falseRole: MenuFunctionRole? = nil,
+        enabled: Bool = true,
+        callback: @escaping () -> Void
+    ) -> MenuFunction {
+        if toggle {
+            return standardMenuFunction(
+                text: trueText,
+                imageName: trueImageName,
+                role: trueRole,
+                enabled: enabled,
+                callback: callback
+            )
+        } else {
+            return standardMenuFunction(
+                text: falseText,
+                imageName: falseImageName,
+                role: falseRole,
+                enabled: enabled,
+                callback: callback
+            )
+        }
     }
     
     static func navigationMenuFunction(

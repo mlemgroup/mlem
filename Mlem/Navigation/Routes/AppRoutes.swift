@@ -19,7 +19,6 @@ enum AppRoute: Routable {
     case userProfile(UserModel, communityContext: CommunityModel? = nil)
     
     case postLinkWithContext(PostLinkWithContext)
-    // case newPostLinkWithContext(NewPostLinkWithContext)
     case lazyLoadPostLinkWithContext(LazyLoadPostLinkWithContext)
     
     // MARK: - Settings

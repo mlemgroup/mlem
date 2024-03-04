@@ -5,10 +5,10 @@
 //  Created by Sjmarf on 28/01/2024.
 //
 
-import SwiftUI
 import Charts
 import Dependencies
 import Foundation
+import SwiftUI
 
 struct InstanceUptimeView: View {
     @Dependency(\.errorHandler) var errorHandler
@@ -26,8 +26,8 @@ struct InstanceUptimeView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             section { summary }
-            .padding(.top, 16)
-            .padding(.bottom, 10)
+                .padding(.top, 16)
+                .padding(.bottom, 10)
             section("Recent Checks") {
                 recentChecks
                     .padding(.horizontal)
@@ -35,9 +35,9 @@ struct InstanceUptimeView: View {
             }
             .padding(.top, 20)
             footnote("Mlem will refresh this automatically every 30 seconds.")
-            .padding(.top, 8)
-            .padding(.leading, 6)
-            .padding(.bottom, 30)
+                .padding(.top, 8)
+                .padding(.leading, 6)
+                .padding(.bottom, 30)
             section("Response Time") {
                 VStack(alignment: .leading, spacing: 4) {
                     responseTimeChart
@@ -55,8 +55,8 @@ struct InstanceUptimeView: View {
             
             Text(
                 todayDowntimes.count == 0
-                ? "There were no recorded incidents today."
-                : "There ^[were \(todayDowntimes.count)](inflect: true) recorded incidents today."
+                    ? "There were no recorded incidents today."
+                    : "There ^[were \(todayDowntimes.count)](inflect: true) recorded incidents today."
             )
             .font(.footnote)
             .foregroundStyle(.secondary)
@@ -170,7 +170,7 @@ struct InstanceUptimeView: View {
                 Spacer()
                 footnote(timeOnlyFormatter.string(from: uptimeData.results.last?.timestamp ?? .now))
             }
-            .frame(maxWidth: CGFloat(uptimeData.results.count*25 + (uptimeData.results.count-1)*3))
+            .frame(maxWidth: CGFloat(uptimeData.results.count * 25 + (uptimeData.results.count - 1) * 3))
             .padding(.top, 4)
         }
     }

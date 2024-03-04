@@ -8,7 +8,6 @@
 import SwiftUI
 
 extension InstanceModel {
-    
     // Instances watched by lemmy-status.org
     static let uptimeSupportedInstances: [String] = [
         "aussie.zone",

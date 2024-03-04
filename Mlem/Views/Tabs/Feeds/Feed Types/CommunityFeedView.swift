@@ -24,6 +24,7 @@ struct CommunityFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.communityRepository) var communityRepository
+    @Dependency(\.siteInformation) var siteInformation
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.scrollViewProxy) var scrollProxy
@@ -155,7 +156,7 @@ struct CommunityFeedView: View {
                 switch selectedTab {
                 case .posts: posts()
                 case .about: about()
-                case .moderators: moderators()
+                case .moderators: ModeratorListView(community: communityModel)
                 case .details: details()
                 }
             }
@@ -168,23 +169,13 @@ struct CommunityFeedView: View {
     }
     
     func about() -> some View {
-        VStack(spacing: AppConstants.postAndCommentSpacing) {
+        VStack(spacing: AppConstants.standardSpacing) {
             if shouldShowCommunityHeaders, let banner = communityModel.banner {
                 CachedImage(url: banner, cornerRadius: AppConstants.largeItemCornerRadius)
             }
             MarkdownView(text: communityModel.description ?? "", isNsfw: false)
         }
-        .padding(AppConstants.postAndCommentSpacing)
-    }
-    
-    @ViewBuilder
-    func moderators() -> some View {
-        if let moderators = communityModel.moderators {
-            ForEach(moderators, id: \.id) { user in
-                UserResultView(user, communityContext: communityModel)
-                Divider()
-            }
-        }
+        .padding(AppConstants.standardSpacing)
     }
     
     func details() -> some View {
@@ -228,9 +219,10 @@ struct CommunityFeedView: View {
                     }
                     .buttonStyle(.plain)
                     Spacer()
+                
                     subscribeButton
                 }
-                .padding(.horizontal, AppConstants.postAndCommentSpacing)
+                .padding(.horizontal, AppConstants.standardSpacing)
                 .padding(.bottom, 3)
                 Divider()
                 BubblePicker(availableTabs, selected: $selectedTab) {
@@ -268,24 +260,22 @@ struct CommunityFeedView: View {
         return Icons.personFill
     }
     
+    var subscriberCountText: String? {
+        if let subscriberCount = communityModel.subscriberCount {
+            abbreviateNumber(subscriberCount)
+        } else {
+            nil
+        }
+    }
+    
     @ViewBuilder
     var subscribeButton: some View {
-        let foregroundColor = subscribeButtonForegroundColor
         if let subscribed = communityModel.subscribed {
-            HStack(spacing: 4) {
-                if let subscriberCount = communityModel.subscriberCount {
-                    Text(abbreviateNumber(subscriberCount))
-                }
-                Image(systemName: subscribeButtonIcon)
-                    .aspectRatio(contentMode: .fit)
-            }
-            .foregroundStyle(foregroundColor)
-            .padding(.vertical, 5)
-            .padding(.horizontal, 10)
-            .background(
-                Capsule()
-                    .strokeBorder(foregroundColor, style: .init(lineWidth: 1))
-                    .background(Capsule().fill(subscribeButtonBackgroundColor))
+            capsuleButton(
+                text: subscriberCountText,
+                imageName: subscribeButtonIcon,
+                foregroundColor: subscribeButtonForegroundColor,
+                backgroundColor: subscribeButtonBackgroundColor
             )
             .gesture(TapGesture().onEnded { _ in
                 hapticManager.play(haptic: .lightSuccess, priority: .low)
@@ -322,6 +312,26 @@ struct CommunityFeedView: View {
                     }
                 }
             })
+        }
+    }
+    
+    func capsuleButton(text: String?, imageName: String, foregroundColor: Color, backgroundColor: Color) -> some View {
+        HStack(spacing: 4) {
+            if let text {
+                Text(text)
+            }
+            
+            Image(systemName: imageName)
+        }
+        .foregroundStyle(foregroundColor)
+        .padding(.vertical, AppConstants.halfSpacing)
+        .padding(.horizontal, AppConstants.standardSpacing)
+        .background {
+            Capsule()
+                .strokeBorder(foregroundColor, style: .init(lineWidth: 1))
+                .background {
+                    Capsule().fill(backgroundColor)
+                }
         }
     }
 }

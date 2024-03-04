@@ -52,6 +52,7 @@ struct InboxMessageBodyView: View {
             UserLinkView(
                 user: message.creator,
                 serverInstanceLocation: .bottom,
+                bannedFromCommunity: false,
                 overrideShowAvatar: true
             )
             .font(.subheadline)

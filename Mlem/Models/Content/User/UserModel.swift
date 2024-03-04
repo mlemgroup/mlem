@@ -120,7 +120,7 @@ struct UserModel {
         isBot = person.botAccount
         
         if let admin = person.admin {
-            self.isAdmin = person.admin
+            isAdmin = person.admin
         }
         creationDate = person.published
         updatedDate = person.updated
@@ -143,9 +143,16 @@ struct UserModel {
     func getFlairs(
         postContext: APIPost? = nil,
         commentContext: APIComment? = nil,
-        communityContext: CommunityModel? = nil
+        communityContext: CommunityModel? = nil,
+        bannedFromCommunity: Bool? = false
     ) -> [UserFlair] {
         var ret: [UserFlair] = .init()
+        if banned {
+            ret.append(.bannedFromInstance)
+        }
+        if bannedFromCommunity ?? false {
+            ret.append(.bannedFromCommunity)
+        }
         if let post = postContext, post.creatorId == self.userId {
             ret.append(.op)
         }
@@ -164,9 +171,6 @@ struct UserModel {
         }
         if isBot {
             ret.append(.bot)
-        }
-        if banned {
-            ret.append(.banned)
         }
         return ret
     }
@@ -189,31 +193,24 @@ struct UserModel {
     }
     
     mutating func toggleBan(
-        expires: Date? = nil,
+        expires: Int? = nil,
         reason: String? = nil,
         removeData: Bool = false,
         _ callback: @escaping (_ item: Self) -> Void = { _ in }
     ) async {
         banned.toggle()
-        if banned {
-            banExpirationDate = expires
-        }
         RunLoop.main.perform { [self] in
             callback(self)
-        }
-        var expirationDate: Int?
-        if let expires {
-            expirationDate = Int(expires.timeIntervalSince1970)
         }
         do {
             let response = try await apiClient.banPerson(
                 id: userId,
                 shouldBan: banned,
-                expires: expirationDate,
+                expires: expires,
                 reason: reason,
                 removeData: removeData
             )
-            self.banned = response.banned
+            banned = response.banned
             RunLoop.main.perform { [self] in
                 callback(self)
             }

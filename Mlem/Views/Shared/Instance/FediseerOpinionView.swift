@@ -15,7 +15,7 @@ struct FediseerOpinionView: View {
             HStack {
                 if let model = opinion.instanceModel {
                     NavigationLink(value: AppRoute.instance(model)) { title }
-                    .buttonStyle(.plain)
+                        .buttonStyle(.plain)
                 } else {
                     title
                 }

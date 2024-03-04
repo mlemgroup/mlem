@@ -8,7 +8,6 @@
 import SwiftUI
 
 extension InstanceView {
-    
     // swiftlint:disable:next function_body_length
     func attemptToLoadInstanceData() {
         if instance.administrators == nil {
@@ -105,22 +104,22 @@ extension InstanceView {
                         from: URL(string: "https://fediseer.com/api/v1/censures/\(instance.name)")!
                     ).0
                     
-                    let fediseerData = FediseerData(
-                        instance: try JSONDecoder.defaultDecoder.decode(
+                    let fediseerData = await try FediseerData(
+                        instance: JSONDecoder.defaultDecoder.decode(
                             FediseerInstance.self,
-                            from: await instanceData
+                            from: instanceData
                         ),
-                        endorsements: try JSONDecoder.defaultDecoder.decode(
+                        endorsements: JSONDecoder.defaultDecoder.decode(
                             FediseerEndorsements.self,
-                            from: await endorsementsData
+                            from: endorsementsData
                         ).instances,
-                        hesitations: try JSONDecoder.defaultDecoder.decode(
+                        hesitations: JSONDecoder.defaultDecoder.decode(
                             FediseerHesitations.self,
-                            from: await hesitationsData
+                            from: hesitationsData
                         ).instances,
-                        censures: try JSONDecoder.defaultDecoder.decode(
+                        censures: JSONDecoder.defaultDecoder.decode(
                             FediseerCensures.self,
-                            from: await censuresData
+                            from: censuresData
                         ).instances
                     )
                     

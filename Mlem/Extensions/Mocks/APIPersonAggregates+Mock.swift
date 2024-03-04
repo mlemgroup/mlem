@@ -13,7 +13,7 @@ extension APIPersonAggregates {
         postCount: Int = 5,
         commentCount: Int = 20
     ) -> APIPersonAggregates {
-        return .init(
+        .init(
             id: nil,
             personId: personId,
             postCount: postCount,

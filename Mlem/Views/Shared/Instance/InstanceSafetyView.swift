@@ -18,7 +18,7 @@ struct InstanceSafetyView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             section { guarantorView }
-            .padding(.top, 16)
+                .padding(.top, 16)
             
             HStack {
                 Button("Learn more...") { showingInfoSheet = true }

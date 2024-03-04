@@ -53,6 +53,8 @@ enum Icons {
     static let pinned: String = "pin.fill"
     static let websiteIcon: String = "globe"
     static let read: String = "book"
+    static let removed: String = "xmark.bin.fill"
+    static let locked: String = "lock.fill"
     
     // post sizes
     static let postSizeSetting: String = "rectangle.expand.vertical"
@@ -105,7 +107,8 @@ enum Icons {
     static let adminFlair: String = "crown.fill"
     static let botFlair: String = "terminal.fill"
     static let opFlair: String = "person.fill"
-    static let bannedFlair: String = "multiply.circle"
+    static let instanceBannedFlair: String = "xmark.circle.fill"
+    static let communityBannedFlair: String = "xmark.shield.fill"
     
     // entities/general Lemmy concepts
     static let federation: String = "point.3.filled.connected.trianglepath.dotted"
@@ -195,7 +198,19 @@ enum Icons {
     static let limitImageHeightSetting: String = "rectangle.compress.vertical"
     static let appLockSettings: String = "lock.app.dashed"
     static let collapseComments: String = "arrow.down.and.line.horizontal.and.arrow.up"
-    static let ban: String = "xmark.circle"
+    static let instanceBan: String = "xmark.circle"
+    
+    // mod tools
+    static let auditUser: String = "person.crop.circle.badge.questionmark.fill"
+    static let communityBan: String = "xmark.shield"
+    static let communityUnban: String = "checkmark.shield"
+    static let unmod: String = "shield.slash"
+    static let pin: String = "pin"
+    static let unpin: String = "pin.slash"
+    static let lock: String = "lock"
+    static let unlock: String = "lock.open"
+    static let remove: String = "xmark.bin"
+    static let restore: String = "arrow.up.bin"
     
     // fediseer
     static let fediseer: String = "shield.checkered"

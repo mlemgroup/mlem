@@ -33,7 +33,7 @@ struct UptimeResponseTime: Codable, Identifiable {
     let timestamp: Date
     
     var durationMs: Int {
-        duration / 1000000
+        duration / 1_000_000
     }
     
     var id: Int { Int(timestamp.timeIntervalSince1970) }

@@ -33,13 +33,13 @@ struct BanPersonRequest: APIPostRequest {
     ) throws {
         self.instanceURL = try session.instanceUrl
 
-        self.body = .init(
+        self.body = try .init(
             personId: personId,
             ban: ban,
             expires: expires,
             reason: reason,
             removeData: removeData,
-            auth: try session.token
+            auth: session.token
         )
     }
 }

@@ -9,9 +9,30 @@ import Foundation
 
 extension PostModel {
     // swiftlint:disable function_body_length
-    func menuFunctions(editorTracker: EditorTracker, postTracker: StandardPostTracker?) -> [MenuFunction] {
+    
+    /// Produces menu functions for this post
+    /// - Parameters:
+    ///   - editorTracker: global EditorTracker
+    ///   - postTracker: optional StandardPostTracker. If present, the block function will remove posts from the tracker by the blocked user.
+    ///   - community: optional CommunityModel. If this and modToolTracker are present, moderator functions will be included in the menu.
+    ///   - modToolTracker: optional ModToolTracker. If this and community are present, moderator functions will be included in the menu.
+    /// - Returns: menu functions for this post
+    func menuFunctions(
+        editorTracker: EditorTracker,
+        postTracker: StandardPostTracker?,
+        community: CommunityModel?,
+        modToolTracker: ModToolTracker?
+    ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         
+//        if let community, let modToolTracker {
+//            functions.append(.childMenu(
+//                titleKey: "Moderation",
+//                children: modMenuFunctions(community: community, modToolTracker: modToolTracker, postTracker: postTracker)
+//            )
+//            )
+//        }
+            
         // Upvote
         functions.append(MenuFunction.standardMenuFunction(
             text: votes.myVote == .upvote ? "Undo Upvote" : "Upvote",
@@ -135,41 +156,113 @@ extension PostModel {
                 })
             }
         }
+        
+        if let community, let modToolTracker {
+            functions.append(.divider)
+            functions.append(contentsOf: modMenuFunctions(community: community, modToolTracker: modToolTracker, postTracker: postTracker))
+        }
 
-#if DEBUG
-        functions.append(
-            buildDeveloperMenu(
-                editorTracker: editorTracker,
-                postTracker: postTracker
+        #if DEBUG
+            functions.append(
+                buildDeveloperMenu(
+                    editorTracker: editorTracker,
+                    postTracker: postTracker
+                )
             )
-        )
-#endif
+        #endif
         
         return functions
     }
+
     // swiftlint:enable function_body_length
     
-#if DEBUG
-    private func buildDeveloperMenu(
-        editorTracker: EditorTracker,
+    // swiftlint:disable:next function_body_length
+    private func modMenuFunctions(
+        community: CommunityModel,
+        modToolTracker: ModToolTracker,
         postTracker: StandardPostTracker?
-    ) -> MenuFunction {
-        MenuFunction.childMenu(
-            titleKey: "Developer Menu",
-            children: [
-                .standardMenuFunction(
-                    text: "Toggle Read State",
-                    imageName: "book.and.wrench",
-                    enabled: true,
-                    callback: {
-                        Task {
-                            let newState = !self.read
-                            await self.markRead(newState)
-                        }
-                    }
+    ) -> [MenuFunction] {
+        var functions: [MenuFunction] = .init()
+        
+        functions.append(MenuFunction.toggleableMenuFunction(
+            toggle: post.featuredCommunity,
+            trueText: "Unpin",
+            trueImageName: Icons.unpin,
+            falseText: "Pin",
+            falseImageName: Icons.pin
+        ) {
+            Task {
+                await self.toggleFeatured(featureType: .community)
+                await self.notifier.add(.success("\(self.post.featuredCommunity ? "P" : "Unp")inned post"))
+            }
+        })
+        
+        functions.append(MenuFunction.toggleableMenuFunction(
+            toggle: post.locked,
+            trueText: "Unlock",
+            trueImageName: Icons.unlock,
+            falseText: "Lock",
+            falseImageName: Icons.lock
+        ) {
+            Task {
+                await self.toggleLocked()
+                await self.notifier.add(.success("\(self.post.locked ? "L" : "Unl")ocked post"))
+            }
+        })
+        
+        functions.append(MenuFunction.toggleableMenuFunction(
+            toggle: post.removed,
+            trueText: "Restore",
+            trueImageName: Icons.restore,
+            falseText: "Remove",
+            falseImageName: Icons.remove,
+            falseRole: .destructive(prompt: nil)
+        ) {
+            modToolTracker.removePost(self, shouldRemove: !self.post.removed)
+        })
+
+        if creator.userId != siteInformation.userId {
+            functions.append(MenuFunction.toggleableMenuFunction(
+                toggle: creatorBannedFromCommunity,
+                trueText: "Unban User",
+                trueImageName: Icons.communityUnban,
+                falseText: "Ban User",
+                falseImageName: Icons.communityBan,
+                falseRole: .destructive(prompt: nil)
+            ) {
+                modToolTracker.banUserFromCommunity(
+                    self.creator,
+                    from: community,
+                    shouldBan: !self.creatorBannedFromCommunity,
+                    postTracker: postTracker
                 )
-            ]
-        )
+            })
+        }
+        
+        return functions
     }
-#endif
+
+    #if DEBUG
+        private func buildDeveloperMenu(
+            editorTracker: EditorTracker,
+            postTracker: StandardPostTracker?
+        ) -> MenuFunction {
+            MenuFunction.childMenu(
+                titleKey: "Developer Menu",
+                children: [
+                    .standardMenuFunction(
+                        text: "Toggle Read State",
+                        imageName: "book.and.wrench",
+                        enabled: true,
+                        callback: {
+                            Task {
+                                let newState = !self.read
+                                await self.markRead(newState)
+                            }
+                        }
+                    )
+                ]
+            )
+        }
+    #endif
 }

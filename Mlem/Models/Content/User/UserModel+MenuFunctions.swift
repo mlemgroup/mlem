@@ -24,32 +24,25 @@ extension UserModel {
     
     func banMenuFunction(
         _ callback: @escaping (_ item: Self) -> Void = { _ in },
-        editorTracker: EditorTracker
+        modToolTracker: ModToolTracker
     ) -> MenuFunction {
-        return .standardMenuFunction(
+        .standardMenuFunction(
             text: banned ? "Unban" : "Ban",
-            imageName: Icons.bannedFlair,
-            role: .destructive(prompt: banned ? "Really unban this user?" : nil),
+            imageName: Icons.instanceBan,
+            role: .destructive(prompt: nil),
             callback: {
-                if banned {
-                    Task {
-                        var new = self
-                        await new.toggleBan(callback)
-                    }
-                } else {
-                    editorTracker.banUser = BanUserEditorModel(user: self, callback: callback)
-                }
+                modToolTracker.banUserFromInstance(self, shouldBan: !banned)
             }
         )
     }
     
     func menuFunctions(
         _ callback: @escaping (_ item: Self) -> Void = { _ in },
-        editorTracker: EditorTracker? = nil
+        modToolTracker: ModToolTracker? = nil
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         do {
-            if let instanceHost = self.profileUrl.host() {
+            if let instanceHost = profileUrl.host() {
                 let instance: InstanceModel
                 if let site {
                     instance = .init(from: site)
@@ -76,12 +69,12 @@ extension UserModel {
         )
         functions.append(.shareMenuFunction(url: profileUrl))
         
-        let isOwnUser = (siteInformation.myUser?.userId ?? -1) == self.userId
+        let isOwnUser = (siteInformation.myUser?.userId ?? -1) == userId
         
         if !isOwnUser {
             functions.append(blockMenuFunction(callback))
-            if siteInformation.myUser?.isAdmin ?? false, !(isAdmin ?? false), let editorTracker {
-                functions.append(banMenuFunction(callback, editorTracker: editorTracker))
+            if siteInformation.myUser?.isAdmin ?? false, !(isAdmin ?? false), let modToolTracker {
+                functions.append(banMenuFunction(callback, modToolTracker: modToolTracker))
             }
         }
         return functions

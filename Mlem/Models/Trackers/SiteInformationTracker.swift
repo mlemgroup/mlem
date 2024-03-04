@@ -14,6 +14,7 @@ class SiteInformationTracker: ObservableObject {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.accountsTracker) var accountsTracker
     @Dependency(\.markReadBatcher) var markReadBatcher
+    @Dependency(\.personRepository) var personRepository
     
     @Published private(set) var instance: InstanceModel?
     @Published private(set) var enableDownvotes = true
@@ -21,6 +22,9 @@ class SiteInformationTracker: ObservableObject {
     @Published private(set) var allLanguages: [APILanguage] = .init()
     @Published var myUserInfo: APIMyUserInfo?
     @Published var myUser: UserModel?
+    @Published var moderatedCommunities: Set<Int> = .init(minimumCapacity: 10)
+    
+    var userId: Int? { myUserInfo?.localUserView.person.id }
     
     func load(account: SavedAccount) {
         version = account.siteVersion
@@ -41,6 +45,12 @@ class SiteInformationTracker: ObservableObject {
                 if let userInfo = response.myUser {
                     myUser = UserModel(from: userInfo.localUserView.person)
                     myUser?.isAdmin = response.admins.contains { $0.person.id == myUser?.userId }
+                    
+                    if let communities = response.myUser?.moderates {
+                        moderatedCommunities = Set(communities.map(\.community.id))
+                    } else {
+                        moderatedCommunities = .init(minimumCapacity: 1)
+                    }
                 }
                 
                 if let version {

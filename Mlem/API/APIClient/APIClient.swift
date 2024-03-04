@@ -21,6 +21,7 @@ enum APIClientError: Error {
     case cancelled
     case invalidSession
     case decoding(Data, Error?)
+    case unexpectedResponse
 }
 
 extension APIClientError: CustomStringConvertible {
@@ -49,6 +50,8 @@ extension APIClientError: CustomStringConvertible {
             }
             
             return "Unable to decode: \(string)"
+        case .unexpectedResponse:
+            return "Unexpected response"
         }
     }
 }

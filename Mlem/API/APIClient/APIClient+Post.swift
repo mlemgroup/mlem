@@ -118,4 +118,25 @@ extension APIClient {
         let request = try SavePostRequest(session: session, postId: id, save: shouldSave)
         return try await perform(request: request).postView
     }
+    
+    func featurePost(id: Int, shouldFeature: Bool, featureType: APIPostFeatureType) async throws -> APIPostView {
+        let request = try FeaturePostRequest(
+            session: session,
+            postId: id,
+            featured: shouldFeature,
+            featureType: featureType
+        )
+        return try await perform(request: request).postView
+    }
+    
+    func lockPost(id: Int, shouldLock: Bool) async throws -> APIPostView {
+        let request = try LockPostRequest(session: session, postId: id, locked: shouldLock)
+        return try await perform(request: request).postView
+    }
+    
+    func removePost(id: Int, shouldRemove: Bool, reason: String?) async throws -> PostModel {
+        let request = try RemovePostRequest(session: session, postId: id, removed: shouldRemove, reason: reason)
+        let response = try await perform(request: request).postView
+        return PostModel(from: response)
+    }
 }

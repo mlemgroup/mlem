@@ -71,4 +71,5 @@ struct FediseerInfoView: View {
         .padding(.horizontal, AppConstants.postAndCommentSpacing)
     }
 }
+
 // swiftlint:enable line_length

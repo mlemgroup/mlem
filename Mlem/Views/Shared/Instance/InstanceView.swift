@@ -113,7 +113,7 @@ struct InstanceView: View {
                         case .administrators:
                             if let administrators = instance.administrators {
                                 ForEach(administrators, id: \.self) { user in
-                                    UserResultView(user, complications: [.date])
+                                    UserListRow(user, complications: [.date])
                                     Divider()
                                 }
                             } else {
@@ -137,9 +137,9 @@ struct InstanceView: View {
                         case .uptime:
                             VStack {
                                 switch uptimeData {
-                                case .success(let uptimeData):
+                                case let .success(uptimeData):
                                     InstanceUptimeView(instance: instance, uptimeData: uptimeData)
-                                case .failure(let error):
+                                case let .failure(error):
                                     ErrorView(.init(error: error))
                                         .padding(.top, 5)
                                 default:

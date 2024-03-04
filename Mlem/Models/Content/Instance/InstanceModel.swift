@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct InstanceModel {
-    
     enum InstanceError: Error {
         case invalidUrl
     }
@@ -52,7 +51,7 @@ struct InstanceModel {
         components.host = domainName
         if let url = components.url {
             self.url = url
-            displayName = name
+            self.displayName = name
         } else {
             throw InstanceError.invalidUrl
         }
@@ -165,7 +164,7 @@ struct InstanceModel {
     }
     
     static func mock() -> InstanceModel {
-        return .init(from: SiteResponse.mock())
+        .init(from: SiteResponse.mock())
     }
 }
 
