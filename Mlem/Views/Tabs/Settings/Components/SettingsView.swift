@@ -76,7 +76,7 @@ struct SettingsView: View {
                             Button {
                                 isShowingInstanceAdditionSheet = true
                             } label: {
-                                Label("Add Another Account", systemImage: "plus")
+                                Label("Add Another Account", systemImage: Icons.add)
                             }
                             .sheet(isPresented: $isShowingInstanceAdditionSheet) {
                                 AddSavedInstanceView(onboarding: false)

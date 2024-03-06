@@ -101,7 +101,7 @@ struct ProfileSettingsView: View {
                             .buttonStyle(.plain)
                         } else {
                             LinkUploadOptionsView(model: avatarAttachmentModel) {
-                                circleImage(systemName: "plus")
+                                circleImage(systemName: Icons.add)
                             }
                         }
                     }
@@ -145,7 +145,7 @@ struct ProfileSettingsView: View {
                                 .buttonStyle(.plain)
                             } else {
                                 LinkUploadOptionsView(model: bannerAttachmentModel) {
-                                    circleImage(systemName: "plus")
+                                    circleImage(systemName: Icons.add)
                                 }
                             }
                         }

@@ -163,6 +163,7 @@ enum Icons {
     
     // common operations
     static let share: String = "square.and.arrow.up"
+    static let add: String = "plus"
     static let subscribe: String = "plus.circle"
     static let subscribed: String = "checkmark.circle"
     static let subscribePerson: String = "person.crop.circle.badge.plus"

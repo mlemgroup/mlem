@@ -12,6 +12,8 @@ import SwiftUI
 struct ModeratorListView: View {
     @Dependency(\.siteInformation) var siteInformation
     
+    @EnvironmentObject var modToolTracker: ModToolTracker
+    
     let community: CommunityModel
     let navigationEnabled: Bool
     
@@ -27,6 +29,16 @@ struct ModeratorListView: View {
                     UserListRow(user, complications: [.date], communityContext: community, navigationEnabled: navigationEnabled)
                     Divider()
                 }
+            }
+            
+            if siteInformation.moderatedCommunities.contains(community.communityId) {
+                Button {
+                    modToolTracker.addModerator(to: community)
+                } label: {
+                    Label("Add Moderator", systemImage: Icons.add)
+                }
+                .accessibilityLabel("Add moderator")
+                .padding(AppConstants.standardSpacing)
             }
         }
     }
