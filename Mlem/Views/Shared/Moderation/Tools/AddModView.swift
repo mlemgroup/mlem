@@ -15,7 +15,7 @@ struct AddModView: View {
     
     @Environment(\.dismiss) var dismiss
 
-    let community: CommunityModel
+    @Binding var community: CommunityModel
     
     @State var searchText: String = ""
     @State var users: [UserModel] = .init()
@@ -83,7 +83,9 @@ struct AddModView: View {
     
     func confirmAddModerator(user: UserModel) {
         Task {
-            await community.updateModStatus(of: user.userId, to: true)
+            await community.updateModStatus(of: user.userId, to: true) { newCommunity in
+                community = newCommunity
+            }
             await notifier.add(.success("Modded \(user.name ?? "user")"))
             dismiss()
         }
