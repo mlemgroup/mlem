@@ -70,7 +70,7 @@ struct ModeratorListView: View {
     }
     
     func genSwipeyActions(for user: UserModel) -> SwipeConfiguration {
-        guard siteInformation.userId ?? -1 != user.userId else {
+        guard siteInformation.moderatedCommunities.contains(community.communityId), siteInformation.userId ?? -1 != user.userId else {
             return .init()
         }
         
