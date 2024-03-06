@@ -206,6 +206,7 @@ enum Icons {
     static let communityBan: String = "xmark.shield"
     static let communityUnban: String = "checkmark.shield"
     static let unmod: String = "shield.slash"
+    static let unmodFill: String = "shield.slash.fill"
     static let pin: String = "pin"
     static let unpin: String = "pin.slash"
     static let lock: String = "lock"
