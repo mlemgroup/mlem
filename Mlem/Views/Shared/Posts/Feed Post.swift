@@ -84,10 +84,6 @@ struct FeedPost: View {
         siteInformation.moderatedCommunities.contains(postModel.community.communityId)
     }
     
-    var isMod: Bool {
-        siteInformation.moderatedCommunities.contains(postModel.community.communityId)
-    }
-    
     // MARK: Computed
     
     var barThickness: CGFloat { !postModel.read && diffWithoutColor && readMarkStyle == .bar ? CGFloat(readBarThickness) : .zero }

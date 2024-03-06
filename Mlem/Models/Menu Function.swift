@@ -143,8 +143,10 @@ extension MenuFunction {
                 text: falseText,
                 imageName: falseImageName,
                 isDestructive: isDestructive == .whenFalse || isDestructive == .always,
-                role: falseRole,
                 enabled: enabled,
+                callback: callback
+            )
+        }
     }
     
     static func navigationMenuFunction(

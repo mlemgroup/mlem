@@ -74,7 +74,6 @@ struct UserView: View {
                         MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
                     }
                 }
-            .refreshable {
             }
             .onChange(of: siteInformation.myUserInfo?.localUserView.person) { newValue in
                 if isOwnProfile {
