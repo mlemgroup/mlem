@@ -23,7 +23,7 @@ struct ResponseEditorView: View {
         self.editorModel = concreteEditorModel.editorModel // don't need the wrapper
         self._editorBody = State(initialValue: concreteEditorModel.editorModel.prefillContents ?? "")
     }
-
+    
     @Environment(\.dismiss) var dismiss
 
     @State var editorBody: String
@@ -36,87 +36,89 @@ struct ResponseEditorView: View {
     private var isReadyToReply: Bool {
         editorBody.trimmed.isNotEmpty
     }
-
+    
     var body: some View {
-        ScrollView {
-            VStack(spacing: AppConstants.postAndCommentSpacing) {
-                // Post Text
-                TextField(
-                    "What do you want to say?",
-                    text: $editorBody,
-                    axis: .vertical
-                )
-                .lineLimit(AppConstants.textFieldVariableLineLimit)
-                .accessibilityLabel("Response Body")
-                .padding(AppConstants.postAndCommentSpacing)
-                .focused($focusedField, equals: .editorBody)
-                .onAppear {
-                    focusedField = .editorBody
-                }
-                .onChange(of: editorBody) { newValue in
-                    if editorModel.showSlurWarning {
-                        slurMatch = siteInformation.instance?.firstSlurFilterMatch(newValue)
+        NavigationStack(path: .constant(.init())) {
+            ScrollView {
+                VStack(spacing: AppConstants.standardSpacing) {
+                    // Post Text
+                    BodyEditorView(
+                        text: $editorBody,
+                        prompt: "What do you want to say?"
+                    )
+                    .lineLimit(AppConstants.textFieldVariableLineLimit)
+                    .accessibilityLabel("Response Body")
+                    .padding(AppConstants.standardSpacing)
+                    .focused($focusedField, equals: .editorBody)
+                    .onAppear {
+                        focusedField = .editorBody
                     }
+                    .onChange(of: editorBody) { newValue in
+                        if editorModel.showSlurWarning {
+                            slurMatch = siteInformation.instance?.firstSlurFilterMatch(newValue)
+                        }
+                    }
+                    
+                    Divider()
+                    
+                    if let slurMatch {
+                        VStack {
+                            Text("\"\(slurMatch)\" is disallowed.")
+                                .foregroundStyle(.white)
+                            Text("You can still post this comment, but your instance will replace \"\(slurMatch)\" with \"*removed*\".")
+                                .multilineTextAlignment(.center)
+                                .font(.footnote)
+                                .foregroundStyle(.white.opacity(0.8))
+                        }
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius).fill(.red))
+                        .padding(.horizontal, 10)
+                    } else {
+                        editorModel.embeddedView()
+                    }
+                }
+                .animation(.default, value: slurMatch)
+                .padding(.bottom, AppConstants.editorOverscroll)
+            }
+            .scrollDismissesKeyboard(.automatic)
+            .overlay {
+                // Loading Indicator
+                if isSubmitting {
+                    ProgressView()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(Color.gray.opacity(0.3))
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel("Submitting Resposne")
+                        .edgesIgnoringSafeArea(.all)
+                        .allowsHitTesting(false)
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel", role: .destructive) {
+                        dismiss()
+                    }
+                    .tint(.red)
                 }
                 
-                Divider()
-                
-                if let slurMatch {
-                    VStack {
-                        Text("\"\(slurMatch)\" is disallowed.")
-                            .foregroundStyle(.white)
-                        Text("You can still post this comment, but your instance will replace \"\(slurMatch)\" with \"*removed*\".")
-                            .multilineTextAlignment(.center)
-                            .font(.footnote)
-                            .foregroundStyle(.white.opacity(0.8))
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius).fill(.red))
-                    .padding(.horizontal, 10)
-                } else {
-                    editorModel.embeddedView()
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    // Submit Button
+                    Button {
+                        Task(priority: .userInitiated) {
+                            await submit()
+                        }
+                    } label: {
+                        Image(systemName: Icons.send)
+                    }.disabled(isSubmitting || !isReadyToReply)
                 }
             }
-            .animation(.default, value: slurMatch)
-            .padding(.bottom, AppConstants.editorOverscroll)
+            .navigationBarColor()
+            .navigationTitle(editorModel.modalName)
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .scrollDismissesKeyboard(.automatic)
-        .overlay {
-            // Loading Indicator
-            if isSubmitting {
-                ProgressView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(Color.gray.opacity(0.3))
-                    .accessibilityElement(children: .ignore)
-                    .accessibilityLabel("Submitting Resposne")
-                    .edgesIgnoringSafeArea(.all)
-                    .allowsHitTesting(false)
-            }
-        }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button("Cancel", role: .destructive) {
-                    dismiss()
-                }
-                .tint(.red)
-            }
-            
-            ToolbarItem(placement: .navigationBarTrailing) {
-                // Submit Button
-                Button {
-                    Task(priority: .userInitiated) {
-                        await submit()
-                    }
-                } label: {
-                    Image(systemName: Icons.send)
-                }.disabled(isSubmitting || !isReadyToReply)
-            }
-        }
-        .navigationBarColor()
-        .navigationTitle(editorModel.modalName)
-        .navigationBarTitleDisplayMode(.inline)
         .interactiveDismissDisabled(isReadyToReply)
+        .presentationDragIndicator(.hidden)
     }
     
     @MainActor

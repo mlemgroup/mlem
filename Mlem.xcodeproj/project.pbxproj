@@ -128,6 +128,7 @@
 		03F4DCA32B1A8B0400556C67 /* AccountGeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F4DCA22B1A8B0400556C67 /* AccountGeneralSettingsView.swift */; };
 		03F6D4B92B951E21008235A0 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 03F6D4B82B951E21008235A0 /* SwiftUIIntrospect */; };
 		03F6D4BB2B952738008235A0 /* SelectTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F6D4BA2B952738008235A0 /* SelectTextView.swift */; };
+		03F6D4BD2B966D53008235A0 /* BodyEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F6D4BC2B966D53008235A0 /* BodyEditorView.swift */; };
 		03F76FA02B2F5EF900E2B54A /* LinkAttachmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F76F9F2B2F5EF900E2B54A /* LinkAttachmentModel.swift */; };
 		03F76FA22B2F5F1100E2B54A /* LinkAttachmentProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F76FA12B2F5F1100E2B54A /* LinkAttachmentProxy.swift */; };
 		03F76FA42B2F5F3500E2B54A /* UploadProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F76FA32B2F5F3500E2B54A /* UploadProgressView.swift */; };
@@ -736,6 +737,7 @@
 		03F4DC9E2B1A8AD500556C67 /* SignInAndSecuritySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInAndSecuritySettingsView.swift; sourceTree = "<group>"; };
 		03F4DCA22B1A8B0400556C67 /* AccountGeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountGeneralSettingsView.swift; sourceTree = "<group>"; };
 		03F6D4BA2B952738008235A0 /* SelectTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTextView.swift; sourceTree = "<group>"; };
+		03F6D4BC2B966D53008235A0 /* BodyEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyEditorView.swift; sourceTree = "<group>"; };
 		03F76F9F2B2F5EF900E2B54A /* LinkAttachmentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkAttachmentModel.swift; sourceTree = "<group>"; };
 		03F76FA12B2F5F1100E2B54A /* LinkAttachmentProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkAttachmentProxy.swift; sourceTree = "<group>"; };
 		03F76FA32B2F5F3500E2B54A /* UploadProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProgressView.swift; sourceTree = "<group>"; };
@@ -2341,6 +2343,7 @@
 			children = (
 				03EA79C32AC0D92C00BCDC91 /* PostComposerView+Logic.swift */,
 				CD391F952A535F5400E213B5 /* ResponseEditorView.swift */,
+				03F6D4BC2B966D53008235A0 /* BodyEditorView.swift */,
 				03CB329D2A6D8E910021EF27 /* PostComposerView.swift */,
 				CD0D5A442B8EC5D9005E3365 /* RemovePostView.swift */,
 			);
@@ -3322,6 +3325,7 @@
 				CDE6A80D2A45EAB30062D161 /* Embedded Post.swift in Sources */,
 				B1955A212A6145C00056CF99 /* EnvironmentValues+EasterFlagSetter.swift in Sources */,
 				6386E02F2A03ED39006B3C1D /* Comment Tracker.swift in Sources */,
+				03F6D4BD2B966D53008235A0 /* BodyEditorView.swift in Sources */,
 				6372185F2A3A2AAD008C4816 /* LoginRequest.swift in Sources */,
 				637218442A3A2AAD008C4816 /* HierarchicalComment.swift in Sources */,
 				CDDCF6472A663849003DA3AC /* EnvironmentValues+TabSelectionHashValue.swift in Sources */,

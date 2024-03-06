@@ -140,9 +140,7 @@ struct ContentView: View {
             }
         }
         .sheet(item: $editorTracker.editResponse) { editing in
-            NavigationStack {
-                ResponseEditorView(concreteEditorModel: editing)
-            }
+            ResponseEditorView(concreteEditorModel: editing)
             .presentationDetents([.medium, .large], selection: .constant(.large))
             ._presentationBackgroundInteraction(enabledUpThrough: .medium)
         }
