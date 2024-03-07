@@ -24,11 +24,12 @@ extension PostModel {
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         
-        functions.append(.controlGroupMenuFunction(children: topRowMenuFunctions(editorTracker: editorTracker)))
+        var mainFunctions: [MenuFunction] = .init()
+        mainFunctions.append(contentsOf: topRowMenuFunctions(editorTracker: editorTracker))
         
         if creator.isActiveAccount {
             // Edit
-            functions.append(MenuFunction.standardMenuFunction(
+            mainFunctions.append(MenuFunction.standardMenuFunction(
                 text: "Edit",
                 imageName: Icons.edit,
                 enabled: true
@@ -37,7 +38,7 @@ extension PostModel {
             })
             
             // Delete
-            functions.append(MenuFunction.standardMenuFunction(
+            mainFunctions.append(MenuFunction.standardMenuFunction(
                 text: "Delete",
                 imageName: Icons.delete,
                 confirmationPrompt: "Are you sure you want to delete this post? This cannot be undone.",
@@ -51,13 +52,13 @@ extension PostModel {
         
         // Share
         if let url = URL(string: post.apId) {
-            functions.append(MenuFunction.shareMenuFunction(url: url))
+            mainFunctions.append(MenuFunction.shareMenuFunction(url: url))
         }
         
         if !creator.isActiveAccount {
             if modToolTracker == nil {
                 // Report
-                functions.append(MenuFunction.standardMenuFunction(
+                mainFunctions.append(MenuFunction.standardMenuFunction(
                     text: "Report",
                     imageName: Icons.moderationReport,
                     confirmationPrompt: AppConstants.reportPostPrompt
@@ -69,9 +70,11 @@ extension PostModel {
             }
             
             if let postTracker {
-                functions.append(contentsOf: blockMenuFunctions(postTracker: postTracker))
+                mainFunctions.append(contentsOf: blockMenuFunctions(postTracker: postTracker))
             }
         }
+        
+        functions.append(.controlGroupMenuFunction(children: mainFunctions))
         
         if let community, let modToolTracker {
             functions.append(.divider)
@@ -106,7 +109,31 @@ extension PostModel {
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         
-        functions.append(.controlGroupMenuFunction(children: pinLockMenuFunctions()))
+        functions.append(MenuFunction.toggleableMenuFunction(
+            toggle: post.featuredCommunity,
+            trueText: "Unpin",
+            trueImageName: Icons.unpin,
+            falseText: "Pin",
+            falseImageName: Icons.pin
+        ) {
+            Task {
+                await self.toggleFeatured(featureType: .community)
+                await self.notifier.add(.success("\(self.post.featuredCommunity ? "P" : "Unp")inned post"))
+            }
+        })
+        
+        functions.append(MenuFunction.toggleableMenuFunction(
+            toggle: post.locked,
+            trueText: "Unlock",
+            trueImageName: Icons.unlock,
+            falseText: "Lock",
+            falseImageName: Icons.lock
+        ) {
+            Task {
+                await self.toggleLocked()
+                await self.notifier.add(.success("\(self.post.locked ? "L" : "Unl")ocked post"))
+            }
+        })
         
         if creator.userId != siteInformation.userId {
             functions.append(MenuFunction.toggleableMenuFunction(
@@ -140,37 +167,6 @@ extension PostModel {
         return functions
     }
     // swiftlint:enable function_body_length
-    
-    private func pinLockMenuFunctions() -> [MenuFunction] {
-        var functions: [MenuFunction] = .init()
-        
-        functions.append(MenuFunction.toggleableMenuFunction(
-            toggle: post.featuredCommunity,
-            trueText: "Unpin",
-            trueImageName: Icons.unpin,
-            falseText: "Pin",
-            falseImageName: Icons.pin
-        ) {
-            Task {
-                await self.toggleFeatured(featureType: .community)
-                await self.notifier.add(.success("\(self.post.featuredCommunity ? "P" : "Unp")inned post"))
-            }
-        })
-        
-        functions.append(MenuFunction.toggleableMenuFunction(
-            toggle: post.locked,
-            trueText: "Unlock",
-            trueImageName: Icons.unlock,
-            falseText: "Lock",
-            falseImageName: Icons.lock
-        ) {
-            Task {
-                await self.toggleLocked()
-                await self.notifier.add(.success("\(self.post.locked ? "L" : "Unl")ocked post"))
-            }
-        })
-        return functions
-    }
     
     private func topRowMenuFunctions(editorTracker: EditorTracker) -> [MenuFunction] {
         var functions = [MenuFunction]()

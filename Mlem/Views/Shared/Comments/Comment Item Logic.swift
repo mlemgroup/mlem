@@ -182,12 +182,12 @@ extension CommentItem {
     func genMenuFunctions() -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         
-        var topRowFunctions: [MenuFunction] = .init()
+        var mainFunctions: [MenuFunction] = .init()
         // upvote
         let (upvoteText, upvoteImg) = hierarchicalComment.commentView.myVote == .upvote ?
         ("Undo Upvote", Icons.upvoteSquareFill) :
         ("Upvote", Icons.upvoteSquare)
-        topRowFunctions.append(MenuFunction.standardMenuFunction(
+        mainFunctions.append(MenuFunction.standardMenuFunction(
             text: upvoteText,
             imageName: upvoteImg
         ) {
@@ -200,7 +200,7 @@ extension CommentItem {
         let (downvoteText, downvoteImg) = hierarchicalComment.commentView.myVote == .downvote ?
         ("Undo Downvote", Icons.downvoteSquareFill) :
         ("Downvote", Icons.downvoteSquare)
-        topRowFunctions.append(MenuFunction.standardMenuFunction(
+        mainFunctions.append(MenuFunction.standardMenuFunction(
             text: downvoteText,
             imageName: downvoteImg
         ) {
@@ -213,7 +213,7 @@ extension CommentItem {
         let (saveText, saveImg) = hierarchicalComment.commentView.saved ?
         ("Unsave", Icons.saveFill) :
         ("Save", Icons.save)
-        topRowFunctions.append(MenuFunction.standardMenuFunction(
+        mainFunctions.append(MenuFunction.standardMenuFunction(
             text: saveText,
             imageName: saveImg
         ) {
@@ -223,20 +223,18 @@ extension CommentItem {
         })
 
         // reply
-        topRowFunctions.append(MenuFunction.standardMenuFunction(
+        mainFunctions.append(MenuFunction.standardMenuFunction(
             text: "Reply",
             imageName: Icons.reply
         ) {
             replyToComment()
         })
         
-        ret.append(.controlGroupMenuFunction(children: topRowFunctions))
-        
         let isOwnComment = appState.isCurrentAccountId(hierarchicalComment.commentView.creator.id)
         
         if isOwnComment {
             // edit
-            ret.append(MenuFunction.standardMenuFunction(
+            mainFunctions.append(MenuFunction.standardMenuFunction(
                 text: "Edit",
                 imageName: Icons.edit
             ) {
@@ -244,7 +242,7 @@ extension CommentItem {
             })
         
             // delete
-            ret.append(MenuFunction.standardMenuFunction(
+            mainFunctions.append(MenuFunction.standardMenuFunction(
                 text: "Delete",
                 imageName: Icons.delete,
                 confirmationPrompt: "Are you sure you want to delete this comment?  This cannot be undone.",
@@ -258,12 +256,12 @@ extension CommentItem {
                 
         // share
         if let url = URL(string: hierarchicalComment.commentView.comment.apId) {
-            ret.append(MenuFunction.shareMenuFunction(url: url))
+            mainFunctions.append(MenuFunction.shareMenuFunction(url: url))
         }
         
         if !isOwnComment {
             // report
-            ret.append(MenuFunction.standardMenuFunction(
+            mainFunctions.append(MenuFunction.standardMenuFunction(
                 text: "Report",
                 imageName: Icons.moderationReport,
                 confirmationPrompt: AppConstants.reportCommentPrompt
@@ -275,7 +273,7 @@ extension CommentItem {
             })
             
             // block
-            ret.append(MenuFunction.standardMenuFunction(
+            mainFunctions.append(MenuFunction.standardMenuFunction(
                 text: "Block User",
                 imageName: Icons.hide,
                 confirmationPrompt: AppConstants.blockUserPrompt
@@ -285,6 +283,8 @@ extension CommentItem {
                 }
             })
         }
+        
+        ret.append(.controlGroupMenuFunction(children: mainFunctions))
                    
         return ret
     }
