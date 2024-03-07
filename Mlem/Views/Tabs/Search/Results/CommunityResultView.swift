@@ -27,8 +27,7 @@ struct CommunityResultView: View {
     let swipeActions: SwipeConfiguration?
     let complications: [CommunityComplication]
 
-    @State private var isPresentingConfirmDestructive: Bool = false
-    @State private var confirmationMenuFunction: StandardMenuFunction?
+    @State private var menuFunctionPopup: MenuFunctionPopup?
     
     @EnvironmentObject var editorTracker: EditorTracker
     
@@ -42,11 +41,6 @@ struct CommunityResultView: View {
         self.complications = complications
         self.swipeActions = swipeActions
         self.trackerCallback = trackerCallback
-    }
-    
-    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
-        confirmationMenuFunction = destructiveFunction
-        isPresentingConfirmDestructive = true
     }
     
     var title: String {
@@ -142,11 +136,8 @@ struct CommunityResultView: View {
             .background(.background)
             .clipShape(RoundedRectangle(cornerRadius: 8))
         }
-        .destructiveConfirmation(
-            isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
-            confirmationMenuFunction: confirmationMenuFunction
-        )
-        .addSwipeyActions(swipeActions ?? community.swipeActions(trackerCallback, confirmDestructive: confirmDestructive))
+        .destructiveConfirmation(menuFunctionPopup: $menuFunctionPopup)
+        .addSwipeyActions(swipeActions ?? community.swipeActions(trackerCallback, menuFunctionPopup: $menuFunctionPopup))
         .contextMenu {
             ForEach(
                 community.menuFunctions(
@@ -154,7 +145,7 @@ struct CommunityResultView: View {
                     trackerCallback
                 )
             ) { item in
-                MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+                MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
             }
         }
     }

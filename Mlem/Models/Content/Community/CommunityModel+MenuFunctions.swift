@@ -13,7 +13,6 @@ extension CommunityModel {
         .standardMenuFunction(
             text: "New Post",
             imageName: Icons.sendFill,
-            role: nil,
             enabled: true
         ) {
             editorTracker.openEditor(with: PostEditorModel(
@@ -23,34 +22,39 @@ extension CommunityModel {
         }
     }
     
-    func subscribeMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) throws -> StandardMenuFunction {
+    func subscribeMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) throws -> MenuFunction {
         guard let subscribed else {
             throw CommunityError.noData
         }
-        return .init(
-            text: subscribed ? "Unsubscribe" : "Subscribe",
-            imageName: subscribed ? Icons.unsubscribe : Icons.subscribe,
-            role: subscribed ? .destructive(prompt: "Are you sure you want to unsubscribe from \(name!)?") : nil,
-            enabled: true,
-            callback: {
-                Task {
-                    do {
-                        try await self.toggleSubscribe(callback)
-                    } catch {
-                        errorHandler.handle(error)
-                    }
+        let callback = {
+            Task {
+                do {
+                    try await self.toggleSubscribe(callback)
+                } catch {
+                    errorHandler.handle(error)
                 }
             }
+            return ()
+        }
+        
+        if subscribed {
+            return .standardMenuFunction(
+                text: "Unsubscribe",
+                imageName: Icons.unsubscribe,
+                confirmationPrompt: "Are you sure you want to unsubscribe from \(name!)?",
+                callback: callback
+            )
+        }
+        return .standardMenuFunction(
+            text: "Subscribe",
+            imageName: Icons.subscribe,
+            callback: callback
         )
     }
     
-    func favoriteMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> StandardMenuFunction {
-        .init(
-            text: favorited ? "Unfavorite" : "Favorite",
-            imageName: favorited ? Icons.unfavorite : Icons.favorite,
-            role: favorited ? .destructive(prompt: "Really unfavorite \(name ?? "this community")?") : nil,
-            enabled: true
-        ) {
+    func favoriteMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> MenuFunction {
+        
+        let callback = {
             Task {
                 do {
                     try await self.toggleFavorite(callback)
@@ -58,27 +62,43 @@ extension CommunityModel {
                     errorHandler.handle(error)
                 }
             }
+            return ()
         }
+        
+        if favorited {
+            return .standardMenuFunction(
+                text: "Unfavorite",
+                imageName: Icons.unfavorite,
+                confirmationPrompt: "Really unfavorite \(name ?? "this community")?",
+                callback: callback
+            )
+        }
+        return .standardMenuFunction(text: "Favorite", imageName: Icons.favorite, callback: callback)
     }
     
     func blockMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) throws -> MenuFunction {
         guard let blocked else {
             throw CommunityError.noData
         }
-        return .standardMenuFunction(
-            text: blocked ? "Unblock" : "Block",
-            imageName: blocked ? Icons.show : Icons.hide,
-            role: blocked ? nil : .destructive(prompt: AppConstants.blockCommunityPrompt),
-            enabled: true,
-            callback: {
-                Task {
-                    do {
-                        try await self.toggleBlock(callback)
-                    } catch {
-                        errorHandler.handle(error)
-                    }
+        let callback = {
+            Task {
+                do {
+                    try await self.toggleBlock(callback)
+                } catch {
+                    errorHandler.handle(error)
                 }
             }
+            return ()
+        }
+        
+        if blocked {
+            return .standardMenuFunction(text: "Unblock", imageName: Icons.show, callback: callback)
+        }
+        return .standardMenuFunction(
+            text: "Block",
+            imageName: Icons.hide,
+            confirmationPrompt: AppConstants.blockCommunityPrompt,
+            callback: callback
         )
     }
     
@@ -92,8 +112,8 @@ extension CommunityModel {
             functions.append(newPostMenuFunction(editorTracker: editorTracker, postTracker: postTracker))
         }
         if let function = try? subscribeMenuFunction(callback) {
-            functions.append(.standard(function))
-            functions.append(.standard(favoriteMenuFunction(callback)))
+            functions.append(function)
+            functions.append(favoriteMenuFunction(callback))
         }
         do {
             if let instanceHost = communityUrl.host() {
@@ -118,8 +138,6 @@ extension CommunityModel {
             .standardMenuFunction(
                 text: "Copy Name",
                 imageName: Icons.copy,
-                role: nil,
-                enabled: true,
                 callback: copyFullyQualifiedName
             )
         )

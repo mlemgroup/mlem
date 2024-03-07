@@ -84,11 +84,11 @@ struct PostFeedView: View {
                     
                     ToolbarItemGroup(placement: .secondaryAction) {
                         ForEach(genEllipsisMenuFunctions()) { menuFunction in
-                            MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
+                            MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
                         }
                         Menu {
                             ForEach(genPostSizeSwitchingFunctions()) { menuFunction in
-                                MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
+                                MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
                             }
                         } label: {
                             Label("Post Size", systemImage: Icons.postSizeSetting)
@@ -176,12 +176,12 @@ struct PostFeedView: View {
     private var sortMenu: some View {
         Menu {
             ForEach(genOuterSortMenuFunctions()) { menuFunction in
-                MenuButton(menuFunction: menuFunction, confirmDestructive: nil) // no destructive sorts
+                MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil)) // no destructive sorts
             }
             
             Menu {
                 ForEach(genTopSortMenuFunctions()) { menuFunction in
-                    MenuButton(menuFunction: menuFunction, confirmDestructive: nil) // no destructive sorts
+                    MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil)) // no destructive sorts
                 }
             } label: {
                 Label("Top...", systemImage: Icons.topSort)

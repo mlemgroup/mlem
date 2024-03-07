@@ -13,6 +13,7 @@ struct AccessibilitySettingsView: View {
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
     @AppStorage("showSettingsIcons") var showSettingsIcons: Bool = true
+    @AppStorage("showExtraContextMenuActions") var showExtraContextMenuActions: Bool = false
     
     @State private var readBarThicknessSlider: CGFloat = 3.0
     
@@ -87,6 +88,16 @@ struct AccessibilitySettingsView: View {
                 )
             } header: {
                 Text("Icons")
+            }
+            Section {
+                SwitchableSettingsItem(
+                    settingPictureSystemName: Icons.copy,
+                    settingName: "Show Duplicate Context Menu Actions",
+                    isTicked: $showExtraContextMenuActions
+                )
+            } footer: {
+                // swiftlint:disable:next line_length
+                Text("Show context menu actions such as Upvote and Save even when those actions are available via buttons below the post or comment.")
             }
         }
         .fancyTabScrollCompatible()

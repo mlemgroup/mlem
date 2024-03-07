@@ -11,18 +11,12 @@ struct EllipsisMenu: View {
     let size: CGFloat
     let menuFunctions: [MenuFunction]
     
-    @State private var isPresentingConfirmDestructive: Bool = false
-    @State private var confirmationMenuFunction: StandardMenuFunction?
-    
-    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
-        confirmationMenuFunction = destructiveFunction
-        isPresentingConfirmDestructive = true
-    }
-    
+    @State private var menuFunctionPopup: MenuFunctionPopup?
+
     var body: some View {
         Menu {
-            ForEach(menuFunctions) { menuFunction in
-                MenuButton(menuFunction: menuFunction, confirmDestructive: confirmDestructive)
+            ForEach(menuFunctions) { item in
+                MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
             }
         } label: {
             Image(systemName: Icons.menu)
@@ -33,9 +27,6 @@ struct EllipsisMenu: View {
                     .foregroundColor(.clear))
         }
         .onTapGesture {} // allows menu to pop up on first tap
-        .destructiveConfirmation(
-            isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
-            confirmationMenuFunction: confirmationMenuFunction
-        )
+        .destructiveConfirmation(menuFunctionPopup: $menuFunctionPopup)
     }
 }

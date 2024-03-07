@@ -182,79 +182,80 @@ extension CommentItem {
     func genMenuFunctions() -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         
-        // upvote
-        let (upvoteText, upvoteImg) = hierarchicalComment.commentView.myVote == .upvote ?
+        let showExtraContextMenuActions = self.showExtraContextMenuActions || compactComments
+        let widgets = layoutWidgetTracker.groups.comment
+        
+        if showExtraContextMenuActions || LayoutWidgetType.upvoteContaining.isDisjoint(with: widgets) {
+            // upvote
+            let (upvoteText, upvoteImg) = hierarchicalComment.commentView.myVote == .upvote ?
             ("Undo Upvote", Icons.upvoteSquareFill) :
             ("Upvote", Icons.upvoteSquare)
-        ret.append(MenuFunction.standardMenuFunction(
-            text: upvoteText,
-            imageName: upvoteImg,
-            role: nil,
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                await upvote()
-            }
-        })
-        
-        // downvote
-        let (downvoteText, downvoteImg) = hierarchicalComment.commentView.myVote == .downvote ?
-            ("Undo Downvote", Icons.downvoteSquareFill) :
-            ("Downvote", Icons.downvoteSquare)
-        ret.append(MenuFunction.standardMenuFunction(
-            text: downvoteText,
-            imageName: downvoteImg,
-            role: nil,
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                await downvote()
-            }
-        })
-        
-        // save
-        let (saveText, saveImg) = hierarchicalComment.commentView.saved ?
-            ("Unsave", Icons.unsave) :
-            ("Save", Icons.save)
-        ret.append(MenuFunction.standardMenuFunction(
-            text: saveText,
-            imageName: saveImg,
-            role: nil,
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                await saveComment()
-            }
-        })
-        
-        // reply
-        ret.append(MenuFunction.standardMenuFunction(
-            text: "Reply",
-            imageName: Icons.reply,
-            role: nil,
-            enabled: true
-        ) {
-            replyToComment()
-        })
-        
-        // edit
-        if appState.isCurrentAccountId(hierarchicalComment.commentView.creator.id) {
             ret.append(MenuFunction.standardMenuFunction(
-                text: "Edit",
-                imageName: Icons.edit,
-                role: nil,
-                enabled: true
+                text: upvoteText,
+                imageName: upvoteImg
             ) {
-                editComment()
+                Task(priority: .userInitiated) {
+                    await upvote()
+                }
             })
         }
         
-        // delete
-        if appState.isCurrentAccountId(hierarchicalComment.commentView.creator.id) {
+        if showExtraContextMenuActions || LayoutWidgetType.downvoteContaining.isDisjoint(with: widgets) {
+            // downvote
+            let (downvoteText, downvoteImg) = hierarchicalComment.commentView.myVote == .downvote ?
+            ("Undo Downvote", Icons.downvoteSquareFill) :
+            ("Downvote", Icons.downvoteSquare)
+            ret.append(MenuFunction.standardMenuFunction(
+                text: downvoteText,
+                imageName: downvoteImg
+            ) {
+                Task(priority: .userInitiated) {
+                    await downvote()
+                }
+            })
+        }
+        
+        if showExtraContextMenuActions || !widgets.contains(.save) {
+            // save
+            let (saveText, saveImg) = hierarchicalComment.commentView.saved ?
+            ("Unsave", Icons.unsave) :
+            ("Save", Icons.save)
+            ret.append(MenuFunction.standardMenuFunction(
+                text: saveText,
+                imageName: saveImg
+            ) {
+                Task(priority: .userInitiated) {
+                    await saveComment()
+                }
+            })
+        }
+        
+        if showExtraContextMenuActions || !widgets.contains(.reply) {
+            // reply
+            ret.append(MenuFunction.standardMenuFunction(
+                text: "Reply",
+                imageName: Icons.reply
+            ) {
+                replyToComment()
+            })
+        }
+        
+        let isOwnComment = appState.isCurrentAccountId(hierarchicalComment.commentView.creator.id)
+        
+        if isOwnComment {
+            // edit
+            ret.append(MenuFunction.standardMenuFunction(
+                text: "Edit",
+                imageName: Icons.edit
+            ) {
+                editComment()
+            })
+        
+            // delete
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Delete",
                 imageName: Icons.delete,
-                role: .destructive(prompt: "Are you sure you want to delete this comment?  This cannot be undone."),
+                confirmationPrompt: "Are you sure you want to delete this comment?  This cannot be undone.",
                 enabled: !hierarchicalComment.commentView.comment.deleted
             ) {
                 Task(priority: .userInitiated) {
@@ -262,36 +263,38 @@ extension CommentItem {
                 }
             })
         }
-        
-        // share
-        if let url = URL(string: hierarchicalComment.commentView.comment.apId) {
-            ret.append(MenuFunction.shareMenuFunction(url: url))
+                
+        if showExtraContextMenuActions || !widgets.contains(.share) {
+            // share
+            if let url = URL(string: hierarchicalComment.commentView.comment.apId) {
+                ret.append(MenuFunction.shareMenuFunction(url: url))
+            }
         }
         
-        // report
-        ret.append(MenuFunction.standardMenuFunction(
-            text: "Report",
-            imageName: Icons.moderationReport,
-            role: .destructive(prompt: "Really report?"),
-            enabled: true
-        ) {
-            editorTracker.openEditor(with: ConcreteEditorModel(
-                comment: hierarchicalComment.commentView,
-                operation: CommentOperation.reportComment
-            ))
-        })
-        
-        // block
-        ret.append(MenuFunction.standardMenuFunction(
-            text: "Block User",
-            imageName: Icons.userBlock,
-            role: .destructive(prompt: AppConstants.blockUserPrompt),
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                await blockUser(userId: hierarchicalComment.commentView.creator.id)
-            }
-        })
+        if !isOwnComment {
+            // report
+            ret.append(MenuFunction.standardMenuFunction(
+                text: "Report",
+                imageName: Icons.moderationReport,
+                confirmationPrompt: AppConstants.reportCommentPrompt
+            ) {
+                editorTracker.openEditor(with: ConcreteEditorModel(
+                    comment: hierarchicalComment.commentView,
+                    operation: CommentOperation.reportComment
+                ))
+            })
+            
+            // block
+            ret.append(MenuFunction.standardMenuFunction(
+                text: "Block User",
+                imageName: Icons.hide,
+                confirmationPrompt: AppConstants.blockUserPrompt
+            ) {
+                Task(priority: .userInitiated) {
+                    await blockUser(userId: hierarchicalComment.commentView.creator.id)
+                }
+            })
+        }
                    
         return ret
     }

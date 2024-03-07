@@ -29,7 +29,7 @@ struct InboxMessageBodyView: View {
                     unreadTracker: unreadTracker,
                     editorTracker: editorTracker
                 )) { item in
-                    MenuButton(menuFunction: item, confirmDestructive: nil)
+                    MenuButton(menuFunction: item, menuFunctionPopup: .constant(nil))
                 }
             }
     }

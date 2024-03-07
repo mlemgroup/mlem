@@ -40,15 +40,6 @@ struct InboxView: View {
     
     // MARK: Internal
     
-    // destructive confirmation
-    @State var isPresentingConfirmDestructive: Bool = false
-    @State var confirmationMenuFunction: StandardMenuFunction?
-    
-    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
-        confirmationMenuFunction = destructiveFunction
-        isPresentingConfirmDestructive = true
-    }
-    
     // error  handling
     @State var errorOccurred: Bool = false
     @State var errorMessage: String = ""
@@ -200,8 +191,8 @@ struct InboxView: View {
     @ViewBuilder
     private var ellipsisMenu: some View {
         Menu {
-            ForEach(genMenuFunctions()) { menuFunction in
-                MenuButton(menuFunction: menuFunction, confirmDestructive: nil) // no destructive functions
+            ForEach(genMenuFunctions()) { item in
+                MenuButton(menuFunction: item, menuFunctionPopup: .constant(nil)) // no destructive functions
             }
         } label: {
             Label("More", systemImage: Icons.menuCircle)

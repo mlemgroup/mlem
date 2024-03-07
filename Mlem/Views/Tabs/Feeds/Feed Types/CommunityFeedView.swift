@@ -40,14 +40,7 @@ struct CommunityFeedView: View {
     
     @State var communityModel: CommunityModel
     
-    // destructive confirmation
-    @State private var isPresentingConfirmDestructive: Bool = false
-    @State private var confirmationMenuFunction: StandardMenuFunction?
-    
-    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
-        confirmationMenuFunction = destructiveFunction
-        isPresentingConfirmDestructive = true
-    }
+    @State private var menuFunctionPopup: MenuFunctionPopup?
     
     // scroll to top
     @Namespace var scrollToTop
@@ -103,10 +96,7 @@ struct CommunityFeedView: View {
                     }
                 }.value
             }
-            .destructiveConfirmation(
-                isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
-                confirmationMenuFunction: confirmationMenuFunction
-            )
+            .destructiveConfirmation(menuFunctionPopup: $menuFunctionPopup)
             .fancyTabScrollCompatible()
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -122,13 +112,9 @@ struct CommunityFeedView: View {
                             editorTracker: editorTracker,
                             postTracker: postTracker
                         ) { communityModel = $0 }
-                    ) { menuFunction in
-                        MenuButton(menuFunction: menuFunction, confirmDestructive: confirmDestructive)
+                    ) { item in
+                        MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
                     }
-                    .destructiveConfirmation(
-                        isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
-                        confirmationMenuFunction: confirmationMenuFunction
-                    )
                 }
             }
             .hoistNavigation {
@@ -283,16 +269,41 @@ struct CommunityFeedView: View {
                 Task {
                     do {
                         if communityModel.favorited {
-                            print("favorited")
-                            confirmDestructive(destructiveFunction: communityModel.favoriteMenuFunction { communityModel = $0 })
+                            menuFunctionPopup = .init(
+                                prompt: "Are you sure you want to unfavorite \(communityModel.name!)?",
+                                actions: [.init(text: "Yes", callback: {
+                                Task {
+                                    do {
+                                        try await communityModel.toggleFavorite { item in
+                                            DispatchQueue.main.async { communityModel = item }
+                                        }
+                                    } catch {
+                                        errorHandler.handle(error)
+                                    }
+                                }
+                            })]
+                            )
+
                         } else if subscribed {
-                            print("subscribed")
-                            try confirmDestructive(destructiveFunction: communityModel.subscribeMenuFunction { communityModel = $0 })
+                            menuFunctionPopup = .init(
+                                prompt: "Are you sure you want to unsubscribe from \(communityModel.name!)?",
+                                actions: [.init(text: "Yes", callback: {
+                                Task {
+                                    do {
+                                        try await communityModel.toggleSubscribe { item in
+                                            DispatchQueue.main.async { communityModel = item }
+                                        }
+                                    } catch {
+                                        errorHandler.handle(error)
+                                    }
+                                }
+                            })]
+                            )
                         } else {
                             print("not subscribed")
-                            try await communityModel.toggleSubscribe { item in
+                            try await communityModel.toggleSubscribe({ item in
                                 DispatchQueue.main.async { communityModel = item }
-                            }
+                            })
                         }
                     } catch {
                         errorHandler.handle(error)
