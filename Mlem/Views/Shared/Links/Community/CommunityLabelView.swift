@@ -4,9 +4,13 @@
 //
 //  Created by Sjmarf on 27/08/2023.
 //
+
+import Dependencies
 import SwiftUI
 
 struct CommunityLabelView: View {
+    @Dependency(\.siteInformation) var siteInformation
+    
     // settings
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     @AppStorage("shouldShowSubscribedStatus") var shouldShowSubscribedStatus: Bool = true
@@ -32,9 +36,16 @@ struct CommunityLabelView: View {
     }
     
     var showSubscribed: Bool {
-        if let feedType, feedType != .subscribed {
+        if let feedType, feedType != .subscribed, !siteInformation.moderatedCommunities.contains(community.communityId) {
             return shouldShowSubscribedStatus &&
                 community.subscribed ?? false
+        }
+        return false
+    }
+    
+    var showModerator: Bool {
+        if siteInformation.moderatedCommunities.contains(community.communityId) {
+            return true
         }
         return false
     }
@@ -107,6 +118,13 @@ struct CommunityLabelView: View {
                     .foregroundColor(.secondary)
             }
             
+            if showModerator, serverInstanceLocation != .bottom {
+                Image(systemName: Icons.moderationFill)
+                    .font(.system(size: 8.0))
+                    .imageScale(.small)
+                    .foregroundColor(.secondary)
+            }
+            
             Text(community.name)
                 .dynamicTypeSize(.small ... .accessibility1)
                 .font(.footnote)
@@ -116,6 +134,14 @@ struct CommunityLabelView: View {
             if showSubscribed, serverInstanceLocation == .bottom {
                 Image(systemName: Icons.present)
                     .font(.system(size: 8.0))
+                    .imageScale(.small)
+                    .foregroundColor(.secondary)
+            }
+            
+            if showModerator, serverInstanceLocation == .bottom {
+                Image(systemName: "shield.lefthalf.fill")
+                    .font(.system(size: 10.0))
+                    .fontWeight(.semibold)
                     .imageScale(.small)
                     .foregroundColor(.secondary)
             }

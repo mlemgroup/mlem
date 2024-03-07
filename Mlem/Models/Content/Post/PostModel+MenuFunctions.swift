@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension PostModel {    
+extension PostModel {
     // swiftlint:disable function_body_length
     /// Produces menu functions for this post
     /// - Parameters:
@@ -99,7 +99,7 @@ extension PostModel {
         return functions
     }
 
-    private func modMenuFunctions(
+    func modMenuFunctions(
         community: CommunityModel,
         modToolTracker: ModToolTracker,
         postTracker: StandardPostTracker?
@@ -139,6 +139,7 @@ extension PostModel {
         
         return functions
     }
+
     // swiftlint:enable function_body_length
     
     private func pinLockMenuFunctions() -> [MenuFunction] {
@@ -276,7 +277,7 @@ extension PostModel {
         }
         
         var functions: [MenuFunction] = .init()
-        if !(self.community.blocked ?? true) && !self.creator.blocked {
+        if !(community.blocked ?? true), !creator.blocked {
             var blockActions: [MenuFunctionPopup.Action] = [
                 .init(text: "Block User", callback: blockUserCallback),
                 .init(text: "Block Community", callback: blockCommunityCallback)
@@ -292,7 +293,7 @@ extension PostModel {
                 )
             )
         } else {
-            if self.creator.blocked {
+            if creator.blocked {
                 functions.append(
                     .standardMenuFunction(
                         text: "Unblock User",
@@ -310,7 +311,7 @@ extension PostModel {
                     )
                 )
             }
-            if self.community.blocked ?? false {
+            if community.blocked ?? false {
                 functions.append(
                     .standardMenuFunction(
                         text: "Unblock Community",

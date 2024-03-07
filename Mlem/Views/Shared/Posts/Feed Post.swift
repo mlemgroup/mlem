@@ -178,6 +178,11 @@ struct FeedPost: View {
                             ReadCheck()
                         }
                         
+//                        ModMenu(size: 24, menuFunctions: postModel.modMenuFunctions(
+//                            community: postModel.community,
+//                            modToolTracker: modToolTracker,
+//                            postTracker: postTracker))
+                        
                         EllipsisMenu(size: 24, menuFunctions: menuFunctions)
                     }
 

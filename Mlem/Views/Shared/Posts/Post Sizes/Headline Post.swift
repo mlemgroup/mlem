@@ -31,24 +31,25 @@ struct HeadlinePost: View {
 
                 VStack(spacing: 2) {
                     HStack(alignment: .top, spacing: 4) {
-                        if post.post.featuredLocal {
-                            StickiedTag(tagType: .local)
-                        } else if post.post.featuredCommunity {
-                            StickiedTag(tagType: .community)
-                        }
-                        
-                        Text(post.post.name)
-                            .font(.headline)
-                            .padding(.trailing)
-                            .foregroundColor(post.read ? .secondary : .primary)
+//                        if post.post.featuredLocal {
+//                            StickiedTag(tagType: .local)
+//                        } else if post.post.featuredCommunity {
+//                            StickiedTag(tagType: .community)
+//                        }
+  
+                        title
+//                        Text(post.post.name)
+//                            .font(.headline)
+//                            .padding(.trailing)
+//                            .foregroundColor(post.read ? .secondary : .primary)
                         
                         Spacer()
                         if post.post.nsfw {
                             NSFWTag(compact: true)
                         }
-                        if post.post.locked {
-                            LockedTag(compact: false)
-                        }
+//                        if post.post.locked {
+//                            LockedTag(compact: false)
+//                        }
                         if post.post.removed {
                             RemovedTag(compact: false)
                         }
@@ -59,6 +60,44 @@ struct HeadlinePost: View {
                     ThumbnailImageView(post: post)
                 }
             }
+        }
+    }
+    
+    @ViewBuilder
+    var title: some View {
+        pinTag + lockTag + postName
+    }
+    
+    var postName: Text {
+        Text(post.post.name)
+            .font(.headline)
+            .foregroundColor(post.read ? .secondary : .primary)
+    }
+    
+    var pinTag: Text {
+        if post.post.featuredLocal {
+            Text(Image(systemName: Icons.pinned))
+                .foregroundColor(.red)
+                .font(.caption) +
+                Text(" ")
+        } else if post.post.featuredCommunity {
+            Text(Image(systemName: Icons.pinned))
+                .foregroundColor(.green)
+                .font(.caption) +
+                Text(" ")
+        } else {
+            Text("")
+        }
+    }
+    
+    var lockTag: Text {
+        if post.post.locked {
+            Text(Image(systemName: Icons.locked))
+                .foregroundColor(.orange)
+                .font(.caption) +
+                Text(" ")
+        } else {
+            Text("")
         }
     }
 }

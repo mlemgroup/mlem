@@ -23,9 +23,9 @@ struct MenuButton: View {
         case let .standard(standardMenuFunction):
             Button(role: standardMenuFunction.isDestructive ? .destructive : nil) {
                 switch standardMenuFunction.role {
-                case .standard(let callback):
+                case let .standard(callback):
                     callback()
-                case .popup(let menuFunctionPopup):
+                case let .popup(menuFunctionPopup):
                     self.menuFunctionPopup = menuFunctionPopup
                 }
             } label: {
@@ -38,7 +38,7 @@ struct MenuButton: View {
             }
         case let .controlGroup(groupMenuFunction):
             
-            if #available(iOS 16.4, *) {
+            if #available(iOS 17.0, *) {
                 ControlGroup {
                     ForEach(groupMenuFunction.children) { child in
                         MenuButton(menuFunction: child, menuFunctionPopup: $menuFunctionPopup)
