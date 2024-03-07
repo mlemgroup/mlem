@@ -24,6 +24,9 @@ indirect enum LayoutWidgetType: String, Hashable, Codable, CaseIterable {
         [.infoStack, .upvote, .downvote, .save, .reply, .share, .upvoteCounter, .downvoteCounter, .scoreCounter]
     }
     
+    static var upvoteContaining: Set<Self> = [.upvote, .upvoteCounter, .scoreCounter]
+    static var downvoteContaining: Set<Self> = [.downvote, .downvoteCounter, .scoreCounter]
+    
     var width: CGFloat {
         switch self {
         case .infoStack:

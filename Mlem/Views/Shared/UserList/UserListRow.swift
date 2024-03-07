@@ -29,8 +29,7 @@ struct UserListRow: View {
     let complications: [UserComplication]
     let navigationEnabled: Bool
     
-    @State private var isPresentingConfirmDestructive: Bool = false
-    @State private var confirmationMenuFunction: StandardMenuFunction?
+    @State private var menuFunctionPopup: MenuFunctionPopup?
     
     init(
         _ user: UserModel,
@@ -48,11 +47,6 @@ struct UserListRow: View {
         self.trackerCallback = trackerCallback
     }
     
-    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
-        confirmationMenuFunction = destructiveFunction
-        isPresentingConfirmDestructive = true
-    }
-    
     var body: some View {
         userRow
             .opacity(user.blocked ? 0.5 : 1)
@@ -67,14 +61,11 @@ struct UserListRow: View {
                 .background(.background)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
             }
-            .destructiveConfirmation(
-                isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
-                confirmationMenuFunction: confirmationMenuFunction
-            )
+            .destructiveConfirmation(menuFunctionPopup: $menuFunctionPopup)
             .addSwipeyActions(swipeActions ?? .init())
             .contextMenu {
                 ForEach(user.menuFunctions(trackerCallback)) { item in
-                    MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+                    MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
                 }
             }
     }

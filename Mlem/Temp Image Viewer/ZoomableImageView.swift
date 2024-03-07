@@ -32,7 +32,7 @@ struct ZoomableImageView: View {
                         .scaleEffect(zoom)
                         .contextMenu {
                             ForEach(genMenuFunctions(image: image)) { item in
-                                MenuButton(menuFunction: item, confirmDestructive: nil)
+                                MenuButton(menuFunction: item, menuFunctionPopup: .constant(nil))
                             }
                         }
                         .padding(.horizontal) // after context menu to avoid padding showing up in context menu
@@ -78,9 +78,7 @@ struct ZoomableImageView: View {
         
         ret.append(MenuFunction.standardMenuFunction(
             text: "Details",
-            imageName: Icons.imageDetails,
-            role: nil,
-            enabled: true
+            imageName: Icons.imageDetails
         ) {
             Task(priority: .userInitiated) {
                 await showQuickLook()
@@ -89,9 +87,7 @@ struct ZoomableImageView: View {
         
         ret.append(MenuFunction.standardMenuFunction(
             text: "Save",
-            imageName: Icons.import,
-            role: nil,
-            enabled: true
+            imageName: Icons.import
         ) {
             Task(priority: .userInitiated) {
                 await saveImage()

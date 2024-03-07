@@ -6,11 +6,12 @@
 //
 
 import Foundation
+import SwiftUI
 
 extension CommunityModel {
     func subscribeSwipeAction(
-        _ callback: @escaping (_ item: Self) -> Void = { _ in },
-        confirmDestructive: ((StandardMenuFunction) -> Void)? = nil
+        _ trackerCallback: @escaping (_ item: Self) -> Void = { _ in },
+        menuFunctionPopup: Binding<MenuFunctionPopup?>
     ) throws -> SwipeAction {
         guard let subscribed else {
             throw CommunityError.noData
@@ -22,28 +23,32 @@ extension CommunityModel {
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: subscribed ? .red : .green,
             action: {
-                Task {
-                    hapticManager.play(haptic: .lightSuccess, priority: .low)
-                    
-                    if subscribed, let confirmDestructive {
-                        if let function = try? subscribeMenuFunction(callback) {
-                            confirmDestructive(function)
-                        }
-                    } else {
+                hapticManager.play(haptic: .lightSuccess, priority: .low)
+                let callback = {
+                    Task {
                         do {
-                            try await self.toggleSubscribe(callback)
+                            try await self.toggleSubscribe(trackerCallback)
                         } catch {
                             errorHandler.handle(error)
                         }
                     }
+                    return ()
+                }
+                if subscribed {
+                    menuFunctionPopup.wrappedValue = .init(
+                        prompt: "Are you sure you want to unsubscribe from \(name!)?",
+                        actions: [.init(text: "Yes", callback: callback)]
+                    )
+                } else {
+                    callback()
                 }
             }
         )
     }
     
     func favoriteSwipeAction(
-        _ callback: @escaping (_ item: Self) -> Void = { _ in },
-        confirmDestructive: ((StandardMenuFunction) -> Void)? = nil
+        _ trackerCallback: @escaping (_ item: Self) -> Void = { _ in },
+        menuFunctionPopup: Binding<MenuFunctionPopup?>
     ) -> SwipeAction {
         let (emptySymbolName, fullSymbolName) = favorited
             ? (Icons.unfavorite, Icons.unfavoriteFill)
@@ -52,26 +57,35 @@ extension CommunityModel {
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: favorited ? .red : .blue,
             action: {
-                Task {
-                    hapticManager.play(haptic: .lightSuccess, priority: .low)
-                    
-                    if favorited, let confirmDestructive {
-                        confirmDestructive(favoriteMenuFunction(callback))
-                    } else {
-                        try await self.toggleFavorite(callback)
+                let callback = {
+                    Task {
+                        do {
+                            try await self.toggleFavorite(trackerCallback)
+                        } catch {
+                            errorHandler.handle(error)
+                        }
                     }
+                    return ()
+                }
+                if favorited {
+                    menuFunctionPopup.wrappedValue = .init(
+                        prompt: "Are you sure you want to unfavorite \(name!)?",
+                        actions: [.init(text: "Yes", callback: callback)]
+                    )
+                } else {
+                    callback()
                 }
             }
         )
     }
         
     func swipeActions(
-        _ callback: @escaping (_ item: Self) -> Void = { _ in },
-        confirmDestructive: ((StandardMenuFunction) -> Void)? = nil
+        _ trackerCallback: @escaping (_ item: Self) -> Void = { _ in },
+        menuFunctionPopup: Binding<MenuFunctionPopup?>
     ) -> SwipeConfiguration {
         var trailingActions: [SwipeAction] = []
-        let subscribeAction = try? subscribeSwipeAction(callback, confirmDestructive: confirmDestructive)
-        let favoriteAction = favoriteSwipeAction(callback, confirmDestructive: confirmDestructive)
+        let subscribeAction = try? subscribeSwipeAction(trackerCallback, menuFunctionPopup: menuFunctionPopup)
+        let favoriteAction = favoriteSwipeAction(trackerCallback, menuFunctionPopup: menuFunctionPopup)
         
         if let subscribeAction {
             trailingActions.append(subscribeAction)
