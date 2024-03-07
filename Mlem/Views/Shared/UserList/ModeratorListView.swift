@@ -59,7 +59,7 @@ struct ModeratorListView: View {
             
             if siteInformation.moderatedCommunities.contains(community.communityId) {
                 Button {
-                    modToolTracker.addModerator(to: $community)
+                    modToolTracker.addModerator(user: nil, to: $community)
                 } label: {
                     Label("Add Moderator", systemImage: Icons.add)
                 }

@@ -36,6 +36,13 @@ extension UserModel {
         )
     }
     
+    func appointModMenuFunction(modToolTracker: ModToolTracker) -> MenuFunction {
+        .standardMenuFunction(
+            text: "Appoint as Moderator",
+            imageName: Icons.moderation
+        ) {}
+    }
+    
     func menuFunctions(
         _ callback: @escaping (_ item: Self) -> Void = { _ in },
         modToolTracker: ModToolTracker? = nil

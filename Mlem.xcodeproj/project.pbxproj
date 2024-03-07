@@ -440,6 +440,7 @@
 		CD5050542B807BF800632C56 /* AddModToCommunity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5050532B807BF800632C56 /* AddModToCommunity.swift */; };
 		CD525F652A4B6D8F00BCA794 /* CommunityLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD525F642A4B6D8F00BCA794 /* CommunityLinkView.swift */; };
 		CD55FE262B97F37A0020EE24 /* AddModView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD55FE252B97F37A0020EE24 /* AddModView.swift */; };
+		CD55FE282B9A28D00020EE24 /* SimpleUserSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD55FE272B9A28D00020EE24 /* SimpleUserSearchView.swift */; };
 		CD59E8A52A72C943005757F4 /* MarkAllAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD59E8A42A72C943005757F4 /* MarkAllAsReadRequest.swift */; };
 		CD5F76BC2B75BE700013A827 /* MarkReadBatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5F76BB2B75BE700013A827 /* MarkReadBatcher.swift */; };
 		CD6483302A38D31C00EE6CA3 /* UpvoteCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD64832F2A38D31C00EE6CA3 /* UpvoteCounterView.swift */; };
@@ -1047,6 +1048,7 @@
 		CD5050532B807BF800632C56 /* AddModToCommunity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddModToCommunity.swift; sourceTree = "<group>"; };
 		CD525F642A4B6D8F00BCA794 /* CommunityLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityLinkView.swift; sourceTree = "<group>"; };
 		CD55FE252B97F37A0020EE24 /* AddModView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddModView.swift; sourceTree = "<group>"; };
+		CD55FE272B9A28D00020EE24 /* SimpleUserSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleUserSearchView.swift; sourceTree = "<group>"; };
 		CD59E8A42A72C943005757F4 /* MarkAllAsReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkAllAsReadRequest.swift; sourceTree = "<group>"; };
 		CD5F76BB2B75BE700013A827 /* MarkReadBatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkReadBatcher.swift; sourceTree = "<group>"; };
 		CD64832F2A38D31C00EE6CA3 /* UpvoteCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpvoteCounterView.swift; sourceTree = "<group>"; };
@@ -2686,6 +2688,7 @@
 			children = (
 				CDA1E84C2B93FC7C007953EF /* BanUserView.swift */,
 				CD55FE252B97F37A0020EE24 /* AddModView.swift */,
+				CD55FE272B9A28D00020EE24 /* SimpleUserSearchView.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -3407,6 +3410,7 @@
 				6372186C2A3A2AAD008C4816 /* SaveComment.swift in Sources */,
 				CD4368B62AE23F4700BD8BD1 /* ParentTracker.swift in Sources */,
 				03C898032AC04F61005F3403 /* RecentSearchesView.swift in Sources */,
+				CD55FE282B9A28D00020EE24 /* SimpleUserSearchView.swift in Sources */,
 				50811B382A920545006BA3F2 /* APICommunityModeratorView+Mock.swift in Sources */,
 				50F2851C2A5C5C1500CF8865 /* TokenRefreshView.swift in Sources */,
 				03F4DCA32B1A8B0400556C67 /* AccountGeneralSettingsView.swift in Sources */,

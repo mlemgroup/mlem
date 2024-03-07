@@ -17,7 +17,7 @@ struct ModToolSheet: View {
             Text("Not yet!")
         case let .communityBan(user, community, shouldBan, postTracker):
             BanUserView(user: user, community: community, shouldBan: shouldBan, postTracker: postTracker)
-        case let .addMod(community):
+        case let .addMod(user, community):
             AddModView(community: community)
         case let .instanceBan(user, shouldBan):
             BanUserView(user: user, community: nil, shouldBan: shouldBan, postTracker: nil) // TODO: add post tracker support
