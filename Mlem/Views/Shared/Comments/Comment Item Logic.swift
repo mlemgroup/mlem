@@ -211,7 +211,7 @@ extension CommentItem {
                 
         // save
         let (saveText, saveImg) = hierarchicalComment.commentView.saved ?
-        ("Unsave", Icons.unsave) :
+        ("Unsave", Icons.saveFill) :
         ("Save", Icons.save)
         topRowFunctions.append(MenuFunction.standardMenuFunction(
             text: saveText,
