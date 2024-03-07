@@ -1,0 +1,74 @@
+//
+//  SimpleCommunitySearchView.swift
+//  Mlem
+//
+//  Created by Eric Andrews on 2024-03-07.
+//
+
+import Dependencies
+import Foundation
+import SwiftUI
+
+/// Simple search view for finding a community. Takes in an optional filter to apply to community results and a callback, which will be activated when a community is tapped with the selected community.
+struct SimpleCommunitySearchView: View {
+    @Dependency(\.errorHandler) var errorHandler
+    
+    @Environment(\.dismiss) var dismiss
+    
+    @State var searchText: String = ""
+    @State var communities: [CommunityModel] = .init()
+    
+    @StateObject var searchModel: SearchModel = .init(searchTab: .communities)
+    
+    let resultsFilter: (CommunityModel) -> Bool
+    let callback: (CommunityModel) -> Void
+    
+    init(
+        resultsFilter: @escaping (CommunityModel) -> Bool = { _ in true },
+        callback: @escaping (CommunityModel) -> Void
+    ) {
+        self.resultsFilter = resultsFilter
+        self.callback = callback
+    }
+    
+    var body: some View {
+        NavigationStack { // needed for navigation title and searchable to work
+            content
+                .searchable(text: $searchModel.searchText) // TODO: 2.0 add isPresented: $isSearching (iOS 17 exclusive)
+                .onReceive(
+                    searchModel.$searchText
+                        .debounce(for: .seconds(0.2), scheduler: DispatchQueue.main)
+                ) { newValue in
+                    if searchModel.previousSearchText != newValue, !newValue.isEmpty {
+                        Task {
+                            do {
+                                let results = try await searchModel.performSearch(page: 1)
+                                communities = results
+                                    .compactMap { $0.wrappedValue as? CommunityModel }
+                                    .filter(resultsFilter)
+                            } catch {
+                                errorHandler.handle(error)
+                            }
+                        }
+                    }
+                }
+                .navigationTitle("Search for User")
+                .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+    
+    var content: some View {
+        ScrollView {
+            VStack(spacing: 0) {
+                ForEach(communities, id: \.uid) { community in
+                    CommunityListRow(community, complications: [.instance, .subscribers], navigationEnabled: false)
+                        .onTapGesture {
+                            callback(community)
+                            dismiss()
+                        }
+                    Divider()
+                }
+            }
+        }
+    }
+}
