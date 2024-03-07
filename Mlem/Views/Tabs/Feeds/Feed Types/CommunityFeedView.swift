@@ -90,6 +90,8 @@ struct CommunityFeedView: View {
             .refreshable {
                 await Task {
                     do {
+                        communityModel = try await communityRepository.loadDetails(for: communityModel.communityId)
+                        print(communityModel.moderators?.count)
                         _ = try await postTracker.refresh(clearBeforeRefresh: false)
                     } catch {
                         errorHandler.handle(error)
@@ -142,7 +144,7 @@ struct CommunityFeedView: View {
                 switch selectedTab {
                 case .posts: posts()
                 case .about: about()
-                case .moderators: ModeratorListView(community: communityModel)
+                case .moderators: ModeratorListView(community: $communityModel)
                 case .details: details()
                 }
             }

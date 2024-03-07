@@ -163,6 +163,7 @@ enum Icons {
     
     // common operations
     static let share: String = "square.and.arrow.up"
+    static let add: String = "plus"
     static let subscribe: String = "plus.circle"
     static let subscribed: String = "checkmark.circle"
     static let subscribePerson: String = "person.crop.circle.badge.plus"
@@ -207,6 +208,7 @@ enum Icons {
     static let communityBan: String = "xmark.shield"
     static let communityUnban: String = "checkmark.shield"
     static let unmod: String = "shield.slash"
+    static let unmodFill: String = "shield.slash.fill"
     static let pin: String = "pin"
     static let unpin: String = "pin.slash"
     static let lock: String = "lock"
