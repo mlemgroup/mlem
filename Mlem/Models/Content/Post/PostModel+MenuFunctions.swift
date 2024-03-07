@@ -7,11 +7,8 @@
 
 import Foundation
 
-extension PostModel {
+extension PostModel {    
     // swiftlint:disable function_body_length
-    // swiftlint:disable cyclomatic_complexity
-    // swiftlint:disable function_parameter_count
-    
     /// Produces menu functions for this post
     /// - Parameters:
     ///   - editorTracker: global EditorTracker
@@ -21,67 +18,13 @@ extension PostModel {
     ///   - Returns: menu functions for this post
     @MainActor func menuFunctions(
         editorTracker: EditorTracker,
-        showExtraContextMenuActions: Bool,
-        widgetTracker: LayoutWidgetTracker,
         postTracker: StandardPostTracker?,
         community: CommunityModel?,
         modToolTracker: ModToolTracker?
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         
-        let widgets = widgetTracker.groups.post
-        
-        if showExtraContextMenuActions || LayoutWidgetType.upvoteContaining.isDisjoint(with: widgets) {
-            // Upvote
-            functions.append(MenuFunction.standardMenuFunction(
-                text: votes.myVote == .upvote ? "Undo Upvote" : "Upvote",
-                imageName: votes.myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvoteSquare,
-                enabled: true
-            ) {
-                Task(priority: .userInitiated) {
-                    await self.vote(inputOp: .upvote)
-                }
-            })
-        }
-
-        if showExtraContextMenuActions || LayoutWidgetType.downvoteContaining.isDisjoint(with: widgets) {
-            // Downvote
-            functions.append(MenuFunction.standardMenuFunction(
-                text: votes.myVote == .downvote ? "Undo Downvote" : "Downvote",
-                imageName: votes.myVote == .downvote ? Icons.downvoteSquareFill : Icons.downvoteSquare,
-                enabled: true
-            ) {
-                Task(priority: .userInitiated) {
-                    await self.vote(inputOp: .downvote)
-                }
-            })
-        }
-        
-        if showExtraContextMenuActions || !widgets.contains(.save) {
-            // Save
-            functions.append(MenuFunction.standardMenuFunction(
-                text: saved ? "Unsave" : "Save",
-                imageName: saved ? Icons.unsave : Icons.save,
-                enabled: true
-            ) {
-                Task(priority: .userInitiated) {
-                    await self.toggleSave()
-                }
-            })
-        }
-        
-        if showExtraContextMenuActions || !widgets.contains(.reply) {
-            // Reply
-            functions.append(MenuFunction.standardMenuFunction(
-                text: "Reply",
-                imageName: Icons.reply,
-                enabled: true
-            ) {
-                editorTracker.openEditor(
-                    with: ConcreteEditorModel(post: self, operation: PostOperation.replyToPost)
-                )
-            })
-        }
+        functions.append(.controlGroup(topRowMenuFunctions(editorTracker: editorTracker)))
         
         if creator.isActiveAccount {
             // Edit
@@ -106,11 +49,9 @@ extension PostModel {
             })
         }
         
-        if showExtraContextMenuActions || !widgets.contains(.share) {
-            // Share
-            if let url = URL(string: post.apId) {
-                functions.append(MenuFunction.shareMenuFunction(url: url))
-            }
+        // Share
+        if let url = URL(string: post.apId) {
+            functions.append(MenuFunction.shareMenuFunction(url: url))
         }
         
         if !creator.isActiveAccount {
@@ -158,11 +99,6 @@ extension PostModel {
         return functions
     }
 
-    // swiftlint:enable function_body_length
-    // swiftlint:enable cyclomatic_complexity
-    // swiftlint:enable function_parameter_count
-    
-    // swiftlint:disable:next function_body_length
     private func modMenuFunctions(
         community: CommunityModel,
         modToolTracker: ModToolTracker,
@@ -170,31 +106,7 @@ extension PostModel {
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         
-        functions.append(MenuFunction.toggleableMenuFunction(
-            toggle: post.featuredCommunity,
-            trueText: "Unpin",
-            trueImageName: Icons.unpin,
-            falseText: "Pin",
-            falseImageName: Icons.pin
-        ) {
-            Task {
-                await self.toggleFeatured(featureType: .community)
-                await self.notifier.add(.success("\(self.post.featuredCommunity ? "P" : "Unp")inned post"))
-            }
-        })
-        
-        functions.append(MenuFunction.toggleableMenuFunction(
-            toggle: post.locked,
-            trueText: "Unlock",
-            trueImageName: Icons.unlock,
-            falseText: "Lock",
-            falseImageName: Icons.lock
-        ) {
-            Task {
-                await self.toggleLocked()
-                await self.notifier.add(.success("\(self.post.locked ? "L" : "Unl")ocked post"))
-            }
-        })
+        functions.append(.controlGroup(pinLockMenuFunctions()))
         
         if creator.userId != siteInformation.userId {
             functions.append(MenuFunction.toggleableMenuFunction(
@@ -224,6 +136,88 @@ extension PostModel {
                 )
             })
         }
+        
+        return functions
+    }
+    // swiftlint:enable function_body_length
+    
+    private func pinLockMenuFunctions() -> [MenuFunction] {
+        var functions: [MenuFunction] = .init()
+        
+        functions.append(MenuFunction.toggleableMenuFunction(
+            toggle: post.featuredCommunity,
+            trueText: "Unpin",
+            trueImageName: Icons.unpin,
+            falseText: "Pin",
+            falseImageName: Icons.pin
+        ) {
+            Task {
+                await self.toggleFeatured(featureType: .community)
+                await self.notifier.add(.success("\(self.post.featuredCommunity ? "P" : "Unp")inned post"))
+            }
+        })
+        
+        functions.append(MenuFunction.toggleableMenuFunction(
+            toggle: post.locked,
+            trueText: "Unlock",
+            trueImageName: Icons.unlock,
+            falseText: "Lock",
+            falseImageName: Icons.lock
+        ) {
+            Task {
+                await self.toggleLocked()
+                await self.notifier.add(.success("\(self.post.locked ? "L" : "Unl")ocked post"))
+            }
+        })
+        return functions
+    }
+    
+    private func topRowMenuFunctions(editorTracker: EditorTracker) -> [MenuFunction] {
+        var functions = [MenuFunction]()
+        
+        // Upvote
+        functions.append(MenuFunction.standardMenuFunction(
+            text: votes.myVote == .upvote ? "Undo Upvote" : "Upvote",
+            imageName: votes.myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvoteSquare,
+            enabled: true
+        ) {
+            Task(priority: .userInitiated) {
+                await self.vote(inputOp: .upvote)
+            }
+        })
+
+        // Downvote
+        functions.append(MenuFunction.standardMenuFunction(
+            text: votes.myVote == .downvote ? "Undo Downvote" : "Downvote",
+            imageName: votes.myVote == .downvote ? Icons.downvoteSquareFill : Icons.downvoteSquare,
+            enabled: true
+        ) {
+            Task(priority: .userInitiated) {
+                await self.vote(inputOp: .downvote)
+            }
+        })
+        
+        // Save
+        functions.append(MenuFunction.standardMenuFunction(
+            text: saved ? "Unsave" : "Save",
+            imageName: saved ? Icons.unsave : Icons.save,
+            enabled: true
+        ) {
+            Task(priority: .userInitiated) {
+                await self.toggleSave()
+            }
+        })
+
+        // Reply
+        functions.append(MenuFunction.standardMenuFunction(
+            text: "Reply",
+            imageName: Icons.reply,
+            enabled: true
+        ) {
+            editorTracker.openEditor(
+                with: ConcreteEditorModel(post: self, operation: PostOperation.replyToPost)
+            )
+        })
         
         return functions
     }

@@ -182,63 +182,55 @@ extension CommentItem {
     func genMenuFunctions() -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         
-        let showExtraContextMenuActions = self.showExtraContextMenuActions || compactComments
-        let widgets = layoutWidgetTracker.groups.comment
+        var topRowFunctions: [MenuFunction] = .init()
+        // upvote
+        let (upvoteText, upvoteImg) = hierarchicalComment.commentView.myVote == .upvote ?
+        ("Undo Upvote", Icons.upvoteSquareFill) :
+        ("Upvote", Icons.upvoteSquare)
+        topRowFunctions.append(MenuFunction.standardMenuFunction(
+            text: upvoteText,
+            imageName: upvoteImg
+        ) {
+            Task(priority: .userInitiated) {
+                await upvote()
+            }
+        })
         
-        if showExtraContextMenuActions || LayoutWidgetType.upvoteContaining.isDisjoint(with: widgets) {
-            // upvote
-            let (upvoteText, upvoteImg) = hierarchicalComment.commentView.myVote == .upvote ?
-            ("Undo Upvote", Icons.upvoteSquareFill) :
-            ("Upvote", Icons.upvoteSquare)
-            ret.append(MenuFunction.standardMenuFunction(
-                text: upvoteText,
-                imageName: upvoteImg
-            ) {
-                Task(priority: .userInitiated) {
-                    await upvote()
-                }
-            })
-        }
+        // downvote
+        let (downvoteText, downvoteImg) = hierarchicalComment.commentView.myVote == .downvote ?
+        ("Undo Downvote", Icons.downvoteSquareFill) :
+        ("Downvote", Icons.downvoteSquare)
+        topRowFunctions.append(MenuFunction.standardMenuFunction(
+            text: downvoteText,
+            imageName: downvoteImg
+        ) {
+            Task(priority: .userInitiated) {
+                await downvote()
+            }
+        })
+                
+        // save
+        let (saveText, saveImg) = hierarchicalComment.commentView.saved ?
+        ("Unsave", Icons.unsave) :
+        ("Save", Icons.save)
+        topRowFunctions.append(MenuFunction.standardMenuFunction(
+            text: saveText,
+            imageName: saveImg
+        ) {
+            Task(priority: .userInitiated) {
+                await saveComment()
+            }
+        })
+
+        // reply
+        topRowFunctions.append(MenuFunction.standardMenuFunction(
+            text: "Reply",
+            imageName: Icons.reply
+        ) {
+            replyToComment()
+        })
         
-        if showExtraContextMenuActions || LayoutWidgetType.downvoteContaining.isDisjoint(with: widgets) {
-            // downvote
-            let (downvoteText, downvoteImg) = hierarchicalComment.commentView.myVote == .downvote ?
-            ("Undo Downvote", Icons.downvoteSquareFill) :
-            ("Downvote", Icons.downvoteSquare)
-            ret.append(MenuFunction.standardMenuFunction(
-                text: downvoteText,
-                imageName: downvoteImg
-            ) {
-                Task(priority: .userInitiated) {
-                    await downvote()
-                }
-            })
-        }
-        
-        if showExtraContextMenuActions || !widgets.contains(.save) {
-            // save
-            let (saveText, saveImg) = hierarchicalComment.commentView.saved ?
-            ("Unsave", Icons.unsave) :
-            ("Save", Icons.save)
-            ret.append(MenuFunction.standardMenuFunction(
-                text: saveText,
-                imageName: saveImg
-            ) {
-                Task(priority: .userInitiated) {
-                    await saveComment()
-                }
-            })
-        }
-        
-        if showExtraContextMenuActions || !widgets.contains(.reply) {
-            // reply
-            ret.append(MenuFunction.standardMenuFunction(
-                text: "Reply",
-                imageName: Icons.reply
-            ) {
-                replyToComment()
-            })
-        }
+        ret.append(.controlGroup(topRowFunctions))
         
         let isOwnComment = appState.isCurrentAccountId(hierarchicalComment.commentView.creator.id)
         
@@ -264,11 +256,9 @@ extension CommentItem {
             })
         }
                 
-        if showExtraContextMenuActions || !widgets.contains(.share) {
-            // share
-            if let url = URL(string: hierarchicalComment.commentView.comment.apId) {
-                ret.append(MenuFunction.shareMenuFunction(url: url))
-            }
+        // share
+        if let url = URL(string: hierarchicalComment.commentView.comment.apId) {
+            ret.append(MenuFunction.shareMenuFunction(url: url))
         }
         
         if !isOwnComment {
