@@ -15,6 +15,7 @@ struct ActiveUserCount {
     let day: Int
 }
 
+// swiftlint:disable:next type_body_length
 struct CommunityModel {
     // MARK: - Members and Init
     
@@ -285,12 +286,14 @@ struct CommunityModel {
     /// - Parameters:
     ///   - of: id of the user to change mod status of
     ///   - to: new mod status
-    mutating func updateModStatus(of userId: Int, to status: Bool) async {
+    func updateModStatus(of userId: Int, to status: Bool, callback: @escaping (_ item: Self) -> Void = { _ in }) async {
+        var new = self
         do {
-            print(userId)
-            print(communityId)
             let newModerators = try await apiClient.updateModStatus(of: userId, in: communityId, status: status)
-            moderators = newModerators
+            new.moderators = newModerators
+            RunLoop.main.perform { [new] in
+                callback(new)
+            }
         } catch {
             errorHandler.handle(error)
         }

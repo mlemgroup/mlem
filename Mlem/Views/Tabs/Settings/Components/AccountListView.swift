@@ -84,7 +84,7 @@ struct AccountListView: View {
                     Button {
                         isShowingInstanceAdditionSheet = true
                     } label: {
-                        Label("Add Account", systemImage: "plus")
+                        Label("Add Account", systemImage: Icons.add)
                     }
                     .accessibilityLabel("Add a new account.")
                 }
