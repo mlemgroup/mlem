@@ -200,7 +200,7 @@ extension PostModel {
         // Save
         functions.append(MenuFunction.standardMenuFunction(
             text: saved ? "Unsave" : "Save",
-            imageName: saved ? Icons.unsave : Icons.save,
+            imageName: saved ? Icons.saveFill : Icons.save,
             enabled: true
         ) {
             Task(priority: .userInitiated) {
