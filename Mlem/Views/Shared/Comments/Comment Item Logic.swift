@@ -230,7 +230,7 @@ extension CommentItem {
             replyToComment()
         })
         
-        ret.append(.controlGroup(topRowFunctions))
+        ret.append(.controlGroupMenuFunction(children: topRowFunctions))
         
         let isOwnComment = appState.isCurrentAccountId(hierarchicalComment.commentView.creator.id)
         
