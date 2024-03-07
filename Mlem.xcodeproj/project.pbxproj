@@ -439,6 +439,7 @@
 		CD50504D2B80065300632C56 /* Date+DaysFromNow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD50504C2B80065300632C56 /* Date+DaysFromNow.swift */; };
 		CD5050542B807BF800632C56 /* AddModToCommunity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5050532B807BF800632C56 /* AddModToCommunity.swift */; };
 		CD525F652A4B6D8F00BCA794 /* CommunityLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD525F642A4B6D8F00BCA794 /* CommunityLinkView.swift */; };
+		CD55FE262B97F37A0020EE24 /* AddModView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD55FE252B97F37A0020EE24 /* AddModView.swift */; };
 		CD59E8A52A72C943005757F4 /* MarkAllAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD59E8A42A72C943005757F4 /* MarkAllAsReadRequest.swift */; };
 		CD5F76BC2B75BE700013A827 /* MarkReadBatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5F76BB2B75BE700013A827 /* MarkReadBatcher.swift */; };
 		CD6483302A38D31C00EE6CA3 /* UpvoteCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD64832F2A38D31C00EE6CA3 /* UpvoteCounterView.swift */; };
@@ -1045,6 +1046,7 @@
 		CD50504C2B80065300632C56 /* Date+DaysFromNow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+DaysFromNow.swift"; sourceTree = "<group>"; };
 		CD5050532B807BF800632C56 /* AddModToCommunity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddModToCommunity.swift; sourceTree = "<group>"; };
 		CD525F642A4B6D8F00BCA794 /* CommunityLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityLinkView.swift; sourceTree = "<group>"; };
+		CD55FE252B97F37A0020EE24 /* AddModView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddModView.swift; sourceTree = "<group>"; };
 		CD59E8A42A72C943005757F4 /* MarkAllAsReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkAllAsReadRequest.swift; sourceTree = "<group>"; };
 		CD5F76BB2B75BE700013A827 /* MarkReadBatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkReadBatcher.swift; sourceTree = "<group>"; };
 		CD64832F2A38D31C00EE6CA3 /* UpvoteCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpvoteCounterView.swift; sourceTree = "<group>"; };
@@ -2683,6 +2685,7 @@
 			isa = PBXGroup;
 			children = (
 				CDA1E84C2B93FC7C007953EF /* BanUserView.swift */,
+				CD55FE252B97F37A0020EE24 /* AddModView.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -3350,6 +3353,7 @@
 				CD3FBCE72A4A8CE300B2063F /* Messages Feed View.swift in Sources */,
 				03A4330D2B6FC0940004E743 /* FediseerInfoView.swift in Sources */,
 				63344C582A07DB9A001BC616 /* Array+MoveElements.swift in Sources */,
+				CD55FE262B97F37A0020EE24 /* AddModView.swift in Sources */,
 				03A18CBD2B1005A400BA69D2 /* SaveUserSettings.swift in Sources */,
 				03E0B9C82A61F0F400FED265 /* AdvancedSettingsView.swift in Sources */,
 				63344C622A08460D001BC616 /* View+Border.swift in Sources */,
