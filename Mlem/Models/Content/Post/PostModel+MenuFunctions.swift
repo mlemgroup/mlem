@@ -24,7 +24,7 @@ extension PostModel {
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         
-        functions.append(.controlGroup(topRowMenuFunctions(editorTracker: editorTracker)))
+        functions.append(.controlGroupMenuFunction(children: topRowMenuFunctions(editorTracker: editorTracker)))
         
         if creator.isActiveAccount {
             // Edit
@@ -106,7 +106,7 @@ extension PostModel {
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         
-        functions.append(.controlGroup(pinLockMenuFunctions()))
+        functions.append(.controlGroupMenuFunction(children: pinLockMenuFunctions()))
         
         if creator.userId != siteInformation.userId {
             functions.append(MenuFunction.toggleableMenuFunction(

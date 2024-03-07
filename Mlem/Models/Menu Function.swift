@@ -21,8 +21,8 @@ enum MenuFunction: Identifiable {
             return navigationMenuFunction.id
         case let .disclosureGroup(groupMenuFunction):
             return groupMenuFunction.id
-        case let .controlGroup(groups):
-            return groups.reduce("CONTROL") { $0 + $1.id }
+        case let .controlGroup(groupMenuFunction):
+            return groupMenuFunction.id
         case .divider:
             return UUID().uuidString
         }
@@ -120,7 +120,7 @@ extension MenuFunction {
     }
     
         static func controlGroupMenuFunction(
-            children: [MenuFunction],
+            children: [MenuFunction]
         ) -> MenuFunction {
             MenuFunction.controlGroup(ControlGroupMenuFunction(children: children))
         }
