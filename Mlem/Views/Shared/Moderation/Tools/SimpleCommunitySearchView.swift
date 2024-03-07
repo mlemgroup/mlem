@@ -20,19 +20,22 @@ struct SimpleCommunitySearchView: View {
     
     @StateObject var searchModel: SearchModel = .init(searchTab: .communities)
     
+    let defaultItems: [CommunityModel]
     let resultsFilter: (CommunityModel) -> Bool
     let callback: (CommunityModel) -> Void
     
     init(
+        defaultItems: [CommunityModel]? = nil,
         resultsFilter: @escaping (CommunityModel) -> Bool = { _ in true },
         callback: @escaping (CommunityModel) -> Void
     ) {
+        self.defaultItems = defaultItems ?? .init()
         self.resultsFilter = resultsFilter
         self.callback = callback
     }
     
     var body: some View {
-        NavigationStack { // needed for navigation title and searchable to work
+        NavigationStack { // needed for .navigationTitle, .searchable to work in nested sheet
             content
                 .searchable(text: $searchModel.searchText) // TODO: 2.0 add isPresented: $isSearching (iOS 17 exclusive)
                 .onReceive(
@@ -52,7 +55,7 @@ struct SimpleCommunitySearchView: View {
                         }
                     }
                 }
-                .navigationTitle("Search for User")
+                .navigationTitle("Search for Community")
                 .navigationBarTitleDisplayMode(.inline)
         }
     }

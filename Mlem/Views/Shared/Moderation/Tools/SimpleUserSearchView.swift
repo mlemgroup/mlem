@@ -32,7 +32,7 @@ struct SimpleUserSearchView: View {
     }
     
     var body: some View {
-        NavigationStack { // needed for navigation title and searchable to work
+        NavigationStack { // needed for .navigationTitle, .searchable to work in nested sheet
             content
                 .searchable(text: $searchModel.searchText) // TODO: 2.0 add isPresented: $isSearching (iOS 17 exclusive)
                 .onReceive(
