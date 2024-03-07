@@ -88,6 +88,7 @@ struct ExpandedPost: View {
                 ToolbarItemGroup(placement: .secondaryAction) {
                     let isMod = siteInformation.moderatedCommunities.contains(post.community.communityId)
                     let menuFunctions = post.menuFunctions(
+                        isExpanded: true,
                         editorTracker: editorTracker,
                         postTracker: postTracker,
                         community: isMod ? post.community : nil,

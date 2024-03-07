@@ -17,6 +17,7 @@ extension PostModel {
     ///   - modToolTracker: optional ModToolTracker. If this and community are present, moderator functions will be included in the menu.
     ///   - Returns: menu functions for this post
     @MainActor func menuFunctions(
+        isExpanded: Bool = false,
         editorTracker: EditorTracker,
         postTracker: StandardPostTracker?,
         community: CommunityModel?,
@@ -80,6 +81,7 @@ extension PostModel {
             functions.append(.divider)
             functions.append(
                 contentsOf: modMenuFunctions(
+                    isExpanded: isExpanded,
                     community: community,
                     modToolTracker: modToolTracker,
                     postTracker: postTracker
@@ -103,37 +105,40 @@ extension PostModel {
     }
 
     private func modMenuFunctions(
+        isExpanded: Bool,
         community: CommunityModel,
         modToolTracker: ModToolTracker,
         postTracker: StandardPostTracker?
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         
-        functions.append(MenuFunction.toggleableMenuFunction(
-            toggle: post.featuredCommunity,
-            trueText: "Unpin",
-            trueImageName: Icons.unpin,
-            falseText: "Pin",
-            falseImageName: Icons.pin
-        ) {
-            Task {
-                await self.toggleFeatured(featureType: .community)
-                await self.notifier.add(.success("\(self.post.featuredCommunity ? "P" : "Unp")inned post"))
-            }
-        })
-        
-        functions.append(MenuFunction.toggleableMenuFunction(
-            toggle: post.locked,
-            trueText: "Unlock",
-            trueImageName: Icons.unlock,
-            falseText: "Lock",
-            falseImageName: Icons.lock
-        ) {
-            Task {
-                await self.toggleLocked()
-                await self.notifier.add(.success("\(self.post.locked ? "L" : "Unl")ocked post"))
-            }
-        })
+        if isExpanded {
+            functions.append(MenuFunction.toggleableMenuFunction(
+                toggle: post.featuredCommunity,
+                trueText: "Unpin",
+                trueImageName: Icons.unpin,
+                falseText: "Pin",
+                falseImageName: Icons.pin
+            ) {
+                Task {
+                    await self.toggleFeatured(featureType: .community)
+                    await self.notifier.add(.success("\(self.post.featuredCommunity ? "P" : "Unp")inned post"))
+                }
+            })
+            
+            functions.append(MenuFunction.toggleableMenuFunction(
+                toggle: post.locked,
+                trueText: "Unlock",
+                trueImageName: Icons.unlock,
+                falseText: "Lock",
+                falseImageName: Icons.lock
+            ) {
+                Task {
+                    await self.toggleLocked()
+                    await self.notifier.add(.success("\(self.post.locked ? "L" : "Unl")ocked post"))
+                }
+            })
+        }
         
         if creator.userId != siteInformation.userId {
             functions.append(MenuFunction.toggleableMenuFunction(
