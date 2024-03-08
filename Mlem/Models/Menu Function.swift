@@ -19,7 +19,9 @@ enum MenuFunction: Identifiable {
             return shareImageFunction.id
         case let .navigation(navigationMenuFunction):
             return navigationMenuFunction.id
-        case let .group(groupMenuFunction):
+        case let .disclosureGroup(groupMenuFunction):
+            return groupMenuFunction.id
+        case let .controlGroup(groupMenuFunction):
             return groupMenuFunction.id
         case .divider:
             return UUID().uuidString
@@ -31,10 +33,8 @@ enum MenuFunction: Identifiable {
     case shareUrl(ShareMenuFunction)
     case shareImage(ShareImageFunction)
     case navigation(NavigationMenuFunction)
-    /// - Parameter titleKey: User-facing title label for menu.
-    /// - Parameter children: Menu items for this child menu.
-    /// - Note: Destructive confirmation is not supported at this time.
-    case group(GroupMenuFunction)
+    case disclosureGroup(DisclosureGroupMenuFunction)
+    case controlGroup(ControlGroupMenuFunction)
 }
 
 struct MenuFunctionPopup {
@@ -112,13 +112,19 @@ extension MenuFunction {
         imageName: String,
         children: [MenuFunction]
     ) -> MenuFunction {
-        MenuFunction.group(GroupMenuFunction(
+        MenuFunction.disclosureGroup(DisclosureGroupMenuFunction(
             text: text,
             imageName: imageName,
             children: children
         ))
     }
     
+        static func controlGroupMenuFunction(
+            children: [MenuFunction]
+        ) -> MenuFunction {
+            MenuFunction.controlGroup(ControlGroupMenuFunction(children: children))
+        }
+
     // swiftlint:disable:next function_parameter_count
     static func toggleableMenuFunction(
         toggle: Bool,
@@ -198,10 +204,15 @@ struct StandardMenuFunction: Identifiable {
     let enabled: Bool
 }
 
-struct GroupMenuFunction: Identifiable {
+struct DisclosureGroupMenuFunction: Identifiable {
     var id: String { text }
     let text: String
     let imageName: String
+    var children: [MenuFunction]
+}
+
+struct ControlGroupMenuFunction: Identifiable {
+    var id: String { children.reduce("CONTROL") { $0 + $1.id } }
     var children: [MenuFunction]
 }
 

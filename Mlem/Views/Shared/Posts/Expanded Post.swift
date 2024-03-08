@@ -50,7 +50,6 @@ struct ExpandedPost: View {
     
     @AppStorage("showCommentJumpButton") var showCommentJumpButton: Bool = true
     @AppStorage("commentJumpButtonSide") var commentJumpButtonSide: JumpButtonLocation = .bottomTrailing
-    @AppStorage("showExtraContextMenuActions") var showExtraContextMenuActions: Bool = false
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var editorTracker: EditorTracker
@@ -78,13 +77,29 @@ struct ExpandedPost: View {
     @State private var scrollToTopAppeared = false
     @Namespace var scrollToTop
     
+    @State private var menuFunctionPopup: MenuFunctionPopup?
+    
     var body: some View {
         contentView
             .environmentObject(commentTracker)
             .navigationBarTitle(post.community.name, displayMode: .inline)
             .toolbar {
-                ToolbarItemGroup(placement: .navigationBarTrailing) { toolbarMenu }
+                ToolbarItem(placement: .primaryAction) { toolbarMenu }
+                ToolbarItemGroup(placement: .secondaryAction) {
+                    let isMod = siteInformation.moderatedCommunities.contains(post.community.communityId)
+                    let menuFunctions = post.menuFunctions(
+                        isExpanded: true,
+                        editorTracker: editorTracker,
+                        postTracker: postTracker,
+                        community: isMod ? post.community : nil,
+                        modToolTracker: isMod ? modToolTracker : nil
+                    )
+                    ForEach(menuFunctions) { child in
+                        MenuButton(menuFunction: child, menuFunctionPopup: $menuFunctionPopup)
+                    }
+                }
             }
+            .destructiveConfirmation(menuFunctionPopup: $menuFunctionPopup)
             .task {
                 if commentTracker.comments.isEmpty {
                     await loadComments()
@@ -225,26 +240,10 @@ struct ExpandedPost: View {
     private var postView: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
-                HStack {
-                    CommunityLinkView(
-                        community: post.community,
-                        serverInstanceLocation: communityServerInstanceLocation
-                    )
-                    
-                    Spacer()
-                    
-                    let isMod = siteInformation.moderatedCommunities.contains(post.community.communityId)
-                    
-                    let menuFunctions = post.menuFunctions(
-                        editorTracker: editorTracker,
-                        showExtraContextMenuActions: showExtraContextMenuActions,
-                        widgetTracker: layoutWidgetTracker,
-                        postTracker: postTracker,
-                        community: isMod ? post.community : nil,
-                        modToolTracker: isMod ? modToolTracker : nil
-                    )
-                    EllipsisMenu(size: 24, menuFunctions: menuFunctions)
-                }
+                CommunityLinkView(
+                    community: post.community,
+                    serverInstanceLocation: communityServerInstanceLocation
+                )
                 
                 LargePost(
                     post: post,

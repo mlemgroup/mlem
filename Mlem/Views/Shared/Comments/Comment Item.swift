@@ -30,7 +30,6 @@ struct CommentItem: View {
     @AppStorage("shouldShowTimeInCommentBar") var shouldShowTimeInCommentBar: Bool = true
     @AppStorage("shouldShowSavedInCommentBar") var shouldShowSavedInCommentBar: Bool = false
     @AppStorage("shouldShowRepliesInCommentBar") var shouldShowRepliesInCommentBar: Bool = true
-    @AppStorage("showExtraContextMenuActions") var showExtraContextMenuActions: Bool = false
     @AppStorage("compactComments") var compactComments: Bool = false
     @AppStorage("collapseChildComments") var collapseComments: Bool = false
     @AppStorage("tapCommentToCollapse") var tapCommentToCollapse: Bool = true
