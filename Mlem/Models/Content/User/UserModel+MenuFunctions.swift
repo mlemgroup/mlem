@@ -36,16 +36,6 @@ extension UserModel {
             }
         )
     }
-  
-    // not dead, just waiting for 2.0
-//    func appointModMenuFunction(modToolTracker: ModToolTracker) -> MenuFunction {
-//        .standardMenuFunction(
-//            text: "Appoint as Moderator",
-//            imageName: Icons.moderation
-//        ) {
-//            modToolTracker.addModerator(user: .constant(self), to: nil)
-//        }
-//    }
     
     func menuFunctions(
         _ callback: @escaping (_ item: Self) -> Void = { _ in },
@@ -82,10 +72,7 @@ extension UserModel {
         
         let isOwnUser = (siteInformation.myUser?.userId ?? -1) == userId
 
-        // TODO: 2.0 use this menu function--doesn't work right now because binding self is cursed
-//        if !isOwnUser || isAdmin ?? false, let modToolTracker {
-//            functions.append(appointModMenuFunction(modToolTracker: modToolTracker))
-//        }
+        // TODO: 2.0 appoint moderator as menu function
         
         if !isOwnUser {
             functions.append(blockMenuFunction(callback))

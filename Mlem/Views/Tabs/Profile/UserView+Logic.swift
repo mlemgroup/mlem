@@ -13,6 +13,8 @@ extension UserView {
     var menuFunctions: [MenuFunction] {
         var ret = user.menuFunctions({ user = $0 }, modToolTracker: modToolTracker)
         
+        // add moderator needs to be defined as a menu function out here instead of within the user model so that it can take the $user binding
+        // TODO: 2.0 move add moderator menu function into Person
         if !isOwnProfile || siteInformation.myUser?.isAdmin ?? false {
             ret.append(.standardMenuFunction(
                 text: "Appoint as Moderator",

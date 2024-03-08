@@ -31,7 +31,7 @@ struct AddModView: View {
     let canChangeCommunity: Bool
     let canChangeUser: Bool
     
-    // TODO: 2.0 get rid of bindings and just update the models
+    // TODO: 2.0 get rid of bindings and just update the models implicitly at cache layer when add mod call returns
     init(community: Binding<CommunityModel>?, user: Binding<UserModel>?) {
         self.communityBinding = community
         self.userBinding = user

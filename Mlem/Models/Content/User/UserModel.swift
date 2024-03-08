@@ -221,9 +221,9 @@ struct UserModel {
     }
     
     mutating func addModeratedCommunity(_ newCommunity: CommunityModel) {
-        var newCommunities = self.moderatedCommunities ?? .init()
+        var newCommunities = moderatedCommunities ?? .init()
         newCommunities.append(newCommunity)
-        self.moderatedCommunities = newCommunities
+        moderatedCommunities = newCommunities
     }
     
     static func mock() -> UserModel {
