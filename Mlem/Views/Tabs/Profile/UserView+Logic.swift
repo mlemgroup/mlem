@@ -10,6 +10,20 @@ import SwiftUI
 extension UserView {
     var isOwnProfile: Bool { user.userId == siteInformation.myUserInfo?.localUserView.person.id }
     
+    var menuFunctions: [MenuFunction] {
+        var ret = user.menuFunctions({ user = $0 }, modToolTracker: modToolTracker)
+        
+        if !isOwnProfile || siteInformation.myUser?.isAdmin ?? false {
+            ret.append(.standardMenuFunction(
+                text: "Appoint as Moderator",
+                imageName: Icons.moderation
+            ) {
+                modToolTracker.addModerator(user: $user, to: nil)
+            })
+        }
+        return ret
+    }
+    
     var tabs: [UserViewTab] {
         var tabs: [UserViewTab] = [.overview, .posts, .comments]
         

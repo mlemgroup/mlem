@@ -63,10 +63,16 @@ struct AddModView: View {
                 SimpleCommunitySearchView(
                     defaultItems: siteInformation.myUser?.moderatedCommunities,
                     resultsFilter: { community in
+                        // filter out communities that the user already moderates
+                        if user?.moderatedCommunities?.contains(community) ?? false {
+                            return false
+                        }
+                        
                         // admin can add mod to any community
                         if siteInformation.myUser?.isAdmin ?? false {
                             return true
                         }
+                        
                         // users can only add mod to communities they moderate
                         return siteInformation.moderatedCommunities.contains(community.communityId)
                     },
@@ -75,48 +81,77 @@ struct AddModView: View {
                     }
                 )
             }
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel", role: .destructive) {
+                        dismiss()
+                    }
+                    .tint(.red)
+                }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        if let community, let user {
+                            confirmAddModerator(community: community, user: user)
+                        } else {
+                            assertionFailure("Confirm enabled but community or user nil!")
+                        }
+                    } label: {
+                        Image(systemName: Icons.send)
+                    }
+                    .disabled(user == nil || community == nil)
+                }
+            }
     }
     
     var content: some View {
         Form {
             Section("Community") {
                 Button {
-                    assert(community != nil || canChangeCommunity, "Community nil but cannot be changed!")
-                    if canChangeCommunity {
-                        isSearchingCommunity = true
-                    }
+                    isSearchingCommunity = true
                 } label: {
-                    if let community {
-                        CommunityLabelView(community: community, serverInstanceLocation: .bottom)
-                    } else {
-                        Text("Search")
-                            .foregroundColor(.accentColor)
+                    HStack {
+                        if let community {
+                            CommunityLabelView(community: community, serverInstanceLocation: .bottom)
+                        } else {
+                            Text("No community selected")
+                                .italic()
+                                .foregroundColor(.secondary)
+                        }
+                        
+                        Spacer()
+                        
+                        if canChangeCommunity {
+                            Image(systemName: Icons.search)
+                        }
                     }
                 }
-                .buttonStyle(.plain)
+                .disabled(!canChangeCommunity)
+                .buttonStyle(.borderless)
             }
             
             Section("User") {
                 Button {
-                    assert(user != nil || canChangeUser, "User nil but cannot be changed!")
-                    if canChangeUser {
-                        isSearchingUser = true
-                    }
+                    isSearchingUser = true
                 } label: {
-                    if let user {
-                        UserLabelView(user: user, serverInstanceLocation: .bottom, bannedFromCommunity: false)
-                    } else {
-                        Text("Search")
-                            .foregroundColor(.accentColor) // mock proper button style
+                    HStack {
+                        if let user {
+                            UserLabelView(user: user, serverInstanceLocation: .bottom, bannedFromCommunity: false)
+                                .foregroundColor(.secondary)
+                        } else {
+                            Text("No user selected")
+                                .italic()
+                                .foregroundColor(.secondary)
+                        }
+                        
+                        Spacer()
+                        
+                        if canChangeUser {
+                            Image(systemName: Icons.search)
+                        }
                     }
                 }
-                .buttonStyle(.plain) // prevent UserLabelView from displaying blue text
-            }
-            
-            if let community, let user {
-                Button("Confirm") {
-                    confirmAddModerator(community: community, user: user)
-                }
+                .disabled(!canChangeUser)
             }
         }
     }
@@ -124,12 +159,15 @@ struct AddModView: View {
     func confirmAddModerator(community: CommunityModel, user: UserModel) {
         Task {
             await community.updateModStatus(of: user.userId, to: true) { newCommunity in
-                if let communityBinding {
-                    communityBinding.wrappedValue = newCommunity
-                }
-                // TODO: update user
+                communityBinding?.wrappedValue = newCommunity
+                userBinding?.wrappedValue.addModeratedCommunity(newCommunity)
             }
-            await notifier.add(.success("Modded \(user.name ?? "user")"))
+            // introduce delay to give sheet time to disappear before notification pops
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                Task {
+                    await notifier.add(.success("Modded \(user.name ?? "user")"))
+                }
+            }
             dismiss()
         }
     }

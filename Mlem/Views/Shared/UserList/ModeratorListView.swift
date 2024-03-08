@@ -20,8 +20,14 @@ struct ModeratorListView: View {
     
     @State var isConfirming: Bool = false
     @State var confirmingUser: UserModel?
+    
     var confirmingUserName: String {
         confirmingUser?.name ?? "user"
+    }
+    
+    var canEditModList: Bool {
+        siteInformation.myUser?.isAdmin ?? false ||
+            siteInformation.moderatedCommunities.contains(community.communityId)
     }
     
     init(community: Binding<CommunityModel>, navigationEnabled: Bool = true) {
@@ -57,7 +63,7 @@ struct ModeratorListView: View {
                 }
             }
             
-            if siteInformation.moderatedCommunities.contains(community.communityId) {
+            if canEditModList {
                 Button {
                     modToolTracker.addModerator(user: nil, to: $community)
                 } label: {
@@ -70,7 +76,8 @@ struct ModeratorListView: View {
     }
     
     func genSwipeyActions(for user: UserModel) -> SwipeConfiguration {
-        guard siteInformation.moderatedCommunities.contains(community.communityId), siteInformation.userId ?? -1 != user.userId else {
+        // disable swipey actions if user is not admin or moderator
+        guard canEditModList else {
             return .init()
         }
         

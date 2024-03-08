@@ -24,12 +24,18 @@ struct SimpleCommunitySearchView: View {
     let resultsFilter: (CommunityModel) -> Bool
     let callback: (CommunityModel) -> Void
     
+    var displayedItems: [CommunityModel] { communities.isEmpty ? defaultItems : communities }
+    
     init(
         defaultItems: [CommunityModel]? = nil,
         resultsFilter: @escaping (CommunityModel) -> Bool = { _ in true },
         callback: @escaping (CommunityModel) -> Void
     ) {
-        self.defaultItems = defaultItems ?? .init()
+        if let defaultItems {
+            self.defaultItems = defaultItems.filter(resultsFilter)
+        } else {
+            self.defaultItems = .init()
+        }
         self.resultsFilter = resultsFilter
         self.callback = callback
     }
@@ -63,7 +69,7 @@ struct SimpleCommunitySearchView: View {
     var content: some View {
         ScrollView {
             VStack(spacing: 0) {
-                ForEach(communities, id: \.uid) { community in
+                ForEach(displayedItems, id: \.uid) { community in
                     CommunityListRow(community, complications: [.instance, .subscribers], navigationEnabled: false)
                         .onTapGesture {
                             callback(community)

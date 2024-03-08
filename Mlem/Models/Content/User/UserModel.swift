@@ -220,6 +220,12 @@ struct UserModel {
         }
     }
     
+    mutating func addModeratedCommunity(_ newCommunity: CommunityModel) {
+        var newCommunities = self.moderatedCommunities ?? .init()
+        newCommunities.append(newCommunity)
+        self.moderatedCommunities = newCommunities
+    }
+    
     static func mock() -> UserModel {
         self.init(from: APIPerson.mock())
     }
@@ -271,5 +277,6 @@ extension UserModel: Hashable {
         hasher.combine(avatar)
         hasher.combine(banner)
         hasher.combine(matrixUserId)
+        hasher.combine(moderatedCommunities)
     }
 }

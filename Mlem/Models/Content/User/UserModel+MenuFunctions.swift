@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 extension UserModel {
     func blockMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> MenuFunction {
@@ -35,13 +36,16 @@ extension UserModel {
             }
         )
     }
-    
-    func appointModMenuFunction(modToolTracker: ModToolTracker) -> MenuFunction {
-        .standardMenuFunction(
-            text: "Appoint as Moderator",
-            imageName: Icons.moderation
-        ) {}
-    }
+  
+    // not dead, just waiting for 2.0
+//    func appointModMenuFunction(modToolTracker: ModToolTracker) -> MenuFunction {
+//        .standardMenuFunction(
+//            text: "Appoint as Moderator",
+//            imageName: Icons.moderation
+//        ) {
+//            modToolTracker.addModerator(user: .constant(self), to: nil)
+//        }
+//    }
     
     func menuFunctions(
         _ callback: @escaping (_ item: Self) -> Void = { _ in },
@@ -77,6 +81,11 @@ extension UserModel {
         functions.append(.shareMenuFunction(url: profileUrl))
         
         let isOwnUser = (siteInformation.myUser?.userId ?? -1) == userId
+
+        // TODO: 2.0 use this menu function--doesn't work right now because binding self is cursed
+//        if !isOwnUser || isAdmin ?? false, let modToolTracker {
+//            functions.append(appointModMenuFunction(modToolTracker: modToolTracker))
+//        }
         
         if !isOwnUser {
             functions.append(blockMenuFunction(callback))
