@@ -9,13 +9,17 @@ import SwiftUI
 
 extension UserView {
     var isOwnProfile: Bool { user.userId == siteInformation.myUserInfo?.localUserView.person.id }
+    var canAppointAsMod: Bool {
+        siteInformation.myUser?.isAdmin ?? false ||
+            (!isOwnProfile && !siteInformation.moderatedCommunities.isEmpty)
+    }
     
     var menuFunctions: [MenuFunction] {
         var ret = user.menuFunctions({ user = $0 }, modToolTracker: modToolTracker)
         
         // add moderator needs to be defined as a menu function out here instead of within the user model so that it can take the $user binding
         // TODO: 2.0 move add moderator menu function into Person
-        if !isOwnProfile || siteInformation.myUser?.isAdmin ?? false {
+        if canAppointAsMod {
             ret.append(.standardMenuFunction(
                 text: "Appoint as Moderator",
                 imageName: Icons.moderation

@@ -95,7 +95,7 @@ struct ModeratorListView: View {
     
     func confirmRemoveModerator(user: UserModel) {
         Task {
-            await community.updateModStatus(of: user.userId, to: false) { newCommunity in
+            _ = await community.updateModStatus(of: user.userId, to: false) { newCommunity in
                 community = newCommunity
             }
             await notifier.add(.success("Unmodded \(user.name ?? "user")"))

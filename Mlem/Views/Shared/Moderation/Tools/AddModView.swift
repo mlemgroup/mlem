@@ -21,6 +21,7 @@ struct AddModView: View {
     
     @State var isSearchingCommunity: Bool = false
     @State var isSearchingUser: Bool = false
+    @State var isSubmitting: Bool = false
 
     @StateObject var searchModel: SearchModel = .init(searchTab: .users)
     
@@ -49,6 +50,13 @@ struct AddModView: View {
     
     var body: some View {
         content
+            .overlay {
+                if isSubmitting {
+                    ProgressView()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(Color.gray.opacity(0.3))
+                }
+            }
             .navigationTitle("Add Moderator")
             .navigationBarTitleDisplayMode(.inline)
             .sheet(isPresented: $isSearchingUser) {
@@ -157,18 +165,25 @@ struct AddModView: View {
     }
     
     func confirmAddModerator(community: CommunityModel, user: UserModel) {
+        isSubmitting = true
+        
         Task {
-            await community.updateModStatus(of: user.userId, to: true) { newCommunity in
+            let result = await community.updateModStatus(of: user.userId, to: true) { newCommunity in
                 communityBinding?.wrappedValue = newCommunity
                 userBinding?.wrappedValue.addModeratedCommunity(newCommunity)
             }
-            // introduce delay to give sheet time to disappear before notification pops
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                Task {
-                    await notifier.add(.success("Modded \(user.name ?? "user")"))
+            
+            if result {
+                // introduce delay to give sheet time to disappear before notification pops
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    Task {
+                        await notifier.add(.success("Modded \(user.name ?? "user")"))
+                    }
                 }
+                dismiss()
+            } else {
+                isSubmitting = false
             }
-            dismiss()
         }
     }
 }

@@ -63,6 +63,14 @@ struct SimpleCommunitySearchView: View {
                 }
                 .navigationTitle("Search for Community")
                 .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button("Cancel", role: .destructive) {
+                            dismiss()
+                        }
+                        .tint(.red)
+                    }
+                }
         }
     }
     

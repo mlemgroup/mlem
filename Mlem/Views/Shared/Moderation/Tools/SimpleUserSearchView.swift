@@ -54,6 +54,14 @@ struct SimpleUserSearchView: View {
                 }
                 .navigationTitle("Search for User")
                 .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button("Cancel", role: .destructive) {
+                            dismiss()
+                        }
+                        .tint(.red)
+                    }
+                }
         }
     }
     
