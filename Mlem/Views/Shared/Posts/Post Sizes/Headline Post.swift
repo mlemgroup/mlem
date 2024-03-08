@@ -78,12 +78,12 @@ struct HeadlinePost: View {
         if post.post.featuredLocal {
             Text(Image(systemName: Icons.pinned))
                 .foregroundColor(.red)
-                .font(.caption) +
+                .font(.caption.weight(.bold)) +
                 Text(" ")
         } else if post.post.featuredCommunity {
             Text(Image(systemName: Icons.pinned))
                 .foregroundColor(.green)
-                .font(.caption) +
+                .font(.caption.weight(.bold)) +
                 Text(" ")
         } else {
             Text("")
@@ -94,7 +94,7 @@ struct HeadlinePost: View {
         if post.post.locked {
             Text(Image(systemName: Icons.locked))
                 .foregroundColor(.orange)
-                .font(.caption) +
+                .font(.caption.weight(.bold)) +
                 Text(" ")
         } else {
             Text("")
