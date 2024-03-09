@@ -20,6 +20,8 @@ extension PostModel {
         isExpanded: Bool = false,
         editorTracker: EditorTracker,
         showSelectText: Bool = true,
+        postTracker: StandardPostTracker?,
+        community: CommunityModel?,
         modToolTracker: ModToolTracker?
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
@@ -28,7 +30,7 @@ extension PostModel {
         mainFunctions.append(contentsOf: topRowMenuFunctions(editorTracker: editorTracker))
         
         if let body = self.post.body, body.isNotEmpty, showSelectText {
-            functions.append(MenuFunction.standardMenuFunction(
+            mainFunctions.append(MenuFunction.standardMenuFunction(
                 text: "Select Text",
                 imageName: Icons.select
             ) {
