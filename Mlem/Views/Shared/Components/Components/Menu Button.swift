@@ -36,7 +36,21 @@ struct MenuButton: View {
             NavigationLink(navigationMenuFunction.destination) {
                 Label(navigationMenuFunction.text, systemImage: navigationMenuFunction.imageName)
             }
-        case let .group(groupMenuFunction):
+        case let .controlGroup(groupMenuFunction):
+            
+            if #available(iOS 16.4, *) {
+                ControlGroup {
+                    ForEach(groupMenuFunction.children) { child in
+                        MenuButton(menuFunction: child, menuFunctionPopup: $menuFunctionPopup)
+                    }
+                }
+                .controlGroupStyle(.compactMenu)
+            } else {
+                ForEach(groupMenuFunction.children) { child in
+                    MenuButton(menuFunction: child, menuFunctionPopup: $menuFunctionPopup)
+                }
+            }
+        case let .disclosureGroup(groupMenuFunction):
             Menu {
                 ForEach(groupMenuFunction.children) { child in
                     MenuButton(menuFunction: child, menuFunctionPopup: $menuFunctionPopup)
