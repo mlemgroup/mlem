@@ -180,6 +180,8 @@ enum Icons {
     static let edit: String = "pencil"
     static let delete: String = "trash"
     static let copy: String = "doc.on.doc"
+    static let copyFill: String = "doc.on.doc.fill"
+    static let select: String = "selection.pin.in.out"
     
     // settings
     static let upvoteOnSave: String = "arrow.up.heart"
