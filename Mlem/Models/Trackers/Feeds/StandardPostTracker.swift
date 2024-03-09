@@ -225,12 +225,13 @@ class StandardPostTracker: StandardTracker<PostModel> {
     /// Given a post, determines whether it should be filtered
     /// - Returns: the first reason according to which the post should be filtered, if applicable, or nil if the post should not be filtered
     private func shouldFilterPost(_ postModel: PostModel, filters: [PostFilter]) -> PostFilter? {
+        let isModerator = siteInformation.moderatedCommunities.contains(postModel.community.communityId)
         for filter in filters {
             switch filter {
             case .read:
                 if postModel.read { return filter }
             case .keyword:
-                if postModel.post.name.lowercased().contains(filteredKeywords) { return filter }
+                if !isModerator, postModel.post.name.lowercased().contains(filteredKeywords) { return filter }
             case let .blockedUser(userId):
                 if postModel.creator.userId == userId { return filter }
             case let .blockedCommunity(communityId):
