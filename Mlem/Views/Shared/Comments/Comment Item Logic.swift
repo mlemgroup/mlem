@@ -231,7 +231,7 @@ extension CommentItem {
         })
         
         let content = self.hierarchicalComment.commentView.comment.content
-        ret.append(MenuFunction.standardMenuFunction(
+        mainFunctions.append(MenuFunction.standardMenuFunction(
             text: "Select Text",
             imageName: Icons.select
         ) {
