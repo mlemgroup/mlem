@@ -224,6 +224,7 @@ struct CommentItem: View {
                 MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
             }
         }
+        .destructiveConfirmation(menuFunctionPopup: $menuFunctionPopup)
         .onChange(of: collapseComments) { newValue in
             if pageContext == .posts {
                 if newValue == false {
