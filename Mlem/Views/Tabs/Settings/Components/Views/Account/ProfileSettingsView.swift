@@ -190,10 +190,6 @@ struct ProfileSettingsView: View {
                             bannerAttachmentModel.url = user.person.banner ?? ""
                         }
                     }
-                } else if showCloseButton {
-                    Button("Close", systemImage: Icons.close) {
-                        dismiss()
-                    }
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
@@ -227,6 +223,8 @@ struct ProfileSettingsView: View {
                     }
                 } else if hasEdited == .updating {
                     ProgressView()
+                } else if showCloseButton {
+                    CloseButtonView()
                 }
             }
         }
