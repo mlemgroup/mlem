@@ -33,17 +33,7 @@ struct SelectTextView: View {
                 .frame(height: 30)
                 .padding(.horizontal, 12)
                 .background(Capsule().fill(Color.accentColor))
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: 30)
-                        .symbolRenderingMode(.palette)
-                        .foregroundStyle(.secondary, .secondary.opacity(0.2))
-                }
-                .buttonStyle(.plain)
+                CloseButtonView()
             }
             .padding(.horizontal, 10)
             TextEditor(text: .constant(text))

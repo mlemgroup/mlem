@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0300F2C62B9C7D4B0022F7C4 /* CloseButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0300F2C52B9C7D4B0022F7C4 /* CloseButtonView.swift */; };
 		0304F58A2B44AF5B00537BFA /* CollapsibleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0304F5892B44AF5B00537BFA /* CollapsibleSection.swift */; };
 		0308E1142B0EA32A000CA955 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0308E1132B0EA32A000CA955 /* AccountSettingsView.swift */; };
 		0308E1162B0EA42B000CA955 /* APILocalUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0308E1152B0EA42B000CA955 /* APILocalUserView.swift */; };
@@ -618,6 +619,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0300F2C52B9C7D4B0022F7C4 /* CloseButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButtonView.swift; sourceTree = "<group>"; };
 		0304F5892B44AF5B00537BFA /* CollapsibleSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleSection.swift; sourceTree = "<group>"; };
 		0308E1132B0EA32A000CA955 /* AccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
 		0308E1152B0EA42B000CA955 /* APILocalUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APILocalUserView.swift; sourceTree = "<group>"; };
@@ -2226,6 +2228,7 @@
 				CDD0EF922B7A957B00CA3504 /* Moderation */,
 				6FF17D002B685C16007E1814 /* AppLockView.swift */,
 				03F6D4BA2B952738008235A0 /* SelectTextView.swift */,
+				0300F2C52B9C7D4B0022F7C4 /* CloseButtonView.swift */,
 				CD2053152ACBBB490000AA38 /* Avatars */,
 				CD2E147B2A6B2891004198DE /* Components */,
 				6332FDCD27EFDD0A0009A98A /* Accounts */,
@@ -3492,6 +3495,7 @@
 				508845CF2A3641160088E483 /* JSONDecoder+Default.swift in Sources */,
 				637218672A3A2AAD008C4816 /* GetPersonDetails.swift in Sources */,
 				B1A26FE12A44AAB200B91A32 /* EnvironmentValues+NavigationPathWithRoutes.swift in Sources */,
+				0300F2C62B9C7D4B0022F7C4 /* CloseButtonView.swift in Sources */,
 				CDD55D222B2674BD002020C7 /* String+ParseLinks.swift in Sources */,
 				6332FDC027EFB05F0009A98A /* Settings Item.swift in Sources */,
 				031A93D62AC847DA0077030C /* UploadConfirmationView.swift in Sources */,

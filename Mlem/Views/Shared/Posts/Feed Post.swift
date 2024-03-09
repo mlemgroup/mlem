@@ -37,7 +37,6 @@ struct FeedPost: View {
     @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
     @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
     @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
-    @AppStorage("showExtraContextMenuActions") var showExtraContextMenuActions: Bool = false
     
     @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
@@ -94,9 +93,7 @@ struct FeedPost: View {
         
         return postModel.menuFunctions(
             editorTracker: editorTracker,
-            showExtraContextMenuActions: showExtraContextMenuActions || postSize == .compact,
             showSelectText: postSize == .large,
-            widgetTracker: layoutWidgetTracker,
             postTracker: postTracker,
             community: isMod ? postModel.community : nil,
             modToolTracker: isMod ? modToolTracker : nil
