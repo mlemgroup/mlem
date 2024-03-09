@@ -5,22 +5,45 @@
 //  Created by Sjmarf on 04/03/2024.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
 import SwiftUIIntrospect
 
-private class BodyEditorModel {
+class BodyEditorModel: ObservableObject {
+    @Dependency(\.pictrsRepository) var pictrsRepository
+    
     var uiTextView: UITextView?
+    var attachedFiles: [PictrsFile] = .init()
+    
+    func deleteUnusedFiles(text: String) async {
+        for file in attachedFiles where !text.contains(file.file) {
+            await deleteFile(file: file)
+        }
+    }
+    
+    func deleteAllFiles() async {
+        for file in attachedFiles {
+            await deleteFile(file: file)
+        }
+    }
+    
+    private func deleteFile(file: PictrsFile) async {
+        do {
+            try await pictrsRepository.deleteImage(file: file)
+            print("Deleted attachment \(file.file)")
+        } catch {
+            print("FAILED TO DELETE", error)
+        }
+    }
 }
 
 struct BodyEditorView: View {
     @Binding var text: String
     let prompt: String
     
-    @StateObject var attachmentModel: LinkAttachmentModel = .init(url: "")
-    private let model = BodyEditorModel()
-    
-    @State var attachedFiles: [PictrsFile] = .init()
+    @ObservedObject var bodyEditorModel: BodyEditorModel
+    @ObservedObject var attachmentModel: LinkAttachmentModel
     
     var body: some View {
         LinkAttachmentView(model: attachmentModel) {
@@ -30,16 +53,18 @@ struct BodyEditorView: View {
                 axis: .vertical
             )
             .disabled(attachmentModel.imageModel?.state != nil)
+            .opacity(attachmentModel.imageModel?.state == nil ? 1 : 0.5)
             .introspect(.textField(axis: .vertical), on: .iOS(.v16, .v17)) { uiTextView in
-                model.uiTextView = uiTextView
+                bodyEditorModel.uiTextView = uiTextView
             }
             .onChange(of: attachmentModel.imageModel?.state) { newValue in
                 switch newValue {
                 case let .uploaded(file: file):
                     if let file {
+                        let cursorPosition = self.cursorPosition
                         let index = text.index(text.startIndex, offsetBy: cursorPosition)
                         text = String(text[..<index] + "![](\(attachmentModel.url))" + text[index...])
-                        attachedFiles.append(file)
+                        bodyEditorModel.attachedFiles.append(file)
                         attachmentModel.url = ""
                         attachmentModel.imageModel = nil
                     }
@@ -47,18 +72,11 @@ struct BodyEditorView: View {
                     break
                 }
             }
-            .toolbar {
-                ToolbarItem {
-                    LinkUploadOptionsView(model: attachmentModel) {
-                        Label("Attach Image or Link", systemImage: Icons.attachment)
-                    }
-                }
-            }
         }
     }
     
     var cursorPosition: Int {
-        if let textView = model.uiTextView {
+        if let textView = bodyEditorModel.uiTextView {
             if let range = textView.selectedTextRange {
                 let cursorPosition = textView.offset(from: textView.beginningOfDocument, to: range.start)
                 return cursorPosition
@@ -66,8 +84,4 @@ struct BodyEditorView: View {
         }
         return text.count - 1
     }
-}
-
-extension View {
-    // It has to be done this way because of an iOS 17 bug in which keyboard toolbars don't behave properly in a sheet when placed inside of a navigation stack - it has to be placed outside.
 }

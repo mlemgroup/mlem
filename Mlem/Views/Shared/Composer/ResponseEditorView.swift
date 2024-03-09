@@ -31,6 +31,9 @@ struct ResponseEditorView: View {
     
     @State var slurMatch: String?
     
+    @StateObject var bodyEditorModel: BodyEditorModel = .init()
+    @StateObject var attachmentModel: LinkAttachmentModel = .init(url: "")
+    
     @FocusState private var focusedField: Field?
 
     private var isReadyToReply: Bool {
@@ -44,7 +47,9 @@ struct ResponseEditorView: View {
                     // Post Text
                     BodyEditorView(
                         text: $editorBody,
-                        prompt: "What do you want to say?"
+                        prompt: "What do you want to say?",
+                        bodyEditorModel: bodyEditorModel,
+                        attachmentModel: attachmentModel
                     )
                     .lineLimit(AppConstants.textFieldVariableLineLimit)
                     .accessibilityLabel("Response Body")
@@ -61,23 +66,9 @@ struct ResponseEditorView: View {
                     
                     Divider()
                     
-                    if let slurMatch {
-                        VStack {
-                            Text("\"\(slurMatch)\" is disallowed.")
-                                .foregroundStyle(.white)
-                            Text("You can still post this comment, but your instance will replace \"\(slurMatch)\" with \"*removed*\".")
-                                .multilineTextAlignment(.center)
-                                .font(.footnote)
-                                .foregroundStyle(.white.opacity(0.8))
-                        }
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius).fill(.red))
-                        .padding(.horizontal, 10)
-                    } else {
-                        editorModel.embeddedView()
-                    }
+                    infoView
                 }
+                .animation(.default, value: attachmentModel.imageModel?.state)
                 .animation(.default, value: slurMatch)
                 .padding(.bottom, AppConstants.editorOverscroll)
             }
@@ -89,7 +80,7 @@ struct ResponseEditorView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .background(Color.gray.opacity(0.3))
                         .accessibilityElement(children: .ignore)
-                        .accessibilityLabel("Submitting Resposne")
+                        .accessibilityLabel("Submitting Response")
                         .edgesIgnoringSafeArea(.all)
                         .allowsHitTesting(false)
                 }
@@ -97,16 +88,25 @@ struct ResponseEditorView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel", role: .destructive) {
+                        Task(priority: .background) {
+                            await bodyEditorModel.deleteAllFiles()
+                        }
                         dismiss()
                     }
                     .tint(.red)
                 }
                 
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    LinkUploadOptionsView(model: attachmentModel) {
+                        Label("Attach Image or Link", systemImage: Icons.attachment)
+                    }
                     // Submit Button
                     Button {
                         Task(priority: .userInitiated) {
                             await submit()
+                        }
+                        Task(priority: .background) {
+                            await bodyEditorModel.deleteUnusedFiles(text: editorBody)
                         }
                     } label: {
                         Image(systemName: Icons.send)
@@ -119,6 +119,48 @@ struct ResponseEditorView: View {
         }
         .interactiveDismissDisabled(isReadyToReply)
         .presentationDragIndicator(.hidden)
+    }
+    
+    @ViewBuilder
+    var infoView: some View {
+        switch attachmentModel.imageModel?.state {
+        case .uploading(let progress):
+            if progress == 1 {
+                HStack(spacing: 20) {
+                    Text("Processing...")
+                    ProgressView()
+                }
+            } else {
+                VStack {
+                    Text("Uploading...")
+                    ProgressView(value: progress)
+                        .progressViewStyle(LinearProgressViewStyle())
+                        .frame(width: 80, height: 10)
+                }
+            }
+        case .failed(let string):
+            VStack {
+                Text("Failed to upload")
+                    .foregroundStyle(.red)
+            }
+        default:
+            if let slurMatch {
+                VStack {
+                    Text("\"\(slurMatch)\" is disallowed.")
+                        .foregroundStyle(.white)
+                    Text("You can still post this comment, but your instance will replace \"\(slurMatch)\" with \"*removed*\".")
+                        .multilineTextAlignment(.center)
+                        .font(.footnote)
+                        .foregroundStyle(.white.opacity(0.8))
+                }
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius).fill(.red))
+                .padding(.horizontal, 10)
+            } else {
+                editorModel.embeddedView()
+            }
+        }
     }
     
     @MainActor
