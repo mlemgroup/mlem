@@ -23,10 +23,9 @@ struct ModToolSheet: View {
                 shouldBan: shouldBan,
                 postTracker: postTracker
             )
-        case let .addMod(community):
-            AddModView(community: community)
+        case let .addMod(user, community):
+            AddModView(community: community, user: user)
         case let .instanceBan(user, shouldBan):
-            BanUserView(
                 user: user,
                 communityContext: nil,
                 shouldBan: shouldBan,

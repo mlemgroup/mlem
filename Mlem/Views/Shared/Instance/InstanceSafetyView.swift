@@ -50,11 +50,7 @@ struct InstanceSafetyView: View {
             NavigationStack {
                 FediseerInfoView()
                     .toolbar {
-                        ToolbarItem(placement: .topBarLeading) {
-                            Button("Close", systemImage: Icons.close) {
-                                showingInfoSheet = false
-                            }
-                        }
+                        CloseButtonView()
                     }
             }
         }

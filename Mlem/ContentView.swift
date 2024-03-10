@@ -146,6 +146,12 @@ struct ContentView: View {
             .presentationDetents([.medium, .large], selection: .constant(.large))
             ._presentationBackgroundInteraction(enabledUpThrough: .medium)
         }
+        .sheet(item: $editorTracker.selectText) { selectText in
+            SelectTextView(text: selectText.text)
+            .presentationDetents([.medium])
+            ._presentationCornerRadius(20)
+            ._presentationBackgroundInteraction(enabledUpThrough: .medium)
+        }
         .sheet(item: $editorTracker.editPost) { editing in
             NavigationStack {
                 PostComposerView(editModel: editing)

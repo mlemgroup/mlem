@@ -19,6 +19,7 @@ extension PostModel {
     @MainActor func menuFunctions(
         isExpanded: Bool = false,
         editorTracker: EditorTracker,
+        showSelectText: Bool = true,
         postTracker: StandardPostTracker?,
         community: CommunityModel?,
         modToolTracker: ModToolTracker?
@@ -28,12 +29,20 @@ extension PostModel {
         var mainFunctions: [MenuFunction] = .init()
         mainFunctions.append(contentsOf: topRowMenuFunctions(editorTracker: editorTracker))
         
+        if let body = self.post.body, body.isNotEmpty, showSelectText {
+            mainFunctions.append(MenuFunction.standardMenuFunction(
+                text: "Select Text",
+                imageName: Icons.select
+            ) {
+                editorTracker.openEditor(with: SelectTextModel(text: body))
+            })
+        }
+        
         if creator.isActiveAccount {
             // Edit
             mainFunctions.append(MenuFunction.standardMenuFunction(
                 text: "Edit",
-                imageName: Icons.edit,
-                enabled: true
+                imageName: Icons.edit
             ) {
                 editorTracker.openEditor(with: PostEditorModel(post: self))
             })

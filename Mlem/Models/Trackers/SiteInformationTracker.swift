@@ -59,6 +59,7 @@ class SiteInformationTracker: ObservableObject {
                     myUser?.isAdmin = response.admins.contains { $0.person.id == myUser?.userId }
                     
                     if let communities = response.myUser?.moderates {
+                        myUser?.moderatedCommunities = communities.map { CommunityModel(from: $0.community) }
                         moderatedCommunities = Set(communities.map(\.community.id))
                     } else {
                         moderatedCommunities = .init(minimumCapacity: 1)

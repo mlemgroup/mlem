@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 extension UserModel {
     func blockMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> MenuFunction {
@@ -70,6 +71,8 @@ extension UserModel {
         functions.append(.shareMenuFunction(url: profileUrl))
         
         let isOwnUser = (siteInformation.myUser?.userId ?? -1) == userId
+
+        // TODO: 2.0 appoint moderator as menu function
         
         if !isOwnUser {
             functions.append(blockMenuFunction(callback))
