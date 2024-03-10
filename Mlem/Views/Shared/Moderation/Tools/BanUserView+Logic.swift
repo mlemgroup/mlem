@@ -22,7 +22,7 @@ extension BanUserView {
             let reason = reason.isEmpty ? nil : reason
             var user = user
             
-            if contentRemovalType == .purge {
+            if contentRemovalType == .purge && isPermanent {
                 let response = await user.purge(reason: reason)
                 DispatchQueue.main.async {
                     isWaiting = false
