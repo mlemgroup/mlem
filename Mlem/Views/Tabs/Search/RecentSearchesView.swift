@@ -72,7 +72,7 @@ struct RecentSearchesView: View {
         ForEach(contentTracker.items, id: \.uid) { contentModel in
             Group {
                 if let community = contentModel.wrappedValue as? CommunityModel {
-                    CommunityResultView(
+                    CommunityListRow(
                         community,
                         complications: .withTypeLabel,
                         swipeActions: .init(trailingActions: [deleteSwipeAction(contentModel)]),
