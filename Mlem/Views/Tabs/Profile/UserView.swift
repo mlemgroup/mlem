@@ -24,6 +24,7 @@ struct UserView: View {
     let communityContext: CommunityModel?
     
     @State var user: UserModel
+    
     @State var selectedTab: UserViewTab = .overview
     @State var isLoadingContent: Bool = true
     
@@ -69,8 +70,7 @@ struct UserView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .secondaryAction) {
-                    let functions = user.menuFunctions({ user = $0 }, modToolTracker: modToolTracker)
-                    ForEach(functions) { item in
+                    ForEach(menuFunctions) { item in
                         MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
                     }
                 }
@@ -80,13 +80,16 @@ struct UserView: View {
                     await tryReloadUser()
                 }
             }
-
             .onChange(of: siteInformation.myUserInfo?.localUserView.person) { newValue in
                 if isOwnProfile {
                     if let newValue {
                         user.update(with: newValue)
                     }
                 }
+            }
+            .onChange(of: user) { newValue in
+                // ugly little hack to propagate user moderation status changes
+                communityTracker.items = newValue.moderatedCommunities ?? .init()
             }
             .hoistNavigation {
                 if navigationPath.isEmpty {
@@ -243,6 +246,7 @@ struct UserView: View {
                     communityTracker: communityTracker,
                     selectedTab: $selectedTab
                 )
+                .id(user.hashValue)
             }
             .transition(.opacity)
         }

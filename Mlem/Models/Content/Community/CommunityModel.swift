@@ -286,7 +286,8 @@ struct CommunityModel {
     /// - Parameters:
     ///   - of: id of the user to change mod status of
     ///   - to: new mod status
-    func updateModStatus(of userId: Int, to status: Bool, callback: @escaping (_ item: Self) -> Void = { _ in }) async {
+    /// - Returns: true on successful update, false otherwise
+    func updateModStatus(of userId: Int, to status: Bool, callback: @escaping (_ item: Self) -> Void = { _ in }) async -> Bool {
         var new = self
         do {
             let newModerators = try await apiClient.updateModStatus(of: userId, in: communityId, status: status)
@@ -294,8 +295,10 @@ struct CommunityModel {
             RunLoop.main.perform { [new] in
                 callback(new)
             }
+            return true
         } catch {
             errorHandler.handle(error)
+            return false
         }
     }
     

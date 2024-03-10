@@ -17,4 +17,12 @@ extension View {
             return self
         }
     }
+    
+    func _presentationCornerRadius(_ cornerRadius: CGFloat?) -> some View {
+        if #available(iOS 16.4, *) {
+            return self.presentationCornerRadius(cornerRadius)
+        } else {
+            return self
+        }
+    }
 }
