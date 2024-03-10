@@ -148,10 +148,8 @@ struct BanUserView: View {
         if !siteInformation.isAdmin || (bannedFromCommunity != user.banned && !banFromInstance) {
             if let communityContext {
                 Section("\(verb.capitalized)ning From") {
-                    HStack {
-                        CommunityLabelView(community: communityContext, serverInstanceLocation: .bottom)
-                    }
-                    .padding(.vertical, 1)
+                    CommunityLabelView(community: communityContext, serverInstanceLocation: .bottom)
+                        .padding(.vertical, 1)
                 }
             }
         } else if let instance = siteInformation.instance {
@@ -187,10 +185,12 @@ struct BanUserView: View {
                         .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
+                    .padding(.vertical, 1)
                 }
             } else {
                 Section("\(verb.capitalized)ning From") {
                     InstanceLabelView(instance: instance)
+                        .padding(.vertical, 1)
                 }
             }
         }
