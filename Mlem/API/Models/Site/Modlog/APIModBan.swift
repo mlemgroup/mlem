@@ -1,20 +1,17 @@
 //
-//  ApiModBanFromCommunity.swift
+//  APIModBan.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-02-27
 //
 
-// ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
-
 import Foundation
 
-// ModBanFromCommunity.ts
-struct ApiModBanFromCommunity: Codable {
+// ModBan.ts
+struct APIModBan: Decodable {
     let id: Int
     let modPersonId: Int
     let otherPersonId: Int
-    let communityId: Int
     let reason: String?
     let banned: Bool
     let expires: String?

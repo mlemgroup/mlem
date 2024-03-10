@@ -1,5 +1,5 @@
 //
-//  ApiModlogActionType.swift
+//  APIModlogActionType.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-02-27
@@ -8,7 +8,7 @@
 import Foundation
 
 // ModlogActionType.ts
-enum ApiModlogActionType: String, Decodable {
+enum APIModlogActionType: String, Decodable {
     case all = "All"
     case modRemovePost = "ModRemovePost"
     case modLockPost = "ModLockPost"

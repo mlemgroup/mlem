@@ -1,5 +1,5 @@
 //
-//  ApiModRemovePostView.swift
+//  APIModRemovePostView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-02-27

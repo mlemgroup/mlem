@@ -20,7 +20,7 @@ struct GetModlogRequest: APIGetRequest {
         communityId: Int?,
         page: Int?,
         limit: Int?,
-        type_: ApiModlogActionType?,
+        type_: APIModlogActionType?,
         otherPersonId: Int?
     ) throws {
         self.instanceURL = try session.instanceUrl
@@ -44,18 +44,18 @@ struct GetModlogRequest: APIGetRequest {
 
 struct APIGetModlogResponse: Decodable {
     let removed_posts: [APIModRemovePostView]
-    let locked_posts: [ApiModLockPostView]
-    let featured_posts: [ApiModFeaturePostView]
-    let removed_comments: [ApiModRemoveCommentView]
-    let removed_communities: [ApiModRemoveCommunityView]
-    let banned_from_community: [ApiModBanFromCommunityView]
-    let banned: [ApiModBanView]
-    let added_to_community: [ApiModAddCommunityView]
-    let transferred_to_community: [ApiModTransferCommunityView]
-    let added: [ApiModAddView]
-    let admin_purged_persons: [ApiAdminPurgePersonView]
-    let admin_purged_communities: [ApiAdminPurgeCommunityView]
-    let admin_purged_posts: [ApiAdminPurgePostView]
-    let admin_purged_comments: [ApiAdminPurgeCommentView]
-    let hidden_communities: [ApiModHideCommunityView]
+    let locked_posts: [APIModLockPostView]
+    let featured_posts: [APIModFeaturePostView]
+    let removed_comments: [APIModRemoveCommentView]
+    let removed_communities: [APIModRemoveCommunityView]
+    let banned_from_community: [APIModBanFromCommunityView]
+    let banned: [APIModBanView]
+    let added_to_community: [APIModAddCommunityView]
+    let transferred_to_community: [APIModTransferCommunityView]
+    let added: [APIModAddView]
+    let admin_purged_persons: [APIAdminPurgePersonView]
+    let admin_purged_communities: [APIAdminPurgeCommunityView]
+    let admin_purged_posts: [APIAdminPurgePostView]
+    let admin_purged_comments: [APIAdminPurgeCommentView]
+    let hidden_communities: [APIModHideCommunityView]
 }

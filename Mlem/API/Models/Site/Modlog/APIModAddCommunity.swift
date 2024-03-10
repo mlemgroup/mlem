@@ -1,5 +1,5 @@
 //
-//  ApiModRemoveComment.swift
+//  APIModAddCommunity.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-02-27
@@ -7,12 +7,12 @@
 
 import Foundation
 
-// ModRemoveComment.ts
-struct ApiModRemoveComment: Decodable {
+// ModAddCommunity.ts
+struct APIModAddCommunity: Decodable {
     let id: Int
     let modPersonId: Int
-    let commentId: Int
-    let reason: String?
+    let otherPersonId: Int
+    let communityId: Int
     let removed: Bool
     let when_: String
 }
