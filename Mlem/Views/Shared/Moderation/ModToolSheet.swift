@@ -26,6 +26,7 @@ struct ModToolSheet: View {
         case let .addMod(user, community):
             AddModView(community: community, user: user)
         case let .instanceBan(user, shouldBan):
+            BanUserView(
                 user: user,
                 communityContext: nil,
                 shouldBan: shouldBan,
