@@ -51,6 +51,7 @@ struct ResponseEditorView: View {
                         bodyEditorModel: bodyEditorModel,
                         attachmentModel: attachmentModel
                     )
+                    .linkAttachmentModel(model: attachmentModel)
                     .lineLimit(AppConstants.textFieldVariableLineLimit)
                     .accessibilityLabel("Response Body")
                     .padding(AppConstants.standardSpacing)
