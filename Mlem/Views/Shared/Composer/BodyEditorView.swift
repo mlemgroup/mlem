@@ -46,31 +46,29 @@ struct BodyEditorView: View {
     @ObservedObject var attachmentModel: LinkAttachmentModel
     
     var body: some View {
-        LinkAttachmentView(model: attachmentModel) {
-            TextField(
-                prompt,
-                text: $text,
-                axis: .vertical
-            )
-            .disabled(attachmentModel.imageModel?.state != nil)
-            .opacity(attachmentModel.imageModel?.state == nil ? 1 : 0.5)
-            .introspect(.textField(axis: .vertical), on: .iOS(.v16, .v17)) { uiTextView in
-                bodyEditorModel.uiTextView = uiTextView
-            }
-            .onChange(of: attachmentModel.imageModel?.state) { newValue in
-                switch newValue {
-                case let .uploaded(file: file):
-                    if let file {
-                        let cursorPosition = self.cursorPosition
-                        let index = text.index(text.startIndex, offsetBy: cursorPosition)
-                        text = String(text[..<index] + "![](\(attachmentModel.url))" + text[index...])
-                        bodyEditorModel.attachedFiles.append(file)
-                        attachmentModel.url = ""
-                        attachmentModel.imageModel = nil
-                    }
-                default:
-                    break
+        TextField(
+            prompt,
+            text: $text,
+            axis: .vertical
+        )
+        .disabled(attachmentModel.imageModel?.state != nil)
+        .opacity(attachmentModel.imageModel?.state == nil ? 1 : 0.5)
+        .introspect(.textField(axis: .vertical), on: .iOS(.v16, .v17)) { uiTextView in
+            bodyEditorModel.uiTextView = uiTextView
+        }
+        .onChange(of: attachmentModel.imageModel?.state) { newValue in
+            switch newValue {
+            case let .uploaded(file: file):
+                if let file {
+                    let cursorPosition = self.cursorPosition
+                    let index = text.index(text.startIndex, offsetBy: cursorPosition)
+                    text = String(text[..<index] + "![](\(attachmentModel.url))" + text[index...])
+                    bodyEditorModel.attachedFiles.append(file)
+                    attachmentModel.url = ""
+                    attachmentModel.imageModel = nil
                 }
+            default:
+                break
             }
         }
     }

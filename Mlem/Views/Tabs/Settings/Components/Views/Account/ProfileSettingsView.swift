@@ -80,32 +80,31 @@ struct ProfileSettingsView: View {
                 Text("You can use markdown here.")
             }
             Section {
-                LinkAttachmentView(model: avatarAttachmentModel) {
-                    HStack {
-                        AvatarView(url: URL(string: avatarAttachmentModel.url), type: .user, avatarSize: 48, iconResolution: .unrestricted)
-                        switch avatarAttachmentModel.imageModel?.state {
-                        case nil, .uploaded:
-                            Text("Avatar")
+                HStack {
+                    AvatarView(url: URL(string: avatarAttachmentModel.url), type: .user, avatarSize: 48, iconResolution: .unrestricted)
+                    switch avatarAttachmentModel.imageModel?.state {
+                    case nil, .uploaded:
+                        Text("Avatar")
+                            .padding(.leading, 3)
+                    default:
+                        if let imageModel = avatarAttachmentModel.imageModel {
+                            UploadProgressView(imageModel: imageModel)
                                 .padding(.leading, 3)
-                        default:
-                            if let imageModel = avatarAttachmentModel.imageModel {
-                                UploadProgressView(imageModel: imageModel)
-                                    .padding(.leading, 3)
-                            }
                         }
-                        Spacer()
-                        if avatarAttachmentModel.imageModel != nil || avatarAttachmentModel.url.isNotEmpty {
-                            Button(action: avatarAttachmentModel.removeLinkAction) {
-                                circleImage(systemName: "xmark")
-                            }
-                            .buttonStyle(.plain)
-                        } else {
-                            LinkUploadOptionsView(model: avatarAttachmentModel) {
-                                circleImage(systemName: Icons.add)
-                            }
+                    }
+                    Spacer()
+                    if avatarAttachmentModel.imageModel != nil || avatarAttachmentModel.url.isNotEmpty {
+                        Button(action: avatarAttachmentModel.removeLinkAction) {
+                            circleImage(systemName: "xmark")
+                        }
+                        .buttonStyle(.plain)
+                    } else {
+                        LinkUploadOptionsView(model: avatarAttachmentModel) {
+                            circleImage(systemName: Icons.add)
                         }
                     }
                 }
+                .linkAttachmentModel(model: avatarAttachmentModel)
                 .padding(10)
                 .listRowInsets(EdgeInsets())
                 .onChange(of: avatarAttachmentModel.url) { newValue in
@@ -115,43 +114,42 @@ struct ProfileSettingsView: View {
                 }
             }
             Section {
-                LinkAttachmentView(model: bannerAttachmentModel) {
-                    VStack(spacing: 0) {
-                        Group {
-                            if bannerAttachmentModel.url.isNotEmpty {
-                                CachedImage(url: URL(string: bannerAttachmentModel.url), shouldExpand: false)
-                            } else {
-                                Color(uiColor: .systemGray5)
-                            }
+                VStack(spacing: 0) {
+                    Group {
+                        if bannerAttachmentModel.url.isNotEmpty {
+                            CachedImage(url: URL(string: bannerAttachmentModel.url), shouldExpand: false)
+                        } else {
+                            Color(uiColor: .systemGray5)
                         }
-                        .frame(height: 100)
-                        .clipped()
-                        HStack {
-                            switch bannerAttachmentModel.imageModel?.state {
-                            case nil, .uploaded:
-                                Text("Banner")
-                                    .padding(.leading, 3)
-                            default:
-                                if let imageModel = bannerAttachmentModel.imageModel {
-                                    UploadProgressView(imageModel: imageModel)
-                                        .padding(.leading, 3)
-                                }
-                            }
-                            Spacer()
-                            if bannerAttachmentModel.imageModel != nil || bannerAttachmentModel.url.isNotEmpty {
-                                Button(action: bannerAttachmentModel.removeLinkAction) {
-                                    circleImage(systemName: "xmark")
-                                }
-                                .buttonStyle(.plain)
-                            } else {
-                                LinkUploadOptionsView(model: bannerAttachmentModel) {
-                                    circleImage(systemName: Icons.add)
-                                }
-                            }
-                        }
-                        .padding(10)
                     }
+                    .frame(height: 100)
+                    .clipped()
+                    HStack {
+                        switch bannerAttachmentModel.imageModel?.state {
+                        case nil, .uploaded:
+                            Text("Banner")
+                                .padding(.leading, 3)
+                        default:
+                            if let imageModel = bannerAttachmentModel.imageModel {
+                                UploadProgressView(imageModel: imageModel)
+                                    .padding(.leading, 3)
+                            }
+                        }
+                        Spacer()
+                        if bannerAttachmentModel.imageModel != nil || bannerAttachmentModel.url.isNotEmpty {
+                            Button(action: bannerAttachmentModel.removeLinkAction) {
+                                circleImage(systemName: "xmark")
+                            }
+                            .buttonStyle(.plain)
+                        } else {
+                            LinkUploadOptionsView(model: bannerAttachmentModel) {
+                                circleImage(systemName: Icons.add)
+                            }
+                        }
+                    }
+                    .padding(10)
                 }
+                .linkAttachmentModel(model: bannerAttachmentModel)
                 .listRowInsets(EdgeInsets())
                 .onChange(of: bannerAttachmentModel.url) { newValue in
                     if newValue != siteInformation.myUserInfo?.localUserView.person.banner ?? "" {
