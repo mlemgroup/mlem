@@ -62,7 +62,7 @@ struct RemovePostView: View {
     
     var form: some View {
         Form {
-            ReasonView(reason: $reason, focusedField: $reasonFocused, showReason: true)
+            ReasonView(reason: $reason, focusedField: $reasonFocused, showReason: shouldRemove)
             if siteInformation.isAdmin, shouldRemove {
                 Section {
                     Toggle("Purge", isOn: $shouldPurge)
