@@ -245,7 +245,7 @@ struct BanUserView: View {
                         .now.advanced(by: .days(Double(days)))
                     },
                     set: { newValue in
-                        days = Int(newValue.timeIntervalSince(.now) / (60 * 60 * 24))
+                        days = Int(round(newValue.timeIntervalSince(.now) / (60 * 60 * 24)))
                     }
                 ),
                 in: Date.now.advanced(by: .days(1))...,
