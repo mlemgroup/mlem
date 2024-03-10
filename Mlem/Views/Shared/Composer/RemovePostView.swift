@@ -12,12 +12,14 @@ struct RemovePostView: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.notifier) var notifier
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.siteInformation) var siteInformation
     
     @Environment(\.dismiss) var dismiss
     
     @State var reason: String = ""
     @FocusState var reasonFocused: FocusedField?
     @State var isWaiting: Bool = false
+    @State var shouldPurge: Bool = false
     
     let post: PostModel
     let shouldRemove: Bool
@@ -61,6 +63,14 @@ struct RemovePostView: View {
     var form: some View {
         Form {
             ReasonView(reason: $reason, focusedField: $reasonFocused, showReason: true)
+            if siteInformation.isAdmin {
+                Section {
+                    Toggle("Purge", isOn: $shouldPurge)
+                        .tint(.red)
+                } footer: {
+                    Text("Permanently remove this post, its comments, and any attachments from the database. This cannot be undone.")
+                }
+            }
         }
     }
     

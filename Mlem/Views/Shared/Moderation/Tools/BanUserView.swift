@@ -17,6 +17,44 @@ struct BanUserView: View {
     
     @Environment(\.dismiss) var dismiss
     
+    enum ContentRemovalType: CaseIterable {
+        case keep, remove, purge
+        
+        var label: String {
+            switch self {
+            case .keep:
+                "Keep"
+            case .remove:
+                "Remove"
+            case .purge:
+                "Purge"
+            }
+        }
+        
+        var systemImage: String {
+            switch self {
+            case .keep:
+                "checkmark.square"
+            case .remove:
+                Icons.remove
+            case .purge:
+                Icons.purge
+            }
+        }
+        
+        var description: String {
+            switch self {
+            case .keep:
+                "Keep all posts and comments made by this user."
+            case .remove:
+                "Remove all posts and comments created by this user. They can be restored later."
+            case .purge:
+                // swiftlint:disable:next line_length
+                "Permanently remove all of this user's posts, comments, attachments and account data from the database. This cannot be undone."
+            }
+        }
+    }
+    
     let user: UserModel
     let community: CommunityModel? // if nil, instance ban; otherwise community ban
     let shouldBan: Bool
@@ -25,7 +63,7 @@ struct BanUserView: View {
     @State var reason: String = ""
     @State var days: Int = 1
     @State var isPermanent: Bool = true
-    @State var removeContent: Bool = false
+    @State var contentRemovalType: ContentRemovalType = .keep
     @State var isWaiting: Bool = false
     
     @FocusState var focusedField: FocusedField?
@@ -77,8 +115,6 @@ struct BanUserView: View {
             
             if shouldBan {
                 durationSections()
-                
-                removeContentSection()
             }
         }
     }
@@ -95,9 +131,30 @@ struct BanUserView: View {
     @ViewBuilder
     func durationSections() -> some View {
         Section {
-            Toggle("Permanent", isOn: $isPermanent)
-                .tint(.red)
+            Toggle(
+                "Permanent",
+                isOn: Binding(
+                    get: { isPermanent },
+                    set: { newValue in
+                        isPermanent = newValue
+                        if !newValue && contentRemovalType == .purge {
+                            contentRemovalType = .remove
+                        }
+                    }
+                )
+            )
+            .tint(.red)
         }
+        if siteInformation.isAdmin && isPermanent {
+            removeContentPickerSection()
+        } else {
+            banDurationSection()
+            removeContentSection()
+        }
+    }
+    
+    @ViewBuilder
+    func banDurationSection() -> some View {
         Section("Ban Duration") {
             HStack {
                 Text("Days:")
@@ -110,8 +167,8 @@ struct BanUserView: View {
                         days = newValue > 1 ? newValue : 0
                     }
                 ), format: .number)
-                    .keyboardType(.numberPad)
-                    .focused($focusedField, equals: .days)
+                .keyboardType(.numberPad)
+                .focused($focusedField, equals: .days)
             }
             DatePicker(
                 "Expiration Date:",
@@ -144,18 +201,54 @@ struct BanUserView: View {
     @ViewBuilder
     func removeContentSection() -> some View {
         Section {
-            Toggle("Remove Content", isOn: $removeContent)
-                .tint(.red)
+            Toggle(
+                "Remove Content",
+                isOn: Binding(
+                    get: { contentRemovalType != .keep },
+                    set: { contentRemovalType = $0 ? .remove : .keep}
+                )
+            )
+            .tint(.red)
         } footer: {
             if community == nil {
                 let posts = user.postCount ?? 0
                 let comments = user.commentCount ?? 0
-                Text("Remove all \(posts) posts and \(comments) comments created by this user.")
+                Text("Remove all \(posts) posts and \(comments) comments created by this user. They can be restored later if needed.")
             }
         }
     }
     
-    // MARK: Components
+    @ViewBuilder
+    func removeContentPickerSection() -> some View {
+        Section {
+            ForEach(ContentRemovalType.allCases, id: \.self) { type in
+                Button { contentRemovalType = type } label: {
+                    HStack {
+                        Label {
+                            Text(type.label)
+                        } icon: {
+                            Image(systemName: type.systemImage)
+                                .foregroundStyle(.secondary)
+                        }
+                        Spacer()
+                        Checkbox(isOn: contentRemovalType == type)
+                            .tint(type == .purge ? .red : .blue)
+                        
+                    }
+                    .foregroundStyle(.primary)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(EmptyButtonStyle())
+            }
+            .tint(.red)
+            .pickerStyle(.inline)
+        } header: {
+            Text("User Content")
+        } footer: {
+            Text(contentRemovalType.description)
+                .foregroundStyle(contentRemovalType == .purge ? .red : .secondary)
+        }
+    }
     
     @ViewBuilder
     func daysPresetButton(_ label: String, value: Int) -> some View {
@@ -164,72 +257,6 @@ struct BanUserView: View {
             hapticManager.play(haptic: .gentleInfo, priority: .low)
         }
         .buttonStyle(BanFormButton(selected: days == value && !isPermanent))
-    }
-    
-    // MARK: Logic
-    
-    private func confirm() {
-        if let community {
-            communityBan(from: community)
-        } else {
-            instanceBan()
-        }
-    }
-    
-    private func instanceBan() {
-        isWaiting = true
-        Task {
-            let reason = reason.isEmpty ? nil : reason
-            var user = user
-            await user.toggleBan(
-                expires: expires,
-                reason: reason,
-                removeData: removeContent
-            )
-            DispatchQueue.main.async {
-                isWaiting = false
-            }
-            
-            await handleResult(user.banned)
-        }
-    }
-    
-    private func communityBan(from community: CommunityModel) {
-        isWaiting = true
-        Task {
-            let updatedBannedStatus = await community.banUser(
-                userId: user.userId,
-                ban: shouldBan,
-                removeData: removeContent,
-                reason: reason.isEmpty ? nil : reason,
-                expires: expires
-            )
-            DispatchQueue.main.async {
-                isWaiting = false
-            }
-            
-            await handleResult(updatedBannedStatus)
-        }
-    }
-    
-    private func handleResult(_ result: Bool) async {
-        if result == shouldBan {
-            await notifier.add(.success("\(verb.capitalized)"))
-            
-            await MainActor.run {
-                if let postTracker {
-                    for post in postTracker.items where post.creator.userId == user.userId {
-                        post.creatorBannedFromCommunity = shouldBan
-                    }
-                }
-            }
-            
-            DispatchQueue.main.async {
-                dismiss()
-            }
-        } else {
-            await notifier.add(.failure("Failed to \(verb) user"))
-        }
     }
 }
 

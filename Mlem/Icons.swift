@@ -212,6 +212,7 @@ enum Icons {
     static let lock: String = "lock"
     static let unlock: String = "lock.open"
     static let remove: String = "xmark.bin"
+    static let purge: String = "burn"
     static let restore: String = "arrow.up.bin"
     
     // fediseer
