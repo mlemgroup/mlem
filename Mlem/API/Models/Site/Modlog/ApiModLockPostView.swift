@@ -9,7 +9,7 @@ import Foundation
 
 // ModLockPostView.ts
 struct ApiModLockPostView: Decodable {
-    let mod_lock_post: ApiModLockPost
+    let modLockPost: ApiModLockPost
     let moderator: APIPerson?
     let post: APIPost
     let community: APICommunity

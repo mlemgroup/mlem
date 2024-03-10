@@ -5,12 +5,10 @@
 //  Created by Eric Andrews on 2024-02-27
 //
 
-// ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
-
 import Foundation
 
 // ModlogActionType.ts
-enum ApiModlogActionType: String, Codable {
+enum ApiModlogActionType: String, Decodable {
     case all = "All"
     case modRemovePost = "ModRemovePost"
     case modLockPost = "ModLockPost"

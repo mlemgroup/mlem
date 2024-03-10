@@ -9,7 +9,7 @@ import Foundation
 
 // ModRemoveCommunityView.ts
 struct ApiModRemoveCommunityView: Decodable {
-    let mod_remove_community: ApiModRemoveCommunity
+    let modRemoveCommunity: ApiModRemoveCommunity
     let moderator: APIPerson?
     let community: APICommunity
 }

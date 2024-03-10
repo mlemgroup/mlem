@@ -9,7 +9,7 @@ import Foundation
 
 // ModRemoveCommentView.ts
 struct ApiModRemoveCommentView: Decodable {
-    let mod_remove_comment: ApiModRemoveComment
+    let modRemoveComment: ApiModRemoveComment
     let moderator: APIPerson?
     let comment: APIComment
     let commenter: APIPerson

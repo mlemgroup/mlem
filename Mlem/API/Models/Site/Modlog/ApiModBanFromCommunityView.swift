@@ -9,8 +9,8 @@ import Foundation
 
 // ModBanFromCommunityView.ts
 struct ApiModBanFromCommunityView: Decodable {
-    let mod_ban_from_community: ApiModBanFromCommunity
+    let modBanFromCommunity: ApiModBanFromCommunity
     let moderator: APIPerson?
     let community: APICommunity
-    let banned_person: APIPerson
+    let bannedPerson: APIPerson
 }

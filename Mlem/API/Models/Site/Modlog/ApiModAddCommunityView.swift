@@ -5,14 +5,12 @@
 //  Created by Eric Andrews on 2024-02-27
 //
 
-// ---- AUTOMATICALLY GENERATED FILE, DO NOT MODIFY ---- //
-
 import Foundation
 
 // ModAddCommunityView.ts
 struct ApiModAddCommunityView: Decodable {
-    let mod_add_community: ApiModAddCommunity
+    let modAddCommunity: ApiModAddCommunity
     let moderator: APIPerson?
     let community: APICommunity
-    let modded_person: APIPerson
+    let moddedPerson: APIPerson
 }
