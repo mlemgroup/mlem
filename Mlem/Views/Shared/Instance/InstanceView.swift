@@ -11,7 +11,7 @@ import Foundation
 import SwiftUI
 
 enum InstanceViewTab: String, Identifiable, CaseIterable {
-    case about, administrators, details, uptime, safety
+    case about, administrators, details, modlog, uptime, safety
     
     var id: Self { self }
     
@@ -71,7 +71,7 @@ struct InstanceView: View {
     }
     
     var availableTabs: [InstanceViewTab] {
-        var tabs: [InstanceViewTab] = [.about, .administrators, .details]
+        var tabs: [InstanceViewTab] = [.about, .administrators, .details, .modlog]
         if instance.canFetchUptime {
             tabs.append(.uptime)
         }
@@ -134,6 +134,8 @@ struct InstanceView: View {
                                 ProgressView()
                                     .padding(.top, 30)
                             }
+                        case .modlog:
+                            ModlogView()
                         case .uptime:
                             VStack {
                                 switch uptimeData {
