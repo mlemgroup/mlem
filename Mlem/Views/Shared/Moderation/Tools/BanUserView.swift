@@ -8,6 +8,7 @@
 import Dependencies
 import SwiftUI
 
+// swiftlint:disable:next type_body_length
 struct BanUserView: View {
     @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.hapticManager) var hapticManager
@@ -56,9 +57,12 @@ struct BanUserView: View {
     }
     
     let user: UserModel
-    let community: CommunityModel? // if nil, instance ban; otherwise community ban
+    let communityContext: CommunityModel?
+    let bannedFromCommunity: Bool
     let shouldBan: Bool
     let postTracker: StandardPostTracker? // if present, will update with new banned status
+    
+    @State var banFromInstance: Bool
     
     @State var reason: String = ""
     @State var days: Int = 1
@@ -67,6 +71,26 @@ struct BanUserView: View {
     @State var isWaiting: Bool = false
     
     @FocusState var focusedField: FocusedField?
+    
+    init(
+        user: UserModel,
+        communityContext: CommunityModel?,
+        bannedFromCommunity: Bool = false,
+        shouldBan: Bool,
+        postTracker: StandardPostTracker?
+    ) {
+        self.user = user
+        self.communityContext = communityContext
+        self.bannedFromCommunity = bannedFromCommunity
+        self.shouldBan = shouldBan
+        self.postTracker = postTracker
+        
+        @Dependency(\.siteInformation) var siteInformation
+        
+        self._banFromInstance = .init(
+            wrappedValue: siteInformation.isAdmin && shouldBan != user.banned
+        )
+    }
     
     var expires: Int? {
         isPermanent ? nil : Date.getEpochDate(daysFromNow: days)
@@ -107,9 +131,7 @@ struct BanUserView: View {
     
     var form: some View {
         Form {
-            if let community {
-                communitySection(for: community)
-            }
+            scopeSection()
             
             ReasonView(reason: $reason, focusedField: $focusedField, showReason: shouldBan)
             
@@ -122,9 +144,55 @@ struct BanUserView: View {
     // MARK: Form Sections
     
     @ViewBuilder
-    func communitySection(for community: CommunityModel) -> some View {
-        Section("\(verb.capitalized)ning From") {
-            CommunityLabelView(community: community, serverInstanceLocation: .bottom)
+    func scopeSection() -> some View {
+        if !siteInformation.isAdmin || (bannedFromCommunity != user.banned && !banFromInstance) {
+            if let communityContext {
+                Section("\(verb.capitalized)ning From") {
+                    CommunityLabelView(community: communityContext, serverInstanceLocation: .bottom)
+                        .padding(.vertical, 2)
+                }
+            }
+        } else if let instance = siteInformation.instance {
+            if let communityContext, bannedFromCommunity == user.banned {
+                Section("\(verb.capitalized) From") {
+                    Menu {
+                        Picker("Test", selection: $banFromInstance) {
+                            Button { } label: {
+                                Text("Instance")
+                                if let name = siteInformation.instance?.name {
+                                    Text(name)
+                                }
+                            }.tag(true)
+                            Button { } label: {
+                                Text("Community")
+                                if let name = communityContext.fullyQualifiedName {
+                                    Text(name)
+                                }
+                            }.tag(false)
+                        }.pickerStyle(.inline)
+                    } label: {
+                        HStack {
+                            if banFromInstance {
+                                InstanceLabelView(instance: instance)
+                            } else {
+                                CommunityLabelView(community: communityContext, serverInstanceLocation: .bottom)
+                            }
+                            Spacer()
+                            Image(systemName: "chevron.down")
+                                .fontWeight(.semibold)
+                                .foregroundStyle(.secondary)
+                        }
+                        .padding(.vertical, 2)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                }
+            } else {
+                Section("\(verb.capitalized)ning From") {
+                    InstanceLabelView(instance: instance)
+                        .padding(.vertical, 2)
+                }
+            }
         }
     }
     
@@ -136,16 +204,16 @@ struct BanUserView: View {
                 isOn: Binding(
                     get: { isPermanent },
                     set: { newValue in
-                        isPermanent = newValue
                         if !newValue && contentRemovalType == .purge {
                             contentRemovalType = .remove
                         }
+                        isPermanent = newValue
                     }
                 )
             )
             .tint(.red)
         }
-        if siteInformation.isAdmin && isPermanent {
+        if isPermanent && banFromInstance {
             removeContentPickerSection()
         } else {
             banDurationSection()
@@ -210,7 +278,7 @@ struct BanUserView: View {
             )
             .tint(.red)
         } footer: {
-            if community == nil {
+            if communityContext == nil {
                 let posts = user.postCount ?? 0
                 let comments = user.commentCount ?? 0
                 Text("Remove all \(posts) posts and \(comments) comments created by this user. They can be restored later if needed.")
@@ -261,5 +329,5 @@ struct BanUserView: View {
 }
 
 #Preview {
-    BanUserView(user: .mock(), community: .mock(), shouldBan: true, postTracker: nil)
+    BanUserView(user: .mock(), communityContext: .mock(), shouldBan: true, postTracker: nil)
 }

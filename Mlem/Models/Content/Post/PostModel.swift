@@ -8,6 +8,7 @@
 import Dependencies
 import Foundation
 
+// swiftlint:disable type_body_length
 /// Internal model to represent a post
 /// Note: this is just the first pass at decoupling the internal models from the API models--to avoid massive merge conflicts and an unreviewably large PR, I've kept the structure practically identical, and will slowly morph it over the course of several PRs. Eventually all of the API types that this model uses will go away and everything downstream of the repositories won't ever know there's an API at all :)
 class PostModel: ContentIdentifiable, ObservableObject {
@@ -33,6 +34,7 @@ class PostModel: ContentIdentifiable, ObservableObject {
     var updated: Date?
     @Published var creatorBannedFromCommunity: Bool
     var links: [LinkType]
+    var purged: Bool = false
     
     var uid: ContentModelIdentifier { .init(contentType: .post, contentId: postId) }
     
@@ -292,6 +294,26 @@ class PostModel: ContentIdentifiable, ObservableObject {
         }
     }
     
+    func purge(reason: String?) async -> Bool {
+        DispatchQueue.main.async {
+            self.purged = true
+        }
+        do {
+            let response = try await apiClient.purgePost(id: postId, reason: reason)
+            if !response.success {
+                throw APIClientError.unexpectedResponse
+            }
+            return true
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+            DispatchQueue.main.async {
+                self.purged = false
+            }
+        }
+        return false
+    }
+    
     // MARK: Utility Methods
     
     var postType: PostType {
@@ -338,3 +360,5 @@ extension PostModel: Equatable {
         lhs.id == rhs.id
     }
 }
+
+// swiftlint:enable type_body_length

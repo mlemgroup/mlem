@@ -271,6 +271,11 @@ extension APIClient {
         return try await perform(request: request)
     }
     
+    func purgePerson(id: Int, reason: String?) async throws -> SuccessResponse {
+        let request = try PurgePersonRequest(session: session, personId: id, reason: reason)
+        return try await perform(request: request)
+    }
+    
     func markPersonMentionAsRead(mentionId: Int, isRead: Bool) async throws -> APIPersonMentionView {
         let request = try MarkPersonMentionAsRead(session: session, personMentionId: mentionId, read: isRead)
         return try await perform(request: request).personMentionView

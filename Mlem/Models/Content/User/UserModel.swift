@@ -220,6 +220,20 @@ struct UserModel {
         }
     }
     
+    mutating func purge(reason: String?) async -> Bool {
+        do {
+            let response = try await apiClient.purgePerson(id: userId, reason: reason)
+            if !response.success {
+                throw APIClientError.unexpectedResponse
+            }
+            return true
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+        }
+        return false
+    }
+    
     static func mock() -> UserModel {
         self.init(from: APIPerson.mock())
     }

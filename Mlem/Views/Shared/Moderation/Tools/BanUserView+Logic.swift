@@ -9,8 +9,8 @@ import SwiftUI
 
 extension BanUserView {
     func confirm() {
-        if let community {
-            communityBan(from: community)
+        if !banFromInstance, let communityContext {
+            communityBan(from: communityContext)
         } else {
             instanceBan()
         }
@@ -21,16 +21,25 @@ extension BanUserView {
         Task {
             let reason = reason.isEmpty ? nil : reason
             var user = user
-            await user.toggleBan(
-                expires: expires,
-                reason: reason,
-                removeData: contentRemovalType == .remove
-            )
-            DispatchQueue.main.async {
-                isWaiting = false
-            }
             
-            await handleResult(user.banned)
+            if contentRemovalType == .purge {
+                let response = await user.purge(reason: reason)
+                DispatchQueue.main.async {
+                    isWaiting = false
+                }
+                await handleResult(response)
+            } else {
+                await user.toggleBan(
+                    expires: expires,
+                    reason: reason,
+                    removeData: contentRemovalType == .remove
+                )
+                DispatchQueue.main.async {
+                    isWaiting = false
+                }
+                
+                await handleResult(user.banned)
+            }
         }
     }
     
@@ -54,12 +63,16 @@ extension BanUserView {
     
     func handleResult(_ result: Bool) async {
         if result == shouldBan {
-            await notifier.add(.success("\(verb.capitalized)"))
+            await notifier.add(.success("\(verb.capitalized)ned User"))
             
             await MainActor.run {
                 if let postTracker {
                     for post in postTracker.items where post.creator.userId == user.userId {
-                        post.creatorBannedFromCommunity = shouldBan
+                        if banFromInstance {
+                            post.creator.banned = shouldBan
+                        } else {
+                            post.creatorBannedFromCommunity = shouldBan
+                        }
                     }
                 }
             }

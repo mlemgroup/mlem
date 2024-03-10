@@ -99,7 +99,7 @@ struct FeedPost: View {
 
     var body: some View {
         // this allows post deletion/removal to not require tracker updates
-        if postModel.post.deleted || (postModel.post.removed && !isMod) {
+        if postModel.post.deleted || (postModel.post.removed && !isMod) || postModel.purged {
             EmptyView()
         } else {
             VStack(spacing: 0) {

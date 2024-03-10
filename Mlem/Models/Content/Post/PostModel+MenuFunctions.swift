@@ -151,22 +151,44 @@ extension PostModel {
             ) {
                 modToolTracker.removePost(self, shouldRemove: !self.post.removed)
             })
-
-            functions.append(MenuFunction.toggleableMenuFunction(
-                toggle: creatorBannedFromCommunity,
-                trueText: "Unban User",
-                trueImageName: Icons.communityUnban,
-                falseText: "Ban User",
-                falseImageName: Icons.communityBan,
-                isDestructive: .whenFalse
-            ) {
-                modToolTracker.banUserFromCommunity(
-                    self.creator,
-                    from: community,
-                    shouldBan: !self.creatorBannedFromCommunity,
-                    postTracker: postTracker
-                )
-            })
+            
+            if !(siteInformation.isAdmin && creatorBannedFromCommunity && creator.banned) {
+                functions.append(MenuFunction.toggleableMenuFunction(
+                    toggle: creatorBannedFromCommunity,
+                    trueText: "Unban User",
+                    trueImageName: Icons.communityUnban,
+                    falseText: "Ban User",
+                    falseImageName: (siteInformation.isAdmin && !creator.banned) ? Icons.instanceBan : Icons.communityBan,
+                    isDestructive: .whenFalse
+                ) {
+                    modToolTracker.banUserFromCommunity(
+                        self.creator,
+                        from: community,
+                        bannedFromCommunity: self.creatorBannedFromCommunity,
+                        shouldBan: !self.creatorBannedFromCommunity,
+                        postTracker: postTracker
+                    )
+                })
+            }
+            
+            if siteInformation.isAdmin && (creator.banned || creatorBannedFromCommunity) {
+                functions.append(MenuFunction.toggleableMenuFunction(
+                    toggle: creator.banned,
+                    trueText: "Unban User",
+                    trueImageName: Icons.instanceUnban,
+                    falseText: "Ban User",
+                    falseImageName: Icons.instanceBan,
+                    isDestructive: .whenFalse
+                ) {
+                    modToolTracker.banUserFromCommunity(
+                        self.creator,
+                        from: community,
+                        bannedFromCommunity: self.creatorBannedFromCommunity,
+                        shouldBan: !self.creator.banned,
+                        postTracker: postTracker
+                    )
+                })
+            }
         }
         
         return functions

@@ -139,4 +139,9 @@ extension APIClient {
         let response = try await perform(request: request).postView
         return PostModel(from: response)
     }
+    
+    func purgePost(id: Int, reason: String?) async throws -> SuccessResponse {
+        let request = try PurgePostRequest(session: session, postId: id, reason: reason)
+        return try await perform(request: request)
+    }
 }
