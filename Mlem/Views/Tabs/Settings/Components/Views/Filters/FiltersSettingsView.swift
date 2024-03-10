@@ -44,7 +44,7 @@ struct FiltersSettingsView: View {
             } header: {
                 Text("Filtered Keywords")
             } footer: {
-                Text("Posts containing these keywords in their title will not be shown.")
+                Text("Posts containing these keywords in their title will not be shown. Posts are not hidden for communities you moderate.")
             }
 
             Section {
