@@ -8,6 +8,11 @@
 import Foundation
 import SwiftUI
 
+enum LinkDestinationType {
+    case appRoute(AppRoute)
+    case url(URL)
+}
+
 /// Enumerates the types of links
 /// Equatable so that things like PostModel can be equatable
 /// All cases have a 'position' int for sorting the list
@@ -18,9 +23,12 @@ enum LinkType {
     // - posts
     // - comments
     
+    // TODO: 2.0 clean up type discrepancies
     case website(Int, String, URL) // position, link title, url
     case user(Int, String, String, URL) // position, username, instance, url
     case community(Int, String, String, URL) // position, community name, instance, url
+    case userFromModel(Int, UserModel)
+    case postFromApiType(Int, APIPost)
     
     var title: String {
         switch self {
@@ -30,6 +38,10 @@ enum LinkType {
             return "/u/\(username)"
         case let .community(_, community, _, _):
             return "/c/\(community)"
+        case let .userFromModel(_, user):
+            return "/u/\(user.name ?? "user")"
+        case let .postFromApiType(_, post):
+            return post.name
         }
     }
     
@@ -38,42 +50,26 @@ enum LinkType {
         case
             let .website(position, _, _),
             let .user(position, _, _, _),
-            let .community(position, _, _, _):
+            let .community(position, _, _, _),
+            let .userFromModel(position, _),
+            let .postFromApiType(position, _):
             return position
         }
     }
     
-    var url: URL {
+    var destinationType: LinkDestinationType {
         switch self {
         case
             let .website(_, _, url),
             let .user(_, _, _, url),
             let .community(_, _, _, url):
-            return url
+            return .url(url)
+        case let .userFromModel(_, user):
+            return .appRoute(.userProfile(user))
+        case let .postFromApiType(_, post):
+            return .appRoute(.lazyLoadPostLinkWithContext(.init(postId: post.id)))
         }
     }
-}
-
-extension LinkType: Hashable, Identifiable {
-    func hash(into hasher: inout Hasher) {
-        switch self {
-        case let .website(position, title, url):
-            hasher.combine(0)
-            hasher.combine(position)
-            hasher.combine(title)
-            hasher.combine(url)
-        case let .user(position, _, _, url):
-            hasher.combine(1)
-            hasher.combine(position)
-            hasher.combine(url)
-        case let .community(position, _, _, url):
-            hasher.combine(2)
-            hasher.combine(position)
-            hasher.combine(url)
-        }
-    }
-    
-    var id: Int { hashValue }
     
     var isWebsite: Bool {
         if case .website = self {
@@ -81,6 +77,32 @@ extension LinkType: Hashable, Identifiable {
         }
         return false
     }
+}
+
+extension LinkType: Hashable, Identifiable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(position)
+        switch self {
+        case let .website(_, title, url):
+            hasher.combine("website")
+            hasher.combine(title)
+            hasher.combine(url)
+        case let .user(_, _, _, url):
+            hasher.combine("user")
+            hasher.combine(url)
+        case let .community(_, _, _, url):
+            hasher.combine("community")
+            hasher.combine(url)
+        case let .userFromModel(_, user):
+            hasher.combine("userFromModel")
+            hasher.combine(user)
+        case let .postFromApiType(_, post):
+            hasher.combine("postFromModel")
+            hasher.combine(post)
+        }
+    }
+    
+    var id: Int { hashValue }
 }
 
 enum EasyTapLinkDisplayMode: String, SettingsOptions {
@@ -98,10 +120,29 @@ struct EasyTapLinkView: View {
     let showCaption: Bool
     
     var body: some View {
-        content
-            .onTapGesture {
-                openURL(linkType.url)
+        switch linkType.destinationType {
+        case let .appRoute(appRoute):
+            NavigationLink(appRoute) {
+                content
             }
+        case let .url(url):
+            content
+                .onTapGesture {
+                    openURL(url)
+                }
+                .contextMenu {
+                    if linkType.isWebsite {
+                        Button("Open", systemImage: Icons.browser) {
+                            openURL(url)
+                        }
+                        Button("Copy", systemImage: Icons.copy) {
+                            let pasteboard = UIPasteboard.general
+                            pasteboard.url = url
+                        }
+                        ShareLink(item: url)
+                    }
+                } preview: { WebView(url: url) }
+        }
     }
     
     var content: some View {
@@ -117,21 +158,9 @@ struct EasyTapLinkView: View {
                     .lineLimit(1)
             }
         }
-        .padding(AppConstants.postAndCommentSpacing)
+        .padding(AppConstants.standardSpacing)
         .background(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
-        .foregroundColor(Color(UIColor.secondarySystemBackground)))
-        .contextMenu {
-            if linkType.isWebsite {
-                Button("Open", systemImage: Icons.browser) {
-                    openURL(linkType.url)
-                }
-                Button("Copy", systemImage: Icons.copy) {
-                    let pasteboard = UIPasteboard.general
-                    pasteboard.url = linkType.url
-                }
-                ShareLink(item: linkType.url)
-            }
-        } preview: { WebView(url: linkType.url) }
+            .foregroundColor(Color(UIColor.secondarySystemBackground)))
     }
     
     @ViewBuilder
@@ -141,6 +170,11 @@ struct EasyTapLinkView: View {
             websiteCaption(url: url)
         case let .user(_, name, instance, _), let .community(_, name, instance, _):
             userOrCommunityCaption(name: name, instance: instance)
+        case let .userFromModel(_, user):
+            let instance = user.profileUrl.host() ?? "unknown"
+            userOrCommunityCaption(name: user.name, instance: instance)
+        case .postFromApiType:
+            EmptyView() // not enough information in APIPost for caption
         }
     }
     

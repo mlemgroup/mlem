@@ -14,5 +14,5 @@ struct APIModRemovePost: Decodable {
     let postId: Int
     let reason: String?
     let removed: Bool
-    let when_: String
+    let when_: Date
 }
