@@ -29,6 +29,8 @@ enum LinkType {
     case community(Int, String, String, URL) // position, community name, instance, url
     case userFromModel(Int, UserModel)
     case postFromApiType(Int, APIPost)
+    case commentFromApiType(Int, APIComment)
+    case communityFromApiType(Int, APICommunity)
     
     var title: String {
         switch self {
@@ -42,6 +44,10 @@ enum LinkType {
             return "/u/\(user.name ?? "user")"
         case let .postFromApiType(_, post):
             return post.name
+        case let .commentFromApiType(_, comment):
+            return comment.content
+        case let .communityFromApiType(_, community):
+            return "/c/\(community.name)"
         }
     }
     
@@ -52,7 +58,9 @@ enum LinkType {
             let .user(position, _, _, _),
             let .community(position, _, _, _),
             let .userFromModel(position, _),
-            let .postFromApiType(position, _):
+            let .postFromApiType(position, _),
+            let .commentFromApiType(position, _),
+            let .communityFromApiType(position, _):
             return position
         }
     }
@@ -68,6 +76,10 @@ enum LinkType {
             return .appRoute(.userProfile(user))
         case let .postFromApiType(_, post):
             return .appRoute(.lazyLoadPostLinkWithContext(.init(postId: post.id)))
+        case let .commentFromApiType(_, comment):
+            return .appRoute(.lazyLoadPostLinkWithContext(.init(postId: comment.postId, scrollTarget: comment.id)))
+        case let .communityFromApiType(_, community):
+            return .appRoute(.community(.init(from: community, subscribed: nil)))
         }
     }
     
@@ -97,8 +109,14 @@ extension LinkType: Hashable, Identifiable {
             hasher.combine("userFromModel")
             hasher.combine(user)
         case let .postFromApiType(_, post):
-            hasher.combine("postFromModel")
+            hasher.combine("postFromApiType")
             hasher.combine(post)
+        case let .commentFromApiType(_, comment):
+            hasher.combine("commentFromApiType")
+            hasher.combine(comment)
+        case let .communityFromApiType(_, community):
+            hasher.combine("communityFromApiType")
+            hasher.combine(community)
         }
     }
     
@@ -173,8 +191,9 @@ struct EasyTapLinkView: View {
         case let .userFromModel(_, user):
             let instance = user.profileUrl.host() ?? "unknown"
             userOrCommunityCaption(name: user.name, instance: instance)
-        case .postFromApiType:
-            EmptyView() // not enough information in APIPost for caption
+        case .postFromApiType, .commentFromApiType, .communityFromApiType:
+            // not enough info in base API types for a meaningful caption
+            EmptyView()
         }
     }
     

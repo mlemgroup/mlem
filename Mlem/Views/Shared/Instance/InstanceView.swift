@@ -11,7 +11,7 @@ import Foundation
 import SwiftUI
 
 enum InstanceViewTab: String, Identifiable, CaseIterable {
-    case about, administrators, details, modlog, uptime, safety
+    case about, administration, details, uptime, safety
     
     var id: Self { self }
     
@@ -71,7 +71,7 @@ struct InstanceView: View {
     }
     
     var availableTabs: [InstanceViewTab] {
-        var tabs: [InstanceViewTab] = [.about, .administrators, .details, .modlog]
+        var tabs: [InstanceViewTab] = [.about, .administration, .details]
         if instance.canFetchUptime {
             tabs.append(.uptime)
         }
@@ -93,7 +93,7 @@ struct InstanceView: View {
                         }
                         Divider()
                     }
-                    if let errorDetails, [.about, .administrators, .details].contains(selectedTab) {
+                    if let errorDetails, [.about, .administration, .details].contains(selectedTab) {
                         ErrorView(errorDetails)
                     } else {
                         switch selectedTab {
@@ -110,15 +110,21 @@ struct InstanceView: View {
                                 ProgressView()
                                     .padding(.top, 30)
                             }
-                        case .administrators:
-                            if let administrators = instance.administrators {
-                                ForEach(administrators, id: \.self) { user in
-                                    UserListRow(user, complications: [.date])
-                                    Divider()
+                        case .administration:
+                            VStack {
+                                NavigationLink(value: AppRoute.modlog(.init(community: nil))) {
+                                    Text("Modlog")
                                 }
-                            } else {
-                                ProgressView()
-                                    .padding(.top, 30)
+                                
+                                if let administrators = instance.administrators {
+                                    ForEach(administrators, id: \.self) { user in
+                                        UserListRow(user, complications: [.date])
+                                        Divider()
+                                    }
+                                } else {
+                                    ProgressView()
+                                        .padding(.top, 30)
+                                }
                             }
                         case .details:
                             if instance.administrators != nil {
@@ -134,8 +140,6 @@ struct InstanceView: View {
                                 ProgressView()
                                     .padding(.top, 30)
                             }
-                        case .modlog:
-                            ModlogView()
                         case .uptime:
                             VStack {
                                 switch uptimeData {

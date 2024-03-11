@@ -437,7 +437,7 @@
 		CD2BFE782B9F60AC00717611 /* APIClient+Instance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2BFE772B9F60AC00717611 /* APIClient+Instance.swift */; };
 		CD2BFE7B2B9F616700717611 /* APIModRemovePostView+ModlogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2BFE7A2B9F616700717611 /* APIModRemovePostView+ModlogEntry.swift */; };
 		CD2BFE7E2B9F670B00717611 /* ModlogEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2BFE7D2B9F670B00717611 /* ModlogEntryView.swift */; };
-		CD2BFE802B9F6DBE00717611 /* ModlogContextLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2BFE7F2B9F6DBE00717611 /* ModlogContextLinkView.swift */; };
+		CD2BFE822B9FA05300717611 /* ModlogLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2BFE812B9FA05300717611 /* ModlogLink.swift */; };
 		CD2E182B2A3B708500224F8A /* Settings Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2E182A2A3B708500224F8A /* Settings Options.swift */; };
 		CD309C462A93FBD300988F95 /* Logo View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD309C452A93FBD300988F95 /* Logo View.swift */; };
 		CD3720EC2B2E8F96004D7103 /* AlternativeIconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3720EB2B2E8F96004D7103 /* AlternativeIconCell.swift */; };
@@ -1095,7 +1095,7 @@
 		CD2BFE772B9F60AC00717611 /* APIClient+Instance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient+Instance.swift"; sourceTree = "<group>"; };
 		CD2BFE7A2B9F616700717611 /* APIModRemovePostView+ModlogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIModRemovePostView+ModlogEntry.swift"; sourceTree = "<group>"; };
 		CD2BFE7D2B9F670B00717611 /* ModlogEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogEntryView.swift; sourceTree = "<group>"; };
-		CD2BFE7F2B9F6DBE00717611 /* ModlogContextLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogContextLinkView.swift; sourceTree = "<group>"; };
+		CD2BFE812B9FA05300717611 /* ModlogLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogLink.swift; sourceTree = "<group>"; };
 		CD2E182A2A3B708500224F8A /* Settings Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings Options.swift"; sourceTree = "<group>"; };
 		CD309C452A93FBD300988F95 /* Logo View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logo View.swift"; sourceTree = "<group>"; };
 		CD3720EB2B2E8F96004D7103 /* AlternativeIconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeIconCell.swift; sourceTree = "<group>"; };
@@ -2469,6 +2469,7 @@
 				B14E93BF2A45CA3400D6DA93 /* Post Link.swift */,
 				B14E93C12A45D3B300D6DA93 /* Community Link.swift */,
 				6DE118382A4A20D600810C7E /* Lazy Load Post Link.swift */,
+				CD2BFE812B9FA05300717611 /* ModlogLink.swift */,
 			);
 			path = "Navigation Contexts";
 			sourceTree = "<group>";
@@ -2755,7 +2756,6 @@
 			children = (
 				CD2697E22B9E13B70002B459 /* ModlogView.swift */,
 				CD2BFE7D2B9F670B00717611 /* ModlogEntryView.swift */,
-				CD2BFE7F2B9F6DBE00717611 /* ModlogContextLinkView.swift */,
 			);
 			path = Modlog;
 			sourceTree = "<group>";
@@ -3619,6 +3619,7 @@
 				03ED5D5F2B6560FE005C245B /* PostModel+MenuFunctions.swift in Sources */,
 				030E86482AC6FD1D000283A6 /* _assignIfNotEqual.swift in Sources */,
 				CD26980E2B9E16A70002B459 /* APIModFeaturePost.swift in Sources */,
+				CD2BFE822B9FA05300717611 /* ModlogLink.swift in Sources */,
 				03A54C372B545A430064CCDE /* InstanceModel+MenuFunctions.swift in Sources */,
 				6354F30A2A2E20040074C08D /* View+Alert.swift in Sources */,
 				03EC92992AC0BF8A007BBE7E /* APIClient+Pictrs.swift in Sources */,
@@ -3835,7 +3836,6 @@
 				CDF9EF332AB2845C003F885B /* Icons.swift in Sources */,
 				B14E93C22A45D3B300D6DA93 /* Community Link.swift in Sources */,
 				637218712A3A2AAD008C4816 /* GetSite.swift in Sources */,
-				CD2BFE802B9F6DBE00717611 /* ModlogContextLinkView.swift in Sources */,
 				CD29ED3D2B2E863C006937CE /* String+WithEscapedCharacters.swift in Sources */,
 				CD0BE42F2A65A73600314B24 /* Haptic Manager.swift in Sources */,
 				50811B422A92061E006BA3F2 /* SavedAccount+Mock.swift in Sources */,

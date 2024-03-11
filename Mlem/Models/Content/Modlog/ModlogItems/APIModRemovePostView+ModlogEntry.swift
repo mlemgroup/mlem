@@ -15,13 +15,15 @@ extension APIModRemovePostView: ModlogEntry {
         return "\(agent) removed post \"\(post.name)\" from \(community.name)"
     }
     
-    var context: [ModlogContext] {
-        var ret: [ModlogContext] = .init()
+    var contextLinks: [LinkType] {
+        var ret: [LinkType] = .init()
+        
         if let moderator {
-            ret.append(.user(moderator))
+            ret.append(.userFromModel(0, UserModel(from: moderator)))
         }
-        ret.append(.post(post))
-        ret.append(.community(community))
+        ret.append(.postFromApiType(1, post))
+        ret.append(.communityFromApiType(2, community))
+        
         return ret
     }
 }

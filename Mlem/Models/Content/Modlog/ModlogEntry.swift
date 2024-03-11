@@ -7,36 +7,10 @@
 
 import Foundation
 
-enum ModlogContext: Hashable, Identifiable {
-    case user(APIPerson)
-    case post(APIPost)
-    case comment(APIComment)
-    case community(APICommunity)
-    
-    var id: Int { hashValue }
-    
-    func hash(into hasher: inout Hasher) {
-        switch self {
-        case let .user(user):
-            hasher.combine("user")
-            hasher.combine(user)
-        case let .post(post):
-            hasher.combine("post")
-            hasher.combine(post)
-        case let .comment(comment):
-            hasher.combine("comment")
-            hasher.combine(comment)
-        case let .community(community):
-            hasher.combine("community")
-            hasher.combine(community)
-        }
-    }
-}
-
 protocol ModlogEntry {
     var date: Date { get }
     var description: String { get }
-    var context: [ModlogContext] { get }
+    var contextLinks: [LinkType] { get }
 }
 
 struct AnyModlogEntry: Hashable, Equatable {
@@ -44,7 +18,7 @@ struct AnyModlogEntry: Hashable, Equatable {
     
     var date: Date { wrappedValue.date }
     var description: String { wrappedValue.description }
-    var context: [ModlogContext] { wrappedValue.context }
+    var contextLinks: [LinkType] { wrappedValue.contextLinks }
     
     init(wrappedValue: any ModlogEntry) {
         self.wrappedValue = wrappedValue

@@ -49,6 +49,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                 case let .lazyLoadPostLinkWithContext(post):
                     LazyLoadExpandedPost(postId: post.postId, scrollTarget: post.scrollTarget)
                         .environmentObject(quickLookState)
+                case let .modlog(modlogLink):
+                    ModlogView(modlogLink: modlogLink)
                 case let .settings(page):
                     settingsDestination(for: page)
                 case let .aboutSettings(page):

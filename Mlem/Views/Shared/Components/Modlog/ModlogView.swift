@@ -13,6 +13,9 @@ struct ModlogView: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     
+    // TODO: let this pre-populate filters (e.g., user or community)
+    let modlogLink: ModlogLink
+    
     @State var modlogEntries: [AnyModlogEntry]?
     
     var body: some View {
@@ -24,6 +27,8 @@ struct ModlogView: View {
                     errorHandler.handle(error)
                 }
             }
+            .hoistNavigation()
+            .fancyTabScrollCompatible()
     }
     
     @ViewBuilder
@@ -34,7 +39,9 @@ struct ModlogView: View {
                     Text("No modlog entries")
                 }
                 
-                VStack(alignment: .leading, spacing: 0) {
+                LazyVStack(alignment: .leading, spacing: 0) {
+                    Divider()
+                    
                     ForEach(modlogEntries, id: \.hashValue) { entry in
                         ModlogEntryView(modlogEntry: entry)
                             .padding(AppConstants.standardSpacing)
