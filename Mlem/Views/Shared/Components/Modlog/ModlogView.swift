@@ -16,7 +16,7 @@ struct ModlogView: View {
     // TODO: let this pre-populate filters (e.g., user or community)
     let modlogLink: ModlogLink
     
-    @State var modlogEntries: [AnyModlogEntry]?
+    @State var modlogEntries: [ModlogEntry]?
     
     var body: some View {
         content

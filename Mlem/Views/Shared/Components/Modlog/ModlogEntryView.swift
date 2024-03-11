@@ -9,8 +9,7 @@ import Foundation
 import SwiftUI
 
 struct ModlogEntryView: View {
-    
-    let modlogEntry: AnyModlogEntry
+    let modlogEntry: ModlogEntry
     
     // plain DisclosureGroup has compatibility issues with LazyVStack (some items just won't open after scrolling a bit), so doing it manually
     @State var collapsed: Bool = true

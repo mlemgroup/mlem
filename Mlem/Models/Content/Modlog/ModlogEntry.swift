@@ -7,24 +7,27 @@
 
 import Foundation
 
-protocol ModlogEntry {
-    var date: Date { get }
-    var description: String { get }
-    var contextLinks: [LinkType] { get }
-}
-
-struct AnyModlogEntry: Hashable, Equatable {
-    private let wrappedValue: any ModlogEntry
+struct ModlogEntry: Hashable, Equatable {
+    let date: Date
+    let description: String
+    let contextLinks: [LinkType]
     
-    var date: Date { wrappedValue.date }
-    var description: String { wrappedValue.description }
-    var contextLinks: [LinkType] { wrappedValue.contextLinks }
-    
-    init(wrappedValue: any ModlogEntry) {
-        self.wrappedValue = wrappedValue
+    init(from apiType: APIModRemovePostView) {
+        self.date = apiType.modRemovePost.when_
+        
+        let agent = apiType.moderator?.name ?? "Moderator"
+        self.description = "\(agent) removed post \"\(apiType.post.name)\" from \(apiType.community.name)"
+        
+        var contextLinks: [LinkType] = .init()
+        if let moderator = apiType.moderator {
+            contextLinks.append(.userFromModel(0, UserModel(from: moderator)))
+        }
+        contextLinks.append(.postFromApiType(1, apiType.post))
+        contextLinks.append(.communityFromApiType(2, apiType.community))
+        self.contextLinks = contextLinks
     }
     
-    static func == (lhs: AnyModlogEntry, rhs: AnyModlogEntry) -> Bool {
+    static func == (lhs: ModlogEntry, rhs: ModlogEntry) -> Bool {
         lhs.hashValue == rhs.hashValue
     }
     

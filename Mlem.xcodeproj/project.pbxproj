@@ -435,7 +435,6 @@
 		CD2BD6782A79F55800ECFF89 /* ImageSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2BD6772A79F55800ECFF89 /* ImageSize.swift */; };
 		CD2BFE742B9F5BE800717611 /* ModlogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2BFE732B9F5BE800717611 /* ModlogEntry.swift */; };
 		CD2BFE782B9F60AC00717611 /* APIClient+Instance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2BFE772B9F60AC00717611 /* APIClient+Instance.swift */; };
-		CD2BFE7B2B9F616700717611 /* APIModRemovePostView+ModlogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2BFE7A2B9F616700717611 /* APIModRemovePostView+ModlogEntry.swift */; };
 		CD2BFE7E2B9F670B00717611 /* ModlogEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2BFE7D2B9F670B00717611 /* ModlogEntryView.swift */; };
 		CD2BFE822B9FA05300717611 /* ModlogLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2BFE812B9FA05300717611 /* ModlogLink.swift */; };
 		CD2E182B2A3B708500224F8A /* Settings Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2E182A2A3B708500224F8A /* Settings Options.swift */; };
@@ -1093,7 +1092,6 @@
 		CD2BD6772A79F55800ECFF89 /* ImageSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSize.swift; sourceTree = "<group>"; };
 		CD2BFE732B9F5BE800717611 /* ModlogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogEntry.swift; sourceTree = "<group>"; };
 		CD2BFE772B9F60AC00717611 /* APIClient+Instance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient+Instance.swift"; sourceTree = "<group>"; };
-		CD2BFE7A2B9F616700717611 /* APIModRemovePostView+ModlogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIModRemovePostView+ModlogEntry.swift"; sourceTree = "<group>"; };
 		CD2BFE7D2B9F670B00717611 /* ModlogEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogEntryView.swift; sourceTree = "<group>"; };
 		CD2BFE812B9FA05300717611 /* ModlogLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogLink.swift; sourceTree = "<group>"; };
 		CD2E182A2A3B708500224F8A /* Settings Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings Options.swift"; sourceTree = "<group>"; };
@@ -2737,18 +2735,9 @@
 		CD2BFE702B9E6CC700717611 /* Modlog */ = {
 			isa = PBXGroup;
 			children = (
-				CD2BFE792B9F614C00717611 /* ModlogItems */,
 				CD2BFE732B9F5BE800717611 /* ModlogEntry.swift */,
 			);
 			path = Modlog;
-			sourceTree = "<group>";
-		};
-		CD2BFE792B9F614C00717611 /* ModlogItems */ = {
-			isa = PBXGroup;
-			children = (
-				CD2BFE7A2B9F616700717611 /* APIModRemovePostView+ModlogEntry.swift */,
-			);
-			path = ModlogItems;
 			sourceTree = "<group>";
 		};
 		CD2BFE7C2B9F64E000717611 /* Modlog */ = {

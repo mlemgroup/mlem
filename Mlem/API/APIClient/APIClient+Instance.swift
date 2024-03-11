@@ -8,7 +8,7 @@
 import Foundation
 
 extension APIClient {
-    func getModlog() async throws -> [AnyModlogEntry] {
+    func getModlog() async throws -> [ModlogEntry] {
         // TODO: params
         let request = try GetModlogRequest(
             session: session,
@@ -22,6 +22,6 @@ extension APIClient {
         
         let response = try await perform(request: request)
         
-        return response.removedPosts.map { AnyModlogEntry(wrappedValue: $0) }
+        return response.removedPosts.map { ModlogEntry(from: $0) }
     }
 }
