@@ -22,6 +22,14 @@ extension APIClient {
         
         let response = try await perform(request: request)
         
-        return response.removedPosts.map { ModlogEntry(from: $0) }
+        var ret: [ModlogEntry] = .init()
+        ret.append(contentsOf: response.removedPosts.map { ModlogEntry(from: $0) })
+        ret.append(contentsOf: response.lockedPosts.map { ModlogEntry(from: $0) })
+        ret.append(contentsOf: response.featuredPosts.map { ModlogEntry(from: $0) })
+        ret.append(contentsOf: response.removedComments.map { ModlogEntry(from: $0) })
+        ret.append(contentsOf: response.removedCommunities.map { ModlogEntry(from: $0) })
+        ret.append(contentsOf: response.bannedFromCommunity.map { ModlogEntry(from: $0) })
+        
+        return ret.sorted(by: { $0.date > $1.date })
     }
 }

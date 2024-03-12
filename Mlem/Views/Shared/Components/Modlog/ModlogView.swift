@@ -16,6 +16,7 @@ struct ModlogView: View {
     // TODO: let this pre-populate filters (e.g., user or community)
     let modlogLink: ModlogLink
     
+    // TODO: tracker
     @State var modlogEntries: [ModlogEntry]?
     
     var body: some View {
@@ -27,6 +28,7 @@ struct ModlogView: View {
                     errorHandler.handle(error)
                 }
             }
+            .navigationTitle("Modlog")
             .hoistNavigation()
             .fancyTabScrollCompatible()
     }
@@ -44,7 +46,6 @@ struct ModlogView: View {
                     
                     ForEach(modlogEntries, id: \.hashValue) { entry in
                         ModlogEntryView(modlogEntry: entry)
-                            .padding(AppConstants.standardSpacing)
                         Divider()
                     }
                 }

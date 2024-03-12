@@ -13,6 +13,6 @@ struct APIModFeaturePost: Decodable {
     let modPersonId: Int
     let postId: Int
     let featured: Bool
-    let when_: String
+    let when_: Date
     let isFeaturedCommunity: Bool
 }

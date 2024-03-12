@@ -51,10 +51,13 @@ enum Icons {
     static let textPost: String = "text.book.closed"
     static let titleOnlyPost: String = "character.bubble"
     static let pinned: String = "pin.fill"
+    static let unpinned: String = "pin.slash.fill"
     static let websiteIcon: String = "globe"
     static let read: String = "book"
-    static let removed: String = "xmark.bin.fill"
     static let locked: String = "lock.fill"
+    static let unlocked: String = "lock.open.fill"
+    static let removed: String = "xmark.bin.fill"
+    static let restored: String = "arrow.up.bin.fill"
     
     // post sizes
     static let postSizeSetting: String = "rectangle.expand.vertical"
@@ -210,7 +213,9 @@ enum Icons {
     // mod tools
     static let auditUser: String = "person.crop.circle.badge.questionmark.fill"
     static let communityBan: String = "xmark.shield"
+    static let communityBanned: String = "xmark.shield.fill"
     static let communityUnban: String = "checkmark.shield"
+    static let communityUnbanned: String = "checkmark.shield.fill"
     static let unmod: String = "shield.slash"
     static let unmodFill: String = "shield.slash.fill"
     static let pin: String = "pin"

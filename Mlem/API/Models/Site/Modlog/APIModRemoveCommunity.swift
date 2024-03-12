@@ -15,5 +15,5 @@ struct APIModRemoveCommunity: Codable {
     let reason: String?
     let removed: Bool
     let expires: String?
-    let when_: String
+    let when_: Date
 }

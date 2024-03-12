@@ -10,40 +10,62 @@ import SwiftUI
 
 struct ModlogEntryView: View {
     let modlogEntry: ModlogEntry
-    
-    // plain DisclosureGroup has compatibility issues with LazyVStack (some items just won't open after scrolling a bit), so doing it manually
-    @State var collapsed: Bool = true
-    
+
     var body: some View {
-        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
-            HStack {
-                Text(modlogEntry.description)
-                    .multilineTextAlignment(.leading)
-                
-                Spacer()
-                
-                Image(systemName: Icons.forward)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.secondary)
-                    .rotationEffect(collapsed ? Angle.zero : Angle(degrees: 90.0))
-            }
-            
-            if !collapsed {
-                VStack(spacing: AppConstants.standardSpacing) {
-                    ForEach(modlogEntry.contextLinks) { link in
-                        EasyTapLinkView(linkType: link, showCaption: false)
-                    }
+        content
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(AppConstants.standardSpacing)
+            .background(Color(uiColor: .systemBackground))
+            .contextMenu {
+                ForEach(modlogEntry.contextLinks) { menuFunction in
+                    MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
                 }
             }
+    }
+    
+    var content: some View {
+        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+            description
             
-            Text(modlogEntry.date.formatted())
+            Text("\(modlogEntry.date.formatted()) (\(modlogEntry.date.getRelativeTime()))")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
-        .contentShape(Rectangle())
-        .onTapGesture {
-            withAnimation {
-                collapsed = !collapsed
+    }
+    
+    @ViewBuilder
+    var description: some View {
+        HStack(alignment: .top, spacing: AppConstants.standardSpacing) {
+            Image(systemName: modlogEntry.icon.imageName)
+                .foregroundColor(modlogEntry.icon.color)
+                .padding(.top, 3)
+            
+            VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+                Text(modlogEntry.description)
+                
+                switch modlogEntry.reason {
+                case .inapplicable:
+                    EmptyView()
+                case .noneGiven:
+                    Text("No reason given")
+                        .italic()
+                        .foregroundColor(.secondary)
+                case let .reason(reason):
+                    Text("Reason: \(reason)")
+                }
+                
+                switch modlogEntry.expires {
+                case .inapplicable:
+                    EmptyView()
+                case .permanent:
+                    Text("Permanent")
+                        .italic()
+                        .foregroundColor(.secondary)
+                case let .date(date):
+                    Text("Expires \(date.getRelativeTime())")
+                        .italic()
+                        .foregroundColor(.secondary)
+                }
             }
         }
     }

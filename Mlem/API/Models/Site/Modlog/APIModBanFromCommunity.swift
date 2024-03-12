@@ -15,6 +15,6 @@ struct APIModBanFromCommunity: Decodable {
     let communityId: Int
     let reason: String?
     let banned: Bool
-    let expires: String?
-    let when_: String
+    let expires: Date?
+    let when_: Date
 }

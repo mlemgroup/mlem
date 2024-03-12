@@ -13,5 +13,5 @@ struct APIModLockPost: Decodable {
     let modPersonId: Int
     let postId: Int
     let locked: Bool
-    let when_: String
+    let when_: Date
 }
