@@ -80,7 +80,7 @@ struct FeedPost: View {
     @State private var menuFunctionPopup: MenuFunctionPopup?
     
     var isMod: Bool {
-        siteInformation.moderatedCommunities.contains(postModel.community.communityId)
+        siteInformation.isModOrAdmin(communityId: postModel.community.communityId)
     }
     
     // MARK: Computed
@@ -89,8 +89,6 @@ struct FeedPost: View {
     var showCheck: Bool { postModel.read && diffWithoutColor && readMarkStyle == .check }
     
     var menuFunctions: [MenuFunction] {
-        let isMod = siteInformation.moderatedCommunities.contains(postModel.community.communityId)
-        
         return postModel.menuFunctions(
             editorTracker: editorTracker,
             showSelectText: postSize == .large,
@@ -102,7 +100,7 @@ struct FeedPost: View {
 
     var body: some View {
         // this allows post deletion/removal to not require tracker updates
-        if postModel.post.deleted || (postModel.post.removed && !isMod) {
+        if postModel.post.deleted || (postModel.post.removed && !isMod) || postModel.purged {
             EmptyView()
         } else {
             VStack(spacing: 0) {

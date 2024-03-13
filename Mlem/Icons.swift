@@ -205,6 +205,7 @@ enum Icons {
     static let appLockSettings: String = "lock.app.dashed"
     static let collapseComments: String = "arrow.down.and.line.horizontal.and.arrow.up"
     static let instanceBan: String = "xmark.circle"
+    static let instanceUnban: String = "checkmark.circle"
     
     // mod tools
     static let auditUser: String = "person.crop.circle.badge.questionmark.fill"
@@ -217,6 +218,7 @@ enum Icons {
     static let lock: String = "lock"
     static let unlock: String = "lock.open"
     static let remove: String = "xmark.bin"
+    static let purge: String = "burn"
     static let restore: String = "arrow.up.bin"
     
     // fediseer

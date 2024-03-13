@@ -135,7 +135,7 @@ struct Checkbox: View {
         VStack {
             if isOn {
                 Image(systemName: "checkmark.circle.fill")
-                    .foregroundStyle(.white, .blue)
+                    .foregroundStyle(.white, .tint)
                     .imageScale(.large)
             } else {
                 Image(systemName: "circle")

@@ -195,7 +195,7 @@ struct ShareImageFunction: Identifiable {
 
 /// MenuFunction to perform a generic menu action
 struct StandardMenuFunction: Identifiable {
-    var id: String { text }
+    var id: String { UUID().uuidString }
     
     let text: String
     let imageName: String
