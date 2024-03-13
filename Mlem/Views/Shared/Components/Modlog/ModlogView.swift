@@ -13,6 +13,8 @@ struct ModlogView: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     
+    // TODO: 2.0 enable searching--search needs to be submitted against the instance that the modlog is fetched from to ensure that the communityId/moderatorId is locally correct, which is annoying right now but very easy in 2.0.
+    
     // TODO: let this pre-populate filters (e.g., user or community)
     let modlogLink: ModlogLink
     
@@ -23,7 +25,10 @@ struct ModlogView: View {
         content
             .task {
                 do {
-                    modlogEntries = try await apiClient.getModlog()
+                    modlogEntries = try await apiClient.getModlog(
+                        for: modlogLink.instance,
+                        communityId: modlogLink.community?.communityId
+                    )
                 } catch {
                     errorHandler.handle(error)
                 }

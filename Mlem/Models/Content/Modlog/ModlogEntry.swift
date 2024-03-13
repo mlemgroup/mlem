@@ -172,7 +172,7 @@ struct ModlogEntry: Hashable, Equatable {
     init(from apiType: APIModBanView) {
         self.date = apiType.modBan.when_
         
-        let agent = genModeratorAgent(agent: apiType.moderator)
+        let agent = genAdministratorAgent(agent: apiType.moderator)
         let verb = apiType.modBan.banned ? "banned" : "unbanned"
         // swiftlint:disable:next line_length
         self.description = "\(agent) \(verb) \(apiType.bannedPerson.fullyQualifiedName) from \(apiType.moderator?.actorId.host() ?? "instance")"
@@ -232,7 +232,7 @@ struct ModlogEntry: Hashable, Equatable {
     init(from apiType: APIModAddView) {
         self.date = apiType.modAdd.when_
         
-        let agent = genModeratorAgent(agent: apiType.moderator)
+        let agent = genAdministratorAgent(agent: apiType.moderator)
         let verb = apiType.modAdd.removed ? "removed" : "appointed"
         let instance = apiType.moderator?.actorId.host() ?? "instance"
         self.description = "\(agent) \(verb) \(apiType.moddedPerson.fullyQualifiedName) as administrator of \(instance)"
@@ -253,7 +253,7 @@ struct ModlogEntry: Hashable, Equatable {
     init(from apiType: APIAdminPurgePersonView) {
         self.date = apiType.adminPurgePerson.when_
         
-        let agent = genModeratorAgent(agent: apiType.admin)
+        let agent = genAdministratorAgent(agent: apiType.admin)
         self.description = "\(agent) purged a person"
         
         self.reason = genReason(reason: apiType.adminPurgePerson.reason)
@@ -269,7 +269,7 @@ struct ModlogEntry: Hashable, Equatable {
     init(from apiType: APIAdminPurgeCommunityView) {
         self.date = apiType.adminPurgeCommunity.when_
         
-        let agent = genModeratorAgent(agent: apiType.admin)
+        let agent = genAdministratorAgent(agent: apiType.admin)
         self.description = "\(agent) purged a community"
         
         self.reason = genReason(reason: apiType.adminPurgeCommunity.reason)
@@ -285,7 +285,7 @@ struct ModlogEntry: Hashable, Equatable {
     init(from apiType: APIAdminPurgePostView) {
         self.date = apiType.adminPurgePost.when_
         
-        let agent = genModeratorAgent(agent: apiType.admin)
+        let agent = genAdministratorAgent(agent: apiType.admin)
         self.description = "\(agent) purged a post from \(apiType.community.fullyQualifiedName)"
         
         self.reason = genReason(reason: apiType.adminPurgePost.reason)
@@ -302,7 +302,7 @@ struct ModlogEntry: Hashable, Equatable {
     init(from apiType: APIAdminPurgeCommentView) {
         self.date = apiType.adminPurgeComment.when_
         
-        let agent = genModeratorAgent(agent: apiType.admin)
+        let agent = genAdministratorAgent(agent: apiType.admin)
         self.description = "\(agent) purged a comment from \"\(apiType.post.name)\""
         
         self.reason = genReason(reason: apiType.adminPurgeComment.reason)
@@ -319,7 +319,7 @@ struct ModlogEntry: Hashable, Equatable {
     init(from apiType: APIModHideCommunityView) {
         self.date = apiType.modHideCommunity.when_
         
-        let agent = genModeratorAgent(agent: apiType.admin)
+        let agent = genAdministratorAgent(agent: apiType.admin)
         let verb = apiType.modHideCommunity.hidden ? "hid" : "unhid"
         self.description = "\(agent) \(verb) community \(apiType.community.fullyQualifiedName)"
         
@@ -398,6 +398,10 @@ private enum ModlogMenuFunction {
             )
         }
     }
+}
+
+private func genAdministratorAgent(agent: APIPerson?) -> String {
+    agent?.fullyQualifiedName ?? "Administrator"
 }
 
 private func genModeratorAgent(agent: APIPerson?) -> String {

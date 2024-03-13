@@ -8,12 +8,29 @@
 import Foundation
 
 extension APIClient {
-    func getModlog() async throws -> [ModlogEntry] {
+    func getModlog(
+        for instance: URL?,
+        communityId: Int?
+    ) async throws -> [ModlogEntry] {
         // TODO: params
+        var useSession: APISession
+        
+        if let instance {
+            useSession = .unauthenticated(instance.appending(path: "/api/v3"))
+        } else {
+            useSession = session
+        }
+        
+        #if DEBUG
+            if let host = instance?.host(), ["lemmy-alpha", "lemmy-beta", "lemmy-delta"].contains(host) {
+                useSession = .unauthenticated(.init(string: "http://localhost:8536/api/v3")!)
+            }
+        #endif
+      
         let request = try GetModlogRequest(
-            session: session,
+            session: useSession,
             modPersonId: nil,
-            communityId: nil,
+            communityId: communityId,
             page: nil,
             limit: nil,
             type_: nil,

@@ -112,20 +112,7 @@ struct InstanceView: View {
                             }
                         case .administration:
                             VStack(spacing: 0) {
-                                NavigationLink(value: AppRoute.modlog(.init(community: nil))) {
-                                    HStack(alignment: .center) {
-                                        Text("View Modlog")
-                                        
-                                        Spacer()
-                                        
-                                        Image(systemName: Icons.forward)
-                                            .imageScale(.small)
-                                            .foregroundStyle(.tertiary)
-                                    }
-                                    .padding(.horizontal)
-                                    .padding(.vertical, 8)
-                                    .foregroundColor(.secondary)
-                                }
+                                ModlogNavigationLink(instance: instance.url, community: nil)
                                 
                                 Divider()
                                 

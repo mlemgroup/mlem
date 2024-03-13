@@ -8,9 +8,11 @@
 import Foundation
 
 struct ModlogLink: Hashable {
+    let instance: URL?
     let community: CommunityModel?
     
     func hash(into hasher: inout Hasher) {
+        hasher.combine(instance)
         hasher.combine(community)
     }
 }
