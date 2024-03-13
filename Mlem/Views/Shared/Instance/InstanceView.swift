@@ -111,10 +111,23 @@ struct InstanceView: View {
                                     .padding(.top, 30)
                             }
                         case .administration:
-                            VStack {
+                            VStack(spacing: 0) {
                                 NavigationLink(value: AppRoute.modlog(.init(community: nil))) {
-                                    Text("Modlog")
+                                    HStack(alignment: .center) {
+                                        Text("View Modlog")
+                                        
+                                        Spacer()
+                                        
+                                        Image(systemName: Icons.forward)
+                                            .imageScale(.small)
+                                            .foregroundStyle(.tertiary)
+                                    }
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 8)
+                                    .foregroundColor(.secondary)
                                 }
+                                
+                                Divider()
                                 
                                 if let administrators = instance.administrators {
                                     ForEach(administrators, id: \.self) { user in

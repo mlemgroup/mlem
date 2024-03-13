@@ -50,7 +50,7 @@ struct ModlogView: View {
                     }
                 }
             } else {
-                Text("Loading...")
+                ProgressView()
             }
         }
     }

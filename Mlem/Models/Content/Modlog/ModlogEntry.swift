@@ -363,18 +363,21 @@ private enum ModlogMenuFunction {
             return .navigationMenuFunction(
                 text: "View Administrator",
                 imageName: Icons.moderation,
-                destination: .userProfile(.init(from: administrator)))
+                destination: .userProfile(.init(from: administrator))
+            )
         case let .moderator(moderator):
             guard let moderator else { return nil }
             return .navigationMenuFunction(
                 text: "View Moderator",
                 imageName: Icons.moderation,
-                destination: .userProfile(.init(from: moderator)))
+                destination: .userProfile(.init(from: moderator))
+            )
         case let .user(user, verb):
             return .navigationMenuFunction(
                 text: "View \(verb) User",
                 imageName: Icons.user,
-                destination: .userProfile(.init(from: user)))
+                destination: .userProfile(.init(from: user))
+            )
         case let .post(post):
             return .navigationMenuFunction(
                 text: "View Post",
@@ -426,4 +429,5 @@ extension APICommunity {
         "\(name)@\(actorId.host() ?? "unknown")"
     }
 }
+
 // swiftlint:enable file_length

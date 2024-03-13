@@ -44,7 +44,7 @@ struct ModlogEntryView: View {
         HStack(alignment: .top, spacing: AppConstants.standardSpacing) {
             Image(systemName: modlogEntry.icon.imageName)
                 .foregroundColor(modlogEntry.icon.color)
-                .padding(.top, 3)
+                .padding(.top, 3) // line it up nicely with the text
             
             VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
                 Text(modlogEntry.description)
