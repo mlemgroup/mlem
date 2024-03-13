@@ -220,6 +220,20 @@ struct UserModel {
         }
     }
     
+    mutating func purge(reason: String?) async -> Bool {
+        do {
+            let response = try await apiClient.purgePerson(id: userId, reason: reason)
+            if !response.success {
+                throw APIClientError.unexpectedResponse
+            }
+            return true
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+        }
+        return false
+    }
+    
     mutating func addModeratedCommunity(_ newCommunity: CommunityModel) {
         var newCommunities = moderatedCommunities ?? .init()
         newCommunities.append(newCommunity)

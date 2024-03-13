@@ -26,6 +26,18 @@ class SiteInformationTracker: ObservableObject {
     
     var userId: Int? { myUserInfo?.localUserView.person.id }
     
+    func isMod(communityId: Int) -> Bool {
+        moderatedCommunities.contains(communityId)
+    }
+    
+    func isModOrAdmin(communityId: Int) -> Bool {
+        isMod(communityId: communityId) || (myUser?.isAdmin ?? false)
+    }
+    
+    var isAdmin: Bool {
+        myUser?.isAdmin ?? false
+    }
+    
     func load(account: SavedAccount) {
         version = account.siteVersion
         Task {

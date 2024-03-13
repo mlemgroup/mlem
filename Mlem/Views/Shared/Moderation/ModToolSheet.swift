@@ -15,12 +15,23 @@ struct ModToolSheet: View {
         switch tool {
         case .editCommunity:
             Text("Not yet!")
-        case let .communityBan(user, community, shouldBan, postTracker):
-            BanUserView(user: user, community: community, shouldBan: shouldBan, postTracker: postTracker)
+        case let .communityBan(user, community, bannedFromCommunity, shouldBan, postTracker):
+            BanUserView(
+                user: user,
+                communityContext: community,
+                bannedFromCommunity: bannedFromCommunity,
+                shouldBan: shouldBan,
+                postTracker: postTracker
+            )
         case let .addMod(user, community):
             AddModView(community: community, user: user)
         case let .instanceBan(user, shouldBan):
-            BanUserView(user: user, community: nil, shouldBan: shouldBan, postTracker: nil) // TODO: add post tracker support
+            BanUserView(
+                user: user,
+                communityContext: nil,
+                shouldBan: shouldBan,
+                postTracker: nil
+            ) // TODO: add post tracker support
         case let .removePost(post, shouldRemove):
             RemovePostView(post: post, shouldRemove: shouldRemove)
         }

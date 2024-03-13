@@ -8,6 +8,7 @@
 import Dependencies
 import SwiftUI
 
+// swiftlint:disable:next type_body_length
 struct BanUserView: View {
     @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.hapticManager) var hapticManager
@@ -17,18 +18,79 @@ struct BanUserView: View {
     
     @Environment(\.dismiss) var dismiss
     
+    enum ContentRemovalType: CaseIterable {
+        case keep, remove, purge
+        
+        var label: String {
+            switch self {
+            case .keep:
+                "Keep"
+            case .remove:
+                "Remove"
+            case .purge:
+                "Purge"
+            }
+        }
+        
+        var systemImage: String {
+            switch self {
+            case .keep:
+                "checkmark.square"
+            case .remove:
+                Icons.remove
+            case .purge:
+                Icons.purge
+            }
+        }
+        
+        var description: String {
+            switch self {
+            case .keep:
+                "Keep all posts and comments made by this user."
+            case .remove:
+                "Remove all posts and comments created by this user. They can be restored later."
+            case .purge:
+                // swiftlint:disable:next line_length
+                "Permanently remove all of this user's posts, comments, attachments and account data from the database. This cannot be undone."
+            }
+        }
+    }
+    
     let user: UserModel
-    let community: CommunityModel? // if nil, instance ban; otherwise community ban
+    let communityContext: CommunityModel?
+    let bannedFromCommunity: Bool
     let shouldBan: Bool
     let postTracker: StandardPostTracker? // if present, will update with new banned status
+    
+    @State var banFromInstance: Bool
     
     @State var reason: String = ""
     @State var days: Int = 1
     @State var isPermanent: Bool = true
-    @State var removeContent: Bool = false
+    @State var contentRemovalType: ContentRemovalType = .keep
     @State var isWaiting: Bool = false
     
     @FocusState var focusedField: FocusedField?
+    
+    init(
+        user: UserModel,
+        communityContext: CommunityModel?,
+        bannedFromCommunity: Bool = false,
+        shouldBan: Bool,
+        postTracker: StandardPostTracker?
+    ) {
+        self.user = user
+        self.communityContext = communityContext
+        self.bannedFromCommunity = bannedFromCommunity
+        self.shouldBan = shouldBan
+        self.postTracker = postTracker
+        
+        @Dependency(\.siteInformation) var siteInformation
+        
+        self._banFromInstance = .init(
+            wrappedValue: siteInformation.isAdmin && shouldBan != user.banned
+        )
+    }
     
     var expires: Int? {
         isPermanent ? nil : Date.getEpochDate(daysFromNow: days)
@@ -69,16 +131,12 @@ struct BanUserView: View {
     
     var form: some View {
         Form {
-            if let community {
-                communitySection(for: community)
-            }
+            scopeSection()
             
             ReasonView(reason: $reason, focusedField: $focusedField, showReason: shouldBan)
             
             if shouldBan {
                 durationSections()
-                
-                removeContentSection()
             }
         }
     }
@@ -86,18 +144,85 @@ struct BanUserView: View {
     // MARK: Form Sections
     
     @ViewBuilder
-    func communitySection(for community: CommunityModel) -> some View {
-        Section("\(verb.capitalized)ning From") {
-            CommunityLabelView(community: community, serverInstanceLocation: .bottom)
+    func scopeSection() -> some View {
+        if !siteInformation.isAdmin || (bannedFromCommunity != user.banned && !banFromInstance) {
+            if let communityContext {
+                Section("\(verb.capitalized)ning From") {
+                    CommunityLabelView(community: communityContext, serverInstanceLocation: .bottom)
+                        .padding(.vertical, 1)
+                }
+            }
+        } else if let instance = siteInformation.instance {
+            if let communityContext, bannedFromCommunity == user.banned {
+                Section("\(verb.capitalized) From") {
+                    Menu {
+                        Picker("Test", selection: $banFromInstance) {
+                            Button { } label: {
+                                Text("Instance")
+                                if let name = siteInformation.instance?.name {
+                                    Text(name)
+                                }
+                            }.tag(true)
+                            Button { } label: {
+                                Text("Community")
+                                if let name = communityContext.fullyQualifiedName {
+                                    Text(name)
+                                }
+                            }.tag(false)
+                        }.pickerStyle(.inline)
+                    } label: {
+                        HStack {
+                            if banFromInstance {
+                                InstanceLabelView(instance: instance)
+                            } else {
+                                CommunityLabelView(community: communityContext, serverInstanceLocation: .bottom)
+                            }
+                            Spacer()
+                            Image(systemName: "chevron.down")
+                                .fontWeight(.semibold)
+                                .foregroundStyle(.secondary)
+                        }
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.vertical, 1)
+                }
+            } else {
+                Section("\(verb.capitalized)ning From") {
+                    InstanceLabelView(instance: instance)
+                        .padding(.vertical, 1)
+                }
+            }
         }
     }
     
     @ViewBuilder
     func durationSections() -> some View {
         Section {
-            Toggle("Permanent", isOn: $isPermanent)
-                .tint(.red)
+            Toggle(
+                "Permanent",
+                isOn: Binding(
+                    get: { isPermanent },
+                    set: { newValue in
+                        if !newValue && contentRemovalType == .purge {
+                            contentRemovalType = .remove
+                        }
+                        isPermanent = newValue
+                    }
+                )
+            )
+            .tint(.red)
         }
+        if isPermanent && banFromInstance {
+            removeContentPickerSection()
+        } else {
+            banDurationSection()
+            removeContentSection()
+        }
+    }
+    
+    @ViewBuilder
+    func banDurationSection() -> some View {
         Section("Ban Duration") {
             HStack {
                 Text("Days:")
@@ -110,8 +235,8 @@ struct BanUserView: View {
                         days = newValue > 1 ? newValue : 0
                     }
                 ), format: .number)
-                    .keyboardType(.numberPad)
-                    .focused($focusedField, equals: .days)
+                .keyboardType(.numberPad)
+                .focused($focusedField, equals: .days)
             }
             DatePicker(
                 "Expiration Date:",
@@ -120,7 +245,7 @@ struct BanUserView: View {
                         .now.advanced(by: .days(Double(days)))
                     },
                     set: { newValue in
-                        days = Int(newValue.timeIntervalSince(.now) / (60 * 60 * 24))
+                        days = Int(round(newValue.timeIntervalSince(.now) / (60 * 60 * 24)))
                     }
                 ),
                 in: Date.now.advanced(by: .days(1))...,
@@ -144,18 +269,54 @@ struct BanUserView: View {
     @ViewBuilder
     func removeContentSection() -> some View {
         Section {
-            Toggle("Remove Content", isOn: $removeContent)
-                .tint(.red)
+            Toggle(
+                "Remove Content",
+                isOn: Binding(
+                    get: { contentRemovalType != .keep },
+                    set: { contentRemovalType = $0 ? .remove : .keep}
+                )
+            )
+            .tint(.red)
         } footer: {
-            if community == nil {
+            if communityContext == nil {
                 let posts = user.postCount ?? 0
                 let comments = user.commentCount ?? 0
-                Text("Remove all \(posts) posts and \(comments) comments created by this user.")
+                Text("Remove all \(posts) posts and \(comments) comments created by this user. They can be restored later if needed.")
             }
         }
     }
     
-    // MARK: Components
+    @ViewBuilder
+    func removeContentPickerSection() -> some View {
+        Section {
+            ForEach(ContentRemovalType.allCases, id: \.self) { type in
+                Button { contentRemovalType = type } label: {
+                    HStack {
+                        Label {
+                            Text(type.label)
+                        } icon: {
+                            Image(systemName: type.systemImage)
+                                .foregroundStyle(.secondary)
+                        }
+                        Spacer()
+                        Checkbox(isOn: contentRemovalType == type)
+                            .tint(type == .purge ? .red : .blue)
+                        
+                    }
+                    .foregroundStyle(.primary)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(EmptyButtonStyle())
+            }
+            .tint(.red)
+            .pickerStyle(.inline)
+        } header: {
+            Text("User Content")
+        } footer: {
+            Text(contentRemovalType.description)
+                .foregroundStyle(contentRemovalType == .purge ? .red : .secondary)
+        }
+    }
     
     @ViewBuilder
     func daysPresetButton(_ label: String, value: Int) -> some View {
@@ -165,74 +326,8 @@ struct BanUserView: View {
         }
         .buttonStyle(BanFormButton(selected: days == value && !isPermanent))
     }
-    
-    // MARK: Logic
-    
-    private func confirm() {
-        if let community {
-            communityBan(from: community)
-        } else {
-            instanceBan()
-        }
-    }
-    
-    private func instanceBan() {
-        isWaiting = true
-        Task {
-            let reason = reason.isEmpty ? nil : reason
-            var user = user
-            await user.toggleBan(
-                expires: expires,
-                reason: reason,
-                removeData: removeContent
-            )
-            DispatchQueue.main.async {
-                isWaiting = false
-            }
-            
-            await handleResult(user.banned)
-        }
-    }
-    
-    private func communityBan(from community: CommunityModel) {
-        isWaiting = true
-        Task {
-            let updatedBannedStatus = await community.banUser(
-                userId: user.userId,
-                ban: shouldBan,
-                removeData: removeContent,
-                reason: reason.isEmpty ? nil : reason,
-                expires: expires
-            )
-            DispatchQueue.main.async {
-                isWaiting = false
-            }
-            
-            await handleResult(updatedBannedStatus)
-        }
-    }
-    
-    private func handleResult(_ result: Bool) async {
-        if result == shouldBan {
-            await notifier.add(.success("\(verb.capitalized)"))
-            
-            await MainActor.run {
-                if let postTracker {
-                    for post in postTracker.items where post.creator.userId == user.userId {
-                        post.creatorBannedFromCommunity = shouldBan
-                    }
-                }
-            }
-            
-            DispatchQueue.main.async {
-                dismiss()
-            }
-        } else {
-            await notifier.add(.failure("Failed to \(verb) user"))
-        }
-    }
 }
 
 #Preview {
-    BanUserView(user: .mock(), community: .mock(), shouldBan: true, postTracker: nil)
+    BanUserView(user: .mock(), communityContext: .mock(), shouldBan: true, postTracker: nil)
 }
