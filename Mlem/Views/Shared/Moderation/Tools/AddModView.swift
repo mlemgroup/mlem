@@ -50,13 +50,7 @@ struct AddModView: View {
     
     var body: some View {
         content
-            .overlay {
-                if isSubmitting {
-                    ProgressView()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(Color.gray.opacity(0.3))
-                }
-            }
+            .progressOverlay(isPresented: $isSubmitting)
             .navigationTitle("Add Moderator")
             .navigationBarTitleDisplayMode(.inline)
             .sheet(isPresented: $isSearchingUser) {

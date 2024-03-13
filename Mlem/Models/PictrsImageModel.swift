@@ -19,7 +19,7 @@ struct PictrsFile: Codable, Equatable {
 }
 
 struct PictrsImageModel {
-    enum UploadState {
+    enum UploadState: Equatable {
         case waiting
         case readyToUpload(data: Data)
         case uploading(progress: Double)

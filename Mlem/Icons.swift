@@ -181,7 +181,10 @@ enum Icons {
     static let delete: String = "trash"
     static let copy: String = "doc.on.doc"
     static let copyFill: String = "doc.on.doc.fill"
+    static let paste: String = "doc.on.clipboard"
     static let select: String = "selection.pin.in.out"
+    static let choosePhoto: String = "photo.on.rectangle"
+    static let chooseFile: String = "folder"
     
     // settings
     static let upvoteOnSave: String = "arrow.up.heart"

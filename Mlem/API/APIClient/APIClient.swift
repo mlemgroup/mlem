@@ -176,6 +176,8 @@ class APIClient {
         } else if let putDefinition = definition as? any APIPutRequest {
             urlRequest.httpMethod = "PUT"
             urlRequest.httpBody = try createBodyData(for: putDefinition)
+        } else if let deleteDefinition = definition as? any APIDeleteRequest {
+            urlRequest.httpMethod = "DELETE"
         }
 
         return urlRequest
