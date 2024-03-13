@@ -14,5 +14,5 @@ struct APIModAddCommunity: Decodable {
     let otherPersonId: Int
     let communityId: Int
     let removed: Bool
-    let when_: String
+    let when_: Date
 }

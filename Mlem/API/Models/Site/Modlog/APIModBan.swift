@@ -14,6 +14,6 @@ struct APIModBan: Decodable {
     let otherPersonId: Int
     let reason: String?
     let banned: Bool
-    let expires: String?
-    let when_: String
+    let expires: Date?
+    let when_: Date
 }

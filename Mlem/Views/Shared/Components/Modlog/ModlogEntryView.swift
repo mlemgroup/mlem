@@ -25,11 +25,17 @@ struct ModlogEntryView: View {
     
     var content: some View {
         VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
-            description
+            HStack {
+                Text("\(modlogEntry.date.formatted()) (\(modlogEntry.date.getRelativeTime()))")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                
+                Spacer()
+                
+                EllipsisMenu(size: 20, menuFunctions: modlogEntry.contextLinks)
+            }
             
-            Text("\(modlogEntry.date.formatted()) (\(modlogEntry.date.getRelativeTime()))")
-                .font(.caption)
-                .foregroundStyle(.secondary)
+            description
         }
     }
     

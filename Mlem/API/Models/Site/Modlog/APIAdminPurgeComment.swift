@@ -13,5 +13,5 @@ struct APIAdminPurgeComment: Decodable {
     let adminPersonId: Int
     let postId: Int
     let reason: String?
-    let when_: String
+    let when_: Date
 }

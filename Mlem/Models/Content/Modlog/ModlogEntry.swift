@@ -5,6 +5,7 @@
 //  Created by Eric Andrews on 2024-03-11.
 //
 
+// swiftlint:disable file_length
 import Foundation
 import SwiftUI
 
@@ -36,8 +37,8 @@ struct ModlogEntry: Hashable, Equatable {
         
         let agent = genModeratorAgent(agent: apiType.moderator)
         self.description = apiType.modRemovePost.removed ?
-            "\(agent) removed post \"\(apiType.post.name)\" from \(apiType.community.name)" :
-            "\(agent) restored post \"\(apiType.post.name)\" to \(apiType.community.name)"
+            "\(agent) removed post \"\(apiType.post.name)\" from \(apiType.community.fullyQualifiedName)" :
+            "\(agent) restored post \"\(apiType.post.name)\" to \(apiType.community.fullyQualifiedName)"
         
         self.reason = genReason(reason: apiType.modRemovePost.reason)
         self.expires = .inapplicable
@@ -45,19 +46,12 @@ struct ModlogEntry: Hashable, Equatable {
         self.icon = apiType.modRemovePost.removed ?
             .init(imageName: Icons.removed, color: .red) :
             .init(imageName: Icons.restored, color: .green)
-        
-        var contextLinks: [MenuFunction] = genInitialMenuFunctions(for: apiType.moderator)
-        contextLinks.append(.navigationMenuFunction(
-            text: apiType.post.name,
-            imageName: apiType.modRemovePost.removed ? Icons.remove : Icons.restore,
-            destination: .lazyLoadPostLinkWithContext(.init(postId: apiType.post.id))
-        ))
-        contextLinks.append(.navigationMenuFunction(
-            text: apiType.community.name,
-            imageName: Icons.community,
-            destination: .community(CommunityModel(from: apiType.community))
-        ))
-        self.contextLinks = contextLinks
+  
+        self.contextLinks = [
+            ModlogMenuFunction.moderator(apiType.moderator),
+            ModlogMenuFunction.post(apiType.post),
+            ModlogMenuFunction.community(apiType.community)
+        ].compactMap { $0.toMenuFunction() }
     }
     
     init(from apiType: APIModLockPostView) {
@@ -65,20 +59,19 @@ struct ModlogEntry: Hashable, Equatable {
         
         let agent = genModeratorAgent(agent: apiType.moderator)
         let verb = apiType.modLockPost.locked ? "locked" : "unlocked"
-        self.description = "\(agent) \(verb) post \"\(apiType.post.name)\" in \(apiType.community.name)"
+        self.description = "\(agent) \(verb) post \"\(apiType.post.name)\" in \(apiType.community.fullyQualifiedName)"
         
         self.reason = .inapplicable
         self.expires = .inapplicable
         
-        self.icon = .init(imageName: apiType.modLockPost.locked ? Icons.locked : Icons.unlocked, color: .orange)
+        let icon = apiType.modLockPost.locked ? Icons.locked : Icons.unlocked
+        self.icon = .init(imageName: icon, color: .orange)
         
-        var contextLinks: [MenuFunction] = .init()
-//        if let moderator = apiType.moderator {
-//            contextLinks.append(.userFromModel(0, UserModel(from: moderator)))
-//        }
-//        contextLinks.append(.postFromApiType(1, apiType.post))
-//        contextLinks.append(.communityFromApiType(2, apiType.community))
-        self.contextLinks = contextLinks
+        self.contextLinks = [
+            ModlogMenuFunction.moderator(apiType.moderator),
+            ModlogMenuFunction.post(apiType.post),
+            ModlogMenuFunction.community(apiType.community)
+        ].compactMap { $0.toMenuFunction() }
     }
     
     init(from apiType: APIModFeaturePostView) {
@@ -88,12 +81,12 @@ struct ModlogEntry: Hashable, Equatable {
         let description: String
         if apiType.modFeaturePost.isFeaturedCommunity {
             description = apiType.modFeaturePost.featured ?
-                "\(agent) pinned post \"\(apiType.post.name)\" to \(apiType.community.name)" :
-                "\(agent) unpinned post \"\(apiType.post.name)\" from \(apiType.community.name)"
+                "\(agent) pinned post \"\(apiType.post.name)\" to \(apiType.community.fullyQualifiedName)" :
+                "\(agent) unpinned post \"\(apiType.post.name)\" from \(apiType.community.fullyQualifiedName)"
         } else {
             description = apiType.modFeaturePost.featured ?
-                "\(agent) pinned post \"\(apiType.post.name)\" (from \(apiType.community.name)) to Local" :
-                "\(agent) unpinned post \"\(apiType.post.name)\" (from \(apiType.community.name)) from Local"
+                "\(agent) pinned post \"\(apiType.post.name)\" (from \(apiType.community.fullyQualifiedName)) to Local" :
+                "\(agent) unpinned post \"\(apiType.post.name)\" (from \(apiType.community.fullyQualifiedName)) from Local"
         }
         self.description = description
         
@@ -105,13 +98,11 @@ struct ModlogEntry: Hashable, Equatable {
             color: apiType.modFeaturePost.isFeaturedCommunity ? .green : .red
         )
         
-        var contextLinks: [MenuFunction] = .init()
-//        if let moderator = apiType.moderator {
-//            contextLinks.append(.userFromModel(0, UserModel(from: moderator)))
-//        }
-//        contextLinks.append(.postFromApiType(1, apiType.post))
-//        contextLinks.append(.communityFromApiType(2, apiType.community))
-        self.contextLinks = contextLinks
+        self.contextLinks = [
+            ModlogMenuFunction.moderator(apiType.moderator),
+            ModlogMenuFunction.post(apiType.post),
+            ModlogMenuFunction.community(apiType.community)
+        ].compactMap { $0.toMenuFunction() }
     }
     
     init(from apiType: APIModRemoveCommentView) {
@@ -119,7 +110,7 @@ struct ModlogEntry: Hashable, Equatable {
         
         let agent = genModeratorAgent(agent: apiType.moderator)
         let verb = apiType.modRemoveComment.removed ? "removed" : "restored"
-        self.description = "\(agent) \(verb) comment \"\(apiType.comment.content)\""
+        self.description = "\(agent) \(verb) comment \"\(apiType.comment.content)\" (posted in \(apiType.community.fullyQualifiedName))"
         
         // self.reason = apiType.modRemoveComment.removed ? genReason(reason: apiType.modRemoveComment.reason) : .inapplicable
         self.reason = genReason(reason: apiType.modRemoveComment.reason)
@@ -129,12 +120,12 @@ struct ModlogEntry: Hashable, Equatable {
             .init(imageName: Icons.removed, color: .red) :
             .init(imageName: Icons.restored, color: .green)
         
-        var contextLinks: [MenuFunction] = .init()
-//        if let moderator = apiType.moderator {
-//            contextLinks.append(.userFromModel(0, UserModel(from: moderator)))
-//        }
-//        contextLinks.append(.commentFromApiType(1, apiType.comment))
-        self.contextLinks = contextLinks
+        self.contextLinks = [
+            ModlogMenuFunction.moderator(apiType.moderator),
+            ModlogMenuFunction.comment(apiType.comment),
+            ModlogMenuFunction.post(apiType.post),
+            ModlogMenuFunction.community(apiType.community)
+        ].compactMap { $0.toMenuFunction() }
     }
     
     init(from apiType: APIModRemoveCommunityView) {
@@ -142,9 +133,8 @@ struct ModlogEntry: Hashable, Equatable {
         
         let agent = genModeratorAgent(agent: apiType.moderator)
         let verb = apiType.modRemoveCommunity.removed ? "removed" : "restored"
-        self.description = "\(agent) \(verb) community \(apiType.community.name)"
+        self.description = "\(agent) \(verb) community \(apiType.community.fullyQualifiedName)"
         
-        // self.reason = apiType.modRemoveCommunity.removed ? genReason(reason: apiType.modRemoveCommunity.reason) : .inapplicable
         self.reason = genReason(reason: apiType.modRemoveCommunity.reason)
         self.expires = .inapplicable
         
@@ -152,12 +142,10 @@ struct ModlogEntry: Hashable, Equatable {
             .init(imageName: Icons.removed, color: .red) :
             .init(imageName: Icons.restored, color: .green)
         
-        var contextLinks: [MenuFunction] = .init()
-//        if let moderator = apiType.moderator {
-//            contextLinks.append(.userFromModel(0, UserModel(from: moderator)))
-//        }
-//        contextLinks.append(.communityFromApiType(1, apiType.community))
-        self.contextLinks = contextLinks
+        self.contextLinks = [
+            ModlogMenuFunction.moderator(apiType.moderator),
+            ModlogMenuFunction.community(apiType.community)
+        ].compactMap { $0.toMenuFunction() }
     }
     
     init(from apiType: APIModBanFromCommunityView) {
@@ -165,9 +153,8 @@ struct ModlogEntry: Hashable, Equatable {
         
         let agent = genModeratorAgent(agent: apiType.moderator)
         let verb = apiType.modBanFromCommunity.banned ? "banned" : "unbanned"
-        self.description = "\(agent) \(verb) user \(apiType.bannedPerson.name) from \(apiType.community.name)"
+        self.description = "\(agent) \(verb) \(apiType.bannedPerson.fullyQualifiedName) from \(apiType.community.fullyQualifiedName)"
         
-        // self.reason = apiType.modBanFromCommunity.banned ? genReason(reason: apiType.modBanFromCommunity.reason) : .inapplicable
         self.reason = genReason(reason: apiType.modBanFromCommunity.reason)
         self.expires = apiType.modBanFromCommunity.banned ? genExpires(expires: apiType.modBanFromCommunity.expires) : .inapplicable
         
@@ -175,13 +162,178 @@ struct ModlogEntry: Hashable, Equatable {
             .init(imageName: Icons.communityBanned, color: .red) :
             .init(imageName: Icons.communityUnbanned, color: .green)
         
-        var contextLinks: [MenuFunction] = .init()
-//        if let moderator = apiType.moderator {
-//            contextLinks.append(.userFromModel(0, UserModel(from: moderator)))
-//        }
-//        contextLinks.append(.userFromModel(1, UserModel(from: apiType.bannedPerson)))
-//        contextLinks.append(.communityFromApiType(2, apiType.community))
-        self.contextLinks = contextLinks
+        self.contextLinks = [
+            ModlogMenuFunction.moderator(apiType.moderator),
+            ModlogMenuFunction.user(apiType.bannedPerson, verb.capitalized),
+            ModlogMenuFunction.community(apiType.community)
+        ].compactMap { $0.toMenuFunction() }
+    }
+    
+    init(from apiType: APIModBanView) {
+        self.date = apiType.modBan.when_
+        
+        let agent = genModeratorAgent(agent: apiType.moderator)
+        let verb = apiType.modBan.banned ? "banned" : "unbanned"
+        // swiftlint:disable:next line_length
+        self.description = "\(agent) \(verb) \(apiType.bannedPerson.fullyQualifiedName) from \(apiType.moderator?.actorId.host() ?? "instance")"
+        
+        self.reason = genReason(reason: apiType.modBan.reason)
+        self.expires = apiType.modBan.banned ? genExpires(expires: apiType.modBan.expires) : .inapplicable
+        
+        self.icon = apiType.modBan.banned ?
+            .init(imageName: Icons.instanceBanned, color: .red) :
+            .init(imageName: Icons.instanceUnbanned, color: .green)
+        
+        self.contextLinks = [
+            ModlogMenuFunction.moderator(apiType.moderator),
+            ModlogMenuFunction.user(apiType.bannedPerson, verb.capitalized)
+        ].compactMap { $0.toMenuFunction() }
+    }
+    
+    init(from apiType: APIModAddCommunityView) {
+        self.date = apiType.modAddCommunity.when_
+        
+        let agent = genModeratorAgent(agent: apiType.moderator)
+        let verb = apiType.modAddCommunity.removed ? "removed" : "appointed"
+        // swiftlint:disable:next line_length
+        self.description = "\(agent) \(verb) \(apiType.moddedPerson.fullyQualifiedName) as moderator of \(apiType.community.fullyQualifiedName)"
+        
+        self.reason = .inapplicable
+        self.expires = .inapplicable
+        
+        self.icon = apiType.modAddCommunity.removed ?
+            .init(imageName: Icons.unmodFill, color: .red) :
+            .init(imageName: Icons.moderationFill, color: .green)
+        
+        self.contextLinks = [
+            ModlogMenuFunction.moderator(apiType.moderator),
+            ModlogMenuFunction.user(apiType.moddedPerson, apiType.modAddCommunity.removed ? "Unmodded" : "Modded")
+        ].compactMap { $0.toMenuFunction() }
+    }
+    
+    init(from apiType: APIModTransferCommunityView) {
+        self.date = apiType.modTransferCommunity.when_
+        
+        let agent = genModeratorAgent(agent: apiType.moderator)
+        self.description = "\(agent) transferred \(apiType.community.fullyQualifiedName) to \(apiType.moddedPerson.fullyQualifiedName)"
+        
+        self.reason = .inapplicable
+        self.expires = .inapplicable
+        
+        self.icon = .init(imageName: Icons.leftRight, color: .green)
+        
+        self.contextLinks = [
+            ModlogMenuFunction.moderator(apiType.moderator),
+            ModlogMenuFunction.user(apiType.moddedPerson, "Promoted"),
+            ModlogMenuFunction.community(apiType.community)
+        ].compactMap { $0.toMenuFunction() }
+    }
+    
+    init(from apiType: APIModAddView) {
+        self.date = apiType.modAdd.when_
+        
+        let agent = genModeratorAgent(agent: apiType.moderator)
+        let verb = apiType.modAdd.removed ? "removed" : "appointed"
+        let instance = apiType.moderator?.actorId.host() ?? "instance"
+        self.description = "\(agent) \(verb) \(apiType.moddedPerson.fullyQualifiedName) as administrator of \(instance)"
+        
+        self.reason = .inapplicable
+        self.expires = .inapplicable
+        
+        self.icon = apiType.modAdd.removed ?
+            .init(imageName: Icons.unAdmin, color: .indigo) :
+            .init(imageName: Icons.admin, color: .teal)
+        
+        self.contextLinks = [
+            ModlogMenuFunction.administrator(apiType.moderator),
+            ModlogMenuFunction.user(apiType.moddedPerson, apiType.modAdd.removed ? "Demoted" : "Promoted")
+        ].compactMap { $0.toMenuFunction() }
+    }
+    
+    init(from apiType: APIAdminPurgePersonView) {
+        self.date = apiType.adminPurgePerson.when_
+        
+        let agent = genModeratorAgent(agent: apiType.admin)
+        self.description = "\(agent) purged a person"
+        
+        self.reason = genReason(reason: apiType.adminPurgePerson.reason)
+        self.expires = .inapplicable
+        
+        self.icon = .init(imageName: Icons.purge, color: .primary)
+        
+        self.contextLinks = [
+            ModlogMenuFunction.administrator(apiType.admin)
+        ].compactMap { $0.toMenuFunction() }
+    }
+    
+    init(from apiType: APIAdminPurgeCommunityView) {
+        self.date = apiType.adminPurgeCommunity.when_
+        
+        let agent = genModeratorAgent(agent: apiType.admin)
+        self.description = "\(agent) purged a community"
+        
+        self.reason = genReason(reason: apiType.adminPurgeCommunity.reason)
+        self.expires = .inapplicable
+        
+        self.icon = .init(imageName: Icons.purge, color: .primary)
+        
+        self.contextLinks = [
+            ModlogMenuFunction.administrator(apiType.admin)
+        ].compactMap { $0.toMenuFunction() }
+    }
+    
+    init(from apiType: APIAdminPurgePostView) {
+        self.date = apiType.adminPurgePost.when_
+        
+        let agent = genModeratorAgent(agent: apiType.admin)
+        self.description = "\(agent) purged a post from \(apiType.community.fullyQualifiedName)"
+        
+        self.reason = genReason(reason: apiType.adminPurgePost.reason)
+        self.expires = .inapplicable
+        
+        self.icon = .init(imageName: Icons.purge, color: .primary)
+        
+        self.contextLinks = [
+            ModlogMenuFunction.administrator(apiType.admin),
+            ModlogMenuFunction.community(apiType.community)
+        ].compactMap { $0.toMenuFunction() }
+    }
+    
+    init(from apiType: APIAdminPurgeCommentView) {
+        self.date = apiType.adminPurgeComment.when_
+        
+        let agent = genModeratorAgent(agent: apiType.admin)
+        self.description = "\(agent) purged a comment from \"\(apiType.post.name)\""
+        
+        self.reason = genReason(reason: apiType.adminPurgeComment.reason)
+        self.expires = .inapplicable
+        
+        self.icon = .init(imageName: Icons.purge, color: .primary)
+        
+        self.contextLinks = [
+            ModlogMenuFunction.administrator(apiType.admin),
+            ModlogMenuFunction.post(apiType.post)
+        ].compactMap { $0.toMenuFunction() }
+    }
+    
+    init(from apiType: APIModHideCommunityView) {
+        self.date = apiType.modHideCommunity.when_
+        
+        let agent = genModeratorAgent(agent: apiType.admin)
+        let verb = apiType.modHideCommunity.hidden ? "hid" : "unhid"
+        self.description = "\(agent) \(verb) community \(apiType.community.fullyQualifiedName)"
+        
+        self.reason = genReason(reason: apiType.modHideCommunity.reason)
+        self.expires = .inapplicable
+        
+        self.icon = apiType.modHideCommunity.hidden ?
+            .init(imageName: Icons.hide, color: .red) :
+            .init(imageName: Icons.show, color: .green)
+        
+        self.contextLinks = [
+            ModlogMenuFunction.administrator(apiType.admin),
+            ModlogMenuFunction.community(apiType.community)
+        ].compactMap { $0.toMenuFunction() }
     }
     
     static func == (lhs: ModlogEntry, rhs: ModlogEntry) -> Bool {
@@ -196,26 +348,62 @@ struct ModlogEntry: Hashable, Equatable {
 
 // MARK: helpers
 
-private func genInitialMenuFunctions(for moderator: APIPerson?) -> [MenuFunction] {
-    var ret: [MenuFunction] = .init()
-    if let moderator {
-        ret.append(.navigationMenuFunction(
-            text: "/u/\(moderator.name)",
-            imageName: Icons.moderation,
-            destination: .userProfile(.init(from: moderator))
-        )
-        )
+private enum ModlogMenuFunction {
+    case administrator(APIPerson?)
+    case moderator(APIPerson?)
+    case user(APIPerson, String) // user, verb
+    case post(APIPost)
+    case comment(APIComment)
+    case community(APICommunity)
+    
+    func toMenuFunction() -> MenuFunction? {
+        switch self {
+        case let .administrator(administrator):
+            guard let administrator else { return nil }
+            return .navigationMenuFunction(
+                text: "View Administrator",
+                imageName: Icons.moderation,
+                destination: .userProfile(.init(from: administrator)))
+        case let .moderator(moderator):
+            guard let moderator else { return nil }
+            return .navigationMenuFunction(
+                text: "View Moderator",
+                imageName: Icons.moderation,
+                destination: .userProfile(.init(from: moderator)))
+        case let .user(user, verb):
+            return .navigationMenuFunction(
+                text: "View \(verb) User",
+                imageName: Icons.user,
+                destination: .userProfile(.init(from: user)))
+        case let .post(post):
+            return .navigationMenuFunction(
+                text: "View Post",
+                imageName: Icons.posts,
+                destination: .lazyLoadPostLinkWithContext(.init(postId: post.id))
+            )
+        case let .comment(comment):
+            return .navigationMenuFunction(
+                text: "View Comment",
+                imageName: Icons.replies,
+                destination: .lazyLoadPostLinkWithContext(.init(postId: comment.postId, scrollTarget: comment.id))
+            )
+        case let .community(community):
+            return .navigationMenuFunction(
+                text: "View Community",
+                imageName: Icons.community,
+                destination: .community(.init(from: community))
+            )
+        }
     }
-    return ret
 }
 
 private func genModeratorAgent(agent: APIPerson?) -> String {
-    agent?.name ?? "Moderator"
+    agent?.fullyQualifiedName ?? "Moderator"
 }
 
 private func genReason(reason: String?) -> ModlogReason {
-    if let reason, !reason.isEmpty {
-        return .reason(reason)
+    if let strippedReason = reason?.trimmingCharacters(in: .whitespacesAndNewlines), !strippedReason.isEmpty {
+        return .reason(strippedReason)
     }
     return .noneGiven
 }
@@ -226,3 +414,16 @@ private func genExpires(expires: Date?) -> ModlogExpiration {
     }
     return .permanent
 }
+
+extension APIPerson {
+    var fullyQualifiedName: String {
+        "\(name)@\(actorId.host() ?? "unknown")"
+    }
+}
+
+extension APICommunity {
+    var fullyQualifiedName: String {
+        "\(name)@\(actorId.host() ?? "unknown")"
+    }
+}
+// swiftlint:enable file_length

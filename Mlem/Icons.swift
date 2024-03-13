@@ -107,7 +107,6 @@ enum Icons {
     
     // user flairs
     static let developerFlair: String = "hammer.fill"
-    static let adminFlair: String = "crown.fill"
     static let botFlair: String = "terminal.fill"
     static let opFlair: String = "person.fill"
     static let instanceBannedFlair: String = "xmark.circle.fill"
@@ -121,6 +120,8 @@ enum Icons {
     static let userBlock: String = "person.fill.xmark"
     static let community: String = "building.2.crop.circle"
     static let communityFill: String = "building.2.crop.circle.fill"
+    static let admin: String = "crown.fill"
+    static let unAdmin: String = "cloud.bolt.fill" // idk what to do for this one
     
     // tabs
     static let feeds: String = "scroll"
@@ -216,6 +217,9 @@ enum Icons {
     static let communityBanned: String = "xmark.shield.fill"
     static let communityUnban: String = "checkmark.shield"
     static let communityUnbanned: String = "checkmark.shield.fill"
+    static let instanceBan: String = "xmark.circle"
+    static let instanceBanned: String = "xmark.circle.fill"
+    static let instanceUnbanned: String = "checkmark.circle.fill"
     static let unmod: String = "shield.slash"
     static let unmodFill: String = "shield.slash.fill"
     static let pin: String = "pin"

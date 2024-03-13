@@ -12,7 +12,7 @@ struct APIModHideCommunity: Codable {
     let id: Int
     let communityId: Int
     let modPersonId: Int
-    let when_: String
+    let when_: Date
     let reason: String?
     let hidden: Bool
 }

@@ -29,6 +29,14 @@ extension APIClient {
         ret.append(contentsOf: response.removedComments.map { ModlogEntry(from: $0) })
         ret.append(contentsOf: response.removedCommunities.map { ModlogEntry(from: $0) })
         ret.append(contentsOf: response.bannedFromCommunity.map { ModlogEntry(from: $0) })
+        ret.append(contentsOf: response.banned.map { ModlogEntry(from: $0) })
+        ret.append(contentsOf: response.addedToCommunity.map { ModlogEntry(from: $0) })
+        ret.append(contentsOf: response.transferredToCommunity.map { ModlogEntry(from: $0) })
+        ret.append(contentsOf: response.added.map { ModlogEntry(from: $0) })
+        ret.append(contentsOf: response.adminPurgedPersons.map { ModlogEntry(from: $0) })
+        ret.append(contentsOf: response.adminPurgedCommunities.map { ModlogEntry(from: $0) })
+        ret.append(contentsOf: response.adminPurgedPosts.map { ModlogEntry(from: $0) })
+        ret.append(contentsOf: response.adminPurgedComments.map { ModlogEntry(from: $0) })
         
         return ret.sorted(by: { $0.date > $1.date })
     }
