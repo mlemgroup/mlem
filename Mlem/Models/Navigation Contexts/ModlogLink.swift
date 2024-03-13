@@ -7,12 +7,21 @@
 
 import Foundation
 
-struct ModlogLink: Hashable {
-    let instance: URL?
-    let community: CommunityModel?
+enum ModlogLink: Hashable {
+    case userInstance
+    case instance(URL)
+    case community(CommunityModel)
     
     func hash(into hasher: inout Hasher) {
-        hasher.combine(instance)
-        hasher.combine(community)
+        switch self {
+        case .userInstance:
+            hasher.combine("userInstance")
+        case let .instance(instance):
+            hasher.combine("instance")
+            hasher.combine(instance)
+        case let .community(community):
+            hasher.combine("community")
+            hasher.combine(community)
+        }
     }
 }

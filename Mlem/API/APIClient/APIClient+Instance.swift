@@ -9,8 +9,13 @@ import Foundation
 
 extension APIClient {
     func getModlog(
-        for instance: URL?,
-        communityId: Int?
+        for instance: URL? = nil,
+        modPersonId: Int? = nil,
+        communityId: Int? = nil,
+        page: Int? = nil,
+        limit: Int? = nil,
+        type: APIModlogActionType? = nil,
+        otherPersonId: Int? = nil
     ) async throws -> [ModlogEntry] {
         // TODO: params
         var useSession: APISession
@@ -31,10 +36,10 @@ extension APIClient {
             session: useSession,
             modPersonId: nil,
             communityId: communityId,
-            page: nil,
-            limit: nil,
-            type_: nil,
-            otherPersonId: nil
+            page: page,
+            limit: limit,
+            type_: type,
+            otherPersonId: otherPersonId
         )
         
         let response = try await perform(request: request)

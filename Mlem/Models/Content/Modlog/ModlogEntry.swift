@@ -348,6 +348,7 @@ struct ModlogEntry: Hashable, Equatable {
 
 // MARK: helpers
 
+// TODO: resolve links to communities from other instances
 private enum ModlogMenuFunction {
     case administrator(APIPerson?)
     case moderator(APIPerson?)
