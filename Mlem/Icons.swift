@@ -208,8 +208,6 @@ enum Icons {
     static let limitImageHeightSetting: String = "rectangle.compress.vertical"
     static let appLockSettings: String = "lock.app.dashed"
     static let collapseComments: String = "arrow.down.and.line.horizontal.and.arrow.up"
-    static let instanceBan: String = "xmark.circle"
-    static let instanceUnban: String = "checkmark.circle"
     
     // mod tools
     static let auditUser: String = "person.crop.circle.badge.questionmark.fill"
@@ -218,6 +216,7 @@ enum Icons {
     static let communityUnban: String = "checkmark.shield"
     static let communityUnbanned: String = "checkmark.shield.fill"
     static let instanceBan: String = "xmark.circle"
+    static let instanceUnban: String = "checkmark.circle"
     static let instanceBanned: String = "xmark.circle.fill"
     static let instanceUnbanned: String = "checkmark.circle.fill"
     static let unmod: String = "shield.slash"
