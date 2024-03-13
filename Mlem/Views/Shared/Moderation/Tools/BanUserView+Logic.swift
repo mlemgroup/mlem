@@ -9,10 +9,12 @@ import SwiftUI
 
 extension BanUserView {
     func confirm() {
-        if !banFromInstance, let communityContext {
+        if banFromInstance {
+            instanceBan()
+        } else if let communityContext {
             communityBan(from: communityContext)
         } else {
-            instanceBan()
+            assertionFailure("banFromInstance false but communityContext nil!")
         }
     }
     
