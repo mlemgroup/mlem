@@ -74,18 +74,7 @@ struct ResponseEditorView: View {
                 .padding(.bottom, AppConstants.editorOverscroll)
             }
             .scrollDismissesKeyboard(.automatic)
-            .overlay {
-                // Loading Indicator
-                if isSubmitting {
-                    ProgressView()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(Color.gray.opacity(0.3))
-                        .accessibilityElement(children: .ignore)
-                        .accessibilityLabel("Submitting Response")
-                        .edgesIgnoringSafeArea(.all)
-                        .allowsHitTesting(false)
-                }
-            }
+            .progressOverlay(isPresented: $isSubmitting)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel", role: .destructive) {

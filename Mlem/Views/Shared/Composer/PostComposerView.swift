@@ -198,19 +198,8 @@ struct PostComposerView: View {
                     .clipShape(UnevenRoundedRectangle(cornerRadii: .init(topLeading: 15, topTrailing: 15)))
                     .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: -3)
                 }
-                
-                // Loading Indicator
-                if isSubmitting {
-                    ZStack {
-                        Color.gray.opacity(0.3)
-                        ProgressView()
-                    }
-                    .accessibilityElement(children: .ignore)
-                    .accessibilityLabel("Submitting Post")
-                    .edgesIgnoringSafeArea(.all)
-                    .allowsHitTesting(false)
-                }
             }
+            .progressOverlay(isPresented: $isSubmitting)
             .background(Color(uiColor: .systemGroupedBackground))
             .scrollDismissesKeyboard(.automatic)
             .toolbar {

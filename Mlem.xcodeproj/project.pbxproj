@@ -92,6 +92,7 @@
 		03B7AAF32ABEF85300068B23 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B7AAF22ABEF85200068B23 /* UserModel.swift */; };
 		03B7AAF52ABEFA7A00068B23 /* UserListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B7AAF42ABEFA7A00068B23 /* UserListRow.swift */; };
 		03BAA23A2A57DC1400D48252 /* PublishedTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BAA2392A57DC1400D48252 /* PublishedTimestampView.swift */; };
+		03C194082BA25B5200B00349 /* ProgressOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C194072BA25B5200B00349 /* ProgressOverlayView.swift */; };
 		03C897F62ABF49BD005F3403 /* Abbreviate Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C897F52ABF49BD005F3403 /* Abbreviate Numbers.swift */; };
 		03C897F82ABF652D005F3403 /* SearchRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C897F72ABF652D005F3403 /* SearchRoot.swift */; };
 		03C898012AC04EF9005F3403 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C898002AC04EF9005F3403 /* SearchResultsView.swift */; };
@@ -707,6 +708,7 @@
 		03B7AAF22ABEF85200068B23 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		03B7AAF42ABEFA7A00068B23 /* UserListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListRow.swift; sourceTree = "<group>"; };
 		03BAA2392A57DC1400D48252 /* PublishedTimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishedTimestampView.swift; sourceTree = "<group>"; };
+		03C194072BA25B5200B00349 /* ProgressOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressOverlayView.swift; sourceTree = "<group>"; };
 		03C897F52ABF49BD005F3403 /* Abbreviate Numbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Abbreviate Numbers.swift"; sourceTree = "<group>"; };
 		03C897F72ABF652D005F3403 /* SearchRoot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRoot.swift; sourceTree = "<group>"; };
 		03C898002AC04EF9005F3403 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
@@ -2354,6 +2356,7 @@
 			children = (
 				03EA79C32AC0D92C00BCDC91 /* PostComposerView+Logic.swift */,
 				CD391F952A535F5400E213B5 /* ResponseEditorView.swift */,
+				03C194072BA25B5200B00349 /* ProgressOverlayView.swift */,
 				03F6D4BC2B966D53008235A0 /* BodyEditorView.swift */,
 				03CB329D2A6D8E910021EF27 /* PostComposerView.swift */,
 				CD0D5A442B8EC5D9005E3365 /* RemovePostView.swift */,
@@ -3541,6 +3544,7 @@
 				038A16DF2A75172C0087987E /* LayoutWidgetEditView.swift in Sources */,
 				CD69F5732A4239D70028D4F7 /* Comment Item.swift in Sources */,
 				6FF17D062B685CF6007E1814 /* UIDevice+DynamicIsland.swift in Sources */,
+				03C194082BA25B5200B00349 /* ProgressOverlayView.swift in Sources */,
 				CD29ED412B2E867C006937CE /* UIApplication+TopMostViewController.swift in Sources */,
 				CDB45C622AF1AF9B00A1FF08 /* ReplyModel+TrackerItem.swift in Sources */,
 				6318EDC327EE4D7F00BFCAE8 /* Feed Post.swift in Sources */,
