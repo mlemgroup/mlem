@@ -34,6 +34,7 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
     }
 
     func addChildTracker(_ newChild: some ChildTrackerProtocol, preheat: Bool = false) {
+        childTrackers.append(newChild)
         newChild.setParentTracker(self, preheat: preheat)
     }
 

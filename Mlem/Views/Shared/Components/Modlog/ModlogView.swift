@@ -51,6 +51,7 @@ enum ModlogAction: CaseIterable {
     }
 }
 
+// swiftlint:disable:next type_body_length
 struct ModlogView: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
@@ -270,6 +271,12 @@ struct ModlogView: View {
                 case .communityHide:
                     currentTracker = communityHidesTracker
                 }
+                
+                if currentTracker.items.isEmpty {
+                    Task {
+                        await currentTracker.loadMoreItems()
+                    }
+                }
             }
             .navigationTitle("Modlog")
             .hoistNavigation()
@@ -280,13 +287,15 @@ struct ModlogView: View {
     var content: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
+                Divider()
+                
                 actionPicker
+                
+                Divider()
                
                 if currentTracker.items.isEmpty {
                     noEntriesView()
                 } else {
-                    Divider()
-                    
                     ForEach(currentTracker.items, id: \.uid) { entry in
                         entryView(for: entry)
                     }
@@ -299,11 +308,18 @@ struct ModlogView: View {
     
     @ViewBuilder
     var actionPicker: some View {
-        Picker("Modlog Action", selection: $selectedAction) {
-            ForEach(ModlogAction.allCases, id: \.self) { action in
-                Text(action.label)
+        HStack {
+            Text("Action Type")
+            
+            Spacer()
+            
+            Picker("Modlog Action", selection: $selectedAction) {
+                ForEach(ModlogAction.allCases, id: \.self) { action in
+                    Text(action.label)
+                }
             }
         }
+        .padding(AppConstants.standardSpacing)
     }
     
     @ViewBuilder
@@ -328,6 +344,8 @@ struct ModlogView: View {
                     .frame(maxWidth: .infinity)
             } else if currentTracker.loadingState == .done {
                 Text("No items found")
+                    .italic()
+                    .foregroundColor(.secondary)
                     .padding(.top, 20)
                     .transition(.scale(scale: 0.9).combined(with: .opacity))
             }
