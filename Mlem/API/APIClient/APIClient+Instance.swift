@@ -12,8 +12,8 @@ extension APIClient {
         for instance: URL? = nil,
         modPersonId: Int? = nil,
         communityId: Int? = nil,
-        page: Int? = nil,
-        limit: Int? = nil,
+        page: Int,
+        limit: Int,
         type: APIModlogActionType? = nil,
         otherPersonId: Int? = nil
     ) async throws -> [ModlogEntry] {
@@ -59,6 +59,7 @@ extension APIClient {
         ret.append(contentsOf: response.adminPurgedCommunities.map { ModlogEntry(from: $0) })
         ret.append(contentsOf: response.adminPurgedPosts.map { ModlogEntry(from: $0) })
         ret.append(contentsOf: response.adminPurgedComments.map { ModlogEntry(from: $0) })
+        ret.append(contentsOf: response.hiddenCommunities.map { ModlogEntry(from: $0) })
         
         return ret.sorted(by: { $0.date > $1.date })
     }

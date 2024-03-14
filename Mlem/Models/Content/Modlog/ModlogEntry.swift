@@ -215,6 +215,7 @@ struct ModlogEntry: Hashable, Equatable {
         self.date = apiType.modTransferCommunity.when_
         
         let agent = genModeratorAgent(agent: apiType.moderator)
+        print(apiType.moderator)
         self.description = "\(agent) transferred \(apiType.community.fullyQualifiedName) to \(apiType.moddedPerson.fullyQualifiedName)"
         
         self.reason = .inapplicable

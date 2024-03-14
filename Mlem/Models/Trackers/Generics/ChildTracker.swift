@@ -23,8 +23,14 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
         preconditionFailure("This method must be implemented by the inheriting class")
     }
     
-    func setParentTracker(_ newParent: any ParentTrackerProtocol) {
+    func setParentTracker(_ newParent: any ParentTrackerProtocol, preheat: Bool) {
         parentTracker = newParent
+        
+        if preheat, items.isEmpty {
+            Task {
+                await loadMoreItems()
+            }
+        }
     }
     
     /// Gets the next item in the feed stream and increments the cursor

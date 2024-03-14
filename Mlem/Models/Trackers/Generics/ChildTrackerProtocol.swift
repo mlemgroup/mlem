@@ -16,7 +16,7 @@ protocol ChildTrackerProtocol: AnyObject {
 
     // MARK: stream support methods
     
-    func setParentTracker(_ newParent: any ParentTrackerProtocol)
+    func setParentTracker(_ newParent: any ParentTrackerProtocol, preheat: Bool)
 
     func consumeNextItem() -> ParentItem?
 

@@ -17,19 +17,24 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
     
     private(set) var sortType: TrackerSortType
 
-    init(internetSpeed: InternetSpeed, sortType: TrackerSortType, childTrackers: [any ChildTrackerProtocol]) {
+    init(
+        internetSpeed: InternetSpeed,
+        sortType: TrackerSortType,
+        childTrackers: [any ChildTrackerProtocol],
+        preheatChildren: Bool = false
+    ) {
         self.childTrackers = childTrackers
         self.sortType = sortType
         
         super.init(internetSpeed: internetSpeed)
 
         for child in self.childTrackers {
-            child.setParentTracker(self)
+            child.setParentTracker(self, preheat: preheatChildren)
         }
     }
 
-    func addChildTracker(_ newChild: some ChildTrackerProtocol) {
-        newChild.setParentTracker(self)
+    func addChildTracker(_ newChild: some ChildTrackerProtocol, preheat: Bool = false) {
+        newChild.setParentTracker(self, preheat: preheat)
     }
 
     // MARK: main actor methods
