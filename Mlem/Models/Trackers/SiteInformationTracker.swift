@@ -38,6 +38,18 @@ class SiteInformationTracker: ObservableObject {
         myUser?.isAdmin ?? false
     }
     
+    var feeds: [FeedType] {
+        if moderatorFeedAvailable {
+            [.all, .local, .subscribed, .moderated, .saved]
+        } else {
+            [.all, .local, .subscribed, .saved]
+        }
+    }
+    
+    var moderatorFeedAvailable: Bool {
+        !moderatedCommunities.isEmpty && (version ?? .zero) >= .init("0.19.0")
+    }
+    
     func load(account: SavedAccount) {
         version = account.siteVersion
         Task {
