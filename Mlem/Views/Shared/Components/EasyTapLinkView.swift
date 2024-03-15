@@ -23,14 +23,9 @@ enum LinkType {
     // - posts
     // - comments
     
-    // TODO: 2.0 clean up type discrepancies
     case website(Int, String, URL) // position, link title, url
     case user(Int, String, String, URL) // position, username, instance, url
     case community(Int, String, String, URL) // position, community name, instance, url
-    case userFromModel(Int, UserModel)
-    case postFromApiType(Int, APIPost)
-    case commentFromApiType(Int, APIComment)
-    case communityFromApiType(Int, APICommunity)
     
     var title: String {
         switch self {
@@ -40,14 +35,6 @@ enum LinkType {
             return "/u/\(username)"
         case let .community(_, community, _, _):
             return "/c/\(community)"
-        case let .userFromModel(_, user):
-            return "/u/\(user.name ?? "user")"
-        case let .postFromApiType(_, post):
-            return post.name
-        case let .commentFromApiType(_, comment):
-            return comment.content
-        case let .communityFromApiType(_, community):
-            return "/c/\(community.name)"
         }
     }
     
@@ -56,11 +43,7 @@ enum LinkType {
         case
             let .website(position, _, _),
             let .user(position, _, _, _),
-            let .community(position, _, _, _),
-            let .userFromModel(position, _),
-            let .postFromApiType(position, _),
-            let .commentFromApiType(position, _),
-            let .communityFromApiType(position, _):
+            let .community(position, _, _, _):
             return position
         }
     }
@@ -72,14 +55,6 @@ enum LinkType {
             let .user(_, _, _, url),
             let .community(_, _, _, url):
             return .url(url)
-        case let .userFromModel(_, user):
-            return .appRoute(.userProfile(user))
-        case let .postFromApiType(_, post):
-            return .appRoute(.lazyLoadPostLinkWithContext(.init(postId: post.id)))
-        case let .commentFromApiType(_, comment):
-            return .appRoute(.lazyLoadPostLinkWithContext(.init(postId: comment.postId, scrollTarget: comment.id)))
-        case let .communityFromApiType(_, community):
-            return .appRoute(.community(.init(from: community, subscribed: nil)))
         }
     }
     
@@ -105,18 +80,6 @@ extension LinkType: Hashable, Identifiable {
         case let .community(_, _, _, url):
             hasher.combine("community")
             hasher.combine(url)
-        case let .userFromModel(_, user):
-            hasher.combine("userFromModel")
-            hasher.combine(user)
-        case let .postFromApiType(_, post):
-            hasher.combine("postFromApiType")
-            hasher.combine(post)
-        case let .commentFromApiType(_, comment):
-            hasher.combine("commentFromApiType")
-            hasher.combine(comment)
-        case let .communityFromApiType(_, community):
-            hasher.combine("communityFromApiType")
-            hasher.combine(community)
         }
     }
     
@@ -188,12 +151,6 @@ struct EasyTapLinkView: View {
             websiteCaption(url: url)
         case let .user(_, name, instance, _), let .community(_, name, instance, _):
             userOrCommunityCaption(name: name, instance: instance)
-        case let .userFromModel(_, user):
-            let instance = user.profileUrl.host() ?? "unknown"
-            userOrCommunityCaption(name: user.name, instance: instance)
-        case .postFromApiType, .commentFromApiType, .communityFromApiType:
-            // not enough info in base API types for a meaningful caption
-            EmptyView()
         }
     }
     
