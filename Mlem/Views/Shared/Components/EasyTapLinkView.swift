@@ -8,11 +8,6 @@
 import Foundation
 import SwiftUI
 
-enum LinkDestinationType {
-    case appRoute(AppRoute)
-    case url(URL)
-}
-
 /// Enumerates the types of links
 /// Equatable so that things like PostModel can be equatable
 /// All cases have a 'position' int for sorting the list
@@ -48,15 +43,37 @@ enum LinkType {
         }
     }
     
-    var destinationType: LinkDestinationType {
+    var url: URL {
         switch self {
         case
             let .website(_, _, url),
             let .user(_, _, _, url),
             let .community(_, _, _, url):
-            return .url(url)
+            return url
         }
     }
+}
+
+extension LinkType: Hashable, Identifiable {
+    func hash(into hasher: inout Hasher) {
+        switch self {
+        case let .website(position, title, url):
+            hasher.combine(0)
+            hasher.combine(position)
+            hasher.combine(title)
+            hasher.combine(url)
+        case let .user(position, _, _, url):
+            hasher.combine(1)
+            hasher.combine(position)
+            hasher.combine(url)
+        case let .community(position, _, _, url):
+            hasher.combine(2)
+            hasher.combine(position)
+            hasher.combine(url)
+        }
+    }
+    
+    var id: Int { hashValue }
     
     var isWebsite: Bool {
         if case .website = self {
@@ -64,26 +81,6 @@ enum LinkType {
         }
         return false
     }
-}
-
-extension LinkType: Hashable, Identifiable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(position)
-        switch self {
-        case let .website(_, title, url):
-            hasher.combine("website")
-            hasher.combine(title)
-            hasher.combine(url)
-        case let .user(_, _, _, url):
-            hasher.combine("user")
-            hasher.combine(url)
-        case let .community(_, _, _, url):
-            hasher.combine("community")
-            hasher.combine(url)
-        }
-    }
-    
-    var id: Int { hashValue }
 }
 
 enum EasyTapLinkDisplayMode: String, SettingsOptions {
@@ -101,29 +98,10 @@ struct EasyTapLinkView: View {
     let showCaption: Bool
     
     var body: some View {
-        switch linkType.destinationType {
-        case let .appRoute(appRoute):
-            NavigationLink(appRoute) {
-                content
+        content
+            .onTapGesture {
+                openURL(linkType.url)
             }
-        case let .url(url):
-            content
-                .onTapGesture {
-                    openURL(url)
-                }
-                .contextMenu {
-                    if linkType.isWebsite {
-                        Button("Open", systemImage: Icons.browser) {
-                            openURL(url)
-                        }
-                        Button("Copy", systemImage: Icons.copy) {
-                            let pasteboard = UIPasteboard.general
-                            pasteboard.url = url
-                        }
-                        ShareLink(item: url)
-                    }
-                } preview: { WebView(url: url) }
-        }
     }
     
     var content: some View {
@@ -139,9 +117,21 @@ struct EasyTapLinkView: View {
                     .lineLimit(1)
             }
         }
-        .padding(AppConstants.standardSpacing)
+        .padding(AppConstants.postAndCommentSpacing)
         .background(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
             .foregroundColor(Color(UIColor.secondarySystemBackground)))
+        .contextMenu {
+            if linkType.isWebsite {
+                Button("Open", systemImage: Icons.browser) {
+                    openURL(linkType.url)
+                }
+                Button("Copy", systemImage: Icons.copy) {
+                    let pasteboard = UIPasteboard.general
+                    pasteboard.url = linkType.url
+                }
+                ShareLink(item: linkType.url)
+            }
+        } preview: { WebView(url: linkType.url) }
     }
     
     @ViewBuilder
