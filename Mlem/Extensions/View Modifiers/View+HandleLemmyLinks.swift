@@ -187,7 +187,8 @@ struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
     }
 
     @MainActor
-    func didReceiveURL(_ url: URL) -> OpenURLAction.Result {
+    func didReceiveURL(_ url: URL) -> OpenURLAction.Result { // swiftlint:disable:this function_body_length
+        print("DEBUG GOT URL")
         // let's try keep peps in the app!
         if url.absoluteString.contains(["lem", "/c/", "/u/", "/post/", "@"]) {
             // this link is sus! let's go
@@ -270,7 +271,11 @@ struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
             do {
                 switch resolution {
                 case let .post(object):
-                    try navigationPath.wrappedValue.append(Path.makeRoute(object))
+                    try navigationPath.wrappedValue.append(Path.makeRoute(PostLinkWithContext(
+                        post: .init(from: object),
+                        postTracker: .init(internetSpeed: .slow, sortType: .new, showReadPosts: true, feedType: .all)
+                    )
+                    ))
                     return true
                 case let .person(object):
                     try navigationPath.wrappedValue.append(Path.makeRoute(UserModel(from: object.person)))

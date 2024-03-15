@@ -26,11 +26,7 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
     func setParentTracker(_ newParent: any ParentTrackerProtocol, preheat: Bool) {
         parentTracker = newParent
         
-        if preheat, items.isEmpty {
-            Task {
-                await loadMoreItems()
-            }
-        }
+        if preheat { Task { await self.preheat() } }
     }
     
     /// Gets the next item in the feed stream and increments the cursor
@@ -75,6 +71,12 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
     /// Resets the cursor to 0 but does not unload any items
     func resetCursor() {
         streamCursor = 0
+    }
+    
+    func preheat() async {
+        if items.isEmpty, loadingState == .idle {
+            await loadMoreItems()
+        }
     }
 
     func refresh(clearBeforeRefresh: Bool, notifyParent: Bool = true) async throws {

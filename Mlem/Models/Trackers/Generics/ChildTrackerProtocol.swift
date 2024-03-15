@@ -26,6 +26,8 @@ protocol ChildTrackerProtocol: AnyObject {
 
     // MARK: loading methods
     
+    func preheat() async
+    
     func reset(notifyParent: Bool) async
 
     func refresh(clearBeforeRefresh: Bool, notifyParent: Bool) async throws

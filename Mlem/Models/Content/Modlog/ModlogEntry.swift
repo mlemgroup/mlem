@@ -5,6 +5,7 @@
 //  Created by Eric Andrews on 2024-03-11.
 //
 
+import Dependencies
 // swiftlint:disable file_length
 import Foundation
 import SwiftUI
@@ -122,7 +123,6 @@ struct ModlogEntry: Hashable, Equatable {
         
         self.contextLinks = [
             ModlogMenuFunction.moderator(apiType.moderator),
-            ModlogMenuFunction.comment(apiType.comment),
             ModlogMenuFunction.post(apiType.post),
             ModlogMenuFunction.community(apiType.community)
         ].compactMap { $0.toMenuFunction() }
@@ -215,7 +215,6 @@ struct ModlogEntry: Hashable, Equatable {
         self.date = apiType.modTransferCommunity.when_
         
         let agent = genModeratorAgent(agent: apiType.moderator)
-        print(apiType.moderator)
         self.description = "\(agent) transferred \(apiType.community.fullyQualifiedName) to \(apiType.moddedPerson.fullyQualifiedName)"
         
         self.reason = .inapplicable
@@ -355,48 +354,46 @@ private enum ModlogMenuFunction {
     case moderator(APIPerson?)
     case user(APIPerson, String) // user, verb
     case post(APIPost)
-    case comment(APIComment)
     case community(APICommunity)
+    // comment not available because Lemmy API does not currently support comment object resolution
     
     func toMenuFunction() -> MenuFunction? {
         switch self {
         case let .administrator(administrator):
             guard let administrator else { return nil }
-            return .navigationMenuFunction(
+            return .openUrlMenuFunction(
                 text: "View Administrator",
                 imageName: Icons.moderation,
-                destination: .userProfile(.init(from: administrator))
+                destination: administrator.actorId
             )
         case let .moderator(moderator):
             guard let moderator else { return nil }
-            return .navigationMenuFunction(
+            return .openUrlMenuFunction(
                 text: "View Moderator",
                 imageName: Icons.moderation,
-                destination: .userProfile(.init(from: moderator))
+                destination: moderator.actorId
             )
         case let .user(user, verb):
-            return .navigationMenuFunction(
+            return .openUrlMenuFunction(
                 text: "View \(verb) User",
                 imageName: Icons.user,
-                destination: .userProfile(.init(from: user))
+                destination: user.actorId
             )
         case let .post(post):
-            return .navigationMenuFunction(
+            guard let url = URL(string: post.apId) else {
+                print("Failed to generate URL from url \(post.apId)")
+                return nil
+            }
+            return .openUrlMenuFunction(
                 text: "View Post",
                 imageName: Icons.posts,
-                destination: .lazyLoadPostLinkWithContext(.init(postId: post.id))
-            )
-        case let .comment(comment):
-            return .navigationMenuFunction(
-                text: "View Comment",
-                imageName: Icons.replies,
-                destination: .lazyLoadPostLinkWithContext(.init(postId: comment.postId, scrollTarget: comment.id))
+                destination: url
             )
         case let .community(community):
-            return .navigationMenuFunction(
+            return .openUrlMenuFunction(
                 text: "View Community",
                 imageName: Icons.community,
-                destination: .community(.init(from: community))
+                destination: community.actorId
             )
         }
     }

@@ -79,6 +79,8 @@ struct ModlogView: View {
     @StateObject var communityHidesTracker: ModlogChildTracker
     
     @State var errorDetails: ErrorDetails?
+    @Namespace var scrollToTop
+    @State private var scrollToTopAppeared = false
     
     // sorry swiftlint but the API made me do it
     // swiftlint:disable:next function_body_length
@@ -231,68 +233,86 @@ struct ModlogView: View {
         self._modlogTracker = .init(wrappedValue: modlogTracker)
         self._currentTracker = .init(wrappedValue: modlogTracker)
     }
-
+    
     var body: some View {
-        content
-            .animation(.easeOut(duration: 0.2), value: currentTracker.items.isEmpty)
-            .task { await currentTracker.loadMoreItems() }
-            .onChange(of: selectedAction) { newValue in
-                switch newValue {
-                case .all:
-                    currentTracker = modlogTracker
-                case .postRemoval:
-                    currentTracker = postRemovalsTracker
-                case .postLock:
-                    currentTracker = postLocksTracker
-                case .postPin:
-                    currentTracker = postPinsTracker
-                case .commentremoval:
-                    currentTracker = commentRemovalsTracker
-                case .communityRemoval:
-                    currentTracker = communityRemovalsTracker
-                case .communityBan:
-                    currentTracker = communityBansTracker
-                case .instanceBan:
-                    currentTracker = instanceBansTracker
-                case .moderatorAdd:
-                    currentTracker = moderatorAddsTracker
-                case .communityTransfer:
-                    currentTracker = communityTransfersTracker
-                case .administratorAdd:
-                    currentTracker = administratorAddsTracker
-                case .personPurge:
-                    currentTracker = personPurgesTracker
-                case .communityPurge:
-                    currentTracker = communityPurgesTracker
-                case .postPurge:
-                    currentTracker = postPurgesTracker
-                case .commentPurge:
-                    currentTracker = commentPurgesTracker
-                case .communityHide:
-                    currentTracker = communityHidesTracker
+        ScrollViewReader { scrollProxy in
+            content
+                .animation(.easeOut(duration: 0.2), value: currentTracker.items.isEmpty)
+                .task { await currentTracker.loadMoreItems() }
+                .refreshable {
+                    await Task {
+                        await modlogTracker.refresh()
+                    }.value
                 }
-                
-                if currentTracker.items.isEmpty {
-                    Task {
-                        await currentTracker.loadMoreItems()
+                .onChange(of: selectedAction) { newValue in
+                    switch newValue {
+                    case .all:
+                        currentTracker = modlogTracker
+                    case .postRemoval:
+                        currentTracker = postRemovalsTracker
+                    case .postLock:
+                        currentTracker = postLocksTracker
+                    case .postPin:
+                        currentTracker = postPinsTracker
+                    case .commentremoval:
+                        currentTracker = commentRemovalsTracker
+                    case .communityRemoval:
+                        currentTracker = communityRemovalsTracker
+                    case .communityBan:
+                        currentTracker = communityBansTracker
+                    case .instanceBan:
+                        currentTracker = instanceBansTracker
+                    case .moderatorAdd:
+                        currentTracker = moderatorAddsTracker
+                    case .communityTransfer:
+                        currentTracker = communityTransfersTracker
+                    case .administratorAdd:
+                        currentTracker = administratorAddsTracker
+                    case .personPurge:
+                        currentTracker = personPurgesTracker
+                    case .communityPurge:
+                        currentTracker = communityPurgesTracker
+                    case .postPurge:
+                        currentTracker = postPurgesTracker
+                    case .commentPurge:
+                        currentTracker = commentPurgesTracker
+                    case .communityHide:
+                        currentTracker = communityHidesTracker
+                    }
+                    
+                    if currentTracker.items.isEmpty {
+                        Task {
+                            await currentTracker.loadMoreItems()
+                        }
                     }
                 }
-            }
-            .navigationTitle("Modlog")
-            .hoistNavigation()
-            .fancyTabScrollCompatible()
+                .navigationTitle("Modlog")
+                .hoistNavigation {
+                    if scrollToTopAppeared {
+                        return false
+                    }
+                    withAnimation {
+                        scrollProxy.scrollTo(scrollToTop, anchor: .bottom)
+                    }
+                    return true
+                }
+                .fancyTabScrollCompatible()
+        }
     }
     
     @ViewBuilder
     var content: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
+                ScrollToView(appeared: $scrollToTopAppeared)
+                    .id(scrollToTop)
+                
                 Divider()
                 
                 actionPicker
                 
                 Divider()
-               
+                
                 if currentTracker.items.isEmpty {
                     noEntriesView()
                 } else {
