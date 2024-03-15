@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct ModlogNavigationLink: View {
+struct ModlogNavigationLinkView: View {
     let link: ModlogLink
     
     init() {

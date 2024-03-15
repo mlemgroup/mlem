@@ -55,7 +55,7 @@ struct ModeratorListView: View {
     
     var content: some View {
         VStack(spacing: 0) {
-            ModlogNavigationLink(to: community)
+            ModlogNavigationLinkView(to: community)
             
             Divider()
             
