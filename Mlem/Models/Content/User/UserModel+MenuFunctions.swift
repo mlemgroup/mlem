@@ -77,6 +77,7 @@ extension UserModel {
         if !isOwnUser {
             functions.append(blockMenuFunction(callback))
             if siteInformation.myUser?.isAdmin ?? false, !(isAdmin ?? false), let modToolTracker {
+                functions.append(.divider)
                 functions.append(banMenuFunction(callback, modToolTracker: modToolTracker))
             }
         }
