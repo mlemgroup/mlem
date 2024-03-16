@@ -34,43 +34,4 @@ extension PostFeedView {
             }
         }
     }
-    
-    func genEllipsisMenuFunctions() -> [MenuFunction] {
-        var ret: [MenuFunction] = .init()
-        
-        let blurNsfwText = shouldBlurNsfw ? "Unblur NSFW" : "Blur NSFW"
-        ret.append(MenuFunction.standardMenuFunction(
-            text: blurNsfwText,
-            imageName: Icons.blurNsfw,
-            enabled: true
-        ) {
-            shouldBlurNsfw.toggle()
-        })
-        
-        let showReadPostsText = showReadPosts ? "Hide Read" : "Show Read"
-        ret.append(MenuFunction.standardMenuFunction(
-            text: showReadPostsText,
-            imageName: "book",
-            enabled: true
-        ) {
-            showReadPosts.toggle()
-        })
-        
-        return ret
-    }
-    
-    func genPostSizeSwitchingFunctions() -> [MenuFunction] {
-        PostSize.allCases.map { size in
-            let (imageName, enabled) = size != postSize
-                ? (size.iconName, true)
-                : (size.iconNameFill, false)
-            
-            return MenuFunction.standardMenuFunction(
-                text: size.label,
-                imageName: imageName,
-                enabled: enabled,
-                callback: { postSize = size }
-            )
-        }
-    }
 }

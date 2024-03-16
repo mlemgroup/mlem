@@ -102,9 +102,11 @@ extension CommunityModel {
         )
     }
     
+    // swiftlint:disable:next function_body_length
     func menuFunctions(
         editorTracker: EditorTracker? = nil,
         postTracker: StandardPostTracker? = nil,
+        modToolTracker: ModToolTracker? = nil,
         _ callback: @escaping (_ item: Self) -> Void = { _ in }
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
@@ -144,6 +146,23 @@ extension CommunityModel {
         functions.append(.shareMenuFunction(url: communityUrl))
         if let function = try? blockMenuFunction(callback) {
             functions.append(function)
+        }
+        
+        if siteInformation.myUser?.isAdmin ?? false, let modToolTracker {
+            functions.append(.divider)
+            functions.append(
+                .toggleableMenuFunction(
+                    toggle: removed,
+                    trueText: "Restore",
+                    trueImageName: Icons.restore,
+                    falseText: "Remove",
+                    falseImageName: Icons.remove,
+                    isDestructive: .always,
+                    callback: {
+                        modToolTracker.removeCommunity(self, shouldRemove: !removed)
+                    }
+                )
+            )
         }
         
         return functions

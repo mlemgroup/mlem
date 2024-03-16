@@ -118,6 +118,11 @@ struct AggregateFeedView: View {
                         .opacity(scrollToTopAppeared ? 0 : 1)
                         .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
                 }
+                ToolbarItem(placement: .primaryAction) {
+                    ToolbarEllipsisMenu {
+                        FeedToolbarContent()
+                    }
+                }
             }
             .hoistNavigation {
                 if let scrollProxy {
