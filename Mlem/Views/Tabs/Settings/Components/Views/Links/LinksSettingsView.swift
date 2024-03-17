@@ -26,7 +26,7 @@ struct LinksSettingsView: View {
             Section {
                 SwitchableSettingsItem(
                     settingPictureSystemName: "doc.plaintext",
-                    settingName: "Open in Reader Mode",
+                    settingName: "Open in Reader",
                     isTicked: Binding(
                         get: {
                             !openLinksInBrowser && openLinksInReaderMode
@@ -38,7 +38,7 @@ struct LinksSettingsView: View {
                 )
                 .disabled(openLinksInBrowser)
             } footer: {
-                Text("Automatically enable Reader Mode for supported webpages.")
+                Text("Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser.")
             }
             Section {
                 SelectableSettingsItem(
