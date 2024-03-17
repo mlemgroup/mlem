@@ -120,6 +120,7 @@ enum Icons {
     static let userBlock: String = "person.fill.xmark"
     static let community: String = "building.2.crop.circle"
     static let communityFill: String = "building.2.crop.circle.fill"
+    static let communityButton: String = "building.2"
     static let admin: String = "crown.fill"
     static let unAdmin: String = "cloud.bolt.fill" // idk what to do for this one
     

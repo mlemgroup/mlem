@@ -8,8 +8,9 @@
 import Foundation
 
 extension APIClient {
+    // swiftlint:disable:next function_body_length
     func getModlog(
-        for instance: URL? = nil,
+        for instanceUrl: URL? = nil,
         modPersonId: Int? = nil,
         communityId: Int? = nil,
         page: Int,
@@ -17,17 +18,16 @@ extension APIClient {
         type: APIModlogActionType? = nil,
         otherPersonId: Int? = nil
     ) async throws -> [ModlogEntry] {
-        // TODO: params
         var useSession: APISession
         
-        if let instance {
-            useSession = .unauthenticated(instance.appending(path: "/api/v3"))
+        if let instanceUrl {
+            useSession = .unauthenticated(instanceUrl.appending(path: "/api/v3"))
         } else {
             useSession = session
         }
         
         #if DEBUG
-            if let host = instance?.host(), ["lemmy-alpha", "lemmy-beta", "lemmy-delta"].contains(host) {
+            if let host = instanceUrl?.host(), ["lemmy-alpha", "lemmy-beta", "lemmy-delta"].contains(host) {
                 useSession = .unauthenticated(.init(string: "http://localhost:8536/api/v3")!)
             }
         #endif
@@ -44,12 +44,28 @@ extension APIClient {
         
         let response = try await perform(request: request)
         
+        func isAdmin(for actorId: URL?) -> Bool {
+            // can only view admin actions if the logged in user is an admin and the modlog is sourced from their instance
+            siteInformation.isAdmin && actorId?.host() == siteInformation.instance?.url.host()
+        }
+        
+        func canViewRemovedPost(in community: APICommunity) -> Bool {
+            siteInformation.isMod(communityActorId: community.actorId) ||
+                isAdmin(for: community.actorId)
+        }
+        
         var ret: [ModlogEntry] = .init()
-        ret.append(contentsOf: response.removedPosts.map { ModlogEntry(from: $0) })
+        ret.append(contentsOf: response.removedPosts.map { ModlogEntry(
+            from: $0,
+            canViewRemovedPost: canViewRemovedPost(in: $0.community)
+        ) })
         ret.append(contentsOf: response.lockedPosts.map { ModlogEntry(from: $0) })
         ret.append(contentsOf: response.featuredPosts.map { ModlogEntry(from: $0) })
         ret.append(contentsOf: response.removedComments.map { ModlogEntry(from: $0) })
-        ret.append(contentsOf: response.removedCommunities.map { ModlogEntry(from: $0) })
+        ret.append(contentsOf: response.removedCommunities.map { ModlogEntry(
+            from: $0,
+            canViewRemovedCommunity: isAdmin(for: $0.community.actorId)
+        ) })
         ret.append(contentsOf: response.bannedFromCommunity.map { ModlogEntry(from: $0) })
         ret.append(contentsOf: response.banned.map { ModlogEntry(from: $0) })
         ret.append(contentsOf: response.addedToCommunity.map { ModlogEntry(from: $0) })

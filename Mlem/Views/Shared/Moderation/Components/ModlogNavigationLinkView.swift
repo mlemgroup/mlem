@@ -15,7 +15,7 @@ struct ModlogNavigationLinkView: View {
         self.link = .userInstance
     }
     
-    init(to instance: URL) {
+    init(to instance: InstanceModel) {
         self.link = .instance(instance)
     }
     

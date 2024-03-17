@@ -13,7 +13,7 @@ class ModlogChildTracker: ChildTracker<ModlogEntry, ModlogEntry>, ModlogTrackerP
     @Dependency(\.apiClient) var apiClient
     
     private let actionType: APIModlogActionType
-    private let instance: URL?
+    private let instanceUrl: URL?
     private let communityId: Int?
     
     init(
@@ -24,7 +24,7 @@ class ModlogChildTracker: ChildTracker<ModlogEntry, ModlogEntry>, ModlogTrackerP
         communityId: Int?
     ) {
         self.actionType = actionType
-        self.instance = instance
+        self.instanceUrl = instance
         self.communityId = communityId
         
         super.init(internetSpeed: internetSpeed, sortType: sortType)
@@ -38,13 +38,13 @@ class ModlogChildTracker: ChildTracker<ModlogEntry, ModlogEntry>, ModlogTrackerP
         self.actionType = actionType
         switch modlogLink {
         case .userInstance:
-            self.instance = nil
+            self.instanceUrl = nil
             self.communityId = nil
         case let .instance(instance):
-            self.instance = instance
+            self.instanceUrl = instance.url
             self.communityId = nil
         case let .community(community):
-            self.instance = nil
+            self.instanceUrl = nil
             self.communityId = community.communityId
         }
         
@@ -53,7 +53,7 @@ class ModlogChildTracker: ChildTracker<ModlogEntry, ModlogEntry>, ModlogTrackerP
     
     override func fetchPage(page: Int) async throws -> FetchResponse<ModlogEntry> {
         let items = try await apiClient.getModlog(
-            for: instance,
+            for: instanceUrl,
             communityId: communityId,
             page: page,
             limit: internetSpeed.pageSize,

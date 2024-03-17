@@ -9,6 +9,7 @@ import Dependencies
 import Foundation
 import SwiftUI
 
+// swiftlint:disable file_length
 enum ModlogAction: CaseIterable {
     case all, postRemoval, postLock, postPin, commentremoval, communityRemoval, communityBan, instanceBan,
          moderatorAdd, communityTransfer, administratorAdd, personPurge, communityPurge, postPurge, commentPurge, communityHide
@@ -78,6 +79,9 @@ struct ModlogView: View {
     @StateObject var commentPurgesTracker: ModlogChildTracker
     @StateObject var communityHidesTracker: ModlogChildTracker
     
+    @State var instanceContext: InstanceModel?
+    @State var communityContext: CommunityModel?
+    
     @State var errorDetails: ErrorDetails?
     @Namespace var scrollToTop
     @State private var scrollToTopAppeared = false
@@ -86,6 +90,18 @@ struct ModlogView: View {
     // swiftlint:disable:next function_body_length
     init(modlogLink: ModlogLink) {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+        
+        switch modlogLink {
+        case .userInstance:
+            self._instanceContext = .init(wrappedValue: nil)
+            self._communityContext = .init(wrappedValue: nil)
+        case let .instance(instanceModel):
+            self._instanceContext = .init(wrappedValue: instanceModel)
+            self._communityContext = .init(wrappedValue: nil)
+        case let .community(communityModel):
+            self._instanceContext = .init(wrappedValue: nil) // TODO: home instance
+            self._communityContext = .init(wrappedValue: communityModel)
+        }
         
         let postRemovalsTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
@@ -308,8 +324,21 @@ struct ModlogView: View {
                     .id(scrollToTop)
                 
                 Divider()
-                
-                actionPicker
+  
+                header
+                    .padding(AppConstants.standardSpacing)
+//                VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+//                    if let instanceContext {
+//                        InstanceLabelView(instance: instanceContext)
+//                    }
+//
+//                    if let communityContext {
+//                        CommunityLabelView(community: communityContext, serverInstanceLocation: .bottom)
+//                    }
+//
+//                    header
+//                }
+//                .padding(AppConstants.standardSpacing)
                 
                 Divider()
                 
@@ -327,9 +356,16 @@ struct ModlogView: View {
     }
     
     @ViewBuilder
-    var actionPicker: some View {
+    var header: some View {
         HStack {
-            Text("Action Type")
+            // Text("Action Type")
+            if let instanceContext {
+                InstanceLabelView(instance: instanceContext)
+            }
+            
+            if let communityContext {
+                CommunityLabelView(community: communityContext, serverInstanceLocation: .bottom)
+            }
             
             Spacer()
             
@@ -339,7 +375,6 @@ struct ModlogView: View {
                 }
             }
         }
-        .padding(AppConstants.standardSpacing)
     }
     
     @ViewBuilder
@@ -373,3 +408,5 @@ struct ModlogView: View {
         .animation(.easeOut(duration: 0.1), value: currentTracker.loadingState)
     }
 }
+
+// swiftlint:enable file_length

@@ -112,7 +112,7 @@ struct InstanceView: View {
                             }
                         case .administration:
                             VStack(spacing: 0) {
-                                ModlogNavigationLinkView(to: instance.url)
+                                ModlogNavigationLinkView(to: instance)
                                 
                                 Divider()
                                 

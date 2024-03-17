@@ -25,15 +25,19 @@ enum ModlogExpiration {
     case date(Date)
 }
 
+// swiftlint:disable:next type_body_length
 struct ModlogEntry: Hashable, Equatable {
     let date: Date
     let description: String
     let reason: ModlogReason
     let expires: ModlogExpiration
+    let additionalContext: String?
     let icon: ModlogIcon
     let contextLinks: [MenuFunction]
     
-    init(from apiType: APIModRemovePostView) {
+    init(from apiType: APIModRemovePostView, canViewRemovedPost: Bool) {
+        @Dependency(\.siteInformation) var siteInformation
+        
         self.date = apiType.modRemovePost.when_
         
         let agent = genModeratorAgent(agent: apiType.moderator)
@@ -44,13 +48,17 @@ struct ModlogEntry: Hashable, Equatable {
         self.reason = genReason(reason: apiType.modRemovePost.reason)
         self.expires = .inapplicable
         
+        self.additionalContext = apiType.post.removed != apiType.modRemovePost.removed ?
+            "Post has since been \(apiType.post.removed ? "removed" : "restored")" :
+            nil
+        
         self.icon = apiType.modRemovePost.removed ?
             .init(imageName: Icons.removed, color: .red) :
             .init(imageName: Icons.restored, color: .green)
   
         self.contextLinks = [
             ModlogMenuFunction.moderator(apiType.moderator),
-            ModlogMenuFunction.post(apiType.post),
+            ModlogMenuFunction.post(!apiType.post.removed || canViewRemovedPost ? apiType.post : nil),
             ModlogMenuFunction.community(apiType.community)
         ].compactMap { $0.toMenuFunction() }
     }
@@ -67,6 +75,10 @@ struct ModlogEntry: Hashable, Equatable {
         
         let icon = apiType.modLockPost.locked ? Icons.locked : Icons.unlocked
         self.icon = .init(imageName: icon, color: .orange)
+        
+        self.additionalContext = apiType.post.locked != apiType.modLockPost.locked ?
+            "Post has since been \(apiType.post.locked ? "locked" : "unlocked")" :
+            nil
         
         self.contextLinks = [
             ModlogMenuFunction.moderator(apiType.moderator),
@@ -93,6 +105,9 @@ struct ModlogEntry: Hashable, Equatable {
         
         self.reason = .inapplicable
         self.expires = .inapplicable
+        self.additionalContext = apiType.post.featuredCommunity != apiType.modFeaturePost.featured ?
+            "Post has since been \(apiType.post.featuredCommunity ? "pinned" : "unpinned")" :
+            nil
         
         self.icon = .init(
             imageName: apiType.modFeaturePost.featured ? Icons.pinned : Icons.unpinned,
@@ -113,9 +128,11 @@ struct ModlogEntry: Hashable, Equatable {
         let verb = apiType.modRemoveComment.removed ? "removed" : "restored"
         self.description = "\(agent) \(verb) comment \"\(apiType.comment.content)\" (posted in \(apiType.community.fullyQualifiedName))"
         
-        // self.reason = apiType.modRemoveComment.removed ? genReason(reason: apiType.modRemoveComment.reason) : .inapplicable
         self.reason = genReason(reason: apiType.modRemoveComment.reason)
         self.expires = .inapplicable
+        self.additionalContext = apiType.comment.removed != apiType.modRemoveComment.removed ?
+            "Comment has since been \(apiType.comment.removed ? "removed" : "restored")" :
+            nil
         
         self.icon = apiType.modRemoveComment.removed ?
             .init(imageName: Icons.removed, color: .red) :
@@ -128,15 +145,19 @@ struct ModlogEntry: Hashable, Equatable {
         ].compactMap { $0.toMenuFunction() }
     }
     
-    init(from apiType: APIModRemoveCommunityView) {
+    init(from apiType: APIModRemoveCommunityView, canViewRemovedCommunity: Bool) {
         self.date = apiType.modRemoveCommunity.when_
         
-        let agent = genModeratorAgent(agent: apiType.moderator)
+        // it's calld "ModRemoveCommunityView" but only admins can do it
+        let agent = genAdministratorAgent(agent: apiType.moderator)
         let verb = apiType.modRemoveCommunity.removed ? "removed" : "restored"
         self.description = "\(agent) \(verb) community \(apiType.community.fullyQualifiedName)"
         
         self.reason = genReason(reason: apiType.modRemoveCommunity.reason)
         self.expires = .inapplicable
+        self.additionalContext = apiType.community.removed != apiType.modRemoveCommunity.removed ?
+            "Community has since been \(apiType.community.removed ? "removed" : "restored")" :
+            nil
         
         self.icon = apiType.modRemoveCommunity.removed ?
             .init(imageName: Icons.removed, color: .red) :
@@ -144,7 +165,7 @@ struct ModlogEntry: Hashable, Equatable {
         
         self.contextLinks = [
             ModlogMenuFunction.moderator(apiType.moderator),
-            ModlogMenuFunction.community(apiType.community)
+            ModlogMenuFunction.community(!apiType.community.removed || canViewRemovedCommunity ? apiType.community : nil)
         ].compactMap { $0.toMenuFunction() }
     }
     
@@ -157,6 +178,7 @@ struct ModlogEntry: Hashable, Equatable {
         
         self.reason = genReason(reason: apiType.modBanFromCommunity.reason)
         self.expires = apiType.modBanFromCommunity.banned ? genExpires(expires: apiType.modBanFromCommunity.expires) : .inapplicable
+        self.additionalContext = nil // current ban status in community unavailable from API [Eric 2024.03.17]
         
         self.icon = apiType.modBanFromCommunity.banned ?
             .init(imageName: Icons.communityBanned, color: .red) :
@@ -180,6 +202,20 @@ struct ModlogEntry: Hashable, Equatable {
         self.reason = genReason(reason: apiType.modBan.reason)
         self.expires = apiType.modBan.banned ? genExpires(expires: apiType.modBan.expires) : .inapplicable
         
+        let actionImpliesCurrentlyBanned: Bool
+        if apiType.modBan.banned {
+            if let expires = apiType.modBan.expires {
+                actionImpliesCurrentlyBanned = expires >= Date.now
+            } else {
+                actionImpliesCurrentlyBanned = true
+            }
+        } else {
+            actionImpliesCurrentlyBanned = false
+        }
+        self.additionalContext = apiType.bannedPerson.banned != actionImpliesCurrentlyBanned ?
+            "User has since been \(apiType.bannedPerson.banned ? "banned" : "unbanned")" :
+            nil
+        
         self.icon = apiType.modBan.banned ?
             .init(imageName: Icons.instanceBanned, color: .red) :
             .init(imageName: Icons.instanceUnbanned, color: .green)
@@ -200,6 +236,7 @@ struct ModlogEntry: Hashable, Equatable {
         
         self.reason = .inapplicable
         self.expires = .inapplicable
+        self.additionalContext = nil
         
         self.icon = apiType.modAddCommunity.removed ?
             .init(imageName: Icons.unmodFill, color: .red) :
@@ -219,6 +256,7 @@ struct ModlogEntry: Hashable, Equatable {
         
         self.reason = .inapplicable
         self.expires = .inapplicable
+        self.additionalContext = nil
         
         self.icon = .init(imageName: Icons.leftRight, color: .green)
         
@@ -239,6 +277,7 @@ struct ModlogEntry: Hashable, Equatable {
         
         self.reason = .inapplicable
         self.expires = .inapplicable
+        self.additionalContext = nil
         
         self.icon = apiType.modAdd.removed ?
             .init(imageName: Icons.unAdmin, color: .indigo) :
@@ -258,6 +297,7 @@ struct ModlogEntry: Hashable, Equatable {
         
         self.reason = genReason(reason: apiType.adminPurgePerson.reason)
         self.expires = .inapplicable
+        self.additionalContext = nil
         
         self.icon = .init(imageName: Icons.purge, color: .primary)
         
@@ -274,6 +314,7 @@ struct ModlogEntry: Hashable, Equatable {
         
         self.reason = genReason(reason: apiType.adminPurgeCommunity.reason)
         self.expires = .inapplicable
+        self.additionalContext = nil
         
         self.icon = .init(imageName: Icons.purge, color: .primary)
         
@@ -290,6 +331,7 @@ struct ModlogEntry: Hashable, Equatable {
         
         self.reason = genReason(reason: apiType.adminPurgePost.reason)
         self.expires = .inapplicable
+        self.additionalContext = nil
         
         self.icon = .init(imageName: Icons.purge, color: .primary)
         
@@ -307,6 +349,7 @@ struct ModlogEntry: Hashable, Equatable {
         
         self.reason = genReason(reason: apiType.adminPurgeComment.reason)
         self.expires = .inapplicable
+        self.additionalContext = nil
         
         self.icon = .init(imageName: Icons.purge, color: .primary)
         
@@ -325,6 +368,7 @@ struct ModlogEntry: Hashable, Equatable {
         
         self.reason = genReason(reason: apiType.modHideCommunity.reason)
         self.expires = .inapplicable
+        self.additionalContext = nil
         
         self.icon = apiType.modHideCommunity.hidden ?
             .init(imageName: Icons.hide, color: .red) :
@@ -343,6 +387,7 @@ struct ModlogEntry: Hashable, Equatable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(date)
         hasher.combine(description)
+        hasher.combine(contextLinks.map(\.id))
     }
 }
 
@@ -353,8 +398,8 @@ private enum ModlogMenuFunction {
     case administrator(APIPerson?)
     case moderator(APIPerson?)
     case user(APIPerson, String) // user, verb
-    case post(APIPost)
-    case community(APICommunity)
+    case post(APIPost?)
+    case community(APICommunity?)
     // comment not available because Lemmy API does not currently support comment object resolution
     
     func toMenuFunction() -> MenuFunction? {
@@ -380,19 +425,17 @@ private enum ModlogMenuFunction {
                 destination: user.actorId
             )
         case let .post(post):
-            guard let url = URL(string: post.apId) else {
-                print("Failed to generate URL from url \(post.apId)")
-                return nil
-            }
+            guard let post else { return nil }
             return .openUrlMenuFunction(
                 text: "View Post",
                 imageName: Icons.posts,
-                destination: url
+                destination: post.apId
             )
         case let .community(community):
+            guard let community else { return nil }
             return .openUrlMenuFunction(
                 text: "View Community",
-                imageName: Icons.community,
+                imageName: Icons.communityButton,
                 destination: community.actorId
             )
         }

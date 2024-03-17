@@ -9,7 +9,7 @@ import Foundation
 
 enum ModlogLink: Hashable {
     case userInstance
-    case instance(URL)
+    case instance(InstanceModel)
     case community(CommunityModel)
     
     func hash(into hasher: inout Hasher) {

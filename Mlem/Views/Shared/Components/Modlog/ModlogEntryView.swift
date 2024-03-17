@@ -33,6 +33,7 @@ struct ModlogEntryView: View {
                 Spacer()
                 
                 EllipsisMenu(size: 20, menuFunctions: modlogEntry.contextLinks)
+                    .opacity(modlogEntry.contextLinks.isEmpty ? 0.4 : 1)
             }
             
             description
@@ -68,9 +69,16 @@ struct ModlogEntryView: View {
                         .italic()
                         .foregroundColor(.secondary)
                 case let .date(date):
-                    Text("Expires \(date.getRelativeTime())")
+                    let expireTerm = date > Date.now ? "Expires" : "Expired"
+                    Text("\(expireTerm) \(date.getRelativeTime())")
                         .italic()
                         .foregroundColor(.secondary)
+                }
+                
+                if let additionalContext = modlogEntry.additionalContext {
+                    Text(additionalContext)
+                        .italic()
+                        .foregroundStyle(.secondary)
                 }
             }
         }
