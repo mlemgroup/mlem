@@ -63,7 +63,6 @@ struct ModlogView: View {
             self._communityContext = .init(wrappedValue: communityModel)
         }
           
-                
         let postRemovalsTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
