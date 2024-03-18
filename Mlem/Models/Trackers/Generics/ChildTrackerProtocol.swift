@@ -16,7 +16,7 @@ protocol ChildTrackerProtocol: AnyObject {
 
     // MARK: stream support methods
     
-    func setParentTracker(_ newParent: any ParentTrackerProtocol, preheat: Bool)
+    func setParentTracker(_ newParent: any ParentTrackerProtocol)
 
     func consumeNextItem() -> ParentItem?
 
@@ -25,8 +25,6 @@ protocol ChildTrackerProtocol: AnyObject {
     func resetCursor()
 
     // MARK: loading methods
-    
-    func preheat() async
     
     func reset(notifyParent: Bool) async
 

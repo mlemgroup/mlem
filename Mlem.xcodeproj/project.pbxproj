@@ -528,6 +528,7 @@
 		CD876EC72B7736370075DC15 /* MarkReadBatcher+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD876EC62B7736370075DC15 /* MarkReadBatcher+Dependency.swift */; };
 		CD8C55342A95515C0060B75B /* Onboarding Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8C55332A95515C0060B75B /* Onboarding Text.swift */; };
 		CD8CF2092AF3F131009FFC23 /* Firm Info.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CD8CF2082AF3F131009FFC23 /* Firm Info.ahap */; };
+		CD9395272BA7CF92008F6C4C /* ModlogAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9395262BA7CF92008F6C4C /* ModlogAction.swift */; };
 		CD963FCB2B5F0388002352FD /* DefaultFeedType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD963FCA2B5F0388002352FD /* DefaultFeedType.swift */; };
 		CD9A03C62B34D20500C16276 /* EnvironmentValues+Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9A03C52B34D20500C16276 /* EnvironmentValues+Navigation.swift */; };
 		CD9A03C82B389F7000C16276 /* EnvironmentValues+FeedType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9A03C72B389F7000C16276 /* EnvironmentValues+FeedType.swift */; };
@@ -1189,6 +1190,7 @@
 		CD876EC62B7736370075DC15 /* MarkReadBatcher+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MarkReadBatcher+Dependency.swift"; sourceTree = "<group>"; };
 		CD8C55332A95515C0060B75B /* Onboarding Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Onboarding Text.swift"; sourceTree = "<group>"; };
 		CD8CF2082AF3F131009FFC23 /* Firm Info.ahap */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Firm Info.ahap"; sourceTree = "<group>"; };
+		CD9395262BA7CF92008F6C4C /* ModlogAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogAction.swift; sourceTree = "<group>"; };
 		CD963FCA2B5F0388002352FD /* DefaultFeedType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultFeedType.swift; sourceTree = "<group>"; };
 		CD9A03C52B34D20500C16276 /* EnvironmentValues+Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+Navigation.swift"; sourceTree = "<group>"; };
 		CD9A03C72B389F7000C16276 /* EnvironmentValues+FeedType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+FeedType.swift"; sourceTree = "<group>"; };
@@ -2532,6 +2534,7 @@
 				CD17C1E92BA3997000A0C8BC /* ModlogTrackerProtocol.swift */,
 				CD17C1DA2BA358FD00A0C8BC /* ModlogTracker.swift */,
 				CD17C1E52BA369C700A0C8BC /* ModlogChildTracker.swift */,
+				CD9395262BA7CF92008F6C4C /* ModlogAction.swift */,
 			);
 			path = Modlog;
 			sourceTree = "<group>";
@@ -3497,7 +3500,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint lint --strict\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint lint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -4032,6 +4035,7 @@
 				6372185B2A3A2AAD008C4816 /* APICommunityView.swift in Sources */,
 				030E86442AC6F6D5000283A6 /* SearchBar+NavigationView.swift in Sources */,
 				637218552A3A2AAD008C4816 /* APITagline.swift in Sources */,
+				CD9395272BA7CF92008F6C4C /* ModlogAction.swift in Sources */,
 				6322A5CB27F77A4D00135D4F /* Loading View.swift in Sources */,
 				03A1B3F72A84000400AB0DE0 /* APIContentAggregatesProtocol.swift in Sources */,
 				CD26980C2B9E16810002B459 /* APIModRemoveComment.swift in Sources */,

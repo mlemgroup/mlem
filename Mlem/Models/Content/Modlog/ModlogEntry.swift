@@ -27,6 +27,7 @@ enum ModlogExpiration {
 
 // swiftlint:disable:next type_body_length
 struct ModlogEntry: Hashable, Equatable {
+    let action: ModlogAction
     let date: Date
     let description: String
     let reason: ModlogReason
@@ -38,6 +39,7 @@ struct ModlogEntry: Hashable, Equatable {
     init(from apiType: APIModRemovePostView, canViewRemovedPost: Bool) {
         @Dependency(\.siteInformation) var siteInformation
         
+        self.action = .postRemoval
         self.date = apiType.modRemovePost.when_
         
         let agent = genModeratorAgent(agent: apiType.moderator)
@@ -64,6 +66,7 @@ struct ModlogEntry: Hashable, Equatable {
     }
     
     init(from apiType: APIModLockPostView) {
+        self.action = .postLock
         self.date = apiType.modLockPost.when_
         
         let agent = genModeratorAgent(agent: apiType.moderator)
@@ -88,6 +91,7 @@ struct ModlogEntry: Hashable, Equatable {
     }
     
     init(from apiType: APIModFeaturePostView) {
+        self.action = .postPin
         self.date = apiType.modFeaturePost.when_
         
         let agent = genModeratorAgent(agent: apiType.moderator)
@@ -122,6 +126,7 @@ struct ModlogEntry: Hashable, Equatable {
     }
     
     init(from apiType: APIModRemoveCommentView) {
+        self.action = .commentRemoval
         self.date = apiType.modRemoveComment.when_
         
         let agent = genModeratorAgent(agent: apiType.moderator)
@@ -146,6 +151,7 @@ struct ModlogEntry: Hashable, Equatable {
     }
     
     init(from apiType: APIModRemoveCommunityView, canViewRemovedCommunity: Bool) {
+        self.action = .communityRemoval
         self.date = apiType.modRemoveCommunity.when_
         
         // it's calld "ModRemoveCommunityView" but only admins can do it
@@ -170,6 +176,7 @@ struct ModlogEntry: Hashable, Equatable {
     }
     
     init(from apiType: APIModBanFromCommunityView) {
+        self.action = .communityBan
         self.date = apiType.modBanFromCommunity.when_
         
         let agent = genModeratorAgent(agent: apiType.moderator)
@@ -192,6 +199,7 @@ struct ModlogEntry: Hashable, Equatable {
     }
     
     init(from apiType: APIModBanView) {
+        self.action = .instanceBan
         self.date = apiType.modBan.when_
         
         let agent = genAdministratorAgent(agent: apiType.moderator)
@@ -227,6 +235,7 @@ struct ModlogEntry: Hashable, Equatable {
     }
     
     init(from apiType: APIModAddCommunityView) {
+        self.action = .moderatorAdd
         self.date = apiType.modAddCommunity.when_
         
         let agent = genModeratorAgent(agent: apiType.moderator)
@@ -249,6 +258,7 @@ struct ModlogEntry: Hashable, Equatable {
     }
     
     init(from apiType: APIModTransferCommunityView) {
+        self.action = .communityTransfer
         self.date = apiType.modTransferCommunity.when_
         
         let agent = genModeratorAgent(agent: apiType.moderator)
@@ -268,6 +278,7 @@ struct ModlogEntry: Hashable, Equatable {
     }
     
     init(from apiType: APIModAddView) {
+        self.action = .administratorAdd
         self.date = apiType.modAdd.when_
         
         let agent = genAdministratorAgent(agent: apiType.moderator)
@@ -290,6 +301,7 @@ struct ModlogEntry: Hashable, Equatable {
     }
     
     init(from apiType: APIAdminPurgePersonView) {
+        self.action = .personPurge
         self.date = apiType.adminPurgePerson.when_
         
         let agent = genAdministratorAgent(agent: apiType.admin)
@@ -307,6 +319,7 @@ struct ModlogEntry: Hashable, Equatable {
     }
     
     init(from apiType: APIAdminPurgeCommunityView) {
+        self.action = .communityPurge
         self.date = apiType.adminPurgeCommunity.when_
         
         let agent = genAdministratorAgent(agent: apiType.admin)
@@ -324,6 +337,7 @@ struct ModlogEntry: Hashable, Equatable {
     }
     
     init(from apiType: APIAdminPurgePostView) {
+        self.action = .postPurge
         self.date = apiType.adminPurgePost.when_
         
         let agent = genAdministratorAgent(agent: apiType.admin)
@@ -342,6 +356,7 @@ struct ModlogEntry: Hashable, Equatable {
     }
     
     init(from apiType: APIAdminPurgeCommentView) {
+        self.action = .commentPurge
         self.date = apiType.adminPurgeComment.when_
         
         let agent = genAdministratorAgent(agent: apiType.admin)
@@ -360,6 +375,7 @@ struct ModlogEntry: Hashable, Equatable {
     }
     
     init(from apiType: APIModHideCommunityView) {
+        self.action = .communityHide
         self.date = apiType.modHideCommunity.when_
         
         let agent = genAdministratorAgent(agent: apiType.admin)

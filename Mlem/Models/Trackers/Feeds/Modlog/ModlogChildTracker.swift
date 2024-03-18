@@ -12,14 +12,14 @@ import Foundation
 class ModlogChildTracker: ChildTracker<ModlogEntry, ModlogEntry>, ModlogTrackerProtocol {
     @Dependency(\.apiClient) var apiClient
     
-    private let actionType: APIModlogActionType
+    private let actionType: ModlogAction
     private let instanceUrl: URL?
     private let communityId: Int?
     
     init(
         internetSpeed: InternetSpeed,
         sortType: TrackerSortType,
-        actionType: APIModlogActionType,
+        actionType: ModlogAction,
         instance: URL?,
         communityId: Int?
     ) {
@@ -34,7 +34,7 @@ class ModlogChildTracker: ChildTracker<ModlogEntry, ModlogEntry>, ModlogTrackerP
         item
     }
     
-    init(internetSpeed: InternetSpeed, sortType: TrackerSortType, actionType: APIModlogActionType, modlogLink: ModlogLink) {
+    init(internetSpeed: InternetSpeed, sortType: TrackerSortType, actionType: ModlogAction, modlogLink: ModlogLink) {
         self.actionType = actionType
         switch modlogLink {
         case .userInstance:
@@ -52,12 +52,22 @@ class ModlogChildTracker: ChildTracker<ModlogEntry, ModlogEntry>, ModlogTrackerP
     }
     
     override func fetchPage(page: Int) async throws -> FetchResponse<ModlogEntry> {
+        // if first page, attempt to fetch from parent tracker
+        if page == 1, let parentTracker = parentTracker as? ModlogTracker {
+            if let items = try await parentTracker.getPreloadedItems(for: actionType, instanceUrl: instanceUrl, communityId: communityId) {
+                return .init(items: items, cursor: nil, numFiltered: 0)
+            } else {
+                assertionFailure("Got no items from parent tracker!")
+            }
+        }
+        
+        // otherwise (or fallback in prod) get from API
         let items = try await apiClient.getModlog(
             for: instanceUrl,
             communityId: communityId,
             page: page,
             limit: internetSpeed.pageSize,
-            type: actionType
+            type: actionType.toApiType
         )
         
         return .init(items: items, cursor: nil, numFiltered: 0)

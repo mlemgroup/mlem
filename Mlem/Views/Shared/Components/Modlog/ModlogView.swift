@@ -10,47 +10,6 @@ import Foundation
 import SwiftUI
 
 // swiftlint:disable file_length
-enum ModlogAction: CaseIterable {
-    case all, postRemoval, postLock, postPin, commentremoval, communityRemoval, communityBan, instanceBan,
-         moderatorAdd, communityTransfer, administratorAdd, personPurge, communityPurge, postPurge, commentPurge, communityHide
-    
-    var label: String {
-        switch self {
-        case .all:
-            "All"
-        case .postRemoval:
-            "Removed Post"
-        case .postLock:
-            "Locked Post"
-        case .postPin:
-            "Pinned Post"
-        case .commentremoval:
-            "Removed Comment"
-        case .communityRemoval:
-            "Removed Community"
-        case .communityBan:
-            "Banned from Community"
-        case .instanceBan:
-            "Banned from Instance"
-        case .moderatorAdd:
-            "Appointed Moderator"
-        case .communityTransfer:
-            "Transferred Community"
-        case .administratorAdd:
-            "Appointed Administrator"
-        case .personPurge:
-            "Purged Person"
-        case .communityPurge:
-            "Purged Community"
-        case .postPurge:
-            "Purged Post"
-        case .commentPurge:
-            "Purged Comment"
-        case .communityHide:
-            "Hid Community"
-        }
-    }
-}
 
 // swiftlint:disable:next type_body_length
 struct ModlogView: View {
@@ -62,6 +21,7 @@ struct ModlogView: View {
     @State var selectedAction: ModlogAction = .all
     
     @State var currentTracker: any ModlogTrackerProtocol
+    
     @StateObject var modlogTracker: ModlogTracker
     @StateObject var postRemovalsTracker: ModlogChildTracker
     @StateObject var postLocksTracker: ModlogChildTracker
@@ -102,109 +62,110 @@ struct ModlogView: View {
             self._instanceContext = .init(wrappedValue: nil) // TODO: home instance
             self._communityContext = .init(wrappedValue: communityModel)
         }
-        
+          
+                
         let postRemovalsTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
-            actionType: .modRemovePost,
+            actionType: .postRemoval,
             modlogLink: modlogLink
         )
         
         let postLocksTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
-            actionType: .modLockPost,
+            actionType: .postLock,
             modlogLink: modlogLink
         )
         
         let postPinsTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
-            actionType: .modFeaturePost,
+            actionType: .postPin,
             modlogLink: modlogLink
         )
         
         let commentRemovalsTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
-            actionType: .modRemoveComment,
+            actionType: .commentRemoval,
             modlogLink: modlogLink
         )
         
         let communityRemovalsTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
-            actionType: .modRemoveCommunity,
+            actionType: .communityRemoval,
             modlogLink: modlogLink
         )
         
         let communityBansTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
-            actionType: .modBanFromCommunity,
+            actionType: .communityBan,
             modlogLink: modlogLink
         )
         
         let instanceBansTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
-            actionType: .modBan,
+            actionType: .instanceBan,
             modlogLink: modlogLink
         )
         
         let moderatorAddsTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
-            actionType: .modAddCommunity,
+            actionType: .moderatorAdd,
             modlogLink: modlogLink
         )
         
         let communityTransfersTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
-            actionType: .modTransferCommunity,
+            actionType: .communityTransfer,
             modlogLink: modlogLink
         )
         
         let administratorAddsTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
-            actionType: .modAdd,
+            actionType: .administratorAdd,
             modlogLink: modlogLink
         )
         
         let personPurgesTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
-            actionType: .adminPurgePerson,
+            actionType: .personPurge,
             modlogLink: modlogLink
         )
         
         let communityPurgesTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
-            actionType: .adminPurgeCommunity,
+            actionType: .communityPurge,
             modlogLink: modlogLink
         )
         
         let postPurgesTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
-            actionType: .adminPurgePost,
+            actionType: .postPurge,
             modlogLink: modlogLink
         )
         
         let commentPurgesTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
-            actionType: .adminPurgeComment,
+            actionType: .commentPurge,
             modlogLink: modlogLink
         )
         
         let communityHidesTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
-            actionType: .modHideCommunity,
+            actionType: .communityHide,
             modlogLink: modlogLink
         )
         
@@ -227,8 +188,7 @@ struct ModlogView: View {
                 postPurgesTracker,
                 commentPurgesTracker,
                 communityHidesTracker
-            ],
-            preheatChildren: true
+            ]
         )
         
         self._postRemovalsTracker = .init(wrappedValue: postRemovalsTracker)
@@ -270,7 +230,7 @@ struct ModlogView: View {
                         currentTracker = postLocksTracker
                     case .postPin:
                         currentTracker = postPinsTracker
-                    case .commentremoval:
+                    case .commentRemoval:
                         currentTracker = commentRemovalsTracker
                     case .communityRemoval:
                         currentTracker = communityRemovalsTracker

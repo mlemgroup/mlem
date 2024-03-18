@@ -14,30 +14,27 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
 
     private var childTrackers: [any ChildTrackerProtocol] = .init()
     private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
-    private let preheatChildren: Bool
     
     private(set) var sortType: TrackerSortType
 
     init(
         internetSpeed: InternetSpeed,
         sortType: TrackerSortType,
-        childTrackers: [any ChildTrackerProtocol],
-        preheatChildren: Bool = false
+        childTrackers: [any ChildTrackerProtocol]
     ) {
         self.childTrackers = childTrackers
         self.sortType = sortType
-        self.preheatChildren = preheatChildren
         
         super.init(internetSpeed: internetSpeed)
 
         for child in self.childTrackers {
-            child.setParentTracker(self, preheat: preheatChildren)
+            child.setParentTracker(self)
         }
     }
 
     func addChildTracker(_ newChild: some ChildTrackerProtocol, preheat: Bool = false) {
         childTrackers.append(newChild)
-        newChild.setParentTracker(self, preheat: preheat)
+        newChild.setParentTracker(self)
     }
 
     // MARK: main actor methods
@@ -62,16 +59,6 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
         }
         
         await resetChildren()
-        
-        if preheatChildren {
-            await withTaskGroup(of: Void.self) { taskGroup in
-                for child in childTrackers {
-                    taskGroup.addTask {
-                        await child.preheat()
-                    }
-                }
-            }
-        }
         
         let newItems = await fetchNextItems(numItems: internetSpeed.pageSize)
         await setItems(newItems)
