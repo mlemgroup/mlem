@@ -363,8 +363,36 @@ struct ModlogView: View {
             Spacer()
             
             Picker("Modlog Action", selection: $selectedAction) {
-                ForEach(ModlogAction.allCases, id: \.self) { action in
-                    Text(action.label)
+                Text(ModlogAction.all.label).tag(ModlogAction.all)
+                
+                Divider()
+                
+                ForEach(ModlogAction.communityActionCases, id: \.self) { action in
+                    Text(action.label).tag(action)
+                }
+                
+                Divider()
+                
+                ForEach(ModlogAction.removalCases, id: \.self) { action in
+                    Text(action.label).tag(action)
+                }
+                
+                Divider()
+                
+                ForEach(ModlogAction.banCases, id: \.self) { action in
+                    Text(action.label).tag(action)
+                }
+                
+                Divider()
+                
+                ForEach(ModlogAction.instanceActionCases, id: \.self) { action in
+                    Text(action.label).tag(action)
+                }
+                
+                Divider()
+                
+                ForEach(ModlogAction.purgeCases, id: \.self) { action in
+                    Text(action.label).tag(action)
                 }
             }
         }

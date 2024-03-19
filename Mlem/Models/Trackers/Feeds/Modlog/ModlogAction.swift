@@ -48,6 +48,26 @@ enum ModlogAction: CaseIterable {
         }
     }
     
+    static var communityActionCases: [ModlogAction] {
+        [.postLock, .postPin, .moderatorAdd, .communityTransfer]
+    }
+    
+    static var removalCases: [ModlogAction] {
+        [.postRemoval, .commentRemoval, .communityRemoval]
+    }
+    
+    static var banCases: [ModlogAction] {
+        [.communityBan, .instanceBan]
+    }
+    
+    static var instanceActionCases: [ModlogAction] {
+        [.administratorAdd, .communityHide]
+    }
+    
+    static var purgeCases: [ModlogAction] {
+        [.postPurge, .commentPurge, .communityPurge, .personPurge]
+    }
+    
     var toApiType: APIModlogActionType? {
         switch self {
         case .all:

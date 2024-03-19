@@ -187,7 +187,7 @@ struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
     }
 
     @MainActor
-    func didReceiveURL(_ url: URL) -> OpenURLAction.Result { // swiftlint:disable:this function_body_length
+    func didReceiveURL(_ url: URL) -> OpenURLAction.Result {
         // let's try keep peps in the app!
         if url.absoluteString.contains(["lem", "/c/", "/u/", "/post/", "@"]) {
             // this link is sus! let's go
