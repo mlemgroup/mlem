@@ -13,6 +13,8 @@ import SwiftUI
 
 // swiftlint:disable:next type_body_length
 struct ModlogView: View {
+    @AppStorage("showModlogWarning") var showModlogWarning: Bool = true
+    
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     
@@ -42,14 +44,20 @@ struct ModlogView: View {
     @State var instanceContext: InstanceModel?
     @State var communityContext: CommunityModel?
     
+    @State var modlogWarningDisplayed: Bool
+    @State var suppressModlogWarning: Bool = false
+    
     @State var errorDetails: ErrorDetails?
     @Namespace var scrollToTop
     @State private var scrollToTopAppeared = false
     
-    // sorry swiftlint but the API made me do it
+    // TODO: 2.0 tidy this up with @Observable
     // swiftlint:disable:next function_body_length
     init(modlogLink: ModlogLink) {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+        @AppStorage("showModlogWarning") var showModlogWarning = true
+        
+        self._modlogWarningDisplayed = .init(wrappedValue: showModlogWarning)
         
         switch modlogLink {
         case .userInstance:
@@ -210,68 +218,72 @@ struct ModlogView: View {
     }
     
     var body: some View {
-        ScrollViewReader { scrollProxy in
-            content
-                .animation(.easeOut(duration: 0.2), value: currentTracker.items.isEmpty)
-                .task { await currentTracker.loadMoreItems() }
-                .refreshable {
-                    await Task {
-                        await modlogTracker.refresh()
-                    }.value
-                }
-                .onChange(of: selectedAction) { newValue in
-                    switch newValue {
-                    case .all:
-                        currentTracker = modlogTracker
-                    case .postRemoval:
-                        currentTracker = postRemovalsTracker
-                    case .postLock:
-                        currentTracker = postLocksTracker
-                    case .postPin:
-                        currentTracker = postPinsTracker
-                    case .commentRemoval:
-                        currentTracker = commentRemovalsTracker
-                    case .communityRemoval:
-                        currentTracker = communityRemovalsTracker
-                    case .communityBan:
-                        currentTracker = communityBansTracker
-                    case .instanceBan:
-                        currentTracker = instanceBansTracker
-                    case .moderatorAdd:
-                        currentTracker = moderatorAddsTracker
-                    case .communityTransfer:
-                        currentTracker = communityTransfersTracker
-                    case .administratorAdd:
-                        currentTracker = administratorAddsTracker
-                    case .personPurge:
-                        currentTracker = personPurgesTracker
-                    case .communityPurge:
-                        currentTracker = communityPurgesTracker
-                    case .postPurge:
-                        currentTracker = postPurgesTracker
-                    case .commentPurge:
-                        currentTracker = commentPurgesTracker
-                    case .communityHide:
-                        currentTracker = communityHidesTracker
+        if modlogWarningDisplayed {
+            modlogWarning
+        } else {
+            ScrollViewReader { scrollProxy in
+                content
+                    .animation(.easeOut(duration: 0.2), value: currentTracker.items.isEmpty)
+                    .task { await currentTracker.loadMoreItems() }
+                    .refreshable {
+                        await Task {
+                            await modlogTracker.refresh()
+                        }.value
                     }
-                    
-                    if currentTracker.items.isEmpty {
-                        Task {
-                            await currentTracker.loadMoreItems()
+                    .onChange(of: selectedAction) { newValue in
+                        switch newValue {
+                        case .all:
+                            currentTracker = modlogTracker
+                        case .postRemoval:
+                            currentTracker = postRemovalsTracker
+                        case .postLock:
+                            currentTracker = postLocksTracker
+                        case .postPin:
+                            currentTracker = postPinsTracker
+                        case .commentRemoval:
+                            currentTracker = commentRemovalsTracker
+                        case .communityRemoval:
+                            currentTracker = communityRemovalsTracker
+                        case .communityBan:
+                            currentTracker = communityBansTracker
+                        case .instanceBan:
+                            currentTracker = instanceBansTracker
+                        case .moderatorAdd:
+                            currentTracker = moderatorAddsTracker
+                        case .communityTransfer:
+                            currentTracker = communityTransfersTracker
+                        case .administratorAdd:
+                            currentTracker = administratorAddsTracker
+                        case .personPurge:
+                            currentTracker = personPurgesTracker
+                        case .communityPurge:
+                            currentTracker = communityPurgesTracker
+                        case .postPurge:
+                            currentTracker = postPurgesTracker
+                        case .commentPurge:
+                            currentTracker = commentPurgesTracker
+                        case .communityHide:
+                            currentTracker = communityHidesTracker
+                        }
+                        
+                        if currentTracker.items.isEmpty {
+                            Task {
+                                await currentTracker.loadMoreItems()
+                            }
                         }
                     }
-                }
-                .navigationTitle("Modlog")
-                .hoistNavigation {
-                    if scrollToTopAppeared {
-                        return false
+                    .navigationTitle("Modlog")
+                    .hoistNavigation {
+                        if scrollToTopAppeared {
+                            return false
+                        }
+                        withAnimation {
+                            scrollProxy.scrollTo(scrollToTop, anchor: .bottom)
+                        }
+                        return true
                     }
-                    withAnimation {
-                        scrollProxy.scrollTo(scrollToTop, anchor: .bottom)
-                    }
-                    return true
-                }
-                .fancyTabScrollCompatible()
+                    .fancyTabScrollCompatible()
+            }
         }
     }
     
@@ -286,18 +298,6 @@ struct ModlogView: View {
   
                 header
                     .padding(AppConstants.standardSpacing)
-//                VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
-//                    if let instanceContext {
-//                        InstanceLabelView(instance: instanceContext)
-//                    }
-//
-//                    if let communityContext {
-//                        CommunityLabelView(community: communityContext, serverInstanceLocation: .bottom)
-//                    }
-//
-//                    header
-//                }
-//                .padding(AppConstants.standardSpacing)
                 
                 Divider()
                 
@@ -315,9 +315,43 @@ struct ModlogView: View {
     }
     
     @ViewBuilder
+    var modlogWarning: some View {
+        VStack(alignment: .center, spacing: AppConstants.doubleSpacing) {
+            Image(systemName: Icons.warning)
+                .resizable()
+                .scaledToFit()
+                .foregroundStyle(.red)
+                .frame(width: 60, height: 60)
+            
+            Text("The moderation log may contain sensitive or disturbing content. Proceed with caution.")
+                .multilineTextAlignment(.center)
+                .padding(.bottom, AppConstants.doubleSpacing)
+            
+            VStack(spacing: AppConstants.standardSpacing) {
+                Button {
+                    modlogWarningDisplayed = false
+                    if suppressModlogWarning {
+                        showModlogWarning = false
+                    }
+                } label: {
+                    Text("View Modlog")
+                        .padding(3)
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.borderedProminent)
+                
+                Toggle(isOn: $suppressModlogWarning) {
+                    Text("Do not show this warning again")
+                }
+                .padding(5)
+            }
+        }
+        .padding(AppConstants.standardSpacing)
+    }
+    
+    @ViewBuilder
     var header: some View {
         HStack {
-            // Text("Action Type")
             if let instanceContext {
                 InstanceLabelView(instance: instanceContext)
             }
