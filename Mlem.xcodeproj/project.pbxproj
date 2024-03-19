@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0300F2C62B9C7D4B0022F7C4 /* CloseButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0300F2C52B9C7D4B0022F7C4 /* CloseButtonView.swift */; };
+		030245CA2BA70F5200D07747 /* LinksSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030245C92BA70F5200D07747 /* LinksSettingsView.swift */; };
 		0304F58A2B44AF5B00537BFA /* CollapsibleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0304F5892B44AF5B00537BFA /* CollapsibleSection.swift */; };
 		0308E1142B0EA32A000CA955 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0308E1132B0EA32A000CA955 /* AccountSettingsView.swift */; };
 		0308E1162B0EA42B000CA955 /* APILocalUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0308E1152B0EA42B000CA955 /* APILocalUserView.swift */; };
@@ -628,6 +629,7 @@
 
 /* Begin PBXFileReference section */
 		0300F2C52B9C7D4B0022F7C4 /* CloseButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButtonView.swift; sourceTree = "<group>"; };
+		030245C92BA70F5200D07747 /* LinksSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksSettingsView.swift; sourceTree = "<group>"; };
 		0304F5892B44AF5B00537BFA /* CollapsibleSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleSection.swift; sourceTree = "<group>"; };
 		0308E1132B0EA32A000CA955 /* AccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
 		0308E1152B0EA42B000CA955 /* APILocalUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APILocalUserView.swift; sourceTree = "<group>"; };
@@ -1260,6 +1262,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		030245CB2BA70F5F00D07747 /* Links */ = {
+			isa = PBXGroup;
+			children = (
+				030245C92BA70F5200D07747 /* LinksSettingsView.swift */,
+			);
+			path = Links;
+			sourceTree = "<group>";
+		};
 		0308E1122B0EA31F000CA955 /* Account */ = {
 			isa = PBXGroup;
 			children = (
@@ -1871,6 +1881,7 @@
 				032C1E022B5D7D9C00FB4F23 /* AccountList */,
 				0308E1122B0EA31F000CA955 /* Account */,
 				030AC0432A62F82B00037155 /* General */,
+				030245CB2BA70F5F00D07747 /* Links */,
 				03E79F3D2AE3E6FF0006700D /* Sorting */,
 				030AC0442A62F83100037155 /* Filters */,
 				CDC1C93D2A7AB8B400072E3D /* Accessibility */,
@@ -3682,6 +3693,7 @@
 				CD876EC72B7736370075DC15 /* MarkReadBatcher+Dependency.swift in Sources */,
 				50A8812C2A72D727003E3661 /* CommunityRepository+Dependency.swift in Sources */,
 				0394398F2A98EB2300463032 /* APIComment+Mock.swift in Sources */,
+				030245CA2BA70F5200D07747 /* LinksSettingsView.swift in Sources */,
 				E453477E2A9DE37300D1B46F /* Array+SafeIndexing.swift in Sources */,
 				CD4368BE2AE23FA600BD8BD1 /* LoadingState.swift in Sources */,
 				CD9DD8852A62302A0044EA8E /* ConcreteEditorModel.swift in Sources */,

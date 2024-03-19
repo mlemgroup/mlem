@@ -48,7 +48,7 @@ extension SFSafariViewController.Configuration {
     /// The default settings used in this application
     static var `default`: Self {
         let configuration = Self()
-        configuration.entersReaderIfAvailable = false
+        configuration.entersReaderIfAvailable = UserDefaults.standard.bool(forKey: "openLinksInReaderMode")
         return configuration
     }
 }
