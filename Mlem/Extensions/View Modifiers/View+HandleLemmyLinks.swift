@@ -92,6 +92,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             QuickSwitcherSettingsView()
         case .general:
             GeneralSettingsView()
+        case .links:
+            LinksSettingsView()
         case .sorting:
             SortingSettingsView()
         case .contentFilters:

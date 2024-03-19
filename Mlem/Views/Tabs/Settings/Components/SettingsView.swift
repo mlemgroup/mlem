@@ -87,7 +87,9 @@ struct SettingsView: View {
                         NavigationLink(.settings(.general)) {
                             Label("General", systemImage: "gear").labelStyle(SquircleLabelStyle(color: .gray))
                         }
-                        
+                        NavigationLink(.settings(.links)) {
+                            Label("Links", systemImage: "link").labelStyle(SquircleLabelStyle(color: .teal))
+                        }
                         NavigationLink(.settings(.sorting)) {
                             Label("Sorting", systemImage: "arrow.up.and.down.text.horizontal")
                                 .labelStyle(SquircleLabelStyle(color: .indigo))
