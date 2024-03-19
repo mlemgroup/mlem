@@ -18,7 +18,7 @@ struct InboxReplyBodyView: View {
     
     var body: some View {
         NavigationLink(.lazyLoadPostLinkWithContext(.init(
-            post: reply.post,
+            postId: reply.post.id,
             scrollTarget: reply.comment.id
         ))) {
             content

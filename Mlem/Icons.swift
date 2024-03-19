@@ -51,10 +51,13 @@ enum Icons {
     static let textPost: String = "text.book.closed"
     static let titleOnlyPost: String = "character.bubble"
     static let pinned: String = "pin.fill"
+    static let unpinned: String = "pin.slash.fill"
     static let websiteIcon: String = "globe"
     static let read: String = "book"
-    static let removed: String = "xmark.bin.fill"
     static let locked: String = "lock.fill"
+    static let unlocked: String = "lock.open.fill"
+    static let removed: String = "xmark.bin.fill"
+    static let restored: String = "arrow.up.bin.fill"
     
     // post sizes
     static let postSizeSetting: String = "rectangle.expand.vertical"
@@ -104,7 +107,6 @@ enum Icons {
     
     // user flairs
     static let developerFlair: String = "hammer.fill"
-    static let adminFlair: String = "crown.fill"
     static let botFlair: String = "terminal.fill"
     static let opFlair: String = "person.fill"
     static let instanceBannedFlair: String = "xmark.circle.fill"
@@ -118,6 +120,9 @@ enum Icons {
     static let userBlock: String = "person.fill.xmark"
     static let community: String = "building.2.crop.circle"
     static let communityFill: String = "building.2.crop.circle.fill"
+    static let communityButton: String = "building.2"
+    static let admin: String = "crown.fill"
+    static let unAdmin: String = "cloud.bolt.fill" // idk what to do for this one
     
     // tabs
     static let feeds: String = "scroll"
@@ -160,6 +165,7 @@ enum Icons {
     // end of feed
     static let endOfFeedHobbit: String = "figure.climbing"
     static let endOfFeedCartoon: String = "figure.wave"
+    static let endOfFeedTurtle: String = "tortoise"
     
     // common operations
     static let share: String = "square.and.arrow.up"
@@ -204,13 +210,17 @@ enum Icons {
     static let limitImageHeightSetting: String = "rectangle.compress.vertical"
     static let appLockSettings: String = "lock.app.dashed"
     static let collapseComments: String = "arrow.down.and.line.horizontal.and.arrow.up"
-    static let instanceBan: String = "xmark.circle"
-    static let instanceUnban: String = "checkmark.circle"
     
     // mod tools
     static let auditUser: String = "person.crop.circle.badge.questionmark.fill"
     static let communityBan: String = "xmark.shield"
+    static let communityBanned: String = "xmark.shield.fill"
     static let communityUnban: String = "checkmark.shield"
+    static let communityUnbanned: String = "checkmark.shield.fill"
+    static let instanceBan: String = "xmark.circle"
+    static let instanceUnban: String = "checkmark.circle"
+    static let instanceBanned: String = "xmark.circle.fill"
+    static let instanceUnbanned: String = "checkmark.circle.fill"
     static let unmod: String = "shield.slash"
     static let unmodFill: String = "shield.slash.fill"
     static let pin: String = "pin"

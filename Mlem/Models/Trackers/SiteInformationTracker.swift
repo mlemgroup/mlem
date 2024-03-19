@@ -26,8 +26,16 @@ class SiteInformationTracker: ObservableObject {
     
     var userId: Int? { myUserInfo?.localUserView.person.id }
     
+    /// Look up whether the user moderates a community by ID. Super efficient, backed by quick-access Set of ids
     func isMod(communityId: Int) -> Bool {
         moderatedCommunities.contains(communityId)
+    }
+    
+    /// Look up whether the user moderates a community by actor ID. Use in cases where you need to check moderation status with community info fetched from a different instance. Less efficient than lookup by id, performs an iterative search of moderated communities
+    func isMod(communityActorId: URL) -> Bool {
+        myUserInfo?.moderates.contains { moderatedCommunity in
+            moderatedCommunity.community.actorId == communityActorId
+        } ?? false
     }
     
     func isModOrAdmin(communityId: Int) -> Bool {

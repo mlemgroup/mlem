@@ -22,7 +22,7 @@ struct APIPost: Decodable {
     var featuredCommunity: Bool
     let featuredLocal: Bool
     let languageId: Int
-    let apId: String
+    let apId: URL
     let local: Bool
     let locked: Bool
     let nsfw: Bool
