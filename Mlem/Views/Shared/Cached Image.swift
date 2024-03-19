@@ -15,6 +15,7 @@ import SwiftUI
 
 struct CachedImage: View {
     @Dependency(\.notifier) var notifier
+    @Dependency(\.errorHandler) var errorHandler
     let url: URL?
     let shouldExpand: Bool
     let hasContextMenu: Bool
@@ -195,9 +196,15 @@ struct CachedImage: View {
                     do {
                         let (data, _) = try await ImagePipeline.shared.data(for: url)
                         let imageSaver = ImageSaver()
-                        imageSaver.writeToPhotoAlbum(imageData: data)
+                        try await imageSaver.writeToPhotoAlbum(imageData: data)
                         await notifier.add(.success("Image saved"))
                     } catch {
+                        await notifier.add(
+                            .detailedFailure(
+                                title: "Failed to Save Image",
+                                subtitle: "You may need to allow Mlem to access your Photo Library in System Settings."
+                            )
+                        )
                         print(String(describing: error))
                     }
                 }
