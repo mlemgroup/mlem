@@ -90,6 +90,16 @@ extension APIClient {
         return response.banned
     }
     
+    func removeCommunity(id: Int, shouldRemove: Bool, reason: String?) async throws -> CommunityResponse {
+        let request = try RemoveCommunityRequest(session: session, communityId: id, removed: shouldRemove, reason: reason)
+        return try await perform(request: request)
+    }
+    
+    func purgeCommunity(id: Int, reason: String?) async throws -> SuccessResponse {
+        let request = try PurgeCommunityRequest(session: session, communityId: id, reason: reason)
+        return try await perform(request: request)
+    }
+    
     /// Adds or removes the given user from the mod list of the given community
     /// - Parameters:
     ///   - of: id of user to add/remove

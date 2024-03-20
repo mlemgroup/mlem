@@ -32,6 +32,7 @@ struct CommunityFeedView: View {
     
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var editorTracker: EditorTracker
+    @EnvironmentObject var modToolTracker: ModToolTracker
     
     @StateObject var postTracker: StandardPostTracker
     
@@ -108,14 +109,19 @@ struct CommunityFeedView: View {
                         .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
                 }
                 
-                ToolbarItemGroup(placement: .secondaryAction) {
-                    ForEach(
-                        communityModel.menuFunctions(
-                            editorTracker: editorTracker,
-                            postTracker: postTracker
-                        ) { communityModel = $0 }
-                    ) { item in
-                        MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
+                ToolbarItemGroup(placement: .primaryAction) {
+                    ToolbarEllipsisMenu {
+                        ForEach(
+                            communityModel.menuFunctions(
+                                editorTracker: editorTracker,
+                                postTracker: postTracker,
+                                modToolTracker: modToolTracker
+                            ) { communityModel = $0 }
+                        ) { item in
+                            MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
+                        }
+                        Divider()
+                        FeedToolbarContent()
                     }
                 }
             }

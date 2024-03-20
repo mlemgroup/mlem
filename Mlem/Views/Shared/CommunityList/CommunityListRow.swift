@@ -31,6 +31,7 @@ struct CommunityListRow: View {
     @State private var menuFunctionPopup: MenuFunctionPopup?
     
     @EnvironmentObject var editorTracker: EditorTracker
+    @EnvironmentObject var modToolTracker: ModToolTracker
     
     init(
         _ community: CommunityModel,
@@ -67,6 +68,7 @@ struct CommunityListRow: View {
                 ForEach(
                     community.menuFunctions(
                         editorTracker: editorTracker,
+                        modToolTracker: modToolTracker,
                         trackerCallback
                     )
                 ) { item in

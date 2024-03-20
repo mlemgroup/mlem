@@ -25,6 +25,7 @@ struct CommunityModel {
     @Dependency(\.communityRepository) var communityRepository
     @Dependency(\.notifier) var notifier
     @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
+    @Dependency(\.siteInformation) var siteInformation
     
     enum CommunityError: Error {
         case noData
@@ -259,6 +260,39 @@ struct CommunityModel {
     
     // MARK: - Moderation
     
+    func toggleRemove(
+        reason: String?,
+        callback: @escaping (_ item: Self) -> Void = { _ in },
+        onFailure: () -> Void
+    ) async {
+        // no need to state fake because removal masked by sheet
+        do {
+            let response = try await apiClient.removeCommunity(
+                id: communityId,
+                shouldRemove: !removed,
+                reason: reason
+            )
+            callback(.init(from: response))
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+        }
+    }
+    
+    func purge(reason: String?) async -> Bool {
+        do {
+            let response = try await apiClient.purgeCommunity(id: communityId, reason: reason)
+            if !response.success {
+                throw APIClientError.unexpectedResponse
+            }
+            return true
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+        }
+        return false
+    }
+    
     func banUser(
         userId: Int,
         ban: Bool,
@@ -346,6 +380,7 @@ extension CommunityModel: Hashable {
         hasher.combine(favorited)
         hasher.combine(subscriberCount)
         hasher.combine(blocked)
+        hasher.combine(removed)
         hasher.combine(moderators?.map(\.id) ?? [])
     }
 }
