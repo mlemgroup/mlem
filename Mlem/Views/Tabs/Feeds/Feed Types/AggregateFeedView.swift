@@ -67,10 +67,8 @@ struct AggregateFeedView: View {
         if siteInformation.moderatorFeedAvailable {
             availableFeeds.append(.moderated)
         }
-        if appState.currentActiveAccount != nil {
-            if !availableFeeds.contains(.saved) {
-                availableFeeds.append(.saved)
-            }
+        if appState.currentActiveAccount != nil, !availableFeeds.contains(.saved) {
+            availableFeeds.append(.saved)
         }
         return availableFeeds
     }
