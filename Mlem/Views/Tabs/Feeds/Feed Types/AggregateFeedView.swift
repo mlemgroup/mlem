@@ -89,7 +89,6 @@ struct AggregateFeedView: View {
                 if let selectedFeed {
                     switch selectedFeed {
                     case .all, .local, .moderated, .subscribed:
-                        print("SWITCH", selectedFeed)
                         await markReadBatcher.flush()
                         await postTracker.changeFeedType(to: selectedFeed)
                         postTracker.isStale = false
