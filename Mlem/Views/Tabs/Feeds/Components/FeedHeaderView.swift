@@ -21,6 +21,8 @@ struct FeedHeaderView: View {
             return "Posts from \(appState.currentActiveAccount?.instanceLink.host() ?? "your instance's") communities"
         case .subscribed:
             return "Posts from all subscribed communities"
+        case .moderated:
+            return "Posts from communities you moderate"
         case .saved:
             return "Your saved posts and comments"
         default:
@@ -31,12 +33,9 @@ struct FeedHeaderView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            HStack(alignment: .center, spacing: AppConstants.postAndCommentSpacing) {
-                Image(systemName: feedType.iconNameCircle)
-                    .resizable()
-                    .frame(width: 44, height: 44)
-                    .foregroundStyle(feedType.color ?? .primary)
-                    .padding(.leading, AppConstants.postAndCommentSpacing)
+            HStack(alignment: .center, spacing: AppConstants.standardSpacing) {
+                FeedIconView(feedType: feedType, size: 44)
+                    .padding(.leading, AppConstants.standardSpacing)
                     
                 VStack(alignment: .leading, spacing: 0) {
                     HStack(spacing: 5) {
