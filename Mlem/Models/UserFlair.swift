@@ -36,7 +36,7 @@ enum UserFlair {
     var icon: String {
         switch self {
         case .admin:
-            return Icons.adminFlair
+            return Icons.admin
         case .moderator:
             return Icons.moderationFill
         case .op:

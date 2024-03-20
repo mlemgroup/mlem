@@ -23,7 +23,7 @@ extension APIPost {
         featuredCommunity: Bool = false,
         featuredLocal: Bool = false,
         languageId: Int = 0,
-        apId: String = "mock.apId",
+        apId: URL = URL(string: "mock.apId")!,
         local: Bool = false,
         locked: Bool = false,
         nsfw: Bool = false,

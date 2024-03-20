@@ -40,7 +40,6 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     InstanceView(instance: instance)
                 case let .instanceFediseerOpinionList(instance, data: data, type: type):
                     FediseerOpinionListView(instance: instance, opinionType: type, fediseerData: data)
-                    
                 case let .postLinkWithContext(postLink):
                     ExpandedPost(post: postLink.post, community: postLink.community, scrollTarget: postLink.scrollTarget)
                         .environmentObject(postLink.postTracker)
@@ -48,8 +47,10 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                         .environmentObject(quickLookState)
                         .environmentObject(layoutWidgetTracker)
                 case let .lazyLoadPostLinkWithContext(post):
-                    LazyLoadExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
+                    LazyLoadExpandedPost(postId: post.postId, scrollTarget: post.scrollTarget)
                         .environmentObject(quickLookState)
+                case let .modlog(modlogLink):
+                    ModlogView(modlogLink: modlogLink)
                 case let .settings(page):
                     settingsDestination(for: page)
                 case let .aboutSettings(page):
@@ -92,6 +93,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             QuickSwitcherSettingsView()
         case .general:
             GeneralSettingsView()
+        case .links:
+            LinksSettingsView()
         case .sorting:
             SortingSettingsView()
         case .contentFilters:
@@ -267,7 +270,11 @@ struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
             do {
                 switch resolution {
                 case let .post(object):
-                    try navigationPath.wrappedValue.append(Path.makeRoute(object))
+                    try navigationPath.wrappedValue.append(Path.makeRoute(PostLinkWithContext(
+                        post: .init(from: object),
+                        postTracker: .init(internetSpeed: .slow, sortType: .new, showReadPosts: true, feedType: .all)
+                    )
+                    ))
                     return true
                 case let .person(object):
                     try navigationPath.wrappedValue.append(Path.makeRoute(UserModel(from: object.person)))

@@ -70,7 +70,7 @@ struct UserContentFeedView: View {
     private func feedPost(for postModel: PostModel) -> some View {
         VStack(spacing: 0) {
             // NavigationLink(.postLinkWithContext(.init(post: post, community: nil, postTracker: nil))) {
-            NavigationLink(.lazyLoadPostLinkWithContext(.init(post: postModel.post))) {
+            NavigationLink(.lazyLoadPostLinkWithContext(.init(postId: postModel.postId))) {
                 FeedPost(
                     post: postModel,
                     postTracker: nil, // TODO: enable filtering on these posts--low priority because sort of silly to filter your saved feed
@@ -89,7 +89,7 @@ struct UserContentFeedView: View {
     private func feedComment(for hierarchicalComment: HierarchicalComment) -> some View {
         VStack(spacing: 0) {
             NavigationLink(.lazyLoadPostLinkWithContext(.init(
-                post: hierarchicalComment.commentView.post,
+                postId: hierarchicalComment.commentView.post.id,
                 scrollTarget: hierarchicalComment.id
             ))) {
                 CommentItem(

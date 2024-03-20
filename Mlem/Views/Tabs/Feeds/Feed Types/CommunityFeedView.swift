@@ -15,7 +15,7 @@ import SwiftUI
 struct CommunityFeedView: View {
     enum Tab: String, Identifiable, CaseIterable {
         var id: Self { self }
-        case posts, about, moderators, details
+        case posts, about, moderation, details
     }
     
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = true
@@ -51,7 +51,7 @@ struct CommunityFeedView: View {
     }
     
     var availableTabs: [Tab] {
-        var output: [Tab] = [.posts, .moderators, .details]
+        var output: [Tab] = [.posts, .moderation, .details]
         if communityModel.description != nil {
             output.insert(.about, at: 1)
         }
@@ -150,7 +150,7 @@ struct CommunityFeedView: View {
                 switch selectedTab {
                 case .posts: posts()
                 case .about: about()
-                case .moderators: ModeratorListView(community: $communityModel)
+                case .moderation: ModeratorListView(community: $communityModel)
                 case .details: details()
                 }
             }
@@ -280,38 +280,38 @@ struct CommunityFeedView: View {
                             menuFunctionPopup = .init(
                                 prompt: "Are you sure you want to unfavorite \(communityModel.name!)?",
                                 actions: [.init(text: "Yes", callback: {
-                                Task {
-                                    do {
-                                        try await communityModel.toggleFavorite { item in
-                                            DispatchQueue.main.async { communityModel = item }
+                                    Task {
+                                        do {
+                                            try await communityModel.toggleFavorite { item in
+                                                DispatchQueue.main.async { communityModel = item }
+                                            }
+                                        } catch {
+                                            errorHandler.handle(error)
                                         }
-                                    } catch {
-                                        errorHandler.handle(error)
                                     }
-                                }
-                            })]
+                                })]
                             )
 
                         } else if subscribed {
                             menuFunctionPopup = .init(
                                 prompt: "Are you sure you want to unsubscribe from \(communityModel.name!)?",
                                 actions: [.init(text: "Yes", callback: {
-                                Task {
-                                    do {
-                                        try await communityModel.toggleSubscribe { item in
-                                            DispatchQueue.main.async { communityModel = item }
+                                    Task {
+                                        do {
+                                            try await communityModel.toggleSubscribe { item in
+                                                DispatchQueue.main.async { communityModel = item }
+                                            }
+                                        } catch {
+                                            errorHandler.handle(error)
                                         }
-                                    } catch {
-                                        errorHandler.handle(error)
                                     }
-                                }
-                            })]
+                                })]
                             )
                         } else {
                             print("not subscribed")
-                            try await communityModel.toggleSubscribe({ item in
+                            try await communityModel.toggleSubscribe { item in
                                 DispatchQueue.main.async { communityModel = item }
-                            })
+                            }
                         }
                     } catch {
                         errorHandler.handle(error)

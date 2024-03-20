@@ -119,7 +119,7 @@ struct EasyTapLinkView: View {
         }
         .padding(AppConstants.postAndCommentSpacing)
         .background(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
-        .foregroundColor(Color(UIColor.secondarySystemBackground)))
+            .foregroundColor(Color(UIColor.secondarySystemBackground)))
         .contextMenu {
             if linkType.isWebsite {
                 Button("Open", systemImage: Icons.browser) {

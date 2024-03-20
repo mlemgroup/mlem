@@ -278,7 +278,7 @@ struct ExpandedPost: View {
                 downvote: post.toggleDownvote,
                 save: post.toggleSave,
                 reply: replyToPost,
-                shareURL: URL(string: post.post.apId),
+                shareURL: post.post.apId,
                 shouldShowScore: shouldShowScoreInPostBar,
                 showDownvotesSeparately: showPostDownvotesSeparately,
                 shouldShowTime: shouldShowTimeInPostBar,
