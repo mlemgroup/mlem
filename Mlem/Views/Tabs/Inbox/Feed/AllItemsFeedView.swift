@@ -18,10 +18,7 @@ struct AllItemsFeedView: View {
             } else if inboxTracker.items.isEmpty {
                 noItemsView()
             } else {
-                LazyVStack(spacing: 0) {
-                    EmptyView().id("top")
-                    inboxListView()
-                }
+                inboxListView()
             }
         }
     }

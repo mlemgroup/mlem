@@ -492,7 +492,7 @@
 		CD46C1F82B0D0A8A00065953 /* View+ReselectAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD46C1F72B0D0A8A00065953 /* View+ReselectAction.swift */; };
 		CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */; };
 		CD4BAD3B2B4C6C3200A1E726 /* FeedRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BAD3A2B4C6C3200A1E726 /* FeedRowView.swift */; };
-		CD4BAD3D2B4C6C8E00A1E726 /* FeedType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BAD3C2B4C6C8E00A1E726 /* FeedType.swift */; };
+		CD4BAD3D2B4C6C8E00A1E726 /* PostFeedType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BAD3C2B4C6C8E00A1E726 /* PostFeedType.swift */; };
 		CD4BAD432B507F2B00A1E726 /* AggregateFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BAD422B507F2B00A1E726 /* AggregateFeedView.swift */; };
 		CD4DBC032A6F803C001A1E61 /* ReplyToPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4DBC022A6F803C001A1E61 /* ReplyToPost.swift */; };
 		CD50504D2B80065300632C56 /* Date+DaysFromNow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD50504C2B80065300632C56 /* Date+DaysFromNow.swift */; };
@@ -1159,7 +1159,7 @@
 		CD46C1F72B0D0A8A00065953 /* View+ReselectAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ReselectAction.swift"; sourceTree = "<group>"; };
 		CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedsView.swift; sourceTree = "<group>"; };
 		CD4BAD3A2B4C6C3200A1E726 /* FeedRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedRowView.swift; sourceTree = "<group>"; };
-		CD4BAD3C2B4C6C8E00A1E726 /* FeedType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedType.swift; sourceTree = "<group>"; };
+		CD4BAD3C2B4C6C8E00A1E726 /* PostFeedType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFeedType.swift; sourceTree = "<group>"; };
 		CD4BAD422B507F2B00A1E726 /* AggregateFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AggregateFeedView.swift; sourceTree = "<group>"; };
 		CD4DBC022A6F803C001A1E61 /* ReplyToPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToPost.swift; sourceTree = "<group>"; };
 		CD50504C2B80065300632C56 /* Date+DaysFromNow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+DaysFromNow.swift"; sourceTree = "<group>"; };
@@ -2412,7 +2412,7 @@
 				CD2053132ACBAF150000AA38 /* AvatarType.swift */,
 				CD4368BD2AE23FA600BD8BD1 /* LoadingState.swift */,
 				CD4368C92AE2428C00BD8BD1 /* ContentIdentifiable.swift */,
-				CD4BAD3C2B4C6C8E00A1E726 /* FeedType.swift */,
+				CD4BAD3C2B4C6C8E00A1E726 /* PostFeedType.swift */,
 				CDB652542B8EAC3E007B7797 /* APIPostFeatureType.swift */,
 			);
 			path = Enums;
@@ -3617,7 +3617,7 @@
 				ADDC9E3A2A5CEAA100383D58 /* BlockPerson.swift in Sources */,
 				CD6F29A82A77FF1700F20B6B /* MarkPostRead.swift in Sources */,
 				031A617E2B1CE90F00ABF23B /* ChangePasswordView.swift in Sources */,
-				CD4BAD3D2B4C6C8E00A1E726 /* FeedType.swift in Sources */,
+				CD4BAD3D2B4C6C8E00A1E726 /* PostFeedType.swift in Sources */,
 				6372186B2A3A2AAD008C4816 /* GetComments.swift in Sources */,
 				B1DD00BD2A62DDEC002A7B39 /* RecognizedLemmyInstances.swift in Sources */,
 				6DA61F892A575DF1001EA633 /* URL+WithIconSize.swift in Sources */,

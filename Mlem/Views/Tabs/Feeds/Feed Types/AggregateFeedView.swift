@@ -26,7 +26,7 @@ struct AggregateFeedView: View {
     
     @State var postSortType: PostSortType
     
-    @Binding var selectedFeed: FeedType?
+    @Binding var selectedFeed: PostFeedType?
     
     @Namespace var scrollToTop
     @State private var scrollToTopAppeared = false
@@ -34,8 +34,8 @@ struct AggregateFeedView: View {
         postTracker.items.first?.id
     }
     
-    init(selectedFeed: Binding<FeedType?>) {
-        var feedType: FeedType = .all
+    init(selectedFeed: Binding<PostFeedType?>) {
+        var feedType: PostFeedType = .all
         if let selectedFeed = selectedFeed.wrappedValue {
             feedType = selectedFeed
         } else {
@@ -62,8 +62,8 @@ struct AggregateFeedView: View {
         self._selectedFeed = selectedFeed
     }
     
-    var availableFeeds: [FeedType] {
-        var availableFeeds: [FeedType] = [.all, .local, .subscribed]
+    var availableFeeds: [PostFeedType] {
+        var availableFeeds: [PostFeedType] = [.all, .local, .subscribed]
         if siteInformation.moderatorFeedAvailable {
             availableFeeds.append(.moderated)
         }
@@ -174,7 +174,7 @@ struct AggregateFeedView: View {
                 MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
             }
         } label: {
-            if let selectedFeed, FeedType.allAggregateFeedCases.contains(selectedFeed) {
+            if let selectedFeed, PostFeedType.allAggregateFeedCases.contains(selectedFeed) {
                 FeedHeaderView(feedType: selectedFeed)
             } else {
                 EmptyView() // shouldn't be possible

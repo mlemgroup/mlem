@@ -15,10 +15,7 @@ struct RepliesFeedView: View {
         if replyTracker.loadingState == .done, replyTracker.items.isEmpty {
             noRepliesView()
         } else {
-            LazyVStack(spacing: 0) {
-                EmptyView().id("top")
-                repliesListView()
-            }
+            repliesListView()
         }
     }
     

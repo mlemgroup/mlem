@@ -9,6 +9,40 @@ import Dependencies
 import Foundation
 import SwiftUI
 
+enum InboxFeed: FeedType {
+    case inbox
+    
+    var label: String {
+        switch self {
+        case .inbox: "Inbox"
+        }
+    }
+        
+    var subtitle: String {
+        switch self {
+        case .inbox: "Replies, mentions, and messages"
+        }
+    }
+    
+    var color: Color? {
+        switch self {
+        case .inbox: .purple
+        }
+    }
+    
+    var iconNameFill: String {
+        switch self {
+        case .inbox: Icons.inboxFill
+        }
+    }
+    
+    var iconScaleFactor: CGFloat {
+        switch self {
+        case .inbox: 0.55
+        }
+    }
+}
+
 enum InboxTab: String, CaseIterable, Identifiable {
     case all, replies, mentions, messages
     
@@ -80,8 +114,9 @@ struct InboxView: View {
         self._messageTracker = StateObject(wrappedValue: newMessageTracker)
     }
     
-    // input state handling
-    // - current view
+    let headerHeight: CGFloat = 40.0
+    @State var pickerOffset: CGFloat = 40.0
+    
     @State var curTab: InboxTab = .all
     
     // utility
@@ -92,7 +127,7 @@ struct InboxView: View {
         ScrollViewReader { scrollProxy in
             // NOTE: there appears to be a SwiftUI issue with segmented pickers stacked on top of ScrollViews which causes the tab bar to appear fully transparent. The internet suggests that this may be a bug that only manifests in dev mode, so, unless this pops up in a build, don't worry about it. If it does manifest, we can either put the Picker *in* the ScrollView (bad because then you can't access it without scrolling to the top) or put a Divider() at the bottom of the VStack (bad because then the material tab bar doesn't show)
             NavigationStack(path: $inboxTabNavigation.path) {
-                contentView(scrollProxy: scrollProxy)
+                content(scrollProxy: scrollProxy)
                     .navigationTitle("Inbox")
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationBarColor()
@@ -101,6 +136,12 @@ struct InboxView: View {
                     }
                     .listStyle(PlainListStyle())
                     .tabBarNavigationEnabled(.inbox, navigation)
+                    .hoistNavigation {
+                        withAnimation {
+                            scrollProxy.scrollTo(scrollToTop)
+                        }
+                        return true
+                    }
                     .handleLemmyViews()
                     .environmentObject(inboxTabNavigation)
                     .environmentObject(inboxTracker)
@@ -117,21 +158,45 @@ struct InboxView: View {
         }
     }
     
-    @ViewBuilder private func contentView(scrollProxy: ScrollViewProxy) -> some View {
-        VStack(spacing: AppConstants.postAndCommentSpacing) {
-            Picker(selection: $curTab, label: Text("Inbox tab")) {
-                ForEach(InboxTab.allCases) { tab in
-                    Text(tab.label).tag(tab.rawValue)
-                }
+    @ViewBuilder
+    private func content(scrollProxy: ScrollViewProxy) -> some View {
+        ScrollView {
+            feed
+        }
+        .fancyTabScrollCompatible()
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                navBarTitle
+                    .opacity(scrollToTopAppeared ? 0 : 1)
+                    .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
             }
-            .pickerStyle(.segmented)
-            .padding(.horizontal, AppConstants.postAndCommentSpacing)
-            .padding(.top, AppConstants.postAndCommentSpacing)
-            
-            ScrollView {
+        }
+        .refreshable {
+            // wrapping in task so view redraws don't cancel
+            // awaiting the value makes the refreshable indicator properly wait for the call to finish
+            await Task {
+                await refresh()
+            }.value
+        }
+        .task {
+            // wrapping in task so view redraws don't cancel
+            Task(priority: .userInitiated) {
+                await refresh()
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var feed: some View {
+        LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
+            Section {
                 ScrollToView(appeared: $scrollToTopAppeared)
                     .id(scrollToTop)
-                
+            } header: {
+                FeedHeaderView(feedType: InboxFeed.inbox, suppressDropdownIndicator: true)
+            }
+            
+            Section {
                 if errorOccurred {
                     errorView()
                 } else {
@@ -146,26 +211,17 @@ struct InboxView: View {
                         MessagesFeedView(messageTracker: messageTracker)
                     }
                 }
-            }
-            .fancyTabScrollCompatible()
-            .refreshable {
-                // wrapping in task so view redraws don't cancel
-                // awaiting the value makes the refreshable indicator properly wait for the call to finish
-                await Task {
-                    await refresh()
-                }.value
-            }
-            .hoistNavigation {
-                withAnimation {
-                    scrollProxy.scrollTo(scrollToTop)
+            } header: {
+                VStack(spacing: 0) {
+                    BubblePicker(InboxTab.allCases, selected: $curTab) { tab in
+                        Text(tab.label)
+                    }
+                    .background(Color.systemBackground.opacity(scrollToTopAppeared ? 1 : 0))
+                    .background(.regularMaterial)
+                    .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
+                    
+                    Divider()
                 }
-                return true
-            }
-        }
-        .task {
-            // wrapping in task so view redraws don't cancel
-            Task(priority: .userInitiated) {
-                await refresh()
             }
         }
     }
@@ -195,5 +251,12 @@ struct InboxView: View {
                 .frame(height: AppConstants.barIconHitbox)
                 .contentShape(Rectangle())
         }
+    }
+    
+    @ViewBuilder
+    var navBarTitle: some View {
+        // this is a bit silly as its own view right now but it will be a menu once mod mail is implemented
+        Text(curTab.label)
+            .font(.headline)
     }
 }
