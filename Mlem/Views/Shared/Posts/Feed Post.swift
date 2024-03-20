@@ -89,7 +89,7 @@ struct FeedPost: View {
     var showCheck: Bool { postModel.read && diffWithoutColor && readMarkStyle == .check }
     
     var menuFunctions: [MenuFunction] {
-        return postModel.menuFunctions(
+        postModel.menuFunctions(
             editorTracker: editorTracker,
             showSelectText: postSize == .large,
             postTracker: postTracker,
@@ -215,7 +215,7 @@ struct FeedPost: View {
                     downvote: postModel.toggleDownvote,
                     save: postModel.toggleSave,
                     reply: replyToPost,
-                    shareURL: URL(string: postModel.post.apId),
+                    shareURL: postModel.post.apId,
                     shouldShowScore: shouldShowScoreInPostBar,
                     showDownvotesSeparately: showPostDownvotesSeparately,
                     shouldShowTime: shouldShowTimeInPostBar,

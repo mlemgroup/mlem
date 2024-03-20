@@ -4,10 +4,11 @@
 //
 //  Created by Eric Andrews on 2023-10-16.
 //
+
 import Foundation
 
 class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<Item>, ChildTrackerProtocol {
-    private weak var parentTracker: (any ParentTrackerProtocol)?
+    private(set) weak var parentTracker: (any ParentTrackerProtocol)?
     private var streamCursor: Int = 0
     
     private(set) var sortType: TrackerSortType

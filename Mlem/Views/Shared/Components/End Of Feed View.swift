@@ -14,7 +14,7 @@ struct EndOfFeedViewContent {
 }
 
 enum EndOfFeedViewType {
-    case hobbit, cartoon
+    case hobbit, cartoon, turtle
     
     var viewContent: EndOfFeedViewContent {
         switch self {
@@ -22,6 +22,8 @@ enum EndOfFeedViewType {
             return EndOfFeedViewContent(icon: Icons.endOfFeedHobbit, message: "I think I've found the bottom!")
         case .cartoon:
             return EndOfFeedViewContent(icon: Icons.endOfFeedCartoon, message: "That's all, folks!")
+        case .turtle:
+            return EndOfFeedViewContent(icon: Icons.endOfFeedTurtle, message: "It's turtles all the way down")
         }
     }
 }

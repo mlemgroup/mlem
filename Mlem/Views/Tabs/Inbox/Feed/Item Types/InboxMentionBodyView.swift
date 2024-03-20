@@ -18,7 +18,7 @@ struct InboxMentionBodyView: View {
     
     var body: some View {
         NavigationLink(.lazyLoadPostLinkWithContext(.init(
-            post: mention.post,
+            postId: mention.post.id,
             scrollTarget: mention.comment.id
         ))) {
             content

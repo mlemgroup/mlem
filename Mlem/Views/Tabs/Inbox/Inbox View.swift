@@ -74,10 +74,6 @@ struct InboxView: View {
             ]
         )
         
-        newReplyTracker.setParentTracker(newInboxTracker)
-        newMentionTracker.setParentTracker(newInboxTracker)
-        newMessageTracker.setParentTracker(newInboxTracker)
-        
         self._inboxTracker = StateObject(wrappedValue: newInboxTracker)
         self._replyTracker = StateObject(wrappedValue: newReplyTracker)
         self._mentionTracker = StateObject(wrappedValue: newMentionTracker)

@@ -10,16 +10,10 @@ import Foundation
 import Photos
 
 class ImageSaver: NSObject {
-    func writeToPhotoAlbum(imageData: Data) {
-        PHPhotoLibrary.shared().performChanges({
+    func writeToPhotoAlbum(imageData: Data) async throws {
+        try await PHPhotoLibrary.shared().performChanges({
             let creationRequest = PHAssetCreationRequest.forAsset()
             creationRequest.addResource(with: .photo, data: imageData, options: nil)
-        }, completionHandler: { success, error in
-            if success {
-                print("Save finished!")
-            } else {
-                print("Error saving photo: \(String(describing: error?.localizedDescription))")
-            }
         })
     }
 }
