@@ -5,10 +5,12 @@
 //  Created by Eric Andrews on 2024-01-07.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
 
 struct FeedsView: View {
+    @Dependency(\.siteInformation) var siteInformation
     @AppStorage("defaultFeed") var defaultFeed: DefaultFeedType = .subscribed
     
     @Environment(\.scenePhase) var scenePhase
@@ -53,7 +55,7 @@ struct FeedsView: View {
                 // Note that NavigationLinks in here update selectedFeed and are handled by the detail switch, not the general navigation handler
                 ZStack(alignment: .trailing) {
                     List(selection: $selectedFeed) {
-                        ForEach([FeedType.all, FeedType.local, FeedType.subscribed, FeedType.saved]) { feedType in
+                        ForEach(siteInformation.feeds) { feedType in
                             NavigationLink(value: feedType) {
                                 FeedRowView(feedType: feedType)
                             }
@@ -113,7 +115,7 @@ struct FeedsView: View {
     @ViewBuilder
     private var navStackView: some View {
         switch selectedFeed {
-        case .all, .local, .subscribed, .saved:
+        case .all, .local, .subscribed, .moderated, .saved:
             AggregateFeedView(selectedFeed: $selectedFeed)
         case let .community(communityModel):
             CommunityFeedView(communityModel: communityModel)
