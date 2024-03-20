@@ -65,7 +65,7 @@ struct ContentView: View {
                 // but when guest mode arrives we'll either omit these entirely, or replace them with a
                 // guest mode specific tab for sign in / change instance screen.
                 if appState.currentActiveAccount != nil {
-                    InboxView()
+                    InboxRoot()
                         .fancyTabItem(tag: TabSelection.inbox) {
                             FancyTabBarLabel(
                                 tag: TabSelection.inbox,
@@ -141,14 +141,14 @@ struct ContentView: View {
         }
         .sheet(item: $editorTracker.editResponse) { editing in
             ResponseEditorView(concreteEditorModel: editing)
-            .presentationDetents([.medium, .large], selection: .constant(.large))
-            ._presentationBackgroundInteraction(enabledUpThrough: .medium)
+                .presentationDetents([.medium, .large], selection: .constant(.large))
+                ._presentationBackgroundInteraction(enabledUpThrough: .medium)
         }
         .sheet(item: $editorTracker.selectText) { selectText in
             SelectTextView(text: selectText.text)
-            .presentationDetents([.medium])
-            ._presentationCornerRadius(20)
-            ._presentationBackgroundInteraction(enabledUpThrough: .medium)
+                .presentationDetents([.medium])
+                ._presentationCornerRadius(20)
+                ._presentationBackgroundInteraction(enabledUpThrough: .medium)
         }
         .sheet(item: $editorTracker.editPost) { editing in
             NavigationStack {

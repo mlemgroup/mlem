@@ -495,6 +495,7 @@
 		CD4BAD3D2B4C6C8E00A1E726 /* PostFeedType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BAD3C2B4C6C8E00A1E726 /* PostFeedType.swift */; };
 		CD4BAD432B507F2B00A1E726 /* AggregateFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BAD422B507F2B00A1E726 /* AggregateFeedView.swift */; };
 		CD4DBC032A6F803C001A1E61 /* ReplyToPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4DBC022A6F803C001A1E61 /* ReplyToPost.swift */; };
+		CD4DD9DA2BABABB000085D41 /* InboxRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4DD9D92BABABB000085D41 /* InboxRoot.swift */; };
 		CD50504D2B80065300632C56 /* Date+DaysFromNow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD50504C2B80065300632C56 /* Date+DaysFromNow.swift */; };
 		CD5050542B807BF800632C56 /* AddModToCommunity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5050532B807BF800632C56 /* AddModToCommunity.swift */; };
 		CD525F652A4B6D8F00BCA794 /* CommunityLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD525F642A4B6D8F00BCA794 /* CommunityLinkView.swift */; };
@@ -1162,6 +1163,7 @@
 		CD4BAD3C2B4C6C8E00A1E726 /* PostFeedType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFeedType.swift; sourceTree = "<group>"; };
 		CD4BAD422B507F2B00A1E726 /* AggregateFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AggregateFeedView.swift; sourceTree = "<group>"; };
 		CD4DBC022A6F803C001A1E61 /* ReplyToPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToPost.swift; sourceTree = "<group>"; };
+		CD4DD9D92BABABB000085D41 /* InboxRoot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxRoot.swift; sourceTree = "<group>"; };
 		CD50504C2B80065300632C56 /* Date+DaysFromNow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+DaysFromNow.swift"; sourceTree = "<group>"; };
 		CD5050532B807BF800632C56 /* AddModToCommunity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddModToCommunity.swift; sourceTree = "<group>"; };
 		CD525F642A4B6D8F00BCA794 /* CommunityLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityLinkView.swift; sourceTree = "<group>"; };
@@ -2460,6 +2462,7 @@
 				CDE6A80E2A4908200062D161 /* Feed */,
 				6DFF50422A48DED3001E648D /* Inbox View.swift */,
 				CD4368DC2AE24E1A00BD8BD1 /* InboxView+Logic.swift */,
+				CD4DD9D92BABABB000085D41 /* InboxRoot.swift */,
 			);
 			path = Inbox;
 			sourceTree = "<group>";
@@ -3647,6 +3650,7 @@
 				6FF17D012B685C16007E1814 /* AppLockView.swift in Sources */,
 				B1955A1D2A606B950056CF99 /* Easter Rewards.swift in Sources */,
 				CD16A0642B66F81A000312D2 /* UserContentModel+TrackerItem.swift in Sources */,
+				CD4DD9DA2BABABB000085D41 /* InboxRoot.swift in Sources */,
 				CDB0117F2A6F70A000D043EB /* Editor Tracker.swift in Sources */,
 				03ED5D5F2B6560FE005C245B /* PostModel+MenuFunctions.swift in Sources */,
 				030E86482AC6FD1D000283A6 /* _assignIfNotEqual.swift in Sources */,
