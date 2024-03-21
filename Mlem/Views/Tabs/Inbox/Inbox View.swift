@@ -178,7 +178,7 @@ struct InboxView: View {
             ScrollToView(appeared: $scrollToTopAppeared)
                 .id(scrollToTop)
             
-            FeedHeaderView(feedType: InboxFeed.inbox, suppressDropdownIndicator: true)
+            FeedHeaderView(feedType: InboxFeed.inbox, showDropdownIndicator: false)
             
             Section {
                 if errorOccurred {

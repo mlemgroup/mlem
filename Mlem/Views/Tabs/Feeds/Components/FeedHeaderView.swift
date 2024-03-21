@@ -20,11 +20,11 @@ struct FeedHeaderView: View {
     @EnvironmentObject var appState: AppState
     
     let feedType: any FeedType
-    let suppressDropdownIndicator: Bool
+    let showDropdownIndicator: Bool
     
-    init(feedType: any FeedType, suppressDropdownIndicator: Bool = false) {
+    init(feedType: any FeedType, showDropdownIndicator: Bool = true) {
         self.feedType = feedType
-        self.suppressDropdownIndicator = suppressDropdownIndicator
+        self.showDropdownIndicator = showDropdownIndicator
     }
     
     var body: some View {
@@ -40,7 +40,7 @@ struct FeedHeaderView: View {
                             .minimumScaleFactor(0.01)
                             .fontWeight(.semibold)
                         
-                        if !suppressDropdownIndicator {
+                        if showDropdownIndicator {
                             Image(systemName: Icons.dropdown)
                                 .foregroundStyle(.secondary)
                         }
