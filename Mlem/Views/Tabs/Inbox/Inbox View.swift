@@ -159,6 +159,9 @@ struct InboxView: View {
         ScrollView {
             feed
         }
+        .onChange(of: curTab) { _ in
+            scrollProxy?.scrollTo(scrollToTop)
+        }
         .fancyTabScrollCompatible()
         .refreshable {
             // wrapping in task so view redraws don't cancel
