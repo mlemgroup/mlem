@@ -172,12 +172,10 @@ struct InboxView: View {
     @ViewBuilder
     var feed: some View {
         LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
-            Section {
-                ScrollToView(appeared: $scrollToTopAppeared)
-                    .id(scrollToTop)
-            } header: {
-                FeedHeaderView(feedType: InboxFeed.inbox, suppressDropdownIndicator: true)
-            }
+            ScrollToView(appeared: $scrollToTopAppeared)
+                .id(scrollToTop)
+            
+            FeedHeaderView(feedType: InboxFeed.inbox, suppressDropdownIndicator: true)
             
             Section {
                 if errorOccurred {
