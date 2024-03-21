@@ -16,15 +16,12 @@ struct GeneralSettingsView: View {
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     @AppStorage("appLock") var appLock: AppLock = .disabled
     @AppStorage("tapCommentToCollapse") var tapCommentToCollapse: Bool = true
-    @AppStorage("easyTapLinkDisplayMode") var easyTapLinkDisplayMode: EasyTapLinkDisplayMode = .contextual
     @AppStorage("markReadOnScroll") var markReadOnScroll: Bool = false
     
     @AppStorage("defaultFeed") var defaultFeed: DefaultFeedType = .subscribed
     
     @AppStorage("hapticLevel") var hapticLevel: HapticPriority = .low
     @AppStorage("upvoteOnSave") var upvoteOnSave: Bool = false
-    
-    @AppStorage("openLinksInBrowser") var openLinksInBrowser: Bool = false
 
     @EnvironmentObject var appState: AppState
 
@@ -33,11 +30,6 @@ struct GeneralSettingsView: View {
     var body: some View {
         List {
             Section {
-                SwitchableSettingsItem(
-                    settingPictureSystemName: Icons.browser,
-                    settingName: "Open Links in Browser",
-                    isTicked: $openLinksInBrowser
-                )
                 SelectableSettingsItem(
                     settingIconSystemName: Icons.haptics,
                     settingName: "Haptic Level",
@@ -53,12 +45,6 @@ struct GeneralSettingsView: View {
                     settingPictureSystemName: Icons.upvoteOnSave,
                     settingName: "Upvote on Save",
                     isTicked: $upvoteOnSave
-                )
-                SelectableSettingsItem(
-                    settingIconSystemName: Icons.websiteAddress,
-                    settingName: "Tappable Links",
-                    currentValue: $easyTapLinkDisplayMode,
-                    options: EasyTapLinkDisplayMode.allCases
                 )
                 SwitchableSettingsItem(
                     settingPictureSystemName: Icons.read,

@@ -34,6 +34,8 @@ struct ModToolSheet: View {
             ) // TODO: add post tracker support
         case let .removePost(post, shouldRemove):
             RemovePostView(post: post, shouldRemove: shouldRemove)
+        case let .removeCommunity(community, shouldRemove):
+            RemoveCommunityView(community: community, shouldRemove: shouldRemove)
         }
     }
 }

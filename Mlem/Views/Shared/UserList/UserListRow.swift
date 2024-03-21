@@ -22,6 +22,8 @@ struct UserListRow: View {
     @Dependency(\.apiClient) private var apiClient
     @Dependency(\.hapticManager) var hapticManager
     
+    @EnvironmentObject var modToolTracker: ModToolTracker
+    
     let user: UserModel
     let communityContext: CommunityModel?
     let trackerCallback: (_ item: UserModel) -> Void
@@ -64,7 +66,7 @@ struct UserListRow: View {
             .destructiveConfirmation(menuFunctionPopup: $menuFunctionPopup)
             .addSwipeyActions(swipeActions ?? .init())
             .contextMenu {
-                ForEach(user.menuFunctions(trackerCallback)) { item in
+                ForEach(user.menuFunctions(trackerCallback, modToolTracker: modToolTracker)) { item in
                     MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
                 }
             }

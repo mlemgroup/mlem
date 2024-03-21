@@ -55,6 +55,10 @@ struct ModeratorListView: View {
     
     var content: some View {
         VStack(spacing: 0) {
+            ModlogNavigationLinkView(to: community)
+            
+            Divider()
+            
             if let moderators = community.moderators {
                 ForEach(moderators, id: \.id) { user in
                     UserListRow(user, complications: [.date], communityContext: community, navigationEnabled: navigationEnabled)

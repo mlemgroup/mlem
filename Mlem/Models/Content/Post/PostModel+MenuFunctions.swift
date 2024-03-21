@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension PostModel {    
+extension PostModel {
     // swiftlint:disable function_body_length
     /// Produces menu functions for this post
     /// - Parameters:
@@ -29,7 +29,7 @@ extension PostModel {
         var mainFunctions: [MenuFunction] = .init()
         mainFunctions.append(contentsOf: topRowMenuFunctions(editorTracker: editorTracker))
         
-        if let body = self.post.body, body.isNotEmpty, showSelectText {
+        if let body = post.body, body.isNotEmpty, showSelectText {
             mainFunctions.append(MenuFunction.standardMenuFunction(
                 text: "Select Text",
                 imageName: Icons.select
@@ -61,9 +61,7 @@ extension PostModel {
         }
         
         // Share
-        if let url = URL(string: post.apId) {
-            mainFunctions.append(MenuFunction.shareMenuFunction(url: url))
-        }
+        mainFunctions.append(MenuFunction.shareMenuFunction(url: post.apId))
         
         if !creator.isActiveAccount {
             if modToolTracker == nil {
@@ -180,7 +178,7 @@ extension PostModel {
                 })
             }
             
-            if siteInformation.isAdmin && (creator.banned || creatorBannedFromCommunity) {
+            if siteInformation.isAdmin, creator.banned || creatorBannedFromCommunity {
                 functions.append(MenuFunction.toggleableMenuFunction(
                     toggle: creator.banned,
                     trueText: "Unban User",
@@ -202,6 +200,7 @@ extension PostModel {
         
         return functions
     }
+
     // swiftlint:enable function_body_length
     
     private func topRowMenuFunctions(editorTracker: EditorTracker) -> [MenuFunction] {
@@ -308,7 +307,7 @@ extension PostModel {
         }
         
         var functions: [MenuFunction] = .init()
-        if !(self.community.blocked ?? true) && !self.creator.blocked {
+        if !(community.blocked ?? true), !creator.blocked {
             var blockActions: [MenuFunctionPopup.Action] = [
                 .init(text: "Block User", callback: blockUserCallback),
                 .init(text: "Block Community", callback: blockCommunityCallback)
@@ -324,7 +323,7 @@ extension PostModel {
                 )
             )
         } else {
-            if self.creator.blocked {
+            if creator.blocked {
                 functions.append(
                     .standardMenuFunction(
                         text: "Unblock User",
@@ -342,7 +341,7 @@ extension PostModel {
                     )
                 )
             }
-            if self.community.blocked ?? false {
+            if community.blocked ?? false {
                 functions.append(
                     .standardMenuFunction(
                         text: "Unblock Community",

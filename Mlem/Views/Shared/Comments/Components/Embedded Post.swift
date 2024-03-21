@@ -25,7 +25,7 @@ struct EmbeddedPost: View {
     // - enrich info
     var body: some View {
         NavigationLink(.lazyLoadPostLinkWithContext(.init(
-            post: post,
+            postId: post.id,
             scrollTarget: comment.id
         ))) {
             postLinkButton()

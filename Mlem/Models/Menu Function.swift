@@ -19,6 +19,8 @@ enum MenuFunction: Identifiable {
             return shareImageFunction.id
         case let .navigation(navigationMenuFunction):
             return navigationMenuFunction.id
+        case let .openUrl(openUrlMenuFunction):
+            return openUrlMenuFunction.id
         case let .disclosureGroup(groupMenuFunction):
             return groupMenuFunction.id
         case let .controlGroup(groupMenuFunction):
@@ -33,6 +35,7 @@ enum MenuFunction: Identifiable {
     case shareUrl(ShareMenuFunction)
     case shareImage(ShareImageFunction)
     case navigation(NavigationMenuFunction)
+    case openUrl(OpenUrlMenuFunction)
     case disclosureGroup(DisclosureGroupMenuFunction)
     case controlGroup(ControlGroupMenuFunction)
 }
@@ -119,11 +122,11 @@ extension MenuFunction {
         ))
     }
     
-        static func controlGroupMenuFunction(
-            children: [MenuFunction]
-        ) -> MenuFunction {
-            MenuFunction.controlGroup(ControlGroupMenuFunction(children: children))
-        }
+    static func controlGroupMenuFunction(
+        children: [MenuFunction]
+    ) -> MenuFunction {
+        MenuFunction.controlGroup(ControlGroupMenuFunction(children: children))
+    }
 
     // swiftlint:disable:next function_parameter_count
     static func toggleableMenuFunction(
@@ -161,6 +164,18 @@ extension MenuFunction {
         destination: AppRoute
     ) -> MenuFunction {
         MenuFunction.navigation(NavigationMenuFunction(
+            text: text,
+            imageName: imageName,
+            destination: destination
+        ))
+    }
+    
+    static func openUrlMenuFunction(
+        text: String,
+        imageName: String,
+        destination: URL
+    ) -> MenuFunction {
+        MenuFunction.openUrl(OpenUrlMenuFunction(
             text: text,
             imageName: imageName,
             destination: destination
@@ -222,4 +237,12 @@ struct NavigationMenuFunction: Identifiable {
     let text: String
     let imageName: String
     let destination: AppRoute
+}
+
+struct OpenUrlMenuFunction: Identifiable {
+    var id: String { text }
+    
+    let text: String
+    let imageName: String
+    let destination: URL
 }

@@ -5,6 +5,7 @@
 //  Created by Nicholas Lawson on 04/06/2023.
 //
 
+import Dependencies
 import Foundation
 
 // swiftlint:disable file_length
@@ -57,6 +58,8 @@ extension APIClientError: CustomStringConvertible {
 }
 
 class APIClient {
+    @Dependency(\.siteInformation) var siteInformation
+    
     let urlSession: URLSession
     let decoder: JSONDecoder
     let transport: (URLSession, URLRequest) async throws -> (Data, URLResponse)

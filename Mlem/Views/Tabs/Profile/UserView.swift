@@ -175,7 +175,7 @@ struct UserView: View {
                                         Text("Permanently Banned")
                                     }
                                 case .admin:
-                                    Image(systemName: Icons.adminFlair)
+                                    Image(systemName: Icons.admin)
                                     let host = user.profileUrl.host()
                                     Text("\(host ?? "Instance") Administrator")
                                 case .moderator:
