@@ -200,7 +200,7 @@ struct InboxView: View {
                         Text(tab.label)
                     }
                     .background(Color.systemBackground.opacity(scrollToTopAppeared ? 1 : 0))
-                    .background(.regularMaterial)
+                    .background(.thickMaterial)
                     .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
                     
                     Divider()
@@ -239,7 +239,7 @@ struct InboxView: View {
     @ViewBuilder
     var navBarTitle: some View {
         // this is a bit silly as its own view right now but it will be a menu once mod mail is implemented
-        Text(curTab.label)
+        Text(InboxFeed.inbox.label)
             .font(.headline)
     }
 }
