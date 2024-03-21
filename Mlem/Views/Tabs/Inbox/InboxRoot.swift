@@ -17,7 +17,7 @@ struct InboxRoot: View {
             NavigationStack(path: $inboxRouter.path) {
                 InboxView()
                     .environmentObject(inboxRouter)
-                    .tabBarNavigationEnabled(.search, navigation)
+                    .tabBarNavigationEnabled(.inbox, navigation)
             }
             .environment(\.navigationPathWithRoutes, $inboxRouter.path)
             .environment(\.navigation, navigation)
