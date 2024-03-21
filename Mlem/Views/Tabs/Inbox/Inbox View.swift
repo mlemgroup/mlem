@@ -201,7 +201,7 @@ struct InboxView: View {
                         Text(tab.label)
                     }
                     .background(Color.systemBackground.opacity(scrollToTopAppeared ? 1 : 0))
-                    .background(.thickMaterial)
+                    .background(.bar)
                     .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
                     
                     Divider()
