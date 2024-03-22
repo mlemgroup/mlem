@@ -203,8 +203,6 @@ struct InboxView: View {
                     .background(Color.systemBackground.opacity(scrollToTopAppeared ? 1 : 0))
                     .background(.bar)
                     .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
-                    
-                    Divider()
                 }
             }
         }

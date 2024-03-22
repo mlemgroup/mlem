@@ -119,16 +119,14 @@ struct UserView: View {
             ScrollToView(appeared: $scrollToTopAppeared)
                 .id(scrollToTop)
             
-            VStack(spacing: AppConstants.postAndCommentSpacing) {
+            VStack(spacing: AppConstants.standardSpacing) {
                 header
                 
                 flairs
                 
-                VStack(spacing: 0) {
+                Group {
                     bio
-                    
-                    Divider()
-                        .padding(.top, AppConstants.postAndCommentSpacing * 2)
+                        .padding(.bottom, AppConstants.halfSpacing)
                     
                     userContent
                 }
@@ -225,7 +223,7 @@ struct UserView: View {
             .transition(.opacity)
         } else {
             VStack(spacing: 0) {
-                BubblePicker(tabs, selected: $selectedTab) { tab in
+                BubblePicker(tabs, selected: $selectedTab, withDividers: [.top, .bottom]) { tab in
                     switch tab {
                     case .posts:
                         Text("Posts (\(abbreviateNumber(user.postCount ?? 0)))")
@@ -237,8 +235,7 @@ struct UserView: View {
                         Text(tab.label)
                     }
                 }
-                .padding(.vertical, 4)
-                Divider()
+                
                 UserFeedView(
                     user: user,
                     privatePostTracker: privatePostTracker,

@@ -23,7 +23,6 @@ struct SearchHomeView: View {
             BubblePicker(SearchTab.homePageCases, selected: $searchModel.searchTab) {
                 Text($0.label)
             }
-            .padding(.bottom, 10)
             Divider()
             SearchResultListView(showTypeLabel: false)
         }
@@ -46,7 +45,6 @@ struct SearchHomeView: View {
 }
 
 struct SearchHomeViewPreview: View {
-    
     @StateObject var homeSearchModel: SearchModel = .init()
     @StateObject var homeContentTracker: ContentTracker<AnyContentModel> = .init()
     

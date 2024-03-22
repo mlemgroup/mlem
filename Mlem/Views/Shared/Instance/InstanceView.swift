@@ -83,16 +83,15 @@ struct InstanceView: View {
         ScrollView {
             ScrollToView(appeared: $scrollToTopAppeared)
                 .id(scrollToTop)
-            VStack(spacing: AppConstants.postAndCommentSpacing) {
+            VStack(spacing: AppConstants.standardSpacing) {
                 headerView
+                    .padding(.bottom, AppConstants.halfSpacing)
+                
                 VStack(spacing: 0) {
-                    VStack(spacing: 4) {
-                        Divider()
-                        BubblePicker(availableTabs, selected: $selectedTab) { tab in
-                            Text(tab.label)
-                        }
-                        Divider()
+                    BubblePicker(availableTabs, selected: $selectedTab, withDividers: [.top, .bottom]) { tab in
+                        Text(tab.label)
                     }
+                    
                     if let errorDetails, [.about, .administration, .details].contains(selectedTab) {
                         ErrorView(errorDetails)
                     } else {
@@ -170,7 +169,6 @@ struct InstanceView: View {
                             .frame(height: 100)
                     }
                 }
-                .padding(.top, 5)
             }
         }
         .toolbar {
