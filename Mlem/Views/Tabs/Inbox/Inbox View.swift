@@ -196,14 +196,12 @@ struct InboxView: View {
                     }
                 }
             } header: {
-                VStack(spacing: 0) {
-                    BubblePicker(InboxTab.allCases, selected: $curTab, withDividers: [.bottom]) { tab in
-                        Text(tab.label)
-                    }
-                    .background(Color.systemBackground.opacity(scrollToTopAppeared ? 1 : 0))
-                    .background(.bar)
-                    .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
+                BubblePicker(InboxTab.allCases, selected: $curTab, withDividers: [.bottom]) { tab in
+                    Text(tab.label)
                 }
+                .background(Color.systemBackground.opacity(scrollToTopAppeared ? 1 : 0))
+                .background(.bar)
+                .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
             }
         }
     }
