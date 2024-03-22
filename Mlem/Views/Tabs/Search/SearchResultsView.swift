@@ -19,8 +19,8 @@ struct SearchResultsView: View {
             BubblePicker(SearchTab.allCases, selected: $searchModel.searchTab) {
                 Text($0.label)
             }
-            .padding(.top, 5)
-            .padding(.bottom, 10)
+            .padding(.top, -AppConstants.halfSpacing)
+            .padding(.bottom, AppConstants.halfSpacing)
             Divider()
             SearchResultListView(showTypeLabel: searchModel.searchTab == .topResults)
         }

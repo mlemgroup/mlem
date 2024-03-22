@@ -20,10 +20,12 @@ struct SearchHomeView: View {
                 .fontWeight(.semibold)
                 .padding(.horizontal, 18)
                 .padding(.top, 12)
-            BubblePicker(SearchTab.homePageCases, selected: $searchModel.searchTab) {
+                .padding(.bottom, -AppConstants.halfSpacing)
+            
+            BubblePicker(SearchTab.homePageCases, selected: $searchModel.searchTab, withDividers: [.bottom]) {
                 Text($0.label)
             }
-            Divider()
+            
             SearchResultListView(showTypeLabel: false)
         }
         .frame(maxWidth: .infinity)

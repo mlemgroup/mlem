@@ -197,7 +197,7 @@ struct InboxView: View {
                 }
             } header: {
                 VStack(spacing: 0) {
-                    BubblePicker(InboxTab.allCases, selected: $curTab) { tab in
+                    BubblePicker(InboxTab.allCases, selected: $curTab, withDividers: [.bottom]) { tab in
                         Text(tab.label)
                     }
                     .background(Color.systemBackground.opacity(scrollToTopAppeared ? 1 : 0))
