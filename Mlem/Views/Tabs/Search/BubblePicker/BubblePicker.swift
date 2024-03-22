@@ -21,11 +21,11 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
     @Dependency(\.hapticManager) var hapticManager
     
     @Binding var selected: Value
-    @State var selectedTabIndex: Int
     let tabs: [Value]
     let dividers: Set<DividerPlacement>
     @ViewBuilder let labelBuilder: (Value) -> any View
     
+    @State var currentSize: Int
     @State var sizes: [BubblePickerItemFrame]
     let spaceName: String = UUID().uuidString
     
@@ -38,7 +38,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
         assert(tabs.isNotEmpty, "Cannot create bubble picker with empty tabs!")
         
         self._selected = selected
-        self._selectedTabIndex = .init(wrappedValue: 0)
+        self._currentSize = .init(wrappedValue: 0)
         self.tabs = tabs
         self.dividers = withDividers
         self.labelBuilder = labelBuilder
@@ -53,23 +53,21 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
             
             ScrollViewReader { scrollProxy in
                 ScrollView(.horizontal) {
-                    // Use negative spacing as well as padding the HStack's children so that scrollTo leaves extra space around each tab
-                    // HStack(spacing: -AppConstants.doubleSpacing) {
-                    ZStack(alignment: .leading) {
-                        Capsule()
-                            .fill(.blue)
-                            .offset(x: sizes[selectedTabIndex].offset)
-                            .frame(width: sizes[selectedTabIndex].width, height: 30)
-                        
-                        HStack {
-                            ForEach(Array(zip(tabs.indices, tabs)), id: \.0) { index, tab in
-                                ChildSizeReader(sizes: $sizes, index: index, spaceName: spaceName) {
-                                    bubbleButton(index: index, tab: tab, scrollProxy: scrollProxy)
+                    buttonStack(scrollProxy: scrollProxy)
+                        .foregroundStyle(.primary)
+                        .background(Color.systemBackground)
+                        .overlay {
+                            buttonStack()
+                                .foregroundStyle(.white)
+                                .background(.blue)
+                                .allowsHitTesting(false)
+                                .mask(alignment: .leading) {
+                                    Capsule()
+                                        .offset(x: sizes[currentSize].offset + AppConstants.standardSpacing)
+                                        .frame(width: max(sizes[currentSize].width - AppConstants.doubleSpacing, 0), height: 30)
                                 }
-                            }
                         }
-                    }
-                    .coordinateSpace(name: spaceName)
+                        .coordinateSpace(name: spaceName)
                 }
                 .scrollIndicators(.hidden)
             }
@@ -83,37 +81,48 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
         }
     }
     
+    /// Builds the HStack containing the actual buttons
+    /// - Parameter scrollProxy: scrollProxy to handle scrolling horizontally to the selected view. If present, the stack will create buttons and apply a ChildSizeReader to them to populate the size information for the masking; otherwise the stack will use inert labels.
+    @ViewBuilder
+    func buttonStack(scrollProxy: ScrollViewProxy? = nil) -> some View {
+        // Use negative spacing as well as padding the HStack's children so that scrollTo leaves extra space around each tab
+        HStack(spacing: -AppConstants.doubleSpacing) {
+            ForEach(Array(zip(tabs.indices, tabs)), id: \.0) { index, tab in
+                if let scrollProxy {
+                    ChildSizeReader(sizes: $sizes, index: index, spaceName: spaceName) {
+                        bubbleButton(index: index, tab: tab, scrollProxy: scrollProxy)
+                    }
+                } else {
+                    bubbleButtonLabel(tab: tab)
+                }
+            }
+        }
+    }
+    
     @ViewBuilder
     func bubbleButton(index: Int, tab: Value, scrollProxy: ScrollViewProxy) -> some View {
         Button {
             selected = tab
             hapticManager.play(haptic: .gentleInfo, priority: .low)
-            withAnimation {
-                selectedTabIndex = index
+            withAnimation(.spring(response: 0.2, dampingFraction: 0.8)) {
+                currentSize = index
                 scrollProxy.scrollTo(index)
             }
         } label: {
-            AnyView(labelBuilder(tab))
-                .padding(.vertical, 6)
-                .padding(.horizontal, 12)
-                .foregroundStyle(selected == tab ? .white : .primary)
-                .font(.subheadline)
-                .fontWeight(.semibold)
-//                .background(
-//                    Group {
-//                        if selected == tab {
-//                            Capsule()
-//                                .fill(.blue)
-//                                .transition(.scale.combined(with: .opacity))
-//                        }
-//                    }
-//                )
-                .padding(AppConstants.standardSpacing)
-                .animation(.spring(response: 0.15, dampingFraction: 0.7), value: selected)
-                .contentShape(Rectangle())
+            bubbleButtonLabel(tab: tab)
         }
         .buttonStyle(EmptyButtonStyle())
         .id(index)
+    }
+    
+    @ViewBuilder
+    func bubbleButtonLabel(tab: Value) -> some View {
+        AnyView(labelBuilder(tab))
+            .frame(minHeight: 50)
+            .padding(.horizontal, 22)
+            .font(.subheadline)
+            .fontWeight(.semibold)
+            .contentShape(Rectangle())
     }
 }
 
