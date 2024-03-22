@@ -9,12 +9,12 @@ import Foundation
 
 // lemmy_db_views::structs::CommentView
 struct APICommentView: Decodable, APIContentViewProtocol {
-    let comment: APIComment
-    let creator: APIPerson
+    var comment: APIComment
+    var creator: APIPerson
     let post: APIPost
     let community: APICommunity
     let counts: APICommentAggregates
-    let creatorBannedFromCommunity: Bool
+    var creatorBannedFromCommunity: Bool
     let creatorIsModerator: Bool? // TODO: 0.18 deprecation make this field non-optional
     let creatorIsAdmin: Bool? // TODO: 0.18 deprecation make this field non-optional
     let subscribed: APISubscribedStatus
