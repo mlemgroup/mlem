@@ -502,6 +502,7 @@
 		CD55FE262B97F37A0020EE24 /* AddModView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD55FE252B97F37A0020EE24 /* AddModView.swift */; };
 		CD55FE282B9A28D00020EE24 /* SimpleUserSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD55FE272B9A28D00020EE24 /* SimpleUserSearchView.swift */; };
 		CD59E8A52A72C943005757F4 /* MarkAllAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD59E8A42A72C943005757F4 /* MarkAllAsReadRequest.swift */; };
+		CD5BB8172BADF7700027398F /* ChildSizeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5BB8162BADF7700027398F /* ChildSizeReader.swift */; };
 		CD5F76BC2B75BE700013A827 /* MarkReadBatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5F76BB2B75BE700013A827 /* MarkReadBatcher.swift */; };
 		CD6483302A38D31C00EE6CA3 /* UpvoteCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD64832F2A38D31C00EE6CA3 /* UpvoteCounterView.swift */; };
 		CD6483322A38D3A600EE6CA3 /* ScoreCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483312A38D3A600EE6CA3 /* ScoreCounterView.swift */; };
@@ -1170,6 +1171,7 @@
 		CD55FE252B97F37A0020EE24 /* AddModView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddModView.swift; sourceTree = "<group>"; };
 		CD55FE272B9A28D00020EE24 /* SimpleUserSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleUserSearchView.swift; sourceTree = "<group>"; };
 		CD59E8A42A72C943005757F4 /* MarkAllAsReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkAllAsReadRequest.swift; sourceTree = "<group>"; };
+		CD5BB8162BADF7700027398F /* ChildSizeReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildSizeReader.swift; sourceTree = "<group>"; };
 		CD5F76BB2B75BE700013A827 /* MarkReadBatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkReadBatcher.swift; sourceTree = "<group>"; };
 		CD64832F2A38D31C00EE6CA3 /* UpvoteCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpvoteCounterView.swift; sourceTree = "<group>"; };
 		CD6483312A38D3A600EE6CA3 /* ScoreCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreCounterView.swift; sourceTree = "<group>"; };
@@ -2423,6 +2425,7 @@
 		6DA61F7F2A55B831001EA633 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				CD5BB8152BADF7660027398F /* BubblePicker */,
 				6DA61F802A55B83F001EA633 /* SearchView.swift */,
 				03C897F72ABF652D005F3403 /* SearchRoot.swift */,
 				03C898002AC04EF9005F3403 /* SearchResultsView.swift */,
@@ -2430,7 +2433,6 @@
 				03C898022AC04F61005F3403 /* RecentSearchesView.swift */,
 				03EC92942AC064AE007BBE7E /* SearchHomeView.swift */,
 				036ED3BB2ABF1058009664BC /* SearchModel.swift */,
-				03EEEAF62AB8ED3C0087F8D8 /* BubblePicker.swift */,
 				030D00832AD0842900953B1D /* Results */,
 			);
 			path = Search;
@@ -2936,6 +2938,15 @@
 				032109452AA7C32F00912DFC /* Community */,
 			);
 			path = Links;
+			sourceTree = "<group>";
+		};
+		CD5BB8152BADF7660027398F /* BubblePicker */ = {
+			isa = PBXGroup;
+			children = (
+				03EEEAF62AB8ED3C0087F8D8 /* BubblePicker.swift */,
+				CD5BB8162BADF7700027398F /* ChildSizeReader.swift */,
+			);
+			path = BubblePicker;
 			sourceTree = "<group>";
 		};
 		CD5F76BA2B75B8290013A827 /* Batchers */ = {
@@ -3633,6 +3644,7 @@
 				CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */,
 				507573942A5AD59E00AA7ABD /* EquatableError.swift in Sources */,
 				CDE6A81A2A490B970062D161 /* Inbox ReplyBodyView.swift in Sources */,
+				CD5BB8172BADF7700027398F /* ChildSizeReader.swift in Sources */,
 				50811B3C2A92059C006BA3F2 /* BlockCommunityResponse+Mock.swift in Sources */,
 				CD12627A2B4759BC007549F9 /* StandardPostTracker.swift in Sources */,
 				CD391F9E2A539F1800E213B5 /* ReplyToMention.swift in Sources */,
