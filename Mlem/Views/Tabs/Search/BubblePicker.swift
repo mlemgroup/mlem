@@ -17,13 +17,13 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
     
     @Binding var selected: Value
     let tabs: [Value]
-    let dividers: [DividerPlacement]
+    let dividers: Set<DividerPlacement>
     @ViewBuilder let labelBuilder: (Value) -> any View
     
     init(
         _ tabs: [Value],
         selected: Binding<Value>,
-        withDividers: [DividerPlacement] = .init(),
+        withDividers: Set<DividerPlacement> = .init(),
         @ViewBuilder labelBuilder: @escaping (Value) -> any View
     ) {
         self._selected = selected
