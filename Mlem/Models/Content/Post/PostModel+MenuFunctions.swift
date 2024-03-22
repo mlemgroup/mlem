@@ -115,6 +115,7 @@ extension PostModel {
         isExpanded: Bool,
         community: CommunityModel,
         modToolTracker: ModToolTracker,
+        isAdmin: Bool,
         postTracker: StandardPostTracker?
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
@@ -145,6 +146,11 @@ extension PostModel {
                     await self.notifier.add(.success("\(self.post.locked ? "L" : "Unl")ocked post"))
                 }
             })
+            functions.append(MenuFunction.navigationMenuFunction(
+                text: "View Votes",
+                imageName: Icons.votes,
+                destination: .postVotes(self)
+            ))
         }
         
         if creator.userId != siteInformation.userId {

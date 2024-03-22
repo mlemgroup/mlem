@@ -32,6 +32,9 @@ enum AppRoute: Routable {
     case postSettings(PostSettingsPage)
     case licenseSettings(LicensesSettingsPage)
     
+    case postVotes(PostModel)
+    case commentVotes(HierarchicalComment)
+    
     // swiftlint:disable cyclomatic_complexity
     static func makeRoute(_ value: some Hashable) throws -> AppRoute {
         switch value {
