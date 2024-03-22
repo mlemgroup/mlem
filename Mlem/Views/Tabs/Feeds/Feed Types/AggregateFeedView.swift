@@ -150,7 +150,6 @@ struct AggregateFeedView: View {
                     ScrollToView(appeared: $scrollToTopAppeared)
                         .id(scrollToTop)
                     headerView
-                        .padding(.top, -1)
                 }
                 
                 switch selectedFeed {
