@@ -25,7 +25,8 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
     let dividers: Set<DividerPlacement>
     @ViewBuilder let labelBuilder: (Value) -> any View
     
-    @State var currentSize: Int
+    // currentTabIndex is used to drive the capsule animation; it is tracked separately from selected so that the capsule animations can be triggered independently of any animation (or lack thereof) that is desired on selected
+    @State var currentTabIndex: Int
     @State var sizes: [BubblePickerItemFrame]
     let spaceName: String = UUID().uuidString
     
@@ -38,7 +39,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
         assert(tabs.isNotEmpty, "Cannot create bubble picker with empty tabs!")
         
         self._selected = selected
-        self._currentSize = .init(wrappedValue: 0)
+        self._currentTabIndex = .init(wrappedValue: 0)
         self.tabs = tabs
         self.dividers = withDividers
         self.labelBuilder = labelBuilder
@@ -63,13 +64,20 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                                 .allowsHitTesting(false)
                                 .mask(alignment: .leading) {
                                     Capsule()
-                                        .offset(x: sizes[currentSize].offset + AppConstants.standardSpacing)
-                                        .frame(width: max(sizes[currentSize].width - AppConstants.doubleSpacing, 0), height: 30)
+                                        .offset(x: sizes[currentTabIndex].offset + AppConstants.standardSpacing)
+                                        .frame(width: max(sizes[currentTabIndex].width - AppConstants.doubleSpacing, 0), height: 30)
                                 }
                         }
                         .coordinateSpace(name: spaceName)
                 }
                 .scrollIndicators(.hidden)
+                .onChange(of: selected) { newValue in
+                    let newIndex = tabs.firstIndex(of: newValue) ?? 0
+                    withAnimation(.interactiveSpring(response: 0.2, dampingFraction: 0.8)) {
+                        currentTabIndex = newIndex
+                        scrollProxy.scrollTo(newIndex)
+                    }
+                }
             }
             
             if dividers.contains(.bottom) {
@@ -104,10 +112,6 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
         Button {
             selected = tab
             hapticManager.play(haptic: .gentleInfo, priority: .low)
-            withAnimation(.spring(response: 0.2, dampingFraction: 0.8)) {
-                currentSize = index
-                scrollProxy.scrollTo(index)
-            }
         } label: {
             bubbleButtonLabel(tab: tab)
         }
