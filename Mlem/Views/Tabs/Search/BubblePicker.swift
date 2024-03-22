@@ -43,12 +43,23 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
             
             ScrollViewReader { scrollProxy in
                 ScrollView(.horizontal) {
-                    // Use negative spacing as well as padding the HStack's children so that scrollTo leaves extra space around each tab
-                    HStack(spacing: -AppConstants.doubleSpacing) {
-                        ForEach(Array(zip(tabs.indices, tabs)), id: \.0) { index, tab in
-                            bubbleButton(index: index, tab: tab, scrollProxy: scrollProxy)
+                    ZStack {
+                        // Use negative spacing as well as padding the HStack's children so that scrollTo leaves extra space around each tab
+                        HStack(spacing: -AppConstants.doubleSpacing) {
+                            ForEach(Array(zip(tabs.indices, tabs)), id: \.0) { index, tab in
+                                bubbleButton(index: index, tab: tab, scrollProxy: scrollProxy)
+                            }
+                        }
+                        
+                        // Use negative spacing as well as padding the HStack's children so that scrollTo leaves extra space around each tab
+                        HStack(spacing: -AppConstants.doubleSpacing) {
+                            ForEach(Array(zip(tabs.indices, tabs)), id: \.0) { index, tab in
+                                darkBubbleButton(index: index, tab: tab, scrollProxy: scrollProxy)
+                            }
                         }
                     }
+//                    .compositingGroup()
+//                    .blendMode(.destinationOut)
                 }
                 .scrollIndicators(.hidden)
             }
@@ -57,6 +68,47 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                 Divider()
             }
         }
+    }
+    
+    @ViewBuilder
+    func darkBubbleButton(index: Int, tab: Value, scrollProxy: ScrollViewProxy) -> some View {
+        Button {
+            selected = tab
+            hapticManager.play(haptic: .gentleInfo, priority: .low)
+            withAnimation(.spring(response: 0.2, dampingFraction: 0.8)) {
+                currentIndex = index
+                scrollProxy.scrollTo(index)
+            }
+        } label: {
+            AnyView(labelBuilder(tab))
+                .padding(.vertical, 6)
+                .padding(.horizontal, 12)
+                .background(.blue)
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .mask {
+                    ZStack {
+                        Rectangle()
+                        
+                        if currentIndex == index {
+                            Capsule()
+                        }
+                    }
+                    .blendMode(.destinationOut)
+                }
+                //                .mask(
+//                    Group {
+//                        if currentIndex == index {
+//                            Capsule()
+//                                .opacity(0)
+//                                .matchedGeometryEffect(id: "bubbleBackground", in: animation)
+//                        }
+//                    }
+//                )
+                .padding(AppConstants.standardSpacing)
+        }
+        .buttonStyle(EmptyButtonStyle())
+        .id(index)
     }
     
     @ViewBuilder
@@ -72,21 +124,13 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
             AnyView(labelBuilder(tab))
                 .padding(.vertical, 6)
                 .padding(.horizontal, 12)
-                .foregroundStyle(currentIndex == index ? .white : .primary)
+                .background(Color.systemBackground)
                 .font(.subheadline)
                 .fontWeight(.semibold)
-                .background(
-                    Group {
-                        if currentIndex == index {
-                            Capsule()
-                                .fill(.blue)
-                                .matchedGeometryEffect(id: "bubbleBackground", in: animation)
-                        }
-                    }
-                )
                 .padding(AppConstants.standardSpacing)
                 .contentShape(Rectangle())
         }
+        // .opacity(0.9)
         .buttonStyle(EmptyButtonStyle())
         .id(index)
     }
