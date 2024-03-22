@@ -15,7 +15,10 @@ enum DividerPlacement {
 struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
     @Dependency(\.hapticManager) var hapticManager
     
+    @Namespace private var animation
+    
     @Binding var selected: Value
+    @State var currentIndex: Int = 0
     let tabs: [Value]
     let dividers: Set<DividerPlacement>
     @ViewBuilder let labelBuilder: (Value) -> any View
@@ -61,27 +64,27 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
         Button {
             selected = tab
             hapticManager.play(haptic: .gentleInfo, priority: .low)
-            withAnimation {
+            withAnimation(.spring(response: 0.2, dampingFraction: 0.8)) {
+                currentIndex = index
                 scrollProxy.scrollTo(index)
             }
         } label: {
             AnyView(labelBuilder(tab))
                 .padding(.vertical, 6)
                 .padding(.horizontal, 12)
-                .foregroundStyle(selected == tab ? .white : .primary)
+                .foregroundStyle(currentIndex == index ? .white : .primary)
                 .font(.subheadline)
                 .fontWeight(.semibold)
                 .background(
                     Group {
-                        if selected == tab {
+                        if currentIndex == index {
                             Capsule()
                                 .fill(.blue)
-                                .transition(.scale.combined(with: .opacity))
+                                .matchedGeometryEffect(id: "bubbleBackground", in: animation)
                         }
                     }
                 )
                 .padding(AppConstants.standardSpacing)
-                .animation(.spring(response: 0.15, dampingFraction: 0.7), value: selected)
                 .contentShape(Rectangle())
         }
         .buttonStyle(EmptyButtonStyle())
