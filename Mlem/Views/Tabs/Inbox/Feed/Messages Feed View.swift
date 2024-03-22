@@ -15,10 +15,7 @@ struct MessagesFeedView: View {
         if messageTracker.loadingState == .done, messageTracker.items.isEmpty {
             noMessagesView()
         } else {
-            LazyVStack(spacing: 0) {
-                EmptyView().id("top")
-                messagesListView()
-            }
+            messagesListView()
         }
     }
     

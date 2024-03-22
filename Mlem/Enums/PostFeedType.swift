@@ -5,15 +5,17 @@
 //  Created by Eric Andrews on 2024-01-08.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
 
-enum FeedType {
+// maybe a slight misnomer because .saved can include comments?
+enum PostFeedType: FeedType {
     case all, local, subscribed, moderated, saved
     case community(CommunityModel)
     
-    static var allShortcutFeedCases: [FeedType] = [.all, .local, .subscribed, .saved]
-    static var allAggregateFeedCases: [FeedType] = [.all, .local, .subscribed, .moderated, .saved]
+    static var allShortcutFeedCases: [PostFeedType] = [.all, .local, .subscribed, .saved]
+    static var allAggregateFeedCases: [PostFeedType] = [.all, .local, .subscribed, .moderated, .saved]
     
     var label: String {
         switch self {
@@ -23,6 +25,25 @@ enum FeedType {
         case .moderated: "Moderated"
         case .saved: "Saved"
         case let .community(communityModel): communityModel.name
+        }
+    }
+    
+    var subtitle: String {
+        @Dependency(\.siteInformation) var siteInformation
+        switch self {
+        case .all:
+            return "Posts from all federated instances"
+        case .local:
+            return "Posts from \(siteInformation.instance?.url.host() ?? "your instance's") communities"
+        case .subscribed:
+            return "Posts from all subscribed communities"
+        case .moderated:
+            return "Posts from communities you moderate"
+        case .saved:
+            return "Your saved posts and comments"
+        default:
+            assertionFailure("We shouldn't be here...")
+            return ""
         }
     }
     
@@ -50,7 +71,7 @@ enum FeedType {
         }
     }
     
-    static func fromShortcutString(shortcut: String?) -> FeedType? {
+    static func fromShortcutString(shortcut: String?) -> PostFeedType? {
         switch shortcut {
         case "All":
             return .all
@@ -75,7 +96,7 @@ enum FeedType {
     }
 }
 
-extension FeedType: Hashable, Identifiable {
+extension PostFeedType: Hashable, Identifiable {
     func hash(into hasher: inout Hasher) {
         switch self {
         case .all:
@@ -97,7 +118,7 @@ extension FeedType: Hashable, Identifiable {
     var id: Int { hashValue }
 }
 
-extension FeedType: AssociatedIcon {
+extension PostFeedType: AssociatedIcon {
     var iconName: String {
         switch self {
         case .all: Icons.federatedFeed
@@ -150,7 +171,7 @@ extension FeedType: AssociatedIcon {
     }
 }
 
-extension FeedType: AssociatedColor {
+extension PostFeedType: AssociatedColor {
     var color: Color? {
         switch self {
         case .all: .blue

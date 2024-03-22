@@ -18,7 +18,7 @@ struct FeedsView: View {
     
     @EnvironmentObject var appState: AppState
     
-    @State private var selectedFeed: FeedType?
+    @State private var selectedFeed: PostFeedType?
     @State var appeared: Bool = false // tracks whether this is the view's first appearance
     
     @StateObject private var communityListModel: CommunityListModel = .init()
@@ -42,7 +42,7 @@ struct FeedsView: View {
                 }
             }
             .onChange(of: scenePhase) { newPhase in
-                if newPhase == .active, let shortcutItem = FeedType.fromShortcutString(shortcut: shortcutItemToProcess?.type) {
+                if newPhase == .active, let shortcutItem = PostFeedType.fromShortcutString(shortcut: shortcutItemToProcess?.type) {
                     selectedFeed = shortcutItem
                 }
             }
@@ -66,7 +66,7 @@ struct FeedsView: View {
                         ForEach(communityListModel.visibleSections) { section in
                             Section(header: communitySectionHeaderView(for: section)) {
                                 ForEach(communityListModel.communities(for: section)) { community in
-                                    NavigationLink(value: FeedType.community(.init(from: community, subscribed: true))) {
+                                    NavigationLink(value: PostFeedType.community(.init(from: community, subscribed: true))) {
                                         CommunityFeedRowView(
                                             community: community,
                                             subscribed: communityListModel.isSubscribed(to: community),

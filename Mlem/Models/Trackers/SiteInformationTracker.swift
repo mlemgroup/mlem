@@ -46,7 +46,7 @@ class SiteInformationTracker: ObservableObject {
         myUser?.isAdmin ?? false
     }
     
-    var feeds: [FeedType] {
+    var feeds: [PostFeedType] {
         if moderatorFeedAvailable {
             [.all, .local, .subscribed, .moderated, .saved]
         } else {
