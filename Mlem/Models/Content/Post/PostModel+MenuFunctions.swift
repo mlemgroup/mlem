@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+// swiftlint:disable file_length
 extension PostModel {
     // swiftlint:disable function_body_length
     /// Produces menu functions for this post
@@ -90,7 +90,6 @@ extension PostModel {
             functions.append(
                 contentsOf: modMenuFunctions(
                     isExpanded: isExpanded,
-                    postTracker: postTracker,
                     community: community,
                     modToolTracker: modToolTracker,
                     postTracker: postTracker,
@@ -116,7 +115,6 @@ extension PostModel {
 
     private func modMenuFunctions(
         isExpanded: Bool,
-        postTracker: StandardPostTracker?,
         community: CommunityModel,
         modToolTracker: ModToolTracker,
         postTracker: StandardPostTracker?,
@@ -181,7 +179,7 @@ extension PostModel {
                     falseImageName: (siteInformation.isAdmin && !creator.banned) ? Icons.instanceBan : Icons.communityBan,
                     isDestructive: .whenFalse
                 ) {
-                    modToolTracker.banUserFromCommunity(
+                    modToolTracker.banUser(
                         self.creator,
                         from: community,
                         bannedFromCommunity: self.creatorBannedFromCommunity,
@@ -201,7 +199,7 @@ extension PostModel {
                     falseImageName: Icons.instanceBan,
                     isDestructive: .whenFalse
                 ) {
-                    modToolTracker.banUserFromCommunity(
+                    modToolTracker.banUser(
                         self.creator,
                         from: community,
                         bannedFromCommunity: self.creatorBannedFromCommunity,
@@ -403,3 +401,5 @@ extension PostModel {
         }
     #endif
 }
+
+// swiftlint:enable file_length

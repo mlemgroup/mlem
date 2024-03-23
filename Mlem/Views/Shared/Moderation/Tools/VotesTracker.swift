@@ -1,5 +1,5 @@
 //
-//  VotesListModel.swift
+//  VotesTracker.swift
 //  Mlem
 //
 //  Created by Sjmarf on 23/03/2024.
@@ -12,8 +12,12 @@ struct VoteModel: Identifiable {
     var user: UserModel
     let vote: ScoringOperation
     
+    // This is only used for state-faking, and isn't truthful for already existing bans.
+    // I opened an issue for proper support here https://github.com/LemmyNet/lemmy/issues/4561
+    var creatorBannedFromCommunity: Bool = false
+    
     // If I try to access user.userId in a computed property, I get a "Publishing changes from background
-    // threads is not allowed" error. Doing this instead, hopefully we can fix in 2.0 - sjmarf
+    // threads is not allowed" error. Doing this instead, hopefully I can fix this in 2.0 - sjmarf
     let id: Int
     
     init(item: APIVoteView) {
@@ -23,7 +27,7 @@ struct VoteModel: Identifiable {
     }
 }
 
-class VotesListModel: ObservableObject {
+class VotesTracker: ObservableObject {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     

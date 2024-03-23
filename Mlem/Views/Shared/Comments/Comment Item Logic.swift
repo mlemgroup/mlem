@@ -326,7 +326,7 @@ extension CommentItem {
                     falseImageName: (siteInformation.isAdmin && !creatorBannedFromInstance) ? Icons.instanceBan : Icons.communityBan,
                     isDestructive: .whenFalse
                 ) {
-                    modToolTracker.banUserFromCommunity(
+                    modToolTracker.banUser(
                         .init(from: hierarchicalComment.commentView.creator),
                         from: .init(from: hierarchicalComment.commentView.community),
                         bannedFromCommunity: creatorBannedFromCommunity,
@@ -346,7 +346,7 @@ extension CommentItem {
                     falseImageName: Icons.instanceBan,
                     isDestructive: .whenFalse
                 ) {
-                    modToolTracker.banUserFromCommunity(
+                    modToolTracker.banUser(
                         .init(from: hierarchicalComment.commentView.creator),
                         from: .init(from: hierarchicalComment.commentView.community),
                         bannedFromCommunity: creatorBannedFromCommunity,

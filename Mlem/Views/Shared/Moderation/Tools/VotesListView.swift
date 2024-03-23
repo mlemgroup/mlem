@@ -9,16 +9,18 @@ import Dependencies
 import SwiftUI
 
 struct VotesListView: View {
+    @Dependency(\.siteInformation) var siteInformation
+    
     @EnvironmentObject var modToolTracker: ModToolTracker
     
-    @StateObject var votesListModel: VotesListModel
+    @StateObject var votesTracker: VotesTracker
     
     @State private var menuFunctionPopup: MenuFunctionPopup?
     let content: any ContentIdentifiable
     
     init(content: any ContentIdentifiable) {
         self.content = content
-        self._votesListModel = .init(wrappedValue: .init(content: content))
+        self._votesTracker = .init(wrappedValue: .init(content: content))
     }
     
     var communityContext: CommunityModel? {
@@ -33,17 +35,17 @@ struct VotesListView: View {
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
-                if votesListModel.votes.isEmpty {
+                if votesTracker.votes.isEmpty {
                     LoadingView(whatIsLoading: .votes)
                 } else {
                     Divider()
-                    ForEach(votesListModel.votes, id: \.id) { item in
+                    ForEach(votesTracker.votes, id: \.id) { item in
                         NavigationLink(.userProfile(item.user, communityContext: communityContext)) {
                             HStack {
                                 UserLinkView(
                                     user: item.user,
                                     serverInstanceLocation: .bottom,
-                                    bannedFromCommunity: false
+                                    bannedFromCommunity: item.creatorBannedFromCommunity
                                 )
                                 Spacer()
                                 Image(systemName: item.vote.iconNameFill)
@@ -56,15 +58,13 @@ struct VotesListView: View {
                         }
                         .buttonStyle(.plain)
                         .contextMenu {
-                            ForEach(
-                                item.user.menuFunctions(votesListModel.updateItem, modToolTracker: modToolTracker)
-                            ) { item in
+                            ForEach(menuFunctions(for: item)) { item in
                                 MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
                             }
                         }
                         .onAppear {
-                            if item.id == votesListModel.votes.last?.id {
-                                votesListModel.loadNextPage()
+                            if item.id == votesTracker.votes.last?.id {
+                                votesTracker.loadNextPage()
                             }
                         }
                         Divider()
@@ -76,9 +76,53 @@ struct VotesListView: View {
         .fancyTabScrollCompatible()
         .navigationTitle("Votes")
         .onAppear {
-            if votesListModel.votes.isEmpty {
-                votesListModel.loadNextPage()
+            if votesTracker.votes.isEmpty {
+                votesTracker.loadNextPage()
             }
         }
+    }
+    
+    func menuFunctions(for item: VoteModel) -> [MenuFunction] {
+        var functions = [MenuFunction]()
+        
+        if !(siteInformation.isAdmin && item.creatorBannedFromCommunity && item.user.banned) {
+            functions.append(MenuFunction.toggleableMenuFunction(
+                toggle: item.creatorBannedFromCommunity,
+                trueText: "Unban",
+                trueImageName: Icons.communityUnban,
+                falseText: "Ban",
+                falseImageName: item.user.banned ? Icons.communityBan : Icons.instanceBan,
+                isDestructive: .whenFalse
+            ) {
+                modToolTracker.banUser(
+                    item.user,
+                    from: communityContext,
+                    bannedFromCommunity: item.creatorBannedFromCommunity,
+                    shouldBan: !item.creatorBannedFromCommunity,
+                    votesTracker: votesTracker
+                )
+            })
+        }
+    
+        if siteInformation.isAdmin, item.user.banned || item.creatorBannedFromCommunity {
+            functions.append(MenuFunction.toggleableMenuFunction(
+                toggle: item.user.banned,
+                trueText: "Unban",
+                trueImageName: Icons.instanceUnban,
+                falseText: "Ban",
+                falseImageName: Icons.instanceBan,
+                isDestructive: .whenFalse
+            ) {
+                modToolTracker.banUser(
+                    item.user,
+                    from: communityContext,
+                    bannedFromCommunity: item.creatorBannedFromCommunity,
+                    shouldBan: !item.user.banned,
+                    votesTracker: votesTracker
+                )
+            })
+        }
+        
+        return functions
     }
 }

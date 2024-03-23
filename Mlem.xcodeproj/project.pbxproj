@@ -61,12 +61,12 @@
 		0394398F2A98EB2300463032 /* APIComment+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0394398E2A98EB2300463032 /* APIComment+Mock.swift */; };
 		039439912A98FA6100463032 /* UserFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039439902A98FA6100463032 /* UserFeedView.swift */; };
 		039439932A99098900463032 /* InternetConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039439922A99098900463032 /* InternetConnectionManager.swift */; };
-		039C59AD2BADFF6200C18765 /* ListPostLikesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C59AC2BADFF6200C18765 /* ListPostLikesRequest.swift */; };
-		039C59AF2BAE029300C18765 /* VotesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C59AE2BAE029300C18765 /* VotesListView.swift */; };
-		039C59B12BAF272E00C18765 /* VotesListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C59B02BAF272E00C18765 /* VotesListModel.swift */; };
 		039C59A72BADA04100C18765 /* RemoveCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C59A62BADA04100C18765 /* RemoveCommentView.swift */; };
 		039C59A92BADA5DA00C18765 /* PurgeCommentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C59A82BADA5DA00C18765 /* PurgeCommentRequest.swift */; };
 		039C59AB2BADC85400C18765 /* RemoveCommentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C59AA2BADC85400C18765 /* RemoveCommentRequest.swift */; };
+		039C59AD2BADFF6200C18765 /* ListPostLikesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C59AC2BADFF6200C18765 /* ListPostLikesRequest.swift */; };
+		039C59AF2BAE029300C18765 /* VotesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C59AE2BAE029300C18765 /* VotesListView.swift */; };
+		039C59B12BAF272E00C18765 /* VotesTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C59B02BAF272E00C18765 /* VotesTracker.swift */; };
 		039C8DB72B35A32D0096BAAF /* AccountSwitcherSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C8DB62B35A32D0096BAAF /* AccountSwitcherSettingsView.swift */; };
 		039C8DB92B35A81C0096BAAF /* AccountIconStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C8DB82B35A81C0096BAAF /* AccountIconStack.swift */; };
 		039C8DBB2B35B2EB0096BAAF /* AccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C8DBA2B35B2EB0096BAAF /* AccountListView.swift */; };
@@ -737,12 +737,12 @@
 		0394398E2A98EB2300463032 /* APIComment+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIComment+Mock.swift"; sourceTree = "<group>"; };
 		039439902A98FA6100463032 /* UserFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFeedView.swift; sourceTree = "<group>"; };
 		039439922A99098900463032 /* InternetConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetConnectionManager.swift; sourceTree = "<group>"; };
-		039C59AC2BADFF6200C18765 /* ListPostLikesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPostLikesRequest.swift; sourceTree = "<group>"; };
-		039C59AE2BAE029300C18765 /* VotesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotesListView.swift; sourceTree = "<group>"; };
-		039C59B02BAF272E00C18765 /* VotesListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotesListModel.swift; sourceTree = "<group>"; };
 		039C59A62BADA04100C18765 /* RemoveCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveCommentView.swift; sourceTree = "<group>"; };
 		039C59A82BADA5DA00C18765 /* PurgeCommentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurgeCommentRequest.swift; sourceTree = "<group>"; };
 		039C59AA2BADC85400C18765 /* RemoveCommentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveCommentRequest.swift; sourceTree = "<group>"; };
+		039C59AC2BADFF6200C18765 /* ListPostLikesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPostLikesRequest.swift; sourceTree = "<group>"; };
+		039C59AE2BAE029300C18765 /* VotesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotesListView.swift; sourceTree = "<group>"; };
+		039C59B02BAF272E00C18765 /* VotesTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotesTracker.swift; sourceTree = "<group>"; };
 		039C8DB62B35A32D0096BAAF /* AccountSwitcherSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSwitcherSettingsView.swift; sourceTree = "<group>"; };
 		039C8DB82B35A81C0096BAAF /* AccountIconStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountIconStack.swift; sourceTree = "<group>"; };
 		039C8DBA2B35B2EB0096BAAF /* AccountListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListView.swift; sourceTree = "<group>"; };
@@ -2937,7 +2937,7 @@
 				CDA1E84C2B93FC7C007953EF /* BanUserView.swift */,
 				03F0DF532B9D129D0018F239 /* BanUserView+Logic.swift */,
 				039C59AE2BAE029300C18765 /* VotesListView.swift */,
-				039C59B02BAF272E00C18765 /* VotesListModel.swift */,
+				039C59B02BAF272E00C18765 /* VotesTracker.swift */,
 				CD55FE252B97F37A0020EE24 /* AddModView.swift */,
 				CD55FE272B9A28D00020EE24 /* SimpleUserSearchView.swift */,
 				CD268C102B9A3CB30074DBEE /* SimpleCommunitySearchView.swift */,
@@ -3546,7 +3546,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CDA77C322B6BD74400B8B8B4 /* CommunityListSection.swift in Sources */,
-				039C59B12BAF272E00C18765 /* VotesListModel.swift in Sources */,
+				039C59B12BAF272E00C18765 /* VotesTracker.swift in Sources */,
 				CD16A0622B66F7FC000312D2 /* UserContentModel.swift in Sources */,
 				CDDB2EDE2A85C2F1001D4B16 /* HapticPriority.swift in Sources */,
 				CD6F29AA2A78003A00F20B6B /* PostRepository.swift in Sources */,

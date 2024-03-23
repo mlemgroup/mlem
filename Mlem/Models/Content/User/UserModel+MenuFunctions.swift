@@ -32,7 +32,7 @@ extension UserModel {
             imageName: Icons.instanceBan,
             isDestructive: true,
             callback: {
-                modToolTracker.banUserFromInstance(self, shouldBan: !banned)
+                modToolTracker.banUser(self, shouldBan: !banned)
             }
         )
     }
