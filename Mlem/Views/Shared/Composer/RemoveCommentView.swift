@@ -102,10 +102,11 @@ struct RemoveCommentView: View {
                     }
                 }
             } else {
-                var response: CommentResponse? = nil
+                let response: CommentResponse?
                 do {
                     response = try await apiClient.removeComment(id: comment.commentView.id, shouldRemove: shouldRemove, reason: reason)
                 } catch {
+                    response = nil
                     errorHandler.handle(error)
                 }
                 
