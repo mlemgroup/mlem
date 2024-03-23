@@ -102,18 +102,17 @@ struct RemoveCommentView: View {
                     }
                 }
             } else {
+                var response: CommentResponse? = nil
                 do {
-                    let response = try await apiClient.removeComment(id: comment.commentView.id, shouldRemove: shouldRemove, reason: reason)
-                    DispatchQueue.main.async {
-                        comment.commentView.comment.removed = response.commentView.comment.removed
-                    }
+                    response = try await apiClient.removeComment(id: comment.commentView.id, shouldRemove: shouldRemove, reason: reason)
                 } catch {
                     errorHandler.handle(error)
                 }
                 
-                if comment.commentView.comment.removed == shouldRemove {
+                if let response, response.commentView.comment.removed == shouldRemove {
                     await notifier.add(.success("\(verb)d comment"))
                     DispatchQueue.main.async {
+                        comment.commentView.comment.removed = shouldRemove
                         dismiss()
                     }
                 } else {

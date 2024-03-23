@@ -17,6 +17,7 @@ struct PurgeCommunityRequest: APIPostRequest {
     struct Body: Codable {
         let community_id: Int
         let reason: String?
+        let auth: String
     }
 
     init(
@@ -27,7 +28,8 @@ struct PurgeCommunityRequest: APIPostRequest {
         self.instanceURL = try session.instanceUrl
         self.body = .init(
             community_id: communityId,
-            reason: reason
+            reason: reason,
+            auth: try session.token
       )
     }
 }
