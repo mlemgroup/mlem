@@ -50,7 +50,7 @@ class StandardPostTracker: StandardTracker<PostModel> {
     // TODO: ERIC keyword filters could be more elegant
     var filteredKeywords: [String]
     
-    var feedType: FeedType
+    var feedType: PostFeedType
     private(set) var postSortType: PostSortType
     private var filters: [PostFilter: Int]
     
@@ -64,7 +64,7 @@ class StandardPostTracker: StandardTracker<PostModel> {
         maxConcurrentRequestCount: 40
     )
     
-    init(internetSpeed: InternetSpeed, sortType: PostSortType, showReadPosts: Bool, feedType: FeedType) {
+    init(internetSpeed: InternetSpeed, sortType: PostSortType, showReadPosts: Bool, feedType: PostFeedType) {
         @Dependency(\.persistenceRepository) var persistenceRepository
         
         assert(feedType != .saved, "Cannot create StandardPostTracker for saved feed!")
@@ -136,7 +136,7 @@ class StandardPostTracker: StandardTracker<PostModel> {
     }
     
     @MainActor
-    func changeFeedType(to newFeedType: FeedType) async {
+    func changeFeedType(to newFeedType: PostFeedType) async {
         // don't do anything if feed type not changed
         guard feedType != newFeedType else {
             return

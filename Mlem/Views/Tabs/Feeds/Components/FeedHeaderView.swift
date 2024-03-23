@@ -8,27 +8,23 @@
 import Foundation
 import SwiftUI
 
+protocol FeedType {
+    var label: String { get }
+    var subtitle: String { get }
+    var color: Color? { get }
+    var iconNameFill: String { get }
+    var iconScaleFactor: CGFloat { get }
+}
+
 struct FeedHeaderView: View {
     @EnvironmentObject var appState: AppState
     
-    let feedType: FeedType
+    let feedType: any FeedType
+    let showDropdownIndicator: Bool
     
-    var subtitle: String {
-        switch feedType {
-        case .all:
-            return "Posts from all federated instances"
-        case .local:
-            return "Posts from \(appState.currentActiveAccount?.instanceLink.host() ?? "your instance's") communities"
-        case .subscribed:
-            return "Posts from all subscribed communities"
-        case .moderated:
-            return "Posts from communities you moderate"
-        case .saved:
-            return "Your saved posts and comments"
-        default:
-            assertionFailure("We shouldn't be here...")
-            return ""
-        }
+    init(feedType: any FeedType, showDropdownIndicator: Bool = true) {
+        self.feedType = feedType
+        self.showDropdownIndicator = showDropdownIndicator
     }
     
     var body: some View {
@@ -43,12 +39,15 @@ struct FeedHeaderView: View {
                             .lineLimit(1)
                             .minimumScaleFactor(0.01)
                             .fontWeight(.semibold)
-                        Image(systemName: Icons.dropdown)
-                            .foregroundStyle(.secondary)
+                        
+                        if showDropdownIndicator {
+                            Image(systemName: Icons.dropdown)
+                                .foregroundStyle(.secondary)
+                        }
                     }
                     .font(.title2)
                         
-                    Text(subtitle)
+                    Text(feedType.subtitle)
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
@@ -56,7 +55,7 @@ struct FeedHeaderView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.vertical, 5)
-            .padding(.bottom, 3)
+            .padding(.bottom, 5)
             
             Divider()
         }

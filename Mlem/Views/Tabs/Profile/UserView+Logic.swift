@@ -77,7 +77,9 @@ extension UserView {
             privateCommentTracker.comments = newComments
             await privatePostTracker.reset(with: newPosts)
             
-            isLoadingContent = false
+            withAnimation(.easeOut(duration: 0.2)) {
+                isLoadingContent = false
+            }
             
         } catch {
             errorHandler.handle(

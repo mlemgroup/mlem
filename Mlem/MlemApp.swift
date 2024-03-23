@@ -73,7 +73,7 @@ struct MlemApp: App {
     private func setupAppShortcuts() {
         guard accountsTracker.savedAccounts.first != nil else { return }
         
-        UIApplication.shared.shortcutItems = FeedType.allShortcutFeedCases.map { feedType in
+        UIApplication.shared.shortcutItems = PostFeedType.allShortcutFeedCases.map { feedType in
             let icon = UIApplicationShortcutIcon(systemImageName: feedType.iconName)
             return UIApplicationShortcutItem(
                 type: feedType.toShortcutString,

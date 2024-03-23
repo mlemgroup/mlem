@@ -190,8 +190,8 @@ struct CommunityFeedView: View {
     @ViewBuilder
     var headerView: some View {
         Group {
-            VStack(spacing: 5) {
-                HStack(alignment: .center, spacing: 10) {
+            VStack(spacing: AppConstants.standardSpacing) {
+                HStack(alignment: .center, spacing: AppConstants.standardSpacing) {
                     if shouldShowCommunityIcons {
                         AvatarView(community: communityModel, avatarSize: 44, iconResolution: .unrestricted)
                     }
@@ -217,13 +217,11 @@ struct CommunityFeedView: View {
                     subscribeButton
                 }
                 .padding(.horizontal, AppConstants.standardSpacing)
-                .padding(.bottom, 3)
-                Divider()
-                BubblePicker(availableTabs, selected: $selectedTab) {
+                
+                BubblePicker(availableTabs, selected: $selectedTab, withDividers: [.top, .bottom]) {
                     Text($0.rawValue.capitalized)
                 }
             }
-            Divider()
         }
     }
     

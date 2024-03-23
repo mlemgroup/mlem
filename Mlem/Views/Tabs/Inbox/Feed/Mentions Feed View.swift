@@ -15,10 +15,7 @@ struct MentionsFeedView: View {
         if mentionTracker.loadingState == .done, mentionTracker.items.isEmpty {
             noMentionsView()
         } else {
-            LazyVStack(spacing: 0) {
-                EmptyView().id("top")
-                mentionsListView()
-            }
+            mentionsListView()
         }
     }
     
