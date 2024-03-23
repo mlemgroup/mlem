@@ -56,7 +56,6 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                 ScrollView(.horizontal) {
                     buttonStack(scrollProxy: scrollProxy)
                         .foregroundStyle(.primary)
-                        .background(Color.systemBackground)
                         .overlay {
                             buttonStack()
                                 .foregroundStyle(.white)
