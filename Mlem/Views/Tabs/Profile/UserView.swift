@@ -124,13 +124,10 @@ struct UserView: View {
                 
                 flairs
                 
-                Group {
-                    bio
-                        .padding(.bottom, AppConstants.halfSpacing)
-                    
-                    userContent
-                }
-                .animation(.easeOut(duration: 0.2), value: isLoadingContent)
+                bio
+                    .padding(.bottom, AppConstants.halfSpacing)
+                
+                userContent
             }
         }
     }
