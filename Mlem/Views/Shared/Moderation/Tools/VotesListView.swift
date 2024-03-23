@@ -9,30 +9,65 @@ import Dependencies
 import SwiftUI
 
 struct VotesListView: View {
-    @Dependency(\.apiClient) var apiClient
-    @Dependency(\.errorHandler) var errorHandler
-        
-    @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+    @EnvironmentObject var modToolTracker: ModToolTracker
     
+    @StateObject var votesListModel: VotesListModel
+    
+    @State private var menuFunctionPopup: MenuFunctionPopup?
     let content: any ContentIdentifiable
-    @State var votes: [APIVoteView] = .init()
-    @State var isLoading: Bool = false
+    
+    init(content: any ContentIdentifiable) {
+        self.content = content
+        self._votesListModel = .init(wrappedValue: .init(content: content))
+    }
+    
+    var communityContext: CommunityModel? {
+        if let post = content as? PostModel {
+            return post.community
+        } else if let comment = content as? HierarchicalComment {
+            return CommunityModel(from: comment.commentView.community)
+        }
+        return nil
+    }
     
     var body: some View {
         ScrollView {
-            LazyVStack {
-                if votes.isEmpty {
+            LazyVStack(spacing: 0) {
+                if votesListModel.votes.isEmpty {
                     LoadingView(whatIsLoading: .votes)
                 } else {
-                    ForEach(votes, id: \.creator.id) { item in
-                        HStack {
-                            Text(item.creator.name)
+                    Divider()
+                    ForEach(votesListModel.votes, id: \.id) { item in
+                        NavigationLink(.userProfile(item.user, communityContext: communityContext)) {
+                            HStack {
+                                UserLinkView(
+                                    user: item.user,
+                                    serverInstanceLocation: .bottom,
+                                    bannedFromCommunity: false
+                                )
+                                Spacer()
+                                Image(systemName: item.vote.iconNameFill)
+                                    .foregroundStyle(item.vote.color ?? .primary)
+                                    .imageScale(.large)
+                            }
+                            .padding(.horizontal, AppConstants.standardSpacing)
+                            .padding(.vertical, 8)
+                            .contentShape(.rect)
                         }
-                        .onAppear {
-                            if item.creator == votes.last?.creator {
-                                loadNextPage()
+                        .buttonStyle(.plain)
+                        .contextMenu {
+                            ForEach(
+                                item.user.menuFunctions(votesListModel.updateItem, modToolTracker: modToolTracker)
+                            ) { item in
+                                MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
                             }
                         }
+                        .onAppear {
+                            if item.id == votesListModel.votes.last?.id {
+                                votesListModel.loadNextPage()
+                            }
+                        }
+                        Divider()
                     }
                 }
                 Spacer().frame(height: 50)
@@ -41,28 +76,8 @@ struct VotesListView: View {
         .fancyTabScrollCompatible()
         .navigationTitle("Votes")
         .onAppear {
-            if votes.isEmpty {
-                loadNextPage()
-            }
-        }
-    }
-    
-    func loadNextPage() {
-        if !isLoading {
-            isLoading = true
-            Task {
-                let page = 1 + votes.count % internetSpeed.pageSize
-                do {
-                    let response = try await apiClient.getPostLikes(
-                        id: content.uid.contentId,
-                        page: page,
-                        limit: internetSpeed.pageSize
-                    )
-                    votes.append(contentsOf: response.postLikes)
-                } catch {
-                    errorHandler.handle(error)
-                }
-                isLoading = false
+            if votesListModel.votes.isEmpty {
+                votesListModel.loadNextPage()
             }
         }
     }

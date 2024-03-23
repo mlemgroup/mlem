@@ -89,9 +89,9 @@ extension PostModel {
             functions.append(
                 contentsOf: modMenuFunctions(
                     isExpanded: isExpanded,
+                    postTracker: postTracker,
                     community: community,
-                    modToolTracker: modToolTracker,
-                    postTracker: postTracker
+                    modToolTracker: modToolTracker
                 )
             )
         }
@@ -113,10 +113,9 @@ extension PostModel {
 
     private func modMenuFunctions(
         isExpanded: Bool,
+        postTracker: StandardPostTracker?,
         community: CommunityModel,
-        modToolTracker: ModToolTracker,
-        isAdmin: Bool,
-        postTracker: StandardPostTracker?
+        modToolTracker: ModToolTracker
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         
@@ -146,11 +145,14 @@ extension PostModel {
                     await self.notifier.add(.success("\(self.post.locked ? "L" : "Unl")ocked post"))
                 }
             })
-            functions.append(MenuFunction.navigationMenuFunction(
-                text: "View Votes",
-                imageName: Icons.votes,
-                destination: .postVotes(self)
-            ))
+            // TODO: 0.19 deprecation
+            if siteInformation.isAdmin || ((siteInformation.version ?? .infinity) > .init("0.19.3")) {
+                functions.append(MenuFunction.navigationMenuFunction(
+                    text: "View Votes",
+                    imageName: Icons.votes,
+                    destination: .postVotes(self)
+                ))
+            }
         }
         
         if creator.userId != siteInformation.userId {

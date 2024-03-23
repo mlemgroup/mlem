@@ -32,7 +32,7 @@ struct ListPostLikesRequest: APIGetRequest {
 
 struct APIVoteView: Decodable {
     let creator: APIPerson
-    let score: Int
+    let score: ScoringOperation
 }
 
 struct APIListPostLikesResponse: Decodable {
