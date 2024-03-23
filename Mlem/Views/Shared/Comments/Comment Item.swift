@@ -56,6 +56,7 @@ struct CommentItem: View {
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
+    @EnvironmentObject var modToolTracker: ModToolTracker
 
     // MARK: Constants
 
@@ -128,6 +129,8 @@ struct CommentItem: View {
                 if hierarchicalComment.isParentCollapsed, hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
                     EmptyView()
                 } else if hierarchicalComment.isParentCollapsed, !hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
+                    EmptyView()
+                } else if hierarchicalComment.purged {
                     EmptyView()
                 } else {
                     Group {

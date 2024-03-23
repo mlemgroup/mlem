@@ -21,6 +21,7 @@ extension PostModel {
         editorTracker: EditorTracker,
         showSelectText: Bool = true,
         postTracker: StandardPostTracker?,
+        commentTracker: CommentTracker?,
         community: CommunityModel?,
         modToolTracker: ModToolTracker?
     ) -> [MenuFunction] {
@@ -91,7 +92,9 @@ extension PostModel {
                     isExpanded: isExpanded,
                     postTracker: postTracker,
                     community: community,
-                    modToolTracker: modToolTracker
+                    modToolTracker: modToolTracker,
+                    postTracker: postTracker,
+                    commentTracker: commentTracker
                 )
             )
         }
@@ -115,7 +118,9 @@ extension PostModel {
         isExpanded: Bool,
         postTracker: StandardPostTracker?,
         community: CommunityModel,
-        modToolTracker: ModToolTracker
+        modToolTracker: ModToolTracker,
+        postTracker: StandardPostTracker?,
+        commentTracker: CommentTracker?
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         
@@ -181,7 +186,8 @@ extension PostModel {
                         from: community,
                         bannedFromCommunity: self.creatorBannedFromCommunity,
                         shouldBan: !self.creatorBannedFromCommunity,
-                        postTracker: postTracker
+                        postTracker: postTracker,
+                        commentTracker: commentTracker
                     )
                 })
             }
@@ -200,7 +206,8 @@ extension PostModel {
                         from: community,
                         bannedFromCommunity: self.creatorBannedFromCommunity,
                         shouldBan: !self.creator.banned,
-                        postTracker: postTracker
+                        postTracker: postTracker,
+                        commentTracker: commentTracker
                     )
                 })
             }

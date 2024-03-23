@@ -1,14 +1,14 @@
 //
-//  RemovePostView.swift
+//  RemoveCommentView.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-27.
+//  Created by Sam Marfleet on 22/03/2024.
 //
 
 import Dependencies
 import SwiftUI
 
-struct RemovePostView: View {
+struct RemoveCommentView: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.notifier) var notifier
     @Dependency(\.errorHandler) var errorHandler
@@ -21,7 +21,7 @@ struct RemovePostView: View {
     @State var isWaiting: Bool = false
     @State var shouldPurge: Bool = false
     
-    let post: PostModel
+    let comment: HierarchicalComment
     let shouldRemove: Bool
     
     var verb: String { shouldRemove ? "Remove" : "Restore" }
@@ -56,7 +56,7 @@ struct RemovePostView: View {
             .allowsHitTesting(!isWaiting)
             .opacity(isWaiting ? 0.5 : 1)
             .interactiveDismissDisabled(isWaiting)
-            .navigationTitle("\(verb) Post")
+            .navigationTitle("\(verb) Comment")
             .navigationBarTitleDisplayMode(.inline)
     }
     
@@ -69,7 +69,7 @@ struct RemovePostView: View {
                         .tint(.red)
                 } footer: {
                     // swiftlint:disable:next line_length
-                    Text("Permanently remove this post, its comments, its attachments and any other related data from the database. This cannot be undone.")
+                    Text("Permanently remove this comment, its replies, its attachments and any other related data from the database. This cannot be undone.")
                 }
             }
         }
@@ -81,9 +81,18 @@ struct RemovePostView: View {
         Task {
             let reason = reason.isEmpty ? nil : reason
             if shouldPurge {
-                let outcome = await post.purge(reason: reason)
+                let outcome: Bool
+                do {
+                    outcome = try await apiClient.purgeComment(id: comment.commentView.id, reason: reason).success
+                    DispatchQueue.main.async {
+                        comment.purged = true
+                    }
+                } catch {
+                    outcome = false
+                    errorHandler.handle(error)
+                }
                 if outcome {
-                    await notifier.add(.success("Purged post"))
+                    await notifier.add(.success("Purged comment"))
                     DispatchQueue.main.async {
                         dismiss()
                     }
@@ -93,10 +102,17 @@ struct RemovePostView: View {
                     }
                 }
             } else {
-                await post.toggleRemove(reason: reason)
+                do {
+                    let response = try await apiClient.removeComment(id: comment.commentView.id, shouldRemove: shouldRemove, reason: reason)
+                    DispatchQueue.main.async {
+                        comment.commentView.comment.removed = response.commentView.comment.removed
+                    }
+                } catch {
+                    errorHandler.handle(error)
+                }
                 
-                if post.post.removed == shouldRemove {
-                    await notifier.add(.success("\(verb)d post"))
+                if comment.commentView.comment.removed == shouldRemove {
+                    await notifier.add(.success("\(verb)d comment"))
                     DispatchQueue.main.async {
                         dismiss()
                     }

@@ -13,7 +13,7 @@ struct APIComment: Decodable, Identifiable {
     let creatorId: Int
     let postId: Int
     let content: String
-    let removed: Bool
+    var removed: Bool
     let deleted: Bool
     let published: Date
     let updated: Date?
