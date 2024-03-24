@@ -37,7 +37,7 @@ struct HeadlinePost: View {
                             StickiedTag(tagType: .community)
                         }
                         
-                        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+                        VStack(alignment: .leading, spacing: AppConstants.halfSpacing) {
                             Text(post.post.name)
                                 .font(.headline)
                                 .padding(.trailing)
