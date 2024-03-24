@@ -21,18 +21,6 @@ struct HeadlinePost: View {
 
     // arguments
     @ObservedObject var post: PostModel
-    
-    var link: String? {
-        guard case .link = post.postType else {
-            return nil
-        }
-
-        if let rawLink = post.post.url, var host = URL(string: rawLink)?.host() {
-            host.trimPrefix("www.")
-            return host
-        }
-        return "website"
-    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
@@ -55,7 +43,7 @@ struct HeadlinePost: View {
                                 .padding(.trailing)
                                 .foregroundColor(post.read ? .secondary : .primary)
                             
-                            if let link {
+                            if let link = post.linkHost {
                                 Group {
                                     Text(Image(systemName: Icons.browser)) +
                                         Text(" ") +
