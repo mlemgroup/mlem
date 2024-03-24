@@ -46,8 +46,7 @@ struct HeadlinePost: View {
                             if let link = post.linkHost {
                                 Group {
                                     Text(Image(systemName: Icons.browser)) +
-                                        Text(" ") +
-                                        Text(link)
+                                        Text(" \(link)")
                                 }
                                 .imageScale(.small)
                                 .font(.subheadline)
