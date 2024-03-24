@@ -21,10 +21,22 @@ struct HeadlinePost: View {
 
     // arguments
     @ObservedObject var post: PostModel
+    
+    var link: String? {
+        guard case .link = post.postType else {
+            return nil
+        }
+
+        if let rawLink = post.post.url, var host = URL(string: rawLink)?.host() {
+            host.trimPrefix("www.")
+            return host
+        }
+        return "website"
+    }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
-            HStack(alignment: .top, spacing: spacing) {
+        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+            HStack(alignment: .top, spacing: AppConstants.standardSpacing) {
                 if shouldShowPostThumbnails, !thumbnailsOnRight {
                     ThumbnailImageView(post: post)
                 }
@@ -37,10 +49,23 @@ struct HeadlinePost: View {
                             StickiedTag(tagType: .community)
                         }
                         
-                        Text(post.post.name)
-                            .font(.headline)
-                            .padding(.trailing)
-                            .foregroundColor(post.read ? .secondary : .primary)
+                        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+                            Text(post.post.name)
+                                .font(.headline)
+                                .padding(.trailing)
+                                .foregroundColor(post.read ? .secondary : .primary)
+                            
+                            if let link {
+                                Group {
+                                    Text(Image(systemName: Icons.browser)) +
+                                        Text(" ") +
+                                        Text(link)
+                                }
+                                .imageScale(.small)
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                            }
+                        }
                         
                         Spacer()
                         if post.post.nsfw {

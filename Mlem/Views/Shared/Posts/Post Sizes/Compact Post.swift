@@ -38,6 +38,18 @@ struct CompactPost: View {
     // computed
     var showReadCheck: Bool { post.read && diffWithoutColor && readMarkStyle == .check }
     
+    var link: String? {
+        guard case let .link = post.postType else {
+            return nil
+        }
+
+        if let rawLink = post.post.url, var host = URL(string: rawLink)?.host() {
+            host.trimPrefix("www.")
+            return host
+        }
+        return "website"
+    }
+    
     init(post: PostModel, community: CommunityModel? = nil, showCommunity: Bool, menuFunctions: [MenuFunction]) {
         self.post = post
         self.community = community
@@ -82,7 +94,18 @@ struct CompactPost: View {
                 Text(post.post.name)
                     .font(.subheadline)
                     .foregroundColor(post.read ? .secondary : .primary)
-    
+                
+                if let link {
+                    Group {
+                        Text(Image(systemName: Icons.browser)) +
+                            Text(" ") +
+                            Text(link)
+                    }
+                    .imageScale(.small)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                }
+                
                 compactInfo
             }
             
