@@ -86,8 +86,7 @@ struct CompactPost: View {
                 if let link = post.linkHost {
                     Group {
                         Text(Image(systemName: Icons.browser)) +
-                            Text(" ") +
-                            Text(link)
+                            Text(" \(link)")
                     }
                     .imageScale(.small)
                     .font(.caption)
