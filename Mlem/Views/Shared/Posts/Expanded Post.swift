@@ -91,6 +91,7 @@ struct ExpandedPost: View {
                         isExpanded: true,
                         editorTracker: editorTracker,
                         postTracker: postTracker,
+                        commentTracker: commentTracker,
                         community: isMod ? post.community : nil,
                         modToolTracker: isMod ? modToolTracker : nil
                     )

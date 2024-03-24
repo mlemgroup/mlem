@@ -77,6 +77,15 @@ extension BanUserView {
                         }
                     }
                 }
+                if let commentTracker {
+                    for comment in commentTracker.comments where comment.commentView.comment.creatorId == user.userId {
+                        if banFromInstance {
+                            comment.commentView.creator.banned = shouldBan
+                        } else {
+                            comment.commentView.creatorBannedFromCommunity = shouldBan
+                        }
+                    }
+                }
             }
             
             DispatchQueue.main.async {
