@@ -69,6 +69,7 @@ struct VotesListView: View {
                         }
                         Divider()
                     }
+                    EndOfFeedView(loadingState: votesTracker.loadingState, viewType: .hobbit)
                 }
                 Spacer().frame(height: 50)
             }

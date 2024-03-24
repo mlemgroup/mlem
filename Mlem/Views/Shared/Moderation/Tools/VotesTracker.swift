@@ -35,6 +35,7 @@ class VotesTracker: ObservableObject {
     
     @Published var votes: [VoteModel] = .init()
     @Published var isLoading: Bool = false
+    @Published var hasReachedEnd: Bool = false
     
     let content: any ContentIdentifiable
     
@@ -42,11 +43,17 @@ class VotesTracker: ObservableObject {
         self.content = content
     }
     
+    var loadingState: LoadingState {
+        if hasReachedEnd { return .done }
+        if isLoading { return .loading }
+        return .idle
+    }
+    
     func loadNextPage() {
-        if !isLoading {
+        if !isLoading, !hasReachedEnd {
             isLoading = true
             Task {
-                let page = 1 + votes.count % internetSpeed.pageSize
+                let page = 1 // + votes.count % internetSpeed.pageSize
                 do {
                     let response = try await apiClient.getPostLikes(
                         id: content.uid.contentId,
@@ -55,6 +62,9 @@ class VotesTracker: ObservableObject {
                     )
                     DispatchQueue.main.async {
                         self.votes.append(contentsOf: response.postLikes.map(VoteModel.init))
+//                        if response.postLikes.count != self.internetSpeed.pageSize {
+//                            self.hasReachedEnd = true
+//                        }
                     }
                 } catch {
                     errorHandler.handle(error)
