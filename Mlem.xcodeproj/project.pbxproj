@@ -332,7 +332,7 @@
 		6DCE71292A53C26600CFEB5E /* ServerInstanceLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DCE71282A53C26600CFEB5E /* ServerInstanceLocation.swift */; };
 		6DE118392A4A20D600810C7E /* Lazy Load Post Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE118382A4A20D600810C7E /* Lazy Load Post Link.swift */; };
 		6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE1183B2A4A217400810C7E /* Profile View.swift */; };
-		6DFF50432A48DED3001E648D /* Inbox View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFF50422A48DED3001E648D /* Inbox View.swift */; };
+		6DFF50432A48DED3001E648D /* PersonalInboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFF50422A48DED3001E648D /* PersonalInboxView.swift */; };
 		6DFF50452A48E373001E648D /* GetPrivateMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFF50442A48E373001E648D /* GetPrivateMessages.swift */; };
 		6FB4A4DE2B47860B00A7CD82 /* CollapsedCommentReplies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB4A4DD2B47860B00A7CD82 /* CollapsedCommentReplies.swift */; };
 		6FF17D012B685C16007E1814 /* AppLockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF17D002B685C16007E1814 /* AppLockView.swift */; };
@@ -520,6 +520,7 @@
 		CD6F29A82A77FF1700F20B6B /* MarkPostRead.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6F29A72A77FF1700F20B6B /* MarkPostRead.swift */; };
 		CD6F29AA2A78003A00F20B6B /* PostRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6F29A92A78003A00F20B6B /* PostRepository.swift */; };
 		CD6F29AC2A78015200F20B6B /* PostRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6F29AB2A78015200F20B6B /* PostRepository+Dependency.swift */; };
+		CD7798A62BB0E5B50067DF82 /* InboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7798A52BB0E5B50067DF82 /* InboxView.swift */; };
 		CD7B53B52A5F251400006E81 /* CreatePrivateMessageReportRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7B53B42A5F251400006E81 /* CreatePrivateMessageReportRequest.swift */; };
 		CD7B53B72A5F258B00006E81 /* APIPrivateMessageReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7B53B62A5F258B00006E81 /* APIPrivateMessageReportView.swift */; };
 		CD7B53B92A5F263D00006E81 /* APIPrivateMessageReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7B53B82A5F263D00006E81 /* APIPrivateMessageReport.swift */; };
@@ -1004,7 +1005,7 @@
 		6DCE71282A53C26600CFEB5E /* ServerInstanceLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerInstanceLocation.swift; sourceTree = "<group>"; };
 		6DE118382A4A20D600810C7E /* Lazy Load Post Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Lazy Load Post Link.swift"; sourceTree = "<group>"; };
 		6DE1183B2A4A217400810C7E /* Profile View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile View.swift"; sourceTree = "<group>"; };
-		6DFF50422A48DED3001E648D /* Inbox View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox View.swift"; sourceTree = "<group>"; };
+		6DFF50422A48DED3001E648D /* PersonalInboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInboxView.swift; sourceTree = "<group>"; };
 		6DFF50442A48E373001E648D /* GetPrivateMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPrivateMessages.swift; sourceTree = "<group>"; };
 		6FB4A4DD2B47860B00A7CD82 /* CollapsedCommentReplies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsedCommentReplies.swift; sourceTree = "<group>"; };
 		6FF17D002B685C16007E1814 /* AppLockView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLockView.swift; sourceTree = "<group>"; };
@@ -1189,6 +1190,7 @@
 		CD6F29A72A77FF1700F20B6B /* MarkPostRead.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkPostRead.swift; sourceTree = "<group>"; };
 		CD6F29A92A78003A00F20B6B /* PostRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRepository.swift; sourceTree = "<group>"; };
 		CD6F29AB2A78015200F20B6B /* PostRepository+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostRepository+Dependency.swift"; sourceTree = "<group>"; };
+		CD7798A52BB0E5B50067DF82 /* InboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxView.swift; sourceTree = "<group>"; };
 		CD7B53B42A5F251400006E81 /* CreatePrivateMessageReportRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePrivateMessageReportRequest.swift; sourceTree = "<group>"; };
 		CD7B53B62A5F258B00006E81 /* APIPrivateMessageReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPrivateMessageReportView.swift; sourceTree = "<group>"; };
 		CD7B53B82A5F263D00006E81 /* APIPrivateMessageReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPrivateMessageReport.swift; sourceTree = "<group>"; };
@@ -2463,9 +2465,10 @@
 			isa = PBXGroup;
 			children = (
 				CDE6A80E2A4908200062D161 /* Feed */,
-				6DFF50422A48DED3001E648D /* Inbox View.swift */,
+				6DFF50422A48DED3001E648D /* PersonalInboxView.swift */,
 				CD4368DC2AE24E1A00BD8BD1 /* InboxView+Logic.swift */,
 				CD4DD9D92BABABB000085D41 /* InboxRoot.swift */,
+				CD7798A52BB0E5B50067DF82 /* InboxView.swift */,
 			);
 			path = Inbox;
 			sourceTree = "<group>";
@@ -3712,7 +3715,7 @@
 				B11D72832A49FAA7009DC22F /* Cached Image.swift in Sources */,
 				637218752A3A2AAD008C4816 /* GetCommunity.swift in Sources */,
 				03A2767B2AFE560000C0D66B /* CommunityModel+SwipeActions.swift in Sources */,
-				6DFF50432A48DED3001E648D /* Inbox View.swift in Sources */,
+				6DFF50432A48DED3001E648D /* PersonalInboxView.swift in Sources */,
 				CD2697FE2B9E15C80002B459 /* APIAdminPurgeCommunityView.swift in Sources */,
 				03EEEAF72AB8ED3C0087F8D8 /* BubblePicker.swift in Sources */,
 				CD2053102AC878B50000AA38 /* UpdatedTimestampView.swift in Sources */,
@@ -3880,6 +3883,7 @@
 				6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */,
 				CD2BFE7E2B9F670B00717611 /* ModlogEntryView.swift in Sources */,
 				CD04D5DF2A361585008EF95B /* Empty Button Style.swift in Sources */,
+				CD7798A62BB0E5B50067DF82 /* InboxView.swift in Sources */,
 				CD69F55B2A400D820028D4F7 /* App Theme.swift in Sources */,
 				CDEBC3392A9ADE6C00518D9D /* APIClient+Post.swift in Sources */,
 				E4A7BFD12B35912500B95F56 /* InboxMessageView.swift in Sources */,

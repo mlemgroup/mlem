@@ -15,7 +15,7 @@ struct InboxRoot: View {
     var body: some View {
         ScrollViewReader { scrollProxy in
             NavigationStack(path: $inboxRouter.path) {
-                InboxView()
+                PersonalInboxView()
                     .environmentObject(inboxRouter)
                     .tabBarNavigationEnabled(.inbox, navigation)
             }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension InboxView {
+extension PersonalInboxView {
     func refresh() async {
         do {
             switch curTab {

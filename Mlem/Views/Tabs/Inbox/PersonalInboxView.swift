@@ -9,40 +9,6 @@ import Dependencies
 import Foundation
 import SwiftUI
 
-enum InboxFeed: FeedType {
-    case inbox
-    
-    var label: String {
-        switch self {
-        case .inbox: "Inbox"
-        }
-    }
-        
-    var subtitle: String {
-        switch self {
-        case .inbox: "Replies, mentions, and messages"
-        }
-    }
-    
-    var color: Color? {
-        switch self {
-        case .inbox: .purple
-        }
-    }
-    
-    var iconNameFill: String {
-        switch self {
-        case .inbox: Icons.inboxFill
-        }
-    }
-    
-    var iconScaleFactor: CGFloat {
-        switch self {
-        case .inbox: 0.55
-        }
-    }
-}
-
 enum InboxTab: String, CaseIterable, Identifiable {
     case all, replies, mentions, messages
     
@@ -53,7 +19,7 @@ enum InboxTab: String, CaseIterable, Identifiable {
     }
 }
 
-struct InboxView: View {
+struct PersonalInboxView: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.commentRepository) var commentRepository
     @Dependency(\.errorHandler) var errorHandler
@@ -178,7 +144,7 @@ struct InboxView: View {
             ScrollToView(appeared: $scrollToTopAppeared)
                 .id(scrollToTop)
             
-            FeedHeaderView(feedType: InboxFeed.inbox, showDropdownIndicator: false)
+            FeedHeaderView(feedType: InboxSelection.inbox, showDropdownIndicator: false)
             
             Section {
                 if errorOccurred {
@@ -236,7 +202,7 @@ struct InboxView: View {
     @ViewBuilder
     var navBarTitle: some View {
         // this is a bit silly as its own view right now but it will be a menu once mod mail is implemented
-        Text(InboxFeed.inbox.label)
+        Text(InboxSelection.inbox.label)
             .font(.headline)
     }
 }
