@@ -22,7 +22,7 @@ struct ModlogView: View {
     
     @State var selectedAction: ModlogAction = .all
     
-    @State var currentTracker: any ModlogTrackerProtocol
+    @State var currentTracker: any TrackerProtocol<ModlogEntry>
     
     @StateObject var modlogTracker: ModlogTracker
     @StateObject var postRemovalsTracker: ModlogChildTracker

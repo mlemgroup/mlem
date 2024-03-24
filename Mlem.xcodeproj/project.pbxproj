@@ -392,7 +392,7 @@
 		CD17C1DB2BA358FD00A0C8BC /* ModlogTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD17C1DA2BA358FD00A0C8BC /* ModlogTracker.swift */; };
 		CD17C1DD2BA3596000A0C8BC /* ModlogEntry+TrackerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD17C1DC2BA3596000A0C8BC /* ModlogEntry+TrackerItem.swift */; };
 		CD17C1E62BA369C700A0C8BC /* ModlogChildTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD17C1E52BA369C700A0C8BC /* ModlogChildTracker.swift */; };
-		CD17C1EA2BA3997000A0C8BC /* ModlogTrackerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD17C1E92BA3997000A0C8BC /* ModlogTrackerProtocol.swift */; };
+		CD17C1EA2BA3997000A0C8BC /* TrackerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD17C1E92BA3997000A0C8BC /* TrackerProtocol.swift */; };
 		CD1824402AA8E24100D9BEB5 /* View+DestructiveConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18243F2AA8E24100D9BEB5 /* View+DestructiveConfirmation.swift */; };
 		CD18DC6B2A5202D4002C56BC /* MarkPersonMentionAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18DC6A2A5202D4002C56BC /* MarkPersonMentionAsReadRequest.swift */; };
 		CD18DC6F2A5209C3002C56BC /* MarkPrivateMessageAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18DC6E2A5209C3002C56BC /* MarkPrivateMessageAsReadRequest.swift */; };
@@ -1062,7 +1062,7 @@
 		CD17C1DA2BA358FD00A0C8BC /* ModlogTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogTracker.swift; sourceTree = "<group>"; };
 		CD17C1DC2BA3596000A0C8BC /* ModlogEntry+TrackerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModlogEntry+TrackerItem.swift"; sourceTree = "<group>"; };
 		CD17C1E52BA369C700A0C8BC /* ModlogChildTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogChildTracker.swift; sourceTree = "<group>"; };
-		CD17C1E92BA3997000A0C8BC /* ModlogTrackerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogTrackerProtocol.swift; sourceTree = "<group>"; };
+		CD17C1E92BA3997000A0C8BC /* TrackerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerProtocol.swift; sourceTree = "<group>"; };
 		CD18243F2AA8E24100D9BEB5 /* View+DestructiveConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+DestructiveConfirmation.swift"; sourceTree = "<group>"; };
 		CD18DC6A2A5202D4002C56BC /* MarkPersonMentionAsReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkPersonMentionAsReadRequest.swift; sourceTree = "<group>"; };
 		CD18DC6E2A5209C3002C56BC /* MarkPrivateMessageAsReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkPrivateMessageAsReadRequest.swift; sourceTree = "<group>"; };
@@ -1836,6 +1836,7 @@
 				CD4368B72AE23F5400BD8BD1 /* ParentTrackerProtocol.swift */,
 				CD4368B92AE23F6400BD8BD1 /* TrackerItem.swift */,
 				CD4368BB2AE23F6F00BD8BD1 /* TrackerSort.swift */,
+				CD17C1E92BA3997000A0C8BC /* TrackerProtocol.swift */,
 			);
 			path = Generics;
 			sourceTree = "<group>";
@@ -2550,7 +2551,6 @@
 		CD17C1DE2BA3642800A0C8BC /* Modlog */ = {
 			isa = PBXGroup;
 			children = (
-				CD17C1E92BA3997000A0C8BC /* ModlogTrackerProtocol.swift */,
 				CD17C1DA2BA358FD00A0C8BC /* ModlogTracker.swift */,
 				CD17C1E52BA369C700A0C8BC /* ModlogChildTracker.swift */,
 				CD9395262BA7CF92008F6C4C /* ModlogAction.swift */,
@@ -3772,7 +3772,7 @@
 				CD6483382A3A0F2200EE6CA3 /* NSFW Tag.swift in Sources */,
 				CD2697FA2B9E15B90002B459 /* APIModAddView.swift in Sources */,
 				CD0D5A4A2B8ED320005E3365 /* BanFormButtonStyle.swift in Sources */,
-				CD17C1EA2BA3997000A0C8BC /* ModlogTrackerProtocol.swift in Sources */,
+				CD17C1EA2BA3997000A0C8BC /* TrackerProtocol.swift in Sources */,
 				503422582AAB798600EFE88D /* AppFlow.swift in Sources */,
 				039C8DBF2B363DAD0096BAAF /* AccountListView+Logic.swift in Sources */,
 				637218642A3A2AAD008C4816 /* GetPost.swift in Sources */,

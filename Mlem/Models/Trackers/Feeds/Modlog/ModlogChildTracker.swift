@@ -9,7 +9,7 @@ import Dependencies
 import Foundation
 
 /// Class to handle modlog children. Because the API paginates the modlog per-action type, modlog needs to be handled using a multi-tracker; however, because all modlog entries are represented with ModlogEntry, we can define a single generic child tracker instead of needing 14 different ones
-class ModlogChildTracker: ChildTracker<ModlogEntry, ModlogEntry>, ModlogTrackerProtocol {
+class ModlogChildTracker: ChildTracker<ModlogEntry, ModlogEntry> {
     @Dependency(\.apiClient) var apiClient
     
     private let actionType: ModlogAction
