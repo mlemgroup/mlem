@@ -83,7 +83,7 @@ struct RemoveCommunityView: View {
             if shouldPurge {
                 let outcome = await community.purge(reason: reason.isEmpty ? nil: reason)
                 if outcome {
-                    await notifier.add(.success("purged community"))
+                    await notifier.add(.success("Purged community"))
                     DispatchQueue.main.async {
                         dismiss()
                     }

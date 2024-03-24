@@ -14,6 +14,7 @@ struct RemoveCommunityRequest: APIPostRequest {
         let community_id: Int
         let removed: Bool
         let reason: String?
+        let auth: String
     }
 
     let instanceURL: URL
@@ -30,7 +31,8 @@ struct RemoveCommunityRequest: APIPostRequest {
         self.body = .init(
           community_id: communityId,
           removed: removed,
-          reason: reason
+          reason: reason,
+          auth: try session.token
         )
     }
 }
