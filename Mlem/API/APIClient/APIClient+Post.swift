@@ -156,8 +156,6 @@ extension APIClient {
             page: page,
             limit: limit
         )
-        
         return try await perform(request: request)
     }
-
 }

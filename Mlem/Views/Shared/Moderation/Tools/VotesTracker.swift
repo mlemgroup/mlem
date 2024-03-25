@@ -53,18 +53,32 @@ class VotesTracker: ObservableObject {
         if !isLoading, !hasReachedEnd {
             isLoading = true
             Task {
-                let page = 1 // + votes.count % internetSpeed.pageSize
+                let page = 1 + votes.count % internetSpeed.pageSize
                 do {
-                    let response = try await apiClient.getPostLikes(
-                        id: content.uid.contentId,
-                        page: page,
-                        limit: internetSpeed.pageSize
-                    )
-                    DispatchQueue.main.async {
-                        self.votes.append(contentsOf: response.postLikes.map(VoteModel.init))
-//                        if response.postLikes.count != self.internetSpeed.pageSize {
-//                            self.hasReachedEnd = true
-//                        }
+                    let newVotes: [APIVoteView]
+                    if content is PostModel {
+                        let response = try await apiClient.getPostLikes(
+                            id: content.uid.contentId,
+                            page: page,
+                            limit: internetSpeed.pageSize
+                        )
+                        newVotes = response.postLikes
+                    } else if content is HierarchicalComment {
+                        let response = try await apiClient.getCommentLikes(
+                            id: content.uid.contentId,
+                            page: page,
+                            limit: internetSpeed.pageSize
+                        )
+                        newVotes = response.commentLikes
+                    } else {
+                        newVotes = .init()
+                        assertionFailure("Only a PostModel or HierarchicalComment can be used!")
+                    }
+                    DispatchQueue.main.async { [newVotes] in
+                        self.votes.append(contentsOf: newVotes.map(VoteModel.init))
+                        if newVotes.count != self.internetSpeed.pageSize {
+                            self.hasReachedEnd = true
+                        }
                     }
                 } catch {
                     errorHandler.handle(error)

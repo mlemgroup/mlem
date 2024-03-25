@@ -120,6 +120,7 @@
 		03CEE04D2B6EBEA800D65B1B /* InstanceView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CEE04C2B6EBEA800D65B1B /* InstanceView+Logic.swift */; };
 		03CEE04F2B6ECFFC00D65B1B /* FediseerOpinionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CEE04E2B6ECFFC00D65B1B /* FediseerOpinionView.swift */; };
 		03CEE0512B6EED2C00D65B1B /* Array+IsNotEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CEE0502B6EED2C00D65B1B /* Array+IsNotEmpty.swift */; };
+		03D89E722BB1BB0100F49DB3 /* ListCommentLikesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D89E712BB1BB0100F49DB3 /* ListCommentLikesRequest.swift */; };
 		03E0B9C82A61F0F400FED265 /* AdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */; };
 		03E0B9CA2A62B4A400FED265 /* ContributorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9C92A62B4A400FED265 /* ContributorsView.swift */; };
 		03E0B9CC2A62CD5800FED265 /* ThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9CB2A62CD5800FED265 /* ThemeSettingsView.swift */; };
@@ -797,6 +798,7 @@
 		03CEE04C2B6EBEA800D65B1B /* InstanceView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InstanceView+Logic.swift"; sourceTree = "<group>"; };
 		03CEE04E2B6ECFFC00D65B1B /* FediseerOpinionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FediseerOpinionView.swift; sourceTree = "<group>"; };
 		03CEE0502B6EED2C00D65B1B /* Array+IsNotEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+IsNotEmpty.swift"; sourceTree = "<group>"; };
+		03D89E712BB1BB0100F49DB3 /* ListCommentLikesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCommentLikesRequest.swift; sourceTree = "<group>"; };
 		03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsView.swift; sourceTree = "<group>"; };
 		03E0B9C92A62B4A400FED265 /* ContributorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorsView.swift; sourceTree = "<group>"; };
 		03E0B9CB2A62CD5800FED265 /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
@@ -2309,6 +2311,7 @@
 				637218312A3A2AAD008C4816 /* CreateComment.swift */,
 				637218322A3A2AAD008C4816 /* CreateCommentLike.swift */,
 				039C59A82BADA5DA00C18765 /* PurgeCommentRequest.swift */,
+				03D89E712BB1BB0100F49DB3 /* ListCommentLikesRequest.swift */,
 				637218332A3A2AAD008C4816 /* GetComment.swift */,
 				637218342A3A2AAD008C4816 /* GetComments.swift */,
 				039C59AA2BADC85400C18765 /* RemoveCommentRequest.swift */,
@@ -3883,6 +3886,7 @@
 				CDB652572B8EAE15007B7797 /* APIPostResponse.swift in Sources */,
 				CD268C142B9A3DD80074DBEE /* CommunityListRowBody.swift in Sources */,
 				CD18DC6B2A5202D4002C56BC /* MarkPersonMentionAsReadRequest.swift in Sources */,
+				03D89E722BB1BB0100F49DB3 /* ListCommentLikesRequest.swift in Sources */,
 				030245C22BA60A2600D07747 /* ToolbarEllipsisMenu.swift in Sources */,
 				CD16A06A2B670ABE000312D2 /* UserContentFeedView+Logic.swift in Sources */,
 				CD4BAD3B2B4C6C3200A1E726 /* FeedRowView.swift in Sources */,

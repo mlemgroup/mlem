@@ -99,7 +99,6 @@ class APIClient {
     func perform<Request: APIRequest>(request: Request, overrideToken: String? = nil) async throws -> Request.Response {
         let urlRequest = try urlRequest(from: request, overrideToken: overrideToken)
 
-        print("REQUEST", urlRequest.url ?? "NONE")
         let (data, response) = try await execute(urlRequest)
         
         if let response = response as? HTTPURLResponse {
