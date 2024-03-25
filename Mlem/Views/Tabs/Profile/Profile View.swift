@@ -26,7 +26,7 @@ struct ProfileView: View {
         ScrollViewReader { proxy in
             NavigationStack(path: $profileTabNavigation.path) {
                 if let person = siteInformation.myUserInfo?.localUserView.person {
-                    UserView(user: UserModel(from: person))
+                    UserView(user: UserModel(from: person), isPresentingProfileEditor: $isPresentingProfileEditor)
                         .handleLemmyViews()
                         .environmentObject(profileTabNavigation)
                         .tabBarNavigationEnabled(.profile, navigation)
@@ -36,14 +36,7 @@ struct ProfileView: View {
                                     isPresentingAccountSwitcher = true
                                 }
                             }
-                            // TODO: 0.17 deprecation
-                            if (siteInformation.version ?? .infinity) >= .init("0.18.0") {
-                                ToolbarItem(placement: .secondaryAction) {
-                                    Button("Edit", systemImage: Icons.edit) {
-                                        isPresentingProfileEditor = true
-                                    }
-                                }
-                            }
+                            
                         }
                         .sheet(isPresented: $isPresentingAccountSwitcher) {
                             Form {
