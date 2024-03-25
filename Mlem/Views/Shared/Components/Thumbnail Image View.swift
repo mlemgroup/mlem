@@ -67,7 +67,7 @@ struct ThumbnailImageView: View {
         .contentShape(Rectangle())
         .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
         .overlay(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
-        .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
+            .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
     }
  
     @ViewBuilder
@@ -84,14 +84,6 @@ struct ThumbnailImageView: View {
                 openURL(url)
                 markPostAsRead()
             }
-        }
-        .overlay {
-            Group {
-                WebsiteIndicatorView()
-                    .frame(width: 20, height: 20)
-                    .padding(6)
-            }
-            .frame(width: size.width, height: size.height, alignment: .topLeading)
         }
     }
     

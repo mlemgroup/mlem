@@ -79,10 +79,22 @@ struct CompactPost: View {
                 }
                 .padding(.bottom, -2)
                 
-                Text(post.post.name)
-                    .font(.subheadline)
-                    .foregroundColor(post.read ? .secondary : .primary)
-    
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(post.post.name)
+                        .font(.subheadline)
+                        .foregroundColor(post.read ? .secondary : .primary)
+                    
+                    if let link = post.linkHost {
+                        Group {
+                            Text(Image(systemName: Icons.browser)) +
+                                Text(" \(link)")
+                        }
+                        .imageScale(.small)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    }
+                }
+                
                 compactInfo
             }
             
