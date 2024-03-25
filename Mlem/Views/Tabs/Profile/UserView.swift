@@ -69,9 +69,11 @@ struct UserView: View {
                 }
             }
             .toolbar {
-                ToolbarItemGroup(placement: .secondaryAction) {
-                    ForEach(menuFunctions) { item in
-                        MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    ToolbarEllipsisMenu {
+                        ForEach(menuFunctions) { item in
+                            MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
+                        }
                     }
                 }
             }

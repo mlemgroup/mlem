@@ -74,10 +74,12 @@ extension UserModel {
 
         // TODO: 2.0 appoint moderator as menu function
         
+        // This has to be outside of the `!isOwnUser` is statement so that it shows when "Appoint As Moderator" is appended
+        functions.append(.divider)
+        
         if !isOwnUser {
             functions.append(blockMenuFunction(callback))
             if siteInformation.myUser?.isAdmin ?? false, !(isAdmin ?? false), let modToolTracker {
-                functions.append(.divider)
                 functions.append(banMenuFunction(callback, modToolTracker: modToolTracker))
             }
         }
