@@ -23,8 +23,8 @@ struct HeadlinePost: View {
     @ObservedObject var post: PostModel
 
     var body: some View {
-        VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
-            HStack(alignment: .top, spacing: spacing) {
+        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+            HStack(alignment: .top, spacing: AppConstants.standardSpacing) {
                 if shouldShowPostThumbnails, !thumbnailsOnRight {
                     ThumbnailImageView(post: post)
                 }
@@ -37,10 +37,22 @@ struct HeadlinePost: View {
                             StickiedTag(tagType: .community)
                         }
                         
-                        Text(post.post.name)
-                            .font(.headline)
-                            .padding(.trailing)
-                            .foregroundColor(post.read ? .secondary : .primary)
+                        VStack(alignment: .leading, spacing: AppConstants.halfSpacing) {
+                            Text(post.post.name)
+                                .font(.headline)
+                                .padding(.trailing)
+                                .foregroundColor(post.read ? .secondary : .primary)
+                            
+                            if let link = post.linkHost {
+                                Group {
+                                    Text(Image(systemName: Icons.browser)) +
+                                        Text(" \(link)")
+                                }
+                                .imageScale(.small)
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                            }
+                        }
                         
                         Spacer()
                         if post.post.nsfw {
