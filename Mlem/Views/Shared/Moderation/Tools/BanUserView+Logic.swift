@@ -92,7 +92,7 @@ extension BanUserView {
                     }
                 }
                 
-                if let index = votesTracker?.votes.firstIndex(where: {$0.id == user.userId}) {
+                if let votesTracker, let index = votesTracker.votes.firstIndex(where: {$0.id == user.userId}) {
                         if contentRemovalType == .purge {
                             votesTracker.votes.remove(at: index)
                         } else if banFromInstance {

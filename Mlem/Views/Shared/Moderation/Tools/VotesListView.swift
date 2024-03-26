@@ -40,33 +40,7 @@ struct VotesListView: View {
                 } else {
                     Divider()
                     ForEach(votesTracker.votes, id: \.id) { item in
-                        NavigationLink(.userProfile(item.user, communityContext: communityContext)) {
-                            HStack {
-                                UserLinkView(
-                                    user: item.user,
-                                    serverInstanceLocation: .bottom,
-                                    bannedFromCommunity: item.creatorBannedFromCommunity
-                                )
-                                Spacer()
-                                Image(systemName: item.vote.iconNameFill)
-                                    .foregroundStyle(item.vote.color ?? .primary)
-                                    .imageScale(.large)
-                            }
-                            .padding(.horizontal, AppConstants.standardSpacing)
-                            .padding(.vertical, 8)
-                            .contentShape(.rect)
-                        }
-                        .buttonStyle(.plain)
-                        .contextMenu {
-                            ForEach(menuFunctions(for: item)) { item in
-                                MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
-                            }
-                        }
-                        .onAppear {
-                            if item.id == votesTracker.votes.last?.id {
-                                votesTracker.loadNextPage()
-                            }
-                        }
+                        voteRow(item: item)
                         Divider()
                     }
                     EndOfFeedView(loadingState: votesTracker.loadingState, viewType: .hobbit)
@@ -78,6 +52,37 @@ struct VotesListView: View {
         .navigationTitle("Votes")
         .onAppear {
             if votesTracker.votes.isEmpty {
+                votesTracker.loadNextPage()
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func voteRow(item: VoteModel) -> some View {
+        NavigationLink(.userProfile(item.user, communityContext: communityContext)) {
+            HStack {
+                UserLinkView(
+                    user: item.user,
+                    serverInstanceLocation: .bottom,
+                    bannedFromCommunity: item.creatorBannedFromCommunity
+                )
+                Spacer()
+                Image(systemName: item.vote.iconNameFill)
+                    .foregroundStyle(item.vote.color ?? .primary)
+                    .imageScale(.large)
+            }
+            .padding(.horizontal, AppConstants.standardSpacing)
+            .padding(.vertical, 8)
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+        .contextMenu {
+            ForEach(menuFunctions(for: item)) { item in
+                MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
+            }
+        }
+        .onAppear {
+            if item.id == votesTracker.votes.last?.id {
                 votesTracker.loadNextPage()
             }
         }

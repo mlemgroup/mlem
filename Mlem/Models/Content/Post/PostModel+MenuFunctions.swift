@@ -149,7 +149,7 @@ extension PostModel {
                 }
             })
             // TODO: 0.19 deprecation
-            if siteInformation.isAdmin || ((siteInformation.version ?? .infinity) > .init("0.19.3")) {
+            if siteInformation.isAdmin || ((siteInformation.version ?? .zero) > .init("0.19.3")) {
                 functions.append(MenuFunction.navigationMenuFunction(
                     text: "View Votes",
                     imageName: Icons.votes,

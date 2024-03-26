@@ -12,9 +12,8 @@ struct VoteModel: Identifiable {
     var user: UserModel
     let vote: ScoringOperation
     
-    // This is only used for state-faking, and isn't truthful for already existing bans.
-    // I opened an issue for proper support here https://github.com/LemmyNet/lemmy/issues/4561
-    var creatorBannedFromCommunity: Bool = false
+    // On 0.19.3 and below this is only used for state-faking, and isn't truthful for already existing bans.
+    var creatorBannedFromCommunity: Bool
     
     // If I try to access user.userId in a computed property, I get a "Publishing changes from background
     // threads is not allowed" error. Doing this instead, hopefully I can fix this in 2.0 - sjmarf
@@ -23,6 +22,7 @@ struct VoteModel: Identifiable {
     init(item: APIVoteView) {
         self.user = .init(from: item.creator)
         self.vote = item.score
+        self.creatorBannedFromCommunity = item.creatorBannedFromCommunity ?? false
         self.id = item.creator.id
     }
 }

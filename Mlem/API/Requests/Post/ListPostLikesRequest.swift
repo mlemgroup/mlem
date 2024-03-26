@@ -32,6 +32,10 @@ struct ListPostLikesRequest: APIGetRequest {
 
 struct APIVoteView: Decodable {
     let creator: APIPerson
+    
+    // Not in a live version yet as of the time of writing, but was merged in https://github.com/LemmyNet/lemmy/pull/4568
+    let creatorBannedFromCommunity: Bool?
+    
     let score: ScoringOperation
 }
 
