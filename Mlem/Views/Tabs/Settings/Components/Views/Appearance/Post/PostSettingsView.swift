@@ -115,7 +115,7 @@ struct PostSettingsView: View {
                     isTicked: $shouldShowScoreInPostBar
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: Icons.votes,
+                    settingPictureSystemName: Icons.votesSquare,
                     settingName: "Show Downvotes Separately",
                     isTicked: $showDownvotesSeparately
                 )

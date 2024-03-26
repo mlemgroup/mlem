@@ -32,7 +32,7 @@ extension UserModel {
             imageName: Icons.instanceBan,
             isDestructive: true,
             callback: {
-                modToolTracker.banUserFromInstance(self, shouldBan: !banned)
+                modToolTracker.banUser(self, shouldBan: !banned)
             }
         )
     }
@@ -76,8 +76,13 @@ extension UserModel {
         
         if !isOwnUser {
             functions.append(blockMenuFunction(callback))
+        }
+        
+        // This has to be outside of the below `if` statement so that it shows when "Appoint As Moderator" is appended
+        functions.append(.divider)
+        
+        if !isOwnUser {
             if siteInformation.myUser?.isAdmin ?? false, !(isAdmin ?? false), let modToolTracker {
-                functions.append(.divider)
                 functions.append(banMenuFunction(callback, modToolTracker: modToolTracker))
             }
         }
