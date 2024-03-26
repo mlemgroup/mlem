@@ -80,6 +80,7 @@ struct InboxView: View {
     
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.siteInformation) var siteInformation
+    @Dependency(\.personRepository) var personRepository
     
     @EnvironmentObject var unreadTracker: UnreadTracker
     
@@ -160,6 +161,15 @@ struct InboxView: View {
                 }.value
             }
             .task {
+                Task {
+                    do {
+                        let unreadCounts = try await personRepository.getUnreadCounts()
+                        unreadTracker.update(with: unreadCounts)
+                    } catch {
+                        errorHandler.handle(error)
+                    }
+                }
+                
                 // wrapping in task so view redraws don't cancel
                 Task(priority: .userInitiated) {
                     await refresh()
