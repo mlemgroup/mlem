@@ -536,7 +536,6 @@
 		CD82A2552A716C7C00111034 /* APIPersonUnreadCounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD82A2542A716C7C00111034 /* APIPersonUnreadCounts.swift */; };
 		CD82A2572A716D7C00111034 /* PersonRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD82A2562A716D7C00111034 /* PersonRepository+Dependency.swift */; };
 		CD82A2592A71775E00111034 /* UnreadTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD82A2582A71775E00111034 /* UnreadTracker.swift */; };
-		CD8461662A96F9EB0026A627 /* Website Indicator View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8461652A96F9EB0026A627 /* Website Indicator View.swift */; };
 		CD863FBA2A6AEB5900A31ED9 /* View+FancyTabScrollCompatible.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863FB92A6AEB5900A31ED9 /* View+FancyTabScrollCompatible.swift */; };
 		CD863FBC2A6B026400A31ED9 /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863FBB2A6B026400A31ED9 /* DocumentView.swift */; };
 		CD876EC72B7736370075DC15 /* MarkReadBatcher+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD876EC62B7736370075DC15 /* MarkReadBatcher+Dependency.swift */; };
@@ -1212,7 +1211,6 @@
 		CD82A2542A716C7C00111034 /* APIPersonUnreadCounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPersonUnreadCounts.swift; sourceTree = "<group>"; };
 		CD82A2562A716D7C00111034 /* PersonRepository+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonRepository+Dependency.swift"; sourceTree = "<group>"; };
 		CD82A2582A71775E00111034 /* UnreadTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadTracker.swift; sourceTree = "<group>"; };
-		CD8461652A96F9EB0026A627 /* Website Indicator View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Website Indicator View.swift"; sourceTree = "<group>"; };
 		CD863FB92A6AEB5900A31ED9 /* View+FancyTabScrollCompatible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+FancyTabScrollCompatible.swift"; sourceTree = "<group>"; };
 		CD863FBB2A6B026400A31ED9 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
 		CD876EC62B7736370075DC15 /* MarkReadBatcher+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MarkReadBatcher+Dependency.swift"; sourceTree = "<group>"; };
@@ -1930,7 +1928,6 @@
 				035EB0C92A8687C200227859 /* JumpButtonView.swift */,
 				CD1446172A58FC3B00610EF1 /* InfoStackView.swift */,
 				CDE3BA882A8C64BD00B972E2 /* Collapsible Text Item.swift */,
-				CD8461652A96F9EB0026A627 /* Website Indicator View.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -3868,7 +3865,6 @@
 				032109492AA7C41800912DFC /* AvatarView.swift in Sources */,
 				CD4368B02AE23F1400BD8BD1 /* ChildTracker.swift in Sources */,
 				CD863FBC2A6B026400A31ED9 /* DocumentView.swift in Sources */,
-				CD8461662A96F9EB0026A627 /* Website Indicator View.swift in Sources */,
 				038A16E92A7A9C640087987E /* LayoutWidget.swift in Sources */,
 				CDEC95192B5D950D004BA288 /* PostFeedView+Logic.swift in Sources */,
 				CD9A03C82B389F7000C16276 /* EnvironmentValues+FeedType.swift in Sources */,
