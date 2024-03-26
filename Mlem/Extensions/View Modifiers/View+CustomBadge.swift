@@ -34,7 +34,7 @@ struct CustomBadge: ViewModifier {
     
     @ViewBuilder
     var customBadge: some View {
-        if let count, count != 0 {
+        if let count, count > 0 {
             Text(count.description)
                 .font(.system(size: 10))
                 .padding(.vertical, 1)

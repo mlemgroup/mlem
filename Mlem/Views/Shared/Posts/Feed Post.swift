@@ -93,6 +93,7 @@ struct FeedPost: View {
             editorTracker: editorTracker,
             showSelectText: postSize == .large,
             postTracker: postTracker,
+            commentTracker: nil,
             community: isMod ? postModel.community : nil,
             modToolTracker: isMod ? modToolTracker : nil
         )

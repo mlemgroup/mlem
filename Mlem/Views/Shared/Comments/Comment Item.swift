@@ -56,6 +56,7 @@ struct CommentItem: View {
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
+    @EnvironmentObject var modToolTracker: ModToolTracker
 
     // MARK: Constants
 
@@ -129,6 +130,8 @@ struct CommentItem: View {
                     EmptyView()
                 } else if hierarchicalComment.isParentCollapsed, !hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
                     EmptyView()
+                } else if hierarchicalComment.purged {
+                    EmptyView()
                 } else {
                     Group {
                         commentBody(hierarchicalComment: hierarchicalComment)
@@ -197,7 +200,7 @@ struct CommentItem: View {
                    hierarchicalComment.children.count > 0,
                    !isCommentReplyHidden {
                     Divider()
-                        CollapsedCommentReplies(numberOfReplies: .constant(hierarchicalComment.commentView.counts.childCount))
+                    CollapsedCommentReplies(numberOfReplies: .constant(hierarchicalComment.commentView.counts.childCount))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .contentShape(.rect)
                         .onTapGesture {

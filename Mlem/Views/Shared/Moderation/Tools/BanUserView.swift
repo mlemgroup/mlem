@@ -60,7 +60,10 @@ struct BanUserView: View {
     let communityContext: CommunityModel?
     let bannedFromCommunity: Bool
     let shouldBan: Bool
-    let postTracker: StandardPostTracker? // if present, will update with new banned status
+    
+    // if present, will update with new banned status
+    let postTracker: StandardPostTracker?
+    let commentTracker: CommentTracker?
     
     @State var banFromInstance: Bool
     
@@ -77,17 +80,19 @@ struct BanUserView: View {
         communityContext: CommunityModel?,
         bannedFromCommunity: Bool = false,
         shouldBan: Bool,
-        postTracker: StandardPostTracker?
+        postTracker: StandardPostTracker?,
+        commentTracker: CommentTracker?
     ) {
         self.user = user
         self.communityContext = communityContext
         self.bannedFromCommunity = bannedFromCommunity
         self.shouldBan = shouldBan
         self.postTracker = postTracker
+        self.commentTracker = commentTracker
         
         @Dependency(\.siteInformation) var siteInformation
         
-        self._banFromInstance = .init(
+        _banFromInstance = .init(
             wrappedValue: siteInformation.isAdmin && shouldBan != user.banned
         )
     }
@@ -157,13 +162,13 @@ struct BanUserView: View {
                 Section("\(verb.capitalized) From") {
                     Menu {
                         Picker("Test", selection: $banFromInstance) {
-                            Button { } label: {
+                            Button {} label: {
                                 Text("Instance")
                                 if let name = siteInformation.instance?.name {
                                     Text(name)
                                 }
                             }.tag(true)
-                            Button { } label: {
+                            Button {} label: {
                                 Text("Community")
                                 if let name = communityContext.fullyQualifiedName {
                                     Text(name)
@@ -204,7 +209,7 @@ struct BanUserView: View {
                 isOn: Binding(
                     get: { isPermanent },
                     set: { newValue in
-                        if !newValue && contentRemovalType == .purge {
+                        if !newValue, contentRemovalType == .purge {
                             contentRemovalType = .remove
                         }
                         isPermanent = newValue
@@ -213,7 +218,7 @@ struct BanUserView: View {
             )
             .tint(.red)
         }
-        if isPermanent && banFromInstance {
+        if isPermanent, banFromInstance {
             removeContentPickerSection()
         } else {
             banDurationSection()
@@ -235,8 +240,8 @@ struct BanUserView: View {
                         days = newValue > 1 ? newValue : 0
                     }
                 ), format: .number)
-                .keyboardType(.numberPad)
-                .focused($focusedField, equals: .days)
+                    .keyboardType(.numberPad)
+                    .focused($focusedField, equals: .days)
             }
             DatePicker(
                 "Expiration Date:",
@@ -273,7 +278,7 @@ struct BanUserView: View {
                 "Remove Content",
                 isOn: Binding(
                     get: { contentRemovalType != .keep },
-                    set: { contentRemovalType = $0 ? .remove : .keep}
+                    set: { contentRemovalType = $0 ? .remove : .keep }
                 )
             )
             .tint(.red)
@@ -301,7 +306,6 @@ struct BanUserView: View {
                         Spacer()
                         Checkbox(isOn: contentRemovalType == type)
                             .tint(type == .purge ? .red : .blue)
-                        
                     }
                     .foregroundStyle(.primary)
                     .contentShape(Rectangle())
@@ -329,5 +333,11 @@ struct BanUserView: View {
 }
 
 #Preview {
-    BanUserView(user: .mock(), communityContext: .mock(), shouldBan: true, postTracker: nil)
+    BanUserView(
+        user: .mock(),
+        communityContext: .mock(),
+        shouldBan: true,
+        postTracker: nil,
+        commentTracker: nil
+    )
 }

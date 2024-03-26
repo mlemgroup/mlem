@@ -180,13 +180,15 @@ extension CommentItem {
     
     // swiftlint:disable function_body_length
     func genMenuFunctions() -> [MenuFunction] {
+        let isMod = siteInformation.isModOrAdmin(communityId: hierarchicalComment.commentView.post.communityId)
+        
         var ret: [MenuFunction] = .init()
         
         var mainFunctions: [MenuFunction] = .init()
         // upvote
         let (upvoteText, upvoteImg) = hierarchicalComment.commentView.myVote == .upvote ?
-        ("Undo Upvote", Icons.upvoteSquareFill) :
-        ("Upvote", Icons.upvoteSquare)
+            ("Undo Upvote", Icons.upvoteSquareFill) :
+            ("Upvote", Icons.upvoteSquare)
         mainFunctions.append(MenuFunction.standardMenuFunction(
             text: upvoteText,
             imageName: upvoteImg
@@ -198,8 +200,8 @@ extension CommentItem {
         
         // downvote
         let (downvoteText, downvoteImg) = hierarchicalComment.commentView.myVote == .downvote ?
-        ("Undo Downvote", Icons.downvoteSquareFill) :
-        ("Downvote", Icons.downvoteSquare)
+            ("Undo Downvote", Icons.downvoteSquareFill) :
+            ("Downvote", Icons.downvoteSquare)
         mainFunctions.append(MenuFunction.standardMenuFunction(
             text: downvoteText,
             imageName: downvoteImg
@@ -211,8 +213,8 @@ extension CommentItem {
                 
         // save
         let (saveText, saveImg) = hierarchicalComment.commentView.saved ?
-        ("Unsave", Icons.saveFill) :
-        ("Save", Icons.save)
+            ("Unsave", Icons.saveFill) :
+            ("Save", Icons.save)
         mainFunctions.append(MenuFunction.standardMenuFunction(
             text: saveText,
             imageName: saveImg
@@ -230,7 +232,7 @@ extension CommentItem {
             replyToComment()
         })
         
-        let content = self.hierarchicalComment.commentView.comment.content
+        let content = hierarchicalComment.commentView.comment.content
         mainFunctions.append(MenuFunction.standardMenuFunction(
             text: "Select Text",
             imageName: Icons.select
@@ -268,17 +270,19 @@ extension CommentItem {
         }
         
         if !isOwnComment {
-            // report
-            mainFunctions.append(MenuFunction.standardMenuFunction(
-                text: "Report",
-                imageName: Icons.moderationReport,
-                confirmationPrompt: AppConstants.reportCommentPrompt
-            ) {
-                editorTracker.openEditor(with: ConcreteEditorModel(
-                    comment: hierarchicalComment.commentView,
-                    operation: CommentOperation.reportComment
-                ))
-            })
+            if !isMod {
+                // report
+                mainFunctions.append(MenuFunction.standardMenuFunction(
+                    text: "Report",
+                    imageName: Icons.moderationReport,
+                    confirmationPrompt: AppConstants.reportCommentPrompt
+                ) {
+                    editorTracker.openEditor(with: ConcreteEditorModel(
+                        comment: hierarchicalComment.commentView,
+                        operation: CommentOperation.reportComment
+                    ))
+                })
+            }
             
             // block
             mainFunctions.append(MenuFunction.standardMenuFunction(
@@ -293,6 +297,66 @@ extension CommentItem {
         }
         
         ret.append(.controlGroupMenuFunction(children: mainFunctions))
+        
+        if isMod, !isOwnComment {
+            ret.append(.divider)
+            ret.append(MenuFunction.toggleableMenuFunction(
+                toggle: hierarchicalComment.commentView.comment.removed,
+                trueText: "Restore",
+                trueImageName: Icons.restore,
+                falseText: "Remove",
+                falseImageName: Icons.remove,
+                isDestructive: .always
+            ) {
+                modToolTracker.removeComment(
+                    hierarchicalComment,
+                    shouldRemove: !self.hierarchicalComment.commentView.comment.removed
+                )
+            })
+            
+            let creatorBannedFromCommunity = hierarchicalComment.commentView.creatorBannedFromCommunity
+            let creatorBannedFromInstance = hierarchicalComment.commentView.creator.banned
+            
+            if !(siteInformation.isAdmin && creatorBannedFromCommunity && creatorBannedFromInstance) {
+                ret.append(MenuFunction.toggleableMenuFunction(
+                    toggle: creatorBannedFromCommunity,
+                    trueText: "Unban User",
+                    trueImageName: Icons.communityUnban,
+                    falseText: "Ban User",
+                    falseImageName: (siteInformation.isAdmin && !creatorBannedFromInstance) ? Icons.instanceBan : Icons.communityBan,
+                    isDestructive: .whenFalse
+                ) {
+                    modToolTracker.banUserFromCommunity(
+                        .init(from: hierarchicalComment.commentView.creator),
+                        from: .init(from: hierarchicalComment.commentView.community),
+                        bannedFromCommunity: creatorBannedFromCommunity,
+                        shouldBan: !creatorBannedFromCommunity,
+                        postTracker: nil,
+                        commentTracker: commentTracker
+                    )
+                })
+            }
+            
+            if siteInformation.isAdmin, creatorBannedFromInstance || creatorBannedFromCommunity {
+                ret.append(MenuFunction.toggleableMenuFunction(
+                    toggle: creatorBannedFromInstance,
+                    trueText: "Unban User",
+                    trueImageName: Icons.instanceUnban,
+                    falseText: "Ban User",
+                    falseImageName: Icons.instanceBan,
+                    isDestructive: .whenFalse
+                ) {
+                    modToolTracker.banUserFromCommunity(
+                        .init(from: hierarchicalComment.commentView.creator),
+                        from: .init(from: hierarchicalComment.commentView.community),
+                        bannedFromCommunity: creatorBannedFromCommunity,
+                        shouldBan: !creatorBannedFromInstance,
+                        postTracker: nil,
+                        commentTracker: commentTracker
+                    )
+                })
+            }
+        }
                    
         return ret
     }

@@ -1,33 +1,36 @@
 //
-//  PurgePostRequest.swift
+//  RemoveCommentRequest.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-02-27
+//  Created by Sjmarf on 22/03/2024.
 //
 
 import Foundation
 
-struct PurgePostRequest: APIPostRequest {
-    typealias Response = SuccessResponse
-
+struct RemoveCommentRequest: APIPostRequest {
+    typealias Response = CommentResponse
+    
     var instanceURL: URL
-    let path = "admin/purge/post"
+    let path = "comment/remove"
     let body: Body
     
     struct Body: Codable {
-        let post_id: Int
+        let comment_id: Int
+        let removed: Bool
         let reason: String?
         let auth: String
     }
-
+    
     init(
         session: APISession,
-        postId: Int,
+        commentId: Int,
+        removed: Bool,
         reason: String?
     ) throws {
         self.instanceURL = try session.instanceUrl
         self.body = try .init(
-            post_id: postId,
+            comment_id: commentId,
+            removed: removed,
             reason: reason,
             auth: session.token
         )

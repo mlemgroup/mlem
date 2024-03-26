@@ -61,6 +61,9 @@
 		0394398F2A98EB2300463032 /* APIComment+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0394398E2A98EB2300463032 /* APIComment+Mock.swift */; };
 		039439912A98FA6100463032 /* UserFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039439902A98FA6100463032 /* UserFeedView.swift */; };
 		039439932A99098900463032 /* InternetConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039439922A99098900463032 /* InternetConnectionManager.swift */; };
+		039C59A72BADA04100C18765 /* RemoveCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C59A62BADA04100C18765 /* RemoveCommentView.swift */; };
+		039C59A92BADA5DA00C18765 /* PurgeCommentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C59A82BADA5DA00C18765 /* PurgeCommentRequest.swift */; };
+		039C59AB2BADC85400C18765 /* RemoveCommentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C59AA2BADC85400C18765 /* RemoveCommentRequest.swift */; };
 		039C8DB72B35A32D0096BAAF /* AccountSwitcherSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C8DB62B35A32D0096BAAF /* AccountSwitcherSettingsView.swift */; };
 		039C8DB92B35A81C0096BAAF /* AccountIconStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C8DB82B35A81C0096BAAF /* AccountIconStack.swift */; };
 		039C8DBB2B35B2EB0096BAAF /* AccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C8DBA2B35B2EB0096BAAF /* AccountListView.swift */; };
@@ -530,7 +533,6 @@
 		CD82A2552A716C7C00111034 /* APIPersonUnreadCounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD82A2542A716C7C00111034 /* APIPersonUnreadCounts.swift */; };
 		CD82A2572A716D7C00111034 /* PersonRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD82A2562A716D7C00111034 /* PersonRepository+Dependency.swift */; };
 		CD82A2592A71775E00111034 /* UnreadTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD82A2582A71775E00111034 /* UnreadTracker.swift */; };
-		CD8461662A96F9EB0026A627 /* Website Indicator View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8461652A96F9EB0026A627 /* Website Indicator View.swift */; };
 		CD863FBA2A6AEB5900A31ED9 /* View+FancyTabScrollCompatible.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863FB92A6AEB5900A31ED9 /* View+FancyTabScrollCompatible.swift */; };
 		CD863FBC2A6B026400A31ED9 /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863FBB2A6B026400A31ED9 /* DocumentView.swift */; };
 		CD876EC72B7736370075DC15 /* MarkReadBatcher+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD876EC62B7736370075DC15 /* MarkReadBatcher+Dependency.swift */; };
@@ -733,6 +735,9 @@
 		0394398E2A98EB2300463032 /* APIComment+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIComment+Mock.swift"; sourceTree = "<group>"; };
 		039439902A98FA6100463032 /* UserFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFeedView.swift; sourceTree = "<group>"; };
 		039439922A99098900463032 /* InternetConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetConnectionManager.swift; sourceTree = "<group>"; };
+		039C59A62BADA04100C18765 /* RemoveCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveCommentView.swift; sourceTree = "<group>"; };
+		039C59A82BADA5DA00C18765 /* PurgeCommentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurgeCommentRequest.swift; sourceTree = "<group>"; };
+		039C59AA2BADC85400C18765 /* RemoveCommentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveCommentRequest.swift; sourceTree = "<group>"; };
 		039C8DB62B35A32D0096BAAF /* AccountSwitcherSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSwitcherSettingsView.swift; sourceTree = "<group>"; };
 		039C8DB82B35A81C0096BAAF /* AccountIconStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountIconStack.swift; sourceTree = "<group>"; };
 		039C8DBA2B35B2EB0096BAAF /* AccountListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListView.swift; sourceTree = "<group>"; };
@@ -1200,7 +1205,6 @@
 		CD82A2542A716C7C00111034 /* APIPersonUnreadCounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPersonUnreadCounts.swift; sourceTree = "<group>"; };
 		CD82A2562A716D7C00111034 /* PersonRepository+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonRepository+Dependency.swift"; sourceTree = "<group>"; };
 		CD82A2582A71775E00111034 /* UnreadTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadTracker.swift; sourceTree = "<group>"; };
-		CD8461652A96F9EB0026A627 /* Website Indicator View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Website Indicator View.swift"; sourceTree = "<group>"; };
 		CD863FB92A6AEB5900A31ED9 /* View+FancyTabScrollCompatible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+FancyTabScrollCompatible.swift"; sourceTree = "<group>"; };
 		CD863FBB2A6B026400A31ED9 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
 		CD876EC62B7736370075DC15 /* MarkReadBatcher+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MarkReadBatcher+Dependency.swift"; sourceTree = "<group>"; };
@@ -1919,7 +1923,6 @@
 				035EB0C92A8687C200227859 /* JumpButtonView.swift */,
 				CD1446172A58FC3B00610EF1 /* InfoStackView.swift */,
 				CDE3BA882A8C64BD00B972E2 /* Collapsible Text Item.swift */,
-				CD8461652A96F9EB0026A627 /* Website Indicator View.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2298,8 +2301,10 @@
 			children = (
 				637218312A3A2AAD008C4816 /* CreateComment.swift */,
 				637218322A3A2AAD008C4816 /* CreateCommentLike.swift */,
+				039C59A82BADA5DA00C18765 /* PurgeCommentRequest.swift */,
 				637218332A3A2AAD008C4816 /* GetComment.swift */,
 				637218342A3A2AAD008C4816 /* GetComments.swift */,
+				039C59AA2BADC85400C18765 /* RemoveCommentRequest.swift */,
 				637218352A3A2AAD008C4816 /* SaveComment.swift */,
 				637218362A3A2AAD008C4816 /* EditComment.swift */,
 				637218372A3A2AAD008C4816 /* DeleteComment.swift */,
@@ -2491,6 +2496,7 @@
 				03F6D4BC2B966D53008235A0 /* BodyEditorView.swift */,
 				03CB329D2A6D8E910021EF27 /* PostComposerView.swift */,
 				CD0D5A442B8EC5D9005E3365 /* RemovePostView.swift */,
+				039C59A62BADA04100C18765 /* RemoveCommentView.swift */,
 				030245C32BA6123A00D07747 /* RemoveCommunityView.swift */,
 			);
 			path = Composer;
@@ -3838,6 +3844,7 @@
 				CD391F9A2A537EF900E213B5 /* CommentBodyView.swift in Sources */,
 				63344C562A07D81D001BC616 /* Array+Prepend.swift in Sources */,
 				CDBCBA202B537A4B0070F60D /* PostFeedView.swift in Sources */,
+				039C59A72BADA04100C18765 /* RemoveCommentView.swift in Sources */,
 				CDDCF64F2A672C0A003DA3AC /* FancyTabBarLabel.swift in Sources */,
 				CD2698232B9E18450002B459 /* APIAdminPurgeComment.swift in Sources */,
 				CD04D5D92A3614BE008EF95B /* Large Post.swift in Sources */,
@@ -3846,7 +3853,6 @@
 				032109492AA7C41800912DFC /* AvatarView.swift in Sources */,
 				CD4368B02AE23F1400BD8BD1 /* ChildTracker.swift in Sources */,
 				CD863FBC2A6B026400A31ED9 /* DocumentView.swift in Sources */,
-				CD8461662A96F9EB0026A627 /* Website Indicator View.swift in Sources */,
 				038A16E92A7A9C640087987E /* LayoutWidget.swift in Sources */,
 				CDEC95192B5D950D004BA288 /* PostFeedView+Logic.swift in Sources */,
 				CD9A03C82B389F7000C16276 /* EnvironmentValues+FeedType.swift in Sources */,
@@ -3877,6 +3883,7 @@
 				CD2698212B9E18350002B459 /* APIAdminPurgePost.swift in Sources */,
 				030D4AE82AA1278400A3393D /* ErrorDetails+Mock.swift in Sources */,
 				CD2697F82B9E15AD0002B459 /* APIModTransferCommunityView.swift in Sources */,
+				039C59AB2BADC85400C18765 /* RemoveCommentRequest.swift in Sources */,
 				CD4368C62AE240BF00BD8BD1 /* MessageModel.swift in Sources */,
 				CD2BFE782B9F60AC00717611 /* APIClient+Instance.swift in Sources */,
 				6363D60427EE20A200E34822 /* Expanded Post.swift in Sources */,
@@ -4066,6 +4073,7 @@
 				CD29ED372B2E85EA006937CE /* String+Alphabet.swift in Sources */,
 				637218562A3A2AAD008C4816 /* APILocalSite.swift in Sources */,
 				CDA217EE2A630F3300BDA173 /* ReportPost.swift in Sources */,
+				039C59A92BADA5DA00C18765 /* PurgeCommentRequest.swift in Sources */,
 				03E79F3F2AE3E7100006700D /* SortingSettingsView.swift in Sources */,
 				039C8DB92B35A81C0096BAAF /* AccountIconStack.swift in Sources */,
 				CD2698022B9E15D60002B459 /* APIAdminPurgeCommentView.swift in Sources */,

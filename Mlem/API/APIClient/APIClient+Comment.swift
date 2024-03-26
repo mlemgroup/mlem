@@ -101,4 +101,14 @@ extension APIClient {
         let request = try CreateCommentReportRequest(session: session, commentId: id, reason: reason)
         return try await perform(request: request)
     }
+    
+    func removeComment(id: Int, shouldRemove: Bool, reason: String?) async throws -> CommentResponse {
+        let request = try RemoveCommentRequest(session: session, commentId: id, removed: shouldRemove, reason: reason)
+        return try await perform(request: request)
+    }
+    
+    func purgeComment(id: Int, reason: String?) async throws -> SuccessResponse {
+        let request = try PurgeCommentRequest(session: session, commentId: id, reason: reason)
+        return try await perform(request: request)
+    }
 }

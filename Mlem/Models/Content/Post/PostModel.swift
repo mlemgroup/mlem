@@ -41,6 +41,18 @@ class PostModel: ContentIdentifiable, ObservableObject {
     // prevents a voting operation from ocurring while another is ocurring
     var voting: Bool = false
     
+    var linkHost: String? {
+        guard case .link = postType else {
+            return nil
+        }
+        
+        if let rawLink = post.url, var host = URL(string: rawLink)?.host() {
+            host.trimPrefix("www.")
+            return host
+        }
+        return "website"
+    }
+    
     /// Creates a PostModel from an APIPostView
     /// - Parameter apiPostView: APIPostView to create a PostModel representation of
     init(from apiPostView: APIPostView) {

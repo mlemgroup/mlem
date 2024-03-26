@@ -24,7 +24,7 @@ extension BanUserView {
             let reason = reason.isEmpty ? nil : reason
             var user = user
             
-            if contentRemovalType == .purge && isPermanent {
+            if contentRemovalType == .purge, isPermanent {
                 let response = await user.purge(reason: reason)
                 DispatchQueue.main.async {
                     isWaiting = false
@@ -74,6 +74,15 @@ extension BanUserView {
                             post.creator.banned = shouldBan
                         } else {
                             post.creatorBannedFromCommunity = shouldBan
+                        }
+                    }
+                }
+                if let commentTracker {
+                    for comment in commentTracker.comments where comment.commentView.comment.creatorId == user.userId {
+                        if banFromInstance {
+                            comment.commentView.creator.banned = shouldBan
+                        } else {
+                            comment.commentView.creatorBannedFromCommunity = shouldBan
                         }
                     }
                 }
