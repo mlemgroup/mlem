@@ -100,7 +100,7 @@ extension BanUserView {
                         } else {
                             votesTracker.votes[index].creatorBannedFromCommunity = shouldBan
                         }
-                    }
+                    
                 }
             }
             
