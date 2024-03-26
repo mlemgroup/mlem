@@ -30,12 +30,16 @@ extension PostModel {
         var mainFunctions: [MenuFunction] = .init()
         mainFunctions.append(contentsOf: topRowMenuFunctions(editorTracker: editorTracker))
         
-        if let body = post.body, body.isNotEmpty, showSelectText {
+        if showSelectText {
+            var text = self.post.name
+            if let body = post.body, body.isNotEmpty {
+                text += "\n\n\(body)"
+            }
             mainFunctions.append(MenuFunction.standardMenuFunction(
                 text: "Select Text",
                 imageName: Icons.select
             ) {
-                editorTracker.openEditor(with: SelectTextModel(text: body))
+                editorTracker.openEditor(with: SelectTextModel(text: text))
             })
         }
         
