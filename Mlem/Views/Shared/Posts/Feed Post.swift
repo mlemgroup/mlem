@@ -38,6 +38,8 @@ struct FeedPost: View {
     @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
     @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
     
+    @AppStorage("moderatorActionGrouping") var moderatorActionGrouping: ModerationActionGroupingMode = .none
+
     @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
 
@@ -88,14 +90,31 @@ struct FeedPost: View {
     var barThickness: CGFloat { !postModel.read && diffWithoutColor && readMarkStyle == .bar ? CGFloat(readBarThickness) : .zero }
     var showCheck: Bool { postModel.read && diffWithoutColor && readMarkStyle == .check }
     
-    var menuFunctions: [MenuFunction] {
-        postModel.menuFunctions(
+    var combinedMenuFunctions: [MenuFunction] {
+        postModel.combinedMenuFunctions(
             editorTracker: editorTracker,
             showSelectText: postSize == .large,
             postTracker: postTracker,
-            commentTracker: nil,
             community: isMod ? postModel.community : nil,
             modToolTracker: isMod ? modToolTracker : nil
+        )
+    }
+
+    var onlyPersonalMenuFunctions: [MenuFunction] {
+        postModel.personalMenuFunctions(
+            editorTracker: editorTracker,
+            showSelectText: postSize == .large,
+            postTracker: postTracker,
+            community: isMod ? postModel.community : nil,
+            modToolTracker: isMod ? modToolTracker : nil
+        )
+    }
+    
+    var onlyModeratorMenuFunctions: [MenuFunction] {
+        postModel.modMenuFunctions(
+            community: postModel.community,
+            modToolTracker: modToolTracker,
+            postTracker: postTracker
         )
     }
 
@@ -120,7 +139,7 @@ struct FeedPost: View {
                         ]
                     )
                     .contextMenu {
-                        ForEach(menuFunctions) { item in
+                        ForEach(combinedMenuFunctions) { item in
                             MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
                         }
                     }
@@ -156,7 +175,7 @@ struct FeedPost: View {
             CompactPost(
                 post: postModel,
                 showCommunity: showCommunity,
-                menuFunctions: menuFunctions
+                menuFunctions: combinedMenuFunctions
             )
         } else {
             VStack(spacing: 0) {
@@ -178,7 +197,20 @@ struct FeedPost: View {
                             ReadCheck()
                         }
                         
-                        EllipsisMenu(size: 24, menuFunctions: menuFunctions)
+                        if moderatorActionGrouping == .separateMenu {
+                            if isMod {
+                                let functions = onlyModeratorMenuFunctions
+                                EllipsisMenu(
+                                    size: 24,
+                                    systemImage: siteInformation.isAdmin ? Icons.admin : Icons.moderation,
+                                    menuFunctions: functions
+                                )
+                                .opacity(functions.isEmpty ? 0.5 : 1)
+                            }
+                            EllipsisMenu(size: 24, menuFunctions: onlyPersonalMenuFunctions)
+                        } else {
+                            EllipsisMenu(size: 24, menuFunctions: combinedMenuFunctions)
+                        }
                     }
 
                     if postSize == .headline {

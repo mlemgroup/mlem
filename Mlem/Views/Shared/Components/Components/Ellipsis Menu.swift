@@ -9,6 +9,7 @@ import SwiftUI
 
 struct EllipsisMenu: View {
     let size: CGFloat
+    var systemImage: String = Icons.menu
     let menuFunctions: [MenuFunction]
     
     @State private var menuFunctionPopup: MenuFunctionPopup?
@@ -19,7 +20,7 @@ struct EllipsisMenu: View {
                 MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
             }
         } label: {
-            Image(systemName: Icons.menu)
+            Image(systemName: systemImage)
                 .frame(width: size, height: size)
                 .foregroundColor(.primary)
                 .background(RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)

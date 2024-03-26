@@ -6,6 +6,9 @@
 //
 
 import Foundation
+import SwiftUI
+
+// swiftlint:disable file_length
 
 extension PostModel {
     // swiftlint:disable function_body_length
@@ -16,14 +19,69 @@ extension PostModel {
     ///   - community: optional CommunityModel. If this and modToolTracker are present, moderator functions will be included in the menu.
     ///   - modToolTracker: optional ModToolTracker. If this and community are present, moderator functions will be included in the menu.
     ///   - Returns: menu functions for this post
-    @MainActor func menuFunctions(
+    @MainActor func combinedMenuFunctions(
         isExpanded: Bool = false,
         editorTracker: EditorTracker,
         showSelectText: Bool = true,
-        postTracker: StandardPostTracker?,
-        commentTracker: CommentTracker?,
-        community: CommunityModel?,
-        modToolTracker: ModToolTracker?
+        postTracker: StandardPostTracker? = nil,
+        commentTracker: CommentTracker? = nil,
+        community: CommunityModel? = nil,
+        modToolTracker: ModToolTracker? = nil
+    ) -> [MenuFunction] {
+        
+        @AppStorage("moderatorActionGrouping") var moderatorActionGrouping: ModerationActionGroupingMode = .none
+        
+        var functions: [MenuFunction] = .init()
+
+        functions.append(
+            contentsOf: personalMenuFunctions(
+                editorTracker: editorTracker,
+                showSelectText: showSelectText,
+                postTracker: postTracker,
+                community: community,
+                modToolTracker: modToolTracker
+            )
+        )
+        
+        if let community, let modToolTracker {
+            functions.append(.divider)
+            let modFunctions = modMenuFunctions(
+                isExpanded: isExpanded,
+                community: community,
+                modToolTracker: modToolTracker,
+                postTracker: postTracker,
+                commentTracker: commentTracker
+            )
+            if !isExpanded, moderatorActionGrouping != .none {
+                functions.append(
+                    .groupMenuFunction(text: "Moderation", imageName: Icons.moderation, children: modFunctions)
+                )
+            } else {
+                functions.append(contentsOf: modFunctions)
+            }
+        }
+        
+        #if DEBUG
+            if UserDefaults.standard.bool(forKey: "developerMode") {
+                functions.append(.divider)
+                functions.append(
+                    buildDeveloperMenu(
+                        editorTracker: editorTracker,
+                        postTracker: postTracker
+                    )
+                )
+            }
+        #endif
+        
+        return functions
+    }
+    
+    @MainActor func personalMenuFunctions(
+        editorTracker: EditorTracker,
+        showSelectText: Bool = true,
+        postTracker: StandardPostTracker? = nil,
+        community: CommunityModel? = nil,
+        modToolTracker: ModToolTracker? = nil
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         
@@ -85,44 +143,21 @@ extension PostModel {
         
         functions.append(.controlGroupMenuFunction(children: mainFunctions))
         
-        if let community, let modToolTracker {
-            functions.append(.divider)
-            functions.append(
-                contentsOf: modMenuFunctions(
-                    isExpanded: isExpanded,
-                    community: community,
-                    modToolTracker: modToolTracker,
-                    postTracker: postTracker,
-                    commentTracker: commentTracker
-                )
-            )
-        }
-        
-        #if DEBUG
-            if UserDefaults.standard.bool(forKey: "developerMode") {
-                functions.append(.divider)
-                functions.append(
-                    buildDeveloperMenu(
-                        editorTracker: editorTracker,
-                        postTracker: postTracker
-                    )
-                )
-            }
-        #endif
-        
         return functions
     }
 
-    private func modMenuFunctions(
-        isExpanded: Bool,
+    @MainActor func modMenuFunctions(
+        isExpanded: Bool = false,
         community: CommunityModel,
         modToolTracker: ModToolTracker,
-        postTracker: StandardPostTracker?,
-        commentTracker: CommentTracker?
+        postTracker: StandardPostTracker? = nil,
+        commentTracker: CommentTracker? = nil
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         
-        if isExpanded {
+        var showAllActions = isExpanded || UserDefaults.standard.bool(forKey: "showAllModeratorActions")
+        
+        if showAllActions {
             functions.append(MenuFunction.toggleableMenuFunction(
                 toggle: post.featuredCommunity,
                 trueText: "Unpin",
@@ -161,6 +196,19 @@ extension PostModel {
             ) {
                 modToolTracker.removePost(self, shouldRemove: !self.post.removed)
             })
+            
+            // if siteInformation.isAdmin {
+                functions.append(MenuFunction.standardMenuFunction(
+                    text: "Purge",
+                    imageName: Icons.purge,
+                    isDestructive: true
+                ) { }
+                )
+            // }
+            
+            if showAllActions { // siteInformation.isAdmin
+                functions.append(.divider)
+            }
             
             if !(siteInformation.isAdmin && creatorBannedFromCommunity && creator.banned) {
                 functions.append(MenuFunction.toggleableMenuFunction(
@@ -201,6 +249,15 @@ extension PostModel {
                     )
                 })
             }
+            
+            // if siteInformation.isAdmin {
+                functions.append(MenuFunction.standardMenuFunction(
+                    text: "Purge User",
+                    imageName: Icons.purge,
+                    isDestructive: true
+                ) { }
+                )
+            // }
         }
         
         return functions
@@ -393,3 +450,5 @@ extension PostModel {
         }
     #endif
 }
+
+// swiftlint:enable file_length
