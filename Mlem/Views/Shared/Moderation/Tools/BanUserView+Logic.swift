@@ -23,25 +23,16 @@ extension BanUserView {
         Task {
             let reason = reason.isEmpty ? nil : reason
             var user = user
-            
-            if contentRemovalType == .purge && isPermanent {
-                let response = await user.purge(reason: reason)
-                DispatchQueue.main.async {
-                    isWaiting = false
-                }
-                await handleResult(response)
-            } else {
-                await user.toggleBan(
-                    expires: expires,
-                    reason: reason,
-                    removeData: contentRemovalType == .remove
-                )
-                DispatchQueue.main.async {
-                    isWaiting = false
-                }
-                
-                await handleResult(user.banned)
+            await user.toggleBan(
+                expires: expires,
+                reason: reason,
+                removeData: removeContent
+            )
+            DispatchQueue.main.async {
+                isWaiting = false
             }
+            
+            await handleResult(user.banned)
         }
     }
     
@@ -51,7 +42,7 @@ extension BanUserView {
             let updatedBannedStatus = await community.banUser(
                 userId: user.userId,
                 ban: shouldBan,
-                removeData: contentRemovalType == .remove,
+                removeData: removeContent,
                 reason: reason.isEmpty ? nil : reason,
                 expires: expires
             )
@@ -68,24 +59,22 @@ extension BanUserView {
             await notifier.add(.success("\(verb.capitalized)ned User"))
             
             await MainActor.run {
-                if let postTracker {
-                    for post in postTracker.items where post.creator.userId == user.userId {
+                userRemovalWalker.remove(
+                    userId: user.userId,
+                    postAction: { post in
                         if banFromInstance {
                             post.creator.banned = shouldBan
                         } else {
                             post.creatorBannedFromCommunity = shouldBan
                         }
-                    }
-                }
-                if let commentTracker {
-                    for comment in commentTracker.comments where comment.commentView.comment.creatorId == user.userId {
+                    },
+                    commentAction: { comment in
                         if banFromInstance {
                             comment.commentView.creator.banned = shouldBan
                         } else {
                             comment.commentView.creatorBannedFromCommunity = shouldBan
                         }
-                    }
-                }
+                    })
             }
             
             DispatchQueue.main.async {

@@ -11,7 +11,7 @@ import Foundation
 // swiftlint:disable type_body_length
 /// Internal model to represent a post
 /// Note: this is just the first pass at decoupling the internal models from the API models--to avoid massive merge conflicts and an unreviewably large PR, I've kept the structure practically identical, and will slowly morph it over the course of several PRs. Eventually all of the API types that this model uses will go away and everything downstream of the repositories won't ever know there's an API at all :)
-class PostModel: ContentIdentifiable, ObservableObject {
+class PostModel: ContentIdentifiable, Purgable, ObservableObject {
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.apiClient) var apiClient

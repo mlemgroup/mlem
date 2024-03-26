@@ -156,6 +156,7 @@ extension PostModel {
         var functions: [MenuFunction] = .init()
         
         var showAllActions = isExpanded || UserDefaults.standard.bool(forKey: "showAllModeratorActions")
+        @AppStorage("moderatorActionGrouping") var moderatorActionGrouping: ModerationActionGroupingMode = .none
         
         if showAllActions {
             functions.append(MenuFunction.toggleableMenuFunction(
@@ -197,16 +198,18 @@ extension PostModel {
                 modToolTracker.removePost(self, shouldRemove: !self.post.removed)
             })
             
-            // if siteInformation.isAdmin {
+            if siteInformation.isAdmin {
                 functions.append(MenuFunction.standardMenuFunction(
                     text: "Purge",
                     imageName: Icons.purge,
                     isDestructive: true
-                ) { }
+                ) {
+                    modToolTracker.purgeContent(self)
+                }
                 )
-            // }
+            }
             
-            if showAllActions { // siteInformation.isAdmin
+            if siteInformation.isAdmin {
                 functions.append(.divider)
             }
             
@@ -244,20 +247,21 @@ extension PostModel {
                         from: community,
                         bannedFromCommunity: self.creatorBannedFromCommunity,
                         shouldBan: !self.creator.banned,
-                        postTracker: postTracker,
-                        commentTracker: commentTracker
+                        userRemovalWalker: .init(postTracker: postTracker, commentTracker: commentTracker)
                     )
                 })
             }
             
-            // if siteInformation.isAdmin {
+            if siteInformation.isAdmin {
                 functions.append(MenuFunction.standardMenuFunction(
                     text: "Purge User",
                     imageName: Icons.purge,
                     isDestructive: true
-                ) { }
+                ) {
+                    modToolTracker.purgeContent(self.creator)
+                }
                 )
-            // }
+            }
         }
         
         return functions

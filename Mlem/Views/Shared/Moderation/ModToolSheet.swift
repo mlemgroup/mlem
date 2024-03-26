@@ -15,6 +15,8 @@ struct ModToolSheet: View {
         switch tool {
         case .editCommunity:
             Text("Not yet!")
+        case let .purgeContent(content):
+            PurgeContentView(content: content)
         case let .communityBan(user, community, bannedFromCommunity, shouldBan, postTracker, commentTracker):
             BanUserView(
                 user: user,
