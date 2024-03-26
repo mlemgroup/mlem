@@ -7,10 +7,10 @@
 
 import Foundation
 
-extension PersonalInboxView {
+extension InboxView {
     func refresh() async {
         do {
-            switch curTab {
+            switch selectedInboxTab {
             case .all:
                 await inboxTracker.refresh(clearBeforeFetch: false)
             case .replies:
@@ -43,6 +43,23 @@ extension PersonalInboxView {
     
     func markAllAsRead() async {
         await inboxTracker.markAllAsRead(unreadTracker: unreadTracker)
+    }
+    
+    func genFeedSwitchingFunctions() -> [MenuFunction] {
+        var ret: [MenuFunction] = .init()
+        availableFeeds.forEach { type in
+            let (imageName, enabled) = type != selectedInbox
+                ? (type.iconName, true)
+                : (type.iconNameFill, false)
+            ret.append(MenuFunction.standardMenuFunction(
+                text: type.label,
+                imageName: imageName
+            ) {
+                selectedInbox = type
+            }
+            )
+        }
+        return ret
     }
     
     func genMenuFunctions() -> [MenuFunction] {

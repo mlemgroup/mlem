@@ -9,16 +9,6 @@ import Dependencies
 import Foundation
 import SwiftUI
 
-enum InboxTab: String, CaseIterable, Identifiable {
-    case all, replies, mentions, messages
-    
-    var id: Self { self }
-    
-    var label: String {
-        rawValue.capitalized
-    }
-}
-
 struct PersonalInboxView: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.commentRepository) var commentRepository
@@ -52,38 +42,13 @@ struct PersonalInboxView: View {
     @AppStorage("shouldFilterRead") var shouldFilterRead: Bool = false
     
     // item feeds
-    @StateObject var inboxTracker: InboxTracker
-    @StateObject var replyTracker: ReplyTracker
-    @StateObject var mentionTracker: MentionTracker
-    @StateObject var messageTracker: MessageTracker
+    @ObservedObject var inboxTracker: InboxTracker
+    @ObservedObject var replyTracker: ReplyTracker
+    @ObservedObject var mentionTracker: MentionTracker
+    @ObservedObject var messageTracker: MessageTracker
     
-    init() {
-        // TODO: once the post tracker is changed we won't need this here...
-        @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
-        @AppStorage("shouldFilterRead") var unreadOnly = false
-        @AppStorage("upvoteOnSave") var upvoteOnSave = false
-        
-        let newReplyTracker = ReplyTracker(internetSpeed: internetSpeed, sortType: .published, unreadOnly: unreadOnly)
-        let newMentionTracker = MentionTracker(internetSpeed: internetSpeed, sortType: .published, unreadOnly: unreadOnly)
-        let newMessageTracker = MessageTracker(internetSpeed: internetSpeed, sortType: .published, unreadOnly: unreadOnly)
-        
-        let newInboxTracker = InboxTracker(
-            internetSpeed: internetSpeed,
-            sortType: .published,
-            childTrackers: [
-                newReplyTracker,
-                newMentionTracker,
-                newMessageTracker
-            ]
-        )
-        
-        self._inboxTracker = StateObject(wrappedValue: newInboxTracker)
-        self._replyTracker = StateObject(wrappedValue: newReplyTracker)
-        self._mentionTracker = StateObject(wrappedValue: newMentionTracker)
-        self._messageTracker = StateObject(wrappedValue: newMessageTracker)
-    }
-    
-    @State var curTab: InboxTab = .all
+    let curTab: InboxTab
+    // @State var curTab: InboxTab = .all
     
     var body: some View {
         content
@@ -97,7 +62,7 @@ struct PersonalInboxView: View {
                         .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
                 }
                 
-                ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
+//                 ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
             }
             .hoistNavigation {
                 withAnimation {
@@ -109,67 +74,68 @@ struct PersonalInboxView: View {
             .environmentObject(inboxTracker)
             .task {
                 // wrapping in task so view redraws don't cancel
-                Task(priority: .userInitiated) {
-                    await refresh()
-                }
+//                Task(priority: .userInitiated) {
+//                    await refresh()
+//                }
             }
-            .onChange(of: shouldFilterRead) { newValue in
-                Task(priority: .userInitiated) {
-                    await handleShouldFilterReadChange(newShouldFilterRead: newValue)
-                }
-            }
+//            .onChange(of: shouldFilterRead) { newValue in
+//                Task(priority: .userInitiated) {
+//                    await handleShouldFilterReadChange(newShouldFilterRead: newValue)
+//                }
+//            }
     }
     
     @ViewBuilder
     private var content: some View {
-        ScrollView {
-            feed
-        }
-        .onChange(of: curTab) { _ in
-            scrollProxy?.scrollTo(scrollToTop)
-        }
-        .fancyTabScrollCompatible()
-        .refreshable {
-            // wrapping in task so view redraws don't cancel
-            // awaiting the value makes the refreshable indicator properly wait for the call to finish
-            await Task {
-                await refresh()
-            }.value
-        }
+        AllItemsFeedView(inboxTracker: inboxTracker)
+//         ScrollView {
+        // feed
+//         }
+//        .onChange(of: curTab) { _ in
+//            scrollProxy?.scrollTo(scrollToTop)
+//        }
+//        .fancyTabScrollCompatible()
+//        .refreshable {
+//            // wrapping in task so view redraws don't cancel
+//            // awaiting the value makes the refreshable indicator properly wait for the call to finish
+//            await Task {
+//                await refresh()
+//            }.value
+//        }
     }
     
     @ViewBuilder
     var feed: some View {
-        LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
-            ScrollToView(appeared: $scrollToTopAppeared)
-                .id(scrollToTop)
-            
-            FeedHeaderView(feedType: InboxSelection.inbox, showDropdownIndicator: false)
-            
-            Section {
-                if errorOccurred {
-                    errorView()
-                } else {
-                    switch curTab {
-                    case .all:
-                        AllItemsFeedView(inboxTracker: inboxTracker)
-                    case .replies:
-                        RepliesFeedView(replyTracker: replyTracker)
-                    case .mentions:
-                        MentionsFeedView(mentionTracker: mentionTracker)
-                    case .messages:
-                        MessagesFeedView(messageTracker: messageTracker)
-                    }
-                }
-            } header: {
-                BubblePicker(InboxTab.allCases, selected: $curTab, withDividers: [.bottom]) { tab in
-                    Text(tab.label)
-                }
-                .background(Color.systemBackground.opacity(scrollToTopAppeared ? 1 : 0))
-                .background(.bar)
-                .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
+//        LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
+//            ScrollToView(appeared: $scrollToTopAppeared)
+//                .id(scrollToTop)
+//
+//            FeedHeaderView(feedType: InboxSelection.inbox, showDropdownIndicator: false)
+//
+        //             Section {
+        if errorOccurred {
+            errorView()
+        } else {
+            switch curTab {
+            case .all:
+                AllItemsFeedView(inboxTracker: inboxTracker)
+            case .replies:
+                RepliesFeedView(replyTracker: replyTracker)
+            case .mentions:
+                MentionsFeedView(mentionTracker: mentionTracker)
+            case .messages:
+                MessagesFeedView(messageTracker: messageTracker)
             }
         }
+//            } header: {
+//                BubblePicker(InboxTab.allCases, selected: $curTab, withDividers: [.bottom]) { tab in
+//                    Text(tab.label)
+//                }
+//                .background(Color.systemBackground.opacity(scrollToTopAppeared ? 1 : 0))
+//                .background(.bar)
+//                .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
+//            }
+//         }
     }
     
     @ViewBuilder
@@ -186,23 +152,23 @@ struct PersonalInboxView: View {
         .foregroundColor(.secondary)
     }
     
-    @ViewBuilder
-    private var ellipsisMenu: some View {
-        Menu {
-            ForEach(genMenuFunctions()) { item in
-                MenuButton(menuFunction: item, menuFunctionPopup: .constant(nil)) // no destructive functions
-            }
-        } label: {
-            Label("More", systemImage: Icons.menuCircle)
-                .frame(height: AppConstants.barIconHitbox)
-                .contentShape(Rectangle())
-        }
-    }
+//    @ViewBuilder
+//    private var ellipsisMenu: some View {
+//        Menu {
+//            ForEach(genMenuFunctions()) { item in
+//                MenuButton(menuFunction: item, menuFunctionPopup: .constant(nil)) // no destructive functions
+//            }
+//        } label: {
+//            Label("More", systemImage: Icons.menuCircle)
+//                .frame(height: AppConstants.barIconHitbox)
+//                .contentShape(Rectangle())
+//        }
+//    }
     
     @ViewBuilder
     var navBarTitle: some View {
         // this is a bit silly as its own view right now but it will be a menu once mod mail is implemented
-        Text(InboxSelection.inbox.label)
+        Text(InboxSelection.personal.label)
             .font(.headline)
     }
 }

@@ -71,7 +71,6 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                 }
                 .scrollIndicators(.hidden)
                 .onChange(of: selected) { newValue in
-                    print("DEBUG changed")
                     let newIndex = tabs.firstIndex(of: newValue) ?? 0
                     withAnimation(.interactiveSpring(response: 0.2, dampingFraction: 0.8)) {
                         currentTabIndex = newIndex
