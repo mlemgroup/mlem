@@ -278,7 +278,8 @@ extension ReplyModel {
         // report
         ret.append(MenuFunction.standardMenuFunction(
             text: "Report",
-            imageName: Icons.moderationReport
+            imageName: Icons.moderationReport,
+            isDestructive: true
         ) {
             Task(priority: .userInitiated) {
                 await self.report(editorTracker: editorTracker, unreadTracker: unreadTracker)

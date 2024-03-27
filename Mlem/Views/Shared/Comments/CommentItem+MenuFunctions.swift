@@ -122,7 +122,8 @@ extension CommentItem {
                 // report
                 functions.append(MenuFunction.standardMenuFunction(
                     text: "Report",
-                    imageName: Icons.moderationReport
+                    imageName: Icons.moderationReport,
+                    isDestructive: true
                 ) {
                     editorTracker.openEditor(with: ConcreteEditorModel(
                         comment: hierarchicalComment.commentView,

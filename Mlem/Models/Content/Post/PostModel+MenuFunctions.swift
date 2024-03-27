@@ -130,7 +130,8 @@ extension PostModel {
                 // Report
                 functions.append(MenuFunction.standardMenuFunction(
                     text: "Report",
-                    imageName: Icons.moderationReport
+                    imageName: Icons.moderationReport,
+                    isDestructive: true
                 ) {
                     editorTracker.openEditor(
                         with: ConcreteEditorModel(post: self, operation: PostOperation.reportPost)
