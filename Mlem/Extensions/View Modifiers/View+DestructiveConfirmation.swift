@@ -19,7 +19,7 @@ struct MenuFunctionPopupView: ViewModifier {
             ) {
                 if let actions = menuFunctionPopup?.actions {
                     ForEach(actions, id: \.text) { action in
-                        Button(action.text, role: .destructive, action: action.callback)
+                        Button(action.text, role: action.isDestructive ? .destructive : nil, action: action.callback)
                     }
                 }
             } message: {

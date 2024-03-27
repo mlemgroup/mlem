@@ -160,18 +160,40 @@ extension PostModel {
         @AppStorage("moderatorActionGrouping") var moderatorActionGrouping: ModerationActionGroupingMode = .none
         
         if showAllActions {
-            functions.append(MenuFunction.toggleableMenuFunction(
-                toggle: post.featuredCommunity,
-                trueText: "Unpin",
-                trueImageName: Icons.unpin,
-                falseText: "Pin",
-                falseImageName: Icons.pin
-            ) {
-                Task {
-                    await self.toggleFeatured(featureType: .community)
-                    await self.notifier.add(.success("\(self.post.featuredCommunity ? "P" : "Unp")inned post"))
-                }
-            })
+            if siteInformation.isAdmin {
+                functions.append(MenuFunction.standardMenuFunction(
+                    text: "Pin",
+                    imageName: Icons.pin,
+                    prompt: "Pin/Unpin from...",
+                    actions: [
+                        .init(text: "Community") {
+                            Task {
+                                await self.toggleFeatured(featureType: .community)
+                                await self.notifier.add(.success("\(self.post.featuredCommunity ? "P" : "Unp")inned post"))
+                            }
+                        },
+                        .init(text: "Instance") {
+                            Task {
+                                await self.toggleFeatured(featureType: .local)
+                                await self.notifier.add(.success("\(self.post.featuredLocal ? "P" : "Unp")inned post"))
+                            }
+                        }
+                    ]
+                ))
+            } else {
+                functions.append(MenuFunction.toggleableMenuFunction(
+                    toggle: post.featuredCommunity,
+                    trueText: "Unpin",
+                    trueImageName: Icons.unpin,
+                    falseText: "Pin",
+                    falseImageName: Icons.pin
+                ) {
+                    Task {
+                        await self.toggleFeatured(featureType: .community)
+                        await self.notifier.add(.success("\(self.post.featuredCommunity ? "P" : "Unp")inned post"))
+                    }
+                })
+            }
             
             functions.append(MenuFunction.toggleableMenuFunction(
                 toggle: post.locked,

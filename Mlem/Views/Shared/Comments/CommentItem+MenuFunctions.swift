@@ -14,16 +14,19 @@ extension CommentItem {
     func combinedMenuFunctions() -> [MenuFunction] {
         
         @AppStorage("moderatorActionGrouping") var moderatorActionGrouping: ModerationActionGroupingMode = .none
+        let isMod = siteInformation.isModOrAdmin(communityId: hierarchicalComment.commentView.post.communityId)
         
         var functions: [MenuFunction] = .init()
         
         functions.append(contentsOf: personalMenuFunctions())
-        if moderatorActionGrouping != .none {
-            functions.append(
-                .groupMenuFunction(text: "Moderation", imageName: Icons.moderation, children: modMenuFunctions())
-            )
-        } else {
-            functions.append(contentsOf: modMenuFunctions())
+        if isMod {
+            if moderatorActionGrouping != .none {
+                functions.append(
+                    .groupMenuFunction(text: "Moderation", imageName: Icons.moderation, children: modMenuFunctions())
+                )
+            } else {
+                functions.append(contentsOf: modMenuFunctions())
+            }
         }
         return functions
     }

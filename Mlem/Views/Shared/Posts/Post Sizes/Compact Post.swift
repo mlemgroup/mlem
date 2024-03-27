@@ -114,12 +114,10 @@ struct CompactPost: View {
     @ViewBuilder
     private var compactInfo: some View {
         HStack(spacing: 8) {
-            if post.post.featuredCommunity {
-                if post.post.featuredLocal {
-                    StickiedTag(tagType: .local, compact: true)
-                } else if post.post.featuredCommunity {
-                    StickiedTag(tagType: .community, compact: true)
-                }
+            if post.post.featuredLocal {
+                StickiedTag(tagType: .local, compact: true)
+            } else if post.post.featuredCommunity {
+                StickiedTag(tagType: .community, compact: true)
             }
             
             if post.post.nsfw || post.community.nsfw {
