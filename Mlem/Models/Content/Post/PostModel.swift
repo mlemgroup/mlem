@@ -256,7 +256,8 @@ class PostModel: ContentIdentifiable, Purgable, ObservableObject {
     func toggleFeatured(featureType: APIPostFeatureType) async {
         // no state fake because it would be extremely tedious for little value add now but very easy to do post-2.0
         do {
-            let response = try await apiClient.featurePost(id: postId, shouldFeature: !post.featuredCommunity, featureType: featureType)
+            let isFeatured = (featureType == .local) ? post.featuredLocal : post.featuredCommunity
+            let response = try await apiClient.featurePost(id: postId, shouldFeature: !isFeatured, featureType: featureType)
             await reinit(from: PostModel(from: response))
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
