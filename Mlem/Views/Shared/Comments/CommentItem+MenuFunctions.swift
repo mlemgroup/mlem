@@ -6,14 +6,25 @@
 //
 
 import Foundation
+import SwiftUI
+
+// swiftlint:disable function_body_length
 
 extension CommentItem {
     func combinedMenuFunctions() -> [MenuFunction] {
-        let isMod = siteInformation.isModOrAdmin(communityId: hierarchicalComment.commentView.post.communityId)
+        
+        @AppStorage("moderatorActionGrouping") var moderatorActionGrouping: ModerationActionGroupingMode = .none
+        
         var functions: [MenuFunction] = .init()
         
         functions.append(contentsOf: personalMenuFunctions())
-        functions.append(contentsOf: modMenuFunctions())
+        if moderatorActionGrouping != .none {
+            functions.append(
+                .groupMenuFunction(text: "Moderation", imageName: Icons.moderation, children: modMenuFunctions())
+            )
+        } else {
+            functions.append(contentsOf: modMenuFunctions())
+        }
         return functions
     }
     
@@ -234,6 +245,9 @@ extension CommentItem {
                 })
             }
         }
+        
+        return functions
     }
 }
 
+// swiftlint:enable function_body_length

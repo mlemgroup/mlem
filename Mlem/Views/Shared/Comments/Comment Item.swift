@@ -161,7 +161,9 @@ struct CommentItem: View {
                     isParentCollapsed: $hierarchicalComment.isParentCollapsed,
                     isCollapsed: $hierarchicalComment.isCollapsed,
                     showPostContext: showPostContext,
-                    menuFunctions: combinedMenuFunctions(),
+                    combinedMenuFunctions: combinedMenuFunctions(),
+                    personalMenuFunctions: personalMenuFunctions(),
+                    modMenuFunctions: modMenuFunctions(),
                     links: hierarchicalComment.links
                 )
                 // top and bottom spacing uses default even when compact--it's *too* compact otherwise
@@ -223,7 +225,7 @@ struct CommentItem: View {
         )
         .border(width: borderWidth, edges: [.leading], color: threadingColors[depth % threadingColors.count])
         .contextMenu {
-            ForEach(genMenuFunctions()) { item in
+            ForEach(combinedMenuFunctions()) { item in
                 MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
             }
         }
