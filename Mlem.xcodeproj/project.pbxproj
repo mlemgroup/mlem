@@ -586,6 +586,7 @@
 		CDCBD7262A8D69A200387A2C /* Instance Picker View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCBD7252A8D69A200387A2C /* Instance Picker View.swift */; };
 		CDCBD7282A8D6B7700387A2C /* Instance Picker View Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCBD7272A8D6B7700387A2C /* Instance Picker View Logic.swift */; };
 		CDCBD72B2A8EC0A800387A2C /* Instance Summary.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCBD72A2A8EC0A800387A2C /* Instance Summary.swift */; };
+		CDD0B8AB2BB37B3D003E7174 /* WebsiteIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0B8AA2BB37B3D003E7174 /* WebsiteIndicatorView.swift */; };
 		CDD0EF9C2B7D6B9100CA3504 /* ModToolTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EF9B2B7D6B9100CA3504 /* ModToolTracker.swift */; };
 		CDD0EF9E2B7D6F3E00CA3504 /* ModToolSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EF9D2B7D6F3E00CA3504 /* ModToolSheet.swift */; };
 		CDD0EFA22B7D9E5800CA3504 /* UserListRowBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EFA12B7D9E5800CA3504 /* UserListRowBody.swift */; };
@@ -1256,6 +1257,7 @@
 		CDCBD7252A8D69A200387A2C /* Instance Picker View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Instance Picker View.swift"; sourceTree = "<group>"; };
 		CDCBD7272A8D6B7700387A2C /* Instance Picker View Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Instance Picker View Logic.swift"; sourceTree = "<group>"; };
 		CDCBD72A2A8EC0A800387A2C /* Instance Summary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Instance Summary.swift"; sourceTree = "<group>"; };
+		CDD0B8AA2BB37B3D003E7174 /* WebsiteIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsiteIndicatorView.swift; sourceTree = "<group>"; };
 		CDD0EF9B2B7D6B9100CA3504 /* ModToolTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModToolTracker.swift; sourceTree = "<group>"; };
 		CDD0EF9D2B7D6F3E00CA3504 /* ModToolSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModToolSheet.swift; sourceTree = "<group>"; };
 		CDD0EFA12B7D9E5800CA3504 /* UserListRowBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListRowBody.swift; sourceTree = "<group>"; };
@@ -1920,6 +1922,7 @@
 				035EB0C92A8687C200227859 /* JumpButtonView.swift */,
 				CD1446172A58FC3B00610EF1 /* InfoStackView.swift */,
 				CDE3BA882A8C64BD00B972E2 /* Collapsible Text Item.swift */,
+				CDD0B8AA2BB37B3D003E7174 /* WebsiteIndicatorView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -4153,6 +4156,7 @@
 				CDA217E62A63016A00BDA173 /* ReportMessage.swift in Sources */,
 				CD9DD8832A622A6C0044EA8E /* ReportCommentReply.swift in Sources */,
 				6FB4A4DE2B47860B00A7CD82 /* CollapsedCommentReplies.swift in Sources */,
+				CDD0B8AB2BB37B3D003E7174 /* WebsiteIndicatorView.swift in Sources */,
 				CD3FBCE12A4A836000B2063F /* AllItemsFeedView.swift in Sources */,
 				6D91D4582A4159D8006B8F9A /* FavoriteStarButtonStyle.swift in Sources */,
 				63F0C7B92A0533C700A18C5D /* Add Account View.swift in Sources */,
