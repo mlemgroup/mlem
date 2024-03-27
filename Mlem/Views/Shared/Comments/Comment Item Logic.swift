@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-// swiftlint:disable file_length
 extension CommentItem {
     func voteOnComment(inputOp: ScoringOperation) async {
         hapticManager.play(haptic: .lightSuccess, priority: .low)
@@ -203,4 +202,3 @@ extension CommentItem {
         }
     }
 }
-// swiftlint:enable file_length

@@ -54,7 +54,6 @@ extension BanUserView {
         }
     }
     
-    // swiftlint:disable:next cyclomatic_complexity
     func handleResult(_ result: Bool) async {
         if result == shouldBan {
             await notifier.add(.success("\(verb.capitalized)ned User"))
