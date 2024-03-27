@@ -23,16 +23,27 @@ extension UserModel {
         )
     }
     
-    func banMenuFunction(
-        _ callback: @escaping (_ item: Self) -> Void = { _ in },
-        modToolTracker: ModToolTracker
-    ) -> MenuFunction {
-        .standardMenuFunction(
-            text: banned ? "Unban" : "Ban",
-            imageName: Icons.instanceBan,
-            isDestructive: true,
+    func banMenuFunction(modToolTracker: ModToolTracker) -> MenuFunction {
+        .toggleableMenuFunction(
+            toggle: banned,
+            trueText: "Unban",
+            trueImageName: Icons.instanceBan,
+            falseText: "Ban",
+            falseImageName: Icons.instanceBan,
+            isDestructive: .whenFalse,
             callback: {
                 modToolTracker.banUser(self, shouldBan: !banned)
+            }
+        )
+    }
+    
+    func purgeMenuFunction(modToolTracker: ModToolTracker) -> MenuFunction {
+        .standardMenuFunction(
+            text: "Purge",
+            imageName: Icons.purge,
+            isDestructive: true,
+            callback: {
+                modToolTracker.purgeContent(self)
             }
         )
     }
@@ -82,8 +93,9 @@ extension UserModel {
         functions.append(.divider)
         
         if !isOwnUser {
-            if siteInformation.myUser?.isAdmin ?? false, !(isAdmin ?? false), let modToolTracker {
-                functions.append(banMenuFunction(callback, modToolTracker: modToolTracker))
+            if siteInformation.isAdmin, !(self.isAdmin ?? false), let modToolTracker {
+                functions.append(banMenuFunction(modToolTracker: modToolTracker))
+                functions.append(purgeMenuFunction(modToolTracker: modToolTracker))
             }
         }
         return functions
