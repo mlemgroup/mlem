@@ -11,6 +11,7 @@ import SwiftUI
 
 struct ThumbnailImageView: View {
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
+    @AppStorage("showWebsiteIndicatorIcon") var showWebsiteIndicatorIcon: Bool = false
     
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.postRepository) var postRepository
@@ -83,6 +84,16 @@ struct ThumbnailImageView: View {
             if let url = post.post.linkUrl {
                 openURL(url)
                 markPostAsRead()
+            }
+        }
+        .overlay {
+            if showWebsiteIndicatorIcon {
+                Group {
+                    WebsiteIndicatorView()
+                        .frame(width: 20, height: 20)
+                        .padding(6)
+                }
+                .frame(width: size.width, height: size.height, alignment: .topLeading)
             }
         }
     }

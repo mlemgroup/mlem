@@ -13,6 +13,7 @@ struct AccessibilitySettingsView: View {
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
     @AppStorage("showSettingsIcons") var showSettingsIcons: Bool = true
+    @AppStorage("showWebsiteIndicatorIcon") var showWebsiteIndicatorIcon: Bool = false
     
     @State private var readBarThicknessSlider: CGFloat = 3.0
     
@@ -84,6 +85,12 @@ struct AccessibilitySettingsView: View {
                     settingPictureSystemName: Icons.icon,
                     settingName: "Show Settings Icons",
                     isTicked: $showSettingsIcons
+                )
+                
+                SwitchableSettingsItem(
+                    settingPictureSystemName: Icons.browser,
+                    settingName: "Thumbnail Website Indicator",
+                    isTicked: $showWebsiteIndicatorIcon
                 )
             } header: {
                 Text("Icons")
