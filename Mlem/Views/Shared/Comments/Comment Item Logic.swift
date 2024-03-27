@@ -180,6 +180,7 @@ extension CommentItem {
     // MARK: helpers
     
     // swiftlint:disable function_body_length
+    // swiftlint:disable:next cyclomatic_complexity
     func genMenuFunctions() -> [MenuFunction] {
         let isMod = siteInformation.isModOrAdmin(communityId: hierarchicalComment.commentView.post.communityId)
         
@@ -275,8 +276,7 @@ extension CommentItem {
                 // report
                 mainFunctions.append(MenuFunction.standardMenuFunction(
                     text: "Report",
-                    imageName: Icons.moderationReport,
-                    confirmationPrompt: AppConstants.reportCommentPrompt
+                    imageName: Icons.moderationReport
                 ) {
                     editorTracker.openEditor(with: ConcreteEditorModel(
                         comment: hierarchicalComment.commentView,
@@ -318,14 +318,30 @@ extension CommentItem {
                     trueImageName: Icons.restore,
                     falseText: "Remove",
                     falseImageName: Icons.remove,
-                    isDestructive: .always
+                    isDestructive: .whenFalse
                 ) {
                     modToolTracker.removeComment(
                         hierarchicalComment,
                         shouldRemove: !self.hierarchicalComment.commentView.comment.removed
                     )
                 })
-                
+            }
+            
+            if siteInformation.isAdmin {
+                ret.append(.standardMenuFunction(
+                    text: "Purge",
+                    imageName: Icons.purge,
+                    isDestructive: true
+                ) {
+                    modToolTracker.purgeContent(
+                        hierarchicalComment,
+                        userRemovalWalker: .init(commentTracker: commentTracker)
+                    )
+                })
+                ret.append(.divider)
+            }
+            
+            if !isOwnComment {
                 let creatorBannedFromCommunity = hierarchicalComment.commentView.creatorBannedFromCommunity
                 let creatorBannedFromInstance = hierarchicalComment.commentView.creator.banned
                 
@@ -343,8 +359,7 @@ extension CommentItem {
                             from: .init(from: hierarchicalComment.commentView.community),
                             bannedFromCommunity: creatorBannedFromCommunity,
                             shouldBan: !creatorBannedFromCommunity,
-                            postTracker: nil,
-                            commentTracker: commentTracker
+                            userRemovalWalker: .init(commentTracker: commentTracker)
                         )
                     })
                 }
@@ -363,8 +378,20 @@ extension CommentItem {
                             from: .init(from: hierarchicalComment.commentView.community),
                             bannedFromCommunity: creatorBannedFromCommunity,
                             shouldBan: !creatorBannedFromInstance,
-                            postTracker: nil,
-                            commentTracker: commentTracker
+                            userRemovalWalker: .init(commentTracker: commentTracker)
+                        )
+                    })
+                }
+                
+                if siteInformation.isAdmin {
+                    ret.append(.standardMenuFunction(
+                        text: "Purge User",
+                        imageName: Icons.purge,
+                        isDestructive: true
+                    ) {
+                        modToolTracker.purgeContent(
+                            UserModel(from: hierarchicalComment.commentView.creator),
+                            userRemovalWalker: .init(commentTracker: commentTracker)
                         )
                     })
                 }

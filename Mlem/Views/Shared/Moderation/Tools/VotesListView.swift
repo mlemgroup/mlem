@@ -89,14 +89,16 @@ struct VotesListView: View {
     }
     
     func menuFunctions(for item: VoteModel) -> [MenuFunction] {
+        guard siteInformation.userId != item.user.userId else { return [] }
+        
         var functions = [MenuFunction]()
         
         if !(siteInformation.isAdmin && item.creatorBannedFromCommunity && item.user.banned) {
             functions.append(MenuFunction.toggleableMenuFunction(
                 toggle: item.creatorBannedFromCommunity,
-                trueText: "Unban",
+                trueText: "Unban User",
                 trueImageName: Icons.communityUnban,
-                falseText: "Ban",
+                falseText: "Ban User",
                 falseImageName: item.user.banned ? Icons.communityBan : Icons.instanceBan,
                 isDestructive: .whenFalse
             ) {
@@ -105,7 +107,7 @@ struct VotesListView: View {
                     from: communityContext,
                     bannedFromCommunity: item.creatorBannedFromCommunity,
                     shouldBan: !item.creatorBannedFromCommunity,
-                    votesTracker: votesTracker
+                    userRemovalWalker: .init(votesTracker: votesTracker)
                 )
             })
         }
@@ -113,9 +115,9 @@ struct VotesListView: View {
         if siteInformation.isAdmin, item.user.banned || item.creatorBannedFromCommunity {
             functions.append(MenuFunction.toggleableMenuFunction(
                 toggle: item.user.banned,
-                trueText: "Unban",
+                trueText: "Unban User",
                 trueImageName: Icons.instanceUnban,
-                falseText: "Ban",
+                falseText: "Ban User",
                 falseImageName: Icons.instanceBan,
                 isDestructive: .whenFalse
             ) {
@@ -124,8 +126,17 @@ struct VotesListView: View {
                     from: communityContext,
                     bannedFromCommunity: item.creatorBannedFromCommunity,
                     shouldBan: !item.user.banned,
-                    votesTracker: votesTracker
+                    userRemovalWalker: .init(votesTracker: votesTracker)
                 )
+            })
+        }
+        if siteInformation.isAdmin {
+            functions.append(.standardMenuFunction(
+                text: "Purge User",
+                imageName: Icons.purge,
+                isDestructive: true
+            ) {
+                modToolTracker.purgeContent(item.user, userRemovalWalker: .init(votesTracker: votesTracker))
             })
         }
         

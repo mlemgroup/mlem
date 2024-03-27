@@ -21,7 +21,7 @@ struct EllipsisMenu: View {
             }
         } label: {
             Image(systemName: systemImage)
-                .frame(width: size, height: size)
+                .frame(width: 24, height: size)
                 .foregroundColor(.primary)
                 .background(RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
                     .aspectRatio(1, contentMode: .fit)

@@ -131,8 +131,7 @@ extension PostModel {
                 // Report
                 mainFunctions.append(MenuFunction.standardMenuFunction(
                     text: "Report",
-                    imageName: Icons.moderationReport,
-                    confirmationPrompt: AppConstants.reportPostPrompt
+                    imageName: Icons.moderationReport
                 ) {
                     editorTracker.openEditor(
                         with: ConcreteEditorModel(post: self, operation: PostOperation.reportPost)
@@ -188,6 +187,7 @@ extension PostModel {
                     await self.notifier.add(.success("\(self.post.locked ? "L" : "Unl")ocked post"))
                 }
             })
+            
             // TODO: 0.19 deprecation
             if siteInformation.isAdmin || ((siteInformation.version ?? .zero) > .init("0.19.3")) {
                 functions.append(MenuFunction.navigationMenuFunction(
@@ -205,22 +205,24 @@ extension PostModel {
                 trueImageName: Icons.restore,
                 falseText: "Remove",
                 falseImageName: Icons.remove,
-                isDestructive: .always
+                isDestructive: .whenFalse
             ) {
                 modToolTracker.removePost(self, shouldRemove: !self.post.removed)
             })
-            
-            if siteInformation.isAdmin {
-                functions.append(MenuFunction.standardMenuFunction(
-                    text: "Purge",
-                    imageName: Icons.purge,
-                    isDestructive: true
-                ) {
-                    modToolTracker.purgeContent(self)
-                }
-                )
+        }
+        
+        if siteInformation.isAdmin {
+            functions.append(MenuFunction.standardMenuFunction(
+                text: "Purge",
+                imageName: Icons.purge,
+                isDestructive: true
+            ) {
+                modToolTracker.purgeContent(self)
             }
+            )
+        }
             
+        if creator.userId != siteInformation.userId {
             if siteInformation.isAdmin {
                 functions.append(.divider)
             }
@@ -239,8 +241,7 @@ extension PostModel {
                         from: community,
                         bannedFromCommunity: self.creatorBannedFromCommunity,
                         shouldBan: !self.creatorBannedFromCommunity,
-                        postTracker: postTracker,
-                        commentTracker: commentTracker
+                        userRemovalWalker: .init(postTracker: postTracker, commentTracker: commentTracker)
                     )
                 })
             }

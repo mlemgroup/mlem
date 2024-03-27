@@ -25,6 +25,7 @@ struct PurgeContentView: View {
     @State var isWaiting: Bool = false
     
     let content: any Purgable
+    let userRemovalWalker: UserRemovalWalker
     
     var title: String {
         if content is PostModel {
@@ -88,6 +89,7 @@ struct PurgeContentView: View {
                     Text("Purged content cannot is removed permanently from the database and cannot be restored.")
                         .font(.headline)
                         .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 5)
@@ -100,12 +102,26 @@ struct PurgeContentView: View {
         }
     }
     
+    var userId: Int? {
+        if let post = content as? PostModel {
+            return post.creator.userId
+        } else if let comment = content as? HierarchicalComment {
+            return comment.commentView.creator.id
+        } else if let user = content as? UserModel {
+            return user.userId
+        }
+        return nil
+    }
+    
     private func confirm() {
         isWaiting = true
         
         Task {
             var content = content
             let outcome = await content.purge(reason: reason.isEmpty ? nil : reason)
+            if let userId {
+                userRemovalWalker.purge(userId: userId)
+            }
             if outcome {
                 await notifier.add(.success("Purged"))
                 DispatchQueue.main.async {
@@ -121,5 +137,5 @@ struct PurgeContentView: View {
 }
 
 #Preview {
-    PurgeContentView(content: CommunityModel.mock())
+    PurgeContentView(content: CommunityModel.mock(), userRemovalWalker: .init())
 }

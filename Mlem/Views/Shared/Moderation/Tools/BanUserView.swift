@@ -8,7 +8,6 @@
 import Dependencies
 import SwiftUI
 
-// swiftlint:disable:next type_body_length
 struct BanUserView: View {
     @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.hapticManager) var hapticManager
@@ -161,7 +160,7 @@ struct BanUserView: View {
     @ViewBuilder
     func durationSections() -> some View {
         Section {
-            Toggle("Permanent",isOn: $isPermanent)
+            Toggle("Permanent", isOn: $isPermanent)
                 .tint(.red)
         }
         banDurationSection()

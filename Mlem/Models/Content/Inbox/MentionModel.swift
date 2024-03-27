@@ -279,8 +279,7 @@ extension MentionModel {
         // report
         ret.append(MenuFunction.standardMenuFunction(
             text: "Report",
-            imageName: Icons.moderationReport,
-            confirmationPrompt: AppConstants.reportCommentPrompt
+            imageName: Icons.moderationReport
         ) {
             Task(priority: .userInitiated) {
                 await self.report(editorTracker: editorTracker, unreadTracker: unreadTracker)

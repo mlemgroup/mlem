@@ -33,13 +33,12 @@ struct ModerationSettingsView: View {
                 )
             }
             Section("Separate moderator actions using...") {
-                let plural = siteInformation.isAdmin
                 Picker("Group actions using", selection: $moderatorActionGrouping) {
-                    Text(plural ? "Dividers" : "Divider")
+                    Text("Divider")
                         .tag(ModerationActionGroupingMode.none)
-                    Text(plural ? "Disclosure Groups" : "Disclosure Group")
+                    Text("Disclosure Group")
                         .tag(ModerationActionGroupingMode.disclosureGroup)
-                    Text(plural ? "Separate Menus" : "Separate Menu")
+                    Text("Separate Menu")
                         .tag(ModerationActionGroupingMode.separateMenu)
                 }
                 .pickerStyle(.inline)

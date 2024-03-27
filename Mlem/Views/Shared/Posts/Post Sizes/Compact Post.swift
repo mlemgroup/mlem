@@ -31,18 +31,23 @@ struct CompactPost: View {
     
     // arguments
     @ObservedObject var post: PostModel
+    var postTracker: StandardPostTracker?
     let community: CommunityModel?
     let showCommunity: Bool // true to show community name, false to show username
-    let menuFunctions: [MenuFunction]
     
     // computed
     var showReadCheck: Bool { post.read && diffWithoutColor && readMarkStyle == .check }
     
-    init(post: PostModel, community: CommunityModel? = nil, showCommunity: Bool, menuFunctions: [MenuFunction]) {
+    init(
+        post: PostModel,
+        postTracker: StandardPostTracker?,
+        community: CommunityModel? = nil,
+        showCommunity: Bool
+    ) {
         self.post = post
+        self.postTracker = postTracker
         self.community = community
         self.showCommunity = showCommunity
-        self.menuFunctions = menuFunctions
     }
     
     var body: some View {
@@ -74,7 +79,7 @@ struct CompactPost: View {
                     
                     if showReadCheck { ReadCheck() }
                     
-                    EllipsisMenu(size: 12, menuFunctions: menuFunctions)
+                    PostEllipsisMenus(postModel: post, postTracker: postTracker, size: 12)
                         .padding(.trailing, 6)
                 }
                 .padding(.bottom, -2)

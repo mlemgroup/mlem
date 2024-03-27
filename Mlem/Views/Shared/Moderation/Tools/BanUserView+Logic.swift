@@ -54,13 +54,12 @@ extension BanUserView {
         }
     }
     
-    // swiftlint:disable:next cyclomatic_complexity
     func handleResult(_ result: Bool) async {
         if result == shouldBan {
             await notifier.add(.success("\(verb.capitalized)ned User"))
             
             await MainActor.run {
-                userRemovalWalker.remove(
+                userRemovalWalker.modify(
                     userId: user.userId,
                     postAction: { post in
                         if banFromInstance {
@@ -75,7 +74,15 @@ extension BanUserView {
                         } else {
                             comment.commentView.creatorBannedFromCommunity = shouldBan
                         }
-                    })
+                    },
+                    voteAction: { vote in
+                        if banFromInstance {
+                            vote.user.banned = shouldBan
+                        } else {
+                            vote.creatorBannedFromCommunity = shouldBan
+                        }
+                    }
+                )
             }
             
             DispatchQueue.main.async {

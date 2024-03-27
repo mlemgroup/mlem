@@ -106,6 +106,7 @@
 		03B7AAF52ABEFA7A00068B23 /* UserListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B7AAF42ABEFA7A00068B23 /* UserListRow.swift */; };
 		03B85A3C2BB34D1F003C4203 /* PurgeContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B85A3B2BB34D1F003C4203 /* PurgeContentView.swift */; };
 		03B85A3E2BB36C4B003C4203 /* UserRemovalWalker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B85A3D2BB36C4B003C4203 /* UserRemovalWalker.swift */; };
+		03B85A402BB38868003C4203 /* PostEllipsisMenus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B85A3F2BB38868003C4203 /* PostEllipsisMenus.swift */; };
 		03BAA23A2A57DC1400D48252 /* PublishedTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BAA2392A57DC1400D48252 /* PublishedTimestampView.swift */; };
 		03C194082BA25B5200B00349 /* ProgressOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C194072BA25B5200B00349 /* ProgressOverlayView.swift */; };
 		03C897F62ABF49BD005F3403 /* Abbreviate Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C897F52ABF49BD005F3403 /* Abbreviate Numbers.swift */; };
@@ -786,6 +787,7 @@
 		03B7AAF42ABEFA7A00068B23 /* UserListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListRow.swift; sourceTree = "<group>"; };
 		03B85A3B2BB34D1F003C4203 /* PurgeContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurgeContentView.swift; sourceTree = "<group>"; };
 		03B85A3D2BB36C4B003C4203 /* UserRemovalWalker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRemovalWalker.swift; sourceTree = "<group>"; };
+		03B85A3F2BB38868003C4203 /* PostEllipsisMenus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEllipsisMenus.swift; sourceTree = "<group>"; };
 		03BAA2392A57DC1400D48252 /* PublishedTimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishedTimestampView.swift; sourceTree = "<group>"; };
 		03C194072BA25B5200B00349 /* ProgressOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressOverlayView.swift; sourceTree = "<group>"; };
 		03C897F52ABF49BD005F3403 /* Abbreviate Numbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Abbreviate Numbers.swift"; sourceTree = "<group>"; };
@@ -1881,6 +1883,7 @@
 			children = (
 				6318DE5327FB958800CC2AD6 /* Stickied Tag.swift */,
 				CD6483372A3A0F2200EE6CA3 /* NSFW Tag.swift */,
+				03B85A3F2BB38868003C4203 /* PostEllipsisMenus.swift */,
 				CDA1E84E2B93FF83007953EF /* RemovedTag.swift */,
 				CDA1E8502B940390007953EF /* LockedTag.swift */,
 			);
@@ -3904,6 +3907,7 @@
 				030245C22BA60A2600D07747 /* ToolbarEllipsisMenu.swift in Sources */,
 				CD16A06A2B670ABE000312D2 /* UserContentFeedView+Logic.swift in Sources */,
 				CD4BAD3B2B4C6C3200A1E726 /* FeedRowView.swift in Sources */,
+				03B85A402BB38868003C4203 /* PostEllipsisMenus.swift in Sources */,
 				CD1824402AA8E24100D9BEB5 /* View+DestructiveConfirmation.swift in Sources */,
 				CD82A2502A7162D400111034 /* GetPersonUnreadCount.swift in Sources */,
 				0317D4712B55AE0700EEE72C /* Color+Hex.swift in Sources */,

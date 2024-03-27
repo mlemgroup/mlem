@@ -37,8 +37,6 @@ struct FeedPost: View {
     @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
     @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
     @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
-    
-    @AppStorage("moderatorActionGrouping") var moderatorActionGrouping: ModerationActionGroupingMode = .none
 
     @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
@@ -85,11 +83,6 @@ struct FeedPost: View {
         siteInformation.isModOrAdmin(communityId: postModel.community.communityId)
     }
     
-    // MARK: Computed
-    
-    var barThickness: CGFloat { !postModel.read && diffWithoutColor && readMarkStyle == .bar ? CGFloat(readBarThickness) : .zero }
-    var showCheck: Bool { postModel.read && diffWithoutColor && readMarkStyle == .check }
-    
     var combinedMenuFunctions: [MenuFunction] {
         postModel.combinedMenuFunctions(
             editorTracker: editorTracker,
@@ -99,24 +92,11 @@ struct FeedPost: View {
             modToolTracker: isMod ? modToolTracker : nil
         )
     }
-
-    var onlyPersonalMenuFunctions: [MenuFunction] {
-        postModel.personalMenuFunctions(
-            editorTracker: editorTracker,
-            showSelectText: postSize == .large,
-            postTracker: postTracker,
-            community: isMod ? postModel.community : nil,
-            modToolTracker: isMod ? modToolTracker : nil
-        )
-    }
     
-    var onlyModeratorMenuFunctions: [MenuFunction] {
-        postModel.modMenuFunctions(
-            community: postModel.community,
-            modToolTracker: modToolTracker,
-            postTracker: postTracker
-        )
-    }
+    // MARK: Computed
+    
+    var barThickness: CGFloat { !postModel.read && diffWithoutColor && readMarkStyle == .bar ? CGFloat(readBarThickness) : .zero }
+    var showCheck: Bool { postModel.read && diffWithoutColor && readMarkStyle == .check }
 
     var body: some View {
         // this allows post deletion/removal to not require tracker updates
@@ -174,43 +154,22 @@ struct FeedPost: View {
         if postSize == .compact {
             CompactPost(
                 post: postModel,
-                showCommunity: showCommunity,
-                menuFunctions: combinedMenuFunctions
+                postTracker: postTracker,
+                showCommunity: showCommunity
             )
         } else {
             VStack(spacing: 0) {
-                VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
-                    // community name
-                    // TEMPORARILY DISABLED: conditionally showing based on community
-                    // if showCommunity {
-                    //    CommunityLinkView(community: postView.community)
-                    // }
+                VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
                     HStack {
                         CommunityLinkView(
                             community: postModel.community,
                             serverInstanceLocation: communityServerInstanceLocation
                         )
-
                         Spacer()
-
                         if showCheck {
                             ReadCheck()
                         }
-                        
-                        if moderatorActionGrouping == .separateMenu {
-                            if isMod {
-                                let functions = onlyModeratorMenuFunctions
-                                EllipsisMenu(
-                                    size: 24,
-                                    systemImage: siteInformation.isAdmin ? Icons.admin : Icons.moderation,
-                                    menuFunctions: functions
-                                )
-                                .opacity(functions.isEmpty ? 0.5 : 1)
-                            }
-                            EllipsisMenu(size: 24, menuFunctions: onlyPersonalMenuFunctions)
-                        } else {
-                            EllipsisMenu(size: 24, menuFunctions: combinedMenuFunctions)
-                        }
+                        PostEllipsisMenus(postModel: postModel, postTracker: postTracker)
                     }
 
                     if postSize == .headline {
@@ -232,8 +191,8 @@ struct FeedPost: View {
                         )
                     }
                 }
-                .padding(.top, AppConstants.postAndCommentSpacing)
-                .padding(.horizontal, AppConstants.postAndCommentSpacing)
+                .padding(.top, AppConstants.standardSpacing)
+                .padding(.horizontal, AppConstants.standardSpacing)
                 
                 InteractionBarView(
                     votes: postModel.votes,
