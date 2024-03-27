@@ -111,4 +111,18 @@ extension APIClient {
         let request = try PurgeCommentRequest(session: session, commentId: id, reason: reason)
         return try await perform(request: request)
     }
+    
+    func getCommentLikes(
+        id: Int,
+        page: Int,
+        limit: Int?
+    ) async throws -> APIListCommentLikesResponse {
+        let request = try ListCommentLikesRequest(
+            session: session,
+            commentId: id,
+            page: page,
+            limit: limit
+        )
+        return try await perform(request: request)
+    }
 }

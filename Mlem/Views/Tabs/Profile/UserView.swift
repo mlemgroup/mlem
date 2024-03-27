@@ -37,10 +37,17 @@ struct UserView: View {
     
     @State private var menuFunctionPopup: MenuFunctionPopup?
     
+    let isProfileView: Bool
+    @Binding var isPresentingProfileEditor: Bool
+    
     @Namespace var scrollToTop
     @State private var scrollToTopAppeared = false
     
-    init(user: UserModel, communityContext: CommunityModel? = nil) {
+    init(
+        user: UserModel,
+        communityContext: CommunityModel? = nil,
+        isPresentingProfileEditor: (Binding<Bool>)? = nil
+    ) {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
         
@@ -54,6 +61,8 @@ struct UserView: View {
         ))
         
         self._user = State(wrappedValue: user)
+        self.isProfileView = isPresentingProfileEditor != nil
+        self._isPresentingProfileEditor = isPresentingProfileEditor ?? .constant(false)
         self.communityContext = communityContext
     }
     
@@ -69,9 +78,17 @@ struct UserView: View {
                 }
             }
             .toolbar {
-                ToolbarItemGroup(placement: .secondaryAction) {
-                    ForEach(menuFunctions) { item in
-                        MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    ToolbarEllipsisMenu {
+                        // TODO: 0.17 deprecation
+                        if isProfileView, (siteInformation.version ?? .infinity) >= .init("0.18.0") {
+                            Button("Edit", systemImage: Icons.edit) {
+                                isPresentingProfileEditor = true
+                            }
+                        }
+                        ForEach(menuFunctions) { item in
+                            MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
+                        }
                     }
                 }
             }

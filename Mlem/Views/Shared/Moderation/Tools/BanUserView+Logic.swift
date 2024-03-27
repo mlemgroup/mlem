@@ -63,6 +63,7 @@ extension BanUserView {
         }
     }
     
+    // swiftlint:disable:next cyclomatic_complexity
     func handleResult(_ result: Bool) async {
         if result == shouldBan {
             await notifier.add(.success("\(verb.capitalized)ned User"))
@@ -70,7 +71,9 @@ extension BanUserView {
             await MainActor.run {
                 if let postTracker {
                     for post in postTracker.items where post.creator.userId == user.userId {
-                        if banFromInstance {
+                        if contentRemovalType == .purge {
+                            post.purged = true
+                        } else if banFromInstance {
                             post.creator.banned = shouldBan
                         } else {
                             post.creatorBannedFromCommunity = shouldBan
@@ -79,12 +82,25 @@ extension BanUserView {
                 }
                 if let commentTracker {
                     for comment in commentTracker.comments where comment.commentView.comment.creatorId == user.userId {
-                        if banFromInstance {
+                        if contentRemovalType == .purge {
+                            comment.purged = true
+                        } else if banFromInstance {
                             comment.commentView.creator.banned = shouldBan
                         } else {
                             comment.commentView.creatorBannedFromCommunity = shouldBan
                         }
                     }
+                }
+                
+                if let votesTracker, let index = votesTracker.votes.firstIndex(where: {$0.id == user.userId}) {
+                        if contentRemovalType == .purge {
+                            votesTracker.votes.remove(at: index)
+                        } else if banFromInstance {
+                            votesTracker.votes[index].user.banned = shouldBan
+                        } else {
+                            votesTracker.votes[index].creatorBannedFromCommunity = shouldBan
+                        }
+                    
                 }
             }
             

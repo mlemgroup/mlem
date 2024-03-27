@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// swiftlint:disable file_length
 extension CommentItem {
     func voteOnComment(inputOp: ScoringOperation) async {
         hapticManager.play(haptic: .lightSuccess, priority: .low)
@@ -298,63 +299,75 @@ extension CommentItem {
         
         ret.append(.controlGroupMenuFunction(children: mainFunctions))
         
-        if isMod, !isOwnComment {
+        if isMod {
             ret.append(.divider)
-            ret.append(MenuFunction.toggleableMenuFunction(
-                toggle: hierarchicalComment.commentView.comment.removed,
-                trueText: "Restore",
-                trueImageName: Icons.restore,
-                falseText: "Remove",
-                falseImageName: Icons.remove,
-                isDestructive: .always
-            ) {
-                modToolTracker.removeComment(
-                    hierarchicalComment,
-                    shouldRemove: !self.hierarchicalComment.commentView.comment.removed
-                )
-            })
             
-            let creatorBannedFromCommunity = hierarchicalComment.commentView.creatorBannedFromCommunity
-            let creatorBannedFromInstance = hierarchicalComment.commentView.creator.banned
-            
-            if !(siteInformation.isAdmin && creatorBannedFromCommunity && creatorBannedFromInstance) {
-                ret.append(MenuFunction.toggleableMenuFunction(
-                    toggle: creatorBannedFromCommunity,
-                    trueText: "Unban User",
-                    trueImageName: Icons.communityUnban,
-                    falseText: "Ban User",
-                    falseImageName: (siteInformation.isAdmin && !creatorBannedFromInstance) ? Icons.instanceBan : Icons.communityBan,
-                    isDestructive: .whenFalse
-                ) {
-                    modToolTracker.banUserFromCommunity(
-                        .init(from: hierarchicalComment.commentView.creator),
-                        from: .init(from: hierarchicalComment.commentView.community),
-                        bannedFromCommunity: creatorBannedFromCommunity,
-                        shouldBan: !creatorBannedFromCommunity,
-                        postTracker: nil,
-                        commentTracker: commentTracker
-                    )
-                })
+            // TODO: 0.19 deprecation
+            if siteInformation.isAdmin || ((siteInformation.version ?? .infinity) > .init("0.19.3")) {
+                ret.append(MenuFunction.navigationMenuFunction(
+                    text: "View Votes",
+                    imageName: Icons.votes,
+                    destination: .commentVotes(hierarchicalComment)
+                ))
             }
             
-            if siteInformation.isAdmin, creatorBannedFromInstance || creatorBannedFromCommunity {
+            if !isOwnComment {
                 ret.append(MenuFunction.toggleableMenuFunction(
-                    toggle: creatorBannedFromInstance,
-                    trueText: "Unban User",
-                    trueImageName: Icons.instanceUnban,
-                    falseText: "Ban User",
-                    falseImageName: Icons.instanceBan,
-                    isDestructive: .whenFalse
+                    toggle: hierarchicalComment.commentView.comment.removed,
+                    trueText: "Restore",
+                    trueImageName: Icons.restore,
+                    falseText: "Remove",
+                    falseImageName: Icons.remove,
+                    isDestructive: .always
                 ) {
-                    modToolTracker.banUserFromCommunity(
-                        .init(from: hierarchicalComment.commentView.creator),
-                        from: .init(from: hierarchicalComment.commentView.community),
-                        bannedFromCommunity: creatorBannedFromCommunity,
-                        shouldBan: !creatorBannedFromInstance,
-                        postTracker: nil,
-                        commentTracker: commentTracker
+                    modToolTracker.removeComment(
+                        hierarchicalComment,
+                        shouldRemove: !self.hierarchicalComment.commentView.comment.removed
                     )
                 })
+                
+                let creatorBannedFromCommunity = hierarchicalComment.commentView.creatorBannedFromCommunity
+                let creatorBannedFromInstance = hierarchicalComment.commentView.creator.banned
+                
+                if !(siteInformation.isAdmin && creatorBannedFromCommunity && creatorBannedFromInstance) {
+                    ret.append(MenuFunction.toggleableMenuFunction(
+                        toggle: creatorBannedFromCommunity,
+                        trueText: "Unban User",
+                        trueImageName: Icons.communityUnban,
+                        falseText: "Ban User",
+                        falseImageName: (siteInformation.isAdmin && !creatorBannedFromInstance) ? Icons.instanceBan : Icons.communityBan,
+                        isDestructive: .whenFalse
+                    ) {
+                        modToolTracker.banUser(
+                            .init(from: hierarchicalComment.commentView.creator),
+                            from: .init(from: hierarchicalComment.commentView.community),
+                            bannedFromCommunity: creatorBannedFromCommunity,
+                            shouldBan: !creatorBannedFromCommunity,
+                            postTracker: nil,
+                            commentTracker: commentTracker
+                        )
+                    })
+                }
+                
+                if siteInformation.isAdmin, creatorBannedFromInstance || creatorBannedFromCommunity {
+                    ret.append(MenuFunction.toggleableMenuFunction(
+                        toggle: creatorBannedFromInstance,
+                        trueText: "Unban User",
+                        trueImageName: Icons.instanceUnban,
+                        falseText: "Ban User",
+                        falseImageName: Icons.instanceBan,
+                        isDestructive: .whenFalse
+                    ) {
+                        modToolTracker.banUser(
+                            .init(from: hierarchicalComment.commentView.creator),
+                            from: .init(from: hierarchicalComment.commentView.community),
+                            bannedFromCommunity: creatorBannedFromCommunity,
+                            shouldBan: !creatorBannedFromInstance,
+                            postTracker: nil,
+                            commentTracker: commentTracker
+                        )
+                    })
+                }
             }
         }
                    
@@ -387,3 +400,4 @@ extension CommentItem {
         }
     }
 }
+// swiftlint:enable file_length

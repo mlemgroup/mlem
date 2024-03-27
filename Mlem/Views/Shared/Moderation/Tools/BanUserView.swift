@@ -64,6 +64,7 @@ struct BanUserView: View {
     // if present, will update with new banned status
     let postTracker: StandardPostTracker?
     let commentTracker: CommentTracker?
+    let votesTracker: VotesTracker?
     
     @State var banFromInstance: Bool
     
@@ -81,7 +82,8 @@ struct BanUserView: View {
         bannedFromCommunity: Bool = false,
         shouldBan: Bool,
         postTracker: StandardPostTracker?,
-        commentTracker: CommentTracker?
+        commentTracker: CommentTracker?,
+        votesTracker: VotesTracker?
     ) {
         self.user = user
         self.communityContext = communityContext
@@ -89,6 +91,7 @@ struct BanUserView: View {
         self.shouldBan = shouldBan
         self.postTracker = postTracker
         self.commentTracker = commentTracker
+        self.votesTracker = votesTracker
         
         @Dependency(\.siteInformation) var siteInformation
         
@@ -339,6 +342,7 @@ struct BanUserView: View {
         communityContext: .mock(),
         shouldBan: true,
         postTracker: nil,
-        commentTracker: nil
+        commentTracker: nil,
+        votesTracker: nil
     )
 }

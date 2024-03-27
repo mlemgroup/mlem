@@ -11,7 +11,8 @@ import SwiftUI
 /// SFSymbol names for icons
 enum Icons {
     // votes
-    static let votes: String = "arrow.up.arrow.down.square"
+    static let votes: String = "arrow.up.arrow.down"
+    static let votesSquare: String = "arrow.up.arrow.down.square"
     static let upvote: String = "arrow.up"
     static let upvoteSquare: String = "arrow.up.square"
     static let upvoteSquareFill: String = "arrow.up.square.fill"

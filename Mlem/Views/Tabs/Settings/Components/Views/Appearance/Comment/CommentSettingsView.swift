@@ -94,7 +94,7 @@ struct CommentSettingsView: View {
                     isTicked: $shouldShowScoreInCommentBar
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: Icons.votes,
+                    settingPictureSystemName: Icons.votesSquare,
                     settingName: "Show Downvotes Separately",
                     isTicked: $showCommentDownvotesSeparately
                 )
