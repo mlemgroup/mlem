@@ -54,6 +54,7 @@
 		0355DA512B5EB87700CDF5A5 /* InstanceResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0355DA502B5EB87700CDF5A5 /* InstanceResultView.swift */; };
 		035EB0CA2A8687C200227859 /* JumpButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EB0C92A8687C200227859 /* JumpButtonView.swift */; };
 		036ED3BC2ABF1058009664BC /* SearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036ED3BB2ABF1058009664BC /* SearchModel.swift */; };
+		038142F22BB46FFF00856C9B /* CommentItem+MenuFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038142F12BB46FFF00856C9B /* CommentItem+MenuFunctions.swift */; };
 		038A16DF2A75172C0087987E /* LayoutWidgetEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038A16DE2A75172C0087987E /* LayoutWidgetEditView.swift */; };
 		038A16E12A75AA880087987E /* LayoutWidgetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038A16E02A75AA880087987E /* LayoutWidgetModel.swift */; };
 		038A16E52A7A97380087987E /* LayoutWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038A16E42A7A97380087987E /* LayoutWidgetView.swift */; };
@@ -735,6 +736,7 @@
 		0355DA502B5EB87700CDF5A5 /* InstanceResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceResultView.swift; sourceTree = "<group>"; };
 		035EB0C92A8687C200227859 /* JumpButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpButtonView.swift; sourceTree = "<group>"; };
 		036ED3BB2ABF1058009664BC /* SearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchModel.swift; sourceTree = "<group>"; };
+		038142F12BB46FFF00856C9B /* CommentItem+MenuFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentItem+MenuFunctions.swift"; sourceTree = "<group>"; };
 		038A16DE2A75172C0087987E /* LayoutWidgetEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutWidgetEditView.swift; sourceTree = "<group>"; };
 		038A16E02A75AA880087987E /* LayoutWidgetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutWidgetModel.swift; sourceTree = "<group>"; };
 		038A16E42A7A97380087987E /* LayoutWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutWidgetView.swift; sourceTree = "<group>"; };
@@ -2842,6 +2844,7 @@
 			children = (
 				CD69F5722A4239D70028D4F7 /* Comment Item.swift */,
 				CD69F5742A42479A0028D4F7 /* Comment Item Logic.swift */,
+				038142F12BB46FFF00856C9B /* CommentItem+MenuFunctions.swift */,
 				6399719427F463150057F611 /* Components */,
 			);
 			path = Comments;
@@ -3845,6 +3848,7 @@
 				CD2697F02B9E157E0002B459 /* APIModBanFromCommunityView.swift in Sources */,
 				B1955A1F2A606F010056CF99 /* EasterFlagsTracker.swift in Sources */,
 				CD0D5A482B8EC6F3005E3365 /* ReasonView.swift in Sources */,
+				038142F22BB46FFF00856C9B /* CommentItem+MenuFunctions.swift in Sources */,
 				63D24ED92A169A5F005CCA81 /* UIApplication+FirstKeyWindow.swift in Sources */,
 				039439912A98FA6100463032 /* UserFeedView.swift in Sources */,
 				03EA79C42AC0D92C00BCDC91 /* PostComposerView+Logic.swift in Sources */,

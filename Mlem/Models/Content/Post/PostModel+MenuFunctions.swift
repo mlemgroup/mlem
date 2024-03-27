@@ -85,15 +85,14 @@ extension PostModel {
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         
-        var mainFunctions: [MenuFunction] = .init()
-        mainFunctions.append(contentsOf: topRowMenuFunctions(editorTracker: editorTracker))
+        functions.append(contentsOf: topRowMenuFunctions(editorTracker: editorTracker))
         
         if showSelectText {
             var text = self.post.name
             if let body = post.body, body.isNotEmpty {
                 text += "\n\n\(body)"
             }
-            mainFunctions.append(MenuFunction.standardMenuFunction(
+            functions.append(MenuFunction.standardMenuFunction(
                 text: "Select Text",
                 imageName: Icons.select
             ) {
@@ -103,7 +102,7 @@ extension PostModel {
         
         if creator.isActiveAccount {
             // Edit
-            mainFunctions.append(MenuFunction.standardMenuFunction(
+            functions.append(MenuFunction.standardMenuFunction(
                 text: "Edit",
                 imageName: Icons.edit
             ) {
@@ -111,7 +110,7 @@ extension PostModel {
             })
             
             // Delete
-            mainFunctions.append(MenuFunction.standardMenuFunction(
+            functions.append(MenuFunction.standardMenuFunction(
                 text: "Delete",
                 imageName: Icons.delete,
                 confirmationPrompt: "Are you sure you want to delete this post? This cannot be undone.",
@@ -124,12 +123,12 @@ extension PostModel {
         }
         
         // Share
-        mainFunctions.append(MenuFunction.shareMenuFunction(url: post.apId))
+        functions.append(MenuFunction.shareMenuFunction(url: post.apId))
         
         if !creator.isActiveAccount {
             if modToolTracker == nil {
                 // Report
-                mainFunctions.append(MenuFunction.standardMenuFunction(
+                functions.append(MenuFunction.standardMenuFunction(
                     text: "Report",
                     imageName: Icons.moderationReport
                 ) {
@@ -140,13 +139,11 @@ extension PostModel {
             }
             
             if let postTracker {
-                mainFunctions.append(contentsOf: blockMenuFunctions(postTracker: postTracker))
+                functions.append(contentsOf: blockMenuFunctions(postTracker: postTracker))
             }
         }
         
-        functions.append(.controlGroupMenuFunction(children: mainFunctions))
-        
-        return functions
+        return [.controlGroupMenuFunction(children: functions)]
     }
 
     @MainActor func modMenuFunctions(

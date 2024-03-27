@@ -161,7 +161,7 @@ struct CommentItem: View {
                     isParentCollapsed: $hierarchicalComment.isParentCollapsed,
                     isCollapsed: $hierarchicalComment.isCollapsed,
                     showPostContext: showPostContext,
-                    menuFunctions: genMenuFunctions(),
+                    menuFunctions: combinedMenuFunctions(),
                     links: hierarchicalComment.links
                 )
                 // top and bottom spacing uses default even when compact--it's *too* compact otherwise
