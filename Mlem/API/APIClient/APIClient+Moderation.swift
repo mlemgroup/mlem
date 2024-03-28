@@ -21,10 +21,16 @@ extension APIClient {
             unresolvedOnly: unresolvedOnly,
             communityId: communityId
         )
+        // the request throws an error if the calling user is not mod or admin, so prevent it from executing in that case
+        guard siteInformation.isAdmin || !siteInformation.moderatedCommunities.isEmpty else {
+            return .init()
+        }
+        
         let response = try await perform(request: request)
         
         return response.commentReports.map { CommentReportModel(
             reporter: UserModel(from: $0.creator),
+            community: CommunityModel(from: $0.community),
             commentReport: $0.commentReport,
             comment: $0.comment
         ) }

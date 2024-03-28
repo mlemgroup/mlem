@@ -9,13 +9,15 @@ import Foundation
 
 class CommentReportModel: ContentIdentifiable, ObservableObject {
     let reporter: UserModel
+    let community: CommunityModel
     let commentReport: APICommentReport
     @Published var comment: APIComment
     
     var uid: ContentModelIdentifier { .init(contentType: .commentReport, contentId: commentReport.id) }
     
-    init(reporter: UserModel, commentReport: APICommentReport, comment: APIComment) {
+    init(reporter: UserModel, community: CommunityModel, commentReport: APICommentReport, comment: APIComment) {
         self.reporter = reporter
+        self.community = community
         self.commentReport = commentReport
         self.comment = comment
     }

@@ -22,7 +22,7 @@ struct InboxReplyBodyView: View {
             scrollTarget: reply.comment.id
         ))) {
             content
-                .padding(AppConstants.postAndCommentSpacing)
+                .padding(AppConstants.standardSpacing)
                 .background(Color(uiColor: .systemBackground))
                 .contentShape(Rectangle())
                 .contextMenu {
@@ -38,10 +38,10 @@ struct InboxReplyBodyView: View {
     }
     
     var content: some View {
-        VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
+        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
             Text(reply.post.name)
                 .font(.headline)
-                .padding(.bottom, AppConstants.postAndCommentSpacing)
+                .padding(.bottom, AppConstants.standardSpacing)
             
             UserLinkView(
                 user: reply.creator,
@@ -51,7 +51,7 @@ struct InboxReplyBodyView: View {
             )
             .font(.subheadline)
             
-            HStack(alignment: .top, spacing: AppConstants.postAndCommentSpacing) {
+            HStack(alignment: .top, spacing: AppConstants.standardSpacing) {
                 Image(systemName: iconName)
                     .foregroundColor(.accentColor)
                     .frame(width: AppConstants.largeAvatarSize)

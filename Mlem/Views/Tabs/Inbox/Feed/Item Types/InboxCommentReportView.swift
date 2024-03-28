@@ -12,9 +12,6 @@ struct InboxCommentReportView: View {
     @ObservedObject var commentReport: CommentReportModel
     
     var body: some View {
-        VStack {
-            Text(commentReport.comment.content)
-            Text(commentReport.commentReport.reason)
-        }
+        InboxCommentReportBodyView(commentReport: commentReport)
     }
 }

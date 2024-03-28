@@ -21,7 +21,7 @@ struct InboxMessageBodyView: View {
     
     var body: some View {
         content
-            .padding(AppConstants.postAndCommentSpacing)
+            .padding(AppConstants.standardSpacing)
             .background(Color(uiColor: .systemBackground))
             .contentShape(Rectangle())
             .contextMenu {
@@ -35,12 +35,12 @@ struct InboxMessageBodyView: View {
     }
     
     var content: some View {
-        VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
-            Text("Direct message")
+        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+            Text("Direct Message")
                 .font(.headline.smallCaps())
-                .padding(.bottom, AppConstants.postAndCommentSpacing)
+                .padding(.bottom, AppConstants.standardSpacing)
             
-            HStack(alignment: .top, spacing: AppConstants.postAndCommentSpacing) {
+            HStack(alignment: .top, spacing: AppConstants.standardSpacing) {
                 Image(systemName: iconName)
                     .foregroundColor(.accentColor)
                     .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
