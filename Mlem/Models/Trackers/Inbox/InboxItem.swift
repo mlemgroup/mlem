@@ -20,6 +20,7 @@ enum AnyInboxItem: InboxItem {
     case reply(ReplyModel)
     case mention(MentionModel)
     case message(MessageModel)
+    case commentReport(CommentReportModel)
     
     var value: any InboxItem {
         switch self {
@@ -29,6 +30,8 @@ enum AnyInboxItem: InboxItem {
             return mention
         case let .message(message):
             return message
+        case let .commentReport(commentReport):
+            return commentReport
         }
     }
     

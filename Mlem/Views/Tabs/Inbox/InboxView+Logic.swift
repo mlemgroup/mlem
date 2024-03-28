@@ -9,20 +9,16 @@ import Foundation
 
 extension InboxView {
     func refresh() async {
-        do {
-            switch selectedInboxTab {
-            case .all:
-                await inboxTracker.refresh(clearBeforeFetch: false)
-            case .replies:
-                try await replyTracker.refresh(clearBeforeRefresh: false)
-            case .mentions:
-                try await mentionTracker.refresh(clearBeforeRefresh: false)
-            case .messages:
-                try await messageTracker.refresh(clearBeforeRefresh: false)
+        Task {
+            do {
+                let unreadCounts = try await personRepository.getUnreadCounts()
+                unreadTracker.update(with: unreadCounts)
+            } catch {
+                errorHandler.handle(error)
             }
-        } catch {
-            errorHandler.handle(error)
         }
+        
+        await inboxTracker.refresh(clearBeforeFetch: false)
     }
     
     func toggleFilterRead() {

@@ -155,4 +155,6 @@ class InboxRepository {
     func reportMessage(id: Int, reason: String) async throws -> APIPrivateMessageReportView {
         try await apiClient.reportPrivateMessage(id: id, reason: reason)
     }
+    
+    // MARK: - comment reports
 }

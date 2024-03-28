@@ -50,7 +50,7 @@ enum InboxSelection: FeedType {
     var iconScaleFactor: CGFloat {
         switch self {
         case .personal: 0.55
-        case .mod: 0.55
+        case .mod: 0.5
         }
     }
 }
@@ -88,6 +88,7 @@ struct InboxView: View {
     @StateObject var replyTracker: ReplyTracker
     @StateObject var mentionTracker: MentionTracker
     @StateObject var messageTracker: MessageTracker
+    @StateObject var commentReportTracker: CommentReportTracker
     
     @Namespace var scrollToTop
     @State private var scrollToTopAppeared = false
@@ -107,6 +108,7 @@ struct InboxView: View {
         let newReplyTracker = ReplyTracker(internetSpeed: internetSpeed, sortType: .published, unreadOnly: unreadOnly)
         let newMentionTracker = MentionTracker(internetSpeed: internetSpeed, sortType: .published, unreadOnly: unreadOnly)
         let newMessageTracker = MessageTracker(internetSpeed: internetSpeed, sortType: .published, unreadOnly: unreadOnly)
+        let newCommentReportTracker = CommentReportTracker(internetSpeed: internetSpeed, sortType: .published, unreadOnly: unreadOnly)
         
         let newInboxTracker = InboxTracker(
             internetSpeed: internetSpeed,
@@ -114,7 +116,8 @@ struct InboxView: View {
             childTrackers: [
                 newReplyTracker,
                 newMentionTracker,
-                newMessageTracker
+                newMessageTracker,
+                newCommentReportTracker
             ]
         )
         
@@ -122,6 +125,7 @@ struct InboxView: View {
         self._replyTracker = StateObject(wrappedValue: newReplyTracker)
         self._mentionTracker = StateObject(wrappedValue: newMentionTracker)
         self._messageTracker = StateObject(wrappedValue: newMessageTracker)
+        self._commentReportTracker = StateObject(wrappedValue: newCommentReportTracker)
     }
     
     var availableFeeds: [InboxSelection] {
@@ -161,15 +165,6 @@ struct InboxView: View {
                 }.value
             }
             .task {
-                Task {
-                    do {
-                        let unreadCounts = try await personRepository.getUnreadCounts()
-                        unreadTracker.update(with: unreadCounts)
-                    } catch {
-                        errorHandler.handle(error)
-                    }
-                }
-                
                 // wrapping in task so view redraws don't cancel
                 Task(priority: .userInitiated) {
                     await refresh()
@@ -283,7 +278,11 @@ struct InboxView: View {
     @ViewBuilder
     var modMailView: some View {
         Section {
-            Text("Not yet!")
+            LazyVStack(spacing: 0) {
+                ForEach(commentReportTracker.items, id: \.uid) { item in
+                    InboxCommentReportView(commentReport: item)
+                }
+            }
         } header: {
             BubblePicker(ModMailTab.allCases, selected: $selectedModMailTab, withDividers: [.bottom]) { tab in
                 Text(tab.label)

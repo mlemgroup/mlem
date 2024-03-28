@@ -8,7 +8,7 @@
 import Foundation
 
 // lemmy_db_schema::source::comment::CommentReport
-struct APICommentReport: Decodable {
+struct APICommentReport: Hashable, Decodable {
     let id: Int
     let creatorId: Int
     let commentId: Int
