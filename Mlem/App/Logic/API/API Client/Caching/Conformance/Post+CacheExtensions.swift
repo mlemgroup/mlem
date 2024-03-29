@@ -8,11 +8,7 @@
 import Foundation
 
 extension Post1: CacheIdentifiable {
-    var cacheId: Int {
-        var hasher: Hasher = .init()
-        hasher.combine(actorId)
-        return hasher.finalize()
-    }
+    var cacheId: Int { actorId.hashValue }
     
     func update(with post: ApiPost) {
         updatedDate = post.updated
@@ -39,11 +35,7 @@ extension Post1: CacheIdentifiable {
 }
 
 extension Post2: CacheIdentifiable {
-    var cacheId: Int {
-        var hasher: Hasher = .init()
-        hasher.combine(actorId)
-        return hasher.finalize()
-    }
+    var cacheId: Int { post1.cacheId }
     
     func update(with post: ApiPostView) {
         commentCount = post.counts.comments

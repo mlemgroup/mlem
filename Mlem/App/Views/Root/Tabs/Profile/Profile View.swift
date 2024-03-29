@@ -19,6 +19,9 @@ struct ProfileView: View {
     }
     
     var content: some View {
-        Text("\(appState.myUser?.name ?? "No User")")
+        VStack {
+            Text("\(appState.myUser?.name ?? "No User")")
+            Text("\(appState.api.baseUrl)")
+        }
     }
 }

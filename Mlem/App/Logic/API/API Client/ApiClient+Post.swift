@@ -66,7 +66,7 @@ extension ApiClient: PostFeedProvider {
                 from: response.postView.counts,
                 myVote: .guaranteedInit(from: response.postView.myVote)
             )
-            if existing.voteStatusManager.finishVotingOperation(semaphore: semaphore, with: newVotes) {
+            if existing.votesManager.finishOperation(semaphore: semaphore, with: newVotes) {
                 return caches.post2.getModel(api: self, from: response.postView)
             } else {
                 return existing

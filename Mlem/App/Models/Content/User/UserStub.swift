@@ -35,7 +35,7 @@ final class UserStub: UserProviding, Codable {
     }
     
     enum DecodingError: Error {
-        case noTokenInKeychain
+        case noTokenInKeychain, cannotRemoveExtraneousPathComponents
     }
     
     init(
@@ -76,6 +76,7 @@ final class UserStub: UserProviding, Codable {
         // Remove the "api/v3" path that we attached to the instanceLink pre-1.3
         var components = URLComponents(url: instanceLink, resolvingAgainstBaseURL: false)!
         components.path = ""
+        guard let instanceLink = components.url else { throw DecodingError.cannotRemoveExtraneousPathComponents }
         
         // parse actor id
         self.actorId = parseActorId(instanceLink: instanceLink, name: name)

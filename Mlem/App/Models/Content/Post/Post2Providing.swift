@@ -26,7 +26,7 @@ extension Post2Providing {
     var unreadCommentCount: Int { post2.unreadCommentCount }
     var isSaved: Bool { post2.isSaved }
     var isRead: Bool { get { post2.isRead } set { post2.isRead = newValue } }
-    var voteStatusManager: VoteStatusManager { post2.voteStatusManager }
+    var votesManager: StateManager<VotesModel> { post2.votesManager }
     
     var creator_: Person1? { post2.creator }
     var community_: Community1? { post2.community }
@@ -35,11 +35,11 @@ extension Post2Providing {
     var unreadCommentCount_: Int? { post2.unreadCommentCount }
     var isSaved_: Bool? { post2.isSaved }
     var isRead_: Bool? { post2.isRead }
-    var voteStatusManager_: VoteStatusManager { post2.voteStatusManager }
+    var votesManager_: StateManager<VotesModel> { post2.votesManager }
   
     func vote(_ newVote: ScoringOperation) {
         // notify the status manager that we are voting now
-        let semaphore = voteStatusManager.beginVotingOperation(with: votes)
+        let semaphore = votesManager.beginOperation(with: votes)
         
         // state fake
         RunLoop.main.perform {
@@ -51,7 +51,7 @@ extension Post2Providing {
                 try await api.voteOnPost(id: id, score: newVote, semaphore: semaphore)
             } catch {
                 print("DEBUG [\(semaphore)] failed!")
-                if let newVotes = voteStatusManager.getRollbackState(semaphore: semaphore) {
+                if let newVotes = votesManager.getRollbackState(semaphore: semaphore) {
                     votes = newVotes
                 }
             }
