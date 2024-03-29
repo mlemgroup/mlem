@@ -73,16 +73,24 @@ struct MinimalPostFeedView: View {
                     VStack {
                         HStack {
                             Button {
-                                post.vote(post.votes.myVote == .upvote ? .none : .upvote)
+                                post.toggleUpvote()
                             } label: {
                                 Image(systemName: post.votes.myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvote)
                                     .foregroundColor(post.votes.myVote == .upvote ? .blue : .primary)
+                            }
+                            .buttonStyle(.plain)
+                            Button {
+                                post.toggleDownvote()
+                            } label: {
+                                Image(systemName: post.votes.myVote == .downvote ? Icons.upvoteSquareFill : Icons.downvote)
+                                    .foregroundColor(post.votes.myVote == .downvote ? .red : .primary)
                             }
                             .buttonStyle(.plain)
                             
                             Text(post.title)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.horizontal)
+                                .foregroundStyle(post.isRead ? .secondary : .primary)
                         }
                         .padding(.horizontal)
                         Divider()

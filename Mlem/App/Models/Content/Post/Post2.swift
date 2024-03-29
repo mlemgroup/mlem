@@ -17,13 +17,13 @@ final class Post2: Post2Providing {
     let creator: Person1
     let community: Community1
     
-    var votes: VotesModel
     var commentCount: Int
     var unreadCommentCount: Int
     var isSaved: Bool
     var isRead: Bool
     
-    var votesManager: StateManager<VotesModel> = .init()
+    var votesManager: StateManager<VotesModel>
+    var votes: VotesModel { votesManager.wrappedValue }
     
     init(
         api: ApiClient,
@@ -40,7 +40,7 @@ final class Post2: Post2Providing {
         self.post1 = post1
         self.creator = creator
         self.community = community
-        self.votes = votes
+        self.votesManager = .init(wrappedValue: votes)
         self.commentCount = commentCount
         self.unreadCommentCount = unreadCommentCount
         self.isSaved = isSaved
