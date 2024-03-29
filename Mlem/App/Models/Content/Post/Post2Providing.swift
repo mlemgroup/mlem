@@ -25,8 +25,9 @@ extension Post2Providing {
     var votes: VotesModel { post2.votes }
     var unreadCommentCount: Int { post2.unreadCommentCount }
     var isSaved: Bool { post2.isSaved }
-    var isRead: Bool { get { post2.isRead } set { post2.isRead = newValue } }
+    var isRead: Bool { post2.isRead }
     var votesManager: StateManager<VotesModel> { post2.votesManager }
+    var isReadManager: StateManager<Bool> { post2.isReadManager }
     
     var creator_: Person1? { post2.creator }
     var community_: Community1? { post2.community }
@@ -36,11 +37,13 @@ extension Post2Providing {
     var isSaved_: Bool? { post2.isSaved }
     var isRead_: Bool? { post2.isRead }
     var votesManager_: StateManager<VotesModel> { post2.votesManager }
+    var isReadManager_: StateManager<Bool> { post2.isReadManager }
   
     func vote(_ newVote: ScoringOperation) {
-        self.votesManager.performRequest(
-            expectedResult: self.votes.applyScoringOperation(operation: newVote)
-        ) { semaphore in 
+        groupStateRequest(
+            votesManager.ticket(self.votes.applyScoringOperation(operation: newVote)),
+            isReadManager.ticket(true)
+        ) { semaphore in
             try await self.api.voteOnPost(id: self.id, score: newVote, semaphore: semaphore)
         }
     }

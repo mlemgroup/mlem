@@ -20,7 +20,9 @@ final class Post2: Post2Providing {
     var commentCount: Int
     var unreadCommentCount: Int
     var isSaved: Bool
-    var isRead: Bool
+    
+    var isReadManager: StateManager<Bool>
+    var isRead: Bool { isReadManager.wrappedValue }
     
     var votesManager: StateManager<VotesModel>
     var votes: VotesModel { votesManager.wrappedValue }
@@ -44,6 +46,6 @@ final class Post2: Post2Providing {
         self.commentCount = commentCount
         self.unreadCommentCount = unreadCommentCount
         self.isSaved = isSaved
-        self.isRead = isRead
+        self.isReadManager = .init(wrappedValue: isRead)
     }
 }
