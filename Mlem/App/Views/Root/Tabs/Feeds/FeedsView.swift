@@ -75,8 +75,8 @@ struct MinimalPostFeedView: View {
                             Button {
                                 post.vote(post.votes.myVote == .upvote ? .none : .upvote)
                             } label: {
-                                Image(systemName: post.votes.myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvote)
-                                    .foregroundColor(post.votes.myVote == .upvote ? .blue : .primary)
+                                Image(systemName: post.votes.myVote.iconNameFill)
+                                    .foregroundColor(post.votes.myVote.color)
                             }
                             .buttonStyle(.plain)
                             
