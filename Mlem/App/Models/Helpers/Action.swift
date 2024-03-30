@@ -8,33 +8,27 @@
 import SwiftUI
 
 struct Action {
-    var label: String
-    var barIsOn: Bool
-    var barIcon: String
-    var menuIcon: String
-    var swipeIcon: String
-    var swipeIcon2: String
-    var color: Color
-    var callback: (() -> Void)?
+    let type: ActionType
+    let isOn: Bool
+    
+    /// If this is nil, the Action is disabled
+    let callback: (() -> Void)?
     
     init(
-        label: String,
+        type: ActionType,
+        isOn: Bool,
         enabled: Bool = true,
-        barIsOn: Bool = false,
-        barIcon: String,
-        menuIcon: String,
-        swipeIcon: String,
-        swipeIcon2: String,
-        color: Color = .clear,
         callback: (() -> Void)? = nil
     ) {
-        self.label = label
-        self.barIsOn = barIsOn
-        self.barIcon = barIcon
-        self.menuIcon = menuIcon
-        self.swipeIcon = swipeIcon
-        self.swipeIcon2 = swipeIcon2
-        self.color = color
+        self.type = type
+        self.isOn = isOn
         self.callback = enabled ? callback : nil
     }
+    
+    var label: String { type.label(isOn) }
+    var color: Color { type.color }
+    var barIcon: String { type.barIcon(isOn: isOn) }
+    var menuIcon: String { type.menuIcon(isOn: isOn) }
+    var swipeIcon1: String { type.swipeIcon1(isOn: isOn) }
+    var swipeIcon2: String { type.swipeIcon2(isOn: isOn) }
 }

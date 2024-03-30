@@ -70,11 +70,11 @@ struct MinimalPostFeedView: View {
     func actionButton(_ action: Action) -> some View {
         Button(action: action.callback ?? { }) {
             Image(systemName: action.barIcon)
-                .foregroundColor(action.barIsOn ? .white : .primary)
+                .foregroundColor(action.isOn ? .white : .primary)
                 .padding(2)
                 .background(
                     RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
-                        .fill(action.barIsOn ? action.color : .clear)
+                        .fill(action.isOn ? action.color : .clear)
                 )
         }
         .buttonStyle(EmptyButtonStyle())
@@ -88,9 +88,9 @@ struct MinimalPostFeedView: View {
                 ForEach(postTracker.items, id: \.uid) { post in
                     VStack {
                         HStack {
-                            actionButton(post.action(forKey: .upvote))
-                            actionButton(post.action(forKey: .downvote))
-                            actionButton(post.action(forKey: .save))
+                            actionButton(post.upvoteAction)
+                            actionButton(post.downvoteAction)
+                            actionButton(post.saveAction)
                             
                             Text(post.title)
                                 .frame(maxWidth: .infinity, alignment: .leading)

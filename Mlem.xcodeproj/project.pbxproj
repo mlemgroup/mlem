@@ -48,8 +48,9 @@
 		03D3A1D72BB8923C009DE55E /* Interactable1Providing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1D62BB8923C009DE55E /* Interactable1Providing.swift */; };
 		03D3A1D92BB8934D009DE55E /* Interactable1Providing+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1D82BB8934D009DE55E /* Interactable1Providing+Actions.swift */; };
 		03D3A1DF2BB89F21009DE55E /* Actionable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1DE2BB89F21009DE55E /* Actionable.swift */; };
-		03D3A1E12BB8A019009DE55E /* Post1Providing+Actionable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1E02BB8A019009DE55E /* Post1Providing+Actionable.swift */; };
 		03D3A1E32BB8A40A009DE55E /* EmptyButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1E22BB8A40A009DE55E /* EmptyButtonStyle.swift */; };
+		03D3A1E52BB8B7A3009DE55E /* ActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1E42BB8B7A3009DE55E /* ActionType.swift */; };
+		03D3A1E72BB8B887009DE55E /* Interactable2Providing+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1E62BB8B887009DE55E /* Interactable2Providing+Actions.swift */; };
 		03E1E0492B76BFC20009DF9F /* Instance1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E0482B76BFC20009DF9F /* Instance1.swift */; };
 		03E1E04C2B7771710009DF9F /* Person1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E04B2B7771710009DF9F /* Person1.swift */; };
 		03E1E04E2B779A180009DF9F /* UserStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E04D2B779A180009DF9F /* UserStub.swift */; };
@@ -584,8 +585,9 @@
 		03D3A1D62BB8923C009DE55E /* Interactable1Providing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactable1Providing.swift; sourceTree = "<group>"; };
 		03D3A1D82BB8934D009DE55E /* Interactable1Providing+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Interactable1Providing+Actions.swift"; sourceTree = "<group>"; };
 		03D3A1DE2BB89F21009DE55E /* Actionable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actionable.swift; sourceTree = "<group>"; };
-		03D3A1E02BB8A019009DE55E /* Post1Providing+Actionable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post1Providing+Actionable.swift"; sourceTree = "<group>"; };
 		03D3A1E22BB8A40A009DE55E /* EmptyButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyButtonStyle.swift; sourceTree = "<group>"; };
+		03D3A1E42BB8B7A3009DE55E /* ActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionType.swift; sourceTree = "<group>"; };
+		03D3A1E62BB8B887009DE55E /* Interactable2Providing+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Interactable2Providing+Actions.swift"; sourceTree = "<group>"; };
 		03E1E0482B76BFC20009DF9F /* Instance1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instance1.swift; sourceTree = "<group>"; };
 		03E1E04B2B7771710009DF9F /* Person1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person1.swift; sourceTree = "<group>"; };
 		03E1E04D2B779A180009DF9F /* UserStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStub.swift; sourceTree = "<group>"; };
@@ -1096,7 +1098,6 @@
 			children = (
 				030E7ED12B7F91FA00E9A1AD /* PostStubProviding.swift */,
 				030E7ED72B7F97BC00E9A1AD /* Post1Providing.swift */,
-				03D3A1E02BB8A019009DE55E /* Post1Providing+Actionable.swift */,
 				030E7EDB2B7FADE100E9A1AD /* Post2Providing.swift */,
 				030E7ED52B7F946100E9A1AD /* PostStub.swift */,
 				030E7ED92B7F97E400E9A1AD /* Post1.swift */,
@@ -1136,6 +1137,7 @@
 				03D3A1D62BB8923C009DE55E /* Interactable1Providing.swift */,
 				03D3A1D82BB8934D009DE55E /* Interactable1Providing+Actions.swift */,
 				030E7EE12B80E6EA00E9A1AD /* Interactable2Providing.swift */,
+				03D3A1E62BB8B887009DE55E /* Interactable2Providing+Actions.swift */,
 			);
 			path = Interactable;
 			sourceTree = "<group>";
@@ -1962,6 +1964,7 @@
 			children = (
 				CDA1E8532B952C3D007953EF /* StateManager.swift */,
 				03D3A1D32BB88EF1009DE55E /* Action.swift */,
+				03D3A1E42BB8B7A3009DE55E /* ActionType.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -2476,6 +2479,7 @@
 				CD4D57002B86772400B82964 /* DeletePostRequest.swift in Sources */,
 				CD4D57212B86772400B82964 /* EditSiteRequest.swift in Sources */,
 				CDB7D0342B83D48B0013E0F0 /* APISiteView+Extensions.swift in Sources */,
+				03D3A1E72BB8B887009DE55E /* Interactable2Providing+Actions.swift in Sources */,
 				CD4D591E2B87B4C900B82964 /* StandardPostFeedLoader.swift in Sources */,
 				CD4D57D22B86772500B82964 /* ApiSaveComment.swift in Sources */,
 				030E7ED42B7F929900E9A1AD /* ContentStub.swift in Sources */,
@@ -2594,6 +2598,7 @@
 				CD4D57842B86772400B82964 /* ApiBlockCommunityResponse.swift in Sources */,
 				CD4D573A2B86772400B82964 /* GetCaptchaRequest.swift in Sources */,
 				CD4D58032B86772500B82964 /* ApiReadableFederationState.swift in Sources */,
+				03D3A1E52BB8B7A3009DE55E /* ActionType.swift in Sources */,
 				03AFBE9E2B6E79D200F01F3C /* Community3.swift in Sources */,
 				50D61E5B2AA32B9400A926EC /* ApiSession.swift in Sources */,
 				CD4D57752B86772400B82964 /* ApiCustomEmojiResponse.swift in Sources */,
@@ -2710,7 +2715,6 @@
 				CD4D57772B86772400B82964 /* ApiSiteMetadata.swift in Sources */,
 				CD4D57B22B86772400B82964 /* ApiGetUnreadCount.swift in Sources */,
 				CD4D579A2B86772400B82964 /* ApiGetCommunity.swift in Sources */,
-				03D3A1E12BB8A019009DE55E /* Post1Providing+Actionable.swift in Sources */,
 				CD4D572E2B86772400B82964 /* DistinguishCommentRequest.swift in Sources */,
 				AD1B0D372A5F7A260006F554 /* Licenses.swift in Sources */,
 				CD4D57CC2B86772500B82964 /* ApiDeleteCustomEmoji.swift in Sources */,

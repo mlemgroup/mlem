@@ -9,8 +9,6 @@ import SwiftUI
 
 @Observable
 final class Post2: Post2Providing {
-    typealias ActionKey = PostActionKey
-    
     var api: ApiClient
     var post2: Post2 { self }
     

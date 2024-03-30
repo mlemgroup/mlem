@@ -8,6 +8,5 @@
 import Foundation
 
 protocol Actionable {
-    associatedtype ActionKey
-    func action(forKey key: ActionKey) -> Action
+    func action(ofType type: ActionType) -> Action?
 }
