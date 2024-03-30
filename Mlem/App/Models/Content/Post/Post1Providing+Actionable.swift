@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 enum PostActionKey {
     case upvote, downvote, save
 }
