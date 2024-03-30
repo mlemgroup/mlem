@@ -43,6 +43,7 @@ extension Post2Providing {
     private var isSavedManager: StateManager<Bool> { post2.isSavedManager }
 
     func vote(_ newVote: ScoringOperation) {
+        guard newVote != self.votes.myVote else { return }
         groupStateRequest(
             votesManager.ticket(self.votes.applyScoringOperation(operation: newVote)),
             isReadManager.ticket(true)
@@ -53,7 +54,13 @@ extension Post2Providing {
     
     func toggleSave() {
         let newValue = !isSaved
-        isSavedManager.performRequest(expectedResult: newValue) { semaphore in
+        if newValue, UserDefaults.standard.bool(forKey: "upvoteOnSave") {
+            vote(.upvote)
+        }
+        groupStateRequest(
+            isSavedManager.ticket(newValue),
+            isReadManager.ticket(true)
+        ) { semaphore in
             try await self.api.savePost(id: self.id, save: newValue, semaphore: semaphore)
         }
     }
