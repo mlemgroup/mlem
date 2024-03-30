@@ -83,6 +83,11 @@ struct PostFeedView: View {
                     ToolbarItem(placement: .topBarTrailing) { sortMenu }
                 }
             }
+            .onDisappear {
+                Task {
+                    await markReadBatcher.flush()
+                }
+            }
     }
     
     var content: some View {
