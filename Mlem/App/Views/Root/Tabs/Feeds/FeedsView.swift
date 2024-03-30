@@ -65,6 +65,22 @@ struct MinimalPostFeedView: View {
         }
     }
     
+    // This is a proof-of-concept; in the real frontend this code will go in InteractionBarView
+    @ViewBuilder
+    func actionButton(_ action: Action) -> some View {
+        Button(action: action.callback ?? { }) {
+            Image(systemName: action.barIcon)
+                .foregroundColor(action.barIsOn ? .white : .primary)
+                .padding(2)
+                .background(
+                    RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
+                        .fill(action.barIsOn ? action.color : .clear)
+                )
+        }
+        .buttonStyle(EmptyButtonStyle())
+        .disabled(action.callback == nil)
+    }
+    
     @ViewBuilder
     var content: some View {
         ScrollView {
@@ -72,20 +88,8 @@ struct MinimalPostFeedView: View {
                 ForEach(postTracker.items, id: \.uid) { post in
                     VStack {
                         HStack {
-                            Button {
-                                post.toggleUpvote()
-                            } label: {
-                                Image(systemName: post.votes.myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvote)
-                                    .foregroundColor(post.votes.myVote == .upvote ? .blue : .primary)
-                            }
-                            .buttonStyle(.plain)
-                            Button {
-                                post.toggleDownvote()
-                            } label: {
-                                Image(systemName: post.votes.myVote == .downvote ? Icons.upvoteSquareFill : Icons.downvote)
-                                    .foregroundColor(post.votes.myVote == .downvote ? .red : .primary)
-                            }
-                            .buttonStyle(.plain)
+                            actionButton(post.action(forKey: .upvote))
+                            actionButton(post.action(forKey: .downvote))
                             
                             Text(post.title)
                                 .frame(maxWidth: .infinity, alignment: .leading)
