@@ -188,6 +188,7 @@ struct InboxView: View {
                 }
             }
         }
+        .scrollIndicators(.hidden)
         .fancyTabScrollCompatible()
     }
     

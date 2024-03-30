@@ -69,21 +69,22 @@ struct InboxReplyBodyView: View {
             }
             .padding(.top, AppConstants.standardSpacing)
             .padding(.horizontal, AppConstants.standardSpacing)
-            
-            InteractionBarView(
-                votes: reply.votes,
-                published: reply.published,
-                updated: reply.comment.updated,
-                commentCount: reply.numReplies,
-                saved: reply.saved,
-                accessibilityContext: "comment",
-                widgets: layoutWidgetTracker.groups.comment,
-                upvote: { assertionFailure("TODO: upvote") },
-                downvote: { assertionFailure("TODO: downvote") },
-                save: { assertionFailure("TODO: save") },
-                reply: { assertionFailure("TODO: reply") },
-                shareURL: URL(string: reply.comment.apId)
-            )
+    
+            // TODO: NEXT reenable
+//            InteractionBarView(
+//                votes: reply.votes,
+//                published: reply.published,
+//                updated: reply.comment.updated,
+//                commentCount: reply.numReplies,
+//                saved: reply.saved,
+//                accessibilityContext: "comment",
+//                widgets: layoutWidgetTracker.groups.comment,
+//                upvote: { assertionFailure("TODO: upvote") },
+//                downvote: { assertionFailure("TODO: downvote") },
+//                save: { assertionFailure("TODO: save") },
+//                reply: { assertionFailure("TODO: reply") },
+//                shareURL: URL(string: reply.comment.apId)
+//            )
         }
     }
 }

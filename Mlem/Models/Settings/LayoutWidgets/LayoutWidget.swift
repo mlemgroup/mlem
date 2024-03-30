@@ -7,6 +7,40 @@
 
 import SwiftUI
 
+struct InfoStackContent {
+    let colorizeVotes: Bool
+    let votes: DetailedVotes
+    let published: Date
+    let updated: Date?
+    let commentCount: Int
+    let unreadCommentCount: Int
+    let saved: Bool
+}
+
+enum EnrichedLayoutWidget {
+    case upvote(myVote: ScoringOperation, upvote: () async -> Void)
+    case downvote(myVote: ScoringOperation, downvote: () async -> Void)
+    case save(saved: Bool, save: () async -> Void)
+    case reply(reply: () -> Void)
+    case share(shareUrl: URL)
+    case upvoteCounter(votes: VotesModel, upvote: () async -> Void)
+    case downvoteCounter(votes: VotesModel, downvote: () async -> Void)
+    case scoreCounter(votes: VotesModel, upvote: () async -> Void, downvote: () async -> Void)
+    case resolve
+    case remove
+    case purge
+    case ban
+    case infoStack(
+        colorizeVotes: Bool,
+        votes: VotesModel,
+        published: Date,
+        updated: Date?,
+        commentCount: Int,
+        unreadCommentCount: Int,
+        saved: Bool
+    )
+}
+
 indirect enum LayoutWidgetType: String, Hashable, Codable, CaseIterable {
     var id: Self { self }
     

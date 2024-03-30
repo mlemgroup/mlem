@@ -67,21 +67,22 @@ struct InboxMentionBodyView: View {
             }
             .padding(.top, AppConstants.standardSpacing)
             .padding(.horizontal, AppConstants.standardSpacing)
-            
-            InteractionBarView(
-                votes: mention.votes,
-                published: mention.published,
-                updated: mention.comment.updated,
-                commentCount: mention.numReplies,
-                saved: mention.saved,
-                accessibilityContext: "comment",
-                widgets: layoutWidgetTracker.groups.comment,
-                upvote: { assertionFailure("TODO: upvote") },
-                downvote: { assertionFailure("TODO: downvote") },
-                save: { assertionFailure("TODO: save") },
-                reply: { assertionFailure("TODO: reply") },
-                shareURL: URL(string: mention.comment.apId)
-            )
+  
+            // TODO: NEXT reenable
+//            InteractionBarView(
+//                votes: mention.votes,
+//                published: mention.published,
+//                updated: mention.comment.updated,
+//                commentCount: mention.numReplies,
+//                saved: mention.saved,
+//                accessibilityContext: "comment",
+//                widgets: layoutWidgetTracker.groups.comment,
+//                upvote: { assertionFailure("TODO: upvote") },
+//                downvote: { assertionFailure("TODO: downvote") },
+//                save: { assertionFailure("TODO: save") },
+//                reply: { assertionFailure("TODO: reply") },
+//                shareURL: URL(string: mention.comment.apId)
+//            )
         }
     }
 }

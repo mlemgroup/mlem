@@ -43,21 +43,22 @@ struct InboxCommentReportBodyView: View {
             }
             .padding(.top, AppConstants.standardSpacing)
             .padding(.horizontal, AppConstants.standardSpacing)
-            
-            InteractionBarView(
-                votes: .init(upvotes: 0, downvotes: 0, myVote: .resetVote),
-                published: commentReport.published,
-                updated: commentReport.commentReport.updated,
-                commentCount: 0,
-                saved: false,
-                accessibilityContext: "comment report",
-                widgets: layoutWidgetTracker.groups.moderator,
-                upvote: {},
-                downvote: {},
-                save: {},
-                reply: {},
-                shareURL: nil
-            )
+  
+            // TODO: NEXT reenable
+//            InteractionBarView(
+//                votes: .init(upvotes: 0, downvotes: 0, myVote: .resetVote),
+//                published: commentReport.published,
+//                updated: commentReport.commentReport.updated,
+//                commentCount: 0,
+//                saved: false,
+//                accessibilityContext: "comment report",
+//                widgets: layoutWidgetTracker.groups.moderator,
+//                upvote: {},
+//                downvote: {},
+//                save: {},
+//                reply: {},
+//                shareURL: nil
+//            )
         }
     }
 }
