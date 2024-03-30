@@ -28,7 +28,7 @@ class Community1Cache: ApiTypeBackedCache<Community1, ApiCommunity> {
         )
     }
     
-    override func updateModel(_ item: Community1, with apiType: ApiCommunity) {
+    override func updateModel(_ item: Community1, with apiType: ApiCommunity, semaphore: UInt? = nil) {
         item.update(with: apiType)
     }
 }
@@ -58,7 +58,7 @@ class Community2Cache: ApiTypeBackedCache<Community2, ApiCommunityView> {
         )
     }
     
-    override func updateModel(_ item: Community2, with apiType: ApiCommunityView) {
+    override func updateModel(_ item: Community2, with apiType: ApiCommunityView, semaphore: UInt? = nil) {
         item.update(with: apiType)
     }
 }

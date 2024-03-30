@@ -82,7 +82,7 @@ struct MinimalPostFeedView: View {
                             Button {
                                 post.toggleDownvote()
                             } label: {
-                                Image(systemName: post.votes.myVote == .downvote ? Icons.upvoteSquareFill : Icons.downvote)
+                                Image(systemName: post.votes.myVote == .downvote ? Icons.downvoteSquareFill : Icons.downvote)
                                     .foregroundColor(post.votes.myVote == .downvote ? .red : .primary)
                             }
                             .buttonStyle(.plain)

@@ -40,7 +40,6 @@ extension ApiClient: PostFeedProvider {
         limit: Int,
         savedOnly: Bool
     ) async throws -> (posts: [Post2], cursor: String?) {
-        print("REQUEST", feed, sort, endpointUrl, token)
         let request = try GetPostsRequest(
             communityId: nil,
             page: page,
@@ -51,7 +50,6 @@ extension ApiClient: PostFeedProvider {
             savedOnly: savedOnly
         )
         let response = try await perform(request)
-        print("RESPONSE", response.posts.first?.post.name)
         let posts = response.posts.map { caches.post2.getModel(api: self, from: $0) }
         return (posts: posts, cursor: response.nextPage)
     }
@@ -60,12 +58,6 @@ extension ApiClient: PostFeedProvider {
     func voteOnPost(id: Int, score: ScoringOperation, semaphore: UInt?) async throws -> Post2 {
         let request = LikePostRequest(postId: id, score: score.rawValue)
         let response = try await perform(request)
-        
-        if let semaphore, let existing = caches.post2.retrieveModel(cacheId: response.postView.cacheId) {
-            existing.update(with: response.postView, semaphore: semaphore)
-            return existing
-        } else {
-            return caches.post2.getModel(api: self, from: response.postView)
-        }
+        return caches.post2.getModel(api: self, from: response.postView, semaphore: semaphore)
     }
 }
