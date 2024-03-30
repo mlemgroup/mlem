@@ -7,12 +7,10 @@
 
 import SwiftUI
 
-// Cases for *all* model types need to go in here if we want to avoid having duplicate logic for posts/comments. I'd have preferred to have separate ActionType enums for each content type if possible, but alas I think the cons of doing that outweight the pros - sjmarf
-
 enum ActionType: String {
     case upvote, downvote, save
     
-    static func upvoteConfiguration(isOn: Bool) -> BasicActionConfiguration {
+    static func upvoteAction(isOn: Bool) -> BasicAction {
         .init(
             type: .upvote,
             isOn: isOn,
@@ -25,7 +23,7 @@ enum ActionType: String {
         )
     }
     
-    static func downvoteConfiguration(isOn: Bool) -> BasicActionConfiguration {
+    static func downvoteAction(isOn: Bool) -> BasicAction {
         .init(
             type: .downvote,
             isOn: isOn,
@@ -38,7 +36,7 @@ enum ActionType: String {
         )
     }
     
-    static func saveConfiguration(isOn: Bool) -> BasicActionConfiguration {
+    static func saveAction(isOn: Bool) -> BasicAction {
         .init(
             type: .save,
             isOn: isOn,

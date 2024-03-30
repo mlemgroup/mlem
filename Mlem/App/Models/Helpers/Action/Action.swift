@@ -8,34 +8,53 @@
 import SwiftUI
 
 protocol Action {
-    associatedtype Configuration: ActionConfiguration
-    var configuration: Configuration { get }
+    var type: ActionType { get }
+    var isOn: Bool { get }
+    
+    var label: String { get }
+    var color: Color { get }
+    
+    var barIcon: String { get }
+    var menuIcon: String { get }
+    var swipeIcon1: String { get }
+    var swipeIcon2: String { get }
 }
 
 struct BasicAction: Action {
-    typealias Configuration = BasicActionConfiguration
+    let type: ActionType
+    let isOn: Bool
     
-    let configuration: BasicActionConfiguration
+    let label: String
+    let color: Color
+    
+    let barIcon: String
+    let menuIcon: String
+    let swipeIcon1: String
+    let swipeIcon2: String
     
     /// If this is nil, the Action is disabled
-    let callback: (() -> Void)?
+    var callback: (() -> Void)?
     
     init(
-        configuration: Configuration,
+        type: ActionType,
+        isOn: Bool,
+        label: String,
+        color: Color,
+        barIcon: String,
+        menuIcon: String,
+        swipeIcon1: String,
+        swipeIcon2: String,
         enabled: Bool = true,
         callback: (() -> Void)? = nil
     ) {
-        self.configuration = configuration
+        self.type = type
+        self.isOn = isOn
+        self.label = label
+        self.color = color
+        self.barIcon = barIcon
+        self.menuIcon = menuIcon
+        self.swipeIcon1 = swipeIcon1
+        self.swipeIcon2 = swipeIcon2
         self.callback = enabled ? callback : nil
     }
-    
-    var type: ActionType { configuration.type }
-    var isOn: Bool { configuration.isOn }
-    var label: String { configuration.label }
-    var color: Color { configuration.color }
-    
-    var barIcon: String { configuration.barIcon }
-    var menuIcon: String { configuration.menuIcon }
-    var swipeIcon1: String { configuration.swipeIcon1 }
-    var swipeIcon2: String { configuration.swipeIcon2 }
 }
