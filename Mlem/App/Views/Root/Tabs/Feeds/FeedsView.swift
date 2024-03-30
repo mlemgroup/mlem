@@ -90,6 +90,7 @@ struct MinimalPostFeedView: View {
                         HStack {
                             actionButton(post.action(forKey: .upvote))
                             actionButton(post.action(forKey: .downvote))
+                            actionButton(post.action(forKey: .save))
                             
                             Text(post.title)
                                 .frame(maxWidth: .infinity, alignment: .leading)

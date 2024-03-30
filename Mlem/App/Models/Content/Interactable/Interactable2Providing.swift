@@ -15,6 +15,7 @@ protocol Interactable2Providing: Interactable1Providing {
     var isSaved: Bool { get }
     
     func vote(_ newVote: ScoringOperation)
+    func toggleSave()
 }
 
 extension Interactable2Providing {

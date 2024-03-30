@@ -67,4 +67,32 @@ extension Interactable1Providing {
             }
         }
     }
+    
+    var saveAction: Action {
+        if self2?.isSaved ?? false {
+            return .init(
+                label: "Unsave",
+                barIsOn: true,
+                barIcon: Icons.saveFill,
+                menuIcon: Icons.saveFill,
+                swipeIcon: Icons.unsave,
+                swipeIcon2: Icons.unsaveFill,
+                color: Colors.saveColor
+            ) {
+                self.self2?.toggleSave()
+            }
+        } else {
+            return .init(
+                label: "Save",
+                enabled: self2 != nil,
+                barIcon: Icons.save,
+                menuIcon: Icons.save,
+                swipeIcon: Icons.save,
+                swipeIcon2: Icons.saveFill,
+                color: Colors.saveColor
+            ) {
+                self.self2?.toggleSave()
+            }
+        }
+    }
 }

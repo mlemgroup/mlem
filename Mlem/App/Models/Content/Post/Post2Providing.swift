@@ -52,8 +52,9 @@ extension Post2Providing {
     }
     
     func toggleSave() {
-        isSavedManager.performRequest(expectedResult: !isSaved) { semaphore in
-            try await self.api.savePost(id: self.id, isSaved: isSaved, semaphore: semaphore)
+        let newValue = !isSaved
+        isSavedManager.performRequest(expectedResult: newValue) { semaphore in
+            try await self.api.savePost(id: self.id, save: newValue, semaphore: semaphore)
         }
     }
 }

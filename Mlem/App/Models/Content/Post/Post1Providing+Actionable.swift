@@ -8,7 +8,7 @@
 import Foundation
 
 enum PostActionKey {
-    case upvote, downvote
+    case upvote, downvote, save
 }
 
 extension Post1Providing where ActionKey == PostActionKey {
@@ -18,6 +18,8 @@ extension Post1Providing where ActionKey == PostActionKey {
             upvoteAction
         case .downvote:
             downvoteAction
+        case .save:
+            saveAction
         }
     }
 }
