@@ -11,8 +11,4 @@ import Foundation
 protocol Interactable1Providing: AnyObject, Actionable, ContentStub {
     var creationDate: Date { get }
     var updatedDate: Date? { get }
-    
-    // These are implemented in Interactable1Providing+Actions
-    var upvoteAction: Action { get }
-    var downvoteAction: Action { get }
 }

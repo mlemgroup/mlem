@@ -8,5 +8,5 @@
 import Foundation
 
 protocol Actionable {
-    func action(ofType type: ActionType) -> Action?
+    func action(ofType type: ActionType) -> (any Action)?
 }

@@ -8,19 +8,19 @@
 import Foundation
 
 extension Interactable1Providing {
-    var upvoteAction: Action {
-        .init(type: .upvote, isOn: false)
+    var upvoteAction: BasicAction {
+        .init(configuration: ActionType.upvoteConfiguration(isOn: false))
     }
     
-    var downvoteAction: Action {
-        .init(type: .upvote, isOn: false)
+    var downvoteAction: BasicAction {
+        .init(configuration: ActionType.downvoteConfiguration(isOn: false))
     }
     
-    var saveAction: Action {
-        .init(type: .upvote, isOn: false)
+    var saveAction: BasicAction {
+        .init(configuration: ActionType.saveConfiguration(isOn: false))
     }
     
-    func action(ofType type: ActionType) -> Action? {
+    func action(ofType type: ActionType) -> (any Action)? {
         switch type {
         case .upvote:
             upvoteAction

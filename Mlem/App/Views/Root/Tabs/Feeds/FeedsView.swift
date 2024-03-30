@@ -67,7 +67,7 @@ struct MinimalPostFeedView: View {
     
     // This is a proof-of-concept; in the real frontend this code will go in InteractionBarView
     @ViewBuilder
-    func actionButton(_ action: Action) -> some View {
+    func actionButton(_ action: BasicAction) -> some View {
         Button(action: action.callback ?? { }) {
             Image(systemName: action.barIcon)
                 .foregroundColor(action.isOn ? .white : .primary)
