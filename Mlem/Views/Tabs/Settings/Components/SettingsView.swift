@@ -87,6 +87,11 @@ struct SettingsView: View {
                         NavigationLink(.settings(.general)) {
                             Label("General", systemImage: "gear").labelStyle(SquircleLabelStyle(color: .gray))
                         }
+                        if siteInformation.isAdmin || !siteInformation.moderatedCommunities.isEmpty {
+                            NavigationLink(.settings(.moderation)) {
+                                Label("Moderation", systemImage: Icons.moderationFill).labelStyle(SquircleLabelStyle(color: .green))
+                            }
+                        }
                         NavigationLink(.settings(.links)) {
                             Label("Links", systemImage: "link").labelStyle(SquircleLabelStyle(color: .teal))
                         }

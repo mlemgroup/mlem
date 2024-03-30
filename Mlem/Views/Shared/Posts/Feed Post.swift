@@ -37,7 +37,7 @@ struct FeedPost: View {
     @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
     @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
     @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
-    
+
     @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
 
@@ -83,21 +83,20 @@ struct FeedPost: View {
         siteInformation.isModOrAdmin(communityId: postModel.community.communityId)
     }
     
-    // MARK: Computed
-    
-    var barThickness: CGFloat { !postModel.read && diffWithoutColor && readMarkStyle == .bar ? CGFloat(readBarThickness) : .zero }
-    var showCheck: Bool { postModel.read && diffWithoutColor && readMarkStyle == .check }
-    
-    var menuFunctions: [MenuFunction] {
-        postModel.menuFunctions(
+    var combinedMenuFunctions: [MenuFunction] {
+        postModel.combinedMenuFunctions(
             editorTracker: editorTracker,
             showSelectText: postSize == .large,
             postTracker: postTracker,
-            commentTracker: nil,
             community: isMod ? postModel.community : nil,
             modToolTracker: isMod ? modToolTracker : nil
         )
     }
+    
+    // MARK: Computed
+    
+    var barThickness: CGFloat { !postModel.read && diffWithoutColor && readMarkStyle == .bar ? CGFloat(readBarThickness) : .zero }
+    var showCheck: Bool { postModel.read && diffWithoutColor && readMarkStyle == .check }
 
     var body: some View {
         // this allows post deletion/removal to not require tracker updates
@@ -120,7 +119,7 @@ struct FeedPost: View {
                         ]
                     )
                     .contextMenu {
-                        ForEach(menuFunctions) { item in
+                        ForEach(combinedMenuFunctions) { item in
                             MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
                         }
                     }
@@ -155,30 +154,22 @@ struct FeedPost: View {
         if postSize == .compact {
             CompactPost(
                 post: postModel,
-                showCommunity: showCommunity,
-                menuFunctions: menuFunctions
+                postTracker: postTracker,
+                showCommunity: showCommunity
             )
         } else {
             VStack(spacing: 0) {
-                VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
-                    // community name
-                    // TEMPORARILY DISABLED: conditionally showing based on community
-                    // if showCommunity {
-                    //    CommunityLinkView(community: postView.community)
-                    // }
+                VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
                     HStack {
                         CommunityLinkView(
                             community: postModel.community,
                             serverInstanceLocation: communityServerInstanceLocation
                         )
-
                         Spacer()
-
                         if showCheck {
                             ReadCheck()
                         }
-                        
-                        EllipsisMenu(size: 24, menuFunctions: menuFunctions)
+                        PostEllipsisMenus(postModel: postModel, postTracker: postTracker)
                     }
 
                     if postSize == .headline {
@@ -200,8 +191,8 @@ struct FeedPost: View {
                         )
                     }
                 }
-                .padding(.top, AppConstants.postAndCommentSpacing)
-                .padding(.horizontal, AppConstants.postAndCommentSpacing)
+                .padding(.top, AppConstants.standardSpacing)
+                .padding(.horizontal, AppConstants.standardSpacing)
                 
                 InteractionBarView(
                     votes: postModel.votes,

@@ -43,6 +43,7 @@ enum MenuFunction: Identifiable {
 struct MenuFunctionPopup {
     struct Action {
         var text: String
+        var isDestructive: Bool = false
         var callback: () -> Void
     }
     
@@ -88,7 +89,9 @@ extension MenuFunction {
             text: text,
             imageName: imageName,
             isDestructive: true,
-            role: .popup(.init(prompt: confirmationPrompt, actions: [.init(text: "Yes", callback: callback)])),
+            role: .popup(.init(prompt: confirmationPrompt, actions: [
+                .init(text: "Yes", isDestructive: true, callback: callback)
+            ])),
             enabled: enabled
         ))
     }

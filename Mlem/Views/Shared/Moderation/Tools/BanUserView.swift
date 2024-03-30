@@ -8,7 +8,6 @@
 import Dependencies
 import SwiftUI
 
-// swiftlint:disable:next type_body_length
 struct BanUserView: View {
     @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.hapticManager) var hapticManager
@@ -18,60 +17,18 @@ struct BanUserView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    enum ContentRemovalType: CaseIterable {
-        case keep, remove, purge
-        
-        var label: String {
-            switch self {
-            case .keep:
-                "Keep"
-            case .remove:
-                "Remove"
-            case .purge:
-                "Purge"
-            }
-        }
-        
-        var systemImage: String {
-            switch self {
-            case .keep:
-                "checkmark.square"
-            case .remove:
-                Icons.remove
-            case .purge:
-                Icons.purge
-            }
-        }
-        
-        var description: String {
-            switch self {
-            case .keep:
-                "Keep all posts and comments made by this user."
-            case .remove:
-                "Remove all posts and comments created by this user. They can be restored later."
-            case .purge:
-                // swiftlint:disable:next line_length
-                "Permanently remove all of this user's posts, comments, attachments and account data from the database. This cannot be undone."
-            }
-        }
-    }
-    
     let user: UserModel
     let communityContext: CommunityModel?
     let bannedFromCommunity: Bool
     let shouldBan: Bool
-    
-    // if present, will update with new banned status
-    let postTracker: StandardPostTracker?
-    let commentTracker: CommentTracker?
-    let votesTracker: VotesTracker?
+    let userRemovalWalker: UserRemovalWalker
     
     @State var banFromInstance: Bool
     
     @State var reason: String = ""
     @State var days: Int = 1
     @State var isPermanent: Bool = true
-    @State var contentRemovalType: ContentRemovalType = .keep
+    @State var removeContent: Bool = false
     @State var isWaiting: Bool = false
     
     @FocusState var focusedField: FocusedField?
@@ -81,17 +38,13 @@ struct BanUserView: View {
         communityContext: CommunityModel?,
         bannedFromCommunity: Bool = false,
         shouldBan: Bool,
-        postTracker: StandardPostTracker?,
-        commentTracker: CommentTracker?,
-        votesTracker: VotesTracker?
+        userRemovalWalker: UserRemovalWalker
     ) {
         self.user = user
         self.communityContext = communityContext
         self.bannedFromCommunity = bannedFromCommunity
         self.shouldBan = shouldBan
-        self.postTracker = postTracker
-        self.commentTracker = commentTracker
-        self.votesTracker = votesTracker
+        self.userRemovalWalker = userRemovalWalker
         
         @Dependency(\.siteInformation) var siteInformation
         
@@ -207,26 +160,11 @@ struct BanUserView: View {
     @ViewBuilder
     func durationSections() -> some View {
         Section {
-            Toggle(
-                "Permanent",
-                isOn: Binding(
-                    get: { isPermanent },
-                    set: { newValue in
-                        if !newValue && contentRemovalType == .purge {
-                            contentRemovalType = .remove
-                        }
-                        isPermanent = newValue
-                    }
-                )
-            )
-            .tint(.red)
+            Toggle("Permanent", isOn: $isPermanent)
+                .tint(.red)
         }
-        if isPermanent && banFromInstance {
-            removeContentPickerSection()
-        } else {
-            banDurationSection()
-            removeContentSection()
-        }
+        banDurationSection()
+        removeContentSection()
     }
     
     @ViewBuilder
@@ -277,13 +215,7 @@ struct BanUserView: View {
     @ViewBuilder
     func removeContentSection() -> some View {
         Section {
-            Toggle(
-                "Remove Content",
-                isOn: Binding(
-                    get: { contentRemovalType != .keep },
-                    set: { contentRemovalType = $0 ? .remove : .keep}
-                )
-            )
+            Toggle("Remove Content", isOn: $removeContent)
             .tint(.red)
         } footer: {
             if communityContext == nil {
@@ -291,38 +223,6 @@ struct BanUserView: View {
                 let comments = user.commentCount ?? 0
                 Text("Remove all \(posts) posts and \(comments) comments created by this user. They can be restored later if needed.")
             }
-        }
-    }
-    
-    @ViewBuilder
-    func removeContentPickerSection() -> some View {
-        Section {
-            ForEach(ContentRemovalType.allCases, id: \.self) { type in
-                Button { contentRemovalType = type } label: {
-                    HStack {
-                        Label {
-                            Text(type.label)
-                        } icon: {
-                            Image(systemName: type.systemImage)
-                                .foregroundStyle(.secondary)
-                        }
-                        Spacer()
-                        Checkbox(isOn: contentRemovalType == type)
-                            .tint(type == .purge ? .red : .blue)
-                        
-                    }
-                    .foregroundStyle(.primary)
-                    .contentShape(Rectangle())
-                }
-                .buttonStyle(EmptyButtonStyle())
-            }
-            .tint(.red)
-            .pickerStyle(.inline)
-        } header: {
-            Text("User Content")
-        } footer: {
-            Text(contentRemovalType.description)
-                .foregroundStyle(contentRemovalType == .purge ? .red : .secondary)
         }
     }
     
@@ -341,8 +241,6 @@ struct BanUserView: View {
         user: .mock(),
         communityContext: .mock(),
         shouldBan: true,
-        postTracker: nil,
-        commentTracker: nil,
-        votesTracker: nil
+        userRemovalWalker: .init()
     )
 }

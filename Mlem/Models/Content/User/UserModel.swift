@@ -9,7 +9,7 @@ import Dependencies
 import Foundation
 import SwiftUI
 
-struct UserModel {
+struct UserModel: Purgable {
     @Dependency(\.personRepository) var personRepository
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.siteInformation) var siteInformation

@@ -5,10 +5,15 @@
 //  Created by Nicholas Lawson on 08/06/2023.
 //
 
+import Dependencies
 import Foundation
 
 /// A model which represents a comment and it's child relationships
-class HierarchicalComment: ObservableObject {
+class HierarchicalComment: Purgable, ObservableObject {
+    @Dependency(\.apiClient) var apiClient
+    @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.errorHandler) var errorHandler
+    
     @Published var commentView: APICommentView
     @Published var purged: Bool = false
     
@@ -38,6 +43,27 @@ class HierarchicalComment: ObservableObject {
         self.isParentCollapsed = shouldCollapseChildren && depth >= 1 || parentCollapsed
         self.isCollapsed = shouldCollapseChildren && depth == 1 || collapsed
         self.links = comment.comment.content.parseLinks()
+    }
+    
+    func purge(reason: String?) async -> Bool {
+        DispatchQueue.main.async {
+            self.purged = true
+        }
+        do {
+            let response = try await apiClient.purgeComment(id: commentView.id, reason: reason)
+            if !response.success {
+                throw APIClientError.unexpectedResponse
+            }
+            return true
+        } catch {
+            DispatchQueue.main.async {
+                self.hapticManager.play(haptic: .failure, priority: .high)
+                self.errorHandler.handle(error)
+                self.purged = false
+            }
+        }
+        return false
+        
     }
 }
 

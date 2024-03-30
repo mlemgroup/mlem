@@ -67,7 +67,4 @@ enum AppConstants {
 
     static let blockUserPrompt: String = "Really block this user?"
     static let blockCommunityPrompt: String = "Really block this community?"
-    static let reportPostPrompt: String = "Really report this post?"
-    static let reportCommentPrompt: String = "Really report this comment?"
-    static let reportMessagePrompt: String = "Really report this message?"
 }

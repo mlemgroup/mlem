@@ -19,6 +19,7 @@ enum SettingsPage: DestinationValue {
     case accounts
     case quickSwitcher
     case general
+    case moderation
     case links
     case sorting
     case contentFilters

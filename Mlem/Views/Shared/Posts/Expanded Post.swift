@@ -84,19 +84,21 @@ struct ExpandedPost: View {
             .environmentObject(commentTracker)
             .navigationBarTitle(post.community.name, displayMode: .inline)
             .toolbar {
-                ToolbarItem(placement: .primaryAction) { toolbarMenu }
-                ToolbarItemGroup(placement: .secondaryAction) {
-                    let isMod = siteInformation.isModOrAdmin(communityId: post.community.communityId)
-                    let menuFunctions = post.menuFunctions(
-                        isExpanded: true,
-                        editorTracker: editorTracker,
-                        postTracker: postTracker,
-                        commentTracker: commentTracker,
-                        community: isMod ? post.community : nil,
-                        modToolTracker: isMod ? modToolTracker : nil
-                    )
-                    ForEach(menuFunctions) { child in
-                        MenuButton(menuFunction: child, menuFunctionPopup: $menuFunctionPopup)
+                ToolbarItem(placement: .topBarTrailing) { toolbarMenu }
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    ToolbarEllipsisMenu {
+                        let isMod = siteInformation.isModOrAdmin(communityId: post.community.communityId)
+                        let menuFunctions = post.combinedMenuFunctions(
+                            isExpanded: true,
+                            editorTracker: editorTracker,
+                            postTracker: postTracker,
+                            commentTracker: commentTracker,
+                            community: isMod ? post.community : nil,
+                            modToolTracker: isMod ? modToolTracker : nil
+                        )
+                        ForEach(menuFunctions) { child in
+                            MenuButton(menuFunction: child, menuFunctionPopup: $menuFunctionPopup)
+                        }
                     }
                 }
             }
