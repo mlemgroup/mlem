@@ -8,11 +8,7 @@
 import Foundation
 
 extension ApiSiteView: CacheIdentifiable, ActorIdentifiable, Identifiable {
-    var cacheId: Int {
-        var hasher: Hasher = .init()
-        hasher.combine(actorId)
-        return hasher.finalize()
-    }
+    var cacheId: Int { actorId.hashValue }
     
     var actorId: URL { site.actorId }
     var id: Int { site.id }

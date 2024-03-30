@@ -23,14 +23,7 @@ final class Post2: Post2Providing {
     var isSaved: Bool
     var isRead: Bool
     
-    var voteStatusManager: VoteStatusManager = .init()
-    
-    var tasks: Tasks = .init()
-    
-    struct Tasks {
-        // var vote: Task<Void, Never>?
-        var save: Task<Void, Never>?
-    }
+    var votesManager: StateManager<VotesModel> = .init()
     
     init(
         api: ApiClient,

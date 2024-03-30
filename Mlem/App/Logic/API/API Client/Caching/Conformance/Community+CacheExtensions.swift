@@ -8,11 +8,7 @@
 import Foundation
 
 extension Community1: CacheIdentifiable {
-    var cacheId: Int {
-        var hasher: Hasher = .init()
-        hasher.combine(actorId)
-        return hasher.finalize()
-    }
+    var cacheId: Int { actorId.hashValue }
     
     func update(with community: ApiCommunity) {
         updatedDate = community.updated

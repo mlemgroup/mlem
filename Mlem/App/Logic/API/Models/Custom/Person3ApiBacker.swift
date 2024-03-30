@@ -15,11 +15,7 @@ protocol Person3ApiBacker: ActorIdentifiable, CacheIdentifiable, Identifiable {
 }
 
 extension Person3ApiBacker {
-    var cacheId: Int {
-        var hasher: Hasher = .init()
-        hasher.combine(actorId)
-        return hasher.finalize()
-    }
+    var cacheId: Int { actorId.hashValue }
     
     var id: Int { person2ApiBacker.id }
     var actorId: URL { person2ApiBacker.actorId }

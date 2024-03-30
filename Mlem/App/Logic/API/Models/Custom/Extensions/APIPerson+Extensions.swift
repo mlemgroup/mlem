@@ -8,9 +8,5 @@
 import Foundation
 
 extension ApiPerson: ActorIdentifiable, CacheIdentifiable, Identifiable {
-    var cacheId: Int {
-        var hasher: Hasher = .init()
-        hasher.combine(actorId)
-        return hasher.finalize()
-    }
+    var cacheId: Int { actorId.hashValue }
 }
