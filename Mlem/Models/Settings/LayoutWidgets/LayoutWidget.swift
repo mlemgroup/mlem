@@ -19,6 +19,10 @@ indirect enum LayoutWidgetType: String, Hashable, Codable, CaseIterable {
     case upvoteCounter
     case downvoteCounter
     case scoreCounter
+    case resolve
+    case remove
+    case purge
+    case ban
     
     static var allCases: [LayoutWidgetType] {
         [.infoStack, .upvote, .downvote, .save, .reply, .share, .upvoteCounter, .downvoteCounter, .scoreCounter]
@@ -29,39 +33,20 @@ indirect enum LayoutWidgetType: String, Hashable, Codable, CaseIterable {
     
     var width: CGFloat {
         switch self {
-        case .infoStack:
-            return .infinity
-        case .upvote:
-            return 40
-        case .downvote:
-            return 40
-        case .save:
-            return 40
-        case .reply:
-            return 40
-        case .share:
-            return 40
-        case .upvoteCounter:
-            return 70
-        case .downvoteCounter:
-            return 70
-        case .scoreCounter:
-            return 90
+        case .infoStack: .infinity
+        case .upvote, .downvote, .save, .reply, .share, .resolve, .remove, .purge, .ban: 40
+        case .upvoteCounter: 70
+        case .downvoteCounter: 70
+        case .scoreCounter: 90
         }
     }
     
     var cost: Float {
         switch self {
-        case .scoreCounter:
-            return 3
-        case .upvoteCounter:
-            return 2
-        case .downvoteCounter:
-            return 2
-        case .infoStack:
-            return 0
-        default:
-            return 1
+        case .scoreCounter: 3
+        case .upvoteCounter, .downvoteCounter: 2
+        case .infoStack: 0
+        default: 1
         }
     }
     

@@ -10,82 +10,54 @@ import SwiftUI
 
 struct InboxCommentReportBodyView: View {
     @ObservedObject var commentReport: CommentReportModel
+    @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
     var body: some View {
         content
-            .padding(AppConstants.standardSpacing)
     }
     
     var iconName: String { commentReport.commentReport.resolved ? Icons.commentReport : Icons.commentReportFill }
     
     var content: some View {
-        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
-            Text("Comment Report")
-                .font(.headline.smallCaps())
-                .padding(.bottom, AppConstants.standardSpacing)
-            
-            UserLinkView(user: commentReport.reporter, serverInstanceLocation: .bottom, bannedFromCommunity: false)
-            
-            HStack(alignment: .top, spacing: AppConstants.standardSpacing) {
-                Image(systemName: iconName)
-                    .foregroundColor(.accentColor)
-                    .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
-                
-                VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
-                    Text(commentReport.commentReport.reason)
+        VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+                HStack {
+                    UserLinkView(user: commentReport.reporter, serverInstanceLocation: .bottom, bannedFromCommunity: false)
                     
-                    EmbeddedCommentView(comment: commentReport.comment)
+                    Spacer()
+                    
+                    Image(systemName: iconName)
+                        .foregroundColor(.accentColor)
+                        .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
                 }
+                
+                VStack(alignment: .leading, spacing: AppConstants.halfSpacing) {
+                    Text("Comment reported for: ")
+                        .font(.body.smallCaps())
+                        .foregroundColor(.secondary)
+                    
+                    Text(commentReport.commentReport.reason)
+                }
+                
+                EmbeddedCommentView(comment: commentReport.comment, post: nil, community: commentReport.community)
             }
+            .padding(.top, AppConstants.standardSpacing)
+            .padding(.horizontal, AppConstants.standardSpacing)
             
-            CommunityLinkView(community: commentReport.community)
-            
-            actionBar
+            InteractionBarView(
+                votes: .init(upvotes: 0, downvotes: 0, myVote: .resetVote),
+                published: commentReport.published,
+                updated: commentReport.commentReport.updated,
+                commentCount: 0,
+                saved: false,
+                accessibilityContext: "comment report",
+                widgets: layoutWidgetTracker.groups.moderator,
+                upvote: {},
+                downvote: {},
+                save: {},
+                reply: {},
+                shareURL: nil
+            )
         }
-    }
-    
-    @ViewBuilder
-    var actionBar: some View {
-        HStack {
-            markResolvedButton
-            
-            removeCommentButton
-            
-            banUserButton
-            
-            Spacer()
-            
-            PublishedTimestampView(date: commentReport.published)
-        }
-    }
-    
-    var markResolvedButton: some View {
-        Button {
-            print("TODO: mark resolved")
-        } label: {
-            Image(systemName: Icons.resolve)
-                .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
-        }
-        .buttonStyle(.plain)
-    }
-    
-    var removeCommentButton: some View {
-        Button {
-            print("TODO: remove comment")
-        } label: {
-            Image(systemName: Icons.remove)
-                .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
-        }
-        .buttonStyle(.plain)
-    }
-    
-    var banUserButton: some View {
-        Button {
-            print("TODO: ban user")
-        } label: {
-            Image(systemName: Icons.communityBan)
-                .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
-        }
-        .buttonStyle(.plain)
     }
 }

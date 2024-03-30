@@ -65,9 +65,10 @@ struct ResponseEditorView: View {
                         }
                     }
                     
-                    Divider()
-                    
-                    infoView
+                    VStack(spacing: 0) {
+                        Divider()
+                        infoView
+                    }
                 }
                 .animation(.default, value: attachmentModel.imageModel?.state)
                 .animation(.default, value: slurMatch)
@@ -114,7 +115,7 @@ struct ResponseEditorView: View {
     @ViewBuilder
     var infoView: some View {
         switch attachmentModel.imageModel?.state {
-        case .uploading(let progress):
+        case let .uploading(progress):
             if progress == 1 {
                 HStack(spacing: 20) {
                     Text("Processing...")
@@ -128,7 +129,7 @@ struct ResponseEditorView: View {
                         .frame(width: 80, height: 10)
                 }
             }
-        case .failed(let string):
+        case let .failed(string):
             VStack {
                 Text("Failed to upload")
                     .foregroundStyle(.red)

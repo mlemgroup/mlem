@@ -12,6 +12,7 @@ struct InboxMentionBodyView: View {
     @EnvironmentObject var inboxTracker: InboxTracker
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var unreadTracker: UnreadTracker
+    @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
     var voteIconName: String { mention.votes.myVote == .downvote ? Icons.downvote : Icons.upvote }
     var iconName: String { mention.personMention.read ? "quote.bubble" : "quote.bubble.fill" }
@@ -22,7 +23,6 @@ struct InboxMentionBodyView: View {
             scrollTarget: mention.comment.id
         ))) {
             content
-                .padding(AppConstants.standardSpacing)
                 .background(Color(uiColor: .systemBackground))
                 .contentShape(Rectangle())
                 .contextMenu {
@@ -38,51 +38,50 @@ struct InboxMentionBodyView: View {
     }
     
     var content: some View {
-        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
-            Text(mention.post.name)
-                .font(.headline)
-                .padding(.bottom, AppConstants.standardSpacing)
-            
-            UserLinkView(
-                user: mention.creator,
-                serverInstanceLocation: .bottom,
-                bannedFromCommunity: mention.creatorBannedFromCommunity,
-                overrideShowAvatar: true
-            )
-            .font(.subheadline)
-            
-            HStack(alignment: .top, spacing: AppConstants.standardSpacing) {
-                Image(systemName: iconName)
-                    .foregroundColor(.accentColor)
-                    .frame(width: AppConstants.largeAvatarSize)
+        VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+                HStack(spacing: AppConstants.standardSpacing) {
+                    UserLinkView(
+                        user: mention.creator,
+                        serverInstanceLocation: .bottom,
+                        bannedFromCommunity: mention.creatorBannedFromCommunity,
+                        overrideShowAvatar: true
+                    )
+                    
+                    Spacer()
+                    
+                    Image(systemName: iconName)
+                        .foregroundColor(.accentColor)
+                        .frame(width: AppConstants.largeAvatarSize)
+                    
+                    EllipsisMenu(
+                        size: AppConstants.largeAvatarSize,
+                        menuFunctions: mention.menuFunctions(unreadTracker: unreadTracker, editorTracker: editorTracker)
+                    )
+                }
                 
                 MarkdownView(text: mention.comment.content, isNsfw: false)
                     .font(.subheadline)
+                
+                EmbeddedPost(community: mention.community.community, post: mention.post, comment: mention.comment)
             }
+            .padding(.top, AppConstants.standardSpacing)
+            .padding(.horizontal, AppConstants.standardSpacing)
             
-            CommunityLinkView(community: mention.community)
-            
-            HStack {
-                HStack(spacing: 4) {
-                    Image(systemName: voteIconName)
-                    Text(mention.votes.total.description)
-                }
-                .foregroundColor(mention.votes.myVote.color ?? .secondary)
-                .onTapGesture {
-                    Task(priority: .userInitiated) {
-                        await mention.vote(inputOp: .upvote, unreadTracker: unreadTracker)
-                    }
-                }
-                
-                EllipsisMenu(
-                    size: AppConstants.largeAvatarSize,
-                    menuFunctions: mention.menuFunctions(unreadTracker: unreadTracker, editorTracker: editorTracker)
-                )
-                
-                Spacer()
-                
-                PublishedTimestampView(date: mention.comment.published)
-            }
+            InteractionBarView(
+                votes: mention.votes,
+                published: mention.published,
+                updated: mention.comment.updated,
+                commentCount: mention.numReplies,
+                saved: mention.saved,
+                accessibilityContext: "comment",
+                widgets: layoutWidgetTracker.groups.comment,
+                upvote: { assertionFailure("TODO: upvote") },
+                downvote: { assertionFailure("TODO: downvote") },
+                save: { assertionFailure("TODO: save") },
+                reply: { assertionFailure("TODO: reply") },
+                shareURL: URL(string: mention.comment.apId)
+            )
         }
     }
 }

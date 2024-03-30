@@ -99,6 +99,18 @@ struct InteractionBarView: View {
                 case .share:
                     ShareButtonView(accessibilityContext: accessibilityContext, url: shareURL)
                     
+                case .resolve:
+                    ResolveButtonView(resolved: false)
+                    
+                case .remove:
+                    RemoveButtonView(removed: false)
+                    
+                case .purge:
+                    PurgeButtonView()
+                    
+                case .ban:
+                    BanButtonView(banned: false)
+                    
                 case .infoStack:
                     InfoStackView(
                         votes: shouldShowScore

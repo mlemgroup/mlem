@@ -234,10 +234,11 @@ enum Icons {
     static let postReportFill: String = "exclamationmark.square.fill"
     static let privateMessageReport: String = "bubble.left.and.exclamationmark.bubble.right"
     static let privateMessageReportFill: String = "bubble.left.and.exclamationmark.bubble.right.fill"
-    static let resolve: String = "checkmark.square"
-    static let resolveFill: String = "checkmark.square.fill"
-    static let unresolve: String = "xmark.square"
-    static let unresolveFill: String = "xmark.square.fill"
+    static let resolve: String = "checkmark.circle"
+//    static let resolve: String = "checkmark.square"
+//    static let resolveFill: String = "checkmark.square.fill"
+//    static let unresolve: String = "xmark.square"
+//    static let unresolveFill: String = "xmark.square.fill"
     
     // fediseer
     static let fediseer: String = "shield.checkered"

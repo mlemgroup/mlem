@@ -30,7 +30,6 @@ struct MarkdownView: View {
     private let replaceImagesWithEmoji: Bool
     private let isInline: Bool
     private let alignment: TextAlignment
-    private let foregroundColor: Color
     
     // Don't show images from these domains
     static let hiddenImageDomains = [
@@ -44,15 +43,13 @@ struct MarkdownView: View {
         isNsfw: Bool,
         replaceImagesWithEmoji: Bool = false,
         isInline: Bool = false,
-        alignment: TextAlignment = .leading,
-        foregroundColor: Color = .primary
+        alignment: TextAlignment = .leading
     ) {
         self.text = isInline ? MarkdownView.prepareInlineMarkdown(text: text) : text
         self.isNsfw = isNsfw
         self.replaceImagesWithEmoji = replaceImagesWithEmoji
         self.isInline = isInline
         self.alignment = alignment
-        self.foregroundColor = foregroundColor
         do {
             self.blocks = try MarkdownView.parseMarkdownForImages(text: text)
         } catch {
@@ -188,9 +185,6 @@ struct MarkdownView: View {
 
     func renderAsMarkdown(text: String, theme: Theme = .mlem) -> some View {
         Markdown(text)
-            .markdownTextStyle(\.text) {
-                ForegroundColor(foregroundColor)
-            }
             .frame(maxWidth: .infinity, alignment: alignment == .center ? .top : .topLeading)
             .multilineTextAlignment(alignment)
             .markdownTheme(theme)

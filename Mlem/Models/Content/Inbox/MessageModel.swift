@@ -61,8 +61,10 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         // call API and either update with latest info or revert state fake on fail
         do {
             let newMessage = try await inboxRepository.markMessageRead(id: privateMessage.id, isRead: privateMessage.read)
-            await unreadTracker.toggleMessageRead(originalState: originalPrivateMessage.read)
             await reinit(from: newMessage)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                unreadTracker.toggleMessageRead(originalState: originalPrivateMessage.read)
+            }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)

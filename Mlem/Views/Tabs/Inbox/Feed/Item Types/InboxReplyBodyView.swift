@@ -12,6 +12,9 @@ struct InboxReplyBodyView: View {
     @EnvironmentObject var inboxTracker: InboxTracker
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var unreadTracker: UnreadTracker
+    @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
+    
+    @Environment(\.layoutDirection) var layoutDirection
     
     var voteIconName: String { reply.votes.myVote == .downvote ? Icons.downvote : Icons.upvote }
     var iconName: String { reply.commentReply.read ? "arrowshape.turn.up.right" : "arrowshape.turn.up.right.fill" }
@@ -22,7 +25,6 @@ struct InboxReplyBodyView: View {
             scrollTarget: reply.comment.id
         ))) {
             content
-                .padding(AppConstants.standardSpacing)
                 .background(Color(uiColor: .systemBackground))
                 .contentShape(Rectangle())
                 .contextMenu {
@@ -38,51 +40,50 @@ struct InboxReplyBodyView: View {
     }
     
     var content: some View {
-        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
-            Text(reply.post.name)
-                .font(.headline)
-                .padding(.bottom, AppConstants.standardSpacing)
-            
-            UserLinkView(
-                user: reply.creator,
-                serverInstanceLocation: .bottom,
-                bannedFromCommunity: reply.creatorBannedFromCommunity,
-                overrideShowAvatar: true
-            )
-            .font(.subheadline)
-            
-            HStack(alignment: .top, spacing: AppConstants.standardSpacing) {
-                Image(systemName: iconName)
-                    .foregroundColor(.accentColor)
-                    .frame(width: AppConstants.largeAvatarSize)
+        VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+                HStack(spacing: AppConstants.standardSpacing) {
+                    UserLinkView(
+                        user: reply.creator,
+                        serverInstanceLocation: .bottom,
+                        bannedFromCommunity: reply.creatorBannedFromCommunity,
+                        overrideShowAvatar: true
+                    )
+                    
+                    Spacer()
+                    
+                    Image(systemName: iconName)
+                        .foregroundColor(.accentColor)
+                        .frame(width: AppConstants.largeAvatarSize)
+                    
+                    EllipsisMenu(
+                        size: AppConstants.largeAvatarSize,
+                        menuFunctions: reply.menuFunctions(unreadTracker: unreadTracker, editorTracker: editorTracker)
+                    )
+                }
                 
                 MarkdownView(text: reply.comment.content, isNsfw: false)
                     .font(.subheadline)
+                
+                EmbeddedPost(community: reply.community.community, post: reply.post, comment: reply.comment)
             }
+            .padding(.top, AppConstants.standardSpacing)
+            .padding(.horizontal, AppConstants.standardSpacing)
             
-            CommunityLinkView(community: reply.community)
-            
-            HStack {
-                HStack(spacing: 4) {
-                    Image(systemName: voteIconName)
-                    Text(reply.votes.total.description)
-                }
-                .foregroundColor(reply.votes.myVote.color ?? .secondary)
-                .onTapGesture {
-                    Task(priority: .userInitiated) {
-                        await reply.vote(inputOp: .upvote, unreadTracker: unreadTracker)
-                    }
-                }
-                
-                EllipsisMenu(
-                    size: AppConstants.largeAvatarSize,
-                    menuFunctions: reply.menuFunctions(unreadTracker: unreadTracker, editorTracker: editorTracker)
-                )
-                
-                Spacer()
-                
-                PublishedTimestampView(date: reply.commentReply.published)
-            }
+            InteractionBarView(
+                votes: reply.votes,
+                published: reply.published,
+                updated: reply.comment.updated,
+                commentCount: reply.numReplies,
+                saved: reply.saved,
+                accessibilityContext: "comment",
+                widgets: layoutWidgetTracker.groups.comment,
+                upvote: { assertionFailure("TODO: upvote") },
+                downvote: { assertionFailure("TODO: downvote") },
+                save: { assertionFailure("TODO: save") },
+                reply: { assertionFailure("TODO: reply") },
+                shareURL: URL(string: reply.comment.apId)
+            )
         }
     }
 }

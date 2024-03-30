@@ -36,28 +36,20 @@ struct InboxMessageBodyView: View {
     
     var content: some View {
         VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
-            Text("Direct Message")
-                .font(.headline.smallCaps())
-                .padding(.bottom, AppConstants.standardSpacing)
-            
-            HStack(alignment: .top, spacing: AppConstants.standardSpacing) {
+            HStack(spacing: AppConstants.standardSpacing) {
+                UserLinkView(
+                    user: message.creator,
+                    serverInstanceLocation: .bottom,
+                    bannedFromCommunity: false,
+                    overrideShowAvatar: true
+                )
+                
+                Spacer()
+                
                 Image(systemName: iconName)
                     .foregroundColor(.accentColor)
                     .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
                 
-                MarkdownView(text: message.privateMessage.content, isNsfw: false)
-                    .font(.subheadline)
-            }
-            
-            UserLinkView(
-                user: message.creator,
-                serverInstanceLocation: .bottom,
-                bannedFromCommunity: false,
-                overrideShowAvatar: true
-            )
-            .font(.subheadline)
-            
-            HStack {
                 EllipsisMenu(
                     size: AppConstants.largeAvatarSize,
                     menuFunctions: message.menuFunctions(
@@ -65,11 +57,14 @@ struct InboxMessageBodyView: View {
                         editorTracker: editorTracker
                     )
                 )
-                
-                Spacer()
-                
-                PublishedTimestampView(date: message.privateMessage.published)
             }
+            
+            MarkdownView(text: message.privateMessage.content, isNsfw: false)
+                .font(.subheadline)
+            
+            Text("Sent \(message.published.getRelativeTime())")
+                .font(.caption)
+                .foregroundStyle(.secondary)
         }
     }
 }

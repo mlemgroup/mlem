@@ -41,7 +41,6 @@ struct CommunityLinkView: View {
     }
 
     var body: some View {
-        // NavigationLink(value: community) {
         NavigationLink(.community(community)) {
             HStack {
                 CommunityLabelView(
