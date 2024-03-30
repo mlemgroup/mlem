@@ -99,6 +99,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             GeneralSettingsView()
         case .links:
             LinksSettingsView()
+        case .moderation:
+            ModerationSettingsView()
         case .sorting:
             SortingSettingsView()
         case .contentFilters:

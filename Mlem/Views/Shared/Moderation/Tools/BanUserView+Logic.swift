@@ -23,25 +23,16 @@ extension BanUserView {
         Task {
             let reason = reason.isEmpty ? nil : reason
             var user = user
-            
-            if contentRemovalType == .purge && isPermanent {
-                let response = await user.purge(reason: reason)
-                DispatchQueue.main.async {
-                    isWaiting = false
-                }
-                await handleResult(response)
-            } else {
-                await user.toggleBan(
-                    expires: expires,
-                    reason: reason,
-                    removeData: contentRemovalType == .remove
-                )
-                DispatchQueue.main.async {
-                    isWaiting = false
-                }
-                
-                await handleResult(user.banned)
+            await user.toggleBan(
+                expires: expires,
+                reason: reason,
+                removeData: removeContent
+            )
+            DispatchQueue.main.async {
+                isWaiting = false
             }
+            
+            await handleResult(user.banned)
         }
     }
     
@@ -51,7 +42,7 @@ extension BanUserView {
             let updatedBannedStatus = await community.banUser(
                 userId: user.userId,
                 ban: shouldBan,
-                removeData: contentRemovalType == .remove,
+                removeData: removeContent,
                 reason: reason.isEmpty ? nil : reason,
                 expires: expires
             )
@@ -63,45 +54,35 @@ extension BanUserView {
         }
     }
     
-    // swiftlint:disable:next cyclomatic_complexity
     func handleResult(_ result: Bool) async {
         if result == shouldBan {
             await notifier.add(.success("\(verb.capitalized)ned User"))
             
             await MainActor.run {
-                if let postTracker {
-                    for post in postTracker.items where post.creator.userId == user.userId {
-                        if contentRemovalType == .purge {
-                            post.purged = true
-                        } else if banFromInstance {
+                userRemovalWalker.modify(
+                    userId: user.userId,
+                    postAction: { post in
+                        if banFromInstance {
                             post.creator.banned = shouldBan
                         } else {
                             post.creatorBannedFromCommunity = shouldBan
                         }
-                    }
-                }
-                if let commentTracker {
-                    for comment in commentTracker.comments where comment.commentView.comment.creatorId == user.userId {
-                        if contentRemovalType == .purge {
-                            comment.purged = true
-                        } else if banFromInstance {
+                    },
+                    commentAction: { comment in
+                        if banFromInstance {
                             comment.commentView.creator.banned = shouldBan
                         } else {
                             comment.commentView.creatorBannedFromCommunity = shouldBan
                         }
-                    }
-                }
-                
-                if let votesTracker, let index = votesTracker.votes.firstIndex(where: {$0.id == user.userId}) {
-                        if contentRemovalType == .purge {
-                            votesTracker.votes.remove(at: index)
-                        } else if banFromInstance {
-                            votesTracker.votes[index].user.banned = shouldBan
+                    },
+                    voteAction: { vote in
+                        if banFromInstance {
+                            vote.user.banned = shouldBan
                         } else {
-                            votesTracker.votes[index].creatorBannedFromCommunity = shouldBan
+                            vote.creatorBannedFromCommunity = shouldBan
                         }
-                    
-                }
+                    }
+                )
             }
             
             DispatchQueue.main.async {

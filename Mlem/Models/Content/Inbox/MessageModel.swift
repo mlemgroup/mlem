@@ -145,7 +145,6 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         ret.append(MenuFunction.standardMenuFunction(
             text: "Report",
             imageName: Icons.moderationReport,
-            confirmationPrompt: AppConstants.reportMessagePrompt,
             enabled: true
         ) {
             Task(priority: .userInitiated) {

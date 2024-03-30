@@ -12,8 +12,10 @@ enum ModTool: Hashable, Identifiable {
     // community
     case editCommunity(CommunityModel) // community to edit
     case removeCommunity(CommunityModel, Bool) // community to remove, should remove
+    
+    case purgeContent(any Purgable, UserRemovalWalker)
 
-    case banUser(UserModel, CommunityModel?, Bool?, Bool, StandardPostTracker?, CommentTracker?, VotesTracker?)
+    case banUser(UserModel, CommunityModel?, Bool?, Bool, UserRemovalWalker)
     // user to ban, community to ban from, is banned from community, should ban
 
     case addMod(Binding<UserModel>?, Binding<CommunityModel>?) // user to add as mod, community to add mod to
@@ -35,12 +37,15 @@ enum ModTool: Hashable, Identifiable {
         case let .editCommunity(community):
             hasher.combine("edit")
             hasher.combine(community.uid)
-        case let .banUser(user, community, isBanned, shouldBan, _, _, _):
+        case let .banUser(user, community, isBanned, shouldBan, _):
             hasher.combine("communityBan")
             hasher.combine(user.uid)
             hasher.combine(community?.uid)
             hasher.combine(isBanned)
             hasher.combine(shouldBan)
+        case let .purgeContent(content, _):
+            hasher.combine("purge")
+            hasher.combine(content.uid)
         case let .addMod(user, community):
             hasher.combine("addMod")
             hasher.combine(user?.wrappedValue.uid)
@@ -74,11 +79,9 @@ class ModToolTracker: ObservableObject {
         from community: CommunityModel? = nil,
         bannedFromCommunity: Bool = false,
         shouldBan: Bool,
-        postTracker: StandardPostTracker? = nil,
-        commentTracker: CommentTracker? = nil,
-        votesTracker: VotesTracker? = nil
+        userRemovalWalker: UserRemovalWalker = .init()
     ) {
-        openTool = .banUser(user, community, bannedFromCommunity, shouldBan, postTracker, commentTracker, votesTracker)
+        openTool = .banUser(user, community, bannedFromCommunity, shouldBan, userRemovalWalker)
     }
     
     func addModerator(user: Binding<UserModel>?, to community: Binding<CommunityModel>?) {
@@ -95,5 +98,9 @@ class ModToolTracker: ObservableObject {
     
     func removeCommunity(_ community: CommunityModel, shouldRemove: Bool) {
         openTool = .removeCommunity(community, shouldRemove)
+    }
+    
+    func purgeContent(_ content: Purgable, userRemovalWalker: UserRemovalWalker = .init()) {
+        openTool = .purgeContent(content, userRemovalWalker)
     }
 }
