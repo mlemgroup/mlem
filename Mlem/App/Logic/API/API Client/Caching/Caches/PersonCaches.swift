@@ -39,7 +39,7 @@ class Person1Cache: ApiTypeBackedCache<Person1, ApiPerson> {
         )
     }
     
-    override func updateModel(_ item: Person1, with apiType: ApiPerson) {
+    override func updateModel(_ item: Person1, with apiType: ApiPerson, semaphore: UInt? = nil) {
         item.update(with: apiType)
     }
 }
