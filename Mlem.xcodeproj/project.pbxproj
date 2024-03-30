@@ -398,7 +398,6 @@
 		CD16A0642B66F81A000312D2 /* UserContentModel+TrackerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD16A0632B66F81A000312D2 /* UserContentModel+TrackerItem.swift */; };
 		CD16A0662B670039000312D2 /* HierarchicalComment+TrackerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD16A0652B670039000312D2 /* HierarchicalComment+TrackerItem.swift */; };
 		CD16A0682B670327000312D2 /* UserContentFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD16A0672B670327000312D2 /* UserContentFeedView.swift */; };
-		CD16A06A2B670ABE000312D2 /* UserContentFeedView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD16A0692B670ABE000312D2 /* UserContentFeedView+Logic.swift */; };
 		CD16A06C2B674ABF000312D2 /* FeedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD16A06B2B674ABF000312D2 /* FeedHeaderView.swift */; };
 		CD17C1D92BA2660300A0C8BC /* ModlogNavigationLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD17C1D82BA2660300A0C8BC /* ModlogNavigationLinkView.swift */; };
 		CD17C1DB2BA358FD00A0C8BC /* ModlogTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD17C1DA2BA358FD00A0C8BC /* ModlogTracker.swift */; };
@@ -1080,7 +1079,6 @@
 		CD16A0632B66F81A000312D2 /* UserContentModel+TrackerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserContentModel+TrackerItem.swift"; sourceTree = "<group>"; };
 		CD16A0652B670039000312D2 /* HierarchicalComment+TrackerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HierarchicalComment+TrackerItem.swift"; sourceTree = "<group>"; };
 		CD16A0672B670327000312D2 /* UserContentFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserContentFeedView.swift; sourceTree = "<group>"; };
-		CD16A0692B670ABE000312D2 /* UserContentFeedView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserContentFeedView+Logic.swift"; sourceTree = "<group>"; };
 		CD16A06B2B674ABF000312D2 /* FeedHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedHeaderView.swift; sourceTree = "<group>"; };
 		CD17C1D82BA2660300A0C8BC /* ModlogNavigationLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogNavigationLinkView.swift; sourceTree = "<group>"; };
 		CD17C1DA2BA358FD00A0C8BC /* ModlogTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogTracker.swift; sourceTree = "<group>"; };
@@ -2949,7 +2947,6 @@
 				CDCA28D32B58AF53009D9F54 /* PostFeedView+MenuFunctions.swift */,
 				CDEC95182B5D950D004BA288 /* PostFeedView+Logic.swift */,
 				CD16A0672B670327000312D2 /* UserContentFeedView.swift */,
-				CD16A0692B670ABE000312D2 /* UserContentFeedView+Logic.swift */,
 				CD16A06B2B674ABF000312D2 /* FeedHeaderView.swift */,
 			);
 			path = Components;
@@ -3912,7 +3909,6 @@
 				CD18DC6B2A5202D4002C56BC /* MarkPersonMentionAsReadRequest.swift in Sources */,
 				03D89E722BB1BB0100F49DB3 /* ListCommentLikesRequest.swift in Sources */,
 				030245C22BA60A2600D07747 /* ToolbarEllipsisMenu.swift in Sources */,
-				CD16A06A2B670ABE000312D2 /* UserContentFeedView+Logic.swift in Sources */,
 				CD4BAD3B2B4C6C3200A1E726 /* FeedRowView.swift in Sources */,
 				03B85A402BB38868003C4203 /* PostEllipsisMenus.swift in Sources */,
 				CD1824402AA8E24100D9BEB5 /* View+DestructiveConfirmation.swift in Sources */,
