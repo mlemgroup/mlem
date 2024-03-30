@@ -58,13 +58,7 @@ extension ApiClient: PostFeedProvider {
     func voteOnPost(id: Int, score: ScoringOperation, semaphore: UInt?) async throws -> Post2 {
         let request = LikePostRequest(postId: id, score: score.rawValue)
         let response = try await perform(request)
-        
-        if let semaphore, let existing = caches.post2.retrieveModel(cacheId: response.postView.cacheId) {
-            existing.update(with: response.postView, semaphore: semaphore)
-            return existing
-        } else {
-            return caches.post2.getModel(api: self, from: response.postView)
-        }
+        return caches.post2.getModel(api: self, from: response.postView, semaphore: semaphore)
     }
     
     @discardableResult
