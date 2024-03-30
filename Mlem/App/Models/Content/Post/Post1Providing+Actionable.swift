@@ -7,9 +7,12 @@
 
 import Foundation
 
+
 enum PostActionKey {
     case upvote, downvote, save
 }
+
+// This could be defined as an extension of Interactable1Providing at this point, but I am not doing so because in future we will have actions that only exist for posts/comments (e.g. "Crosspost") - sjmarf
 
 extension Post1Providing where ActionKey == PostActionKey {
     func action(forKey key: PostActionKey) -> Action {
