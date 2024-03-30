@@ -81,7 +81,9 @@ class StateManager<Value: Equatable> {
     func updateWithReceivedValue(_ newState: Value, semaphore: UInt?) -> Bool {
         if lastVerifiedValue == nil {
             wrappedValue = newState
+            return false
         }
+        
         if self.lastSemaphore == semaphore {
             print("DEBUG [\(semaphore?.description ?? "nil")] is the last caller! Resetting lastVerifiedValue.")
             lastVerifiedValue = nil
