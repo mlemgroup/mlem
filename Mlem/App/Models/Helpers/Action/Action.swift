@@ -7,11 +7,14 @@
 
 import SwiftUI
 
-protocol Action {
+protocol Action: Identifiable {
+    var id: UUID { get }
+    
     var type: ActionType { get }
     var isOn: Bool { get }
     
     var label: String { get }
+    var isDestructive: Bool { get }
     var color: Color { get }
     
     var barIcon: String { get }
@@ -21,10 +24,13 @@ protocol Action {
 }
 
 struct BasicAction: Action {
+    let id: UUID = .init()
+    
     let type: ActionType
     let isOn: Bool
     
     let label: String
+    let isDestructive: Bool
     let color: Color
     
     let barIcon: String
@@ -40,6 +46,7 @@ struct BasicAction: Action {
         isOn: Bool,
         label: String,
         color: Color,
+        isDestructive: Bool = false,
         barIcon: String,
         menuIcon: String,
         swipeIcon1: String,
@@ -50,6 +57,7 @@ struct BasicAction: Action {
         self.type = type
         self.isOn = isOn
         self.label = label
+        self.isDestructive = isDestructive
         self.color = color
         self.barIcon = barIcon
         self.menuIcon = menuIcon

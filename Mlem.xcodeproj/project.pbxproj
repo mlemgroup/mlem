@@ -51,6 +51,7 @@
 		03D3A1E32BB8A40A009DE55E /* EmptyButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1E22BB8A40A009DE55E /* EmptyButtonStyle.swift */; };
 		03D3A1E52BB8B7A3009DE55E /* ActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1E42BB8B7A3009DE55E /* ActionType.swift */; };
 		03D3A1E72BB8B887009DE55E /* Interactable2Providing+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1E62BB8B887009DE55E /* Interactable2Providing+Actions.swift */; };
+		03D3A1EF2BB9CA1D009DE55E /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */; };
 		03E1E0492B76BFC20009DF9F /* Instance1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E0482B76BFC20009DF9F /* Instance1.swift */; };
 		03E1E04C2B7771710009DF9F /* Person1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E04B2B7771710009DF9F /* Person1.swift */; };
 		03E1E04E2B779A180009DF9F /* UserStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E04D2B779A180009DF9F /* UserStub.swift */; };
@@ -588,6 +589,7 @@
 		03D3A1E22BB8A40A009DE55E /* EmptyButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyButtonStyle.swift; sourceTree = "<group>"; };
 		03D3A1E42BB8B7A3009DE55E /* ActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionType.swift; sourceTree = "<group>"; };
 		03D3A1E62BB8B887009DE55E /* Interactable2Providing+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Interactable2Providing+Actions.swift"; sourceTree = "<group>"; };
+		03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		03E1E0482B76BFC20009DF9F /* Instance1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instance1.swift; sourceTree = "<group>"; };
 		03E1E04B2B7771710009DF9F /* Person1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person1.swift; sourceTree = "<group>"; };
 		03E1E04D2B779A180009DF9F /* UserStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStub.swift; sourceTree = "<group>"; };
@@ -1776,6 +1778,7 @@
 				CDDCF6412A662444003DA3AC /* Fancy Tab Bar */,
 				CD4D58AB2B86BE6100B82964 /* Accounts */,
 				03D3A1E22BB8A40A009DE55E /* EmptyButtonStyle.swift */,
+				03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -2448,6 +2451,7 @@
 				032145792B7F866C001AE07E /* PersonStubProviding.swift in Sources */,
 				CD4D58FA2B87B10600B82964 /* StandardFeedLoader.swift in Sources */,
 				032145602B7A79E7001AE07E /* Instance3.swift in Sources */,
+				03D3A1EF2BB9CA1D009DE55E /* MenuButton.swift in Sources */,
 				CD4D571A2B86772400B82964 /* CreateCommentRequest.swift in Sources */,
 				CD4D57822B86772400B82964 /* ApiUpdateTotpResponse.swift in Sources */,
 				CD4D570E2B86772400B82964 /* DeletePrivateMessageRequest.swift in Sources */,

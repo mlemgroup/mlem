@@ -94,4 +94,12 @@ extension Post1Providing {
 
         return .titleOnly
     }
+    
+    var menuActions: [any Action] {
+        [
+            upvoteAction,
+            downvoteAction,
+            saveAction
+        ]
+    }
 }

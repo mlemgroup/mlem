@@ -11,4 +11,8 @@ import Foundation
 protocol Interactable1Providing: AnyObject, Actionable, ContentStub {
     var created: Date { get }
     var updated: Date? { get }
+    
+    var upvoteAction: BasicAction { get }
+    var downvoteAction: BasicAction { get }
+    var saveAction: BasicAction { get }
 }

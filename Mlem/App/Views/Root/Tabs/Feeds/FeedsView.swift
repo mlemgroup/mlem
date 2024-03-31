@@ -98,6 +98,12 @@ struct MinimalPostFeedView: View {
                                 .foregroundStyle(post.isRead ? .secondary : .primary)
                         }
                         .padding(.horizontal)
+                        .contentShape(.rect)
+                        .contextMenu {
+                            ForEach(post.menuActions, id: \.id) { action in
+                                MenuButton(action: action)
+                            }
+                        }
                         Divider()
                     }
                 }
