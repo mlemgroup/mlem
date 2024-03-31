@@ -10,23 +10,28 @@ import SwiftUI
 
 struct ResolveButtonView: View {
     let resolved: Bool
-    let resolve: () -> Void
+    let resolve: () async -> Void
     
     var body: some View {
         Button {
-            resolve()
+            Task(priority: .userInitiated) {
+                await resolve()
+            }
         } label: {
             Image(systemName: resolved ? Icons.resolveFill : Icons.resolve)
                 .resizable()
                 .scaledToFit()
-                .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)
                 .foregroundStyle(resolved ? .white : .primary)
+                .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)
                 .padding(AppConstants.barIconPadding)
                 .background(RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
                     .aspectRatio(1, contentMode: .fit)
                     .foregroundColor(resolved ? .green : .clear))
                 .padding(AppConstants.standardSpacing)
                 .contentShape(Rectangle())
+        }
+        .transaction { transaction in
+            transaction.disablesAnimations = true
         }
     }
 }

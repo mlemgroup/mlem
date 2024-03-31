@@ -26,10 +26,10 @@ enum EnrichedLayoutWidget {
     case upvoteCounter(votes: VotesModel, upvote: () async -> Void)
     case downvoteCounter(votes: VotesModel, downvote: () async -> Void)
     case scoreCounter(votes: VotesModel, upvote: () async -> Void, downvote: () async -> Void)
-    case resolve(resolved: Bool, resolve: () -> Void)
+    case resolve(resolved: Bool, resolve: () async -> Void)
     case remove(removed: Bool, remove: () -> Void)
     case purge
-    case ban
+    case ban(banned: Bool, ban: () -> Void)
     case infoStack(
         colorizeVotes: Bool,
         votes: VotesModel,

@@ -12,8 +12,12 @@ protocol InboxItem: Identifiable, ContentIdentifiable, TrackerItem {
     var published: Date { get }
     var uid: ContentModelIdentifier { get }
     var creatorId: Int { get }
+    var banStatusCreatorId: Int { get }
+    var creatorBannedFromCommunity: Bool { get set }
     var read: Bool { get }
     var id: Int { get }
+    
+    func setCreatorBannedFromCommunity(_ newBanned: Bool)
 }
 
 enum AnyInboxItem: InboxItem {
@@ -41,9 +45,20 @@ enum AnyInboxItem: InboxItem {
     
     var creatorId: Int { value.creatorId }
     
+    var banStatusCreatorId: Int { value.banStatusCreatorId }
+    
+    var creatorBannedFromCommunity: Bool {
+        get { value.creatorBannedFromCommunity }
+        set { value.setCreatorBannedFromCommunity(newValue) }
+    }
+    
     var read: Bool { value.read }
     
     var id: Int { value.id }
     
     func sortVal(sortType: TrackerSortType) -> TrackerSortVal { value.sortVal(sortType: sortType) }
+    
+    func setCreatorBannedFromCommunity(_ newBanned: Bool) {
+        value.setCreatorBannedFromCommunity(newBanned)
+    }
 }

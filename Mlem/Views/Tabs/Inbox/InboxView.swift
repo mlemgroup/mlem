@@ -82,6 +82,8 @@ struct InboxView: View {
     @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.personRepository) var personRepository
     
+    @Environment(\.scrollViewProxy) var scrollViewProxy
+    
     @EnvironmentObject var unreadTracker: UnreadTracker
     
     @StateObject var inboxTracker: InboxTracker
@@ -138,6 +140,7 @@ struct InboxView: View {
     
     var body: some View {
         content
+            .environmentObject(inboxTracker)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     navBarTitle
@@ -171,6 +174,12 @@ struct InboxView: View {
                         await refresh()
                     }
                 }
+            }
+            .hoistNavigation {
+                withAnimation {
+                    scrollViewProxy?.scrollTo(scrollToTop)
+                }
+                return true
             }
     }
     

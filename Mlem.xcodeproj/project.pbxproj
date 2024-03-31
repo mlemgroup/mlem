@@ -611,6 +611,7 @@
 		CDD0B8C92BB782CF003E7174 /* PurgeButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0B8C82BB782CF003E7174 /* PurgeButtonView.swift */; };
 		CDD0B8CB2BB7844F003E7174 /* BanButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0B8CA2BB7844F003E7174 /* BanButtonView.swift */; };
 		CDD0B8CD2BB9E53F003E7174 /* Removable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0B8CC2BB9E53F003E7174 /* Removable.swift */; };
+		CDD0B8CF2BBA0D31003E7174 /* ResolveCommentReportRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0B8CE2BBA0D31003E7174 /* ResolveCommentReportRequest.swift */; };
 		CDD0EF9C2B7D6B9100CA3504 /* ModToolTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EF9B2B7D6B9100CA3504 /* ModToolTracker.swift */; };
 		CDD0EF9E2B7D6F3E00CA3504 /* ModToolSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EF9D2B7D6F3E00CA3504 /* ModToolSheet.swift */; };
 		CDD0EFA22B7D9E5800CA3504 /* UserListRowBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EFA12B7D9E5800CA3504 /* UserListRowBody.swift */; };
@@ -1305,6 +1306,7 @@
 		CDD0B8C82BB782CF003E7174 /* PurgeButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurgeButtonView.swift; sourceTree = "<group>"; };
 		CDD0B8CA2BB7844F003E7174 /* BanButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BanButtonView.swift; sourceTree = "<group>"; };
 		CDD0B8CC2BB9E53F003E7174 /* Removable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Removable.swift; sourceTree = "<group>"; };
+		CDD0B8CE2BBA0D31003E7174 /* ResolveCommentReportRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolveCommentReportRequest.swift; sourceTree = "<group>"; };
 		CDD0EF9B2B7D6B9100CA3504 /* ModToolTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModToolTracker.swift; sourceTree = "<group>"; };
 		CDD0EF9D2B7D6F3E00CA3504 /* ModToolSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModToolSheet.swift; sourceTree = "<group>"; };
 		CDD0EFA12B7D9E5800CA3504 /* UserListRowBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListRowBody.swift; sourceTree = "<group>"; };
@@ -3206,6 +3208,7 @@
 			isa = PBXGroup;
 			children = (
 				CDD0B8B82BB4E407003E7174 /* ListCommentReportsRequest.swift */,
+				CDD0B8CE2BBA0D31003E7174 /* ResolveCommentReportRequest.swift */,
 			);
 			path = Moderation;
 			sourceTree = "<group>";
@@ -4245,6 +4248,7 @@
 				CD82A2552A716C7C00111034 /* APIPersonUnreadCounts.swift in Sources */,
 				CD04D5E72A3636FB008EF95B /* Headline Post.swift in Sources */,
 				50A8812E2A72D76C003E3661 /* APIClient+Comment.swift in Sources */,
+				CDD0B8CF2BBA0D31003E7174 /* ResolveCommentReportRequest.swift in Sources */,
 				6363D5C527EE196700E34822 /* MlemApp.swift in Sources */,
 				CDF1EF162A6C3BC2003594B6 /* End Of Feed View.swift in Sources */,
 				CDD0B8CD2BB9E53F003E7174 /* Removable.swift in Sources */,

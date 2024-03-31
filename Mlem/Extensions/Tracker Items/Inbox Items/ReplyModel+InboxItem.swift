@@ -12,4 +12,11 @@ extension ReplyModel: InboxItem {
     var published: Date { commentReply.published }
     
     var creatorId: Int { comment.creatorId }
+    
+    var banStatusCreatorId: Int { comment.creatorId }
+    
+    @MainActor
+    func setCreatorBannedFromCommunity(_ newBanned: Bool) {
+        creatorBannedFromCommunity = newBanned
+    }
 }

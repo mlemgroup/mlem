@@ -214,6 +214,7 @@ enum Icons {
     // mod tools
     static let auditUser: String = "person.crop.circle.badge.questionmark.fill"
     static let communityBan: String = "xmark.shield"
+    static let communityBanFill: String = "xmark.shield.fill"
     static let communityBanned: String = "xmark.shield.fill"
     static let communityUnban: String = "checkmark.shield"
     static let communityUnbanned: String = "checkmark.shield.fill"

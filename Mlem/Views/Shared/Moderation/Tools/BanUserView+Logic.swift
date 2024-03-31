@@ -75,6 +75,12 @@ extension BanUserView {
                             comment.commentView.creatorBannedFromCommunity = shouldBan
                         }
                     },
+                    inboxAction: { item in
+                        if !banFromInstance {
+                            print(item.uid)
+                            item.setCreatorBannedFromCommunity(shouldBan)
+                        }
+                    },
                     voteAction: { vote in
                         if banFromInstance {
                             vote.user.banned = shouldBan

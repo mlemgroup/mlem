@@ -5,12 +5,16 @@
 //  Created by Eric Andrews on 2024-03-28.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
 
 struct InboxCommentReportBodyView: View {
+    @Dependency(\.errorHandler) var errorHandler
+    
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     @EnvironmentObject var modToolTracker: ModToolTracker
+    @EnvironmentObject var inboxTracker: InboxTracker
     
     @ObservedObject var commentReport: CommentReportModel
     
@@ -42,6 +46,14 @@ struct InboxCommentReportBodyView: View {
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                 
+                if let resolver = commentReport.resolver {
+                    let verb = commentReport.commentReport.resolved ? "Resolved" : "Unresolved"
+                    Text("\(verb) by \(resolver.fullyQualifiedUsername ?? resolver.name)")
+                        .italic()
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+                
                 EmbeddedCommentView(comment: commentReport.comment, post: nil, community: commentReport.community)
             }
             .padding(.top, AppConstants.standardSpacing)
@@ -66,16 +78,22 @@ struct InboxCommentReportBodyView: View {
                 )
             case .resolve:
                 return .resolve(resolved: commentReport.commentReport.resolved) {
-                    assertionFailure("TODO: implement")
+                    do {
+                        try await commentReport.toggleResolved()
+                    } catch {
+                        errorHandler.handle(error)
+                    }
                 }
             case .remove:
                 return .remove(removed: commentReport.removed) {
-                    commentReport.remove(modToolTracker: modToolTracker)
+                    commentReport.removeComment(modToolTracker: modToolTracker, shouldRemove: !commentReport.removed)
                 }
             case .purge:
                 return .purge
             case .ban:
-                return .ban
+                return .ban(banned: commentReport.creatorBannedFromCommunity) {
+                    commentReport.toggleCommentCreatorBanned(modToolTracker: modToolTracker, inboxTracker: inboxTracker)
+                }
             default:
                 return nil
             }

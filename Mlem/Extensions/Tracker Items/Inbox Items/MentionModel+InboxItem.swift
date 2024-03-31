@@ -13,4 +13,11 @@ extension MentionModel: InboxItem {
     var published: Date { personMention.published }
     
     var creatorId: Int { comment.creatorId }
+    
+    var banStatusCreatorId: Int { comment.creatorId }
+    
+    @MainActor
+    func setCreatorBannedFromCommunity(_ newBanned: Bool) {
+        creatorBannedFromCommunity = newBanned
+    }
 }

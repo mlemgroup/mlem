@@ -127,8 +127,7 @@ struct InteractionBarView: View {
         .font(.callout)
     }
     
-    // swiftlint:disable cyclomatic_complexity
-    // swiftlint:disable function_body_length
+    // swiftlint:disable cyclomatic_complexity function_body_length
     @ViewBuilder
     func buildWidget(for widget: EnrichedLayoutWidget, offset: Int) -> some View {
         switch widget {
@@ -171,8 +170,8 @@ struct InteractionBarView: View {
             RemoveButtonView(removed: removed, remove: remove)
         case .purge:
             PurgeButtonView()
-        case .ban:
-            BanButtonView(banned: false)
+        case let .ban(banned, ban):
+            BanButtonView(banned: banned, ban: ban)
         case let .infoStack(colorizeVotes, votes, published, updated, commentCount, unreadCommentCount, saved):
             InfoStackView(
                 votes: detailedVotes(from: votes),
@@ -188,6 +187,5 @@ struct InteractionBarView: View {
             .frame(minWidth: 0, maxWidth: .infinity)
         }
     }
-    // swiftlint:enable cyclomatic_complexity
-    // swiftlint:enable function_body_length
+    // swiftlint:enable cyclomatic_complexity function_body_length
 }

@@ -49,7 +49,7 @@ struct BanUserView: View {
         @Dependency(\.siteInformation) var siteInformation
         
         _banFromInstance = .init(
-            wrappedValue: siteInformation.isAdmin && shouldBan != user.banned
+            wrappedValue: siteInformation.isAdmin && shouldBan != user.banned && communityContext == nil
         )
     }
     

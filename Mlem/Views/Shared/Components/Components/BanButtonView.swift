@@ -10,17 +10,25 @@ import SwiftUI
 
 struct BanButtonView: View {
     let banned: Bool
+    let ban: () -> Void
     
     var body: some View {
-        Image(systemName: Icons.communityBan)
-            .resizable()
-            .scaledToFit()
-            .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)
-            .padding(AppConstants.barIconPadding)
-            .background(RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
-                .aspectRatio(1, contentMode: .fit)
-                .foregroundColor(banned ? .red : .clear))
-            .padding(AppConstants.standardSpacing)
-            .contentShape(Rectangle())
+        Button {
+            ban()
+        } label: {
+            Image(systemName: banned ? Icons.communityBanFill : Icons.communityBan)
+                .resizable()
+                .scaledToFit()
+                .foregroundStyle(banned ? .white : .primary)
+                .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)
+                .padding(AppConstants.barIconPadding)
+                .background(RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
+                    .aspectRatio(1, contentMode: .fit)
+                    .foregroundColor(banned ? .red : .clear))
+                .padding(AppConstants.standardSpacing)
+                .contentShape(Rectangle())
+        }.transaction { transaction in
+            transaction.disablesAnimations = true
+        }
     }
 }
