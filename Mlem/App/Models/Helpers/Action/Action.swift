@@ -96,7 +96,7 @@ struct BasicAction: Action {
         .init(
             type: .save,
             isOn: isOn,
-            label: isOn ? "Undo Save": "Save",
+            label: isOn ? "Unsave": "Save",
             color: Colors.saveColor,
             barIcon: isOn ? Icons.saveFill : Icons.save,
             menuIcon: isOn ? Icons.saveFill : Icons.save,
