@@ -25,10 +25,10 @@ protocol Post1Providing: PostStubProviding,
     var pinnedInstance: Bool { get }
     var locked: Bool { get }
     var nsfw: Bool { get }
-    var creationDate: Date { get }
+    var created: Date { get }
     var removed: Bool { get }
     var thumbnailUrl: URL? { get }
-    var updatedDate: Date? { get }
+    var updated: Date? { get }
 }
 
 extension Post1Providing {
@@ -36,7 +36,7 @@ extension Post1Providing {
     func sortVal(sortType: FeedLoaderSortType) -> FeedLoaderSortVal {
         switch sortType {
         case .published:
-            return .published(creationDate)
+            return .published(created)
         }
     }
 }
@@ -57,10 +57,10 @@ extension Post1Providing {
     var pinnedInstance: Bool { post1.pinnedInstance }
     var locked: Bool { post1.locked }
     var nsfw: Bool { post1.nsfw }
-    var creationDate: Date { post1.creationDate }
+    var created: Date { post1.created }
     var removed: Bool { post1.removed }
     var thumbnailUrl: URL? { post1.thumbnailUrl }
-    var updatedDate: Date? { post1.updatedDate }
+    var updated: Date? { post1.updated }
     
     var id_: Int? { post1.id }
     var title_: String? { post1.title }
@@ -73,10 +73,10 @@ extension Post1Providing {
     var pinnedInstance_: Bool? { post1.pinnedInstance }
     var locked_: Bool? { post1.locked }
     var nsfw_: Bool? { post1.nsfw }
-    var creationDate_: Date? { post1.creationDate }
+    var creationDate_: Date? { post1.created }
     var removed_: Bool? { post1.removed }
     var thumbnailUrl_: URL? { post1.thumbnailUrl }
-    var updatedDate_: Date? { post1.updatedDate }
+    var updatedDate_: Date? { post1.updated }
 }
 
 extension Post1Providing {

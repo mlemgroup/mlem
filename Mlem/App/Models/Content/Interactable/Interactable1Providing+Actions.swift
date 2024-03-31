@@ -9,15 +9,15 @@ import Foundation
 
 extension Interactable1Providing {
     var upvoteAction: BasicAction {
-        ActionType.upvoteAction(isOn: false)
+        .upvote(isOn: false)
     }
     
     var downvoteAction: BasicAction {
-        ActionType.downvoteAction(isOn: false)
+        .downvote(isOn: false)
     }
     
     var saveAction: BasicAction {
-        ActionType.saveAction(isOn: false)
+        .save(isOn: false)
     }
     
     func action(ofType type: ActionType) -> (any Action)? {

@@ -11,7 +11,7 @@ extension Post1: CacheIdentifiable {
     var cacheId: Int { actorId.hashValue }
     
     func update(with post: ApiPost) {
-        updatedDate = post.updated
+        updated = post.updated
     
         title = post.name
         

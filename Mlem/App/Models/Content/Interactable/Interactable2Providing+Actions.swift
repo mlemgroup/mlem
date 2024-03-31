@@ -9,19 +9,19 @@ import Foundation
 
 extension Interactable2Providing {
     var upvoteAction: BasicAction {
-        var action = ActionType.upvoteAction(isOn: votes.myVote == .upvote)
+        var action = BasicAction.upvote(isOn: votes.myVote == .upvote)
         action.callback = toggleUpvote
         return action
     }
     
     var downvoteAction: BasicAction {
-        var action = ActionType.downvoteAction(isOn: votes.myVote == .downvote)
+        var action = BasicAction.downvote(isOn: votes.myVote == .downvote)
         action.callback = toggleDownvote
         return action
     }
     
     var saveAction: BasicAction {
-        var action = ActionType.saveAction(isOn: isSaved)
+        var action = BasicAction.save(isOn: isSaved)
         action.callback = toggleSave
         return action
     }

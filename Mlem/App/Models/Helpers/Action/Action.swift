@@ -32,7 +32,7 @@ struct BasicAction: Action {
     let swipeIcon1: String
     let swipeIcon2: String
     
-    /// If this is nil, the Action is disabled
+    /// If this is nil, the BasicAction is disabled
     var callback: (() -> Void)?
     
     init(
