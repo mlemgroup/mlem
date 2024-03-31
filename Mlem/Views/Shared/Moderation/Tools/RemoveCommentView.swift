@@ -20,7 +20,7 @@ struct RemoveCommentView: View {
     @FocusState var reasonFocused: FocusedField?
     @State var isWaiting: Bool = false
     
-    let comment: HierarchicalComment
+    @State var comment: any Removable
     let shouldRemove: Bool
     
     var verb: String { shouldRemove ? "Remove" : "Restore" }
@@ -68,7 +68,7 @@ struct RemoveCommentView: View {
             let response: CommentResponse?
             do {
                 response = try await apiClient.removeComment(
-                    id: comment.commentView.id,
+                    id: comment.removalId,
                     shouldRemove: shouldRemove,
                     reason: reason.isEmpty ? nil : reason
                 )
@@ -80,7 +80,7 @@ struct RemoveCommentView: View {
             if let response, response.commentView.comment.removed == shouldRemove {
                 await notifier.add(.success("\(verb)d comment"))
                 DispatchQueue.main.async {
-                    comment.commentView.comment.removed = shouldRemove
+                    comment.removed = shouldRemove
                     dismiss()
                 }
             } else {

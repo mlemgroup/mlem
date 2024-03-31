@@ -5,8 +5,6 @@
 //  Created by Eric Andrews on 2023-06-20.
 //
 
-// swiftlint:disable file_length
-
 import SwiftUI
 
 extension CommentItem {
@@ -245,5 +243,3 @@ extension CommentItem {
         }
     }
 }
-
-// swiftlint:enable file_length
