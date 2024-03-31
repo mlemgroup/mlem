@@ -52,6 +52,8 @@
 		03D3A1E52BB8B7A3009DE55E /* ActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1E42BB8B7A3009DE55E /* ActionType.swift */; };
 		03D3A1E72BB8B887009DE55E /* Interactable2Providing+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1E62BB8B887009DE55E /* Interactable2Providing+Actions.swift */; };
 		03D3A1EF2BB9CA1D009DE55E /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */; };
+		03D3A1F12BB9D48E009DE55E /* BasicAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1F02BB9D48E009DE55E /* BasicAction.swift */; };
+		03D3A1F32BB9D49B009DE55E /* ActionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1F22BB9D49B009DE55E /* ActionGroup.swift */; };
 		03E1E0492B76BFC20009DF9F /* Instance1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E0482B76BFC20009DF9F /* Instance1.swift */; };
 		03E1E04C2B7771710009DF9F /* Person1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E04B2B7771710009DF9F /* Person1.swift */; };
 		03E1E04E2B779A180009DF9F /* UserStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E04D2B779A180009DF9F /* UserStub.swift */; };
@@ -590,6 +592,8 @@
 		03D3A1E42BB8B7A3009DE55E /* ActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionType.swift; sourceTree = "<group>"; };
 		03D3A1E62BB8B887009DE55E /* Interactable2Providing+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Interactable2Providing+Actions.swift"; sourceTree = "<group>"; };
 		03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
+		03D3A1F02BB9D48E009DE55E /* BasicAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAction.swift; sourceTree = "<group>"; };
+		03D3A1F22BB9D49B009DE55E /* ActionGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionGroup.swift; sourceTree = "<group>"; };
 		03E1E0482B76BFC20009DF9F /* Instance1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instance1.swift; sourceTree = "<group>"; };
 		03E1E04B2B7771710009DF9F /* Person1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person1.swift; sourceTree = "<group>"; };
 		03E1E04D2B779A180009DF9F /* UserStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStub.swift; sourceTree = "<group>"; };
@@ -1148,6 +1152,8 @@
 			isa = PBXGroup;
 			children = (
 				03D3A1D32BB88EF1009DE55E /* Action.swift */,
+				03D3A1F02BB9D48E009DE55E /* BasicAction.swift */,
+				03D3A1F22BB9D49B009DE55E /* ActionGroup.swift */,
 				03D3A1E42BB8B7A3009DE55E /* ActionType.swift */,
 			);
 			path = Action;
@@ -2251,6 +2257,7 @@
 				CD4D573F2B86772400B82964 /* PasswordChangeAfterResetRequest.swift in Sources */,
 				0321455A2B7A6ED8001AE07E /* Instance1Providing.swift in Sources */,
 				032145662B7A8721001AE07E /* UserProviding.swift in Sources */,
+				03D3A1F12BB9D48E009DE55E /* BasicAction.swift in Sources */,
 				032145622B7A7A18001AE07E /* Instance3Providing.swift in Sources */,
 				CD4D57E62B86772500B82964 /* ApiGetPersonMentionsResponse.swift in Sources */,
 				CD4D58362B86772500B82964 /* ApiBlockInstanceResponse.swift in Sources */,
@@ -2417,6 +2424,7 @@
 				CD4D57B42B86772400B82964 /* ApiCustomEmojiView.swift in Sources */,
 				504ECBAE2AB45B2A006C0B96 /* LemmyURL.swift in Sources */,
 				CD4D591A2B87B3D100B82964 /* ErrorHandler+Dependency.swift in Sources */,
+				03D3A1F32BB9D49B009DE55E /* ActionGroup.swift in Sources */,
 				CD4D57C02B86772400B82964 /* ApiAdminPurgeCommentView.swift in Sources */,
 				CD4D57602B86772400B82964 /* ApiGetSiteMetadata.swift in Sources */,
 				CD4D58162B86772500B82964 /* ApiPostJoin.swift in Sources */,

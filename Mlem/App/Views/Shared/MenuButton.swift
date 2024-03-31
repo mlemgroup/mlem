@@ -23,6 +23,33 @@ struct MenuButton: View {
                 Label(action.label, systemImage: action.menuIcon)
             }
             .disabled(action.callback == nil)
+        } else if let action = action as? ActionGroup {
+            switch action.displayMode {
+            case .section:
+                Section {
+                    iterateActions(actions: action.children)
+                }
+            case .compactSection:
+                ControlGroup {
+                    iterateActions(actions: action.children)
+                }
+                .controlGroupStyle(.compactMenu)
+            case .disclosure:
+                Menu {
+                    iterateActions(actions: action.children)
+                } label: {
+                    Label(action.label, systemImage: action.menuIcon)
+                }
+            case .popup:
+                Text("WIP")
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func iterateActions(actions: [any Action]) -> some View {
+        ForEach(actions, id: \.id) { action in
+            MenuButton(action: action)
         }
     }
 }

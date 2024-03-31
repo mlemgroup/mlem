@@ -97,8 +97,9 @@ extension Post1Providing {
     
     var menuActions: [any Action] {
         [
-            upvoteAction,
-            downvoteAction,
+            ActionGroup(
+                children: [upvoteAction, downvoteAction]
+            ),
             saveAction
         ]
     }
