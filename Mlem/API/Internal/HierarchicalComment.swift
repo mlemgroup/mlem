@@ -160,6 +160,14 @@ extension HierarchicalComment {
     }
 }
 
+extension HierarchicalComment: Removable {
+    var removalId: Int { commentView.comment.id }
+    var removed: Bool {
+        get { commentView.comment.removed }
+        set { commentView.comment.removed = newValue }
+    }
+}
+
 extension [APICommentView] {
     /// A representation of this array of `APICommentView` in a hierarchy that is suitable for rendering the UI with parent/child relationships
     var hierarchicalRepresentation: [HierarchicalComment] {

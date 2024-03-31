@@ -9,8 +9,10 @@ import Foundation
 import SwiftUI
 
 struct InboxCommentReportBodyView: View {
-    @ObservedObject var commentReport: CommentReportModel
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
+    @EnvironmentObject var modToolTracker: ModToolTracker
+    
+    @ObservedObject var commentReport: CommentReportModel
     
     var body: some View {
         content
@@ -27,38 +29,56 @@ struct InboxCommentReportBodyView: View {
                     Spacer()
                     
                     Image(systemName: iconName)
-                        .foregroundColor(.accentColor)
+                        .foregroundColor(.moderation)
                         .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
+                    
+                    EllipsisMenu(size: AppConstants.largeAvatarSize, menuFunctions: .init()) // TODO: NEXT
                 }
                 
-                VStack(alignment: .leading, spacing: AppConstants.halfSpacing) {
-                    Text("comment reported for: ")
-                        .font(.body.smallCaps())
-                        .foregroundColor(.secondary)
-                    
-                    Text(commentReport.commentReport.reason)
-                }
+                Text(commentReport.commentReport.reason)
+                
+                Text("Reported \(commentReport.published.getRelativeTime())")
+                    .italic()
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
                 
                 EmbeddedCommentView(comment: commentReport.comment, post: nil, community: commentReport.community)
             }
             .padding(.top, AppConstants.standardSpacing)
             .padding(.horizontal, AppConstants.standardSpacing)
-  
-            // TODO: NEXT reenable
-//            InteractionBarView(
-//                votes: .init(upvotes: 0, downvotes: 0, myVote: .resetVote),
-//                published: commentReport.published,
-//                updated: commentReport.commentReport.updated,
-//                commentCount: 0,
-//                saved: false,
-//                accessibilityContext: "comment report",
-//                widgets: layoutWidgetTracker.groups.moderator,
-//                upvote: {},
-//                downvote: {},
-//                save: {},
-//                reply: {},
-//                shareURL: nil
-//            )
+            
+            InteractionBarView(context: .comment, widgets: enrichLayoutWidgets())
+        }
+    }
+    
+    func enrichLayoutWidgets() -> [EnrichedLayoutWidget] {
+        layoutWidgetTracker.groups.moderator.compactMap { baseWidget in
+            switch baseWidget {
+            case .infoStack:
+                return .infoStack(
+                    colorizeVotes: false,
+                    votes: commentReport.votes,
+                    published: commentReport.comment.published,
+                    updated: commentReport.comment.updated,
+                    commentCount: commentReport.numReplies,
+                    unreadCommentCount: 0,
+                    saved: false
+                )
+            case .resolve:
+                return .resolve(resolved: commentReport.commentReport.resolved) {
+                    assertionFailure("TODO: implement")
+                }
+            case .remove:
+                return .remove(removed: commentReport.removed) {
+                    commentReport.remove(modToolTracker: modToolTracker)
+                }
+            case .purge:
+                return .purge
+            case .ban:
+                return .ban
+            default:
+                return nil
+            }
         }
     }
 }

@@ -226,6 +226,7 @@ enum Icons {
     static let lock: String = "lock"
     static let unlock: String = "lock.open"
     static let remove: String = "xmark.bin"
+    static let removeFill: String = "xmark.bin.fill"
     static let purge: String = "burn"
     static let restore: String = "arrow.up.bin"
     static let commentReport: String = "exclamationmark.bubble"
@@ -235,10 +236,7 @@ enum Icons {
     static let privateMessageReport: String = "bubble.left.and.exclamationmark.bubble.right"
     static let privateMessageReportFill: String = "bubble.left.and.exclamationmark.bubble.right.fill"
     static let resolve: String = "checkmark.circle"
-//    static let resolve: String = "checkmark.square"
-//    static let resolveFill: String = "checkmark.square.fill"
-//    static let unresolve: String = "xmark.square"
-//    static let unresolveFill: String = "xmark.square.fill"
+    static let resolveFill: String = "checkmark.circle.fill"
     
     // fediseer
     static let fediseer: String = "shield.checkered"

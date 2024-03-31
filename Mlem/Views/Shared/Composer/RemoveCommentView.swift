@@ -21,7 +21,7 @@ struct RemoveCommentView: View {
     @State var isWaiting: Bool = false
     @State var shouldPurge: Bool = false
     
-    let comment: HierarchicalComment
+    @State var comment: any Removable
     let shouldRemove: Bool
     
     var verb: String { shouldRemove ? "Remove" : "Restore" }
@@ -83,7 +83,7 @@ struct RemoveCommentView: View {
             if shouldPurge {
                 let outcome: Bool
                 do {
-                    outcome = try await apiClient.purgeComment(id: comment.commentView.id, reason: reason).success
+                    outcome = try await apiClient.purgeComment(id: comment.removalId, reason: reason).success
                     DispatchQueue.main.async {
                         comment.purged = true
                     }
@@ -104,7 +104,7 @@ struct RemoveCommentView: View {
             } else {
                 let response: CommentResponse?
                 do {
-                    response = try await apiClient.removeComment(id: comment.commentView.id, shouldRemove: shouldRemove, reason: reason)
+                    response = try await apiClient.removeComment(id: comment.removalId, shouldRemove: shouldRemove, reason: reason)
                 } catch {
                     response = nil
                     errorHandler.handle(error)
@@ -113,7 +113,7 @@ struct RemoveCommentView: View {
                 if let response, response.commentView.comment.removed == shouldRemove {
                     await notifier.add(.success("\(verb)d comment"))
                     DispatchQueue.main.async {
-                        comment.commentView.comment.removed = shouldRemove
+                        comment.removed = shouldRemove
                         dismiss()
                     }
                 } else {

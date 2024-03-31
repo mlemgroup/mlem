@@ -25,7 +25,7 @@ enum ModTool: Hashable, Identifiable {
     case removePost(PostModel, Bool) // post to remove, should remove
     
     // comment
-    case removeComment(HierarchicalComment, Bool) // comment to remove, should remove
+    case removeComment(any Removable, Bool) // comment to remove, should remove
     
     static func == (lhs: ModTool, rhs: ModTool) -> Bool {
         lhs.hashValue == rhs.hashValue
@@ -58,7 +58,7 @@ enum ModTool: Hashable, Identifiable {
             hasher.combine(shouldRemove)
         case let .removeComment(comment, shouldRemove):
             hasher.combine("removeComment")
-            hasher.combine(comment.uid)
+            hasher.combine(comment.removalId)
             hasher.combine(shouldRemove)
         case let .removeCommunity(community, shouldRemove):
             hasher.combine("removeCommunity")
@@ -99,7 +99,7 @@ class ModToolTracker: ObservableObject {
         openTool = .removePost(post, shouldRemove)
     }
     
-    func removeComment(_ comment: HierarchicalComment, shouldRemove: Bool) {
+    func removeComment(_ comment: any Removable, shouldRemove: Bool) {
         openTool = .removeComment(comment, shouldRemove)
     }
     

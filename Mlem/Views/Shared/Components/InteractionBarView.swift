@@ -165,10 +165,10 @@ struct InteractionBarView: View {
                 upvote: upvote,
                 downvote: downvote
             )
-        case .resolve:
-            ResolveButtonView(resolved: false)
-        case .remove:
-            RemoveButtonView(removed: false)
+        case let .resolve(resolved, resolve):
+            ResolveButtonView(resolved: resolved, resolve: resolve)
+        case let .remove(removed, remove):
+            RemoveButtonView(removed: removed, remove: remove)
         case .purge:
             PurgeButtonView()
         case .ban:

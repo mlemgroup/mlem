@@ -32,7 +32,9 @@ extension APIClient {
             reporter: UserModel(from: $0.creator),
             community: CommunityModel(from: $0.community),
             commentReport: $0.commentReport,
-            comment: $0.comment
+            comment: $0.comment,
+            votes: VotesModel(from: $0.counts, myVote: $0.myVote ?? .resetVote),
+            numReplies: $0.counts.childCount
         ) }
     }
 }
