@@ -15,6 +15,8 @@ struct BanUserView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     
+    @EnvironmentObject var unreadTracker: UnreadTracker
+    
     @Environment(\.dismiss) var dismiss
     
     let user: UserModel
@@ -22,6 +24,7 @@ struct BanUserView: View {
     let bannedFromCommunity: Bool
     let shouldBan: Bool
     let userRemovalWalker: UserRemovalWalker
+    let callback: (() -> Void)?
     
     @State var banFromInstance: Bool
     
@@ -38,13 +41,15 @@ struct BanUserView: View {
         communityContext: CommunityModel?,
         bannedFromCommunity: Bool = false,
         shouldBan: Bool,
-        userRemovalWalker: UserRemovalWalker
+        userRemovalWalker: UserRemovalWalker,
+        callback: (() -> Void)? = nil
     ) {
         self.user = user
         self.communityContext = communityContext
         self.bannedFromCommunity = bannedFromCommunity
         self.shouldBan = shouldBan
         self.userRemovalWalker = userRemovalWalker
+        self.callback = callback
         
         @Dependency(\.siteInformation) var siteInformation
         

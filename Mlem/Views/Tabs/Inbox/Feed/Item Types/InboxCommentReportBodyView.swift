@@ -63,6 +63,12 @@ struct InboxCommentReportBodyView: View {
         }
     }
     
+    func toggleResolved() {
+        Task(priority: .userInitiated) {
+            await commentReport.toggleResolved()
+        }
+    }
+    
     func enrichLayoutWidgets() -> [EnrichedLayoutWidget] {
         layoutWidgetTracker.groups.moderator.compactMap { baseWidget in
             switch baseWidget {
@@ -77,13 +83,7 @@ struct InboxCommentReportBodyView: View {
                     saved: false
                 )
             case .resolve:
-                return .resolve(resolved: commentReport.commentReport.resolved) {
-                    do {
-                        try await commentReport.toggleResolved()
-                    } catch {
-                        errorHandler.handle(error)
-                    }
-                }
+                return .resolve(resolved: commentReport.commentReport.resolved, resolve: toggleResolved)
             case .remove:
                 return .remove(removed: commentReport.removed) {
                     commentReport.removeComment(modToolTracker: modToolTracker, shouldRemove: !commentReport.removed)

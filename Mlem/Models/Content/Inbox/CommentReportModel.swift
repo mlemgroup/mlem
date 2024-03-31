@@ -5,12 +5,13 @@
 //  Created by Eric Andrews on 2024-03-27.
 //
 
-import Foundation
 import Dependencies
+import Foundation
 
 class CommentReportModel: ContentIdentifiable, ObservableObject {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.errorHandler) var errorHandler
     
     var reporter: UserModel
     var resolver: UserModel?
@@ -50,22 +51,28 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
     
     @MainActor
     func reinit(from commentReport: CommentReportModel) {
-        self.reporter = commentReport.reporter
-        self.resolver = commentReport.resolver
-        self.commentCreator = commentReport.commentCreator
-        self.community = commentReport.community
+        reporter = commentReport.reporter
+        resolver = commentReport.resolver
+        commentCreator = commentReport.commentCreator
+        community = commentReport.community
         self.commentReport = commentReport.commentReport
-        self.comment = commentReport.comment
-        self.votes = commentReport.votes
-        self.numReplies = commentReport.numReplies
-        self.creatorBannedFromCommunity = creatorBannedFromCommunity
-        self.purged = commentReport.purged
+        comment = commentReport.comment
+        votes = commentReport.votes
+        numReplies = commentReport.numReplies
+        creatorBannedFromCommunity = creatorBannedFromCommunity
+        purged = commentReport.purged
     }
     
-    func toggleResolved() async throws {
-        hapticManager.play(haptic: .lightSuccess, priority: .low)
-        let response = try await apiClient.markCommentReportResolved(reportId: commentReport.id, resolved: !commentReport.resolved)
-        await reinit(from: response)
+    func toggleResolved(withHaptic: Bool = true) async {
+        if withHaptic {
+            hapticManager.play(haptic: .lightSuccess, priority: .low)
+        }
+        do {
+            let response = try await apiClient.markCommentReportResolved(reportId: commentReport.id, resolved: !commentReport.resolved)
+            await reinit(from: response)
+        } catch {
+            errorHandler.handle(error)
+        }
     }
     
     func removeComment(modToolTracker: ModToolTracker, shouldRemove: Bool) {
@@ -79,7 +86,13 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
             bannedFromCommunity: creatorBannedFromCommunity,
             shouldBan: !creatorBannedFromCommunity,
             userRemovalWalker: .init(inboxTracker: inboxTracker)
-        )
+        ) {
+            if !self.commentReport.resolved {
+                Task(priority: .userInitiated) {
+                    await self.toggleResolved(withHaptic: false)
+                }
+            }
+        }
     }
 }
 
