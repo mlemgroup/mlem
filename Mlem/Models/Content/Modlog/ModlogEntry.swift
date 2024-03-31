@@ -292,7 +292,7 @@ struct ModlogEntry: Hashable, Equatable {
         
         self.icon = apiType.modAdd.removed ?
             .init(imageName: Icons.unAdmin, color: .indigo) :
-            .init(imageName: Icons.admin, color: .teal)
+            .init(imageName: Icons.adminFill, color: .teal)
         
         self.contextLinks = [
             ModlogMenuFunction.administrator(apiType.moderator),

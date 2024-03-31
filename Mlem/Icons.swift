@@ -11,7 +11,8 @@ import SwiftUI
 /// SFSymbol names for icons
 enum Icons {
     // votes
-    static let votes: String = "arrow.up.arrow.down.square"
+    static let votes: String = "arrow.up.arrow.down"
+    static let votesSquare: String = "arrow.up.arrow.down.square"
     static let upvote: String = "arrow.up"
     static let upvoteSquare: String = "arrow.up.square"
     static let upvoteSquareFill: String = "arrow.up.square.fill"
@@ -119,7 +120,8 @@ enum Icons {
     static let community: String = "building.2.crop.circle"
     static let communityFill: String = "building.2.crop.circle.fill"
     static let communityButton: String = "building.2"
-    static let admin: String = "crown.fill"
+    static let admin: String = "crown"
+    static let adminFill: String = "crown.fill"
     static let unAdmin: String = "cloud.bolt.fill" // idk what to do for this one
     
     // tabs

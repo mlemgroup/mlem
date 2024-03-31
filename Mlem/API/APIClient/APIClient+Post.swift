@@ -144,4 +144,18 @@ extension APIClient {
         let request = try PurgePostRequest(session: session, postId: id, reason: reason)
         return try await perform(request: request)
     }
+    
+    func getPostLikes(
+        id: Int,
+        page: Int,
+        limit: Int?
+    ) async throws -> APIListPostLikesResponse {
+        let request = try ListPostLikesRequest(
+            session: session,
+            postId: id,
+            page: page,
+            limit: limit
+        )
+        return try await perform(request: request)
+    }
 }

@@ -27,6 +27,7 @@ struct AggregateFeedView: View {
     @State var postSortType: PostSortType
     
     @Binding var selectedFeed: PostFeedType?
+    @State var selectedSavedTab: UserContentFeedType = .all
     
     @Namespace var scrollToTop
     @State private var scrollToTopAppeared = false
@@ -150,6 +151,15 @@ struct AggregateFeedView: View {
                     ScrollToView(appeared: $scrollToTopAppeared)
                         .id(scrollToTop)
                     headerView
+                    if selectedFeed == .saved {
+                        BubblePicker(
+                            UserContentFeedType.allCases,
+                            selected: $selectedSavedTab,
+                            withDividers: [.top, .bottom]
+                        ) { item in
+                            Text(item.rawValue.capitalized)
+                        }
+                    }
                 }
                 
                 switch selectedFeed {
@@ -157,7 +167,7 @@ struct AggregateFeedView: View {
                     PostFeedView(postSortType: $postSortType, showCommunity: true)
                         .environmentObject(postTracker)
                 case .saved:
-                    UserContentFeedView()
+                    UserContentFeedView(contentType: selectedSavedTab)
                         .environmentObject(savedContentTracker)
                 default:
                     EmptyView() // shouldn't be possible

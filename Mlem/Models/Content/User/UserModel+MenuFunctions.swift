@@ -23,16 +23,27 @@ extension UserModel {
         )
     }
     
-    func banMenuFunction(
-        _ callback: @escaping (_ item: Self) -> Void = { _ in },
-        modToolTracker: ModToolTracker
-    ) -> MenuFunction {
+    func banMenuFunction(modToolTracker: ModToolTracker) -> MenuFunction {
+        .toggleableMenuFunction(
+            toggle: banned,
+            trueText: "Unban",
+            trueImageName: Icons.instanceBan,
+            falseText: "Ban",
+            falseImageName: Icons.instanceBan,
+            isDestructive: .whenFalse,
+            callback: {
+                modToolTracker.banUser(self, shouldBan: !banned)
+            }
+        )
+    }
+    
+    func purgeMenuFunction(modToolTracker: ModToolTracker) -> MenuFunction {
         .standardMenuFunction(
-            text: banned ? "Unban" : "Ban",
-            imageName: Icons.instanceBan,
+            text: "Purge",
+            imageName: Icons.purge,
             isDestructive: true,
             callback: {
-                modToolTracker.banUserFromInstance(self, shouldBan: !banned)
+                modToolTracker.purgeContent(self)
             }
         )
     }
@@ -76,9 +87,15 @@ extension UserModel {
         
         if !isOwnUser {
             functions.append(blockMenuFunction(callback))
-            if siteInformation.myUser?.isAdmin ?? false, !(isAdmin ?? false), let modToolTracker {
-                functions.append(.divider)
-                functions.append(banMenuFunction(callback, modToolTracker: modToolTracker))
+        }
+        
+        // This has to be outside of the below `if` statement so that it shows when "Appoint As Moderator" is appended
+        functions.append(.divider)
+        
+        if !isOwnUser {
+            if siteInformation.isAdmin, !(isAdmin ?? false), let modToolTracker {
+                functions.append(banMenuFunction(modToolTracker: modToolTracker))
+                functions.append(purgeMenuFunction(modToolTracker: modToolTracker))
             }
         }
         return functions

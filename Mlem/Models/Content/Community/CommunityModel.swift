@@ -16,7 +16,7 @@ struct ActiveUserCount {
 }
 
 // swiftlint:disable:next type_body_length
-struct CommunityModel {
+struct CommunityModel: Purgable {
     // MARK: - Members and Init
     
     @Dependency(\.apiClient) private var apiClient

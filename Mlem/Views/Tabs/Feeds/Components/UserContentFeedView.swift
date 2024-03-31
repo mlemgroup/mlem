@@ -9,6 +9,12 @@ import Dependencies
 import Foundation
 import SwiftUI
 
+enum UserContentFeedType: String, CaseIterable, Identifiable {
+    case all, posts, comments
+    
+    var id: String { rawValue }
+}
+
 struct UserContentFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.siteInformation) var siteInformation
@@ -24,24 +30,23 @@ struct UserContentFeedView: View {
 
     @State var errorDetails: ErrorDetails?
     
+    var contentType: UserContentFeedType = .all
+    
+    var items: [UserContentModel] {
+        switch contentType {
+        case .all:
+            userContentTracker.items
+        case .posts:
+            userContentTracker.items.filter { $0.uid.contentType == .post }
+        case .comments:
+            userContentTracker.items.filter { $0.uid.contentType == .comment }
+        }
+    }
+    
     var body: some View {
         content
             .animation(.easeOut(duration: 0.2), value: userContentTracker.items.isEmpty)
             .task { await userContentTracker.loadMoreItems() }
-            .toolbar {
-                ToolbarItemGroup(placement: .secondaryAction) {
-                    ForEach(genEllipsisMenuFunctions()) { menuFunction in
-                        MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
-                    }
-                    Menu {
-                        ForEach(genPostSizeSwitchingFunctions()) { menuFunction in
-                            MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
-                        }
-                    } label: {
-                        Label("Post Size", systemImage: Icons.postSizeSetting)
-                    }
-                }
-            }
     }
     
     var content: some View {
@@ -49,7 +54,7 @@ struct UserContentFeedView: View {
             if userContentTracker.items.isEmpty {
                 noPostsView()
             } else {
-                ForEach(userContentTracker.items, id: \.uid) { feedItem(for: $0) }
+                ForEach(items, id: \.uid) { feedItem(for: $0) }
                 EndOfFeedView(loadingState: userContentTracker.loadingState, viewType: .hobbit)
             }
         }

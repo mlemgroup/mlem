@@ -6,6 +6,9 @@
 //
 
 import Foundation
+import SwiftUI
+
+// swiftlint:disable file_length
 
 extension PostModel {
     // swiftlint:disable function_body_length
@@ -16,90 +19,45 @@ extension PostModel {
     ///   - community: optional CommunityModel. If this and modToolTracker are present, moderator functions will be included in the menu.
     ///   - modToolTracker: optional ModToolTracker. If this and community are present, moderator functions will be included in the menu.
     ///   - Returns: menu functions for this post
-    @MainActor func menuFunctions(
+    @MainActor func combinedMenuFunctions(
         isExpanded: Bool = false,
         editorTracker: EditorTracker,
         showSelectText: Bool = true,
-        postTracker: StandardPostTracker?,
-        commentTracker: CommentTracker?,
-        community: CommunityModel?,
-        modToolTracker: ModToolTracker?
+        postTracker: StandardPostTracker? = nil,
+        commentTracker: CommentTracker? = nil,
+        community: CommunityModel? = nil,
+        modToolTracker: ModToolTracker? = nil
     ) -> [MenuFunction] {
+        @AppStorage("moderatorActionGrouping") var moderatorActionGrouping: ModerationActionGroupingMode = .none
+        
         var functions: [MenuFunction] = .init()
-        
-        var mainFunctions: [MenuFunction] = .init()
-        mainFunctions.append(contentsOf: topRowMenuFunctions(editorTracker: editorTracker))
-        
-        if showSelectText {
-            var text = self.post.name
-            if let body = post.body, body.isNotEmpty {
-                text += "\n\n\(body)"
-            }
-            mainFunctions.append(MenuFunction.standardMenuFunction(
-                text: "Select Text",
-                imageName: Icons.select
-            ) {
-                editorTracker.openEditor(with: SelectTextModel(text: text))
-            })
-        }
-        
-        if creator.isActiveAccount {
-            // Edit
-            mainFunctions.append(MenuFunction.standardMenuFunction(
-                text: "Edit",
-                imageName: Icons.edit
-            ) {
-                editorTracker.openEditor(with: PostEditorModel(post: self))
-            })
-            
-            // Delete
-            mainFunctions.append(MenuFunction.standardMenuFunction(
-                text: "Delete",
-                imageName: Icons.delete,
-                confirmationPrompt: "Are you sure you want to delete this post? This cannot be undone.",
-                enabled: !post.deleted
-            ) {
-                Task(priority: .userInitiated) {
-                    await self.delete()
-                }
-            })
-        }
-        
-        // Share
-        mainFunctions.append(MenuFunction.shareMenuFunction(url: post.apId))
-        
-        if !creator.isActiveAccount {
-            if modToolTracker == nil {
-                // Report
-                mainFunctions.append(MenuFunction.standardMenuFunction(
-                    text: "Report",
-                    imageName: Icons.moderationReport,
-                    confirmationPrompt: AppConstants.reportPostPrompt
-                ) {
-                    editorTracker.openEditor(
-                        with: ConcreteEditorModel(post: self, operation: PostOperation.reportPost)
-                    )
-                })
-            }
-            
-            if let postTracker {
-                mainFunctions.append(contentsOf: blockMenuFunctions(postTracker: postTracker))
-            }
-        }
-        
-        functions.append(.controlGroupMenuFunction(children: mainFunctions))
+
+        functions.append(
+            contentsOf: personalMenuFunctions(
+                editorTracker: editorTracker,
+                showSelectText: showSelectText,
+                postTracker: postTracker,
+                community: community,
+                modToolTracker: modToolTracker
+            )
+        )
         
         if let community, let modToolTracker {
             functions.append(.divider)
-            functions.append(
-                contentsOf: modMenuFunctions(
-                    isExpanded: isExpanded,
-                    community: community,
-                    modToolTracker: modToolTracker,
-                    postTracker: postTracker,
-                    commentTracker: commentTracker
-                )
+            let modFunctions = modMenuFunctions(
+                isExpanded: isExpanded,
+                community: community,
+                modToolTracker: modToolTracker,
+                postTracker: postTracker,
+                commentTracker: commentTracker
             )
+            if !isExpanded, moderatorActionGrouping != .none {
+                functions.append(
+                    .groupMenuFunction(text: "Moderation", imageName: Icons.moderation, children: modFunctions)
+                )
+            } else {
+                functions.append(contentsOf: modFunctions)
+            }
         }
         
         #if DEBUG
@@ -116,29 +74,125 @@ extension PostModel {
         
         return functions
     }
-
-    private func modMenuFunctions(
-        isExpanded: Bool,
-        community: CommunityModel,
-        modToolTracker: ModToolTracker,
-        postTracker: StandardPostTracker?,
-        commentTracker: CommentTracker?
+    
+    @MainActor func personalMenuFunctions(
+        editorTracker: EditorTracker,
+        showSelectText: Bool = true,
+        postTracker: StandardPostTracker? = nil,
+        community: CommunityModel? = nil,
+        modToolTracker: ModToolTracker? = nil
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         
-        if isExpanded {
-            functions.append(MenuFunction.toggleableMenuFunction(
-                toggle: post.featuredCommunity,
-                trueText: "Unpin",
-                trueImageName: Icons.unpin,
-                falseText: "Pin",
-                falseImageName: Icons.pin
+        functions.append(contentsOf: topRowMenuFunctions(editorTracker: editorTracker))
+        
+        if showSelectText {
+            var text = post.name
+            if let body = post.body, body.isNotEmpty {
+                text += "\n\n\(body)"
+            }
+            functions.append(MenuFunction.standardMenuFunction(
+                text: "Select Text",
+                imageName: Icons.select
             ) {
-                Task {
-                    await self.toggleFeatured(featureType: .community)
-                    await self.notifier.add(.success("\(self.post.featuredCommunity ? "P" : "Unp")inned post"))
+                editorTracker.openEditor(with: SelectTextModel(text: text))
+            })
+        }
+        
+        if creator.isActiveAccount {
+            // Edit
+            functions.append(MenuFunction.standardMenuFunction(
+                text: "Edit",
+                imageName: Icons.edit
+            ) {
+                editorTracker.openEditor(with: PostEditorModel(post: self))
+            })
+            
+            // Delete
+            functions.append(MenuFunction.standardMenuFunction(
+                text: "Delete",
+                imageName: Icons.delete,
+                confirmationPrompt: "Are you sure you want to delete this post? This cannot be undone.",
+                enabled: !post.deleted
+            ) {
+                Task(priority: .userInitiated) {
+                    await self.delete()
                 }
             })
+        }
+        
+        // Share
+        functions.append(MenuFunction.shareMenuFunction(url: post.apId))
+        
+        if !creator.isActiveAccount {
+            if modToolTracker == nil {
+                // Report
+                functions.append(MenuFunction.standardMenuFunction(
+                    text: "Report",
+                    imageName: Icons.moderationReport,
+                    isDestructive: true
+                ) {
+                    editorTracker.openEditor(
+                        with: ConcreteEditorModel(post: self, operation: PostOperation.reportPost)
+                    )
+                })
+            }
+            
+            if let postTracker {
+                functions.append(contentsOf: blockMenuFunctions(postTracker: postTracker))
+            }
+        }
+        
+        return [.controlGroupMenuFunction(children: functions)]
+    }
+
+    @MainActor func modMenuFunctions(
+        isExpanded: Bool = false,
+        community: CommunityModel,
+        modToolTracker: ModToolTracker,
+        postTracker: StandardPostTracker? = nil,
+        commentTracker: CommentTracker? = nil
+    ) -> [MenuFunction] {
+        var functions: [MenuFunction] = .init()
+        
+        var showAllActions = isExpanded || UserDefaults.standard.bool(forKey: "showAllModeratorActions")
+        @AppStorage("moderatorActionGrouping") var moderatorActionGrouping: ModerationActionGroupingMode = .none
+        
+        if showAllActions {
+            if siteInformation.isAdmin {
+                functions.append(MenuFunction.standardMenuFunction(
+                    text: "Pin",
+                    imageName: Icons.pin,
+                    prompt: "Pin/Unpin from...",
+                    actions: [
+                        .init(text: "Community") {
+                            Task {
+                                await self.toggleFeatured(featureType: .community)
+                                await self.notifier.add(.success("\(self.post.featuredCommunity ? "P" : "Unp")inned post"))
+                            }
+                        },
+                        .init(text: "Instance") {
+                            Task {
+                                await self.toggleFeatured(featureType: .local)
+                                await self.notifier.add(.success("\(self.post.featuredLocal ? "P" : "Unp")inned post"))
+                            }
+                        }
+                    ]
+                ))
+            } else {
+                functions.append(MenuFunction.toggleableMenuFunction(
+                    toggle: post.featuredCommunity,
+                    trueText: "Unpin",
+                    trueImageName: Icons.unpin,
+                    falseText: "Pin",
+                    falseImageName: Icons.pin
+                ) {
+                    Task {
+                        await self.toggleFeatured(featureType: .community)
+                        await self.notifier.add(.success("\(self.post.featuredCommunity ? "P" : "Unp")inned post"))
+                    }
+                })
+            }
             
             functions.append(MenuFunction.toggleableMenuFunction(
                 toggle: post.locked,
@@ -152,6 +206,15 @@ extension PostModel {
                     await self.notifier.add(.success("\(self.post.locked ? "L" : "Unl")ocked post"))
                 }
             })
+            
+            // TODO: 0.19 deprecation
+            if siteInformation.isAdmin || ((siteInformation.version ?? .zero) > .init("0.19.3")) {
+                functions.append(MenuFunction.navigationMenuFunction(
+                    text: "View Votes",
+                    imageName: Icons.votes,
+                    destination: .postVotes(self)
+                ))
+            }
         }
         
         if creator.userId != siteInformation.userId {
@@ -161,10 +224,27 @@ extension PostModel {
                 trueImageName: Icons.restore,
                 falseText: "Remove",
                 falseImageName: Icons.remove,
-                isDestructive: .always
+                isDestructive: .whenFalse
             ) {
                 modToolTracker.removePost(self, shouldRemove: !self.post.removed)
             })
+        }
+        
+        if siteInformation.isAdmin {
+            functions.append(MenuFunction.standardMenuFunction(
+                text: "Purge",
+                imageName: Icons.purge,
+                isDestructive: true
+            ) {
+                modToolTracker.purgeContent(self)
+            }
+            )
+        }
+            
+        if creator.userId != siteInformation.userId {
+            if siteInformation.isAdmin {
+                functions.append(.divider)
+            }
             
             if !(siteInformation.isAdmin && creatorBannedFromCommunity && creator.banned) {
                 functions.append(MenuFunction.toggleableMenuFunction(
@@ -175,13 +255,12 @@ extension PostModel {
                     falseImageName: (siteInformation.isAdmin && !creator.banned) ? Icons.instanceBan : Icons.communityBan,
                     isDestructive: .whenFalse
                 ) {
-                    modToolTracker.banUserFromCommunity(
+                    modToolTracker.banUser(
                         self.creator,
                         from: community,
                         bannedFromCommunity: self.creatorBannedFromCommunity,
                         shouldBan: !self.creatorBannedFromCommunity,
-                        postTracker: postTracker,
-                        commentTracker: commentTracker
+                        userRemovalWalker: .init(postTracker: postTracker, commentTracker: commentTracker)
                     )
                 })
             }
@@ -195,15 +274,25 @@ extension PostModel {
                     falseImageName: Icons.instanceBan,
                     isDestructive: .whenFalse
                 ) {
-                    modToolTracker.banUserFromCommunity(
+                    modToolTracker.banUser(
                         self.creator,
                         from: community,
                         bannedFromCommunity: self.creatorBannedFromCommunity,
                         shouldBan: !self.creator.banned,
-                        postTracker: postTracker,
-                        commentTracker: commentTracker
+                        userRemovalWalker: .init(postTracker: postTracker, commentTracker: commentTracker)
                     )
                 })
+            }
+            
+            if siteInformation.isAdmin {
+                functions.append(MenuFunction.standardMenuFunction(
+                    text: "Purge User",
+                    imageName: Icons.purge,
+                    isDestructive: true
+                ) {
+                    modToolTracker.purgeContent(self.creator)
+                }
+                )
             }
         }
         
@@ -397,3 +486,5 @@ extension PostModel {
         }
     #endif
 }
+
+// swiftlint:enable file_length

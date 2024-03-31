@@ -53,7 +53,6 @@ extension CommunityModel {
     }
     
     func favoriteMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> MenuFunction {
-        
         let callback = {
             Task {
                 do {
@@ -148,7 +147,7 @@ extension CommunityModel {
             functions.append(function)
         }
         
-        if siteInformation.myUser?.isAdmin ?? false, let modToolTracker {
+        if siteInformation.isAdmin, let modToolTracker {
             functions.append(.divider)
             functions.append(
                 .toggleableMenuFunction(
@@ -157,11 +156,16 @@ extension CommunityModel {
                     trueImageName: Icons.restore,
                     falseText: "Remove",
                     falseImageName: Icons.remove,
-                    isDestructive: .always,
+                    isDestructive: .whenFalse,
                     callback: {
                         modToolTracker.removeCommunity(self, shouldRemove: !removed)
                     }
                 )
+            )
+            functions.append(
+                .standardMenuFunction(text: "Purge", imageName: Icons.purge, isDestructive: true) {
+                    modToolTracker.purgeContent(self)
+                }
             )
         }
         
