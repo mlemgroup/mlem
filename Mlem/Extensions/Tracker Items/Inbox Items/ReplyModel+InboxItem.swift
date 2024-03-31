@@ -12,6 +12,4 @@ extension ReplyModel: InboxItem {
     var published: Date { commentReply.published }
     
     var creatorId: Int { comment.creatorId }
-    
-    var read: Bool { commentReply.read }
 }

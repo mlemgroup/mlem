@@ -166,8 +166,10 @@ struct InboxView: View {
             }
             .task {
                 // wrapping in task so view redraws don't cancel
-                Task(priority: .userInitiated) {
-                    await refresh()
+                if inboxTracker.items.isEmpty, inboxTracker.loadingState != .loading {
+                    Task(priority: .userInitiated) {
+                        await refresh()
+                    }
                 }
             }
     }

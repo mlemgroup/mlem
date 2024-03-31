@@ -34,26 +34,41 @@ class InboxRepository {
     }
     
     func voteOnCommentReply(_ reply: ReplyModel, vote: ScoringOperation) async throws -> ReplyModel {
-        // no haptics here as we defer to the `voteOnComment` method which will produce them if necessary
-        do {
-            let updatedCommentView = try await commentRepository.voteOnComment(id: reply.comment.id, vote: vote)
-            return ReplyModel(
-                commentReply: reply.commentReply,
-                comment: updatedCommentView.comment,
-                creator: UserModel(from: updatedCommentView.creator),
-                post: updatedCommentView.post,
-                community: CommunityModel(from: updatedCommentView.community),
-                recipient: reply.recipient,
-                numReplies: updatedCommentView.counts.childCount,
-                votes: VotesModel(from: updatedCommentView.counts, myVote: updatedCommentView.myVote),
-                creatorBannedFromCommunity: updatedCommentView.creatorBannedFromCommunity,
-                subscribed: updatedCommentView.subscribed,
-                saved: updatedCommentView.saved,
-                creatorBlocked: updatedCommentView.creatorBlocked
-            )
-        } catch {
-            throw error
-        }
+        let updatedCommentView = try await commentRepository.voteOnComment(id: reply.comment.id, vote: vote)
+        return ReplyModel(
+            commentReply: reply.commentReply,
+            comment: updatedCommentView.comment,
+            creator: UserModel(from: updatedCommentView.creator),
+            post: updatedCommentView.post,
+            community: CommunityModel(from: updatedCommentView.community),
+            recipient: reply.recipient,
+            numReplies: updatedCommentView.counts.childCount,
+            votes: VotesModel(from: updatedCommentView.counts, myVote: updatedCommentView.myVote),
+            creatorBannedFromCommunity: updatedCommentView.creatorBannedFromCommunity,
+            subscribed: updatedCommentView.subscribed,
+            read: reply.read,
+            saved: updatedCommentView.saved,
+            creatorBlocked: updatedCommentView.creatorBlocked
+        )
+    }
+    
+    func saveCommentReply(_ reply: ReplyModel, shouldSave: Bool) async throws -> ReplyModel {
+        let updatedCommentView = try await commentRepository.saveComment(id: reply.comment.id, shouldSave: shouldSave).commentView
+        return ReplyModel(
+            commentReply: reply.commentReply,
+            comment: updatedCommentView.comment,
+            creator: UserModel(from: updatedCommentView.creator),
+            post: updatedCommentView.post,
+            community: CommunityModel(from: updatedCommentView.community),
+            recipient: reply.recipient,
+            numReplies: updatedCommentView.counts.childCount,
+            votes: VotesModel(from: updatedCommentView.counts, myVote: updatedCommentView.myVote),
+            creatorBannedFromCommunity: updatedCommentView.creatorBannedFromCommunity,
+            subscribed: updatedCommentView.subscribed,
+            read: reply.read,
+            saved: updatedCommentView.saved,
+            creatorBlocked: updatedCommentView.creatorBlocked
+        )
     }
     
     func markReplyRead(id: Int, isRead: Bool) async throws -> ReplyModel {
@@ -82,27 +97,42 @@ class InboxRepository {
         return MentionModel(from: response)
     }
     
+    func saveMention(_ mention: MentionModel, shouldSave: Bool) async throws -> MentionModel {
+        let updatedCommentView = try await commentRepository.saveComment(id: mention.comment.id, shouldSave: shouldSave).commentView
+        return MentionModel(
+            personMention: mention.personMention,
+            comment: updatedCommentView.comment,
+            creator: mention.creator,
+            post: updatedCommentView.post,
+            community: CommunityModel(from: updatedCommentView.community),
+            recipient: mention.recipient,
+            numReplies: updatedCommentView.counts.childCount,
+            votes: VotesModel(from: updatedCommentView.counts, myVote: updatedCommentView.myVote),
+            creatorBannedFromCommunity: updatedCommentView.creatorBannedFromCommunity,
+            subscribed: updatedCommentView.subscribed,
+            read: mention.read,
+            saved: updatedCommentView.saved,
+            creatorBlocked: updatedCommentView.creatorBlocked
+        )
+    }
+    
     func voteOnMention(_ mention: MentionModel, vote: ScoringOperation) async throws -> MentionModel {
-        // no haptics here as we defer to the `voteOnComment` method which will produce them if necessary
-        do {
-            let updatedCommentView = try await commentRepository.voteOnComment(id: mention.comment.id, vote: vote)
-            return MentionModel(
-                personMention: mention.personMention,
-                comment: updatedCommentView.comment,
-                creator: mention.creator,
-                post: updatedCommentView.post,
-                community: CommunityModel(from: updatedCommentView.community),
-                recipient: mention.recipient,
-                numReplies: updatedCommentView.counts.childCount,
-                votes: VotesModel(from: updatedCommentView.counts, myVote: updatedCommentView.myVote),
-                creatorBannedFromCommunity: updatedCommentView.creatorBannedFromCommunity,
-                subscribed: updatedCommentView.subscribed,
-                saved: updatedCommentView.saved,
-                creatorBlocked: updatedCommentView.creatorBlocked
-            )
-        } catch {
-            throw error
-        }
+        let updatedCommentView = try await commentRepository.voteOnComment(id: mention.comment.id, vote: vote)
+        return MentionModel(
+            personMention: mention.personMention,
+            comment: updatedCommentView.comment,
+            creator: mention.creator,
+            post: updatedCommentView.post,
+            community: CommunityModel(from: updatedCommentView.community),
+            recipient: mention.recipient,
+            numReplies: updatedCommentView.counts.childCount,
+            votes: VotesModel(from: updatedCommentView.counts, myVote: updatedCommentView.myVote),
+            creatorBannedFromCommunity: updatedCommentView.creatorBannedFromCommunity,
+            subscribed: updatedCommentView.subscribed,
+            read: mention.read,
+            saved: updatedCommentView.saved,
+            creatorBlocked: updatedCommentView.creatorBlocked
+        )
     }
     
     // MARK: - messages

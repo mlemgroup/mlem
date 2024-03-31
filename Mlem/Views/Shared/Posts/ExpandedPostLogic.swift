@@ -8,6 +8,41 @@
 import Foundation
 
 extension ExpandedPost {
+    func enrichLayoutWidgets() -> [EnrichedLayoutWidget] {
+        layoutWidgetTracker.groups.post.compactMap { baseWidget in
+            switch baseWidget {
+            case .infoStack:
+                .infoStack(
+                    colorizeVotes: false,
+                    votes: post.votes,
+                    published: post.published,
+                    updated: post.updated,
+                    commentCount: post.commentCount,
+                    unreadCommentCount: post.unreadCommentCount,
+                    saved: post.saved
+                )
+            case .upvote:
+                .upvote(myVote: post.votes.myVote, upvote: post.toggleUpvote)
+            case .downvote:
+                .downvote(myVote: post.votes.myVote, downvote: post.toggleDownvote)
+            case .save:
+                .save(saved: post.saved, save: post.toggleSave)
+            case .reply:
+                .reply(reply: replyToPost)
+            case .share:
+                .share(shareUrl: post.post.apId)
+            case .upvoteCounter:
+                .upvoteCounter(votes: post.votes, upvote: post.toggleUpvote)
+            case .downvoteCounter:
+                .downvoteCounter(votes: post.votes, downvote: post.toggleDownvote)
+            case .scoreCounter:
+                .scoreCounter(votes: post.votes, upvote: post.toggleUpvote, downvote: post.toggleDownvote)
+            default:
+                nil
+            }
+        }
+    }
+    
     // MARK: Interaction callbacks
     
     func replyToPost() {

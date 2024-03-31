@@ -5,8 +5,11 @@
 //  Created by Eric Andrews on 2023-09-23.
 //
 
+// swiftlint:disable file_length
+
 import Dependencies
 import Foundation
+import SwiftUI
 
 /// Internal representation of a comment reply
 class ReplyModel: ObservableObject, ContentIdentifiable {
@@ -26,6 +29,7 @@ class ReplyModel: ObservableObject, ContentIdentifiable {
     @Published var votes: VotesModel
     @Published var creatorBannedFromCommunity: Bool
     @Published var subscribed: APISubscribedStatus
+    @Published var read: Bool
     @Published var saved: Bool
     @Published var creatorBlocked: Bool
 
@@ -45,6 +49,7 @@ class ReplyModel: ObservableObject, ContentIdentifiable {
         votes: VotesModel,
         creatorBannedFromCommunity: Bool,
         subscribed: APISubscribedStatus,
+        read: Bool,
         saved: Bool,
         creatorBlocked: Bool
     ) {
@@ -58,6 +63,7 @@ class ReplyModel: ObservableObject, ContentIdentifiable {
         self.votes = votes
         self.creatorBannedFromCommunity = creatorBannedFromCommunity
         self.subscribed = subscribed
+        self.read = read
         self.saved = saved
         self.creatorBlocked = creatorBlocked
     }
@@ -73,6 +79,7 @@ class ReplyModel: ObservableObject, ContentIdentifiable {
         self.votes = VotesModel(from: replyView.counts, myVote: replyView.myVote)
         self.creatorBannedFromCommunity = replyView.creatorBannedFromCommunity
         self.subscribed = replyView.subscribed
+        self.read = replyView.commentReply.read
         self.saved = replyView.saved
         self.creatorBlocked = replyView.creatorBlocked
     }
@@ -89,6 +96,7 @@ class ReplyModel: ObservableObject, ContentIdentifiable {
         votes: VotesModel? = nil,
         creatorBannedFromCommunity: Bool? = nil,
         subscribed: APISubscribedStatus? = nil,
+        read: Bool? = nil,
         saved: Bool? = nil,
         creatorBlocked: Bool? = nil
     ) {
@@ -102,6 +110,7 @@ class ReplyModel: ObservableObject, ContentIdentifiable {
         self.votes = votes ?? replyModel.votes
         self.creatorBannedFromCommunity = creatorBannedFromCommunity ?? replyModel.creatorBannedFromCommunity
         self.subscribed = subscribed ?? replyModel.subscribed
+        self.read = read ?? replyModel.read
         self.saved = saved ?? replyModel.saved
         self.creatorBlocked = creatorBlocked ?? replyModel.creatorBlocked
     }
@@ -118,6 +127,16 @@ extension ReplyModel {
         votes = newVotes
     }
     
+    @MainActor
+    func setSaved(_ newSaved: Bool) {
+        saved = newSaved
+    }
+    
+    @MainActor
+    func setRead(_ newRead: Bool) {
+        read = newRead
+    }
+    
     /// Re-initializes all fields to match the given ReplyModel
     @MainActor
     func reinit(from replyModel: ReplyModel) {
@@ -131,9 +150,13 @@ extension ReplyModel {
         votes = replyModel.votes
         creatorBannedFromCommunity = replyModel.creatorBannedFromCommunity
         subscribed = replyModel.subscribed
+        read = replyModel.read
         saved = replyModel.saved
         creatorBlocked = replyModel.creatorBlocked
     }
+    
+    func toggleUpvote(unreadTracker: UnreadTracker) async { await vote(inputOp: .upvote, unreadTracker: unreadTracker) }
+    func toggleDownvote(unreadTracker: UnreadTracker) async { await vote(inputOp: .downvote, unreadTracker: unreadTracker) }
     
     func vote(inputOp: ScoringOperation, unreadTracker: UnreadTracker) async {
         guard !voting else {
@@ -184,6 +207,43 @@ extension ReplyModel {
             hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)
             await setCommentReply(originalCommentReply)
+        }
+    }
+    
+    func toggleSave(unreadTracker: UnreadTracker) async {
+        hapticManager.play(haptic: .success, priority: .low)
+        
+        let shouldSave: Bool = !saved
+        @AppStorage("upvoteOnSave") var upvoteOnSave = false
+        
+        // state fake
+        let original: ReplyModel = .init(from: self)
+        await setSaved(shouldSave)
+        await setRead(true)
+        if shouldSave, upvoteOnSave, votes.myVote != .upvote {
+            await setVotes(votes.applyScoringOperation(operation: .upvote))
+        }
+        
+        // API call
+        do {
+            let saveResponse = try await inboxRepository.saveCommentReply(self, shouldSave: shouldSave)
+            
+            if shouldSave, upvoteOnSave {
+                let voteResponse = try await inboxRepository.voteOnCommentReply(self, vote: .upvote)
+                await reinit(from: voteResponse)
+            } else {
+                await reinit(from: saveResponse)
+            }
+            if !original.commentReply.read {
+                _ = try await inboxRepository.markReplyRead(id: commentReply.id, isRead: true)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    unreadTracker.toggleReplyRead(originalState: original.read)
+                }
+            }
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+            await reinit(from: original)
         }
     }
     
@@ -378,3 +438,5 @@ extension ReplyModel: Equatable {
         lhs.id == rhs.id
     }
 }
+
+// swiftlint:enable file_length

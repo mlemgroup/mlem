@@ -169,26 +169,7 @@ struct CommentItem: View {
                 .padding(.horizontal, AppConstants.postAndCommentSpacing)
                 
                 if !hierarchicalComment.isCollapsed, !compactComments {
-                    // TODO: NEXT reenable
-//                    InteractionBarView(
-//                        votes: VotesModel(from: hierarchicalComment.commentView.counts, myVote: hierarchicalComment.commentView.myVote),
-//                        published: hierarchicalComment.commentView.comment.published,
-//                        updated: hierarchicalComment.commentView.comment.updated,
-//                        commentCount: hierarchicalComment.commentView.counts.childCount,
-//                        saved: hierarchicalComment.commentView.saved,
-//                        accessibilityContext: "comment",
-//                        widgets: layoutWidgetTracker.groups.comment,
-//                        upvote: upvote,
-//                        downvote: downvote,
-//                        save: saveComment,
-//                        reply: replyToComment,
-//                        shareURL: URL(string: hierarchicalComment.commentView.comment.apId),
-//                        shouldShowScore: shouldShowScoreInCommentBar,
-//                        showDownvotesSeparately: showCommentDownvotesSeparately,
-//                        shouldShowTime: shouldShowTimeInCommentBar,
-//                        shouldShowSaved: shouldShowSavedInCommentBar,
-//                        shouldShowReplies: shouldShowRepliesInCommentBar
-//                    )
+                    InteractionBarView(context: .comment, widgets: enrichLayoutWidgets())
                 } else {
                     Spacer()
                         .frame(height: AppConstants.postAndCommentSpacing)

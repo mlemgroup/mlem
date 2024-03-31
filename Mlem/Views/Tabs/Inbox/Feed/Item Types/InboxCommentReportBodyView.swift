@@ -32,7 +32,7 @@ struct InboxCommentReportBodyView: View {
                 }
                 
                 VStack(alignment: .leading, spacing: AppConstants.halfSpacing) {
-                    Text("Comment reported for: ")
+                    Text("comment reported for: ")
                         .font(.body.smallCaps())
                         .foregroundColor(.secondary)
                     

@@ -13,6 +13,4 @@ extension MentionModel: InboxItem {
     var published: Date { personMention.published }
     
     var creatorId: Int { comment.creatorId }
-    
-    var read: Bool { personMention.read }
 }

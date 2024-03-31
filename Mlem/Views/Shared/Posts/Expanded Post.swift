@@ -265,28 +265,8 @@ struct ExpandedPost: View {
             }
             .padding(.top, AppConstants.postAndCommentSpacing)
             .padding(.horizontal, AppConstants.postAndCommentSpacing)
-  
-            // TODO: NEXT reenable
-//            InteractionBarView(
-//                votes: post.votes,
-//                published: post.published,
-//                updated: post.updated,
-//                commentCount: post.commentCount,
-//                unreadCommentCount: post.unreadCommentCount,
-//                saved: post.saved,
-//                accessibilityContext: "post",
-//                widgets: layoutWidgetTracker.groups.post,
-//                upvote: post.toggleUpvote,
-//                downvote: post.toggleDownvote,
-//                save: post.toggleSave,
-//                reply: replyToPost,
-//                shareURL: post.post.apId,
-//                shouldShowScore: shouldShowScoreInPostBar,
-//                showDownvotesSeparately: showPostDownvotesSeparately,
-//                shouldShowTime: shouldShowTimeInPostBar,
-//                shouldShowSaved: shouldShowSavedInPostBar,
-//                shouldShowReplies: shouldShowRepliesInPostBar
-//            )
+            
+            InteractionBarView(context: .post, widgets: enrichLayoutWidgets())
         }
     }
 

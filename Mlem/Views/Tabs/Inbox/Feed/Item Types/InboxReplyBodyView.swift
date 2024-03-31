@@ -70,21 +70,62 @@ struct InboxReplyBodyView: View {
             .padding(.top, AppConstants.standardSpacing)
             .padding(.horizontal, AppConstants.standardSpacing)
     
-            // TODO: NEXT reenable
-//            InteractionBarView(
-//                votes: reply.votes,
-//                published: reply.published,
-//                updated: reply.comment.updated,
-//                commentCount: reply.numReplies,
-//                saved: reply.saved,
-//                accessibilityContext: "comment",
-//                widgets: layoutWidgetTracker.groups.comment,
-//                upvote: { assertionFailure("TODO: upvote") },
-//                downvote: { assertionFailure("TODO: downvote") },
-//                save: { assertionFailure("TODO: save") },
-//                reply: { assertionFailure("TODO: reply") },
-//                shareURL: URL(string: reply.comment.apId)
-//            )
+            InteractionBarView(context: .comment, widgets: enrichLayoutWidgets())
+        }
+    }
+    
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
+    func enrichLayoutWidgets() -> [EnrichedLayoutWidget] {
+        layoutWidgetTracker.groups.comment.compactMap { baseWidget in
+            switch baseWidget {
+            case .infoStack:
+                return .infoStack(
+                    colorizeVotes: false,
+                    votes: reply.votes,
+                    published: reply.published,
+                    updated: reply.comment.updated,
+                    commentCount: reply.numReplies,
+                    unreadCommentCount: 0,
+                    saved: reply.saved
+                )
+            case .upvote:
+                return .upvote(myVote: reply.votes.myVote) {
+                    await reply.toggleUpvote(unreadTracker: unreadTracker)
+                }
+            case .downvote:
+                return .downvote(myVote: reply.votes.myVote) {
+                    await reply.toggleDownvote(unreadTracker: unreadTracker)
+                }
+            case .save:
+                return .save(saved: reply.saved) {
+                    await reply.toggleSave(unreadTracker: unreadTracker)
+                }
+            case .reply:
+                return .reply {
+                    reply.reply(editorTracker: editorTracker, unreadTracker: unreadTracker)
+                }
+            case .share:
+                if let shareUrl = URL(string: reply.comment.apId) {
+                    return .share(shareUrl: shareUrl)
+                }
+                return nil
+            case .upvoteCounter:
+                return .upvoteCounter(votes: reply.votes) {
+                    await reply.toggleUpvote(unreadTracker: unreadTracker)
+                }
+            case .downvoteCounter:
+                return .downvoteCounter(votes: reply.votes) {
+                    await reply.toggleDownvote(unreadTracker: unreadTracker)
+                }
+            case .scoreCounter:
+                return .scoreCounter(votes: reply.votes) {
+                    await reply.toggleUpvote(unreadTracker: unreadTracker)
+                } downvote: {
+                    await reply.toggleDownvote(unreadTracker: unreadTracker)
+                }
+            default:
+                return nil
+            }
         }
     }
 }
