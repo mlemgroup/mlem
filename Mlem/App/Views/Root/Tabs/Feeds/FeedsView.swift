@@ -84,28 +84,27 @@ struct MinimalPostFeedView: View {
     @ViewBuilder
     var content: some View {
         ScrollView {
-            LazyVStack {
+            LazyVStack(spacing: 0) {
                 ForEach(postTracker.items, id: \.uid) { post in
-                    VStack {
-                        HStack {
-                            actionButton(post.upvoteAction)
-                            actionButton(post.downvoteAction)
-                            actionButton(post.saveAction)
-                            
-                            Text(post.title)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.horizontal)
-                                .foregroundStyle(post.isRead ? .secondary : .primary)
-                        }
-                        .padding(.horizontal)
-                        .contentShape(.rect)
-                        .contextMenu {
-                            ForEach(post.menuActions, id: \.id) { action in
-                                MenuButton(action: action)
-                            }
-                        }
-                        Divider()
+                    HStack {
+                        actionButton(post.upvoteAction)
+                        actionButton(post.downvoteAction)
+                        actionButton(post.saveAction)
+                        
+                        Text(post.title)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal)
+                            .foregroundStyle(post.isRead ? .secondary : .primary)
                     }
+                    .padding(10)
+                    .background(Color(uiColor: .systemBackground))
+                    .contentShape(.rect)
+                    .contextMenu {
+                        ForEach(post.menuActions, id: \.id) { action in
+                            MenuButton(action: action)
+                        }
+                    }
+                    Divider()
                 }
             }
             
