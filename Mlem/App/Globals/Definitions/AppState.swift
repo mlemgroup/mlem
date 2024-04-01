@@ -10,13 +10,14 @@ import Foundation
 
 @Observable
 class AppState {
-    private(set) var activeApi: ApiClient?
+    private(set) var api: ApiClient?
     private(set) var myUser: (any UserProviding)?
-    var actorId: URL? { myUser?.actorId }
-    var isOnboarding: Bool { activeApi == nil }
     
-    var api: ApiClient {
-        if let activeApi { return activeApi }
+    var actorId: URL? { myUser?.actorId }
+    var isOnboarding: Bool { api == nil }
+    
+    var safeApi: ApiClient {
+        if let api { return api }
         assertionFailure(
             "This shouldn't happen! Maybe you should use `activeApi` instead?"
         )
@@ -24,19 +25,20 @@ class AppState {
     }
 
     func changeUser(to user: UserStub) {
-        self.activeApi?.locked = true
+        self.api?.locked = true
         user.api.locked = false
-        self.activeApi = user.api
+        self.api = user.api
         myUser = user
     }
     
     func enterGuestMode(with api: ApiClient) {
-        self.activeApi = api
+        self.api?.locked = true
+        self.api = api
         myUser = nil
     }
     
     func enterOnboarding() {
-        activeApi = nil
+        api = nil
     }
     
     private init() {
@@ -48,7 +50,7 @@ class AppState {
         }
     }
     
-    var lemmyVersion: SiteVersion? { activeApi?.version ?? myUser?.cachedSiteVersion }
+    var lemmyVersion: SiteVersion? { api?.version ?? myUser?.cachedSiteVersion }
     
     static var main: AppState = .init()
 }

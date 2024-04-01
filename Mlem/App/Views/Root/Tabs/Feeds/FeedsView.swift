@@ -18,7 +18,7 @@ struct FeedsView: View {
     }
     
     var content: some View {
-        MinimalPostFeedView(initialFeedProvider: appState.api)
+        MinimalPostFeedView(initialFeedProvider: appState.safeApi)
     }
 }
 
@@ -53,7 +53,7 @@ struct MinimalPostFeedView: View {
                     await postTracker.loadMoreItems()
                 }
                 .task(id: appState.actorId) {
-                    await postTracker.changeFeedType(to: .aggregateFeed(appState.api, type: .subscribed))
+                    await postTracker.changeFeedType(to: .aggregateFeed(appState.safeApi, type: .subscribed))
                 }
                 .refreshable {
                     do {
@@ -79,6 +79,7 @@ struct MinimalPostFeedView: View {
         }
         .buttonStyle(EmptyButtonStyle())
         .disabled(action.callback == nil)
+        .opacity(action.callback == nil ? 0.5 : 1)
     }
     
     @ViewBuilder
@@ -95,11 +96,6 @@ struct MinimalPostFeedView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal)
                             .foregroundStyle(post.isRead ? .secondary : .primary)
-                        
-                        Button("L") {
-                            print(post.api.baseUrl, post.api.locked)
-                        }
-            
                     }
                     .padding(10)
                     .background(Color(uiColor: .systemBackground))

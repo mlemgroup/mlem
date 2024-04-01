@@ -42,7 +42,7 @@ struct ContentView: View {
 //            }
             .onReceive(timer) { _ in
                 // print("Clearing caches...")
-                appState.api.cleanCaches()
+                appState.safeApi.cleanCaches()
             }
             .sheet(isPresented: $isPresentingAccountSwitcher) {
                 QuickSwitcherView()
