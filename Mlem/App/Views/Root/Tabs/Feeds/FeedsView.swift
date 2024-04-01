@@ -95,6 +95,11 @@ struct MinimalPostFeedView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal)
                             .foregroundStyle(post.isRead ? .secondary : .primary)
+                        
+                        Button("L") {
+                            print(post.api.baseUrl, post.api.locked)
+                        }
+            
                     }
                     .padding(10)
                     .background(Color(uiColor: .systemBackground))

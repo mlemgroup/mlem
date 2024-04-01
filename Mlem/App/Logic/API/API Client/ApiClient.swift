@@ -18,6 +18,11 @@ class ApiClient: ActorIdentifiable, CacheIdentifiable {
     let token: String?
     var version: SiteVersion?
     
+    /// When `true`, the token will not be attatched to any API requests. This is useful for ensuring that inactive accounts don't accidentally make requests
+    var locked: Bool = false
+    
+    var willSendToken: Bool { !(locked || token == nil) }
+    
     // CacheIdentifiable, ActorIdentifiable conformance
     var cacheId: Int {
         var hasher: Hasher = .init()
@@ -44,12 +49,12 @@ class ApiClient: ActorIdentifiable, CacheIdentifiable {
     }
     
     /// Creates or retrieves an API client for the given connection parameters
-    static func getApiClient(for url: URL, with token: String?) throws -> ApiClient {
-        try apiClientCache.createOrRetrieveApiClient(for: url, with: token)
+    static func getApiClient(for url: URL, with token: String?) -> ApiClient {
+        apiClientCache.createOrRetrieveApiClient(for: url, with: token)
     }
     
     /// Creates a new API Client. Private because it should never be used outside of ApiClientCache, as the caching system depends on one ApiClient existing for any given session
-    private init(baseUrl: URL, token: String? = nil) throws {
+    private init(baseUrl: URL, token: String? = nil) {
         self.baseUrl = baseUrl
         self.endpointUrl = baseUrl.appendingPathComponent("api/v3")
         self.token = token
@@ -124,7 +129,7 @@ class ApiClient: ActorIdentifiable, CacheIdentifiable {
             urlRequest.httpBody = try createBodyData(for: putDefinition)
         }
 
-        if let token {
+        if let token, !locked {
             // TODO: 0.18 deprecation remove this
             urlRequest.url?.append(queryItems: [.init(name: "auth", value: token)])
             
@@ -161,7 +166,7 @@ class ApiClient: ActorIdentifiable, CacheIdentifiable {
 extension ApiClient {
     /// Cache for ApiClient--exception case because there's no ApiType and it may need to perform ApiClient bootstrapping
     class ApiClientCache: CoreCache<ApiClient> {
-        func createOrRetrieveApiClient(for baseUrl: URL, with token: String?) throws -> ApiClient {
+        func createOrRetrieveApiClient(for baseUrl: URL, with token: String?) -> ApiClient {
             let cacheId: Int = {
                 var hasher: Hasher = .init()
                 hasher.combine(baseUrl)
@@ -173,7 +178,7 @@ extension ApiClient {
                 return client
             }
             
-            let ret: ApiClient = try .init(baseUrl: baseUrl, token: token)
+            let ret: ApiClient = .init(baseUrl: baseUrl, token: token)
             cachedItems[ret.cacheId] = .init(content: ret)
             return ret
         }

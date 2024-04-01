@@ -5,39 +5,50 @@
 //  Created by Sjmarf on 17/02/2024.
 //
 
+import Dependencies
 import Foundation
 
 @Observable
 class AppState {
-    var myUser: (any UserProviding)?
-    
-    var api: ApiClient
+    private(set) var activeApi: ApiClient?
+    private(set) var myUser: (any UserProviding)?
     var actorId: URL? { myUser?.actorId }
+    var isOnboarding: Bool { activeApi == nil }
     
+    var api: ApiClient {
+        if let activeApi { return activeApi }
+        assertionFailure(
+            "This shouldn't happen! Maybe you should use `activeApi` instead?"
+        )
+        return .getApiClient(for: URL(string: "https://lemmy.world")!, with: nil)
+    }
+
     func changeUser(to user: UserStub) {
-        api = user.api
+        self.activeApi?.locked = true
+        user.api.locked = false
+        self.activeApi = user.api
         myUser = user
     }
     
     func enterGuestMode(with api: ApiClient) {
-        self.api = api
+        self.activeApi = api
         myUser = nil
     }
     
-    /// Initializer for a guest mode app state
-    /// - Parameters:
-    ///   - instance: instance to connect to
-    init(api: ApiClient) {
-        self.api = api
-        self.myUser = nil
+    func enterOnboarding() {
+        activeApi = nil
     }
     
-    /// Initializer for an authenticated app state
-    /// - Parameter user: user to connect with
-    init(user: UserStub) {
-        self.api = user.api
-        self.myUser = user
+    private init() {
+        @Dependency(\.accountsTracker) var accountsTracker
+        if let user = accountsTracker.defaultAccount {
+            changeUser(to: user)
+        } else if let user = accountsTracker.savedAccounts.first {
+            changeUser(to: user)
+        }
     }
     
-    var lemmyVersion: SiteVersion? { api.version ?? myUser?.cachedSiteVersion }
+    var lemmyVersion: SiteVersion? { activeApi?.version ?? myUser?.cachedSiteVersion }
+    
+    static var main: AppState = .init()
 }

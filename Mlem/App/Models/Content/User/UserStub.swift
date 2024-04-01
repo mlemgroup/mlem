@@ -87,6 +87,7 @@ final class UserStub: UserProviding, Codable {
         }
         self.accessToken = token
         self.api = try ApiClient.getApiClient(for: instanceLink, with: token)
+        self.api.locked = true
     }
     
     func encode(to encoder: Encoder) throws {

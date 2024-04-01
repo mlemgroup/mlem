@@ -13,7 +13,7 @@ struct AccountListView: View {
     @AppStorage("groupAccountSort") var groupAccountSort: Bool = false
     
     @Environment(AppState.self) var appState
-    @Environment(\.setAppFlow) var setAppFlow
+    @Environment(\.dismiss) var dismiss
     
     let accountsTracker: AccountsTracker
     
@@ -71,11 +71,17 @@ struct AccountListView: View {
                 Section {
                     Button {
                         // isShowingInstanceAdditionSheet = true
-                        setAppFlow(.onboarding)
+                        appState.enterOnboarding()
                     } label: {
                         Label("Add Account", systemImage: "plus")
                     }
                     .accessibilityLabel("Add a new account.")
+                    Button {
+                        try? appState.enterGuestMode(with: .getApiClient(for: URL(string: "https://lemmy.world")!, with: nil))
+                        dismiss()
+                    } label: {
+                        Label("Enter Guest Mode", systemImage: Icons.person)
+                    }
                 }
             }
         }
