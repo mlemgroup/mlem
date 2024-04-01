@@ -20,5 +20,7 @@ extension MessageModel: InboxItem {
     
     var read: Bool { privateMessage.read }
     
+    func toAnyInboxItem() -> AnyInboxItem { .message(self) }
+    
     func setCreatorBannedFromCommunity(_ newBanned: Bool) {}
 }

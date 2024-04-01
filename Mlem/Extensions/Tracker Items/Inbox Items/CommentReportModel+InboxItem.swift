@@ -20,6 +20,8 @@ extension CommentReportModel: InboxItem {
     
     var id: Int { commentReport.id }
     
+    func toAnyInboxItem() -> AnyInboxItem { .commentReport(self) }
+    
     @MainActor
     func setCreatorBannedFromCommunity(_ newBanned: Bool) {
         creatorBannedFromCommunity = newBanned

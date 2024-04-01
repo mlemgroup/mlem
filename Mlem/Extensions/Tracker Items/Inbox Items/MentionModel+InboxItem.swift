@@ -16,6 +16,8 @@ extension MentionModel: InboxItem {
     
     var banStatusCreatorId: Int { comment.creatorId }
     
+    func toAnyInboxItem() -> AnyInboxItem { .mention(self) }
+    
     @MainActor
     func setCreatorBannedFromCommunity(_ newBanned: Bool) {
         creatorBannedFromCommunity = newBanned

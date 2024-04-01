@@ -9,16 +9,16 @@ import Foundation
 
 extension InboxView {
     func refresh() async {
-        Task {
-            do {
-                let unreadCounts = try await personRepository.getUnreadCounts()
-                unreadTracker.update(with: unreadCounts)
-            } catch {
-                errorHandler.handle(error)
-            }
-        }
-        
         await inboxTracker.refresh(clearBeforeFetch: false)
+        await personalInboxTracker.refresh(clearBeforeFetch: false)
+        await modInboxTracker.refresh(clearBeforeFetch: false)
+        
+        do {
+            let unreadCounts = try await personRepository.getUnreadCounts()
+            unreadTracker.update(with: unreadCounts)
+        } catch {
+            errorHandler.handle(error)
+        }
     }
     
     func toggleFilterRead() {
@@ -49,7 +49,8 @@ extension InboxView {
                 : (type.iconNameFill, false)
             ret.append(MenuFunction.standardMenuFunction(
                 text: type.label,
-                imageName: imageName
+                imageName: imageName,
+                enabled: enabled
             ) {
                 selectedInbox = type
             }

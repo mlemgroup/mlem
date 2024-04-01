@@ -10,17 +10,19 @@ import Foundation
 import SwiftUI
 
 enum InboxSelection: FeedType {
-    case personal, mod
+    case all, personal, mod
     
     var label: String {
         switch self {
-        case .personal: "Inbox"
+        case .all: "Inbox"
+        case .personal: "Personal"
         case .mod: "Mod Mail"
         }
     }
         
     var subtitle: String {
         switch self {
+        case .all: "All your notifications"
         case .personal: "Replies, mentions, and messages"
         case .mod: "Moderation and administration notifications"
         }
@@ -28,27 +30,31 @@ enum InboxSelection: FeedType {
     
     var color: Color? {
         switch self {
-        case .personal: .purple
-        case .mod: .green
+        case .all: .purple
+        case .personal: .red
+        case .mod: .moderation
         }
     }
     
     var iconName: String {
         switch self {
-        case .personal: Icons.inbox
+        case .all: Icons.inbox
+        case .personal: Icons.user
         case .mod: Icons.moderation
         }
     }
     
     var iconNameFill: String {
         switch self {
-        case .personal: Icons.inboxFill
+        case .all: Icons.inboxFill
+        case .personal: Icons.userFill
         case .mod: Icons.moderationFill
         }
     }
     
     var iconScaleFactor: CGFloat {
         switch self {
+        case .all: 0.55
         case .personal: 0.55
         case .mod: 0.5
         }
@@ -56,22 +62,23 @@ enum InboxSelection: FeedType {
 }
 
 enum InboxTab: String, CaseIterable, Identifiable {
-    case all, replies, mentions, messages
+    // TODO: registration application
+    
+    case all, replies, mentions, messages, commentReports, postReports, messageReports
+    
+    static var personalCases: [InboxTab] { [.all, .replies, .mentions, .messages] }
+    static var modCases: [InboxTab] { [.all, .commentReports, .postReports, .messageReports] }
     
     var id: Self { self }
     
     var label: String {
-        rawValue.capitalized
-    }
-}
-
-enum ModMailTab: String, CaseIterable, Identifiable {
-    case all
-    
-    var id: Self { self }
-    
-    var label: String {
-        rawValue.capitalized
+        switch self {
+        case .commentReports: "Comment Reports"
+        case .postReports: "Post Reports"
+        case .messageReports: "Message Reports"
+        default:
+            rawValue.capitalized
+        }
     }
 }
 
@@ -87,17 +94,20 @@ struct InboxView: View {
     @EnvironmentObject var unreadTracker: UnreadTracker
     
     @StateObject var inboxTracker: InboxTracker
+    @StateObject var personalInboxTracker: InboxTracker
+    @StateObject var modInboxTracker: InboxTracker
     @StateObject var replyTracker: ReplyTracker
     @StateObject var mentionTracker: MentionTracker
     @StateObject var messageTracker: MessageTracker
     @StateObject var commentReportTracker: CommentReportTracker
     
     @Namespace var scrollToTop
-    @State private var scrollToTopAppeared = false
+    @State var scrollToTopAppeared = false
     
-    @State var selectedInbox: InboxSelection = .personal
+    @State var selectedInbox: InboxSelection = .all
     @State var selectedInboxTab: InboxTab = .all
-    @State var selectedModMailTab: ModMailTab = .all
+    @State var selectedPersonalTab: InboxTab = .all
+    @State var selectedModTab: InboxTab = .all
     
     @State var errorOccurred: Bool = false
     @State var errorMessage: String = ""
@@ -123,17 +133,39 @@ struct InboxView: View {
             ]
         )
         
+        let newPersonalInboxTracker = InboxTracker(
+            internetSpeed: internetSpeed,
+            sortType: .published,
+            childTrackers: [
+                newReplyTracker,
+                newMentionTracker,
+                newMessageTracker
+            ]
+        )
+        
+        let newModInboxTracker = InboxTracker(
+            internetSpeed: internetSpeed,
+            sortType: .published,
+            childTrackers: [
+                newCommentReportTracker
+            ]
+        )
+        
         self._inboxTracker = StateObject(wrappedValue: newInboxTracker)
+        self._personalInboxTracker = StateObject(wrappedValue: newPersonalInboxTracker)
+        self._modInboxTracker = StateObject(wrappedValue: newModInboxTracker)
         self._replyTracker = StateObject(wrappedValue: newReplyTracker)
         self._mentionTracker = StateObject(wrappedValue: newMentionTracker)
         self._messageTracker = StateObject(wrappedValue: newMessageTracker)
         self._commentReportTracker = StateObject(wrappedValue: newCommentReportTracker)
     }
     
+    var showModFeed: Bool { siteInformation.isAdmin || !siteInformation.moderatedCommunities.isEmpty }
+    
     var availableFeeds: [InboxSelection] {
-        var availableFeeds: [InboxSelection] = [.personal]
-        if siteInformation.isAdmin || !siteInformation.moderatedCommunities.isEmpty {
-            availableFeeds.append(.mod)
+        var availableFeeds: [InboxSelection] = [.all]
+        if showModFeed {
+            availableFeeds.append(contentsOf: [.personal, .mod])
         }
         return availableFeeds
     }
@@ -192,27 +224,36 @@ struct InboxView: View {
                 headerView
   
                 switch selectedInbox {
+                case .all:
+                    if showModFeed {
+                        allFeedView
+                    } else {
+                        personalFeedView
+                    }
                 case .personal:
-                    personalInboxView
+                    personalFeedView
                 case .mod:
-                    modMailView
+                    moderatorFeedView
                 }
             }
         }
-        .scrollIndicators(.hidden)
         .fancyTabScrollCompatible()
     }
     
     @ViewBuilder
     var headerView: some View {
-        Menu {
-            ForEach(genFeedSwitchingFunctions()) { menuFunction in
-                MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
+        if showModFeed {
+            Menu {
+                ForEach(genFeedSwitchingFunctions()) { menuFunction in
+                    MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
+                }
+            } label: {
+                FeedHeaderView(feedType: selectedInbox)
             }
-        } label: {
-            FeedHeaderView(feedType: selectedInbox)
+            .buttonStyle(.plain)
+        } else {
+            FeedHeaderView(feedType: InboxSelection.all, showDropdownIndicator: false)
         }
-        .buttonStyle(.plain)
     }
     
     @ViewBuilder
@@ -262,46 +303,5 @@ struct InboxView: View {
         }
         .multilineTextAlignment(.center)
         .foregroundColor(.secondary)
-    }
-    
-    @ViewBuilder
-    var personalInboxView: some View {
-        Section {
-            switch selectedInboxTab {
-            case .all:
-                AllItemsFeedView(inboxTracker: inboxTracker)
-            case .replies:
-                RepliesFeedView(replyTracker: replyTracker)
-            case .mentions:
-                MentionsFeedView(mentionTracker: mentionTracker)
-            case .messages:
-                MessagesFeedView(messageTracker: messageTracker)
-            }
-        } header: {
-            BubblePicker(InboxTab.allCases, selected: $selectedInboxTab, withDividers: [.bottom]) { tab in
-                Text(tab.label)
-            }
-            .background(Color.systemBackground.opacity(scrollToTopAppeared ? 1 : 0))
-            .background(.bar)
-            .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
-        }
-    }
-    
-    @ViewBuilder
-    var modMailView: some View {
-        Section {
-            LazyVStack(spacing: 0) {
-                ForEach(commentReportTracker.items, id: \.uid) { item in
-                    InboxCommentReportView(commentReport: item)
-                }
-            }
-        } header: {
-            BubblePicker(ModMailTab.allCases, selected: $selectedModMailTab, withDividers: [.bottom]) { tab in
-                Text(tab.label)
-            }
-            .background(Color.systemBackground.opacity(scrollToTopAppeared ? 1 : 0))
-            .background(.bar)
-            .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
-        }
     }
 }

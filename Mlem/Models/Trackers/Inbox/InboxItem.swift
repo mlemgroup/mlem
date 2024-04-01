@@ -17,8 +17,9 @@ protocol InboxItem: Identifiable, ContentIdentifiable, TrackerItem {
     var read: Bool { get }
     var id: Int { get }
     
+    func toAnyInboxItem() -> AnyInboxItem
+    
     func setCreatorBannedFromCommunity(_ newBanned: Bool)
-    // func toggleRead(unreadTracker: UnreadTracker) async
 }
 
 enum AnyInboxItem: InboxItem {
@@ -59,11 +60,9 @@ enum AnyInboxItem: InboxItem {
     
     func sortVal(sortType: TrackerSortType) -> TrackerSortVal { value.sortVal(sortType: sortType) }
     
+    func toAnyInboxItem() -> AnyInboxItem { self }
+    
     func setCreatorBannedFromCommunity(_ newBanned: Bool) {
         value.setCreatorBannedFromCommunity(newBanned)
     }
-    
-//    func toggleRead(unreadTracker: UnreadTracker) async {
-//        await value.toggleRead(unreadTracker: unreadTracker)
-//    }
 }
