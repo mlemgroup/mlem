@@ -7,8 +7,6 @@
 
 import Foundation
 
-protocol Removable {
-    var removalId: Int { get }
-    var removed: Bool { get set }
-    var purged: Bool { get set }
+protocol Removable: Hashable {
+    mutating func remove(reason: String?, shouldRemove: Bool) async -> Bool
 }

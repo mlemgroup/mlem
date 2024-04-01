@@ -186,10 +186,21 @@ extension HierarchicalComment {
 }
 
 extension HierarchicalComment: Removable {
-    var removalId: Int { commentView.comment.id }
-    var removed: Bool {
-        get { commentView.comment.removed }
-        set { commentView.comment.removed = newValue }
+    func remove(reason: String?, shouldRemove: Bool) async -> Bool {
+        do {
+            let response = try await apiClient.removeComment(
+                id: commentView.comment.id,
+                shouldRemove: shouldRemove,
+                reason: reason
+            )
+            DispatchQueue.main.async {
+                self.commentView = response.commentView
+            }
+            return true
+        } catch {
+            errorHandler.handle(error)
+        }
+        return false
     }
 }
 

@@ -240,6 +240,7 @@ enum Icons {
     static let privateMessageReportFill: String = "bubble.left.and.exclamationmark.bubble.right.fill"
     static let resolve: String = "checkmark.circle"
     static let resolveFill: String = "checkmark.circle.fill"
+    static let unresolve: String = "xmark.circle"
     
     // fediseer
     static let fediseer: String = "shield.checkered"

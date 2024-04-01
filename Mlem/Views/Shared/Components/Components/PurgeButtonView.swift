@@ -9,13 +9,24 @@ import Foundation
 import SwiftUI
 
 struct PurgeButtonView: View {
+    let purged: Bool
+    let purge: () -> Void
+    
     var body: some View {
-        Image(systemName: Icons.purge)
-            .resizable()
-            .scaledToFit()
-            .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)
-            .padding(AppConstants.barIconPadding)
-            .padding(AppConstants.standardSpacing)
-            .contentShape(Rectangle())
+        Button {
+            purge()
+        } label: {
+            Image(systemName: Icons.purge)
+                .resizable()
+                .scaledToFit()
+                .foregroundStyle(purged ? .white : .primary)
+                .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)
+                .padding(AppConstants.barIconPadding)
+                .background(RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
+                    .aspectRatio(1, contentMode: .fit)
+                    .foregroundColor(purged ? .black : .clear))
+                .padding(AppConstants.standardSpacing)
+                .contentShape(Rectangle())
+        }
     }
 }

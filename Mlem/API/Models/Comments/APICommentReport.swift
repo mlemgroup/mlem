@@ -14,7 +14,7 @@ struct APICommentReport: Hashable, Decodable {
     let commentId: Int
     let originalCommentText: String
     let reason: String
-    let resolved: Bool
+    var resolved: Bool
     let resolverId: Int?
     let published: Date
     let updated: Date?

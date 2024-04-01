@@ -54,9 +54,9 @@ enum ModTool: Hashable, Identifiable {
             hasher.combine("removePost")
             hasher.combine(post.uid)
             hasher.combine(shouldRemove)
-        case let .removeComment(comment, shouldRemove):
+        case let .removeComment(removable, shouldRemove):
             hasher.combine("removeComment")
-            hasher.combine(comment.removalId)
+            hasher.combine(removable)
             hasher.combine(shouldRemove)
         case let .removeCommunity(community, shouldRemove):
             hasher.combine("removeCommunity")

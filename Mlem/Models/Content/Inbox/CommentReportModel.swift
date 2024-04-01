@@ -63,6 +63,11 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
         purged = commentReport.purged
     }
     
+    @MainActor
+    func setPurged(_ newPurged: Bool) {
+        purged = newPurged
+    }
+    
     func toggleResolved(withHaptic: Bool = true) async {
         if withHaptic {
             hapticManager.play(haptic: .lightSuccess, priority: .low)
@@ -75,7 +80,7 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
         }
     }
     
-    func removeComment(modToolTracker: ModToolTracker, shouldRemove: Bool) {
+    func toggleCommentRemoved(modToolTracker: ModToolTracker, shouldRemove: Bool) {
         modToolTracker.removeComment(self, shouldRemove: shouldRemove)
     }
     
@@ -94,13 +99,102 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
             }
         }
     }
+    
+    func purgeComment(modToolTracker: ModToolTracker) {
+        modToolTracker.purgeContent(self)
+    }
+    
+    func genMenuFunctions(modToolTracker: ModToolTracker, inboxTracker: InboxTracker) -> [MenuFunction] {
+        var ret: [MenuFunction] = .init()
+        
+        ret.append(.toggleableMenuFunction(
+            toggle: commentReport.resolved,
+            trueText: "Unresolve",
+            trueImageName: Icons.unresolve,
+            falseText: "Resolve",
+            falseImageName: Icons.resolve
+        ) {
+            Task(priority: .userInitiated) {
+                await self.toggleResolved()
+            }
+        }
+        )
+        
+        ret.append(.toggleableMenuFunction(
+            toggle: comment.removed,
+            trueText: "Restore",
+            trueImageName: Icons.restore,
+            falseText: "Remove",
+            falseImageName: Icons.remove,
+            isDestructive: .whenFalse
+        ) {
+            self.toggleCommentRemoved(modToolTracker: modToolTracker, shouldRemove: !self.comment.removed)
+        }
+        )
+        
+        ret.append(.toggleableMenuFunction(
+            toggle: creatorBannedFromCommunity,
+            trueText: "Unban",
+            trueImageName: Icons.communityUnban,
+            falseText: "Ban",
+            falseImageName: Icons.communityBan,
+            isDestructive: .whenFalse
+        ) {
+            self.toggleCommentCreatorBanned(modToolTracker: modToolTracker, inboxTracker: inboxTracker)
+        }
+        )
+        
+        ret.append(.standardMenuFunction(
+            text: "Purge",
+            imageName: Icons.purge,
+            isDestructive: true
+        ) {
+            self.purgeComment(modToolTracker: modToolTracker)
+        }
+        )
+        
+        return ret
+    }
 }
 
-extension CommentReportModel: Removable {
-    var removalId: Int { comment.id }
-    var removed: Bool {
-        get { comment.removed }
-        set { comment.removed = newValue }
+extension CommentReportModel: Removable, Purgable {
+    func remove(reason: String?, shouldRemove: Bool) async -> Bool {
+        do {
+            let response = try await apiClient.removeComment(
+                id: comment.id,
+                shouldRemove: shouldRemove,
+                reason: reason
+            )
+            if response.commentView.comment.removed == shouldRemove {
+                DispatchQueue.main.async {
+                    self.comment.removed = shouldRemove
+                }
+                if !commentReport.resolved {
+                    await toggleResolved()
+                }
+            }
+            return true
+        } catch {
+            errorHandler.handle(error)
+        }
+        return false
+    }
+    
+    func purge(reason: String?) async -> Bool {
+        do {
+            let response = try await apiClient.purgeComment(id: comment.id, reason: reason)
+            if response.success {
+                await setPurged(true)
+                // don't need to actually call toggleResolved()--purge removes the report altogether, but this is less jarring than removing it from feed
+                await MainActor.run {
+                    self.commentReport.resolved = true
+                }
+                return true
+            }
+        } catch {
+            errorHandler.handle(error)
+        }
+        return false
     }
 }
 

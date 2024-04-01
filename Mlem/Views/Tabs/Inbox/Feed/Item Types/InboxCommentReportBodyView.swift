@@ -20,6 +20,13 @@ struct InboxCommentReportBodyView: View {
     
     var body: some View {
         content
+            .contentShape(Rectangle())
+            .background(Color.systemBackground)
+            .contextMenu {
+                ForEach(commentReport.genMenuFunctions(modToolTracker: modToolTracker, inboxTracker: inboxTracker)) { menuFunction in
+                    MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
+                }
+            }
     }
     
     var iconName: String { commentReport.commentReport.resolved ? Icons.commentReport : Icons.commentReportFill }
@@ -36,7 +43,10 @@ struct InboxCommentReportBodyView: View {
                         .foregroundColor(.moderation)
                         .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
                     
-                    EllipsisMenu(size: AppConstants.largeAvatarSize, menuFunctions: .init()) // TODO: NEXT
+                    EllipsisMenu(
+                        size: AppConstants.largeAvatarSize,
+                        menuFunctions: commentReport.genMenuFunctions(modToolTracker: modToolTracker, inboxTracker: inboxTracker)
+                    )
                 }
                 
                 Text(commentReport.commentReport.reason)
@@ -85,11 +95,13 @@ struct InboxCommentReportBodyView: View {
             case .resolve:
                 return .resolve(resolved: commentReport.commentReport.resolved, resolve: toggleResolved)
             case .remove:
-                return .remove(removed: commentReport.removed) {
-                    commentReport.removeComment(modToolTracker: modToolTracker, shouldRemove: !commentReport.removed)
+                return .remove(removed: commentReport.comment.removed) {
+                    commentReport.toggleCommentRemoved(modToolTracker: modToolTracker, shouldRemove: !commentReport.comment.removed)
                 }
             case .purge:
-                return .purge
+                return .purge(purged: commentReport.purged) {
+                    commentReport.purgeComment(modToolTracker: modToolTracker)
+                }
             case .ban:
                 return .ban(banned: commentReport.creatorBannedFromCommunity) {
                     commentReport.toggleCommentCreatorBanned(modToolTracker: modToolTracker, inboxTracker: inboxTracker)

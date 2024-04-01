@@ -168,8 +168,8 @@ struct InteractionBarView: View {
             ResolveButtonView(resolved: resolved, resolve: resolve)
         case let .remove(removed, remove):
             RemoveButtonView(removed: removed, remove: remove)
-        case .purge:
-            PurgeButtonView()
+        case let .purge(purged, purge):
+            PurgeButtonView(purged: purged, purge: purge)
         case let .ban(banned, ban):
             BanButtonView(banned: banned, ban: ban)
         case let .infoStack(colorizeVotes, votes, published, updated, commentCount, unreadCommentCount, saved):
