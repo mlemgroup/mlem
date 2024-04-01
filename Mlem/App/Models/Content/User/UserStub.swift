@@ -86,8 +86,7 @@ final class UserStub: UserProviding, Codable {
             throw DecodingError.noTokenInKeychain
         }
         self.accessToken = token
-        self.api = try ApiClient.getApiClient(for: instanceLink, with: token)
-        self.api.locked = true
+        self.api = ApiClient.getApiClient(for: instanceLink, with: token)
     }
     
     func encode(to encoder: Encoder) throws {

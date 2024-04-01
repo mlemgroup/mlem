@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-class ApiClient: ActorIdentifiable, CacheIdentifiable {
+class ApiClient {
     let decoder: JSONDecoder = .defaultDecoder
     let urlSession: URLSession = .init(configuration: .default)
     
@@ -16,22 +16,30 @@ class ApiClient: ActorIdentifiable, CacheIdentifiable {
     let baseUrl: URL
     let endpointUrl: URL
     let token: String?
-    var version: SiteVersion?
+    private(set) var fetchedVersion: SiteVersion?
+    private var fetchSiteTask: Task<SiteVersion, Error>?
     
-    /// When `true`, the token will not be attatched to any API requests. This is useful for ensuring that inactive accounts don't accidentally make requests
-    var locked: Bool = false
+    /// When `false`, the token will not be attatched to any API requests. This is useful for ensuring that inactive accounts don't accidentally make requests
+    var isActive: Bool = false
     
-    var willSendToken: Bool { !(locked || token == nil) }
+    var willSendToken: Bool { isActive && token != nil }
     
-    // CacheIdentifiable, ActorIdentifiable conformance
-    var cacheId: Int {
-        var hasher: Hasher = .init()
-        hasher.combine(baseUrl)
-        hasher.combine(token)
-        return hasher.finalize()
+    /// Returns the `fetchedVersion` if the version has already been fetched. Otherwise, waits until the version has been fetched before returning the received value.
+    var version: SiteVersion? {
+        get async {
+            if let fetchedVersion {
+                return fetchedVersion
+            } else {
+                if let fetchSiteTask {
+                    let result = await fetchSiteTask.result
+                    return try? result.get()
+                } else {
+                    return try? await fetchSiteVersion()
+                }
+            }
+            
+        }
     }
-
-    var actorId: URL { baseUrl }
     
     // MARK: caching
     
@@ -58,14 +66,16 @@ class ApiClient: ActorIdentifiable, CacheIdentifiable {
         self.baseUrl = baseUrl
         self.endpointUrl = baseUrl.appendingPathComponent("api/v3")
         self.token = token
-        
-        Task {
-            do {
-                self.version = try await .init(getSite().version)
-            } catch {
-                print("Failed to resolve version! \(error)")
-            }
-        }
+    }
+    
+    @discardableResult
+    func fetchSiteVersion(task: Task<SiteVersion, Error>? = nil) async throws -> SiteVersion {
+        let task = task ?? self.fetchSiteTask ?? Task { return try await getSite().version }
+        self.fetchSiteTask = task
+        let result = await task.result
+        let version = try result.get()
+        self.fetchedVersion = version
+        return version
     }
     
     @discardableResult
@@ -129,7 +139,7 @@ class ApiClient: ActorIdentifiable, CacheIdentifiable {
             urlRequest.httpBody = try createBodyData(for: putDefinition)
         }
 
-        if let token, !locked {
+        if let token, isActive {
             // TODO: 0.18 deprecation remove this
             urlRequest.url?.append(queryItems: [.init(name: "auth", value: token)])
             
@@ -157,6 +167,19 @@ class ApiClient: ActorIdentifiable, CacheIdentifiable {
             throw ApiClientError.decoding(data, error)
         }
     }
+}
+
+extension ApiClient: CacheIdentifiable {
+    var cacheId: Int {
+        var hasher: Hasher = .init()
+        hasher.combine(baseUrl)
+        hasher.combine(token)
+        return hasher.finalize()
+    }
+}
+
+extension ApiClient: ActorIdentifiable {
+    var actorId: URL { baseUrl }
 }
 
 // MARK: ApiClientCache

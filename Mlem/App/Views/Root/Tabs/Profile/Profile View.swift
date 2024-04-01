@@ -22,7 +22,8 @@ struct ProfileView: View {
     var content: some View {
         VStack {
             Text("\(appState.myUser?.name ?? "No User")")
-            Text("\(appState.safeApi.baseUrl)")
+            Text("\(appState.api.baseUrl)")
+            Text(appState.myInstance?.description ?? "...")
             Divider()
             Toggle("Upvote On Save", isOn: $upvoteOnSave)
                 .padding(.horizontal, 50)

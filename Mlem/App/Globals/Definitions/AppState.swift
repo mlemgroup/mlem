@@ -10,35 +10,45 @@ import Foundation
 
 @Observable
 class AppState {
-    private(set) var api: ApiClient?
+    private var activeApi: ApiClient?
     private(set) var myUser: (any UserProviding)?
+    private(set) var myInstance: Instance3?
     
     var actorId: URL? { myUser?.actorId }
-    var isOnboarding: Bool { api == nil }
+    var isOnboarding: Bool { activeApi == nil }
     
-    var safeApi: ApiClient {
-        if let api { return api }
-        assertionFailure(
-            "This shouldn't happen! Maybe you should use `activeApi` instead?"
-        )
+    var api: ApiClient {
+        if let activeApi { return activeApi }
+        assertionFailure("This shouldn't be allowed!")
         return .getApiClient(for: URL(string: "https://lemmy.world")!, with: nil)
     }
 
     func changeUser(to user: UserStub) {
-        self.api?.locked = true
-        user.api.locked = false
-        self.api = user.api
+        self.setApi(user.api)
         myUser = user
     }
     
     func enterGuestMode(with api: ApiClient) {
-        self.api?.locked = true
-        self.api = api
+        self.setApi(api)
         myUser = nil
     }
     
+    private func setApi(_ newApi: ApiClient) {
+        self.activeApi?.isActive = false
+        self.activeApi = newApi
+        newApi.isActive = true
+        self.myInstance = nil
+        Task {
+            try await newApi.fetchSiteVersion(task: Task {
+                let site = try await newApi.getSite()
+                self.myInstance = site
+                return site.version
+            })
+        }
+    }
+    
     func enterOnboarding() {
-        api = nil
+        activeApi = nil
     }
     
     private init() {
@@ -50,7 +60,7 @@ class AppState {
         }
     }
     
-    var lemmyVersion: SiteVersion? { api?.version ?? myUser?.cachedSiteVersion }
+    var lemmyVersion: SiteVersion? { activeApi?.fetchedVersion ?? myUser?.cachedSiteVersion }
     
     static var main: AppState = .init()
 }
