@@ -29,6 +29,7 @@ extension InboxView {
         replyTracker.unreadOnly = newShouldFilterRead
         mentionTracker.unreadOnly = newShouldFilterRead
         messageTracker.unreadOnly = newShouldFilterRead
+        commentReportTracker.unreadOnly = newShouldFilterRead
         
         if newShouldFilterRead {
             await inboxTracker.filterRead()

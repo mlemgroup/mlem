@@ -37,6 +37,8 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
         numReplies: Int,
         creatorBannedFromCommunity: Bool
     ) {
+        print("DEBUG \(commentReport.published): \(commentReport.reason)")
+        
         self.reporter = reporter
         self.resolver = resolver
         self.commentCreator = commentCreator

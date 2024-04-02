@@ -35,7 +35,6 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
     
     func addParentTracker(_ newParent: any ParentTrackerProtocol) -> UUID {
         let newCursorId = UUID()
-        print("DEBUG [\(Item.self) tracker] added parent tracker, gave UUID \(newCursorId)")
         streams[newCursorId] = .init(parentTracker: newParent)
         return newCursorId
     }
@@ -44,7 +43,7 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
     /// - Returns: next item in the feed stream
     /// - Warning: This is NOT a thread-safe function! Only one thread at a time per stream may call this function!
     func consumeNextItem(streamId: UUID) -> ParentItem? {
-        guard var stream = streams[streamId], stream.parentTracker != nil else {
+        guard let stream = streams[streamId], stream.parentTracker != nil else {
             print("[\(Item.self) tracker] (consumeNextItem) could not find stream or parent for \(streamId)")
             return nil
         }
@@ -69,7 +68,7 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
     func nextItemSortVal(streamId: UUID, sortType: TrackerSortType) async throws -> TrackerSortVal? {
         assert(sortType == self.sortType, "Conflicting types for sortType! This will lead to unexpected sorting behavior.")
         
-        guard var stream = streams[streamId], stream.parentTracker != nil else {
+        guard let stream = streams[streamId], stream.parentTracker != nil else {
             print("[\(Item.self) tracker] (nextItemSortVal) could not find stream or parent for \(streamId)")
             return nil
         }
@@ -91,7 +90,7 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
     
     /// Resets the cursor to 0 but does not unload any items
     func resetCursor(streamId: UUID) {
-        guard var stream = streams[streamId], stream.parentTracker != nil else {
+        guard let stream = streams[streamId], stream.parentTracker != nil else {
             print("[\(Item.self) tracker] (resetCursor) could not find stream or parent for \(streamId)")
             return
         }
@@ -100,7 +99,7 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
     }
 
     func refresh(streamId: UUID, clearBeforeRefresh: Bool, notifyParent: Bool = true) async throws {
-        guard var stream = streams[streamId], let parentTracker = stream.parentTracker else {
+        guard let stream = streams[streamId], let parentTracker = stream.parentTracker else {
             print("[\(Item.self) tracker] (refresh) could not find stream or parent for \(streamId)")
             return
         }
@@ -112,7 +111,7 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
     }
 
     func reset(streamId: UUID, notifyParent: Bool = true) async {
-        guard var stream = streams[streamId], let parentTracker = stream.parentTracker else {
+        guard let stream = streams[streamId], let parentTracker = stream.parentTracker else {
             print("[\(Item.self) tracker] (reset) could not find stream or parent for \(streamId)")
             return
         }
@@ -128,7 +127,7 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
         let newItems = items.filter(filter)
         let removed = items.count - newItems.count
         
-        for var stream in streams.values {
+        for stream in streams.values {
             stream.cursor = 0
         }
         await setItems(newItems)

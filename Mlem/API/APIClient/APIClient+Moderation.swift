@@ -14,6 +14,8 @@ extension APIClient {
         unresolvedOnly: Bool,
         communityId: Int?
     ) async throws -> [CommentReportModel] {
+        try print(session.token)
+        
         let request = try ListCommentReportsRequest(
             session: session,
             page: page,

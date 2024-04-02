@@ -3208,6 +3208,17 @@
 			path = Moderation;
 			sourceTree = "<group>";
 		};
+		CDD0B8D62BBB8E4E003E7174 /* ChildTrackers */ = {
+			isa = PBXGroup;
+			children = (
+				CDD0B8B52BB4DC12003E7174 /* CommentReportTracker.swift */,
+				CD4368DA2AE247B700BD8BD1 /* MentionTracker.swift */,
+				CD4368CF2AE245F400BD8BD1 /* MessageTracker.swift */,
+				CD4368D12AE2460100BD8BD1 /* ReplyTracker.swift */,
+			);
+			path = ChildTrackers;
+			sourceTree = "<group>";
+		};
 		CDD0EF922B7A957B00CA3504 /* Moderation */ = {
 			isa = PBXGroup;
 			children = (
@@ -3360,13 +3371,10 @@
 		CDF8425F2A49EA2A00723DA0 /* Inbox */ = {
 			isa = PBXGroup;
 			children = (
+				CDD0B8D62BBB8E4E003E7174 /* ChildTrackers */,
 				CDF8426A2A4A2AB600723DA0 /* InboxItem.swift */,
 				CD82A2582A71775E00111034 /* UnreadTracker.swift */,
-				CD4368CF2AE245F400BD8BD1 /* MessageTracker.swift */,
-				CD4368D12AE2460100BD8BD1 /* ReplyTracker.swift */,
-				CD4368DA2AE247B700BD8BD1 /* MentionTracker.swift */,
 				CDC3E7FF2AEAFEAF008062CA /* InboxTracker.swift */,
-				CDD0B8B52BB4DC12003E7174 /* CommentReportTracker.swift */,
 			);
 			path = Inbox;
 			sourceTree = "<group>";

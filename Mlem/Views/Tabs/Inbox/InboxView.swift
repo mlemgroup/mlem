@@ -181,7 +181,7 @@ struct InboxView: View {
                 }
                 ToolbarItem(placement: .primaryAction) {
                     ToolbarEllipsisMenu {
-                        FeedToolbarContent()
+                        ellipsisMenu
                     }
                 }
             }
@@ -280,14 +280,8 @@ struct InboxView: View {
     
     @ViewBuilder
     var ellipsisMenu: some View {
-        Menu {
-            ForEach(genMenuFunctions()) { item in
-                MenuButton(menuFunction: item, menuFunctionPopup: .constant(nil)) // no destructive functions
-            }
-        } label: {
-            Label("More", systemImage: Icons.menuCircle)
-                .frame(height: AppConstants.barIconHitbox)
-                .contentShape(Rectangle())
+        ForEach(genMenuFunctions()) { item in
+            MenuButton(menuFunction: item, menuFunctionPopup: .constant(nil)) // no destructive functions
         }
     }
     

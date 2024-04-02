@@ -157,7 +157,9 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
         var sortVal: TrackerSortVal?
         var trackerToConsume: StreamingChildTracker?
 
+        // print("\nDEBUG computing next item")
         for child in childTrackers {
+            // print("DEBUG sort val: \(sortVal), tracker: \(trackerToConsume)")
             (sortVal, trackerToConsume) = await compareNextTrackerItem(
                 sortType: sortType,
                 lhsVal: sortVal,
@@ -167,7 +169,6 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
         }
 
         if let trackerToConsume {
-            print("DEBUG consuming from \(trackerToConsume.self)")
             guard let nextItem = trackerToConsume.tracker.consumeNextItem(streamId: trackerToConsume.streamId) as? Item else {
                 assertionFailure("Could not convert child item to Item!")
                 return nil
@@ -193,6 +194,8 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
             guard let lhsVal else {
                 return (rhsVal, rhsTracker)
             }
+            
+            // print("DEBUG    comparing \(lhsVal) to \(rhsVal)")
             
             return lhsVal > rhsVal ? (lhsVal, lhsTracker) : (rhsVal, rhsTracker)
         } catch {
