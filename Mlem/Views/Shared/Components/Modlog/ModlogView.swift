@@ -70,133 +70,147 @@ struct ModlogView: View {
             self._instanceContext = .init(wrappedValue: nil) // TODO: home instance
             self._communityContext = .init(wrappedValue: communityModel)
         }
-          
+        
+        let modlogTracker: ModlogTracker = .init(
+            internetSpeed: internetSpeed,
+            sortType: .published,
+            childTrackers: .init()
+        )
+        
         let postRemovalsTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
             actionType: .postRemoval,
-            modlogLink: modlogLink
+            modlogLink: modlogLink,
+            firstPageProvider: modlogTracker
         )
+        modlogTracker.addChildTracker(postRemovalsTracker)
         
         let postLocksTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
             actionType: .postLock,
-            modlogLink: modlogLink
+            modlogLink: modlogLink,
+            firstPageProvider: modlogTracker
         )
+        modlogTracker.addChildTracker(postLocksTracker)
         
         let postPinsTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
             actionType: .postPin,
-            modlogLink: modlogLink
+            modlogLink: modlogLink,
+            firstPageProvider: modlogTracker
         )
+        modlogTracker.addChildTracker(postPinsTracker)
         
         let commentRemovalsTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
             actionType: .commentRemoval,
-            modlogLink: modlogLink
+            modlogLink: modlogLink,
+            firstPageProvider: modlogTracker
         )
+        modlogTracker.addChildTracker(commentRemovalsTracker)
         
         let communityRemovalsTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
             actionType: .communityRemoval,
-            modlogLink: modlogLink
+            modlogLink: modlogLink,
+            firstPageProvider: modlogTracker
         )
+        modlogTracker.addChildTracker(communityRemovalsTracker)
         
         let communityBansTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
             actionType: .communityBan,
-            modlogLink: modlogLink
+            modlogLink: modlogLink,
+            firstPageProvider: modlogTracker
         )
+        modlogTracker.addChildTracker(communityBansTracker)
         
         let instanceBansTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
             actionType: .instanceBan,
-            modlogLink: modlogLink
+            modlogLink: modlogLink,
+            firstPageProvider: modlogTracker
         )
+        modlogTracker.addChildTracker(instanceBansTracker)
         
         let moderatorAddsTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
             actionType: .moderatorAdd,
-            modlogLink: modlogLink
+            modlogLink: modlogLink,
+            firstPageProvider: modlogTracker
         )
+        modlogTracker.addChildTracker(moderatorAddsTracker)
         
         let communityTransfersTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
             actionType: .communityTransfer,
-            modlogLink: modlogLink
+            modlogLink: modlogLink,
+            firstPageProvider: modlogTracker
         )
+        modlogTracker.addChildTracker(communityTransfersTracker)
         
         let administratorAddsTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
             actionType: .administratorAdd,
-            modlogLink: modlogLink
+            modlogLink: modlogLink,
+            firstPageProvider: modlogTracker
         )
+        modlogTracker.addChildTracker(administratorAddsTracker)
         
         let personPurgesTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
             actionType: .personPurge,
-            modlogLink: modlogLink
+            modlogLink: modlogLink,
+            firstPageProvider: modlogTracker
         )
+        modlogTracker.addChildTracker(personPurgesTracker)
         
         let communityPurgesTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
             actionType: .communityPurge,
-            modlogLink: modlogLink
+            modlogLink: modlogLink,
+            firstPageProvider: modlogTracker
         )
+        modlogTracker.addChildTracker(communityPurgesTracker)
         
         let postPurgesTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
             actionType: .postPurge,
-            modlogLink: modlogLink
+            modlogLink: modlogLink,
+            firstPageProvider: modlogTracker
         )
+        modlogTracker.addChildTracker(postPurgesTracker)
         
         let commentPurgesTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
             actionType: .commentPurge,
-            modlogLink: modlogLink
+            modlogLink: modlogLink,
+            firstPageProvider: modlogTracker
         )
+        modlogTracker.addChildTracker(commentPurgesTracker)
         
         let communityHidesTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
             sortType: .published,
             actionType: .communityHide,
-            modlogLink: modlogLink
+            modlogLink: modlogLink,
+            firstPageProvider: modlogTracker
         )
-        
-        let modlogTracker: ModlogTracker = .init(
-            internetSpeed: internetSpeed,
-            sortType: .published,
-            childTrackers: [
-                postRemovalsTracker,
-                postLocksTracker,
-                postPinsTracker,
-                commentRemovalsTracker,
-                communityRemovalsTracker,
-                communityBansTracker,
-                instanceBansTracker,
-                moderatorAddsTracker,
-                communityTransfersTracker,
-                administratorAddsTracker,
-                personPurgesTracker,
-                communityPurgesTracker,
-                postPurgesTracker,
-                commentPurgesTracker,
-                communityHidesTracker
-            ]
-        )
+        modlogTracker.addChildTracker(communityHidesTracker)
         
         self._postRemovalsTracker = .init(wrappedValue: postRemovalsTracker)
         self._postLocksTracker = .init(wrappedValue: postLocksTracker)

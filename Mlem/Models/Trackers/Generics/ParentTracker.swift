@@ -9,10 +9,15 @@ import Dependencies
 import Foundation
 import Semaphore
 
+struct StreamingChildTracker {
+    let tracker: any ChildTrackerProtocol
+    let streamId: UUID
+}
+
 class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol {
     @Dependency(\.errorHandler) var errorHandler
 
-    private var childTrackers: [any ChildTrackerProtocol] = .init()
+    private var childTrackers: [StreamingChildTracker] = .init()
     private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
     
     private(set) var sortType: TrackerSortType
@@ -22,19 +27,17 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
         sortType: TrackerSortType,
         childTrackers: [any ChildTrackerProtocol]
     ) {
-        self.childTrackers = childTrackers
         self.sortType = sortType
         
         super.init(internetSpeed: internetSpeed)
 
-        for child in self.childTrackers {
-            child.setParentTracker(self)
+        self.childTrackers = childTrackers.map { child in
+            StreamingChildTracker(tracker: child, streamId: child.addParentTracker(self))
         }
     }
 
     func addChildTracker(_ newChild: some ChildTrackerProtocol, preheat: Bool = false) {
-        childTrackers.append(newChild)
-        newChild.setParentTracker(self)
+        childTrackers.append(StreamingChildTracker(tracker: newChild, streamId: newChild.addParentTracker(self)))
     }
 
     // MARK: main actor methods
@@ -73,7 +76,7 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
     private func resetChildren() async {
         // note: this could in theory be run in parallel, but these calls should be super quick so it shouldn't matter
         for child in childTrackers {
-            await child.reset(notifyParent: false)
+            await child.tracker.reset(streamId: child.streamId, notifyParent: false)
         }
     }
     
@@ -83,7 +86,7 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
         // build set of uids to remove. need to iterate through every item in every tracker because trackers may have items that should be filtered but are not present in the parent yet
         var uidsToFilter: Set<ContentModelIdentifier> = .init()
         childTrackers.forEach { child in
-            child.allItems.forEach { item in
+            child.tracker.allItems.forEach { item in
                 guard let item = item as? Item else {
                     assertionFailure("Could not convert to parent type!")
                     return
@@ -102,7 +105,7 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
         // apply filtering to children
         let removed = await withTaskGroup(of: Int.self) { taskGroup in
             childTrackers.forEach { child in
-                taskGroup.addTask { await child.filter(with: filterFunc) }
+                taskGroup.addTask { await child.tracker.filter(with: filterFunc) }
             }
             
             // aggregate count of removed
@@ -152,19 +155,20 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
 
     private func computeNextItem() async -> Item? {
         var sortVal: TrackerSortVal?
-        var trackerToConsume: (any ChildTrackerProtocol)?
+        var trackerToConsume: StreamingChildTracker?
 
-        for tracker in childTrackers {
+        for child in childTrackers {
             (sortVal, trackerToConsume) = await compareNextTrackerItem(
                 sortType: sortType,
                 lhsVal: sortVal,
                 lhsTracker: trackerToConsume,
-                rhsTracker: tracker
+                rhsTracker: child
             )
         }
 
         if let trackerToConsume {
-            guard let nextItem = trackerToConsume.consumeNextItem() as? Item else {
+            print("DEBUG consuming from \(trackerToConsume.self)")
+            guard let nextItem = trackerToConsume.tracker.consumeNextItem(streamId: trackerToConsume.streamId) as? Item else {
                 assertionFailure("Could not convert child item to Item!")
                 return nil
             }
@@ -178,11 +182,11 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
     private func compareNextTrackerItem(
         sortType: TrackerSortType,
         lhsVal: TrackerSortVal?,
-        lhsTracker: (any ChildTrackerProtocol)?,
-        rhsTracker: any ChildTrackerProtocol
-    ) async -> (TrackerSortVal?, (any ChildTrackerProtocol)?) {
+        lhsTracker: StreamingChildTracker?,
+        rhsTracker: StreamingChildTracker
+    ) async -> (TrackerSortVal?, StreamingChildTracker?) {
         do {
-            guard let rhsVal = try await rhsTracker.nextItemSortVal(sortType: sortType) else {
+            guard let rhsVal = try await rhsTracker.tracker.nextItemSortVal(streamId: rhsTracker.streamId, sortType: sortType) else {
                 return (lhsVal, lhsTracker)
             }
             
