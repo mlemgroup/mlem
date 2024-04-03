@@ -14,7 +14,7 @@ struct InboxCommentReportBodyView: View {
     
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     @EnvironmentObject var modToolTracker: ModToolTracker
-    @EnvironmentObject var inboxTracker: InboxTracker
+    @EnvironmentObject var modInboxTracker: InboxTracker
     
     @ObservedObject var commentReport: CommentReportModel
     
@@ -23,7 +23,7 @@ struct InboxCommentReportBodyView: View {
             .contentShape(Rectangle())
             .background(Color.systemBackground)
             .contextMenu {
-                ForEach(commentReport.genMenuFunctions(modToolTracker: modToolTracker, inboxTracker: inboxTracker)) { menuFunction in
+                ForEach(commentReport.genMenuFunctions(modToolTracker: modToolTracker, inboxTracker: modInboxTracker)) { menuFunction in
                     MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
                 }
             }
@@ -45,7 +45,7 @@ struct InboxCommentReportBodyView: View {
                     
                     EllipsisMenu(
                         size: AppConstants.largeAvatarSize,
-                        menuFunctions: commentReport.genMenuFunctions(modToolTracker: modToolTracker, inboxTracker: inboxTracker)
+                        menuFunctions: commentReport.genMenuFunctions(modToolTracker: modToolTracker, inboxTracker: modInboxTracker)
                     )
                 }
                 
@@ -104,7 +104,7 @@ struct InboxCommentReportBodyView: View {
                 }
             case .ban:
                 return .ban(banned: commentReport.creatorBannedFromCommunity) {
-                    commentReport.toggleCommentCreatorBanned(modToolTracker: modToolTracker, inboxTracker: inboxTracker)
+                    commentReport.toggleCommentCreatorBanned(modToolTracker: modToolTracker, inboxTracker: modInboxTracker)
                 }
             default:
                 return nil

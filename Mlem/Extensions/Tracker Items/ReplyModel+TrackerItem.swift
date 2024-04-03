@@ -8,10 +8,10 @@
 import Foundation
 
 extension ReplyModel: TrackerItem {
-    func sortVal(sortType: TrackerSortType) -> TrackerSortVal {
+    func sortVal(sortType: TrackerSortVal.Case) -> TrackerSortVal {
         switch sortType {
-        case .published:
-            return .published(commentReply.published)
+        case .new: .new(commentReply.published)
+        case .old: .old(commentReply.published)
         }
     }
 }

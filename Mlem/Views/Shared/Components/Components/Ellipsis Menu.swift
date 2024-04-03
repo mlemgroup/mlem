@@ -22,7 +22,7 @@ struct EllipsisMenu: View {
         } label: {
             Image(systemName: systemImage)
                 .frame(width: 24, height: size)
-                .foregroundColor(.primary)
+                .foregroundColor(menuFunctions.isEmpty ? .secondary : .primary)
                 .background(RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
                     .aspectRatio(1, contentMode: .fit)
                     .foregroundColor(.clear))

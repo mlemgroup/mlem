@@ -6,34 +6,42 @@
 //
 import Foundation
 
-enum TrackerSortType {
-    case published
-}
-
 enum TrackerSortVal: Comparable {
-    case published(Date)
+    case new(Date)
+    case old(Date)
     
-    static func typeEquals(lhs: TrackerSortVal, rhs: TrackerSortVal) -> Bool {
-        switch lhs {
-        case .published:
-            switch rhs {
-            case .published:
-                return true
-            }
+    // case without associated values for easy type comparison
+    enum Case {
+        case new, old
+    }
+    
+    var `case`: Case {
+        switch self {
+        case .new: .new
+        case .old: .old
         }
     }
     
     static func < (lhs: TrackerSortVal, rhs: TrackerSortVal) -> Bool {
-        guard typeEquals(lhs: lhs, rhs: rhs) else {
+        guard lhs.case == rhs.case else {
             assertionFailure("Compare called on trackersortvals with different types")
             return true
         }
         
         switch lhs {
-        case let .published(lhsDate):
+        case let .new(lhsDate):
             switch rhs {
-            case let .published(rhsDate):
+            case let .new(rhsDate):
                 return lhsDate < rhsDate
+            default:
+                return true
+            }
+        case let .old(lhsDate):
+            switch rhs {
+            case let .old(rhsDate):
+                return lhsDate > rhsDate
+            default:
+                return true
             }
         }
     }

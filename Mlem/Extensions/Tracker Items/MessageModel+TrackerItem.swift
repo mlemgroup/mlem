@@ -8,10 +8,10 @@
 import Foundation
 
 extension MessageModel: TrackerItem {
-    func sortVal(sortType: TrackerSortType) -> TrackerSortVal {
+    func sortVal(sortType: TrackerSortVal.Case) -> TrackerSortVal {
         switch sortType {
-        case .published:
-            return .published(privateMessage.published)
+        case .new: .new(privateMessage.published)
+        case .old: .old(privateMessage.published)
         }
     }
 }

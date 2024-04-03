@@ -10,40 +10,6 @@ import SwiftUI
 
 extension InboxView {
     @ViewBuilder
-    var allFeedView: some View {
-        Section {
-            switch selectedInboxTab {
-            case .all:
-                switch selectedInbox {
-                case .all:
-                    InboxFeedView(tracker: inboxTracker)
-                case .personal:
-                    InboxFeedView(tracker: personalInboxTracker)
-                case .mod:
-                    InboxFeedView(tracker: modInboxTracker)
-                }
-            case .replies:
-                InboxFeedView(tracker: replyTracker)
-            case .mentions:
-                InboxFeedView(tracker: mentionTracker)
-            case .messages:
-                InboxFeedView(tracker: messageTracker)
-            case .commentReports:
-                InboxFeedView(tracker: commentReportTracker)
-            default:
-                Text("TODO")
-            }
-        } header: {
-            BubblePicker(InboxTab.allCases, selected: $selectedInboxTab, withDividers: [.bottom]) { tab in
-                Text(tab.label)
-            }
-            .background(Color.systemBackground.opacity(scrollToTopAppeared ? 1 : 0))
-            .background(.bar)
-            .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
-        }
-    }
-    
-    @ViewBuilder
     var personalFeedView: some View {
         Section {
             switch selectedPersonalTab {
@@ -56,7 +22,7 @@ extension InboxView {
             case .messages:
                 InboxFeedView(tracker: messageTracker)
             default:
-                InboxFeedView(tracker: inboxTracker)
+                InboxFeedView(tracker: personalInboxTracker)
                     .onAppear {
                         assertionFailure("personalFeedView rendered with non-personal tab!")
                     }
@@ -68,6 +34,14 @@ extension InboxView {
             .background(Color.systemBackground.opacity(scrollToTopAppeared ? 1 : 0))
             .background(.bar)
             .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
+        }
+        .task {
+            if personalInboxTracker.items.isEmpty {
+                // wrap in subtask to view redraws don't cancel load
+                Task(priority: .userInitiated) {
+                    await refresh(tracker: personalInboxTracker)
+                }
+            }
         }
     }
     
@@ -96,6 +70,14 @@ extension InboxView {
             .background(Color.systemBackground.opacity(scrollToTopAppeared ? 1 : 0))
             .background(.bar)
             .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
+        }
+        .task {
+            if modInboxTracker.items.isEmpty {
+                // wrap in subtask to view redraws don't cancel load
+                Task(priority: .userInitiated) {
+                    await refresh(tracker: modInboxTracker)
+                }
+            }
         }
     }
 }

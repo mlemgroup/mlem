@@ -73,13 +73,13 @@ struct ModlogView: View {
         
         let modlogTracker: ModlogTracker = .init(
             internetSpeed: internetSpeed,
-            sortType: .published,
+            sortType: .new,
             childTrackers: .init()
         )
         
         let postRemovalsTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
-            sortType: .published,
+            sortType: .new,
             actionType: .postRemoval,
             modlogLink: modlogLink,
             firstPageProvider: modlogTracker
@@ -88,7 +88,7 @@ struct ModlogView: View {
         
         let postLocksTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
-            sortType: .published,
+            sortType: .new,
             actionType: .postLock,
             modlogLink: modlogLink,
             firstPageProvider: modlogTracker
@@ -97,7 +97,7 @@ struct ModlogView: View {
         
         let postPinsTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
-            sortType: .published,
+            sortType: .new,
             actionType: .postPin,
             modlogLink: modlogLink,
             firstPageProvider: modlogTracker
@@ -106,7 +106,7 @@ struct ModlogView: View {
         
         let commentRemovalsTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
-            sortType: .published,
+            sortType: .new,
             actionType: .commentRemoval,
             modlogLink: modlogLink,
             firstPageProvider: modlogTracker
@@ -115,7 +115,7 @@ struct ModlogView: View {
         
         let communityRemovalsTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
-            sortType: .published,
+            sortType: .new,
             actionType: .communityRemoval,
             modlogLink: modlogLink,
             firstPageProvider: modlogTracker
@@ -124,7 +124,7 @@ struct ModlogView: View {
         
         let communityBansTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
-            sortType: .published,
+            sortType: .new,
             actionType: .communityBan,
             modlogLink: modlogLink,
             firstPageProvider: modlogTracker
@@ -133,7 +133,7 @@ struct ModlogView: View {
         
         let instanceBansTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
-            sortType: .published,
+            sortType: .new,
             actionType: .instanceBan,
             modlogLink: modlogLink,
             firstPageProvider: modlogTracker
@@ -142,7 +142,7 @@ struct ModlogView: View {
         
         let moderatorAddsTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
-            sortType: .published,
+            sortType: .new,
             actionType: .moderatorAdd,
             modlogLink: modlogLink,
             firstPageProvider: modlogTracker
@@ -151,7 +151,7 @@ struct ModlogView: View {
         
         let communityTransfersTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
-            sortType: .published,
+            sortType: .new,
             actionType: .communityTransfer,
             modlogLink: modlogLink,
             firstPageProvider: modlogTracker
@@ -160,7 +160,7 @@ struct ModlogView: View {
         
         let administratorAddsTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
-            sortType: .published,
+            sortType: .new,
             actionType: .administratorAdd,
             modlogLink: modlogLink,
             firstPageProvider: modlogTracker
@@ -169,7 +169,7 @@ struct ModlogView: View {
         
         let personPurgesTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
-            sortType: .published,
+            sortType: .new,
             actionType: .personPurge,
             modlogLink: modlogLink,
             firstPageProvider: modlogTracker
@@ -178,7 +178,7 @@ struct ModlogView: View {
         
         let communityPurgesTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
-            sortType: .published,
+            sortType: .new,
             actionType: .communityPurge,
             modlogLink: modlogLink,
             firstPageProvider: modlogTracker
@@ -187,7 +187,7 @@ struct ModlogView: View {
         
         let postPurgesTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
-            sortType: .published,
+            sortType: .new,
             actionType: .postPurge,
             modlogLink: modlogLink,
             firstPageProvider: modlogTracker
@@ -196,7 +196,7 @@ struct ModlogView: View {
         
         let commentPurgesTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
-            sortType: .published,
+            sortType: .new,
             actionType: .commentPurge,
             modlogLink: modlogLink,
             firstPageProvider: modlogTracker
@@ -205,7 +205,7 @@ struct ModlogView: View {
         
         let communityHidesTracker: ModlogChildTracker = .init(
             internetSpeed: internetSpeed,
-            sortType: .published,
+            sortType: .new,
             actionType: .communityHide,
             modlogLink: modlogLink,
             firstPageProvider: modlogTracker

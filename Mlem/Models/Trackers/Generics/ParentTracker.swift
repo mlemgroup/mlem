@@ -20,11 +20,11 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
     private var childTrackers: [StreamingChildTracker] = .init()
     private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
     
-    private(set) var sortType: TrackerSortType
+    private(set) var sortType: TrackerSortVal.Case
 
     init(
         internetSpeed: InternetSpeed,
-        sortType: TrackerSortType,
+        sortType: TrackerSortVal.Case,
         childTrackers: [any ChildTrackerProtocol]
     ) {
         self.sortType = sortType
@@ -124,6 +124,15 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
         let newItems = await fetchNextItems(numItems: max(remaining, abs(AppConstants.infiniteLoadThresholdOffset) + 1))
         await setItems(newItems)
     }
+    
+    /// Changes the sort type of this tracker and all child trackers to the new sort type, then refreshes the feed
+    func changeSortType(to newSortType: TrackerSortVal.Case) async {
+        sortType = newSortType
+        for tracker in childTrackers {
+            tracker.tracker.changeSortType(to: newSortType)
+        }
+        await refresh(clearBeforeFetch: true)
+    }
 
     // MARK: private loading methods
     
@@ -157,9 +166,7 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
         var sortVal: TrackerSortVal?
         var trackerToConsume: StreamingChildTracker?
 
-        // print("\nDEBUG computing next item")
         for child in childTrackers {
-            // print("DEBUG sort val: \(sortVal), tracker: \(trackerToConsume)")
             (sortVal, trackerToConsume) = await compareNextTrackerItem(
                 sortType: sortType,
                 lhsVal: sortVal,
@@ -181,7 +188,7 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
     }
 
     private func compareNextTrackerItem(
-        sortType: TrackerSortType,
+        sortType: TrackerSortVal.Case,
         lhsVal: TrackerSortVal?,
         lhsTracker: StreamingChildTracker?,
         rhsTracker: StreamingChildTracker
@@ -194,9 +201,7 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
             guard let lhsVal else {
                 return (rhsVal, rhsTracker)
             }
-            
-            // print("DEBUG    comparing \(lhsVal) to \(rhsVal)")
-            
+                        
             return lhsVal > rhsVal ? (lhsVal, lhsTracker) : (rhsVal, rhsTracker)
         } catch {
             errorHandler.handle(error)

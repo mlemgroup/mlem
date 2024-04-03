@@ -8,10 +8,10 @@
 import Foundation
 
 extension CommentReportModel: TrackerItem {
-    func sortVal(sortType: TrackerSortType) -> TrackerSortVal {
+    func sortVal(sortType: TrackerSortVal.Case) -> TrackerSortVal {
         switch sortType {
-        case .published:
-            return .published(commentReport.published)
+        case .new: .new(commentReport.published)
+        case .old: .old(commentReport.published)
         }
     }
 }

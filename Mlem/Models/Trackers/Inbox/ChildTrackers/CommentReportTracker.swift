@@ -13,7 +13,7 @@ class CommentReportTracker: ChildTracker<CommentReportModel, AnyInboxItem> {
     
     var unreadOnly: Bool
     
-    init(internetSpeed: InternetSpeed, sortType: TrackerSortType, unreadOnly: Bool) {
+    init(internetSpeed: InternetSpeed, sortType: TrackerSortVal.Case, unreadOnly: Bool) {
         self.unreadOnly = unreadOnly
         super.init(internetSpeed: internetSpeed, sortType: sortType)
     }

@@ -58,7 +58,7 @@ enum AnyInboxItem: InboxItem {
     
     var id: Int { value.id }
     
-    func sortVal(sortType: TrackerSortType) -> TrackerSortVal { value.sortVal(sortType: sortType) }
+    func sortVal(sortType: TrackerSortVal.Case) -> TrackerSortVal { value.sortVal(sortType: sortType) }
     
     func toAnyInboxItem() -> AnyInboxItem { self }
     

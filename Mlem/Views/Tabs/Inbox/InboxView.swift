@@ -10,19 +10,17 @@ import Foundation
 import SwiftUI
 
 enum InboxSelection: FeedType {
-    case all, personal, mod
+    case personal, mod
     
     var label: String {
         switch self {
-        case .all: "Inbox"
-        case .personal: "Personal"
+        case .personal: "Inbox"
         case .mod: "Mod Mail"
         }
     }
         
     var subtitle: String {
         switch self {
-        case .all: "All your notifications"
         case .personal: "Replies, mentions, and messages"
         case .mod: "Moderation and administration notifications"
         }
@@ -30,31 +28,27 @@ enum InboxSelection: FeedType {
     
     var color: Color? {
         switch self {
-        case .all: .purple
-        case .personal: .red
+        case .personal: .purple
         case .mod: .moderation
         }
     }
     
     var iconName: String {
         switch self {
-        case .all: Icons.inbox
-        case .personal: Icons.user
+        case .personal: Icons.inbox
         case .mod: Icons.moderation
         }
     }
     
     var iconNameFill: String {
         switch self {
-        case .all: Icons.inboxFill
-        case .personal: Icons.userFill
+        case .personal: Icons.inboxFill
         case .mod: Icons.moderationFill
         }
     }
     
     var iconScaleFactor: CGFloat {
         switch self {
-        case .all: 0.55
         case .personal: 0.55
         case .mod: 0.5
         }
@@ -93,19 +87,19 @@ struct InboxView: View {
     
     @EnvironmentObject var unreadTracker: UnreadTracker
     
-    @StateObject var inboxTracker: InboxTracker
+    // personal tracker + children
     @StateObject var personalInboxTracker: InboxTracker
-    @StateObject var modInboxTracker: InboxTracker
     @StateObject var replyTracker: ReplyTracker
     @StateObject var mentionTracker: MentionTracker
     @StateObject var messageTracker: MessageTracker
+    // mod tracker + children
+    @StateObject var modInboxTracker: InboxTracker
     @StateObject var commentReportTracker: CommentReportTracker
     
     @Namespace var scrollToTop
     @State var scrollToTopAppeared = false
     
-    @State var selectedInbox: InboxSelection = .all
-    @State var selectedInboxTab: InboxTab = .all
+    @State var selectedInbox: InboxSelection = .personal
     @State var selectedPersonalTab: InboxTab = .all
     @State var selectedModTab: InboxTab = .all
     
@@ -117,25 +111,14 @@ struct InboxView: View {
         @AppStorage("shouldFilterRead") var unreadOnly = false
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
         
-        let newReplyTracker = ReplyTracker(internetSpeed: internetSpeed, sortType: .published, unreadOnly: unreadOnly)
-        let newMentionTracker = MentionTracker(internetSpeed: internetSpeed, sortType: .published, unreadOnly: unreadOnly)
-        let newMessageTracker = MessageTracker(internetSpeed: internetSpeed, sortType: .published, unreadOnly: unreadOnly)
-        let newCommentReportTracker = CommentReportTracker(internetSpeed: internetSpeed, sortType: .published, unreadOnly: unreadOnly)
-        
-        let newInboxTracker = InboxTracker(
-            internetSpeed: internetSpeed,
-            sortType: .published,
-            childTrackers: [
-                newReplyTracker,
-                newMentionTracker,
-                newMessageTracker,
-                newCommentReportTracker
-            ]
-        )
+        let newReplyTracker = ReplyTracker(internetSpeed: internetSpeed, sortType: .new, unreadOnly: unreadOnly)
+        let newMentionTracker = MentionTracker(internetSpeed: internetSpeed, sortType: .new, unreadOnly: unreadOnly)
+        let newMessageTracker = MessageTracker(internetSpeed: internetSpeed, sortType: .new, unreadOnly: unreadOnly)
+        let newCommentReportTracker = CommentReportTracker(internetSpeed: internetSpeed, sortType: .new, unreadOnly: unreadOnly)
         
         let newPersonalInboxTracker = InboxTracker(
             internetSpeed: internetSpeed,
-            sortType: .published,
+            sortType: .new,
             childTrackers: [
                 newReplyTracker,
                 newMentionTracker,
@@ -145,13 +128,12 @@ struct InboxView: View {
         
         let newModInboxTracker = InboxTracker(
             internetSpeed: internetSpeed,
-            sortType: .published,
+            sortType: .new,
             childTrackers: [
                 newCommentReportTracker
             ]
         )
         
-        self._inboxTracker = StateObject(wrappedValue: newInboxTracker)
         self._personalInboxTracker = StateObject(wrappedValue: newPersonalInboxTracker)
         self._modInboxTracker = StateObject(wrappedValue: newModInboxTracker)
         self._replyTracker = StateObject(wrappedValue: newReplyTracker)
@@ -163,16 +145,15 @@ struct InboxView: View {
     var showModFeed: Bool { siteInformation.isAdmin || !siteInformation.moderatedCommunities.isEmpty }
     
     var availableFeeds: [InboxSelection] {
-        var availableFeeds: [InboxSelection] = [.all]
+        var availableFeeds: [InboxSelection] = [.personal]
         if showModFeed {
-            availableFeeds.append(contentsOf: [.personal, .mod])
+            availableFeeds.append(.mod)
         }
         return availableFeeds
     }
     
     var body: some View {
         content
-            .environmentObject(inboxTracker)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     navBarTitle
@@ -192,20 +173,19 @@ struct InboxView: View {
                     await handleShouldFilterReadChange(newShouldFilterRead: newValue)
                 }
             }
+            .environmentObject(modInboxTracker)
+            .environmentObject(personalInboxTracker)
             .refreshable {
                 // wrapping in task so view redraws don't cancel
                 // awaiting the value makes the refreshable indicator properly wait for the call to finish
                 await Task {
-                    await refresh()
-                }.value
-            }
-            .task {
-                // wrapping in task so view redraws don't cancel
-                if inboxTracker.items.isEmpty, inboxTracker.loadingState != .loading {
-                    Task(priority: .userInitiated) {
-                        await refresh()
+                    switch selectedInbox {
+                    case .personal:
+                        await refresh(tracker: personalInboxTracker)
+                    case .mod:
+                        await refresh(tracker: modInboxTracker)
                     }
-                }
+                }.value
             }
             .hoistNavigation {
                 withAnimation {
@@ -224,12 +204,6 @@ struct InboxView: View {
                 headerView
   
                 switch selectedInbox {
-                case .all:
-                    if showModFeed {
-                        allFeedView
-                    } else {
-                        personalFeedView
-                    }
                 case .personal:
                     personalFeedView
                 case .mod:
@@ -252,7 +226,7 @@ struct InboxView: View {
             }
             .buttonStyle(.plain)
         } else {
-            FeedHeaderView(feedType: InboxSelection.all, showDropdownIndicator: false)
+            FeedHeaderView(feedType: InboxSelection.personal, showDropdownIndicator: false)
         }
     }
     

@@ -16,4 +16,6 @@ protocol ParentTrackerProtocol: AnyObject {
     func reset() async
     
     func filter(with filter: @escaping (Item) -> Bool) async
+    
+    func changeSortType(to newSortType: TrackerSortVal.Case) async
 }

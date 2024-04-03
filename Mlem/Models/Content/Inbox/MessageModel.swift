@@ -19,6 +19,7 @@ class MessageModel: ContentIdentifiable, ObservableObject {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.siteInformation) var siteInformation
     
     @Published var creator: UserModel
     @Published var recipient: UserModel
@@ -119,6 +120,12 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         unreadTracker: UnreadTracker,
         editorTracker: EditorTracker
     ) -> [MenuFunction] {
+        // no actions on your own messages allowed
+        // print(siteInformation.myUser?.userId, creatorId)
+        if siteInformation.userId == creatorId {
+            return .init()
+        }
+        
         var ret: [MenuFunction] = .init()
         
         // mark read
@@ -173,6 +180,10 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         unreadTracker: UnreadTracker,
         editorTracker: EditorTracker
     ) -> SwipeConfiguration {
+        if siteInformation.userId == creatorId {
+            return .init()
+        }
+        
         var trailingActions: [SwipeAction] = .init()
         
         trailingActions.append(SwipeAction(

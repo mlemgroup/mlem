@@ -8,10 +8,8 @@
 import Foundation
 
 extension InboxView {
-    func refresh() async {
-        await inboxTracker.refresh(clearBeforeFetch: false)
-        await personalInboxTracker.refresh(clearBeforeFetch: false)
-        await modInboxTracker.refresh(clearBeforeFetch: false)
+    func refresh(tracker: InboxTracker) async {
+        await tracker.refresh(clearBeforeFetch: false)
         
         do {
             let unreadCounts = try await personRepository.getUnreadCounts()
@@ -32,14 +30,18 @@ extension InboxView {
         commentReportTracker.unreadOnly = newShouldFilterRead
         
         if newShouldFilterRead {
-            await inboxTracker.filterRead()
+            await personalInboxTracker.filterRead()
+            
+            // mod items are returned sorted by old when unreadOnly true
+            await modInboxTracker.changeSortType(to: .old)
         } else {
-            await inboxTracker.refresh(clearBeforeFetch: true)
+            await personalInboxTracker.refresh(clearBeforeFetch: true)
+            await modInboxTracker.changeSortType(to: .new)
         }
     }
     
     func markAllAsRead() async {
-        await inboxTracker.markAllAsRead(unreadTracker: unreadTracker)
+        // await inboxTracker.markAllAsRead(unreadTracker: unreadTracker)
     }
     
     func genFeedSwitchingFunctions() -> [MenuFunction] {

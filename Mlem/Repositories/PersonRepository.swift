@@ -71,7 +71,7 @@ class PersonRepository {
         )) }
         
         // TODO: support more sort types--API support is present
-        return (posts + comments).sorted { $0.sortVal(sortType: .published) > $1.sortVal(sortType: .published) }
+        return (posts + comments).sorted { $0.sortVal(sortType: .new) > $1.sortVal(sortType: .new) }
     }
     
     func loadUserDetails(for url: URL, limit: Int, savedOnly: Bool = false) async throws -> GetPersonDetailsResponse {

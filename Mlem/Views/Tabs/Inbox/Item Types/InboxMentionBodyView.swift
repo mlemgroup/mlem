@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct InboxMentionBodyView: View {
-    @ObservedObject var mention: MentionModel
     @EnvironmentObject var inboxTracker: InboxTracker
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var unreadTracker: UnreadTracker
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
+    
+    @ObservedObject var mention: MentionModel
     
     var voteIconName: String { mention.votes.myVote == .downvote ? Icons.downvote : Icons.upvote }
     var iconName: String { mention.personMention.read ? "quote.bubble" : "quote.bubble.fill" }
