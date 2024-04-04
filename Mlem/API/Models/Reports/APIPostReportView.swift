@@ -14,7 +14,7 @@ struct APIPostReportView: Decodable {
     let creator: APIPerson
     let postCreator: APIPerson
     let creatorBannedFromCommunity: Bool
-    let myVote: Int?
+    let myVote: ScoringOperation?
     let counts: APIPostAggregates
     let resolver: APIPerson?
 }

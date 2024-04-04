@@ -27,7 +27,7 @@ class MentionModel: ContentIdentifiable, ObservableObject {
     var recipient: APIPerson
     @Published var numReplies: Int
     @Published var votes: VotesModel
-    @Published var creatorBannedFromCommunity: Bool
+    @Published var commentCreatorBannedFromCommunity: Bool
     @Published var subscribed: APISubscribedStatus
     @Published var read: Bool
     @Published var saved: Bool
@@ -61,7 +61,7 @@ class MentionModel: ContentIdentifiable, ObservableObject {
         self.recipient = recipient
         self.numReplies = numReplies
         self.votes = votes
-        self.creatorBannedFromCommunity = creatorBannedFromCommunity
+        self.commentCreatorBannedFromCommunity = creatorBannedFromCommunity
         self.subscribed = subscribed
         self.read = read
         self.saved = saved
@@ -77,7 +77,7 @@ class MentionModel: ContentIdentifiable, ObservableObject {
         self.recipient = personMentionView.recipient
         self.numReplies = personMentionView.counts.childCount
         self.votes = VotesModel(from: personMentionView.counts, myVote: personMentionView.myVote)
-        self.creatorBannedFromCommunity = personMentionView.creatorBannedFromCommunity
+        self.commentCreatorBannedFromCommunity = personMentionView.creatorBannedFromCommunity
         self.subscribed = personMentionView.subscribed
         self.read = personMentionView.personMention.read
         self.saved = personMentionView.saved
@@ -108,7 +108,7 @@ class MentionModel: ContentIdentifiable, ObservableObject {
         self.recipient = recipient ?? mentionModel.recipient
         self.numReplies = numReplies ?? mentionModel.numReplies
         self.votes = votes ?? mentionModel.votes
-        self.creatorBannedFromCommunity = creatorBannedFromCommunity ?? mentionModel.creatorBannedFromCommunity
+        self.commentCreatorBannedFromCommunity = creatorBannedFromCommunity ?? mentionModel.commentCreatorBannedFromCommunity
         self.subscribed = subscribed ?? mentionModel.subscribed
         self.read = read ?? mentionModel.read
         self.saved = saved ?? mentionModel.saved
@@ -147,7 +147,7 @@ extension MentionModel {
         community = mentionModel.community
         recipient = mentionModel.recipient
         votes = mentionModel.votes
-        creatorBannedFromCommunity = mentionModel.creatorBannedFromCommunity
+        commentCreatorBannedFromCommunity = mentionModel.commentCreatorBannedFromCommunity
         subscribed = mentionModel.subscribed
         saved = mentionModel.saved
         creatorBlocked = mentionModel.creatorBlocked

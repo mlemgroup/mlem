@@ -21,7 +21,7 @@ enum ModTool: Hashable, Identifiable {
     case addMod(Binding<UserModel>?, Binding<CommunityModel>?) // user to add as mod, community to add mod to
     
     // post
-    case removePost(PostModel, Bool) // post to remove, should remove
+    case removePost(any Removable, Bool) // post to remove, should remove
     
     // comment
     case removeComment(any Removable, Bool) // comment to remove, should remove
@@ -52,11 +52,11 @@ enum ModTool: Hashable, Identifiable {
             hasher.combine(community?.wrappedValue.uid)
         case let .removePost(post, shouldRemove):
             hasher.combine("removePost")
-            hasher.combine(post.uid)
+            hasher.combine(post)
             hasher.combine(shouldRemove)
-        case let .removeComment(removable, shouldRemove):
+        case let .removeComment(comment, shouldRemove):
             hasher.combine("removeComment")
-            hasher.combine(removable)
+            hasher.combine(comment)
             hasher.combine(shouldRemove)
         case let .removeCommunity(community, shouldRemove):
             hasher.combine("removeCommunity")
@@ -89,7 +89,7 @@ class ModToolTracker: ObservableObject {
         openTool = .addMod(user, community)
     }
     
-    func removePost(_ post: PostModel, shouldRemove: Bool) {
+    func removePost(_ post: any Removable, shouldRemove: Bool) {
         openTool = .removePost(post, shouldRemove)
     }
     

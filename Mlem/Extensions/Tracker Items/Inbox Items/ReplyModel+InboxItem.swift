@@ -19,6 +19,6 @@ extension ReplyModel: InboxItem {
     
     @MainActor
     func setCreatorBannedFromCommunity(_ newBanned: Bool) {
-        creatorBannedFromCommunity = newBanned
+        commentCreatorBannedFromCommunity = newBanned
     }
 }

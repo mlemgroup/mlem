@@ -56,12 +56,11 @@ enum InboxSelection: FeedType {
 }
 
 enum InboxTab: String, CaseIterable, Identifiable {
-    // TODO: registration application
-    
-    case all, replies, mentions, messages, commentReports, postReports, messageReports
+    case all, replies, mentions, messages, commentReports, postReports, messageReports, registrationApplications
     
     static var personalCases: [InboxTab] { [.all, .replies, .mentions, .messages] }
-    static var modCases: [InboxTab] { [.all, .commentReports, .postReports, .messageReports] }
+    static var modCases: [InboxTab] { [.all, .commentReports, .postReports] }
+    static var adminCases: [InboxTab] { [.all, .registrationApplications, .messageReports, .commentReports, .postReports] }
     
     var id: Self { self }
     
@@ -70,6 +69,7 @@ enum InboxTab: String, CaseIterable, Identifiable {
         case .commentReports: "Comment Reports"
         case .postReports: "Post Reports"
         case .messageReports: "Message Reports"
+        case .registrationApplications: "Registration Applications"
         default:
             rawValue.capitalized
         }
@@ -92,9 +92,11 @@ struct InboxView: View {
     @StateObject var replyTracker: ReplyTracker
     @StateObject var mentionTracker: MentionTracker
     @StateObject var messageTracker: MessageTracker
-    // mod tracker + children
+    // mod/admin trackers + children
     @StateObject var modInboxTracker: InboxTracker
+    @StateObject var adminInboxTracker: InboxTracker
     @StateObject var commentReportTracker: CommentReportTracker
+    @StateObject var postReportTracker: PostReportTracker
     
     @Namespace var scrollToTop
     @State var scrollToTopAppeared = false
@@ -111,10 +113,13 @@ struct InboxView: View {
         @AppStorage("shouldFilterRead") var unreadOnly = false
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
         
+        let modSortType: TrackerSortVal.Case = unreadOnly ? .old : .new
+        
         let newReplyTracker = ReplyTracker(internetSpeed: internetSpeed, sortType: .new, unreadOnly: unreadOnly)
         let newMentionTracker = MentionTracker(internetSpeed: internetSpeed, sortType: .new, unreadOnly: unreadOnly)
         let newMessageTracker = MessageTracker(internetSpeed: internetSpeed, sortType: .new, unreadOnly: unreadOnly)
-        let newCommentReportTracker = CommentReportTracker(internetSpeed: internetSpeed, sortType: .new, unreadOnly: unreadOnly)
+        let newCommentReportTracker = CommentReportTracker(internetSpeed: internetSpeed, sortType: modSortType, unreadOnly: unreadOnly)
+        let newPostReportTracker = PostReportTracker(internetSpeed: internetSpeed, sortType: modSortType, unreadOnly: unreadOnly)
         
         let newPersonalInboxTracker = InboxTracker(
             internetSpeed: internetSpeed,
@@ -128,21 +133,35 @@ struct InboxView: View {
         
         let newModInboxTracker = InboxTracker(
             internetSpeed: internetSpeed,
-            sortType: .new,
+            sortType: modSortType,
             childTrackers: [
-                newCommentReportTracker
+                newCommentReportTracker,
+                newPostReportTracker
+            ]
+        )
+        
+        let newAdminInboxTracker = InboxTracker(
+            internetSpeed: internetSpeed,
+            sortType: modSortType,
+            childTrackers: [
+                newCommentReportTracker,
+                newPostReportTracker
             ]
         )
         
         self._personalInboxTracker = StateObject(wrappedValue: newPersonalInboxTracker)
         self._modInboxTracker = StateObject(wrappedValue: newModInboxTracker)
+        self._adminInboxTracker = StateObject(wrappedValue: newAdminInboxTracker)
         self._replyTracker = StateObject(wrappedValue: newReplyTracker)
         self._mentionTracker = StateObject(wrappedValue: newMentionTracker)
         self._messageTracker = StateObject(wrappedValue: newMessageTracker)
         self._commentReportTracker = StateObject(wrappedValue: newCommentReportTracker)
+        self._postReportTracker = StateObject(wrappedValue: newPostReportTracker)
     }
     
     var showModFeed: Bool { siteInformation.isAdmin || !siteInformation.moderatedCommunities.isEmpty }
+    
+    var modOrAdminInboxTracker: InboxTracker { siteInformation.isAdmin ? adminInboxTracker : modInboxTracker }
     
     var availableFeeds: [InboxSelection] {
         var availableFeeds: [InboxSelection] = [.personal]
@@ -183,7 +202,7 @@ struct InboxView: View {
                     case .personal:
                         await refresh(tracker: personalInboxTracker)
                     case .mod:
-                        await refresh(tracker: modInboxTracker)
+                        await refresh(tracker: modOrAdminInboxTracker)
                     }
                 }.value
             }
@@ -207,7 +226,11 @@ struct InboxView: View {
                 case .personal:
                     personalFeedView
                 case .mod:
-                    moderatorFeedView
+                    if siteInformation.isAdmin {
+                        adminFeedView
+                    } else {
+                        moderatorFeedView
+                    }
                 }
             }
         }

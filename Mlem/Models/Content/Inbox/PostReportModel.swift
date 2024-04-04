@@ -1,66 +1,66 @@
 //
-//  CommentReportModel.swift
+//  PostReportModel.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-03-27.
+//  Created by Eric Andrews on 2024-04-04.
 //
 
 import Dependencies
 import Foundation
 
-class CommentReportModel: ContentIdentifiable, ObservableObject {
+class PostReportModel: ContentIdentifiable, ObservableObject {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.errorHandler) var errorHandler
     
     var reporter: UserModel
     var resolver: UserModel?
-    @Published var commentCreator: UserModel
+    @Published var postCreator: UserModel
     var community: CommunityModel
-    var commentReport: APICommentReport
-    @Published var comment: APIComment
+    var postReport: APIPostReport
+    @Published var post: APIPost
     @Published var votes: VotesModel
     @Published var numReplies: Int
-    @Published var commentCreatorBannedFromCommunity: Bool
+    @Published var postCreatorBannedFromCommunity: Bool
     @Published var purged: Bool
     
-    var uid: ContentModelIdentifier { .init(contentType: .commentReport, contentId: commentReport.id) }
+    var uid: ContentModelIdentifier { .init(contentType: .postReport, contentId: postReport.id) }
     
     init(
         reporter: UserModel,
         resolver: UserModel?,
-        commentCreator: UserModel,
+        postCreator: UserModel,
         community: CommunityModel,
-        commentReport: APICommentReport,
-        comment: APIComment,
+        postReport: APIPostReport,
+        post: APIPost,
         votes: VotesModel,
         numReplies: Int,
-        commentCreatorBannedFromCommunity: Bool
+        postCreatorBannedFromCommunity: Bool
     ) {
         self.reporter = reporter
         self.resolver = resolver
-        self.commentCreator = commentCreator
+        self.postCreator = postCreator
         self.community = community
-        self.commentReport = commentReport
-        self.comment = comment
+        self.postReport = postReport
+        self.post = post
         self.votes = votes
         self.numReplies = numReplies
-        self.commentCreatorBannedFromCommunity = commentCreatorBannedFromCommunity
+        self.postCreatorBannedFromCommunity = postCreatorBannedFromCommunity
         self.purged = false
     }
     
     @MainActor
-    func reinit(from commentReport: CommentReportModel) {
-        self.reporter = commentReport.reporter
-        self.resolver = commentReport.resolver
-        self.commentCreator = commentReport.commentCreator
-        self.community = commentReport.community
-        self.commentReport = commentReport.commentReport
-        self.comment = commentReport.comment
-        self.votes = commentReport.votes
-        self.numReplies = commentReport.numReplies
-        self.commentCreatorBannedFromCommunity = commentCreatorBannedFromCommunity
-        self.purged = commentReport.purged
+    func reinit(from postReport: PostReportModel) {
+        reporter = postReport.reporter
+        resolver = postReport.resolver
+        postCreator = postReport.postCreator
+        community = postReport.community
+        self.postReport = postReport.postReport
+        post = postReport.post
+        votes = postReport.votes
+        numReplies = postReport.numReplies
+        postCreatorBannedFromCommunity = postReport.postCreatorBannedFromCommunity
+        purged = postReport.purged
     }
     
     @MainActor
@@ -73,26 +73,26 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
             hapticManager.play(haptic: .lightSuccess, priority: .low)
         }
         do {
-            let response = try await apiClient.markCommentReportResolved(reportId: commentReport.id, resolved: !commentReport.resolved)
+            let response = try await apiClient.markPostReportResolved(reportId: postReport.id, resolved: !postReport.resolved)
             await reinit(from: response)
         } catch {
             errorHandler.handle(error)
         }
     }
     
-    func toggleCommentRemoved(modToolTracker: ModToolTracker) {
-        modToolTracker.removeComment(self, shouldRemove: !comment.removed)
+    func togglePostRemoved(modToolTracker: ModToolTracker) {
+        modToolTracker.removePost(self, shouldRemove: !post.removed)
     }
     
-    func toggleCommentCreatorBanned(modToolTracker: ModToolTracker, inboxTracker: InboxTracker) {
+    func togglePostCreatorBanned(modToolTracker: ModToolTracker, inboxTracker: InboxTracker) {
         modToolTracker.banUser(
-            commentCreator,
+            postCreator,
             from: community,
-            bannedFromCommunity: commentCreatorBannedFromCommunity,
-            shouldBan: !commentCreatorBannedFromCommunity,
+            bannedFromCommunity: postCreatorBannedFromCommunity,
+            shouldBan: !postCreatorBannedFromCommunity,
             userRemovalWalker: .init(inboxTracker: inboxTracker)
         ) {
-            if !self.commentReport.resolved {
+            if !self.postReport.resolved {
                 Task(priority: .userInitiated) {
                     await self.toggleResolved(withHaptic: false)
                 }
@@ -100,7 +100,7 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
         }
     }
     
-    func purgeComment(modToolTracker: ModToolTracker) {
+    func purgePost(modToolTracker: ModToolTracker) {
         modToolTracker.purgeContent(self)
     }
     
@@ -108,7 +108,7 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
         var ret: [MenuFunction] = .init()
         
         ret.append(.toggleableMenuFunction(
-            toggle: commentReport.resolved,
+            toggle: postReport.resolved,
             trueText: "Unresolve",
             trueImageName: Icons.unresolve,
             falseText: "Resolve",
@@ -121,14 +121,14 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
         )
         
         ret.append(.toggleableMenuFunction(
-            toggle: comment.removed,
+            toggle: post.removed,
             trueText: "Restore",
             trueImageName: Icons.restore,
             falseText: "Remove",
             falseImageName: Icons.remove,
             isDestructive: .whenFalse
         ) {
-            self.toggleCommentRemoved(modToolTracker: modToolTracker)
+            self.togglePostRemoved(modToolTracker: modToolTracker)
         }
         )
         
@@ -140,7 +140,7 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
             falseImageName: Icons.communityBan,
             isDestructive: .whenFalse
         ) {
-            self.toggleCommentCreatorBanned(modToolTracker: modToolTracker, inboxTracker: inboxTracker)
+            self.togglePostCreatorBanned(modToolTracker: modToolTracker, inboxTracker: inboxTracker)
         }
         )
         
@@ -149,7 +149,7 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
             imageName: Icons.purge,
             isDestructive: true
         ) {
-            self.purgeComment(modToolTracker: modToolTracker)
+            self.purgePost(modToolTracker: modToolTracker)
         }
         )
         
@@ -157,19 +157,29 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
     }
 }
 
-extension CommentReportModel: Removable, Purgable {
+extension PostReportModel: Hashable, Equatable {
+    static func == (lhs: PostReportModel, rhs: PostReportModel) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(reporter)
+        hasher.combine(postReport)
+        hasher.combine(post)
+        hasher.combine(votes)
+        hasher.combine(numReplies)
+    }
+}
+
+extension PostReportModel: Removable, Purgable {
     func remove(reason: String?, shouldRemove: Bool) async -> Bool {
         do {
-            let response = try await apiClient.removeComment(
-                id: comment.id,
-                shouldRemove: shouldRemove,
-                reason: reason
-            )
-            if response.commentView.comment.removed == shouldRemove {
+            let response = try await apiClient.removePost(id: post.id, shouldRemove: shouldRemove, reason: reason)
+            if response.post.removed == shouldRemove {
                 await MainActor.run {
-                    self.comment.removed = shouldRemove
+                    self.post.removed = shouldRemove
                 }
-                if !commentReport.resolved {
+                if !postReport.resolved {
                     await toggleResolved(withHaptic: false)
                 }
             }
@@ -182,12 +192,11 @@ extension CommentReportModel: Removable, Purgable {
     
     func purge(reason: String?) async -> Bool {
         do {
-            let response = try await apiClient.purgeComment(id: comment.id, reason: reason)
+            let response = try await apiClient.purgePost(id: post.id, reason: reason)
             if response.success {
                 await setPurged(true)
-                // don't need to actually call toggleResolved()--purge removes the report altogether, but this is less jarring than removing it from feed
                 await MainActor.run {
-                    self.commentReport.resolved = true
+                    self.postReport.resolved = true
                 }
                 return true
             }
@@ -195,19 +204,5 @@ extension CommentReportModel: Removable, Purgable {
             errorHandler.handle(error)
         }
         return false
-    }
-}
-
-extension CommentReportModel: Hashable, Equatable {
-    static func == (lhs: CommentReportModel, rhs: CommentReportModel) -> Bool {
-        lhs.hashValue == rhs.hashValue
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(reporter)
-        hasher.combine(commentReport)
-        hasher.combine(comment)
-        hasher.combine(votes)
-        hasher.combine(numReplies)
     }
 }

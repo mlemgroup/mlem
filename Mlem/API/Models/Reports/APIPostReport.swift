@@ -8,7 +8,7 @@
 import Foundation
 
 // lemmy_db_schema::source::post::PostReport
-struct APIPostReport: Decodable {
+struct APIPostReport: Hashable, Decodable {
     let id: Int
     let creatorId: Int
     let postId: Int
@@ -16,7 +16,7 @@ struct APIPostReport: Decodable {
     let originalPostUrl: String?
     let originalPostBody: String?
     let reason: String
-    let resolved: Bool
+    var resolved: Bool
     let resolverId: Int?
     let published: Date
     let updated: Date?

@@ -46,7 +46,7 @@ struct InboxReplyBodyView: View {
                     UserLinkView(
                         user: reply.creator,
                         serverInstanceLocation: .bottom,
-                        bannedFromCommunity: reply.creatorBannedFromCommunity,
+                        bannedFromCommunity: reply.commentCreatorBannedFromCommunity,
                         overrideShowAvatar: true
                     )
                     

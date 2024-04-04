@@ -55,8 +55,6 @@ extension InboxView {
                 InboxFeedView(tracker: commentReportTracker)
             case .postReports:
                 Text("TODO")
-            case .messageReports:
-                Text("TODO")
             default:
                 InboxFeedView(tracker: modInboxTracker)
                     .onAppear {
@@ -76,6 +74,44 @@ extension InboxView {
                 // wrap in subtask to view redraws don't cancel load
                 Task(priority: .userInitiated) {
                     await refresh(tracker: modInboxTracker)
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var adminFeedView: some View {
+        Section {
+            switch selectedModTab {
+            case .all:
+                InboxFeedView(tracker: adminInboxTracker)
+            case .commentReports:
+                InboxFeedView(tracker: commentReportTracker)
+            case .postReports:
+                InboxFeedView(tracker: postReportTracker)
+            case .messageReports:
+                Text("TODO")
+            case .registrationApplications:
+                Text("TODO")
+            default:
+                InboxFeedView(tracker: adminInboxTracker)
+                    .onAppear {
+                        assertionFailure("adminFeedView rendered with non-admin tab!")
+                    }
+            }
+        } header: {
+            BubblePicker(InboxTab.adminCases, selected: $selectedModTab, withDividers: [.bottom]) { tab in
+                Text(tab.label)
+            }
+            .background(Color.systemBackground.opacity(scrollToTopAppeared ? 1 : 0))
+            .background(.bar)
+            .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
+        }
+        .task {
+            if modInboxTracker.items.isEmpty {
+                // wrap in subtask to view redraws don't cancel load
+                Task(priority: .userInitiated) {
+                    await refresh(tracker: adminInboxTracker)
                 }
             }
         }

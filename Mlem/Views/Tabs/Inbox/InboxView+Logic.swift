@@ -28,12 +28,13 @@ extension InboxView {
         mentionTracker.unreadOnly = newShouldFilterRead
         messageTracker.unreadOnly = newShouldFilterRead
         commentReportTracker.unreadOnly = newShouldFilterRead
+        postReportTracker.unreadOnly = newShouldFilterRead
         
         if newShouldFilterRead {
             await personalInboxTracker.filterRead()
             
             // mod items are returned sorted by old when unreadOnly true
-            await modInboxTracker.changeSortType(to: .old)
+            await modOrAdminInboxTracker.changeSortType(to: .old)
         } else {
             await personalInboxTracker.refresh(clearBeforeFetch: true)
             await modInboxTracker.changeSortType(to: .new)

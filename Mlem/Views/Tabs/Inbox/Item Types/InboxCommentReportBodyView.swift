@@ -40,7 +40,7 @@ struct InboxCommentReportBodyView: View {
                     Spacer()
                     
                     Image(systemName: iconName)
-                        .foregroundColor(.moderation)
+                        .foregroundColor(.red)
                         .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
                     
                     EllipsisMenu(
@@ -51,7 +51,7 @@ struct InboxCommentReportBodyView: View {
                 
                 Text(commentReport.commentReport.reason)
                 
-                Text("Reported \(commentReport.published.getRelativeTime())")
+                Text("Comment reported \(commentReport.published.getRelativeTime())")
                     .italic()
                     .font(.footnote)
                     .foregroundStyle(.secondary)
@@ -96,14 +96,14 @@ struct InboxCommentReportBodyView: View {
                 return .resolve(resolved: commentReport.commentReport.resolved, resolve: toggleResolved)
             case .remove:
                 return .remove(removed: commentReport.comment.removed) {
-                    commentReport.toggleCommentRemoved(modToolTracker: modToolTracker, shouldRemove: !commentReport.comment.removed)
+                    commentReport.toggleCommentRemoved(modToolTracker: modToolTracker)
                 }
             case .purge:
                 return .purge(purged: commentReport.purged) {
                     commentReport.purgeComment(modToolTracker: modToolTracker)
                 }
             case .ban:
-                return .ban(banned: commentReport.creatorBannedFromCommunity) {
+                return .ban(banned: commentReport.commentCreatorBannedFromCommunity) {
                     commentReport.toggleCommentCreatorBanned(modToolTracker: modToolTracker, inboxTracker: modInboxTracker)
                 }
             default:

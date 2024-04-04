@@ -27,7 +27,7 @@ class ReplyModel: ObservableObject, ContentIdentifiable {
     var recipient: UserModel
     @Published var numReplies: Int
     @Published var votes: VotesModel
-    @Published var creatorBannedFromCommunity: Bool
+    @Published var commentCreatorBannedFromCommunity: Bool
     @Published var subscribed: APISubscribedStatus
     @Published var read: Bool
     @Published var saved: Bool
@@ -61,7 +61,7 @@ class ReplyModel: ObservableObject, ContentIdentifiable {
         self.recipient = recipient
         self.numReplies = numReplies
         self.votes = votes
-        self.creatorBannedFromCommunity = creatorBannedFromCommunity
+        self.commentCreatorBannedFromCommunity = creatorBannedFromCommunity
         self.subscribed = subscribed
         self.read = read
         self.saved = saved
@@ -77,7 +77,7 @@ class ReplyModel: ObservableObject, ContentIdentifiable {
         self.recipient = UserModel(from: replyView.recipient)
         self.numReplies = replyView.counts.childCount
         self.votes = VotesModel(from: replyView.counts, myVote: replyView.myVote)
-        self.creatorBannedFromCommunity = replyView.creatorBannedFromCommunity
+        self.commentCreatorBannedFromCommunity = replyView.creatorBannedFromCommunity
         self.subscribed = replyView.subscribed
         self.read = replyView.commentReply.read
         self.saved = replyView.saved
@@ -108,7 +108,7 @@ class ReplyModel: ObservableObject, ContentIdentifiable {
         self.recipient = recipient ?? replyModel.recipient
         self.numReplies = numReplies ?? replyModel.numReplies
         self.votes = votes ?? replyModel.votes
-        self.creatorBannedFromCommunity = creatorBannedFromCommunity ?? replyModel.creatorBannedFromCommunity
+        self.commentCreatorBannedFromCommunity = creatorBannedFromCommunity ?? replyModel.commentCreatorBannedFromCommunity
         self.subscribed = subscribed ?? replyModel.subscribed
         self.read = read ?? replyModel.read
         self.saved = saved ?? replyModel.saved
@@ -148,7 +148,7 @@ extension ReplyModel {
         recipient = replyModel.recipient
         numReplies = replyModel.numReplies
         votes = replyModel.votes
-        creatorBannedFromCommunity = replyModel.creatorBannedFromCommunity
+        commentCreatorBannedFromCommunity = replyModel.commentCreatorBannedFromCommunity
         subscribed = replyModel.subscribed
         read = replyModel.read
         saved = replyModel.saved

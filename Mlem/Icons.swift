@@ -47,6 +47,7 @@ enum Icons {
     
     // misc post
     static let posts: String = "doc.plaintext"
+    static let postsFill: String = "doc.plaintext.fill"
     static let replies: String = "bubble.left"
     static let unreadReplies: String = "text.bubble"
     static let textPost: String = "text.book.closed"
@@ -232,10 +233,8 @@ enum Icons {
     static let removeFill: String = "xmark.bin.fill"
     static let purge: String = "burn"
     static let restore: String = "arrow.up.bin"
-    static let commentReport: String = "exclamationmark.bubble"
-    static let commentReportFill: String = "exclamationmark.bubble.fill"
-    static let postReport: String = "exclamationmark.square"
-    static let postReportFill: String = "exclamationmark.square.fill"
+    static let commentReport: String = "text.bubble"
+    static let commentReportFill: String = "text.bubble.fill"
     static let privateMessageReport: String = "bubble.left.and.exclamationmark.bubble.right"
     static let privateMessageReportFill: String = "bubble.left.and.exclamationmark.bubble.right.fill"
     static let resolve: String = "checkmark.circle"
