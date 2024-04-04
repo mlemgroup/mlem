@@ -10,45 +10,23 @@ import Foundation
 
 @Observable
 class AppState {
-    private var activeApi: ApiClient?
-    private(set) var myUser: (any UserProviding)?
-    private(set) var myInstance: Instance3?
-    
-    var actorId: URL? { myUser?.actorId }
-    var isOnboarding: Bool { activeApi == nil }
-    
-    var api: ApiClient {
-        if let activeApi { return activeApi }
-        assertionFailure("This shouldn't be allowed!")
-        return .getApiClient(for: URL(string: "https://lemmy.world")!, with: nil)
-    }
+    var activeAccounts: [ActiveAccount] = []
+    var isOnboarding: Bool { activeAccounts.isEmpty }
 
     func changeUser(to user: UserStub) {
-        self.setApi(user.api)
-        myUser = user
+        let newAccount = ActiveAccount(user.api, user: user)
+        activeAccounts.forEach { $0.deactivate() }
+        activeAccounts = [newAccount]
     }
     
     func enterGuestMode(with api: ApiClient) {
-        self.setApi(api)
-        myUser = nil
-    }
-    
-    private func setApi(_ newApi: ApiClient) {
-        self.activeApi?.isActive = false
-        self.activeApi = newApi
-        newApi.isActive = true
-        self.myInstance = nil
-        Task {
-            try await newApi.fetchSiteVersion(task: Task {
-                let site = try await newApi.getSite()
-                self.myInstance = site
-                return site.version
-            })
-        }
+        let newAccount = ActiveAccount(api)
+        activeAccounts.forEach { $0.deactivate() }
+        activeAccounts = [newAccount]
     }
     
     func enterOnboarding() {
-        activeApi = nil
+        activeAccounts.removeAll()
     }
     
     private init() {
@@ -60,7 +38,63 @@ class AppState {
         }
     }
     
-    var lemmyVersion: SiteVersion? { activeApi?.fetchedVersion ?? myUser?.cachedSiteVersion }
+    var firstAccount: ActiveAccount { activeAccounts.first ?? .mock }
+    var firstApi: ApiClient { firstAccount.api }
+    
+    func accountThatModerates(actorId: URL) -> ActiveAccount? {
+        return activeAccounts.first(where: { account in
+            account.user?.moderatedCommunities.contains { $0.actorId == actorId } ?? false
+        }) ?? .mock
+    }
+    
+    func cleanCaches() {
+        for account in activeAccounts {
+            account.api.cleanCaches()
+        }
+    }
     
     static var main: AppState = .init()
+}
+
+class ActiveAccount: Hashable {
+    var api: ApiClient
+    private(set) var userStub: UserStub?
+    private(set) var user: User?
+    private(set) var instance: Instance3?
+    
+    var actorId: URL? { userStub?.actorId }
+    
+    init(_ newApi: ApiClient, userStub: UserStub? = nil) {
+        self.api = newApi
+        newApi.permissions = .all
+        self.instance = nil
+        self.userStub = userStub
+        if newApi.permissions != .none {
+            Task {
+                try await newApi.fetchSiteVersion(task: Task {
+                    let (user, instance) = try await newApi.getMyUser(userStub: userStub)
+                    if let user {
+                        self.user = user
+                    }
+                    self.instance = instance
+                    return instance.version
+                })
+            }
+        }
+    }
+    
+    static var mock: ActiveAccount = .init(ApiClient.mock)
+    
+    func deactivate() {
+        self.api.permissions = .none
+        self.api.cleanCaches()
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(actorId)
+    }
+    
+    static func == (lhs: ActiveAccount, rhs: ActiveAccount) -> Bool {
+        lhs.actorId == rhs.actorId
+    }
 }

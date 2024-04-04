@@ -9,6 +9,10 @@ import Combine
 import Foundation
 
 class ApiClient {
+    enum RequestPermissions {
+       case all, getOnly, none
+    }
+    
     let decoder: JSONDecoder = .defaultDecoder
     let urlSession: URLSession = .init(configuration: .default)
     
@@ -19,10 +23,10 @@ class ApiClient {
     private(set) var fetchedVersion: SiteVersion?
     private var fetchSiteTask: Task<SiteVersion, Error>?
     
-    /// When `false`, the token will not be attatched to any API requests. This is useful for ensuring that inactive accounts don't accidentally make requests
-    var isActive: Bool = false
+    /// When `true`, the token will not be attatched to any API requests. This is useful for ensuring that inactive accounts don't accidentally make requests
+    var permissions: RequestPermissions = .all
     
-    var willSendToken: Bool { isActive && token != nil }
+    var willSendToken: Bool { permissions != .none && token != nil }
     
     /// Returns the `fetchedVersion` if the version has already been fetched. Otherwise, waits until the version has been fetched before returning the received value.
     var version: SiteVersion? {
@@ -61,11 +65,18 @@ class ApiClient {
         apiClientCache.createOrRetrieveApiClient(for: url, with: token)
     }
     
+    static let mock: ApiClient = .init(
+        baseUrl: URL(string: "https://lemmy.world")!,
+        token: nil,
+        permissions: .all
+    )
+    
     /// Creates a new API Client. Private because it should never be used outside of ApiClientCache, as the caching system depends on one ApiClient existing for any given session
-    private init(baseUrl: URL, token: String? = nil) {
+    private init(baseUrl: URL, token: String? = nil, permissions: RequestPermissions = .all) {
         self.baseUrl = baseUrl
         self.endpointUrl = baseUrl.appendingPathComponent("api/v3")
         self.token = token
+        self.permissions = permissions
     }
     
     @discardableResult
@@ -123,6 +134,7 @@ class ApiClient {
     }
 
     func urlRequest(from definition: any ApiRequest) throws -> URLRequest {
+        guard permissions != .none else { throw ApiClientError.insufficientPermissions }
         let url = definition.endpoint(base: endpointUrl)
         var urlRequest = URLRequest(url: url)
         definition.headers.forEach { header in
@@ -139,7 +151,7 @@ class ApiClient {
             urlRequest.httpBody = try createBodyData(for: putDefinition)
         }
 
-        if let token, isActive {
+        if let token, permissions == .all {
             // TODO: 0.18 deprecation remove this
             urlRequest.url?.append(queryItems: [.init(name: "auth", value: token)])
             

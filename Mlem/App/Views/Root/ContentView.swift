@@ -27,7 +27,7 @@ struct ContentView: View {
     
     var appState: AppState { AppState.main }
         
-    var profileTabAvatar: URL? { appState.myUser?.avatarUrl }
+    var profileTabAvatar: URL? { appState.firstAccount.myUser?.avatarUrl }
     
     var profileTabLabel: String { "Profile" }
     
@@ -42,7 +42,7 @@ struct ContentView: View {
 //            }
             .onReceive(timer) { _ in
                 // print("Clearing caches...")
-                appState.api.cleanCaches()
+                appState.cleanCaches()
             }
             .sheet(isPresented: $isPresentingAccountSwitcher) {
                 QuickSwitcherView()

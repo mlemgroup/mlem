@@ -18,7 +18,7 @@ struct FeedsView: View {
     }
     
     var content: some View {
-        MinimalPostFeedView(initialFeedProvider: appState.api)
+        MinimalPostFeedView()
     }
 }
 
@@ -29,7 +29,7 @@ struct MinimalPostFeedView: View {
     
     @State var postTracker: StandardPostTracker
     
-    init(initialFeedProvider: any PostFeedProvider) {
+    init() {
         // need to grab some stuff from app storage to initialize with
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
@@ -40,7 +40,7 @@ struct MinimalPostFeedView: View {
             internetSpeed: internetSpeed,
             sortType: defaultPostSorting,
             showReadPosts: showReadPosts,
-            feedType: .aggregateFeed(initialFeedProvider, type: .subscribed)
+            feedType: .aggregateFeed(AppState.main.firstApi, type: .subscribed)
         ))
     }
     
@@ -52,9 +52,9 @@ struct MinimalPostFeedView: View {
                 .task {
                     await postTracker.loadMoreItems()
                 }
-                .task(id: appState.actorId) {
-                    await postTracker.changeFeedType(to: .aggregateFeed(appState.api, type: .subscribed))
-                    print("Site Version", await appState.api.version ?? "unknown")
+                .task(id: appState.activeAccounts) {
+                    await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
+                    print("Site Version", await appState.firstApi.version ?? "unknown")
                 }
                 .refreshable {
                     do {
