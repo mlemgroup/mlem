@@ -133,7 +133,7 @@ class PostReportModel: ContentIdentifiable, ObservableObject {
         )
         
         ret.append(.toggleableMenuFunction(
-            toggle: commentCreatorBannedFromCommunity,
+            toggle: creatorBannedFromCommunity,
             trueText: "Unban",
             trueImageName: Icons.communityUnban,
             falseText: "Ban",

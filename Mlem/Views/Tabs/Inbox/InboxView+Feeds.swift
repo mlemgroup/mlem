@@ -54,7 +54,7 @@ extension InboxView {
             case .commentReports:
                 InboxFeedView(tracker: commentReportTracker)
             case .postReports:
-                Text("TODO")
+                InboxFeedView(tracker: postReportTracker)
             default:
                 InboxFeedView(tracker: modInboxTracker)
                     .onAppear {
@@ -90,7 +90,7 @@ extension InboxView {
             case .postReports:
                 InboxFeedView(tracker: postReportTracker)
             case .messageReports:
-                Text("TODO")
+                InboxFeedView(tracker: messageReportTracker)
             case .registrationApplications:
                 Text("TODO")
             default:

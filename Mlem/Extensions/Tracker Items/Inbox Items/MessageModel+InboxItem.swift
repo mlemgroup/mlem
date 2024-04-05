@@ -15,8 +15,7 @@ extension MessageModel: InboxItem {
     
     var banStatusCreatorId: Int { privateMessage.creatorId }
     
-    // swiftlint:disable:next unused_setter_value
-    var commentCreatorBannedFromCommunity: Bool { get { false } set {} }
+    var creatorBannedFromCommunity: Bool { false }
     
     var read: Bool { privateMessage.read }
     

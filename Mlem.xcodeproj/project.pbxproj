@@ -617,6 +617,13 @@
 		CDD0B8E22BBF49DB003E7174 /* InboxPostReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0B8E12BBF49DB003E7174 /* InboxPostReportView.swift */; };
 		CDD0B8E42BBF4D4B003E7174 /* InboxPostReportBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0B8E32BBF4D4B003E7174 /* InboxPostReportBodyView.swift */; };
 		CDD0B8E62BBF57D9003E7174 /* ResolvePostReportRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0B8E52BBF57D9003E7174 /* ResolvePostReportRequest.swift */; };
+		CDD0B8E82BBF7C8B003E7174 /* MessageReportTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0B8E72BBF7C8B003E7174 /* MessageReportTracker.swift */; };
+		CDD0B8EA2BBF7CAB003E7174 /* MessageReportModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0B8E92BBF7CAB003E7174 /* MessageReportModel.swift */; };
+		CDD0B8EC2BBF7D0F003E7174 /* ListPrivateMessageReportsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0B8EB2BBF7D0F003E7174 /* ListPrivateMessageReportsRequest.swift */; };
+		CDD0B8EE2BBF7F21003E7174 /* MessageReportModel+TrackerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0B8ED2BBF7F21003E7174 /* MessageReportModel+TrackerItem.swift */; };
+		CDD0B8F02BBF7FB7003E7174 /* MessageReportModel+InboxItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0B8EF2BBF7FB7003E7174 /* MessageReportModel+InboxItem.swift */; };
+		CDD0B8F22BBF8406003E7174 /* InboxMessageReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0B8F12BBF8406003E7174 /* InboxMessageReportView.swift */; };
+		CDD0B8F42BBF843C003E7174 /* InboxMessageReportBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0B8F32BBF843B003E7174 /* InboxMessageReportBodyView.swift */; };
 		CDD0EF9C2B7D6B9100CA3504 /* ModToolTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EF9B2B7D6B9100CA3504 /* ModToolTracker.swift */; };
 		CDD0EF9E2B7D6F3E00CA3504 /* ModToolSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EF9D2B7D6F3E00CA3504 /* ModToolSheet.swift */; };
 		CDD0EFA22B7D9E5800CA3504 /* UserListRowBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EFA12B7D9E5800CA3504 /* UserListRowBody.swift */; };
@@ -1317,6 +1324,13 @@
 		CDD0B8E12BBF49DB003E7174 /* InboxPostReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxPostReportView.swift; sourceTree = "<group>"; };
 		CDD0B8E32BBF4D4B003E7174 /* InboxPostReportBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxPostReportBodyView.swift; sourceTree = "<group>"; };
 		CDD0B8E52BBF57D9003E7174 /* ResolvePostReportRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolvePostReportRequest.swift; sourceTree = "<group>"; };
+		CDD0B8E72BBF7C8B003E7174 /* MessageReportTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageReportTracker.swift; sourceTree = "<group>"; };
+		CDD0B8E92BBF7CAB003E7174 /* MessageReportModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageReportModel.swift; sourceTree = "<group>"; };
+		CDD0B8EB2BBF7D0F003E7174 /* ListPrivateMessageReportsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPrivateMessageReportsRequest.swift; sourceTree = "<group>"; };
+		CDD0B8ED2BBF7F21003E7174 /* MessageReportModel+TrackerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageReportModel+TrackerItem.swift"; sourceTree = "<group>"; };
+		CDD0B8EF2BBF7FB7003E7174 /* MessageReportModel+InboxItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageReportModel+InboxItem.swift"; sourceTree = "<group>"; };
+		CDD0B8F12BBF8406003E7174 /* InboxMessageReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxMessageReportView.swift; sourceTree = "<group>"; };
+		CDD0B8F32BBF843B003E7174 /* InboxMessageReportBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxMessageReportBodyView.swift; sourceTree = "<group>"; };
 		CDD0EF9B2B7D6B9100CA3504 /* ModToolTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModToolTracker.swift; sourceTree = "<group>"; };
 		CDD0EF9D2B7D6F3E00CA3504 /* ModToolSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModToolSheet.swift; sourceTree = "<group>"; };
 		CDD0EFA12B7D9E5800CA3504 /* UserListRowBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListRowBody.swift; sourceTree = "<group>"; };
@@ -2957,6 +2971,7 @@
 				CD4368C72AE2426700BD8BD1 /* ReplyModel.swift */,
 				CDD0B8AC2BB4CD7D003E7174 /* CommentReportModel.swift */,
 				CDD0B8D92BBF3C87003E7174 /* PostReportModel.swift */,
+				CDD0B8E92BBF7CAB003E7174 /* MessageReportModel.swift */,
 			);
 			path = Inbox;
 			sourceTree = "<group>";
@@ -2974,6 +2989,7 @@
 				CD17C1DC2BA3596000A0C8BC /* ModlogEntry+TrackerItem.swift */,
 				CDD0B8B32BB4DAFE003E7174 /* CommentReportModel+TrackerItem.swift */,
 				CDD0B8DF2BBF4689003E7174 /* PostReportModel+TrackerItem.swift */,
+				CDD0B8ED2BBF7F21003E7174 /* MessageReportModel+TrackerItem.swift */,
 			);
 			path = "Tracker Items";
 			sourceTree = "<group>";
@@ -3168,6 +3184,7 @@
 				CD4368D62AE2464D00BD8BD1 /* ReplyModel+InboxItem.swift */,
 				CDD0B8B12BB4D990003E7174 /* CommentReportModel+InboxItem.swift */,
 				CDD0B8DD2BBF4601003E7174 /* PostReportModel+InboxItem.swift */,
+				CDD0B8EF2BBF7FB7003E7174 /* MessageReportModel+InboxItem.swift */,
 			);
 			path = "Inbox Items";
 			sourceTree = "<group>";
@@ -3227,6 +3244,7 @@
 				CDD0B8CE2BBA0D31003E7174 /* ResolveCommentReportRequest.swift */,
 				CDD0B8DB2BBF4238003E7174 /* ListPostReportsRequest.swift */,
 				CDD0B8E52BBF57D9003E7174 /* ResolvePostReportRequest.swift */,
+				CDD0B8EB2BBF7D0F003E7174 /* ListPrivateMessageReportsRequest.swift */,
 			);
 			path = Moderation;
 			sourceTree = "<group>";
@@ -3239,6 +3257,7 @@
 				CD4368CF2AE245F400BD8BD1 /* MessageTracker.swift */,
 				CD4368D12AE2460100BD8BD1 /* ReplyTracker.swift */,
 				CDD0B8D72BBF3C5A003E7174 /* PostReportTracker.swift */,
+				CDD0B8E72BBF7C8B003E7174 /* MessageReportTracker.swift */,
 			);
 			path = ChildTrackers;
 			sourceTree = "<group>";
@@ -3311,6 +3330,8 @@
 				CDE6A8192A490B970062D161 /* InboxReplyBodyView.swift */,
 				E449C5962B35239500E3BCF4 /* InboxReplyView.swift */,
 				CDD0B8E32BBF4D4B003E7174 /* InboxPostReportBodyView.swift */,
+				CDD0B8F12BBF8406003E7174 /* InboxMessageReportView.swift */,
+				CDD0B8F32BBF843B003E7174 /* InboxMessageReportBodyView.swift */,
 			);
 			path = "Item Types";
 			sourceTree = "<group>";
@@ -3772,6 +3793,7 @@
 				CD12627A2B4759BC007549F9 /* StandardPostTracker.swift in Sources */,
 				CD391F9E2A539F1800E213B5 /* ReplyToMention.swift in Sources */,
 				CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */,
+				CDD0B8E82BBF7C8B003E7174 /* MessageReportTracker.swift in Sources */,
 				500C168E2A66FAAB006F243B /* HapticManager+Dependency.swift in Sources */,
 				038A16E52A7A97380087987E /* LayoutWidgetView.swift in Sources */,
 				E40E018E2AABFBDE00410B2C /* AnyNavigationPath.swift in Sources */,
@@ -3880,6 +3902,7 @@
 				CDD55D222B2674BD002020C7 /* String+ParseLinks.swift in Sources */,
 				6332FDC027EFB05F0009A98A /* Settings Item.swift in Sources */,
 				031A93D62AC847DA0077030C /* UploadConfirmationView.swift in Sources */,
+				CDD0B8EE2BBF7F21003E7174 /* MessageReportModel+TrackerItem.swift in Sources */,
 				CD8C55342A95515C0060B75B /* Onboarding Text.swift in Sources */,
 				CD4368CC2AE242AD00BD8BD1 /* InboxRepository.swift in Sources */,
 				50C99B602A6299D8005D57DD /* ErrorHandler.swift in Sources */,
@@ -3936,6 +3959,7 @@
 				63D24ED92A169A5F005CCA81 /* UIApplication+FirstKeyWindow.swift in Sources */,
 				039439912A98FA6100463032 /* UserFeedView.swift in Sources */,
 				03EA79C42AC0D92C00BCDC91 /* PostComposerView+Logic.swift in Sources */,
+				CDD0B8EA2BBF7CAB003E7174 /* MessageReportModel.swift in Sources */,
 				03A18CBF2B1252BD00BA69D2 /* ListingType.swift in Sources */,
 				03E47AEF2B66BD3C00A3E4DB /* InstanceModel+Uptime.swift in Sources */,
 				637218482A3A2AAD008C4816 /* APICommentReply.swift in Sources */,
@@ -4024,6 +4048,7 @@
 				B14E93C22A45D3B300D6DA93 /* Community Link.swift in Sources */,
 				637218712A3A2AAD008C4816 /* GetSite.swift in Sources */,
 				CD29ED3D2B2E863C006937CE /* String+WithEscapedCharacters.swift in Sources */,
+				CDD0B8F22BBF8406003E7174 /* InboxMessageReportView.swift in Sources */,
 				CD0BE42F2A65A73600314B24 /* Haptic Manager.swift in Sources */,
 				CDD0B8C52BB78056003E7174 /* ResolveButtonView.swift in Sources */,
 				50811B422A92061E006BA3F2 /* SavedAccount+Mock.swift in Sources */,
@@ -4148,6 +4173,7 @@
 				50C99B5C2A61F5EB005D57DD /* CommentRepository.swift in Sources */,
 				637218732A3A2AAD008C4816 /* FollowCommunity.swift in Sources */,
 				03B7AAF12ABE404300068B23 /* ContentModel.swift in Sources */,
+				CDD0B8F02BBF7FB7003E7174 /* MessageReportModel+InboxItem.swift in Sources */,
 				637218742A3A2AAD008C4816 /* ListCommunities.swift in Sources */,
 				CD1446182A58FC3B00610EF1 /* InfoStackView.swift in Sources */,
 				CDE9CE4F2A7B0B1B002B97DD /* Haptic.swift in Sources */,
@@ -4191,6 +4217,7 @@
 				CDA217F32A63202600BDA173 /* View+NsfwOverlay.swift in Sources */,
 				CDB45C602AF1AF4900A1FF08 /* MentionModel+TrackerItem.swift in Sources */,
 				03B85A3E2BB36C4B003C4203 /* UserRemovalWalker.swift in Sources */,
+				CDD0B8F42BBF843C003E7174 /* InboxMessageReportBodyView.swift in Sources */,
 				6372184E2A3A2AAD008C4816 /* APIPersonView.swift in Sources */,
 				6363D5FA27EE1BDA00E34822 /* SettingsView.swift in Sources */,
 				CDD0B8C72BB78260003E7174 /* RemoveButtonView.swift in Sources */,
@@ -4304,6 +4331,7 @@
 				B1B78D642A51D53900F72485 /* AppDelegate.swift in Sources */,
 				03A1B3F42A83F46200AB0DE0 /* ShareButtonView.swift in Sources */,
 				CD2698102B9E174C0002B459 /* APIModBanFromCommunity.swift in Sources */,
+				CDD0B8EC2BBF7D0F003E7174 /* ListPrivateMessageReportsRequest.swift in Sources */,
 				03FD64FF2AE53D0E00957AA9 /* CommunityModel+ContentModel.swift in Sources */,
 				6DA61F812A55B83F001EA633 /* SearchView.swift in Sources */,
 			);

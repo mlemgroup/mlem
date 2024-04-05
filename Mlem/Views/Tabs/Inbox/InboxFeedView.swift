@@ -49,6 +49,8 @@ struct InboxFeedView<T: TrackerProtocol>: View where T.Item: InboxItem {
                 InboxCommentReportView(commentReport: commentReport)
             case let .postReport(postReport):
                 InboxPostReportView(postReport: postReport)
+            case let .messageReport(messageReport):
+                InboxMessageReportView(messageReport: messageReport)
             }
         }
     }

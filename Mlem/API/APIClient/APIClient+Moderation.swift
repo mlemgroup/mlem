@@ -8,7 +8,6 @@
 import Foundation
 
 extension APIClient {
-    
     // MARK: - Comment Reports
     
     func loadCommentReports(
@@ -143,5 +142,30 @@ extension APIClient {
             numReplies: response.postReportView.counts.comments,
             postCreatorBannedFromCommunity: response.postReportView.creatorBannedFromCommunity
         )
+    }
+    
+    // MARK: - Message Reports
+    
+    func loadMessageReports(
+        page: Int,
+        limit: Int,
+        unresolvedOnly: Bool
+    ) async throws -> [MessageReportModel] {
+        let request = try ListPrivateMessageReportsRequest(session: session, page: page, limit: limit, unresolvedOnly: unresolvedOnly)
+        let response = try await perform(request: request)
+        
+        return response.privateMessageReports.map { report in
+            var resolver: UserModel?
+            if let apiResolver = report.resolver {
+                resolver = UserModel(from: apiResolver)
+            }
+            
+            return MessageReportModel(
+                reporter: UserModel(from: report.creator),
+                resolver: resolver,
+                messageCreator: UserModel(from: report.privateMessageCreator),
+                messageReport: report.privateMessageReport
+            )
+        }
     }
 }

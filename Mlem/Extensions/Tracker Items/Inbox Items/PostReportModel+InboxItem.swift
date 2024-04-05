@@ -22,7 +22,7 @@ extension PostReportModel: InboxItem {
     
     func toAnyInboxItem() -> AnyInboxItem { .postReport(self) }
     
-    var commentCreatorBannedFromCommunity: Bool { postCreatorBannedFromCommunity }
+    var creatorBannedFromCommunity: Bool { postCreatorBannedFromCommunity }
     
     func setCreatorBannedFromCommunity(_ newBanned: Bool) {
         postCreatorBannedFromCommunity = newBanned

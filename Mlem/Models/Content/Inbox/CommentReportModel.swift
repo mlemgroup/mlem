@@ -51,16 +51,16 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
     
     @MainActor
     func reinit(from commentReport: CommentReportModel) {
-        self.reporter = commentReport.reporter
-        self.resolver = commentReport.resolver
-        self.commentCreator = commentReport.commentCreator
-        self.community = commentReport.community
+        reporter = commentReport.reporter
+        resolver = commentReport.resolver
+        commentCreator = commentReport.commentCreator
+        community = commentReport.community
         self.commentReport = commentReport.commentReport
-        self.comment = commentReport.comment
-        self.votes = commentReport.votes
-        self.numReplies = commentReport.numReplies
-        self.commentCreatorBannedFromCommunity = commentCreatorBannedFromCommunity
-        self.purged = commentReport.purged
+        comment = commentReport.comment
+        votes = commentReport.votes
+        numReplies = commentReport.numReplies
+        commentCreatorBannedFromCommunity = commentCreatorBannedFromCommunity
+        purged = commentReport.purged
     }
     
     @MainActor

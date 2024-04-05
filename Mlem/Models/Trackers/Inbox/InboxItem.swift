@@ -13,7 +13,7 @@ protocol InboxItem: Identifiable, ContentIdentifiable, TrackerItem {
     var uid: ContentModelIdentifier { get }
     var creatorId: Int { get }
     var banStatusCreatorId: Int { get }
-    var commentCreatorBannedFromCommunity: Bool { get }
+    var creatorBannedFromCommunity: Bool { get }
     var read: Bool { get }
     var id: Int { get }
     
@@ -28,6 +28,7 @@ enum AnyInboxItem: InboxItem {
     case message(MessageModel)
     case commentReport(CommentReportModel)
     case postReport(PostReportModel)
+    case messageReport(MessageReportModel)
     
     var value: any InboxItem {
         switch self {
@@ -41,6 +42,8 @@ enum AnyInboxItem: InboxItem {
             return commentReport
         case let .postReport(postReport):
             return postReport
+        case let .messageReport(messageReport):
+            return messageReport
         }
     }
     
@@ -52,8 +55,8 @@ enum AnyInboxItem: InboxItem {
     
     var banStatusCreatorId: Int { value.banStatusCreatorId }
     
-    var commentCreatorBannedFromCommunity: Bool {
-        get { value.commentCreatorBannedFromCommunity }
+    var creatorBannedFromCommunity: Bool {
+        get { value.creatorBannedFromCommunity }
         set { value.setCreatorBannedFromCommunity(newValue) }
     }
     

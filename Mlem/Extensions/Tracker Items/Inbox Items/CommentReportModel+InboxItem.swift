@@ -16,6 +16,8 @@ extension CommentReportModel: InboxItem {
     
     var banStatusCreatorId: Int { comment.creatorId }
     
+    var creatorBannedFromCommunity: Bool { commentCreatorBannedFromCommunity }
+    
     var read: Bool { commentReport.resolved }
     
     var id: Int { commentReport.id }

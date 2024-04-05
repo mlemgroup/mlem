@@ -8,7 +8,7 @@
 import Foundation
 
 // crates/db_schema/src/source/private_message_report.rs PrivateMessageReport
-struct APIPrivateMessageReport: Decodable {
+struct APIPrivateMessageReport: Decodable, Hashable {
     let id: Int
     let creatorId: Int
     let privateMessageId: Int

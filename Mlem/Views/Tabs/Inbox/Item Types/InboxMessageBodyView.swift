@@ -20,7 +20,7 @@ struct InboxMessageBodyView: View {
     
     var iconName: String {
         isOwnMessage ? Icons.send :
-            message.privateMessage.read ? "envelope.open" : "envelope.fill"
+            message.privateMessage.read ? Icons.message : Icons.messageFill
     }
     
     var verb: String { isOwnMessage ? "Sent" : "Received" }

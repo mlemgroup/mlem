@@ -29,6 +29,7 @@ extension InboxView {
         messageTracker.unreadOnly = newShouldFilterRead
         commentReportTracker.unreadOnly = newShouldFilterRead
         postReportTracker.unreadOnly = newShouldFilterRead
+        messageReportTracker.unreadOnly = newShouldFilterRead
         
         if newShouldFilterRead {
             await personalInboxTracker.filterRead()
@@ -37,7 +38,7 @@ extension InboxView {
             await modOrAdminInboxTracker.changeSortType(to: .old)
         } else {
             await personalInboxTracker.refresh(clearBeforeFetch: true)
-            await modInboxTracker.changeSortType(to: .new)
+            await modOrAdminInboxTracker.changeSortType(to: .new)
         }
     }
     

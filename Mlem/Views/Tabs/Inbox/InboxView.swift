@@ -97,6 +97,7 @@ struct InboxView: View {
     @StateObject var adminInboxTracker: InboxTracker
     @StateObject var commentReportTracker: CommentReportTracker
     @StateObject var postReportTracker: PostReportTracker
+    @StateObject var messageReportTracker: MessageReportTracker
     
     @Namespace var scrollToTop
     @State var scrollToTopAppeared = false
@@ -120,6 +121,7 @@ struct InboxView: View {
         let newMessageTracker = MessageTracker(internetSpeed: internetSpeed, sortType: .new, unreadOnly: unreadOnly)
         let newCommentReportTracker = CommentReportTracker(internetSpeed: internetSpeed, sortType: modSortType, unreadOnly: unreadOnly)
         let newPostReportTracker = PostReportTracker(internetSpeed: internetSpeed, sortType: modSortType, unreadOnly: unreadOnly)
+        let newMessageReportTracker = MessageReportTracker(internetSpeed: internetSpeed, sortType: modSortType, unreadOnly: unreadOnly)
         
         let newPersonalInboxTracker = InboxTracker(
             internetSpeed: internetSpeed,
@@ -145,7 +147,8 @@ struct InboxView: View {
             sortType: modSortType,
             childTrackers: [
                 newCommentReportTracker,
-                newPostReportTracker
+                newPostReportTracker,
+                newMessageReportTracker
             ]
         )
         
@@ -157,6 +160,7 @@ struct InboxView: View {
         self._messageTracker = StateObject(wrappedValue: newMessageTracker)
         self._commentReportTracker = StateObject(wrappedValue: newCommentReportTracker)
         self._postReportTracker = StateObject(wrappedValue: newPostReportTracker)
+        self._messageReportTracker = StateObject(wrappedValue: newMessageReportTracker)
     }
     
     var showModFeed: Bool { siteInformation.isAdmin || !siteInformation.moderatedCommunities.isEmpty }

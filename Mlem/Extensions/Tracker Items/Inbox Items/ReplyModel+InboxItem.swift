@@ -15,6 +15,8 @@ extension ReplyModel: InboxItem {
     
     var banStatusCreatorId: Int { comment.creatorId }
     
+    var creatorBannedFromCommunity: Bool { commentCreatorBannedFromCommunity }
+    
     func toAnyInboxItem() -> AnyInboxItem { .reply(self) }
     
     @MainActor

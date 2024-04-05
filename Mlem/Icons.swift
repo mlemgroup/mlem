@@ -61,6 +61,10 @@ enum Icons {
     static let removed: String = "xmark.bin.fill"
     static let restored: String = "arrow.up.bin.fill"
     
+    // inbox
+    static let message = "envelope"
+    static let messageFill = "envelope.fill"
+    
     // post sizes
     static let postSizeSetting: String = "rectangle.expand.vertical"
     static let compactPost: String = "rectangle.grid.1x2"
@@ -235,8 +239,6 @@ enum Icons {
     static let restore: String = "arrow.up.bin"
     static let commentReport: String = "text.bubble"
     static let commentReportFill: String = "text.bubble.fill"
-    static let privateMessageReport: String = "bubble.left.and.exclamationmark.bubble.right"
-    static let privateMessageReportFill: String = "bubble.left.and.exclamationmark.bubble.right.fill"
     static let resolve: String = "checkmark.circle"
     static let resolveFill: String = "checkmark.circle.fill"
     static let unresolve: String = "xmark.circle"
