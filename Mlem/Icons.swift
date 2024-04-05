@@ -239,9 +239,11 @@ enum Icons {
     static let restore: String = "arrow.up.bin"
     static let commentReport: String = "text.bubble"
     static let commentReportFill: String = "text.bubble.fill"
+    static let registrationApplication: String = "list.clipboard"
+    static let registrationApplicationFill: String = "list.clipboard.fill"
     static let resolve: String = "checkmark.circle"
     static let resolveFill: String = "checkmark.circle.fill"
-    static let unresolve: String = "xmark.circle"
+    static let unresolve: String = "checkmark.gobackward"
     
     // fediseer
     static let fediseer: String = "shield.checkered"

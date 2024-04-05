@@ -30,6 +30,7 @@ extension InboxView {
         commentReportTracker.unreadOnly = newShouldFilterRead
         postReportTracker.unreadOnly = newShouldFilterRead
         messageReportTracker.unreadOnly = newShouldFilterRead
+        registrationApplicationTracker.unreadOnly = newShouldFilterRead
         
         if newShouldFilterRead {
             await personalInboxTracker.filterRead()

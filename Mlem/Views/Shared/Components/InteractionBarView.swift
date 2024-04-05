@@ -170,8 +170,8 @@ struct InteractionBarView: View {
             RemoveButtonView(removed: removed, remove: remove)
         case let .purge(purged, purge):
             PurgeButtonView(purged: purged, purge: purge)
-        case let .ban(banned, ban):
-            BanButtonView(banned: banned, ban: ban)
+        case let .ban(banned, instanceBan, ban):
+            BanButtonView(banned: banned, instanceBan: instanceBan, ban: ban)
         case let .infoStack(colorizeVotes, votes, published, updated, commentCount, unreadCommentCount, saved):
             InfoStackView(
                 votes: detailedVotes(from: votes),
@@ -185,6 +185,8 @@ struct InteractionBarView: View {
             )
             .padding(AppConstants.standardSpacing)
             .frame(minWidth: 0, maxWidth: .infinity)
+        case .spacer:
+            Spacer()
         }
     }
     // swiftlint:enable cyclomatic_complexity function_body_length

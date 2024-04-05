@@ -19,6 +19,13 @@ struct InboxPostReportBodyView: View {
     
     var body: some View {
         content
+            .background(Color(uiColor: .systemBackground))
+            .contentShape(Rectangle())
+            .contextMenu {
+                ForEach(postReport.genMenuFunctions(modToolTracker: modToolTracker, inboxTracker: modInboxTracker)) { menuFunction in
+                    MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
+                }
+            }
     }
     
     var content: some View {
@@ -93,7 +100,7 @@ struct InboxPostReportBodyView: View {
                     postReport.purgePost(modToolTracker: modToolTracker)
                 }
             case .ban:
-                return .ban(banned: postReport.postCreatorBannedFromCommunity) {
+                return .ban(banned: postReport.postCreatorBannedFromCommunity, instanceBan: false) {
                     postReport.togglePostCreatorBanned(modToolTracker: modToolTracker, inboxTracker: modInboxTracker)
                 }
             default:

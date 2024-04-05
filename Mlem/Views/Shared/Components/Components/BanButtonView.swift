@@ -10,13 +10,27 @@ import SwiftUI
 
 struct BanButtonView: View {
     let banned: Bool
+    let iconName: String
+    let iconNameFill: String
     let ban: () -> Void
+    
+    init(banned: Bool, instanceBan: Bool, ban: @escaping () -> Void) {
+        self.banned = banned
+        if instanceBan {
+            self.iconName = Icons.instanceBan
+            self.iconNameFill = Icons.instanceBanned
+        } else {
+            self.iconName = Icons.communityBan
+            self.iconNameFill = Icons.communityBanFill
+        }
+        self.ban = ban
+    }
     
     var body: some View {
         Button {
             ban()
         } label: {
-            Image(systemName: banned ? Icons.communityBanFill : Icons.communityBan)
+            Image(systemName: banned ? iconNameFill : iconName)
                 .resizable()
                 .scaledToFit()
                 .foregroundStyle(banned ? .white : .primary)

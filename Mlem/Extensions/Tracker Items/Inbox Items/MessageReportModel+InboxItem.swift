@@ -18,13 +18,21 @@ extension MessageReportModel: InboxItem {
     
     var creatorBannedFromCommunity: Bool { false }
     
+    var creatorBannedFromInstance: Bool { messageCreator.banned }
+    
     var read: Bool { messageReport.resolved }
     
     var id: Int { messageReport.id }
     
     func toAnyInboxItem() -> AnyInboxItem { .messageReport(self) }
     
+    @MainActor
     func setCreatorBannedFromCommunity(_ newBanned: Bool) {
         // noop
+    }
+    
+    @MainActor
+    func setCreatorBannedFromInstance(_ newBanned: Bool) {
+        messageCreator.banned = newBanned
     }
 }

@@ -98,6 +98,7 @@ struct InboxView: View {
     @StateObject var commentReportTracker: CommentReportTracker
     @StateObject var postReportTracker: PostReportTracker
     @StateObject var messageReportTracker: MessageReportTracker
+    @StateObject var registrationApplicationTracker: RegistrationApplicationTracker
     
     @Namespace var scrollToTop
     @State var scrollToTopAppeared = false
@@ -109,6 +110,7 @@ struct InboxView: View {
     @State var errorOccurred: Bool = false
     @State var errorMessage: String = ""
     
+    // swiftlint:disable:next function_body_length
     init() {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("shouldFilterRead") var unreadOnly = false
@@ -122,6 +124,11 @@ struct InboxView: View {
         let newCommentReportTracker = CommentReportTracker(internetSpeed: internetSpeed, sortType: modSortType, unreadOnly: unreadOnly)
         let newPostReportTracker = PostReportTracker(internetSpeed: internetSpeed, sortType: modSortType, unreadOnly: unreadOnly)
         let newMessageReportTracker = MessageReportTracker(internetSpeed: internetSpeed, sortType: modSortType, unreadOnly: unreadOnly)
+        let newRegistrationApplicationTracker = RegistrationApplicationTracker(
+            internetSpeed: internetSpeed,
+            sortType: modSortType,
+            unreadOnly: unreadOnly
+        )
         
         let newPersonalInboxTracker = InboxTracker(
             internetSpeed: internetSpeed,
@@ -148,7 +155,8 @@ struct InboxView: View {
             childTrackers: [
                 newCommentReportTracker,
                 newPostReportTracker,
-                newMessageReportTracker
+                newMessageReportTracker,
+                newRegistrationApplicationTracker
             ]
         )
         
@@ -161,6 +169,7 @@ struct InboxView: View {
         self._commentReportTracker = StateObject(wrappedValue: newCommentReportTracker)
         self._postReportTracker = StateObject(wrappedValue: newPostReportTracker)
         self._messageReportTracker = StateObject(wrappedValue: newMessageReportTracker)
+        self._registrationApplicationTracker = StateObject(wrappedValue: newRegistrationApplicationTracker)
     }
     
     var showModFeed: Bool { siteInformation.isAdmin || !siteInformation.moderatedCommunities.isEmpty }
@@ -196,7 +205,7 @@ struct InboxView: View {
                     await handleShouldFilterReadChange(newShouldFilterRead: newValue)
                 }
             }
-            .environmentObject(modInboxTracker)
+            .environmentObject(modOrAdminInboxTracker)
             .environmentObject(personalInboxTracker)
             .refreshable {
                 // wrapping in task so view redraws don't cancel

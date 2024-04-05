@@ -18,6 +18,8 @@ extension CommentReportModel: InboxItem {
     
     var creatorBannedFromCommunity: Bool { commentCreatorBannedFromCommunity }
     
+    var creatorBannedFromInstance: Bool { commentCreator.banned }
+    
     var read: Bool { commentReport.resolved }
     
     var id: Int { commentReport.id }
@@ -27,5 +29,10 @@ extension CommentReportModel: InboxItem {
     @MainActor
     func setCreatorBannedFromCommunity(_ newBanned: Bool) {
         commentCreatorBannedFromCommunity = newBanned
+    }
+    
+    @MainActor
+    func setCreatorBannedFromInstance(_ newBanned: Bool) {
+        commentCreator.banned = newBanned
     }
 }

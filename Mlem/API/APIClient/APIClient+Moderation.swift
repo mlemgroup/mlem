@@ -168,4 +168,73 @@ extension APIClient {
             )
         }
     }
+    
+    func markPrivateMessageReportResolved(
+        reportId: Int,
+        resolved: Bool
+    ) async throws -> MessageReportModel {
+        let request = try ResolvePrivateMessageReportRequest(session: session, reportId: reportId, resolved: resolved)
+        let response = try await perform(request: request).privateMessageReportView
+        
+        var resolver: UserModel?
+        if let apiResolver = response.resolver {
+            resolver = UserModel(from: apiResolver)
+        }
+        
+        return MessageReportModel(
+            reporter: UserModel(from: response.creator),
+            resolver: resolver,
+            messageCreator: UserModel(from: response.privateMessageCreator),
+            messageReport: response.privateMessageReport
+        )
+    }
+    
+    // MARK: - Registration Applications
+    
+    func loadRegistrationApplications(
+        page: Int,
+        limit: Int,
+        unresolvedOnly: Bool
+    ) async throws -> [RegistrationApplicationModel] {
+        let request = try ListRegistrationApplicationsRequest(session: session, unreadOnly: unresolvedOnly, page: page, limit: limit)
+        let response = try await perform(request: request)
+        
+        return response.registrationApplications.map { registrationApplication in
+            var resolver: UserModel?
+            if let apiResolver = registrationApplication.admin {
+                resolver = UserModel(from: apiResolver)
+            }
+            
+            return RegistrationApplicationModel(
+                application: registrationApplication.registrationApplication,
+                creator: UserModel(from: registrationApplication.creator),
+                resolver: resolver
+            )
+        }
+    }
+    
+    func approveRegistrationApplication(
+        applicationId: Int,
+        approve: Bool,
+        denyReason: String?
+    ) async throws -> RegistrationApplicationModel {
+        let request = try ApproveRegistrationApplicationRequest(
+            session: session,
+            id: applicationId,
+            approve: approve,
+            denyReason: denyReason
+        )
+        let response = try await perform(request: request).registrationApplication
+        
+        var resolver: UserModel?
+        if let apiResolver = response.admin {
+            resolver = UserModel(from: apiResolver)
+        }
+        
+        return RegistrationApplicationModel(
+            application: response.registrationApplication,
+            creator: UserModel(from: response.creator),
+            resolver: resolver
+        )
+    }
 }

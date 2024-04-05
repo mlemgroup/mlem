@@ -103,7 +103,7 @@ struct InboxCommentReportBodyView: View {
                     commentReport.purgeComment(modToolTracker: modToolTracker)
                 }
             case .ban:
-                return .ban(banned: commentReport.commentCreatorBannedFromCommunity) {
+                return .ban(banned: commentReport.commentCreatorBannedFromCommunity, instanceBan: false) {
                     commentReport.toggleCommentCreatorBanned(modToolTracker: modToolTracker, inboxTracker: modInboxTracker)
                 }
             default:

@@ -31,9 +31,13 @@ struct UserRemovalWalker {
             }
         }
         if let inboxTracker {
+            print("DEBUG inbox tracker found with \(inboxTracker.items.count) items")
             for item in inboxTracker.items where item.banStatusCreatorId == userId {
+                print("DEBUG checking item with ban status id \(item.banStatusCreatorId) (looking for \(userId))")
                 inboxAction(item)
             }
+        } else {
+            print("DEBUG no inbox tracker found")
         }
         if let votesTracker, let index = votesTracker.votes.firstIndex(where: { $0.id == userId }) {
             voteAction(&votesTracker.votes[index])

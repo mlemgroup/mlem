@@ -34,6 +34,8 @@ struct ModToolSheet: View {
             RemoveCommentView(comment: comment, shouldRemove: shouldRemove)
         case let .removeCommunity(community, shouldRemove):
             RemoveCommunityView(community: community, shouldRemove: shouldRemove)
+        case let .denyApplication(application):
+            DenyApplicationView(application: application)
         }
     }
 }

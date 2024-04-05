@@ -29,7 +29,7 @@ enum EnrichedLayoutWidget {
     case resolve(resolved: Bool, resolve: () async -> Void)
     case remove(removed: Bool, remove: () -> Void)
     case purge(purged: Bool, purge: () -> Void)
-    case ban(banned: Bool, ban: () -> Void)
+    case ban(banned: Bool, instanceBan: Bool, ban: () -> Void)
     case infoStack(
         colorizeVotes: Bool,
         votes: VotesModel,
@@ -39,6 +39,7 @@ enum EnrichedLayoutWidget {
         unreadCommentCount: Int,
         saved: Bool
     )
+    case spacer // internal type for displaying a "blank interaction bar"
 }
 
 indirect enum LayoutWidgetType: String, Hashable, Codable, CaseIterable {

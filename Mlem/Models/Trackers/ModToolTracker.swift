@@ -26,6 +26,8 @@ enum ModTool: Hashable, Identifiable {
     // comment
     case removeComment(any Removable, Bool) // comment to remove, should remove
     
+    case denyApplication(RegistrationApplicationModel)
+    
     static func == (lhs: ModTool, rhs: ModTool) -> Bool {
         lhs.hashValue == rhs.hashValue
     }
@@ -62,6 +64,9 @@ enum ModTool: Hashable, Identifiable {
             hasher.combine("removeCommunity")
             hasher.combine(community.uid)
             hasher.combine(shouldRemove)
+        case let .denyApplication(application):
+            hasher.combine("denyApplication")
+            hasher.combine(application)
         }
     }
 }
@@ -103,5 +108,9 @@ class ModToolTracker: ObservableObject {
     
     func purgeContent(_ content: Purgable, userRemovalWalker: UserRemovalWalker = .init()) {
         openTool = .purgeContent(content, userRemovalWalker)
+    }
+    
+    func denyApplication(_ application: RegistrationApplicationModel) {
+        openTool = .denyApplication(application)
     }
 }

@@ -17,10 +17,17 @@ extension ReplyModel: InboxItem {
     
     var creatorBannedFromCommunity: Bool { commentCreatorBannedFromCommunity }
     
+    var creatorBannedFromInstance: Bool { creator.banned }
+    
     func toAnyInboxItem() -> AnyInboxItem { .reply(self) }
     
     @MainActor
     func setCreatorBannedFromCommunity(_ newBanned: Bool) {
         commentCreatorBannedFromCommunity = newBanned
+    }
+    
+    @MainActor
+    func setCreatorBannedFromInstance(_ newBanned: Bool) {
+        creator.banned = newBanned
     }
 }

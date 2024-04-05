@@ -17,9 +17,19 @@ extension MessageModel: InboxItem {
     
     var creatorBannedFromCommunity: Bool { false }
     
+    var creatorBannedFromInstance: Bool { creator.banned }
+    
     var read: Bool { privateMessage.read }
     
     func toAnyInboxItem() -> AnyInboxItem { .message(self) }
     
-    func setCreatorBannedFromCommunity(_ newBanned: Bool) {}
+    @MainActor
+    func setCreatorBannedFromCommunity(_ newBanned: Bool) {
+        // noop
+    }
+    
+    @MainActor
+    func setCreatorBannedFromInstance(_ newBanned: Bool) {
+        creator.banned = newBanned
+    }
 }
