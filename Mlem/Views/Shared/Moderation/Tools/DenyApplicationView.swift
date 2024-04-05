@@ -56,7 +56,7 @@ struct DenyApplicationView: View {
                 
                 Divider()
                 
-                InboxRegistrationApplicationBodyView(application: application)
+                InboxRegistrationApplicationBodyView(application: application, showMenu: false)
             }
         }
     }

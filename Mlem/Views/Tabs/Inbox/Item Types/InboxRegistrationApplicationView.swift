@@ -16,7 +16,7 @@ struct InboxRegistrationApplicationView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            InboxRegistrationApplicationBodyView(application: application)
+            InboxRegistrationApplicationBodyView(application: application, showMenu: true)
             
             if !application.read {
                 interactions
@@ -29,13 +29,14 @@ struct InboxRegistrationApplicationView: View {
             Button {
                 modToolTracker.denyApplication(application)
             } label: {
-                Text("Deny")
+                Image(systemName: Icons.deny)
                     .font(.subheadline)
                     .fontWeight(.semibold)
                     .frame(maxWidth: .infinity)
+                    .padding(.vertical, AppConstants.standardSpacing)
             }
+            .background(Color.secondarySystemBackground)
             .foregroundStyle(.red)
-            .buttonStyle(.bordered)
             .clipShape(Capsule())
             
             Button {
@@ -43,12 +44,14 @@ struct InboxRegistrationApplicationView: View {
                     await application.approve()
                 }
             } label: {
-                Text("Approve")
+                Image(systemName: Icons.approve)
                     .font(.subheadline)
                     .fontWeight(.semibold)
                     .frame(maxWidth: .infinity)
+                    .padding(.vertical, AppConstants.standardSpacing)
             }
-            .buttonStyle(.borderedProminent)
+            .background(Color.secondarySystemBackground)
+            .foregroundStyle(.blue)
             .clipShape(Capsule())
         }
         .padding(.horizontal, AppConstants.standardSpacing)

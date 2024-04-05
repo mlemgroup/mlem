@@ -92,7 +92,7 @@ extension InboxView {
             case .messageReports:
                 InboxFeedView(tracker: messageReportTracker)
             case .registrationApplications:
-                Text("TODO")
+                InboxFeedView(tracker: registrationApplicationTracker)
             default:
                 InboxFeedView(tracker: adminInboxTracker)
                     .onAppear {

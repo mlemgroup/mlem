@@ -15,11 +15,18 @@ class RegistrationApplicationModel: ObservableObject {
     @Published var application: APIRegistrationApplication
     @Published var creator: UserModel
     @Published var resolver: UserModel?
+    var approved: Bool?
     
-    init(application: APIRegistrationApplication, creator: UserModel, resolver: UserModel? = nil) {
+    init(
+        application: APIRegistrationApplication,
+        creator: UserModel,
+        resolver: UserModel? = nil,
+        approved: Bool?
+    ) {
         self.application = application
         self.creator = creator
         self.resolver = resolver
+        self.approved = approved
     }
     
     @MainActor
@@ -27,9 +34,9 @@ class RegistrationApplicationModel: ObservableObject {
         self.application = application.application
         creator = application.creator
         resolver = application.resolver
+        approved = application.approved
     }
     
-    // TODO:
     func approve() async {
         do {
             let response = try await apiClient.approveRegistrationApplication(
@@ -56,6 +63,32 @@ class RegistrationApplicationModel: ObservableObject {
             errorHandler.handle(error)
         }
         return false
+    }
+    
+    func genMenuFunctions(modToolTracker: ModToolTracker) -> [MenuFunction] {
+        var ret: [MenuFunction] = .init()
+        
+        if !(approved ?? false) {
+            ret.append(.standardMenuFunction(
+                text: "Approve",
+                imageName: Icons.approve
+            ) {
+                Task(priority: .userInitiated) {
+                    await self.approve()
+                }
+            })
+        }
+        
+        if approved ?? true {
+            ret.append(.standardMenuFunction(
+                text: "Deny",
+                imageName: Icons.deny
+            ) {
+                modToolTracker.denyApplication(self)
+            })
+        }
+        
+        return ret
     }
 }
 

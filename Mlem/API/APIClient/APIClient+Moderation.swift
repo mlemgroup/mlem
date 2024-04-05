@@ -208,7 +208,8 @@ extension APIClient {
             return RegistrationApplicationModel(
                 application: registrationApplication.registrationApplication,
                 creator: UserModel(from: registrationApplication.creator),
-                resolver: resolver
+                resolver: resolver,
+                approved: resolver != nil ? registrationApplication.creatorLocalUser.acceptedApplication : nil
             )
         }
     }
@@ -234,7 +235,8 @@ extension APIClient {
         return RegistrationApplicationModel(
             application: response.registrationApplication,
             creator: UserModel(from: response.creator),
-            resolver: resolver
+            resolver: resolver,
+            approved: resolver != nil ? response.creatorLocalUser.acceptedApplication : nil
         )
     }
 }

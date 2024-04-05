@@ -9,7 +9,10 @@ import Foundation
 import SwiftUI
 
 struct InboxRegistrationApplicationBodyView: View {
+    @EnvironmentObject var modToolTracker: ModToolTracker
+    
     @ObservedObject var application: RegistrationApplicationModel
+    let showMenu: Bool
     
     var iconName: String { application.read ? Icons.registrationApplication : Icons.registrationApplicationFill }
     
@@ -18,6 +21,11 @@ struct InboxRegistrationApplicationBodyView: View {
             .padding(AppConstants.standardSpacing)
             .background(Color(uiColor: .systemBackground))
             .contentShape(Rectangle())
+            .contextMenu {
+                ForEach(menuFunctions()) { menuFunction in
+                    MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
+                }
+            }
     }
     
     var content: some View {
@@ -33,7 +41,7 @@ struct InboxRegistrationApplicationBodyView: View {
                 
                 EllipsisMenu(
                     size: AppConstants.largeAvatarSize,
-                    menuFunctions: .init() // TODO: NEXT
+                    menuFunctions: menuFunctions()
                 )
             }
             
@@ -42,8 +50,8 @@ struct InboxRegistrationApplicationBodyView: View {
                 .font(.footnote)
                 .foregroundStyle(.secondary)
             
-            if let resolver = application.resolver {
-                Text(resolutionText(resolver: resolver))
+            if let resolver = application.resolver, let approved = application.approved {
+                Text(resolutionText(approved: approved, resolver: resolver))
                     .italic()
                     .font(.footnote)
                     .foregroundStyle(.secondary)
@@ -53,14 +61,25 @@ struct InboxRegistrationApplicationBodyView: View {
         }
     }
     
-    func resolutionText(resolver: UserModel) -> String {
-        var verb = "Approved"
-        var denyReason = ""
-        if let reason = application.application.denyReason {
-            denyReason = " (\(reason))"
-            verb = "Denied"
-        }
+    func resolutionText(approved: Bool, resolver: UserModel) -> String {
         let resolverName: String = resolver.fullyQualifiedUsername ?? resolver.name
-        return "\(verb) by \(resolverName)\(denyReason)"
+        
+        if approved {
+            return "Approved by \(resolverName)"
+        } else {
+            var denyReason = ""
+            if let reason = application.application.denyReason {
+                denyReason = " (\(reason))"
+            }
+            return "Denied by \(resolverName)\(denyReason)"
+        }
+    }
+    
+    func menuFunctions() -> [MenuFunction] {
+        if showMenu {
+            return application.genMenuFunctions(modToolTracker: modToolTracker)
+        } else {
+            return .init()
+        }
     }
 }
