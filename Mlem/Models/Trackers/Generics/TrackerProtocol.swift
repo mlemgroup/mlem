@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// Protocol to allow modlog tracker and its children to be treated identically
+/// Protocol for common tracker logic
 protocol TrackerProtocol<Item>: ObservableObject {
     associatedtype Item: TrackerItem
     

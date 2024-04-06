@@ -121,7 +121,6 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         editorTracker: EditorTracker
     ) -> [MenuFunction] {
         // no actions on your own messages allowed
-        // print(siteInformation.myUser?.userId, creatorId)
         if siteInformation.userId == creatorId {
             return .init()
         }
