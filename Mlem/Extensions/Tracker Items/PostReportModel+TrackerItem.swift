@@ -8,7 +8,7 @@
 import Foundation
 
 extension PostReportModel: TrackerItem {
-    func sortVal(sortType: TrackerSortVal.Case) -> TrackerSortVal {
+    func sortVal(sortType: TrackerSort.Case) -> TrackerSort {
         switch sortType {
         case .new: .new(postReport.published)
         case .old: .old(postReport.published)

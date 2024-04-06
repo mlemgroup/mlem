@@ -10,7 +10,7 @@ import Foundation
 extension RegistrationApplicationModel: TrackerItem {
     var uid: ContentModelIdentifier { .init(contentType: .registrationApplication, contentId: application.id) }
     
-    func sortVal(sortType: TrackerSortVal.Case) -> TrackerSortVal {
+    func sortVal(sortType: TrackerSort.Case) -> TrackerSort {
         switch sortType {
         case .new: .new(application.published)
         case .old: .old(application.published)

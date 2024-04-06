@@ -116,7 +116,7 @@ struct InboxView: View {
         @AppStorage("shouldFilterRead") var unreadOnly = false
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
         
-        let modSortType: TrackerSortVal.Case = unreadOnly ? .old : .new
+        let modSortType: TrackerSort.Case = unreadOnly ? .old : .new
         
         let newReplyTracker = ReplyTracker(internetSpeed: internetSpeed, sortType: .new, unreadOnly: unreadOnly)
         let newMentionTracker = MentionTracker(internetSpeed: internetSpeed, sortType: .new, unreadOnly: unreadOnly)

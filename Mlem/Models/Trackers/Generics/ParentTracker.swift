@@ -20,11 +20,11 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
     private var childTrackers: [StreamingChildTracker] = .init()
     private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
     
-    private(set) var sortType: TrackerSortVal.Case
+    private(set) var sortType: TrackerSort.Case
 
     init(
         internetSpeed: InternetSpeed,
-        sortType: TrackerSortVal.Case,
+        sortType: TrackerSort.Case,
         childTrackers: [any ChildTrackerProtocol]
     ) {
         self.sortType = sortType
@@ -126,7 +126,7 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
     }
     
     /// Changes the sort type of this tracker and all child trackers to the new sort type, then refreshes the feed
-    func changeSortType(to newSortType: TrackerSortVal.Case) async {
+    func changeSortType(to newSortType: TrackerSort.Case) async {
         sortType = newSortType
         for tracker in childTrackers {
             tracker.tracker.changeSortType(to: newSortType)
@@ -163,7 +163,7 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
     }
 
     private func computeNextItem() async -> Item? {
-        var sortVal: TrackerSortVal?
+        var sortVal: TrackerSort?
         var trackerToConsume: StreamingChildTracker?
 
         for child in childTrackers {
@@ -188,11 +188,11 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
     }
 
     private func compareNextTrackerItem(
-        sortType: TrackerSortVal.Case,
-        lhsVal: TrackerSortVal?,
+        sortType: TrackerSort.Case,
+        lhsVal: TrackerSort?,
         lhsTracker: StreamingChildTracker?,
         rhsTracker: StreamingChildTracker
-    ) async -> (TrackerSortVal?, StreamingChildTracker?) {
+    ) async -> (TrackerSort?, StreamingChildTracker?) {
         do {
             guard let rhsVal = try await rhsTracker.tracker.nextItemSortVal(streamId: rhsTracker.streamId, sortType: sortType) else {
                 return (lhsVal, lhsTracker)

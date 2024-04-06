@@ -6,7 +6,7 @@
 //
 import Foundation
 
-enum TrackerSortVal: Comparable {
+enum TrackerSort: Comparable {
     case new(Date)
     case old(Date)
     
@@ -22,7 +22,7 @@ enum TrackerSortVal: Comparable {
         }
     }
     
-    static func < (lhs: TrackerSortVal, rhs: TrackerSortVal) -> Bool {
+    static func < (lhs: TrackerSort, rhs: TrackerSort) -> Bool {
         guard lhs.case == rhs.case else {
             assertionFailure("Compare called on trackersortvals with different types")
             return true

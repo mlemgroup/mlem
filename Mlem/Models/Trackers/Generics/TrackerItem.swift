@@ -8,7 +8,7 @@ import Foundation
 
 protocol TrackerItem: Equatable {
     var uid: ContentModelIdentifier { get }
-    func sortVal(sortType: TrackerSortVal.Case) -> TrackerSortVal
+    func sortVal(sortType: TrackerSort.Case) -> TrackerSort
     
     static func == (lhs: any TrackerItem, rhs: any TrackerItem) -> Bool
 }

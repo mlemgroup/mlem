@@ -13,7 +13,7 @@ class ReplyTracker: ChildTracker<ReplyModel, AnyInboxItem> {
     
     var unreadOnly: Bool
     
-    init(internetSpeed: InternetSpeed, sortType: TrackerSortVal.Case, unreadOnly: Bool) {
+    init(internetSpeed: InternetSpeed, sortType: TrackerSort.Case, unreadOnly: Bool) {
         self.unreadOnly = unreadOnly
         super.init(internetSpeed: internetSpeed, sortType: sortType)
     }

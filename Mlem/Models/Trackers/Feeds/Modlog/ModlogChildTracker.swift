@@ -19,7 +19,7 @@ class ModlogChildTracker: ChildTracker<ModlogEntry, ModlogEntry> {
     
     init(
         internetSpeed: InternetSpeed,
-        sortType: TrackerSortVal.Case,
+        sortType: TrackerSort.Case,
         actionType: ModlogAction,
         instance: URL?,
         communityId: Int?,
@@ -37,7 +37,7 @@ class ModlogChildTracker: ChildTracker<ModlogEntry, ModlogEntry> {
     
     init(
         internetSpeed: InternetSpeed,
-        sortType: TrackerSortVal.Case,
+        sortType: TrackerSort.Case,
         actionType: ModlogAction,
         modlogLink: ModlogLink,
         firstPageProvider: ModlogTracker

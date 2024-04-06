@@ -44,7 +44,7 @@ extension InboxView {
     }
     
     func markAllAsRead() async {
-        // await inboxTracker.markAllAsRead(unreadTracker: unreadTracker)
+        await personalInboxTracker.markAllAsRead(unreadTracker: unreadTracker)
     }
     
     func genFeedSwitchingFunctions() -> [MenuFunction] {

@@ -10,7 +10,7 @@ import Foundation
 extension ModlogEntry: TrackerItem {
     var uid: ContentModelIdentifier { .init(contentType: .modlog, contentId: hashValue) }
     
-    func sortVal(sortType: TrackerSortVal.Case) -> TrackerSortVal {
+    func sortVal(sortType: TrackerSort.Case) -> TrackerSort {
         switch sortType {
         case .new: .new(date)
         case .old: .old(date)

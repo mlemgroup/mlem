@@ -20,11 +20,11 @@ class TrackerStream {
 class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<Item>, ChildTrackerProtocol {
     private var streams: [UUID: TrackerStream] = .init()
     
-    private(set) var sortType: TrackerSortVal.Case
+    private(set) var sortType: TrackerSort.Case
     
     var allItems: [ParentItem] { items.map { toParent(item: $0) }}
     
-    init(internetSpeed: InternetSpeed, sortType: TrackerSortVal.Case) {
+    init(internetSpeed: InternetSpeed, sortType: TrackerSort.Case) {
         self.sortType = sortType
         super.init(internetSpeed: internetSpeed)
     }
@@ -65,7 +65,7 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
     /// - Parameter sortType: type of sorting being performed
     /// - Returns: sorting value of the next tracker item corresponding to the given sort type
     /// - Warning: This is NOT a thread-safe function! Only one thread at a time per stream may call this function!
-    func nextItemSortVal(streamId: UUID, sortType: TrackerSortVal.Case) async throws -> TrackerSortVal? {
+    func nextItemSortVal(streamId: UUID, sortType: TrackerSort.Case) async throws -> TrackerSort? {
         assert(sortType == self.sortType, "Conflicting types for sortType! This will lead to unexpected sorting behavior.")
         
         guard let stream = streams[streamId], stream.parentTracker != nil else {
@@ -136,7 +136,7 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
     }
     
     /// Changes the sort type to the specified type, but does NOT refresh! This method should only be called from ParentTracker, which handles the refresh logic so that sort orders don't become tangled up
-    func changeSortType(to newSortType: TrackerSortVal.Case) {
+    func changeSortType(to newSortType: TrackerSort.Case) {
         sortType = newSortType
     }
 }

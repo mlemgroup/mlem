@@ -20,7 +20,7 @@ protocol ChildTrackerProtocol: AnyObject {
 
     func consumeNextItem(streamId: UUID) -> ParentItem?
 
-    func nextItemSortVal(streamId: UUID, sortType: TrackerSortVal.Case) async throws -> TrackerSortVal?
+    func nextItemSortVal(streamId: UUID, sortType: TrackerSort.Case) async throws -> TrackerSort?
     
     func resetCursor(streamId: UUID)
 
@@ -32,5 +32,5 @@ protocol ChildTrackerProtocol: AnyObject {
     
     @discardableResult func filter(with filter: @escaping (Item) -> Bool) async -> Int
     
-    func changeSortType(to newSortType: TrackerSortVal.Case)
+    func changeSortType(to newSortType: TrackerSort.Case)
 }
