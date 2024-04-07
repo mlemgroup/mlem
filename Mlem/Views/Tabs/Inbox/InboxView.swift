@@ -22,7 +22,7 @@ enum InboxSelection: FeedType {
     var subtitle: String {
         switch self {
         case .personal: "Replies, mentions, and messages"
-        case .mod: "Moderation and administration notifications"
+        case .mod: "Reports from communities you moderate"
         }
     }
     
@@ -66,10 +66,10 @@ enum InboxTab: String, CaseIterable, Identifiable {
     
     var label: String {
         switch self {
-        case .commentReports: "Comment Reports"
-        case .postReports: "Post Reports"
-        case .messageReports: "Message Reports"
-        case .registrationApplications: "Registration Applications"
+        case .commentReports: "Comments"
+        case .postReports: "Posts"
+        case .messageReports: "Messages"
+        case .registrationApplications: "Applications"
         default:
             rawValue.capitalized
         }
@@ -82,6 +82,7 @@ struct InboxView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.personRepository) var personRepository
+    @Dependency(\.notifier) var notifier
     
     @Environment(\.scrollViewProxy) var scrollViewProxy
     
@@ -176,6 +177,8 @@ struct InboxView: View {
     
     var modOrAdminInboxTracker: InboxTracker { siteInformation.isAdmin ? adminInboxTracker : modInboxTracker }
     
+    var customSubtitle: String? { selectedInbox == .mod && siteInformation.isAdmin ? "Registration applications and reports" : nil }
+    
     var availableFeeds: [InboxSelection] {
         var availableFeeds: [InboxSelection] = [.personal]
         if showModFeed {
@@ -193,9 +196,7 @@ struct InboxView: View {
                         .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
                 }
                 ToolbarItem(placement: .primaryAction) {
-                    ToolbarEllipsisMenu {
-                        ellipsisMenu
-                    }
+                    toolbarMenu
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -258,7 +259,7 @@ struct InboxView: View {
                     MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
                 }
             } label: {
-                FeedHeaderView(feedType: selectedInbox)
+                FeedHeaderView(feedType: selectedInbox, customSubtitle: customSubtitle)
             }
             .buttonStyle(.plain)
         } else {
@@ -307,5 +308,24 @@ struct InboxView: View {
         }
         .multilineTextAlignment(.center)
         .foregroundColor(.secondary)
+    }
+    
+    @ViewBuilder
+    var toolbarMenu: some View {
+        if selectedInbox == .personal {
+            ToolbarEllipsisMenu {
+                ellipsisMenu
+            }
+        } else {
+            Button {
+                let status = shouldFilterRead ? "All" : "Only Unresolved"
+                toggleFilterRead()
+                Task {
+                    await notifier.add(.success("Showing \(status)"))
+                }
+            } label: {
+                Label("Toggle Unread Only", systemImage: shouldFilterRead ? Icons.filterFill : Icons.filter)
+            }
+        }
     }
 }
