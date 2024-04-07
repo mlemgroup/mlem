@@ -62,8 +62,6 @@ extension BanUserView {
                 callback()
             }
             
-            print("DEBUG HANDLING RESULT")
-            
             await MainActor.run {
                 userRemovalWalker.modify(
                     userId: user.userId,
@@ -83,10 +81,8 @@ extension BanUserView {
                     },
                     inboxAction: { item in
                         if banFromInstance {
-                            print("DEBUG setting creator banned from instance")
                             item.setCreatorBannedFromInstance(shouldBan)
                         } else {
-                            print("DEBUG setting creator banned from community")
                             item.setCreatorBannedFromCommunity(shouldBan)
                         }
                     },
