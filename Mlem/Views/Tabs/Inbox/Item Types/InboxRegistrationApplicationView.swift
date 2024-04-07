@@ -16,10 +16,19 @@ struct InboxRegistrationApplicationView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            InboxRegistrationApplicationBodyView(application: application, showMenu: true)
+            InboxRegistrationApplicationBodyView(
+                application: application,
+                menuFunctions: application.genMenuFunctions(modToolTracker: modToolTracker)
+            )
             
             if !application.read {
                 interactions
+            }
+        }
+        .background(Color.systemBackground)
+        .contextMenu {
+            ForEach(application.genMenuFunctions(modToolTracker: modToolTracker)) { menuFunction in
+                MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
             }
         }
     }

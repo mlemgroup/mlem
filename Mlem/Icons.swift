@@ -245,7 +245,9 @@ enum Icons {
     static let resolveFill: String = "checkmark.circle.fill"
     static let unresolve: String = "checkmark.gobackward"
     static let approve: String = "checkmark"
+    static let approveCircle: String = "checkmark.circle"
     static let deny: String = "xmark"
+    static let denyCircle: String = "xmark.circle"
     
     // fediseer
     static let fediseer: String = "shield.checkered"

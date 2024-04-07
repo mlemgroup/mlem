@@ -12,7 +12,7 @@ struct InboxRegistrationApplicationBodyView: View {
     @EnvironmentObject var modToolTracker: ModToolTracker
     
     @ObservedObject var application: RegistrationApplicationModel
-    let showMenu: Bool
+    let menuFunctions: [MenuFunction]
     
     var iconName: String { application.read ? Icons.registrationApplication : Icons.registrationApplicationFill }
     
@@ -21,11 +21,6 @@ struct InboxRegistrationApplicationBodyView: View {
             .padding(AppConstants.standardSpacing)
             .background(Color(uiColor: .systemBackground))
             .contentShape(Rectangle())
-            .contextMenu {
-                ForEach(menuFunctions()) { menuFunction in
-                    MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
-                }
-            }
     }
     
     var content: some View {
@@ -41,7 +36,7 @@ struct InboxRegistrationApplicationBodyView: View {
                 
                 EllipsisMenu(
                     size: AppConstants.largeAvatarSize,
-                    menuFunctions: menuFunctions()
+                    menuFunctions: menuFunctions
                 )
             }
             
@@ -72,14 +67,6 @@ struct InboxRegistrationApplicationBodyView: View {
                 denyReason = " (\(reason))"
             }
             return "Denied by \(resolverName)\(denyReason)"
-        }
-    }
-    
-    func menuFunctions() -> [MenuFunction] {
-        if showMenu {
-            return application.genMenuFunctions(modToolTracker: modToolTracker)
-        } else {
-            return .init()
         }
     }
 }

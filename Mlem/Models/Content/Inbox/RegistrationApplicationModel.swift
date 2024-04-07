@@ -71,7 +71,7 @@ class RegistrationApplicationModel: ObservableObject {
         if !(approved ?? false) {
             ret.append(.standardMenuFunction(
                 text: "Approve",
-                imageName: Icons.approve
+                imageName: Icons.approveCircle
             ) {
                 Task(priority: .userInitiated) {
                     await self.approve()
@@ -82,7 +82,7 @@ class RegistrationApplicationModel: ObservableObject {
         if approved ?? true {
             ret.append(.standardMenuFunction(
                 text: "Deny",
-                imageName: Icons.deny
+                imageName: Icons.denyCircle
             ) {
                 modToolTracker.denyApplication(self)
             })
