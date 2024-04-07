@@ -230,7 +230,8 @@ final class PersistenceRepositoryTests: XCTestCase {
     func testLoadLayoutWidgetsWithValues() async throws {
         let postWidgets: [LayoutWidgetType] = [.upvote, .downvote]
         let commentWidgets: [LayoutWidgetType] = [.reply, .share]
-        let widgets = LayoutWidgetGroups(post: postWidgets, comment: commentWidgets)
+        let moderatorWidgets: [LayoutWidgetType] = [.resolve, .ban, .remove]
+        let widgets = LayoutWidgetGroups(post: postWidgets, comment: commentWidgets, moderator: moderatorWidgets)
         
         try await repository.saveLayoutWidgets(widgets) // write the examples to disk
         let loadedWidgets = repository.loadLayoutWidgets() // read them back
