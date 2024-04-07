@@ -53,8 +53,16 @@ struct BanUserView: View {
         
         @Dependency(\.siteInformation) var siteInformation
         
+        // by default, ban from instance if admin and user isn't already instance banned. If admin but also moderates the community, default to community ban
+        var instanceBan: Bool = siteInformation.isAdmin && shouldBan != user.banned
+        if siteInformation.isAdmin,
+           let communityId = communityContext?.communityId,
+           siteInformation.moderatedCommunities.contains(communityId) {
+            instanceBan = false
+        }
+        
         _banFromInstance = .init(
-            wrappedValue: siteInformation.isAdmin && shouldBan != user.banned && communityContext == nil
+            wrappedValue: instanceBan
         )
     }
     
