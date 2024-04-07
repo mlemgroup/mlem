@@ -221,8 +221,21 @@ struct InboxView: View {
                 }.value
             }
             .hoistNavigation {
-                withAnimation {
-                    scrollViewProxy?.scrollTo(scrollToTop)
+                if scrollToTopAppeared, availableFeeds.count > 1 {
+                    guard showModFeed else {
+                        assertionFailure("Multiple inbox feeds available for non-mod/admin!")
+                        return true
+                    }
+                    switch selectedInbox {
+                    case .personal:
+                        selectedInbox = .mod
+                    case .mod:
+                        selectedInbox = .personal
+                    }
+                } else {
+                    withAnimation {
+                        scrollViewProxy?.scrollTo(scrollToTop)
+                    }
                 }
                 return true
             }
