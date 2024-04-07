@@ -21,8 +21,7 @@ struct ReplyToCommentReply: ResponseEditorModel {
     var id: Int { commentReply.id }
     
     func embeddedView() -> AnyView {
-        AnyView(InboxReplyBodyView(reply: commentReply)
-            .padding(.horizontal))
+        AnyView(InboxReplyBodyView(reply: commentReply))
     }
     
     func sendResponse(responseContents: String) async throws {

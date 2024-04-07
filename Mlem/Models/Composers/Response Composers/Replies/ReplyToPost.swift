@@ -33,7 +33,7 @@ struct ReplyToPost: ResponseEditorModel {
     
     func embeddedView() -> AnyView {
         AnyView(LargePost(post: post, layoutMode: .constant(.maximize))
-            .padding(.horizontal))
+            .padding(AppConstants.standardSpacing))
     }
     
     func sendResponse(responseContents: String) async throws {

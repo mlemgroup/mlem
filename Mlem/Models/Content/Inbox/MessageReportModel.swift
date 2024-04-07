@@ -46,7 +46,10 @@ class MessageReportModel: ContentIdentifiable, ObservableObject {
         }
         
         do {
-            let response = try await apiClient.markPrivateMessageReportResolved(reportId: messageReport.id, resolved: !messageReport.resolved)
+            let response = try await apiClient.markPrivateMessageReportResolved(
+                reportId: messageReport.id,
+                resolved: !messageReport.resolved
+            )
             await reinit(from: response)
         } catch {
             errorHandler.handle(error)
