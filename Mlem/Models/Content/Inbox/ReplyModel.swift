@@ -201,8 +201,10 @@ extension ReplyModel {
         // call API and either update with latest info or revert state fake on fail
         do {
             let newReply = try await inboxRepository.markReplyRead(id: commentReply.id, isRead: commentReply.read)
-            await unreadTracker.toggleReplyRead(originalState: originalCommentReply.read)
             await reinit(from: newReply)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                unreadTracker.toggleReplyRead(originalState: originalCommentReply.read)
+            }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)
@@ -235,9 +237,10 @@ extension ReplyModel {
                 await reinit(from: saveResponse)
             }
             if !original.commentReply.read {
-                _ = try await inboxRepository.markReplyRead(id: commentReply.id, isRead: true)
+                let newReply = try await inboxRepository.markReplyRead(id: commentReply.id, isRead: true)
+                await reinit(from: newReply)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    unreadTracker.toggleReplyRead(originalState: original.read)
+                    unreadTracker.readReply()
                 }
             }
         } catch {
