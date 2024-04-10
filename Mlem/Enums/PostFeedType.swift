@@ -177,7 +177,7 @@ extension PostFeedType: AssociatedColor {
         case .all: .blue
         case .local: .purple
         case .subscribed: .red
-        case .moderated: .green
+        case .moderated: Color.moderation
         case .saved: .green
         case .community: .blue
         }

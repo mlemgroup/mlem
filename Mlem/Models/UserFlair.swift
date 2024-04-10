@@ -21,7 +21,7 @@ enum UserFlair {
         case .admin:
             return .teal
         case .moderator:
-            return .green
+            return Color.moderation
         case .op:
             return .orange
         case .bot:
