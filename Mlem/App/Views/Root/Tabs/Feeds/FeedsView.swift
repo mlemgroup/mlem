@@ -102,7 +102,7 @@ struct MinimalPostFeedView: View {
                     .background(Color(uiColor: .systemBackground))
                     .contentShape(.rect)
                     .contextMenu {
-                        ForEach(post.menuActions, id: \.id) { action in
+                        ForEach(post.menuActions.children, id: \.id) { action in
                             MenuButton(action: action)
                         }
                     }

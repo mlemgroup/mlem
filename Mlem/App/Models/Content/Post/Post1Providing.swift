@@ -95,12 +95,12 @@ extension Post1Providing {
         return .titleOnly
     }
     
-    var menuActions: [any Action] {
-        [
+    var menuActions: ActionGroup {
+        ActionGroup(children: [
             ActionGroup(
                 children: [upvoteAction, downvoteAction]
             ),
             saveAction
-        ]
+        ])
     }
 }
