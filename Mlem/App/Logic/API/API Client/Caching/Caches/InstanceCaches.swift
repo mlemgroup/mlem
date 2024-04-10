@@ -22,7 +22,7 @@ class Instance1Cache: ApiTypeBackedCache<Instance1, ApiSite> {
         )
     }
     
-    override func updateModel(_ item: Instance1, with apiType: ApiSite) {
+    override func updateModel(_ item: Instance1, with apiType: ApiSite, semaphore: UInt? = nil) {
         item.update(with: apiType)
     }
     
@@ -46,7 +46,7 @@ class Instance2Cache: ApiTypeBackedCache<Instance2, ApiSiteView> {
         .init(api: api, instance1: instance1Cache.getModel(api: api, from: apiType.site))
     }
     
-    override func updateModel(_ item: Instance2, with apiType: ApiSiteView) {
+    override func updateModel(_ item: Instance2, with apiType: ApiSiteView, semaphore: UInt? = nil) {
         item.update(with: apiType)
     }
 }
@@ -66,7 +66,7 @@ class Instance3Cache: ApiTypeBackedCache<Instance3, ApiGetSiteResponse> {
         )
     }
     
-    override func updateModel(_ item: Instance3, with apiType: ApiGetSiteResponse) {
+    override func updateModel(_ item: Instance3, with apiType: ApiGetSiteResponse, semaphore: UInt? = nil) {
         item.update(with: apiType)
     }
 }

@@ -37,12 +37,15 @@ extension Post1: CacheIdentifiable {
 extension Post2: CacheIdentifiable {
     var cacheId: Int { post1.cacheId }
     
-    func update(with post: ApiPostView) {
+    func update(with post: ApiPostView, semaphore: UInt? = nil) {
         commentCount = post.counts.comments
-        votes = .init(from: post.counts, myVote: ScoringOperation.guaranteedInit(from: post.myVote))
+        votesManager.updateWithReceivedValue(
+            .init(from: post.counts, myVote: ScoringOperation.guaranteedInit(from: post.myVote)),
+            semaphore: semaphore
+        )
         unreadCommentCount = post.unreadComments
         isSaved = post.saved
-        isRead = post.read
+        isReadManager.updateWithReceivedValue(post.read, semaphore: semaphore)
         
         post1.update(with: post.post)
         creator.update(with: post.creator)

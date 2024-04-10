@@ -22,39 +22,29 @@ extension Post2Providing {
     var creator: Person1 { post2.creator }
     var community: Community1 { post2.community }
     var commentCount: Int { post2.commentCount }
-    var votes: VotesModel { get { post2.votes } set { post2.votes = newValue } }
+    var votes: VotesModel { post2.votes }
     var unreadCommentCount: Int { post2.unreadCommentCount }
     var isSaved: Bool { post2.isSaved }
-    var isRead: Bool { get { post2.isRead } set { post2.isRead = newValue } }
+    var isRead: Bool { post2.isRead }
     var votesManager: StateManager<VotesModel> { post2.votesManager }
+    var isReadManager: StateManager<Bool> { post2.isReadManager }
     
     var creator_: Person1? { post2.creator }
     var community_: Community1? { post2.community }
     var commentCount_: Int? { post2.commentCount }
-    var votes_: VotesModel { get { post2.votes } set { post2.votes = newValue } }
+    var votes_: VotesModel { post2.votes }
     var unreadCommentCount_: Int? { post2.unreadCommentCount }
     var isSaved_: Bool? { post2.isSaved }
     var isRead_: Bool? { post2.isRead }
     var votesManager_: StateManager<VotesModel> { post2.votesManager }
+    var isReadManager_: StateManager<Bool> { post2.isReadManager }
   
     func vote(_ newVote: ScoringOperation) {
-        // notify the status manager that we are voting now
-        let semaphore = votesManager.beginOperation(with: votes)
-        
-        // state fake
-        RunLoop.main.perform {
-            self.votes = self.votes.applyScoringOperation(operation: newVote)
-        }
-        
-        Task {
-            do {
-                try await api.voteOnPost(id: id, score: newVote, semaphore: semaphore)
-            } catch {
-                print("DEBUG [\(semaphore)] failed!")
-                if let newVotes = votesManager.getRollbackState(semaphore: semaphore) {
-                    votes = newVotes
-                }
-            }
+        groupStateRequest(
+            votesManager.ticket(self.votes.applyScoringOperation(operation: newVote)),
+            isReadManager.ticket(true)
+        ) { semaphore in
+            try await self.api.voteOnPost(id: self.id, score: newVote, semaphore: semaphore)
         }
     }
 }

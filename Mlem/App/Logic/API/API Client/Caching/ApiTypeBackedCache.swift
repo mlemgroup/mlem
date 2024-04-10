@@ -9,9 +9,9 @@ import Foundation
 
 /// Class providing caching behavior for models associated with API types
 class ApiTypeBackedCache<Content: CacheIdentifiable & AnyObject, ApiType: CacheIdentifiable>: CoreCache<Content> {
-    func getModel(api: ApiClient, from apiType: ApiType) -> Content {
+    func getModel(api: ApiClient, from apiType: ApiType, semaphore: UInt? = nil) -> Content {
         if let item = retrieveModel(cacheId: apiType.cacheId) {
-            updateModel(item, with: apiType)
+            updateModel(item, with: apiType, semaphore: semaphore)
             return item
         }
         
@@ -27,7 +27,7 @@ class ApiTypeBackedCache<Content: CacheIdentifiable & AnyObject, ApiType: CacheI
         preconditionFailure("This method must be overridden by the instantiating class")
     }
     
-    func updateModel(_ item: Content, with apiType: ApiType) {
+    func updateModel(_ item: Content, with apiType: ApiType, semaphore: UInt? = nil) {
         preconditionFailure("This method must be overridden by the instantiating class")
     }
 }
