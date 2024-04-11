@@ -12,7 +12,6 @@ struct InboxMessageBodyView: View {
     @Dependency(\.siteInformation) var siteInformation
     
     @ObservedObject var message: MessageModel
-    @EnvironmentObject var inboxTracker: InboxTracker
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var unreadTracker: UnreadTracker
     
@@ -30,21 +29,6 @@ struct InboxMessageBodyView: View {
     }
     
     var body: some View {
-        content
-            .padding(AppConstants.standardSpacing)
-            .background(Color(uiColor: .systemBackground))
-            .contentShape(Rectangle())
-            .contextMenu {
-                ForEach(message.menuFunctions(
-                    unreadTracker: unreadTracker,
-                    editorTracker: editorTracker
-                )) { item in
-                    MenuButton(menuFunction: item, menuFunctionPopup: .constant(nil))
-                }
-            }
-    }
-    
-    var content: some View {
         VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
             HStack(spacing: AppConstants.standardSpacing) {
                 if isOwnMessage {

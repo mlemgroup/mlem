@@ -3360,14 +3360,14 @@
 				E4A7BFD22B35913F00B95F56 /* InboxMentionView.swift */,
 				CDD0B8C02BB5BC51003E7174 /* InboxMessageBodyView.swift */,
 				E4A7BFD02B35912500B95F56 /* InboxMessageView.swift */,
+				CDD0B8F32BBF843B003E7174 /* InboxMessageReportBodyView.swift */,
+				CDD0B8F12BBF8406003E7174 /* InboxMessageReportView.swift */,
+				CDD0B8E32BBF4D4B003E7174 /* InboxPostReportBodyView.swift */,
 				CDD0B8E12BBF49DB003E7174 /* InboxPostReportView.swift */,
+				CDD0B90B2BC08E21003E7174 /* InboxRegistrationApplicationBodyView.swift */,
+				CDD0B9092BC08E02003E7174 /* InboxRegistrationApplicationView.swift */,
 				CDE6A8192A490B970062D161 /* InboxReplyBodyView.swift */,
 				E449C5962B35239500E3BCF4 /* InboxReplyView.swift */,
-				CDD0B8E32BBF4D4B003E7174 /* InboxPostReportBodyView.swift */,
-				CDD0B8F12BBF8406003E7174 /* InboxMessageReportView.swift */,
-				CDD0B8F32BBF843B003E7174 /* InboxMessageReportBodyView.swift */,
-				CDD0B9092BC08E02003E7174 /* InboxRegistrationApplicationView.swift */,
-				CDD0B90B2BC08E21003E7174 /* InboxRegistrationApplicationBodyView.swift */,
 			);
 			path = "Item Types";
 			sourceTree = "<group>";

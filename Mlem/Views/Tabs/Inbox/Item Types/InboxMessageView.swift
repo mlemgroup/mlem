@@ -14,11 +14,22 @@ struct InboxMessageView: View {
 
     var body: some View {
         InboxMessageBodyView(message: message)
+            .padding(AppConstants.standardSpacing)
+            .background(Color(uiColor: .systemBackground))
+            .contentShape(Rectangle())
             .addSwipeyActions(
                 message.swipeActions(
                     unreadTracker: unreadTracker,
                     editorTracker: editorTracker
                 )
             )
+            .contextMenu {
+                ForEach(message.menuFunctions(
+                    unreadTracker: unreadTracker,
+                    editorTracker: editorTracker
+                )) { item in
+                    MenuButton(menuFunction: item, menuFunctionPopup: .constant(nil))
+                }
+            }
     }
 }
