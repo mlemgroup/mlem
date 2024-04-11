@@ -71,11 +71,15 @@ struct ContentView: View {
             CustomTabItem(
                 title: "Profile",
                 systemImage: Icons.user,
-                onLongPress: openAccountSwitcher
-            ) {
-                ProfileView()
-            }
-        ], onSwipeUp: openAccountSwitcher)
+                onLongPress: {
+                    // TODO: haptics here
+                    isPresentingAccountSwitcher = true
+                },
+                content: { ProfileView() }
+            )
+        ], onSwipeUp: {
+            isPresentingAccountSwitcher = true
+        })
         .ignoresSafeArea()
     }
     
@@ -84,9 +88,5 @@ struct ContentView: View {
     /// Function that executes whenever the account changes to handle any state updates that need to happen
     func accountChanged() async {
         print("Account changed")
-    }
-    
-    func openAccountSwitcher() {
-        isPresentingAccountSwitcher = true
     }
 }
