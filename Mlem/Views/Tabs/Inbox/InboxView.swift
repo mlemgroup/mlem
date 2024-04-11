@@ -253,11 +253,7 @@ struct InboxView: View {
                 case .personal:
                     personalFeedView
                 case .mod:
-                    if siteInformation.isAdmin {
-                        adminFeedView
-                    } else {
-                        moderatorFeedView
-                    }
+                    moderatorFeedView
                 }
             }
         }

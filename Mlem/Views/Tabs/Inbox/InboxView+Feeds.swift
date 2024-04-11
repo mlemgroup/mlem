@@ -50,41 +50,7 @@ extension InboxView {
         Section {
             switch selectedModTab {
             case .all:
-                InboxFeedView(tracker: modInboxTracker)
-            case .commentReports:
-                InboxFeedView(tracker: commentReportTracker)
-            case .postReports:
-                InboxFeedView(tracker: postReportTracker)
-            default:
-                InboxFeedView(tracker: modInboxTracker)
-                    .onAppear {
-                        assertionFailure("moderatorFeedView rendered with non-moderator tab!")
-                    }
-            }
-        } header: {
-            BubblePicker(InboxTab.modCases, selected: $selectedModTab, withDividers: [.bottom]) { tab in
-                Text(tab.label)
-            }
-            .background(Color.systemBackground.opacity(scrollToTopAppeared ? 1 : 0))
-            .background(.bar)
-            .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
-        }
-        .task {
-            if modInboxTracker.items.isEmpty {
-                // wrap in subtask to view redraws don't cancel load
-                Task(priority: .userInitiated) {
-                    await refresh(tracker: modInboxTracker)
-                }
-            }
-        }
-    }
-    
-    @ViewBuilder
-    var adminFeedView: some View {
-        Section {
-            switch selectedModTab {
-            case .all:
-                InboxFeedView(tracker: adminInboxTracker)
+                InboxFeedView(tracker: modOrAdminInboxTracker)
             case .commentReports:
                 InboxFeedView(tracker: commentReportTracker)
             case .postReports:
@@ -94,24 +60,33 @@ extension InboxView {
             case .registrationApplications:
                 InboxFeedView(tracker: registrationApplicationTracker)
             default:
-                InboxFeedView(tracker: adminInboxTracker)
+                InboxFeedView(tracker: modOrAdminInboxTracker)
                     .onAppear {
-                        assertionFailure("adminFeedView rendered with non-admin tab!")
+                        assertionFailure("moderatorFeedView rendered with non-mod/admin tab!")
                     }
             }
         } header: {
-            BubblePicker(InboxTab.adminCases, selected: $selectedModTab, withDividers: [.bottom]) { tab in
-                Text(tab.label)
+            Group {
+                // BubblePicker doesn't handle changing the number of cases smoothly (sometimes crashes for indexing reasons), so define two different BubblePickers
+                if siteInformation.isAdmin {
+                    BubblePicker(InboxTab.adminCases, selected: $selectedModTab, withDividers: [.bottom]) { tab in
+                        Text(tab.label)
+                    }
+                } else {
+                    BubblePicker(InboxTab.modCases, selected: $selectedModTab, withDividers: [.bottom]) { tab in
+                        Text(tab.label)
+                    }
+                }
             }
             .background(Color.systemBackground.opacity(scrollToTopAppeared ? 1 : 0))
             .background(.bar)
             .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
         }
         .task {
-            if modInboxTracker.items.isEmpty {
+            if modOrAdminInboxTracker.items.isEmpty {
                 // wrap in subtask to view redraws don't cancel load
                 Task(priority: .userInitiated) {
-                    await refresh(tracker: adminInboxTracker)
+                    await refresh(tracker: modOrAdminInboxTracker)
                 }
             }
         }
