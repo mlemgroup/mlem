@@ -65,8 +65,10 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        print(tabBarController.selectedViewController?.tabBarItem.title)
-        print("Selected view controller", viewController.tabBarItem.title)
+        if tabBarController.selectedViewController === viewController,
+           let item = viewController as? CustomTabViewHostingController {
+            print("hi")
+        }
         return true
     }
 }
