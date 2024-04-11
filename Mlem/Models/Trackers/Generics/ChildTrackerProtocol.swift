@@ -16,7 +16,7 @@ protocol ChildTrackerProtocol: AnyObject {
 
     // MARK: stream support methods
     
-    func addParentTracker(_ newParent: any ParentTrackerProtocol) -> UUID
+    func addParentTracker(_ newParent: any ParentTrackerProtocol)
 
     func consumeNextItem(streamId: UUID) -> ParentItem?
 

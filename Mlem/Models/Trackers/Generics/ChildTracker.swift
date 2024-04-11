@@ -33,10 +33,8 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
         preconditionFailure("This method must be implemented by the inheriting class")
     }
     
-    func addParentTracker(_ newParent: any ParentTrackerProtocol) -> UUID {
-        let newCursorId = UUID()
-        streams[newCursorId] = .init(parentTracker: newParent)
-        return newCursorId
+    func addParentTracker(_ newParent: any ParentTrackerProtocol) {
+        streams[newParent.uuid] = .init(parentTracker: newParent)
     }
     
     /// Gets the next item in the feed stream and increments the cursor

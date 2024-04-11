@@ -9,6 +9,8 @@ import Foundation
 protocol ParentTrackerProtocol: AnyObject {
     associatedtype Item: TrackerItem
     
+    var uuid: UUID { get }
+    
     func loadIfThreshold(_ item: Item)
     
     func refresh(clearBeforeFetch: Bool) async
