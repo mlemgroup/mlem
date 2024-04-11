@@ -48,7 +48,6 @@ struct MinimalPostFeedView: View {
         NavigationStack {
             content
                 .navigationTitle("Feeds")
-                .fancyTabScrollCompatible()
                 .task {
                     if postTracker.items.isEmpty, postTracker.loadingState == .idle {
                         print("Loading initial PostTracker page...")
