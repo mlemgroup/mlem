@@ -322,7 +322,7 @@ struct ModlogView: View {
                         entryView(for: entry)
                     }
                     
-                    EndOfFeedView(loadingState: currentTracker.loadingState, viewType: .turtle)
+                    EndOfFeedView(loadingState: currentTracker.loadingState, viewType: .turtle, whatIsLoading: .modlog)
                 }
             }
         }

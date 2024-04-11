@@ -32,7 +32,7 @@ struct InboxFeedView<T: TrackerProtocol>: View where T.Item: InboxItem {
             }
         }
         
-        EndOfFeedView(loadingState: tracker.loadingState, viewType: .cartoon)
+        EndOfFeedView(loadingState: tracker.loadingState, viewType: .cartoon, whatIsLoading: .inbox)
     }
     
     @ViewBuilder
