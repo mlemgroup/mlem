@@ -28,12 +28,7 @@ extension InboxView {
                     }
             }
         } header: {
-            BubblePicker(InboxTab.personalCases, selected: $selectedPersonalTab, withDividers: [.bottom]) { tab in
-                Text(tab.label)
-            }
-            .background(Color.systemBackground.opacity(scrollToTopAppeared ? 1 : 0))
-            .background(.bar)
-            .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
+            picker(tabs: InboxTab.personalCases, selected: $selectedPersonalTab)
         }
         .task {
             if personalInboxTracker.items.isEmpty {
@@ -66,21 +61,7 @@ extension InboxView {
                     }
             }
         } header: {
-            Group {
-                // BubblePicker doesn't handle changing the number of cases smoothly (sometimes crashes for indexing reasons), so define two different BubblePickers
-                if siteInformation.isAdmin {
-                    BubblePicker(InboxTab.adminCases, selected: $selectedModTab, withDividers: [.bottom]) { tab in
-                        Text(tab.label)
-                    }
-                } else {
-                    BubblePicker(InboxTab.modCases, selected: $selectedModTab, withDividers: [.bottom]) { tab in
-                        Text(tab.label)
-                    }
-                }
-            }
-            .background(Color.systemBackground.opacity(scrollToTopAppeared ? 1 : 0))
-            .background(.bar)
-            .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
+            picker(tabs: siteInformation.isAdmin ? InboxTab.adminCases : InboxTab.modCases, selected: $selectedModTab)
         }
         .task {
             if modOrAdminInboxTracker.items.isEmpty {
