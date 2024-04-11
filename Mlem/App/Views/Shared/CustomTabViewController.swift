@@ -67,7 +67,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if tabBarController.selectedViewController === viewController,
            let item = viewController as? CustomTabViewHostingController {
-            print("hi")
+            print("\(item.rootView.title) tab re-selected")
         }
         return true
     }

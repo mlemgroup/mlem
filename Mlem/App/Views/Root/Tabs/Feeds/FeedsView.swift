@@ -50,9 +50,13 @@ struct MinimalPostFeedView: View {
                 .navigationTitle("Feeds")
                 .fancyTabScrollCompatible()
                 .task {
-                    await postTracker.loadMoreItems()
+                    if postTracker.items.isEmpty, postTracker.loadingState == .idle {
+                        print("Loading initial PostTracker page...")
+                        await postTracker.loadMoreItems()
+                    }
                 }
                 .task(id: appState.actorId) {
+                    print("Changed account, switching PostTracker feedType...")
                     await postTracker.changeFeedType(to: .aggregateFeed(appState.api, type: .subscribed))
                 }
                 .refreshable {
@@ -69,9 +73,6 @@ struct MinimalPostFeedView: View {
     var content: some View {
         ScrollView {
             LazyVStack {
-                NavigationLink("Hello") {
-                    Text("Hello world")
-                }
                 ForEach(postTracker.items, id: \.uid) { post in
                     VStack {
                         HStack {

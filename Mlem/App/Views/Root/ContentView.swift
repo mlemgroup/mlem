@@ -33,17 +33,9 @@ struct ContentView: View {
         self._appState = .init(initialValue: .init(api: api))
     }
     
-    // tabs
-    @State private var tabSelection: Int = 0
-    @State private var hasSetupTabBar: Bool = false
-    
     @State private var isPresentingAccountSwitcher: Bool = false
 
     var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
-        
-    var profileTabAvatar: URL? { appState.myUser?.avatarUrl }
-    
-    var profileTabLabel: String { "Profile" }
     
     var body: some View {
         content
@@ -84,9 +76,7 @@ struct ContentView: View {
                 ProfileView()
             }
         ], onSwipeUp: openAccountSwitcher)
-        .onChange(of: tabSelection) {
-            print("TAB", tabSelection)
-        }
+        .ignoresSafeArea()
     }
     
     // MARK: Helpers
