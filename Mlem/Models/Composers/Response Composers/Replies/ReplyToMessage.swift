@@ -21,7 +21,8 @@ struct ReplyToMessage: ResponseEditorModel {
     let message: MessageModel
     
     func embeddedView() -> AnyView {
-        AnyView(InboxMessageBodyView(message: message))
+        AnyView(InboxMessageBodyView(message: message)
+            .padding(AppConstants.standardSpacing))
     }
     
     func sendResponse(responseContents: String) async throws {

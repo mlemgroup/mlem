@@ -26,7 +26,7 @@ struct ReportComment: ResponseEditorModel {
             isCollapsed: .constant(false),
             showPostContext: true
         )
-        .padding(.horizontal, AppConstants.postAndCommentSpacing))
+        .padding(AppConstants.standardSpacing))
     }
     
     func sendResponse(responseContents: String) async throws {
