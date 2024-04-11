@@ -69,6 +69,9 @@ struct MinimalPostFeedView: View {
     var content: some View {
         ScrollView {
             LazyVStack {
+                NavigationLink("Hello") {
+                    Text("Hello world")
+                }
                 ForEach(postTracker.items, id: \.uid) { post in
                     VStack {
                         HStack {

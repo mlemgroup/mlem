@@ -7,6 +7,7 @@
 
 import Dependencies
 import SwiftUI
+import SwiftUIIntrospect
 
 struct ContentView: View {
     @Dependency(\.errorHandler) var errorHandler
@@ -33,9 +34,8 @@ struct ContentView: View {
     }
     
     // tabs
-    @State private var tabSelection: TabSelection = .feeds
-    @State private var tabNavigation: any FancyTabBarSelection = TabSelection._tabBarNavigation
-    @GestureState private var isDetectingLongPress = false
+    @State private var tabSelection: Int = 0
+    @State private var hasSetupTabBar: Bool = false
     
     @State private var isPresentingAccountSwitcher: Bool = false
 
@@ -72,30 +72,20 @@ struct ContentView: View {
     }
     
     var content: some View {
-        FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
-            Group {
+        CustomTabView(tabs: [
+            CustomTabItem(title: "Feeds", systemImage: Icons.feedsFill) {
                 FeedsView()
-                    .fancyTabItem(tag: TabSelection.feeds) {
-                        FancyTabBarLabel(
-                            tag: TabSelection.feeds,
-                            symbolConfiguration: .feed
-                        )
-                    }
-                    
+            },
+            CustomTabItem(
+                title: "Profile",
+                systemImage: Icons.user,
+                onLongPress: openAccountSwitcher
+            ) {
                 ProfileView()
-                    .fancyTabItem(tag: TabSelection.profile) {
-                        FancyTabBarLabel(
-                            tag: TabSelection.profile,
-                            customText: profileTabLabel,
-                            symbolConfiguration: .init(
-                                symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
-                                activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
-                                remoteSymbolUrl: profileTabAvatar
-                            )
-                        )
-                        .simultaneousGesture(accountSwitchLongPress)
-                    }
             }
+        ], onSwipeUp: openAccountSwitcher)
+        .onChange(of: tabSelection) {
+            print("TAB", tabSelection)
         }
     }
     
@@ -106,29 +96,7 @@ struct ContentView: View {
         print("Account changed")
     }
     
-    func showAccountSwitcherDragCallback() {
+    func openAccountSwitcher() {
         isPresentingAccountSwitcher = true
-    }
-    
-    var accountSwitchLongPress: some Gesture {
-        LongPressGesture()
-            .onEnded { _ in
-                @AppStorage("allowQuickSwitcherLongPressGesture") var allowQuickSwitcherLongPressGesture: Bool = true
-                
-                // disable long press in accessibility mode to prevent conflict with HUD
-//                if !accessibilityFont {
-//                    if allowQuickSwitcherLongPressGesture {
-//                        if accountsTracker.savedAccounts.count == 2 {
-//                            for account in accountsTracker.savedAccounts where account.actorId != appState.actorId {
-//                                // TODO: ???????
-//                                appState.api = account.api
-//                                break
-//                            }
-//                        } else {
-//                            isPresentingAccountSwitcher = true
-//                        }
-//                    }
-//                }
-            }
     }
 }

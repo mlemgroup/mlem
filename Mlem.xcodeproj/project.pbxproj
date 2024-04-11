@@ -16,6 +16,11 @@
 		030E7EDE2B7FADFE00E9A1AD /* Post2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E7EDD2B7FADFE00E9A1AD /* Post2.swift */; };
 		030E7EE02B7FBDF100E9A1AD /* ApiClient+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E7EDF2B7FBDF100E9A1AD /* ApiClient+Post.swift */; };
 		030E7EE22B80E6EA00E9A1AD /* InteractableContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E7EE12B80E6EA00E9A1AD /* InteractableContent.swift */; };
+		030FF6792BC84F7E00F6BFAC /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 030FF6782BC84F7E00F6BFAC /* SwiftUIIntrospect */; };
+		030FF67B2BC8521600F6BFAC /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF67A2BC8521600F6BFAC /* CustomTabView.swift */; };
+		030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */; };
+		030FF67F2BC8544700F6BFAC /* CustomTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF67E2BC8544600F6BFAC /* CustomTabViewController.swift */; };
+		030FF6812BC859FD00F6BFAC /* CustomTabViewHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF6802BC859FD00F6BFAC /* CustomTabViewHostingController.swift */; };
 		031BF9532AB24BAF00F4517F /* SiteVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031BF9522AB24BAF00F4517F /* SiteVersion.swift */; };
 		032145472B7A624A001AE07E /* Person1Providing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145462B7A624A001AE07E /* Person1Providing.swift */; };
 		032145492B7A629D001AE07E /* Person2Providing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145482B7A629D001AE07E /* Person2Providing.swift */; };
@@ -546,6 +551,10 @@
 		030E7EDD2B7FADFE00E9A1AD /* Post2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post2.swift; sourceTree = "<group>"; };
 		030E7EDF2B7FBDF100E9A1AD /* ApiClient+Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiClient+Post.swift"; sourceTree = "<group>"; };
 		030E7EE12B80E6EA00E9A1AD /* InteractableContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractableContent.swift; sourceTree = "<group>"; };
+		030FF67A2BC8521600F6BFAC /* CustomTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
+		030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabItem.swift; sourceTree = "<group>"; };
+		030FF67E2BC8544600F6BFAC /* CustomTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabViewController.swift; sourceTree = "<group>"; };
+		030FF6802BC859FD00F6BFAC /* CustomTabViewHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabViewHostingController.swift; sourceTree = "<group>"; };
 		031BF9522AB24BAF00F4517F /* SiteVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteVersion.swift; sourceTree = "<group>"; };
 		032145462B7A624A001AE07E /* Person1Providing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person1Providing.swift; sourceTree = "<group>"; };
 		032145482B7A629D001AE07E /* Person2Providing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person2Providing.swift; sourceTree = "<group>"; };
@@ -1051,6 +1060,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				030FF6792BC84F7E00F6BFAC /* SwiftUIIntrospect in Frameworks */,
 				B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */,
 				63D24EDC2A169F12005CCA81 /* MarkdownUI in Frameworks */,
 				B104A6D82A59BF3C00B3E725 /* Nuke in Frameworks */,
@@ -1079,6 +1089,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		030FF6772BC84F7E00F6BFAC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		032145772B7EC9B9001AE07E /* Post */ = {
 			isa = PBXGroup;
 			children = (
@@ -1163,6 +1180,7 @@
 				6363D5D927EE196A00E34822 /* MlemTests */,
 				6363D5E327EE196A00E34822 /* MlemUITests */,
 				6363D5C227EE196700E34822 /* Products */,
+				030FF6772BC84F7E00F6BFAC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1741,6 +1759,10 @@
 				CD4D58BE2B86DBC900B82964 /* Avatars */,
 				CDDCF6412A662444003DA3AC /* Fancy Tab Bar */,
 				CD4D58AB2B86BE6100B82964 /* Accounts */,
+				030FF67A2BC8521600F6BFAC /* CustomTabView.swift */,
+				030FF6802BC859FD00F6BFAC /* CustomTabViewHostingController.swift */,
+				030FF67E2BC8544600F6BFAC /* CustomTabViewController.swift */,
+				030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -2051,6 +2073,7 @@
 				B104A6DD2A59BF3C00B3E725 /* NukeVideo */,
 				50C99B552A61D792005D57DD /* Dependencies */,
 				CD4368C02AE23FD400BD8BD1 /* Semaphore */,
+				030FF6782BC84F7E00F6BFAC /* SwiftUIIntrospect */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -2132,6 +2155,7 @@
 				B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */,
 				50C99B542A61D792005D57DD /* XCRemoteSwiftPackageReference "swift-dependencies" */,
 				CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */,
+				0392826E2BC84E480097F91A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -2410,6 +2434,7 @@
 				CD4D58FA2B87B10600B82964 /* StandardFeedLoader.swift in Sources */,
 				032145602B7A79E7001AE07E /* Instance3.swift in Sources */,
 				CD4D571A2B86772400B82964 /* CreateCommentRequest.swift in Sources */,
+				030FF67B2BC8521600F6BFAC /* CustomTabView.swift in Sources */,
 				CD4D57822B86772400B82964 /* ApiUpdateTotpResponse.swift in Sources */,
 				CD4D570E2B86772400B82964 /* DeletePrivateMessageRequest.swift in Sources */,
 				CD4D577E2B86772400B82964 /* ApiModBanFromCommunityView.swift in Sources */,
@@ -2628,12 +2653,14 @@
 				CD4D57372B86772400B82964 /* SaveUserSettingsRequest.swift in Sources */,
 				CD4D57122B86772400B82964 /* RemovePostRequest.swift in Sources */,
 				CD4D56EA2B86772400B82964 /* CreateCommentReportRequest.swift in Sources */,
+				030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */,
 				CD4D57322B86772400B82964 /* PasswordResetRequest.swift in Sources */,
 				CDB7AFC22B82FAE60013E0F0 /* GetPostsRequest.swift in Sources */,
 				CD4D57DB2B86772500B82964 /* ApiPrivateMessage.swift in Sources */,
 				CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */,
 				CD4D58302B86772500B82964 /* ApiListPostLikes.swift in Sources */,
 				CD4D576A2B86772400B82964 /* ApiCommentReport.swift in Sources */,
+				030FF67F2BC8544700F6BFAC /* CustomTabViewController.swift in Sources */,
 				CD4D57F12B86772500B82964 /* ApiGetReplies.swift in Sources */,
 				CD4D58D62B86DFA400B82964 /* ContentType.swift in Sources */,
 				CD4D57342B86772400B82964 /* MarkCommentReplyAsReadRequest.swift in Sources */,
@@ -2652,6 +2679,7 @@
 				CD4D577D2B86772400B82964 /* ApiBanFromCommunity.swift in Sources */,
 				CD4D57392B86772400B82964 /* ImportSettingsRequest.swift in Sources */,
 				CD4D57592B86772400B82964 /* ApiPersonMentionView.swift in Sources */,
+				030FF6812BC859FD00F6BFAC /* CustomTabViewHostingController.swift in Sources */,
 				CD4D56F02B86772400B82964 /* GetCommentsRequest.swift in Sources */,
 				CD4D57B72B86772400B82964 /* ApiEditPost.swift in Sources */,
 				CD4D57BE2B86772400B82964 /* ApiBlockPersonResponse.swift in Sources */,
@@ -3060,6 +3088,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0392826E2BC84E480097F91A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.3;
+			};
+		};
 		50C99B542A61D792005D57DD /* XCRemoteSwiftPackageReference "swift-dependencies" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-dependencies";
@@ -3103,6 +3139,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		030FF6782BC84F7E00F6BFAC /* SwiftUIIntrospect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0392826E2BC84E480097F91A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = SwiftUIIntrospect;
+		};
 		50C99B552A61D792005D57DD /* Dependencies */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 50C99B542A61D792005D57DD /* XCRemoteSwiftPackageReference "swift-dependencies" */;
