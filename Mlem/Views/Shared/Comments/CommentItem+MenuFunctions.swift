@@ -197,26 +197,8 @@ extension CommentItem {
             let creatorBannedFromCommunity = hierarchicalComment.commentView.creatorBannedFromCommunity
             let creatorBannedFromInstance = hierarchicalComment.commentView.creator.banned
             
-            if !(siteInformation.isAdmin && creatorBannedFromCommunity && creatorBannedFromInstance) {
-                functions.append(MenuFunction.toggleableMenuFunction(
-                    toggle: creatorBannedFromCommunity,
-                    trueText: "Unban User",
-                    trueImageName: Icons.communityUnban,
-                    falseText: "Ban User",
-                    falseImageName: (siteInformation.isAdmin && !creatorBannedFromInstance) ? Icons.instanceBan : Icons.communityBan,
-                    isDestructive: .whenFalse
-                ) {
-                    modToolTracker.banUser(
-                        .init(from: hierarchicalComment.commentView.creator),
-                        from: .init(from: hierarchicalComment.commentView.community),
-                        bannedFromCommunity: creatorBannedFromCommunity,
-                        shouldBan: !creatorBannedFromCommunity,
-                        userRemovalWalker: .init(commentTracker: commentTracker)
-                    )
-                })
-            }
-            
-            if siteInformation.isAdmin, creatorBannedFromInstance || creatorBannedFromCommunity {
+            // for admins, default to instance ban iff not a moderator of this community
+            if siteInformation.isAdmin, !siteInformation.moderatedCommunities.contains(hierarchicalComment.commentView.community.id) {
                 functions.append(MenuFunction.toggleableMenuFunction(
                     toggle: creatorBannedFromInstance,
                     trueText: "Unban User",
@@ -230,6 +212,23 @@ extension CommentItem {
                         from: .init(from: hierarchicalComment.commentView.community),
                         bannedFromCommunity: creatorBannedFromCommunity,
                         shouldBan: !creatorBannedFromInstance,
+                        userRemovalWalker: .init(commentTracker: commentTracker)
+                    )
+                })
+            } else {
+                functions.append(MenuFunction.toggleableMenuFunction(
+                    toggle: creatorBannedFromCommunity,
+                    trueText: "Unban User",
+                    trueImageName: Icons.communityUnban,
+                    falseText: "Ban User",
+                    falseImageName: Icons.communityBan,
+                    isDestructive: .whenFalse
+                ) {
+                    modToolTracker.banUser(
+                        .init(from: hierarchicalComment.commentView.creator),
+                        from: .init(from: hierarchicalComment.commentView.community),
+                        bannedFromCommunity: creatorBannedFromCommunity,
+                        shouldBan: !creatorBannedFromCommunity,
                         userRemovalWalker: .init(commentTracker: commentTracker)
                     )
                 })
