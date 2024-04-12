@@ -249,7 +249,7 @@ struct ModlogEntry: Hashable, Equatable {
         
         self.icon = apiType.modAddCommunity.removed ?
             .init(imageName: Icons.unmodFill, color: .red) :
-            .init(imageName: Icons.moderationFill, color: .green)
+            .init(imageName: Icons.moderationFill, color: .moderation)
         
         self.contextLinks = [
             ModlogMenuFunction.moderator(apiType.moderator),
@@ -268,7 +268,7 @@ struct ModlogEntry: Hashable, Equatable {
         self.expires = .inapplicable
         self.additionalContext = nil
         
-        self.icon = .init(imageName: Icons.leftRight, color: .green)
+        self.icon = .init(imageName: Icons.leftRight, color: .moderation)
         
         self.contextLinks = [
             ModlogMenuFunction.moderator(apiType.moderator),
