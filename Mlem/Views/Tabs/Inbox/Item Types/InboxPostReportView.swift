@@ -11,6 +11,7 @@ struct InboxPostReportView: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     @EnvironmentObject var modToolTracker: ModToolTracker
     @EnvironmentObject var modInboxTracker: InboxTracker
+    @EnvironmentObject var unreadTracker: UnreadTracker
     
     @ObservedObject var postReport: PostReportModel
     
@@ -22,7 +23,11 @@ struct InboxPostReportView: View {
         .background(Color(uiColor: .systemBackground))
         .contentShape(Rectangle())
         .contextMenu {
-            ForEach(postReport.genMenuFunctions(modToolTracker: modToolTracker, inboxTracker: modInboxTracker)) { menuFunction in
+            ForEach(postReport.genMenuFunctions(
+                modToolTracker: modToolTracker,
+                inboxTracker: modInboxTracker,
+                unreadTracker: unreadTracker
+            )) { menuFunction in
                 MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
             }
         }
@@ -30,7 +35,7 @@ struct InboxPostReportView: View {
     
     func toggleResolved() {
         Task(priority: .userInitiated) {
-            await postReport.toggleResolved()
+            await postReport.toggleResolved(unreadTracker: unreadTracker)
         }
     }
     
@@ -51,7 +56,7 @@ struct InboxPostReportView: View {
                 return .resolve(resolved: postReport.postReport.resolved, resolve: toggleResolved)
             case .remove:
                 return .remove(removed: postReport.post.removed) {
-                    postReport.togglePostRemoved(modToolTracker: modToolTracker)
+                    postReport.togglePostRemoved(modToolTracker: modToolTracker, unreadTracker: unreadTracker)
                 }
             case .purge:
                 return .purge(purged: postReport.purged) {
@@ -59,7 +64,11 @@ struct InboxPostReportView: View {
                 }
             case .ban:
                 return .ban(banned: postReport.postCreatorBannedFromCommunity, instanceBan: false) {
-                    postReport.togglePostCreatorBanned(modToolTracker: modToolTracker, inboxTracker: modInboxTracker)
+                    postReport.togglePostCreatorBanned(
+                        modToolTracker: modToolTracker,
+                        inboxTracker: modInboxTracker,
+                        unreadTracker: unreadTracker
+                    )
                 }
             default:
                 return nil

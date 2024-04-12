@@ -21,10 +21,10 @@ enum ModTool: Hashable, Identifiable {
     case addMod(Binding<UserModel>?, Binding<CommunityModel>?) // user to add as mod, community to add mod to
     
     // post
-    case removePost(any Removable, Bool) // post to remove, should remove
+    case removePost(any Removable, Bool, (() -> Void)?) // post to remove, should remove, callback
     
     // comment
-    case removeComment(any Removable, Bool) // comment to remove, should remove
+    case removeComment(any Removable, Bool, (() -> Void)?) // comment to remove, should remove
     
     case denyApplication(RegistrationApplicationModel)
     
@@ -52,11 +52,11 @@ enum ModTool: Hashable, Identifiable {
             hasher.combine("addMod")
             hasher.combine(user?.wrappedValue.uid)
             hasher.combine(community?.wrappedValue.uid)
-        case let .removePost(post, shouldRemove):
+        case let .removePost(post, shouldRemove, _):
             hasher.combine("removePost")
             hasher.combine(post)
             hasher.combine(shouldRemove)
-        case let .removeComment(comment, shouldRemove):
+        case let .removeComment(comment, shouldRemove, _):
             hasher.combine("removeComment")
             hasher.combine(comment)
             hasher.combine(shouldRemove)
@@ -94,12 +94,12 @@ class ModToolTracker: ObservableObject {
         openTool = .addMod(user, community)
     }
     
-    func removePost(_ post: any Removable, shouldRemove: Bool) {
-        openTool = .removePost(post, shouldRemove)
+    func removePost(_ post: any Removable, shouldRemove: Bool, callback: (() -> Void)? = nil) {
+        openTool = .removePost(post, shouldRemove, callback)
     }
     
-    func removeComment(_ comment: any Removable, shouldRemove: Bool) {
-        openTool = .removeComment(comment, shouldRemove)
+    func removeComment(_ comment: any Removable, shouldRemove: Bool, callback: (() -> Void)? = nil) {
+        openTool = .removeComment(comment, shouldRemove, callback)
     }
     
     func removeCommunity(_ community: CommunityModel, shouldRemove: Bool) {

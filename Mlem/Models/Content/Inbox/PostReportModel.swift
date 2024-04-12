@@ -68,23 +68,33 @@ class PostReportModel: ContentIdentifiable, ObservableObject {
         purged = newPurged
     }
     
-    func toggleResolved(withHaptic: Bool = true) async {
+    func toggleResolved(unreadTracker: UnreadTracker, withHaptic: Bool = true) async {
+        let originalReadState: Bool = read
         if withHaptic {
             hapticManager.play(haptic: .lightSuccess, priority: .low)
         }
         do {
             let response = try await apiClient.markPostReportResolved(reportId: postReport.id, resolved: !postReport.resolved)
             await reinit(from: response)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                unreadTracker.postReports.toggleRead(originalState: originalReadState)
+            }
         } catch {
             errorHandler.handle(error)
         }
     }
     
-    func togglePostRemoved(modToolTracker: ModToolTracker) {
-        modToolTracker.removePost(self, shouldRemove: !post.removed)
+    func togglePostRemoved(modToolTracker: ModToolTracker, unreadTracker: UnreadTracker) {
+        modToolTracker.removePost(self, shouldRemove: !post.removed) {
+            if !self.read {
+                Task {
+                    await self.toggleResolved(unreadTracker: unreadTracker, withHaptic: false)
+                }
+            }
+        }
     }
     
-    func togglePostCreatorBanned(modToolTracker: ModToolTracker, inboxTracker: InboxTracker) {
+    func togglePostCreatorBanned(modToolTracker: ModToolTracker, inboxTracker: InboxTracker, unreadTracker: UnreadTracker) {
         modToolTracker.banUser(
             postCreator,
             from: community,
@@ -94,7 +104,7 @@ class PostReportModel: ContentIdentifiable, ObservableObject {
         ) {
             if !self.postReport.resolved {
                 Task(priority: .userInitiated) {
-                    await self.toggleResolved(withHaptic: false)
+                    await self.toggleResolved(unreadTracker: unreadTracker, withHaptic: false)
                 }
             }
         }
@@ -104,7 +114,11 @@ class PostReportModel: ContentIdentifiable, ObservableObject {
         modToolTracker.purgeContent(self)
     }
     
-    func genMenuFunctions(modToolTracker: ModToolTracker, inboxTracker: InboxTracker) -> [MenuFunction] {
+    func genMenuFunctions(
+        modToolTracker: ModToolTracker,
+        inboxTracker: InboxTracker,
+        unreadTracker: UnreadTracker
+    ) -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         
         ret.append(.toggleableMenuFunction(
@@ -115,7 +129,7 @@ class PostReportModel: ContentIdentifiable, ObservableObject {
             falseImageName: Icons.resolve
         ) {
             Task(priority: .userInitiated) {
-                await self.toggleResolved()
+                await self.toggleResolved(unreadTracker: unreadTracker)
             }
         }
         )
@@ -128,7 +142,7 @@ class PostReportModel: ContentIdentifiable, ObservableObject {
             falseImageName: Icons.remove,
             isDestructive: .whenFalse
         ) {
-            self.togglePostRemoved(modToolTracker: modToolTracker)
+            self.togglePostRemoved(modToolTracker: modToolTracker, unreadTracker: unreadTracker)
         }
         )
         
@@ -140,7 +154,7 @@ class PostReportModel: ContentIdentifiable, ObservableObject {
             falseImageName: Icons.communityBan,
             isDestructive: .whenFalse
         ) {
-            self.togglePostCreatorBanned(modToolTracker: modToolTracker, inboxTracker: inboxTracker)
+            self.togglePostCreatorBanned(modToolTracker: modToolTracker, inboxTracker: inboxTracker, unreadTracker: unreadTracker)
         }
         )
         
@@ -178,9 +192,6 @@ extension PostReportModel: Removable, Purgable {
             if response.post.removed == shouldRemove {
                 await MainActor.run {
                     self.post.removed = shouldRemove
-                }
-                if !postReport.resolved {
-                    await toggleResolved(withHaptic: false)
                 }
             }
             return true

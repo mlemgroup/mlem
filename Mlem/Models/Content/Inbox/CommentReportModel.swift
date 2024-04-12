@@ -68,23 +68,34 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
         purged = newPurged
     }
     
-    func toggleResolved(withHaptic: Bool = true) async {
+    func toggleResolved(unreadTracker: UnreadTracker, withHaptic: Bool = true) async {
+        let originalReadState: Bool = read
+        
         if withHaptic {
             hapticManager.play(haptic: .lightSuccess, priority: .low)
         }
         do {
             let response = try await apiClient.markCommentReportResolved(reportId: commentReport.id, resolved: !commentReport.resolved)
             await reinit(from: response)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                unreadTracker.commentReports.toggleRead(originalState: originalReadState)
+            }
         } catch {
             errorHandler.handle(error)
         }
     }
     
-    func toggleCommentRemoved(modToolTracker: ModToolTracker) {
-        modToolTracker.removeComment(self, shouldRemove: !comment.removed)
+    func toggleCommentRemoved(modToolTracker: ModToolTracker, unreadTracker: UnreadTracker) {
+        modToolTracker.removeComment(self, shouldRemove: !comment.removed) {
+            if !self.read {
+                Task {
+                    await self.toggleResolved(unreadTracker: unreadTracker, withHaptic: false)
+                }
+            }
+        }
     }
     
-    func toggleCommentCreatorBanned(modToolTracker: ModToolTracker, inboxTracker: InboxTracker) {
+    func toggleCommentCreatorBanned(modToolTracker: ModToolTracker, inboxTracker: InboxTracker, unreadTracker: UnreadTracker) {
         modToolTracker.banUser(
             commentCreator,
             from: community,
@@ -92,9 +103,9 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
             shouldBan: !commentCreatorBannedFromCommunity,
             userRemovalWalker: .init(inboxTracker: inboxTracker)
         ) {
-            if !self.commentReport.resolved {
+            if !self.read {
                 Task(priority: .userInitiated) {
-                    await self.toggleResolved(withHaptic: false)
+                    await self.toggleResolved(unreadTracker: unreadTracker, withHaptic: false)
                 }
             }
         }
@@ -104,7 +115,7 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
         modToolTracker.purgeContent(self)
     }
     
-    func genMenuFunctions(modToolTracker: ModToolTracker, inboxTracker: InboxTracker) -> [MenuFunction] {
+    func genMenuFunctions(modToolTracker: ModToolTracker, inboxTracker: InboxTracker, unreadTracker: UnreadTracker) -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         
         ret.append(.toggleableMenuFunction(
@@ -115,7 +126,7 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
             falseImageName: Icons.resolve
         ) {
             Task(priority: .userInitiated) {
-                await self.toggleResolved()
+                await self.toggleResolved(unreadTracker: unreadTracker)
             }
         }
         )
@@ -128,7 +139,7 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
             falseImageName: Icons.remove,
             isDestructive: .whenFalse
         ) {
-            self.toggleCommentRemoved(modToolTracker: modToolTracker)
+            self.toggleCommentRemoved(modToolTracker: modToolTracker, unreadTracker: unreadTracker)
         }
         )
         
@@ -140,7 +151,11 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
             falseImageName: Icons.communityBan,
             isDestructive: .whenFalse
         ) {
-            self.toggleCommentCreatorBanned(modToolTracker: modToolTracker, inboxTracker: inboxTracker)
+            self.toggleCommentCreatorBanned(
+                modToolTracker: modToolTracker,
+                inboxTracker: inboxTracker,
+                unreadTracker: unreadTracker
+            )
         }
         )
         
@@ -168,9 +183,6 @@ extension CommentReportModel: Removable, Purgable {
             if response.commentView.comment.removed == shouldRemove {
                 await MainActor.run {
                     self.comment.removed = shouldRemove
-                }
-                if !commentReport.resolved {
-                    await toggleResolved(withHaptic: false)
                 }
             }
             return true

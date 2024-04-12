@@ -64,7 +64,7 @@ class MessageModel: ContentIdentifiable, ObservableObject {
             let newMessage = try await inboxRepository.markMessageRead(id: privateMessage.id, isRead: privateMessage.read)
             await reinit(from: newMessage)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                unreadTracker.toggleMessageRead(originalState: originalPrivateMessage.read)
+                unreadTracker.messages.toggleRead(originalState: originalPrivateMessage.read)
             }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
@@ -83,7 +83,7 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         // replying to a message marks it as read, but the call doesn't return anything so we just state fake it here
         if !privateMessage.read {
             setPrivateMessage(APIPrivateMessage(from: privateMessage, read: true))
-            unreadTracker.readMessage()
+            unreadTracker.messages.read()
         }
     }
     

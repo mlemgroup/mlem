@@ -12,6 +12,7 @@ struct InboxCommentReportView: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     @EnvironmentObject var modToolTracker: ModToolTracker
     @EnvironmentObject var modInboxTracker: InboxTracker
+    @EnvironmentObject var unreadTracker: UnreadTracker
     
     @ObservedObject var commentReport: CommentReportModel
     
@@ -23,7 +24,11 @@ struct InboxCommentReportView: View {
         .contentShape(Rectangle())
         .background(Color.systemBackground)
         .contextMenu {
-            ForEach(commentReport.genMenuFunctions(modToolTracker: modToolTracker, inboxTracker: modInboxTracker)) { menuFunction in
+            ForEach(commentReport.genMenuFunctions(
+                modToolTracker: modToolTracker,
+                inboxTracker: modInboxTracker,
+                unreadTracker: unreadTracker
+            )) { menuFunction in
                 MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
             }
         }
@@ -46,7 +51,7 @@ struct InboxCommentReportView: View {
                 return .resolve(resolved: commentReport.commentReport.resolved, resolve: toggleResolved)
             case .remove:
                 return .remove(removed: commentReport.comment.removed) {
-                    commentReport.toggleCommentRemoved(modToolTracker: modToolTracker)
+                    commentReport.toggleCommentRemoved(modToolTracker: modToolTracker, unreadTracker: unreadTracker)
                 }
             case .purge:
                 return .purge(purged: commentReport.purged) {
@@ -54,7 +59,11 @@ struct InboxCommentReportView: View {
                 }
             case .ban:
                 return .ban(banned: commentReport.commentCreatorBannedFromCommunity, instanceBan: false) {
-                    commentReport.toggleCommentCreatorBanned(modToolTracker: modToolTracker, inboxTracker: modInboxTracker)
+                    commentReport.toggleCommentCreatorBanned(
+                        modToolTracker: modToolTracker,
+                        inboxTracker: modInboxTracker,
+                        unreadTracker: unreadTracker
+                    )
                 }
             default:
                 return nil
@@ -64,7 +73,7 @@ struct InboxCommentReportView: View {
     
     func toggleResolved() {
         Task(priority: .userInitiated) {
-            await commentReport.toggleResolved()
+            await commentReport.toggleResolved(unreadTracker: unreadTracker)
         }
     }
 }

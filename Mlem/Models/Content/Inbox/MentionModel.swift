@@ -178,7 +178,7 @@ extension MentionModel {
             await reinit(from: updatedMention)
             if !original.personMention.read {
                 _ = try await inboxRepository.markMentionRead(id: personMention.id, isRead: true)
-                await unreadTracker.readMention()
+                await unreadTracker.mentions.read()
             }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
@@ -201,7 +201,7 @@ extension MentionModel {
             let newMessage = try await inboxRepository.markMentionRead(id: personMention.id, isRead: personMention.read)
             await reinit(from: newMessage)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                unreadTracker.toggleMentionRead(originalState: originalPersonMention.read)
+                unreadTracker.mentions.toggleRead(originalState: originalPersonMention.read)
             }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
@@ -237,7 +237,7 @@ extension MentionModel {
             if !original.personMention.read {
                 _ = try await inboxRepository.markMentionRead(id: personMention.id, isRead: true)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                    unreadTracker.toggleMentionRead(originalState: original.read)
+                    unreadTracker.mentions.toggleRead(originalState: original.read)
                 }
             }
             
@@ -258,7 +258,7 @@ extension MentionModel {
         // replying to a message marks it as read, but the call doesn't return anything so we just state fake it here
         if !personMention.read {
             setPersonMention(APIPersonMention(from: personMention, read: true))
-            unreadTracker.readMention()
+            unreadTracker.mentions.read()
         }
     }
     

@@ -8,114 +8,82 @@
 import Dependencies
 import Foundation
 
+struct UnreadCount {
+    private(set) var count: Int
+    
+    init(count: Int) {
+        self.count = count
+    }
+    
+    init() {
+        self.count = 0
+    }
+    
+    // @MainActor
+    mutating func reset() { count = 0 }
+    
+    // @MainActor
+    mutating func read() { count -= 1 }
+    
+    // @MainActor
+    mutating func unread() { count += 1 }
+    
+    // @MainActor
+    mutating func toggleRead(originalState: Bool) {
+        if originalState {
+            unread()
+        } else {
+            read()
+        }
+    }
+}
+
 class UnreadTracker: ObservableObject {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.personRepository) var personRepository
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.siteInformation) var siteInformation
     
-    @Published private(set) var replies: Int
-    @Published private(set) var mentions: Int
-    @Published private(set) var messages: Int
-    @Published private(set) var commentReports: Int
-    @Published private(set) var postReports: Int
-    @Published private(set) var messageReports: Int
-    @Published private(set) var registrationApplications: Int
+    @Published var replies: UnreadCount
+    @Published var mentions: UnreadCount
+    @Published var messages: UnreadCount
+    @Published var commentReports: UnreadCount
+    @Published var postReports: UnreadCount
+    @Published var messageReports: UnreadCount
+    @Published var registrationApplications: UnreadCount
     
-    var total: Int { replies + mentions + messages + commentReports + postReports + messageReports }
-    var personal: Int { replies + mentions + messages }
-    var mod: Int { commentReports + postReports + messageReports + registrationApplications }
+    var total: Int {
+        replies.count +
+            mentions.count +
+            messages.count +
+            commentReports.count +
+            postReports.count +
+            messageReports.count +
+            registrationApplications.count
+    }
+
+    var personal: Int { replies.count + mentions.count + messages.count }
+    var mod: Int { commentReports.count + postReports.count + messageReports.count + registrationApplications.count }
     
     init() {
-        self.replies = 0
-        self.mentions = 0
-        self.messages = 0
-        self.commentReports = 0
-        self.postReports = 0
-        self.messageReports = 0
-        self.registrationApplications = 0
+        self.replies = .init()
+        self.mentions = .init()
+        self.messages = .init()
+        self.commentReports = .init()
+        self.postReports = .init()
+        self.messageReports = .init()
+        self.registrationApplications = .init()
     }
     
     @MainActor
     func reset() {
-        replies = 0
-        mentions = 0
-        messages = 0
-        commentReports = 0
-        postReports = 0
-        messageReports = 0
-        registrationApplications = 0
-    }
-    
-    @MainActor
-    func readReply() { replies -= 1 }
-    
-    @MainActor
-    func unreadReply() { replies += 1 }
-    
-    @MainActor
-    func readMention() { mentions -= 1 }
-    
-    @MainActor
-    func unreadMention() { mentions += 1 }
-    
-    @MainActor
-    func readMessage() { messages -= 1 }
-    
-    @MainActor
-    func unreadMessage() { messages += 1 }
-    
-    @MainActor
-    func readCommentReport() { commentReports -= 1 }
-    
-    @MainActor
-    func unreadCommentReport() { commentReports += 1 }
-    
-    @MainActor
-    func readPostReport() { postReports -= 1 }
-    
-    @MainActor
-    func unreadPostReport() { postReports += 1 }
-    
-    @MainActor
-    func readMessageReport() { messageReports -= 1 }
-    
-    @MainActor
-    func unreadMessageReport() { messageReports += 1 }
-    
-    @MainActor
-    func readRegistrationApplication() { registrationApplications -= 1 }
-    
-    @MainActor
-    func unreadRegistrationApplication() { registrationApplications += 1 }
-    
-    // convenience methods to flip a read state (if originalState is true (read), will unread a message; if false, will read a message)
-    
-    @MainActor
-    func toggleReplyRead(originalState: Bool) {
-        if originalState {
-            unreadReply()
-        } else {
-            readReply()
-        }
-    }
-    
-    @MainActor
-    func toggleMentionRead(originalState: Bool) {
-        if originalState {
-            unreadMention()
-        } else {
-            readMention()
-        }
-    }
-    
-    @MainActor
-    func toggleMessageRead(originalState: Bool) {
-        if originalState {
-            unreadMessage()
-        } else {
-            readMessage()
-        }
+        replies.reset()
+        mentions.reset()
+        messages.reset()
+        commentReports.reset()
+        postReports.reset()
+        messageReports.reset()
+        registrationApplications.reset()
     }
     
     func update() async {
@@ -126,13 +94,13 @@ class UnreadTracker: ObservableObject {
         let (personalCounts, reportCounts, applicationCount) = await (asyncPersonalCounts, asyncReportCounts, asyncApplicationCount)
         
         DispatchQueue.main.async {
-            self.replies = personalCounts.replies
-            self.mentions = personalCounts.mentions
-            self.messages = personalCounts.privateMessages
-            self.commentReports = reportCounts.commentReports
-            self.postReports = reportCounts.postReports
-            self.messageReports = reportCounts.privateMessageReports ?? 0
-            self.registrationApplications = applicationCount.registrationApplications
+            self.replies = .init(count: personalCounts.replies)
+            self.mentions = .init(count: personalCounts.mentions)
+            self.messages = .init(count: personalCounts.privateMessages)
+            self.commentReports = .init(count: reportCounts.commentReports)
+            self.postReports = .init(count: reportCounts.postReports)
+            self.messageReports = .init(count: reportCounts.privateMessageReports ?? 0)
+            self.registrationApplications = .init(count: applicationCount.registrationApplications)
         }
     }
     

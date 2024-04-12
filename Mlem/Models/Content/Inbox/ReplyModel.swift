@@ -180,7 +180,7 @@ extension ReplyModel {
             await reinit(from: updatedReply)
             if !original.commentReply.read {
                 _ = try await inboxRepository.markReplyRead(id: commentReply.id, isRead: true)
-                await unreadTracker.readReply()
+                await unreadTracker.replies.read()
             }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
@@ -203,7 +203,7 @@ extension ReplyModel {
             let newReply = try await inboxRepository.markReplyRead(id: commentReply.id, isRead: commentReply.read)
             await reinit(from: newReply)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                unreadTracker.toggleReplyRead(originalState: originalCommentReply.read)
+                unreadTracker.replies.toggleRead(originalState: originalCommentReply.read)
             }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
@@ -240,7 +240,7 @@ extension ReplyModel {
                 let newReply = try await inboxRepository.markReplyRead(id: commentReply.id, isRead: true)
                 await reinit(from: newReply)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                    unreadTracker.readReply()
+                    unreadTracker.replies.read()
                 }
             }
         } catch {

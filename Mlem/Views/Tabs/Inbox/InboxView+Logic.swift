@@ -96,13 +96,13 @@ extension InboxView {
             case .mod:
                 unread = unreadTracker.mod
             }
-        case .replies: unread = unreadTracker.replies
-        case .mentions: unread = unreadTracker.mentions
-        case .messages: unread = unreadTracker.messages
-        case .commentReports: unread = unreadTracker.commentReports
-        case .postReports: unread = unreadTracker.postReports
-        case .messageReports: unread = unreadTracker.messageReports
-        case .registrationApplications: unread = unreadTracker.registrationApplications
+        case .replies: unread = unreadTracker.replies.count
+        case .mentions: unread = unreadTracker.mentions.count
+        case .messages: unread = unreadTracker.messages.count
+        case .commentReports: unread = unreadTracker.commentReports.count
+        case .postReports: unread = unreadTracker.postReports.count
+        case .messageReports: unread = unreadTracker.messageReports.count
+        case .registrationApplications: unread = unreadTracker.registrationApplications.count
         }
         
         if unread > 0 {

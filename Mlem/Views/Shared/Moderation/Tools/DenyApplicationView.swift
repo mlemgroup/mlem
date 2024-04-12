@@ -12,6 +12,8 @@ import SwiftUI
 struct DenyApplicationView: View {
     @Dependency(\.notifier) var notifier
     
+    @EnvironmentObject var unreadTracker: UnreadTracker
+    
     @Environment(\.dismiss) var dismiss
     
     let application: RegistrationApplicationModel
@@ -64,7 +66,7 @@ struct DenyApplicationView: View {
     func submit() {
         isWaiting = true
         Task {
-            let success = await application.deny(reason: text)
+            let success = await application.deny(reason: text, unreadTracker: unreadTracker)
             if success {
                 await MainActor.run {
                     dismiss()
