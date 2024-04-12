@@ -13,8 +13,8 @@ class AppState {
     var activeAccounts: [ActiveAccount] = []
     var isOnboarding: Bool { activeAccounts.isEmpty }
 
-    func changeUser(to user: UserStub) {
-        let newAccount = ActiveAccount(user.api, user: user)
+    func changeUser(to userStub: UserStub) {
+        let newAccount = ActiveAccount(userStub.api, userStub: userStub)
         activeAccounts.forEach { $0.deactivate() }
         activeAccounts = [newAccount]
     }

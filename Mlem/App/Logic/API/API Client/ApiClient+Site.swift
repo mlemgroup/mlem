@@ -11,7 +11,9 @@ extension ApiClient {
     func getSite() async throws -> Instance3 {
         let request = GetSiteRequest()
         let response = try await perform(request)
-        return caches.instance3.getModel(api: self, from: response)
+        let model = caches.instance3.getModel(api: self, from: response)
+        self.myInstance = model
+        return model
     }
     
     func getMyUser(userStub: UserStub?) async throws -> (user: User?, site: Instance3) {
@@ -29,6 +31,8 @@ extension ApiClient {
                 instance: site
             )
         }
+        self.myUser = user
+        self.myInstance = site
         return (user: user, site: site)
     }
 }

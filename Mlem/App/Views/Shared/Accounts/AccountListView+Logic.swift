@@ -19,7 +19,7 @@ extension AccountListView {
             return accountsTracker.savedAccounts.sorted { $0.instanceSortKey < $1.instanceSortKey }
         case .mostRecent:
             return accountsTracker.savedAccounts.sorted { left, right in
-                if appState.firstAccount.myUser?.actorId == left.actorId {
+                if appState.firstAccount.user?.actorId == left.actorId {
                     return true
                 } else if appState.firstAccount.actorId == right.actorId {
                     return false
@@ -94,7 +94,7 @@ extension AccountListView {
             var groups = [AccountGroup]()
             
             today.sort { $0.lastLoggedIn ?? .distantPast > $1.lastLoggedIn ?? .distantPast }
-            if let user = appState.firstAccount.myUser {
+            if let user = appState.firstAccount.user {
                 today.prepend(user.stub)
             }
             

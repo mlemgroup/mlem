@@ -27,7 +27,7 @@ struct ContentView: View {
     
     var appState: AppState { AppState.main }
         
-    var profileTabAvatar: URL? { appState.firstAccount.myUser?.avatarUrl }
+    var profileTabAvatar: URL? { appState.firstAccount.userStub?.avatarUrl }
     
     var profileTabLabel: String { "Profile" }
     
