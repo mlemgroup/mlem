@@ -115,7 +115,7 @@ struct ModlogEntry: Hashable, Equatable {
         
         self.icon = .init(
             imageName: apiType.modFeaturePost.featured ? Icons.pinned : Icons.unpinned,
-            color: apiType.modFeaturePost.isFeaturedCommunity ? .green : .red
+            color: apiType.modFeaturePost.isFeaturedCommunity ? .moderation : .red
         )
         
         self.contextLinks = [

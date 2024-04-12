@@ -89,7 +89,7 @@ struct SettingsView: View {
                         }
                         if siteInformation.isAdmin || !siteInformation.moderatedCommunities.isEmpty {
                             NavigationLink(.settings(.moderation)) {
-                                Label("Moderation", systemImage: Icons.moderationFill).labelStyle(SquircleLabelStyle(color: .green))
+                                Label("Moderation", systemImage: Icons.moderationFill).labelStyle(SquircleLabelStyle(color: .moderation))
                             }
                         }
                         NavigationLink(.settings(.links)) {
