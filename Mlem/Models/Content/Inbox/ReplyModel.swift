@@ -202,7 +202,7 @@ extension ReplyModel {
         do {
             let newReply = try await inboxRepository.markReplyRead(id: commentReply.id, isRead: commentReply.read)
             await reinit(from: newReply)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 unreadTracker.toggleReplyRead(originalState: originalCommentReply.read)
             }
         } catch {
@@ -239,7 +239,7 @@ extension ReplyModel {
             if !original.commentReply.read {
                 let newReply = try await inboxRepository.markReplyRead(id: commentReply.id, isRead: true)
                 await reinit(from: newReply)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                     unreadTracker.readReply()
                 }
             }

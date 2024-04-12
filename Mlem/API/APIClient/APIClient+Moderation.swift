@@ -239,4 +239,13 @@ extension APIClient {
             approved: resolver != nil ? response.creatorLocalUser.acceptedApplication : nil
         )
     }
+    
+    // MARK: - Unread Counts
+    
+    func getUnreadReports(for communityId: Int?) async throws -> APIGetReportCountResponse {
+        let request = try GetReportCountRequest(session: session, communityId: communityId)
+        let response = try await perform(request: request)
+        
+        return response
+    }
 }

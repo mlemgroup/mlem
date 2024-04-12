@@ -201,12 +201,13 @@ struct ContentView: View {
     func accountChanged() {
         // refresh unread count
         Task(priority: .background) {
-            do {
-                let unreadCounts = try await personRepository.getUnreadCounts()
-                unreadTracker.update(with: unreadCounts)
-            } catch {
-                errorHandler.handle(error)
-            }
+            await unreadTracker.update()
+//            do {
+//                let unreadCounts = try await personRepository.getUnreadCounts()
+//                unreadTracker.update(with: unreadCounts)
+//            } catch {
+//                errorHandler.handle(error)
+//            }
         }
     }
     

@@ -63,7 +63,7 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         do {
             let newMessage = try await inboxRepository.markMessageRead(id: privateMessage.id, isRead: privateMessage.read)
             await reinit(from: newMessage)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 unreadTracker.toggleMessageRead(originalState: originalPrivateMessage.read)
             }
         } catch {
