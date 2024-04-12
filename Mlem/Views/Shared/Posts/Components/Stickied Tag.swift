@@ -36,7 +36,7 @@ struct StickiedTag: View {
         case .local:
             return .red
         case .community:
-            return .green
+            return .moderation
         }
     }
 }
