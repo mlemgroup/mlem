@@ -200,7 +200,7 @@ extension MentionModel {
         do {
             let newMessage = try await inboxRepository.markMentionRead(id: personMention.id, isRead: personMention.read)
             await reinit(from: newMessage)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 unreadTracker.toggleMentionRead(originalState: originalPersonMention.read)
             }
         } catch {
@@ -236,7 +236,7 @@ extension MentionModel {
             }
             if !original.personMention.read {
                 _ = try await inboxRepository.markMentionRead(id: personMention.id, isRead: true)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                     unreadTracker.toggleMentionRead(originalState: original.read)
                 }
             }

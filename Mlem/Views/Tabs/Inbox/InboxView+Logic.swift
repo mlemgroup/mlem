@@ -10,13 +10,7 @@ import Foundation
 extension InboxView {
     func refresh(tracker: InboxTracker) async {
         await tracker.refresh(clearBeforeFetch: false)
-        
-        do {
-            let unreadCounts = try await personRepository.getUnreadCounts()
-            unreadTracker.update(with: unreadCounts)
-        } catch {
-            errorHandler.handle(error)
-        }
+        await unreadTracker.update()
     }
     
     func toggleFilterRead() {
@@ -89,5 +83,31 @@ extension InboxView {
         })
         
         return ret
+    }
+    
+    // swiftlint:disable:next cyclomatic_complexity
+    func genTabLabel(for tab: InboxTab) -> String {
+        var unread = 0
+        switch tab {
+        case .all:
+            switch selectedInbox {
+            case .personal:
+                unread = unreadTracker.personal
+            case .mod:
+                unread = unreadTracker.mod
+            }
+        case .replies: unread = unreadTracker.replies
+        case .mentions: unread = unreadTracker.mentions
+        case .messages: unread = unreadTracker.messages
+        case .commentReports: unread = unreadTracker.commentReports
+        case .postReports: unread = unreadTracker.postReports
+        case .messageReports: unread = unreadTracker.messageReports
+        case .registrationApplications: unread = unreadTracker.registrationApplications
+        }
+        
+        if unread > 0 {
+            return "\(tab.label) (\(unread))"
+        }
+        return tab.label
     }
 }
