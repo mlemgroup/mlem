@@ -202,12 +202,6 @@ struct ContentView: View {
         // refresh unread count
         Task(priority: .background) {
             await unreadTracker.update()
-//            do {
-//                let unreadCounts = try await personRepository.getUnreadCounts()
-//                unreadTracker.update(with: unreadCounts)
-//            } catch {
-//                errorHandler.handle(error)
-//            }
         }
     }
     

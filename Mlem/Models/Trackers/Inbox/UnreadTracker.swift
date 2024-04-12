@@ -12,6 +12,7 @@ class UnreadTracker: ObservableObject {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.personRepository) var personRepository
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.siteInformation) var siteInformation
     
     @Published private(set) var replies: Int
     @Published private(set) var mentions: Int
@@ -117,21 +118,52 @@ class UnreadTracker: ObservableObject {
         }
     }
     
-    // updates from server
     func update() async {
+        async let asyncPersonalCounts = await fetchUnreadPersonalCounts()
+        async let asyncReportCounts = await fetchUnreadReportCounts()
+        async let asyncApplicationCount = await fetchUnreadRegistrationApplicationCounts()
+        
+        let (personalCounts, reportCounts, applicationCount) = await (asyncPersonalCounts, asyncReportCounts, asyncApplicationCount)
+        
+        DispatchQueue.main.async {
+            self.replies = personalCounts.replies
+            self.mentions = personalCounts.mentions
+            self.messages = personalCounts.privateMessages
+            self.commentReports = reportCounts.commentReports
+            self.postReports = reportCounts.postReports
+            self.messageReports = reportCounts.privateMessageReports ?? 0
+            self.registrationApplications = applicationCount.registrationApplications
+        }
+    }
+    
+    private func fetchUnreadPersonalCounts() async -> APIPersonUnreadCounts {
         do {
-            let unreadPersonalCounts = try await personRepository.getUnreadCounts()
-            let unreadReportCounts = try await apiClient.getUnreadReports(for: nil)
-            
-            print(unreadReportCounts)
-            
-            DispatchQueue.main.async {
-                self.replies = unreadPersonalCounts.replies
-                self.mentions = unreadPersonalCounts.mentions
-                self.messages = unreadPersonalCounts.privateMessages
+            return try await personRepository.getUnreadCounts()
+        } catch {
+            errorHandler.handle(error)
+        }
+        return .init(replies: 0, mentions: 0, privateMessages: 0)
+    }
+    
+    private func fetchUnreadReportCounts() async -> APIGetReportCountResponse {
+        do {
+            if siteInformation.isAdmin || !siteInformation.moderatedCommunities.isEmpty {
+                return try await apiClient.getUnreadReports(for: nil)
             }
         } catch {
             errorHandler.handle(error)
         }
+        return .init(communityId: nil, commentReports: 0, postReports: 0, privateMessageReports: 0)
+    }
+    
+    private func fetchUnreadRegistrationApplicationCounts() async -> APIGetUnreadRegistrationApplicationCountResponse {
+        do {
+            if siteInformation.isAdmin {
+                return try await apiClient.getUnreadRegistrationApplications()
+            }
+        } catch {
+            errorHandler.handle(error)
+        }
+        return .init(registrationApplications: 0)
     }
 }
