@@ -114,6 +114,7 @@ class StateManager<Value: Equatable> {
         expectedResult: Value,
         operation: @escaping (_ semaphore: UInt) async throws -> Void
     ) {
+        guard wrappedValue != expectedResult else { return }
         let semaphore = self.beginOperation(expectedResult: expectedResult)
         Task {
             do {
