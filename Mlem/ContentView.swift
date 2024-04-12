@@ -24,7 +24,19 @@ struct ContentView: View {
     
     @StateObject var editorTracker: EditorTracker = .init()
     @StateObject var modToolTracker: ModToolTracker = .init()
-    @StateObject var unreadTracker: UnreadTracker = .init()
+    @StateObject var unreadTracker: UnreadTracker = {
+        @AppStorage("showUnreadPersonal") var showUnreadPersonal = true
+        @AppStorage("showUnreadModerator") var showUnreadModerator = true
+        @AppStorage("showUnreadMessageReports") var showUnreadMessageReports = true
+        @AppStorage("showUnreadApplications") var showUnreadApplications = true
+        
+        return .init(
+            sumPersonal: showUnreadPersonal,
+            sumModerator: showUnreadModerator,
+            sumMessageReports: showUnreadMessageReports,
+            sumRegistrationApplications: showUnreadApplications
+        )
+    }()
     
     @State private var errorAlert: ErrorAlert?
     
@@ -36,7 +48,11 @@ struct ContentView: View {
     @State private var isPresentingAccountSwitcher: Bool = false
     @State private var tokenRefreshAccount: SavedAccount?
     
-    @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
+    @AppStorage("showUnreadPersonal") var showUnreadPersonal: Bool = true
+    @AppStorage("showUnreadModerator") var showUnreadModerator: Bool = true
+    @AppStorage("showUnreadMessageReports") var showUnreadMessageReports: Bool = true
+    @AppStorage("showUnreadApplications") var showUnreadApplications: Bool = true
+    
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
     @AppStorage("allowTabBarSwipeUpGesture") var allowTabBarSwipeUpGesture: Bool = true
     @AppStorage("appLock") var appLock: AppLock = .disabled
@@ -49,6 +65,8 @@ struct ContentView: View {
     var isAppLocked: Bool {
         appLock != .disabled && !biometricUnlock.isUnlocked
     }
+    
+    @State var displayedInboxBadgeCount: Int?
     
     var body: some View {
         FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
@@ -70,7 +88,7 @@ struct ContentView: View {
                             FancyTabBarLabel(
                                 tag: TabSelection.inbox,
                                 symbolConfiguration: .inbox,
-                                badgeCount: showInboxUnreadBadge ? unreadTracker.total : 0
+                                badgeCount: unreadTracker.inboxBadgeCount
                             )
                         }
                 }
@@ -108,6 +126,19 @@ struct ContentView: View {
         }
         .task(id: appState.currentActiveAccount) {
             accountChanged()
+        }
+        // these onChange handlers propagage AppState into the model layer so it can immediately update the badge
+        .onChange(of: showUnreadPersonal) { newValue in
+            unreadTracker.sumPersonal = newValue
+        }
+        .onChange(of: showUnreadModerator) { newValue in
+            unreadTracker.sumModerator = newValue
+        }
+        .onChange(of: showUnreadMessageReports) { newValue in
+            unreadTracker.sumMessageReports = newValue
+        }
+        .onChange(of: showUnreadApplications) { newValue in
+            unreadTracker.sumRegistrationApplications = newValue
         }
         .onReceive(errorHandler.$sessionExpired) { expired in
             if expired {

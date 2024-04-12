@@ -47,8 +47,12 @@ extension InboxView {
             let (imageName, enabled) = type != selectedInbox
                 ? (type.iconName, true)
                 : (type.iconNameFill, false)
+            let label = switch type {
+            case .personal: type.enrichedLabel(unread: unreadTracker.personal)
+            case .mod: type.enrichedLabel(unread: unreadTracker.modAndAdmin)
+            }
             ret.append(MenuFunction.standardMenuFunction(
-                text: type.label,
+                text: label,
                 imageName: imageName,
                 enabled: enabled
             ) {
@@ -94,7 +98,7 @@ extension InboxView {
             case .personal:
                 unread = unreadTracker.personal
             case .mod:
-                unread = unreadTracker.mod
+                unread = unreadTracker.modAndAdmin
             }
         case .replies: unread = unreadTracker.replies.count
         case .mentions: unread = unreadTracker.mentions.count

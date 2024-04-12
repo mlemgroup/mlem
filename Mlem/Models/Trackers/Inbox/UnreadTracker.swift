@@ -52,6 +52,11 @@ class UnreadTracker: ObservableObject {
     @Published var messageReports: UnreadCount
     @Published var registrationApplications: UnreadCount
     
+    @Published var sumPersonal: Bool
+    @Published var sumModerator: Bool
+    @Published var sumMessageReports: Bool
+    @Published var sumRegistrationApplications: Bool
+    
     var total: Int {
         replies.count +
             mentions.count +
@@ -61,11 +66,18 @@ class UnreadTracker: ObservableObject {
             messageReports.count +
             registrationApplications.count
     }
-
-    var personal: Int { replies.count + mentions.count + messages.count }
-    var mod: Int { commentReports.count + postReports.count + messageReports.count + registrationApplications.count }
     
-    init() {
+    var personal: Int { replies.count + mentions.count + messages.count }
+    var mod: Int { commentReports.count + postReports.count }
+    var modAndAdmin: Int { commentReports.count + postReports.count + messageReports.count + registrationApplications.count }
+    var inboxBadgeCount: Int {
+        (sumPersonal ? personal : 0) +
+            (sumModerator ? mod : 0) +
+            (sumMessageReports ? messageReports.count : 0) +
+            (sumRegistrationApplications ? registrationApplications.count : 0)
+    }
+    
+    init(sumPersonal: Bool, sumModerator: Bool, sumMessageReports: Bool, sumRegistrationApplications: Bool) {
         self.replies = .init()
         self.mentions = .init()
         self.messages = .init()
@@ -73,6 +85,11 @@ class UnreadTracker: ObservableObject {
         self.postReports = .init()
         self.messageReports = .init()
         self.registrationApplications = .init()
+        
+        self.sumPersonal = sumPersonal
+        self.sumModerator = sumModerator
+        self.sumMessageReports = sumMessageReports
+        self.sumRegistrationApplications = sumRegistrationApplications
     }
     
     @MainActor

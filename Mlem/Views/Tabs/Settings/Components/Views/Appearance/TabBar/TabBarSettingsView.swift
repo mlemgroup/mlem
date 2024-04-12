@@ -11,7 +11,10 @@ import SwiftUI
 struct TabBarSettingsView: View {
     @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .nickname
     @AppStorage("showTabNames") var showTabNames: Bool = true
-    @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
+    @AppStorage("showUnreadPersonal") var showUnreadPersonal: Bool = true
+    @AppStorage("showUnreadModerator") var showUnreadModerator: Bool = true
+    @AppStorage("showUnreadMessageReports") var showUnreadMessageReports: Bool = true
+    @AppStorage("showUnreadApplications") var showUnreadApplications: Bool = true
     @AppStorage("showUserAvatarOnProfileTab") var showUserAvatar: Bool = true
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
     
@@ -25,12 +28,34 @@ struct TabBarSettingsView: View {
                     settingName: "Tab Labels",
                     isTicked: $showTabNames
                 )
-                
+            }
+            
+            Section {
                 SwitchableSettingsItem(
                     settingPictureSystemName: Icons.unreadBadge,
-                    settingName: "Inbox Unread Count",
-                    isTicked: $showInboxUnreadBadge
+                    settingName: "Personal Notifications",
+                    isTicked: $showUnreadPersonal
                 )
+                
+                SwitchableSettingsItem(
+                    settingPictureSystemName: Icons.moderation,
+                    settingName: "Post and Comment Reports",
+                    isTicked: $showUnreadModerator
+                )
+                
+                SwitchableSettingsItem(
+                    settingPictureSystemName: Icons.messageReportSetting,
+                    settingName: "Message Reports",
+                    isTicked: $showUnreadMessageReports
+                )
+                
+                SwitchableSettingsItem(
+                    settingPictureSystemName: Icons.registrationApplication,
+                    settingName: "Registration Applications",
+                    isTicked: $showUnreadApplications
+                )
+            } header: {
+                Text("Inbox Unread Badge")
             }
             
             // TODO: options like this will need to be updated to only show when there is an active account
