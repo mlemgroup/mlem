@@ -10,7 +10,7 @@ import Foundation
 import Semaphore
 import SwiftUI
 
-class ModlogTracker: ParentTracker<ModlogEntry>, ModlogTrackerProtocol {
+class ModlogTracker: ParentTracker<ModlogEntry> {
     var initialItems: [ModlogEntry]?
     
     private let initialLoadingSemaphore: AsyncSemaphore = .init(value: 1)

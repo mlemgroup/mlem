@@ -7,6 +7,9 @@
 
 import Dependencies
 import Foundation
+import SwiftUI
+
+// swiftlint:disable file_length
 
 /// Internal representation of a person mention
 class MentionModel: ContentIdentifiable, ObservableObject {
@@ -24,8 +27,9 @@ class MentionModel: ContentIdentifiable, ObservableObject {
     var recipient: APIPerson
     @Published var numReplies: Int
     @Published var votes: VotesModel
-    @Published var creatorBannedFromCommunity: Bool
+    @Published var commentCreatorBannedFromCommunity: Bool
     @Published var subscribed: APISubscribedStatus
+    @Published var read: Bool
     @Published var saved: Bool
     @Published var creatorBlocked: Bool
     
@@ -45,6 +49,7 @@ class MentionModel: ContentIdentifiable, ObservableObject {
         votes: VotesModel,
         creatorBannedFromCommunity: Bool,
         subscribed: APISubscribedStatus,
+        read: Bool,
         saved: Bool,
         creatorBlocked: Bool
     ) {
@@ -56,8 +61,9 @@ class MentionModel: ContentIdentifiable, ObservableObject {
         self.recipient = recipient
         self.numReplies = numReplies
         self.votes = votes
-        self.creatorBannedFromCommunity = creatorBannedFromCommunity
+        self.commentCreatorBannedFromCommunity = creatorBannedFromCommunity
         self.subscribed = subscribed
+        self.read = read
         self.saved = saved
         self.creatorBlocked = creatorBlocked
     }
@@ -71,8 +77,9 @@ class MentionModel: ContentIdentifiable, ObservableObject {
         self.recipient = personMentionView.recipient
         self.numReplies = personMentionView.counts.childCount
         self.votes = VotesModel(from: personMentionView.counts, myVote: personMentionView.myVote)
-        self.creatorBannedFromCommunity = personMentionView.creatorBannedFromCommunity
+        self.commentCreatorBannedFromCommunity = personMentionView.creatorBannedFromCommunity
         self.subscribed = personMentionView.subscribed
+        self.read = personMentionView.personMention.read
         self.saved = personMentionView.saved
         self.creatorBlocked = personMentionView.creatorBlocked
     }
@@ -89,6 +96,7 @@ class MentionModel: ContentIdentifiable, ObservableObject {
         votes: VotesModel? = nil,
         creatorBannedFromCommunity: Bool? = nil,
         subscribed: APISubscribedStatus? = nil,
+        read: Bool? = nil,
         saved: Bool? = nil,
         creatorBlocked: Bool? = nil
     ) {
@@ -100,8 +108,9 @@ class MentionModel: ContentIdentifiable, ObservableObject {
         self.recipient = recipient ?? mentionModel.recipient
         self.numReplies = numReplies ?? mentionModel.numReplies
         self.votes = votes ?? mentionModel.votes
-        self.creatorBannedFromCommunity = creatorBannedFromCommunity ?? mentionModel.creatorBannedFromCommunity
+        self.commentCreatorBannedFromCommunity = creatorBannedFromCommunity ?? mentionModel.commentCreatorBannedFromCommunity
         self.subscribed = subscribed ?? mentionModel.subscribed
+        self.read = read ?? mentionModel.read
         self.saved = saved ?? mentionModel.saved
         self.creatorBlocked = creatorBlocked ?? mentionModel.creatorBlocked
     }
@@ -118,6 +127,16 @@ extension MentionModel {
         votes = newVotes
     }
     
+    @MainActor
+    func setSaved(_ newSaved: Bool) {
+        saved = newSaved
+    }
+    
+    @MainActor
+    func setRead(_ newRead: Bool) {
+        read = newRead
+    }
+    
     /// Re-initializes all fields to match the given MentionModel
     @MainActor
     func reinit(from mentionModel: MentionModel) {
@@ -128,11 +147,14 @@ extension MentionModel {
         community = mentionModel.community
         recipient = mentionModel.recipient
         votes = mentionModel.votes
-        creatorBannedFromCommunity = mentionModel.creatorBannedFromCommunity
+        commentCreatorBannedFromCommunity = mentionModel.commentCreatorBannedFromCommunity
         subscribed = mentionModel.subscribed
         saved = mentionModel.saved
         creatorBlocked = mentionModel.creatorBlocked
     }
+    
+    func toggleUpvote(unreadTracker: UnreadTracker) async { await vote(inputOp: .upvote, unreadTracker: unreadTracker) }
+    func toggleDownvote(unreadTracker: UnreadTracker) async { await vote(inputOp: .downvote, unreadTracker: unreadTracker) }
     
     func vote(inputOp: ScoringOperation, unreadTracker: UnreadTracker) async {
         guard !voting else {
@@ -177,12 +199,52 @@ extension MentionModel {
         // call API and either update with latest info or revert state fake on fail
         do {
             let newMessage = try await inboxRepository.markMentionRead(id: personMention.id, isRead: personMention.read)
-            await unreadTracker.toggleMentionRead(originalState: originalPersonMention.read)
             await reinit(from: newMessage)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                unreadTracker.toggleMentionRead(originalState: originalPersonMention.read)
+            }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)
             await setPersonMention(originalPersonMention)
+        }
+    }
+    
+    func toggleSave(unreadTracker: UnreadTracker) async {
+        hapticManager.play(haptic: .success, priority: .low)
+        
+        let shouldSave: Bool = !saved
+        @AppStorage("upvoteOnSave") var upvoteOnSave = false
+        
+        // state fake
+        let original: MentionModel = .init(from: self)
+        await setSaved(shouldSave)
+        await setRead(true)
+        if shouldSave, upvoteOnSave, votes.myVote != .upvote {
+            await setVotes(votes.applyScoringOperation(operation: .upvote))
+        }
+        
+        // API call
+        do {
+            let saveResponse = try await inboxRepository.saveMention(self, shouldSave: shouldSave)
+            
+            if shouldSave, upvoteOnSave {
+                let voteResponse = try await inboxRepository.voteOnMention(self, vote: .upvote)
+                await reinit(from: voteResponse)
+            } else {
+                await reinit(from: saveResponse)
+            }
+            if !original.personMention.read {
+                _ = try await inboxRepository.markMentionRead(id: personMention.id, isRead: true)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    unreadTracker.toggleMentionRead(originalState: original.read)
+                }
+            }
+            
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+            await reinit(from: original)
         }
     }
     
@@ -380,3 +442,5 @@ extension MentionModel: Equatable {
         lhs.id == rhs.id
     }
 }
+
+// swiftlint:enable file_length

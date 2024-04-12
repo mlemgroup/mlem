@@ -55,7 +55,7 @@ struct UserContentFeedView: View {
                 noPostsView()
             } else {
                 ForEach(items, id: \.uid) { feedItem(for: $0) }
-                EndOfFeedView(loadingState: userContentTracker.loadingState, viewType: .hobbit)
+                EndOfFeedView(loadingState: userContentTracker.loadingState, viewType: .hobbit, whatIsLoading: .posts)
             }
         }
     }

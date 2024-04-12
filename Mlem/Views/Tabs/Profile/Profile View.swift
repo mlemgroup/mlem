@@ -36,7 +36,6 @@ struct ProfileView: View {
                                     isPresentingAccountSwitcher = true
                                 }
                             }
-                            
                         }
                         .sheet(isPresented: $isPresentingAccountSwitcher) {
                             Form {

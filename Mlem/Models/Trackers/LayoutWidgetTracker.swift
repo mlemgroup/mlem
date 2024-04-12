@@ -11,12 +11,14 @@ import Foundation
 struct LayoutWidgetGroups: Codable {
     var post: [LayoutWidgetType]
     var comment: [LayoutWidgetType]
+    var moderator: [LayoutWidgetType]
 }
 
 extension LayoutWidgetGroups {
     init() {
         self.post = [.scoreCounter, .infoStack, .save, .reply]
         self.comment = [.scoreCounter, .infoStack, .save, .reply]
+        self.moderator = [.resolve, .remove, .infoStack, .ban, .purge]
     }
 }
 

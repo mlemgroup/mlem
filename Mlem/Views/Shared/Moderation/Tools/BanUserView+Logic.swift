@@ -58,6 +58,10 @@ extension BanUserView {
         if result == shouldBan {
             await notifier.add(.success("\(verb.capitalized)ned User"))
             
+            if let callback {
+                callback()
+            }
+            
             await MainActor.run {
                 userRemovalWalker.modify(
                     userId: user.userId,
@@ -73,6 +77,13 @@ extension BanUserView {
                             comment.commentView.creator.banned = shouldBan
                         } else {
                             comment.commentView.creatorBannedFromCommunity = shouldBan
+                        }
+                    },
+                    inboxAction: { item in
+                        if banFromInstance {
+                            item.setCreatorBannedFromInstance(shouldBan)
+                        } else {
+                            item.setCreatorBannedFromCommunity(shouldBan)
                         }
                     },
                     voteAction: { vote in

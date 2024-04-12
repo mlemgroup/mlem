@@ -23,7 +23,6 @@ struct ReplyToMention: ResponseEditorModel {
     func embeddedView() -> AnyView {
         AnyView(
             InboxMentionBodyView(mention: mention)
-                .padding(.horizontal)
         )
     }
     

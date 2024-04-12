@@ -31,6 +31,7 @@ enum EndOfFeedViewType {
 struct EndOfFeedView: View {
     let loadingState: LoadingState
     let viewType: EndOfFeedViewType
+    let whatIsLoading: LoadingView.PossibleThingsToLoad
     
     var body: some View {
         Group {
@@ -38,7 +39,7 @@ struct EndOfFeedView: View {
             case .idle:
                 EmptyView()
             case .loading:
-                LoadingView(whatIsLoading: .posts)
+                LoadingView(whatIsLoading: whatIsLoading)
             case .done:
                 HStack {
                     Image(systemName: viewType.viewContent.icon)

@@ -18,4 +18,6 @@ extension Color {
     static let upvoteColor = Color.blue
     static let downvoteColor = Color.red
     static let saveColor = Color.green
+    
+    static let moderation = Color.cyan
 }

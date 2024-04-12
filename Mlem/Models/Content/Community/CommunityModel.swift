@@ -338,6 +338,13 @@ struct CommunityModel: Purgable {
     
     // MARK: - Misc
     
+    var fullyQualifiedNameComponents: (String, String)? {
+        if let host = communityUrl.host() {
+            return (name!, host)
+        }
+        return nil
+    }
+    
     var fullyQualifiedName: String? {
         if let host = communityUrl.host() {
             return "\(name!)@\(host)"

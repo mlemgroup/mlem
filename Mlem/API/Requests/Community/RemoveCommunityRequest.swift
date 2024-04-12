@@ -28,11 +28,11 @@ struct RemoveCommunityRequest: APIPostRequest {
         reason: String?
     ) throws {
         self.instanceURL = try session.instanceUrl
-        self.body = .init(
-          community_id: communityId,
-          removed: removed,
-          reason: reason,
-          auth: try session.token
+        self.body = try .init(
+            community_id: communityId,
+            removed: removed,
+            reason: reason,
+            auth: session.token
         )
     }
 }

@@ -8,6 +8,47 @@
 import SwiftUI
 
 extension CommentItem {
+    // swiftlint:disable:next cyclomatic_complexity
+    func enrichLayoutWidgets() -> [EnrichedLayoutWidget] {
+        layoutWidgetTracker.groups.comment.compactMap { baseWidget in
+            let votes: VotesModel = .init(from: hierarchicalComment.commentView.counts, myVote: hierarchicalComment.commentView.myVote)
+            switch baseWidget {
+            case .infoStack:
+                return .infoStack(
+                    colorizeVotes: false,
+                    votes: votes,
+                    published: hierarchicalComment.commentView.comment.published,
+                    updated: hierarchicalComment.commentView.comment.updated,
+                    commentCount: hierarchicalComment.commentView.counts.childCount,
+                    unreadCommentCount: 0,
+                    saved: hierarchicalComment.commentView.saved
+                )
+            case .upvote:
+                return .upvote(myVote: hierarchicalComment.commentView.myVote ?? .resetVote, upvote: upvote)
+            case .downvote:
+                return .downvote(myVote: hierarchicalComment.commentView.myVote ?? .resetVote, downvote: downvote)
+            case .save:
+                return .save(saved: hierarchicalComment.commentView.saved, save: saveComment)
+            case .reply:
+                return .reply(reply: replyToComment)
+            case .share:
+                if let shareUrl = URL(string: hierarchicalComment.commentView.comment.apId) {
+                    return .share(shareUrl: shareUrl)
+                } else {
+                    return nil
+                }
+            case .upvoteCounter:
+                return .upvoteCounter(votes: votes, upvote: upvote)
+            case .downvoteCounter:
+                return .downvoteCounter(votes: votes, downvote: downvote)
+            case .scoreCounter:
+                return .scoreCounter(votes: votes, upvote: upvote, downvote: downvote)
+            default:
+                return nil
+            }
+        }
+    }
+    
     func voteOnComment(inputOp: ScoringOperation) async {
         hapticManager.play(haptic: .lightSuccess, priority: .low)
         let operation = hierarchicalComment.commentView.myVote == inputOp ? ScoringOperation.resetVote : inputOp

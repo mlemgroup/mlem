@@ -8,9 +8,10 @@
 import Foundation
 
 extension HierarchicalComment: TrackerItem {
-    func sortVal(sortType: TrackerSortType) -> TrackerSortVal {
+    func sortVal(sortType: TrackerSort.Case) -> TrackerSort {
         switch sortType {
-        case .published: .published(commentView.comment.published)
+        case .new: .new(commentView.comment.published)
+        case .old: .old(commentView.comment.published)
         }
     }
 }

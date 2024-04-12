@@ -21,8 +21,8 @@ struct ListPostLikesRequest: APIGetRequest {
         limit: Int?
     ) throws {
         self.instanceURL = try session.instanceUrl
-        self.queryItems = [
-            .init(name: "auth", value: try session.token),
+        self.queryItems = try [
+            .init(name: "auth", value: session.token),
             .init(name: "post_id", value: String(postId)),
             .init(name: "page", value: page.map(String.init)),
             .init(name: "limit", value: limit.map(String.init))

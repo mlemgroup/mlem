@@ -15,6 +15,8 @@ struct BanUserView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     
+    @EnvironmentObject var unreadTracker: UnreadTracker
+    
     @Environment(\.dismiss) var dismiss
     
     let user: UserModel
@@ -22,6 +24,7 @@ struct BanUserView: View {
     let bannedFromCommunity: Bool
     let shouldBan: Bool
     let userRemovalWalker: UserRemovalWalker
+    let callback: (() -> Void)?
     
     @State var banFromInstance: Bool
     
@@ -38,18 +41,28 @@ struct BanUserView: View {
         communityContext: CommunityModel?,
         bannedFromCommunity: Bool = false,
         shouldBan: Bool,
-        userRemovalWalker: UserRemovalWalker
+        userRemovalWalker: UserRemovalWalker,
+        callback: (() -> Void)? = nil
     ) {
         self.user = user
         self.communityContext = communityContext
         self.bannedFromCommunity = bannedFromCommunity
         self.shouldBan = shouldBan
         self.userRemovalWalker = userRemovalWalker
+        self.callback = callback
         
         @Dependency(\.siteInformation) var siteInformation
         
-        self._banFromInstance = .init(
-            wrappedValue: siteInformation.isAdmin && shouldBan != user.banned
+        // by default, ban from instance if admin and user isn't already instance banned. If admin but also moderates the community, default to community ban
+        var instanceBan: Bool = siteInformation.isAdmin && shouldBan != user.banned
+        if siteInformation.isAdmin,
+           let communityId = communityContext?.communityId,
+           siteInformation.moderatedCommunities.contains(communityId) {
+            instanceBan = false
+        }
+        
+        _banFromInstance = .init(
+            wrappedValue: instanceBan
         )
     }
     
@@ -118,13 +131,13 @@ struct BanUserView: View {
                 Section("\(verb.capitalized) From") {
                     Menu {
                         Picker("Test", selection: $banFromInstance) {
-                            Button { } label: {
+                            Button {} label: {
                                 Text("Instance")
                                 if let name = siteInformation.instance?.name {
                                     Text(name)
                                 }
                             }.tag(true)
-                            Button { } label: {
+                            Button {} label: {
                                 Text("Community")
                                 if let name = communityContext.fullyQualifiedName {
                                     Text(name)
@@ -181,8 +194,8 @@ struct BanUserView: View {
                         days = newValue > 1 ? newValue : 0
                     }
                 ), format: .number)
-                .keyboardType(.numberPad)
-                .focused($focusedField, equals: .days)
+                    .keyboardType(.numberPad)
+                    .focused($focusedField, equals: .days)
             }
             DatePicker(
                 "Expiration Date:",
@@ -216,7 +229,7 @@ struct BanUserView: View {
     func removeContentSection() -> some View {
         Section {
             Toggle("Remove Content", isOn: $removeContent)
-            .tint(.red)
+                .tint(.red)
         } footer: {
             if communityContext == nil {
                 let posts = user.postCount ?? 0

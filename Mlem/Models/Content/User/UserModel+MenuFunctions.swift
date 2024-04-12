@@ -93,7 +93,7 @@ extension UserModel {
         functions.append(.divider)
         
         if !isOwnUser {
-            if siteInformation.isAdmin, !(self.isAdmin ?? false), let modToolTracker {
+            if siteInformation.isAdmin, !(isAdmin ?? false), let modToolTracker {
                 functions.append(banMenuFunction(modToolTracker: modToolTracker))
                 functions.append(purgeMenuFunction(modToolTracker: modToolTracker))
             }

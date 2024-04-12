@@ -19,6 +19,7 @@ class MessageModel: ContentIdentifiable, ObservableObject {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.siteInformation) var siteInformation
     
     @Published var creator: UserModel
     @Published var recipient: UserModel
@@ -61,8 +62,10 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         // call API and either update with latest info or revert state fake on fail
         do {
             let newMessage = try await inboxRepository.markMessageRead(id: privateMessage.id, isRead: privateMessage.read)
-            await unreadTracker.toggleMessageRead(originalState: originalPrivateMessage.read)
             await reinit(from: newMessage)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                unreadTracker.toggleMessageRead(originalState: originalPrivateMessage.read)
+            }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)
@@ -117,6 +120,11 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         unreadTracker: UnreadTracker,
         editorTracker: EditorTracker
     ) -> [MenuFunction] {
+        // no actions on your own messages allowed
+        if siteInformation.userId == creatorId {
+            return .init()
+        }
+        
         var ret: [MenuFunction] = .init()
         
         // mark read
@@ -171,6 +179,10 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         unreadTracker: UnreadTracker,
         editorTracker: EditorTracker
     ) -> SwipeConfiguration {
+        if siteInformation.userId == creatorId {
+            return .init()
+        }
+        
         var trailingActions: [SwipeAction] = .init()
         
         trailingActions.append(SwipeAction(

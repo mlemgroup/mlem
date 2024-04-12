@@ -115,7 +115,7 @@ struct PostFeedView: View {
                             }
                         }
                 }
-                EndOfFeedView(loadingState: postTracker.loadingState, viewType: .hobbit)
+                EndOfFeedView(loadingState: postTracker.loadingState, viewType: .hobbit, whatIsLoading: .posts)
             }
         }
     }

@@ -11,7 +11,7 @@ import Foundation
 // swiftlint:disable type_body_length
 /// Internal model to represent a post
 /// Note: this is just the first pass at decoupling the internal models from the API models--to avoid massive merge conflicts and an unreviewably large PR, I've kept the structure practically identical, and will slowly morph it over the course of several PRs. Eventually all of the API types that this model uses will go away and everything downstream of the repositories won't ever know there's an API at all :)
-class PostModel: ContentIdentifiable, Purgable, ObservableObject {
+class PostModel: ContentIdentifiable, Removable, Purgable, ObservableObject {
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.apiClient) var apiClient
@@ -292,19 +292,21 @@ class PostModel: ContentIdentifiable, Purgable, ObservableObject {
         }
     }
     
-    func toggleRemove(reason: String?) async {
+    func remove(reason: String?, shouldRemove: Bool) async -> Bool {
         // no need to state fake because removal masked by sheet
         do {
             let response = try await apiClient.removePost(
                 id: postId,
-                shouldRemove: !post.removed,
+                shouldRemove: shouldRemove,
                 reason: reason
             )
             await reinit(from: response)
+            return true
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)
         }
+        return false
     }
     
     func purge(reason: String?) async -> Bool {

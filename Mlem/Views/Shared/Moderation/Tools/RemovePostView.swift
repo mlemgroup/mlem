@@ -20,7 +20,7 @@ struct RemovePostView: View {
     @FocusState var reasonFocused: FocusedField?
     @State var isWaiting: Bool = false
     
-    let post: PostModel
+    @State var post: any Removable
     let shouldRemove: Bool
     
     var verb: String { shouldRemove ? "Remove" : "Restore" }
@@ -65,15 +65,16 @@ struct RemovePostView: View {
         isWaiting = true
         
         Task {
-            await post.toggleRemove(reason: reason.isEmpty ? nil : reason)
-            
-            if post.post.removed == shouldRemove {
-                await notifier.add(.success("\(verb)d post"))
-                DispatchQueue.main.async {
+            let success = await post.remove(reason: reason.isEmpty ? nil : reason, shouldRemove: shouldRemove)
+            DispatchQueue.main.async {
+                if success {
                     dismiss()
-                }
-            } else {
-                DispatchQueue.main.async {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        Task {
+                            await notifier.add(.success("\(verb)d post"))
+                        }
+                    }
+                } else {
                     isWaiting = false
                 }
             }

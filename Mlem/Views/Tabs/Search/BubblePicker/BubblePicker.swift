@@ -36,10 +36,12 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
         withDividers: Set<DividerPlacement> = .init(),
         @ViewBuilder labelBuilder: @escaping (Value) -> any View
     ) {
-        assert(tabs.isNotEmpty, "Cannot create bubble picker with empty tabs!")
+        let initialIndex = tabs.firstIndex(of: selected.wrappedValue)
+        
+        assert(initialIndex != nil, "Selected tab \(selected.wrappedValue) not in tabs \(tabs)!")
         
         self._selected = selected
-        self._currentTabIndex = .init(wrappedValue: 0)
+        self._currentTabIndex = .init(wrappedValue: initialIndex ?? 0)
         self.tabs = tabs
         self.dividers = withDividers
         self.labelBuilder = labelBuilder
@@ -71,7 +73,6 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                 }
                 .scrollIndicators(.hidden)
                 .onChange(of: selected) { newValue in
-                    print("DEBUG changed")
                     let newIndex = tabs.firstIndex(of: newValue) ?? 0
                     withAnimation(.interactiveSpring(response: 0.2, dampingFraction: 0.8)) {
                         currentTabIndex = newIndex

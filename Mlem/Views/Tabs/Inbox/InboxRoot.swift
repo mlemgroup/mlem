@@ -16,6 +16,7 @@ struct InboxRoot: View {
         ScrollViewReader { scrollProxy in
             NavigationStack(path: $inboxRouter.path) {
                 InboxView()
+                    .handleLemmyViews()
                     .environmentObject(inboxRouter)
                     .tabBarNavigationEnabled(.inbox, navigation)
             }

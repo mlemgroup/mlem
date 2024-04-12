@@ -91,7 +91,7 @@ class VotesTracker: ObservableObject {
     }
     
     func updateItem(user: UserModel) {
-        if let index = votes.firstIndex(where: {$0.id == user.userId}) {
+        if let index = votes.firstIndex(where: { $0.id == user.userId }) {
             votes[index].user = user
         }
     }

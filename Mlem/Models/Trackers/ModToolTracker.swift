@@ -15,16 +15,18 @@ enum ModTool: Hashable, Identifiable {
     
     case purgeContent(any Purgable, UserRemovalWalker)
 
-    case banUser(UserModel, CommunityModel?, Bool?, Bool, UserRemovalWalker)
-    // user to ban, community to ban from, is banned from community, should ban
+    case banUser(UserModel, CommunityModel?, Bool?, Bool, UserRemovalWalker, (() -> Void)?)
+    // user to ban, community to ban from, is banned from community, should ban, callback
 
     case addMod(Binding<UserModel>?, Binding<CommunityModel>?) // user to add as mod, community to add mod to
     
     // post
-    case removePost(PostModel, Bool) // post to remove, should remove
+    case removePost(any Removable, Bool) // post to remove, should remove
     
     // comment
-    case removeComment(HierarchicalComment, Bool) // comment to remove, should remove
+    case removeComment(any Removable, Bool) // comment to remove, should remove
+    
+    case denyApplication(RegistrationApplicationModel)
     
     static func == (lhs: ModTool, rhs: ModTool) -> Bool {
         lhs.hashValue == rhs.hashValue
@@ -37,7 +39,7 @@ enum ModTool: Hashable, Identifiable {
         case let .editCommunity(community):
             hasher.combine("edit")
             hasher.combine(community.uid)
-        case let .banUser(user, community, isBanned, shouldBan, _):
+        case let .banUser(user, community, isBanned, shouldBan, _, _):
             hasher.combine("communityBan")
             hasher.combine(user.uid)
             hasher.combine(community?.uid)
@@ -52,16 +54,19 @@ enum ModTool: Hashable, Identifiable {
             hasher.combine(community?.wrappedValue.uid)
         case let .removePost(post, shouldRemove):
             hasher.combine("removePost")
-            hasher.combine(post.uid)
+            hasher.combine(post)
             hasher.combine(shouldRemove)
         case let .removeComment(comment, shouldRemove):
             hasher.combine("removeComment")
-            hasher.combine(comment.uid)
+            hasher.combine(comment)
             hasher.combine(shouldRemove)
         case let .removeCommunity(community, shouldRemove):
             hasher.combine("removeCommunity")
             hasher.combine(community.uid)
             hasher.combine(shouldRemove)
+        case let .denyApplication(application):
+            hasher.combine("denyApplication")
+            hasher.combine(application)
         }
     }
 }
@@ -79,20 +84,21 @@ class ModToolTracker: ObservableObject {
         from community: CommunityModel? = nil,
         bannedFromCommunity: Bool = false,
         shouldBan: Bool,
-        userRemovalWalker: UserRemovalWalker = .init()
+        userRemovalWalker: UserRemovalWalker = .init(),
+        callback: (() -> Void)? = nil
     ) {
-        openTool = .banUser(user, community, bannedFromCommunity, shouldBan, userRemovalWalker)
+        openTool = .banUser(user, community, bannedFromCommunity, shouldBan, userRemovalWalker, callback)
     }
     
     func addModerator(user: Binding<UserModel>?, to community: Binding<CommunityModel>?) {
         openTool = .addMod(user, community)
     }
     
-    func removePost(_ post: PostModel, shouldRemove: Bool) {
+    func removePost(_ post: any Removable, shouldRemove: Bool) {
         openTool = .removePost(post, shouldRemove)
     }
     
-    func removeComment(_ comment: HierarchicalComment, shouldRemove: Bool) {
+    func removeComment(_ comment: any Removable, shouldRemove: Bool) {
         openTool = .removeComment(comment, shouldRemove)
     }
     
@@ -102,5 +108,9 @@ class ModToolTracker: ObservableObject {
     
     func purgeContent(_ content: Purgable, userRemovalWalker: UserRemovalWalker = .init()) {
         openTool = .purgeContent(content, userRemovalWalker)
+    }
+    
+    func denyApplication(_ application: RegistrationApplicationModel) {
+        openTool = .denyApplication(application)
     }
 }

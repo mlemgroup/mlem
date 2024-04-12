@@ -26,10 +26,10 @@ struct PurgeCommunityRequest: APIPostRequest {
         reason: String?
     ) throws {
         self.instanceURL = try session.instanceUrl
-        self.body = .init(
+        self.body = try .init(
             community_id: communityId,
             reason: reason,
-            auth: try session.token
-      )
+            auth: session.token
+        )
     }
 }

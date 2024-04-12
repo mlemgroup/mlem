@@ -28,7 +28,6 @@ extension PostModel {
         community: CommunityModel? = nil,
         modToolTracker: ModToolTracker? = nil
     ) -> [MenuFunction] {
-        
         @AppStorage("moderatorActionGrouping") var moderatorActionGrouping: ModerationActionGroupingMode = .none
         
         var functions: [MenuFunction] = .init()
@@ -88,7 +87,7 @@ extension PostModel {
         functions.append(contentsOf: topRowMenuFunctions(editorTracker: editorTracker))
         
         if showSelectText {
-            var text = self.post.name
+            var text = post.name
             if let body = post.body, body.isNotEmpty {
                 text += "\n\n\(body)"
             }
@@ -247,26 +246,8 @@ extension PostModel {
                 functions.append(.divider)
             }
             
-            if !(siteInformation.isAdmin && creatorBannedFromCommunity && creator.banned) {
-                functions.append(MenuFunction.toggleableMenuFunction(
-                    toggle: creatorBannedFromCommunity,
-                    trueText: "Unban User",
-                    trueImageName: Icons.communityUnban,
-                    falseText: "Ban User",
-                    falseImageName: (siteInformation.isAdmin && !creator.banned) ? Icons.instanceBan : Icons.communityBan,
-                    isDestructive: .whenFalse
-                ) {
-                    modToolTracker.banUser(
-                        self.creator,
-                        from: community,
-                        bannedFromCommunity: self.creatorBannedFromCommunity,
-                        shouldBan: !self.creatorBannedFromCommunity,
-                        userRemovalWalker: .init(postTracker: postTracker, commentTracker: commentTracker)
-                    )
-                })
-            }
-            
-            if siteInformation.isAdmin, creator.banned || creatorBannedFromCommunity {
+            // for admins, default to instance ban iff not a moderator of this community
+            if siteInformation.isAdmin, !siteInformation.moderatedCommunities.contains(community.communityId) {
                 functions.append(MenuFunction.toggleableMenuFunction(
                     toggle: creator.banned,
                     trueText: "Unban User",
@@ -280,6 +261,23 @@ extension PostModel {
                         from: community,
                         bannedFromCommunity: self.creatorBannedFromCommunity,
                         shouldBan: !self.creator.banned,
+                        userRemovalWalker: .init(postTracker: postTracker, commentTracker: commentTracker)
+                    )
+                })
+            } else {
+                functions.append(MenuFunction.toggleableMenuFunction(
+                    toggle: creatorBannedFromCommunity,
+                    trueText: "Unban User",
+                    trueImageName: Icons.communityUnban,
+                    falseText: "Ban User",
+                    falseImageName: Icons.communityBan,
+                    isDestructive: .whenFalse
+                ) {
+                    modToolTracker.banUser(
+                        self.creator,
+                        from: community,
+                        bannedFromCommunity: self.creatorBannedFromCommunity,
+                        shouldBan: !self.creatorBannedFromCommunity,
                         userRemovalWalker: .init(postTracker: postTracker, commentTracker: commentTracker)
                     )
                 })

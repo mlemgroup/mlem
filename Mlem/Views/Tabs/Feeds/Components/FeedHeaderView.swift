@@ -21,10 +21,12 @@ struct FeedHeaderView: View {
     
     let feedType: any FeedType
     let showDropdownIndicator: Bool
+    let subtitle: String
     
-    init(feedType: any FeedType, showDropdownIndicator: Bool = true) {
+    init(feedType: any FeedType, showDropdownIndicator: Bool = true, customSubtitle: String? = nil) {
         self.feedType = feedType
         self.showDropdownIndicator = showDropdownIndicator
+        self.subtitle = customSubtitle ?? feedType.subtitle
     }
     
     var body: some View {
@@ -47,7 +49,7 @@ struct FeedHeaderView: View {
                     }
                     .font(.title2)
                         
-                    Text(feedType.subtitle)
+                    Text(subtitle)
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }

@@ -47,6 +47,7 @@ enum Icons {
     
     // misc post
     static let posts: String = "doc.plaintext"
+    static let postsFill: String = "doc.plaintext.fill"
     static let replies: String = "bubble.left"
     static let unreadReplies: String = "text.bubble"
     static let textPost: String = "text.book.closed"
@@ -59,6 +60,10 @@ enum Icons {
     static let unlocked: String = "lock.open.fill"
     static let removed: String = "xmark.bin.fill"
     static let restored: String = "arrow.up.bin.fill"
+    
+    // inbox
+    static let message = "envelope"
+    static let messageFill = "envelope.fill"
     
     // post sizes
     static let postSizeSetting: String = "rectangle.expand.vertical"
@@ -92,8 +97,8 @@ enum Icons {
     static let newSortFill: String = "hare.fill"
     static let oldSort: String = "tortoise"
     static let oldSortFill: String = "tortoise.fill"
-    static let newCommentsSort: String = "exclamationmark.bubble"
-    static let newCommentsSortFill: String = "exclamationmark.bubble.fill"
+    static let newCommentsSort: String = "plus.bubble"
+    static let newCommentsSortFill: String = "plus.bubble.fill"
     static let mostCommentsSort: String = "bubble.left.and.bubble.right"
     static let mostCommentsSortFill: String = "bubble.left.and.bubble.right.fill"
     static let controversialSort: String = "bolt"
@@ -214,6 +219,7 @@ enum Icons {
     // mod tools
     static let auditUser: String = "person.crop.circle.badge.questionmark.fill"
     static let communityBan: String = "xmark.shield"
+    static let communityBanFill: String = "xmark.shield.fill"
     static let communityBanned: String = "xmark.shield.fill"
     static let communityUnban: String = "checkmark.shield"
     static let communityUnbanned: String = "checkmark.shield.fill"
@@ -228,8 +234,20 @@ enum Icons {
     static let lock: String = "lock"
     static let unlock: String = "lock.open"
     static let remove: String = "xmark.bin"
+    static let removeFill: String = "xmark.bin.fill"
     static let purge: String = "burn"
     static let restore: String = "arrow.up.bin"
+    static let commentReport: String = "text.bubble"
+    static let commentReportFill: String = "text.bubble.fill"
+    static let registrationApplication: String = "list.clipboard"
+    static let registrationApplicationFill: String = "list.clipboard.fill"
+    static let resolve: String = "checkmark.circle"
+    static let resolveFill: String = "checkmark.circle.fill"
+    static let unresolve: String = "checkmark.gobackward"
+    static let approve: String = "checkmark"
+    static let approveCircle: String = "checkmark.circle"
+    static let deny: String = "xmark"
+    static let denyCircle: String = "xmark.circle"
     
     // fediseer
     static let fediseer: String = "shield.checkered"

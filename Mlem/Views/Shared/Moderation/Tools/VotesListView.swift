@@ -43,7 +43,7 @@ struct VotesListView: View {
                         voteRow(item: item)
                         Divider()
                     }
-                    EndOfFeedView(loadingState: votesTracker.loadingState, viewType: .hobbit)
+                    EndOfFeedView(loadingState: votesTracker.loadingState, viewType: .hobbit, whatIsLoading: .votes)
                 }
                 Spacer().frame(height: 50)
             }

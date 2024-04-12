@@ -12,7 +12,6 @@ import SwiftUI
 
 extension CommentItem {
     func combinedMenuFunctions() -> [MenuFunction] {
-        
         @AppStorage("moderatorActionGrouping") var moderatorActionGrouping: ModerationActionGroupingMode = .none
         let isMod = siteInformation.isModOrAdmin(communityId: hierarchicalComment.commentView.post.communityId)
         
@@ -38,8 +37,8 @@ extension CommentItem {
         
         // upvote
         let (upvoteText, upvoteImg) = hierarchicalComment.commentView.myVote == .upvote ?
-        ("Undo Upvote", Icons.upvoteSquareFill) :
-        ("Upvote", Icons.upvoteSquare)
+            ("Undo Upvote", Icons.upvoteSquareFill) :
+            ("Upvote", Icons.upvoteSquare)
         functions.append(MenuFunction.standardMenuFunction(
             text: upvoteText,
             imageName: upvoteImg
@@ -51,8 +50,8 @@ extension CommentItem {
         
         // downvote
         let (downvoteText, downvoteImg) = hierarchicalComment.commentView.myVote == .downvote ?
-        ("Undo Downvote", Icons.downvoteSquareFill) :
-        ("Downvote", Icons.downvoteSquare)
+            ("Undo Downvote", Icons.downvoteSquareFill) :
+            ("Downvote", Icons.downvoteSquare)
         functions.append(MenuFunction.standardMenuFunction(
             text: downvoteText,
             imageName: downvoteImg
@@ -64,8 +63,8 @@ extension CommentItem {
                 
         // save
         let (saveText, saveImg) = hierarchicalComment.commentView.saved ?
-        ("Unsave", Icons.saveFill) :
-        ("Save", Icons.save)
+            ("Unsave", Icons.saveFill) :
+            ("Save", Icons.save)
         functions.append(MenuFunction.standardMenuFunction(
             text: saveText,
             imageName: saveImg
@@ -83,7 +82,7 @@ extension CommentItem {
             replyToComment()
         })
         
-        let content = self.hierarchicalComment.commentView.comment.content
+        let content = hierarchicalComment.commentView.comment.content
         functions.append(MenuFunction.standardMenuFunction(
             text: "Select Text",
             imageName: Icons.select
@@ -198,26 +197,8 @@ extension CommentItem {
             let creatorBannedFromCommunity = hierarchicalComment.commentView.creatorBannedFromCommunity
             let creatorBannedFromInstance = hierarchicalComment.commentView.creator.banned
             
-            if !(siteInformation.isAdmin && creatorBannedFromCommunity && creatorBannedFromInstance) {
-                functions.append(MenuFunction.toggleableMenuFunction(
-                    toggle: creatorBannedFromCommunity,
-                    trueText: "Unban User",
-                    trueImageName: Icons.communityUnban,
-                    falseText: "Ban User",
-                    falseImageName: (siteInformation.isAdmin && !creatorBannedFromInstance) ? Icons.instanceBan : Icons.communityBan,
-                    isDestructive: .whenFalse
-                ) {
-                    modToolTracker.banUser(
-                        .init(from: hierarchicalComment.commentView.creator),
-                        from: .init(from: hierarchicalComment.commentView.community),
-                        bannedFromCommunity: creatorBannedFromCommunity,
-                        shouldBan: !creatorBannedFromCommunity,
-                        userRemovalWalker: .init(commentTracker: commentTracker)
-                    )
-                })
-            }
-            
-            if siteInformation.isAdmin, creatorBannedFromInstance || creatorBannedFromCommunity {
+            // for admins, default to instance ban iff not a moderator of this community
+            if siteInformation.isAdmin, !siteInformation.moderatedCommunities.contains(hierarchicalComment.commentView.community.id) {
                 functions.append(MenuFunction.toggleableMenuFunction(
                     toggle: creatorBannedFromInstance,
                     trueText: "Unban User",
@@ -231,6 +212,23 @@ extension CommentItem {
                         from: .init(from: hierarchicalComment.commentView.community),
                         bannedFromCommunity: creatorBannedFromCommunity,
                         shouldBan: !creatorBannedFromInstance,
+                        userRemovalWalker: .init(commentTracker: commentTracker)
+                    )
+                })
+            } else {
+                functions.append(MenuFunction.toggleableMenuFunction(
+                    toggle: creatorBannedFromCommunity,
+                    trueText: "Unban User",
+                    trueImageName: Icons.communityUnban,
+                    falseText: "Ban User",
+                    falseImageName: Icons.communityBan,
+                    isDestructive: .whenFalse
+                ) {
+                    modToolTracker.banUser(
+                        .init(from: hierarchicalComment.commentView.creator),
+                        from: .init(from: hierarchicalComment.commentView.community),
+                        bannedFromCommunity: creatorBannedFromCommunity,
+                        shouldBan: !creatorBannedFromCommunity,
                         userRemovalWalker: .init(commentTracker: commentTracker)
                     )
                 })

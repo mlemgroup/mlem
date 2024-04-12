@@ -194,26 +194,42 @@ struct FeedPost: View {
                 .padding(.top, AppConstants.standardSpacing)
                 .padding(.horizontal, AppConstants.standardSpacing)
                 
-                InteractionBarView(
+                InteractionBarView(context: .post, widgets: enrichLayoutWidgets())
+            }
+        }
+    }
+    
+    func enrichLayoutWidgets() -> [EnrichedLayoutWidget] {
+        layoutWidgetTracker.groups.post.compactMap { baseWidget in
+            switch baseWidget {
+            case .infoStack:
+                .infoStack(
+                    colorizeVotes: false,
                     votes: postModel.votes,
                     published: postModel.published,
                     updated: postModel.updated,
                     commentCount: postModel.commentCount,
                     unreadCommentCount: postModel.unreadCommentCount,
-                    saved: postModel.saved,
-                    accessibilityContext: "post",
-                    widgets: layoutWidgetTracker.groups.post,
-                    upvote: postModel.toggleUpvote,
-                    downvote: postModel.toggleDownvote,
-                    save: postModel.toggleSave,
-                    reply: replyToPost,
-                    shareURL: postModel.post.apId,
-                    shouldShowScore: shouldShowScoreInPostBar,
-                    showDownvotesSeparately: showPostDownvotesSeparately,
-                    shouldShowTime: shouldShowTimeInPostBar,
-                    shouldShowSaved: shouldShowSavedInPostBar,
-                    shouldShowReplies: shouldShowRepliesInPostBar
+                    saved: postModel.saved
                 )
+            case .upvote:
+                .upvote(myVote: postModel.votes.myVote, upvote: postModel.toggleUpvote)
+            case .downvote:
+                .downvote(myVote: postModel.votes.myVote, downvote: postModel.toggleDownvote)
+            case .save:
+                .save(saved: postModel.saved, save: postModel.toggleSave)
+            case .reply:
+                .reply(reply: replyToPost)
+            case .share:
+                .share(shareUrl: postModel.post.apId)
+            case .upvoteCounter:
+                .upvoteCounter(votes: postModel.votes, upvote: postModel.toggleUpvote)
+            case .downvoteCounter:
+                .downvoteCounter(votes: postModel.votes, downvote: postModel.toggleDownvote)
+            case .scoreCounter:
+                .scoreCounter(votes: postModel.votes, upvote: postModel.toggleUpvote, downvote: postModel.toggleDownvote)
+            default:
+                nil
             }
         }
     }
@@ -222,10 +238,6 @@ struct FeedPost: View {
 // MARK: - Swipe Actions
 
 extension FeedPost {
-    // TODO: if we want to mirror the behaviour in comments here we need the `dirty` operation to be visible from this
-    // context, which at present would require some work as it occurs down inside the post interaction bar
-    // this may need to wait until we complete https://github.com/mormaer/Mlem/issues/117
-
     var upvoteSwipeAction: SwipeAction {
         let (emptySymbolName, fullSymbolName) = postModel.votes.myVote == .upvote ?
             (Icons.resetVoteSquare, Icons.resetVoteSquareFill) :

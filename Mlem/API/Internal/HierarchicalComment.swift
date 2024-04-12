@@ -63,7 +63,6 @@ class HierarchicalComment: Purgable, ObservableObject {
             }
         }
         return false
-        
     }
 }
 
@@ -183,6 +182,25 @@ extension HierarchicalComment {
             let closestParentCollapsed = self.isCollapsed ? true : isParentCollapsed
             child.setParentCollapsed(closestParentCollapsed)
         }
+    }
+}
+
+extension HierarchicalComment: Removable {
+    func remove(reason: String?, shouldRemove: Bool) async -> Bool {
+        do {
+            let response = try await apiClient.removeComment(
+                id: commentView.comment.id,
+                shouldRemove: shouldRemove,
+                reason: reason
+            )
+            DispatchQueue.main.async {
+                self.commentView = response.commentView
+            }
+            return true
+        } catch {
+            errorHandler.handle(error)
+        }
+        return false
     }
 }
 

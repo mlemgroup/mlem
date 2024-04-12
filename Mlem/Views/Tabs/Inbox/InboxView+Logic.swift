@@ -8,18 +8,12 @@
 import Foundation
 
 extension InboxView {
-    func refresh() async {
+    func refresh(tracker: InboxTracker) async {
+        await tracker.refresh(clearBeforeFetch: false)
+        
         do {
-            switch curTab {
-            case .all:
-                await inboxTracker.refresh(clearBeforeFetch: false)
-            case .replies:
-                try await replyTracker.refresh(clearBeforeRefresh: false)
-            case .mentions:
-                try await mentionTracker.refresh(clearBeforeRefresh: false)
-            case .messages:
-                try await messageTracker.refresh(clearBeforeRefresh: false)
-            }
+            let unreadCounts = try await personRepository.getUnreadCounts()
+            unreadTracker.update(with: unreadCounts)
         } catch {
             errorHandler.handle(error)
         }
@@ -33,16 +27,42 @@ extension InboxView {
         replyTracker.unreadOnly = newShouldFilterRead
         mentionTracker.unreadOnly = newShouldFilterRead
         messageTracker.unreadOnly = newShouldFilterRead
+        commentReportTracker.unreadOnly = newShouldFilterRead
+        postReportTracker.unreadOnly = newShouldFilterRead
+        messageReportTracker.unreadOnly = newShouldFilterRead
+        registrationApplicationTracker.unreadOnly = newShouldFilterRead
         
         if newShouldFilterRead {
-            await inboxTracker.filterRead()
+            await personalInboxTracker.filterRead()
+            
+            // mod items are returned sorted by old when unreadOnly true
+            await modOrAdminInboxTracker.changeSortType(to: .old)
         } else {
-            await inboxTracker.refresh(clearBeforeFetch: true)
+            await personalInboxTracker.refresh(clearBeforeFetch: true)
+            await modOrAdminInboxTracker.changeSortType(to: .new)
         }
     }
     
     func markAllAsRead() async {
-        await inboxTracker.markAllAsRead(unreadTracker: unreadTracker)
+        await personalInboxTracker.markAllAsRead(unreadTracker: unreadTracker)
+    }
+    
+    func genFeedSwitchingFunctions() -> [MenuFunction] {
+        var ret: [MenuFunction] = .init()
+        availableFeeds.forEach { type in
+            let (imageName, enabled) = type != selectedInbox
+                ? (type.iconName, true)
+                : (type.iconNameFill, false)
+            ret.append(MenuFunction.standardMenuFunction(
+                text: type.label,
+                imageName: imageName,
+                enabled: enabled
+            ) {
+                selectedInbox = type
+            }
+            )
+        }
+        return ret
     }
     
     func genMenuFunctions() -> [MenuFunction] {

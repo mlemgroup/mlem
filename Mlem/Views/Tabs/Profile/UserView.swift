@@ -46,7 +46,7 @@ struct UserView: View {
     init(
         user: UserModel,
         communityContext: CommunityModel? = nil,
-        isPresentingProfileEditor: (Binding<Bool>)? = nil
+        isPresentingProfileEditor: Binding<Bool>? = nil
     ) {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false

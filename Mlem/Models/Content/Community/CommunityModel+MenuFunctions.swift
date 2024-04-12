@@ -53,7 +53,6 @@ extension CommunityModel {
     }
     
     func favoriteMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> MenuFunction {
-        
         let callback = {
             Task {
                 do {

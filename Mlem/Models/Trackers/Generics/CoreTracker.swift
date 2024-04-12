@@ -8,7 +8,7 @@
 import Foundation
 
 /// Class providing common tracker functionality for StandardTracker and ParentTracker
-class CoreTracker<Item: TrackerItem>: ObservableObject {
+class CoreTracker<Item: TrackerItem>: ObservableObject, TrackerProtocol {
     @Published var items: [Item] = .init()
     @Published private(set) var loadingState: LoadingState = .idle
     
