@@ -166,6 +166,7 @@ enum Icons {
     static let filterFill: String = "line.3.horizontal.decrease.circle.fill"
     static let menu: String = "ellipsis"
     static let menuCircle: String = "ellipsis.circle"
+    static let menuCircleFill: String = "ellipsis.circle.fill"
     static let `import`: String = "square.and.arrow.down"
     static let attachment: String = "paperclip"
     static let edit: String = "pencil"

@@ -66,7 +66,7 @@ class StateManager<Value: Equatable> {
         self.lastSemaphore = semaphore ?? SemaphoreServer.next()
         print("DEBUG [\(self.lastSemaphore)] began operation.")
         if lastVerifiedValue == nil {
-            print("DEBUG [\(self.lastSemaphore)] Set lastVerifiedValue.")
+            print("DEBUG [\(self.lastSemaphore)] Set lastVerifiedValue to \(wrappedValue).")
             lastVerifiedValue = wrappedValue
         }
         DispatchQueue.main.async {
@@ -80,7 +80,7 @@ class StateManager<Value: Equatable> {
     @discardableResult
     func updateWithReceivedValue(_ newState: Value, semaphore: UInt?) -> Bool {
         if lastVerifiedValue == nil {
-            wrappedValue = newState
+            self.wrappedValue = newState
             return false
         }
         
@@ -93,7 +93,7 @@ class StateManager<Value: Equatable> {
         if lastVerifiedValue != newState {
             lastVerifiedValue = newState
             if semaphore != nil {
-                print("DEBUG [\(semaphore?.description ?? "nil")] is not the last caller! Updating lastVerifiedValue.")
+                print("DEBUG [\(semaphore?.description ?? "nil")] is not the last caller! Updating lastVerifiedValue to \(wrappedValue).")
             }
         }
         return false
@@ -114,6 +114,7 @@ class StateManager<Value: Equatable> {
         expectedResult: Value,
         operation: @escaping (_ semaphore: UInt) async throws -> Void
     ) {
+        guard wrappedValue != expectedResult else { return }
         let semaphore = self.beginOperation(expectedResult: expectedResult)
         Task {
             do {

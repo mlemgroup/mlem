@@ -65,36 +65,46 @@ struct MinimalPostFeedView: View {
         }
     }
     
+    // This is a proof-of-concept; in the real frontend this code will go in InteractionBarView
+    @ViewBuilder
+    func actionButton(_ action: BasicAction) -> some View {
+        Button(action: action.callback ?? { }) {
+            Image(systemName: action.barIcon)
+                .foregroundColor(action.isOn ? .white : .primary)
+                .padding(2)
+                .background(
+                    RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
+                        .fill(action.isOn ? action.color : .clear)
+                )
+        }
+        .buttonStyle(EmptyButtonStyle())
+        .disabled(action.callback == nil)
+    }
+    
     @ViewBuilder
     var content: some View {
         ScrollView {
-            LazyVStack {
+            LazyVStack(spacing: 0) {
                 ForEach(postTracker.items, id: \.uid) { post in
-                    VStack {
-                        HStack {
-                            Button {
-                                post.toggleUpvote()
-                            } label: {
-                                Image(systemName: post.votes.myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvote)
-                                    .foregroundColor(post.votes.myVote == .upvote ? .blue : .primary)
-                            }
-                            .buttonStyle(.plain)
-                            Button {
-                                post.toggleDownvote()
-                            } label: {
-                                Image(systemName: post.votes.myVote == .downvote ? Icons.downvoteSquareFill : Icons.downvote)
-                                    .foregroundColor(post.votes.myVote == .downvote ? .red : .primary)
-                            }
-                            .buttonStyle(.plain)
-                            
-                            Text(post.title)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.horizontal)
-                                .foregroundStyle(post.isRead ? .secondary : .primary)
-                        }
-                        .padding(.horizontal)
-                        Divider()
+                    HStack {
+                        actionButton(post.upvoteAction)
+                        actionButton(post.downvoteAction)
+                        actionButton(post.saveAction)
+                        
+                        Text(post.title)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal)
+                            .foregroundStyle(post.isRead ? .secondary : .primary)
                     }
+                    .padding(10)
+                    .background(Color(uiColor: .systemBackground))
+                    .contentShape(.rect)
+                    .contextMenu {
+                        ForEach(post.menuActions.children, id: \.id) { action in
+                            MenuButton(action: action)
+                        }
+                    }
+                    Divider()
                 }
             }
             
