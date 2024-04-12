@@ -20,6 +20,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         super.init(nibName: nibName, bundle: bundle)
     }
     
+    // This is used for Storyboard, and wont ever be called as long as we dont use Storyboard
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
