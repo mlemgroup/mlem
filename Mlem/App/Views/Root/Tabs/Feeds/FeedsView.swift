@@ -54,7 +54,6 @@ struct MinimalPostFeedView: View {
                 }
                 .task(id: appState.activeAccounts) {
                     await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
-                    print("Site Version", await appState.firstApi.version ?? "unknown")
                 }
                 .refreshable {
                     do {
