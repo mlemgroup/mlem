@@ -143,10 +143,10 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                 .fontWeight(.semibold)
                 .foregroundColor(isSelected ? .white : .primary)
                 // .padding(value == nil ? .horizontal : .leading, 22
-            + Text(value == nil ? " " : " \(value?.abbreviated ?? "0")")
+            + Text(value == nil ? "" : " • \(value?.abbreviated ?? "0")")
                     .monospacedDigit()
                     .font(.subheadline)
-                    .fontWeight(.semibold)
+                    .fontWeight(.medium)
                     .foregroundColor(isSelected ? .white.opacity(0.8) : .secondary)
                     // .padding(.horizontal, 5)
                     // .frame(minWidth: 22)
@@ -183,9 +183,9 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
             case .administration:
                 5
             case .details:
-                10
+                9_950_000
             case .uptime:
-                10_000
+                10_000_000
             default:
                 nil
             }
