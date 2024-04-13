@@ -79,7 +79,7 @@ struct CommunityListRowBody: View {
             Spacer()
             if complications.contains(.subscribers), let subscriberCount = community.subscriberCount {
                 HStack(spacing: 5) {
-                    Text(abbreviateNumber(subscriberCount))
+                    Text(subscriberCount.abbreviated)
                         .monospacedDigit()
                     Image(systemName: subscriberCountIcon)
                 }

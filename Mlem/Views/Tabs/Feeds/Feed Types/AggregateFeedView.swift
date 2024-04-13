@@ -155,10 +155,9 @@ struct AggregateFeedView: View {
                         BubblePicker(
                             UserContentFeedType.allCases,
                             selected: $selectedSavedTab,
-                            withDividers: [.top, .bottom]
-                        ) { item in
-                            Text(item.rawValue.capitalized)
-                        }
+                            withDividers: [.top, .bottom],
+                            label: \.rawValue.capitalized
+                        )
                     }
                 }
                 

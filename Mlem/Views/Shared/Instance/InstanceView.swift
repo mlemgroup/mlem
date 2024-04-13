@@ -88,9 +88,12 @@ struct InstanceView: View {
                     .padding(.bottom, AppConstants.halfSpacing)
                 
                 VStack(spacing: 0) {
-                    BubblePicker(availableTabs, selected: $selectedTab, withDividers: [.top, .bottom]) { tab in
-                        Text(tab.label)
-                    }
+                    BubblePicker(
+                        availableTabs,
+                        selected: $selectedTab,
+                        withDividers: [.top, .bottom],
+                        label: \.label
+                    )
                     
                     if let errorDetails, [.about, .administration, .details].contains(selectedTab) {
                         ErrorView(errorDetails)

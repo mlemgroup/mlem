@@ -16,9 +16,11 @@ struct SearchResultsView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            BubblePicker(SearchTab.allCases, selected: $searchModel.searchTab) {
-                Text($0.label)
-            }
+            BubblePicker(
+                SearchTab.allCases,
+                selected: $searchModel.searchTab,
+                label: \.label
+            )
             .padding(.top, -2.5)
             .padding(.bottom, AppConstants.halfSpacing)
             Divider()
