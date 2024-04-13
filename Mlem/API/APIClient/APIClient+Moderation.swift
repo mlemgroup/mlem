@@ -257,7 +257,7 @@ extension APIClient {
     func getUnreadRegistrationApplications() async throws -> APIGetUnreadRegistrationApplicationCountResponse {
         // the request throws an error if the calling user is not an admin--should never be called
         guard siteInformation.isAdmin else {
-            assertionFailure("getUnreadRegistrationApplications called by non-moderator user!")
+            assertionFailure("getUnreadRegistrationApplications called by non-admin user!")
             return .init(registrationApplications: 0)
         }
         
