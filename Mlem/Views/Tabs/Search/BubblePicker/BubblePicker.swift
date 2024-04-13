@@ -136,6 +136,31 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
         tab: Value,
         isSelected: Bool
     ) -> some View {
+        AnyView(HStack(spacing: 8) {
+            let value = self.value(tab)
+            Text(label(tab))
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .foregroundColor(isSelected ? .white : .primary)
+            if let value {
+                Text(value.abbreviated)
+                    .monospacedDigit()
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .foregroundColor(isSelected ? .white.opacity(0.8) : .secondary)
+            }
+        })
+        .padding(.horizontal, 22)
+        .frame(minHeight: 50)
+        .contentShape(Rectangle())
+    }
+    
+    
+    @ViewBuilder
+    func bubbleButtonLabel2(
+        tab: Value,
+        isSelected: Bool
+    ) -> some View {
         AnyView(HStack {
             let value = self.value(tab)
             Text(label(tab))
@@ -143,26 +168,28 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                 .fontWeight(.semibold)
                 .foregroundColor(isSelected ? .white : .primary)
                 // .padding(value == nil ? .horizontal : .leading, 22
-            + Text(value == nil ? "" : " • \(value?.abbreviated ?? "0")")
+            if let value {
+                Text(value.abbreviated)
                     .monospacedDigit()
                     .font(.subheadline)
                     .fontWeight(.medium)
                     .foregroundColor(isSelected ? .white.opacity(0.8) : .secondary)
-                    // .padding(.horizontal, 5)
-                    // .frame(minWidth: 22)
-                    // .frame(height: 22)
-//                    .background(
-//                        Group {
-//                            if value < 10 {
-//                                Circle()
-//                            } else {
-//                                Capsule()
-//                            }
-//                        }
-//                            .foregroundStyle(
-//                                isSelected ? Color(uiColor: .systemBackground).opacity(0.3) : Color(uiColor: .secondarySystemBackground)
-//                            )
-//                    )
+                    .padding(.horizontal, 5)
+                    .frame(minWidth: 22)
+                    .frame(height: 22)
+                    .background(
+                        Group {
+                            if value < 10 {
+                                Circle()
+                            } else {
+                                Capsule()
+                            }
+                        }
+                            .foregroundStyle(
+                                isSelected ? Color(uiColor: .systemBackground).opacity(0.3) : Color(uiColor: .secondarySystemBackground)
+                            )
+                    )
+            }
         })
         .padding(.horizontal, 22)
         .frame(minHeight: 50)

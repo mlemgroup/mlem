@@ -90,28 +90,22 @@ extension InboxView {
     }
     
     // swiftlint:disable:next cyclomatic_complexity
-    func genTabLabel(for tab: InboxTab) -> String {
-        var unread = 0
+    func tabValue(for tab: InboxTab) -> Int {
         switch tab {
         case .all:
             switch selectedInbox {
             case .personal:
-                unread = unreadTracker.personal
+                unreadTracker.personal
             case .mod:
-                unread = unreadTracker.modAndAdmin
+                unreadTracker.modAndAdmin
             }
-        case .replies: unread = unreadTracker.replies.count
-        case .mentions: unread = unreadTracker.mentions.count
-        case .messages: unread = unreadTracker.messages.count
-        case .commentReports: unread = unreadTracker.commentReports.count
-        case .postReports: unread = unreadTracker.postReports.count
-        case .messageReports: unread = unreadTracker.messageReports.count
-        case .registrationApplications: unread = unreadTracker.registrationApplications.count
+        case .replies: unreadTracker.replies.count
+        case .mentions: unreadTracker.mentions.count
+        case .messages: unreadTracker.messages.count
+        case .commentReports: unreadTracker.commentReports.count
+        case .postReports: unreadTracker.postReports.count
+        case .messageReports: unreadTracker.messageReports.count
+        case .registrationApplications: unreadTracker.registrationApplications.count
         }
-        
-        if unread > 0 {
-            return "\(tab.label) (\(unread))"
-        }
-        return tab.label
     }
 }
