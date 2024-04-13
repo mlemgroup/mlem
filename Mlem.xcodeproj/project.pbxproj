@@ -575,12 +575,14 @@
 		CDB652552B8EAC3E007B7797 /* APIPostFeatureType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB652542B8EAC3E007B7797 /* APIPostFeatureType.swift */; };
 		CDB652572B8EAE15007B7797 /* APIPostResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB652562B8EAE15007B7797 /* APIPostResponse.swift */; };
 		CDB652592B8EC024007B7797 /* LockPostRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB652582B8EC024007B7797 /* LockPostRequest.swift */; };
+		CDBA5FC62BC9C58300469C05 /* GetUnreadRegistrationApplicationCountRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBA5FC52BC9C58300469C05 /* GetUnreadRegistrationApplicationCountRequest.swift */; };
 		CDBCBA202B537A4B0070F60D /* PostFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBCBA1F2B537A4B0070F60D /* PostFeedView.swift */; };
 		CDBCBA242B54A5F40070F60D /* NoPostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBCBA232B54A5F40070F60D /* NoPostsView.swift */; };
 		CDC1C93C2A7AA76000072E3D /* InternetSpeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC1C93B2A7AA76000072E3D /* InternetSpeed.swift */; };
 		CDC1C93F2A7AB8C700072E3D /* AccessibilitySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC1C93E2A7AB8C700072E3D /* AccessibilitySettingsView.swift */; };
 		CDC1C9412A7ABA9C00072E3D /* ReadMarkStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC1C9402A7ABA9C00072E3D /* ReadMarkStyle.swift */; };
 		CDC1C9432A7AC24600072E3D /* ReadCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC1C9422A7AC24600072E3D /* ReadCheck.swift */; };
+		CDC24EA62BC9B352009AA6D1 /* GetReportCountRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC24EA52BC9B352009AA6D1 /* GetReportCountRequest.swift */; };
 		CDC3E8002AEAFEAF008062CA /* InboxTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC3E7FF2AEAFEAF008062CA /* InboxTracker.swift */; };
 		CDC65D8F2A86B6DD007205E5 /* DeleteUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC65D8E2A86B6DD007205E5 /* DeleteUser.swift */; };
 		CDC65D912A86B830007205E5 /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC65D902A86B830007205E5 /* DeleteAccountView.swift */; };
@@ -1294,12 +1296,14 @@
 		CDB652542B8EAC3E007B7797 /* APIPostFeatureType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPostFeatureType.swift; sourceTree = "<group>"; };
 		CDB652562B8EAE15007B7797 /* APIPostResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIPostResponse.swift; sourceTree = "<group>"; };
 		CDB652582B8EC024007B7797 /* LockPostRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockPostRequest.swift; sourceTree = "<group>"; };
+		CDBA5FC52BC9C58300469C05 /* GetUnreadRegistrationApplicationCountRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUnreadRegistrationApplicationCountRequest.swift; sourceTree = "<group>"; };
 		CDBCBA1F2B537A4B0070F60D /* PostFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFeedView.swift; sourceTree = "<group>"; };
 		CDBCBA232B54A5F40070F60D /* NoPostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoPostsView.swift; sourceTree = "<group>"; };
 		CDC1C93B2A7AA76000072E3D /* InternetSpeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetSpeed.swift; sourceTree = "<group>"; };
 		CDC1C93E2A7AB8C700072E3D /* AccessibilitySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilitySettingsView.swift; sourceTree = "<group>"; };
 		CDC1C9402A7ABA9C00072E3D /* ReadMarkStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadMarkStyle.swift; sourceTree = "<group>"; };
 		CDC1C9422A7AC24600072E3D /* ReadCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCheck.swift; sourceTree = "<group>"; };
+		CDC24EA52BC9B352009AA6D1 /* GetReportCountRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetReportCountRequest.swift; sourceTree = "<group>"; };
 		CDC3E7FF2AEAFEAF008062CA /* InboxTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxTracker.swift; sourceTree = "<group>"; };
 		CDC65D8E2A86B6DD007205E5 /* DeleteUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteUser.swift; sourceTree = "<group>"; };
 		CDC65D902A86B830007205E5 /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
@@ -3286,6 +3290,8 @@
 				CDD0B8F52BC064F0003E7174 /* ResolvePrivateMessageReportRequest.swift */,
 				CDD0B8F72BC07E6A003E7174 /* ListRegistrationApplicationsRequest.swift */,
 				CDD0B8FF2BC080C7003E7174 /* ApproveRegistrationApplicationRequest.swift */,
+				CDC24EA52BC9B352009AA6D1 /* GetReportCountRequest.swift */,
+				CDBA5FC52BC9C58300469C05 /* GetUnreadRegistrationApplicationCountRequest.swift */,
 			);
 			path = Moderation;
 			sourceTree = "<group>";
@@ -3935,6 +3941,7 @@
 				50785F762A9A684300117245 /* SavedAccountTracker+Dependency.swift in Sources */,
 				504ECBAE2AB45B2A006C0B96 /* LemmyURL.swift in Sources */,
 				CDA217EA2A63093E00BDA173 /* ReportComment.swift in Sources */,
+				CDC24EA62BC9B352009AA6D1 /* GetReportCountRequest.swift in Sources */,
 				CDD0B8E02BBF4689003E7174 /* PostReportModel+TrackerItem.swift in Sources */,
 				CDA217E82A63029B00BDA173 /* ReportMention.swift in Sources */,
 				504ECBAA2AB27C73006C0B96 /* LandingPage.swift in Sources */,
@@ -3990,6 +3997,7 @@
 				505240E72A88D36D00EA4558 /* SectionIndexTitles.swift in Sources */,
 				5064D0452A71549C00B22EE3 /* NotificationMessage.swift in Sources */,
 				E4F0B56F2ABD00A000BC3E4A /* View+PresentationBackgroundInteraction.swift in Sources */,
+				CDBA5FC62BC9C58300469C05 /* GetUnreadRegistrationApplicationCountRequest.swift in Sources */,
 				CDD0B8FC2BC07ED7003E7174 /* APIRegistrationApplication.swift in Sources */,
 				6D693A4C2A51B99E009E2D76 /* APICommentReport.swift in Sources */,
 				030E863B2AC6C3B1000283A6 /* PictrsRespository.swift in Sources */,

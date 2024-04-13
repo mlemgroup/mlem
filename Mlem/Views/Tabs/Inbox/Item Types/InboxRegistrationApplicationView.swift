@@ -11,6 +11,7 @@ import SwiftUI
 
 struct InboxRegistrationApplicationView: View {
     @EnvironmentObject var modToolTracker: ModToolTracker
+    @EnvironmentObject var unreadTracker: UnreadTracker
     
     @ObservedObject var application: RegistrationApplicationModel
     
@@ -18,7 +19,7 @@ struct InboxRegistrationApplicationView: View {
         VStack(spacing: 0) {
             InboxRegistrationApplicationBodyView(
                 application: application,
-                menuFunctions: application.genMenuFunctions(modToolTracker: modToolTracker)
+                menuFunctions: application.genMenuFunctions(modToolTracker: modToolTracker, unreadTracker: unreadTracker)
             )
             
             if !application.read {
@@ -27,7 +28,7 @@ struct InboxRegistrationApplicationView: View {
         }
         .background(Color.systemBackground)
         .contextMenu {
-            ForEach(application.genMenuFunctions(modToolTracker: modToolTracker)) { menuFunction in
+            ForEach(application.genMenuFunctions(modToolTracker: modToolTracker, unreadTracker: unreadTracker)) { menuFunction in
                 MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
             }
         }
@@ -50,7 +51,7 @@ struct InboxRegistrationApplicationView: View {
             
             Button {
                 Task {
-                    await application.approve()
+                    await application.approve(unreadTracker: unreadTracker)
                 }
             } label: {
                 Image(systemName: Icons.approve)

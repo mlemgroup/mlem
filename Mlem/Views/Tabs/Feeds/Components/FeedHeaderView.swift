@@ -22,11 +22,18 @@ struct FeedHeaderView: View {
     let feedType: any FeedType
     let showDropdownIndicator: Bool
     let subtitle: String
+    let showDropdownBadge: Bool
     
-    init(feedType: any FeedType, showDropdownIndicator: Bool = true, customSubtitle: String? = nil) {
+    init(feedType: any FeedType, showDropdownIndicator: Bool = true, customSubtitle: String? = nil, showDropdownBadge: Bool = false) {
+        assert(
+            !showDropdownBadge || showDropdownIndicator,
+            "showDropdownBadge (\(showDropdownBadge)) cannot be true if showDropdownIndicator (\(showDropdownIndicator)) false!"
+        )
+        
         self.feedType = feedType
         self.showDropdownIndicator = showDropdownIndicator
         self.subtitle = customSubtitle ?? feedType.subtitle
+        self.showDropdownBadge = showDropdownBadge
     }
     
     var body: some View {
@@ -45,6 +52,13 @@ struct FeedHeaderView: View {
                         if showDropdownIndicator {
                             Image(systemName: Icons.dropdown)
                                 .foregroundStyle(.secondary)
+                                .overlay(alignment: .topTrailing) {
+                                    if showDropdownBadge {
+                                        Circle()
+                                            .frame(width: 6, height: 6)
+                                            .foregroundStyle(.red)
+                                    }
+                                }
                         }
                     }
                     .font(.title2)

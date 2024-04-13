@@ -239,4 +239,30 @@ extension APIClient {
             approved: resolver != nil ? response.creatorLocalUser.acceptedApplication : nil
         )
     }
+    
+    // MARK: - Unread Counts
+    
+    func getUnreadReports(for communityId: Int?) async throws -> APIGetReportCountResponse {
+        // the request throws an error if the calling user is not mod or admin--should never be called
+        guard siteInformation.isAdmin || !siteInformation.moderatedCommunities.isEmpty else {
+            assertionFailure("getUnreadReports called by non-moderator user!")
+            return .init(communityId: communityId, commentReports: 0, postReports: 0, privateMessageReports: 0)
+        }
+        
+        let request = try GetReportCountRequest(session: session, communityId: communityId)
+        let response = try await perform(request: request)
+        return response
+    }
+    
+    func getUnreadRegistrationApplications() async throws -> APIGetUnreadRegistrationApplicationCountResponse {
+        // the request throws an error if the calling user is not an admin--should never be called
+        guard siteInformation.isAdmin else {
+            assertionFailure("getUnreadRegistrationApplications called by non-admin user!")
+            return .init(registrationApplications: 0)
+        }
+        
+        let request = try GetUnreadRegistrationApplicationCountRequest(session: session)
+        let response = try await perform(request: request)
+        return response
+    }
 }

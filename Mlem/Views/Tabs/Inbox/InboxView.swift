@@ -18,6 +18,13 @@ enum InboxSelection: FeedType {
         case .mod: "Mod Mail"
         }
     }
+    
+    func enrichedLabel(unread: Int) -> String {
+        if unread > 0 {
+            return "\(label) (\(unread))"
+        }
+        return label
+    }
         
     var subtitle: String {
         switch self {
@@ -179,6 +186,13 @@ struct InboxView: View {
     
     var customSubtitle: String? { selectedInbox == .mod && siteInformation.isAdmin ? "Registration applications and reports" : nil }
     
+    var showDropdownBadge: Bool {
+        switch selectedInbox {
+        case .personal: unreadTracker.modAndAdmin > 0
+        case .mod: unreadTracker.personal > 0
+        }
+    }
+    
     var availableFeeds: [InboxSelection] {
         var availableFeeds: [InboxSelection] = [.personal]
         if showModFeed {
@@ -268,7 +282,7 @@ struct InboxView: View {
                     MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
                 }
             } label: {
-                FeedHeaderView(feedType: selectedInbox, customSubtitle: customSubtitle)
+                FeedHeaderView(feedType: selectedInbox, customSubtitle: customSubtitle, showDropdownBadge: showDropdownBadge)
             }
             .buttonStyle(.plain)
         } else {
@@ -340,7 +354,13 @@ struct InboxView: View {
     
     @ViewBuilder
     func picker(tabs: [InboxTab], selected: Binding<InboxTab>) -> some View {
-        BubblePicker(tabs, selected: selected, withDividers: [.bottom], label: \.label)
+        BubblePicker(
+            tabs,
+            selected: selected,
+            withDividers: [.bottom],
+            label: \.label,
+            value: { tabValue(for: $0) }
+        )
         .background(Color.systemBackground.opacity(scrollToTopAppeared ? 1 : 0))
         .background(.bar)
         .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)

@@ -40,7 +40,9 @@ class MessageReportModel: ContentIdentifiable, ObservableObject {
         self.messageReport = messageReport.messageReport
     }
     
-    func toggleResolved(withHaptic: Bool = true) async {
+    func toggleResolved(unreadTracker: UnreadTracker, withHaptic: Bool = true) async {
+        let originalReadState: Bool = read
+        
         if withHaptic {
             hapticManager.play(haptic: .lightSuccess, priority: .high)
         }
@@ -51,12 +53,15 @@ class MessageReportModel: ContentIdentifiable, ObservableObject {
                 resolved: !messageReport.resolved
             )
             await reinit(from: response)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                unreadTracker.messageReports.toggleRead(originalState: originalReadState)
+            }
         } catch {
             errorHandler.handle(error)
         }
     }
     
-    func toggleMessageCreatorBanned(modToolTracker: ModToolTracker, inboxTracker: InboxTracker) {
+    func toggleMessageCreatorBanned(modToolTracker: ModToolTracker, inboxTracker: InboxTracker, unreadTracker: UnreadTracker) {
         modToolTracker.banUser(
             messageCreator,
             bannedFromCommunity: false,
@@ -65,13 +70,13 @@ class MessageReportModel: ContentIdentifiable, ObservableObject {
         ) {
             if !self.messageReport.resolved {
                 Task(priority: .userInitiated) {
-                    await self.toggleResolved(withHaptic: false)
+                    await self.toggleResolved(unreadTracker: unreadTracker, withHaptic: false)
                 }
             }
         }
     }
     
-    func genMenuFunctions(modToolTracker: ModToolTracker, inboxTracker: InboxTracker) -> [MenuFunction] {
+    func genMenuFunctions(modToolTracker: ModToolTracker, inboxTracker: InboxTracker, unreadTracker: UnreadTracker) -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         
         ret.append(.toggleableMenuFunction(
@@ -81,7 +86,7 @@ class MessageReportModel: ContentIdentifiable, ObservableObject {
             falseText: "Ban",
             falseImageName: Icons.instanceBan
         ) {
-            self.toggleMessageCreatorBanned(modToolTracker: modToolTracker, inboxTracker: inboxTracker)
+            self.toggleMessageCreatorBanned(modToolTracker: modToolTracker, inboxTracker: inboxTracker, unreadTracker: unreadTracker)
         })
         
         ret.append(.toggleableMenuFunction(
@@ -92,7 +97,7 @@ class MessageReportModel: ContentIdentifiable, ObservableObject {
             falseImageName: Icons.resolve
         ) {
             Task(priority: .userInitiated) {
-                await self.toggleResolved()
+                await self.toggleResolved(unreadTracker: unreadTracker)
             }
         })
         

@@ -11,6 +11,7 @@ import SwiftUI
 struct InboxMessageReportBodyView: View {
     @EnvironmentObject var modToolTracker: ModToolTracker
     @EnvironmentObject var modInboxTracker: InboxTracker
+    @EnvironmentObject var unreadTracker: UnreadTracker
     
     @ObservedObject var messageReport: MessageReportModel
     
@@ -29,7 +30,11 @@ struct InboxMessageReportBodyView: View {
                 
                 EllipsisMenu(
                     size: AppConstants.largeAvatarSize,
-                    menuFunctions: messageReport.genMenuFunctions(modToolTracker: modToolTracker, inboxTracker: modInboxTracker)
+                    menuFunctions: messageReport.genMenuFunctions(
+                        modToolTracker: modToolTracker,
+                        inboxTracker: modInboxTracker,
+                        unreadTracker: unreadTracker
+                    )
                 )
             }
             

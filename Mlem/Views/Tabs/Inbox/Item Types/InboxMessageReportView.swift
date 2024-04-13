@@ -12,6 +12,7 @@ struct InboxMessageReportView: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     @EnvironmentObject var modToolTracker: ModToolTracker
     @EnvironmentObject var modInboxTracker: InboxTracker
+    @EnvironmentObject var unreadTracker: UnreadTracker
     
     @ObservedObject var messageReport: MessageReportModel
     
@@ -23,7 +24,11 @@ struct InboxMessageReportView: View {
         .background(Color(uiColor: .systemBackground))
         .contentShape(Rectangle())
         .contextMenu {
-            ForEach(messageReport.genMenuFunctions(modToolTracker: modToolTracker, inboxTracker: modInboxTracker)) { menuFunction in
+            ForEach(messageReport.genMenuFunctions(
+                modToolTracker: modToolTracker,
+                inboxTracker: modInboxTracker,
+                unreadTracker: unreadTracker
+            )) { menuFunction in
                 MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
             }
         }
@@ -31,7 +36,7 @@ struct InboxMessageReportView: View {
     
     func toggleResolved() {
         Task {
-            await messageReport.toggleResolved()
+            await messageReport.toggleResolved(unreadTracker: unreadTracker)
         }
     }
     
@@ -42,7 +47,11 @@ struct InboxMessageReportView: View {
                 return .resolve(resolved: messageReport.messageReport.resolved, resolve: toggleResolved)
             case .ban:
                 return .ban(banned: messageReport.messageCreator.banned, instanceBan: true) {
-                    messageReport.toggleMessageCreatorBanned(modToolTracker: modToolTracker, inboxTracker: modInboxTracker)
+                    messageReport.toggleMessageCreatorBanned(
+                        modToolTracker: modToolTracker,
+                        inboxTracker: modInboxTracker,
+                        unreadTracker: unreadTracker
+                    )
                 }
             case .infoStack:
                 return .spacer
