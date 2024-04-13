@@ -14,6 +14,7 @@ struct InboxCommentReportBodyView: View {
     
     @EnvironmentObject var modToolTracker: ModToolTracker
     @EnvironmentObject var modInboxTracker: InboxTracker
+    @EnvironmentObject var unreadTracker: UnreadTracker
     
     @ObservedObject var commentReport: CommentReportModel
     
@@ -32,7 +33,11 @@ struct InboxCommentReportBodyView: View {
                 
                 EllipsisMenu(
                     size: AppConstants.largeAvatarSize,
-                    menuFunctions: commentReport.genMenuFunctions(modToolTracker: modToolTracker, inboxTracker: modInboxTracker)
+                    menuFunctions: commentReport.genMenuFunctions(
+                        modToolTracker: modToolTracker,
+                        inboxTracker: modInboxTracker,
+                        unreadTracker: unreadTracker
+                    )
                 )
             }
             

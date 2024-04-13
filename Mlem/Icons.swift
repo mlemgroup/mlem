@@ -44,6 +44,7 @@ enum Icons {
     static let moderation: String = "shield"
     static let moderationFill: String = "shield.fill"
     static let moderationReport: String = "exclamationmark.shield"
+    static let messageReportSetting: String = "envelope.badge.shield.half.filled"
     
     // misc post
     static let posts: String = "doc.plaintext"

@@ -22,6 +22,7 @@ struct RemovePostView: View {
     
     @State var post: any Removable
     let shouldRemove: Bool
+    var callback: (() -> Void)?
     
     var verb: String { shouldRemove ? "Remove" : "Restore" }
     
@@ -69,6 +70,7 @@ struct RemovePostView: View {
             DispatchQueue.main.async {
                 if success {
                     dismiss()
+                    callback?()
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         Task {
                             await notifier.add(.success("\(verb)d post"))

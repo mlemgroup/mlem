@@ -22,6 +22,7 @@ struct RemoveCommentView: View {
     
     @State var comment: any Removable
     let shouldRemove: Bool
+    var callback: (() -> Void)?
     
     var verb: String { shouldRemove ? "Remove" : "Restore" }
     
@@ -68,6 +69,7 @@ struct RemoveCommentView: View {
             let success = await comment.remove(reason: reason.isEmpty ? nil : reason, shouldRemove: shouldRemove)
             DispatchQueue.main.async {
                 if success {
+                    callback?()
                     dismiss()
                 } else {
                     isWaiting = false

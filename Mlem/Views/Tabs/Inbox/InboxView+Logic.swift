@@ -10,13 +10,7 @@ import Foundation
 extension InboxView {
     func refresh(tracker: InboxTracker) async {
         await tracker.refresh(clearBeforeFetch: false)
-        
-        do {
-            let unreadCounts = try await personRepository.getUnreadCounts()
-            unreadTracker.update(with: unreadCounts)
-        } catch {
-            errorHandler.handle(error)
-        }
+        await unreadTracker.update()
     }
     
     func toggleFilterRead() {
@@ -53,8 +47,12 @@ extension InboxView {
             let (imageName, enabled) = type != selectedInbox
                 ? (type.iconName, true)
                 : (type.iconNameFill, false)
+            let label = switch type {
+            case .personal: type.enrichedLabel(unread: unreadTracker.personal)
+            case .mod: type.enrichedLabel(unread: unreadTracker.modAndAdmin)
+            }
             ret.append(MenuFunction.standardMenuFunction(
-                text: type.label,
+                text: label,
                 imageName: imageName,
                 enabled: enabled
             ) {
@@ -89,5 +87,31 @@ extension InboxView {
         })
         
         return ret
+    }
+    
+    // swiftlint:disable:next cyclomatic_complexity
+    func genTabLabel(for tab: InboxTab) -> String {
+        var unread = 0
+        switch tab {
+        case .all:
+            switch selectedInbox {
+            case .personal:
+                unread = unreadTracker.personal
+            case .mod:
+                unread = unreadTracker.modAndAdmin
+            }
+        case .replies: unread = unreadTracker.replies.count
+        case .mentions: unread = unreadTracker.mentions.count
+        case .messages: unread = unreadTracker.messages.count
+        case .commentReports: unread = unreadTracker.commentReports.count
+        case .postReports: unread = unreadTracker.postReports.count
+        case .messageReports: unread = unreadTracker.messageReports.count
+        case .registrationApplications: unread = unreadTracker.registrationApplications.count
+        }
+        
+        if unread > 0 {
+            return "\(tab.label) (\(unread))"
+        }
+        return tab.label
     }
 }

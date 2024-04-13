@@ -37,26 +37,36 @@ class RegistrationApplicationModel: ObservableObject {
         approved = application.approved
     }
     
-    func approve() async {
+    func approve(unreadTracker: UnreadTracker) async {
         do {
             let response = try await apiClient.approveRegistrationApplication(
                 applicationId: application.id,
                 approve: true,
                 denyReason: nil
             )
+            if !read {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    unreadTracker.registrationApplications.read()
+                }
+            }
             await reinit(from: response)
         } catch {
             errorHandler.handle(error)
         }
     }
     
-    func deny(reason: String) async -> Bool {
+    func deny(reason: String, unreadTracker: UnreadTracker) async -> Bool {
         do {
             let response = try await apiClient.approveRegistrationApplication(
                 applicationId: application.id,
                 approve: false,
                 denyReason: reason
             )
+            if !read {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    unreadTracker.registrationApplications.read()
+                }
+            }
             await reinit(from: response)
             return true
         } catch {
@@ -65,7 +75,7 @@ class RegistrationApplicationModel: ObservableObject {
         return false
     }
     
-    func genMenuFunctions(modToolTracker: ModToolTracker) -> [MenuFunction] {
+    func genMenuFunctions(modToolTracker: ModToolTracker, unreadTracker: UnreadTracker) -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         
         if !(approved ?? false) {
@@ -74,7 +84,7 @@ class RegistrationApplicationModel: ObservableObject {
                 imageName: Icons.approveCircle
             ) {
                 Task(priority: .userInitiated) {
-                    await self.approve()
+                    await self.approve(unreadTracker: unreadTracker)
                 }
             })
         }

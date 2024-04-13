@@ -28,10 +28,10 @@ struct ModToolSheet: View {
             )
         case let .addMod(user, community):
             AddModView(community: community, user: user)
-        case let .removePost(post, shouldRemove):
-            RemovePostView(post: post, shouldRemove: shouldRemove)
-        case let .removeComment(comment, shouldRemove):
-            RemoveCommentView(comment: comment, shouldRemove: shouldRemove)
+        case let .removePost(post, shouldRemove, callback):
+            RemovePostView(post: post, shouldRemove: shouldRemove, callback: callback)
+        case let .removeComment(comment, shouldRemove, callback):
+            RemoveCommentView(comment: comment, shouldRemove: shouldRemove, callback: callback)
         case let .removeCommunity(community, shouldRemove):
             RemoveCommunityView(community: community, shouldRemove: shouldRemove)
         case let .denyApplication(application):
