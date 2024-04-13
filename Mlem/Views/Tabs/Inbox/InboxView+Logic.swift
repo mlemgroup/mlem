@@ -48,8 +48,8 @@ extension InboxView {
                 ? (type.iconName, true)
                 : (type.iconNameFill, false)
             let label = switch type {
-            case .personal: type.enrichedLabel(unread: unreadTracker.personal)
-            case .mod: type.enrichedLabel(unread: unreadTracker.modAndAdmin)
+                        case .personal: type.enrichedLabel(unread: unreadTracker.personal)
+                        case .mod: type.enrichedLabel(unread: unreadTracker.modAndAdmin)
             }
             ret.append(MenuFunction.standardMenuFunction(
                 text: label,
