@@ -81,22 +81,10 @@ struct PurgeContentView: View {
         Form {
             ReasonView(reason: $reason, focusedField: $reasonFocused, showReason: true)
             Section {
-                VStack(alignment: .center, spacing: 12) {
-                    Image(systemName: Icons.purge)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 50)
-                    Text("Purged content cannot is removed permanently from the database and cannot be restored.")
-                        .font(.headline)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 5)
-                .listRowBackground(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(.red, lineWidth: 3)
-                        .background(Color.red.opacity(0.1))
+                WarningView(
+                    iconName: Icons.purge,
+                    text: "Purged content cannot is removed permanently from the database and cannot be restored.",
+                    inList: true
                 )
             }
         }
