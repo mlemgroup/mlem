@@ -354,9 +354,13 @@ struct InboxView: View {
     
     @ViewBuilder
     func picker(tabs: [InboxTab], selected: Binding<InboxTab>) -> some View {
-        BubblePicker(tabs, selected: selected, withDividers: [.bottom]) { tab in
-            Text(genTabLabel(for: tab))
-        }
+        BubblePicker(
+            tabs,
+            selected: selected,
+            withDividers: [.bottom],
+            label: \.label,
+            value: { tabValue(for: $0) }
+        )
         .background(Color.systemBackground.opacity(scrollToTopAppeared ? 1 : 0))
         .background(.bar)
         .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)

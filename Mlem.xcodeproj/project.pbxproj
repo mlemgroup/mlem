@@ -33,6 +33,7 @@
 		030E86462AC6FC1B000283A6 /* DefaultTextInputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E86452AC6FC1B000283A6 /* DefaultTextInputType.swift */; };
 		030E86482AC6FD1D000283A6 /* _assignIfNotEqual.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E86472AC6FD1D000283A6 /* _assignIfNotEqual.swift */; };
 		030E864C2AC7037F000283A6 /* SearchBarExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E864B2AC7037F000283A6 /* SearchBarExtensions.swift */; };
+		030FF6862BCB218000F6BFAC /* Int+Abbreviated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF6852BCB218000F6BFAC /* Int+Abbreviated.swift */; };
 		0317D46F2B558CB500EEE72C /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0317D46E2B558CB500EEE72C /* BadgeView.swift */; };
 		0317D4712B55AE0700EEE72C /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0317D4702B55AE0700EEE72C /* Color+Hex.swift */; };
 		031A617C2B1BDFD100ABF23B /* AdvancedAccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031A617B2B1BDFD100ABF23B /* AdvancedAccountSettingsView.swift */; };
@@ -110,7 +111,6 @@
 		03B85A402BB38868003C4203 /* PostEllipsisMenus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B85A3F2BB38868003C4203 /* PostEllipsisMenus.swift */; };
 		03BAA23A2A57DC1400D48252 /* PublishedTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BAA2392A57DC1400D48252 /* PublishedTimestampView.swift */; };
 		03C194082BA25B5200B00349 /* ProgressOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C194072BA25B5200B00349 /* ProgressOverlayView.swift */; };
-		03C897F62ABF49BD005F3403 /* Abbreviate Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C897F52ABF49BD005F3403 /* Abbreviate Numbers.swift */; };
 		03C897F82ABF652D005F3403 /* SearchRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C897F72ABF652D005F3403 /* SearchRoot.swift */; };
 		03C898012AC04EF9005F3403 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C898002AC04EF9005F3403 /* SearchResultsView.swift */; };
 		03C898032AC04F61005F3403 /* RecentSearchesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C898022AC04F61005F3403 /* RecentSearchesView.swift */; };
@@ -757,6 +757,7 @@
 		030E86452AC6FC1B000283A6 /* DefaultTextInputType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTextInputType.swift; sourceTree = "<group>"; };
 		030E86472AC6FD1D000283A6 /* _assignIfNotEqual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _assignIfNotEqual.swift; sourceTree = "<group>"; };
 		030E864B2AC7037F000283A6 /* SearchBarExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarExtensions.swift; sourceTree = "<group>"; };
+		030FF6852BCB218000F6BFAC /* Int+Abbreviated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Abbreviated.swift"; sourceTree = "<group>"; };
 		0317D46E2B558CB500EEE72C /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
 		0317D4702B55AE0700EEE72C /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
 		031A617B2B1BDFD100ABF23B /* AdvancedAccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedAccountSettingsView.swift; sourceTree = "<group>"; };
@@ -834,7 +835,6 @@
 		03B85A3F2BB38868003C4203 /* PostEllipsisMenus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEllipsisMenus.swift; sourceTree = "<group>"; };
 		03BAA2392A57DC1400D48252 /* PublishedTimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishedTimestampView.swift; sourceTree = "<group>"; };
 		03C194072BA25B5200B00349 /* ProgressOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressOverlayView.swift; sourceTree = "<group>"; };
-		03C897F52ABF49BD005F3403 /* Abbreviate Numbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Abbreviate Numbers.swift"; sourceTree = "<group>"; };
 		03C897F72ABF652D005F3403 /* SearchRoot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRoot.swift; sourceTree = "<group>"; };
 		03C898002AC04EF9005F3403 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
 		03C898022AC04F61005F3403 /* RecentSearchesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchesView.swift; sourceTree = "<group>"; };
@@ -1623,6 +1623,14 @@
 			path = "Search Bar";
 			sourceTree = "<group>";
 		};
+		030FF6842BCB217700F6BFAC /* Int */ = {
+			isa = PBXGroup;
+			children = (
+				030FF6852BCB218000F6BFAC /* Int+Abbreviated.swift */,
+			);
+			path = Int;
+			sourceTree = "<group>";
+		};
 		031A93D42AC847D10077030C /* Image Upload */ = {
 			isa = PBXGroup;
 			children = (
@@ -2008,7 +2016,6 @@
 				B1955A1B2A606B810056CF99 /* Easter */,
 				630049EB27EF390900D5105B /* Networking */,
 				6322A5D127F88CFD00135D4F /* Time Parser.swift */,
-				03C897F52ABF49BD005F3403 /* Abbreviate Numbers.swift */,
 				50EC39B12A346DDC00E014C2 /* URLHandler.swift */,
 				CD3FBCE82A4B482700B2063F /* Generic Merge.swift */,
 				50CC4A7E2AA0D3A90074C845 /* InstanceMetadataParser.swift */,
@@ -2058,6 +2065,7 @@
 		6332FDC127EFCB530009A98A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				030FF6842BCB217700F6BFAC /* Int */,
 				CD29ED2C2B2E829B006937CE /* Array */,
 				CD29ED2D2B2E82D1006937CE /* Bundle */,
 				CD29ED2F2B2E83F6006937CE /* Color */,
@@ -4103,7 +4111,6 @@
 				03AFBEAB2B6EAA0C00F01F3C /* APILocalSite+Mock.swift in Sources */,
 				CD2697E52B9E14FB0002B459 /* GetModlogRequest.swift in Sources */,
 				CD29ED392B2E860C006937CE /* String+Trimmed.swift in Sources */,
-				03C897F62ABF49BD005F3403 /* Abbreviate Numbers.swift in Sources */,
 				637218522A3A2AAD008C4816 /* APIFederatedInstances.swift in Sources */,
 				CD59E8A52A72C943005757F4 /* MarkAllAsReadRequest.swift in Sources */,
 				03A1B3F22A83F33900AB0DE0 /* DownvoteCounterView.swift in Sources */,
@@ -4214,6 +4221,7 @@
 				50811B442A920945006BA3F2 /* APIPost+Mock.swift in Sources */,
 				030E86462AC6FC1B000283A6 /* DefaultTextInputType.swift in Sources */,
 				03B85A3C2BB34D1F003C4203 /* PurgeContentView.swift in Sources */,
+				030FF6862BCB218000F6BFAC /* Int+Abbreviated.swift in Sources */,
 				50811B3A2A920569006BA3F2 /* APIPerson+Mock.swift in Sources */,
 				03C897F82ABF652D005F3403 /* SearchRoot.swift in Sources */,
 				03CEE04D2B6EBEA800D65B1B /* InstanceView+Logic.swift in Sources */,

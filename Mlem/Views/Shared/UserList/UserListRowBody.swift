@@ -90,10 +90,10 @@ struct UserListRowBody: View {
                 if complications.contains(.comments), let commentCount = user.commentCount {
                     HStack(spacing: 5) {
                         VStack(alignment: .trailing, spacing: 6) {
-                            Text(abbreviateNumber(postCount))
+                            Text(postCount.abbreviated)
                                 .font(.subheadline)
                                 .monospacedDigit()
-                            Text(abbreviateNumber(commentCount))
+                            Text(commentCount.abbreviated)
                                 .font(.subheadline)
                                 .monospacedDigit()
                         }
@@ -108,7 +108,7 @@ struct UserListRowBody: View {
                     .foregroundStyle(.secondary)
                 } else {
                     HStack(spacing: 5) {
-                        Text(abbreviateNumber(postCount))
+                        Text(postCount.abbreviated)
                             .monospacedDigit()
                         Image(systemName: Icons.posts)
                     }
@@ -116,7 +116,7 @@ struct UserListRowBody: View {
                 }
             } else if complications.contains(.comments), let commentCount = user.commentCount {
                 HStack(spacing: 5) {
-                    Text(abbreviateNumber(commentCount))
+                    Text(commentCount.abbreviated)
                         .monospacedDigit()
                     Image(systemName: Icons.replies)
                 }

@@ -237,18 +237,24 @@ struct UserView: View {
             .transition(.opacity)
         } else {
             VStack(spacing: 0) {
-                BubblePicker(tabs, selected: $selectedTab, withDividers: [.top, .bottom]) { tab in
-                    switch tab {
-                    case .posts:
-                        Text("Posts (\(abbreviateNumber(user.postCount ?? 0)))")
-                    case .comments:
-                        Text("Comments (\(abbreviateNumber(user.commentCount ?? 0)))")
-                    case .communities:
-                        Text("Communities (\(abbreviateNumber(user.moderatedCommunities?.count ?? 0)))")
-                    default:
-                        Text(tab.label)
+                BubblePicker(
+                    tabs,
+                    selected: $selectedTab,
+                    withDividers: [.top, .bottom],
+                    label: \.label,
+                    value: { tab in
+                        switch tab {
+                        case .posts:
+                            user.postCount ?? 0
+                        case .comments:
+                            user.commentCount ?? 0
+                        case .communities:
+                            user.moderatedCommunities?.count ?? 0
+                        default:
+                            nil
+                        }
                     }
-                }
+                )
                 
                 UserFeedView(
                     user: user,

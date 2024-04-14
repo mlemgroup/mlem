@@ -218,9 +218,12 @@ struct CommunityFeedView: View {
                 }
                 .padding(.horizontal, AppConstants.standardSpacing)
                 
-                BubblePicker(availableTabs, selected: $selectedTab, withDividers: [.top, .bottom]) {
-                    Text($0.rawValue.capitalized)
-                }
+                BubblePicker(
+                    availableTabs,
+                    selected: $selectedTab,
+                    withDividers: [.top, .bottom],
+                    label: \.rawValue.capitalized
+                )
             }
         }
     }
@@ -252,19 +255,11 @@ struct CommunityFeedView: View {
         return Icons.personFill
     }
     
-    var subscriberCountText: String? {
-        if let subscriberCount = communityModel.subscriberCount {
-            abbreviateNumber(subscriberCount)
-        } else {
-            nil
-        }
-    }
-    
     @ViewBuilder
     var subscribeButton: some View {
         if let subscribed = communityModel.subscribed {
             capsuleButton(
-                text: subscriberCountText,
+                text: communityModel.subscriberCount?.abbreviated,
                 imageName: subscribeButtonIcon,
                 foregroundColor: subscribeButtonForegroundColor,
                 backgroundColor: subscribeButtonBackgroundColor

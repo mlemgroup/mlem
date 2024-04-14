@@ -22,9 +22,12 @@ struct SearchHomeView: View {
                 .padding(.top, 12)
                 .padding(.bottom, -AppConstants.halfSpacing)
             
-            BubblePicker(SearchTab.homePageCases, selected: $searchModel.searchTab, withDividers: [.bottom]) {
-                Text($0.label)
-            }
+            BubblePicker(
+                SearchTab.homePageCases,
+                selected: $searchModel.searchTab,
+                withDividers: [.bottom],
+                label: \.label
+            )
             
             SearchResultListView(showTypeLabel: false)
         }

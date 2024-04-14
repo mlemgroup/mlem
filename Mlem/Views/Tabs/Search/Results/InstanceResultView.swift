@@ -62,7 +62,7 @@ struct InstanceResultView: View {
                 Spacer()
                 if complications.contains(.users), let userCount = instance.userCount {
                     HStack(spacing: 5) {
-                        Text(abbreviateNumber(userCount))
+                        Text(userCount.abbreviated)
                             .monospacedDigit()
                         Image(systemName: Icons.personFill)
                     }
