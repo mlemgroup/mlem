@@ -12,13 +12,20 @@ struct LayoutWidgetGroups: Codable {
     var post: [LayoutWidgetType]
     var comment: [LayoutWidgetType]
     var moderator: [LayoutWidgetType]
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        post = (try? values.decode([LayoutWidgetType].self, forKey: .post)) ?? LayoutWidgetType.defaultPostWidgets
+        comment = (try? values.decode([LayoutWidgetType].self, forKey: .comment)) ?? LayoutWidgetType.defaultCommentWidgets
+        moderator = (try? values.decode([LayoutWidgetType].self, forKey: .moderator)) ?? LayoutWidgetType.defaultModeratorWidgets
+    }
 }
 
 extension LayoutWidgetGroups {
     init() {
-        self.post = [.scoreCounter, .infoStack, .save, .reply]
-        self.comment = [.scoreCounter, .infoStack, .save, .reply]
-        self.moderator = [.resolve, .remove, .infoStack, .ban, .purge]
+        self.post = LayoutWidgetType.defaultPostWidgets
+        self.comment = LayoutWidgetType.defaultCommentWidgets
+        self.moderator = LayoutWidgetType.defaultModeratorWidgets
     }
 }
 

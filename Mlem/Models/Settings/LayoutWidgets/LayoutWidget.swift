@@ -88,6 +88,10 @@ indirect enum LayoutWidgetType: String, Hashable, Codable, CaseIterable {
     var canRemove: Bool {
         self != .infoStack
     }
+    
+    static let defaultPostWidgets: [Self] = [.scoreCounter, .infoStack, .save, .reply]
+    static let defaultCommentWidgets: [Self] = [.scoreCounter, .infoStack, .save, .reply]
+    static let defaultModeratorWidgets: [Self] = [.resolve, .remove, .infoStack, .ban, .purge]
 }
 
 class LayoutWidget: Equatable, Hashable {
