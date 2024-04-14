@@ -331,15 +331,21 @@ struct ModlogView: View {
     @ViewBuilder
     var modlogWarning: some View {
         VStack(alignment: .center, spacing: AppConstants.doubleSpacing) {
-            Image(systemName: Icons.warning)
-                .resizable()
-                .scaledToFit()
-                .foregroundStyle(.red)
-                .frame(width: 60, height: 60)
+//            Image(systemName: Icons.warning)
+//                .resizable()
+//                .scaledToFit()
+//                .foregroundStyle(.red)
+//                .frame(width: 60, height: 60)
+//
+//            Text("The moderation log may contain sensitive or disturbing content. Proceed with caution.")
+//                .multilineTextAlignment(.center)
+//                .padding(.bottom, AppConstants.doubleSpacing)
             
-            Text("The moderation log may contain sensitive or disturbing content. Proceed with caution.")
-                .multilineTextAlignment(.center)
-                .padding(.bottom, AppConstants.doubleSpacing)
+            WarningView(
+                iconName: Icons.warning,
+                text: "The moderation log may contain sensitive or disturbing content. Proceed with caution.",
+                inList: false
+            )
             
             VStack(spacing: AppConstants.standardSpacing) {
                 Button {
