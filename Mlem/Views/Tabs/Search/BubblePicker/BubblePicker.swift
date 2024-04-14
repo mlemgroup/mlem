@@ -155,7 +155,6 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
         .contentShape(Rectangle())
     }
     
-    
     @ViewBuilder
     func bubbleButtonLabel2(
         tab: Value,

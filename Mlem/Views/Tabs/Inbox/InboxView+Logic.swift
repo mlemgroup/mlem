@@ -89,7 +89,6 @@ extension InboxView {
         return ret
     }
     
-    // swiftlint:disable:next cyclomatic_complexity
     func tabValue(for tab: InboxTab) -> Int {
         switch tab {
         case .all:
