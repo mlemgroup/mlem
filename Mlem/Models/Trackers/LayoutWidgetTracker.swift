@@ -8,11 +8,13 @@
 import Dependencies
 import Foundation
 
-struct LayoutWidgetGroups: Codable {
+struct LayoutWidgetGroups {
     var post: [LayoutWidgetType]
     var comment: [LayoutWidgetType]
     var moderator: [LayoutWidgetType]
-    
+}
+
+extension LayoutWidgetGroups: Codable {
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         post = (try? values.decode([LayoutWidgetType].self, forKey: .post)) ?? LayoutWidgetType.defaultPostWidgets
