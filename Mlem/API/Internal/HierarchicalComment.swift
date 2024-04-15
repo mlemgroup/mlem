@@ -7,6 +7,7 @@
 
 import Dependencies
 import Foundation
+import SwiftUI
 
 /// A model which represents a comment and it's child relationships
 class HierarchicalComment: Purgable, ObservableObject {
@@ -207,6 +208,8 @@ extension HierarchicalComment: Removable {
 extension [APICommentView] {
     /// A representation of this array of `APICommentView` in a hierarchy that is suitable for rendering the UI with parent/child relationships
     var hierarchicalRepresentation: [HierarchicalComment] {
+        @AppStorage("collapseChildComments") var collapseChildComments = false
+        
         var allComments = self
         
         let childrenStartIndex = allComments.partition(by: { $0.comment.parentId != nil })
@@ -219,7 +222,6 @@ extension [APICommentView] {
         }
         
         let identifiedComments = Dictionary(uniqueKeysWithValues: allComments.lazy.map { ($0.id, $0) })
-        let collapseChildComments = UserDefaults.standard.bool(forKey: "collapseChildComments")
 
         /// Recursively populates child comments by looking up IDs from `childrenById`
         func populateChildren(_ comment: APICommentView) -> HierarchicalComment {
