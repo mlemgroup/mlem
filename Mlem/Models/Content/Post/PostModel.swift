@@ -7,6 +7,7 @@
 
 import Dependencies
 import Foundation
+import SwiftUI
 
 // swiftlint:disable type_body_length
 /// Internal model to represent a post
@@ -208,8 +209,8 @@ class PostModel: ContentIdentifiable, Removable, Purgable, ObservableObject {
     func toggleSave() async {
         hapticManager.play(haptic: .success, priority: .low)
         
+        @AppStorage("upvoteOnSave") var upvoteOnSave = false
         let shouldSave: Bool = !saved
-        let upvoteOnSave = UserDefaults.standard.bool(forKey: "upvoteOnSave")
         
         // state fake
         let original: PostModel = .init(from: self)

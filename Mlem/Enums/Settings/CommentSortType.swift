@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 // lemmy_db_schema::CommentSortType
 // TODO: this is not accurate to the Lemmy enum, "controversial" is missing
@@ -48,8 +49,8 @@ extension CommentSortType: SettingsOptions {
 }
 
 extension CommentSortType {
-    static func appStorageValue(store: UserDefaults = .standard) -> Self {
-        let defaultValue = store.string(forKey: "defaultCommentSorting") ?? ""
-        return CommentSortType(rawValue: defaultValue) ?? .top
+    static func appStorageValue() -> Self {
+        @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
+        return defaultCommentSorting
     }
 }

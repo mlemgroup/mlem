@@ -29,6 +29,7 @@ extension PostModel {
         modToolTracker: ModToolTracker? = nil
     ) -> [MenuFunction] {
         @AppStorage("moderatorActionGrouping") var moderatorActionGrouping: ModerationActionGroupingMode = .none
+        @AppStorage("developerMode") var developerMode = false
         
         var functions: [MenuFunction] = .init()
 
@@ -61,7 +62,7 @@ extension PostModel {
         }
         
         #if DEBUG
-            if UserDefaults.standard.bool(forKey: "developerMode") {
+            if developerMode {
                 functions.append(.divider)
                 functions.append(
                     buildDeveloperMenu(
@@ -155,7 +156,8 @@ extension PostModel {
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         
-        var showAllActions = isExpanded || UserDefaults.standard.bool(forKey: "showAllModeratorActions")
+        @AppStorage("showAllModeratorActions") var showAllModeratorActions = false
+        let showAllActions = isExpanded || showAllModeratorActions
         @AppStorage("moderatorActionGrouping") var moderatorActionGrouping: ModerationActionGroupingMode = .none
         
         if showAllActions {
