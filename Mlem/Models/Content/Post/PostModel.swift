@@ -207,10 +207,9 @@ class PostModel: ContentIdentifiable, Removable, Purgable, ObservableObject {
     }
     
     func toggleSave() async {
-        @AppStorage("upvoteOnSave") var upvoteOnSave = false
-        
         hapticManager.play(haptic: .success, priority: .low)
         
+        @AppStorage("upvoteOnSave") var upvoteOnSave = false
         let shouldSave: Bool = !saved
         
         // state fake
