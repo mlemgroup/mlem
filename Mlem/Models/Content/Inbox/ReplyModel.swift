@@ -180,7 +180,9 @@ extension ReplyModel {
             await reinit(from: updatedReply)
             if !original.commentReply.read {
                 _ = try await inboxRepository.markReplyRead(id: commentReply.id, isRead: true)
-                await unreadTracker.replies.read()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    unreadTracker.replies.read()
+                }
             }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)

@@ -19,16 +19,18 @@ struct UnreadCount {
         self.count = 0
     }
     
-    // @MainActor
     mutating func reset() { count = 0 }
     
-    // @MainActor
-    mutating func read() { count -= 1 }
+    mutating func read() {
+        if count > 0 {
+            count -= 1
+        } else {
+            assertionFailure("read() called but count was <= 0!")
+        }
+    }
     
-    // @MainActor
     mutating func unread() { count += 1 }
     
-    // @MainActor
     mutating func toggleRead(originalState: Bool) {
         if originalState {
             unread()
