@@ -94,7 +94,7 @@ struct Window: View {
         transition(flow)
         DispatchQueue.main.async {
             Task {
-                await markReadBatcher.flush()
+                await markReadBatcher.flush(includeStaged: true)
             }
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

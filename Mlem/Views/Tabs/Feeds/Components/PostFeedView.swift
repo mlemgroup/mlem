@@ -70,7 +70,7 @@ struct PostFeedView: View {
                 defer { suppressNoPostsView = false }
                 
                 if let versionSafePostSort {
-                    await markReadBatcher.flush()
+                    await markReadBatcher.flush(includeStaged: true)
                     
                     await postTracker.changeSortType(
                         to: versionSafePostSort,
@@ -85,7 +85,7 @@ struct PostFeedView: View {
             }
             .onDisappear {
                 Task {
-                    await markReadBatcher.flush()
+                    await markReadBatcher.flush(includeStaged: true)
                 }
             }
     }
@@ -103,13 +103,18 @@ struct PostFeedView: View {
                                 let indexToMark = index >= postSize.markReadThreshold ? index - postSize.markReadThreshold : index
 
                                 if let postToMark = postTracker.items[safeIndex: indexToMark] {
-                                    postToMark.setRead(true)
-                                    await markReadBatcher.add(postToMark.postId)
-                                    
-                                    // handle posts at end of feed
+                                    await markReadBatcher.stage(postToMark.postId)
                                     if postTracker.items.count - index <= postSize.markReadThreshold {
+                                        await markReadBatcher.stage(element.postId)
+                                    }
+                                }
+                            }
+                        }
+                        .onDisappear {
+                            if markReadOnScroll {
+                                Task {
+                                    if await markReadBatcher.add(element.postId) {
                                         element.setRead(true)
-                                        await markReadBatcher.add(element.postId)
                                     }
                                 }
                             }
