@@ -113,9 +113,7 @@ struct PostFeedView: View {
                         .onDisappear {
                             if markReadOnScroll {
                                 Task {
-                                    if await markReadBatcher.add(element.postId) {
-                                        element.setRead(true)
-                                    }
+                                    await markReadBatcher.add(post: element)
                                 }
                             }
                         }

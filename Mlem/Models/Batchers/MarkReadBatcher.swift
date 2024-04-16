@@ -68,18 +68,13 @@ class MarkReadBatcher {
             return
         }
         
-        print("DEBUG staging \(postId)")
-        
         staged.insert(postId)
     }
   
-    func add(_ postId: Int) async -> Bool {
-        // FUTURE DEV: wouldn't it be nicer to pass in a PostModel and perform the mark read state fake here?
-        // PAST DEV: no, that causes nasty little memory errors in fringe cases thanks to pass-by-reference. Trust in the safety of pass-by-value, future dev.
-        
+    func add(post: PostModel) async {
         guard enabled else {
             assertionFailure("Cannot add to disabled batcher!")
-            return false
+            return
         }
         
         if pending.count >= 50 {
@@ -91,14 +86,10 @@ class MarkReadBatcher {
         // - Thread 0 calls flush() and performs sending = pending
         // - Thread 1 adds its id to pending
         // - Thread 0 performs pending = .init(), and thread 1's id is lost forever!
-        if staged.contains(postId) {
-            pending.append(postId)
-            staged.remove(postId)
-            return true
-            // print("DEBUG added \(postId)")
+        if staged.contains(post.postId) {
+            pending.append(post.postId)
+            staged.remove(post.postId)
+            await post.setRead(true)
         }
-        
-        print("DEBUG non-staged postId \(postId) added to MarkReadBatcher")
-        return false
     }
 }
