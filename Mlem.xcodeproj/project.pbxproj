@@ -34,6 +34,7 @@
 		030E86482AC6FD1D000283A6 /* _assignIfNotEqual.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E86472AC6FD1D000283A6 /* _assignIfNotEqual.swift */; };
 		030E864C2AC7037F000283A6 /* SearchBarExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E864B2AC7037F000283A6 /* SearchBarExtensions.swift */; };
 		030FF6862BCB218000F6BFAC /* Int+Abbreviated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF6852BCB218000F6BFAC /* Int+Abbreviated.swift */; };
+		030FF6882BCEE58900F6BFAC /* BlockInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF6872BCEE58900F6BFAC /* BlockInstance.swift */; };
 		0317D46F2B558CB500EEE72C /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0317D46E2B558CB500EEE72C /* BadgeView.swift */; };
 		0317D4712B55AE0700EEE72C /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0317D4702B55AE0700EEE72C /* Color+Hex.swift */; };
 		031A617C2B1BDFD100ABF23B /* AdvancedAccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031A617B2B1BDFD100ABF23B /* AdvancedAccountSettingsView.swift */; };
@@ -759,6 +760,7 @@
 		030E86472AC6FD1D000283A6 /* _assignIfNotEqual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _assignIfNotEqual.swift; sourceTree = "<group>"; };
 		030E864B2AC7037F000283A6 /* SearchBarExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarExtensions.swift; sourceTree = "<group>"; };
 		030FF6852BCB218000F6BFAC /* Int+Abbreviated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Abbreviated.swift"; sourceTree = "<group>"; };
+		030FF6872BCEE58900F6BFAC /* BlockInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockInstance.swift; sourceTree = "<group>"; };
 		0317D46E2B558CB500EEE72C /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
 		0317D4702B55AE0700EEE72C /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
 		031A617B2B1BDFD100ABF23B /* AdvancedAccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedAccountSettingsView.swift; sourceTree = "<group>"; };
@@ -2446,6 +2448,7 @@
 				CD2697E42B9E14FB0002B459 /* GetModlogRequest.swift */,
 				6372183B2A3A2AAD008C4816 /* GetSite.swift */,
 				031A617F2B1CEA7300ABF23B /* ChangePassword.swift */,
+				030FF6872BCEE58900F6BFAC /* BlockInstance.swift */,
 				03A18CBC2B1005A400BA69D2 /* SaveUserSettings.swift */,
 			);
 			path = Site;
@@ -4363,6 +4366,7 @@
 				CD04D5E72A3636FB008EF95B /* Headline Post.swift in Sources */,
 				50A8812E2A72D76C003E3661 /* APIClient+Comment.swift in Sources */,
 				CDD0B8CF2BBA0D31003E7174 /* ResolveCommentReportRequest.swift in Sources */,
+				030FF6882BCEE58900F6BFAC /* BlockInstance.swift in Sources */,
 				6363D5C527EE196700E34822 /* MlemApp.swift in Sources */,
 				CDF1EF162A6C3BC2003594B6 /* End Of Feed View.swift in Sources */,
 				CDD0B8D32BBB4158003E7174 /* InboxView+Feeds.swift in Sources */,

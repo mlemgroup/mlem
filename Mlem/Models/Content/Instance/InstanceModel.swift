@@ -5,9 +5,15 @@
 //  Created by Sjmarf on 13/01/2024.
 //
 
+import Dependencies
 import SwiftUI
 
 struct InstanceModel {
+    @Dependency(\.apiClient) var apiClient
+    @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.notifier) var notifier
+    
     enum InstanceError: Error {
         case invalidUrl
     }
@@ -45,6 +51,12 @@ struct InstanceModel {
     var applicationsEmailAdmins: Bool?
     var reportsEmailAdmins: Bool?
     
+    // Not included in any API types; assumed to be false
+    var blocked: Bool = false
+    
+    // This is included in APISite, but should ONLY be set when fetched from local instance
+    var localSiteId: Int?
+    
     init(domainName: String) throws {
         var components = URLComponents()
         components.scheme = "https"
@@ -65,8 +77,11 @@ struct InstanceModel {
         update(with: siteView)
     }
     
-    init(from site: APISite) {
+    init(from site: APISite, isLocal: Bool = false) {
         update(with: site)
+        if isLocal {
+            self.localSiteId = site.id
+        }
     }
     
     init(from stub: InstanceStub) {
@@ -163,6 +178,35 @@ struct InstanceModel {
         return nil
     }
     
+    func toggleBlock(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async {
+        guard let localSiteId else { return }
+        var new = self
+        new.blocked = !blocked
+        RunLoop.main.perform { [new] in
+            callback(new)
+        }
+        do {
+            let response: BlockInstanceResponse
+            if !blocked {
+                response = try await apiClient.blockSite(id: localSiteId, shouldBlock: true)
+            } else {
+                response = try await apiClient.blockSite(id: localSiteId, shouldBlock: false)
+            }
+            new.blocked = response.blocked
+            RunLoop.main.perform { [new] in
+                callback(new)
+            }
+            await notifier.add(.success(response.blocked ? "Blocked instance" : "Unblocked instance"))
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+            let phrase = !blocked ? "block" : "unblock"
+            errorHandler.handle(
+                .init(title: "Failed to \(phrase) instance", style: .toast, underlyingError: error)
+            )
+        }
+    }
+    
     static func mock() -> InstanceModel {
         .init(from: SiteResponse.mock())
     }
@@ -181,5 +225,6 @@ extension InstanceModel: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(url)
         hasher.combine(creationDate)
+        hasher.combine(blocked)
     }
 }

@@ -48,6 +48,8 @@ struct InstanceView: View {
     @Namespace var scrollToTop
     @State private var scrollToTopAppeared = false
     
+    @State private var menuFunctionPopup: MenuFunctionPopup?
+    
     @State var selectedTab: InstanceViewTab = .about
     
     var uptimeRefreshTimer = Timer.publish(every: 30, tolerance: 0.5, on: .main, in: .common)
@@ -176,11 +178,16 @@ struct InstanceView: View {
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Link(destination: instance.url) {
-                    Label("Open in Browser", systemImage: Icons.browser)
+                ToolbarEllipsisMenu {
+                    ForEach(instance.menuFunctions { new in
+                        self.instance = new
+                    }) { item in
+                        MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
+                    }
                 }
             }
         }
+        .destructiveConfirmation(menuFunctionPopup: $menuFunctionPopup)
         .onAppear(perform: attemptToLoadInstanceData)
         .fancyTabScrollCompatible()
         .hoistNavigation {

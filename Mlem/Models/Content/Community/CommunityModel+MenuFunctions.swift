@@ -118,9 +118,9 @@ extension CommunityModel {
         }
         do {
             if let instanceHost = communityUrl.host() {
-                let instance: InstanceModel
+                var instance: InstanceModel
                 if let site {
-                    instance = .init(from: site)
+                    instance = .init(from: site, isLocal: true)
                 } else {
                     instance = try .init(domainName: instanceHost)
                 }

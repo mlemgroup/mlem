@@ -57,7 +57,7 @@ extension UserModel {
             if let instanceHost = profileUrl.host() {
                 let instance: InstanceModel
                 if let site {
-                    instance = .init(from: site)
+                    instance = .init(from: site, isLocal: true)
                 } else {
                     instance = try .init(domainName: instanceHost)
                 }
