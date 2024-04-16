@@ -30,15 +30,11 @@ class MarkReadBatcher {
         enabled = siteVersion >= .init("0.19.0")
     }
     
-    func flush(includeStaged: Bool = false) async {
+    func flush() async {
         // only one thread may execute this function at a time to avoid duplicate requests
         await loadingSemaphore.wait()
         defer { loadingSemaphore.signal() }
         
-        if includeStaged {
-            pending.append(contentsOf: staged)
-            staged.removeAll()
-        }
         sending = pending
         pending = .init()
         

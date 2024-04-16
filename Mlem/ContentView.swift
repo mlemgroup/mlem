@@ -212,7 +212,7 @@ struct ContentView: View {
                 
                 // flush batcher(s) to avoid batches being lost on quit
                 Task {
-                    await markReadBatcher.flush(includeStaged: true)
+                    await markReadBatcher.flush()
                 }
                 
                 // activate biometric lock

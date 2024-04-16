@@ -90,7 +90,7 @@ struct AggregateFeedView: View {
                 if let selectedFeed {
                     switch selectedFeed {
                     case .all, .local, .moderated, .subscribed:
-                        await markReadBatcher.flush(includeStaged: true)
+                        await markReadBatcher.flush()
                         await postTracker.changeFeedType(to: selectedFeed)
                         postTracker.isStale = false
                     default:
@@ -103,7 +103,7 @@ struct AggregateFeedView: View {
                     do {
                         switch selectedFeed {
                         case .all, .local, .moderated, .subscribed:
-                            await markReadBatcher.flush(includeStaged: true)
+                            await markReadBatcher.flush()
                             _ = try await postTracker.refresh(clearBeforeRefresh: false)
                         case .saved:
                             _ = try await savedContentTracker.refresh(clearBeforeRefresh: false)

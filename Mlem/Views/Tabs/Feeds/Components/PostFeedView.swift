@@ -70,7 +70,7 @@ struct PostFeedView: View {
                 defer { suppressNoPostsView = false }
                 
                 if let versionSafePostSort {
-                    await markReadBatcher.flush(includeStaged: true)
+                    await markReadBatcher.flush()
                     
                     await postTracker.changeSortType(
                         to: versionSafePostSort,
@@ -85,7 +85,7 @@ struct PostFeedView: View {
             }
             .onDisappear {
                 Task {
-                    await markReadBatcher.flush(includeStaged: true)
+                    await markReadBatcher.flush()
                 }
             }
     }
