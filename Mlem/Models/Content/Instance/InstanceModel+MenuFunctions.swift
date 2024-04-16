@@ -31,12 +31,15 @@ extension InstanceModel {
     
     func menuFunctions(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> [MenuFunction] {
         if let url {
-            return [
+            var functions: [MenuFunction] = [
                 .shareMenuFunction(url: url),
                 .openUrlMenuFunction(text: "View on Web", imageName: Icons.browser, destination: url),
-                .divider,
-                blockMenuFunction(callback)
+                .divider
             ]
+            if localSiteId != nil {
+                functions.append(blockMenuFunction(callback))
+            }
+            return functions
         }
         return []
     }
