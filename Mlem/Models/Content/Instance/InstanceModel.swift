@@ -80,7 +80,7 @@ struct InstanceModel {
     init(from site: APISite, isLocal: Bool = false) {
         update(with: site)
         if isLocal {
-            self.localSiteId = site.id
+            self.localSiteId = site.instanceId
         }
     }
     
