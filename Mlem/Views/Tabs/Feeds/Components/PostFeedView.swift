@@ -103,14 +103,17 @@ struct PostFeedView: View {
                                 let indexToMark = index >= postSize.markReadThreshold ? index - postSize.markReadThreshold : index
 
                                 if let postToMark = postTracker.items[safeIndex: indexToMark] {
-                                    postToMark.setRead(true)
-                                    await markReadBatcher.add(postToMark.postId)
-                                    
-                                    // handle posts at end of feed
+                                    await markReadBatcher.stage(postToMark.postId)
                                     if postTracker.items.count - index <= postSize.markReadThreshold {
-                                        element.setRead(true)
-                                        await markReadBatcher.add(element.postId)
+                                        await markReadBatcher.stage(element.postId)
                                     }
+                                }
+                            }
+                        }
+                        .onDisappear {
+                            if markReadOnScroll {
+                                Task {
+                                    await markReadBatcher.add(post: element)
                                 }
                             }
                         }
