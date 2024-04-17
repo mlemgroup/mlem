@@ -79,4 +79,14 @@ extension APIClient {
         
         return ret.sorted(by: { $0.date > $1.date })
     }
+    
+    func blockSite(id: Int, shouldBlock: Bool) async throws -> BlockInstanceResponse {
+        let request = try BlockInstanceRequest(
+            session: session,
+            instanceId: id,
+            block: shouldBlock
+        )
+        
+        return try await perform(request: request)
+    }
 }

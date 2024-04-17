@@ -8,9 +8,38 @@
 import Foundation
 
 extension InstanceModel {
-    func menuFunctions() -> [MenuFunction] {
+    
+    func blockMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> MenuFunction {
+        if blocked {
+            return .standardMenuFunction(
+                text: "Unblock",
+                imageName: Icons.show,
+                enabled: localSiteId != nil
+            ) {
+                Task { await toggleBlock(callback) }
+            }
+        }
+        return .standardMenuFunction(
+            text: "Block",
+            imageName: Icons.hide,
+            confirmationPrompt: AppConstants.blockInstancePrompt,
+            enabled: localSiteId != nil
+        ) {
+            Task { await toggleBlock(callback) }
+        }
+    }
+    
+    func menuFunctions(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> [MenuFunction] {
         if let url {
-            return [.shareMenuFunction(url: url)]
+            var functions: [MenuFunction] = [
+                .shareMenuFunction(url: url),
+                .openUrlMenuFunction(text: "View on Web", imageName: Icons.browser, destination: url),
+                .divider
+            ]
+            if localSiteId != nil {
+                functions.append(blockMenuFunction(callback))
+            }
+            return functions
         }
         return []
     }
