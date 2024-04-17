@@ -20,6 +20,7 @@ class MarkReadBatcher {
     @Dependency(\.postRepository) var postRepository
     
     private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
+    private let stagedSemaphore: AsyncSemaphore = .init(value: 1)
     
     private(set) var enabled: Bool = false
     private var staged: Set<Int> = .init()
@@ -64,7 +65,9 @@ class MarkReadBatcher {
             return
         }
         
+        await stagedSemaphore.wait()
         staged.insert(postId)
+        stagedSemaphore.signal()
     }
   
     func add(post: PostModel) async {
@@ -82,10 +85,12 @@ class MarkReadBatcher {
         // - Thread 0 calls flush() and performs sending = pending
         // - Thread 1 adds its id to pending
         // - Thread 0 performs pending = .init(), and thread 1's id is lost forever!
+        await stagedSemaphore.wait()
         if staged.contains(post.postId) {
             pending.append(post.postId)
             staged.remove(post.postId)
             await post.setRead(true)
         }
+        stagedSemaphore.signal()
     }
 }
