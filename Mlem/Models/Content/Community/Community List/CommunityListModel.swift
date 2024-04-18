@@ -138,7 +138,6 @@ class CommunityListModel: ObservableObject {
         }
     }
     
-    // swiftlint:disable:next function_body_length
     private func recomputeSections() -> (all: [CommunityListSection], visible: [CommunityListSection]) {
         var newAllSections: [CommunityListSection] = .init()
         var newVisibleSections: [CommunityListSection] = .init()
@@ -146,10 +145,7 @@ class CommunityListModel: ObservableObject {
         let topSection = withDependencies(from: self) {
             CommunityListSection(
                 viewId: "top",
-                sidebarEntry: EmptySidebarEntry(
-                    sidebarLabel: nil,
-                    sidebarIcon: "line.3.horizontal"
-                ),
+                sidebarEntry: .init(sidebarLabel: nil, sidebarIcon: "line.3.horizontal"),
                 inlineHeaderLabel: nil,
                 accessibilityLabel: "Top of communities",
                 communities: .init()
@@ -160,10 +156,7 @@ class CommunityListModel: ObservableObject {
         let favoritesSection = withDependencies(from: self) {
             CommunityListSection(
                 viewId: "favorites",
-                sidebarEntry: FavoritesSidebarEntry(
-                    sidebarLabel: nil,
-                    sidebarIcon: "star.fill"
-                ),
+                sidebarEntry: .init(sidebarLabel: nil, sidebarIcon: "star.fill"),
                 inlineHeaderLabel: "Favorites",
                 accessibilityLabel: "Favorited Communities",
                 communities: favorited
@@ -180,32 +173,9 @@ class CommunityListModel: ObservableObject {
             !section.communities.isEmpty
         })
         
-        let nonLetterSections = withDependencies(from: self) {
-            let sidebarEntry = RegexCommunityNameSidebarEntry(
-                communityNameRegex: /^[^a-zA-Z]/,
-                sidebarLabel: "#",
-                sidebarIcon: nil
-            )
-            
-            return CommunityListSection(
-                viewId: "non_letter_titles",
-                sidebarEntry: sidebarEntry,
-                inlineHeaderLabel: "#",
-                accessibilityLabel: "Communities starting with a symbol or number",
-                communities: subscribed.filter { community in
-                    sidebarEntry.contains(community: community, isSubscribed: true)
-                }
-            )
-        }
-        newAllSections.append(nonLetterSections)
-        if !nonLetterSections.communities.isEmpty {
-            newVisibleSections.append(nonLetterSections)
-        }
-        
         return (all: newAllSections, visible: newVisibleSections)
     }
     
-    // swiftlint:disable:next function_body_length
     private func alphabeticSections() -> [CommunityListSection] {
         let alphabetSet = Set([String].alphabet)
         let sectionTitles: [String] = .alphabet
@@ -247,11 +217,7 @@ class CommunityListModel: ObservableObject {
         ret.append(
             CommunityListSection(
                 viewId: "non_letter_titles",
-                sidebarEntry: RegexCommunityNameSidebarEntry(
-                    communityNameRegex: /^[^a-zA-Z]/,
-                    sidebarLabel: "#",
-                    sidebarIcon: nil
-                ),
+                sidebarEntry: .init(sidebarLabel: "#", sidebarIcon: nil),
                 inlineHeaderLabel: "#",
                 accessibilityLabel: "Communities starting with a symbol or number",
                 communities: communities["other"] ?? .init()
@@ -260,16 +226,10 @@ class CommunityListModel: ObservableObject {
         
         let alphabetics = alphabet.map { character in
             withDependencies(from: self) {
-                let sidebarEntry = RegexCommunityNameSidebarEntry(
-                    communityNameRegex: (try? Regex("^[\(character.uppercased())\(character.lowercased())]"))!,
-                    sidebarLabel: character,
-                    sidebarIcon: nil
-                )
-                
                 // This looks sinister but I didn't know how to string replace in a non-string based regex
                 return CommunityListSection(
                     viewId: character,
-                    sidebarEntry: sidebarEntry,
+                    sidebarEntry: .init(sidebarLabel: character, sidebarIcon: nil),
                     inlineHeaderLabel: character,
                     accessibilityLabel: "Communities starting with the letter '\(character)'",
                     communities: communities[character, default: .init()]
