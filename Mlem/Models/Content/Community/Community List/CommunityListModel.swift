@@ -2,8 +2,7 @@
 //  CommunityListModel.swift
 //  Mlem
 //
-//  Created by mormaer on 11/08/2023.
-//
+//  Created by Eric Andrews on 2024-04-18.
 //
 
 import Combine
@@ -15,13 +14,17 @@ class CommunityListModel: ObservableObject {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
     @Dependency(\.notifier) var notifier
-    @Dependency(\.mainQueue) var mainQueue
     
-    @Published private(set) var communities = [APICommunity]()
-    
-    private var subscriptions = [APICommunity]()
-    private var favoriteCommunities = [APICommunity]()
     private var cancellables = Set<AnyCancellable>()
+    
+    @Published private(set) var allCommunities: [APICommunity] = .init()
+    @Published private(set) var allSections: [CommunityListSection] = .init()
+    @Published private(set) var visibleSections: [CommunityListSection] = .init()
+    
+    private var subscribed: [APICommunity] = .init()
+    private var subscribedSet: Set<Int> = .init()
+    private var favorited: [APICommunity] = .init()
+    private var favoritedSet: Set<Int> = .init()
     
     init() {
         favoriteCommunitiesTracker
@@ -33,20 +36,18 @@ class CommunityListModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    // MARK: - Public methods
-    
     func load() async {
         do {
             // load our subscribed communities
-            let subscriptions = try await communityRepository
+            let newSubscribed = try await communityRepository
                 .loadSubscriptions()
                 .map(\.community)
             
             // load our favourite communities
-            let favorites = favoriteCommunitiesTracker.favoritesForCurrentAccount
+            let newFavorited = favoriteCommunitiesTracker.favoritesForCurrentAccount
             
             // combine the two lists
-            combine(subscriptions, favorites)
+            combine(newSubscribed, newFavorited)
         } catch {
             errorHandler.handle(
                 .init(underlyingError: error)
@@ -55,7 +56,7 @@ class CommunityListModel: ObservableObject {
     }
     
     func isSubscribed(to community: APICommunity) -> Bool {
-        subscriptions.contains(community)
+        subscribedSet.contains(community.id)
     }
     
     func updateSubscriptionStatus(for community: APICommunity, subscribed: Bool) {
@@ -68,115 +69,21 @@ class CommunityListModel: ObservableObject {
         }
     }
     
-    var visibleSections: [CommunityListSection] {
-        allSections()
-        
-            // Only show sections which have labels to show
-            .filter { communitySection -> Bool in
-                communitySection.inlineHeaderLabel != nil
-            }
-        
-            // Only show letter headers for letters we have in our community list
-            .filter { communitySection -> Bool in
-                communities
-                    .contains(where: { communitySection.sidebarEntry
-                            .contains(community: $0, isSubscribed: isSubscribed(to: $0))
-                    })
-            }
-    }
-    
-    func communities(for section: CommunityListSection) -> [APICommunity] {
-        // Filter down to sidebar entry which wants us
-        communities
-            .filter { community -> Bool in
-                section.sidebarEntry.contains(community: community, isSubscribed: isSubscribed(to: community))
-            }
-    }
-    
-    func allSections() -> [CommunityListSection] {
-        var sections = [CommunityListSection]()
-        
-        sections.append(
-            withDependencies(from: self) {
-                CommunityListSection(
-                    viewId: "top",
-                    sidebarEntry: EmptySidebarEntry(
-                        sidebarLabel: nil,
-                        sidebarIcon: "line.3.horizontal"
-                    ),
-                    inlineHeaderLabel: nil,
-                    accessibilityLabel: "Top of communities"
-                )
-            }
-        )
-        
-        sections.append(
-            withDependencies(from: self) {
-                CommunityListSection(
-                    viewId: "favorites",
-                    sidebarEntry: FavoritesSidebarEntry(
-                        sidebarLabel: nil,
-                        sidebarIcon: "star.fill"
-                    ),
-                    inlineHeaderLabel: "Favorites",
-                    accessibilityLabel: "Favorited Communities"
-                )
-            }
-        )
-        
-        sections.append(contentsOf: alphabeticSections())
-        
-        sections.append(
-            withDependencies(from: self) {
-                CommunityListSection(
-                    viewId: "non_letter_titles",
-                    sidebarEntry: RegexCommunityNameSidebarEntry(
-                        communityNameRegex: /^[^a-zA-Z]/,
-                        sidebarLabel: "#",
-                        sidebarIcon: nil
-                    ),
-                    inlineHeaderLabel: "#",
-                    accessibilityLabel: "Communities starting with a symbol or number"
-                )
-            }
-        )
-        
-        return sections
-    }
-    
-    func alphabeticSections() -> [CommunityListSection] {
-        let alphabet: [String] = .alphabet
-        return alphabet.map { character in
-            withDependencies(from: self) {
-                // This looks sinister but I didn't know how to string replace in a non-string based regex
-                CommunityListSection(
-                    viewId: character,
-                    sidebarEntry: RegexCommunityNameSidebarEntry(
-                        communityNameRegex: (try? Regex("^[\(character.uppercased())\(character.lowercased())]"))!,
-                        sidebarLabel: character,
-                        sidebarIcon: nil
-                    ),
-                    inlineHeaderLabel: character,
-                    accessibilityLabel: "Communities starting with the letter '\(character)'"
-                )
-            }
-        }
-    }
-    
-    // MARK: - Private methods
-    
     private func updateLocalStatus(for community: APICommunity, subscribed: Bool) {
-        var updatedSubscriptions = subscriptions
+        var newSubscribed = self.subscribed
         
         if subscribed {
-            updatedSubscriptions.append(community)
+            newSubscribed.append(community)
         } else {
-            if let index = updatedSubscriptions.firstIndex(where: { $0 == community }) {
-                updatedSubscriptions.remove(at: index)
+            if !subscribedSet.contains(community.id) {
+                assertionFailure("Tried to unsubscribe from already unsubscribed community \(community.fullyQualifiedName)")
+            }
+            if let index = newSubscribed.firstIndex(where: { $0 == community }) {
+                newSubscribed.remove(at: index)
             }
         }
         
-        combine(updatedSubscriptions, favoriteCommunities)
+        combine(newSubscribed, favorited)
     }
     
     private func updateRemoteStatus(for community: APICommunity, subscribed: Bool) async {
@@ -189,10 +96,10 @@ class CommunityListModel: ObservableObject {
                 await notifier.add(.success("Unsubscribed from \(community.name)"))
             }
             
-            if let indexToUpdate = subscriptions.firstIndex(where: { $0.id == updatedCommunity.id }) {
-                var updatedSubscriptions = subscriptions
-                updatedSubscriptions[indexToUpdate] = updatedCommunity
-                combine(updatedSubscriptions, favoriteCommunities)
+            if let indexToUpdate = self.subscribed.firstIndex(where: { $0.id == updatedCommunity.id }) {
+                var newSubscribed = self.subscribed
+                newSubscribed[indexToUpdate] = updatedCommunity
+                combine(newSubscribed, favorited)
             }
         } catch {
             let phrase = subscribed ? "subscribe to" : "unsubscribe from"
@@ -212,21 +119,120 @@ class CommunityListModel: ObservableObject {
     }
     
     private func updateFavorites(_ favorites: [APICommunity]) {
-        combine(subscriptions, favorites)
+        combine(subscribed, favorites)
     }
     
-    private func combine(_ subscriptions: [APICommunity], _ favorites: [APICommunity]) {
-        // store the values for future use...
-        self.subscriptions = subscriptions
-        favoriteCommunities = favorites
+    private func combine(_ subscribed: [APICommunity], _ favorited: [APICommunity]) {
+        // store the values for future use
+        self.subscribed = subscribed
+        subscribedSet = Set(subscribed.map(\.id))
+        self.favorited = favorited
+        favoritedSet = Set(favorited.map(\.id))
         
         // combine and sort the two lists, excluding duplicates
-        let combined = subscriptions + favorites.filter { !subscriptions.contains($0) }
+        let combined = subscribed + favorited.filter { !subscribed.contains($0) }
         let sorted = combined.sorted()
         
-        // update our published value for the view to render
-        mainQueue.schedule { [weak self] in
-            self?.communities = sorted
+        Task {
+            await MainActor.run {
+                self.allCommunities = sorted
+            }
+            let (newAllSections, newVisibleSections) = recomputeSections()
+            await MainActor.run {
+                self.allSections = newAllSections
+                self.visibleSections = newVisibleSections
+            }
+        }
+    }
+    
+    // swiftlint:disable:next function_body_length
+    private func recomputeSections() -> (all: [CommunityListSection], visible: [CommunityListSection]) {
+        var newAllSections: [CommunityListSection] = .init()
+        var newVisibleSections: [CommunityListSection] = .init()
+        
+        let topSection = withDependencies(from: self) {
+            CommunityListSection(
+                viewId: "top",
+                sidebarEntry: EmptySidebarEntry(
+                    sidebarLabel: nil,
+                    sidebarIcon: "line.3.horizontal"
+                ),
+                inlineHeaderLabel: nil,
+                accessibilityLabel: "Top of communities",
+                communities: .init()
+            )
+        }
+        newAllSections.append(topSection)
+        
+        let favoritesSection = withDependencies(from: self) {
+            CommunityListSection(
+                viewId: "favorites",
+                sidebarEntry: FavoritesSidebarEntry(
+                    sidebarLabel: nil,
+                    sidebarIcon: "star.fill"
+                ),
+                inlineHeaderLabel: "Favorites",
+                accessibilityLabel: "Favorited Communities",
+                communities: favorited
+            )
+        }
+        newAllSections.append(favoritesSection)
+        if !favoritedSet.isEmpty {
+            newVisibleSections.append(favoritesSection)
+        }
+        
+        let alphabeticSections = alphabeticSections()
+        newAllSections.append(contentsOf: alphabeticSections)
+        newVisibleSections.append(contentsOf: alphabeticSections.filter { section in
+            !section.communities.isEmpty
+        })
+        
+        let nonLetterSections = withDependencies(from: self) {
+            let sidebarEntry = RegexCommunityNameSidebarEntry(
+                communityNameRegex: /^[^a-zA-Z]/,
+                sidebarLabel: "#",
+                sidebarIcon: nil
+            )
+            
+            return CommunityListSection(
+                viewId: "non_letter_titles",
+                sidebarEntry: sidebarEntry,
+                inlineHeaderLabel: "#",
+                accessibilityLabel: "Communities starting with a symbol or number",
+                communities: allCommunities.filter { community in
+                    sidebarEntry.contains(community: community, isSubscribed: subscribedSet.contains(community.id))
+                }
+            )
+        }
+        newAllSections.append(nonLetterSections)
+        if !nonLetterSections.communities.isEmpty {
+            newVisibleSections.append(nonLetterSections)
+        }
+        
+        return (all: newAllSections, visible: newVisibleSections)
+    }
+    
+    private func alphabeticSections() -> [CommunityListSection] {
+        let alphabet: [String] = .alphabet
+        return alphabet.map { character in
+            withDependencies(from: self) {
+                let sidebarEntry = RegexCommunityNameSidebarEntry(
+                    communityNameRegex: (try? Regex("^[\(character.uppercased())\(character.lowercased())]"))!,
+                    sidebarLabel: character,
+                    sidebarIcon: nil
+                )
+                
+                // This looks sinister but I didn't know how to string replace in a non-string based regex
+                return CommunityListSection(
+                    viewId: character,
+                    sidebarEntry: sidebarEntry,
+                    inlineHeaderLabel: character,
+                    accessibilityLabel: "Communities starting with the letter '\(character)'",
+                    communities: allCommunities.filter { community in
+                        sidebarEntry.contains(community: community, isSubscribed: subscribedSet.contains(community.id))
+                    }
+                )
+            }
         }
     }
 }

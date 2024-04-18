@@ -14,4 +14,5 @@ struct CommunityListSection: Identifiable {
     let sidebarEntry: any SidebarEntry
     let inlineHeaderLabel: String?
     let accessibilityLabel: String
+    let communities: [APICommunity]
 }
