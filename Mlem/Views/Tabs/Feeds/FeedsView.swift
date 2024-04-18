@@ -108,7 +108,7 @@ struct FeedsView: View {
                         CommunityFeedRowView(
                             community: community,
                             subscribed: communityListModel.isSubscribed(to: community),
-                            communitySubscriptionChanged: communityListModel.updateSubscriptionStatus,
+                            communitySubscriptionChanged: updateSubscriptionStatus, // communityListModel.updateSubscriptionStatus,
                             navigationContext: .sidebar
                         )
                     }
@@ -127,6 +127,12 @@ struct FeedsView: View {
                 .id(communityModel.uid) // explicit id forces redraw on change of community model
         case .none:
             Text("Please select a feed")
+        }
+    }
+    
+    private func updateSubscriptionStatus(_ community: APICommunity, _ status: Bool) {
+        Task {
+            await communityListModel.updateSubscriptionStatus(for: community, subscribed: status)
         }
     }
     
