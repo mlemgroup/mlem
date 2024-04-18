@@ -178,15 +178,15 @@ class CommunityListModel: ObservableObject {
     
     private func alphabeticSections() -> [CommunityListSection] {
         let alphabetSet = Set([String].alphabet)
-        let sectionTitles: [String] = .alphabet
+        let alphabet: [String] = .alphabet
         
         var communities: [String: [APICommunity]] = .init()
         communities["other"] = .init()
-        communities[sectionTitles[0]] = .init()
+        communities[alphabet[0]] = .init()
         
         let sortedCommunities = subscribed.sorted()
         var currentSectionIndex = 0
-        var currentSectionTitle: String = sectionTitles[0]
+        var currentSectionTitle: String = alphabet[0]
         
         // iterate through sorted communities, building up each letter's section
         // it's not guaranteed that non-alphabetics be sorted to one side or the other of the alphabetics, so each element does have to be individually checked, hence the quick-lookup alphabetSet. They will be grouped, however, so branch prediction ought to make the performance impact of the conditional negligible
@@ -196,9 +196,9 @@ class CommunityListModel: ObservableObject {
                 assert(communities.keys.contains("other"), "No 'other' key in communities!")
                 communities["other"]?.append(community)
             } else {
-                while currentSectionIndex < 26, !community.name.uppercased().starts(with: currentSectionTitle) {
+                while currentSectionIndex < 25, !community.name.uppercased().starts(with: currentSectionTitle) {
                     currentSectionIndex += 1
-                    currentSectionTitle = sectionTitles[currentSectionIndex]
+                    currentSectionTitle = alphabet[currentSectionIndex]
                     communities[currentSectionTitle] = .init()
                 }
                 assert(communities.keys.contains(currentSectionTitle), "No '\(currentSectionTitle)' key in communities!")
@@ -209,8 +209,6 @@ class CommunityListModel: ObservableObject {
         assert(communities.values.reduce(0) { x, community in
             x + community.count
         } == subscribed.count, "mapping operation produced mismatched counts")
-        
-        let alphabet: [String] = .alphabet
         
         var ret: [CommunityListSection] = .init()
         
@@ -227,7 +225,7 @@ class CommunityListModel: ObservableObject {
         let alphabetics = alphabet.map { character in
             withDependencies(from: self) {
                 // This looks sinister but I didn't know how to string replace in a non-string based regex
-                return CommunityListSection(
+                CommunityListSection(
                     viewId: character,
                     sidebarEntry: .init(sidebarLabel: character, sidebarIcon: nil),
                     inlineHeaderLabel: character,
