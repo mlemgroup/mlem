@@ -39,7 +39,9 @@ extension InstanceModel {
         "sh.itjust.works",
         "slrpnk.net",
         "sopuli.xyz",
-        "startrek.website"
+        "startrek.website",
+        "szmer.info",
+        "toast.ooo"
     ]
     
     var canFetchUptime: Bool { InstanceModel.uptimeSupportedInstances.contains(name) }
