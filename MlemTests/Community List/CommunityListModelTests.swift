@@ -37,7 +37,7 @@ final class CommunityListModelTests: XCTestCase {
         }
         
         // assert that even though a subscription and favorite are available nothing is present without `load()` being called
-        XCTAssert(model.communities.isEmpty)
+        XCTAssert(model.allCommunities.isEmpty)
     }
     
     func testLoadingWithNoSubscriptionsOrFavourites() async throws {
@@ -53,7 +53,7 @@ final class CommunityListModelTests: XCTestCase {
         // ask the model to load
         await model.load()
         // assert after loading it's empty as there are no subscriptions or favourites for this user
-        XCTAssert(model.communities.isEmpty)
+        XCTAssert(model.allCommunities.isEmpty)
     }
     
     func testLoadingWithSubscriptionAndFavorite() async throws {
@@ -79,9 +79,9 @@ final class CommunityListModelTests: XCTestCase {
         await model.load()
         
         // assert both the favorite and subscription are present in the model
-        XCTAssert(model.communities.count == 2)
-        XCTAssert(model.communities[0].name == "favorite community")
-        XCTAssert(model.communities[1].name == "subscribed community")
+        XCTAssert(model.allCommunities.count == 2)
+        XCTAssert(model.allCommunities[0].name == "favorite community")
+        XCTAssert(model.allCommunities[1].name == "subscribed community")
     }
     
     func testDuplicatesAreHandledCorrectly() async throws {
@@ -110,8 +110,8 @@ final class CommunityListModelTests: XCTestCase {
         await model.load()
         // expectation is that although we will load the same community in favorites and subscriptions
         // when the two lists combine the duplicate will be excluded, leaving only one copy of it
-        XCTAssert(model.communities.count == 1)
-        XCTAssert(model.communities[0].id == 42)
+        XCTAssert(model.allCommunities.count == 1)
+        XCTAssert(model.allCommunities[0].id == 42)
     }
     
     func testSubscribedStatusIsCorrect() async throws {
@@ -132,7 +132,7 @@ final class CommunityListModelTests: XCTestCase {
         // ask the model to load
         await model.load()
         // assert only one subscription is present
-        XCTAssert(model.communities.count == 1)
+        XCTAssert(model.allCommunities.count == 1)
         // assert the model correctly identfies if we're subscribed
         XCTAssert(model.isSubscribed(to: communityView.community))
         // assert the model correctly identifies when we're not subscribed by passing a different community
@@ -159,17 +159,17 @@ final class CommunityListModelTests: XCTestCase {
         // load the model
         await model.load()
         // assert we have a blank slate
-        XCTAssert(model.communities.isEmpty)
+        XCTAssert(model.allCommunities.isEmpty)
         // tell the model to subscribe to a community
-        model.updateSubscriptionStatus(for: .mock(id: 42), subscribed: true)
+        await model.updateSubscriptionStatus(for: .mock(id: 42), subscribed: true)
         // assert it is _immediately_ added to the communities (state faking)
-        XCTAssert(model.communities.count == 1)
-        XCTAssert(model.communities[0].id == 42)
+        XCTAssert(model.allCommunities.count == 1)
+        XCTAssert(model.allCommunities[0].id == 42)
         // allow suspension so the model can make the remote call (stubbed as `.updateSubscription` above)
         await Task.megaYield(count: 1000)
         // assert the community remains in our list as the _remote_ call succeeded
-        XCTAssert(model.communities.count == 1)
-        XCTAssert(model.communities[0].id == 42)
+        XCTAssert(model.allCommunities.count == 1)
+        XCTAssert(model.allCommunities[0].id == 42)
     }
     
     func testFailedSubscriptionUpdate() async throws {
@@ -192,16 +192,16 @@ final class CommunityListModelTests: XCTestCase {
         // load the model
         await model.load()
         // assert we have a blank slate
-        XCTAssert(model.communities.isEmpty)
+        XCTAssert(model.allCommunities.isEmpty)
         // tell the model to subscribe to a community
-        model.updateSubscriptionStatus(for: .mock(id: 42), subscribed: true)
+        await model.updateSubscriptionStatus(for: .mock(id: 42), subscribed: true)
         // assert it is _immediately_ added to the communities (state faking)
-        XCTAssert(model.communities.count == 1)
-        XCTAssert(model.communities[0].id == 42)
+        XCTAssert(model.allCommunities.count == 1)
+        XCTAssert(model.allCommunities[0].id == 42)
         // allow suspension so the model can make the remote call (stubbed as `.updateSubscription` above)
         await Task.megaYield(count: 1000)
         // assert the community has been removed from our list as the _remote_ call failed in this test
-        XCTAssert(model.communities.isEmpty)
+        XCTAssert(model.allCommunities.isEmpty)
     }
     
     func testModelRespondsToFavorites() async throws {
@@ -224,12 +224,14 @@ final class CommunityListModelTests: XCTestCase {
         // add a favorite to the tracker, expectation is the model will observe this change and update itself
         let favoriteCommunity = APICommunity.mock(id: 42)
         tracker.favorite(favoriteCommunity)
+        sleep(1) // give async call time to execute
         // assert that adding this favorite resulted in the model updating, it should now display a favorites section
         XCTAssert(model.visibleSections.contains(where: { $0.viewId == "favorites" }))
-        XCTAssert(model.communities.first! == favoriteCommunity)
+        XCTAssert(model.allCommunities.first! == favoriteCommunity)
         // now unfavorite the community
         tracker.unfavorite(favoriteCommunity.id)
         // assert that the favorites section is no longer included
+        sleep(1) // give async call time to execute
         XCTAssertFalse(model.visibleSections.contains(where: { $0.viewId == "favorites" }))
     }
     
@@ -258,33 +260,34 @@ final class CommunityListModelTests: XCTestCase {
         // ask the model to load
         await model.load()
         // assert all the communities are present
-        XCTAssert(model.communities.count == communities.count)
+        XCTAssert(model.allCommunities.count == communities.count)
         // assert we have the correct number of visible sections, some will group together...
         XCTAssert(model.visibleSections.count == 5)
         // assuming alphabetical ordering, assert we get the correct communities back for each section
+        print("DEBUG \(model.visibleSections.count)")
         XCTAssertEqual(
             // section 0 (aka 'A') should include 'accordion'
-            model.communities(for: model.visibleSections[0]),
+            model.visibleSections[0].communities,
             [communities[0].community]
         )
         XCTAssertEqual(
             // section 1 (aka 'G') should include 'glockenspiel'
-            model.communities(for: model.visibleSections[1]),
+            model.visibleSections[1].communities,
             [communities[5].community]
         )
         XCTAssertEqual(
             // section 2 (aka 'H') should include 'harmonica' and 'harp'
-            model.communities(for: model.visibleSections[2]),
+            model.visibleSections[2].communities,
             [communities[2].community, communities[1].community]
         )
         XCTAssertEqual(
             // section 3 (aka 'T') should include 'trombone' and 'tuba'
-            model.communities(for: model.visibleSections[3]),
+            model.visibleSections[3].communities,
             [communities[3].community, communities[6].community]
         )
         XCTAssertEqual(
             // section 4 (aka 'X') should include 'xylophone'
-            model.communities(for: model.visibleSections[4]),
+            model.visibleSections[4].communities,
             [communities[4].community]
         )
     }
@@ -303,17 +306,18 @@ final class CommunityListModelTests: XCTestCase {
         // - non-letter (symbols/numerics)
         
         // assert we have 26 for alphabet + 3
-        XCTAssert(model.allSections().count == 29)
+        XCTAssert(model.allSections.count == 29)
         // assert order
-        XCTAssert(model.allSections()[0].viewId == "top")
-        XCTAssert(model.allSections()[1].viewId == "favorites")
+        print("DEBUG \(model.allSections.count)")
+        XCTAssert(model.allSections[0].viewId == "top")
+        XCTAssert(model.allSections[1].viewId == "favorites")
         
         let alphabet: [String] = .alphabet
         let offset = 2
         alphabet.enumerated().forEach { index, character in
-            XCTAssert(model.allSections()[index + offset].viewId == character)
+            XCTAssert(model.allSections[index + offset].viewId == character)
         }
-        XCTAssert(model.allSections()[28].viewId == "non_letter_titles")
+        XCTAssert(model.allSections[28].viewId == "non_letter_titles")
     }
     
     // MARK: - Helpers

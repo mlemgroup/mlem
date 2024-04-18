@@ -31,9 +31,16 @@ class CommunityListModel: ObservableObject {
             .$favoritesForCurrentAccount
             .dropFirst()
             .sink { [weak self] value in
-                self?.updateFavorites(value)
+                if let self {
+                    Task {
+                        await self.updateFavorites(value)
+                    }
+                }
             }
             .store(in: &cancellables)
+        let (newAllSections, newVisibleSections) = recomputeSections()
+        self.allSections = newAllSections
+        self.visibleSections = newVisibleSections
     }
     
     func load() async {
@@ -47,7 +54,7 @@ class CommunityListModel: ObservableObject {
             let newFavorited = favoriteCommunitiesTracker.favoritesForCurrentAccount
             
             // combine the two lists
-            combine(newSubscribed, newFavorited)
+            await combine(newSubscribed, newFavorited)
         } catch {
             errorHandler.handle(
                 .init(underlyingError: error)
@@ -59,9 +66,9 @@ class CommunityListModel: ObservableObject {
         subscribedSet.contains(community.id)
     }
     
-    func updateSubscriptionStatus(for community: APICommunity, subscribed: Bool) {
+    func updateSubscriptionStatus(for community: APICommunity, subscribed: Bool) async {
         // immediately update our local state
-        updateLocalStatus(for: community, subscribed: subscribed)
+        await updateLocalStatus(for: community, subscribed: subscribed)
         
         // then attempt to update our remote state
         Task {
@@ -69,7 +76,7 @@ class CommunityListModel: ObservableObject {
         }
     }
     
-    private func updateLocalStatus(for community: APICommunity, subscribed: Bool) {
+    private func updateLocalStatus(for community: APICommunity, subscribed: Bool) async {
         var newSubscribed = self.subscribed
         
         if subscribed {
@@ -83,7 +90,7 @@ class CommunityListModel: ObservableObject {
             }
         }
         
-        combine(newSubscribed, favorited)
+        await combine(newSubscribed, favorited)
     }
     
     private func updateRemoteStatus(for community: APICommunity, subscribed: Bool) async {
@@ -99,7 +106,7 @@ class CommunityListModel: ObservableObject {
             if let indexToUpdate = self.subscribed.firstIndex(where: { $0.id == updatedCommunity.id }) {
                 var newSubscribed = self.subscribed
                 newSubscribed[indexToUpdate] = updatedCommunity
-                combine(newSubscribed, favorited)
+                await combine(newSubscribed, favorited)
             }
         } catch {
             let phrase = subscribed ? "subscribe to" : "unsubscribe from"
@@ -112,17 +119,15 @@ class CommunityListModel: ObservableObject {
             )
             
             // as the call failed, we need to revert the change to the local state
-            await MainActor.run {
-                updateLocalStatus(for: community, subscribed: !subscribed)
-            }
+            await updateLocalStatus(for: community, subscribed: !subscribed)
         }
     }
     
-    private func updateFavorites(_ favorites: [APICommunity]) {
-        combine(subscribed, favorites)
+    private func updateFavorites(_ favorites: [APICommunity]) async {
+        await combine(subscribed, favorites)
     }
     
-    private func combine(_ subscribed: [APICommunity], _ favorited: [APICommunity]) {
+    private func combine(_ subscribed: [APICommunity], _ favorited: [APICommunity]) async {
         // store the values for future use
         self.subscribed = subscribed
         subscribedSet = Set(subscribed.map(\.id))
@@ -132,17 +137,17 @@ class CommunityListModel: ObservableObject {
         // combine and sort the two lists, excluding duplicates
         let combined = subscribed + favorited.filter { !subscribed.contains($0) }
         let sorted = combined.sorted()
-        
-        Task {
-            await MainActor.run {
-                self.allCommunities = sorted
-            }
-            let (newAllSections, newVisibleSections) = recomputeSections()
-            await MainActor.run {
-                self.allSections = newAllSections
-                self.visibleSections = newVisibleSections
-            }
+  
+        // Task {
+        await MainActor.run {
+            self.allCommunities = sorted
         }
+        let (newAllSections, newVisibleSections) = recomputeSections()
+        await MainActor.run {
+            self.allSections = newAllSections
+            self.visibleSections = newVisibleSections
+        }
+        // }
     }
     
     // swiftlint:disable:next function_body_length
