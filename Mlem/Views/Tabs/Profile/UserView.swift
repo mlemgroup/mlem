@@ -92,6 +92,7 @@ struct UserView: View {
                     }
                 }
             }
+            .destructiveConfirmation(menuFunctionPopup: $menuFunctionPopup)
             .refreshable {
                 Task {
                     await tryReloadUser()
