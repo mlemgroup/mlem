@@ -170,7 +170,6 @@
 		504ECBAE2AB45B2A006C0B96 /* LemmyURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504ECBAD2AB45B2A006C0B96 /* LemmyURL.swift */; };
 		504ECBB12AB4B101006C0B96 /* LemmyURLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504ECBB02AB4B101006C0B96 /* LemmyURLTests.swift */; };
 		505240E32A86916500EA4558 /* FavoriteCommunitiesTracker+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505240E22A86916500EA4558 /* FavoriteCommunitiesTracker+Dependency.swift */; };
-		505240E52A86E32700EA4558 /* CommunityListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505240E42A86E32700EA4558 /* CommunityListModel.swift */; };
 		505240E72A88D36D00EA4558 /* SectionIndexTitles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505240E62A88D36D00EA4558 /* SectionIndexTitles.swift */; };
 		5064D03D2A6DE0AA00B22EE3 /* Notifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5064D03C2A6DE0AA00B22EE3 /* Notifier.swift */; };
 		5064D03F2A6DE0DB00B22EE3 /* Notifier+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5064D03E2A6DE0DB00B22EE3 /* Notifier+Dependency.swift */; };
@@ -578,6 +577,7 @@
 		CDB652592B8EC024007B7797 /* LockPostRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB652582B8EC024007B7797 /* LockPostRequest.swift */; };
 		CDBA5FC62BC9C58300469C05 /* GetUnreadRegistrationApplicationCountRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBA5FC52BC9C58300469C05 /* GetUnreadRegistrationApplicationCountRequest.swift */; };
 		CDBA5FC82BCC477F00469C05 /* WarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBA5FC72BCC477F00469C05 /* WarningView.swift */; };
+		CDBA5FCA2BD17F3D00469C05 /* CommunityListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBA5FC92BD17F3D00469C05 /* CommunityListModel.swift */; };
 		CDBCBA202B537A4B0070F60D /* PostFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBCBA1F2B537A4B0070F60D /* PostFeedView.swift */; };
 		CDBCBA242B54A5F40070F60D /* NoPostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBCBA232B54A5F40070F60D /* NoPostsView.swift */; };
 		CDC1C93C2A7AA76000072E3D /* InternetSpeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC1C93B2A7AA76000072E3D /* InternetSpeed.swift */; };
@@ -895,7 +895,6 @@
 		504ECBAD2AB45B2A006C0B96 /* LemmyURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemmyURL.swift; sourceTree = "<group>"; };
 		504ECBB02AB4B101006C0B96 /* LemmyURLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemmyURLTests.swift; sourceTree = "<group>"; };
 		505240E22A86916500EA4558 /* FavoriteCommunitiesTracker+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteCommunitiesTracker+Dependency.swift"; sourceTree = "<group>"; };
-		505240E42A86E32700EA4558 /* CommunityListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListModel.swift; sourceTree = "<group>"; };
 		505240E62A88D36D00EA4558 /* SectionIndexTitles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionIndexTitles.swift; sourceTree = "<group>"; };
 		5064D03C2A6DE0AA00B22EE3 /* Notifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifier.swift; sourceTree = "<group>"; };
 		5064D03E2A6DE0DB00B22EE3 /* Notifier+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifier+Dependency.swift"; sourceTree = "<group>"; };
@@ -1301,6 +1300,7 @@
 		CDB652582B8EC024007B7797 /* LockPostRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockPostRequest.swift; sourceTree = "<group>"; };
 		CDBA5FC52BC9C58300469C05 /* GetUnreadRegistrationApplicationCountRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUnreadRegistrationApplicationCountRequest.swift; sourceTree = "<group>"; };
 		CDBA5FC72BCC477F00469C05 /* WarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningView.swift; sourceTree = "<group>"; };
+		CDBA5FC92BD17F3D00469C05 /* CommunityListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListModel.swift; sourceTree = "<group>"; };
 		CDBCBA1F2B537A4B0070F60D /* PostFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFeedView.swift; sourceTree = "<group>"; };
 		CDBCBA232B54A5F40070F60D /* NoPostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoPostsView.swift; sourceTree = "<group>"; };
 		CDC1C93B2A7AA76000072E3D /* InternetSpeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetSpeed.swift; sourceTree = "<group>"; };
@@ -3117,7 +3117,7 @@
 			isa = PBXGroup;
 			children = (
 				6D8F08FE2A4029AE003EB4FD /* CommunityListSection.swift */,
-				505240E42A86E32700EA4558 /* CommunityListModel.swift */,
+				CDBA5FC92BD17F3D00469C05 /* CommunityListModel.swift */,
 			);
 			path = "Community List";
 			sourceTree = "<group>";
@@ -3925,7 +3925,6 @@
 				CDB652532B8EABFC007B7797 /* FeaturePostRequest.swift in Sources */,
 				0304F58A2B44AF5B00537BFA /* CollapsibleSection.swift in Sources */,
 				CDDCF6432A66343D003DA3AC /* FancyTabBar.swift in Sources */,
-				505240E52A86E32700EA4558 /* CommunityListModel.swift in Sources */,
 				CD05E77F2A4F263B0081D102 /* Menu Function.swift in Sources */,
 				036ED3BC2ABF1058009664BC /* SearchModel.swift in Sources */,
 				CDDB08782A5DF1330075BFEE /* CommentSettingsView.swift in Sources */,
@@ -4265,6 +4264,7 @@
 				0308E1162B0EA42B000CA955 /* APILocalUserView.swift in Sources */,
 				030E863F2AC6C5E9000283A6 /* PictrsImageModel.swift in Sources */,
 				632E8EE627EE63D3007E8D75 /* UpvoteButtonView.swift in Sources */,
+				CDBA5FCA2BD17F3D00469C05 /* CommunityListModel.swift in Sources */,
 				CDD0B9022BC084A9003E7174 /* DenyApplicationView.swift in Sources */,
 				B1A26FE32A45B11800B91A32 /* View+HandleLemmyLinks.swift in Sources */,
 				03B643572A6864CD00F65700 /* TabBarSettingsView.swift in Sources */,

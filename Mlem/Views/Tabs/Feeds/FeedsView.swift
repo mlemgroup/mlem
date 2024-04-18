@@ -63,28 +63,15 @@ struct FeedsView: View {
                         .id(scrollToTop) // using this instead of ScrollToView because ScrollToView renders as an empty list item
                         .padding(.trailing, 10)
                         
-                        ForEach(communityListModel.visibleSections) { section in
-                            Section(header: communitySectionHeaderView(for: section)) {
-                                ForEach(communityListModel.communities(for: section)) { community in
-                                    NavigationLink(value: PostFeedType.community(.init(from: community, subscribed: true))) {
-                                        CommunityFeedRowView(
-                                            community: community,
-                                            subscribed: communityListModel.isSubscribed(to: community),
-                                            communitySubscriptionChanged: communityListModel.updateSubscriptionStatus,
-                                            navigationContext: .sidebar
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                        .padding(.trailing, 10)
+                        communitySections
+                            .padding(.trailing, 10)
                     }
                     .scrollIndicators(.hidden)
                     .navigationTitle("Feeds")
                     .listStyle(PlainListStyle())
                     .fancyTabScrollCompatible()
                     
-                    SectionIndexTitles(proxy: scrollProxy, communitySections: communityListModel.allSections())
+                    SectionIndexTitles(proxy: scrollProxy, communitySections: communityListModel.allSections)
                 }
                 .onChange(of: tabReselectionHashValue) { newValue in
                     // due to NavigationSplitView weirdness, the normal .hoistNavigation doesn't work here, so we do it manually
@@ -109,6 +96,25 @@ struct FeedsView: View {
             }
             .environment(\.navigationPathWithRoutes, $feedTabNavigation.path)
             .environment(\.navigation, navigation)
+        }
+    }
+    
+    @ViewBuilder
+    var communitySections: some View {
+        ForEach(communityListModel.visibleSections) { section in
+            Section(header: communitySectionHeaderView(for: section)) {
+                // ForEach(communityListModel.communities(for: section)) { community in
+                ForEach(section.communities) { community in
+                    NavigationLink(value: PostFeedType.community(.init(from: community, subscribed: true))) {
+                        CommunityFeedRowView(
+                            community: community,
+                            subscribed: communityListModel.isSubscribed(to: community),
+                            communitySubscriptionChanged: communityListModel.updateSubscriptionStatus,
+                            navigationContext: .sidebar
+                        )
+                    }
+                }
+            }
         }
     }
     
