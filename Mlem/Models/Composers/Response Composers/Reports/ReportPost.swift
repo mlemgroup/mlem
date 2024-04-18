@@ -21,8 +21,10 @@ struct ReportPost: ResponseEditorModel {
     let post: PostModel
     
     func embeddedView() -> AnyView {
-        AnyView(LargePost(post: post, layoutMode: .constant(.maximize))
-            .padding(.horizontal, AppConstants.postAndCommentSpacing))
+        AnyView(
+            LargePost(post: post, layoutMode: .constant(.maximize))
+            .padding(AppConstants.standardSpacing)
+        )
     }
     
     func sendResponse(responseContents: String) async throws {
