@@ -17,13 +17,12 @@ class CommunityListModel: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     
-    @Published private(set) var allCommunities: [APICommunity] = .init()
     @Published private(set) var allSections: [CommunityListSection] = .init()
     @Published private(set) var visibleSections: [CommunityListSection] = .init()
     
-    private var subscribed: [APICommunity] = .init()
+    private(set) var subscribed: [APICommunity] = .init()
     private var subscribedSet: Set<Int> = .init()
-    private var favorited: [APICommunity] = .init()
+    private(set) var favorited: [APICommunity] = .init()
     private var favoritedSet: Set<Int> = .init()
     
     init() {
@@ -54,7 +53,7 @@ class CommunityListModel: ObservableObject {
             let newFavorited = favoriteCommunitiesTracker.favoritesForCurrentAccount
             
             // combine the two lists
-            await combine(newSubscribed, newFavorited)
+            await update(newSubscribed, newFavorited)
         } catch {
             errorHandler.handle(
                 .init(underlyingError: error)
@@ -90,7 +89,7 @@ class CommunityListModel: ObservableObject {
             }
         }
         
-        await combine(newSubscribed, favorited)
+        await update(newSubscribed, favorited)
     }
     
     private func updateRemoteStatus(for community: APICommunity, subscribed: Bool) async {
@@ -106,7 +105,7 @@ class CommunityListModel: ObservableObject {
             if let indexToUpdate = self.subscribed.firstIndex(where: { $0.id == updatedCommunity.id }) {
                 var newSubscribed = self.subscribed
                 newSubscribed[indexToUpdate] = updatedCommunity
-                await combine(newSubscribed, favorited)
+                await update(newSubscribed, favorited)
             }
         } catch {
             let phrase = subscribed ? "subscribe to" : "unsubscribe from"
@@ -124,30 +123,21 @@ class CommunityListModel: ObservableObject {
     }
     
     private func updateFavorites(_ favorites: [APICommunity]) async {
-        await combine(subscribed, favorites)
+        await update(subscribed, favorites)
     }
     
-    private func combine(_ subscribed: [APICommunity], _ favorited: [APICommunity]) async {
+    private func update(_ subscribed: [APICommunity], _ favorited: [APICommunity]) async {
         // store the values for future use
         self.subscribed = subscribed
         subscribedSet = Set(subscribed.map(\.id))
         self.favorited = favorited
         favoritedSet = Set(favorited.map(\.id))
-        
-        // combine and sort the two lists, excluding duplicates
-        let combined = subscribed + favorited.filter { !subscribed.contains($0) }
-        let sorted = combined.sorted()
   
-        // Task {
-        await MainActor.run {
-            self.allCommunities = sorted
-        }
         let (newAllSections, newVisibleSections) = recomputeSections()
         await MainActor.run {
             self.allSections = newAllSections
             self.visibleSections = newVisibleSections
         }
-        // }
     }
     
     // swiftlint:disable:next function_body_length
@@ -204,8 +194,8 @@ class CommunityListModel: ObservableObject {
                 sidebarEntry: sidebarEntry,
                 inlineHeaderLabel: "#",
                 accessibilityLabel: "Communities starting with a symbol or number",
-                communities: allCommunities.filter { community in
-                    sidebarEntry.contains(community: community, isSubscribed: subscribedSet.contains(community.id))
+                communities: subscribed.filter { community in
+                    sidebarEntry.contains(community: community, isSubscribed: true)
                 }
             )
         }
@@ -233,8 +223,8 @@ class CommunityListModel: ObservableObject {
                     sidebarEntry: sidebarEntry,
                     inlineHeaderLabel: character,
                     accessibilityLabel: "Communities starting with the letter '\(character)'",
-                    communities: allCommunities.filter { community in
-                        sidebarEntry.contains(community: community, isSubscribed: subscribedSet.contains(community.id))
+                    communities: subscribed.filter { community in
+                        sidebarEntry.contains(community: community, isSubscribed: true)
                     }
                 )
             }
