@@ -103,7 +103,6 @@ struct FeedsView: View {
     var communitySections: some View {
         ForEach(communityListModel.visibleSections) { section in
             Section(header: communitySectionHeaderView(for: section)) {
-                // ForEach(communityListModel.communities(for: section)) { community in
                 ForEach(section.communities) { community in
                     NavigationLink(value: PostFeedType.community(.init(from: community, subscribed: true))) {
                         CommunityFeedRowView(
