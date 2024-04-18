@@ -408,8 +408,8 @@ extension PostModel {
         var functions: [MenuFunction] = .init()
         if !(community.blocked ?? true), !creator.blocked {
             var blockActions: [MenuFunctionPopup.Action] = [
-                .init(text: "Block User", callback: blockUserCallback),
-                .init(text: "Block Community", callback: blockCommunityCallback)
+                .init(text: "Block User", isDestructive: true, callback: blockUserCallback),
+                .init(text: "Block Community", isDestructive: true, callback: blockCommunityCallback)
             ]
             
             functions.append(

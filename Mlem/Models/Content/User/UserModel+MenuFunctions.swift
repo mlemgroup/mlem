@@ -10,17 +10,24 @@ import SwiftUI
 
 extension UserModel {
     func blockMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> MenuFunction {
-        .standardMenuFunction(
-            text: blocked ? "Unblock" : "Block",
-            imageName: blocked ? Icons.show : Icons.hide,
-            confirmationPrompt: AppConstants.blockUserPrompt,
-            callback: {
+        if blocked {
+            return .standardMenuFunction(text: "Unblock", imageName: Icons.show) {
                 Task {
                     var new = self
                     await new.toggleBlock(callback)
                 }
             }
-        )
+        }
+        return .standardMenuFunction(
+            text: "Block",
+            imageName: Icons.hide,
+            confirmationPrompt: AppConstants.blockUserPrompt
+        ) {
+            Task {
+                var new = self
+                await new.toggleBlock(callback)
+            }
+        }
     }
     
     func banMenuFunction(modToolTracker: ModToolTracker) -> MenuFunction {
