@@ -26,6 +26,7 @@ struct UserListRow: View {
     
     let user: UserModel
     let communityContext: CommunityModel?
+    let showBlockStatus: Bool
     let trackerCallback: (_ item: UserModel) -> Void
     let swipeActions: SwipeConfiguration?
     let complications: [UserComplication]
@@ -36,6 +37,7 @@ struct UserListRow: View {
     init(
         _ user: UserModel,
         complications: [UserComplication] = .withoutTypeLabel,
+        showBlockStatus: Bool = true,
         communityContext: CommunityModel? = nil,
         swipeActions: SwipeConfiguration? = nil,
         navigationEnabled: Bool = true,
@@ -43,6 +45,7 @@ struct UserListRow: View {
     ) {
         self.user = user
         self.complications = complications
+        self.showBlockStatus = showBlockStatus
         self.communityContext = communityContext
         self.swipeActions = swipeActions
         self.navigationEnabled = navigationEnabled
@@ -51,7 +54,7 @@ struct UserListRow: View {
     
     var body: some View {
         userRow
-            .opacity(user.blocked ? 0.5 : 1)
+            .opacity((user.blocked && showBlockStatus) ? 0.5 : 1)
             .buttonStyle(.plain)
             .background(.background)
             .draggable(user.profileUrl) {
@@ -76,10 +79,22 @@ struct UserListRow: View {
     var userRow: some View {
         if navigationEnabled {
             NavigationLink(value: AppRoute.userProfile(user, communityContext: communityContext)) {
-                UserListRowBody(user: user, communityContext: communityContext, complications: complications, navigationEnabled: true)
+                UserListRowBody(
+                    user: user,
+                    communityContext: communityContext,
+                    complications: complications,
+                    showBlockStatus: showBlockStatus,
+                    navigationEnabled: true
+                )
             }
         } else {
-            UserListRowBody(user: user, communityContext: communityContext, complications: complications, navigationEnabled: false)
+            UserListRowBody(
+                user: user,
+                communityContext: communityContext,
+                complications: complications,
+                showBlockStatus: showBlockStatus,
+                navigationEnabled: false
+            )
         }
     }
 }

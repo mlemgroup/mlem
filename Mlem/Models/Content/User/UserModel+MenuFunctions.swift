@@ -15,6 +15,11 @@ extension UserModel {
                 Task {
                     var new = self
                     await new.toggleBlock(callback)
+                    if !new.blocked {
+                        await notifier.add(.success("Unblocked user"))
+                    } else {
+                        await notifier.add(.failure("Failed to unblock user"))
+                    }
                 }
             }
         }
@@ -26,6 +31,11 @@ extension UserModel {
             Task {
                 var new = self
                 await new.toggleBlock(callback)
+                if new.blocked {
+                    await notifier.add(.success("Blocked user"))
+                } else {
+                    await notifier.add(.failure("Failed to block user"))
+                }
             }
         }
     }

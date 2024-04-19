@@ -83,8 +83,11 @@ struct UserModel: Purgable {
     /// Creates a UserModel from an APIPerson. Note that using this initialiser nullifies count values, since
     /// those are only accessable from APIPersonView.
     /// - Parameter apiPerson: APIPerson to create a UserModel representation of
-    init(from person: APIPerson) {
+    init(from person: APIPerson, blocked: Bool? = nil) {
         update(with: person)
+        if let blocked {
+            self.blocked = blocked
+        }
     }
     
     mutating func update(with response: GetPersonDetailsResponse) {
@@ -175,16 +178,17 @@ struct UserModel: Purgable {
         return ret
     }
     
-    mutating func toggleBlock(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async {
-        blocked.toggle()
-        RunLoop.main.perform { [self] in
-            callback(self)
+    func toggleBlock(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async {
+        var new = self
+        new.blocked.toggle()
+        RunLoop.main.perform { [new] in
+            callback(new)
         }
         do {
-            let response = try await personRepository.updateBlocked(for: userId, blocked: blocked)
-            blocked = response.blocked
-            RunLoop.main.perform { [self] in
-                callback(self)
+            let response = try await personRepository.updateBlocked(for: userId, blocked: new.blocked)
+            new.blocked = response.blocked
+            RunLoop.main.perform { [new] in
+                callback(new)
             }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)

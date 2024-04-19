@@ -26,6 +26,7 @@ struct CommunityListRow: View {
     let trackerCallback: (_ item: CommunityModel) -> Void
     let swipeActions: SwipeConfiguration?
     let complications: [CommunityComplication]
+    let showBlockStatus: Bool
     let navigationEnabled: Bool
     
     @State private var menuFunctionPopup: MenuFunctionPopup?
@@ -36,12 +37,14 @@ struct CommunityListRow: View {
     init(
         _ community: CommunityModel,
         complications: [CommunityComplication] = .withoutTypeLabel,
+        showBlockStatus: Bool = true,
         swipeActions: SwipeConfiguration? = nil,
         navigationEnabled: Bool = true,
         trackerCallback: @escaping (_ item: CommunityModel) -> Void = { _ in }
     ) {
         self.community = community
         self.complications = complications
+        self.showBlockStatus = showBlockStatus
         self.swipeActions = swipeActions
         self.navigationEnabled = navigationEnabled
         self.trackerCallback = trackerCallback
@@ -49,7 +52,7 @@ struct CommunityListRow: View {
     
     var body: some View {
         communityRow
-            .opacity((community.blocked ?? false) ? 0.5 : 1)
+            .opacity(((community.blocked ?? false) && showBlockStatus) ? 0.5 : 1)
             .buttonStyle(.plain)
             .padding(.vertical, 8)
             .background(.background)
@@ -81,10 +84,20 @@ struct CommunityListRow: View {
     var communityRow: some View {
         if navigationEnabled {
             NavigationLink(value: AppRoute.community(community)) {
-                CommunityListRowBody(community: community, complications: complications, navigationEnabled: true)
+                CommunityListRowBody(
+                    community: community,
+                    complications: complications,
+                    showBlockStatus: showBlockStatus,
+                    navigationEnabled: true
+                )
             }
         } else {
-            CommunityListRowBody(community: community, complications: complications, navigationEnabled: false)
+            CommunityListRowBody(
+                community: community,
+                complications: complications,
+                showBlockStatus: showBlockStatus,
+                navigationEnabled: false
+            )
         }
     }
 }

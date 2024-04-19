@@ -14,6 +14,7 @@ enum SettingsPage: DestinationValue {
     case accountGeneral
     case accountAdvanced
     case accountLocal
+    case blockList
     case accountDiscussionLanguages
     case linkMatrixAccount
     case accounts

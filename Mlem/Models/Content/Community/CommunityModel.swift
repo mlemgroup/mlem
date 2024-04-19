@@ -90,10 +90,13 @@ struct CommunityModel: Purgable {
         update(with: communityView)
     }
     
-    init(from community: APICommunity, subscribed: Bool? = nil) {
+    init(from community: APICommunity, subscribed: Bool? = nil, blocked: Bool? = nil) {
         update(with: community)
         if let subscribed {
             self.subscribed = subscribed
+        }
+        if let blocked {
+            self.blocked = blocked
         }
     }
     

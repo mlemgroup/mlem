@@ -86,6 +86,12 @@ struct AccountSettingsView: View {
                 .disabled(settingsDisabled)
                 
                 Section {
+                    NavigationLink(.settings(.blockList)) {
+                        Label("Block List", systemImage: Icons.hide).labelStyle(SquircleLabelStyle(color: .red, fontSize: 16))
+                    }
+                }
+            
+                Section {
                     NavigationLink(.settings(.accountLocal)) {
                         Label("Local Options", systemImage: "iphone.gen3")
                             .labelStyle(SquircleLabelStyle(color: .blue))
@@ -93,16 +99,7 @@ struct AccountSettingsView: View {
                 } footer: {
                     Text("These options are stored locally in Mlem and not on your Lemmy account.")
                 }
-                
-//                Section {
-//                    NavigationLink { EmptyView() } label: {
-//                        Label("Blocked Commuities", systemImage: "house.fill").labelStyle(SquircleLabelStyle(color: .gray))
-//                    }
-//                    NavigationLink { EmptyView() } label: {
-//                        Label("Blocked Users", systemImage: "person.fill").labelStyle(SquircleLabelStyle(color: .gray))
-//                    }
-//                }
-                
+
                 Section {
                     Button("Sign Out", role: .destructive) {
                         showingSignOutConfirmation = true

@@ -65,6 +65,7 @@
 		0394398F2A98EB2300463032 /* APIComment+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0394398E2A98EB2300463032 /* APIComment+Mock.swift */; };
 		039439912A98FA6100463032 /* UserFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039439902A98FA6100463032 /* UserFeedView.swift */; };
 		039439932A99098900463032 /* InternetConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039439922A99098900463032 /* InternetConnectionManager.swift */; };
+		039B4FE92BD2D81D00E42114 /* BlockListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039B4FE82BD2D81D00E42114 /* BlockListView.swift */; };
 		039C59A72BADA04100C18765 /* RemoveCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C59A62BADA04100C18765 /* RemoveCommentView.swift */; };
 		039C59A92BADA5DA00C18765 /* PurgeCommentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C59A82BADA5DA00C18765 /* PurgeCommentRequest.swift */; };
 		039C59AB2BADC85400C18765 /* RemoveCommentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C59AA2BADC85400C18765 /* RemoveCommentRequest.swift */; };
@@ -791,6 +792,7 @@
 		0394398E2A98EB2300463032 /* APIComment+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIComment+Mock.swift"; sourceTree = "<group>"; };
 		039439902A98FA6100463032 /* UserFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFeedView.swift; sourceTree = "<group>"; };
 		039439922A99098900463032 /* InternetConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetConnectionManager.swift; sourceTree = "<group>"; };
+		039B4FE82BD2D81D00E42114 /* BlockListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockListView.swift; sourceTree = "<group>"; };
 		039C59A62BADA04100C18765 /* RemoveCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveCommentView.swift; sourceTree = "<group>"; };
 		039C59A82BADA5DA00C18765 /* PurgeCommentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurgeCommentRequest.swift; sourceTree = "<group>"; };
 		039C59AA2BADC85400C18765 /* RemoveCommentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveCommentRequest.swift; sourceTree = "<group>"; };
@@ -1484,6 +1486,7 @@
 			isa = PBXGroup;
 			children = (
 				0308E1132B0EA32A000CA955 /* AccountSettingsView.swift */,
+				039B4FE82BD2D81D00E42114 /* BlockListView.swift */,
 				03A18CBA2B0FD6F000BA69D2 /* ProfileSettingsView.swift */,
 				031A617B2B1BDFD100ABF23B /* AdvancedAccountSettingsView.swift */,
 				03F4DC9E2B1A8AD500556C67 /* SignInAndSecuritySettingsView.swift */,
@@ -4071,6 +4074,7 @@
 				E409E16E2AFEFB8C0026FDC2 /* ImageDetailSheetState.swift in Sources */,
 				CD391F962A535F5400E213B5 /* ResponseEditorView.swift in Sources */,
 				03EEEAF92ABB985D0087F8D8 /* CommunityModel.swift in Sources */,
+				039B4FE92BD2D81D00E42114 /* BlockListView.swift in Sources */,
 				CD391F8B2A53371300E213B5 /* ExpandedPostLogic.swift in Sources */,
 				CD16A0682B670327000312D2 /* UserContentFeedView.swift in Sources */,
 				CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */,

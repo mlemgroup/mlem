@@ -82,7 +82,13 @@ extension CommunityModel {
         let callback = {
             Task {
                 do {
-                    try await self.toggleBlock(callback)
+                    var new = self
+                    try await new.toggleBlock(callback)
+                    if new.blocked != blocked {
+                        await notifier.add(.success("\(blocked ? "Unblocked" : "Blocked") community"))
+                    } else {
+                        await notifier.add(.failure("Failed to \(blocked ? "block" : "block") community"))
+                    }
                 } catch {
                     errorHandler.handle(error)
                 }
