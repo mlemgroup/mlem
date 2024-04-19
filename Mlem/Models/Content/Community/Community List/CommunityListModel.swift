@@ -191,7 +191,7 @@ class CommunityListModel: ObservableObject {
             x + communities.count
         } == subscribed.count, "mapping operation produced mismatched counts")
         
-        return [String].labelAlphabet.map { character in
+        return sections.keys.sorted().map { character in
             CommunityListSection(
                 viewId: character,
                 sidebarEntry: .init(sidebarLabel: character, sidebarIcon: nil),
