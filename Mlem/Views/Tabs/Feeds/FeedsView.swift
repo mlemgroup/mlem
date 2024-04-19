@@ -69,6 +69,11 @@ struct FeedsView: View {
                     .scrollIndicators(.hidden)
                     .navigationTitle("Feeds")
                     .listStyle(PlainListStyle())
+                    .refreshable {
+                        await Task {
+                            await communityListModel.load()
+                        }.value
+                    }
                     .fancyTabScrollCompatible()
                     
                     SectionIndexTitles(proxy: scrollProxy, communitySections: communityListModel.allSections)
