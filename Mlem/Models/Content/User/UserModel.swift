@@ -178,17 +178,16 @@ struct UserModel: Purgable {
         return ret
     }
     
-    func toggleBlock(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async {
-        var new = self
-        new.blocked.toggle()
-        RunLoop.main.perform { [new] in
-            callback(new)
+    mutating func toggleBlock(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async {
+        blocked.toggle()
+        RunLoop.main.perform { [self] in
+            callback(self)
         }
         do {
-            let response = try await personRepository.updateBlocked(for: userId, blocked: new.blocked)
-            new.blocked = response.blocked
-            RunLoop.main.perform { [new] in
-                callback(new)
+            let response = try await personRepository.updateBlocked(for: userId, blocked: blocked)
+            blocked = response.blocked
+            RunLoop.main.perform { [self] in
+                callback(self)
             }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)

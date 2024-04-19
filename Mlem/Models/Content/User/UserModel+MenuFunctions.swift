@@ -9,35 +9,33 @@ import Foundation
 import SwiftUI
 
 extension UserModel {
+    func blockCallback(_ callback: @escaping (_ item: Self) -> Void = { _ in }) {
+        let blocked = blocked ?? false
+        Task {
+            var new = self
+            await new.toggleBlock(callback)
+            if new.blocked != blocked {
+                await notifier.add(.success("\(blocked ? "Unblocked" : "Blocked") user"))
+            } else {
+                await notifier.add(.failure("Failed to \(blocked ? "block" : "block") user"))
+            }
+        }
+    }
+    
     func blockMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> MenuFunction {
         if blocked {
-            return .standardMenuFunction(text: "Unblock", imageName: Icons.show) {
-                Task {
-                    var new = self
-                    await new.toggleBlock(callback)
-                    if !new.blocked {
-                        await notifier.add(.success("Unblocked user"))
-                    } else {
-                        await notifier.add(.failure("Failed to unblock user"))
-                    }
-                }
-            }
+            return .standardMenuFunction(
+                text: "Unblock",
+                imageName: Icons.show,
+                callback: { blockCallback(callback) }
+            )
         }
         return .standardMenuFunction(
             text: "Block",
             imageName: Icons.hide,
-            confirmationPrompt: AppConstants.blockUserPrompt
-        ) {
-            Task {
-                var new = self
-                await new.toggleBlock(callback)
-                if new.blocked {
-                    await notifier.add(.success("Blocked user"))
-                } else {
-                    await notifier.add(.failure("Failed to block user"))
-                }
-            }
-        }
+            confirmationPrompt: AppConstants.blockUserPrompt,
+            callback: { blockCallback(callback) }
+        )
     }
     
     func banMenuFunction(modToolTracker: ModToolTracker) -> MenuFunction {

@@ -8,16 +8,18 @@
 import Dependencies
 import SwiftUI
 
-private enum BlockListTab: String, Identifiable, CaseIterable {
+enum BlockListTab: String, Identifiable, CaseIterable {
     var id: Self { self }
     
-    case users, communities, instances
+    case communities, users, instances
 }
 
 struct BlockListView: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.notifier) var notifier
-    @State private var selected: BlockListTab = .users
+    @Dependency(\.siteInformation) var siteInformation
+    
+    @State var selected: BlockListTab = .users
     
     @Namespace var scrollToTop
     @State var scrollToTopAppeared = true
@@ -29,6 +31,14 @@ struct BlockListView: View {
     @State var hasDoneInitialLoad: Bool = false
     @State var isLoading: Bool = true
     @State var errorDetails: ErrorDetails?
+    
+    var availableTabs: [BlockListTab] {
+        // TODO: 0.18 deprecation
+        if (siteInformation.version ?? .infinity) >= .init("0.19.0") {
+            return BlockListTab.allCases
+        }
+        return [.communities, .users]
+    }
     
     var body: some View {
         ScrollView {
@@ -46,7 +56,7 @@ struct BlockListView: View {
                 } header: {
                     HStack {
                         BubblePicker(
-                            BlockListTab.allCases,
+                            availableTabs,
                             selected: $selected,
                             withDividers: [.bottom],
                             label: \.rawValue.capitalized
@@ -100,11 +110,7 @@ struct BlockListView: View {
                     UserListRow(
                         user,
                         showBlockStatus: false,
-                        swipeActions: swipeActions {
-                            Task {
-                                await user.toggleBlock(removeUser)
-                            }
-                        },
+                        swipeActions: swipeActions { user.blockCallback(removeUser) },
                         trackerCallback: removeUser
                     )
                     Divider()
@@ -123,11 +129,7 @@ struct BlockListView: View {
                     CommunityListRow(
                         community,
                         showBlockStatus: false,
-                        swipeActions: swipeActions {
-                            Task {
-                                try await community.toggleBlock(removeCommunity)
-                            }
-                        },
+                        swipeActions: swipeActions { community.blockCallback(removeCommunity) },
                         trackerCallback: removeCommunity
                     )
                     Divider()
@@ -171,56 +173,5 @@ struct BlockListView: View {
         .init(trailingActions: [
             .init(symbol: .init(emptyName: "eye", fillName: "eye.fill"), color: .gray, action: callback)
         ])
-    }
-    
-    func loadItems() async {
-        isLoading = true
-        errorDetails = nil
-        do {
-            let info = try await apiClient.loadSiteInformation()
-            if let myUser = info.myUser {
-                DispatchQueue.main.async {
-                    self.communities = myUser.communityBlocks.map { .init(from: $0.community, blocked: true) }
-                    self.users = myUser.personBlocks.map { .init(from: $0.target, blocked: true) }
-                    self.instances = myUser.instanceBlocks?.map(\.instance) ?? .init()
-                    self.isLoading = false
-                }
-            }
-        } catch {
-            isLoading = false
-            errorDetails = .init(error: error)
-        }
-    }
-    
-    func unblockInstance(id: Int) {
-        Task {
-            do {
-                try await apiClient.blockSite(id: id, shouldBlock: false)
-                await notifier.add(.success("Unblocked instance"))
-                if let index = instances.firstIndex(
-                    where: { $0.id == id }
-                ) {
-                    instances.remove(at: index)
-                }
-            } catch {
-                await notifier.add(.failure("Failed to unblock instance"))
-            }
-        }
-    }
-    
-    func removeUser(_ user: UserModel) {
-        if !user.blocked, let index = users.firstIndex(
-            where: { $0.userId == user.userId }
-        ) {
-            users.remove(at: index)
-        }
-    }
-    
-    func removeCommunity(_ community: CommunityModel) {
-        if !(community.blocked ?? true), let index = communities.firstIndex(
-            where: { $0.communityId == community.communityId }
-        ) {
-            communities.remove(at: index)
-        }
     }
 }
