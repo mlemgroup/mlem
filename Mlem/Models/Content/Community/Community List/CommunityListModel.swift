@@ -180,7 +180,7 @@ class CommunityListModel: ObservableObject {
         let sections: [String: [APICommunity]] = .init(
             grouping: subscribed,
             by: { item in
-                if let first = item.name.first, first.isLetter {
+                if let first = item.name.strippingDiacritics.first, first.isLetter {
                     return first.uppercased()
                 }
                 return "#"
@@ -191,13 +191,15 @@ class CommunityListModel: ObservableObject {
             x + communities.count
         } == subscribed.count, "mapping operation produced mismatched counts")
         
-        return sections.keys.sorted().map { character in
+        return [String].labelAlphabet.map { character in
             CommunityListSection(
                 viewId: character,
                 sidebarEntry: .init(sidebarLabel: character, sidebarIcon: nil),
                 inlineHeaderLabel: character,
                 accessibilityLabel: "Communities starting with \(character == "#" ? "a symbol or number" : character)",
-                communities: sections[character, default: .init()].sorted()
+                communities: sections[character, default: .init()].sorted { lhs, rhs in
+                    lhs.name.strippingDiacritics < rhs.name.strippingDiacritics
+                }
             )
         }
     }

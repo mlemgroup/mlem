@@ -36,8 +36,8 @@ final class CommunityListModelTests: XCTestCase {
             CommunityListModel()
         }
         
-        // assert that even though a subscription and favorite are available nothing is present without `load()` being called
-        XCTAssert(model.subscribed.isEmpty && model.favorited.isEmpty)
+        // assert that initial state propagates as expected--favorited appear from tracker, but subscribed does not appear until load
+        XCTAssert(model.subscribed.count == 0 && model.favorited.count == 1)
     }
     
     func testLoadingWithNoSubscriptionsOrFavourites() async throws {
@@ -280,13 +280,13 @@ final class CommunityListModelTests: XCTestCase {
         // assert order
         XCTAssert(model.allSections[0].viewId == "top")
         XCTAssert(model.allSections[1].viewId == "favorites")
+        XCTAssert(model.allSections[2].viewId == "#")
         
         let alphabet: [String] = .alphabet
-        let offset = 2
+        let offset = 3
         alphabet.enumerated().forEach { index, character in
             XCTAssert(model.allSections[index + offset].viewId == character)
         }
-        XCTAssert(model.allSections[28].viewId == "#")
     }
     
     // MARK: - Helpers
