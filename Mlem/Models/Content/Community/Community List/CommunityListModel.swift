@@ -196,7 +196,7 @@ class CommunityListModel: ObservableObject {
                 viewId: character,
                 sidebarEntry: .init(sidebarLabel: character, sidebarIcon: nil),
                 inlineHeaderLabel: character,
-                accessibilityLabel: "Communities starting with a symbol or number",
+                accessibilityLabel: "Communities starting with \(character == "#" ? "a symbol or number" : character)",
                 communities: sections[character, default: .init()].sorted()
             )
         }
