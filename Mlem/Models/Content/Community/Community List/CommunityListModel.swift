@@ -168,6 +168,7 @@ class CommunityListModel: ObservableObject {
         }
         
         let alphabeticSections = alphabeticSections()
+        
         newAllSections.append(contentsOf: alphabeticSections)
         newVisibleSections.append(contentsOf: alphabeticSections.filter { section in
             !section.communities.isEmpty
@@ -177,46 +178,28 @@ class CommunityListModel: ObservableObject {
     }
     
     private func alphabeticSections() -> [CommunityListSection] {
-        let communities: [String: [APICommunity]] = .init(
+        let sections: [String: [APICommunity]] = .init(
             grouping: subscribed,
             by: { item in
                 if let first = item.name.first, first.isLetter {
                     return first.uppercased()
                 }
-                return "other"
+                return "#"
             }
         )
         
-        assert(communities.values.reduce(0) { x, community in
-            x + community.count
+        assert(sections.values.reduce(0) { x, communities in
+            x + communities.count
         } == subscribed.count, "mapping operation produced mismatched counts")
         
-        var ret: [CommunityListSection] = .init()
-        
-        ret.append(
+        return [String].labelAlphabet.map { character in
             CommunityListSection(
-                viewId: "non_letter_titles",
-                sidebarEntry: .init(sidebarLabel: "#", sidebarIcon: nil),
-                inlineHeaderLabel: "#",
+                viewId: character,
+                sidebarEntry: .init(sidebarLabel: character, sidebarIcon: nil),
+                inlineHeaderLabel: character,
                 accessibilityLabel: "Communities starting with a symbol or number",
-                communities: communities["other"] ?? .init()
+                communities: sections[character, default: .init()].sorted()
             )
-        )
-        
-        let alphabetics = alphabet.map { character in
-            withDependencies(from: self) {
-                // This looks sinister but I didn't know how to string replace in a non-string based regex
-                CommunityListSection(
-                    viewId: character,
-                    sidebarEntry: .init(sidebarLabel: character, sidebarIcon: nil),
-                    inlineHeaderLabel: character,
-                    accessibilityLabel: "Communities starting with the letter '\(character)'",
-                    communities: communities[character, default: .init()]
-                )
-            }
         }
-        ret.append(contentsOf: alphabetics)
-        
-        return ret
     }
 }

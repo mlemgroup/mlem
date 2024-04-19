@@ -278,7 +278,6 @@ final class CommunityListModelTests: XCTestCase {
         // assert we have 26 for alphabet + 3
         XCTAssert(model.allSections.count == 29)
         // assert order
-        print("DEBUG \(model.allSections.count)")
         XCTAssert(model.allSections[0].viewId == "top")
         XCTAssert(model.allSections[1].viewId == "favorites")
         
@@ -287,7 +286,7 @@ final class CommunityListModelTests: XCTestCase {
         alphabet.enumerated().forEach { index, character in
             XCTAssert(model.allSections[index + offset].viewId == character)
         }
-        XCTAssert(model.allSections[28].viewId == "non_letter_titles")
+        XCTAssert(model.allSections[28].viewId == "#")
     }
     
     // MARK: - Helpers
