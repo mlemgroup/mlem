@@ -177,34 +177,15 @@ class CommunityListModel: ObservableObject {
     }
     
     private func alphabeticSections() -> [CommunityListSection] {
-        let alphabetSet = Set([String].alphabet)
-        let alphabet: [String] = .alphabet
-        
-        var communities: [String: [APICommunity]] = .init()
-        communities["other"] = .init()
-        communities[alphabet[0]] = .init()
-        
-        let sortedCommunities = subscribed.sorted()
-        var currentSectionIndex = 0
-        var currentSectionTitle: String = alphabet[0]
-        
-        // iterate through sorted communities, building up each letter's section
-        // it's not guaranteed that non-alphabetics be sorted to one side or the other of the alphabetics, so each element does have to be individually checked, hence the quick-lookup alphabetSet. They will be grouped, however, so branch prediction ought to make the performance impact of the conditional negligible
-        for community in sortedCommunities {
-            assert(community.name.first != nil, "\(community.name) has no first character!")
-            if !alphabetSet.contains(String(community.name.first!.uppercased())) {
-                assert(communities.keys.contains("other"), "No 'other' key in communities!")
-                communities["other"]?.append(community)
-            } else {
-                while currentSectionIndex < 25, !community.name.uppercased().starts(with: currentSectionTitle) {
-                    currentSectionIndex += 1
-                    currentSectionTitle = alphabet[currentSectionIndex]
-                    communities[currentSectionTitle] = .init()
+        let communities: [String: [APICommunity]] = .init(
+            grouping: subscribed,
+            by: { item in
+                if let first = item.name.first, first.isLetter {
+                    return first.uppercased()
                 }
-                assert(communities.keys.contains(currentSectionTitle), "No '\(currentSectionTitle)' key in communities!")
-                communities[currentSectionTitle]?.append(community)
+                return "other"
             }
-        }
+        )
         
         assert(communities.values.reduce(0) { x, community in
             x + community.count
