@@ -27,7 +27,6 @@ class CommunityListModel: ObservableObject {
     init() {
         favoriteCommunitiesTracker
             .$favoritesForCurrentAccount
-            .dropFirst()
             .sink { [weak self] value in
                 if let self {
                     Task {
