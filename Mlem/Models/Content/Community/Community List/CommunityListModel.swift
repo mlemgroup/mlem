@@ -128,7 +128,7 @@ class CommunityListModel: ObservableObject {
     private func update(_ subscribed: [APICommunity], _ favorited: [APICommunity]) async {
         // store the values for future use
         self.subscribed = subscribed
-        subscribedSet = Set(subscribed.map(\.id))
+        subscribedSet = Set(subscribed.lazy.map(\.id))
         self.favorited = favorited.sorted()
   
         let (newAllSections, newVisibleSections) = recomputeSections()
