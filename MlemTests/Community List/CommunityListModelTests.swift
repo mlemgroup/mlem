@@ -36,8 +36,9 @@ final class CommunityListModelTests: XCTestCase {
             CommunityListModel()
         }
         
-        // assert that even though a subscription and favorite are available nothing is present without `load()` being called
-        XCTAssert(model.subscribed.isEmpty && model.favorited.isEmpty)
+        // assert that subscribed and favorited are initialized properly
+        // favorites should populate directly from the tracker, subscribed should not populate until load() called
+        XCTAssert(model.subscribed.count == 0 && model.favorited.count == 1)
     }
     
     func testLoadingWithNoSubscriptionsOrFavourites() async throws {
@@ -191,19 +192,19 @@ final class CommunityListModelTests: XCTestCase {
         // ask the model to load
         await model.load()
         // assert the model is not displaying any favorites
-        XCTAssertFalse(model.visibleSections.contains(where: { $0.viewId == "favorites" }))
+        XCTAssertFalse(model.sections.contains(where: { $0.viewId == "favorites" }))
         // add a favorite to the tracker, expectation is the model will observe this change and update itself
         let favoriteCommunity = APICommunity.mock(id: 42)
         tracker.favorite(favoriteCommunity)
         sleep(1) // give async call time to execute
         // assert that adding this favorite resulted in the model updating, it should now display a favorites section
-        XCTAssert(model.visibleSections.contains(where: { $0.viewId == "favorites" }))
+        XCTAssert(model.sections.contains(where: { $0.viewId == "favorites" }))
         XCTAssert(model.favorited.first! == favoriteCommunity)
         // now unfavorite the community
         tracker.unfavorite(favoriteCommunity.id)
         // assert that the favorites section is no longer included
         sleep(1) // give async call time to execute
-        XCTAssertFalse(model.visibleSections.contains(where: { $0.viewId == "favorites" }))
+        XCTAssertFalse(model.sections.contains(where: { $0.viewId == "favorites" }))
     }
     
     func testCorrectCommunitiesAreReturnedForSections() async throws {
@@ -233,60 +234,33 @@ final class CommunityListModelTests: XCTestCase {
         // assert all the communities are present
         XCTAssert(model.subscribed.count == communities.count)
         // assert we have the correct number of visible sections, some will group together...
-        XCTAssert(model.visibleSections.count == 5)
+        XCTAssert(model.sections.count == 6)
         // assuming alphabetical ordering, assert we get the correct communities back for each section
         XCTAssertEqual(
-            // section 0 (aka 'A') should include 'accordion'
-            model.visibleSections[0].communities,
+            // section 1 (aka 'A') should include 'accordion'
+            model.sections[1].communities,
             [communities[0].community]
         )
         XCTAssertEqual(
-            // section 1 (aka 'G') should include 'glockenspiel'
-            model.visibleSections[1].communities,
+            // section 2 (aka 'G') should include 'glockenspiel'
+            model.sections[2].communities,
             [communities[5].community]
         )
         XCTAssertEqual(
-            // section 2 (aka 'H') should include 'harmonica' and 'harp'
-            model.visibleSections[2].communities,
+            // section 3 (aka 'H') should include 'harmonica' and 'harp'
+            model.sections[3].communities,
             [communities[2].community, communities[1].community]
         )
         XCTAssertEqual(
-            // section 3 (aka 'T') should include 'trombone' and 'tuba'
-            model.visibleSections[3].communities,
+            // section 4 (aka 'T') should include 'trombone' and 'tuba'
+            model.sections[4].communities,
             [communities[3].community, communities[6].community]
         )
         XCTAssertEqual(
-            // section 4 (aka 'X') should include 'xylophone'
-            model.visibleSections[4].communities,
+            // section 5 (aka 'X') should include 'xylophone'
+            model.sections[5].communities,
             [communities[4].community]
         )
-    }
-    
-    func testAllSectionsOrder() async throws {
-        let model = withDependencies {
-            $0.favoriteCommunitiesTracker = favoritesTracker
-        } operation: {
-            CommunityListModel()
-        }
-        
-        // expectation is the all sections are made up of:
-        // - top section
-        // - favorites
-        // - alphabetics (a-z)
-        // - non-letter (symbols/numerics)
-        
-        // assert we have 26 for alphabet + 3
-        XCTAssert(model.allSections.count == 29)
-        // assert order
-        XCTAssert(model.allSections[0].viewId == "top")
-        XCTAssert(model.allSections[1].viewId == "favorites")
-        
-        let alphabet: [String] = .alphabet
-        let offset = 2
-        alphabet.enumerated().forEach { index, character in
-            XCTAssert(model.allSections[index + offset].viewId == character)
-        }
-        XCTAssert(model.allSections[28].viewId == "#")
     }
     
     // MARK: - Helpers

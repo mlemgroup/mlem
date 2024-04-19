@@ -17,8 +17,7 @@ class CommunityListModel: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     
-    @Published private(set) var allSections: [CommunityListSection] = .init()
-    @Published private(set) var visibleSections: [CommunityListSection] = .init()
+    @Published private(set) var sections: [CommunityListSection] = .init()
     
     private(set) var subscribed: [APICommunity] = .init()
     private var subscribedSet: Set<Int> = .init()
@@ -35,9 +34,8 @@ class CommunityListModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
-        let (newAllSections, newVisibleSections) = recomputeSections()
-        self.allSections = newAllSections
-        self.visibleSections = newVisibleSections
+        let newSections = recomputeSections()
+        self.sections = newSections
     }
     
     func load() async {
@@ -130,16 +128,14 @@ class CommunityListModel: ObservableObject {
         subscribedSet = Set(subscribed.lazy.map(\.id))
         self.favorited = favorited.sorted()
   
-        let (newAllSections, newVisibleSections) = recomputeSections()
+        let newSections = recomputeSections()
         await MainActor.run {
-            self.allSections = newAllSections
-            self.visibleSections = newVisibleSections
+            self.sections = newSections
         }
     }
     
-    private func recomputeSections() -> (all: [CommunityListSection], visible: [CommunityListSection]) {
-        var newAllSections: [CommunityListSection] = .init()
-        var newVisibleSections: [CommunityListSection] = .init()
+    private func recomputeSections() -> [CommunityListSection] {
+        var newSections: [CommunityListSection] = .init()
         
         let topSection = withDependencies(from: self) {
             CommunityListSection(
@@ -150,30 +146,26 @@ class CommunityListModel: ObservableObject {
                 communities: .init()
             )
         }
-        newAllSections.append(topSection)
+        newSections.append(topSection)
         
-        let favoritesSection = withDependencies(from: self) {
-            CommunityListSection(
-                viewId: "favorites",
-                sidebarEntry: .init(sidebarLabel: nil, sidebarIcon: "star.fill"),
-                inlineHeaderLabel: "Favorites",
-                accessibilityLabel: "Favorited Communities",
-                communities: favorited
-            )
-        }
-        newAllSections.append(favoritesSection)
         if !favorited.isEmpty {
-            newVisibleSections.append(favoritesSection)
+            let favoritesSection = withDependencies(from: self) {
+                CommunityListSection(
+                    viewId: "favorites",
+                    sidebarEntry: .init(sidebarLabel: nil, sidebarIcon: "star.fill"),
+                    inlineHeaderLabel: "Favorites",
+                    accessibilityLabel: "Favorited Communities",
+                    communities: favorited
+                )
+            }
+            newSections.append(favoritesSection)
         }
         
         let alphabeticSections = alphabeticSections()
         
-        newAllSections.append(contentsOf: alphabeticSections)
-        newVisibleSections.append(contentsOf: alphabeticSections.filter { section in
-            !section.communities.isEmpty
-        })
+        newSections.append(contentsOf: alphabeticSections)
         
-        return (all: newAllSections, visible: newVisibleSections)
+        return newSections
     }
     
     private func alphabeticSections() -> [CommunityListSection] {

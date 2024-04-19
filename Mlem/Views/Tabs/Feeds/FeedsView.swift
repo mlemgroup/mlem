@@ -76,7 +76,7 @@ struct FeedsView: View {
                     }
                     .fancyTabScrollCompatible()
                     
-                    SectionIndexTitles(proxy: scrollProxy, communitySections: communityListModel.allSections)
+                    SectionIndexTitles(proxy: scrollProxy, communitySections: communityListModel.sections)
                 }
                 .onChange(of: tabReselectionHashValue) { newValue in
                     // due to NavigationSplitView weirdness, the normal .hoistNavigation doesn't work here, so we do it manually
@@ -106,7 +106,7 @@ struct FeedsView: View {
     
     @ViewBuilder
     var communitySections: some View {
-        ForEach(communityListModel.visibleSections) { section in
+        ForEach(communityListModel.sections) { section in
             Section(header: communitySectionHeaderView(for: section)) {
                 ForEach(section.communities) { community in
                     NavigationLink(value: PostFeedType.community(.init(from: community, subscribed: true))) {
@@ -141,12 +141,15 @@ struct FeedsView: View {
         }
     }
     
+    @ViewBuilder
     private func communitySectionHeaderView(for section: CommunityListSection) -> some View {
-        HStack {
-            Text(section.inlineHeaderLabel!)
-                .accessibilityLabel(section.accessibilityLabel)
-            Spacer()
+        if let header = section.inlineHeaderLabel {
+            HStack {
+                Text(header)
+                    .accessibilityLabel(section.accessibilityLabel)
+                Spacer()
+            }
+            .id(section.viewId)
         }
-        .id(section.viewId)
     }
 }
