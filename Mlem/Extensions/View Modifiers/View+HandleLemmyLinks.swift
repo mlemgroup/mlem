@@ -85,6 +85,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             AccountGeneralSettingsView()
         case .accountLocal:
             LocalAccountSettingsView()
+        case .blockList:
+            BlockListView()
         case .accountAdvanced:
             AdvancedAccountSettingsView()
         case .accountDiscussionLanguages:

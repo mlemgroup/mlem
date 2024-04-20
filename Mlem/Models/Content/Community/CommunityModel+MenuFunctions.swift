@@ -75,29 +75,36 @@ extension CommunityModel {
         return .standardMenuFunction(text: "Favorite", imageName: Icons.favorite, callback: callback)
     }
     
+    func blockCallback(_ callback: @escaping (_ item: Self) -> Void = { _ in }) {
+        let blocked = blocked ?? false
+        Task {
+            do {
+                var new = self
+                try await new.toggleBlock(callback)
+                if new.blocked != blocked {
+                    await notifier.add(.success("\(blocked ? "Unblocked" : "Blocked") community"))
+                } else {
+                    await notifier.add(.failure("Failed to \(blocked ? "block" : "block") community"))
+                }
+            } catch {
+                errorHandler.handle(error)
+            }
+        }
+    }
+    
     func blockMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) throws -> MenuFunction {
         guard let blocked else {
             throw CommunityError.noData
         }
-        let callback = {
-            Task {
-                do {
-                    try await self.toggleBlock(callback)
-                } catch {
-                    errorHandler.handle(error)
-                }
-            }
-            return ()
-        }
         
         if blocked {
-            return .standardMenuFunction(text: "Unblock", imageName: Icons.show, callback: callback)
+            return .standardMenuFunction(text: "Unblock", imageName: Icons.show, callback: { blockCallback(callback )})
         }
         return .standardMenuFunction(
             text: "Block",
             imageName: Icons.hide,
             confirmationPrompt: AppConstants.blockCommunityPrompt,
-            callback: callback
+            callback: { blockCallback(callback )}
         )
     }
     

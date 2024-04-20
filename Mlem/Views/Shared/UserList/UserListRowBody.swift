@@ -12,10 +12,11 @@ struct UserListRowBody: View {
     let user: UserModel
     let communityContext: CommunityModel?
     let complications: [UserComplication]
+    var showBlockStatus: Bool = true
     let navigationEnabled: Bool
     
     var title: String {
-        if user.blocked {
+        if user.blocked && showBlockStatus {
             return "\(user.displayName!) ∙ Blocked"
         } else {
             return user.displayName
@@ -47,7 +48,7 @@ struct UserListRowBody: View {
     
     var content: some View {
         HStack(spacing: AppConstants.standardSpacing) {
-            if user.blocked {
+            if user.blocked && showBlockStatus {
                 Image(systemName: Icons.hide)
                     .resizable()
                     .aspectRatio(contentMode: .fit)

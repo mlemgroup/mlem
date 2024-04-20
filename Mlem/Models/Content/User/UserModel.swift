@@ -83,8 +83,11 @@ struct UserModel: Purgable {
     /// Creates a UserModel from an APIPerson. Note that using this initialiser nullifies count values, since
     /// those are only accessable from APIPersonView.
     /// - Parameter apiPerson: APIPerson to create a UserModel representation of
-    init(from person: APIPerson) {
+    init(from person: APIPerson, blocked: Bool? = nil) {
         update(with: person)
+        if let blocked {
+            self.blocked = blocked
+        }
     }
     
     mutating func update(with response: GetPersonDetailsResponse) {

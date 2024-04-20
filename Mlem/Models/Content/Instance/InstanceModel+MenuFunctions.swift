@@ -13,8 +13,7 @@ extension InstanceModel {
         if blocked {
             return .standardMenuFunction(
                 text: "Unblock",
-                imageName: Icons.show,
-                enabled: localSiteId != nil
+                imageName: Icons.show
             ) {
                 Task { await toggleBlock(callback) }
             }
@@ -22,8 +21,7 @@ extension InstanceModel {
         return .standardMenuFunction(
             text: "Block",
             imageName: Icons.hide,
-            confirmationPrompt: AppConstants.blockInstancePrompt,
-            enabled: localSiteId != nil
+            confirmationPrompt: AppConstants.blockInstancePrompt
         ) {
             Task { await toggleBlock(callback) }
         }
@@ -36,7 +34,7 @@ extension InstanceModel {
                 .openUrlMenuFunction(text: "View on Web", imageName: Icons.browser, destination: url),
                 .divider
             ]
-            if localSiteId != nil {
+            if (siteInformation.version ?? .infinity) >= .init("0.19.0") {
                 functions.append(blockMenuFunction(callback))
             }
             return functions

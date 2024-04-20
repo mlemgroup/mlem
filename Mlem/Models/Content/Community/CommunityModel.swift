@@ -90,10 +90,13 @@ struct CommunityModel: Purgable {
         update(with: communityView)
     }
     
-    init(from community: APICommunity, subscribed: Bool? = nil) {
+    init(from community: APICommunity, subscribed: Bool? = nil, blocked: Bool? = nil) {
         update(with: community)
         if let subscribed {
             self.subscribed = subscribed
+        }
+        if let blocked {
+            self.blocked = blocked
         }
     }
     
@@ -228,14 +231,13 @@ struct CommunityModel: Purgable {
         }
     }
     
-    func toggleBlock(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async throws {
-        var new = self
+    mutating func toggleBlock(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async throws {
         guard let blocked else {
             throw CommunityError.noData
         }
-        new.blocked = !blocked
-        RunLoop.main.perform { [new] in
-            callback(new)
+        self.blocked = !blocked
+        RunLoop.main.perform { [self] in
+            callback(self)
         }
         do {
             let response: BlockCommunityResponse
@@ -244,9 +246,9 @@ struct CommunityModel: Purgable {
             } else {
                 response = try await communityRepository.unblockCommunity(id: communityId)
             }
-            new.update(with: response.communityView)
-            RunLoop.main.perform { [new] in
-                callback(new)
+            self.update(with: response.communityView)
+            RunLoop.main.perform { [self] in
+                callback(self)
             }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)

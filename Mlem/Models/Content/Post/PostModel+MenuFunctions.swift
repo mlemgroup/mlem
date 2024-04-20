@@ -371,7 +371,7 @@ extension PostModel {
             Task(priority: .userInitiated) {
                 await self.creator.toggleBlock { self.creator = $0 }
                 if !self.creator.blocked {
-                    await self.notifier.add(.failure("Unblocked \(self.creator.name ?? "user")"))
+                    await self.notifier.add(.success("Unblocked \(self.creator.name ?? "user")"))
                 } else {
                     await self.notifier.add(.failure("Failed to unblock user"))
                 }
@@ -384,7 +384,7 @@ extension PostModel {
                 try await self.community.toggleBlock { self.community = $0 }
                 if self.community.blocked ?? false {
                     await postTracker.applyFilter(.blockedCommunity(self.community.communityId))
-                    await self.notifier.add(.failure("Blocked \(self.community.name ?? "community")"))
+                    await self.notifier.add(.success("Blocked \(self.community.name ?? "community")"))
                 } else {
                     await self.notifier.add(.failure("Failed to block community"))
                 }
@@ -397,7 +397,7 @@ extension PostModel {
                 await postTracker.removeFilter(.blockedCommunity(self.community.communityId))
                 try await self.community.toggleBlock { self.community = $0 }
                 if !(self.community.blocked ?? false) {
-                    await self.notifier.add(.failure("Unblocked \(self.community.name ?? "community")"))
+                    await self.notifier.add(.success("Unblocked \(self.community.name ?? "community")"))
                 } else {
                     await self.notifier.add(.failure("Failed to unblock community"))
                 }
