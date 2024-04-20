@@ -13,9 +13,13 @@ struct InstanceModel {
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
+    @Dependency(\.siteInformation) var siteInformation
     
     enum InstanceError: Error {
         case invalidUrl
+        case noPostReturned
+        case noSiteReturned
+        case couldNotResolveCommunity
     }
     
     var displayName: String!
@@ -179,13 +183,19 @@ struct InstanceModel {
     }
     
     func toggleBlock(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async {
-        guard let localSiteId else { return }
         var new = self
         new.blocked = !blocked
         RunLoop.main.perform { [new] in
             callback(new)
         }
         do {
+            let localSiteId: Int
+            if let id = self.localSiteId {
+                localSiteId = id
+            } else {
+                localSiteId = try await fetchSiteId()
+            }
+            
             let response: BlockInstanceResponse
             if !blocked {
                 response = try await apiClient.blockSite(id: localSiteId, shouldBlock: true)
@@ -199,11 +209,41 @@ struct InstanceModel {
             await notifier.add(.success(response.blocked ? "Blocked instance" : "Unblocked instance"))
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
-            errorHandler.handle(error)
             let phrase = !blocked ? "block" : "unblock"
             errorHandler.handle(
                 .init(title: "Failed to \(phrase) instance", style: .toast, underlyingError: error)
             )
+        }
+    }
+    
+    private func fetchSiteId() async throws -> Int {
+        let externalClient = APIClient(
+            transport: { urlSession, urlRequest in try await urlSession.data(for: urlRequest) }
+        )
+        externalClient.session = .unauthenticated(self.url.appendingPathComponent("api/v3"))
+        let response = try await externalClient.loadPosts(
+            communityId: nil,
+            page: 1,
+            cursor: nil,
+            sort: .new,
+            type: .local,
+            limit: 1,
+            savedOnly: false,
+            communityName: nil
+        )
+        guard let post = response.posts.first else {
+            throw InstanceError.noPostReturned
+        }
+        switch try await apiClient.resolve(query: post.community.actorId.absoluteString) {
+        case let .community(community):
+            let response = try await apiClient.loadCommunityDetails(id: community.community.id)
+            if let id = response.site?.instanceId {
+                return id
+            } else {
+                throw InstanceError.noSiteReturned
+            }
+        default:
+            throw InstanceError.couldNotResolveCommunity
         }
     }
     
