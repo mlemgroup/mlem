@@ -58,3 +58,7 @@ enum PostSettingsPage: DestinationValue {
 enum LicensesSettingsPage: DestinationValue {
     case licenseDocument(Document)
 }
+
+enum ModerationSettingsPage: DestinationValue {
+    case customizeWidgets
+}

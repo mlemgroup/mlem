@@ -8,9 +8,14 @@
 import Dependencies
 import SwiftUI
 
+enum LayoutWidgetMode {
+    case user, moderator
+}
+
 struct LayoutWidgetEditView: View {
     @Environment(\.isPresented) var isPresented
     
+    let mode: LayoutWidgetMode
     var onSave: (_ widgets: [LayoutWidgetType]) -> Void
     
     @Namespace var animation
@@ -20,7 +25,17 @@ struct LayoutWidgetEditView: View {
     
     @StateObject private var widgetModel: LayoutWidgetModel
     
+    var defaultLayout: [LayoutWidgetType] {
+        switch mode {
+        case .user:
+            [.scoreCounter, .infoStack, .save, .reply]
+        case .moderator:
+            [.resolve, .remove, .infoStack, .ban, .purge]
+        }
+    }
+    
     init(
+        mode: LayoutWidgetMode,
         widgets: [LayoutWidgetType],
         onSave: @escaping (_ widgets: [LayoutWidgetType]) -> Void
     ) {
@@ -30,7 +45,10 @@ struct LayoutWidgetEditView: View {
         
         let bar = OrderedWidgetCollection(barWidgets, costLimit: 7)
         
-        let tray = InfiniteWidgetCollection(
+        let trayWidgets: [LayoutWidgetType] = switch mode {
+        case .moderator:
+            [.resolve, .remove, .ban, .purge]
+        case .user:
             [
                 .upvote,
                 .downvote,
@@ -40,12 +58,17 @@ struct LayoutWidgetEditView: View {
                 .upvoteCounter,
                 .downvoteCounter,
                 .scoreCounter
-            ].map { LayoutWidget($0) }
+            ]
+        }
+        
+        let tray = InfiniteWidgetCollection(
+            trayWidgets.map { LayoutWidget($0) }
         )
         
         _barCollection = StateObject(wrappedValue: bar)
         _trayCollection = StateObject(wrappedValue: tray)
         _widgetModel = StateObject(wrappedValue: LayoutWidgetModel(collections: [bar, tray]))
+        self.mode = mode
     }
     
     var body: some View {
@@ -69,14 +92,13 @@ struct LayoutWidgetEditView: View {
                         .zIndex(1)
                     Spacer()
                     Button("Reset") {
-                        barCollection.replaceItems(with: [.scoreCounter, .infoStack, .save, .reply])
+                        barCollection.replaceItems(with: defaultLayout)
                         Task {
                             onSave(barCollection.items.map(\.type))
                         }
-                    
                     }
-                        .foregroundStyle(.tertiary)
-                        .padding(.bottom, 20)
+                    .foregroundStyle(.tertiary)
+                    .padding(.bottom, 20)
                 }
                 .fancyTabScrollCompatible()
             }
@@ -173,18 +195,29 @@ struct LayoutWidgetEditView: View {
     func tray(_ outerFrame: CGRect) -> some View {
         let widgets = trayCollection.getItemDictionary()
         return VStack(spacing: 20) {
-            HStack(spacing: 20) {
-                trayWidgetView(.scoreCounter, widgets: widgets, outerFrame: outerFrame)
-                trayWidgetView(.upvoteCounter, widgets: widgets, outerFrame: outerFrame)
-                trayWidgetView(.downvoteCounter, widgets: widgets, outerFrame: outerFrame)
+            switch mode {
+            case .user:
+                HStack(spacing: 20) {
+                    trayWidgetView(.scoreCounter, widgets: widgets, outerFrame: outerFrame)
+                    trayWidgetView(.upvoteCounter, widgets: widgets, outerFrame: outerFrame)
+                    trayWidgetView(.downvoteCounter, widgets: widgets, outerFrame: outerFrame)
+                }
+                HStack(spacing: 20) {
+                    trayWidgetView(.upvote, widgets: widgets, outerFrame: outerFrame)
+                    trayWidgetView(.downvote, widgets: widgets, outerFrame: outerFrame)
+                    trayWidgetView(.save, widgets: widgets, outerFrame: outerFrame)
+                    trayWidgetView(.share, widgets: widgets, outerFrame: outerFrame)
+                    trayWidgetView(.reply, widgets: widgets, outerFrame: outerFrame)
+                }
+            case .moderator:
+                HStack(spacing: 20) {
+                    trayWidgetView(.resolve, widgets: widgets, outerFrame: outerFrame)
+                    trayWidgetView(.remove, widgets: widgets, outerFrame: outerFrame)
+                    trayWidgetView(.ban, widgets: widgets, outerFrame: outerFrame)
+                    trayWidgetView(.purge, widgets: widgets, outerFrame: outerFrame)
+                }
             }
-            HStack(spacing: 20) {
-                trayWidgetView(.upvote, widgets: widgets, outerFrame: outerFrame)
-                trayWidgetView(.downvote, widgets: widgets, outerFrame: outerFrame)
-                trayWidgetView(.save, widgets: widgets, outerFrame: outerFrame)
-                trayWidgetView(.share, widgets: widgets, outerFrame: outerFrame)
-                trayWidgetView(.reply, widgets: widgets, outerFrame: outerFrame)
-            }
+
             Spacer()
         }
         .frame(maxWidth: .infinity)
@@ -195,7 +228,6 @@ struct LayoutWidgetEditView: View {
                 Color.clear
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .onAppear {
-                        
                         var rect = geo.frame(in: .global)
                             .offsetBy(dx: -outerFrame.origin.x, dy: -outerFrame.origin.y)
                         // Extend the rect into the infoText area a little

@@ -67,6 +67,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     postSettingsDestination(for: page)
                 case let .licenseSettings(page):
                     licensesSettingsDestination(for: page)
+                case let .moderationSettings(page):
+                    moderationSettingsDestination(for: page)
                 }
             }
     }
@@ -154,7 +156,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     private func commentSettingsDestination(for page: CommentSettingsPage) -> some View {
         switch page {
         case .layoutWidget:
-            LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.comment, onSave: { widgets in
+            LayoutWidgetEditView(mode: .user, widgets: layoutWidgetTracker.groups.comment, onSave: { widgets in
                 layoutWidgetTracker.groups.comment = widgets
                 layoutWidgetTracker.saveLayoutWidgets()
             })
@@ -166,7 +168,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
         switch page {
         case .customizeWidgets:
             /// We really should be passing in the layout widget through the route enum value, but that would involve making layout widget tracker hashable and codable.
-            LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.post, onSave: { widgets in
+            LayoutWidgetEditView(mode: .user, widgets: layoutWidgetTracker.groups.post, onSave: { widgets in
                 layoutWidgetTracker.groups.post = widgets
                 layoutWidgetTracker.saveLayoutWidgets()
             })
@@ -178,6 +180,17 @@ struct HandleLemmyLinksDisplay: ViewModifier {
         switch page {
         case let .licenseDocument(doc):
             DocumentView(text: doc.body)
+        }
+    }
+    
+    @ViewBuilder
+    private func moderationSettingsDestination(for page: ModerationSettingsPage) -> some View {
+        switch page {
+        case .customizeWidgets:
+            LayoutWidgetEditView(mode: .moderator, widgets: layoutWidgetTracker.groups.moderator) { widgets in
+                layoutWidgetTracker.groups.moderator = widgets
+                layoutWidgetTracker.saveLayoutWidgets()
+            }
         }
     }
 }

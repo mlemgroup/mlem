@@ -31,6 +31,7 @@ enum AppRoute: Routable {
     case commentSettings(CommentSettingsPage)
     case postSettings(PostSettingsPage)
     case licenseSettings(LicensesSettingsPage)
+    case moderationSettings(ModerationSettingsPage)
     
     case postVotes(PostModel)
     case commentVotes(HierarchicalComment)
@@ -60,6 +61,8 @@ enum AppRoute: Routable {
             return .postSettings(value)
         case let value as LicensesSettingsPage:
             return .licenseSettings(value)
+        case let value as ModerationSettingsPage:
+            return .moderationSettings(value)
         case let value as Self:
             /// Value is an enum case of type `Self` with either no associated value or pre-populated associated value.
             return value

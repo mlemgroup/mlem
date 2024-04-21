@@ -17,6 +17,7 @@ struct ModerationSettingsView: View {
     
     @AppStorage("showAllModeratorActions") var showAllModeratorActions: Bool = false
     @AppStorage("moderatorActionGrouping") var moderatorActionGrouping: ModerationActionGroupingMode = .none
+    @AppStorage("showSettingsIcons") var showSettingsIcons: Bool = true
     
     var body: some View {
         Form {
@@ -32,6 +33,22 @@ struct ModerationSettingsView: View {
                     "When disabled, some moderator actions will be hidden from the feed and will only be visible from when viewing a post page."
                 )
             }
+            
+            Section {
+                NavigationLink(.moderationSettings(.customizeWidgets)) {
+                    Label {
+                        Text("Customize Widgets")
+                    } icon: {
+                        if showSettingsIcons {
+                            Image(systemName: Icons.widgetWizard)
+                                .foregroundColor(.pink)
+                        }
+                    }
+                }
+            } footer: {
+                Text("Customize the widgets shown on Mod Mail reports.")
+            }
+            
             Section("Separate moderator actions using...") {
                 Picker("Group actions using", selection: $moderatorActionGrouping) {
                     Text("Divider")
