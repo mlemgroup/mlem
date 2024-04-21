@@ -15,12 +15,12 @@
 		030E7EDC2B7FADE100E9A1AD /* Post2Providing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E7EDB2B7FADE100E9A1AD /* Post2Providing.swift */; };
 		030E7EDE2B7FADFE00E9A1AD /* Post2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E7EDD2B7FADFE00E9A1AD /* Post2.swift */; };
 		030E7EE02B7FBDF100E9A1AD /* ApiClient+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E7EDF2B7FBDF100E9A1AD /* ApiClient+Post.swift */; };
-		030E7EE22B80E6EA00E9A1AD /* Interactable2Providing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E7EE12B80E6EA00E9A1AD /* Interactable2Providing.swift */; };
 		030FF6792BC84F7E00F6BFAC /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 030FF6782BC84F7E00F6BFAC /* SwiftUIIntrospect */; };
 		030FF67B2BC8521600F6BFAC /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF67A2BC8521600F6BFAC /* CustomTabView.swift */; };
 		030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */; };
 		030FF67F2BC8544700F6BFAC /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF67E2BC8544600F6BFAC /* CustomTabBarController.swift */; };
 		030FF6812BC859FD00F6BFAC /* CustomTabViewHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF6802BC859FD00F6BFAC /* CustomTabViewHostingController.swift */; };
+		030E7EE22B80E6EA00E9A1AD /* Interactable2Providing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E7EE12B80E6EA00E9A1AD /* Interactable2Providing.swift */; };
 		031BF9532AB24BAF00F4517F /* SiteVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031BF9522AB24BAF00F4517F /* SiteVersion.swift */; };
 		032145472B7A624A001AE07E /* Person1Providing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145462B7A624A001AE07E /* Person1Providing.swift */; };
 		032145492B7A629D001AE07E /* Person2Providing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145482B7A629D001AE07E /* Person2Providing.swift */; };
@@ -551,11 +551,11 @@
 		030E7EDB2B7FADE100E9A1AD /* Post2Providing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post2Providing.swift; sourceTree = "<group>"; };
 		030E7EDD2B7FADFE00E9A1AD /* Post2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post2.swift; sourceTree = "<group>"; };
 		030E7EDF2B7FBDF100E9A1AD /* ApiClient+Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiClient+Post.swift"; sourceTree = "<group>"; };
-		030E7EE12B80E6EA00E9A1AD /* Interactable2Providing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactable2Providing.swift; sourceTree = "<group>"; };
 		030FF67A2BC8521600F6BFAC /* CustomTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
 		030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabItem.swift; sourceTree = "<group>"; };
 		030FF67E2BC8544600F6BFAC /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		030FF6802BC859FD00F6BFAC /* CustomTabViewHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabViewHostingController.swift; sourceTree = "<group>"; };
+		030E7EE12B80E6EA00E9A1AD /* Interactable2Providing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactable2Providing.swift; sourceTree = "<group>"; };
 		031BF9522AB24BAF00F4517F /* SiteVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteVersion.swift; sourceTree = "<group>"; };
 		032145462B7A624A001AE07E /* Person1Providing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person1Providing.swift; sourceTree = "<group>"; };
 		032145482B7A629D001AE07E /* Person2Providing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person2Providing.swift; sourceTree = "<group>"; };
