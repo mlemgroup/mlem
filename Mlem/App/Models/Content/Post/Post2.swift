@@ -19,13 +19,15 @@ final class Post2: Post2Providing {
     
     var commentCount: Int
     var unreadCommentCount: Int
-    var isSaved: Bool
+    
+    var votesManager: StateManager<VotesModel>
+    var votes: VotesModel { votesManager.wrappedValue }
     
     var isReadManager: StateManager<Bool>
     var isRead: Bool { isReadManager.wrappedValue }
     
-    var votesManager: StateManager<VotesModel>
-    var votes: VotesModel { votesManager.wrappedValue }
+    var isSavedManager: StateManager<Bool>
+    var isSaved: Bool { isSavedManager.wrappedValue }
     
     init(
         api: ApiClient,
@@ -45,7 +47,7 @@ final class Post2: Post2Providing {
         self.votesManager = .init(wrappedValue: votes)
         self.commentCount = commentCount
         self.unreadCommentCount = unreadCommentCount
-        self.isSaved = isSaved
+        self.isSavedManager = .init(wrappedValue: isSaved)
         self.isReadManager = .init(wrappedValue: isRead)
     }
 }

@@ -60,4 +60,11 @@ extension ApiClient: PostFeedProvider {
         let response = try await perform(request)
         return caches.post2.getModel(api: self, from: response.postView, semaphore: semaphore)
     }
+    
+    @discardableResult
+    func savePost(id: Int, save: Bool, semaphore: UInt?) async throws -> Post2 {
+        let request = SavePostRequest(postId: id, save: save)
+        let response = try await perform(request)
+        return caches.post2.getModel(api: self, from: response.postView, semaphore: semaphore)
+    }
 }

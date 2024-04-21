@@ -11,7 +11,7 @@ extension Post1: CacheIdentifiable {
     var cacheId: Int { actorId.hashValue }
     
     func update(with post: ApiPost) {
-        updatedDate = post.updated
+        updated = post.updated
     
         title = post.name
         
@@ -44,7 +44,7 @@ extension Post2: CacheIdentifiable {
             semaphore: semaphore
         )
         unreadCommentCount = post.unreadComments
-        isSaved = post.saved
+        isSavedManager.updateWithReceivedValue(post.saved, semaphore: semaphore)
         isReadManager.updateWithReceivedValue(post.read, semaphore: semaphore)
         
         post1.update(with: post.post)

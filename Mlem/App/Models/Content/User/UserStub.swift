@@ -73,7 +73,7 @@ final class UserStub: UserProviding, Codable {
 
         // parse instance link
         let instanceLink = try values.decode(URL.self, forKey: .instanceLink)
-        // Remove the "api/v3" path that we attached to the instanceLink pre-1.3
+        // Remove the "api/v3" path that we attached to the instanceLink pre-2.0
         var components = URLComponents(url: instanceLink, resolvingAgainstBaseURL: false)!
         components.path = ""
         guard let instanceLink = components.url else { throw DecodingError.cannotRemoveExtraneousPathComponents }

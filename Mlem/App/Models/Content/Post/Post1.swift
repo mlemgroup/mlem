@@ -21,7 +21,7 @@ final class Post1: Post1Providing {
     let actorId: URL
     let id: Int
     
-    let creationDate: Date
+    let created: Date
     
     var title: String = ""
     var content: String? = ""
@@ -35,7 +35,7 @@ final class Post1: Post1Providing {
     var nsfw: Bool = false
     var removed: Bool = false
     var thumbnailUrl: URL?
-    var updatedDate: Date?
+    var updated: Date?
     
     init(
         api: ApiClient,
@@ -59,7 +59,7 @@ final class Post1: Post1Providing {
         self.api = api
         self.actorId = actorId
         self.id = id
-        self.creationDate = creationDate
+        self.created = creationDate
         self.title = title
         self.content = content
         self.links = links
@@ -72,6 +72,6 @@ final class Post1: Post1Providing {
         self.nsfw = nsfw
         self.removed = removed
         self.thumbnailUrl = thumbnailUrl
-        self.updatedDate = updatedDate
+        self.updated = updatedDate
     }
 }
