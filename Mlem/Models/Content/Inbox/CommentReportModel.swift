@@ -190,8 +190,7 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
             Task(priority: .userInitiated) {
                 await self.toggleResolved(unreadTracker: unreadTracker)
             }
-        }
-        )
+        })
         leadingActions.append(SwipeAction(
             symbol: .init(
                 emptyName: comment.removed ? Icons.restore : Icons.remove,
@@ -200,8 +199,7 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
             color: .red
         ) {
             self.toggleCommentRemoved(modToolTracker: modToolTracker, unreadTracker: unreadTracker)
-        }
-        )
+        })
         
         trailingActions.append(SwipeAction(
             symbol: .init(
@@ -215,8 +213,7 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
                 inboxTracker: inboxTracker,
                 unreadTracker: unreadTracker
             )
-        }
-        )
+        })
         
         if siteInformation.isAdmin {
             trailingActions.append(SwipeAction(
@@ -224,8 +221,7 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
                 color: .black
             ) {
                 modToolTracker.purgeContent(self)
-            }
-            )
+            })
         }
         
         return SwipeConfiguration(leadingActions: leadingActions, trailingActions: trailingActions)

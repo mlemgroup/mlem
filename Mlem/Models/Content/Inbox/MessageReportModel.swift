@@ -103,6 +103,43 @@ class MessageReportModel: ContentIdentifiable, ObservableObject {
         
         return ret
     }
+    
+    func swipeActions(
+        modToolTracker: ModToolTracker,
+        inboxTracker: InboxTracker,
+        unreadTracker: UnreadTracker
+    ) -> SwipeConfiguration {
+        var leadingActions: [SwipeAction] = .init()
+        var trailingActions: [SwipeAction] = .init()
+        
+        leadingActions.append(SwipeAction(
+            symbol: .init(
+                emptyName: read ? Icons.resolveFill : Icons.resolve,
+                fillName: read ? Icons.resolve : Icons.resolveFill
+            ),
+            color: .green
+        ) {
+            Task(priority: .userInitiated) {
+                await self.toggleResolved(unreadTracker: unreadTracker)
+            }
+        })
+        
+        trailingActions.append(SwipeAction(
+            symbol: .init(
+                emptyName: creatorBannedFromInstance ? Icons.instanceUnban : Icons.instanceBan,
+                fillName: creatorBannedFromInstance ? Icons.instanceUnbanned : Icons.instanceBanned
+            ),
+            color: .red
+        ) {
+            self.toggleMessageCreatorBanned(
+                modToolTracker: modToolTracker,
+                inboxTracker: inboxTracker,
+                unreadTracker: unreadTracker
+            )
+        })
+        
+        return SwipeConfiguration(leadingActions: leadingActions, trailingActions: trailingActions)
+    }
 }
 
 extension MessageReportModel: Hashable, Equatable {
