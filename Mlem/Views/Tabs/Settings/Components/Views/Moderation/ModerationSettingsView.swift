@@ -46,7 +46,7 @@ struct ModerationSettingsView: View {
                     }
                 }
             } footer: {
-                Text("Customize the widgets shown under reports in the Mod Mail.")
+                Text("Customize the widgets shown on Mod Mail reports.")
             }
             
             Section("Separate moderator actions using...") {
