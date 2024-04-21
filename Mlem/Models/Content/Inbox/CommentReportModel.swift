@@ -218,7 +218,8 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
         if siteInformation.isAdmin {
             trailingActions.append(SwipeAction(
                 symbol: .init(emptyName: Icons.purge, fillName: Icons.purge),
-                color: .black
+                color: .primary,
+                iconColor: .systemBackground
             ) {
                 modToolTracker.purgeContent(self)
             })
