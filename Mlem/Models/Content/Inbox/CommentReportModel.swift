@@ -12,6 +12,7 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.siteInformation) var siteInformation
     
     var reporter: UserModel
     var resolver: UserModel?
@@ -169,6 +170,62 @@ class CommentReportModel: ContentIdentifiable, ObservableObject {
         )
         
         return ret
+    }
+    
+    func swipeActions(
+        modToolTracker: ModToolTracker,
+        inboxTracker: InboxTracker,
+        unreadTracker: UnreadTracker
+    ) -> SwipeConfiguration {
+        var leadingActions: [SwipeAction] = .init()
+        var trailingActions: [SwipeAction] = .init()
+        
+        leadingActions.append(SwipeAction(
+            symbol: .init(
+                emptyName: read ? Icons.resolveFill : Icons.resolve,
+                fillName: read ? Icons.resolve : Icons.resolveFill
+            ),
+            color: .green
+        ) {
+            Task(priority: .userInitiated) {
+                await self.toggleResolved(unreadTracker: unreadTracker)
+            }
+        })
+        leadingActions.append(SwipeAction(
+            symbol: .init(
+                emptyName: comment.removed ? Icons.restore : Icons.remove,
+                fillName: comment.removed ? Icons.restoreFill : Icons.removeFill
+            ),
+            color: .red
+        ) {
+            self.toggleCommentRemoved(modToolTracker: modToolTracker, unreadTracker: unreadTracker)
+        })
+        
+        trailingActions.append(SwipeAction(
+            symbol: .init(
+                emptyName: creatorBannedFromCommunity ? Icons.communityUnban : Icons.communityBan,
+                fillName: creatorBannedFromCommunity ? Icons.communityUnbanned : Icons.communityBanFill
+            ),
+            color: .red
+        ) {
+            self.toggleCommentCreatorBanned(
+                modToolTracker: modToolTracker,
+                inboxTracker: inboxTracker,
+                unreadTracker: unreadTracker
+            )
+        })
+        
+        if siteInformation.isAdmin {
+            trailingActions.append(SwipeAction(
+                symbol: .init(emptyName: Icons.purge, fillName: Icons.purge),
+                color: .primary,
+                iconColor: .systemBackground
+            ) {
+                modToolTracker.purgeContent(self)
+            })
+        }
+        
+        return SwipeConfiguration(leadingActions: leadingActions, trailingActions: trailingActions)
     }
 }
 

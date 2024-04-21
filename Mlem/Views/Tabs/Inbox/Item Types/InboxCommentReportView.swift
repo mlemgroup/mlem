@@ -23,6 +23,9 @@ struct InboxCommentReportView: View {
         }
         .contentShape(Rectangle())
         .background(Color.systemBackground)
+        .addSwipeyActions(
+            commentReport.swipeActions(modToolTracker: modToolTracker, inboxTracker: modInboxTracker, unreadTracker: unreadTracker)
+        )
         .contextMenu {
             ForEach(commentReport.genMenuFunctions(
                 modToolTracker: modToolTracker,

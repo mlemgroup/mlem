@@ -100,6 +100,33 @@ class RegistrationApplicationModel: ObservableObject {
         
         return ret
     }
+    
+    func swipeActions(modToolTracker: ModToolTracker, unreadTracker: UnreadTracker) -> SwipeConfiguration {
+        var leadingActions: [SwipeAction] = .init()
+        var trailingActions: [SwipeAction] = .init()
+        
+        if !(approved ?? false) {
+            trailingActions.append(SwipeAction(
+                symbol: .init(emptyName: Icons.approveCircle, fillName: Icons.approveCircleFill),
+                color: .blue
+            ) {
+                Task(priority: .userInitiated) {
+                    await self.approve(unreadTracker: unreadTracker)
+                }
+            })
+        }
+        
+        if approved ?? true {
+            leadingActions.append(SwipeAction(
+                symbol: .init(emptyName: Icons.denyCircle, fillName: Icons.denyCircleFill),
+                color: .red
+            ) {
+                modToolTracker.denyApplication(self)
+            })
+        }
+        
+        return SwipeConfiguration(leadingActions: leadingActions, trailingActions: trailingActions)
+    }
 }
 
 extension RegistrationApplicationModel: Hashable, Equatable {

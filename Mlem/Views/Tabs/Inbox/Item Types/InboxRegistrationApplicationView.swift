@@ -27,6 +27,9 @@ struct InboxRegistrationApplicationView: View {
             }
         }
         .background(Color.systemBackground)
+        .addSwipeyActions(
+            application.swipeActions(modToolTracker: modToolTracker, unreadTracker: unreadTracker)
+        )
         .contextMenu {
             ForEach(application.genMenuFunctions(modToolTracker: modToolTracker, unreadTracker: unreadTracker)) { menuFunction in
                 MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))

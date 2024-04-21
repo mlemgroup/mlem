@@ -22,6 +22,13 @@ struct InboxPostReportView: View {
         }
         .background(Color(uiColor: .systemBackground))
         .contentShape(Rectangle())
+        .addSwipeyActions(
+            postReport.swipeActions(
+                modToolTracker: modToolTracker,
+                inboxTracker: modInboxTracker,
+                unreadTracker: unreadTracker
+            )
+        )
         .contextMenu {
             ForEach(postReport.genMenuFunctions(
                 modToolTracker: modToolTracker,
