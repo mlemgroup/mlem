@@ -238,6 +238,7 @@ enum Icons {
     static let removeFill: String = "xmark.bin.fill"
     static let purge: String = "burn"
     static let restore: String = "arrow.up.bin"
+    static let restoreFill: String = "arrow.up.bin.fill"
     static let commentReport: String = "text.bubble"
     static let commentReportFill: String = "text.bubble.fill"
     static let registrationApplication: String = "list.clipboard"

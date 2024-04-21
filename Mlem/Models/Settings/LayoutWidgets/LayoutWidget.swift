@@ -91,7 +91,7 @@ indirect enum LayoutWidgetType: String, Hashable, Codable, CaseIterable {
     
     static let defaultPostWidgets: [Self] = [.scoreCounter, .infoStack, .save, .reply]
     static let defaultCommentWidgets: [Self] = [.scoreCounter, .infoStack, .save, .reply]
-    static let defaultModeratorWidgets: [Self] = [.resolve, .remove, .infoStack, .ban, .purge]
+    static let defaultModeratorWidgets: [Self] = [.resolve, .remove, .infoStack, .purge, .ban]
 }
 
 class LayoutWidget: Equatable, Hashable {
