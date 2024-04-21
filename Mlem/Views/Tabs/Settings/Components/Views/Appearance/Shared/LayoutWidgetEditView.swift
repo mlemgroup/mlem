@@ -25,6 +25,15 @@ struct LayoutWidgetEditView: View {
     
     @StateObject private var widgetModel: LayoutWidgetModel
     
+    var defaultLayout: [LayoutWidgetType] {
+        switch mode {
+        case .user:
+            [.scoreCounter, .infoStack, .save, .reply]
+        case .moderator:
+            [.resolve, .remove, .infoStack, .ban, .purge]
+        }
+    }
+    
     init(
         mode: LayoutWidgetMode,
         widgets: [LayoutWidgetType],
@@ -83,7 +92,7 @@ struct LayoutWidgetEditView: View {
                         .zIndex(1)
                     Spacer()
                     Button("Reset") {
-                        barCollection.replaceItems(with: [.scoreCounter, .infoStack, .save, .reply])
+                        barCollection.replaceItems(with: defaultLayout)
                         Task {
                             onSave(barCollection.items.map(\.type))
                         }
