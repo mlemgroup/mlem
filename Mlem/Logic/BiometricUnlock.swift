@@ -32,10 +32,10 @@ class BiometricUnlock: ObservableObject {
         let context = LAContext()
         var error: NSError?
         
-        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+        if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
             let reason = "Please authenticate to unlock app."
             
-            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, _ in
+            context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, _ in
                 DispatchQueue.main.async {
                     if success {
                         self.isUnlocked = true
@@ -56,7 +56,7 @@ class BiometricUnlock: ObservableObject {
         var error: NSError?
         let context = LAContext()
         
-        let isBioMetricsAvailable = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
+        let isBioMetricsAvailable = context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error)
         
         if let error {
             print("Biometrics error: \(error.localizedDescription)")
