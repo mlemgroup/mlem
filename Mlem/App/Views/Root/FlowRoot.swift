@@ -10,12 +10,7 @@ import SwiftUI
 
 struct FlowRoot: View {
     var body: some View {
-        Group {
-            if AppState.main.isOnboarding {
-                LandingPage()
-            } else {
-                ContentView()
-            }
-        }.environment(AppState.main)
+        ContentView()
+            .environment(AppState.main)
     }
 }

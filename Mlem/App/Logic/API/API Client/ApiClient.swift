@@ -10,7 +10,7 @@ import Foundation
 
 class ApiClient {
     enum RequestPermissions {
-       case all, getOnly, none
+        case all, getOnly, none
     }
     
     let decoder: JSONDecoder = .defaultDecoder
@@ -26,7 +26,7 @@ class ApiClient {
     /// When `true`, the token will not be attatched to any API requests. This is useful for ensuring that inactive accounts don't accidentally make requests
     var permissions: RequestPermissions = .all
     
-    var willSendToken: Bool { permissions != .none && token != nil }
+    var willSendToken: Bool { permissions == .all && token != nil }
     
     weak var myInstance: Instance3?
     weak var myUser: User?
@@ -44,7 +44,6 @@ class ApiClient {
                     return try? await fetchSiteVersion()
                 }
             }
-            
         }
     }
     
@@ -68,12 +67,6 @@ class ApiClient {
         apiClientCache.createOrRetrieveApiClient(for: url, with: token)
     }
     
-    static let mock: ApiClient = .init(
-        baseUrl: URL(string: "https://lemmy.world")!,
-        token: nil,
-        permissions: .all
-    )
-    
     /// Creates a new API Client. Private because it should never be used outside of ApiClientCache, as the caching system depends on one ApiClient existing for any given session
     private init(baseUrl: URL, token: String? = nil, permissions: RequestPermissions = .all) {
         self.baseUrl = baseUrl
@@ -84,11 +77,11 @@ class ApiClient {
     
     @discardableResult
     func fetchSiteVersion(task: Task<SiteVersion, Error>? = nil) async throws -> SiteVersion {
-        let task = task ?? self.fetchSiteTask ?? Task { return try await getSite().version }
-        self.fetchSiteTask = task
+        let task = task ?? fetchSiteTask ?? Task { try await getSite().version }
+        fetchSiteTask = task
         let result = await task.result
         let version = try result.get()
-        self.fetchedVersion = version
+        fetchedVersion = version
         return version
     }
     
@@ -140,7 +133,7 @@ class ApiClient {
         guard permissions != .none else { throw ApiClientError.insufficientPermissions }
         let url = definition.endpoint(base: endpointUrl)
         var urlRequest = URLRequest(url: url)
-        definition.headers.forEach { header in
+        for header in definition.headers {
             urlRequest.setValue(header.value, forHTTPHeaderField: header.key)
         }
         

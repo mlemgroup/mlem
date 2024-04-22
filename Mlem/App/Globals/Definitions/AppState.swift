@@ -10,19 +10,21 @@ import Foundation
 
 @Observable
 class AppState {
-    var activeAccounts: [ActiveAccount] = []
-    var isOnboarding: Bool { activeAccounts.isEmpty }
+    private(set) var guestAccount: ActiveAccount = .init(.getApiClient(for: URL(string: "https://lemmy.world")!, with: nil))
+    private(set) var activeAccounts: [ActiveAccount] = []
 
     func changeUser(to userStub: UserStub) {
         let newAccount = ActiveAccount(userStub.api, userStub: userStub)
         activeAccounts.forEach { $0.deactivate() }
+        guestAccount.deactivate()
         activeAccounts = [newAccount]
     }
     
     func enterGuestMode(with api: ApiClient) {
-        let newAccount = ActiveAccount(api)
         activeAccounts.forEach { $0.deactivate() }
-        activeAccounts = [newAccount]
+        activeAccounts = []
+        guestAccount.deactivate()
+        guestAccount = .init(api)
     }
     
     func enterOnboarding() {
@@ -38,13 +40,13 @@ class AppState {
         }
     }
     
-    var firstAccount: ActiveAccount { activeAccounts.first ?? .mock }
+    var firstAccount: ActiveAccount { activeAccounts.first ?? guestAccount }
     var firstApi: ApiClient { firstAccount.api }
     
     func accountThatModerates(actorId: URL) -> ActiveAccount? {
-        return activeAccounts.first(where: { account in
+        activeAccounts.first(where: { account in
             account.user?.moderatedCommunities.contains { $0.actorId == actorId } ?? false
-        }) ?? .mock
+        })
     }
     
     func cleanCaches() {
@@ -56,8 +58,9 @@ class AppState {
     static var main: AppState = .init()
 }
 
+@Observable
 class ActiveAccount: Hashable {
-    var api: ApiClient
+    private(set) var api: ApiClient
     private(set) var userStub: UserStub?
     private(set) var user: User?
     private(set) var instance: Instance3?
@@ -83,11 +86,9 @@ class ActiveAccount: Hashable {
         }
     }
     
-    static var mock: ActiveAccount = .init(ApiClient.mock)
-    
     func deactivate() {
-        self.api.permissions = .none
-        self.api.cleanCaches()
+        api.permissions = .getOnly
+        api.cleanCaches()
     }
     
     func hash(into hasher: inout Hasher) {
