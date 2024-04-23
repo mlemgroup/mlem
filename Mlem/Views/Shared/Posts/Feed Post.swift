@@ -152,10 +152,10 @@ struct FeedPost: View {
     /// Render read pinned posts in less "in-your-face" way.
     private var renderPinnedAsCompact: Bool {
         /// Only render pinned posts in compact size in Community feed, ignore this behaviour in other feed types (e.g. Aggregate). [2024.01]
-        guard let community, postTracker?.feedType == .community(community) else {
+        guard case .community = postTracker?.feedType else {
             return false
         }
-        return postModel.read && postModel.post.featuredLocal || postModel.post.featuredCommunity
+        return postModel.read && (postModel.post.featuredLocal || postModel.post.featuredCommunity)
     }
     
     @ViewBuilder
