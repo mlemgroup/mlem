@@ -84,7 +84,7 @@ class ActiveAccount: Hashable {
     
     init(instanceUrl: URL) {
         self.api = .getApiClient(for: instanceUrl, with: nil)
-        api.permissions = .getOnly
+        api.permissions = .all // should this be .getOnly?
     }
     
     func deactivate() {
