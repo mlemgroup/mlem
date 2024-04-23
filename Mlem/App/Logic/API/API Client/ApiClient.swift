@@ -140,9 +140,11 @@ class ApiClient {
         if definition as? any ApiGetRequest != nil {
             urlRequest.httpMethod = "GET"
         } else if let postDefinition = definition as? any ApiPostRequest {
+            guard permissions != .getOnly else { throw ApiClientError.insufficientPermissions }
             urlRequest.httpMethod = "POST"
             urlRequest.httpBody = try createBodyData(for: postDefinition)
         } else if let putDefinition = definition as? any ApiPutRequest {
+            guard permissions != .getOnly else { throw ApiClientError.insufficientPermissions }
             urlRequest.httpMethod = "PUT"
             urlRequest.httpBody = try createBodyData(for: putDefinition)
         }
