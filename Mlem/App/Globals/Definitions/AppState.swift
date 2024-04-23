@@ -10,21 +10,21 @@ import Foundation
 
 @Observable
 class AppState {
-    private(set) var guestAccount: ActiveAccount = .init(.getApiClient(for: URL(string: "https://lemmy.world")!, with: nil))
+    private(set) var guestAccount: ActiveAccount = .init(instanceUrl: URL(string: "https://lemmy.world")!)
     private(set) var activeAccounts: [ActiveAccount] = []
 
     func changeUser(to userStub: UserStub) {
-        let newAccount = ActiveAccount(userStub.api, userStub: userStub)
+        let newAccount = ActiveAccount(userStub: userStub)
         activeAccounts.forEach { $0.deactivate() }
         guestAccount.deactivate()
         activeAccounts = [newAccount]
     }
     
-    func enterGuestMode(with api: ApiClient) {
+    func enterGuestMode(for instanceUrl: URL) {
         activeAccounts.forEach { $0.deactivate() }
         activeAccounts = []
         guestAccount.deactivate()
-        guestAccount = .init(api)
+        guestAccount = .init(instanceUrl: instanceUrl)
     }
     
     func enterOnboarding() {
@@ -66,24 +66,24 @@ class ActiveAccount: Hashable {
     private(set) var instance: Instance3?
     
     var actorId: URL? { userStub?.actorId }
-    
-    init(_ newApi: ApiClient, userStub: UserStub? = nil) {
-        self.api = newApi
-        newApi.permissions = .all
-        self.instance = nil
-        self.userStub = userStub
-        if newApi.permissions != .none {
-            Task {
-                try await newApi.fetchSiteVersion(task: Task {
-                    let (user, instance) = try await newApi.getMyUser(userStub: userStub)
-                    if let user {
-                        self.user = user
-                    }
-                    self.instance = instance
-                    return instance.version
-                })
-            }
+  
+    init(userStub: UserStub) {
+        self.api = userStub.api
+        api.permissions = .all
+        Task {
+            try await self.api.fetchSiteVersion(task: Task {
+                let (user, instance) = try await self.api.getMyUser(userStub: userStub)
+                if let user {
+                    self.user = user
+                }
+                self.instance = instance
+                return instance.version
+            })
         }
+    }
+    
+    init(instanceUrl: URL) {
+        self.api = .getApiClient(for: instanceUrl, with: nil)
     }
     
     func deactivate() {
