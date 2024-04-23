@@ -23,6 +23,8 @@ protocol APIRequest {
     var headers: [String: String] { get }
 }
 
+protocol APIDeleteRequest: APIRequest {}
+
 extension APIRequest {
     var headers: [String: String] { defaultHeaders }
 

@@ -31,18 +31,23 @@ struct CompactPost: View {
     
     // arguments
     @ObservedObject var post: PostModel
+    var postTracker: StandardPostTracker?
     let community: CommunityModel?
     let showCommunity: Bool // true to show community name, false to show username
-    let menuFunctions: [MenuFunction]
     
     // computed
     var showReadCheck: Bool { post.read && diffWithoutColor && readMarkStyle == .check }
     
-    init(post: PostModel, community: CommunityModel? = nil, showCommunity: Bool, menuFunctions: [MenuFunction]) {
+    init(
+        post: PostModel,
+        postTracker: StandardPostTracker?,
+        community: CommunityModel? = nil,
+        showCommunity: Bool
+    ) {
         self.post = post
+        self.postTracker = postTracker
         self.community = community
         self.showCommunity = showCommunity
-        self.menuFunctions = menuFunctions
     }
     
     var body: some View {
@@ -55,11 +60,16 @@ struct CompactPost: View {
                 HStack {
                     Group {
                         if showCommunity {
-                            CommunityLinkView(community: post.community, serverInstanceLocation: .trailing, overrideShowAvatar: false)
+                            CommunityLinkView(
+                                community: post.community,
+                                serverInstanceLocation: .trailing,
+                                overrideShowAvatar: false
+                            )
                         } else {
                             UserLinkView(
                                 user: post.creator,
                                 serverInstanceLocation: .trailing,
+                                bannedFromCommunity: post.creatorBannedFromCommunity,
                                 communityContext: community
                             )
                         }
@@ -69,15 +79,27 @@ struct CompactPost: View {
                     
                     if showReadCheck { ReadCheck() }
                     
-                    EllipsisMenu(size: 12, menuFunctions: menuFunctions)
+                    PostEllipsisMenus(postModel: post, postTracker: postTracker, size: 12)
                         .padding(.trailing, 6)
                 }
                 .padding(.bottom, -2)
                 
-                Text(post.post.name)
-                    .font(.subheadline)
-                    .foregroundColor(post.read ? .secondary : .primary)
-    
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(post.post.name)
+                        .font(.subheadline)
+                        .foregroundColor(post.read ? .secondary : .primary)
+                    
+                    if let link = post.linkHost {
+                        Group {
+                            Text(Image(systemName: Icons.browser)) +
+                                Text(" \(link)")
+                        }
+                        .imageScale(.small)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    }
+                }
+                
                 compactInfo
             }
             
@@ -92,16 +114,20 @@ struct CompactPost: View {
     @ViewBuilder
     private var compactInfo: some View {
         HStack(spacing: 8) {
-            if post.post.featuredCommunity {
-                if post.post.featuredLocal {
-                    StickiedTag(tagType: .local, compact: true)
-                } else if post.post.featuredCommunity {
-                    StickiedTag(tagType: .community, compact: true)
-                }
+            if post.post.featuredLocal {
+                StickiedTag(tagType: .local, compact: true)
+            } else if post.post.featuredCommunity {
+                StickiedTag(tagType: .community, compact: true)
             }
             
             if post.post.nsfw || post.community.nsfw {
                 NSFWTag(compact: true)
+            }
+            if post.post.locked {
+                LockedTag(compact: true)
+            }
+            if post.post.removed {
+                RemovedTag(compact: true)
             }
             
             InfoStackView(

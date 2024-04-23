@@ -23,7 +23,20 @@ struct ContentView: View {
     @EnvironmentObject var appState: AppState
     
     @StateObject var editorTracker: EditorTracker = .init()
-    @StateObject var unreadTracker: UnreadTracker = .init()
+    @StateObject var modToolTracker: ModToolTracker = .init()
+    @StateObject var unreadTracker: UnreadTracker = {
+        @AppStorage("showUnreadPersonal") var showUnreadPersonal = true
+        @AppStorage("showUnreadModerator") var showUnreadModerator = true
+        @AppStorage("showUnreadMessageReports") var showUnreadMessageReports = true
+        @AppStorage("showUnreadApplications") var showUnreadApplications = true
+        
+        return .init(
+            sumPersonal: showUnreadPersonal,
+            sumModerator: showUnreadModerator,
+            sumMessageReports: showUnreadMessageReports,
+            sumRegistrationApplications: showUnreadApplications
+        )
+    }()
     
     @State private var errorAlert: ErrorAlert?
     
@@ -35,7 +48,11 @@ struct ContentView: View {
     @State private var isPresentingAccountSwitcher: Bool = false
     @State private var tokenRefreshAccount: SavedAccount?
     
-    @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
+    @AppStorage("showUnreadPersonal") var showUnreadPersonal: Bool = true
+    @AppStorage("showUnreadModerator") var showUnreadModerator: Bool = true
+    @AppStorage("showUnreadMessageReports") var showUnreadMessageReports: Bool = true
+    @AppStorage("showUnreadApplications") var showUnreadApplications: Bool = true
+    
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
     @AppStorage("allowTabBarSwipeUpGesture") var allowTabBarSwipeUpGesture: Bool = true
     @AppStorage("appLock") var appLock: AppLock = .disabled
@@ -48,6 +65,8 @@ struct ContentView: View {
     var isAppLocked: Bool {
         appLock != .disabled && !biometricUnlock.isUnlocked
     }
+    
+    @State var displayedInboxBadgeCount: Int?
     
     var body: some View {
         FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
@@ -64,12 +83,12 @@ struct ContentView: View {
                 // but when guest mode arrives we'll either omit these entirely, or replace them with a
                 // guest mode specific tab for sign in / change instance screen.
                 if appState.currentActiveAccount != nil {
-                    InboxView()
+                    InboxRoot()
                         .fancyTabItem(tag: TabSelection.inbox) {
                             FancyTabBarLabel(
                                 tag: TabSelection.inbox,
                                 symbolConfiguration: .inbox,
-                                badgeCount: showInboxUnreadBadge ? unreadTracker.total : 0
+                                badgeCount: unreadTracker.inboxBadgeCount
                             )
                         }
                 }
@@ -108,6 +127,19 @@ struct ContentView: View {
         .task(id: appState.currentActiveAccount) {
             accountChanged()
         }
+        // these onChange handlers propagage AppState into the model layer so it can immediately update the badge
+        .onChange(of: showUnreadPersonal) { newValue in
+            unreadTracker.sumPersonal = newValue
+        }
+        .onChange(of: showUnreadModerator) { newValue in
+            unreadTracker.sumModerator = newValue
+        }
+        .onChange(of: showUnreadMessageReports) { newValue in
+            unreadTracker.sumMessageReports = newValue
+        }
+        .onChange(of: showUnreadApplications) { newValue in
+            unreadTracker.sumRegistrationApplications = newValue
+        }
         .onReceive(errorHandler.$sessionExpired) { expired in
             if expired {
                 tokenRefreshAccount = appState.currentActiveAccount
@@ -139,11 +171,15 @@ struct ContentView: View {
             }
         }
         .sheet(item: $editorTracker.editResponse) { editing in
-            NavigationStack {
-                ResponseEditorView(concreteEditorModel: editing)
-            }
-            .presentationDetents([.medium, .large], selection: .constant(.large))
-            ._presentationBackgroundInteraction(enabledUpThrough: .medium)
+            ResponseEditorView(concreteEditorModel: editing)
+                .presentationDetents([.medium, .large], selection: .constant(.large))
+                ._presentationBackgroundInteraction(enabledUpThrough: .medium)
+        }
+        .sheet(item: $editorTracker.selectText) { selectText in
+            SelectTextView(text: selectText.text)
+                .presentationDetents([.medium])
+                ._presentationCornerRadius(20)
+                ._presentationBackgroundInteraction(enabledUpThrough: .medium)
         }
         .sheet(item: $editorTracker.editPost) { editing in
             NavigationStack {
@@ -158,10 +194,17 @@ struct ContentView: View {
                 ImageDetailView(url: url)
             }
         }
+        .sheet(item: $modToolTracker.openTool) { tool in
+            NavigationStack {
+                ModToolSheet(tool: tool)
+            }
+            .handleLemmyViews()
+        }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(editorTracker)
         .environmentObject(unreadTracker)
         .environmentObject(quickLookState)
+        .environmentObject(modToolTracker)
         .onChange(of: scenePhase) { phase in
             if phase != .active {
                 // prevents the app from reopening with the switcher enabled.
@@ -189,12 +232,7 @@ struct ContentView: View {
     func accountChanged() {
         // refresh unread count
         Task(priority: .background) {
-            do {
-                let unreadCounts = try await personRepository.getUnreadCounts()
-                unreadTracker.update(with: unreadCounts)
-            } catch {
-                errorHandler.handle(error)
-            }
+            await unreadTracker.update()
         }
     }
     

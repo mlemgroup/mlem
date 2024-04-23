@@ -20,11 +20,15 @@ struct SearchHomeView: View {
                 .fontWeight(.semibold)
                 .padding(.horizontal, 18)
                 .padding(.top, 12)
-            BubblePicker(SearchTab.homePageCases, selected: $searchModel.searchTab) {
-                Text($0.label)
-            }
-            .padding(.bottom, 10)
-            Divider()
+                .padding(.bottom, -AppConstants.halfSpacing)
+            
+            BubblePicker(
+                SearchTab.homePageCases,
+                selected: $searchModel.searchTab,
+                withDividers: [.bottom],
+                label: \.label
+            )
+            
             SearchResultListView(showTypeLabel: false)
         }
         .frame(maxWidth: .infinity)
@@ -46,7 +50,6 @@ struct SearchHomeView: View {
 }
 
 struct SearchHomeViewPreview: View {
-    
     @StateObject var homeSearchModel: SearchModel = .init()
     @StateObject var homeContentTracker: ContentTracker<AnyContentModel> = .init()
     

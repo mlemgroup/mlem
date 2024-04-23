@@ -36,7 +36,7 @@ class BiometricUnlock: ObservableObject {
             let reason = "Please authenticate to unlock app."
             
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, _ in
-                DispatchQueue.main.sync {
+                DispatchQueue.main.async {
                     if success {
                         self.isUnlocked = true
                         onComplete(.success(()))

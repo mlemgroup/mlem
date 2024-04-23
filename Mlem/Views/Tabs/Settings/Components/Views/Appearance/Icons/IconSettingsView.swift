@@ -20,7 +20,8 @@ struct IconSettingsView: View {
             .init(id: "icon.sjmarf.orange", name: "Orange"),
             .init(id: "icon.sjmarf.green", name: "Green"),
             .init(id: "icon.sjmarf.alien", name: "Alien"),
-            .init(id: "icon.sjmarf.silver", name: "Silver")
+            .init(id: "icon.sjmarf.silver", name: "Silver"),
+            .init(id: "icon.sjmarf.ocean", name: "Ocean")
         ]),
         
         .init(authorName: "Eric Andrews", collapsed: false, icons: [

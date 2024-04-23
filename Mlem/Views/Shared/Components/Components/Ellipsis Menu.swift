@@ -9,33 +9,25 @@ import SwiftUI
 
 struct EllipsisMenu: View {
     let size: CGFloat
+    var systemImage: String = Icons.menu
     let menuFunctions: [MenuFunction]
     
-    @State private var isPresentingConfirmDestructive: Bool = false
-    @State private var confirmationMenuFunction: StandardMenuFunction?
-    
-    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
-        confirmationMenuFunction = destructiveFunction
-        isPresentingConfirmDestructive = true
-    }
-    
+    @State private var menuFunctionPopup: MenuFunctionPopup?
+
     var body: some View {
         Menu {
-            ForEach(menuFunctions) { menuFunction in
-                MenuButton(menuFunction: menuFunction, confirmDestructive: confirmDestructive)
+            ForEach(menuFunctions) { item in
+                MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
             }
         } label: {
-            Image(systemName: Icons.menu)
-                .frame(width: size, height: size)
-                .foregroundColor(.primary)
+            Image(systemName: systemImage)
+                .frame(width: 24, height: size)
+                .foregroundColor(menuFunctions.isEmpty ? .secondary : .primary)
                 .background(RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
                     .aspectRatio(1, contentMode: .fit)
                     .foregroundColor(.clear))
         }
         .onTapGesture {} // allows menu to pop up on first tap
-        .destructiveConfirmation(
-            isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
-            confirmationMenuFunction: confirmationMenuFunction
-        )
+        .destructiveConfirmation(menuFunctionPopup: $menuFunctionPopup)
     }
 }

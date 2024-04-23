@@ -5,9 +5,23 @@
 //  Created by Sjmarf on 13/01/2024.
 //
 
+import Dependencies
 import SwiftUI
 
 struct InstanceModel {
+    @Dependency(\.apiClient) var apiClient
+    @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.notifier) var notifier
+    @Dependency(\.siteInformation) var siteInformation
+    
+    enum InstanceError: Error {
+        case invalidUrl
+        case noPostReturned
+        case noSiteReturned
+        case couldNotResolveCommunity
+    }
+    
     var displayName: String!
     var description: String?
     var avatar: URL?
@@ -41,6 +55,24 @@ struct InstanceModel {
     var applicationsEmailAdmins: Bool?
     var reportsEmailAdmins: Bool?
     
+    // Not included in any API types; assumed to be false
+    var blocked: Bool = false
+    
+    // This is included in APISite, but should ONLY be set when fetched from local instance
+    var localSiteId: Int?
+    
+    init(domainName: String) throws {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = domainName
+        if let url = components.url {
+            self.url = url
+            self.displayName = name
+        } else {
+            throw InstanceError.invalidUrl
+        }
+    }
+    
     init(from response: SiteResponse) {
         update(with: response)
     }
@@ -49,8 +81,11 @@ struct InstanceModel {
         update(with: siteView)
     }
     
-    init(from site: APISite) {
+    init(from site: APISite, isLocal: Bool = false) {
         update(with: site)
+        if isLocal {
+            self.localSiteId = site.instanceId
+        }
     }
     
     init(from stub: InstanceStub) {
@@ -146,6 +181,75 @@ struct InstanceModel {
         }
         return nil
     }
+    
+    func toggleBlock(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async {
+        var new = self
+        new.blocked = !blocked
+        RunLoop.main.perform { [new] in
+            callback(new)
+        }
+        do {
+            let localSiteId: Int
+            if let id = self.localSiteId {
+                localSiteId = id
+            } else {
+                localSiteId = try await fetchSiteId()
+            }
+            
+            let response: BlockInstanceResponse
+            if !blocked {
+                response = try await apiClient.blockSite(id: localSiteId, shouldBlock: true)
+            } else {
+                response = try await apiClient.blockSite(id: localSiteId, shouldBlock: false)
+            }
+            new.blocked = response.blocked
+            RunLoop.main.perform { [new] in
+                callback(new)
+            }
+            await notifier.add(.success(response.blocked ? "Blocked instance" : "Unblocked instance"))
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            let phrase = !blocked ? "block" : "unblock"
+            errorHandler.handle(
+                .init(title: "Failed to \(phrase) instance", style: .toast, underlyingError: error)
+            )
+        }
+    }
+    
+    private func fetchSiteId() async throws -> Int {
+        let externalClient = APIClient(
+            transport: { urlSession, urlRequest in try await urlSession.data(for: urlRequest) }
+        )
+        externalClient.session = .unauthenticated(url.appendingPathComponent("api/v3"))
+        let response = try await externalClient.loadPosts(
+            communityId: nil,
+            page: 1,
+            cursor: nil,
+            sort: .new,
+            type: .local,
+            limit: 1,
+            savedOnly: false,
+            communityName: nil
+        )
+        guard let post = response.posts.first else {
+            throw InstanceError.noPostReturned
+        }
+        switch try await apiClient.resolve(query: post.community.actorId.absoluteString) {
+        case let .community(community):
+            let response = try await apiClient.loadCommunityDetails(id: community.community.id)
+            if let id = response.site?.instanceId {
+                return id
+            } else {
+                throw InstanceError.noSiteReturned
+            }
+        default:
+            throw InstanceError.couldNotResolveCommunity
+        }
+    }
+    
+    static func mock() -> InstanceModel {
+        .init(from: SiteResponse.mock())
+    }
 }
 
 extension InstanceModel: Identifiable {
@@ -161,5 +265,6 @@ extension InstanceModel: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(url)
         hasher.combine(creationDate)
+        hasher.combine(blocked)
     }
 }

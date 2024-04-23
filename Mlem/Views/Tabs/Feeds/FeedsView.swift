@@ -5,10 +5,12 @@
 //  Created by Eric Andrews on 2024-01-07.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
 
 struct FeedsView: View {
+    @Dependency(\.siteInformation) var siteInformation
     @AppStorage("defaultFeed") var defaultFeed: DefaultFeedType = .subscribed
     
     @Environment(\.scenePhase) var scenePhase
@@ -16,7 +18,7 @@ struct FeedsView: View {
     
     @EnvironmentObject var appState: AppState
     
-    @State private var selectedFeed: FeedType?
+    @State private var selectedFeed: PostFeedType?
     @State var appeared: Bool = false // tracks whether this is the view's first appearance
     
     @StateObject private var communityListModel: CommunityListModel = .init()
@@ -40,7 +42,7 @@ struct FeedsView: View {
                 }
             }
             .onChange(of: scenePhase) { newPhase in
-                if newPhase == .active, let shortcutItem = FeedType.fromShortcutString(shortcut: shortcutItemToProcess?.type) {
+                if newPhase == .active, let shortcutItem = PostFeedType.fromShortcutString(shortcut: shortcutItemToProcess?.type) {
                     selectedFeed = shortcutItem
                 }
             }
@@ -53,7 +55,7 @@ struct FeedsView: View {
                 // Note that NavigationLinks in here update selectedFeed and are handled by the detail switch, not the general navigation handler
                 ZStack(alignment: .trailing) {
                     List(selection: $selectedFeed) {
-                        ForEach([FeedType.all, FeedType.local, FeedType.subscribed, FeedType.saved]) { feedType in
+                        ForEach(siteInformation.feeds) { feedType in
                             NavigationLink(value: feedType) {
                                 FeedRowView(feedType: feedType)
                             }
@@ -61,28 +63,20 @@ struct FeedsView: View {
                         .id(scrollToTop) // using this instead of ScrollToView because ScrollToView renders as an empty list item
                         .padding(.trailing, 10)
                         
-                        ForEach(communityListModel.visibleSections) { section in
-                            Section(header: communitySectionHeaderView(for: section)) {
-                                ForEach(communityListModel.communities(for: section)) { community in
-                                    NavigationLink(value: FeedType.community(.init(from: community, subscribed: true))) {
-                                        CommunityFeedRowView(
-                                            community: community,
-                                            subscribed: communityListModel.isSubscribed(to: community),
-                                            communitySubscriptionChanged: communityListModel.updateSubscriptionStatus,
-                                            navigationContext: .sidebar
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                        .padding(.trailing, 10)
+                        communitySections
+                            .padding(.trailing, 10)
                     }
                     .scrollIndicators(.hidden)
                     .navigationTitle("Feeds")
                     .listStyle(PlainListStyle())
+                    .refreshable {
+                        await Task {
+                            await communityListModel.load()
+                        }.value
+                    }
                     .fancyTabScrollCompatible()
                     
-                    SectionIndexTitles(proxy: scrollProxy, communitySections: communityListModel.allSections())
+                    SectionIndexTitles(proxy: scrollProxy, communitySections: communityListModel.allSections)
                 }
                 .onChange(of: tabReselectionHashValue) { newValue in
                     // due to NavigationSplitView weirdness, the normal .hoistNavigation doesn't work here, so we do it manually
@@ -111,15 +105,39 @@ struct FeedsView: View {
     }
     
     @ViewBuilder
+    var communitySections: some View {
+        ForEach(communityListModel.visibleSections) { section in
+            Section(header: communitySectionHeaderView(for: section)) {
+                ForEach(section.communities) { community in
+                    NavigationLink(value: PostFeedType.community(.init(from: community, subscribed: true))) {
+                        CommunityFeedRowView(
+                            community: community,
+                            subscribed: communityListModel.isSubscribed(to: community),
+                            communitySubscriptionChanged: updateSubscriptionStatus, // communityListModel.updateSubscriptionStatus,
+                            navigationContext: .sidebar
+                        )
+                    }
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
     private var navStackView: some View {
         switch selectedFeed {
-        case .all, .local, .subscribed, .saved:
+        case .all, .local, .subscribed, .moderated, .saved:
             AggregateFeedView(selectedFeed: $selectedFeed)
         case let .community(communityModel):
             CommunityFeedView(communityModel: communityModel)
                 .id(communityModel.uid) // explicit id forces redraw on change of community model
         case .none:
             Text("Please select a feed")
+        }
+    }
+    
+    private func updateSubscriptionStatus(_ community: APICommunity, _ status: Bool) {
+        Task {
+            await communityListModel.updateSubscriptionStatus(for: community, subscribed: status)
         }
     }
     

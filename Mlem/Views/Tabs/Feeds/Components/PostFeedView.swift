@@ -80,20 +80,12 @@ struct PostFeedView: View {
             }
             .toolbar {
                 if versionSafePostSort != nil {
-                    ToolbarItem(placement: .primaryAction) { sortMenu }
-                    
-                    ToolbarItemGroup(placement: .secondaryAction) {
-                        ForEach(genEllipsisMenuFunctions()) { menuFunction in
-                            MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
-                        }
-                        Menu {
-                            ForEach(genPostSizeSwitchingFunctions()) { menuFunction in
-                                MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
-                            }
-                        } label: {
-                            Label("Post Size", systemImage: Icons.postSizeSetting)
-                        }
-                    }
+                    ToolbarItem(placement: .topBarTrailing) { sortMenu }
+                }
+            }
+            .onDisappear {
+                Task {
+                    await markReadBatcher.flush()
                 }
             }
     }
@@ -111,19 +103,22 @@ struct PostFeedView: View {
                                 let indexToMark = index >= postSize.markReadThreshold ? index - postSize.markReadThreshold : index
 
                                 if let postToMark = postTracker.items[safeIndex: indexToMark] {
-                                    postToMark.setRead(true)
-                                    await markReadBatcher.add(postToMark.postId)
-                                    
-                                    // handle posts at end of feed
+                                    await markReadBatcher.stage(postToMark.postId)
                                     if postTracker.items.count - index <= postSize.markReadThreshold {
-                                        element.setRead(true)
-                                        await markReadBatcher.add(element.postId)
+                                        await markReadBatcher.stage(element.postId)
                                     }
                                 }
                             }
                         }
+                        .onDisappear {
+                            if markReadOnScroll {
+                                Task {
+                                    await markReadBatcher.add(post: element)
+                                }
+                            }
+                        }
                 }
-                EndOfFeedView(loadingState: postTracker.loadingState, viewType: .hobbit)
+                EndOfFeedView(loadingState: postTracker.loadingState, viewType: .hobbit, whatIsLoading: .posts)
             }
         }
     }
@@ -131,7 +126,7 @@ struct PostFeedView: View {
     @ViewBuilder
     private func feedPost(for post: PostModel) -> some View {
         VStack(spacing: 0) {
-            NavigationLink(.postLinkWithContext(.init(post: post, community: nil, postTracker: postTracker))) {
+            NavigationLink(.postLinkWithContext(.init(post: post, community: communityContext, postTracker: postTracker))) {
                 FeedPost(
                     post: post,
                     postTracker: postTracker,
@@ -176,12 +171,12 @@ struct PostFeedView: View {
     private var sortMenu: some View {
         Menu {
             ForEach(genOuterSortMenuFunctions()) { menuFunction in
-                MenuButton(menuFunction: menuFunction, confirmDestructive: nil) // no destructive sorts
+                MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil)) // no destructive sorts
             }
             
             Menu {
                 ForEach(genTopSortMenuFunctions()) { menuFunction in
-                    MenuButton(menuFunction: menuFunction, confirmDestructive: nil) // no destructive sorts
+                    MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil)) // no destructive sorts
                 }
             } label: {
                 Label("Top...", systemImage: Icons.topSort)

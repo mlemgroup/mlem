@@ -16,9 +16,14 @@ struct SearchResultsView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            tabs
+            BubblePicker(
+                SearchTab.allCases,
+                selected: $searchModel.searchTab,
+                label: \.label
+            )
+            .padding(.top, -2.5)
+            .padding(.bottom, AppConstants.halfSpacing)
             Divider()
-                .padding(.top, 8)
             SearchResultListView(showTypeLabel: searchModel.searchTab == .topResults)
         }
         .onReceive(
@@ -35,15 +40,6 @@ struct SearchResultsView: View {
             searchModel.tabSwitchRefresh(contentTracker: contentTracker)
         }
         .environmentObject(contentTracker)
-    }
-    
-    @ViewBuilder
-    private var tabs: some View {
-        HStack {
-            BubblePicker(SearchTab.allCases, selected: $searchModel.searchTab) {
-                Text($0.label)
-            }
-        }
     }
 }
 

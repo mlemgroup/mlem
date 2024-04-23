@@ -19,6 +19,7 @@ extension HorizontalAlignment {
     static let labelStart = HorizontalAlignment(LabelStart.self)
 }
 
+// swiftlint:disable:next type_body_length
 struct PostComposerView: View {
     private enum Field: Hashable {
         case title, url, body
@@ -41,6 +42,9 @@ struct PostComposerView: View {
     @State var postBody: String
     
     @StateObject var attachmentModel: LinkAttachmentModel
+    
+    @StateObject var bodyEditorModel: BodyEditorModel = .init()
+    @StateObject var inlineAttachmentModel: LinkAttachmentModel
 
     @State var isNSFW: Bool
     
@@ -64,37 +68,38 @@ struct PostComposerView: View {
         self._postBody = State(initialValue: editModel.editPost?.post.body ?? "")
         self._isNSFW = State(initialValue: editModel.editPost?.post.nsfw ?? false)
         self._attachmentModel = StateObject(wrappedValue: .init(url: editModel.editPost?.post.linkUrl?.description ?? ""))
+        self._inlineAttachmentModel = StateObject(wrappedValue: .init(url: ""))
     }
 
     var body: some View {
-        LinkAttachmentView(model: attachmentModel) {
-            ZStack {
-                VStack {
-                    Color.clear
-                    Color(uiColor: .secondarySystemGroupedBackground)
-                }
-                .edgesIgnoringSafeArea(.bottom)
-                VStack(spacing: 0) {
-                    // Community Row
-                    headerView
-                        .padding(.bottom, 15)
-                        .padding(.horizontal)
-                        .zIndex(1)
+        ZStack {
+            VStack {
+                Color.clear
+                Color(uiColor: .secondarySystemGroupedBackground)
+            }
+            .edgesIgnoringSafeArea(.bottom)
+            VStack(spacing: 0) {
+                // Community Row
+                headerView
+                    .padding(.bottom, 15)
+                    .padding(.horizontal)
+                    .zIndex(1)
                     
-                    VStack(spacing: 15) {
-                        TextField("Title", text: $postTitle, axis: .vertical)
-                            .font(.title2)
-                            .accessibilityLabel("Title")
-                            .focused($focusedField, equals: .title)
-                            .onAppear {
-                                focusedField = .title
-                            }
-                            .padding(.top)
-                            .padding(.horizontal)
-                            .onChange(of: postTitle) { newValue in
-                                titleSlurMatch = siteInformation.instance?.firstSlurFilterMatch(newValue)
-                            }
-                                             
+                VStack(spacing: 15) {
+                    TextField("Title", text: $postTitle, axis: .vertical)
+                        .font(.title2)
+                        .accessibilityLabel("Title")
+                        .focused($focusedField, equals: .title)
+                        .onAppear {
+                            focusedField = .title
+                        }
+                        .padding(.top)
+                        .padding(.horizontal)
+                        .onChange(of: postTitle) { newValue in
+                            titleSlurMatch = siteInformation.instance?.firstSlurFilterMatch(newValue)
+                        }
+                        
+                    Group {
                         if attachmentModel.imageModel != nil || attachmentModel.url.isNotEmpty {
                             VStack {
                                 let url = URL(string: attachmentModel.url)
@@ -169,85 +174,93 @@ struct PostComposerView: View {
                         } else {
                             Divider()
                         }
+                    }
+                    .linkAttachmentModel(model: attachmentModel)
                         
-                        TextField(
-                            "Body text (optional)",
-                            text: $postBody,
-                            axis: .vertical
-                        )
-                        .dynamicTypeSize(.small ... .accessibility2)
-                        .accessibilityLabel("Post Body")
-                        .focused($focusedField, equals: .body)
-                        .padding(.horizontal)
-                        .onChange(of: postBody) { newValue in
-                            bodySlurMatch = siteInformation.instance?.firstSlurFilterMatch(newValue)
-                        }
+                    BodyEditorView(
+                        text: $postBody,
+                        prompt: "Body text (optional)",
+                        bodyEditorModel: bodyEditorModel,
+                        attachmentModel: inlineAttachmentModel
+                    )
+                    .dynamicTypeSize(.small ... .accessibility2)
+                    .accessibilityLabel("Post Body")
+                    .focused($focusedField, equals: .body)
+                    .padding(.horizontal)
+                    .onChange(of: postBody) { newValue in
+                        bodySlurMatch = siteInformation.instance?.firstSlurFilterMatch(newValue)
+                    }
+                    .linkAttachmentModel(model: inlineAttachmentModel)
                         
-                        Spacer()
-                    }
-                    .background(Color(uiColor: .secondarySystemGroupedBackground))
-                    .clipShape(UnevenRoundedRectangle(cornerRadii: .init(topLeading: 15, topTrailing: 15)))
-                    .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: -3)
+                    Spacer()
                 }
-                
-                // Loading Indicator
-                if isSubmitting {
-                    ZStack {
-                        Color.gray.opacity(0.3)
-                        ProgressView()
-                    }
-                    .accessibilityElement(children: .ignore)
-                    .accessibilityLabel("Submitting Post")
-                    .edgesIgnoringSafeArea(.all)
-                    .allowsHitTesting(false)
-                }
-            }
-            .background(Color(uiColor: .systemGroupedBackground))
-            .scrollDismissesKeyboard(.automatic)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel", role: .destructive) {
-                        attachmentModel.deletePictrs()
-                        dismiss()
-                    }
-                    .tint(.red)
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        isNSFW.toggle()
-                    } label: {
-                        if isNSFW {
-                            HStack {
-                                Text("NSFW")
-                                    .font(.caption)
-                                Image(systemName: "eye.trianglebadge.exclamationmark.fill")
-                            }
-                            .tint(.red)
-                        } else {
-                            Image(systemName: "eye.fill")
-                                .tint(Color(uiColor: .systemGray2))
-                        }
-                    }
-                    .accessibilityLabel("Toggle NSFW")
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    LinkUploadOptionsView(model: attachmentModel) {
-                        Label("Attach Image or Link", systemImage: Icons.websiteAddress)
-                    }
-                    .disabled(attachmentModel.imageModel != nil || attachmentModel.url.isNotEmpty)
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    // Submit Button
-                    Button {
-                        Task(priority: .userInitiated) {
-                            await submitPost()
-                        }
-                    } label: {
-                        Image(systemName: Icons.send)
-                    }.disabled(isSubmitting || !isReadyToPost)
-                }
+                .background(Color(uiColor: .secondarySystemGroupedBackground))
+                .clipShape(UnevenRoundedRectangle(cornerRadii: .init(topLeading: 15, topTrailing: 15)))
+                .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: -3)
             }
         }
+        .progressOverlay(isPresented: $isSubmitting)
+        .background(Color(uiColor: .systemGroupedBackground))
+        .scrollDismissesKeyboard(.automatic)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button("Cancel", role: .destructive) {
+                    attachmentModel.deletePictrs()
+                    Task {
+                        await bodyEditorModel.deleteAllFiles()
+                    }
+                    dismiss()
+                }
+                .tint(.red)
+            }
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                Button {
+                    isNSFW.toggle()
+                } label: {
+                    if isNSFW {
+                        HStack {
+                            Text("NSFW")
+                                .font(.caption)
+                            Image(systemName: "eye.trianglebadge.exclamationmark.fill")
+                        }
+                        .tint(.red)
+                    } else {
+                        Image(systemName: "eye.fill")
+                            .tint(Color(uiColor: .systemGray2))
+                    }
+                }
+                .accessibilityLabel("Toggle NSFW")
+                Menu {
+                    Button(action: attachmentModel.attachImageAction) {
+                        Label("Photo Library", systemImage: Icons.choosePhoto)
+                    }
+                    Button(action: attachmentModel.attachFileAction) {
+                        Label("Choose File", systemImage: Icons.chooseFile)
+                    }
+                    Button(action: attachmentModel.pasteFromClipboardAction) {
+                        Label("Paste", systemImage: Icons.paste)
+                    }
+                    Divider()
+                    LinkUploadOptionsView(model: inlineAttachmentModel) {
+                        Label("Inline...", systemImage: "text.below.photo")
+                    }
+                } label: {
+                    Label("Attach Image or Link", systemImage: Icons.websiteAddress)
+                }
+                // Submit Button
+                Button {
+                    Task(priority: .background) {
+                        await bodyEditorModel.deleteUnusedFiles(text: postBody)
+                    }
+                    Task(priority: .userInitiated) {
+                        await submitPost()
+                    }
+                } label: {
+                    Image(systemName: Icons.send)
+                }.disabled(isSubmitting || !isReadyToPost)
+            }
+        }
+        
         .interactiveDismissDisabled(hasPostContent)
         .alert("Submit Failed", isPresented: $isShowingErrorDialog) {
             Button("OK", role: .cancel) {}
@@ -271,22 +284,55 @@ struct PostComposerView: View {
                 UserLabelView(
                     person: person,
                     serverInstanceLocation: .bottom,
-                    overrideShowAvatar: true
+                    overrideShowAvatar: true,
+                    bannedFromCommunity: false
                 )
                 .environment(\.layoutDirection, layoutDirection == .leftToRight ? .rightToLeft : .leftToRight)
             }
         }
         .overlay {
-            if let slurMatch = titleSlurMatch == nil ? bodySlurMatch : titleSlurMatch {
-                ZStack {
-                    Capsule()
-                        .fill(.red)
-                    Text("\"\(slurMatch)\" is disallowed.")
-                        .foregroundStyle(.white)
+            switch inlineAttachmentModel.imageModel?.state {
+            case let .uploading(progress: progress):
+                infoCapsule(color: Color(uiColor: .secondarySystemBackground)) {
+                    HStack(spacing: 20) {
+                        if progress == 1 {
+                            Text("Processing...")
+                            ProgressView()
+                        } else {
+                            Text("Uploading")
+                                .foregroundStyle(.white)
+                            ProgressView(value: progress)
+                                .progressViewStyle(LinearProgressViewStyle())
+                                .frame(width: 80, height: 10)
+                        }
+                    }
                 }
                 .padding(-2)
+            case let .failed(message):
+                infoCapsule(color: .red) {
+                    Text("Failed to upload")
+                        .foregroundStyle(.white)
+                }
+            default:
+                if let slurMatch = titleSlurMatch == nil ? bodySlurMatch : titleSlurMatch {
+                    infoCapsule(color: .red) {
+                        Text("\"\(slurMatch)\" is disallowed.")
+                            .foregroundStyle(.white)
+                    }
+                }
             }
         }
         .animation(.default, value: titleSlurMatch == nil && bodySlurMatch == nil)
+        .animation(.default, value: inlineAttachmentModel.imageModel?.state)
+    }
+    
+    @ViewBuilder
+    func infoCapsule(color: Color, @ViewBuilder _ content: () -> some View) -> some View {
+        ZStack {
+            Capsule()
+                .fill(color)
+            content()
+        }
+        .padding(-2)
     }
 }

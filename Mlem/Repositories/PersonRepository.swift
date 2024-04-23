@@ -37,8 +37,8 @@ class PersonRepository {
     /// - Parameter id: id of the user to get
     /// - Returns: UserModel for the given user
     func loadUser(for id: Int) async throws -> UserModel {
-        let response = try await apiClient.getPersonDetails(for: id, sort: .new, page: 0, limit: 0, savedOnly: false)
-        return UserModel(from: response.personView)
+        let response = try await apiClient.getPersonDetails(for: id, sort: .new, page: 1, limit: 1, savedOnly: false)
+        return UserModel(from: response)
     }
     
     /// Gets full user details for the given user
@@ -71,7 +71,7 @@ class PersonRepository {
         )) }
         
         // TODO: support more sort types--API support is present
-        return (posts + comments).sorted { $0.sortVal(sortType: .published) > $1.sortVal(sortType: .published) }
+        return (posts + comments).sorted { $0.sortVal(sortType: .new) > $1.sortVal(sortType: .new) }
     }
     
     func loadUserDetails(for url: URL, limit: Int, savedOnly: Bool = false) async throws -> GetPersonDetailsResponse {

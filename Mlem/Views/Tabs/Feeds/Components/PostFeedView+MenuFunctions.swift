@@ -15,7 +15,6 @@ extension PostFeedView {
             return MenuFunction.standardMenuFunction(
                 text: type.label,
                 imageName: imageName,
-                destructiveActionPrompt: nil,
                 enabled: !isSelected
             ) {
                 postSortType = type
@@ -29,53 +28,10 @@ extension PostFeedView {
             return MenuFunction.standardMenuFunction(
                 text: type.label,
                 imageName: isSelected ? Icons.timeSortFill : Icons.timeSort,
-                destructiveActionPrompt: nil,
                 enabled: !isSelected
             ) {
                 postSortType = type
             }
-        }
-    }
-    
-    func genEllipsisMenuFunctions() -> [MenuFunction] {
-        var ret: [MenuFunction] = .init()
-        
-        let blurNsfwText = shouldBlurNsfw ? "Unblur NSFW" : "Blur NSFW"
-        ret.append(MenuFunction.standardMenuFunction(
-            text: blurNsfwText,
-            imageName: Icons.blurNsfw,
-            destructiveActionPrompt: nil,
-            enabled: true
-        ) {
-            shouldBlurNsfw.toggle()
-        })
-        
-        let showReadPostsText = showReadPosts ? "Hide Read" : "Show Read"
-        ret.append(MenuFunction.standardMenuFunction(
-            text: showReadPostsText,
-            imageName: "book",
-            destructiveActionPrompt: nil,
-            enabled: true
-        ) {
-            showReadPosts.toggle()
-        })
-        
-        return ret
-    }
-    
-    func genPostSizeSwitchingFunctions() -> [MenuFunction] {
-        PostSize.allCases.map { size in
-            let (imageName, enabled) = size != postSize
-                ? (size.iconName, true)
-                : (size.iconNameFill, false)
-            
-            return MenuFunction.standardMenuFunction(
-                text: size.label,
-                imageName: imageName,
-                destructiveActionPrompt: nil,
-                enabled: enabled,
-                callback: { postSize = size }
-            )
         }
     }
 }

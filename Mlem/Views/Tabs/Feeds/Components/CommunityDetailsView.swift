@@ -32,7 +32,7 @@ struct CommunityDetailsView: View {
                 box {
                     Text("Posts")
                         .foregroundStyle(.secondary)
-                    Text("\(abbreviateNumber(community.postCount ?? 0))")
+                    Text("\((community.postCount ?? 0).abbreviated)")
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundStyle(.pink)
@@ -41,7 +41,7 @@ struct CommunityDetailsView: View {
                 box {
                     Text("Comments")
                         .foregroundStyle(.secondary)
-                    Text("\(abbreviateNumber(community.commentCount ?? 0))")
+                    Text("\((community.commentCount ?? 0).abbreviated)")
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundStyle(.orange)
@@ -78,7 +78,7 @@ struct CommunityDetailsView: View {
     @ViewBuilder
     func activeUserBox(_ label: String, value: Int) -> some View {
         VStack {
-            Text(abbreviateNumber(value))
+            Text(value.abbreviated)
                 .font(.title3)
                 .fontWeight(.semibold)
             Text(label)

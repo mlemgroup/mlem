@@ -9,6 +9,7 @@ import Foundation
 class EditorTracker: ObservableObject {
     @Published var editResponse: ConcreteEditorModel?
     @Published var editPost: PostEditorModel?
+    @Published var selectText: SelectTextModel?
 
     func openEditor(with editResponse: ConcreteEditorModel) {
         self.editResponse = editResponse
@@ -17,4 +18,13 @@ class EditorTracker: ObservableObject {
     func openEditor(with editPost: PostEditorModel) {
         self.editPost = editPost
     }
+    
+    func openEditor(with selectText: SelectTextModel) {
+        self.selectText = selectText
+    }
+}
+
+struct SelectTextModel: Identifiable {
+    var id: Int { text.hashValue }
+    var text: String
 }

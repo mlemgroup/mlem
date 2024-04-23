@@ -9,12 +9,13 @@ import Dependencies
 import Foundation
 import SwiftUI
 
-struct UserModel {
+struct UserModel: Purgable {
     @Dependency(\.personRepository) var personRepository
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
+    @Dependency(\.apiClient) var apiClient
     
     // Ids
     var userId: Int!
@@ -82,8 +83,11 @@ struct UserModel {
     /// Creates a UserModel from an APIPerson. Note that using this initialiser nullifies count values, since
     /// those are only accessable from APIPersonView.
     /// - Parameter apiPerson: APIPerson to create a UserModel representation of
-    init(from person: APIPerson) {
+    init(from person: APIPerson, blocked: Bool? = nil) {
         update(with: person)
+        if let blocked {
+            self.blocked = blocked
+        }
     }
     
     mutating func update(with response: GetPersonDetailsResponse) {
@@ -118,8 +122,9 @@ struct UserModel {
         deleted = person.deleted
         isBot = person.botAccount
         
-        isAdmin = person.admin
-        
+        if let admin = person.admin {
+            isAdmin = person.admin
+        }
         creationDate = person.published
         updatedDate = person.updated
         banExpirationDate = person.banExpires
@@ -141,9 +146,16 @@ struct UserModel {
     func getFlairs(
         postContext: APIPost? = nil,
         commentContext: APIComment? = nil,
-        communityContext: CommunityModel? = nil
+        communityContext: CommunityModel? = nil,
+        bannedFromCommunity: Bool? = false
     ) -> [UserFlair] {
         var ret: [UserFlair] = .init()
+        if banned {
+            ret.append(.bannedFromInstance)
+        }
+        if bannedFromCommunity ?? false {
+            ret.append(.bannedFromCommunity)
+        }
         if let post = postContext, post.creatorId == self.userId {
             ret.append(.op)
         }
@@ -163,9 +175,6 @@ struct UserModel {
         if isBot {
             ret.append(.bot)
         }
-        if banned {
-            ret.append(.banned)
-        }
         return ret
     }
     
@@ -184,6 +193,54 @@ struct UserModel {
             hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)
         }
+    }
+    
+    mutating func toggleBan(
+        expires: Int? = nil,
+        reason: String? = nil,
+        removeData: Bool = false,
+        _ callback: @escaping (_ item: Self) -> Void = { _ in }
+    ) async {
+        banned.toggle()
+        RunLoop.main.perform { [self] in
+            callback(self)
+        }
+        do {
+            let response = try await apiClient.banPerson(
+                id: userId,
+                shouldBan: banned,
+                expires: expires,
+                reason: reason,
+                removeData: removeData
+            )
+            banned = response.banned
+            RunLoop.main.perform { [self] in
+                callback(self)
+            }
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+        }
+    }
+    
+    mutating func purge(reason: String?) async -> Bool {
+        do {
+            let response = try await apiClient.purgePerson(id: userId, reason: reason)
+            if !response.success {
+                throw APIClientError.unexpectedResponse
+            }
+            return true
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+        }
+        return false
+    }
+    
+    mutating func addModeratedCommunity(_ newCommunity: CommunityModel) {
+        var newCommunities = moderatedCommunities ?? .init()
+        newCommunities.append(newCommunity)
+        moderatedCommunities = newCommunities
     }
     
     static func mock() -> UserModel {
@@ -229,6 +286,7 @@ extension UserModel: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(uid)
         hasher.combine(blocked)
+        hasher.combine(banned)
         hasher.combine(postCount)
         hasher.combine(commentCount)
         hasher.combine(displayName)
@@ -236,5 +294,6 @@ extension UserModel: Hashable {
         hasher.combine(avatar)
         hasher.combine(banner)
         hasher.combine(matrixUserId)
+        hasher.combine(moderatedCommunities)
     }
 }

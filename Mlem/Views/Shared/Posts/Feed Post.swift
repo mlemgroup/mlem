@@ -37,12 +37,12 @@ struct FeedPost: View {
     @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
     @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
     @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
-    
+
     @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
 
-    // @EnvironmentObject var postTracker: StandardPostTracker
     @EnvironmentObject var editorTracker: EditorTracker
+    @EnvironmentObject var modToolTracker: ModToolTracker
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
@@ -77,14 +77,20 @@ struct FeedPost: View {
     @State private var isShowingEnlargedImage: Bool = false
     @State private var isComposingReport: Bool = false
     
-    // MARK: Destructive confirmation
+    @State private var menuFunctionPopup: MenuFunctionPopup?
     
-    @State private var isPresentingConfirmDestructive: Bool = false
-    @State private var confirmationMenuFunction: StandardMenuFunction?
+    var isMod: Bool {
+        siteInformation.isModOrAdmin(communityId: postModel.community.communityId)
+    }
     
-    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
-        confirmationMenuFunction = destructiveFunction
-        isPresentingConfirmDestructive = true
+    var combinedMenuFunctions: [MenuFunction] {
+        postModel.combinedMenuFunctions(
+            editorTracker: editorTracker,
+            showSelectText: postSize == .large,
+            postTracker: postTracker,
+            community: isMod ? postModel.community : nil,
+            modToolTracker: isMod ? modToolTracker : nil
+        )
     }
     
     // MARK: Computed
@@ -93,18 +99,15 @@ struct FeedPost: View {
     var showCheck: Bool { postModel.read && diffWithoutColor && readMarkStyle == .check }
 
     var body: some View {
-        // this allows post deletion to not require tracker updates
-        if postModel.post.deleted {
+        // this allows post deletion/removal to not require tracker updates
+        if postModel.post.deleted || (postModel.post.removed && !isMod) || postModel.purged {
             EmptyView()
         } else {
             VStack(spacing: 0) {
                 postItem
                     .border(width: barThickness, edges: [.leading], color: .secondary)
                     .background(Color.systemBackground)
-                    .destructiveConfirmation(
-                        isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
-                        confirmationMenuFunction: confirmationMenuFunction
-                    )
+                    .destructiveConfirmation(menuFunctionPopup: $menuFunctionPopup)
                     .addSwipeyActions(
                         leading: [
                             enableSwipeActions ? upvoteSwipeAction : nil,
@@ -116,12 +119,8 @@ struct FeedPost: View {
                         ]
                     )
                     .contextMenu {
-                        let functions = postModel.menuFunctions(
-                            editorTracker: editorTracker,
-                            postTracker: postTracker
-                        )
-                        ForEach(functions) { item in
-                            MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+                        ForEach(combinedMenuFunctions) { item in
+                            MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
                         }
                     }
             }
@@ -161,11 +160,10 @@ struct FeedPost: View {
     
     @ViewBuilder
     private var compactPost: some View {
-        let functions = postModel.menuFunctions(editorTracker: editorTracker, postTracker: postTracker)
         CompactPost(
             post: postModel,
-            showCommunity: showCommunity,
-            menuFunctions: functions
+            postTracker: postTracker,
+            showCommunity: showCommunity
         )
     }
 
@@ -175,29 +173,17 @@ struct FeedPost: View {
             compactPost
         } else {
             VStack(spacing: 0) {
-                VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
-                    // community name
-                    // TEMPORARILY DISABLED: conditionally showing based on community
-                    // if showCommunity {
-                    //    CommunityLinkView(community: postView.community)
-                    // }
+                VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
                     HStack {
                         CommunityLinkView(
                             community: postModel.community,
                             serverInstanceLocation: communityServerInstanceLocation
                         )
-
                         Spacer()
-
                         if showCheck {
                             ReadCheck()
                         }
-                        
-                        let functions = postModel.menuFunctions(
-                            editorTracker: editorTracker,
-                            postTracker: postTracker
-                        )
-                        EllipsisMenu(size: 24, menuFunctions: functions)
+                        PostEllipsisMenus(postModel: postModel, postTracker: postTracker)
                     }
 
                     if postSize == .headline {
@@ -214,33 +200,50 @@ struct FeedPost: View {
                         UserLinkView(
                             user: postModel.creator,
                             serverInstanceLocation: userServerInstanceLocation,
+                            bannedFromCommunity: postModel.creatorBannedFromCommunity,
                             communityContext: community
                         )
                     }
                 }
-                .padding(.top, AppConstants.postAndCommentSpacing)
-                .padding(.horizontal, AppConstants.postAndCommentSpacing)
+                .padding(.top, AppConstants.standardSpacing)
+                .padding(.horizontal, AppConstants.standardSpacing)
                 
-                InteractionBarView(
+                InteractionBarView(context: .post, widgets: enrichLayoutWidgets())
+            }
+        }
+    }
+    
+    func enrichLayoutWidgets() -> [EnrichedLayoutWidget] {
+        layoutWidgetTracker.groups.post.compactMap { baseWidget in
+            switch baseWidget {
+            case .infoStack:
+                .infoStack(
+                    colorizeVotes: false,
                     votes: postModel.votes,
                     published: postModel.published,
                     updated: postModel.updated,
                     commentCount: postModel.commentCount,
                     unreadCommentCount: postModel.unreadCommentCount,
-                    saved: postModel.saved,
-                    accessibilityContext: "post",
-                    widgets: layoutWidgetTracker.groups.post,
-                    upvote: postModel.toggleUpvote,
-                    downvote: postModel.toggleDownvote,
-                    save: postModel.toggleSave,
-                    reply: replyToPost,
-                    shareURL: URL(string: postModel.post.apId),
-                    shouldShowScore: shouldShowScoreInPostBar,
-                    showDownvotesSeparately: showPostDownvotesSeparately,
-                    shouldShowTime: shouldShowTimeInPostBar,
-                    shouldShowSaved: shouldShowSavedInPostBar,
-                    shouldShowReplies: shouldShowRepliesInPostBar
+                    saved: postModel.saved
                 )
+            case .upvote:
+                .upvote(myVote: postModel.votes.myVote, upvote: postModel.toggleUpvote)
+            case .downvote:
+                .downvote(myVote: postModel.votes.myVote, downvote: postModel.toggleDownvote)
+            case .save:
+                .save(saved: postModel.saved, save: postModel.toggleSave)
+            case .reply:
+                .reply(reply: replyToPost)
+            case .share:
+                .share(shareUrl: postModel.post.apId)
+            case .upvoteCounter:
+                .upvoteCounter(votes: postModel.votes, upvote: postModel.toggleUpvote)
+            case .downvoteCounter:
+                .downvoteCounter(votes: postModel.votes, downvote: postModel.toggleDownvote)
+            case .scoreCounter:
+                .scoreCounter(votes: postModel.votes, upvote: postModel.toggleUpvote, downvote: postModel.toggleDownvote)
+            default:
+                nil
             }
         }
     }
@@ -249,10 +252,6 @@ struct FeedPost: View {
 // MARK: - Swipe Actions
 
 extension FeedPost {
-    // TODO: if we want to mirror the behaviour in comments here we need the `dirty` operation to be visible from this
-    // context, which at present would require some work as it occurs down inside the post interaction bar
-    // this may need to wait until we complete https://github.com/mormaer/Mlem/issues/117
-
     var upvoteSwipeAction: SwipeAction {
         let (emptySymbolName, fullSymbolName) = postModel.votes.myVote == .upvote ?
             (Icons.resetVoteSquare, Icons.resetVoteSquareFill) :

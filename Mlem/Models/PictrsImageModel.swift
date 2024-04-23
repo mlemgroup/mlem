@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 29/09/2023.
 //
 
-import SwiftUI
 import PhotosUI
+import SwiftUI
 
 struct ImageUploadResponse: Codable {
     public let msg: String?
@@ -19,7 +19,7 @@ struct PictrsFile: Codable, Equatable {
 }
 
 struct PictrsImageModel {
-    enum UploadState {
+    enum UploadState: Equatable {
         case waiting
         case readyToUpload(data: Data)
         case uploading(progress: Double)

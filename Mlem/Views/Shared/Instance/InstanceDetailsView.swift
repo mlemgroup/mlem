@@ -29,7 +29,7 @@ struct InstanceDetailsView: View {
                 box {
                     Text("Users")
                         .foregroundStyle(.secondary)
-                    Text("\(abbreviateNumber(instance.userCount ?? 0))")
+                    Text("\((instance.userCount ?? 0).abbreviated)")
                         .font(.title)
                         .fontWeight(.semibold)
                 }
@@ -37,7 +37,7 @@ struct InstanceDetailsView: View {
                 box {
                     Text("Communities")
                         .foregroundStyle(.secondary)
-                    Text("\(abbreviateNumber(instance.communityCount ?? 0))")
+                    Text("\((instance.communityCount ?? 0).abbreviated)")
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundStyle(.green)
@@ -49,7 +49,7 @@ struct InstanceDetailsView: View {
                 box {
                     Text("Posts")
                         .foregroundStyle(.secondary)
-                    Text("\(abbreviateNumber(instance.postCount ?? 0))")
+                    Text("\((instance.postCount ?? 0).abbreviated)")
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundStyle(.pink)
@@ -58,7 +58,7 @@ struct InstanceDetailsView: View {
                 box {
                     Text("Comments")
                         .foregroundStyle(.secondary)
-                    Text("\(abbreviateNumber(instance.commentCount ?? 0))")
+                    Text("\((instance.commentCount ?? 0).abbreviated)")
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundStyle(.orange)
@@ -262,7 +262,7 @@ struct InstanceDetailsView: View {
     @ViewBuilder
     func activeUserBox(_ label: String, value: Int) -> some View {
         VStack {
-            Text(abbreviateNumber(value))
+            Text(value.abbreviated)
                 .font(.title3)
                 .fontWeight(.semibold)
             Text(label)

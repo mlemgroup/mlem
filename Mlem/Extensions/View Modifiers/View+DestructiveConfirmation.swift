@@ -8,23 +8,23 @@
 import Foundation
 import SwiftUI
 
-struct DestructiveConfirmation: ViewModifier {
-    let confirmationMenuFunction: StandardMenuFunction?
-    @Binding var isPresentingConfirmDestructive: Bool
+struct MenuFunctionPopupView: ViewModifier {
+    @Binding var menuFunctionPopup: MenuFunctionPopup?
     
     func body(content: Content) -> some View {
         content
-            .confirmationDialog("Destructive Action Confirmation", isPresented: $isPresentingConfirmDestructive) {
-                if let destructiveCallback = confirmationMenuFunction?.callback {
-                    Button("Yes", role: .destructive) {
-                        Task {
-                            destructiveCallback()
-                        }
+            .confirmationDialog(
+                "Destructive Action Confirmation",
+                isPresented: Binding(get: { menuFunctionPopup != nil }, set: { _, _ in menuFunctionPopup = nil })
+            ) {
+                if let actions = menuFunctionPopup?.actions {
+                    ForEach(actions, id: \.text) { action in
+                        Button(action.text, role: action.isDestructive ? .destructive : nil, action: action.callback)
                     }
                 }
             } message: {
-                if let destructivePrompt = confirmationMenuFunction?.destructiveActionPrompt {
-                    Text(destructivePrompt)
+                if let prompt = menuFunctionPopup?.prompt {
+                    Text(prompt)
                 }
             }
     }
@@ -49,12 +49,10 @@ extension View {
     ///   - isPresentingConfirmDestructive: binding Bool to toggle the confirmation presentation
     ///   - confirmationMenuFunction: menu function to confirm
     func destructiveConfirmation(
-        isPresentingConfirmDestructive: Binding<Bool>,
-        confirmationMenuFunction: StandardMenuFunction?
+        menuFunctionPopup: Binding<MenuFunctionPopup?>
     ) -> some View {
-        modifier(DestructiveConfirmation(
-            confirmationMenuFunction: confirmationMenuFunction,
-            isPresentingConfirmDestructive: isPresentingConfirmDestructive
+        modifier(MenuFunctionPopupView(
+            menuFunctionPopup: menuFunctionPopup
         ))
     }
 }

@@ -20,13 +20,13 @@ struct LinkUploadOptionsView<Content: View>: View {
     var body: some View {
         Menu {
             Button(action: model.attachImageAction) {
-                Label("Photo Library", systemImage: "photo.on.rectangle")
+                Label("Photo Library", systemImage: Icons.choosePhoto)
             }
             Button(action: model.attachFileAction) {
-                Label("Choose File", systemImage: "folder")
+                Label("Choose File", systemImage: Icons.chooseFile)
             }
             Button(action: model.pasteFromClipboardAction) {
-                Label("Paste", systemImage: "doc.on.clipboard")
+                Label("Paste", systemImage: Icons.paste)
             }
         } label: {
             label

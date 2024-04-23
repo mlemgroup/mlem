@@ -12,6 +12,7 @@ import SwiftUI
 /// View for post feeds aggregating multiple communities (all, local, subscribed, saved)
 struct AggregateFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.markReadBatcher) var markReadBatcher
     
     @Environment(\.dismiss) var dismiss
@@ -24,9 +25,9 @@ struct AggregateFeedView: View {
     @StateObject var savedContentTracker: UserContentTracker
     
     @State var postSortType: PostSortType
-    @State var availableFeeds: [FeedType] = [.all, .local, .subscribed]
     
-    @Binding var selectedFeed: FeedType?
+    @Binding var selectedFeed: PostFeedType?
+    @State var selectedSavedTab: UserContentFeedType = .all
     
     @Namespace var scrollToTop
     @State private var scrollToTopAppeared = false
@@ -34,8 +35,8 @@ struct AggregateFeedView: View {
         postTracker.items.first?.id
     }
     
-    init(selectedFeed: Binding<FeedType?>) {
-        var feedType: FeedType = .all
+    init(selectedFeed: Binding<PostFeedType?>) {
+        var feedType: PostFeedType = .all
         if let selectedFeed = selectedFeed.wrappedValue {
             feedType = selectedFeed
         } else {
@@ -62,18 +63,24 @@ struct AggregateFeedView: View {
         self._selectedFeed = selectedFeed
     }
     
+    var availableFeeds: [PostFeedType] {
+        var availableFeeds: [PostFeedType] = [.all, .local, .subscribed]
+        if siteInformation.moderatorFeedAvailable {
+            availableFeeds.append(.moderated)
+        }
+        if appState.currentActiveAccount != nil, !availableFeeds.contains(.saved) {
+            availableFeeds.append(.saved)
+        }
+        return availableFeeds
+    }
+    
     var body: some View {
         content
             .environment(\.feedType, selectedFeed)
             .task(id: appState.currentActiveAccount) {
-                // ensure that .saved isn't an available feed until user id resolved
                 if let userId = appState.currentActiveAccount?.id {
                     do {
                         try await savedContentTracker.updateUserId(to: userId)
-                        
-                        if availableFeeds.count < 4 {
-                            availableFeeds.append(.saved)
-                        }
                     } catch {
                         errorHandler.handle(error)
                     }
@@ -82,7 +89,7 @@ struct AggregateFeedView: View {
             .task(id: selectedFeed) {
                 if let selectedFeed {
                     switch selectedFeed {
-                    case .all, .local, .subscribed:
+                    case .all, .local, .moderated, .subscribed:
                         await markReadBatcher.flush()
                         await postTracker.changeFeedType(to: selectedFeed)
                         postTracker.isStale = false
@@ -95,7 +102,7 @@ struct AggregateFeedView: View {
                 await Task {
                     do {
                         switch selectedFeed {
-                        case .all, .local, .subscribed:
+                        case .all, .local, .moderated, .subscribed:
                             await markReadBatcher.flush()
                             _ = try await postTracker.refresh(clearBeforeRefresh: false)
                         case .saved:
@@ -118,6 +125,11 @@ struct AggregateFeedView: View {
                         .opacity(scrollToTopAppeared ? 0 : 1)
                         .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
                 }
+                ToolbarItem(placement: .primaryAction) {
+                    ToolbarEllipsisMenu {
+                        FeedToolbarContent()
+                    }
+                }
             }
             .hoistNavigation {
                 if let scrollProxy {
@@ -139,15 +151,22 @@ struct AggregateFeedView: View {
                     ScrollToView(appeared: $scrollToTopAppeared)
                         .id(scrollToTop)
                     headerView
-                        .padding(.top, -1)
+                    if selectedFeed == .saved {
+                        BubblePicker(
+                            UserContentFeedType.allCases,
+                            selected: $selectedSavedTab,
+                            withDividers: [.top, .bottom],
+                            label: \.rawValue.capitalized
+                        )
+                    }
                 }
                 
                 switch selectedFeed {
-                case .all, .local, .subscribed:
+                case .all, .local, .moderated, .subscribed:
                     PostFeedView(postSortType: $postSortType, showCommunity: true)
                         .environmentObject(postTracker)
                 case .saved:
-                    UserContentFeedView()
+                    UserContentFeedView(contentType: selectedSavedTab)
                         .environmentObject(savedContentTracker)
                 default:
                     EmptyView() // shouldn't be possible
@@ -160,10 +179,10 @@ struct AggregateFeedView: View {
     var headerView: some View {
         Menu {
             ForEach(genFeedSwitchingFunctions()) { menuFunction in
-                MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
+                MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
             }
         } label: {
-            if let selectedFeed, FeedType.allAggregateFeedCases.contains(selectedFeed) {
+            if let selectedFeed, PostFeedType.allAggregateFeedCases.contains(selectedFeed) {
                 FeedHeaderView(feedType: selectedFeed)
             } else {
                 EmptyView() // shouldn't be possible
@@ -176,7 +195,7 @@ struct AggregateFeedView: View {
     var navBarTitle: some View {
         Menu {
             ForEach(genFeedSwitchingFunctions()) { menuFunction in
-                MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
+                MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil))
             }
         } label: {
             HStack(alignment: .center, spacing: 0) {

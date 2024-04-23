@@ -24,7 +24,7 @@ struct ListCommunitiesRequest: APIGetRequest {
     ) throws {
         self.instanceURL = try session.instanceUrl
         var queryItems: [URLQueryItem] = [
-            .init(name: "sort", value: sort),
+            .init(name: "sort", value: sort ?? "Old"), // provide explicit sort if not provided to ensure consistent pagination
             .init(name: "limit", value: limit?.description),
             .init(name: "page", value: page?.description),
             .init(name: "type_", value: type)

@@ -10,7 +10,7 @@ import SwiftUI
 struct LoadingView: View {
     enum PossibleThingsToLoad {
         case posts, image, comments, inbox, replies, mentions, messages,
-             communityDetails, search, instances, instanceDetails, content, profile
+             communityDetails, search, instances, instanceDetails, content, profile, modlog, votes, blockList
     }
 
     let whatIsLoading: PossibleThingsToLoad
@@ -48,6 +48,12 @@ struct LoadingView: View {
                 Text("Loading instances")
             case .instanceDetails:
                 Text("Loading instance details")
+            case .modlog:
+                Text("Loading modlog")
+            case .votes:
+                Text("Loading votes")
+            case .blockList:
+                Text("Loading block list")
             }
 
             Spacer()

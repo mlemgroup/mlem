@@ -6,52 +6,112 @@
 //
 
 import Foundation
+import SwiftUI
 
 extension UserModel {
+    func blockCallback(_ callback: @escaping (_ item: Self) -> Void = { _ in }) {
+        let blocked = blocked ?? false
+        Task {
+            var new = self
+            await new.toggleBlock(callback)
+            if new.blocked != blocked {
+                await notifier.add(.success("\(blocked ? "Unblocked" : "Blocked") user"))
+            } else {
+                await notifier.add(.failure("Failed to \(blocked ? "block" : "block") user"))
+            }
+        }
+    }
+    
     func blockMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> MenuFunction {
-        .standardMenuFunction(
-            text: blocked ? "Unblock" : "Block",
-            imageName: blocked ? Icons.show : Icons.hide,
-            destructiveActionPrompt: blocked ? nil : AppConstants.blockUserPrompt,
-            enabled: true,
+        if blocked {
+            return .standardMenuFunction(
+                text: "Unblock",
+                imageName: Icons.show,
+                callback: { blockCallback(callback) }
+            )
+        }
+        return .standardMenuFunction(
+            text: "Block",
+            imageName: Icons.hide,
+            confirmationPrompt: AppConstants.blockUserPrompt,
+            callback: { blockCallback(callback) }
+        )
+    }
+    
+    func banMenuFunction(modToolTracker: ModToolTracker) -> MenuFunction {
+        .toggleableMenuFunction(
+            toggle: banned,
+            trueText: "Unban",
+            trueImageName: Icons.instanceBan,
+            falseText: "Ban",
+            falseImageName: Icons.instanceBan,
+            isDestructive: .whenFalse,
             callback: {
-                Task {
-                    var new = self
-                    await new.toggleBlock(callback)
-                }
+                modToolTracker.banUser(self, shouldBan: !banned)
             }
         )
     }
     
-    func menuFunctions(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> [MenuFunction] {
-        var functions: [MenuFunction] = .init()
-        if let instanceHost = profileUrl.host() {
-            let instance: InstanceModel?
-            if let site {
-                instance = .init(from: site)
-            } else {
-                instance = nil
+    func purgeMenuFunction(modToolTracker: ModToolTracker) -> MenuFunction {
+        .standardMenuFunction(
+            text: "Purge",
+            imageName: Icons.purge,
+            isDestructive: true,
+            callback: {
+                modToolTracker.purgeContent(self)
             }
-            functions.append(
-                .navigationMenuFunction(
-                    text: instanceHost,
-                    imageName: Icons.instance,
-                    destination: .instance(instanceHost, instance)
+        )
+    }
+    
+    func menuFunctions(
+        _ callback: @escaping (_ item: Self) -> Void = { _ in },
+        modToolTracker: ModToolTracker? = nil
+    ) -> [MenuFunction] {
+        var functions: [MenuFunction] = .init()
+        do {
+            if let instanceHost = profileUrl.host() {
+                let instance: InstanceModel
+                if let site {
+                    instance = .init(from: site, isLocal: true)
+                } else {
+                    instance = try .init(domainName: instanceHost)
+                }
+                functions.append(
+                    .navigationMenuFunction(
+                        text: instanceHost,
+                        imageName: Icons.instance,
+                        destination: .instance(instance)
+                    )
                 )
-            )
+            }
+        } catch {
+            print("Failed to add instance menu function!")
         }
         functions.append(
             .standardMenuFunction(
                 text: "Copy Username",
                 imageName: Icons.copy,
-                destructiveActionPrompt: nil,
-                enabled: true,
                 callback: copyFullyQualifiedUsername
             )
         )
         functions.append(.shareMenuFunction(url: profileUrl))
-        if siteInformation.myUserInfo?.localUserView.person.id != userId {
+        
+        let isOwnUser = (siteInformation.myUser?.userId ?? -1) == userId
+
+        // TODO: 2.0 appoint moderator as menu function
+        
+        if !isOwnUser {
             functions.append(blockMenuFunction(callback))
+        }
+        
+        // This has to be outside of the below `if` statement so that it shows when "Appoint As Moderator" is appended
+        functions.append(.divider)
+        
+        if !isOwnUser {
+            if siteInformation.isAdmin, !(isAdmin ?? false), let modToolTracker {
+                functions.append(banMenuFunction(modToolTracker: modToolTracker))
+                functions.append(purgeMenuFunction(modToolTracker: modToolTracker))
+            }
         }
         return functions
     }

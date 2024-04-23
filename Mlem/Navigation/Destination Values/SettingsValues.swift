@@ -14,11 +14,14 @@ enum SettingsPage: DestinationValue {
     case accountGeneral
     case accountAdvanced
     case accountLocal
+    case blockList
     case accountDiscussionLanguages
     case linkMatrixAccount
     case accounts
     case quickSwitcher
     case general
+    case moderation
+    case links
     case sorting
     case contentFilters
     case accessibility
@@ -54,4 +57,8 @@ enum PostSettingsPage: DestinationValue {
 
 enum LicensesSettingsPage: DestinationValue {
     case licenseDocument(Document)
+}
+
+enum ModerationSettingsPage: DestinationValue {
+    case customizeWidgets
 }

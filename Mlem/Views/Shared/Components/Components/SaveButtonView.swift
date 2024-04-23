@@ -13,7 +13,7 @@ struct SaveButtonView: View {
     let isSaved: Bool
     let accessibilityContext: String
 
-    let save: () -> Void
+    let save: () async -> Void
 
     // ==== COMPUTED ==== //
 
@@ -24,7 +24,9 @@ struct SaveButtonView: View {
 
     var body: some View {
         Button {
-            save()
+            Task(priority: .userInitiated) {
+                await save()
+            }
         } label: {
             Image(systemName: isSaved ? Icons.saveFill : Icons.save)
                 .resizable()
@@ -40,7 +42,11 @@ struct SaveButtonView: View {
                 .fontWeight(.medium) // makes it look a little nicer
         }
         .accessibilityLabel(saveButtonText)
-        .accessibilityAction(.default) { save() }
+        .accessibilityAction(.default) {
+            Task(priority: .userInitiated) {
+                await save()
+            }
+        }
         .buttonStyle(.plain)
         .transaction { transaction in
             transaction.disablesAnimations = true

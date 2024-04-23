@@ -30,7 +30,7 @@ class URLHandler {
         guard let scheme = url.scheme, scheme.hasPrefix("http") else {
             return .init(result: .systemAction, action: .error("This type of link is not currently supported 😞"))
         }
-        let openLinksInBrowser = UserDefaults.standard.bool(forKey: "openLinksInBrowser")
+        @AppStorage("openLinksInBrowser") var openLinksInBrowser = false
         if openLinksInBrowser {
             UIApplication.shared.open(url)
         } else {
@@ -48,7 +48,8 @@ extension SFSafariViewController.Configuration {
     /// The default settings used in this application
     static var `default`: Self {
         let configuration = Self()
-        configuration.entersReaderIfAvailable = false
+        @AppStorage("openLinksInReaderMode") var openLinksInReaderMode = false
+        configuration.entersReaderIfAvailable = openLinksInReaderMode
         return configuration
     }
 }

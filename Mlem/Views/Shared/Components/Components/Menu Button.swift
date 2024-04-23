@@ -10,21 +10,23 @@ import SwiftUI
 
 struct MenuButton: View {
     let menuFunction: MenuFunction
-    let confirmDestructive: ((StandardMenuFunction) -> Void)?
+    @Binding var menuFunctionPopup: MenuFunctionPopup?
 
     var body: some View {
         switch menuFunction {
+        case .divider:
+            Divider()
         case let .shareUrl(shareMenuFunction):
             ShareLink(item: shareMenuFunction.url)
         case let .shareImage(shareImageFunction):
             ShareLink(item: shareImageFunction.image, preview: .init("photo", image: shareImageFunction.image))
         case let .standard(standardMenuFunction):
-            let role: ButtonRole? = standardMenuFunction.destructiveActionPrompt != nil ? .destructive : nil
-            Button(role: role) {
-                if standardMenuFunction.destructiveActionPrompt != nil, let confirmDestructive {
-                    confirmDestructive(standardMenuFunction)
-                } else {
-                    standardMenuFunction.callback()
+            Button(role: standardMenuFunction.isDestructive ? .destructive : nil) {
+                switch standardMenuFunction.role {
+                case let .standard(callback):
+                    callback()
+                case let .popup(menuFunctionPopup):
+                    self.menuFunctionPopup = menuFunctionPopup
                 }
             } label: {
                 Label(standardMenuFunction.text, systemImage: standardMenuFunction.imageName)
@@ -33,6 +35,32 @@ struct MenuButton: View {
         case let .navigation(navigationMenuFunction):
             NavigationLink(navigationMenuFunction.destination) {
                 Label(navigationMenuFunction.text, systemImage: navigationMenuFunction.imageName)
+            }
+        case let .openUrl(openUrlMenuFunction):
+            Link(destination: openUrlMenuFunction.destination) {
+                Label(openUrlMenuFunction.text, systemImage: openUrlMenuFunction.imageName)
+            }
+        case let .controlGroup(groupMenuFunction):
+            
+            if #available(iOS 16.4, *) {
+                ControlGroup {
+                    ForEach(groupMenuFunction.children) { child in
+                        MenuButton(menuFunction: child, menuFunctionPopup: $menuFunctionPopup)
+                    }
+                }
+                .controlGroupStyle(.compactMenu)
+            } else {
+                ForEach(groupMenuFunction.children) { child in
+                    MenuButton(menuFunction: child, menuFunctionPopup: $menuFunctionPopup)
+                }
+            }
+        case let .disclosureGroup(groupMenuFunction):
+            Menu {
+                ForEach(groupMenuFunction.children) { child in
+                    MenuButton(menuFunction: child, menuFunctionPopup: $menuFunctionPopup)
+                }
+            } label: {
+                Label(groupMenuFunction.text, systemImage: groupMenuFunction.imageName)
             }
         }
     }

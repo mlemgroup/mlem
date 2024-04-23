@@ -5,34 +5,24 @@
 //  Created by Sjmarf on 26/09/2023.
 //
 
-import SwiftUI
-import PhotosUI
 import Dependencies
+import PhotosUI
+import SwiftUI
 
-struct LinkAttachmentView<Content: View>: View {
+struct LinkAttachmentModifier: ViewModifier {
     @Dependency(\.apiClient) var apiClient: APIClient
     
     @AppStorage("promptUser.permission.privacy.allowImageUploads") var askedForPermissionToUploadImages: Bool = false
     @AppStorage("confirmImageUploads") var confirmImageUploads: Bool = false
-    
-    @ViewBuilder let content: Content
 
     @ObservedObject var model: LinkAttachmentModel
     
-    init(
-        model: LinkAttachmentModel,
-        @ViewBuilder content: @escaping () -> Content
-    ) {
-        self.content = content()
-        self.model = model
-    }
-    
-    var body: some View {
+    func body(content: Content) -> some View {
         content
-            .photosPicker(isPresented: $model.showingPhotosPicker, selection: $model.photosPickerItem, matching: .images)
             .fileImporter(isPresented: $model.showingFilePicker, allowedContentTypes: [.image]) { result in
                 model.prepareToUpload(result: result)
             }
+            .photosPicker(isPresented: $model.showingPhotosPicker, selection: $model.photosPickerItem, matching: .images)
             .onChange(of: model.photosPickerItem) { newValue in
                 if let newValue {
                     Task {
@@ -54,5 +44,11 @@ struct LinkAttachmentView<Content: View>: View {
                     askedForPermissionToUploadImages = true
                 }
             }
+    }
+}
+
+extension View {
+    func linkAttachmentModel(model: LinkAttachmentModel) -> some View {
+        modifier(LinkAttachmentModifier(model: model))
     }
 }

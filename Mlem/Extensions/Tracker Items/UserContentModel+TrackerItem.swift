@@ -19,7 +19,7 @@ extension UserContentModel: TrackerItem {
         }
     }
     
-    func sortVal(sortType: TrackerSortType) -> TrackerSortVal {
+    func sortVal(sortType: TrackerSort.Case) -> TrackerSort {
         switch self {
         case let .post(postModel): postModel.sortVal(sortType: sortType)
         case let .comment(hierarchicalComment): hierarchicalComment.sortVal(sortType: sortType)

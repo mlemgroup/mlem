@@ -11,7 +11,8 @@ import SwiftUI
 /// SFSymbol names for icons
 enum Icons {
     // votes
-    static let votes: String = "arrow.up.arrow.down.square"
+    static let votes: String = "arrow.up.arrow.down"
+    static let votesSquare: String = "arrow.up.arrow.down.square"
     static let upvote: String = "arrow.up"
     static let upvoteSquare: String = "arrow.up.square"
     static let upvoteSquareFill: String = "arrow.up.square.fill"
@@ -43,16 +44,27 @@ enum Icons {
     static let moderation: String = "shield"
     static let moderationFill: String = "shield.fill"
     static let moderationReport: String = "exclamationmark.shield"
+    static let messageReportSetting: String = "envelope.badge.shield.half.filled"
     
     // misc post
     static let posts: String = "doc.plaintext"
+    static let postsFill: String = "doc.plaintext.fill"
     static let replies: String = "bubble.left"
     static let unreadReplies: String = "text.bubble"
     static let textPost: String = "text.book.closed"
     static let titleOnlyPost: String = "character.bubble"
     static let pinned: String = "pin.fill"
+    static let unpinned: String = "pin.slash.fill"
     static let websiteIcon: String = "globe"
     static let read: String = "book"
+    static let locked: String = "lock.fill"
+    static let unlocked: String = "lock.open.fill"
+    static let removed: String = "xmark.bin.fill"
+    static let restored: String = "arrow.up.bin.fill"
+    
+    // inbox
+    static let message = "envelope"
+    static let messageFill = "envelope.fill"
     
     // post sizes
     static let postSizeSetting: String = "rectangle.expand.vertical"
@@ -66,16 +78,14 @@ enum Icons {
     // feeds
     static let federatedFeed: String = "circle.hexagongrid"
     static let federatedFeedFill: String = "circle.hexagongrid.fill"
-    static let federatedFeedCircle: String = "circle.hexagongrid.circle.fill"
     static let localFeed: String = "house"
     static let localFeedFill: String = "house.fill"
-    static let localFeedCircle: String = "house.circle.fill"
     static let subscribedFeed: String = "newspaper"
     static let subscribedFeedFill: String = "newspaper.fill"
-    static let subscribedFeedCircle: String = "newspaper.circle.fill"
     static let savedFeed: String = "bookmark"
     static let savedFeedFill: String = "bookmark.fill"
-    static let savedFeedCircle: String = "bookmark.circle.fill"
+    static let moderatedFeed: String = moderation
+    static let moderatedFeedFill: String = moderationFill
     
     // sort types
     static let activeSort: String = "popcorn"
@@ -88,8 +98,8 @@ enum Icons {
     static let newSortFill: String = "hare.fill"
     static let oldSort: String = "tortoise"
     static let oldSortFill: String = "tortoise.fill"
-    static let newCommentsSort: String = "exclamationmark.bubble"
-    static let newCommentsSortFill: String = "exclamationmark.bubble.fill"
+    static let newCommentsSort: String = "plus.bubble"
+    static let newCommentsSortFill: String = "plus.bubble.fill"
     static let mostCommentsSort: String = "bubble.left.and.bubble.right"
     static let mostCommentsSortFill: String = "bubble.left.and.bubble.right.fill"
     static let controversialSort: String = "bolt"
@@ -102,10 +112,10 @@ enum Icons {
     
     // user flairs
     static let developerFlair: String = "hammer.fill"
-    static let adminFlair: String = "crown.fill"
     static let botFlair: String = "terminal.fill"
     static let opFlair: String = "person.fill"
-    static let bannedFlair: String = "multiply.circle"
+    static let instanceBannedFlair: String = "xmark.circle.fill"
+    static let communityBannedFlair: String = "xmark.shield.fill"
     
     // entities/general Lemmy concepts
     static let federation: String = "point.3.filled.connected.trianglepath.dotted"
@@ -115,6 +125,10 @@ enum Icons {
     static let userBlock: String = "person.fill.xmark"
     static let community: String = "building.2.crop.circle"
     static let communityFill: String = "building.2.crop.circle.fill"
+    static let communityButton: String = "building.2"
+    static let admin: String = "crown"
+    static let adminFill: String = "crown.fill"
+    static let unAdmin: String = "cloud.bolt.fill" // idk what to do for this one
     
     // tabs
     static let feeds: String = "scroll"
@@ -149,12 +163,19 @@ enum Icons {
     static let close: String = "multiply"
     static let cakeDay: String = "birthday.cake"
     
+    // uptime
+    static let uptimeOffline: String = "xmark.circle.fill"
+    static let uptimeOnline: String = "checkmark.circle.fill"
+    static let uptimeOutage: String = "exclamationmark.circle.fill"
+    
     // end of feed
     static let endOfFeedHobbit: String = "figure.climbing"
     static let endOfFeedCartoon: String = "figure.wave"
+    static let endOfFeedTurtle: String = "tortoise"
     
     // common operations
     static let share: String = "square.and.arrow.up"
+    static let add: String = "plus"
     static let subscribe: String = "plus.circle"
     static let subscribed: String = "checkmark.circle"
     static let subscribePerson: String = "person.crop.circle.badge.plus"
@@ -171,6 +192,11 @@ enum Icons {
     static let edit: String = "pencil"
     static let delete: String = "trash"
     static let copy: String = "doc.on.doc"
+    static let copyFill: String = "doc.on.doc.fill"
+    static let paste: String = "doc.on.clipboard"
+    static let select: String = "selection.pin.in.out"
+    static let choosePhoto: String = "photo.on.rectangle"
+    static let chooseFile: String = "folder"
     
     // settings
     static let upvoteOnSave: String = "arrow.up.heart"
@@ -190,6 +216,50 @@ enum Icons {
     static let limitImageHeightSetting: String = "rectangle.compress.vertical"
     static let appLockSettings: String = "lock.app.dashed"
     static let collapseComments: String = "arrow.down.and.line.horizontal.and.arrow.up"
+    
+    // mod tools
+    static let auditUser: String = "person.crop.circle.badge.questionmark.fill"
+    static let communityBan: String = "xmark.shield"
+    static let communityBanFill: String = "xmark.shield.fill"
+    static let communityBanned: String = "xmark.shield.fill"
+    static let communityUnban: String = "checkmark.shield"
+    static let communityUnbanned: String = "checkmark.shield.fill"
+    static let instanceBan: String = "xmark.circle"
+    static let instanceUnban: String = "checkmark.circle"
+    static let instanceBanned: String = "xmark.circle.fill"
+    static let instanceUnbanned: String = "checkmark.circle.fill"
+    static let unmod: String = "shield.slash"
+    static let unmodFill: String = "shield.slash.fill"
+    static let pin: String = "pin"
+    static let unpin: String = "pin.slash"
+    static let lock: String = "lock"
+    static let unlock: String = "lock.open"
+    static let remove: String = "xmark.bin"
+    static let removeFill: String = "xmark.bin.fill"
+    static let purge: String = "burn"
+    static let restore: String = "arrow.up.bin"
+    static let restoreFill: String = "arrow.up.bin.fill"
+    static let commentReport: String = "text.bubble"
+    static let commentReportFill: String = "text.bubble.fill"
+    static let registrationApplication: String = "list.clipboard"
+    static let registrationApplicationFill: String = "list.clipboard.fill"
+    static let resolve: String = "checkmark.circle"
+    static let resolveFill: String = "checkmark.circle.fill"
+    static let unresolve: String = "checkmark.gobackward"
+    static let approve: String = "checkmark"
+    static let approveCircle: String = "checkmark.circle"
+    static let approveCircleFill: String = "checkmark.circle.fill"
+    static let deny: String = "xmark"
+    static let denyCircle: String = "xmark.circle"
+    static let denyCircleFill = "xmark.circle.fill"
+    
+    // fediseer
+    static let fediseer: String = "shield.checkered"
+    static let fediseerGuarantee: String = "checkmark.seal.fill"
+    static let fediseerUnguarantee: String = "xmark.seal.fill"
+    static let fediseerEndorsement: String = "signature"
+    static let fediseerHesitation: String = "exclamationmark.triangle.fill"
+    static let fediseerCensure: String = "exclamationmark.octagon.fill"
     
     // misc
     static let `private`: String = "lock"

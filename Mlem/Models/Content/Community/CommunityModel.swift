@@ -15,13 +15,17 @@ struct ActiveUserCount {
     let day: Int
 }
 
-struct CommunityModel {
+// swiftlint:disable:next type_body_length
+struct CommunityModel: Purgable {
+    // MARK: - Members and Init
+    
     @Dependency(\.apiClient) private var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.communityRepository) var communityRepository
     @Dependency(\.notifier) var notifier
     @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
+    @Dependency(\.siteInformation) var siteInformation
     
     enum CommunityError: Error {
         case noData
@@ -86,10 +90,13 @@ struct CommunityModel {
         update(with: communityView)
     }
     
-    init(from community: APICommunity, subscribed: Bool? = nil) {
+    init(from community: APICommunity, subscribed: Bool? = nil, blocked: Bool? = nil) {
         update(with: community)
         if let subscribed {
             self.subscribed = subscribed
+        }
+        if let blocked {
+            self.blocked = blocked
         }
     }
     
@@ -151,6 +158,19 @@ struct CommunityModel {
         favorited = favoriteCommunitiesTracker.isFavorited(community)
     }
     
+    // MARK: - Convenience
+    
+    func isModerator(_ userId: Int?) -> Bool {
+        if let moderators, let userId {
+            return moderators.contains(where: { userModel in
+                userModel.userId == userId
+            })
+        }
+        return false
+    }
+    
+    // MARK: - Interactions
+    
     func toggleSubscribe(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async throws {
         var new = self
         guard let subscribed, let subscriberCount else {
@@ -211,14 +231,13 @@ struct CommunityModel {
         }
     }
     
-    func toggleBlock(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async throws {
-        var new = self
+    mutating func toggleBlock(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async throws {
         guard let blocked else {
             throw CommunityError.noData
         }
-        new.blocked = !blocked
-        RunLoop.main.perform { [new] in
-            callback(new)
+        self.blocked = !blocked
+        RunLoop.main.perform { [self] in
+            callback(self)
         }
         do {
             let response: BlockCommunityResponse
@@ -227,9 +246,9 @@ struct CommunityModel {
             } else {
                 response = try await communityRepository.unblockCommunity(id: communityId)
             }
-            new.update(with: response.communityView)
-            RunLoop.main.perform { [new] in
-                callback(new)
+            update(with: response.communityView)
+            RunLoop.main.perform { [self] in
+                callback(self)
             }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
@@ -239,6 +258,93 @@ struct CommunityModel {
                 .init(title: "Failed to \(phrase) community", style: .toast, underlyingError: error)
             )
         }
+    }
+    
+    // MARK: - Moderation
+    
+    func toggleRemove(
+        reason: String?,
+        callback: @escaping (_ item: Self) -> Void = { _ in },
+        onFailure: () -> Void
+    ) async {
+        // no need to state fake because removal masked by sheet
+        do {
+            let response = try await apiClient.removeCommunity(
+                id: communityId,
+                shouldRemove: !removed,
+                reason: reason
+            )
+            callback(.init(from: response))
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+        }
+    }
+    
+    func purge(reason: String?) async -> Bool {
+        do {
+            let response = try await apiClient.purgeCommunity(id: communityId, reason: reason)
+            if !response.success {
+                throw APIClientError.unexpectedResponse
+            }
+            return true
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+        }
+        return false
+    }
+    
+    func banUser(
+        userId: Int,
+        ban: Bool,
+        removeData: Bool? = nil,
+        reason: String? = nil,
+        expires: Int? = nil
+    ) async -> Bool {
+        do {
+            let updatedBannedStatus = try await apiClient.banFromCommunity(
+                userId: userId,
+                communityId: communityId,
+                ban: ban,
+                removeData: removeData,
+                reason: reason,
+                expires: expires
+            )
+            return updatedBannedStatus
+        } catch {
+            errorHandler.handle(error)
+            return !ban
+        }
+    }
+    
+    /// Updates mod status of the given user in this community and updates the mod list
+    /// - Parameters:
+    ///   - of: id of the user to change mod status of
+    ///   - to: new mod status
+    /// - Returns: true on successful update, false otherwise
+    func updateModStatus(of userId: Int, to status: Bool, callback: @escaping (_ item: Self) -> Void = { _ in }) async -> Bool {
+        var new = self
+        do {
+            let newModerators = try await apiClient.updateModStatus(of: userId, in: communityId, status: status)
+            new.moderators = newModerators
+            RunLoop.main.perform { [new] in
+                callback(new)
+            }
+            return true
+        } catch {
+            errorHandler.handle(error)
+            return false
+        }
+    }
+    
+    // MARK: - Misc
+    
+    var fullyQualifiedNameComponents: (String, String)? {
+        if let host = communityUrl.host() {
+            return (name!, host)
+        }
+        return nil
     }
     
     var fullyQualifiedName: String? {
@@ -283,6 +389,7 @@ extension CommunityModel: Hashable {
         hasher.combine(favorited)
         hasher.combine(subscriberCount)
         hasher.combine(blocked)
+        hasher.combine(removed)
         hasher.combine(moderators?.map(\.id) ?? [])
     }
 }

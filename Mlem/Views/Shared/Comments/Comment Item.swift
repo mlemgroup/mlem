@@ -56,6 +56,7 @@ struct CommentItem: View {
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
+    @EnvironmentObject var modToolTracker: ModToolTracker
 
     // MARK: Constants
 
@@ -74,15 +75,7 @@ struct CommentItem: View {
     let enableSwipeActions: Bool
     let pageContext: PageContext
     
-    // MARK: Destructive confirmation
-    
-    @State private var isPresentingConfirmDestructive: Bool = false
-    @State private var confirmationMenuFunction: StandardMenuFunction?
-    
-    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
-        confirmationMenuFunction = destructiveFunction
-        isPresentingConfirmDestructive = true
-    }
+    @State private var menuFunctionPopup: MenuFunctionPopup?
     
     // MARK: Computed
     
@@ -137,6 +130,8 @@ struct CommentItem: View {
                     EmptyView()
                 } else if hierarchicalComment.isParentCollapsed, !hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
                     EmptyView()
+                } else if hierarchicalComment.purged {
+                    EmptyView()
                 } else {
                     Group {
                         commentBody(hierarchicalComment: hierarchicalComment)
@@ -166,7 +161,9 @@ struct CommentItem: View {
                     isParentCollapsed: $hierarchicalComment.isParentCollapsed,
                     isCollapsed: $hierarchicalComment.isCollapsed,
                     showPostContext: showPostContext,
-                    menuFunctions: genMenuFunctions(),
+                    combinedMenuFunctions: combinedMenuFunctions(),
+                    personalMenuFunctions: personalMenuFunctions(),
+                    modMenuFunctions: modMenuFunctions(),
                     links: hierarchicalComment.links
                 )
                 // top and bottom spacing uses default even when compact--it's *too* compact otherwise
@@ -174,25 +171,7 @@ struct CommentItem: View {
                 .padding(.horizontal, AppConstants.postAndCommentSpacing)
                 
                 if !hierarchicalComment.isCollapsed, !compactComments {
-                    InteractionBarView(
-                        votes: VotesModel(from: hierarchicalComment.commentView.counts, myVote: hierarchicalComment.commentView.myVote),
-                        published: hierarchicalComment.commentView.comment.published,
-                        updated: hierarchicalComment.commentView.comment.updated,
-                        commentCount: hierarchicalComment.commentView.counts.childCount,
-                        saved: hierarchicalComment.commentView.saved,
-                        accessibilityContext: "comment",
-                        widgets: layoutWidgetTracker.groups.comment,
-                        upvote: upvote,
-                        downvote: downvote,
-                        save: saveComment,
-                        reply: replyToComment,
-                        shareURL: URL(string: hierarchicalComment.commentView.comment.apId),
-                        shouldShowScore: shouldShowScoreInCommentBar,
-                        showDownvotesSeparately: showCommentDownvotesSeparately,
-                        shouldShowTime: shouldShowTimeInCommentBar,
-                        shouldShowSaved: shouldShowSavedInCommentBar,
-                        shouldShowReplies: shouldShowRepliesInCommentBar
-                    )
+                    InteractionBarView(context: .comment, widgets: enrichLayoutWidgets())
                 } else {
                     Spacer()
                         .frame(height: AppConstants.postAndCommentSpacing)
@@ -205,7 +184,7 @@ struct CommentItem: View {
                    hierarchicalComment.children.count > 0,
                    !isCommentReplyHidden {
                     Divider()
-                        CollapsedCommentReplies(numberOfReplies: .constant(hierarchicalComment.commentView.counts.childCount))
+                    CollapsedCommentReplies(numberOfReplies: .constant(hierarchicalComment.commentView.counts.childCount))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .contentShape(.rect)
                         .onTapGesture {
@@ -221,10 +200,6 @@ struct CommentItem: View {
                 toggleCollapsed()
             }
         }
-        .destructiveConfirmation(
-            isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
-            confirmationMenuFunction: confirmationMenuFunction
-        )
         .background(Color.systemBackground)
         .addSwipeyActions(
             leading: enableSwipeActions ? [upvoteSwipeAction, downvoteSwipeAction] : [],
@@ -232,10 +207,11 @@ struct CommentItem: View {
         )
         .border(width: borderWidth, edges: [.leading], color: threadingColors[depth % threadingColors.count])
         .contextMenu {
-            ForEach(genMenuFunctions()) { item in
-                MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+            ForEach(combinedMenuFunctions()) { item in
+                MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
             }
         }
+        .destructiveConfirmation(menuFunctionPopup: $menuFunctionPopup)
         .onChange(of: collapseComments) { newValue in
             if pageContext == .posts {
                 if newValue == false {

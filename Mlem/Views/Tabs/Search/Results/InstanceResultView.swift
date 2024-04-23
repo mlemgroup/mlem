@@ -47,7 +47,7 @@ struct InstanceResultView: View {
     }
     
     var body: some View {
-        NavigationLink(value: AppRoute.instance(instance.url.host(), instance)) {
+        NavigationLink(value: AppRoute.instance(instance)) {
             HStack(spacing: 10) {
                 AvatarView(instance: instance, avatarSize: 48, iconResolution: .fixed(128))
                 
@@ -62,7 +62,7 @@ struct InstanceResultView: View {
                 Spacer()
                 if complications.contains(.users), let userCount = instance.userCount {
                     HStack(spacing: 5) {
-                        Text(abbreviateNumber(userCount))
+                        Text(userCount.abbreviated)
                             .monospacedDigit()
                         Image(systemName: Icons.personFill)
                     }
@@ -90,7 +90,7 @@ struct InstanceResultView: View {
         .addSwipeyActions(swipeActions ?? .init())
         .contextMenu {
             ForEach(instance.menuFunctions()) { item in
-                MenuButton(menuFunction: item, confirmDestructive: nil)
+                MenuButton(menuFunction: item, menuFunctionPopup: .constant(nil))
             }
         }
     }

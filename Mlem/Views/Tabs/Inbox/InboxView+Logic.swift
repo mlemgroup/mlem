@@ -8,21 +8,9 @@
 import Foundation
 
 extension InboxView {
-    func refresh() async {
-        do {
-            switch curTab {
-            case .all:
-                await inboxTracker.refresh(clearBeforeFetch: false)
-            case .replies:
-                try await replyTracker.refresh(clearBeforeRefresh: false)
-            case .mentions:
-                try await mentionTracker.refresh(clearBeforeRefresh: false)
-            case .messages:
-                try await messageTracker.refresh(clearBeforeRefresh: false)
-            }
-        } catch {
-            errorHandler.handle(error)
-        }
+    func refresh(tracker: InboxTracker) async {
+        await tracker.refresh(clearBeforeFetch: false)
+        await unreadTracker.update()
     }
     
     func toggleFilterRead() {
@@ -33,16 +21,45 @@ extension InboxView {
         replyTracker.unreadOnly = newShouldFilterRead
         mentionTracker.unreadOnly = newShouldFilterRead
         messageTracker.unreadOnly = newShouldFilterRead
+        commentReportTracker.unreadOnly = newShouldFilterRead
+        postReportTracker.unreadOnly = newShouldFilterRead
+        messageReportTracker.unreadOnly = newShouldFilterRead
+        registrationApplicationTracker.unreadOnly = newShouldFilterRead
         
         if newShouldFilterRead {
-            await inboxTracker.filterRead()
+            await personalInboxTracker.filterRead()
+            
+            // mod items are returned sorted by old when unreadOnly true
+            await modOrAdminInboxTracker.changeSortType(to: .old)
         } else {
-            await inboxTracker.refresh(clearBeforeFetch: true)
+            await personalInboxTracker.refresh(clearBeforeFetch: true)
+            await modOrAdminInboxTracker.changeSortType(to: .new)
         }
     }
     
     func markAllAsRead() async {
-        await inboxTracker.markAllAsRead(unreadTracker: unreadTracker)
+        await personalInboxTracker.markAllAsRead(unreadTracker: unreadTracker)
+    }
+    
+    func genFeedSwitchingFunctions() -> [MenuFunction] {
+        var ret: [MenuFunction] = .init()
+        availableFeeds.forEach { type in
+            let (imageName, enabled) = type != selectedInbox
+                ? (type.iconName, true)
+                : (type.iconNameFill, false)
+            let label = type.enrichedLabel(
+                unread: type == .personal ? unreadTracker.personal : unreadTracker.modAndAdmin
+            )
+            ret.append(MenuFunction.standardMenuFunction(
+                text: label,
+                imageName: imageName,
+                enabled: enabled
+            ) {
+                selectedInbox = type
+            }
+            )
+        }
+        return ret
     }
     
     func genMenuFunctions() -> [MenuFunction] {
@@ -54,18 +71,14 @@ extension InboxView {
         
         ret.append(MenuFunction.standardMenuFunction(
             text: filterReadText,
-            imageName: filterReadSymbol,
-            destructiveActionPrompt: nil,
-            enabled: true
+            imageName: filterReadSymbol
         ) {
             toggleFilterRead()
         })
         
         ret.append(MenuFunction.standardMenuFunction(
             text: "Mark All as Read",
-            imageName: "envelope.open",
-            destructiveActionPrompt: nil,
-            enabled: true
+            imageName: "envelope.open"
         ) {
             Task(priority: .userInitiated) {
                 await markAllAsRead()
@@ -73,5 +86,24 @@ extension InboxView {
         })
         
         return ret
+    }
+    
+    func tabValue(for tab: InboxTab) -> Int {
+        switch tab {
+        case .all:
+            switch selectedInbox {
+            case .personal:
+                unreadTracker.personal
+            case .mod:
+                unreadTracker.modAndAdmin
+            }
+        case .replies: unreadTracker.replies.count
+        case .mentions: unreadTracker.mentions.count
+        case .messages: unreadTracker.messages.count
+        case .commentReports: unreadTracker.commentReports.count
+        case .postReports: unreadTracker.postReports.count
+        case .messageReports: unreadTracker.messageReports.count
+        case .registrationApplications: unreadTracker.registrationApplications.count
+        }
     }
 }

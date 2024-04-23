@@ -14,7 +14,7 @@ struct EndOfFeedViewContent {
 }
 
 enum EndOfFeedViewType {
-    case hobbit, cartoon
+    case hobbit, cartoon, turtle
     
     var viewContent: EndOfFeedViewContent {
         switch self {
@@ -22,6 +22,8 @@ enum EndOfFeedViewType {
             return EndOfFeedViewContent(icon: Icons.endOfFeedHobbit, message: "I think I've found the bottom!")
         case .cartoon:
             return EndOfFeedViewContent(icon: Icons.endOfFeedCartoon, message: "That's all, folks!")
+        case .turtle:
+            return EndOfFeedViewContent(icon: Icons.endOfFeedTurtle, message: "It's turtles all the way down")
         }
     }
 }
@@ -29,6 +31,7 @@ enum EndOfFeedViewType {
 struct EndOfFeedView: View {
     let loadingState: LoadingState
     let viewType: EndOfFeedViewType
+    let whatIsLoading: LoadingView.PossibleThingsToLoad
     
     var body: some View {
         Group {
@@ -36,7 +39,7 @@ struct EndOfFeedView: View {
             case .idle:
                 EmptyView()
             case .loading:
-                LoadingView(whatIsLoading: .posts)
+                LoadingView(whatIsLoading: whatIsLoading)
             case .done:
                 HStack {
                     Image(systemName: viewType.viewContent.icon)

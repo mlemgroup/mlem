@@ -115,7 +115,7 @@ struct PostSettingsView: View {
                     isTicked: $shouldShowScoreInPostBar
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: Icons.votes,
+                    settingPictureSystemName: Icons.votesSquare,
                     settingName: "Show Downvotes Separately",
                     isTicked: $showDownvotesSeparately
                 )
@@ -157,7 +157,7 @@ struct PostSettingsView: View {
                         featuredCommunity: false,
                         featuredLocal: false,
                         languageId: 0,
-                        apId: "https://lemmy.ml/post/1011068",
+                        apId: URL(string: "https://lemmy.ml/post/1011068")!,
                         local: true,
                         locked: false,
                         nsfw: false,

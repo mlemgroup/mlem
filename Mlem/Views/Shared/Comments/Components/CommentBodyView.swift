@@ -5,14 +5,17 @@
 //  Created by Eric Andrews on 2023-07-03.
 //
 
-import Foundation
+import Dependencies
 import SwiftUI
 
 struct CommentBodyView: View {
+    @Dependency(\.siteInformation) var siteInformation
+    
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
     @AppStorage("compactComments") var compactComments: Bool = false
     @AppStorage("showCommentDownvotesSeparately") var showCommentDownvotesSeparately: Bool = false
     @AppStorage("easyTapLinkDisplayMode") var easyTapLinkDisplayMode: EasyTapLinkDisplayMode = .contextual
+    @AppStorage("moderatorActionGrouping") var moderatorActionGrouping: ModerationActionGroupingMode = .none
     
     @Binding var isParentCollapsed: Bool
     @Binding var isCollapsed: Bool
@@ -20,7 +23,9 @@ struct CommentBodyView: View {
     let commentView: APICommentView
     let showPostContext: Bool
     let commentorLabel: String
-    let menuFunctions: [MenuFunction]
+    var combinedMenuFunctions: [MenuFunction]
+    let personalMenuFunctions: [MenuFunction]
+    let modMenuFunctions: [MenuFunction]
     let links: [LinkType]
     
     var myVote: ScoringOperation { commentView.myVote ?? .resetVote }
@@ -44,6 +49,10 @@ struct CommentBodyView: View {
         }
     }
     
+    var isMod: Bool {
+        siteInformation.isModOrAdmin(communityId: commentView.post.communityId)
+    }
+    
     var spacing: CGFloat { compactComments ? AppConstants.compactSpacing : AppConstants.postAndCommentSpacing }
     
     init(
@@ -51,15 +60,19 @@ struct CommentBodyView: View {
         isParentCollapsed: Binding<Bool>,
         isCollapsed: Binding<Bool>,
         showPostContext: Bool,
-        menuFunctions: [MenuFunction],
-        links: [LinkType]
+        combinedMenuFunctions: [MenuFunction] = [],
+        personalMenuFunctions: [MenuFunction] = [],
+        modMenuFunctions: [MenuFunction] = [],
+        links: [LinkType] = []
     ) {
         self._isParentCollapsed = isParentCollapsed
         self._isCollapsed = isCollapsed
         
         self.commentView = commentView
         self.showPostContext = showPostContext
-        self.menuFunctions = menuFunctions
+        self.combinedMenuFunctions = combinedMenuFunctions
+        self.personalMenuFunctions = personalMenuFunctions
+        self.modMenuFunctions = modMenuFunctions
         self.links = links
         
         let commentor = commentView.creator
@@ -73,6 +86,7 @@ struct CommentBodyView: View {
                 UserLinkView(
                     person: commentView.creator,
                     serverInstanceLocation: serverInstanceLocation,
+                    bannedFromCommunity: commentView.creatorBannedFromCommunity,
                     postContext: commentView.post,
                     commentContext: commentView.comment
                 )
@@ -86,7 +100,20 @@ struct CommentBodyView: View {
                     compactScoreDisplay()
                 }
                 
-                EllipsisMenu(size: compactComments ? 20 : 24, menuFunctions: menuFunctions)
+                let menuSize: CGFloat = compactComments ? 20 : 24
+                if moderatorActionGrouping == .separateMenu {
+                    if isMod {
+                        EllipsisMenu(
+                            size: menuSize,
+                            systemImage: siteInformation.isAdmin ? Icons.admin : Icons.moderation,
+                            menuFunctions: modMenuFunctions
+                        )
+                        .opacity(modMenuFunctions.isEmpty ? 0.5 : 1)
+                    }
+                    EllipsisMenu(size: menuSize, menuFunctions: personalMenuFunctions)
+                } else {
+                    EllipsisMenu(size: menuSize, menuFunctions: combinedMenuFunctions)
+                }
             }
             
             // comment text or placeholder
