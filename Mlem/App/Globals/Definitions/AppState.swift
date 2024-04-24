@@ -10,7 +10,7 @@ import Foundation
 @Observable
 class AppState {
     var myUser: (any UserProviding)?
-    
+
     var api: ApiClient
     var actorId: URL? { myUser?.actorId }
     

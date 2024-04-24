@@ -16,6 +16,8 @@
 		030E7EDE2B7FADFE00E9A1AD /* Post2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E7EDD2B7FADFE00E9A1AD /* Post2.swift */; };
 		030E7EE02B7FBDF100E9A1AD /* ApiClient+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E7EDF2B7FBDF100E9A1AD /* ApiClient+Post.swift */; };
 		030E7EE22B80E6EA00E9A1AD /* Interactable2Providing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E7EE12B80E6EA00E9A1AD /* Interactable2Providing.swift */; };
+		03159C872BD6F2A600394304 /* cmark.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E96CDA2BD6C51E00B7A98F /* cmark.h */; };
+		03159C882BD6F2CF00394304 /* Mlem-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = 03159C862BD6F20800394304 /* Mlem-Bridging-Header.h */; };
 		031BF9532AB24BAF00F4517F /* SiteVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031BF9522AB24BAF00F4517F /* SiteVersion.swift */; };
 		032145472B7A624A001AE07E /* Person1Providing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145462B7A624A001AE07E /* Person1Providing.swift */; };
 		032145492B7A629D001AE07E /* Person2Providing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145482B7A629D001AE07E /* Person2Providing.swift */; };
@@ -61,6 +63,33 @@
 		03E1E0522B77A2470009DF9F /* ApiClient+Community.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E0512B77A2470009DF9F /* ApiClient+Community.swift */; };
 		03E1E0602B781C860009DF9F /* Person2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E05F2B781C860009DF9F /* Person2.swift */; };
 		03E1E0622B7822610009DF9F /* Person3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E1E0612B7822610009DF9F /* Person3.swift */; };
+		03E96CE82BD6C51E00B7A98F /* cmark.c in Sources */ = {isa = PBXBuildFile; fileRef = 03E96CC42BD6C51E00B7A98F /* cmark.c */; };
+		03E96CEA2BD6C51E00B7A98F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 03E96CC62BD6C51E00B7A98F /* buffer.c */; };
+		03E96CEB2BD6C51E00B7A98F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 03E96CC72BD6C51E00B7A98F /* blocks.c */; };
+		03E96CEC2BD6C51E00B7A98F /* cmark_ctype.c in Sources */ = {isa = PBXBuildFile; fileRef = 03E96CC82BD6C51E00B7A98F /* cmark_ctype.c */; };
+		03E96CED2BD6C51E00B7A98F /* inlines.c in Sources */ = {isa = PBXBuildFile; fileRef = 03E96CC92BD6C51E00B7A98F /* inlines.c */; };
+		03E96CEF2BD6C51E00B7A98F /* houdini_href_e.c in Sources */ = {isa = PBXBuildFile; fileRef = 03E96CCB2BD6C51E00B7A98F /* houdini_href_e.c */; };
+		03E96CF22BD6C51E00B7A98F /* houdini_html_e.c in Sources */ = {isa = PBXBuildFile; fileRef = 03E96CD02BD6C51E00B7A98F /* houdini_html_e.c */; };
+		03E96CF42BD6C51E00B7A98F /* utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 03E96CD42BD6C51E00B7A98F /* utf8.c */; };
+		03E96CF52BD6C51E00B7A98F /* references.c in Sources */ = {isa = PBXBuildFile; fileRef = 03E96CD52BD6C51E00B7A98F /* references.c */; };
+		03E96CF62BD6C51E00B7A98F /* render.c in Sources */ = {isa = PBXBuildFile; fileRef = 03E96CD62BD6C51E00B7A98F /* render.c */; };
+		03E96CF72BD6C51E00B7A98F /* iterator.c in Sources */ = {isa = PBXBuildFile; fileRef = 03E96CD72BD6C51E00B7A98F /* iterator.c */; };
+		03E96CF92BD6C51E00B7A98F /* commonmark.c in Sources */ = {isa = PBXBuildFile; fileRef = 03E96CDC2BD6C51E00B7A98F /* commonmark.c */; };
+		03E96CFB2BD6C51E00B7A98F /* scanners.c in Sources */ = {isa = PBXBuildFile; fileRef = 03E96CDF2BD6C51E00B7A98F /* scanners.c */; };
+		03E96CFC2BD6C51E00B7A98F /* houdini_html_u.c in Sources */ = {isa = PBXBuildFile; fileRef = 03E96CE22BD6C51E00B7A98F /* houdini_html_u.c */; };
+		03E96CFD2BD6C51E00B7A98F /* node.c in Sources */ = {isa = PBXBuildFile; fileRef = 03E96CE42BD6C51E00B7A98F /* node.c */; };
+		03E96D022BD6E46600B7A98F /* entities.inc in Sources */ = {isa = PBXBuildFile; fileRef = 03E96D002BD6E46600B7A98F /* entities.inc */; };
+		03E96D032BD6E46600B7A98F /* case_fold.inc in Sources */ = {isa = PBXBuildFile; fileRef = 03E96D012BD6E46600B7A98F /* case_fold.inc */; };
+		03E96D062BD6EA2000B7A98F /* UnsafeMarkdownNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E96D052BD6EA2000B7A98F /* UnsafeMarkdownNode.swift */; };
+		03FD6E1E2BD6FBB7007EA3C7 /* MarkdownNodeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FD6E1D2BD6FBB7007EA3C7 /* MarkdownNodeType.swift */; };
+		03FD6E202BD6FC2F007EA3C7 /* UnsafeMarkdownNodeSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FD6E1F2BD6FC2F007EA3C7 /* UnsafeMarkdownNodeSequence.swift */; };
+		03FD6E222BD84D31007EA3C7 /* MarkdownBlockNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FD6E212BD84D31007EA3C7 /* MarkdownBlockNode.swift */; };
+		03FD6E242BD84D7D007EA3C7 /* MarkdownInlineNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FD6E232BD84D7D007EA3C7 /* MarkdownInlineNode.swift */; };
+		03FD6E282BD85381007EA3C7 /* MarkdownContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FD6E272BD85381007EA3C7 /* MarkdownContainer.swift */; };
+		03FD6E2A2BD855E0007EA3C7 /* [MarkdownBlockMode]+Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FD6E292BD855E0007EA3C7 /* [MarkdownBlockMode]+Links.swift */; };
+		03FD6E2E2BD856C0007EA3C7 /* MarkdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FD6E2D2BD856C0007EA3C7 /* MarkdownView.swift */; };
+		03FD6E302BD8589D007EA3C7 /* MarkdownTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FD6E2F2BD8589D007EA3C7 /* MarkdownTextView.swift */; };
+		03FD6E322BD85ADD007EA3C7 /* MarkdownInlineNode+Render.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FD6E312BD85ADD007EA3C7 /* MarkdownInlineNode+Render.swift */; };
 		504ECBAE2AB45B2A006C0B96 /* LemmyURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504ECBAD2AB45B2A006C0B96 /* LemmyURL.swift */; };
 		50BC1ABB2A8D6A5A00E3C48B /* ScoringOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50BC1ABA2A8D6A5A00E3C48B /* ScoringOperation.swift */; };
 		50C99B562A61D792005D57DD /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 50C99B552A61D792005D57DD /* Dependencies */; };
@@ -74,7 +103,6 @@
 		6363D5CC27EE196A00E34822 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6363D5CB27EE196A00E34822 /* Preview Assets.xcassets */; };
 		6372184D2A3A2AAD008C4816 /* ApiErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372180F2A3A2AAD008C4816 /* ApiErrorResponse.swift */; };
 		637218772A3A2AAD008C4816 /* ApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218422A3A2AAD008C4816 /* ApiRequest.swift */; };
-		63D24EDC2A169F12005CCA81 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 63D24EDB2A169F12005CCA81 /* MarkdownUI */; };
 		63DF71F12A02999C002AC14E /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DF71F02A02999C002AC14E /* AppConstants.swift */; };
 		6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE1183B2A4A217400810C7E /* Profile View.swift */; };
 		AD1B0D372A5F7A260006F554 /* Licenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1B0D362A5F7A260006F554 /* Licenses.swift */; };
@@ -556,6 +584,7 @@
 		030E7EDD2B7FADFE00E9A1AD /* Post2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post2.swift; sourceTree = "<group>"; };
 		030E7EDF2B7FBDF100E9A1AD /* ApiClient+Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiClient+Post.swift"; sourceTree = "<group>"; };
 		030E7EE12B80E6EA00E9A1AD /* Interactable2Providing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactable2Providing.swift; sourceTree = "<group>"; };
+		03159C862BD6F20800394304 /* Mlem-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mlem-Bridging-Header.h"; sourceTree = "<group>"; };
 		031BF9522AB24BAF00F4517F /* SiteVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteVersion.swift; sourceTree = "<group>"; };
 		032145462B7A624A001AE07E /* Person1Providing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person1Providing.swift; sourceTree = "<group>"; };
 		032145482B7A629D001AE07E /* Person2Providing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person2Providing.swift; sourceTree = "<group>"; };
@@ -601,6 +630,46 @@
 		03E1E0512B77A2470009DF9F /* ApiClient+Community.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiClient+Community.swift"; sourceTree = "<group>"; };
 		03E1E05F2B781C860009DF9F /* Person2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person2.swift; sourceTree = "<group>"; };
 		03E1E0612B7822610009DF9F /* Person3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person3.swift; sourceTree = "<group>"; };
+		03E96CC42BD6C51E00B7A98F /* cmark.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cmark.c; sourceTree = "<group>"; };
+		03E96CC62BD6C51E00B7A98F /* buffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = buffer.c; sourceTree = "<group>"; };
+		03E96CC72BD6C51E00B7A98F /* blocks.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = blocks.c; sourceTree = "<group>"; };
+		03E96CC82BD6C51E00B7A98F /* cmark_ctype.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cmark_ctype.c; sourceTree = "<group>"; };
+		03E96CC92BD6C51E00B7A98F /* inlines.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = inlines.c; sourceTree = "<group>"; };
+		03E96CCB2BD6C51E00B7A98F /* houdini_href_e.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = houdini_href_e.c; sourceTree = "<group>"; };
+		03E96CCC2BD6C51E00B7A98F /* chunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chunk.h; sourceTree = "<group>"; };
+		03E96CCF2BD6C51E00B7A98F /* parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parser.h; sourceTree = "<group>"; };
+		03E96CD02BD6C51E00B7A98F /* houdini_html_e.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = houdini_html_e.c; sourceTree = "<group>"; };
+		03E96CD22BD6C51E00B7A98F /* scanners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scanners.h; sourceTree = "<group>"; };
+		03E96CD32BD6C51E00B7A98F /* node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = node.h; sourceTree = "<group>"; };
+		03E96CD42BD6C51E00B7A98F /* utf8.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = utf8.c; sourceTree = "<group>"; };
+		03E96CD52BD6C51E00B7A98F /* references.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = references.c; sourceTree = "<group>"; };
+		03E96CD62BD6C51E00B7A98F /* render.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render.c; sourceTree = "<group>"; };
+		03E96CD72BD6C51E00B7A98F /* iterator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = iterator.c; sourceTree = "<group>"; };
+		03E96CD82BD6C51E00B7A98F /* cmark_ctype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cmark_ctype.h; sourceTree = "<group>"; };
+		03E96CD92BD6C51E00B7A98F /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
+		03E96CDA2BD6C51E00B7A98F /* cmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cmark.h; sourceTree = "<group>"; };
+		03E96CDC2BD6C51E00B7A98F /* commonmark.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = commonmark.c; sourceTree = "<group>"; };
+		03E96CDE2BD6C51E00B7A98F /* inlines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = inlines.h; sourceTree = "<group>"; };
+		03E96CDF2BD6C51E00B7A98F /* scanners.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scanners.c; sourceTree = "<group>"; };
+		03E96CE02BD6C51E00B7A98F /* houdini.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = houdini.h; sourceTree = "<group>"; };
+		03E96CE12BD6C51E00B7A98F /* iterator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iterator.h; sourceTree = "<group>"; };
+		03E96CE22BD6C51E00B7A98F /* houdini_html_u.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = houdini_html_u.c; sourceTree = "<group>"; };
+		03E96CE32BD6C51E00B7A98F /* utf8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utf8.h; sourceTree = "<group>"; };
+		03E96CE42BD6C51E00B7A98F /* node.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = node.c; sourceTree = "<group>"; };
+		03E96CE52BD6C51E00B7A98F /* references.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = references.h; sourceTree = "<group>"; };
+		03E96CE62BD6C51E00B7A98F /* render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render.h; sourceTree = "<group>"; };
+		03E96D002BD6E46600B7A98F /* entities.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = entities.inc; sourceTree = "<group>"; };
+		03E96D012BD6E46600B7A98F /* case_fold.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = case_fold.inc; sourceTree = "<group>"; };
+		03E96D052BD6EA2000B7A98F /* UnsafeMarkdownNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsafeMarkdownNode.swift; sourceTree = "<group>"; };
+		03FD6E1D2BD6FBB7007EA3C7 /* MarkdownNodeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownNodeType.swift; sourceTree = "<group>"; };
+		03FD6E1F2BD6FC2F007EA3C7 /* UnsafeMarkdownNodeSequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsafeMarkdownNodeSequence.swift; sourceTree = "<group>"; };
+		03FD6E212BD84D31007EA3C7 /* MarkdownBlockNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownBlockNode.swift; sourceTree = "<group>"; };
+		03FD6E232BD84D7D007EA3C7 /* MarkdownInlineNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownInlineNode.swift; sourceTree = "<group>"; };
+		03FD6E272BD85381007EA3C7 /* MarkdownContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownContainer.swift; sourceTree = "<group>"; };
+		03FD6E292BD855E0007EA3C7 /* [MarkdownBlockMode]+Links.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "[MarkdownBlockMode]+Links.swift"; sourceTree = "<group>"; };
+		03FD6E2D2BD856C0007EA3C7 /* MarkdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownView.swift; sourceTree = "<group>"; };
+		03FD6E2F2BD8589D007EA3C7 /* MarkdownTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownTextView.swift; sourceTree = "<group>"; };
+		03FD6E312BD85ADD007EA3C7 /* MarkdownInlineNode+Render.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MarkdownInlineNode+Render.swift"; sourceTree = "<group>"; };
 		504ECBAD2AB45B2A006C0B96 /* LemmyURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemmyURL.swift; sourceTree = "<group>"; };
 		50BC1ABA2A8D6A5A00E3C48B /* ScoringOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringOperation.swift; sourceTree = "<group>"; };
 		50CC4A6F2A9BD2470074C845 /* instance_metadata.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = instance_metadata.json; sourceTree = "<group>"; };
@@ -1072,7 +1141,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */,
-				63D24EDC2A169F12005CCA81 /* MarkdownUI in Frameworks */,
 				B104A6D82A59BF3C00B3E725 /* Nuke in Frameworks */,
 				50C99B562A61D792005D57DD /* Dependencies in Frameworks */,
 				636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */,
@@ -1188,6 +1256,93 @@
 			path = Person;
 			sourceTree = "<group>";
 		};
+		03E96CC32BD6C51E00B7A98F /* cmark-lemmy */ = {
+			isa = PBXGroup;
+			children = (
+				03E96CD92BD6C51E00B7A98F /* buffer.h */,
+				03E96CCC2BD6C51E00B7A98F /* chunk.h */,
+				03E96CDA2BD6C51E00B7A98F /* cmark.h */,
+				03E96CD82BD6C51E00B7A98F /* cmark_ctype.h */,
+				03E96CE02BD6C51E00B7A98F /* houdini.h */,
+				03E96CDE2BD6C51E00B7A98F /* inlines.h */,
+				03E96CE12BD6C51E00B7A98F /* iterator.h */,
+				03E96CD32BD6C51E00B7A98F /* node.h */,
+				03E96CE52BD6C51E00B7A98F /* references.h */,
+				03E96CE62BD6C51E00B7A98F /* render.h */,
+				03E96CD22BD6C51E00B7A98F /* scanners.h */,
+				03E96CCF2BD6C51E00B7A98F /* parser.h */,
+				03E96CE32BD6C51E00B7A98F /* utf8.h */,
+				03E96CC42BD6C51E00B7A98F /* cmark.c */,
+				03E96CC62BD6C51E00B7A98F /* buffer.c */,
+				03E96CC72BD6C51E00B7A98F /* blocks.c */,
+				03E96CC82BD6C51E00B7A98F /* cmark_ctype.c */,
+				03E96CC92BD6C51E00B7A98F /* inlines.c */,
+				03E96CCB2BD6C51E00B7A98F /* houdini_href_e.c */,
+				03E96CD02BD6C51E00B7A98F /* houdini_html_e.c */,
+				03E96CD42BD6C51E00B7A98F /* utf8.c */,
+				03E96CD52BD6C51E00B7A98F /* references.c */,
+				03E96CD62BD6C51E00B7A98F /* render.c */,
+				03E96CD72BD6C51E00B7A98F /* iterator.c */,
+				03E96CDC2BD6C51E00B7A98F /* commonmark.c */,
+				03E96CDF2BD6C51E00B7A98F /* scanners.c */,
+				03E96CE22BD6C51E00B7A98F /* houdini_html_u.c */,
+				03E96CE42BD6C51E00B7A98F /* node.c */,
+				03E96D002BD6E46600B7A98F /* entities.inc */,
+				03E96D012BD6E46600B7A98F /* case_fold.inc */,
+			);
+			path = "cmark-lemmy";
+			sourceTree = "<group>";
+		};
+		03E96D042BD6E64700B7A98F /* Markdown */ = {
+			isa = PBXGroup;
+			children = (
+				03E96CC32BD6C51E00B7A98F /* cmark-lemmy */,
+				03FD6E2B2BD8569D007EA3C7 /* Models */,
+				03FD6E2C2BD856AA007EA3C7 /* Views */,
+			);
+			path = Markdown;
+			sourceTree = "<group>";
+		};
+		03FD6E2B2BD8569D007EA3C7 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				03E96D052BD6EA2000B7A98F /* UnsafeMarkdownNode.swift */,
+				03FD6E1D2BD6FBB7007EA3C7 /* MarkdownNodeType.swift */,
+				03FD6E272BD85381007EA3C7 /* MarkdownContainer.swift */,
+				03FD6E362BD868F1007EA3C7 /* Block */,
+				03FD6E352BD868DB007EA3C7 /* Inline */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		03FD6E2C2BD856AA007EA3C7 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				03FD6E2D2BD856C0007EA3C7 /* MarkdownView.swift */,
+				03FD6E2F2BD8589D007EA3C7 /* MarkdownTextView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		03FD6E352BD868DB007EA3C7 /* Inline */ = {
+			isa = PBXGroup;
+			children = (
+				03FD6E232BD84D7D007EA3C7 /* MarkdownInlineNode.swift */,
+				03FD6E312BD85ADD007EA3C7 /* MarkdownInlineNode+Render.swift */,
+			);
+			path = Inline;
+			sourceTree = "<group>";
+		};
+		03FD6E362BD868F1007EA3C7 /* Block */ = {
+			isa = PBXGroup;
+			children = (
+				03FD6E212BD84D31007EA3C7 /* MarkdownBlockNode.swift */,
+				03FD6E292BD855E0007EA3C7 /* [MarkdownBlockMode]+Links.swift */,
+				03FD6E1F2BD6FC2F007EA3C7 /* UnsafeMarkdownNodeSequence.swift */,
+			);
+			path = Block;
+			sourceTree = "<group>";
+		};
 		6318EDC427EE4E0500BFCAE8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -1227,6 +1382,7 @@
 				B104A6E12A5AFC9F00B3E725 /* Mlem.entitlements */,
 				6363D5CA27EE196A00E34822 /* Preview Content */,
 				6332FDBC27EFAF7B0009A98A /* Settings.bundle */,
+				03159C862BD6F20800394304 /* Mlem-Bridging-Header.h */,
 			);
 			path = Mlem;
 			sourceTree = "<group>";
@@ -1701,6 +1857,7 @@
 		CD4D583B2B867BB300B82964 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				03E96D042BD6E64700B7A98F /* Markdown */,
 				CD4D583D2B867DA900B82964 /* Constants */,
 				CD14461F2A5B328600610EF1 /* Data */,
 				CD4D58C62B86DCE500B82964 /* Enums */,
@@ -2073,11 +2230,24 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		03E96D082BD6ED7E00B7A98F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03159C882BD6F2CF00394304 /* Mlem-Bridging-Header.h in Headers */,
+				03159C872BD6F2A600394304 /* cmark.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		6363D5C027EE196700E34822 /* Mlem */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6363D5EA27EE196A00E34822 /* Build configuration list for PBXNativeTarget "Mlem" */;
 			buildPhases = (
+				03E96D082BD6ED7E00B7A98F /* Headers */,
 				6363D5BD27EE196700E34822 /* Sources */,
 				50F830EB2A47CC4F00D67099 /* Swiftlint */,
 				6363D5BE27EE196700E34822 /* Frameworks */,
@@ -2089,7 +2259,6 @@
 			);
 			name = Mlem;
 			packageProductDependencies = (
-				63D24EDB2A169F12005CCA81 /* MarkdownUI */,
 				636250DB2A18111400FC59B4 /* KeychainAccess */,
 				B104A6D72A59BF3C00B3E725 /* Nuke */,
 				B104A6D92A59BF3C00B3E725 /* NukeExtensions */,
@@ -2173,7 +2342,6 @@
 			);
 			mainGroup = 6363D5B827EE196700E34822;
 			packageReferences = (
-				63D24EDA2A169F12005CCA81 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 				636250DA2A18111400FC59B4 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */,
 				50C99B542A61D792005D57DD /* XCRemoteSwiftPackageReference "swift-dependencies" */,
@@ -2305,6 +2473,8 @@
 				CD4D58CF2B86DDEC00B82964 /* AccountSortMode.swift in Sources */,
 				CD4D57042B86772400B82964 /* SearchRequest.swift in Sources */,
 				CD4D57A52B86772400B82964 /* ApiPrivateMessageReportView.swift in Sources */,
+				03E96CF92BD6C51E00B7A98F /* commonmark.c in Sources */,
+				03E96CFD2BD6C51E00B7A98F /* node.c in Sources */,
 				CD4D57FD2B86772500B82964 /* ApiSortType.swift in Sources */,
 				CD4D57DD2B86772500B82964 /* ApiCreatePrivateMessage.swift in Sources */,
 				CD4D58332B86772500B82964 /* ApiGetPostsResponse.swift in Sources */,
@@ -2376,6 +2546,7 @@
 				CD4D57072B86772400B82964 /* LogoutRequest.swift in Sources */,
 				CD4D57A02B86772400B82964 /* ApiGenerateTotpSecretResponse.swift in Sources */,
 				CD4D58052B86772500B82964 /* ApiCreatePostReport.swift in Sources */,
+				03E96CF22BD6C51E00B7A98F /* houdini_html_e.c in Sources */,
 				CD4D58202B86772500B82964 /* ApiCommunityAggregates.swift in Sources */,
 				CD4D576F2B86772400B82964 /* ApiFollowCommunity.swift in Sources */,
 				032145492B7A629D001AE07E /* Person2Providing.swift in Sources */,
@@ -2445,11 +2616,14 @@
 				03AFBE9C2B6E676600F01F3C /* Community2.swift in Sources */,
 				030E7EDA2B7F97E400E9A1AD /* Post1.swift in Sources */,
 				CD4D575B2B86772400B82964 /* ApiPersonMentionResponse.swift in Sources */,
+				03FD6E242BD84D7D007EA3C7 /* MarkdownInlineNode.swift in Sources */,
 				CD4D59142B87B36B00B82964 /* InternetConnectionManager.swift in Sources */,
+				03E96CF62BD6C51E00B7A98F /* render.c in Sources */,
 				030E7EDC2B7FADE100E9A1AD /* Post2Providing.swift in Sources */,
 				CD4D582F2B86772500B82964 /* ApiGetUnreadRegistrationApplicationCount.swift in Sources */,
 				CD4D57AA2B86772400B82964 /* ApiModTransferCommunity.swift in Sources */,
 				CD4D57F32B86772500B82964 /* ApiDeletePrivateMessage.swift in Sources */,
+				03E96CF72BD6C51E00B7A98F /* iterator.c in Sources */,
 				CD4D572A2B86772400B82964 /* RemoveCommentRequest.swift in Sources */,
 				CD4D579B2B86772400B82964 /* ApiLoginResponse.swift in Sources */,
 				CD4D57A22B86772400B82964 /* ApiResolveObject.swift in Sources */,
@@ -2472,6 +2646,7 @@
 				CD4D576B2B86772400B82964 /* ApiListRegistrationApplications.swift in Sources */,
 				CD4D57432B86772400B82964 /* GetFederatedInstancesRequest.swift in Sources */,
 				0321456A2B7B8C82001AE07E /* User.swift in Sources */,
+				03FD6E322BD85ADD007EA3C7 /* MarkdownInlineNode+Render.swift in Sources */,
 				CD4D57E82B86772500B82964 /* ApiGetComments.swift in Sources */,
 				CDB7CDB02B83D0940013E0F0 /* APIPostView+Extensions.swift in Sources */,
 				CD4D57642B86772400B82964 /* ApiCommentReportView.swift in Sources */,
@@ -2484,6 +2659,8 @@
 				CD4D57302B86772400B82964 /* FeaturePostRequest.swift in Sources */,
 				CD4D571E2B86772400B82964 /* FollowCommunityRequest.swift in Sources */,
 				CD4D574B2B86772400B82964 /* ApiRegistrationApplication.swift in Sources */,
+				03E96D022BD6E46600B7A98F /* entities.inc in Sources */,
+				03E96CFB2BD6C51E00B7A98F /* scanners.c in Sources */,
 				CD4D57DC2B86772500B82964 /* ApiAdminPurgePostView.swift in Sources */,
 				CD4D575D2B86772400B82964 /* ApiCreatePrivateMessageReport.swift in Sources */,
 				CD4D59162B87B38C00B82964 /* UIApplication+Extensions.swift in Sources */,
@@ -2492,11 +2669,13 @@
 				CD4D57BC2B86772400B82964 /* ApiPurgeCommunity.swift in Sources */,
 				CD4D57E72B86772500B82964 /* ApiEditCustomEmoji.swift in Sources */,
 				CD4D57D62B86772500B82964 /* ApiPerson.swift in Sources */,
+				03E96D062BD6EA2000B7A98F /* UnsafeMarkdownNode.swift in Sources */,
 				CD4D57C42B86772400B82964 /* ApiGetSiteResponse.swift in Sources */,
 				CD4D58132B86772500B82964 /* ApiRegistrationMode.swift in Sources */,
 				CD4D57622B86772400B82964 /* ApiAdminPurgeCommunityView.swift in Sources */,
 				CD4D56FB2B86772400B82964 /* RegisterRequest.swift in Sources */,
 				CD4D57002B86772400B82964 /* DeletePostRequest.swift in Sources */,
+				03FD6E1E2BD6FBB7007EA3C7 /* MarkdownNodeType.swift in Sources */,
 				CD4D57212B86772400B82964 /* EditSiteRequest.swift in Sources */,
 				CDB7D0342B83D48B0013E0F0 /* APISiteView+Extensions.swift in Sources */,
 				03D3A1E72BB8B887009DE55E /* Interactable2Providing+Actions.swift in Sources */,
@@ -2544,6 +2723,7 @@
 				CD4D57462B86772400B82964 /* ApiCommunityResponse.swift in Sources */,
 				CD4D57172B86772400B82964 /* EditPostRequest.swift in Sources */,
 				CD4D58DA2B86E11D00B82964 /* Mockable.swift in Sources */,
+				03FD6E282BD85381007EA3C7 /* MarkdownContainer.swift in Sources */,
 				CD4D58182B86772500B82964 /* ApiGetCaptcha.swift in Sources */,
 				CD4D58E12B86E4D700B82964 /* FeedLoaderItem.swift in Sources */,
 				031BF9532AB24BAF00F4517F /* SiteVersion.swift in Sources */,
@@ -2556,9 +2736,12 @@
 				03D3A1D92BB8934D009DE55E /* Interactable1Providing+Actions.swift in Sources */,
 				CD4D56F82B86772400B82964 /* VerifyEmailRequest.swift in Sources */,
 				CD4D590A2B87B1DC00B82964 /* NotificationMessage.swift in Sources */,
+				03FD6E302BD8589D007EA3C7 /* MarkdownTextView.swift in Sources */,
 				03A1B3F92A8400DD00AB0DE0 /* APIContentViewProtocol.swift in Sources */,
+				03E96CED2BD6C51E00B7A98F /* inlines.c in Sources */,
 				CD4D58012B86772500B82964 /* ApiCreateCommentLike.swift in Sources */,
 				CD4D58F42B87B04200B82964 /* CoreFeedLoader.swift in Sources */,
+				03FD6E222BD84D31007EA3C7 /* MarkdownBlockNode.swift in Sources */,
 				CD4D58092B86772500B82964 /* ApiLocalUserView.swift in Sources */,
 				03D3A1D72BB8923C009DE55E /* Interactable1Providing.swift in Sources */,
 				CD4D581D2B86772500B82964 /* ApiGetModlogResponse.swift in Sources */,
@@ -2566,6 +2749,7 @@
 				CD4D57BA2B86772400B82964 /* ApiResolveObjectResponse.swift in Sources */,
 				CD4D57492B86772400B82964 /* ApiLockPost.swift in Sources */,
 				CD4D57F42B86772500B82964 /* ApiSiteView.swift in Sources */,
+				03FD6E2E2BD856C0007EA3C7 /* MarkdownView.swift in Sources */,
 				CD4D57682B86772400B82964 /* ApiSubscribedType.swift in Sources */,
 				CD4D58082B86772500B82964 /* ApiModRemoveCommunityView.swift in Sources */,
 				CD4D57742B86772400B82964 /* ApiCommentSortType.swift in Sources */,
@@ -2577,6 +2761,7 @@
 				CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */,
 				CD4D57FC2B86772500B82964 /* ApiCaptchaResponse.swift in Sources */,
 				CD4D57422B86772400B82964 /* GetModlogRequest.swift in Sources */,
+				03E96CFC2BD6C51E00B7A98F /* houdini_html_u.c in Sources */,
 				CD4D59082B87B1B400B82964 /* NotificationDisplayer.swift in Sources */,
 				CD4D57D52B86772500B82964 /* ApiGetComment.swift in Sources */,
 				B157E0C42A507B8000B02C8B /* FlowRoot.swift in Sources */,
@@ -2584,10 +2769,13 @@
 				CD4D57442B86772400B82964 /* ListPostLikesRequest.swift in Sources */,
 				CD4D57CB2B86772500B82964 /* ApiPostJoinResponse.swift in Sources */,
 				CD4D57452B86772400B82964 /* GetSiteMetadataRequest.swift in Sources */,
+				03E96CEA2BD6C51E00B7A98F /* buffer.c in Sources */,
 				CD4D57E42B86772500B82964 /* ApiInstanceBlockView.swift in Sources */,
 				CD4D572D2B86772400B82964 /* MarkPostAsReadRequest.swift in Sources */,
 				CD4D56F22B86772400B82964 /* CreatePrivateMessageReportRequest.swift in Sources */,
+				03E96CF52BD6C51E00B7A98F /* references.c in Sources */,
 				CD4D58E32B86E4F400B82964 /* FeedLoaderSort.swift in Sources */,
+				03E96CEF2BD6C51E00B7A98F /* houdini_href_e.c in Sources */,
 				CDA1E8422B938E6E007953EF /* Instance+CacheExtensions.swift in Sources */,
 				CDA1E8452B938F8C007953EF /* Person+CacheExtensions.swift in Sources */,
 				032145642B7A7A9D001AE07E /* ApiClient+Site.swift in Sources */,
@@ -2608,6 +2796,7 @@
 				CD4D59182B87B3B000B82964 /* UIViewController+Extensions.swift in Sources */,
 				CD4D57612B86772400B82964 /* ApiGetSiteMetadataResponse.swift in Sources */,
 				CD4D57B12B86772400B82964 /* ApiGetReportCount.swift in Sources */,
+				03E96CE82BD6C51E00B7A98F /* cmark.c in Sources */,
 				CD4D57702B86772400B82964 /* ApiModBanFromCommunity.swift in Sources */,
 				CD4D57582B86772400B82964 /* ApiCommunityFollowerView.swift in Sources */,
 				CD4D57652B86772400B82964 /* ApiPrivateMessageReport.swift in Sources */,
@@ -2616,6 +2805,7 @@
 				CD4D57F02B86772500B82964 /* ApiBlockCommunity.swift in Sources */,
 				CD4D56EF2B86772400B82964 /* ListPostReportsRequest.swift in Sources */,
 				CD4D57842B86772400B82964 /* ApiBlockCommunityResponse.swift in Sources */,
+				03FD6E2A2BD855E0007EA3C7 /* [MarkdownBlockMode]+Links.swift in Sources */,
 				CD4D573A2B86772400B82964 /* GetCaptchaRequest.swift in Sources */,
 				CD4D58032B86772500B82964 /* ApiReadableFederationState.swift in Sources */,
 				03D3A1E52BB8B7A3009DE55E /* ActionType.swift in Sources */,
@@ -2628,6 +2818,7 @@
 				030E7EDE2B7FADFE00E9A1AD /* Post2.swift in Sources */,
 				63DF71F12A02999C002AC14E /* AppConstants.swift in Sources */,
 				CD4D57262B86772400B82964 /* PurgePostRequest.swift in Sources */,
+				03E96D032BD6E46600B7A98F /* case_fold.inc in Sources */,
 				CD4D58242B86772500B82964 /* ApiResolvePostReport.swift in Sources */,
 				03D3A1D42BB88EF1009DE55E /* Action.swift in Sources */,
 				CD4D57CF2B86772500B82964 /* ApiCreateSite.swift in Sources */,
@@ -2635,6 +2826,7 @@
 				03E1E04E2B779A180009DF9F /* UserStub.swift in Sources */,
 				CD4D58122B86772500B82964 /* ApiModAddCommunityView.swift in Sources */,
 				CD4D57C22B86772400B82964 /* ApiDeleteCommunity.swift in Sources */,
+				03E96CEB2BD6C51E00B7A98F /* blocks.c in Sources */,
 				03AFBE962B6E613200F01F3C /* CommunityStub.swift in Sources */,
 				CD4D57AD2B86772400B82964 /* ApiSuccessResponse.swift in Sources */,
 				CD4D577B2B86772400B82964 /* ApiLogin.swift in Sources */,
@@ -2711,6 +2903,7 @@
 				CD4D56F02B86772400B82964 /* GetCommentsRequest.swift in Sources */,
 				CD4D57B72B86772400B82964 /* ApiEditPost.swift in Sources */,
 				CD4D57BE2B86772400B82964 /* ApiBlockPersonResponse.swift in Sources */,
+				03E96CF42BD6C51E00B7A98F /* utf8.c in Sources */,
 				CD4D58192B86772500B82964 /* ApiGetCommentsResponse.swift in Sources */,
 				CD4D57D12B86772500B82964 /* ApiModHideCommunityView.swift in Sources */,
 				CD4D57DA2B86772500B82964 /* ApiAdminPurgePerson.swift in Sources */,
@@ -2741,11 +2934,13 @@
 				CD4D58D32B86DEB000B82964 /* FeedType.swift in Sources */,
 				CD4D56F42B86772400B82964 /* BlockInstanceRequest.swift in Sources */,
 				CD4D58E52B86E58200B82964 /* String+Extensions.swift in Sources */,
+				03FD6E202BD6FC2F007EA3C7 /* UnsafeMarkdownNodeSequence.swift in Sources */,
 				CD4D57332B86772400B82964 /* MarkPrivateMessageAsReadRequest.swift in Sources */,
 				CDB7CDAE2B83CD620013E0F0 /* APICommentView+Extensions.swift in Sources */,
 				030E7EE02B7FBDF100E9A1AD /* ApiClient+Post.swift in Sources */,
 				CD4D57F62B86772500B82964 /* ApiSaveUserSettings.swift in Sources */,
 				CDA1E8562B9531E7007953EF /* ApiPostAggregates+Extensions.swift in Sources */,
+				03E96CEC2BD6C51E00B7A98F /* cmark_ctype.c in Sources */,
 				CD4D57EA2B86772500B82964 /* ApiModJoin.swift in Sources */,
 				CD4D57EF2B86772500B82964 /* ApiPurgePost.swift in Sources */,
 				B1B78D642A51D53900F72485 /* AppDelegate.swift in Sources */,
@@ -2843,6 +3038,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "Mlem/Mlem-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -2897,6 +3093,8 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OBJC_BRIDGING_HEADER = "Mlem/Mlem-Bridging-Header.h";
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "Mlem/Mlem-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -3132,14 +3330,6 @@
 				kind = branch;
 			};
 		};
-		63D24EDA2A169F12005CCA81 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/gonzalezreal/swift-markdown-ui.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
 		B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kean/Nuke";
@@ -3168,11 +3358,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 636250DA2A18111400FC59B4 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
 			productName = KeychainAccess;
-		};
-		63D24EDB2A169F12005CCA81 /* MarkdownUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 63D24EDA2A169F12005CCA81 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
-			productName = MarkdownUI;
 		};
 		B104A6D72A59BF3C00B3E725 /* Nuke */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -64,15 +64,6 @@
       }
     },
     {
-      "identity" : "swift-markdown-ui",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/gonzalezreal/swift-markdown-ui.git",
-      "state" : {
-        "revision" : "12b351a75201a8124c2f2e1f9fc6ef5cd812c0b9",
-        "version" : "2.1.0"
-      }
-    },
-    {
       "identity" : "xctest-dynamic-overlay",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
