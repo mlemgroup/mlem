@@ -77,7 +77,7 @@ struct AccountListView: View {
                     }
                     .accessibilityLabel("Add a new account.")
                     Button {
-                        appState.enterGuestMode(with: .getApiClient(for: URL(string: "https://lemmy.world")!, with: nil))
+                        appState.enterGuestMode(for: URL(string: "https://lemmy.world")!)
                         dismiss()
                     } label: {
                         Label("Enter Guest Mode", systemImage: Icons.person)
