@@ -28,11 +28,10 @@ struct ProfileView: View {
                 .padding(.horizontal, 50)
             Divider()
             MarkdownView("Text\n**strong**\n*emph*\n***strong-emph***\nn^2^ O~2~\n~~strikethrough~~\n`code`\n[Hello](https://google.com)")
-                .padding()
                 .multilineTextAlignment(.center)
             Divider()
-            MarkdownView("**This is in bold [LINK](https://google.com)^2^**")
-                .padding()
+            MarkdownView("One ![](https://sh.itjust.works/pictrs/image/fb4c11a2-f533-4b0b-8f74-466132d93c72.webp?format=webp&thumbnail=96) two")
         }
+        .fancyTabScrollCompatible()
     }
 }
