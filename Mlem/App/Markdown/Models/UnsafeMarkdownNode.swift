@@ -37,6 +37,10 @@ extension UnsafeMarkdownNode {
     var headingLevel: Int {
         Int(cmark_node_get_heading_level(self))
     }
+    
+    var title: String? {
+        cmark_node_get_title(self).map(String.init(cString:))
+    }
 }
 
 extension UnsafeMarkdownNode {

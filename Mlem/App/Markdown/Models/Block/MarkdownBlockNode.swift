@@ -8,24 +8,25 @@
 import Foundation
 
 enum MarkdownBlockNode: Hashable, MarkdownContainer {
-    case blockquote(children: [MarkdownBlockNode])
+    case blockquote(blocks: [MarkdownBlockNode])
+    case spoiler(title: String?, inlines: [MarkdownInlineNode])
     //  case bulletedList(isTight: Bool, items: [RawListItem])
     //  case numberedList(isTight: Bool, start: Int, items: [RawListItem])
     //  case taskList(isTight: Bool, items: [RawTaskListItem])
     case codeBlock(fenceInfo: String?, content: String)
-    case paragraph(content: [MarkdownInlineNode])
-    case heading(level: Int, content: [MarkdownInlineNode])
+    case paragraph(inlines: [MarkdownInlineNode])
+    case heading(level: Int, inlines: [MarkdownInlineNode])
     // case table(columnAlignments: [RawTableColumnAlignment], rows: [RawTableRow])
     case thematicBreak
     
     var children: [any MarkdownContainer] {
         switch self {
-        case let .blockquote(children):
-            return children
-        case let .paragraph(content):
-            return content
-        case let .heading(_, content):
-            return content
+        case let .blockquote(blocks):
+            return blocks
+        case let .paragraph(inlines):
+            return inlines
+        case let .heading(_, inlines):
+            return inlines
         default:
             return []
         }
@@ -36,7 +37,7 @@ extension MarkdownBlockNode {
     init?(unsafeNode: UnsafeMarkdownNode) {
         switch unsafeNode.nodeType {
         case .blockquote:
-            self = .blockquote(children: unsafeNode.children.compactMap(MarkdownBlockNode.init(unsafeNode:)))
+            self = .blockquote(blocks: unsafeNode.children.compactMap(MarkdownBlockNode.init(unsafeNode:)))
         //    case .list:
         //      if unsafeNode.children.contains(where: \.isTaskListItem) {
         //        self = .taskList(
@@ -63,17 +64,22 @@ extension MarkdownBlockNode {
         case .codeBlock:
             self = .codeBlock(fenceInfo: unsafeNode.fenceInfo, content: unsafeNode.literal ?? "")
         case .paragraph:
-            self = .paragraph(content: unsafeNode.children.compactMap(MarkdownInlineNode.init(unsafeNode:)))
+            self = .paragraph(inlines: unsafeNode.children.compactMap(MarkdownInlineNode.init(unsafeNode:)))
         case .heading:
             self = .heading(
                 level: unsafeNode.headingLevel,
-                content: unsafeNode.children.compactMap(MarkdownInlineNode.init(unsafeNode:))
+                inlines: unsafeNode.children.compactMap(MarkdownInlineNode.init(unsafeNode:))
             )
         //    case .table:
         //      self = .table(
         //        columnAlignments: unsafeNode.tableAlignments,
         //        rows: unsafeNode.children.map(RawTableRow.init(unsafeNode:))
         //      )
+        case .spoiler:
+            self = .spoiler(
+                title: unsafeNode.title,
+                inlines: unsafeNode.children.compactMap(MarkdownInlineNode.init(unsafeNode:))
+            )
         case .thematicBreak:
             self = .thematicBreak
         default:
