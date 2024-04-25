@@ -15,15 +15,17 @@ struct MarkdownSpoilerView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            HStack {
+            HStack(spacing: 12) {
                 Image(systemName: "chevron.right")
+                    .imageScale(.small)
                     .rotationEffect(.degrees(isCollapsed ? 0 : 90))
                 Text(title ?? "Spoiler")
             }
             .fontWeight(.bold)
             .foregroundStyle(.secondary)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
+            .padding(.vertical, 10)
+            .padding(.horizontal, 12)
             .background(Color(uiColor: .secondarySystemBackground))
             .onTapGesture {
                 withAnimation(.easeInOut(duration: 0.2)) {
@@ -33,12 +35,12 @@ struct MarkdownSpoilerView: View {
             
             if !isCollapsed {
                 MarkdownTextView(inlines)
-                    .padding()
+                    .padding(10)
             }
         }
-        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
         .overlay(
-            RoundedRectangle(cornerRadius: 16)
+            RoundedRectangle(cornerRadius: 12)
                 .stroke(Color(uiColor: .tertiaryLabel), lineWidth: 1)
         )
     }

@@ -10,9 +10,8 @@ import Foundation
 enum MarkdownBlockNode: Hashable, MarkdownContainer {
     case blockquote(blocks: [MarkdownBlockNode])
     case spoiler(title: String?, inlines: [MarkdownInlineNode])
-    //  case bulletedList(isTight: Bool, items: [RawListItem])
-    //  case numberedList(isTight: Bool, start: Int, items: [RawListItem])
-    //  case taskList(isTight: Bool, items: [RawTaskListItem])
+    case bulletedList(isTight: Bool, items: [MarkdownRawListItem])
+    case numberedList(isTight: Bool, start: Int, items: [MarkdownRawListItem])
     case codeBlock(fenceInfo: String?, content: String)
     case paragraph(inlines: [MarkdownInlineNode])
     case heading(level: Int, inlines: [MarkdownInlineNode])
@@ -33,34 +32,40 @@ enum MarkdownBlockNode: Hashable, MarkdownContainer {
     }
 }
 
+struct MarkdownRawListItem: Hashable {
+    let children: [MarkdownBlockNode]
+}
+
+extension MarkdownRawListItem {
+    init(unsafeNode: UnsafeMarkdownNode) {
+        guard unsafeNode.nodeType == .item else {
+            fatalError("Expected a list item but got a '\(unsafeNode.nodeType)' instead.")
+        }
+        self.init(children: unsafeNode.children.compactMap(MarkdownBlockNode.init(unsafeNode:)))
+    }
+}
+
 extension MarkdownBlockNode {
     init?(unsafeNode: UnsafeMarkdownNode) {
         switch unsafeNode.nodeType {
         case .blockquote:
             self = .blockquote(blocks: unsafeNode.children.compactMap(MarkdownBlockNode.init(unsafeNode:)))
-        //    case .list:
-        //      if unsafeNode.children.contains(where: \.isTaskListItem) {
-        //        self = .taskList(
-        //          isTight: unsafeNode.isTightList,
-        //          items: unsafeNode.children.map(RawTaskListItem.init(unsafeNode:))
-        //        )
-        //      } else {
-        //        switch unsafeNode.listType {
-        //        case CMARK_BULLET_LIST:
-        //          self = .bulletedList(
-        //            isTight: unsafeNode.isTightList,
-        //            items: unsafeNode.children.map(RawListItem.init(unsafeNode:))
-        //          )
-        //        case CMARK_ORDERED_LIST:
-        //          self = .numberedList(
-        //            isTight: unsafeNode.isTightList,
-        //            start: unsafeNode.listStart,
-        //            items: unsafeNode.children.map(RawListItem.init(unsafeNode:))
-        //          )
-        //        default:
-        //          fatalError("cmark reported a list node without a list type.")
-        //        }
-        //      }
+        case .list:
+            switch unsafeNode.listType {
+            case CMARK_BULLET_LIST:
+                self = .bulletedList(
+                    isTight: unsafeNode.isTightList,
+                    items: unsafeNode.children.map(MarkdownRawListItem.init(unsafeNode:))
+                )
+            case CMARK_ORDERED_LIST:
+                self = .numberedList(
+                    isTight: unsafeNode.isTightList,
+                    start: unsafeNode.listStart,
+                    items: unsafeNode.children.map(MarkdownRawListItem.init(unsafeNode:))
+                )
+            default:
+                fatalError("cmark reported a list node without a list type.")
+            }
         case .codeBlock:
             self = .codeBlock(fenceInfo: unsafeNode.fenceInfo, content: unsafeNode.literal ?? "")
         case .paragraph:

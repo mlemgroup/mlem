@@ -41,6 +41,18 @@ extension UnsafeMarkdownNode {
     var title: String? {
         cmark_node_get_title(self).map(String.init(cString:))
     }
+    
+    var listType: cmark_list_type {
+        cmark_node_get_list_type(self)
+    }
+
+    var listStart: Int {
+        Int(cmark_node_get_list_start(self))
+    }
+    
+    var isTightList: Bool {
+        cmark_node_get_list_tight(self) != 0
+    }
 }
 
 extension UnsafeMarkdownNode {

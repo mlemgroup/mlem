@@ -34,6 +34,7 @@ extension MarkdownInlineNode {
             )
         case .code:
             attributes.uiKit.font = UIFont.monospacedSystemFont(ofSize: font.pointSize, weight: .regular)
+            attributes.uiKit.backgroundColor = UIColor.secondarySystemBackground
         case .superscript:
             let size = UIFont.bodyPointSize / 2
             attributes.uiKit.font = font.withSize(size)

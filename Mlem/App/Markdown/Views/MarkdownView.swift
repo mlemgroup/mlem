@@ -31,6 +31,17 @@ struct MarkdownView: View {
                         blockQuote(blocks: blocks)
                     case let .spoiler(title: title, inlines: inlines):
                         MarkdownSpoilerView(title: title, inlines: inlines)
+                    case let .codeBlock(fenceInfo: _, content: content):
+                        codeBlock(content: content)
+                    case .thematicBreak:
+                        Rectangle()
+                            .fill(Color(uiColor: .secondarySystemBackground))
+                            .frame(height: 3)
+                            .frame(maxWidth: .infinity)
+                    case let .bulletedList(isTight: _, items: items):
+                        bulletedList(items: items)
+                    case let .numberedList(isTight: _, start: start, items: items):
+                        numberedList(items: items, startIndex: start)
                     default:
                         Text("???")
                     }
@@ -76,7 +87,6 @@ struct MarkdownView: View {
     @ViewBuilder
     func blockQuote(blocks: [MarkdownBlockNode]) -> some View {
         MarkdownView(blocks)
-            .foregroundStyle(.secondary)
             .padding(.leading, 15)
             .overlay(alignment: .leading) {
                 Capsule()
@@ -84,5 +94,47 @@ struct MarkdownView: View {
                     .frame(width: 5)
                     .frame(maxHeight: .infinity)
             }
+    }
+    
+    @ViewBuilder
+    func codeBlock(content: String) -> some View {
+        Text(content.trimmingCharacters(in: .newlines))
+            .monospaced()
+            .padding(10)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color(uiColor: .secondarySystemBackground))
+            )
+    }
+    
+    @ViewBuilder
+    func bulletedList(items: [MarkdownRawListItem]) -> some View {
+        VStack(spacing: 3) {
+            ForEach(Array(items.enumerated()), id: \.offset) { _, item in
+                HStack(alignment: .center, spacing: 8) {
+                    Circle()
+                        .fill(Color(uiColor: .tertiaryLabel))
+                        .frame(width: 6, height: 6)
+                    MarkdownView(item.children)
+                }
+                .frame(maxWidth: .infinity)
+            }
+        }
+        .frame(maxWidth: .infinity)
+    }
+    
+    @ViewBuilder
+    func numberedList(items: [MarkdownRawListItem], startIndex: Int = 1) -> some View {
+        VStack(spacing: 3) {
+            ForEach(Array(items.enumerated()), id: \.offset) { index, item in
+                HStack(alignment: .center, spacing: 7) {
+                    Text("\(startIndex + index).")
+                        .foregroundStyle(.secondary)
+                    MarkdownView(item.children)
+                }
+                .frame(maxWidth: .infinity)
+            }
+        }
+        .frame(maxWidth: .infinity)
     }
 }

@@ -65,6 +65,7 @@ private class MarkdownTextRenderer {
     ) {
         for node in inlines {
             if let string = node.string {
+                // swiftlint:disable:next shorthand_operator
                 currentText = currentText + AttributedString(string, attributes: node.applyAttributes(attributes))
             } else {
                 switch node {
