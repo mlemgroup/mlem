@@ -17,19 +17,14 @@ struct ContentView: View {
 
     let timer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
     
+    var appState: AppState { .main }
+    
     @State private var isPresentingAccountSwitcher: Bool = false
 
     var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
     
     var body: some View {
         content
-//            .task(id: appState.actorId) {
-//                do {
-//                    appState.myInstance = try await appState.myInstance.stub.upgrade()
-//                } catch {
-//                    errorHandler.handle(error)
-//                }
-//            }
             .onReceive(timer) { _ in
                 // print("Clearing caches...")
                 appState.cleanCaches()

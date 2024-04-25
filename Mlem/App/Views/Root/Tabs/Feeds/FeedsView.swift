@@ -54,7 +54,7 @@ struct MinimalPostFeedView: View {
                         await postTracker.loadMoreItems()
                     }
                 }
-                .task(id: appState.activeAccounts) {
+                .task(id: appState.firstApi) {
                     await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
                 }
                 .refreshable {
