@@ -14,24 +14,8 @@ struct ContentView: View {
     @Dependency(\.accountsTracker) var accountsTracker
     
     @Environment(\.scenePhase) var scenePhase
-    
-    // TODO: pass in user and instance to this view. Everything below here has User? and Instance
-    
-    @State var appState: AppState
 
     let timer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
-    
-    /// Create an authenticated content view
-    /// - Parameter user: user to create content view for
-    init(user: UserStub) {
-        self._appState = .init(initialValue: AppState(user: user))
-    }
-    
-    /// Create a guest content view
-    /// - Parameter user: user to create content view for
-    init(api: ApiClient) {
-        self._appState = .init(initialValue: .init(api: api))
-    }
     
     @State private var isPresentingAccountSwitcher: Bool = false
 
@@ -48,7 +32,7 @@ struct ContentView: View {
 //            }
             .onReceive(timer) { _ in
                 // print("Clearing caches...")
-                appState.api.cleanCaches()
+                appState.cleanCaches()
             }
             .sheet(isPresented: $isPresentingAccountSwitcher) {
                 QuickSwitcherView()

@@ -19,11 +19,14 @@ enum ApiClientError: Error {
     case cancelled
     case invalidSession
     case decoding(Data, Error?)
+    case insufficientPermissions
 }
 
 extension ApiClientError: CustomStringConvertible {
     var description: String {
         switch self {
+        case .insufficientPermissions:
+            return "Insufficient permissions. Check `ApiClient.permissions`"
         case let .encoding(error):
             return "Unable to encode: \(error)"
         case let .networking(error):

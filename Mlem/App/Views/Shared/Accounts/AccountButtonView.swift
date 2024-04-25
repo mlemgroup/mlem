@@ -32,7 +32,7 @@ struct AccountButtonView: View {
     }
     
     var timeText: String? {
-        if account.actorId == appState.actorId {
+        if account.actorId == appState.firstAccount.actorId {
             return "Now"
         }
         if let time = account.lastLoggedIn {
@@ -62,7 +62,7 @@ struct AccountButtonView: View {
     
     var body: some View {
         Button {
-            if appState.actorId != account.actorId {
+            if appState.firstAccount.actorId != account.actorId {
                 appState.changeUser(to: account)
                 dismiss()
             }
@@ -90,7 +90,7 @@ struct AccountButtonView: View {
                 }
                 .padding(.vertical, -2)
                 Spacer()
-                if appState.actorId == account.actorId {
+                if appState.firstAccount.actorId == account.actorId {
                     Image(systemName: Icons.present)
                         .foregroundStyle(.green)
                         .font(.system(size: 10.0))
@@ -100,7 +100,7 @@ struct AccountButtonView: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(
-            "\(account.fullName ?? "unknown"))\(appState.actorId == account.actorId ? ", active" : "")"
+            "\(account.fullName ?? "unknown"))\(appState.firstAccount.actorId == account.actorId ? ", active" : "")"
         )
         .swipeActions {
             Button("Sign Out") {
