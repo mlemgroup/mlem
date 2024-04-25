@@ -12,7 +12,7 @@ import SwiftUI
 struct LandingPage: View {
     @Dependency(\.accountsTracker) var accountsTracker
     
-    @Environment(\.setAppFlow) var setAppFlow
+    @Environment(AppState.self) var appState
     
     @State var instance: String = ""
     @State var username: String = ""
@@ -75,7 +75,7 @@ struct LandingPage: View {
             AppConstants.keychain["\(newAccount.id)_accessToken"] = response.jwt
             accountsTracker.addAccount(account: newAccount)
 
-            setAppFlow(.user(newAccount))
+            appState.changeUser(to: newAccount)
 //
 //            if !onboarding {
 //                dismiss()

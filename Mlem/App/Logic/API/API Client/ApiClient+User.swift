@@ -44,7 +44,7 @@ extension ApiClient {
         // TODO: should this cache? Implicitly via ApiClient?
         let request = GetSiteRequest()
         let response = try await perform(request)
-        
+
         guard let user = response.myUser else {
             throw UserError.noUserInResponse
         }

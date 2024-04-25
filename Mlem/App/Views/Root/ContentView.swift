@@ -13,24 +13,8 @@ struct ContentView: View {
     @Dependency(\.accountsTracker) var accountsTracker
     
     @Environment(\.scenePhase) var scenePhase
-    
-    // TODO: pass in user and instance to this view. Everything below here has User? and Instance
-    
-    @State var appState: AppState
 
     let timer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
-    
-    /// Create an authenticated content view
-    /// - Parameter user: user to create content view for
-    init(user: UserStub) {
-        self._appState = .init(initialValue: AppState(user: user))
-    }
-    
-    /// Create a guest content view
-    /// - Parameter user: user to create content view for
-    init(api: ApiClient) {
-        self._appState = .init(initialValue: .init(api: api))
-    }
     
     // tabs
     @State private var tabSelection: TabSelection = .feeds
@@ -40,8 +24,10 @@ struct ContentView: View {
     @State private var isPresentingAccountSwitcher: Bool = false
 
     var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
+    
+    var appState: AppState { AppState.main }
         
-    var profileTabAvatar: URL? { appState.myUser?.avatarUrl }
+    var profileTabAvatar: URL? { appState.firstAccount.userStub?.avatarUrl }
     
     var profileTabLabel: String { "Profile" }
     
@@ -56,7 +42,7 @@ struct ContentView: View {
 //            }
             .onReceive(timer) { _ in
                 // print("Clearing caches...")
-                appState.api.cleanCaches()
+                appState.cleanCaches()
             }
             .sheet(isPresented: $isPresentingAccountSwitcher) {
                 QuickSwitcherView()
@@ -113,7 +99,7 @@ struct ContentView: View {
     var accountSwitchLongPress: some Gesture {
         LongPressGesture()
             .onEnded { _ in
-                @AppStorage("allowQuickSwitcherLongPressGesture") var allowQuickSwitcherLongPressGesture: Bool = true
+                @AppStorage("allowQuickSwitcherLongPressGesture") var allowQuickSwitcherLongPressGesture = true
                 
                 // disable long press in accessibility mode to prevent conflict with HUD
 //                if !accessibilityFont {

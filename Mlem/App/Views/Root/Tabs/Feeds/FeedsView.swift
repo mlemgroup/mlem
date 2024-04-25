@@ -18,7 +18,7 @@ struct FeedsView: View {
     }
     
     var content: some View {
-        MinimalPostFeedView(initialFeedProvider: appState.api)
+        MinimalPostFeedView()
     }
 }
 
@@ -29,7 +29,7 @@ struct MinimalPostFeedView: View {
     
     @State var postTracker: StandardPostTracker
     
-    init(initialFeedProvider: any PostFeedProvider) {
+    init() {
         // need to grab some stuff from app storage to initialize with
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
@@ -40,7 +40,7 @@ struct MinimalPostFeedView: View {
             internetSpeed: internetSpeed,
             sortType: defaultPostSorting,
             showReadPosts: showReadPosts,
-            feedType: .aggregateFeed(initialFeedProvider, type: .subscribed)
+            feedType: .aggregateFeed(AppState.main.firstApi, type: .subscribed)
         ))
     }
     
@@ -52,8 +52,8 @@ struct MinimalPostFeedView: View {
                 .task {
                     await postTracker.loadMoreItems()
                 }
-                .task(id: appState.actorId) {
-                    await postTracker.changeFeedType(to: .aggregateFeed(appState.api, type: .subscribed))
+                .task(id: appState.activeAccounts) {
+                    await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
                 }
                 .refreshable {
                     do {
@@ -68,7 +68,7 @@ struct MinimalPostFeedView: View {
     // This is a proof-of-concept; in the real frontend this code will go in InteractionBarView
     @ViewBuilder
     func actionButton(_ action: BasicAction) -> some View {
-        Button(action: action.callback ?? { }) {
+        Button(action: action.callback ?? {}) {
             Image(systemName: action.barIcon)
                 .foregroundColor(action.isOn ? .white : .primary)
                 .padding(2)
@@ -79,6 +79,7 @@ struct MinimalPostFeedView: View {
         }
         .buttonStyle(EmptyButtonStyle())
         .disabled(action.callback == nil)
+        .opacity(action.callback == nil ? 0.5 : 1)
     }
     
     @ViewBuilder

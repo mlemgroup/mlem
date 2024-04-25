@@ -8,7 +8,11 @@
 import Combine
 import Foundation
 
-class ApiClient: ActorIdentifiable, CacheIdentifiable {
+class ApiClient {
+    enum RequestPermissions {
+        case all, getOnly, none
+    }
+    
     let decoder: JSONDecoder = .defaultDecoder
     let urlSession: URLSession = .init(configuration: .default)
     
@@ -16,17 +20,32 @@ class ApiClient: ActorIdentifiable, CacheIdentifiable {
     let baseUrl: URL
     let endpointUrl: URL
     let token: String?
-    var version: SiteVersion?
+    private(set) var fetchedVersion: SiteVersion?
+    private var fetchSiteTask: Task<SiteVersion, Error>?
     
-    // CacheIdentifiable, ActorIdentifiable conformance
-    var cacheId: Int {
-        var hasher: Hasher = .init()
-        hasher.combine(baseUrl)
-        hasher.combine(token)
-        return hasher.finalize()
+    /// When `true`, the token will not be attatched to any API requests. This is useful for ensuring that inactive accounts don't accidentally make requests
+    var permissions: RequestPermissions = .all
+    
+    var willSendToken: Bool { permissions == .all && token != nil }
+    
+    weak var myInstance: Instance3?
+    weak var myUser: User?
+    
+    /// Returns the `fetchedVersion` if the version has already been fetched. Otherwise, waits until the version has been fetched before returning the received value.
+    var version: SiteVersion? {
+        get async {
+            if let fetchedVersion {
+                return fetchedVersion
+            } else {
+                if let fetchSiteTask {
+                    let result = await fetchSiteTask.result
+                    return try? result.get()
+                } else {
+                    return try? await fetchSiteVersion()
+                }
+            }
+        }
     }
-
-    var actorId: URL { baseUrl }
     
     // MARK: caching
     
@@ -44,23 +63,26 @@ class ApiClient: ActorIdentifiable, CacheIdentifiable {
     }
     
     /// Creates or retrieves an API client for the given connection parameters
-    static func getApiClient(for url: URL, with token: String?) throws -> ApiClient {
-        try apiClientCache.createOrRetrieveApiClient(for: url, with: token)
+    static func getApiClient(for url: URL, with token: String?) -> ApiClient {
+        apiClientCache.createOrRetrieveApiClient(for: url, with: token)
     }
     
     /// Creates a new API Client. Private because it should never be used outside of ApiClientCache, as the caching system depends on one ApiClient existing for any given session
-    private init(baseUrl: URL, token: String? = nil) throws {
+    private init(baseUrl: URL, token: String? = nil, permissions: RequestPermissions = .all) {
         self.baseUrl = baseUrl
         self.endpointUrl = baseUrl.appendingPathComponent("api/v3")
         self.token = token
-        
-        Task {
-            do {
-                self.version = try await .init(getSite().version)
-            } catch {
-                print("Failed to resolve version! \(error)")
-            }
-        }
+        self.permissions = permissions
+    }
+    
+    @discardableResult
+    func fetchSiteVersion(task: Task<SiteVersion, Error>? = nil) async throws -> SiteVersion {
+        let task = task ?? fetchSiteTask ?? Task { try await getSite().version }
+        fetchSiteTask = task
+        let result = await task.result
+        let version = try result.get()
+        fetchedVersion = version
+        return version
     }
     
     @discardableResult
@@ -108,9 +130,10 @@ class ApiClient: ActorIdentifiable, CacheIdentifiable {
     }
 
     func urlRequest(from definition: any ApiRequest) throws -> URLRequest {
+        guard permissions != .none else { throw ApiClientError.insufficientPermissions }
         let url = definition.endpoint(base: endpointUrl)
         var urlRequest = URLRequest(url: url)
-        definition.headers.forEach { header in
+        for header in definition.headers {
             urlRequest.setValue(header.value, forHTTPHeaderField: header.key)
         }
         
@@ -124,7 +147,7 @@ class ApiClient: ActorIdentifiable, CacheIdentifiable {
             urlRequest.httpBody = try createBodyData(for: putDefinition)
         }
 
-        if let token {
+        if let token, permissions == .all {
             // TODO: 0.18 deprecation remove this
             urlRequest.url?.append(queryItems: [.init(name: "auth", value: token)])
             
@@ -154,6 +177,19 @@ class ApiClient: ActorIdentifiable, CacheIdentifiable {
     }
 }
 
+extension ApiClient: CacheIdentifiable {
+    var cacheId: Int {
+        var hasher: Hasher = .init()
+        hasher.combine(baseUrl)
+        hasher.combine(token)
+        return hasher.finalize()
+    }
+}
+
+extension ApiClient: ActorIdentifiable {
+    var actorId: URL { baseUrl }
+}
+
 // MARK: ApiClientCache
 
 // This needs to be declared in this file to have access to the private initializer
@@ -161,7 +197,7 @@ class ApiClient: ActorIdentifiable, CacheIdentifiable {
 extension ApiClient {
     /// Cache for ApiClient--exception case because there's no ApiType and it may need to perform ApiClient bootstrapping
     class ApiClientCache: CoreCache<ApiClient> {
-        func createOrRetrieveApiClient(for baseUrl: URL, with token: String?) throws -> ApiClient {
+        func createOrRetrieveApiClient(for baseUrl: URL, with token: String?) -> ApiClient {
             let cacheId: Int = {
                 var hasher: Hasher = .init()
                 hasher.combine(baseUrl)
@@ -173,7 +209,7 @@ extension ApiClient {
                 return client
             }
             
-            let ret: ApiClient = try .init(baseUrl: baseUrl, token: token)
+            let ret: ApiClient = .init(baseUrl: baseUrl, token: token)
             cachedItems[ret.cacheId] = .init(content: ret)
             return ret
         }

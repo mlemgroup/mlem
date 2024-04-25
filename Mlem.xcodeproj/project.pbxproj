@@ -486,7 +486,6 @@
 		CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591F2B87B63300B82964 /* SettingsOptions.swift */; };
 		CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8202B8FC411007953EF /* LandingPage.swift */; };
 		CDA1E8232B8FCECB007953EF /* PostFeedProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8222B8FCECB007953EF /* PostFeedProvider.swift */; };
-		CDA1E8252B90EF18007953EF /* EnvironmentValues+AppFlowSetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8242B90EF18007953EF /* EnvironmentValues+AppFlowSetter.swift */; };
 		CDA1E8272B90EF24007953EF /* AppFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8262B90EF24007953EF /* AppFlow.swift */; };
 		CDA1E8292B924F4C007953EF /* ApiClient+Caches.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8282B924F4C007953EF /* ApiClient+Caches.swift */; };
 		CDA1E82E2B926531007953EF /* CoreCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E82D2B926531007953EF /* CoreCache.swift */; };
@@ -1025,7 +1024,6 @@
 		CD4D591F2B87B63300B82964 /* SettingsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOptions.swift; sourceTree = "<group>"; };
 		CDA1E8202B8FC411007953EF /* LandingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPage.swift; sourceTree = "<group>"; };
 		CDA1E8222B8FCECB007953EF /* PostFeedProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFeedProvider.swift; sourceTree = "<group>"; };
-		CDA1E8242B90EF18007953EF /* EnvironmentValues+AppFlowSetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+AppFlowSetter.swift"; sourceTree = "<group>"; };
 		CDA1E8262B90EF24007953EF /* AppFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlow.swift; sourceTree = "<group>"; };
 		CDA1E8282B924F4C007953EF /* ApiClient+Caches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiClient+Caches.swift"; sourceTree = "<group>"; };
 		CDA1E82D2B926531007953EF /* CoreCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreCache.swift; sourceTree = "<group>"; };
@@ -1775,7 +1773,6 @@
 			children = (
 				CD4D58982B86BB0300B82964 /* EnvironmentValues+TabSelectionHashValue.swift */,
 				CD4D58962B86BAD900B82964 /* EnvironmentValues+TabReselectionHashValue.swift */,
-				CDA1E8242B90EF18007953EF /* EnvironmentValues+AppFlowSetter.swift */,
 			);
 			path = EnvironmentValues;
 			sourceTree = "<group>";
@@ -2628,7 +2625,6 @@
 				CD4D57222B86772400B82964 /* GetSiteRequest.swift in Sources */,
 				CD4D57182B86772400B82964 /* DeleteCustomEmojiRequest.swift in Sources */,
 				CD4D58042B86772500B82964 /* ApiGetReportCountResponse.swift in Sources */,
-				CDA1E8252B90EF18007953EF /* EnvironmentValues+AppFlowSetter.swift in Sources */,
 				CD4D59182B87B3B000B82964 /* UIViewController+Extensions.swift in Sources */,
 				CD4D57612B86772400B82964 /* ApiGetSiteMetadataResponse.swift in Sources */,
 				CD4D57B12B86772400B82964 /* ApiGetReportCount.swift in Sources */,

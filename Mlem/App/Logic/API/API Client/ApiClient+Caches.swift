@@ -32,6 +32,9 @@ extension ApiClient {
         var post1: Post1Cache
         var post2: Post2Cache
         
+        // We can only create a User for the logged-in account at the moment, so we only need one
+        weak var user: User?
+        
         init() {
             self.instance1 = .init()
             self.person1 = .init()
