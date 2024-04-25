@@ -11,8 +11,11 @@ extension [MarkdownBlockNode] {
     var links: [(title: [MarkdownInlineNode], url: URL)] {
         var ret: [(title: [MarkdownInlineNode], url: URL)] = .init()
         var stack: [any MarkdownContainer] = self
-        while let node = stack.popLast() {
-            stack.append(contentsOf: node.children)
+        while !stack.isEmpty {
+            let node = stack.removeFirst()
+            if node.searchChildrenForLinks {
+                stack.append(contentsOf: node.children)
+            }
             if case let MarkdownInlineNode.link(destination: destination, children: children) = node {
                 if let url = URL(string: destination) {
                     ret.append((title: children, url: url))

@@ -46,6 +46,7 @@ static bool S_can_contain(cmark_node *node, cmark_node *child) {
   switch (node->type) {
   case CMARK_NODE_DOCUMENT:
   case CMARK_NODE_BLOCK_QUOTE:
+  case CMARK_NODE_SPOILER:
   case CMARK_NODE_ITEM:
     return S_is_block(child) && child->type != CMARK_NODE_ITEM;
 
@@ -53,7 +54,6 @@ static bool S_can_contain(cmark_node *node, cmark_node *child) {
     return child->type == CMARK_NODE_ITEM;
 
   case CMARK_NODE_CUSTOM_BLOCK:
-  case CMARK_NODE_SPOILER:
     return true;
 
   case CMARK_NODE_PARAGRAPH:

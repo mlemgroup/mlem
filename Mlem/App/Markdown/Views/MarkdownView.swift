@@ -29,8 +29,8 @@ struct MarkdownView: View {
                         heading(level: level, inlines: inlines)
                     case let .blockquote(blocks: blocks):
                         blockQuote(blocks: blocks)
-                    case let .spoiler(title: title, inlines: inlines):
-                        MarkdownSpoilerView(title: title, inlines: inlines)
+                    case let .spoiler(title: title, blocks: blocks):
+                        MarkdownSpoilerView(title: title, blocks: blocks)
                     case let .codeBlock(fenceInfo: _, content: content):
                         codeBlock(content: content)
                     case .thematicBreak:
@@ -98,13 +98,13 @@ struct MarkdownView: View {
     
     @ViewBuilder
     func codeBlock(content: String) -> some View {
-        Text(content.trimmingCharacters(in: .newlines))
-            .monospaced()
-            .padding(10)
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(Color(uiColor: .secondarySystemBackground))
-            )
+        ScrollView(.horizontal) {
+            Text(content.trimmingCharacters(in: .newlines))
+                .monospaced()
+                .padding(10)
+        }
+        .background(Color(uiColor: .secondarySystemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 8))
     }
     
     @ViewBuilder
@@ -115,7 +115,7 @@ struct MarkdownView: View {
                     Circle()
                         .fill(Color(uiColor: .tertiaryLabel))
                         .frame(width: 6, height: 6)
-                    MarkdownView(item.children)
+                    MarkdownView(item.blocks)
                 }
                 .frame(maxWidth: .infinity)
             }
@@ -130,7 +130,7 @@ struct MarkdownView: View {
                 HStack(alignment: .center, spacing: 7) {
                     Text("\(startIndex + index).")
                         .foregroundStyle(.secondary)
-                    MarkdownView(item.children)
+                    MarkdownView(item.blocks)
                 }
                 .frame(maxWidth: .infinity)
             }

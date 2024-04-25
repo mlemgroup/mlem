@@ -66,4 +66,10 @@ extension UnsafeMarkdownNode {
         
         return document.children.compactMap(MarkdownBlockNode.init(unsafeNode:))
     }
+    
+    static func parseInlinesOnly(markdown: String) -> [MarkdownInlineNode]? {
+        let blocks = UnsafeMarkdownNode.parseMarkdown(markdown: markdown)
+        guard let paragraph = blocks?.first else { return nil }
+        return paragraph.children as? [MarkdownInlineNode] ?? nil
+    }
 }

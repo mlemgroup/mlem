@@ -171,13 +171,12 @@ static inline bool can_contain(cmark_node_type parent_type,
 
 static inline bool accepts_lines(cmark_node_type block_type) {
   return (block_type == CMARK_NODE_PARAGRAPH ||
-          block_type == CMARK_NODE_SPOILER ||
           block_type == CMARK_NODE_HEADING ||
           block_type == CMARK_NODE_CODE_BLOCK);
 }
 
 static inline bool contains_inlines(cmark_node_type block_type) {
-  return (block_type == CMARK_NODE_PARAGRAPH || block_type == CMARK_NODE_SPOILER ||
+  return (block_type == CMARK_NODE_PARAGRAPH ||
           block_type == CMARK_NODE_HEADING);
 }
 
@@ -270,7 +269,7 @@ static cmark_node *finalize(cmark_parser *parser, cmark_node *b) {
     // end of input - line number has not been incremented
     b->end_line = parser->line_number;
     b->end_column = parser->last_line_length;
-  } else if (S_type(b) == CMARK_NODE_DOCUMENT || S_type(b) == CMARK_NODE_SPOILER ||
+  } else if (S_type(b) == CMARK_NODE_DOCUMENT ||
              (S_type(b) == CMARK_NODE_CODE_BLOCK && b->as.code.fenced) ||
              (S_type(b) == CMARK_NODE_HEADING && b->as.heading.setext)) {
     b->end_line = parser->line_number;
@@ -328,36 +327,6 @@ static cmark_node *finalize(cmark_parser *parser, cmark_node *b) {
         pos += 1;
       cmark_strbuf_drop(node_content, pos);
     }
-    b->len = node_content->size;
-    b->data = cmark_strbuf_detach(node_content);
-    break;
-
-  case CMARK_NODE_SPOILER:
-    // first line of contents becomes title
-    for (pos = 0; pos < node_content->size; ++pos) {
-      if (S_is_line_end_char(node_content->ptr[pos]))
-        break;
-    }
-    assert(pos < node_content->size);
-
-    if (pos == 0) {
-      b->as.spoiler.title = NULL;
-    } else {
-      cmark_strbuf tmp = CMARK_BUF_INIT(parser->mem);
-      houdini_unescape_html_f(&tmp, node_content->ptr, pos);
-      cmark_strbuf_trim(&tmp);
-      cmark_strbuf_drop(&tmp, 7);
-      cmark_strbuf_trim(&tmp);
-      cmark_strbuf_unescape(&tmp);
-      b->as.spoiler.title = cmark_strbuf_detach(&tmp);
-    }
-
-    if (node_content->ptr[pos] == '\r')
-      pos += 1;
-    if (node_content->ptr[pos] == '\n')
-      pos += 1;
-    cmark_strbuf_drop(node_content, pos);
-
     b->len = node_content->size;
     b->data = cmark_strbuf_detach(node_content);
     break;
@@ -851,8 +820,7 @@ static bool parse_node_item_prefix(cmark_parser *parser, cmark_chunk *input,
 }
 
 static bool parse_spoiler_prefix(cmark_parser *parser, cmark_chunk *input,
-                                 cmark_node *container,
-                                 bool *should_continue) {
+                                 cmark_node *container) {
   bool res = false;
   bufsize_t matched = 0;
 
@@ -861,14 +829,11 @@ static bool parse_spoiler_prefix(cmark_parser *parser, cmark_chunk *input,
   }
 
   if (matched >= container->as.spoiler.fence_length) {
-    // closing fence - and since we're at
-    // the end of a line, we can stop processing it:
-    *should_continue = false;
+    // closing fence
     S_advance_offset(parser, input, matched, false);
-    parser->current = finalize(parser, container);
   } else {
     // skip opt. spaces of fence parser->offset
-    int i = container->as.code.fence_offset;
+    int i = container->as.spoiler.fence_offset;
 
     while (i > 0 && S_is_space_or_tab(peek_at(input, parser->offset))) {
       S_advance_offset(parser, input, 1, true);
@@ -981,7 +946,7 @@ static cmark_node *check_open_blocks(cmark_parser *parser, cmark_chunk *input,
         goto done;
       break;
     case CMARK_NODE_SPOILER:
-      if (!parse_spoiler_prefix(parser, input, container, &should_continue))
+      if (!parse_spoiler_prefix(parser, input, container))
         goto done;
       break;
     case CMARK_NODE_HEADING:
@@ -1084,10 +1049,35 @@ static void open_new_blocks(cmark_parser *parser, cmark_node **container,
       (*container)->as.spoiler.fence_length = (matched > 255) ? 255 : matched;
       (*container)->as.spoiler.fence_offset =
           (int8_t)(parser->first_nonspace - parser->offset);
-      (*container)->as.spoiler.title = NULL;
       S_advance_offset(parser, input,
                        parser->first_nonspace + matched - parser->offset,
                        false);
+
+      int8_t pos = 0;
+      while (!S_is_line_end_char(peek_at(input, parser->offset + pos))) {
+        // S_advance_offset(parser, input, 1, true);
+        pos++;
+      }
+
+      cmark_strbuf tmp = CMARK_BUF_INIT(parser->mem);
+
+      cmark_strbuf *node_content = &parser->curline;
+
+      int8_t prefix = (*container)->as.spoiler.fence_length + (*container)->as.spoiler.fence_offset;
+      houdini_unescape_html_f(&tmp, node_content->ptr, prefix + pos);
+      cmark_strbuf_drop(&tmp, prefix);
+      cmark_strbuf_trim(&tmp);
+      cmark_strbuf_drop(&tmp, 7);
+      cmark_strbuf_trim(&tmp);
+      cmark_strbuf_unescape(&tmp);
+      (*container)->as.spoiler.title = cmark_strbuf_detach(&tmp);
+      if (node_content->ptr[pos] == '\r')
+        pos += 1;
+      if (node_content->ptr[pos] == '\n')
+        pos += 1;
+      cmark_strbuf_drop(node_content, pos);
+      parser->line_number ++;
+
     } else if (!indented && cont_type == CMARK_NODE_PARAGRAPH &&
                (lev =
                     scan_setext_heading_line(input, parser->first_nonspace))) {
@@ -1209,7 +1199,7 @@ static void add_text_to_container(cmark_parser *parser, cmark_node *container,
   // on an empty list item.
   const cmark_node_type ctype = S_type(container);
   const bool last_line_blank =
-      (parser->blank && ctype != CMARK_NODE_BLOCK_QUOTE &&
+      (parser->blank && ctype != CMARK_NODE_BLOCK_QUOTE && ctype != CMARK_NODE_SPOILER &&
        ctype != CMARK_NODE_HEADING && ctype != CMARK_NODE_THEMATIC_BREAK &&
        !(ctype == CMARK_NODE_CODE_BLOCK && container->as.code.fenced) &&
        !(ctype == CMARK_NODE_ITEM && container->first_child == NULL &&

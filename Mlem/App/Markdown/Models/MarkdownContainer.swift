@@ -9,4 +9,5 @@ import Foundation
 
 protocol MarkdownContainer {
     var children: [any MarkdownContainer] { get }
+    var searchChildrenForLinks: Bool { get }
 }

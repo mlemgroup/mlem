@@ -9,7 +9,7 @@ import Foundation
 
 enum MarkdownBlockNode: Hashable, MarkdownContainer {
     case blockquote(blocks: [MarkdownBlockNode])
-    case spoiler(title: String?, inlines: [MarkdownInlineNode])
+    case spoiler(title: String?, blocks: [MarkdownBlockNode])
     case bulletedList(isTight: Bool, items: [MarkdownRawListItem])
     case numberedList(isTight: Bool, start: Int, items: [MarkdownRawListItem])
     case codeBlock(fenceInfo: String?, content: String)
@@ -26,14 +26,33 @@ enum MarkdownBlockNode: Hashable, MarkdownContainer {
             return inlines
         case let .heading(_, inlines):
             return inlines
+        case let .spoiler(_, blocks: blocks):
+            return blocks
+        case let .bulletedList(_, items: items):
+            return items
+        case let .numberedList(_, _, items: items):
+            return items
         default:
             return []
         }
     }
+    
+    var searchChildrenForLinks: Bool {
+        switch self {
+        case .spoiler:
+            false
+        default:
+            true
+        }
+    }
 }
 
-struct MarkdownRawListItem: Hashable {
-    let children: [MarkdownBlockNode]
+struct MarkdownRawListItem: Hashable, MarkdownContainer {
+    var searchChildrenForLinks: Bool { true }
+    
+    let blocks: [MarkdownBlockNode]
+    
+    var children: [MarkdownContainer] { blocks }
 }
 
 extension MarkdownRawListItem {
@@ -41,11 +60,12 @@ extension MarkdownRawListItem {
         guard unsafeNode.nodeType == .item else {
             fatalError("Expected a list item but got a '\(unsafeNode.nodeType)' instead.")
         }
-        self.init(children: unsafeNode.children.compactMap(MarkdownBlockNode.init(unsafeNode:)))
+        self.init(blocks: unsafeNode.children.compactMap(MarkdownBlockNode.init(unsafeNode:)))
     }
 }
 
 extension MarkdownBlockNode {
+    // swiftlint:disable:next cyclomatic_complexity
     init?(unsafeNode: UnsafeMarkdownNode) {
         switch unsafeNode.nodeType {
         case .blockquote:
@@ -64,7 +84,8 @@ extension MarkdownBlockNode {
                     items: unsafeNode.children.map(MarkdownRawListItem.init(unsafeNode:))
                 )
             default:
-                fatalError("cmark reported a list node without a list type.")
+                assertionFailure("cmark reported a list node without a list type.")
+                self = .paragraph(inlines: [.text("???")])
             }
         case .codeBlock:
             self = .codeBlock(fenceInfo: unsafeNode.fenceInfo, content: unsafeNode.literal ?? "")
@@ -83,7 +104,7 @@ extension MarkdownBlockNode {
         case .spoiler:
             self = .spoiler(
                 title: unsafeNode.title,
-                inlines: unsafeNode.children.compactMap(MarkdownInlineNode.init(unsafeNode:))
+                blocks: unsafeNode.children.compactMap(MarkdownBlockNode.init(unsafeNode:))
             )
         case .thematicBreak:
             self = .thematicBreak

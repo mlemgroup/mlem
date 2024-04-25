@@ -40,6 +40,7 @@
 		0321457F2B7F8971001AE07E /* CommunityOrPersonStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321457E2B7F8971001AE07E /* CommunityOrPersonStub.swift */; };
 		036CC3A82B812DA10098B6A1 /* ApiClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CC3A72B812DA10098B6A1 /* ApiClientError.swift */; };
 		036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CC3AE2B8145C30098B6A1 /* AppState.swift */; };
+		0373863E2BDABBCD007492B5 /* MarkdownTextRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0373863D2BDABBCD007492B5 /* MarkdownTextRenderer.swift */; };
 		03A1B3F72A84000400AB0DE0 /* APIContentAggregatesProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A1B3F62A84000400AB0DE0 /* APIContentAggregatesProtocol.swift */; };
 		03A1B3F92A8400DD00AB0DE0 /* APIContentViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A1B3F82A8400DD00AB0DE0 /* APIContentViewProtocol.swift */; };
 		03AFBE962B6E613200F01F3C /* CommunityStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFBE952B6E613200F01F3C /* CommunityStub.swift */; };
@@ -608,6 +609,7 @@
 		0321457E2B7F8971001AE07E /* CommunityOrPersonStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityOrPersonStub.swift; sourceTree = "<group>"; };
 		036CC3A72B812DA10098B6A1 /* ApiClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClientError.swift; sourceTree = "<group>"; };
 		036CC3AE2B8145C30098B6A1 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		0373863D2BDABBCD007492B5 /* MarkdownTextRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownTextRenderer.swift; sourceTree = "<group>"; };
 		03A1B3F62A84000400AB0DE0 /* APIContentAggregatesProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContentAggregatesProtocol.swift; sourceTree = "<group>"; };
 		03A1B3F82A8400DD00AB0DE0 /* APIContentViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContentViewProtocol.swift; sourceTree = "<group>"; };
 		03AFBE952B6E613200F01F3C /* CommunityStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityStub.swift; sourceTree = "<group>"; };
@@ -1311,6 +1313,7 @@
 				03E96D052BD6EA2000B7A98F /* UnsafeMarkdownNode.swift */,
 				03FD6E1D2BD6FBB7007EA3C7 /* MarkdownNodeType.swift */,
 				03FD6E272BD85381007EA3C7 /* MarkdownContainer.swift */,
+				0373863D2BDABBCD007492B5 /* MarkdownTextRenderer.swift */,
 				03FD6E362BD868F1007EA3C7 /* Block */,
 				03FD6E352BD868DB007EA3C7 /* Inline */,
 			);
@@ -2613,6 +2616,7 @@
 				CDB7CDB42B83D36E0013E0F0 /* APISite+Extensions.swift in Sources */,
 				03D3A1DF2BB89F21009DE55E /* Actionable.swift in Sources */,
 				CD4D58352B86772500B82964 /* ApiGetPosts.swift in Sources */,
+				0373863E2BDABBCD007492B5 /* MarkdownTextRenderer.swift in Sources */,
 				CD4D58BB2B86DA7D00B82964 /* AccountListView+Logic.swift in Sources */,
 				CD4D578B2B86772400B82964 /* ApiPostReport.swift in Sources */,
 				CD4D58742B86B4AA00B82964 /* AccountsTracker+Dependency.swift in Sources */,

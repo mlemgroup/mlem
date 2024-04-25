@@ -10,8 +10,17 @@ import SwiftUI
 struct MarkdownSpoilerView: View {
     @State var isCollapsed: Bool = true
     
-    let title: String?
-    let inlines: [MarkdownInlineNode]
+    let titleInlines: [MarkdownInlineNode]
+    let blocks: [MarkdownBlockNode]
+    
+    init(title: String?, blocks: [MarkdownBlockNode]) {
+        if let title {
+            self.titleInlines = UnsafeMarkdownNode.parseInlinesOnly(markdown: title) ?? [.text("Spoiler")]
+        } else {
+            self.titleInlines = [.text("Spoiler")]
+        }
+        self.blocks = blocks
+    }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -19,7 +28,7 @@ struct MarkdownSpoilerView: View {
                 Image(systemName: "chevron.right")
                     .imageScale(.small)
                     .rotationEffect(.degrees(isCollapsed ? 0 : 90))
-                Text(title ?? "Spoiler")
+                MarkdownTextView(titleInlines)
             }
             .fontWeight(.bold)
             .foregroundStyle(.secondary)
@@ -34,7 +43,7 @@ struct MarkdownSpoilerView: View {
             }
             
             if !isCollapsed {
-                MarkdownTextView(inlines)
+                MarkdownView(blocks)
                     .padding(10)
             }
         }

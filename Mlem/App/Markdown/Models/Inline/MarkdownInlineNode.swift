@@ -50,13 +50,15 @@ enum MarkdownInlineNode: Hashable, MarkdownContainer {
         case let .code(string):
             return string
         case .softBreak:
-            return "\n"
+            return " "
         case .lineBreak:
             return "\n"
         default:
             return nil
         }
     }
+    
+    var searchChildrenForLinks: Bool { true }
 }
 
 extension MarkdownInlineNode {
