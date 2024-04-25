@@ -33,7 +33,7 @@ struct ProfileView: View {
                 Toggle("Upvote On Save", isOn: $upvoteOnSave)
                     .padding(.horizontal, 50)
                 Divider()
-                MarkdownView(markdown)
+                Markdown(markdown)
                     .padding()
                 Divider()
             }
