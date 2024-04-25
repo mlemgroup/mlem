@@ -29,16 +29,12 @@ enum MarkdownNodeType: String {
     case spoiler
     case superscript = "super"
     case `subscript` = "sub"
+    case strikethrough = "strike"
     case inlineAttributes = "attribute"
     case none = "NONE"
     case unknown = "<unknown>"
-
-    // Extensions
-
-    case strikethrough = "strike"
-    case table
-    case tableHead = "table_header"
-    case tableRow = "table_row"
-    case tableCell = "table_cell"
-    case taskListItem = "tasklist"
+//    case table
+//    case tableHead = "table_header"
+//    case tableRow = "table_row"
+//    case tableCell = "table_cell"
 }
