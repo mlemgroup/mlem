@@ -118,22 +118,24 @@ struct CommentBodyView: View {
             
             // comment text or placeholder
             Group {
-                if commentView.comment.deleted {
-                    Text("Comment was deleted")
-                        .italic()
-                        .foregroundColor(.secondary)
-                } else if commentView.comment.removed {
-                    Text("Comment was removed")
-                        .italic()
-                        .foregroundColor(.secondary)
-                } else if !isCollapsed {
-                    MarkdownView(text: commentView.comment.content, isNsfw: commentView.post.nsfw)
-                        .frame(maxWidth: .infinity, alignment: .topLeading)
-                        .transition(.markdownView())
-                    
-                    if easyTapLinkDisplayMode != .disabled {
-                        ForEach(links) { link in
-                            EasyTapLinkView(linkType: link, showCaption: showLinkCaptions)
+                if !isCollapsed {
+                    if commentView.comment.deleted {
+                        Text("Comment was deleted")
+                            .italic()
+                            .foregroundColor(.secondary)
+                    } else if commentView.comment.removed {
+                        Text("Comment was removed")
+                            .italic()
+                            .foregroundColor(.secondary)
+                    } else {
+                        MarkdownView(text: commentView.comment.content, isNsfw: commentView.post.nsfw)
+                            .frame(maxWidth: .infinity, alignment: .topLeading)
+                            .transition(.markdownView())
+                        
+                        if easyTapLinkDisplayMode != .disabled {
+                            ForEach(links) { link in
+                                EasyTapLinkView(linkType: link, showCaption: showLinkCaptions)
+                            }
                         }
                     }
                 }
