@@ -28,6 +28,6 @@ struct PurgePersonRequest: APIPostRequest {
         self.body = .init(
             person_id: personId,
             reason: reason
-      )
+        )
     }
 }

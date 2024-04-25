@@ -61,8 +61,8 @@ extension UserView {
                 authoredContent = try await personRepository.loadUserDetails(for: user.userId, limit: internetSpeed.pageSize)
             }
              
-            self.user.update(with: authoredContent)
-            self.user.isAdmin = user.isAdmin
+            user.update(with: authoredContent)
+            user.isAdmin = user.isAdmin
             
             communityTracker.replaceAll(with: user.moderatedCommunities ?? [])
             

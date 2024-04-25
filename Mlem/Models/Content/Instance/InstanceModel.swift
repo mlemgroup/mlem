@@ -220,7 +220,7 @@ struct InstanceModel {
         let externalClient = APIClient(
             transport: { urlSession, urlRequest in try await urlSession.data(for: urlRequest) }
         )
-        externalClient.session = .unauthenticated(self.url.appendingPathComponent("api/v3"))
+        externalClient.session = .unauthenticated(url.appendingPathComponent("api/v3"))
         let response = try await externalClient.loadPosts(
             communityId: nil,
             page: 1,

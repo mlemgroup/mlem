@@ -5,9 +5,9 @@
 //  Created by Sjmarf on 03/03/2024.
 //
 
+import Dependencies
 import SwiftUI
 import SwiftUIIntrospect
-import Dependencies
 
 struct SelectTextView: View {
     @Dependency(\.hapticManager) var hapticManager

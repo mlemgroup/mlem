@@ -11,9 +11,9 @@ import Photos
 
 class ImageSaver: NSObject {
     func writeToPhotoAlbum(imageData: Data) async throws {
-        try await PHPhotoLibrary.shared().performChanges({
+        try await PHPhotoLibrary.shared().performChanges {
             let creationRequest = PHAssetCreationRequest.forAsset()
             creationRequest.addResource(with: .photo, data: imageData, options: nil)
-        })
+        }
     }
 }

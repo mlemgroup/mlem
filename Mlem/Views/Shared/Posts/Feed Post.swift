@@ -148,15 +148,29 @@ struct FeedPost: View {
             with: ConcreteEditorModel(post: postModel, operation: PostOperation.replyToPost)
         )
     }
+    
+    /// Render read pinned posts in less "in-your-face" way.
+    private var renderPinnedAsCompact: Bool {
+        /// Only render pinned posts in compact size in Community feed, ignore this behaviour in other feed types (e.g. Aggregate). [2024.01]
+        guard case .community = postTracker?.feedType else {
+            return false
+        }
+        return postModel.read && (postModel.post.featuredLocal || postModel.post.featuredCommunity)
+    }
+    
+    @ViewBuilder
+    private var compactPost: some View {
+        CompactPost(
+            post: postModel,
+            postTracker: postTracker,
+            showCommunity: showCommunity
+        )
+    }
 
     @ViewBuilder
     var postItem: some View {
-        if postSize == .compact {
-            CompactPost(
-                post: postModel,
-                postTracker: postTracker,
-                showCommunity: showCommunity
-            )
+        if postSize == .compact || renderPinnedAsCompact {
+            compactPost
         } else {
             VStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {

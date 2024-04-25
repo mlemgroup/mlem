@@ -17,9 +17,9 @@ struct LayoutWidgetGroups {
 extension LayoutWidgetGroups: Codable {
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        post = (try? values.decode([LayoutWidgetType].self, forKey: .post)) ?? LayoutWidgetType.defaultPostWidgets
-        comment = (try? values.decode([LayoutWidgetType].self, forKey: .comment)) ?? LayoutWidgetType.defaultCommentWidgets
-        moderator = (try? values.decode([LayoutWidgetType].self, forKey: .moderator)) ?? LayoutWidgetType.defaultModeratorWidgets
+        self.post = (try? values.decode([LayoutWidgetType].self, forKey: .post)) ?? LayoutWidgetType.defaultPostWidgets
+        self.comment = (try? values.decode([LayoutWidgetType].self, forKey: .comment)) ?? LayoutWidgetType.defaultCommentWidgets
+        self.moderator = (try? values.decode([LayoutWidgetType].self, forKey: .moderator)) ?? LayoutWidgetType.defaultModeratorWidgets
     }
 }
 

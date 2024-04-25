@@ -180,7 +180,7 @@ struct InstanceView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 ToolbarEllipsisMenu {
                     ForEach(instance.menuFunctions { new in
-                        self.instance = new
+                        instance = new
                     }) { item in
                         MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
                     }

@@ -137,7 +137,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
         isSelected: Bool
     ) -> some View {
         AnyView(HStack(spacing: 8) {
-            let value = self.value(tab)
+            let value = value(tab)
             Text(label(tab))
                 .font(.subheadline)
                 .fontWeight(.semibold)
@@ -161,12 +161,12 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
         isSelected: Bool
     ) -> some View {
         AnyView(HStack {
-            let value = self.value(tab)
+            let value = value(tab)
             Text(label(tab))
                 .font(.subheadline)
                 .fontWeight(.semibold)
                 .foregroundColor(isSelected ? .white : .primary)
-                // .padding(value == nil ? .horizontal : .leading, 22
+            // .padding(value == nil ? .horizontal : .leading, 22
             if let value {
                 Text(value.abbreviated)
                     .monospacedDigit()
@@ -184,9 +184,9 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                                 Capsule()
                             }
                         }
-                            .foregroundStyle(
-                                isSelected ? Color(uiColor: .systemBackground).opacity(0.3) : Color(uiColor: .secondarySystemBackground)
-                            )
+                        .foregroundStyle(
+                            isSelected ? Color(uiColor: .systemBackground).opacity(0.3) : Color(uiColor: .secondarySystemBackground)
+                        )
                     )
             }
         })

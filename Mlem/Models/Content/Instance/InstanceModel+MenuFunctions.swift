@@ -8,7 +8,6 @@
 import Foundation
 
 extension InstanceModel {
-    
     func blockMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> MenuFunction {
         if blocked {
             return .standardMenuFunction(

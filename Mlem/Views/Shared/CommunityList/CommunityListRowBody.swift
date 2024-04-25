@@ -16,7 +16,7 @@ struct CommunityListRowBody: View {
     
     var title: String {
         var suffix = ""
-        if (community.blocked ?? false) && showBlockStatus {
+        if community.blocked ?? false, showBlockStatus {
             suffix.append(" ∙ Blocked")
         }
         if community.nsfw {
@@ -58,7 +58,7 @@ struct CommunityListRowBody: View {
     
     var body: some View {
         HStack(spacing: 10) {
-            if (community.blocked ?? false) && showBlockStatus {
+            if community.blocked ?? false, showBlockStatus {
                 Image(systemName: Icons.hide)
                     .resizable()
                     .aspectRatio(contentMode: .fit)

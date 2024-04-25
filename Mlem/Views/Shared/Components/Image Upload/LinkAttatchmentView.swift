@@ -5,9 +5,9 @@
 //  Created by Sjmarf on 26/09/2023.
 //
 
-import SwiftUI
-import PhotosUI
 import Dependencies
+import PhotosUI
+import SwiftUI
 
 struct LinkAttachmentModifier: ViewModifier {
     @Dependency(\.apiClient) var apiClient: APIClient

@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 29/09/2023.
 //
 
-import SwiftUI
 import PhotosUI
+import SwiftUI
 
 struct ImageUploadResponse: Codable {
     public let msg: String?

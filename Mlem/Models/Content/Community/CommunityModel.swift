@@ -246,7 +246,7 @@ struct CommunityModel: Purgable {
             } else {
                 response = try await communityRepository.unblockCommunity(id: communityId)
             }
-            self.update(with: response.communityView)
+            update(with: response.communityView)
             RunLoop.main.perform { [self] in
                 callback(self)
             }

@@ -74,15 +74,15 @@ struct BlockListView: View {
         .task {
             if !hasDoneInitialLoad {
                 DispatchQueue.main.async {
-                    self.hasDoneInitialLoad = true
+                    hasDoneInitialLoad = true
                 }
-                await self.loadItems()
+                await loadItems()
             }
         }
         .refreshable {
             await Task {
                 if !isLoading {
-                    await self.loadItems()
+                    await loadItems()
                 }
             }.value
         }

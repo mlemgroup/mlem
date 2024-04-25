@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct ImageDetailView: View {    
+struct ImageDetailView: View {
     let url: URL
     
     var body: some View {

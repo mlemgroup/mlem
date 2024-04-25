@@ -33,4 +33,4 @@ struct ImageDeleteRequest: APIDeleteRequest {
     }
 }
 
-struct ImageDeleteResponse: Decodable { }
+struct ImageDeleteResponse: Decodable {}

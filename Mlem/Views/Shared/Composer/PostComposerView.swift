@@ -72,194 +72,194 @@ struct PostComposerView: View {
     }
 
     var body: some View {
-            ZStack {
-                VStack {
-                    Color.clear
-                    Color(uiColor: .secondarySystemGroupedBackground)
-                }
-                .edgesIgnoringSafeArea(.bottom)
-                VStack(spacing: 0) {
-                    // Community Row
-                    headerView
-                        .padding(.bottom, 15)
-                        .padding(.horizontal)
-                        .zIndex(1)
+        ZStack {
+            VStack {
+                Color.clear
+                Color(uiColor: .secondarySystemGroupedBackground)
+            }
+            .edgesIgnoringSafeArea(.bottom)
+            VStack(spacing: 0) {
+                // Community Row
+                headerView
+                    .padding(.bottom, 15)
+                    .padding(.horizontal)
+                    .zIndex(1)
                     
-                    VStack(spacing: 15) {
-                        TextField("Title", text: $postTitle, axis: .vertical)
-                            .font(.title2)
-                            .accessibilityLabel("Title")
-                            .focused($focusedField, equals: .title)
-                            .onAppear {
-                                focusedField = .title
-                            }
-                            .padding(.top)
-                            .padding(.horizontal)
-                            .onChange(of: postTitle) { newValue in
-                                titleSlurMatch = siteInformation.instance?.firstSlurFilterMatch(newValue)
-                            }
+                VStack(spacing: 15) {
+                    TextField("Title", text: $postTitle, axis: .vertical)
+                        .font(.title2)
+                        .accessibilityLabel("Title")
+                        .focused($focusedField, equals: .title)
+                        .onAppear {
+                            focusedField = .title
+                        }
+                        .padding(.top)
+                        .padding(.horizontal)
+                        .onChange(of: postTitle) { newValue in
+                            titleSlurMatch = siteInformation.instance?.firstSlurFilterMatch(newValue)
+                        }
                         
-                        Group {
-                            if attachmentModel.imageModel != nil || attachmentModel.url.isNotEmpty {
-                                VStack {
-                                    let url = URL(string: attachmentModel.url)
-                                    if !(url?.isImage ?? true) {
-                                        HStack(spacing: AppConstants.postAndCommentSpacing) {
-                                            Image(systemName: Icons.websiteAddress)
-                                                .foregroundStyle(.blue)
-                                                .padding(.leading, 5)
-                                            Text(attachmentModel.url)
-                                                .foregroundStyle(.secondary)
-                                                .lineLimit(1)
-                                            Spacer()
-                                            Button(action: attachmentModel.removeLinkAction, label: {
-                                                Image(systemName: Icons.close)
-                                                    .fontWeight(.semibold)
-                                                    .tint(.secondary)
-                                                    .padding(5)
-                                                    .background(Circle().fill(Color(uiColor: .secondarySystemGroupedBackground)))
-                                            })
-                                            .padding(5)
+                    Group {
+                        if attachmentModel.imageModel != nil || attachmentModel.url.isNotEmpty {
+                            VStack {
+                                let url = URL(string: attachmentModel.url)
+                                if !(url?.isImage ?? true) {
+                                    HStack(spacing: AppConstants.postAndCommentSpacing) {
+                                        Image(systemName: Icons.websiteAddress)
+                                            .foregroundStyle(.blue)
+                                            .padding(.leading, 5)
+                                        Text(attachmentModel.url)
+                                            .foregroundStyle(.secondary)
+                                            .lineLimit(1)
+                                        Spacer()
+                                        Button(action: attachmentModel.removeLinkAction, label: {
+                                            Image(systemName: Icons.close)
+                                                .fontWeight(.semibold)
+                                                .tint(.secondary)
+                                                .padding(5)
+                                                .background(Circle().fill(Color(uiColor: .secondarySystemGroupedBackground)))
+                                        })
+                                        .padding(5)
+                                    }
+                                    .padding(10)
+                                } else {
+                                    HStack(spacing: AppConstants.postAndCommentSpacing) {
+                                        if attachmentModel.url.isNotEmpty {
+                                            let url = URL(string: attachmentModel.url)
+                                            CachedImage(url: url, shouldExpand: false)
+                                                .frame(
+                                                    width: AppConstants.thumbnailSize,
+                                                    height: AppConstants.thumbnailSize,
+                                                    alignment: .center
+                                                )
+                                                .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
+                                        } else {
+                                            RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
+                                                .fill(.secondary)
+                                                .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
                                         }
-                                        .padding(10)
-                                    } else {
-                                        HStack(spacing: AppConstants.postAndCommentSpacing) {
-                                            if attachmentModel.url.isNotEmpty {
-                                                let url = URL(string: attachmentModel.url)
-                                                CachedImage(url: url, shouldExpand: false)
-                                                    .frame(
-                                                        width: AppConstants.thumbnailSize,
-                                                        height: AppConstants.thumbnailSize,
-                                                        alignment: .center
-                                                    )
-                                                    .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
+                                        VStack(alignment: .leading) {
+                                            if attachmentModel.imageModel?.state == nil {
+                                                Text("Attached Image")
                                             } else {
-                                                RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
-                                                    .fill(.secondary)
-                                                    .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
-                                            }
-                                            VStack(alignment: .leading) {
-                                                if attachmentModel.imageModel?.state == nil {
+                                                if let imageModel = attachmentModel.imageModel {
                                                     Text("Attached Image")
-                                                } else {
-                                                    if let imageModel = attachmentModel.imageModel {
-                                                        Text("Attached Image")
-                                                        Spacer()
-                                                        UploadProgressView(imageModel: imageModel)
-                                                    }
+                                                    Spacer()
+                                                    UploadProgressView(imageModel: imageModel)
                                                 }
                                             }
-                                            .frame(height: AppConstants.thumbnailSize - 20)
-                                            Spacer()
                                         }
-                                        .padding(10)
-                                        .overlay(alignment: .topTrailing) {
-                                            Button(action: attachmentModel.removeLinkAction, label: {
-                                                Image(systemName: Icons.close)
-                                                    .fontWeight(.semibold)
-                                                    .tint(.secondary)
-                                                    .padding(5)
-                                                    .background(Circle().fill(Color(uiColor: .secondarySystemGroupedBackground)))
-                                            })
-                                            .padding(5)
-                                        }
+                                        .frame(height: AppConstants.thumbnailSize - 20)
+                                        Spacer()
+                                    }
+                                    .padding(10)
+                                    .overlay(alignment: .topTrailing) {
+                                        Button(action: attachmentModel.removeLinkAction, label: {
+                                            Image(systemName: Icons.close)
+                                                .fontWeight(.semibold)
+                                                .tint(.secondary)
+                                                .padding(5)
+                                                .background(Circle().fill(Color(uiColor: .secondarySystemGroupedBackground)))
+                                        })
+                                        .padding(5)
                                     }
                                 }
-                                .frame(maxWidth: .infinity)
-                                .background {
-                                    RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
-                                        .fill(Color(UIColor.systemGroupedBackground))
-                                }
-                                .padding(.horizontal)
-                            } else {
-                                Divider()
                             }
-                        }
-                        .linkAttachmentModel(model: attachmentModel)
-                        
-                        BodyEditorView(
-                            text: $postBody,
-                            prompt: "Body text (optional)",
-                            bodyEditorModel: bodyEditorModel,
-                            attachmentModel: inlineAttachmentModel
-                        )
-                        .dynamicTypeSize(.small ... .accessibility2)
-                        .accessibilityLabel("Post Body")
-                        .focused($focusedField, equals: .body)
-                        .padding(.horizontal)
-                        .onChange(of: postBody) { newValue in
-                            bodySlurMatch = siteInformation.instance?.firstSlurFilterMatch(newValue)
-                        }
-                        .linkAttachmentModel(model: inlineAttachmentModel)
-                        
-                        Spacer()
-                    }
-                    .background(Color(uiColor: .secondarySystemGroupedBackground))
-                    .clipShape(UnevenRoundedRectangle(cornerRadii: .init(topLeading: 15, topTrailing: 15)))
-                    .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: -3)
-                }
-            }
-            .progressOverlay(isPresented: $isSubmitting)
-            .background(Color(uiColor: .systemGroupedBackground))
-            .scrollDismissesKeyboard(.automatic)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel", role: .destructive) {
-                        attachmentModel.deletePictrs()
-                        Task {
-                            await bodyEditorModel.deleteAllFiles()
-                        }
-                        dismiss()
-                    }
-                    .tint(.red)
-                }
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Button {
-                        isNSFW.toggle()
-                    } label: {
-                        if isNSFW {
-                            HStack {
-                                Text("NSFW")
-                                    .font(.caption)
-                                Image(systemName: "eye.trianglebadge.exclamationmark.fill")
+                            .frame(maxWidth: .infinity)
+                            .background {
+                                RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
+                                    .fill(Color(UIColor.systemGroupedBackground))
                             }
-                            .tint(.red)
+                            .padding(.horizontal)
                         } else {
-                            Image(systemName: "eye.fill")
-                                .tint(Color(uiColor: .systemGray2))
+                            Divider()
                         }
                     }
-                    .accessibilityLabel("Toggle NSFW")
-                    Menu {
-                        Button(action: attachmentModel.attachImageAction) {
-                            Label("Photo Library", systemImage: Icons.choosePhoto)
-                        }
-                        Button(action: attachmentModel.attachFileAction) {
-                            Label("Choose File", systemImage: Icons.chooseFile)
-                        }
-                        Button(action: attachmentModel.pasteFromClipboardAction) {
-                            Label("Paste", systemImage: Icons.paste)
-                        }
-                        Divider()
-                        LinkUploadOptionsView(model: inlineAttachmentModel) {
-                            Label("Inline...", systemImage: "text.below.photo")
-                        }
-                    } label: {
-                        Label("Attach Image or Link", systemImage: Icons.websiteAddress)
+                    .linkAttachmentModel(model: attachmentModel)
+                        
+                    BodyEditorView(
+                        text: $postBody,
+                        prompt: "Body text (optional)",
+                        bodyEditorModel: bodyEditorModel,
+                        attachmentModel: inlineAttachmentModel
+                    )
+                    .dynamicTypeSize(.small ... .accessibility2)
+                    .accessibilityLabel("Post Body")
+                    .focused($focusedField, equals: .body)
+                    .padding(.horizontal)
+                    .onChange(of: postBody) { newValue in
+                        bodySlurMatch = siteInformation.instance?.firstSlurFilterMatch(newValue)
                     }
-                    // Submit Button
-                    Button {
-                        Task(priority: .background) {
-                            await bodyEditorModel.deleteUnusedFiles(text: postBody)
-                        }
-                        Task(priority: .userInitiated) {
-                            await submitPost()
-                        }
-                    } label: {
-                        Image(systemName: Icons.send)
-                    }.disabled(isSubmitting || !isReadyToPost)
+                    .linkAttachmentModel(model: inlineAttachmentModel)
+                        
+                    Spacer()
                 }
+                .background(Color(uiColor: .secondarySystemGroupedBackground))
+                .clipShape(UnevenRoundedRectangle(cornerRadii: .init(topLeading: 15, topTrailing: 15)))
+                .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: -3)
             }
+        }
+        .progressOverlay(isPresented: $isSubmitting)
+        .background(Color(uiColor: .systemGroupedBackground))
+        .scrollDismissesKeyboard(.automatic)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button("Cancel", role: .destructive) {
+                    attachmentModel.deletePictrs()
+                    Task {
+                        await bodyEditorModel.deleteAllFiles()
+                    }
+                    dismiss()
+                }
+                .tint(.red)
+            }
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                Button {
+                    isNSFW.toggle()
+                } label: {
+                    if isNSFW {
+                        HStack {
+                            Text("NSFW")
+                                .font(.caption)
+                            Image(systemName: "eye.trianglebadge.exclamationmark.fill")
+                        }
+                        .tint(.red)
+                    } else {
+                        Image(systemName: "eye.fill")
+                            .tint(Color(uiColor: .systemGray2))
+                    }
+                }
+                .accessibilityLabel("Toggle NSFW")
+                Menu {
+                    Button(action: attachmentModel.attachImageAction) {
+                        Label("Photo Library", systemImage: Icons.choosePhoto)
+                    }
+                    Button(action: attachmentModel.attachFileAction) {
+                        Label("Choose File", systemImage: Icons.chooseFile)
+                    }
+                    Button(action: attachmentModel.pasteFromClipboardAction) {
+                        Label("Paste", systemImage: Icons.paste)
+                    }
+                    Divider()
+                    LinkUploadOptionsView(model: inlineAttachmentModel) {
+                        Label("Inline...", systemImage: "text.below.photo")
+                    }
+                } label: {
+                    Label("Attach Image or Link", systemImage: Icons.websiteAddress)
+                }
+                // Submit Button
+                Button {
+                    Task(priority: .background) {
+                        await bodyEditorModel.deleteUnusedFiles(text: postBody)
+                    }
+                    Task(priority: .userInitiated) {
+                        await submitPost()
+                    }
+                } label: {
+                    Image(systemName: Icons.send)
+                }.disabled(isSubmitting || !isReadyToPost)
+            }
+        }
         
         .interactiveDismissDisabled(hasPostContent)
         .alert("Submit Failed", isPresented: $isShowingErrorDialog) {
@@ -292,7 +292,7 @@ struct PostComposerView: View {
         }
         .overlay {
             switch inlineAttachmentModel.imageModel?.state {
-            case .uploading(progress: let progress):
+            case let .uploading(progress: progress):
                 infoCapsule(color: Color(uiColor: .secondarySystemBackground)) {
                     HStack(spacing: 20) {
                         if progress == 1 {
@@ -308,7 +308,7 @@ struct PostComposerView: View {
                     }
                 }
                 .padding(-2)
-            case .failed(let message):
+            case let .failed(message):
                 infoCapsule(color: .red) {
                     Text("Failed to upload")
                         .foregroundStyle(.white)
@@ -321,7 +321,6 @@ struct PostComposerView: View {
                     }
                 }
             }
-            
         }
         .animation(.default, value: titleSlurMatch == nil && bodySlurMatch == nil)
         .animation(.default, value: inlineAttachmentModel.imageModel?.state)

@@ -60,7 +60,7 @@ struct BodyEditorView: View {
             switch newValue {
             case let .uploaded(file: file):
                 if let file {
-                    let cursorPosition = self.cursorPosition
+                    let cursorPosition = cursorPosition
                     let index = text.index(text.startIndex, offsetBy: cursorPosition)
                     text = String(text[..<index] + "![](\(attachmentModel.url))" + text[index...])
                     bodyEditorModel.attachedFiles.append(file)

@@ -98,13 +98,13 @@ extension CommunityModel {
         }
         
         if blocked {
-            return .standardMenuFunction(text: "Unblock", imageName: Icons.show, callback: { blockCallback(callback )})
+            return .standardMenuFunction(text: "Unblock", imageName: Icons.show, callback: { blockCallback(callback) })
         }
         return .standardMenuFunction(
             text: "Block",
             imageName: Icons.hide,
             confirmationPrompt: AppConstants.blockCommunityPrompt,
-            callback: { blockCallback(callback )}
+            callback: { blockCallback(callback) }
         )
     }
     

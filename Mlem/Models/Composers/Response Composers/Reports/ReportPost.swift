@@ -23,7 +23,7 @@ struct ReportPost: ResponseEditorModel {
     func embeddedView() -> AnyView {
         AnyView(
             LargePost(post: post, layoutMode: .constant(.maximize))
-            .padding(AppConstants.standardSpacing)
+                .padding(AppConstants.standardSpacing)
         )
     }
     
