@@ -63,16 +63,16 @@ class StateManager<Value: Equatable> {
     /// - Returns: new sempaphore value
     @discardableResult
     func beginOperation(expectedResult: Value, semaphore: UInt? = nil) -> UInt {
-        self.lastSemaphore = semaphore ?? SemaphoreServer.next()
-        print("DEBUG [\(self.lastSemaphore)] began operation.")
+        lastSemaphore = semaphore ?? SemaphoreServer.next()
+        print("DEBUG [\(lastSemaphore)] began operation.")
         if lastVerifiedValue == nil {
-            print("DEBUG [\(self.lastSemaphore)] Set lastVerifiedValue to \(wrappedValue).")
+            print("DEBUG [\(lastSemaphore)] Set lastVerifiedValue to \(wrappedValue).")
             lastVerifiedValue = wrappedValue
         }
         DispatchQueue.main.async {
             self.wrappedValue = expectedResult
         }
-        return self.lastSemaphore
+        return lastSemaphore
     }
     
     /// Call at the end of a successful operation. If the caller is the most recent caller, resets clean state and returns true; otherwise updates clean state and returns false.
@@ -80,11 +80,11 @@ class StateManager<Value: Equatable> {
     @discardableResult
     func updateWithReceivedValue(_ newState: Value, semaphore: UInt?) -> Bool {
         if lastVerifiedValue == nil {
-            self.wrappedValue = newState
+            wrappedValue = newState
             return false
         }
         
-        if self.lastSemaphore == semaphore {
+        if lastSemaphore == semaphore {
             print("DEBUG [\(semaphore?.description ?? "nil")] is the last caller! Resetting lastVerifiedValue.")
             lastVerifiedValue = nil
             return true
@@ -101,9 +101,9 @@ class StateManager<Value: Equatable> {
     
     /// If the given semaphore is still the most recent operation, rollback `wrappedValue` to `cleanValue`.
     func rollback(semaphore: UInt) {
-        if self.lastSemaphore == semaphore, let lastVerifiedValue {
+        if lastSemaphore == semaphore, let lastVerifiedValue {
             print("DEBUG [\(semaphore)] is the most recent caller! Resetting lastVerifiedValue.")
-            self.wrappedValue = lastVerifiedValue
+            wrappedValue = lastVerifiedValue
             self.lastVerifiedValue = nil
         } else {
             print("DEBUG [\(semaphore)] is not the most recent caller or vote state nil.")
@@ -115,7 +115,7 @@ class StateManager<Value: Equatable> {
         operation: @escaping (_ semaphore: UInt) async throws -> Void
     ) {
         guard wrappedValue != expectedResult else { return }
-        let semaphore = self.beginOperation(expectedResult: expectedResult)
+        let semaphore = beginOperation(expectedResult: expectedResult)
         Task {
             do {
                 try await operation(semaphore)
@@ -127,12 +127,12 @@ class StateManager<Value: Equatable> {
     }
     
     func ticket(_ expectedResult: Value) -> StateManagerTicket<Value> {
-        return StateManagerTicket(manager: self, expectedResult: expectedResult)
+        StateManagerTicket(manager: self, expectedResult: expectedResult)
     }
 }
 
 func groupStateRequest(
-    _ tickets: [(any StateManagerTickerProtocol)],
+    _ tickets: [any StateManagerTickerProtocol],
     operation: @escaping (_ semaphore: UInt) async throws -> Void
 ) {
     let semaphore = SemaphoreServer.next()

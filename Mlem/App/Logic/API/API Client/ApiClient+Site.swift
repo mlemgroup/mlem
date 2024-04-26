@@ -12,7 +12,7 @@ extension ApiClient {
         let request = GetSiteRequest()
         let response = try await perform(request)
         let model = caches.instance3.getModel(api: self, from: response)
-        self.myInstance = model
+        myInstance = model
         return model
     }
     
@@ -31,8 +31,8 @@ extension ApiClient {
                 instance: site
             )
         }
-        self.myUser = user
-        self.myInstance = site
+        myUser = user
+        myInstance = site
         return (user: user, site: site)
     }
 }

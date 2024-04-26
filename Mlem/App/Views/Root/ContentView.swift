@@ -99,7 +99,7 @@ struct ContentView: View {
     var accountSwitchLongPress: some Gesture {
         LongPressGesture()
             .onEnded { _ in
-                @AppStorage("allowQuickSwitcherLongPressGesture") var allowQuickSwitcherLongPressGesture: Bool = true
+                @AppStorage("allowQuickSwitcherLongPressGesture") var allowQuickSwitcherLongPressGesture = true
                 
                 // disable long press in accessibility mode to prevent conflict with HUD
 //                if !accessibilityFont {
