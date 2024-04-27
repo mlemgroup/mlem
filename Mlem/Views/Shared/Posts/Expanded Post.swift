@@ -141,6 +141,7 @@ struct ExpandedPost: View {
                             noCommentsView()
                         } else {
                             commentsView
+                                .clipped()
                                 .onAppear {
                                     if let target = scrollTarget {
                                         scrollTarget = nil
