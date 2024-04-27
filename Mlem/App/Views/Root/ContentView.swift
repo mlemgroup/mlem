@@ -60,27 +60,31 @@ struct ContentView: View {
     var content: some View {
         FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
             Group {
-                FeedsView()
-                    .fancyTabItem(tag: TabSelection.feeds) {
-                        FancyTabBarLabel(
-                            tag: TabSelection.feeds,
-                            symbolConfiguration: .feed
-                        )
-                    }
+                NavigationRoot {
+                    FeedsView()
+                }
+                .fancyTabItem(tag: TabSelection.feeds) {
+                    FancyTabBarLabel(
+                        tag: TabSelection.feeds,
+                        symbolConfiguration: .feed
+                    )
+                }
                     
-                ProfileView()
-                    .fancyTabItem(tag: TabSelection.profile) {
-                        FancyTabBarLabel(
-                            tag: TabSelection.profile,
-                            customText: profileTabLabel,
-                            symbolConfiguration: .init(
-                                symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
-                                activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
-                                remoteSymbolUrl: profileTabAvatar
-                            )
+                NavigationRoot {
+                    ProfileView()
+                }
+                .fancyTabItem(tag: TabSelection.profile) {
+                    FancyTabBarLabel(
+                        tag: TabSelection.profile,
+                        customText: profileTabLabel,
+                        symbolConfiguration: .init(
+                            symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
+                            activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
+                            remoteSymbolUrl: profileTabAvatar
                         )
-                        .simultaneousGesture(accountSwitchLongPress)
-                    }
+                    )
+                    .simultaneousGesture(accountSwitchLongPress)
+                }
             }
         }
     }

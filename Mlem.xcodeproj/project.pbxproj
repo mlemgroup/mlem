@@ -36,6 +36,7 @@
 		032145792B7F866C001AE07E /* PersonStubProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032145782B7F866C001AE07E /* PersonStubProviding.swift */; };
 		0321457D2B7F8821001AE07E /* PersonStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321457C2B7F8821001AE07E /* PersonStub.swift */; };
 		0321457F2B7F8971001AE07E /* CommunityOrPersonStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321457E2B7F8971001AE07E /* CommunityOrPersonStub.swift */; };
+		035BE0872BDD8DA000F77D73 /* NavigationRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0862BDD8DA000F77D73 /* NavigationRoot.swift */; };
 		036CC3A82B812DA10098B6A1 /* ApiClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CC3A72B812DA10098B6A1 /* ApiClientError.swift */; };
 		036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CC3AE2B8145C30098B6A1 /* AppState.swift */; };
 		037386412BDAF3F7007492B5 /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037386402BDAF3F7007492B5 /* Markdown.swift */; };
@@ -577,6 +578,7 @@
 		032145782B7F866C001AE07E /* PersonStubProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonStubProviding.swift; sourceTree = "<group>"; };
 		0321457C2B7F8821001AE07E /* PersonStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonStub.swift; sourceTree = "<group>"; };
 		0321457E2B7F8971001AE07E /* CommunityOrPersonStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityOrPersonStub.swift; sourceTree = "<group>"; };
+		035BE0862BDD8DA000F77D73 /* NavigationRoot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRoot.swift; sourceTree = "<group>"; };
 		036CC3A72B812DA10098B6A1 /* ApiClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClientError.swift; sourceTree = "<group>"; };
 		036CC3AE2B8145C30098B6A1 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		0373863F2BDAE6DB007492B5 /* LemmyMarkdownUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LemmyMarkdownUI; path = ../../LemmyMarkdownUI; sourceTree = "<group>"; };
@@ -1113,6 +1115,14 @@
 				030E7EDD2B7FADFE00E9A1AD /* Post2.swift */,
 			);
 			path = Post;
+			sourceTree = "<group>";
+		};
+		035BE0852BDD8D9100F77D73 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				035BE0862BDD8DA000F77D73 /* NavigationRoot.swift */,
+			);
+			path = Navigation;
 			sourceTree = "<group>";
 		};
 		037386422BDAF574007492B5 /* Frameworks */ = {
@@ -1791,6 +1801,7 @@
 		CD4D58A82B86BE4C00B82964 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				035BE0852BDD8D9100F77D73 /* Navigation */,
 				CD4D58BE2B86DBC900B82964 /* Avatars */,
 				CDDCF6412A662444003DA3AC /* Fancy Tab Bar */,
 				CD4D58AB2B86BE6100B82964 /* Accounts */,
@@ -2308,6 +2319,7 @@
 				CD4D571D2B86772400B82964 /* DeleteAccountRequest.swift in Sources */,
 				CD4D57CA2B86772500B82964 /* ApiCreateComment.swift in Sources */,
 				CD4D58312B86772500B82964 /* ApiPasswordReset.swift in Sources */,
+				035BE0872BDD8DA000F77D73 /* NavigationRoot.swift in Sources */,
 				CD4D58C42B86DC6000B82964 /* Array+Extensions.swift in Sources */,
 				CD4D57CE2B86772500B82964 /* ApiDeleteCustomEmojiResponse.swift in Sources */,
 				03D3A1E32BB8A40A009DE55E /* EmptyButtonStyle.swift in Sources */,
