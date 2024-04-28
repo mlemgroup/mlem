@@ -13,19 +13,22 @@ class NavigationLayer {
     var index: Int
     
     var root: NavigationPage
-    var path: NavigationPath = .init()
+    var path: [NavigationPage] = .init()
     var hasNavigationStack: Bool
+    var isFullScreenCover: Bool
     
     init(
         root: NavigationPage,
         model: NavigationModel,
         index: Int,
-        hasNavigationStack: Bool
+        hasNavigationStack: Bool,
+        isFullScreenCover: Bool
     ) {
         self.model = model
         self.index = index
         self.root = root
         self.hasNavigationStack = hasNavigationStack
+        self.isFullScreenCover = isFullScreenCover
     }
     
     func push(_ page: NavigationPage) {
@@ -39,11 +42,24 @@ class NavigationLayer {
     }
     
     func popToRoot() {
-        path.removeLast(path.count)
+        path.removeAll()
     }
     
     /// Open a new sheet, optionally with navigation enabled. If `nil` is specified for `hasNavigationStack`, the value of `page.hasNavigationStack` will be used.
     func openSheet(_ page: NavigationPage, hasNavigationStack: Bool? = nil) {
-        model?.openSheet(page, hasNavigationStack: hasNavigationStack ?? page.hasNavigationStack)
+        model?.openSheet(
+            page,
+            hasNavigationStack: hasNavigationStack ?? page.hasNavigationStack,
+            isFullScreenCover: false
+        )
+    }
+    
+    /// Open a new sheet, optionally with navigation enabled. If `nil` is specified for `hasNavigationStack`, the value of `page.hasNavigationStack` will be used.
+    func showFullScreenCover(_ page: NavigationPage, hasNavigationStack: Bool? = nil) {
+        model?.openSheet(
+            page,
+            hasNavigationStack: hasNavigationStack ?? page.hasNavigationStack,
+            isFullScreenCover: true
+        )
     }
 }

@@ -34,7 +34,6 @@ struct NavigationSplitRootView: View {
             sidebar: {
                 Button("Push") {
                     navigationModel.rootLayer.push(.page1)
-                    print(navigationModel.rootLayer.path.codable)
                 }
             },
             detail: {

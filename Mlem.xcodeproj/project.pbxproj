@@ -41,6 +41,7 @@
 		035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE08A2BDD903100F77D73 /* NavigationModel.swift */; };
 		035BE08D2BDE88EC00F77D73 /* NavigationLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE08C2BDE88EC00F77D73 /* NavigationLayerView.swift */; };
 		035BE08F2BDE911900F77D73 /* NavigationLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE08E2BDE911900F77D73 /* NavigationLayer.swift */; };
+		035BE0912BDEA01E00F77D73 /* NavigationPage+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0902BDEA01E00F77D73 /* NavigationPage+View.swift */; };
 		036CC3A82B812DA10098B6A1 /* ApiClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CC3A72B812DA10098B6A1 /* ApiClientError.swift */; };
 		036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CC3AE2B8145C30098B6A1 /* AppState.swift */; };
 		037386412BDAF3F7007492B5 /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037386402BDAF3F7007492B5 /* Markdown.swift */; };
@@ -587,6 +588,7 @@
 		035BE08A2BDD903100F77D73 /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
 		035BE08C2BDE88EC00F77D73 /* NavigationLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLayerView.swift; sourceTree = "<group>"; };
 		035BE08E2BDE911900F77D73 /* NavigationLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLayer.swift; sourceTree = "<group>"; };
+		035BE0902BDEA01E00F77D73 /* NavigationPage+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationPage+View.swift"; sourceTree = "<group>"; };
 		036CC3A72B812DA10098B6A1 /* ApiClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClientError.swift; sourceTree = "<group>"; };
 		036CC3AE2B8145C30098B6A1 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		0373863F2BDAE6DB007492B5 /* LemmyMarkdownUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LemmyMarkdownUI; path = ../../LemmyMarkdownUI; sourceTree = "<group>"; };
@@ -1133,6 +1135,7 @@
 				035BE08A2BDD903100F77D73 /* NavigationModel.swift */,
 				035BE08E2BDE911900F77D73 /* NavigationLayer.swift */,
 				035BE0882BDD901B00F77D73 /* NavigationPage.swift */,
+				035BE0902BDEA01E00F77D73 /* NavigationPage+View.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -2491,6 +2494,7 @@
 				CD4D58352B86772500B82964 /* ApiGetPosts.swift in Sources */,
 				CD4D58BB2B86DA7D00B82964 /* AccountListView+Logic.swift in Sources */,
 				CD4D578B2B86772400B82964 /* ApiPostReport.swift in Sources */,
+				035BE0912BDEA01E00F77D73 /* NavigationPage+View.swift in Sources */,
 				CD4D58742B86B4AA00B82964 /* AccountsTracker+Dependency.swift in Sources */,
 				03AFBE9C2B6E676600F01F3C /* Community2.swift in Sources */,
 				030E7EDA2B7F97E400E9A1AD /* Post1.swift in Sources */,

@@ -23,38 +23,30 @@ extension NavigationPage {
         }
     }
     
-    @ViewBuilder
-    func viewWithModifiers(layer: NavigationLayer) -> some View {
-        view()
-            .navigationDestination(for: NavigationPage.self) { $0.view() }
-            .sheet(isPresented: Binding(
-                get: { (layer.model?.layers.count ?? 0) > (layer.index + 1) },
-                set: { newValue in
-                    if !newValue, let model = layer.model {
-                        model.layers.removeLast(model.layers.count - layer.index - 1)
-                    }
-                }
-            )) {
-                if let model = layer.model {
-                    NavigationLayerView(layer: model.layers[layer.index + 1])
-                }
-            }
-    }
-    
     var hasNavigationStack: Bool { false }
 }
 
 private struct Page1: View {
     @Environment(NavigationLayer.self) var navigation
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         VStack {
-            Text("Page 1")
+            Text("1")
+                .font(.largeTitle)
+                .foregroundStyle(.green)
+                .padding()
             Button("Go to page 2") {
                 navigation.push(.page2)
             }
             Button("Open sheet") {
                 navigation.openSheet(.page2, hasNavigationStack: true)
+            }
+            Button("Open fullscreen cover") {
+                navigation.showFullScreenCover(.page2, hasNavigationStack: true)
+            }
+            Button("Dismiss") {
+                dismiss()
             }
         }
     }
@@ -62,15 +54,25 @@ private struct Page1: View {
 
 private struct Page2: View {
     @Environment(NavigationLayer.self) var navigation
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         VStack {
-            Text("Page 2")
+            Text("2")
+                .font(.largeTitle)
+                .foregroundStyle(.red)
+                .padding()
             Button("Go to page 1") {
                 navigation.push(.page1)
             }
             Button("Open sheet") {
                 navigation.openSheet(.page1, hasNavigationStack: true)
+            }
+            Button("Open fullscreen cover") {
+                navigation.showFullScreenCover(.page2, hasNavigationStack: true)
+            }
+            Button("Dismiss") {
+                dismiss()
             }
         }
     }
