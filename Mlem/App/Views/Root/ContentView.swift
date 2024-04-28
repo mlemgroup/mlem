@@ -60,31 +60,27 @@ struct ContentView: View {
     var content: some View {
         FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
             Group {
-                NavigationRoot {
-                    FeedsView()
-                }
-                .fancyTabItem(tag: TabSelection.feeds) {
-                    FancyTabBarLabel(
-                        tag: TabSelection.feeds,
-                        symbolConfiguration: .feed
-                    )
-                }
-                    
-                NavigationRoot {
-                    ProfileView()
-                }
-                .fancyTabItem(tag: TabSelection.profile) {
-                    FancyTabBarLabel(
-                        tag: TabSelection.profile,
-                        customText: profileTabLabel,
-                        symbolConfiguration: .init(
-                            symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
-                            activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
-                            remoteSymbolUrl: profileTabAvatar
+                NavigationSplitView(sidebar: { Text("One") }, content: { Text("Two") }, detail: { Text("Three") })
+                    .fancyTabItem(tag: TabSelection.feeds) {
+                        FancyTabBarLabel(
+                            tag: TabSelection.feeds,
+                            symbolConfiguration: .feed
                         )
-                    )
-                    .simultaneousGesture(accountSwitchLongPress)
-                }
+                    }
+                    
+                NavigationRoot(root: .page1)
+                    .fancyTabItem(tag: TabSelection.profile) {
+                        FancyTabBarLabel(
+                            tag: TabSelection.profile,
+                            customText: profileTabLabel,
+                            symbolConfiguration: .init(
+                                symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
+                                activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
+                                remoteSymbolUrl: profileTabAvatar
+                            )
+                        )
+                        .simultaneousGesture(accountSwitchLongPress)
+                    }
             }
         }
     }

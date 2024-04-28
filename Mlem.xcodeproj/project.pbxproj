@@ -37,6 +37,8 @@
 		0321457D2B7F8821001AE07E /* PersonStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321457C2B7F8821001AE07E /* PersonStub.swift */; };
 		0321457F2B7F8971001AE07E /* CommunityOrPersonStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321457E2B7F8971001AE07E /* CommunityOrPersonStub.swift */; };
 		035BE0872BDD8DA000F77D73 /* NavigationRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0862BDD8DA000F77D73 /* NavigationRoot.swift */; };
+		035BE0892BDD901B00F77D73 /* NavigationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0882BDD901B00F77D73 /* NavigationPage.swift */; };
+		035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE08A2BDD903100F77D73 /* NavigationModel.swift */; };
 		036CC3A82B812DA10098B6A1 /* ApiClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CC3A72B812DA10098B6A1 /* ApiClientError.swift */; };
 		036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CC3AE2B8145C30098B6A1 /* AppState.swift */; };
 		037386412BDAF3F7007492B5 /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037386402BDAF3F7007492B5 /* Markdown.swift */; };
@@ -579,6 +581,8 @@
 		0321457C2B7F8821001AE07E /* PersonStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonStub.swift; sourceTree = "<group>"; };
 		0321457E2B7F8971001AE07E /* CommunityOrPersonStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityOrPersonStub.swift; sourceTree = "<group>"; };
 		035BE0862BDD8DA000F77D73 /* NavigationRoot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRoot.swift; sourceTree = "<group>"; };
+		035BE0882BDD901B00F77D73 /* NavigationPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPage.swift; sourceTree = "<group>"; };
+		035BE08A2BDD903100F77D73 /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
 		036CC3A72B812DA10098B6A1 /* ApiClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClientError.swift; sourceTree = "<group>"; };
 		036CC3AE2B8145C30098B6A1 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		0373863F2BDAE6DB007492B5 /* LemmyMarkdownUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LemmyMarkdownUI; path = ../../LemmyMarkdownUI; sourceTree = "<group>"; };
@@ -1121,6 +1125,8 @@
 			isa = PBXGroup;
 			children = (
 				035BE0862BDD8DA000F77D73 /* NavigationRoot.swift */,
+				035BE08A2BDD903100F77D73 /* NavigationModel.swift */,
+				035BE0882BDD901B00F77D73 /* NavigationPage.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -2549,6 +2555,7 @@
 				CD4D58072B86772500B82964 /* ApiPostListingMode.swift in Sources */,
 				CD4D582A2B86772500B82964 /* ApiListCommunitiesResponse.swift in Sources */,
 				CDA1E8542B952C3D007953EF /* StateManager.swift in Sources */,
+				035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */,
 				CD4D58CB2B86DD3D00B82964 /* AssociatedIcon.swift in Sources */,
 				CD4D57922B86772400B82964 /* ApiLocalUser.swift in Sources */,
 				CD4D57142B86772400B82964 /* EditCommentRequest.swift in Sources */,
@@ -2696,6 +2703,7 @@
 				CD4D57F52B86772500B82964 /* ApiCommentReplyView.swift in Sources */,
 				CD4D57A72B86772400B82964 /* ApiPrivateMessageResponse.swift in Sources */,
 				CD4D57272B86772400B82964 /* DeleteCommunityRequest.swift in Sources */,
+				035BE0892BDD901B00F77D73 /* NavigationPage.swift in Sources */,
 				CD4D580E2B86772500B82964 /* ApiModHideCommunity.swift in Sources */,
 				CD4D57D02B86772500B82964 /* ApiEditComment.swift in Sources */,
 				CD4D56F12B86772400B82964 /* LockPostRequest.swift in Sources */,
