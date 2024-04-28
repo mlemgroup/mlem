@@ -8,6 +8,35 @@
 import Dependencies
 import SwiftUI
 
+private struct TestView: View {
+    @State var showingInspector: Bool = false
+    
+    @State var path1: [NavigationPage] = .init()
+    @State var path2: [NavigationPage] = .init()
+    
+    var body: some View {
+        NavigationSplitView(
+            sidebar: { Text("Sidebar") },
+            content: {
+                NavigationStack(path: $path1) {
+                    Button("Test2") {
+                        path1.append(.page1)
+                    }
+                    .navigationDestination(for: NavigationPage.self) { $0.view() }
+                }
+            },
+            detail: {
+                NavigationStack(path: $path2) {
+                    Button("Test2") {
+                        path2.append(.page2)
+                    }
+                    .navigationDestination(for: NavigationPage.self) { $0.view() }
+                }
+            }
+        )
+    }
+}
+
 struct ContentView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.accountsTracker) var accountsTracker
@@ -60,7 +89,7 @@ struct ContentView: View {
     var content: some View {
         FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
             Group {
-                NavigationSplitView(sidebar: { Text("One") }, content: { Text("Two") }, detail: { Text("Three") })
+                NavigationSplitRootView(root: .page1)
                     .fancyTabItem(tag: TabSelection.feeds) {
                         FancyTabBarLabel(
                             tag: TabSelection.feeds,
@@ -68,7 +97,7 @@ struct ContentView: View {
                         )
                     }
                     
-                NavigationRoot(root: .page1)
+                NavigationRootView(root: .page1)
                     .fancyTabItem(tag: TabSelection.profile) {
                         FancyTabBarLabel(
                             tag: TabSelection.profile,

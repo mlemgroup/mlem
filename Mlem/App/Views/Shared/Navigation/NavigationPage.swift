@@ -23,6 +23,24 @@ extension NavigationPage {
         }
     }
     
+    @ViewBuilder
+    func viewWithModifiers(layer: NavigationLayer) -> some View {
+        view()
+            .navigationDestination(for: NavigationPage.self) { $0.view() }
+            .sheet(isPresented: Binding(
+                get: { (layer.model?.layers.count ?? 0) > (layer.index + 1) },
+                set: { newValue in
+                    if !newValue, let model = layer.model {
+                        model.layers.removeLast(model.layers.count - layer.index - 1)
+                    }
+                }
+            )) {
+                if let model = layer.model {
+                    NavigationLayerView(layer: model.layers[layer.index + 1])
+                }
+            }
+    }
+    
     var hasNavigationStack: Bool { false }
 }
 
