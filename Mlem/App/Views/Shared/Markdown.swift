@@ -19,22 +19,27 @@ struct Markdown: View {
     var body: some View {
         LemmyMarkdownUI.Markdown(
             markdown,
-            inlineImageLoader: loadInlineImage,
-            imageBlockView: imageBlockView
+            configuration: configuration
         )
     }
     
+    var configuration: MarkdownConfiguration {
+        .init(inlineImageLoader: loadInlineImage, imageBlockView: imageBlockView)
+    }
+    
     @ViewBuilder
-    func imageBlockView(_ image: InlineImage) -> some View {
-        Image(systemName: "photo")
-            .imageScale(.large)
-            .foregroundStyle(.secondary)
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(Color(uiColor: .secondarySystemBackground))
-            )
+    func imageBlockView(_ image: InlineImage) -> AnyView {
+        AnyView(
+            Image(systemName: "photo")
+                .imageScale(.large)
+                .foregroundStyle(.secondary)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Color(uiColor: .secondarySystemBackground))
+                )
+        )
     }
     
     func loadInlineImage(inlineImage: InlineImage) async {
