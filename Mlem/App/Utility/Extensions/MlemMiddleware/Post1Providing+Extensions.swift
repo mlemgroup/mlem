@@ -33,13 +33,3 @@ extension Post1Providing {
         ])
     }
 }
-
-extension Post1Providing: Actionable, Interactable1Providing, FeedLoadable {
-    var uid: ContentModelIdentifier { .init(contentType: .post, contentId: id) }
-    func sortVal(sortType: FeedLoaderSortType) -> FeedLoaderSortVal {
-        switch sortType {
-        case .published:
-            return .published(created)
-        }
-    }
-}

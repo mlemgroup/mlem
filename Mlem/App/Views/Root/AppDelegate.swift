@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MlemMiddleware
 import SwiftUI
 
 // TODO: we need to do a bit of work to ensure we also switch tab when responding to these

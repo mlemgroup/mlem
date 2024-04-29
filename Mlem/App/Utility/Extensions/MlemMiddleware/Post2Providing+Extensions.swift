@@ -8,4 +8,4 @@
 import Foundation
 import MlemMiddleware
 
-extension Post2Providing: Interactable2Providing {}
+// extension Post2Providing: Interactable2Providing {}

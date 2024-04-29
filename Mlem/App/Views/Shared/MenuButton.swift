@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 31/03/2024.
 //
 
+import MlemMiddleware
 import SwiftUI
 
 struct MenuButton: View {
@@ -18,7 +19,7 @@ struct MenuButton: View {
         if let action = action as? BasicAction {
             Button(
                 role: action.isDestructive ? .destructive : nil,
-                action: action.callback ?? { }
+                action: action.callback ?? {}
             ) {
                 Label(action.label, systemImage: action.menuIcon)
             }
