@@ -8,6 +8,7 @@
 
 import Dependencies
 import Foundation
+import MlemMiddleware
 
 private enum Path {
     private static var root = {

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MlemMiddleware
 import SwiftUI
 
 enum FeedType: Equatable {

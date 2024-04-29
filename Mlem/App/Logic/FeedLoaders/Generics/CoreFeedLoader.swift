@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MlemMiddleware
 import SwiftUI
 
 /// Class providing common feed loading functionality for StandardFeedLoader and ParentFeedLoader
