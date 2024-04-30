@@ -4,7 +4,9 @@
 //
 //  Created by Eric Andrews on 2023-10-15.
 //
+
 import Foundation
+import MlemMiddleware
 
 protocol FeedLoadable: Equatable, AnyObject {
     var uid: ContentModelIdentifier { get }
