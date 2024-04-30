@@ -43,6 +43,9 @@
 		0321457F2B7F8971001AE07E /* CommunityOrPersonStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321457E2B7F8971001AE07E /* CommunityOrPersonStub.swift */; };
 		036CC3A82B812DA10098B6A1 /* ApiClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CC3A72B812DA10098B6A1 /* ApiClientError.swift */; };
 		036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CC3AE2B8145C30098B6A1 /* AppState.swift */; };
+		037386412BDAF3F7007492B5 /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037386402BDAF3F7007492B5 /* Markdown.swift */; };
+		037386442BDAF574007492B5 /* LemmyMarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 037386432BDAF574007492B5 /* LemmyMarkdownUI */; };
+		037386472BDAFE81007492B5 /* LemmyMarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 037386462BDAFE81007492B5 /* LemmyMarkdownUI */; };
 		03A1B3F72A84000400AB0DE0 /* APIContentAggregatesProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A1B3F62A84000400AB0DE0 /* APIContentAggregatesProtocol.swift */; };
 		03A1B3F92A8400DD00AB0DE0 /* APIContentViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A1B3F82A8400DD00AB0DE0 /* APIContentViewProtocol.swift */; };
 		03AFBE962B6E613200F01F3C /* CommunityStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFBE952B6E613200F01F3C /* CommunityStub.swift */; };
@@ -79,7 +82,6 @@
 		6363D5CC27EE196A00E34822 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6363D5CB27EE196A00E34822 /* Preview Assets.xcassets */; };
 		6372184D2A3A2AAD008C4816 /* ApiErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372180F2A3A2AAD008C4816 /* ApiErrorResponse.swift */; };
 		637218772A3A2AAD008C4816 /* ApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218422A3A2AAD008C4816 /* ApiRequest.swift */; };
-		63D24EDC2A169F12005CCA81 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 63D24EDB2A169F12005CCA81 /* MarkdownUI */; };
 		63DF71F12A02999C002AC14E /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DF71F02A02999C002AC14E /* AppConstants.swift */; };
 		6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE1183B2A4A217400810C7E /* Profile View.swift */; };
 		AD1B0D372A5F7A260006F554 /* Licenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1B0D362A5F7A260006F554 /* Licenses.swift */; };
@@ -577,6 +579,8 @@
 		0321457E2B7F8971001AE07E /* CommunityOrPersonStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityOrPersonStub.swift; sourceTree = "<group>"; };
 		036CC3A72B812DA10098B6A1 /* ApiClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClientError.swift; sourceTree = "<group>"; };
 		036CC3AE2B8145C30098B6A1 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		0373863F2BDAE6DB007492B5 /* LemmyMarkdownUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LemmyMarkdownUI; path = ../../LemmyMarkdownUI; sourceTree = "<group>"; };
+		037386402BDAF3F7007492B5 /* Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
 		03A1B3F62A84000400AB0DE0 /* APIContentAggregatesProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContentAggregatesProtocol.swift; sourceTree = "<group>"; };
 		03A1B3F82A8400DD00AB0DE0 /* APIContentViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContentViewProtocol.swift; sourceTree = "<group>"; };
 		03AFBE952B6E613200F01F3C /* CommunityStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityStub.swift; sourceTree = "<group>"; };
@@ -1062,10 +1066,11 @@
 			files = (
 				030FF6792BC84F7E00F6BFAC /* SwiftUIIntrospect in Frameworks */,
 				B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */,
-				63D24EDC2A169F12005CCA81 /* MarkdownUI in Frameworks */,
+				037386472BDAFE81007492B5 /* LemmyMarkdownUI in Frameworks */,
 				B104A6D82A59BF3C00B3E725 /* Nuke in Frameworks */,
 				50C99B562A61D792005D57DD /* Dependencies in Frameworks */,
 				636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */,
+				037386442BDAF574007492B5 /* LemmyMarkdownUI in Frameworks */,
 				CD4368C12AE23FD400BD8BD1 /* Semaphore in Frameworks */,
 				B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */,
 				B104A6DC2A59BF3C00B3E725 /* NukeUI in Frameworks */,
@@ -1107,6 +1112,13 @@
 				030E7EDD2B7FADFE00E9A1AD /* Post2.swift */,
 			);
 			path = Post;
+			sourceTree = "<group>";
+		};
+		037386422BDAF574007492B5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		03A1B3F52A83FFDA00AB0DE0 /* Protocol */ = {
@@ -1202,7 +1214,7 @@
 				6363D5D927EE196A00E34822 /* MlemTests */,
 				6363D5E327EE196A00E34822 /* MlemUITests */,
 				6363D5C227EE196700E34822 /* Products */,
-				030FF6772BC84F7E00F6BFAC /* Frameworks */,
+				037386422BDAF574007492B5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1219,6 +1231,7 @@
 		6363D5C327EE196700E34822 /* Mlem */ = {
 			isa = PBXGroup;
 			children = (
+				0373863F2BDAE6DB007492B5 /* LemmyMarkdownUI */,
 				CD4D583B2B867BB300B82964 /* App */,
 				6363D5C827EE196A00E34822 /* Assets.xcassets */,
 				630D753C27F65E44006E60C9 /* Info.plist */,
@@ -1784,6 +1797,7 @@
 				030FF67E2BC8544600F6BFAC /* CustomTabBarController.swift */,
 				030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */,
 				03D3A1E22BB8A40A009DE55E /* EmptyButtonStyle.swift */,
+				037386402BDAF3F7007492B5 /* Markdown.swift */,
 				03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */,
 			);
 			path = Shared;
@@ -2057,11 +2071,22 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		03E96D082BD6ED7E00B7A98F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		6363D5C027EE196700E34822 /* Mlem */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6363D5EA27EE196A00E34822 /* Build configuration list for PBXNativeTarget "Mlem" */;
 			buildPhases = (
+				03E96D082BD6ED7E00B7A98F /* Headers */,
 				6363D5BD27EE196700E34822 /* Sources */,
 				50F830EB2A47CC4F00D67099 /* Swiftlint */,
 				6363D5BE27EE196700E34822 /* Frameworks */,
@@ -2073,7 +2098,6 @@
 			);
 			name = Mlem;
 			packageProductDependencies = (
-				63D24EDB2A169F12005CCA81 /* MarkdownUI */,
 				636250DB2A18111400FC59B4 /* KeychainAccess */,
 				B104A6D72A59BF3C00B3E725 /* Nuke */,
 				B104A6D92A59BF3C00B3E725 /* NukeExtensions */,
@@ -2082,6 +2106,8 @@
 				50C99B552A61D792005D57DD /* Dependencies */,
 				CD4368C02AE23FD400BD8BD1 /* Semaphore */,
 				030FF6782BC84F7E00F6BFAC /* SwiftUIIntrospect */,
+				037386432BDAF574007492B5 /* LemmyMarkdownUI */,
+				037386462BDAFE81007492B5 /* LemmyMarkdownUI */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -2158,12 +2184,12 @@
 			);
 			mainGroup = 6363D5B827EE196700E34822;
 			packageReferences = (
-				63D24EDA2A169F12005CCA81 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 				636250DA2A18111400FC59B4 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */,
 				50C99B542A61D792005D57DD /* XCRemoteSwiftPackageReference "swift-dependencies" */,
 				CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */,
 				0392826E2BC84E480097F91A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
+				037386452BDAFE81007492B5 /* XCRemoteSwiftPackageReference "LemmyMarkdownUI" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -2281,6 +2307,7 @@
 				CD4D59102B87B31200B82964 /* Notifier+Dependency.swift in Sources */,
 				637218772A3A2AAD008C4816 /* ApiRequest.swift in Sources */,
 				CD4D57932B86772400B82964 /* ApiPurgeComment.swift in Sources */,
+				037386412BDAF3F7007492B5 /* Markdown.swift in Sources */,
 				CD4D589B2B86BBF900B82964 /* ActorIdentifiable.swift in Sources */,
 				0321455E2B7A76BC001AE07E /* Instance2Providing.swift in Sources */,
 				CD4D57692B86772400B82964 /* ApiCommentReportResponse.swift in Sources */,
@@ -2823,6 +2850,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -2877,6 +2905,8 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -3104,6 +3134,14 @@
 				minimumVersion = 1.1.3;
 			};
 		};
+		037386452BDAFE81007492B5 /* XCRemoteSwiftPackageReference "LemmyMarkdownUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mlemgroup/LemmyMarkdownUI";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		50C99B542A61D792005D57DD /* XCRemoteSwiftPackageReference "swift-dependencies" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-dependencies";
@@ -3118,14 +3156,6 @@
 			requirement = {
 				branch = master;
 				kind = branch;
-			};
-		};
-		63D24EDA2A169F12005CCA81 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/gonzalezreal/swift-markdown-ui.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
 			};
 		};
 		B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */ = {
@@ -3151,6 +3181,15 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0392826E2BC84E480097F91A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
 			productName = SwiftUIIntrospect;
+	    };
+		037386432BDAF574007492B5 /* LemmyMarkdownUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LemmyMarkdownUI;
+		};
+		037386462BDAFE81007492B5 /* LemmyMarkdownUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 037386452BDAFE81007492B5 /* XCRemoteSwiftPackageReference "LemmyMarkdownUI" */;
+			productName = LemmyMarkdownUI;
 		};
 		50C99B552A61D792005D57DD /* Dependencies */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -3161,11 +3200,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 636250DA2A18111400FC59B4 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
 			productName = KeychainAccess;
-		};
-		63D24EDB2A169F12005CCA81 /* MarkdownUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 63D24EDA2A169F12005CCA81 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
-			productName = MarkdownUI;
 		};
 		B104A6D72A59BF3C00B3E725 /* Nuke */ = {
 			isa = XCSwiftPackageProductDependency;
