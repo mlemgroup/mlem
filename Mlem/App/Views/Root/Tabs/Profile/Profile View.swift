@@ -39,6 +39,5 @@ struct ProfileView: View {
                 Divider()
             }
         }
-        .fancyTabScrollCompatible()
     }
 }
