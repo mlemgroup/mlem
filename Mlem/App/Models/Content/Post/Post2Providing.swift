@@ -43,9 +43,9 @@ extension Post2Providing {
     private var isSavedManager: StateManager<Bool> { post2.isSavedManager }
 
     func vote(_ newVote: ScoringOperation) {
-        guard newVote != self.votes.myVote else { return }
+        guard newVote != votes.myVote else { return }
         groupStateRequest(
-            votesManager.ticket(self.votes.applyScoringOperation(operation: newVote)),
+            votesManager.ticket(votes.applyScoringOperation(operation: newVote)),
             isReadManager.ticket(true)
         ) { semaphore in
             try await self.api.voteOnPost(id: self.id, score: newVote, semaphore: semaphore)

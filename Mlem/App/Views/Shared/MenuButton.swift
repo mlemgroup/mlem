@@ -18,7 +18,7 @@ struct MenuButton: View {
         if let action = action as? BasicAction {
             Button(
                 role: action.isDestructive ? .destructive : nil,
-                action: action.callback ?? { }
+                action: action.callback ?? {}
             ) {
                 Label(action.label, systemImage: action.menuIcon)
             }

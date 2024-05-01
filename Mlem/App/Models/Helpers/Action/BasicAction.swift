@@ -73,7 +73,7 @@ struct BasicAction: Action {
     static func save(isOn: Bool) -> BasicAction {
         .init(
             isOn: isOn,
-            label: isOn ? "Unsave": "Save",
+            label: isOn ? "Unsave" : "Save",
             color: Colors.saveColor,
             barIcon: isOn ? Icons.saveFill : Icons.save,
             menuIcon: isOn ? Icons.saveFill : Icons.save,
