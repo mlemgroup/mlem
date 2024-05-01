@@ -48,11 +48,13 @@ struct MinimalPostFeedView: View {
         NavigationStack {
             content
                 .navigationTitle("Feeds")
-                .fancyTabScrollCompatible()
                 .task {
-                    await postTracker.loadMoreItems()
+                    if postTracker.items.isEmpty, postTracker.loadingState == .idle {
+                        print("Loading initial PostTracker page...")
+                        await postTracker.loadMoreItems()
+                    }
                 }
-                .task(id: appState.activeAccounts) {
+                .task(id: appState.firstApi) {
                     await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
                 }
                 .refreshable {

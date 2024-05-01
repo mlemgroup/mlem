@@ -7,6 +7,7 @@
 
 import Dependencies
 import SwiftUI
+import SwiftUIIntrospect
 
 struct ContentView: View {
     @Dependency(\.errorHandler) var errorHandler
@@ -16,30 +17,14 @@ struct ContentView: View {
 
     let timer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
     
-    // tabs
-    @State private var tabSelection: TabSelection = .feeds
-    @State private var tabNavigation: any FancyTabBarSelection = TabSelection._tabBarNavigation
-    @GestureState private var isDetectingLongPress = false
+    var appState: AppState { .main }
     
     @State private var isPresentingAccountSwitcher: Bool = false
 
     var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
     
-    var appState: AppState { AppState.main }
-        
-    var profileTabAvatar: URL? { appState.firstAccount.userStub?.avatarUrl }
-    
-    var profileTabLabel: String { "Profile" }
-    
     var body: some View {
         content
-//            .task(id: appState.actorId) {
-//                do {
-//                    appState.myInstance = try await appState.myInstance.stub.upgrade()
-//                } catch {
-//                    errorHandler.handle(error)
-//                }
-//            }
             .onReceive(timer) { _ in
                 // print("Clearing caches...")
                 appState.cleanCaches()
@@ -58,31 +43,23 @@ struct ContentView: View {
     }
     
     var content: some View {
-        FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
-            Group {
+        CustomTabView(tabs: [
+            CustomTabItem(title: "Feeds", systemImage: Icons.feedsFill) {
                 FeedsView()
-                    .fancyTabItem(tag: TabSelection.feeds) {
-                        FancyTabBarLabel(
-                            tag: TabSelection.feeds,
-                            symbolConfiguration: .feed
-                        )
-                    }
-                    
-                ProfileView()
-                    .fancyTabItem(tag: TabSelection.profile) {
-                        FancyTabBarLabel(
-                            tag: TabSelection.profile,
-                            customText: profileTabLabel,
-                            symbolConfiguration: .init(
-                                symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
-                                activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
-                                remoteSymbolUrl: profileTabAvatar
-                            )
-                        )
-                        .simultaneousGesture(accountSwitchLongPress)
-                    }
-            }
-        }
+            },
+            CustomTabItem(
+                title: "Profile",
+                systemImage: Icons.user,
+                onLongPress: {
+                    // TODO: haptics here
+                    isPresentingAccountSwitcher = true
+                },
+                content: { ProfileView() }
+            )
+        ], onSwipeUp: {
+            isPresentingAccountSwitcher = true
+        })
+        .ignoresSafeArea()
     }
     
     // MARK: Helpers
@@ -90,31 +67,5 @@ struct ContentView: View {
     /// Function that executes whenever the account changes to handle any state updates that need to happen
     func accountChanged() async {
         print("Account changed")
-    }
-    
-    func showAccountSwitcherDragCallback() {
-        isPresentingAccountSwitcher = true
-    }
-    
-    var accountSwitchLongPress: some Gesture {
-        LongPressGesture()
-            .onEnded { _ in
-                @AppStorage("allowQuickSwitcherLongPressGesture") var allowQuickSwitcherLongPressGesture = true
-                
-                // disable long press in accessibility mode to prevent conflict with HUD
-//                if !accessibilityFont {
-//                    if allowQuickSwitcherLongPressGesture {
-//                        if accountsTracker.savedAccounts.count == 2 {
-//                            for account in accountsTracker.savedAccounts where account.actorId != appState.actorId {
-//                                // TODO: ???????
-//                                appState.api = account.api
-//                                break
-//                            }
-//                        } else {
-//                            isPresentingAccountSwitcher = true
-//                        }
-//                    }
-//                }
-            }
     }
 }

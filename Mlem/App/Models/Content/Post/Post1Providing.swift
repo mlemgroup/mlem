@@ -8,10 +8,10 @@
 import Foundation
 
 protocol Post1Providing: PostStubProviding,
-                         Interactable1Providing,
-                         Actionable,
-                         FeedLoadable,
-                         Identifiable {
+    Interactable1Providing,
+    Actionable,
+    FeedLoadable,
+    Identifiable {
     var post1: Post1 { get }
     
     var id: Int { get }

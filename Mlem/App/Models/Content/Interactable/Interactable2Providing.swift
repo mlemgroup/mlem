@@ -8,7 +8,7 @@
 import Foundation
 
 // Content that can be upvoted, downvoted, saved etc
-protocol Interactable2Providing: Interactable1Providing {    
+protocol Interactable2Providing: Interactable1Providing {
     var commentCount: Int { get }
     
     var votes: VotesModel { get }
