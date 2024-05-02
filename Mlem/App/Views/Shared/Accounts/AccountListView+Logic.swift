@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 22/12/2023.
 //
 
+import MlemMiddleware
 import SwiftUI
 
 extension AccountListView {

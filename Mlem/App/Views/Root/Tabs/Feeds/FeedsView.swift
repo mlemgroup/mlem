@@ -7,6 +7,7 @@
 
 import Dependencies
 import Foundation
+import MlemMiddleware
 import SwiftUI
 
 struct FeedsView: View {
@@ -36,10 +37,13 @@ struct MinimalPostFeedView: View {
         @AppStorage("showReadPosts") var showReadPosts = true
         @AppStorage("defaultPostSorting") var defaultPostSorting: ApiSortType = .hot
         
-        self._postTracker = .init(initialValue: .init(
-            internetSpeed: internetSpeed,
+        @Dependency(\.persistenceRepository) var persistenceRepository
+        
+        _postTracker = .init(initialValue: .init(
+            pageSize: internetSpeed.pageSize,
             sortType: defaultPostSorting,
             showReadPosts: showReadPosts,
+            filteredKeywords: persistenceRepository.loadFilteredKeywords(),
             feedType: .aggregateFeed(AppState.main.firstApi, type: .subscribed)
         ))
     }
@@ -51,11 +55,19 @@ struct MinimalPostFeedView: View {
                 .task {
                     if postTracker.items.isEmpty, postTracker.loadingState == .idle {
                         print("Loading initial PostTracker page...")
-                        await postTracker.loadMoreItems()
+                        do {
+                            try await postTracker.loadMoreItems()
+                        } catch {
+                            errorHandler.handle(error)
+                        }
                     }
                 }
                 .task(id: appState.firstApi) {
-                    await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
+                    do {
+                        try await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
+                    } catch {
+                        errorHandler.handle(error)
+                    }
                 }
                 .refreshable {
                     do {
@@ -90,9 +102,9 @@ struct MinimalPostFeedView: View {
             LazyVStack(spacing: 0) {
                 ForEach(postTracker.items, id: \.uid) { post in
                     HStack {
-                        actionButton(post.upvoteAction)
-                        actionButton(post.downvoteAction)
-                        actionButton(post.saveAction)
+//                        actionButton(post.upvoteAction)
+//                        actionButton(post.downvoteAction)
+//                        actionButton(post.saveAction)
                         
                         Text(post.title)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -102,11 +114,11 @@ struct MinimalPostFeedView: View {
                     .padding(10)
                     .background(Color(uiColor: .systemBackground))
                     .contentShape(.rect)
-                    .contextMenu {
-                        ForEach(post.menuActions.children, id: \.id) { action in
-                            MenuButton(action: action)
-                        }
-                    }
+//                    .contextMenu {
+//                        ForEach(post.menuActions.children, id: \.id) { action in
+//                            MenuButton(action: action)
+//                        }
+//                    }
                     Divider()
                 }
             }
