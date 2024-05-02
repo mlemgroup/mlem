@@ -28,7 +28,7 @@ struct MinimalPostFeedView: View {
     
     @Environment(AppState.self) var appState
     
-    @State var postTracker: StandardPostTracker
+    @State var postTracker: StandardPostFeedLoader
     
     init() {
         // need to grab some stuff from app storage to initialize with
@@ -102,9 +102,9 @@ struct MinimalPostFeedView: View {
             LazyVStack(spacing: 0) {
                 ForEach(postTracker.items, id: \.uid) { post in
                     HStack {
-//                        actionButton(post.upvoteAction)
-//                        actionButton(post.downvoteAction)
-//                        actionButton(post.saveAction)
+                        actionButton(post.upvoteAction)
+                        actionButton(post.downvoteAction)
+                        actionButton(post.saveAction)
                         
                         Text(post.title)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -114,11 +114,11 @@ struct MinimalPostFeedView: View {
                     .padding(10)
                     .background(Color(uiColor: .systemBackground))
                     .contentShape(.rect)
-//                    .contextMenu {
-//                        ForEach(post.menuActions.children, id: \.id) { action in
-//                            MenuButton(action: action)
-//                        }
-//                    }
+                    .contextMenu {
+                        ForEach(post.menuActions.children, id: \.id) { action in
+                            MenuButton(action: action)
+                        }
+                    }
                     Divider()
                 }
             }

@@ -28,10 +28,11 @@ struct BasicAction: Action {
         label: String,
         color: Color,
         isDestructive: Bool = false,
-        barIcon: String,
-        menuIcon: String,
-        swipeIcon1: String,
-        swipeIcon2: String,
+        icon: String,
+        barIcon: String? = nil,
+        menuIcon: String? = nil,
+        swipeIcon1: String? = nil,
+        swipeIcon2: String? = nil,
         enabled: Bool = true,
         callback: (() -> Void)? = nil
     ) {
@@ -39,46 +40,49 @@ struct BasicAction: Action {
         self.label = label
         self.isDestructive = isDestructive
         self.color = color
-        self.barIcon = barIcon
-        self.menuIcon = menuIcon
-        self.swipeIcon1 = swipeIcon1
-        self.swipeIcon2 = swipeIcon2
+        self.barIcon = barIcon ?? icon
+        self.menuIcon = menuIcon ?? icon
+        self.swipeIcon1 = swipeIcon1 ?? icon
+        self.swipeIcon2 = swipeIcon2 ?? icon
         self.callback = enabled ? callback : nil
     }
     
-    static func upvote(isOn: Bool) -> BasicAction {
+    static func upvote(isOn: Bool, callback: (() -> Void)? = nil) -> BasicAction {
         .init(
             isOn: isOn,
             label: isOn ? "Undo Upvote" : "Upvote",
             color: Colors.upvoteColor,
-            barIcon: Icons.upvote,
+            icon: Icons.upvote,
             menuIcon: isOn ? Icons.upvoteSquareFill : Icons.upvoteSquare,
             swipeIcon1: isOn ? Icons.resetVoteSquare : Icons.upvoteSquare,
-            swipeIcon2: isOn ? Icons.resetVoteSquareFill : Icons.upvoteSquareFill
+            swipeIcon2: isOn ? Icons.resetVoteSquareFill : Icons.upvoteSquareFill,
+            callback: callback
         )
     }
     
-    static func downvote(isOn: Bool) -> BasicAction {
+    static func downvote(isOn: Bool, callback: (() -> Void)? = nil) -> BasicAction {
         .init(
             isOn: isOn,
             label: isOn ? "Undo Downvote" : "Downvote",
             color: Colors.downvoteColor,
-            barIcon: Icons.downvote,
+            icon: Icons.downvote,
             menuIcon: isOn ? Icons.downvoteSquareFill : Icons.downvoteSquare,
             swipeIcon1: isOn ? Icons.resetVoteSquare : Icons.downvoteSquare,
-            swipeIcon2: isOn ? Icons.resetVoteSquareFill : Icons.downvoteSquareFill
+            swipeIcon2: isOn ? Icons.resetVoteSquareFill : Icons.downvoteSquareFill,
+            callback: callback
         )
     }
     
-    static func save(isOn: Bool) -> BasicAction {
+    static func save(isOn: Bool, callback: (() -> Void)? = nil) -> BasicAction {
         .init(
             isOn: isOn,
             label: isOn ? "Unsave" : "Save",
             color: Colors.saveColor,
-            barIcon: isOn ? Icons.saveFill : Icons.save,
+            icon: isOn ? Icons.saveFill : Icons.save,
             menuIcon: isOn ? Icons.saveFill : Icons.save,
             swipeIcon1: isOn ? Icons.unsave : Icons.save,
-            swipeIcon2: isOn ? Icons.unsaveFill : Icons.saveFill
+            swipeIcon2: isOn ? Icons.unsaveFill : Icons.saveFill,
+            callback: callback
         )
     }
 }
