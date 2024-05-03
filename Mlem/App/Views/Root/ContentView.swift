@@ -35,7 +35,7 @@ struct ContentView: View {
             CustomTabItem(title: "Feeds", systemImage: Icons.feedsFill) {
                 NavigationRootView(navigationModel: navigationModels[0])
             },
-            CustomTabItem(title: "Inbox", systemImage: "envelope.fill") {
+            CustomTabItem(title: "Inbox", systemImage: Icons.inboxFill) {
                 NavigationRootView(navigationModel: navigationModels[1])
             },
             CustomTabItem(
@@ -52,7 +52,7 @@ struct ContentView: View {
             CustomTabItem(title: "Search", systemImage: Icons.search) {
                 NavigationRootView(navigationModel: navigationModels[3])
             },
-            CustomTabItem(title: "Settings", systemImage: "gearshape.fill") {
+            CustomTabItem(title: "Settings", systemImage: Icons.settings) {
                 NavigationRootView(navigationModel: navigationModels[4])
             }
         ], onSwipeUp: {
