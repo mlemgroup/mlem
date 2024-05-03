@@ -17,6 +17,7 @@ struct NavigationLayerView: View {
                 set: { layer.path = $0 }
             )) {
                 layer.root.viewWithModifiers(layer: layer)
+                    .navigationDestination(for: NavigationPage.self) { $0.view() }
             }
             .environment(layer)
         } else {

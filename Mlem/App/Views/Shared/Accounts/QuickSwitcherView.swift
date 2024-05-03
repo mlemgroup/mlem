@@ -9,10 +9,17 @@ import Foundation
 import SwiftUI
 
 struct QuickSwitcherView: View {
+    @Environment(\.scenePhase) var scenePhase
+    @Environment(NavigationLayer.self) var navigation
+    
     var body: some View {
-        Group {
-            List {
-                AccountListView(isQuickSwitcher: true)
+        List {
+            AccountListView(isQuickSwitcher: true)
+        }
+        .onChange(of: scenePhase) {
+            // when app moves into background, hide the account switcher. This prevents the app from reopening with the switcher enabled.
+            if scenePhase != .active {
+                navigation.dismissIfOnTop()
             }
         }
     }

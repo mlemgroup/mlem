@@ -10,12 +10,14 @@ import SwiftUI
 struct NavigationRootView: View {
     @State var navigationModel: NavigationModel
     
-    init(root: NavigationPage) {
-        self._navigationModel = .init(wrappedValue: .init(root: root))
-    }
-    
     var body: some View {
         NavigationLayerView(layer: navigationModel.rootLayer)
+    }
+}
+
+extension NavigationRootView {
+    init(root: NavigationPage) {
+        self._navigationModel = .init(wrappedValue: .init(root: root))
     }
 }
 
@@ -43,6 +45,7 @@ struct NavigationSplitRootView<Content: View>: View {
                     }
                 )) {
                     navigationModel.rootLayer.root.viewWithModifiers(layer: navigationModel.rootLayer)
+                        .navigationDestination(for: NavigationPage.self) { $0.view() }
                 }
             }
         )

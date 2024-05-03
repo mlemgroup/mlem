@@ -11,14 +11,13 @@ extension NavigationPage {
     @ViewBuilder
     func viewWithModifiers(layer: NavigationLayer) -> some View {
         view()
-            .navigationDestination(for: NavigationPage.self) { $0.view() }
             .sheet(isPresented: Binding(
                 get: { (layer.model?.layers.count ?? 0) > (layer.index + 1)
                     && !(layer.model?.layers[layer.index + 1].isFullScreenCover ?? true)
                 },
                 set: { newValue in
                     if !newValue, let model = layer.model {
-                        model.layers.removeLast(model.layers.count - layer.index - 1)
+                        model.layers.removeLast(max(0, model.layers.count - layer.index - 1))
                     }
                 }
             )) {
@@ -32,7 +31,7 @@ extension NavigationPage {
                 },
                 set: { newValue in
                     if !newValue, let model = layer.model {
-                        model.layers.removeLast(model.layers.count - layer.index - 1)
+                        model.layers.removeLast(max(0, model.layers.count - layer.index - 1))
                     }
                 }
             )) {

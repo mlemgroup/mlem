@@ -22,7 +22,7 @@ class NavigationModel {
         )
     }
 
-    func openSheet(_ page: NavigationPage, hasNavigationStack: Bool? = nil, isFullScreenCover: Bool) {
+    private func openSheet(_ page: NavigationPage, hasNavigationStack: Bool? = nil, isFullScreenCover: Bool) {
         layers.append(
             .init(
                 root: page,
@@ -32,5 +32,17 @@ class NavigationModel {
                 isFullScreenCover: isFullScreenCover
             )
         )
+    }
+    
+    func closeSheets(aboveIndex index: Int) {
+        layers.removeLast(layers.count - index)
+    }
+    
+    func openSheet(_ page: NavigationPage, hasNavigationStack: Bool? = nil) {
+        openSheet(page, hasNavigationStack: hasNavigationStack, isFullScreenCover: false)
+    }
+    
+    func showFullScreenCover(_ page: NavigationPage, hasNavigationStack: Bool? = nil) {
+        openSheet(page, hasNavigationStack: hasNavigationStack, isFullScreenCover: true)
     }
 }
