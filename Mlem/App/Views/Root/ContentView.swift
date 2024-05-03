@@ -45,7 +45,7 @@ struct ContentView: View {
     var content: some View {
         CustomTabView(tabs: [
             CustomTabItem(title: "Feeds", systemImage: Icons.feedsFill) {
-                NavigationSplitRootView(root: .page1)
+                FeedsView()
             },
             CustomTabItem(
                 title: "Profile",
@@ -55,7 +55,7 @@ struct ContentView: View {
                     isPresentingAccountSwitcher = true
                 },
                 content: {
-                    NavigationRootView(root: .page1)
+                    ProfileView()
                 }
             )
         ], onSwipeUp: {

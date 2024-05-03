@@ -19,23 +19,22 @@ struct NavigationRootView: View {
     }
 }
 
-struct NavigationSplitRootView: View {
+struct NavigationSplitRootView<Content: View>: View {
     @State var navigationModel: NavigationModel
     
     @State var columnVisibility: NavigationSplitViewVisibility = .all
     
-    init(root: NavigationPage) {
+    @ViewBuilder var sidebar: () -> Content
+    
+    init(root: NavigationPage, @ViewBuilder sidebar: @escaping () -> Content) {
         self._navigationModel = .init(wrappedValue: .init(root: root))
+        self.sidebar = sidebar
     }
     
     var body: some View {
         NavigationSplitView(
             columnVisibility: $columnVisibility,
-            sidebar: {
-                Button("Push") {
-                    navigationModel.rootLayer.push(.page1)
-                }
-            },
+            sidebar: sidebar,
             detail: {
                 NavigationStack(path: Binding(
                     get: { navigationModel.rootLayer.path },
