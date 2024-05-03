@@ -13,10 +13,8 @@ struct ProfileView: View {
     @AppStorage("upvoteOnSave") var upvoteOnSave = false
     
     var body: some View {
-        NavigationStack {
-            content
-                .navigationTitle("Profile")
-        }
+        content
+            .navigationTitle("Profile")
     }
     
     var markdown: String {

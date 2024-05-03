@@ -14,12 +14,13 @@ class CustomTabViewHostingController: UIHostingController<CustomTabItem> {
         
         self.tabBarItem = UITabBarItem(
             title: rootView.title,
-            image: UIImage.init(systemName: rootView.systemImage),
+            image: UIImage(systemName: rootView.systemImage),
             tag: index
         )
     }
     
-    @MainActor required dynamic init?(coder aDecoder: NSCoder) {
+    @available(*, unavailable)
+    @MainActor dynamic required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }

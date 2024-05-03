@@ -21,7 +21,7 @@ struct CustomTabView: UIViewControllerRepresentable {
         context: UIViewControllerRepresentableContext<CustomTabView>
     ) -> UITabBarController {
         let tabBarController = CustomTabBarController(swipeGestureCallback: swipeGestureCallback)
-        tabBarController.viewControllers = self.viewControllers
+        tabBarController.viewControllers = viewControllers
         return tabBarController
     }
     
@@ -33,7 +33,7 @@ struct CustomTabView: UIViewControllerRepresentable {
     }
     
     func makeCoordinator() -> Coordinator {
-        return Coordinator(self)
+        Coordinator(self)
     }
     
     class Coordinator: NSObject {

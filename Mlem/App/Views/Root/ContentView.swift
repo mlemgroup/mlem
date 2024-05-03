@@ -54,7 +54,9 @@ struct ContentView: View {
                     // TODO: haptics here
                     isPresentingAccountSwitcher = true
                 },
-                content: { ProfileView() }
+                content: {
+                    ProfileView()
+                }
             )
         ], onSwipeUp: {
             isPresentingAccountSwitcher = true
