@@ -119,7 +119,7 @@ enum Icons {
     // tabs
     static let feeds: String = "scroll"
     static let feedsFill: String = "scroll.fill"
-    static let inbox: String = "envelope"
+    static let inbox: String = "mail.stack"
     static let inboxFill: String = "mail.stack.fill"
     static let search: String = "magnifyingglass"
     static let searchActive: String = "text.magnifyingglass"
