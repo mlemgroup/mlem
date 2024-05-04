@@ -9,7 +9,8 @@ import Foundation
 import KeychainAccess
 
 enum AppConstants {
-    static let webSocketSession: URLSession = .init(configuration: .default)
+    static let cacheSize = 500_000_000 // 500MB in bytes
+    static let urlCache: URLCache = .init(memoryCapacity: cacheSize, diskCapacity: cacheSize)
     static let urlSession: URLSession = .init(configuration: .default)
 
     // MARK: - Date parsing
