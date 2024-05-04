@@ -15,11 +15,11 @@ struct CustomTabItem: View {
     
     var onLongPress: (() -> Void)?
     
-    init<Content: View>(
+    init(
         title: String,
         systemImage: String,
         onLongPress: (() -> Void)? = nil,
-        @ViewBuilder content: () -> Content
+        @ViewBuilder content: () -> some View
     ) {
         self.title = title
         self.systemImage = systemImage
@@ -27,5 +27,5 @@ struct CustomTabItem: View {
         self.content = AnyView(content())
     }
     
-    var body: some View { self.content }
+    var body: some View { content }
 }
