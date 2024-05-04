@@ -18,6 +18,7 @@ class MarkReadBatcher {
     @Dependency(\.notifier) var notifier
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.postRepository) var postRepository
+    @Dependency(\.apiClient) var apiClient
     
     private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
     private let stagedSemaphore: AsyncSemaphore = .init(value: 1)
@@ -43,6 +44,10 @@ class MarkReadBatcher {
         Task {
             await dispatchSending()
         }
+    }
+    
+    func clearStaged() {
+        staged.removeAll()
     }
     
     func dispatchSending() async {
