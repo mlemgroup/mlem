@@ -44,7 +44,9 @@ struct MinimalPostFeedView: View {
             sortType: defaultPostSorting,
             showReadPosts: showReadPosts,
             filteredKeywords: persistenceRepository.loadFilteredKeywords(),
-            feedType: .aggregateFeed(AppState.main.firstApi, type: .subscribed)
+            feedType: .aggregateFeed(AppState.main.firstApi, type: .subscribed),
+            smallAvatarSize: AppConstants.smallAvatarSize,
+            largeAvatarSize: AppConstants.largeAvatarSize
         ))
     }
     
