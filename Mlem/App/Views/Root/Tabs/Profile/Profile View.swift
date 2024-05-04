@@ -29,9 +29,6 @@ struct ProfileView: View {
                 Text("\(appState.firstAccount.user?.name ?? "No User")")
                 Text("\(appState.firstApi.baseUrl)")
                 Text(appState.firstAccount.user?.displayName ?? "...")
-                Button("Test") {
-                    navigation.openSheet(.profile)
-                }
                 Divider()
                 Toggle("Upvote On Save", isOn: $upvoteOnSave)
                     .padding(.horizontal, 50)
