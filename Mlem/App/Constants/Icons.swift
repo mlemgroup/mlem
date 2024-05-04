@@ -120,7 +120,7 @@ enum Icons {
     static let feeds: String = "scroll"
     static let feedsFill: String = "scroll.fill"
     static let inbox: String = "envelope"
-    static let inboxFill: String = "envelope.fill"
+    static let inboxFill: String = "mail.stack.fill"
     static let search: String = "magnifyingglass"
     static let searchActive: String = "text.magnifyingglass"
     static let settings: String = "gear"

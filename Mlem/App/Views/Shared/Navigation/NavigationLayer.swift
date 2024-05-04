@@ -20,9 +20,9 @@ class NavigationLayer {
     init(
         root: NavigationPage,
         model: NavigationModel,
-        index: Int,
-        hasNavigationStack: Bool,
-        isFullScreenCover: Bool
+        index: Int = -1,
+        hasNavigationStack: Bool = true,
+        isFullScreenCover: Bool = false
     ) {
         self.model = model
         self.index = index

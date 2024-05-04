@@ -9,6 +9,7 @@ import SwiftUI
 
 struct NavigationLayerView: View {
     @State var layer: NavigationLayer
+    let hasSheetModifiers: Bool
     
     var body: some View {
         if layer.hasNavigationStack {
@@ -16,13 +17,22 @@ struct NavigationLayerView: View {
                 get: { layer.path },
                 set: { layer.path = $0 }
             )) {
-                layer.root.viewWithModifiers(layer: layer)
+                rootView()
                     .navigationDestination(for: NavigationPage.self) { $0.view() }
             }
             .environment(layer)
         } else {
-            layer.root.viewWithModifiers(layer: layer)
+            rootView()
                 .environment(layer)
+        }
+    }
+    
+    @ViewBuilder
+    private func rootView() -> some View {
+        if hasSheetModifiers {
+            layer.root.viewWithModifiers(layer: layer)
+        } else {
+            layer.root.view()
         }
     }
 }

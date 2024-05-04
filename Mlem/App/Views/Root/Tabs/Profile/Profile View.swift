@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ProfileView: View {
     @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
     @AppStorage("upvoteOnSave") var upvoteOnSave = false
     
     var body: some View {
@@ -28,6 +29,9 @@ struct ProfileView: View {
                 Text("\(appState.firstAccount.user?.name ?? "No User")")
                 Text("\(appState.firstApi.baseUrl)")
                 Text(appState.firstAccount.user?.displayName ?? "...")
+                Button("Test") {
+                    navigation.openSheet(.profile)
+                }
                 Divider()
                 Toggle("Upvote On Save", isOn: $upvoteOnSave)
                     .padding(.horizontal, 50)

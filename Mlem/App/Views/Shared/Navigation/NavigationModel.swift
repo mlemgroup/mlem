@@ -9,18 +9,7 @@ import SwiftUI
 
 @Observable
 class NavigationModel {
-    var rootLayer: NavigationLayer!
     var layers: [NavigationLayer] = .init()
-    
-    init(root: NavigationPage) {
-        self.rootLayer = NavigationLayer(
-            root: root,
-            model: self,
-            index: -1,
-            hasNavigationStack: true,
-            isFullScreenCover: false
-        )
-    }
 
     private func openSheet(_ page: NavigationPage, hasNavigationStack: Bool? = nil, isFullScreenCover: Bool) {
         layers.append(
@@ -32,6 +21,10 @@ class NavigationModel {
                 isFullScreenCover: isFullScreenCover
             )
         )
+    }
+    
+    func addLayer(_ navigationLayer: NavigationLayer) {
+        layers.append(navigationLayer)
     }
     
     func closeSheets(aboveIndex index: Int) {

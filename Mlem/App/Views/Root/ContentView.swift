@@ -13,14 +13,8 @@ struct ContentView: View {
     var appState: AppState { .main }
     
     @State var selectedTabIndex: Int = 0
-    let navigationModels: [NavigationModel] = [.feeds, .inbox, .profile, .search, .settings].map(NavigationModel.init)
-    var activeNavigationModel: NavigationModel {
-        if 0 ... 5 ~= selectedTabIndex {
-            return navigationModels[selectedTabIndex]
-        }
-        assertionFailure()
-        return navigationModels[0]
-    }
+    
+    @State var navigationModel: NavigationModel = .init()
     
     var body: some View {
         content
@@ -33,31 +27,43 @@ struct ContentView: View {
     var content: some View {
         CustomTabView(selectedIndex: $selectedTabIndex, tabs: [
             CustomTabItem(title: "Feeds", systemImage: Icons.feedsFill) {
-                NavigationRootView(navigationModel: navigationModels[0])
+                NavigationLayerView(layer: .init(root: .feeds, model: navigationModel), hasSheetModifiers: false)
             },
             CustomTabItem(title: "Inbox", systemImage: Icons.inboxFill) {
-                NavigationRootView(navigationModel: navigationModels[1])
+                NavigationLayerView(layer: .init(root: .inbox, model: navigationModel), hasSheetModifiers: false)
             },
             CustomTabItem(
                 title: "Profile",
                 systemImage: Icons.userFill,
                 onLongPress: {
                     // TODO: haptics here
-                    activeNavigationModel.openSheet(.quickSwitcher)
+                    navigationModel.openSheet(.quickSwitcher)
                 },
                 content: {
-                    NavigationRootView(navigationModel: navigationModels[2])
+                    NavigationLayerView(layer: .init(root: .profile, model: navigationModel), hasSheetModifiers: false)
                 }
             ),
             CustomTabItem(title: "Search", systemImage: Icons.search) {
-                NavigationRootView(navigationModel: navigationModels[3])
+                NavigationLayerView(layer: .init(root: .search, model: navigationModel), hasSheetModifiers: false)
             },
             CustomTabItem(title: "Settings", systemImage: Icons.settings) {
-                NavigationRootView(navigationModel: navigationModels[4])
+                NavigationLayerView(layer: .init(root: .settings, model: navigationModel), hasSheetModifiers: false)
             }
         ], onSwipeUp: {
-            activeNavigationModel.openSheet(.quickSwitcher)
+            navigationModel.openSheet(.quickSwitcher)
         })
         .ignoresSafeArea()
+        .sheet(isPresented: Binding(
+            get: { !(navigationModel.layers.first?.isFullScreenCover ?? true) },
+            set: { if !$0 { navigationModel.layers.removeAll() } }
+        )) {
+            NavigationLayerView(layer: navigationModel.layers[0], hasSheetModifiers: true)
+        }
+        .fullScreenCover(isPresented: Binding(
+            get: { navigationModel.layers.first?.isFullScreenCover ?? false },
+            set: { if !$0 { navigationModel.layers.removeAll() } }
+        )) {
+            NavigationLayerView(layer: navigationModel.layers[0], hasSheetModifiers: true)
+        }
     }
 }

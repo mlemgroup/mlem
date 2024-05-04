@@ -22,7 +22,7 @@ extension NavigationPage {
                 }
             )) {
                 if let model = layer.model {
-                    NavigationLayerView(layer: model.layers[layer.index + 1])
+                    NavigationLayerView(layer: model.layers[layer.index + 1], hasSheetModifiers: true)
                 }
             }
             .fullScreenCover(isPresented: Binding(
@@ -36,7 +36,7 @@ extension NavigationPage {
                 }
             )) {
                 if let model = layer.model {
-                    NavigationLayerView(layer: model.layers[layer.index + 1])
+                    NavigationLayerView(layer: model.layers[layer.index + 1], hasSheetModifiers: true)
                 }
             }
     }
