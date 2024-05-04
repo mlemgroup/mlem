@@ -36,10 +36,11 @@ struct ActionGroup: Action {
         label: String = "More...",
         color: Color = .blue,
         isDestructive: Bool = false,
-        barIcon: String = Icons.menuCircle,
-        menuIcon: String = Icons.menuCircle,
-        swipeIcon1: String = Icons.menuCircle,
-        swipeIcon2: String = Icons.menuCircleFill,
+        icon: String = Icons.menuCircle,
+        barIcon: String? = nil,
+        menuIcon: String? = nil,
+        swipeIcon1: String? = nil,
+        swipeIcon2: String? = nil,
         enabled: Bool = true,
         children: [any Action],
         displayMode: ActionGroupMode = .section
@@ -48,10 +49,10 @@ struct ActionGroup: Action {
         self.label = label
         self.isDestructive = isDestructive
         self.color = color
-        self.barIcon = barIcon
-        self.menuIcon = menuIcon
-        self.swipeIcon1 = swipeIcon1
-        self.swipeIcon2 = swipeIcon2
+        self.barIcon = barIcon ?? icon
+        self.menuIcon = menuIcon ?? icon
+        self.swipeIcon1 = swipeIcon1 ?? icon
+        self.swipeIcon2 = swipeIcon2 ?? icon
         self.enabled = enabled
         self.children = children
         self.displayMode = displayMode
