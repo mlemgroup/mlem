@@ -95,6 +95,7 @@ struct Window: View {
         DispatchQueue.main.async {
             Task {
                 await markReadBatcher.flush()
+                markReadBatcher.clearStaged()
             }
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

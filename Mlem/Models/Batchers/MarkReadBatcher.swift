@@ -45,6 +45,10 @@ class MarkReadBatcher {
         }
     }
     
+    func clearStaged() {
+        staged.removeAll()
+    }
+    
     func dispatchSending() async {
         guard sending.count > 0 else {
             return
