@@ -32,6 +32,8 @@ struct ExpandedPost: View {
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.notifier) var notifier
     @Dependency(\.postRepository) var postRepository
+    @Dependency(\.communityRepository) var communityRepository
+    @Dependency(\.siteInformation) var siteInformation
     
     // appstorage
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
@@ -52,11 +54,12 @@ struct ExpandedPost: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
+    @EnvironmentObject var modToolTracker: ModToolTracker
 
     @StateObject var commentTracker: CommentTracker = .init()
     @EnvironmentObject var postTracker: StandardPostTracker
     @StateObject var post: PostModel
-    var community: CommunityModel?
+    @State var community: CommunityModel?
     
     @State var commentErrorDetails: ErrorDetails?
     
@@ -74,17 +77,38 @@ struct ExpandedPost: View {
     @State private var scrollToTopAppeared = false
     @Namespace var scrollToTop
     
+    @State private var menuFunctionPopup: MenuFunctionPopup?
+    
     var body: some View {
         contentView
             .environmentObject(commentTracker)
             .navigationBarTitle(post.community.name, displayMode: .inline)
             .toolbar {
-                ToolbarItemGroup(placement: .navigationBarTrailing) { toolbarMenu }
+                ToolbarItem(placement: .topBarTrailing) { toolbarMenu }
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    ToolbarEllipsisMenu {
+                        let isMod = siteInformation.isModOrAdmin(communityId: post.community.communityId)
+                        let menuFunctions = post.combinedMenuFunctions(
+                            isExpanded: true,
+                            editorTracker: editorTracker,
+                            postTracker: postTracker,
+                            commentTracker: commentTracker,
+                            community: isMod ? post.community : nil,
+                            modToolTracker: isMod ? modToolTracker : nil
+                        )
+                        ForEach(menuFunctions) { child in
+                            MenuButton(menuFunction: child, menuFunctionPopup: $menuFunctionPopup)
+                        }
+                    }
+                }
             }
+            .destructiveConfirmation(menuFunctionPopup: $menuFunctionPopup)
             .task {
                 if commentTracker.comments.isEmpty {
                     await loadComments()
                 }
+            }
+            .task {
                 await post.markRead(true)
             }
             .refreshable { await refreshComments() }
@@ -117,6 +141,7 @@ struct ExpandedPost: View {
                             noCommentsView()
                         } else {
                             commentsView
+                                .clipped()
                                 .onAppear {
                                     if let target = scrollTarget {
                                         scrollTarget = nil
@@ -219,24 +244,17 @@ struct ExpandedPost: View {
     private var postView: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
-                HStack {
-                    CommunityLinkView(
-                        community: post.community,
-                        serverInstanceLocation: communityServerInstanceLocation
-                    )
-                    
-                    Spacer()
-                    
-                    let functions = post.menuFunctions(editorTracker: editorTracker, postTracker: postTracker)
-                    EllipsisMenu(size: 24, menuFunctions: functions)
-                }
+                CommunityLinkView(
+                    community: post.community,
+                    serverInstanceLocation: communityServerInstanceLocation
+                )
                 
                 LargePost(
                     post: post,
                     layoutMode: $postLayoutMode
                 )
                 .onTapGesture {
-                    withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.25)) {
+                    withAnimation(.showHidePost) {
                         postLayoutMode = postLayoutMode == .maximize ? .minimize : .maximize
                     }
                 }
@@ -244,32 +262,14 @@ struct ExpandedPost: View {
                 UserLinkView(
                     user: post.creator,
                     serverInstanceLocation: userServerInstanceLocation,
+                    bannedFromCommunity: post.creatorBannedFromCommunity,
                     communityContext: community
                 )
             }
             .padding(.top, AppConstants.postAndCommentSpacing)
             .padding(.horizontal, AppConstants.postAndCommentSpacing)
             
-            InteractionBarView(
-                votes: post.votes,
-                published: post.published,
-                updated: post.updated,
-                commentCount: post.commentCount,
-                unreadCommentCount: post.unreadCommentCount,
-                saved: post.saved,
-                accessibilityContext: "post",
-                widgets: layoutWidgetTracker.groups.post,
-                upvote: post.toggleUpvote,
-                downvote: post.toggleDownvote,
-                save: post.toggleSave,
-                reply: replyToPost,
-                shareURL: URL(string: post.post.apId),
-                shouldShowScore: shouldShowScoreInPostBar,
-                showDownvotesSeparately: showPostDownvotesSeparately,
-                shouldShowTime: shouldShowTimeInPostBar,
-                shouldShowSaved: shouldShowSavedInPostBar,
-                shouldShowReplies: shouldShowRepliesInPostBar
-            )
+            InteractionBarView(context: .post, widgets: enrichLayoutWidgets())
         }
     }
 

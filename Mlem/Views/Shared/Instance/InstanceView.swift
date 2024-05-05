@@ -7,10 +7,11 @@
 
 import Charts
 import Dependencies
+import Foundation
 import SwiftUI
 
 enum InstanceViewTab: String, Identifiable, CaseIterable {
-    case about, administrators, details, uptime, safety
+    case about, administration, details, uptime, safety
     
     var id: Self { self }
     
@@ -34,98 +35,103 @@ struct InstanceView: View {
     @Environment(\.navigationPathWithRoutes) private var navigationPath
     @Environment(\.scrollViewProxy) private var scrollViewProxy
     
-    @State var domainName: String
-    @State var instance: InstanceModel?
+    enum UptimeDataStatus {
+        case success(UptimeData)
+        case failure(Error)
+    }
+    
+    @State var instance: InstanceModel
+    @State var uptimeData: UptimeDataStatus?
+    @State var fediseerData: FediseerData?
     @State var errorDetails: ErrorDetails?
     
     @Namespace var scrollToTop
     @State private var scrollToTopAppeared = false
     
+    @State private var menuFunctionPopup: MenuFunctionPopup?
+    
     @State var selectedTab: InstanceViewTab = .about
     
-    init(domainName: String? = nil, instance: InstanceModel? = nil) {
-        _domainName = State(wrappedValue: domainName ?? instance?.name ?? "")
+    var uptimeRefreshTimer = Timer.publish(every: 30, tolerance: 0.5, on: .main, in: .common)
+        .autoconnect()
+    
+    init(instance: InstanceModel) {
         var instance = instance
-        if domainName == siteInformation.instance?.url.host() {
+        @Dependency(\.siteInformation) var siteInformation
+        if instance.name == siteInformation.instance?.url.host() {
             instance = siteInformation.instance ?? instance
         }
         _instance = State(wrappedValue: instance)
     }
     
     var subtitleText: String {
-        if let version = instance?.version {
-            "\(domainName) • \(String(describing: version))"
+        if let version = instance.version {
+            "\(instance.name) • \(String(describing: version))"
         } else {
-            domainName
+            instance.name
         }
+    }
+    
+    var availableTabs: [InstanceViewTab] {
+        var tabs: [InstanceViewTab] = [.about, .administration, .details]
+        if instance.canFetchUptime {
+            tabs.append(.uptime)
+        }
+        tabs.append(.safety)
+        return tabs
     }
     
     var body: some View {
         ScrollView {
             ScrollToView(appeared: $scrollToTopAppeared)
                 .id(scrollToTop)
-            VStack(spacing: AppConstants.postAndCommentSpacing) {
-                AvatarBannerView(instance: instance)
-                    .padding(.horizontal, AppConstants.postAndCommentSpacing)
-                    .padding(.top, 10)
-                VStack(spacing: 5) {
-                    if errorDetails == nil {
-                        if let instance {
-                            Text(instance.displayName)
-                                .font(.title)
-                                .fontWeight(.semibold)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.01)
-
-                            Text(subtitleText)
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
-                        }
+            VStack(spacing: AppConstants.standardSpacing) {
+                headerView
+                    .padding(.bottom, AppConstants.halfSpacing)
+                
+                VStack(spacing: 0) {
+                    BubblePicker(
+                        availableTabs,
+                        selected: $selectedTab,
+                        withDividers: [.top, .bottom],
+                        label: \.label
+                    )
+                    
+                    if let errorDetails, [.about, .administration, .details].contains(selectedTab) {
+                        ErrorView(errorDetails)
                     } else {
-                        Text(domainName)
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.01)
-                            .padding(.bottom, 5)
-                        Divider()
-                    }
-                }
-                .padding(.bottom, 5)
-                if let errorDetails {
-                    ErrorView(errorDetails)
-                } else if let instance, instance.creationDate != nil {
-                    VStack(spacing: 0) {
-                        VStack(spacing: 4) {
-                            Divider()
-                            BubblePicker([.about, .administrators, .details], selected: $selectedTab) { tab in
-                                Text(tab.label)
-                            }
-                            Divider()
-                        }
                         switch selectedTab {
                         case .about:
                             if let description = instance.description {
                                 MarkdownView(text: description, isNsfw: false)
                                     .padding(.horizontal, AppConstants.postAndCommentSpacing)
                                     .padding(.top)
-                            } else {
+                            } else if instance.administrators != nil {
                                 Text("No Description")
                                     .foregroundStyle(.secondary)
                                     .padding(.top)
-                            }
-                        case .administrators:
-                            if let administrators = instance.administrators {
-                                ForEach(administrators, id: \.self) { user in
-                                    UserResultView(user, complications: [.date])
-                                    Divider()
-                                }
                             } else {
                                 ProgressView()
-                                    .padding(.top)
+                                    .padding(.top, 30)
+                            }
+                        case .administration:
+                            VStack(spacing: 0) {
+                                ModlogNavigationLinkView(to: instance)
+                                
+                                Divider()
+                                
+                                if let administrators = instance.administrators {
+                                    ForEach(administrators, id: \.self) { user in
+                                        UserListRow(user, complications: [.date])
+                                        Divider()
+                                    }
+                                } else {
+                                    ProgressView()
+                                        .padding(.top, 30)
+                                }
                             }
                         case .details:
-                            if instance.userCount != nil {
+                            if instance.administrators != nil {
                                 VStack(spacing: 0) {
                                     InstanceDetailsView(instance: instance)
                                         .padding(.vertical, 16)
@@ -136,67 +142,53 @@ struct InstanceView: View {
                                 }
                             } else {
                                 ProgressView()
-                                    .padding(.top)
+                                    .padding(.top, 30)
                             }
-                        default:
-                            EmptyView()
+                        case .uptime:
+                            VStack {
+                                switch uptimeData {
+                                case let .success(uptimeData):
+                                    InstanceUptimeView(instance: instance, uptimeData: uptimeData)
+                                case let .failure(error):
+                                    ErrorView(.init(error: error))
+                                        .padding(.top, 5)
+                                default:
+                                    ProgressView()
+                                        .padding(.top, 30)
+                                }
+                            }
+                            .onAppear(perform: attemptToLoadUptimeData)
+                            .onReceive(uptimeRefreshTimer) { _ in attemptToLoadUptimeData() }
+                        case .safety:
+                            Group {
+                                if let fediseerData {
+                                    InstanceSafetyView(instance: instance, fediseerData: fediseerData)
+                                } else {
+                                    ProgressView()
+                                        .padding(.top, 30)
+                                }
+                            }
+                            .onAppear(perform: attemptToLoadFediseerData)
                         }
                         Spacer()
                             .frame(height: 100)
                     }
-                    
-                } else {
-                    LoadingView(whatIsLoading: .instanceDetails)
                 }
             }
         }
         .toolbar {
-            if let instance {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Link(destination: instance.url) {
-                        Label("Open in Browser", systemImage: Icons.browser)
+            ToolbarItem(placement: .topBarTrailing) {
+                ToolbarEllipsisMenu {
+                    ForEach(instance.menuFunctions { new in
+                        instance = new
+                    }) { item in
+                        MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
                     }
                 }
             }
         }
-        .task {
-            if instance?.administrators == nil {
-                do {
-                    if let url = URL(string: "https://\(domainName)") {
-                        let info = try await apiClient.loadSiteInformation(instanceURL: url)
-                        DispatchQueue.main.async {
-                            withAnimation(.easeOut(duration: 0.2)) {
-                                if var instance {
-                                    instance.update(with: info)
-                                    self.instance = instance
-                                } else {
-                                    instance = InstanceModel(from: info)
-                                }
-                            }
-                        }
-                    } else {
-                        errorDetails = ErrorDetails(title: "\"\(domainName)\" is an invalid URL.")
-                    }
-                } catch let APIClientError.decoding(data, error) {
-                    withAnimation(.easeOut(duration: 0.2)) {
-                        if let content = String(data: data, encoding: .utf8),
-                           content.contains("<div class=\"kbin-container\">") {
-                            errorDetails = ErrorDetails(
-                                title: "KBin Instance",
-                                body: "We can't yet display KBin details.",
-                                icon: Icons.federation
-                            )
-                        } else {
-                            errorDetails = ErrorDetails(error: APIClientError.decoding(data, error))
-                        }
-                    }
-                } catch {
-                    withAnimation(.easeOut(duration: 0.2)) {
-                        errorDetails = ErrorDetails(error: error)
-                    }
-                }
-            }
-        }
+        .destructiveConfirmation(menuFunctionPopup: $menuFunctionPopup)
+        .onAppear(perform: attemptToLoadInstanceData)
         .fancyTabScrollCompatible()
         .hoistNavigation {
             if navigationPath.isEmpty {
@@ -216,7 +208,35 @@ struct InstanceView: View {
             }
         }
         .navigationBarColor()
-        .navigationTitle(instance?.displayName ?? domainName)
+        .navigationTitle(instance.displayName ?? instance.name)
         .navigationBarTitleDisplayMode(.inline)
+        .onChange(of: errorDetails == nil) { _ in
+            attemptToLoadUptimeData()
+        }
     }
+    
+    @ViewBuilder
+    var headerView: some View {
+        AvatarBannerView(instance: instance)
+            .padding(.horizontal, AppConstants.postAndCommentSpacing)
+            .padding(.top, 10)
+        VStack(spacing: 5) {
+            Text(instance.displayName)
+                .font(.title)
+                .fontWeight(.semibold)
+                .lineLimit(1)
+                .minimumScaleFactor(0.01)
+                .transition(.opacity)
+                .id("Title" + instance.displayName) // https://stackoverflow.com/a/60136737/17629371
+            Text(subtitleText)
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+                .transition(.opacity)
+                .id("Subtitle" + subtitleText)
+        }
+    }
+}
+
+#Preview {
+    InstanceView(instance: .mock())
 }

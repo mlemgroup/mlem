@@ -5,6 +5,7 @@
 //  Created by tht7 on 26/06/2023.
 //
 
+import Dependencies
 import Foundation
 import MarkdownUI
 import Nuke
@@ -13,11 +14,15 @@ import QuickLook
 import SwiftUI
 
 struct CachedImage: View {
+    @Dependency(\.notifier) var notifier
+    @Dependency(\.errorHandler) var errorHandler
     let url: URL?
     let shouldExpand: Bool
+    let hasContextMenu: Bool
     
     // state vars to track the current image size and whether that size needs to be recomputed when the image actually loads. Combined with the image size cache, this produces good scrolling behavior except in the case where we scroll past an image and it derenders before it ever gets a chance to load, in which case that image will cause a slight hiccup on the way back up. That's kind of an unsolvable problem, since we can't know the size before we load the image at all, but that's fine because it shouldn't really happen during normal use. If we really want to guarantee smooth feed scrolling we can squish any image with no cached size into a square, but that feels like squishing a lot of images for the sake of a fringe case.
     @State var size: CGSize
+    let fixedSize: CGSize?
     @State var shouldRecomputeSize: Bool
     
     @EnvironmentObject private var imageDetailSheetState: ImageDetailSheetState
@@ -37,6 +42,7 @@ struct CachedImage: View {
     init(
         url: URL?,
         shouldExpand: Bool = true,
+        hasContextMenu: Bool = false,
         maxHeight: CGFloat = .infinity,
         fixedSize: CGSize? = nil,
         imageNotFound: @escaping () -> AnyView = imageNotFoundDefault,
@@ -48,6 +54,7 @@ struct CachedImage: View {
     ) {
         self.url = url
         self.shouldExpand = shouldExpand
+        self.hasContextMenu = hasContextMenu
         self.maxHeight = maxHeight
         self.imageNotFound = imageNotFound
         self.errorBackgroundColor = errorBackgroundColor
@@ -58,6 +65,7 @@ struct CachedImage: View {
         
         self.screenWidth = UIScreen.main.bounds.width - (AppConstants.postAndCommentSpacing * 2)
         
+        self.fixedSize = fixedSize
         // determine the size of the image
         if let fixedSize {
             // if we're given a size, just use it and to hell with the cache
@@ -86,40 +94,26 @@ struct CachedImage: View {
     var body: some View {
         LazyImage(url: url) { state in
             if let imageContainer = state.imageContainer {
-                let imageView = Image(uiImage: imageContainer.image)
-                    .resizable()
-                    .aspectRatio(contentMode: contentMode)
-                    .cornerRadius(cornerRadius)
-                    .frame(idealWidth: size.width, maxHeight: size.height)
-                    .blur(radius: blurRadius)
-                    .clipped()
-                    .allowsHitTesting(false)
-                    .overlay(alignment: .top) {
-                        // weeps in janky hack but this lets us tap the image only in the area we want
-                        Rectangle()
-                            .frame(maxHeight: size.height)
-                            .opacity(0.00000000001)
-                    }
-                    .onAppear {
-                        // if the image appears and its size isn't cached, compute its size and cache it
-                        if shouldRecomputeSize {
-                            let ratio = screenWidth / imageContainer.image.size.width
-                            size = CGSize(
-                                width: screenWidth,
-                                height: min(maxHeight, imageContainer.image.size.height * ratio)
-                            )
-                            cacheImageSize()
-                            shouldRecomputeSize = false
-                        }
-                    }
-                if shouldExpand {
-                    imageView
-                        .onTapGesture {
-                            imageDetailSheetState.url = url // show image detail
-                            onTapCallback?()
+                let baseImage = Image(uiImage: imageContainer.image)
+                let coreImage = coreImage(baseImage: baseImage, containerSize: imageContainer.image.size)
+                
+                if fixedSize == nil {
+                    imageWithTapGestures(image: coreImage)
+                        .contextMenu {
+                            if hasContextMenu {
+                                contextMenuActions(image: Image(uiImage: imageContainer.image))
+                            }
                         }
                 } else {
-                    imageView
+                    imageWithTapGestures(image: coreImage)
+                        .contextMenu {
+                            if hasContextMenu {
+                                contextMenuActions(image: Image(uiImage: imageContainer.image))
+                            }
+                        } preview: {
+                            baseImage
+                                .resizable()
+                        }
                 }
             } else if state.error != nil {
                 // Indicates an error
@@ -150,6 +144,75 @@ struct CachedImage: View {
         }
     }
     
+    @ViewBuilder func coreImage(baseImage: Image, containerSize: CGSize) -> some View {
+        baseImage
+            .resizable()
+            .aspectRatio(contentMode: contentMode)
+            .cornerRadius(cornerRadius)
+            .frame(idealWidth: size.width, maxHeight: size.height)
+            .fixSize(fixedSize: fixedSize, fallbackSize: size)
+            .blur(radius: blurRadius)
+            .clipped()
+            .allowsHitTesting(false)
+            .overlay(alignment: .top) {
+                // weeps in janky hack but this lets us tap the image only in the area we want
+                Rectangle()
+                    .frame(maxHeight: size.height)
+                    .opacity(0.00000000001)
+            }
+            .onAppear {
+                // if the image appears and its size isn't cached, compute its size and cache it
+                if shouldRecomputeSize {
+                    let ratio = screenWidth / containerSize.width
+                    size = CGSize(
+                        width: screenWidth,
+                        height: min(maxHeight, containerSize.height * ratio)
+                    )
+                    cacheImageSize()
+                    shouldRecomputeSize = false
+                }
+            }
+    }
+    
+    @ViewBuilder func imageWithTapGestures(image: some View) -> some View {
+        if shouldExpand {
+            image
+                .onTapGesture {
+                    if shouldExpand {
+                        imageDetailSheetState.url = url // show image detail
+                        onTapCallback?()
+                    }
+                }
+        } else {
+            image
+        }
+    }
+    
+    @ViewBuilder
+    func contextMenuActions(image: Image) -> some View {
+        if hasContextMenu, let url {
+            Button("Save", systemImage: Icons.import) {
+                Task {
+                    do {
+                        let (data, _) = try await ImagePipeline.shared.data(for: url)
+                        let imageSaver = ImageSaver()
+                        try await imageSaver.writeToPhotoAlbum(imageData: data)
+                        await notifier.add(.success("Image saved"))
+                    } catch {
+                        await notifier.add(
+                            .detailedFailure(
+                                title: "Failed to Save Image",
+                                subtitle: "You may need to allow Mlem to access your Photo Library in System Settings."
+                            )
+                        )
+                        print(String(describing: error))
+                    }
+                }
+            }
+        }
+        ShareLink(item: image, preview: .init("photo", image: image))
+    }
+    
     static func imageNotFoundDefault() -> AnyView {
         AnyView(Image(systemName: Icons.missing)
             .resizable()
@@ -166,5 +229,24 @@ struct CachedImage: View {
         if let url {
             AppConstants.imageSizeCache.setObject(ImageSize(size: size), forKey: NSString(string: url.description))
         }
+    }
+}
+
+private struct OptionalFixedSizeImage: ViewModifier {
+    let fixedSize: CGSize?
+    let fallbackSize: CGSize
+    
+    func body(content: Content) -> some View {
+        if let fixedSize {
+            content.frame(width: fixedSize.width, height: fixedSize.height)
+        } else {
+            content.frame(idealWidth: fallbackSize.width, maxHeight: fallbackSize.height)
+        }
+    }
+}
+
+private extension View {
+    func fixSize(fixedSize: CGSize?, fallbackSize: CGSize) -> some View {
+        modifier(OptionalFixedSizeImage(fixedSize: fixedSize, fallbackSize: fallbackSize))
     }
 }

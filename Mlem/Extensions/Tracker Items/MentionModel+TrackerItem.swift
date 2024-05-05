@@ -8,10 +8,10 @@
 import Foundation
 
 extension MentionModel: TrackerItem {
-    func sortVal(sortType: TrackerSortType) -> TrackerSortVal {
+    func sortVal(sortType: TrackerSort.Case) -> TrackerSort {
         switch sortType {
-        case .published:
-            return .published(personMention.published)
+        case .new: .new(personMention.published)
+        case .old: .old(personMention.published)
         }
     }
 }

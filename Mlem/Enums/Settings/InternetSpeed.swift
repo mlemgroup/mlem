@@ -8,7 +8,7 @@
 import Foundation
 
 enum InternetSpeed: String, SettingsOptions {
-    case slow, fast
+    case debug, slow, fast
     
     var label: String { rawValue.capitalized }
     
@@ -16,6 +16,7 @@ enum InternetSpeed: String, SettingsOptions {
     
     var pageSize: Int {
         switch self {
+        case .debug: return 11
         case .slow: return 25
         case .fast: return 50
         }

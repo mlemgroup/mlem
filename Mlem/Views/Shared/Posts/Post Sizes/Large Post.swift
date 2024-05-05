@@ -178,10 +178,16 @@ struct LargePost: View {
             if post.post.nsfw {
                 NSFWTag(compact: false)
             }
+            if post.post.locked {
+                LockedTag(compact: false)
+            }
+            if post.post.removed {
+                RemovedTag(compact: false)
+            }
         }
         .scaleEffect(x: scaleX, y: scaleY)
         .onChange(of: layoutMode) { newValue in
-            withAnimation(.easeOut(duration: 0.25)) {
+            withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .easeOut(duration: 0.25)) {
                 if newValue == .minimize {
                     scaleX = 0.95
                     scaleY = 0.95
@@ -202,6 +208,7 @@ struct LargePost: View {
                 if layoutMode != .minimize {
                     CachedImage(
                         url: url,
+                        hasContextMenu: true,
                         maxHeight: layoutMode.getMaxHeight(limitHeight),
                         onTapCallback: markPostAsRead,
                         cornerRadius: AppConstants.largeItemCornerRadius

@@ -15,6 +15,7 @@ struct Window: View {
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.siteInformation) var siteInformation
+    @Dependency(\.markReadBatcher) var markReadBatcher
 
     @StateObject var easterFlagsTracker: EasterFlagsTracker = .init()
     @StateObject var filtersTracker: FiltersTracker = .init()
@@ -91,6 +92,12 @@ struct Window: View {
     
     private func setFlow(_ flow: AppFlow) {
         transition(flow)
+        DispatchQueue.main.async {
+            Task {
+                await markReadBatcher.flush()
+                markReadBatcher.clearStaged()
+            }
+        }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.flow = flow
         }

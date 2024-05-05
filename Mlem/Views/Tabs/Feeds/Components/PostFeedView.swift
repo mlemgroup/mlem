@@ -12,6 +12,7 @@ import SwiftUI
 struct PostFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.siteInformation) var siteInformation
+    @Dependency(\.markReadBatcher) var markReadBatcher
     
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
     @AppStorage("showReadPosts") var showReadPosts: Bool = true
@@ -19,6 +20,7 @@ struct PostFeedView: View {
     @AppStorage("postSize") var postSize: PostSize = .large
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
     @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
+    @AppStorage("markReadOnScroll") var markReadOnScroll: Bool = false
     
     @EnvironmentObject var postTracker: StandardPostTracker
     @EnvironmentObject var appState: AppState
@@ -68,6 +70,8 @@ struct PostFeedView: View {
                 defer { suppressNoPostsView = false }
                 
                 if let versionSafePostSort {
+                    await markReadBatcher.flush()
+                    
                     await postTracker.changeSortType(
                         to: versionSafePostSort,
                         forceRefresh: postTracker.items.isEmpty
@@ -76,20 +80,12 @@ struct PostFeedView: View {
             }
             .toolbar {
                 if versionSafePostSort != nil {
-                    ToolbarItem(placement: .primaryAction) { sortMenu }
-                    
-                    ToolbarItemGroup(placement: .secondaryAction) {
-                        ForEach(genEllipsisMenuFunctions()) { menuFunction in
-                            MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
-                        }
-                        Menu {
-                            ForEach(genPostSizeSwitchingFunctions()) { menuFunction in
-                                MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
-                            }
-                        } label: {
-                            Label("Post Size", systemImage: Icons.postSizeSetting)
-                        }
-                    }
+                    ToolbarItem(placement: .topBarTrailing) { sortMenu }
+                }
+            }
+            .onDisappear {
+                Task {
+                    await markReadBatcher.flush()
                 }
             }
     }
@@ -99,8 +95,30 @@ struct PostFeedView: View {
             if postTracker.items.isEmpty || versionSafePostSort == nil || postTracker.isStale {
                 noPostsView()
             } else {
-                ForEach(postTracker.items, id: \.uid) { feedPost(for: $0) }
-                EndOfFeedView(loadingState: postTracker.loadingState, viewType: .hobbit)
+                ForEach(Array(postTracker.items.enumerated()), id: \.element.uid) { index, element in
+                    feedPost(for: element)
+                        .task {
+                            if markReadOnScroll, markReadBatcher.enabled {
+                                // mark the post above (or several posts above) read when this post appears. This lets us get a rough "post crossed the middle of the screen" trigger without GeometryReader or timers or any of that
+                                let indexToMark = index >= postSize.markReadThreshold ? index - postSize.markReadThreshold : index
+
+                                if let postToMark = postTracker.items[safeIndex: indexToMark] {
+                                    await markReadBatcher.stage(postToMark.postId)
+                                    if postTracker.items.count - index <= postSize.markReadThreshold {
+                                        await markReadBatcher.stage(element.postId)
+                                    }
+                                }
+                            }
+                        }
+                        .onDisappear {
+                            if markReadOnScroll {
+                                Task {
+                                    await markReadBatcher.add(post: element)
+                                }
+                            }
+                        }
+                }
+                EndOfFeedView(loadingState: postTracker.loadingState, viewType: .hobbit, whatIsLoading: .posts)
             }
         }
     }
@@ -108,7 +126,7 @@ struct PostFeedView: View {
     @ViewBuilder
     private func feedPost(for post: PostModel) -> some View {
         VStack(spacing: 0) {
-            NavigationLink(.postLinkWithContext(.init(post: post, community: nil, postTracker: postTracker))) {
+            NavigationLink(.postLinkWithContext(.init(post: post, community: communityContext, postTracker: postTracker))) {
                 FeedPost(
                     post: post,
                     postTracker: postTracker,
@@ -120,7 +138,9 @@ struct PostFeedView: View {
             
             Divider()
         }
-        .onAppear { postTracker.loadIfThreshold(post) }
+        .onAppear {
+            postTracker.loadIfThreshold(post)
+        }
         .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
     }
     
@@ -151,12 +171,12 @@ struct PostFeedView: View {
     private var sortMenu: some View {
         Menu {
             ForEach(genOuterSortMenuFunctions()) { menuFunction in
-                MenuButton(menuFunction: menuFunction, confirmDestructive: nil) // no destructive sorts
+                MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil)) // no destructive sorts
             }
             
             Menu {
                 ForEach(genTopSortMenuFunctions()) { menuFunction in
-                    MenuButton(menuFunction: menuFunction, confirmDestructive: nil) // no destructive sorts
+                    MenuButton(menuFunction: menuFunction, menuFunctionPopup: .constant(nil)) // no destructive sorts
                 }
             } label: {
                 Label("Top...", systemImage: Icons.topSort)

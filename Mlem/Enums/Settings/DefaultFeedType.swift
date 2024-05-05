@@ -21,7 +21,7 @@ enum DefaultFeedType: String, SettingsOptions, CaseIterable {
         }
     }
     
-    var toFeedType: FeedType {
+    var toFeedType: PostFeedType {
         switch self {
         case .all: .all
         case .local: .local

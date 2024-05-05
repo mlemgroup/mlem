@@ -9,11 +9,11 @@ import Foundation
 import SwiftUI
 
 private struct FeedTypeEnvironmentKey: EnvironmentKey {
-    static let defaultValue: FeedType? = nil
+    static let defaultValue: PostFeedType? = nil
 }
 
 extension EnvironmentValues {
-    var feedType: FeedType? {
+    var feedType: PostFeedType? {
         get { self[FeedTypeEnvironmentKey.self] }
         set { self[FeedTypeEnvironmentKey.self] = newValue }
     }

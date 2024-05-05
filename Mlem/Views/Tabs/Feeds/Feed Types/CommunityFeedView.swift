@@ -15,7 +15,7 @@ import SwiftUI
 struct CommunityFeedView: View {
     enum Tab: String, Identifiable, CaseIterable {
         var id: Self { self }
-        case posts, about, moderators, details
+        case posts, about, moderation, details
     }
     
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = true
@@ -24,6 +24,7 @@ struct CommunityFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.communityRepository) var communityRepository
+    @Dependency(\.siteInformation) var siteInformation
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.scrollViewProxy) var scrollProxy
@@ -31,6 +32,7 @@ struct CommunityFeedView: View {
     
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var editorTracker: EditorTracker
+    @EnvironmentObject var modToolTracker: ModToolTracker
     
     @StateObject var postTracker: StandardPostTracker
     
@@ -39,14 +41,7 @@ struct CommunityFeedView: View {
     
     @State var communityModel: CommunityModel
     
-    // destructive confirmation
-    @State private var isPresentingConfirmDestructive: Bool = false
-    @State private var confirmationMenuFunction: StandardMenuFunction?
-    
-    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
-        confirmationMenuFunction = destructiveFunction
-        isPresentingConfirmDestructive = true
-    }
+    @State private var menuFunctionPopup: MenuFunctionPopup?
     
     // scroll to top
     @Namespace var scrollToTop
@@ -56,7 +51,7 @@ struct CommunityFeedView: View {
     }
     
     var availableTabs: [Tab] {
-        var output: [Tab] = [.posts, .moderators, .details]
+        var output: [Tab] = [.posts, .moderation, .details]
         if communityModel.description != nil {
             output.insert(.about, at: 1)
         }
@@ -96,16 +91,15 @@ struct CommunityFeedView: View {
             .refreshable {
                 await Task {
                     do {
+                        communityModel = try await communityRepository.loadDetails(for: communityModel.communityId)
+                        print(communityModel.moderators?.count)
                         _ = try await postTracker.refresh(clearBeforeRefresh: false)
                     } catch {
                         errorHandler.handle(error)
                     }
                 }.value
             }
-            .destructiveConfirmation(
-                isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
-                confirmationMenuFunction: confirmationMenuFunction
-            )
+            .destructiveConfirmation(menuFunctionPopup: $menuFunctionPopup)
             .fancyTabScrollCompatible()
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -115,19 +109,20 @@ struct CommunityFeedView: View {
                         .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
                 }
                 
-                ToolbarItemGroup(placement: .secondaryAction) {
-                    ForEach(
-                        communityModel.menuFunctions(
-                            editorTracker: editorTracker,
-                            postTracker: postTracker
-                        ) { communityModel = $0 }
-                    ) { menuFunction in
-                        MenuButton(menuFunction: menuFunction, confirmDestructive: confirmDestructive)
+                ToolbarItemGroup(placement: .primaryAction) {
+                    ToolbarEllipsisMenu {
+                        ForEach(
+                            communityModel.menuFunctions(
+                                editorTracker: editorTracker,
+                                postTracker: postTracker,
+                                modToolTracker: modToolTracker
+                            ) { communityModel = $0 }
+                        ) { item in
+                            MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
+                        }
+                        Divider()
+                        FeedToolbarContent()
                     }
-                    .destructiveConfirmation(
-                        isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
-                        confirmationMenuFunction: confirmationMenuFunction
-                    )
                 }
             }
             .hoistNavigation {
@@ -155,7 +150,7 @@ struct CommunityFeedView: View {
                 switch selectedTab {
                 case .posts: posts()
                 case .about: about()
-                case .moderators: moderators()
+                case .moderation: ModeratorListView(community: $communityModel)
                 case .details: details()
                 }
             }
@@ -168,23 +163,13 @@ struct CommunityFeedView: View {
     }
     
     func about() -> some View {
-        VStack(spacing: AppConstants.postAndCommentSpacing) {
+        VStack(spacing: AppConstants.standardSpacing) {
             if shouldShowCommunityHeaders, let banner = communityModel.banner {
                 CachedImage(url: banner, cornerRadius: AppConstants.largeItemCornerRadius)
             }
             MarkdownView(text: communityModel.description ?? "", isNsfw: false)
         }
-        .padding(AppConstants.postAndCommentSpacing)
-    }
-    
-    @ViewBuilder
-    func moderators() -> some View {
-        if let moderators = communityModel.moderators {
-            ForEach(moderators, id: \.id) { user in
-                UserResultView(user, communityContext: communityModel)
-                Divider()
-            }
-        }
+        .padding(AppConstants.standardSpacing)
     }
     
     func details() -> some View {
@@ -205,8 +190,8 @@ struct CommunityFeedView: View {
     @ViewBuilder
     var headerView: some View {
         Group {
-            VStack(spacing: 5) {
-                HStack(alignment: .center, spacing: 10) {
+            VStack(spacing: AppConstants.standardSpacing) {
+                HStack(alignment: .center, spacing: AppConstants.standardSpacing) {
                     if shouldShowCommunityIcons {
                         AvatarView(community: communityModel, avatarSize: 44, iconResolution: .unrestricted)
                     }
@@ -228,16 +213,18 @@ struct CommunityFeedView: View {
                     }
                     .buttonStyle(.plain)
                     Spacer()
+                
                     subscribeButton
                 }
-                .padding(.horizontal, AppConstants.postAndCommentSpacing)
-                .padding(.bottom, 3)
-                Divider()
-                BubblePicker(availableTabs, selected: $selectedTab) {
-                    Text($0.rawValue.capitalized)
-                }
+                .padding(.horizontal, AppConstants.standardSpacing)
+                
+                BubblePicker(
+                    availableTabs,
+                    selected: $selectedTab,
+                    withDividers: [.top, .bottom],
+                    label: \.rawValue.capitalized
+                )
             }
-            Divider()
         }
     }
     
@@ -270,22 +257,12 @@ struct CommunityFeedView: View {
     
     @ViewBuilder
     var subscribeButton: some View {
-        let foregroundColor = subscribeButtonForegroundColor
         if let subscribed = communityModel.subscribed {
-            HStack(spacing: 4) {
-                if let subscriberCount = communityModel.subscriberCount {
-                    Text(abbreviateNumber(subscriberCount))
-                }
-                Image(systemName: subscribeButtonIcon)
-                    .aspectRatio(contentMode: .fit)
-            }
-            .foregroundStyle(foregroundColor)
-            .padding(.vertical, 5)
-            .padding(.horizontal, 10)
-            .background(
-                Capsule()
-                    .strokeBorder(foregroundColor, style: .init(lineWidth: 1))
-                    .background(Capsule().fill(subscribeButtonBackgroundColor))
+            capsuleButton(
+                text: communityModel.subscriberCount?.abbreviated,
+                imageName: subscribeButtonIcon,
+                foregroundColor: subscribeButtonForegroundColor,
+                backgroundColor: subscribeButtonBackgroundColor
             )
             .gesture(TapGesture().onEnded { _ in
                 hapticManager.play(haptic: .lightSuccess, priority: .low)
@@ -293,11 +270,36 @@ struct CommunityFeedView: View {
                 Task {
                     do {
                         if communityModel.favorited {
-                            print("favorited")
-                            confirmDestructive(destructiveFunction: communityModel.favoriteMenuFunction { communityModel = $0 })
+                            menuFunctionPopup = .init(
+                                prompt: "Are you sure you want to unfavorite \(communityModel.name!)?",
+                                actions: [.init(text: "Yes", callback: {
+                                    Task {
+                                        do {
+                                            try await communityModel.toggleFavorite { item in
+                                                DispatchQueue.main.async { communityModel = item }
+                                            }
+                                        } catch {
+                                            errorHandler.handle(error)
+                                        }
+                                    }
+                                })]
+                            )
+
                         } else if subscribed {
-                            print("subscribed")
-                            try confirmDestructive(destructiveFunction: communityModel.subscribeMenuFunction { communityModel = $0 })
+                            menuFunctionPopup = .init(
+                                prompt: "Are you sure you want to unsubscribe from \(communityModel.name!)?",
+                                actions: [.init(text: "Yes", callback: {
+                                    Task {
+                                        do {
+                                            try await communityModel.toggleSubscribe { item in
+                                                DispatchQueue.main.async { communityModel = item }
+                                            }
+                                        } catch {
+                                            errorHandler.handle(error)
+                                        }
+                                    }
+                                })]
+                            )
                         } else {
                             print("not subscribed")
                             try await communityModel.toggleSubscribe { item in
@@ -322,6 +324,26 @@ struct CommunityFeedView: View {
                     }
                 }
             })
+        }
+    }
+    
+    func capsuleButton(text: String?, imageName: String, foregroundColor: Color, backgroundColor: Color) -> some View {
+        HStack(spacing: 4) {
+            if let text {
+                Text(text)
+            }
+            
+            Image(systemName: imageName)
+        }
+        .foregroundStyle(foregroundColor)
+        .padding(.vertical, AppConstants.halfSpacing)
+        .padding(.horizontal, AppConstants.standardSpacing)
+        .background {
+            Capsule()
+                .strokeBorder(foregroundColor, style: .init(lineWidth: 1))
+                .background {
+                    Capsule().fill(backgroundColor)
+                }
         }
     }
 }

@@ -100,7 +100,7 @@ class HapticManager {
                     handleEngineFailure(with: file)
                 }
             } else {
-                print("no engine")
+                print("\(haptic.rawValue) not played (no engine)")
             }
         }
     }

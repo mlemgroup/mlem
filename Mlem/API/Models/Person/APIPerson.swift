@@ -13,7 +13,7 @@ struct APIPerson: Decodable, Identifiable, Hashable, Equatable {
     let name: String
     var displayName: String?
     var avatar: String?
-    let banned: Bool
+    var banned: Bool
     let published: Date
     let updated: Date?
     let actorId: URL

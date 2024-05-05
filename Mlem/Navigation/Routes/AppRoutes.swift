@@ -13,13 +13,15 @@ import Foundation
 ///
 enum AppRoute: Routable {
     case community(CommunityModel)
-    case instance(String? = nil, InstanceModel? = nil)
+    case instance(InstanceModel)
+    case instanceFediseerOpinionList(InstanceModel, data: FediseerData, type: FediseerOpinionType)
     
     case userProfile(UserModel, communityContext: CommunityModel? = nil)
     
     case postLinkWithContext(PostLinkWithContext)
-    // case newPostLinkWithContext(NewPostLinkWithContext)
     case lazyLoadPostLinkWithContext(LazyLoadPostLinkWithContext)
+    
+    case modlog(ModlogLink)
     
     // MARK: - Settings
 
@@ -29,6 +31,10 @@ enum AppRoute: Routable {
     case commentSettings(CommentSettingsPage)
     case postSettings(PostSettingsPage)
     case licenseSettings(LicensesSettingsPage)
+    case moderationSettings(ModerationSettingsPage)
+    
+    case postVotes(PostModel)
+    case commentVotes(HierarchicalComment)
     
     // swiftlint:disable cyclomatic_complexity
     static func makeRoute(_ value: some Hashable) throws -> AppRoute {
@@ -41,6 +47,8 @@ enum AppRoute: Routable {
             return .postLinkWithContext(value)
         case let value as LazyLoadPostLinkWithContext:
             return .lazyLoadPostLinkWithContext(value)
+        case let value as ModlogLink:
+            return .modlog(value)
         case let value as SettingsPage:
             return .settings(value)
         case let value as AboutSettingsPage:
@@ -53,6 +61,8 @@ enum AppRoute: Routable {
             return .postSettings(value)
         case let value as LicensesSettingsPage:
             return .licenseSettings(value)
+        case let value as ModerationSettingsPage:
+            return .moderationSettings(value)
         case let value as Self:
             /// Value is an enum case of type `Self` with either no associated value or pre-populated associated value.
             return value

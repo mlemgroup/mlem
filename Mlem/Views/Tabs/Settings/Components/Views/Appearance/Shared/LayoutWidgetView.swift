@@ -23,6 +23,8 @@ struct LayoutWidgetView: View {
     var body: some View {
         HStack(spacing: 12) {
             switch widget.type {
+            case .infoStack:
+                EmptyView()
             case .upvote:
                 icon(Icons.upvote)
             case .downvote:
@@ -43,8 +45,14 @@ struct LayoutWidgetView: View {
                 icon(Icons.upvote)
                 Text("7")
                 icon(Icons.downvote)
-            default:
-                EmptyView()
+            case .resolve:
+                icon(Icons.resolve)
+            case .remove:
+                icon(Icons.remove)
+            case .purge:
+                icon(Icons.purge)
+            case .ban:
+                icon(Icons.communityBan)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: 40)

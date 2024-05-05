@@ -16,14 +16,12 @@ struct GeneralSettingsView: View {
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     @AppStorage("appLock") var appLock: AppLock = .disabled
     @AppStorage("tapCommentToCollapse") var tapCommentToCollapse: Bool = true
-    @AppStorage("easyTapLinkDisplayMode") var easyTapLinkDisplayMode: EasyTapLinkDisplayMode = .contextual
+    @AppStorage("markReadOnScroll") var markReadOnScroll: Bool = false
     
     @AppStorage("defaultFeed") var defaultFeed: DefaultFeedType = .subscribed
     
     @AppStorage("hapticLevel") var hapticLevel: HapticPriority = .low
     @AppStorage("upvoteOnSave") var upvoteOnSave: Bool = false
-    
-    @AppStorage("openLinksInBrowser") var openLinksInBrowser: Bool = false
 
     @EnvironmentObject var appState: AppState
 
@@ -32,11 +30,6 @@ struct GeneralSettingsView: View {
     var body: some View {
         List {
             Section {
-                SwitchableSettingsItem(
-                    settingPictureSystemName: Icons.browser,
-                    settingName: "Open Links in Browser",
-                    isTicked: $openLinksInBrowser
-                )
                 SelectableSettingsItem(
                     settingIconSystemName: Icons.haptics,
                     settingName: "Haptic Level",
@@ -53,12 +46,16 @@ struct GeneralSettingsView: View {
                     settingName: "Upvote on Save",
                     isTicked: $upvoteOnSave
                 )
-                SelectableSettingsItem(
-                    settingIconSystemName: Icons.websiteAddress,
-                    settingName: "Tappable Links",
-                    currentValue: $easyTapLinkDisplayMode,
-                    options: EasyTapLinkDisplayMode.allCases
+                SwitchableSettingsItem(
+                    settingPictureSystemName: Icons.read,
+                    settingName: "Mark Read on Scroll",
+                    isTicked: $markReadOnScroll
                 )
+                .disabled(siteInformation.version ?? .infinity <= .init("0.19.0"))
+            } footer: {
+                if siteInformation.version ?? .infinity <= .init("0.19.0") {
+                    Text("Mark read on scroll is only available on instances running v0.19.0 or greater.")
+                }
             }
             
             Section {

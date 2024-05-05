@@ -10,17 +10,30 @@ import Foundation
 import SwiftUI
 
 struct FeedRowView: View {
-    let feedType: FeedType
+    let feedType: PostFeedType
     
     var body: some View {
         HStack {
-            Image(systemName: feedType.iconNameCircle)
-                .resizable()
-                .frame(width: 30, height: 30)
-                .foregroundColor(feedType.color)
-            
+            FeedIconView(feedType: feedType, size: 30)
             Text(feedType.label)
         }
+    }
+}
+
+struct FeedIconView: View {
+    let feedType: any FeedType
+    let size: CGFloat
+    
+    var body: some View {
+        Circle().fill(feedType.color ?? .blue)
+            .frame(width: size, height: size)
+            .overlay {
+                Image(systemName: feedType.iconNameFill)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundStyle(.white)
+                    .frame(width: size * feedType.iconScaleFactor, height: size * feedType.iconScaleFactor)
+            }
     }
 }
 

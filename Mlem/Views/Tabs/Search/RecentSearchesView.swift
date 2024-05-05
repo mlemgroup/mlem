@@ -72,7 +72,7 @@ struct RecentSearchesView: View {
         ForEach(contentTracker.items, id: \.uid) { contentModel in
             Group {
                 if let community = contentModel.wrappedValue as? CommunityModel {
-                    CommunityResultView(
+                    CommunityListRow(
                         community,
                         complications: .withTypeLabel,
                         swipeActions: .init(trailingActions: [deleteSwipeAction(contentModel)]),
@@ -81,7 +81,7 @@ struct RecentSearchesView: View {
                         }
                     )
                 } else if let user = contentModel.wrappedValue as? UserModel {
-                    UserResultView(
+                    UserListRow(
                         user,
                         complications: [.type, .instance, .comments],
                         swipeActions: .init(trailingActions: [deleteSwipeAction(contentModel)]),

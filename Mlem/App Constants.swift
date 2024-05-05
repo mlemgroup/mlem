@@ -38,9 +38,13 @@ enum AppConstants {
     static let smallAvatarSize: CGFloat = 16
     static let defaultAvatarSize: CGFloat = 24
     static let largeAvatarSpacing: CGFloat = 10
-    static let postAndCommentSpacing: CGFloat = 10 // standard spacing for the app
+    static let doubleSpacing: CGFloat = 20
+    static let standardSpacing: CGFloat = 10 // standard spacing for the app
+    static let halfSpacing: CGFloat = 5
+    @available(*, deprecated, message: "prefer standardSpacing")
+    static let postAndCommentSpacing: CGFloat = 10
     static let compactSpacing: CGFloat = 6 // standard spacing for compact things
-    static let appIconCornerRadius: CGFloat = 10
+    static let appIconCornerRadius: CGFloat = 14
     static let largeItemCornerRadius: CGFloat = 8 // posts, website previews, etc
     static let smallItemCornerRadius: CGFloat = 6 // settings items, compact thumbnails
     static let tinyItemCornerRadius: CGFloat = 4 // buttons
@@ -63,7 +67,5 @@ enum AppConstants {
 
     static let blockUserPrompt: String = "Really block this user?"
     static let blockCommunityPrompt: String = "Really block this community?"
-    static let reportPostPrompt: String = "Really report this post?"
-    static let reportCommentPrompt: String = "Really report this comment?"
-    static let reportMessagePrompt: String = "Really report this message?"
+    static let blockInstancePrompt: String = "Really block this instance?"
 }

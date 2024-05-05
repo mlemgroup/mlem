@@ -8,6 +8,47 @@
 import SwiftUI
 
 extension CommentItem {
+    // swiftlint:disable:next cyclomatic_complexity
+    func enrichLayoutWidgets() -> [EnrichedLayoutWidget] {
+        layoutWidgetTracker.groups.comment.compactMap { baseWidget in
+            let votes: VotesModel = .init(from: hierarchicalComment.commentView.counts, myVote: hierarchicalComment.commentView.myVote)
+            switch baseWidget {
+            case .infoStack:
+                return .infoStack(
+                    colorizeVotes: false,
+                    votes: votes,
+                    published: hierarchicalComment.commentView.comment.published,
+                    updated: hierarchicalComment.commentView.comment.updated,
+                    commentCount: hierarchicalComment.commentView.counts.childCount,
+                    unreadCommentCount: 0,
+                    saved: hierarchicalComment.commentView.saved
+                )
+            case .upvote:
+                return .upvote(myVote: hierarchicalComment.commentView.myVote ?? .resetVote, upvote: upvote)
+            case .downvote:
+                return .downvote(myVote: hierarchicalComment.commentView.myVote ?? .resetVote, downvote: downvote)
+            case .save:
+                return .save(saved: hierarchicalComment.commentView.saved, save: saveComment)
+            case .reply:
+                return .reply(reply: replyToComment)
+            case .share:
+                if let shareUrl = URL(string: hierarchicalComment.commentView.comment.apId) {
+                    return .share(shareUrl: shareUrl)
+                } else {
+                    return nil
+                }
+            case .upvoteCounter:
+                return .upvoteCounter(votes: votes, upvote: upvote)
+            case .downvoteCounter:
+                return .downvoteCounter(votes: votes, downvote: downvote)
+            case .scoreCounter:
+                return .scoreCounter(votes: votes, upvote: upvote, downvote: downvote)
+            default:
+                return nil
+            }
+        }
+    }
+    
     func voteOnComment(inputOp: ScoringOperation) async {
         hapticManager.play(haptic: .lightSuccess, priority: .low)
         let operation = hierarchicalComment.commentView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
@@ -177,126 +218,6 @@ extension CommentItem {
     }
     
     // MARK: helpers
-    
-    // swiftlint:disable function_body_length
-    func genMenuFunctions() -> [MenuFunction] {
-        var ret: [MenuFunction] = .init()
-        
-        // upvote
-        let (upvoteText, upvoteImg) = hierarchicalComment.commentView.myVote == .upvote ?
-            ("Undo Upvote", Icons.upvoteSquareFill) :
-            ("Upvote", Icons.upvoteSquare)
-        ret.append(MenuFunction.standardMenuFunction(
-            text: upvoteText,
-            imageName: upvoteImg,
-            destructiveActionPrompt: nil,
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                await upvote()
-            }
-        })
-        
-        // downvote
-        let (downvoteText, downvoteImg) = hierarchicalComment.commentView.myVote == .downvote ?
-            ("Undo Downvote", Icons.downvoteSquareFill) :
-            ("Downvote", Icons.downvoteSquare)
-        ret.append(MenuFunction.standardMenuFunction(
-            text: downvoteText,
-            imageName: downvoteImg,
-            destructiveActionPrompt: nil,
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                await downvote()
-            }
-        })
-        
-        // save
-        let (saveText, saveImg) = hierarchicalComment.commentView.saved ?
-            ("Unsave", Icons.unsave) :
-            ("Save", Icons.save)
-        ret.append(MenuFunction.standardMenuFunction(
-            text: saveText,
-            imageName: saveImg,
-            destructiveActionPrompt: nil,
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                await saveComment()
-            }
-        })
-        
-        // reply
-        ret.append(MenuFunction.standardMenuFunction(
-            text: "Reply",
-            imageName: Icons.reply,
-            destructiveActionPrompt: nil,
-            enabled: true
-        ) {
-            replyToComment()
-        })
-        
-        // edit
-        if appState.isCurrentAccountId(hierarchicalComment.commentView.creator.id) {
-            ret.append(MenuFunction.standardMenuFunction(
-                text: "Edit",
-                imageName: Icons.edit,
-                destructiveActionPrompt: nil,
-                enabled: true
-            ) {
-                editComment()
-            })
-        }
-        
-        // delete
-        if appState.isCurrentAccountId(hierarchicalComment.commentView.creator.id) {
-            ret.append(MenuFunction.standardMenuFunction(
-                text: "Delete",
-                imageName: Icons.delete,
-                destructiveActionPrompt: "Are you sure you want to delete this comment?  This cannot be undone.",
-                enabled: !hierarchicalComment.commentView.comment.deleted
-            ) {
-                Task(priority: .userInitiated) {
-                    await deleteComment()
-                }
-            })
-        }
-        
-        // share
-        if let url = URL(string: hierarchicalComment.commentView.comment.apId) {
-            ret.append(MenuFunction.shareMenuFunction(url: url))
-        }
-        
-        // report
-        ret.append(MenuFunction.standardMenuFunction(
-            text: "Report",
-            imageName: Icons.moderationReport,
-            destructiveActionPrompt: "Really report?",
-            enabled: true
-        ) {
-            editorTracker.openEditor(with: ConcreteEditorModel(
-                comment: hierarchicalComment.commentView,
-                operation: CommentOperation.reportComment
-            ))
-        })
-        
-        // block
-        ret.append(MenuFunction.standardMenuFunction(
-            text: "Block User",
-            imageName: Icons.userBlock,
-            destructiveActionPrompt: AppConstants.blockUserPrompt,
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                await blockUser(userId: hierarchicalComment.commentView.creator.id)
-            }
-        })
-                   
-        return ret
-    }
-
-    // swiftlint:enable function_body_length
     
     func blockUser(userId: Int) async {
         do {

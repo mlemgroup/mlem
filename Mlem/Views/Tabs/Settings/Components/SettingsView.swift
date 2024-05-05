@@ -76,7 +76,7 @@ struct SettingsView: View {
                             Button {
                                 isShowingInstanceAdditionSheet = true
                             } label: {
-                                Label("Add Another Account", systemImage: "plus")
+                                Label("Add Another Account", systemImage: Icons.add)
                             }
                             .sheet(isPresented: $isShowingInstanceAdditionSheet) {
                                 AddSavedInstanceView(onboarding: false)
@@ -87,7 +87,14 @@ struct SettingsView: View {
                         NavigationLink(.settings(.general)) {
                             Label("General", systemImage: "gear").labelStyle(SquircleLabelStyle(color: .gray))
                         }
-                        
+                        if siteInformation.isAdmin || !siteInformation.moderatedCommunities.isEmpty {
+                            NavigationLink(.settings(.moderation)) {
+                                Label("Moderation", systemImage: Icons.moderationFill).labelStyle(SquircleLabelStyle(color: .moderation))
+                            }
+                        }
+                        NavigationLink(.settings(.links)) {
+                            Label("Links", systemImage: "link").labelStyle(SquircleLabelStyle(color: .teal))
+                        }
                         NavigationLink(.settings(.sorting)) {
                             Label("Sorting", systemImage: "arrow.up.and.down.text.horizontal")
                                 .labelStyle(SquircleLabelStyle(color: .indigo))

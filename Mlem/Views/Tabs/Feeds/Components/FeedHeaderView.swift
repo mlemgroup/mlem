@@ -8,35 +8,39 @@
 import Foundation
 import SwiftUI
 
+protocol FeedType {
+    var label: String { get }
+    var subtitle: String { get }
+    var color: Color? { get }
+    var iconNameFill: String { get }
+    var iconScaleFactor: CGFloat { get }
+}
+
 struct FeedHeaderView: View {
     @EnvironmentObject var appState: AppState
     
-    let feedType: FeedType
+    let feedType: any FeedType
+    let showDropdownIndicator: Bool
+    let subtitle: String
+    let showDropdownBadge: Bool
     
-    var subtitle: String {
-        switch feedType {
-        case .all:
-            return "Posts from all federated instances"
-        case .local:
-            return "Posts from \(appState.currentActiveAccount?.instanceLink.host() ?? "your instance's") communities"
-        case .subscribed:
-            return "Posts from all subscribed communities"
-        case .saved:
-            return "Your saved posts and comments"
-        default:
-            assertionFailure("We shouldn't be here...")
-            return ""
-        }
+    init(feedType: any FeedType, showDropdownIndicator: Bool = true, customSubtitle: String? = nil, showDropdownBadge: Bool = false) {
+        assert(
+            !showDropdownBadge || showDropdownIndicator,
+            "showDropdownBadge (\(showDropdownBadge)) cannot be true if showDropdownIndicator (\(showDropdownIndicator)) false!"
+        )
+        
+        self.feedType = feedType
+        self.showDropdownIndicator = showDropdownIndicator
+        self.subtitle = customSubtitle ?? feedType.subtitle
+        self.showDropdownBadge = showDropdownBadge
     }
     
     var body: some View {
         VStack(spacing: 0) {
-            HStack(alignment: .center, spacing: AppConstants.postAndCommentSpacing) {
-                Image(systemName: feedType.iconNameCircle)
-                    .resizable()
-                    .frame(width: 44, height: 44)
-                    .foregroundStyle(feedType.color ?? .primary)
-                    .padding(.leading, AppConstants.postAndCommentSpacing)
+            HStack(alignment: .center, spacing: AppConstants.standardSpacing) {
+                FeedIconView(feedType: feedType, size: 44)
+                    .padding(.leading, AppConstants.standardSpacing)
                     
                 VStack(alignment: .leading, spacing: 0) {
                     HStack(spacing: 5) {
@@ -44,8 +48,18 @@ struct FeedHeaderView: View {
                             .lineLimit(1)
                             .minimumScaleFactor(0.01)
                             .fontWeight(.semibold)
-                        Image(systemName: Icons.dropdown)
-                            .foregroundStyle(.secondary)
+                        
+                        if showDropdownIndicator {
+                            Image(systemName: Icons.dropdown)
+                                .foregroundStyle(.secondary)
+                                .overlay(alignment: .topTrailing) {
+                                    if showDropdownBadge {
+                                        Circle()
+                                            .frame(width: 6, height: 6)
+                                            .foregroundStyle(.red)
+                                    }
+                                }
+                        }
                     }
                     .font(.title2)
                         
@@ -57,7 +71,7 @@ struct FeedHeaderView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.vertical, 5)
-            .padding(.bottom, 3)
+            .padding(.bottom, 5)
             
             Divider()
         }

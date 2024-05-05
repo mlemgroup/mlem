@@ -5,6 +5,7 @@
 //  Created by Nicholas Lawson on 04/06/2023.
 //
 
+import Dependencies
 import Foundation
 
 // swiftlint:disable file_length
@@ -21,6 +22,7 @@ enum APIClientError: Error {
     case cancelled
     case invalidSession
     case decoding(Data, Error?)
+    case unexpectedResponse
 }
 
 extension APIClientError: CustomStringConvertible {
@@ -49,11 +51,15 @@ extension APIClientError: CustomStringConvertible {
             }
             
             return "Unable to decode: \(string)"
+        case .unexpectedResponse:
+            return "Unexpected response"
         }
     }
 }
 
 class APIClient {
+    @Dependency(\.siteInformation) var siteInformation
+    
     let urlSession: URLSession
     let decoder: JSONDecoder
     let transport: (URLSession, URLRequest) async throws -> (Data, URLResponse)
@@ -173,6 +179,8 @@ class APIClient {
         } else if let putDefinition = definition as? any APIPutRequest {
             urlRequest.httpMethod = "PUT"
             urlRequest.httpBody = try createBodyData(for: putDefinition)
+        } else if let deleteDefinition = definition as? any APIDeleteRequest {
+            urlRequest.httpMethod = "DELETE"
         }
 
         return urlRequest
@@ -253,6 +261,23 @@ extension APIClient {
     
     func blockPerson(id: Int, shouldBlock: Bool) async throws -> BlockPersonResponse {
         let request = try BlockPersonRequest(session: session, personId: id, block: shouldBlock)
+        return try await perform(request: request)
+    }
+    
+    func banPerson(id: Int, shouldBan: Bool, expires: Int?, reason: String?, removeData: Bool) async throws -> BanPersonResponse {
+        let request = try BanPersonRequest(
+            session: session,
+            personId: id,
+            ban: shouldBan,
+            expires: expires,
+            reason: reason,
+            removeData: removeData
+        )
+        return try await perform(request: request)
+    }
+    
+    func purgePerson(id: Int, reason: String?) async throws -> SuccessResponse {
+        let request = try PurgePersonRequest(session: session, personId: id, reason: reason)
         return try await perform(request: request)
     }
     

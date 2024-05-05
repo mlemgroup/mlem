@@ -16,19 +16,21 @@ protocol ChildTrackerProtocol: AnyObject {
 
     // MARK: stream support methods
     
-    func setParentTracker(_ newParent: any ParentTrackerProtocol)
+    func addParentTracker(_ newParent: any ParentTrackerProtocol)
 
-    func consumeNextItem() -> ParentItem?
+    func consumeNextItem(streamId: UUID) -> ParentItem?
 
-    func nextItemSortVal(sortType: TrackerSortType) async throws -> TrackerSortVal?
+    func nextItemSortVal(streamId: UUID, sortType: TrackerSort.Case) async throws -> TrackerSort?
     
-    func resetCursor()
+    func resetCursor(streamId: UUID)
 
     // MARK: loading methods
     
-    func reset(notifyParent: Bool) async
+    func reset(streamId: UUID, notifyParent: Bool) async
 
-    func refresh(clearBeforeRefresh: Bool, notifyParent: Bool) async throws
+    func refresh(streamId: UUID, clearBeforeRefresh: Bool, notifyParent: Bool) async throws
     
     @discardableResult func filter(with filter: @escaping (Item) -> Bool) async -> Int
+    
+    func changeSortType(to newSortType: TrackerSort.Case)
 }

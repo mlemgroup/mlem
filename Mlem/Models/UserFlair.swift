@@ -10,7 +10,8 @@ import SwiftUI
 enum UserFlair {
     case admin
     case bot
-    case banned
+    case bannedFromInstance
+    case bannedFromCommunity
     case moderator
     case developer
     case op
@@ -20,12 +21,12 @@ enum UserFlair {
         case .admin:
             return .teal
         case .moderator:
-            return .green
+            return .moderation
         case .op:
             return .orange
         case .bot:
             return .indigo
-        case .banned:
+        case .bannedFromInstance, .bannedFromCommunity:
             return .red
         case .developer:
             return .purple
@@ -35,15 +36,17 @@ enum UserFlair {
     var icon: String {
         switch self {
         case .admin:
-            return Icons.adminFlair
+            return Icons.adminFill
         case .moderator:
             return Icons.moderationFill
         case .op:
             return Icons.opFlair
         case .bot:
             return Icons.botFlair
-        case .banned:
-            return Icons.bannedFlair
+        case .bannedFromInstance:
+            return Icons.instanceBannedFlair
+        case .bannedFromCommunity:
+            return Icons.communityBannedFlair
         case .developer:
             return Icons.developerFlair
         }
@@ -55,8 +58,10 @@ enum UserFlair {
             return "Administrator"
         case .bot:
             return "Bot Account"
-        case .banned:
+        case .bannedFromInstance:
             return "Banned"
+        case .bannedFromCommunity:
+            return "Banned from Community"
         case .moderator:
             return "Moderator"
         case .developer:

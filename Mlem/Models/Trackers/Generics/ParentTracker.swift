@@ -15,21 +15,30 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
     private var childTrackers: [any ChildTrackerProtocol] = .init()
     private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
     
-    private(set) var sortType: TrackerSortType
+    private(set) var sortType: TrackerSort.Case
+    
+    let uuid: UUID
 
-    init(internetSpeed: InternetSpeed, sortType: TrackerSortType, childTrackers: [any ChildTrackerProtocol]) {
-        self.childTrackers = childTrackers
+    init(
+        internetSpeed: InternetSpeed,
+        sortType: TrackerSort.Case,
+        childTrackers: [any ChildTrackerProtocol]
+    ) {
         self.sortType = sortType
+        self.uuid = .init()
         
         super.init(internetSpeed: internetSpeed)
-
-        for child in self.childTrackers {
-            child.setParentTracker(self)
+        
+        self.childTrackers = childTrackers
+        
+        childTrackers.forEach { child in
+            child.addParentTracker(self)
         }
     }
 
-    func addChildTracker(_ newChild: some ChildTrackerProtocol) {
-        newChild.setParentTracker(self)
+    func addChildTracker(_ newChild: some ChildTrackerProtocol, preheat: Bool = false) {
+        newChild.addParentTracker(self)
+        childTrackers.append(newChild)
     }
 
     // MARK: main actor methods
@@ -68,7 +77,7 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
     private func resetChildren() async {
         // note: this could in theory be run in parallel, but these calls should be super quick so it shouldn't matter
         for child in childTrackers {
-            await child.reset(notifyParent: false)
+            await child.reset(streamId: uuid, notifyParent: false)
         }
     }
     
@@ -116,6 +125,15 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
         let newItems = await fetchNextItems(numItems: max(remaining, abs(AppConstants.infiniteLoadThresholdOffset) + 1))
         await setItems(newItems)
     }
+    
+    /// Changes the sort type of this tracker and all child trackers to the new sort type, then refreshes the feed
+    func changeSortType(to newSortType: TrackerSort.Case) async {
+        sortType = newSortType
+        for tracker in childTrackers {
+            tracker.changeSortType(to: newSortType)
+        }
+        await refresh(clearBeforeFetch: true)
+    }
 
     // MARK: private loading methods
     
@@ -146,20 +164,20 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
     }
 
     private func computeNextItem() async -> Item? {
-        var sortVal: TrackerSortVal?
+        var sortVal: TrackerSort?
         var trackerToConsume: (any ChildTrackerProtocol)?
 
-        for tracker in childTrackers {
+        for child in childTrackers {
             (sortVal, trackerToConsume) = await compareNextTrackerItem(
                 sortType: sortType,
                 lhsVal: sortVal,
                 lhsTracker: trackerToConsume,
-                rhsTracker: tracker
+                rhsTracker: child
             )
         }
 
         if let trackerToConsume {
-            guard let nextItem = trackerToConsume.consumeNextItem() as? Item else {
+            guard let nextItem = trackerToConsume.consumeNextItem(streamId: uuid) as? Item else {
                 assertionFailure("Could not convert child item to Item!")
                 return nil
             }
@@ -171,20 +189,20 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
     }
 
     private func compareNextTrackerItem(
-        sortType: TrackerSortType,
-        lhsVal: TrackerSortVal?,
+        sortType: TrackerSort.Case,
+        lhsVal: TrackerSort?,
         lhsTracker: (any ChildTrackerProtocol)?,
         rhsTracker: any ChildTrackerProtocol
-    ) async -> (TrackerSortVal?, (any ChildTrackerProtocol)?) {
+    ) async -> (TrackerSort?, (any ChildTrackerProtocol)?) {
         do {
-            guard let rhsVal = try await rhsTracker.nextItemSortVal(sortType: sortType) else {
+            guard let rhsVal = try await rhsTracker.nextItemSortVal(streamId: uuid, sortType: sortType) else {
                 return (lhsVal, lhsTracker)
             }
             
             guard let lhsVal else {
                 return (rhsVal, rhsTracker)
             }
-            
+                        
             return lhsVal > rhsVal ? (lhsVal, lhsTracker) : (rhsVal, rhsTracker)
         } catch {
             errorHandler.handle(error)

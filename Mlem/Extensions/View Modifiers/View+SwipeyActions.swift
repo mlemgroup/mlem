@@ -18,7 +18,15 @@ public struct SwipeAction {
     
     let symbol: Symbol
     let color: Color
+    let iconColor: Color?
     let action: () -> Void
+    
+    init(symbol: Symbol, color: Color, iconColor: Color? = nil, action: @escaping () -> Void) {
+        self.symbol = symbol
+        self.color = color
+        self.iconColor = iconColor
+        self.action = action
+    }
 }
 
 // MARK: -
@@ -80,6 +88,7 @@ struct SwipeyView: ViewModifier {
     @State var dragPosition: CGFloat = .zero
     @State var prevDragPosition: CGFloat = .zero
     @State var dragBackground: Color? = .systemBackground
+    @State var iconColor: Color? = .white
     @State var leadingSwipeSymbol: String?
     @State var trailingSwipeSymbol: String?
     
@@ -144,21 +153,25 @@ struct SwipeyView: ViewModifier {
                     // update color and symbol. If crossed an edge, play a gentle haptic
                     switch edgeForActions {
                     case .leading:
-                        leadingSwipeSymbol = actionIndex == nil
-                            ? primaryLeadingAction?.symbol.emptyName
-                            : action?.symbol.fillName
-                        
-                        dragBackground = actionIndex == nil
-                            ? primaryLeadingAction?.color.opacity(dragPosition / threshold)
-                            : action?.color.opacity(dragPosition / threshold)
+                        if actionIndex == nil {
+                            leadingSwipeSymbol = primaryLeadingAction?.symbol.emptyName
+                            dragBackground = primaryLeadingAction?.color.opacity(dragPosition / threshold)
+                            iconColor = primaryLeadingAction?.iconColor
+                        } else {
+                            leadingSwipeSymbol = action?.symbol.fillName
+                            dragBackground = action?.color.opacity(dragPosition / threshold)
+                            iconColor = action?.iconColor
+                        }
                     case .trailing:
-                        trailingSwipeSymbol = actionIndex == nil
-                            ? primaryTrailingAction?.symbol.emptyName
-                            : action?.symbol.fillName
-                        
-                        dragBackground = actionIndex == nil
-                            ? primaryTrailingAction?.color.opacity(dragPosition / threshold)
-                            : action?.color.opacity(dragPosition / threshold)
+                        if actionIndex == nil {
+                            trailingSwipeSymbol = primaryTrailingAction?.symbol.emptyName
+                            dragBackground = primaryTrailingAction?.color.opacity(dragPosition / threshold)
+                            iconColor = primaryTrailingAction?.iconColor
+                        } else {
+                            trailingSwipeSymbol = action?.symbol.fillName
+                            dragBackground = action?.color.opacity(dragPosition / threshold)
+                            iconColor = action?.iconColor
+                        }
                     }
                     
                     // If crossed an edge, play a gentle haptic
@@ -184,7 +197,7 @@ struct SwipeyView: ViewModifier {
                             Image(systemName: trailingSwipeSymbol ?? Icons.warning)
                                 .font(.title)
                                 .frame(width: 20, height: 20)
-                                .foregroundColor(.white)
+                                .foregroundColor(iconColor ?? .white)
                                 .padding(.horizontal, 20)
                         }
                         .accessibilityHidden(true) // prevent these from popping up in VO
@@ -214,6 +227,7 @@ struct SwipeyView: ViewModifier {
             leadingSwipeSymbol = primaryLeadingAction?.symbol.emptyName
             trailingSwipeSymbol = primaryTrailingAction?.symbol.emptyName
             dragBackground = .systemBackground
+            iconColor = .white
         }
     }
     

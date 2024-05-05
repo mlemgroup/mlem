@@ -50,7 +50,7 @@ class StandardPostTracker: StandardTracker<PostModel> {
     // TODO: ERIC keyword filters could be more elegant
     var filteredKeywords: [String]
     
-    var feedType: FeedType
+    var feedType: PostFeedType
     private(set) var postSortType: PostSortType
     private var filters: [PostFilter: Int]
     
@@ -64,7 +64,7 @@ class StandardPostTracker: StandardTracker<PostModel> {
         maxConcurrentRequestCount: 40
     )
     
-    init(internetSpeed: InternetSpeed, sortType: PostSortType, showReadPosts: Bool, feedType: FeedType) {
+    init(internetSpeed: InternetSpeed, sortType: PostSortType, showReadPosts: Bool, feedType: PostFeedType) {
         @Dependency(\.persistenceRepository) var persistenceRepository
         
         assert(feedType != .saved, "Cannot create StandardPostTracker for saved feed!")
@@ -136,7 +136,7 @@ class StandardPostTracker: StandardTracker<PostModel> {
     }
     
     @MainActor
-    func changeFeedType(to newFeedType: FeedType) async {
+    func changeFeedType(to newFeedType: PostFeedType) async {
         // don't do anything if feed type not changed
         guard feedType != newFeedType else {
             return
@@ -225,12 +225,13 @@ class StandardPostTracker: StandardTracker<PostModel> {
     /// Given a post, determines whether it should be filtered
     /// - Returns: the first reason according to which the post should be filtered, if applicable, or nil if the post should not be filtered
     private func shouldFilterPost(_ postModel: PostModel, filters: [PostFilter]) -> PostFilter? {
+        let isModerator = siteInformation.moderatedCommunities.contains(postModel.community.communityId)
         for filter in filters {
             switch filter {
             case .read:
                 if postModel.read { return filter }
             case .keyword:
-                if postModel.post.name.lowercased().contains(filteredKeywords) { return filter }
+                if !isModerator, postModel.post.name.lowercased().contains(filteredKeywords) { return filter }
             case let .blockedUser(userId):
                 if postModel.creator.userId == userId { return filter }
             case let .blockedCommunity(communityId):

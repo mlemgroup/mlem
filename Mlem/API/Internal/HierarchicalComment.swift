@@ -5,11 +5,19 @@
 //  Created by Nicholas Lawson on 08/06/2023.
 //
 
+import Dependencies
 import Foundation
+import SwiftUI
 
 /// A model which represents a comment and it's child relationships
-class HierarchicalComment: ObservableObject {
+class HierarchicalComment: Purgable, ObservableObject {
+    @Dependency(\.apiClient) var apiClient
+    @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.errorHandler) var errorHandler
+    
     @Published var commentView: APICommentView
+    @Published var purged: Bool = false
+    
     var children: [HierarchicalComment]
     /// Indicates comment's position in a post's parent/child comment thread.
     /// Values range from `0...Int.max`, where 0 indicates the parent comment.
@@ -36,6 +44,26 @@ class HierarchicalComment: ObservableObject {
         self.isParentCollapsed = shouldCollapseChildren && depth >= 1 || parentCollapsed
         self.isCollapsed = shouldCollapseChildren && depth == 1 || collapsed
         self.links = comment.comment.content.parseLinks()
+    }
+    
+    func purge(reason: String?) async -> Bool {
+        DispatchQueue.main.async {
+            self.purged = true
+        }
+        do {
+            let response = try await apiClient.purgeComment(id: commentView.id, reason: reason)
+            if !response.success {
+                throw APIClientError.unexpectedResponse
+            }
+            return true
+        } catch {
+            DispatchQueue.main.async {
+                self.hapticManager.play(haptic: .failure, priority: .high)
+                self.errorHandler.handle(error)
+                self.purged = false
+            }
+        }
+        return false
     }
 }
 
@@ -158,9 +186,30 @@ extension HierarchicalComment {
     }
 }
 
+extension HierarchicalComment: Removable {
+    func remove(reason: String?, shouldRemove: Bool) async -> Bool {
+        do {
+            let response = try await apiClient.removeComment(
+                id: commentView.comment.id,
+                shouldRemove: shouldRemove,
+                reason: reason
+            )
+            DispatchQueue.main.async {
+                self.commentView = response.commentView
+            }
+            return true
+        } catch {
+            errorHandler.handle(error)
+        }
+        return false
+    }
+}
+
 extension [APICommentView] {
     /// A representation of this array of `APICommentView` in a hierarchy that is suitable for rendering the UI with parent/child relationships
     var hierarchicalRepresentation: [HierarchicalComment] {
+        @AppStorage("collapseChildComments") var collapseChildComments = false
+        
         var allComments = self
         
         let childrenStartIndex = allComments.partition(by: { $0.comment.parentId != nil })
@@ -173,7 +222,6 @@ extension [APICommentView] {
         }
         
         let identifiedComments = Dictionary(uniqueKeysWithValues: allComments.lazy.map { ($0.id, $0) })
-        let collapseChildComments = UserDefaults.standard.bool(forKey: "collapseChildComments")
 
         /// Recursively populates child comments by looking up IDs from `childrenById`
         func populateChildren(_ comment: APICommentView) -> HierarchicalComment {

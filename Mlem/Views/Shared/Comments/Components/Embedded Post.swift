@@ -10,9 +10,9 @@ import SwiftUI
 struct EmbeddedPost: View {
     let community: APICommunity
     let post: APIPost
-    let comment: APIComment
+    let comment: APIComment?
     
-    init(community: APICommunity, post: APIPost, comment: APIComment) {
+    init(community: APICommunity, post: APIPost, comment: APIComment?) {
         self.community = community
         self.post = post
         self.comment = comment
@@ -25,8 +25,8 @@ struct EmbeddedPost: View {
     // - enrich info
     var body: some View {
         NavigationLink(.lazyLoadPostLinkWithContext(.init(
-            post: post,
-            scrollTarget: comment.id
+            postId: post.id,
+            scrollTarget: comment?.id
         ))) {
             postLinkButton()
         }

@@ -43,6 +43,13 @@ extension APIClient {
         return SuccessResponse(from: compatibilityResponse)
     }
     
+    func markPostsAsRead(for postIds: [Int], read: Bool) async throws -> SuccessResponse {
+        let request = try MarkPostReadRequest(session: session, postIds: postIds, read: read)
+        // TODO: 0.18 deprecation simply return result of perform
+        let compatibilityResponse = try await perform(request: request)
+        return SuccessResponse(from: compatibilityResponse)
+    }
+    
     func loadPost(id: Int, commentId: Int? = nil) async throws -> APIPostView {
         let request = try GetPostRequest(session: session, id: id, commentId: commentId)
         return try await perform(request: request).postView
@@ -110,5 +117,45 @@ extension APIClient {
     func savePost(id: Int, shouldSave: Bool) async throws -> APIPostView {
         let request = try SavePostRequest(session: session, postId: id, save: shouldSave)
         return try await perform(request: request).postView
+    }
+    
+    func featurePost(id: Int, shouldFeature: Bool, featureType: APIPostFeatureType) async throws -> APIPostView {
+        let request = try FeaturePostRequest(
+            session: session,
+            postId: id,
+            featured: shouldFeature,
+            featureType: featureType
+        )
+        return try await perform(request: request).postView
+    }
+    
+    func lockPost(id: Int, shouldLock: Bool) async throws -> APIPostView {
+        let request = try LockPostRequest(session: session, postId: id, locked: shouldLock)
+        return try await perform(request: request).postView
+    }
+    
+    func removePost(id: Int, shouldRemove: Bool, reason: String?) async throws -> PostModel {
+        let request = try RemovePostRequest(session: session, postId: id, removed: shouldRemove, reason: reason)
+        let response = try await perform(request: request).postView
+        return PostModel(from: response)
+    }
+    
+    func purgePost(id: Int, reason: String?) async throws -> SuccessResponse {
+        let request = try PurgePostRequest(session: session, postId: id, reason: reason)
+        return try await perform(request: request)
+    }
+    
+    func getPostLikes(
+        id: Int,
+        page: Int,
+        limit: Int?
+    ) async throws -> APIListPostLikesResponse {
+        let request = try ListPostLikesRequest(
+            session: session,
+            postId: id,
+            page: page,
+            limit: limit
+        )
+        return try await perform(request: request)
     }
 }

@@ -14,6 +14,7 @@ import SwiftUI
 
 struct ZoomableImageView: View {
     @Dependency(\.notifier) var notifier
+    @Dependency(\.errorHandler) var errorHandler
     
     let url: URL
     
@@ -32,7 +33,7 @@ struct ZoomableImageView: View {
                         .scaleEffect(zoom)
                         .contextMenu {
                             ForEach(genMenuFunctions(image: image)) { item in
-                                MenuButton(menuFunction: item, confirmDestructive: nil)
+                                MenuButton(menuFunction: item, menuFunctionPopup: .constant(nil))
                             }
                         }
                         .padding(.horizontal) // after context menu to avoid padding showing up in context menu
@@ -66,9 +67,15 @@ struct ZoomableImageView: View {
         do {
             let (data, _) = try await ImagePipeline.shared.data(for: url)
             let imageSaver = ImageSaver()
-            imageSaver.writeToPhotoAlbum(imageData: data)
+            try await imageSaver.writeToPhotoAlbum(imageData: data)
             await notifier.add(.success("Image saved"))
         } catch {
+            await notifier.add(
+                .detailedFailure(
+                    title: "Failed to Save Image",
+                    subtitle: "You may need to allow Mlem to access your Photo Library in System Settings."
+                )
+            )
             print(String(describing: error))
         }
     }
@@ -78,9 +85,7 @@ struct ZoomableImageView: View {
         
         ret.append(MenuFunction.standardMenuFunction(
             text: "Details",
-            imageName: Icons.imageDetails,
-            destructiveActionPrompt: nil,
-            enabled: true
+            imageName: Icons.imageDetails
         ) {
             Task(priority: .userInitiated) {
                 await showQuickLook()
@@ -89,9 +94,7 @@ struct ZoomableImageView: View {
         
         ret.append(MenuFunction.standardMenuFunction(
             text: "Save",
-            imageName: Icons.import,
-            destructiveActionPrompt: nil,
-            enabled: true
+            imageName: Icons.import
         ) {
             Task(priority: .userInitiated) {
                 await saveImage()

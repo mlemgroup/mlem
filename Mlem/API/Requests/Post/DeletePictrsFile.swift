@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ImageDeleteRequest: APIRequest {
+struct ImageDeleteRequest: APIDeleteRequest {
     var path: String
     var instanceURL: URL
     
@@ -33,4 +33,4 @@ struct ImageDeleteRequest: APIRequest {
     }
 }
 
-struct ImageDeleteResponse: Decodable { }
+struct ImageDeleteResponse: Decodable {}

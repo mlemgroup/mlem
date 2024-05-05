@@ -17,8 +17,6 @@ extension AggregateFeedView {
             ret.append(MenuFunction.standardMenuFunction(
                 text: type.label,
                 imageName: imageName,
-                destructiveActionPrompt: nil,
-                enabled: enabled,
                 callback: {
                     // when switching back from the saved feed, stale items are sometimes present in the post tracker; this ensures that those are not displayed
                     if selectedFeed == .saved, type != postTracker.feedType {

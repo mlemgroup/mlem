@@ -11,6 +11,7 @@ import SwiftUI
 
 struct ThumbnailImageView: View {
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
+    @AppStorage("showWebsiteIndicatorIcon") var showWebsiteIndicatorIcon: Bool = false
     
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.postRepository) var postRepository
@@ -23,38 +24,36 @@ struct ThumbnailImageView: View {
     let size = CGSize(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
     
     var body: some View {
-        Group {
+        VStack {
             switch post.postType {
             case let .image(url):
                 // just blur, no need for the whole filter viewModifier since this is just a thumbnail
                 CachedImage(
                     url: url,
+                    hasContextMenu: true,
                     fixedSize: size,
                     blurRadius: showNsfwFilter ? 8 : 0,
                     contentMode: .fill,
                     onTapCallback: markPostAsRead
                 )
             case let .link(url):
-                CachedImage(
-                    url: url,
-                    shouldExpand: false,
-                    fixedSize: size,
-                    blurRadius: showNsfwFilter ? 8 : 0,
-                    contentMode: .fill
-                )
-                .onTapGesture {
-                    if let url = post.post.linkUrl {
-                        openURL(url)
-                        markPostAsRead()
+                VStack {
+                    if let linkUrl = post.post.linkUrl {
+                        websiteView(url: url)
+                            .contextMenu {
+                                Button("Open", systemImage: Icons.browser) {
+                                    openURL(linkUrl)
+                                    markPostAsRead()
+                                }
+                                Button("Copy", systemImage: Icons.copy) {
+                                    let pasteboard = UIPasteboard.general
+                                    pasteboard.url = linkUrl
+                                }
+                                ShareLink(item: linkUrl)
+                            } preview: { WebView(url: linkUrl) }
+                    } else {
+                        websiteView(url: url)
                     }
-                }
-                .overlay {
-                    Group {
-                        WebsiteIndicatorView()
-                            .frame(width: 20, height: 20)
-                            .padding(6)
-                    }
-                    .frame(width: size.width, height: size.height, alignment: .topLeading)
                 }
             case .text:
                 Image(systemName: Icons.textPost)
@@ -70,6 +69,33 @@ struct ThumbnailImageView: View {
         .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
         .overlay(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
             .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
+    }
+ 
+    @ViewBuilder
+    func websiteView(url: URL?) -> some View {
+        CachedImage(
+            url: url,
+            shouldExpand: false,
+            fixedSize: size,
+            blurRadius: showNsfwFilter ? 8 : 0,
+            contentMode: .fill
+        )
+        .onTapGesture {
+            if let url = post.post.linkUrl {
+                openURL(url)
+                markPostAsRead()
+            }
+        }
+        .overlay {
+            if showWebsiteIndicatorIcon {
+                Group {
+                    WebsiteIndicatorView()
+                        .frame(width: 20, height: 20)
+                        .padding(6)
+                }
+                .frame(width: size.width, height: size.height, alignment: .topLeading)
+            }
+        }
     }
     
     /// Synchronous void wrapper for postTracker.markRead to pass into CachedImage as dismiss callback

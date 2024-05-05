@@ -11,7 +11,8 @@ import SwiftUI
 struct CommunityListSection: Identifiable {
     let id = UUID()
     let viewId: String
-    let sidebarEntry: any SidebarEntry
+    let sidebarEntry: SidebarEntry
     let inlineHeaderLabel: String?
     let accessibilityLabel: String
+    let communities: [APICommunity]
 }

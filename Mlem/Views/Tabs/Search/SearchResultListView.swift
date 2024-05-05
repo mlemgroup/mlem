@@ -21,7 +21,7 @@ struct SearchResultListView: View {
             ForEach(contentTracker.items, id: \.uid) { contentModel in
                 Group {
                     if let community = contentModel.wrappedValue as? CommunityModel {
-                        CommunityResultView(
+                        CommunityListRow(
                             community,
                             complications: showTypeLabel ? .withTypeLabel : .withoutTypeLabel,
                             trackerCallback: {
@@ -29,7 +29,7 @@ struct SearchResultListView: View {
                             }
                         )
                     } else if let user = contentModel.wrappedValue as? UserModel {
-                        UserResultView(
+                        UserListRow(
                             user,
                             complications: showTypeLabel ? .withTypeLabel : .withoutTypeLabel,
                             trackerCallback: {

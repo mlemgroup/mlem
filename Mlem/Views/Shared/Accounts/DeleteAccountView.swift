@@ -30,17 +30,15 @@ struct DeleteAccountView: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 20) {
-            Image(systemName: Icons.warning)
-                .resizable()
-                .scaledToFit()
-                .foregroundStyle(.red)
-                .frame(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize)
-            
             Text("Really delete \(account.username)?")
                 .font(.title)
                 .fontWeight(.bold)
             
-            Text("Please note that this will *permanently* remove it from \(account.hostName ?? "the instance"), not just Mlem!")
+            WarningView(
+                iconName: Icons.warning,
+                text: "This will permanently remove it from \(account.hostName ?? "the instance"), not just Mlem!",
+                inList: false
+            )
             
             deleteConfirmation
             

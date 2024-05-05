@@ -9,6 +9,12 @@ import Dependencies
 import Foundation
 import SwiftUI
 
+enum UserContentFeedType: String, CaseIterable, Identifiable {
+    case all, posts, comments
+    
+    var id: String { rawValue }
+}
+
 struct UserContentFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.siteInformation) var siteInformation
@@ -24,24 +30,23 @@ struct UserContentFeedView: View {
 
     @State var errorDetails: ErrorDetails?
     
+    var contentType: UserContentFeedType = .all
+    
+    var items: [UserContentModel] {
+        switch contentType {
+        case .all:
+            userContentTracker.items
+        case .posts:
+            userContentTracker.items.filter { $0.uid.contentType == .post }
+        case .comments:
+            userContentTracker.items.filter { $0.uid.contentType == .comment }
+        }
+    }
+    
     var body: some View {
         content
             .animation(.easeOut(duration: 0.2), value: userContentTracker.items.isEmpty)
             .task { await userContentTracker.loadMoreItems() }
-            .toolbar {
-                ToolbarItemGroup(placement: .secondaryAction) {
-                    ForEach(genEllipsisMenuFunctions()) { menuFunction in
-                        MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
-                    }
-                    Menu {
-                        ForEach(genPostSizeSwitchingFunctions()) { menuFunction in
-                            MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
-                        }
-                    } label: {
-                        Label("Post Size", systemImage: Icons.postSizeSetting)
-                    }
-                }
-            }
     }
     
     var content: some View {
@@ -49,8 +54,8 @@ struct UserContentFeedView: View {
             if userContentTracker.items.isEmpty {
                 noPostsView()
             } else {
-                ForEach(userContentTracker.items, id: \.uid) { feedItem(for: $0) }
-                EndOfFeedView(loadingState: userContentTracker.loadingState, viewType: .hobbit)
+                ForEach(items, id: \.uid) { feedItem(for: $0) }
+                EndOfFeedView(loadingState: userContentTracker.loadingState, viewType: .hobbit, whatIsLoading: .posts)
             }
         }
     }
@@ -70,7 +75,7 @@ struct UserContentFeedView: View {
     private func feedPost(for postModel: PostModel) -> some View {
         VStack(spacing: 0) {
             // NavigationLink(.postLinkWithContext(.init(post: post, community: nil, postTracker: nil))) {
-            NavigationLink(.lazyLoadPostLinkWithContext(.init(post: postModel.post))) {
+            NavigationLink(.lazyLoadPostLinkWithContext(.init(postId: postModel.postId))) {
                 FeedPost(
                     post: postModel,
                     postTracker: nil, // TODO: enable filtering on these posts--low priority because sort of silly to filter your saved feed
@@ -89,7 +94,7 @@ struct UserContentFeedView: View {
     private func feedComment(for hierarchicalComment: HierarchicalComment) -> some View {
         VStack(spacing: 0) {
             NavigationLink(.lazyLoadPostLinkWithContext(.init(
-                post: hierarchicalComment.commentView.post,
+                postId: hierarchicalComment.commentView.post.id,
                 scrollTarget: hierarchicalComment.id
             ))) {
                 CommentItem(
