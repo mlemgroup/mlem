@@ -1306,7 +1306,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				branch = master;
+				branch = "sjmarf/subscription-list";
 				kind = branch;
 			};
 		};
