@@ -85,4 +85,31 @@ struct BasicAction: Action {
             callback: callback
         )
     }
+    
+    static func subscribe(isOn: Bool, callback: (() -> Void)? = nil) -> BasicAction {
+        .init(
+            isOn: isOn,
+            label: isOn ? "Unsubscribe" : "Subscribe",
+            color: isOn ? .green : .red,
+            icon: isOn ? Icons.unsubscribe : Icons.subscribe,
+            barIcon: Icons.subscribe,
+            swipeIcon1: isOn ? Icons.unsubscribePerson : Icons.subscribePerson,
+            swipeIcon2: isOn ? Icons.unsubscribePersonFill : Icons.subscribePersonFill,
+            callback: callback
+        )
+    }
+    
+    static func favorite(isOn: Bool, callback: (() -> Void)? = nil) -> BasicAction {
+        .init(
+            isOn: isOn,
+            label: isOn ? "Unfavorite" : "Favorite",
+            color: .blue,
+            icon: isOn ? Icons.unfavorite : Icons.favorite,
+            barIcon: Icons.favorite,
+            menuIcon: isOn ? Icons.favoriteFill : Icons.favorite,
+            swipeIcon1: isOn ? Icons.unfavorite : Icons.favorite,
+            swipeIcon2: isOn ? Icons.unfavoriteFill : Icons.favoriteFill,
+            callback: callback
+        )
+    }
 }

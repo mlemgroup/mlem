@@ -18,6 +18,6 @@ extension Interactable2Providing {
     }
 
     var saveAction: BasicAction {
-        .save(isOn: isSaved, callback: api.willSendToken ? toggleSave : nil)
+        .save(isOn: saved, callback: api.willSendToken ? toggleSave : nil)
     }
 }
