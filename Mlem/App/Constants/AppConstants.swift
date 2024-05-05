@@ -11,8 +11,6 @@ import KeychainAccess
 enum AppConstants {
     static let cacheSize = 500_000_000 // 500MB in bytes
     static let urlCache: URLCache = .init(memoryCapacity: cacheSize, diskCapacity: cacheSize)
-    // static let imageSizeCache: NSCache<NSString, ImageSize> = .init()
-    static let webSocketSession: URLSession = .init(configuration: .default)
     static let urlSession: URLSession = .init(configuration: .default)
 
     // MARK: - Date parsing
@@ -57,7 +55,6 @@ enum AppConstants {
     // MARK: - Other
 
     static let pictureEmoji: [String] = ["🎆", "🎇", "🌠", "🌅", "🌆", "🌁", "🌃", "🌄", "🌉", "🌌", "🌇", "🖼️", "🎑", "🏞️", "🗾", "🏙️"]
-    static let infiniteLoadThresholdOffset: Int = -10
     
     // MARK: - Text
 

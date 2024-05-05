@@ -6,6 +6,7 @@
 //
 
 import Dependencies
+import MlemMiddleware
 import SwiftUI
 
 struct AccountListView: View {

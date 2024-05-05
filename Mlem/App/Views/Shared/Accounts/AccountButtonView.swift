@@ -6,6 +6,7 @@
 //
 
 import Dependencies
+import MlemMiddleware
 import NukeUI
 import SwiftUI
 

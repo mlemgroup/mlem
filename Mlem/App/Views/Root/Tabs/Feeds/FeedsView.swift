@@ -7,6 +7,7 @@
 
 import Dependencies
 import Foundation
+import MlemMiddleware
 import SwiftUI
 
 struct FeedsView: View {
@@ -27,7 +28,7 @@ struct MinimalPostFeedView: View {
     
     @Environment(AppState.self) var appState
     
-    @State var postTracker: StandardPostTracker
+    @State var postTracker: StandardPostFeedLoader
     
     init() {
         // need to grab some stuff from app storage to initialize with
@@ -36,11 +37,17 @@ struct MinimalPostFeedView: View {
         @AppStorage("showReadPosts") var showReadPosts = true
         @AppStorage("defaultPostSorting") var defaultPostSorting: ApiSortType = .hot
         
-        self._postTracker = .init(initialValue: .init(
-            internetSpeed: internetSpeed,
+        @Dependency(\.persistenceRepository) var persistenceRepository
+        
+        _postTracker = .init(initialValue: .init(
+            pageSize: internetSpeed.pageSize,
             sortType: defaultPostSorting,
             showReadPosts: showReadPosts,
-            feedType: .aggregateFeed(AppState.main.firstApi, type: .subscribed)
+            filteredKeywords: persistenceRepository.loadFilteredKeywords(),
+            feedType: .aggregateFeed(AppState.main.firstApi, type: .subscribed),
+            smallAvatarSize: AppConstants.smallAvatarSize,
+            largeAvatarSize: AppConstants.largeAvatarSize,
+            urlCache: AppConstants.urlCache
         ))
     }
     
@@ -51,11 +58,19 @@ struct MinimalPostFeedView: View {
                 .task {
                     if postTracker.items.isEmpty, postTracker.loadingState == .idle {
                         print("Loading initial PostTracker page...")
-                        await postTracker.loadMoreItems()
+                        do {
+                            try await postTracker.loadMoreItems()
+                        } catch {
+                            errorHandler.handle(error)
+                        }
                     }
                 }
                 .task(id: appState.firstApi) {
-                    await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
+                    do {
+                        try await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
+                    } catch {
+                        errorHandler.handle(error)
+                    }
                 }
                 .refreshable {
                     do {
