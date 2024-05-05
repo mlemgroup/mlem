@@ -129,7 +129,6 @@
 		035BE08E2BDE911900F77D73 /* NavigationLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLayer.swift; sourceTree = "<group>"; };
 		035BE0902BDEA01E00F77D73 /* NavigationPage+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationPage+View.swift"; sourceTree = "<group>"; };
 		036CC3AE2B8145C30098B6A1 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
-		0373863F2BDAE6DB007492B5 /* LemmyMarkdownUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LemmyMarkdownUI; path = ../../LemmyMarkdownUI; sourceTree = "<group>"; };
 		037386402BDAF3F7007492B5 /* Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
 		037658DE2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		037658E02BE7DA8A00F4DD4D /* Community2Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community2Providing+Extensions.swift"; sourceTree = "<group>"; };
@@ -306,7 +305,6 @@
 		6363D5C327EE196700E34822 /* Mlem */ = {
 			isa = PBXGroup;
 			children = (
-				0373863F2BDAE6DB007492B5 /* LemmyMarkdownUI */,
 				CD4D583B2B867BB300B82964 /* App */,
 				6363D5C827EE196A00E34822 /* Assets.xcassets */,
 				630D753C27F65E44006E60C9 /* Info.plist */,
