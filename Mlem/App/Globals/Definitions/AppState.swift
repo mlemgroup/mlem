@@ -7,6 +7,7 @@
 
 import Dependencies
 import Foundation
+import MlemMiddleware
 
 @Observable
 class AppState {

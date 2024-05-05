@@ -8,6 +8,7 @@
 
 import Dependencies
 import Foundation
+import MlemMiddleware
 
 class ErrorHandler: ObservableObject {
     @Dependency(\.notifier) private var notifier

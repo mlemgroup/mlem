@@ -8,6 +8,7 @@
 import Combine
 import Dependencies
 import Foundation
+import MlemMiddleware
 import SwiftUI
 
 private let defaultInstanceGroupKey = "Other"
