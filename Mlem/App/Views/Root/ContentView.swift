@@ -17,7 +17,9 @@ struct ContentView: View {
 
     let timer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
     
+    // globals
     var appState: AppState { .main }
+    @State private var colorProvider: PaletteProvider = .main
     
     @State private var isPresentingAccountSwitcher: Bool = false
 
@@ -40,6 +42,7 @@ struct ContentView: View {
                 }
             }
             .environment(appState)
+            .environment(colorProvider)
     }
     
     var content: some View {

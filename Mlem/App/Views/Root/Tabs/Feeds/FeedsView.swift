@@ -27,6 +27,7 @@ struct MinimalPostFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
     
     @Environment(AppState.self) var appState
+    @Environment(PaletteProvider.self) var paletteProvider
     
     @State var postTracker: StandardPostFeedLoader
     
@@ -103,6 +104,14 @@ struct MinimalPostFeedView: View {
     var content: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
+                Button("Monochrome") {
+                    paletteProvider.changePalette(to: MonochromePalette())
+                }
+                
+                Button("Default") {
+                    paletteProvider.changePalette(to: DefaultPalette())
+                }
+                
                 ForEach(postTracker.items, id: \.uid) { post in
                     HStack {
                         actionButton(post.upvoteAction)

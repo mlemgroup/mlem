@@ -51,7 +51,7 @@ struct BasicAction: Action {
         .init(
             isOn: isOn,
             label: isOn ? "Undo Upvote" : "Upvote",
-            color: Colors.upvoteColor,
+            color: PaletteProvider.main.upvoteColor,
             icon: Icons.upvote,
             menuIcon: isOn ? Icons.upvoteSquareFill : Icons.upvoteSquare,
             swipeIcon1: isOn ? Icons.resetVoteSquare : Icons.upvoteSquare,
@@ -64,7 +64,7 @@ struct BasicAction: Action {
         .init(
             isOn: isOn,
             label: isOn ? "Undo Downvote" : "Downvote",
-            color: Colors.downvoteColor,
+            color: PaletteProvider.main.downvoteColor,
             icon: Icons.downvote,
             menuIcon: isOn ? Icons.downvoteSquareFill : Icons.downvoteSquare,
             swipeIcon1: isOn ? Icons.resetVoteSquare : Icons.downvoteSquare,
@@ -77,7 +77,7 @@ struct BasicAction: Action {
         .init(
             isOn: isOn,
             label: isOn ? "Unsave" : "Save",
-            color: Colors.saveColor,
+            color: PaletteProvider.main.saveColor,
             icon: isOn ? Icons.saveFill : Icons.save,
             menuIcon: isOn ? Icons.saveFill : Icons.save,
             swipeIcon1: isOn ? Icons.unsave : Icons.save,
