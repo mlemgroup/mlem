@@ -27,7 +27,10 @@ struct ContentView: View {
     var content: some View {
         CustomTabView(selectedIndex: $selectedTabIndex, tabs: [
             CustomTabItem(title: "Feeds", image: Icons.feeds, selectedImage: Icons.feedsFill) {
-                NavigationLayerView(layer: .init(root: .feeds, model: navigationModel), hasSheetModifiers: false)
+                NavigationSplitRootView(layer: .init(root: .feeds, model: navigationModel)) {
+                    testSidebar
+                }
+                // NavigationLayerView(layer: .init(root: .feeds, model: navigationModel), hasSheetModifiers: false)
             },
             CustomTabItem(title: "Inbox", image: Icons.inbox, selectedImage: Icons.inboxFill) {
                 NavigationLayerView(layer: .init(root: .inbox, model: navigationModel), hasSheetModifiers: false)
@@ -66,5 +69,21 @@ struct ContentView: View {
         )) {
             NavigationLayerView(layer: navigationModel.layers[0], hasSheetModifiers: true)
         }
+    }
+    
+    @ViewBuilder
+    var testSidebar: some View {
+        Group {
+            Text("I'm a sidebar!")
+            
+            NavigationLink(value: NavigationPage.feeds) {
+                Text("Feeds")
+            }
+            
+            NavigationLink(value: NavigationPage.inbox) {
+                Text("Inbox")
+            }
+        }
+        .navigationDestination(for: NavigationPage.self) { $0.view() }
     }
 }
