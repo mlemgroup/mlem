@@ -25,9 +25,9 @@ struct FeedsView: View {
 
 struct MinimalPostFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.paletteProvider) var paletteProvider
     
     @Environment(AppState.self) var appState
-    @Environment(PaletteProvider.self) var paletteProvider
     
     @State var postTracker: StandardPostFeedLoader
     

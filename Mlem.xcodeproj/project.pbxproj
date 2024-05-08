@@ -97,6 +97,7 @@
 		CDC199EA2BE449790077B4F1 /* Interactable1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC199E92BE449790077B4F1 /* Interactable1Providing+Extensions.swift */; };
 		CDC199EC2BE449EA0077B4F1 /* Post1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC199EB2BE449EA0077B4F1 /* Post1Providing+Extensions.swift */; };
 		CDC199EE2BE44A200077B4F1 /* Post2Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC199ED2BE44A200077B4F1 /* Post2Providing+Extensions.swift */; };
+		CDEB38B02BEC38F20059FBA7 /* PaletteProvider+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEB38AF2BEC38F20059FBA7 /* PaletteProvider+Dependency.swift */; };
 		CDF9EF332AB2845C003F885B /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF9EF322AB2845C003F885B /* Icons.swift */; };
 /* End PBXBuildFile section */
 
@@ -202,6 +203,7 @@
 		CDC199E92BE449790077B4F1 /* Interactable1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Interactable1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		CDC199EB2BE449EA0077B4F1 /* Post1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		CDC199ED2BE44A200077B4F1 /* Post2Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post2Providing+Extensions.swift"; sourceTree = "<group>"; };
+		CDEB38AF2BEC38F20059FBA7 /* PaletteProvider+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaletteProvider+Dependency.swift"; sourceTree = "<group>"; };
 		CDF9EF322AB2845C003F885B /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -442,6 +444,7 @@
 				CD4D58732B86B4AA00B82964 /* AccountsTracker+Dependency.swift */,
 				CD4D590F2B87B31200B82964 /* Notifier+Dependency.swift */,
 				CD4D59192B87B3D100B82964 /* ErrorHandler+Dependency.swift */,
+				CDEB38AF2BEC38F20059FBA7 /* PaletteProvider+Dependency.swift */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -859,6 +862,7 @@
 				CDC199EC2BE449EA0077B4F1 /* Post1Providing+Extensions.swift in Sources */,
 				030FF67B2BC8521600F6BFAC /* CustomTabView.swift in Sources */,
 				CD4D59162B87B38C00B82964 /* UIApplication+Extensions.swift in Sources */,
+				CDEB38B02BEC38F20059FBA7 /* PaletteProvider+Dependency.swift in Sources */,
 				CDA1E8542B952C3D007953EF /* StateManager.swift in Sources */,
 				035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */,
 				CD4D58CB2B86DD3D00B82964 /* AssociatedIcon.swift in Sources */,

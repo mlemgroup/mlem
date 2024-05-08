@@ -12,7 +12,7 @@ struct ContentView: View {
 
     // globals
     var appState: AppState { .main }
-    @State private var colorProvider: PaletteProvider = .main
+    // @State private var colorProvider: PaletteProvider = .main
     
     @State var selectedTabIndex: Int = 0
     
@@ -24,7 +24,6 @@ struct ContentView: View {
                 appState.cleanCaches()
             }
             .environment(appState)
-            .environment(colorProvider)
     }
     
     var content: some View {
