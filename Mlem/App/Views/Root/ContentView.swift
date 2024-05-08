@@ -48,7 +48,7 @@ struct ContentView: View {
                 NavigationLayerView(layer: .init(root: .search, model: navigationModel), hasSheetModifiers: false)
             },
             CustomTabItem(title: "Settings", image: Icons.settings) {
-                NavigationLayerView(layer: .init(root: .settings, model: navigationModel), hasSheetModifiers: false)
+                NavigationLayerView(layer: .init(root: .settings(), model: navigationModel), hasSheetModifiers: false)
             }
         ], onSwipeUp: {
             navigationModel.openSheet(.quickSwitcher)

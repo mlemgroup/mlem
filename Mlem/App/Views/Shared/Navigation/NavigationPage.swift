@@ -8,13 +8,17 @@
 import SwiftUI
 
 enum NavigationPage: Hashable {
-    case feeds, profile, inbox, search, settings, quickSwitcher, addAccount
+    case settings(_ page: SettingsPage = .root)
+    case feeds, profile, inbox, search
+    case quickSwitcher, addAccount
 }
 
 extension NavigationPage {
     @ViewBuilder
     func view() -> some View {
         switch self {
+        case let .settings(page):
+            page.view()
         case .feeds:
             FeedsView()
         case .profile:
@@ -23,8 +27,6 @@ extension NavigationPage {
             Text("Inbox")
         case .search:
             Text("Search")
-        case .settings:
-            Text("Settings")
         case .quickSwitcher:
             QuickSwitcherView()
                 .presentationDetents([.medium, .large])
@@ -33,5 +35,12 @@ extension NavigationPage {
         }
     }
     
-    var hasNavigationStack: Bool { false }
+    var hasNavigationStack: Bool {
+        switch self {
+        case .quickSwitcher, .addAccount:
+            false
+        default:
+            true
+        }
+    }
 }

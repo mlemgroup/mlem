@@ -15,6 +15,8 @@ private let defaultInstanceGroupKey = "Other"
 
 @Observable
 class AccountsTracker {
+    static let main: AccountsTracker = .init()
+    
     @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
     @ObservationIgnored @AppStorage("defaultAccountId") var defaultAccountId: Int?
     
@@ -26,7 +28,7 @@ class AccountsTracker {
     
     private var cancellables = Set<AnyCancellable>()
     
-    init() {
+    private init() {
         self.savedAccounts = persistenceRepository.loadAccounts()
     }
     

@@ -11,7 +11,6 @@ import NukeUI
 import SwiftUI
 
 struct AccountButtonView: View {
-    @Dependency(\.accountsTracker) var accountsTracker: AccountsTracker
     @Environment(\.dismiss) var dismiss
     
     @Environment(AppState.self) var appState

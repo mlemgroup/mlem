@@ -33,10 +33,9 @@ class AppState {
     }
     
     private init() {
-        @Dependency(\.accountsTracker) var accountsTracker
-        if let user = accountsTracker.defaultAccount {
+        if let user = AccountsTracker.main.defaultAccount {
             changeUser(to: user)
-        } else if let user = accountsTracker.savedAccounts.first {
+        } else if let user = AccountsTracker.main.savedAccounts.first {
             changeUser(to: user)
         }
     }

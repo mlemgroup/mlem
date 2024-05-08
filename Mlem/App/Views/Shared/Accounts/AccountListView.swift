@@ -17,7 +17,7 @@ struct AccountListView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.dismiss) var dismiss
     
-    let accountsTracker: AccountsTracker
+    var accountsTracker: AccountsTracker { .main }
     
     @State private var isShowingInstanceAdditionSheet: Bool = false
     
@@ -31,9 +31,6 @@ struct AccountListView: View {
     let isQuickSwitcher: Bool
     
     init(isQuickSwitcher: Bool = false) {
-        // We have to create an ObservedObject here so that changes to the accounts list create view updates
-        @Dependency(\.accountsTracker) var accountsTracker: AccountsTracker
-        self.accountsTracker = accountsTracker
         self.isQuickSwitcher = isQuickSwitcher
     }
     

@@ -12,6 +12,10 @@
 		030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */; };
 		030FF67F2BC8544700F6BFAC /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF67E2BC8544600F6BFAC /* CustomTabBarController.swift */; };
 		030FF6812BC859FD00F6BFAC /* CustomTabViewHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF6802BC859FD00F6BFAC /* CustomTabViewHostingController.swift */; };
+		03134A4B2BEACF50002662CC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A4A2BEACF50002662CC /* SettingsView.swift */; };
+		03134A4D2BEAD058002662CC /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A4C2BEAD058002662CC /* AvatarView.swift */; };
+		03134A502BEAD245002662CC /* NavigationLink+NavigationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A4F2BEAD245002662CC /* NavigationLink+NavigationPage.swift */; };
+		03134A522BEAD69F002662CC /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A512BEAD69F002662CC /* SettingsPage.swift */; };
 		035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */; };
 		035BE0892BDD901B00F77D73 /* NavigationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0882BDD901B00F77D73 /* NavigationPage.swift */; };
 		035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE08A2BDD903100F77D73 /* NavigationModel.swift */; };
@@ -52,7 +56,6 @@
 		CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */; };
 		CD4D583F2B86855F00B82964 /* MlemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D583E2B86855F00B82964 /* MlemTests.swift */; };
 		CD4D58412B86858100B82964 /* MlemUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58402B86858100B82964 /* MlemUITests.swift */; };
-		CD4D58742B86B4AA00B82964 /* AccountsTracker+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58732B86B4AA00B82964 /* AccountsTracker+Dependency.swift */; };
 		CD4D58932B86BA5C00B82964 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58922B86BA5C00B82964 /* Colors.swift */; };
 		CD4D58972B86BAD900B82964 /* EnvironmentValues+TabReselectionHashValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58962B86BAD900B82964 /* EnvironmentValues+TabReselectionHashValue.swift */; };
 		CD4D58992B86BB0300B82964 /* EnvironmentValues+TabSelectionHashValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58982B86BB0300B82964 /* EnvironmentValues+TabSelectionHashValue.swift */; };
@@ -120,6 +123,10 @@
 		030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabItem.swift; sourceTree = "<group>"; };
 		030FF67E2BC8544600F6BFAC /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		030FF6802BC859FD00F6BFAC /* CustomTabViewHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabViewHostingController.swift; sourceTree = "<group>"; };
+		03134A4A2BEACF50002662CC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		03134A4C2BEAD058002662CC /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
+		03134A4F2BEAD245002662CC /* NavigationLink+NavigationPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationLink+NavigationPage.swift"; sourceTree = "<group>"; };
+		03134A512BEAD69F002662CC /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
 		035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRootView.swift; sourceTree = "<group>"; };
 		035BE0882BDD901B00F77D73 /* NavigationPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPage.swift; sourceTree = "<group>"; };
 		035BE08A2BDD903100F77D73 /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
@@ -157,7 +164,6 @@
 		CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedsView.swift; sourceTree = "<group>"; };
 		CD4D583E2B86855F00B82964 /* MlemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemTests.swift; sourceTree = "<group>"; };
 		CD4D58402B86858100B82964 /* MlemUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemUITests.swift; sourceTree = "<group>"; };
-		CD4D58732B86B4AA00B82964 /* AccountsTracker+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountsTracker+Dependency.swift"; sourceTree = "<group>"; };
 		CD4D58922B86BA5C00B82964 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		CD4D58962B86BAD900B82964 /* EnvironmentValues+TabReselectionHashValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+TabReselectionHashValue.swift"; sourceTree = "<group>"; };
 		CD4D58982B86BB0300B82964 /* EnvironmentValues+TabSelectionHashValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+TabSelectionHashValue.swift"; sourceTree = "<group>"; };
@@ -238,6 +244,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		03134A492BEACF46002662CC /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				03134A4A2BEACF50002662CC /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		03134A4E2BEAD23A002662CC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				03134A4F2BEAD245002662CC /* NavigationLink+NavigationPage.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		035BE0852BDD8D9100F77D73 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
@@ -246,6 +268,7 @@
 				035BE08A2BDD903100F77D73 /* NavigationModel.swift */,
 				035BE08E2BDE911900F77D73 /* NavigationLayer.swift */,
 				035BE0882BDD901B00F77D73 /* NavigationPage.swift */,
+				03134A512BEAD69F002662CC /* SettingsPage.swift */,
 				035BE0902BDEA01E00F77D73 /* NavigationPage+View.swift */,
 			);
 			path = Navigation;
@@ -349,6 +372,7 @@
 		6363D5F427EE1BAE00E34822 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
+				03134A492BEACF46002662CC /* Settings */,
 				CD4BAD382B4C6C1B00A1E726 /* Feeds */,
 				6DE1183A2A4A215F00810C7E /* Profile */,
 			);
@@ -406,6 +430,7 @@
 				6363D5C627EE196700E34822 /* ContentView.swift */,
 				6363D5C427EE196700E34822 /* MlemApp.swift */,
 				B157E0C32A507B8000B02C8B /* FlowRoot.swift */,
+				03134A4C2BEAD058002662CC /* AvatarView.swift */,
 				CDA1E81A2B8FC39A007953EF /* Onboarding */,
 				6363D5F427EE1BAE00E34822 /* Tabs */,
 			);
@@ -426,7 +451,6 @@
 			isa = PBXGroup;
 			children = (
 				CD4D58B42B86BFFA00B82964 /* PersistenceRepository+Dependency.swift */,
-				CD4D58732B86B4AA00B82964 /* AccountsTracker+Dependency.swift */,
 				CD4D590F2B87B31200B82964 /* Notifier+Dependency.swift */,
 				CD4D59192B87B3D100B82964 /* ErrorHandler+Dependency.swift */,
 			);
@@ -491,6 +515,7 @@
 		CD4D58C22B86DC5800B82964 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				03134A4E2BEAD23A002662CC /* Views */,
 				CDA8A0052BE43B350022F7ED /* Content Models */,
 				CD4D590D2B87B23F00B82964 /* Error+Extensions.swift */,
 				CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */,
@@ -816,6 +841,7 @@
 				CD4D59102B87B31200B82964 /* Notifier+Dependency.swift in Sources */,
 				037386412BDAF3F7007492B5 /* Markdown.swift in Sources */,
 				CD4D58CF2B86DDEC00B82964 /* AccountSortMode.swift in Sources */,
+				03134A522BEAD69F002662CC /* SettingsPage.swift in Sources */,
 				CD4D59062B87B1A400B82964 /* Notifiable.swift in Sources */,
 				CD4D58C02B86DBD100B82964 /* DefaultAvatarView.swift in Sources */,
 				CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */,
@@ -826,6 +852,7 @@
 				CD4D58972B86BAD900B82964 /* EnvironmentValues+TabReselectionHashValue.swift in Sources */,
 				CDA8A00B2BE43CB30022F7ED /* Interactable2Providing+Extensions.swift in Sources */,
 				CD4D591C2B87B43D00B82964 /* Task+Extensions.swift in Sources */,
+				03134A4D2BEAD058002662CC /* AvatarView.swift in Sources */,
 				CD4D58AA2B86BE5900B82964 /* AccountListView.swift in Sources */,
 				CD4D58B92B86D9F800B82964 /* AccountButtonView.swift in Sources */,
 				CD4D58B32B86BFD400B82964 /* AccountsTracker.swift in Sources */,
@@ -837,7 +864,6 @@
 				CD4D58C82B86DCED00B82964 /* AvatarType.swift in Sources */,
 				CD4D58BB2B86DA7D00B82964 /* AccountListView+Logic.swift in Sources */,
 				035BE0912BDEA01E00F77D73 /* NavigationPage+View.swift in Sources */,
-				CD4D58742B86B4AA00B82964 /* AccountsTracker+Dependency.swift in Sources */,
 				CD4D59142B87B36B00B82964 /* InternetConnectionManager.swift in Sources */,
 				03D3A1EF2BB9CA1D009DE55E /* MenuButton.swift in Sources */,
 				CDC199EC2BE449EA0077B4F1 /* Post1Providing+Extensions.swift in Sources */,
@@ -856,6 +882,7 @@
 				CD4D59082B87B1B400B82964 /* NotificationDisplayer.swift in Sources */,
 				B157E0C42A507B8000B02C8B /* FlowRoot.swift in Sources */,
 				036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */,
+				03134A502BEAD245002662CC /* NavigationLink+NavigationPage.swift in Sources */,
 				CDC199EA2BE449790077B4F1 /* Interactable1Providing+Extensions.swift in Sources */,
 				CD4D59032B87B17000B82964 /* ErrorHandler.swift in Sources */,
 				CD4D59182B87B3B000B82964 /* UIViewController+Extensions.swift in Sources */,
@@ -864,6 +891,7 @@
 				63DF71F12A02999C002AC14E /* AppConstants.swift in Sources */,
 				03D3A1D42BB88EF1009DE55E /* Action.swift in Sources */,
 				CDC199EE2BE44A200077B4F1 /* Post2Providing+Extensions.swift in Sources */,
+				03134A4B2BEACF50002662CC /* SettingsView.swift in Sources */,
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
 				CDA1E8272B90EF24007953EF /* AppFlow.swift in Sources */,
 				035BE0892BDD901B00F77D73 /* NavigationPage.swift in Sources */,
