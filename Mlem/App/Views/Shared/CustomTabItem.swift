@@ -11,18 +11,21 @@ struct CustomTabItem: View {
     var content: AnyView
     
     var title: String
-    var systemImage: String
+    var image: String
+    var selectedImage: String
     
     var onLongPress: (() -> Void)?
     
     init(
         title: String,
-        systemImage: String,
+        image: String,
+        selectedImage: String? = nil,
         onLongPress: (() -> Void)? = nil,
         @ViewBuilder content: () -> some View
     ) {
         self.title = title
-        self.systemImage = systemImage
+        self.image = image
+        self.selectedImage = selectedImage ?? image
         self.onLongPress = onLongPress
         self.content = AnyView(content())
     }

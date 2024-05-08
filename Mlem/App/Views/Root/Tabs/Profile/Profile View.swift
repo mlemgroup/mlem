@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ProfileView: View {
     @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
     @AppStorage("upvoteOnSave") var upvoteOnSave = false
     
     var body: some View {

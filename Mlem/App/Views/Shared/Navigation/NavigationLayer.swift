@@ -20,9 +20,9 @@ class NavigationLayer {
     init(
         root: NavigationPage,
         model: NavigationModel,
-        index: Int,
-        hasNavigationStack: Bool,
-        isFullScreenCover: Bool
+        index: Int = -1,
+        hasNavigationStack: Bool = true,
+        isFullScreenCover: Bool = false
     ) {
         self.model = model
         self.index = index
@@ -39,6 +39,15 @@ class NavigationLayer {
         if !path.isEmpty {
             path.removeLast()
         }
+        if path.isEmpty, index != -1 {
+            model?.closeSheets(aboveIndex: index)
+        }
+    }
+    
+    func dismissIfOnTop() {
+        if index == (model?.layers.count ?? 0) - 1 {
+            model?.closeSheets(aboveIndex: index)
+        }
     }
     
     func popToRoot() {
@@ -49,17 +58,15 @@ class NavigationLayer {
     func openSheet(_ page: NavigationPage, hasNavigationStack: Bool? = nil) {
         model?.openSheet(
             page,
-            hasNavigationStack: hasNavigationStack ?? page.hasNavigationStack,
-            isFullScreenCover: false
+            hasNavigationStack: hasNavigationStack ?? page.hasNavigationStack
         )
     }
     
     /// Open a new sheet, optionally with navigation enabled. If `nil` is specified for `hasNavigationStack`, the value of `page.hasNavigationStack` will be used.
     func showFullScreenCover(_ page: NavigationPage, hasNavigationStack: Bool? = nil) {
-        model?.openSheet(
+        model?.showFullScreenCover(
             page,
-            hasNavigationStack: hasNavigationStack ?? page.hasNavigationStack,
-            isFullScreenCover: true
+            hasNavigationStack: hasNavigationStack ?? page.hasNavigationStack
         )
     }
 }

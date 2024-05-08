@@ -53,34 +53,32 @@ struct MinimalPostFeedView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            content
-                .navigationTitle("Feeds")
-                .task {
-                    if postTracker.items.isEmpty, postTracker.loadingState == .idle {
-                        print("Loading initial PostTracker page...")
-                        do {
-                            try await postTracker.loadMoreItems()
-                        } catch {
-                            errorHandler.handle(error)
-                        }
-                    }
-                }
-                .task(id: appState.firstApi) {
+        content
+            .navigationTitle("Feeds")
+            .task {
+                if postTracker.items.isEmpty, postTracker.loadingState == .idle {
+                    print("Loading initial PostTracker page...")
                     do {
-                        try await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
+                        try await postTracker.loadMoreItems()
                     } catch {
                         errorHandler.handle(error)
                     }
                 }
-                .refreshable {
-                    do {
-                        try await postTracker.refresh(clearBeforeRefresh: false)
-                    } catch {
-                        errorHandler.handle(error)
-                    }
+            }
+            .task(id: appState.firstApi) {
+                do {
+                    try await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
+                } catch {
+                    errorHandler.handle(error)
                 }
-        }
+            }
+            .refreshable {
+                do {
+                    try await postTracker.refresh(clearBeforeRefresh: false)
+                } catch {
+                    errorHandler.handle(error)
+                }
+            }
     }
     
     // This is a proof-of-concept; in the real frontend this code will go in InteractionBarView

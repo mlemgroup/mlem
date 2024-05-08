@@ -7,29 +7,12 @@
 
 import SwiftUI
 
-struct NavigationRootView: View {
-    @State var navigationModel: NavigationModel
-    
-    init(root: NavigationPage) {
-        self._navigationModel = .init(wrappedValue: .init(root: root))
-    }
-    
-    var body: some View {
-        NavigationLayerView(layer: navigationModel.rootLayer)
-    }
-}
-
 struct NavigationSplitRootView<Content: View>: View {
-    @State var navigationModel: NavigationModel
+    @State var layer: NavigationLayer
     
     @State var columnVisibility: NavigationSplitViewVisibility = .all
     
     @ViewBuilder var sidebar: () -> Content
-    
-    init(root: NavigationPage, @ViewBuilder sidebar: @escaping () -> Content) {
-        self._navigationModel = .init(wrappedValue: .init(root: root))
-        self.sidebar = sidebar
-    }
     
     var body: some View {
         NavigationSplitView(
@@ -37,15 +20,16 @@ struct NavigationSplitRootView<Content: View>: View {
             sidebar: sidebar,
             detail: {
                 NavigationStack(path: Binding(
-                    get: { navigationModel.rootLayer.path },
+                    get: { layer.path },
                     set: {
-                        navigationModel.rootLayer.path = $0
+                        layer.path = $0
                     }
                 )) {
-                    navigationModel.rootLayer.root.viewWithModifiers(layer: navigationModel.rootLayer)
+                    layer.root.view()
+                        .navigationDestination(for: NavigationPage.self) { $0.view() }
                 }
             }
         )
-        .environment(navigationModel.rootLayer)
+        .environment(layer)
     }
 }
