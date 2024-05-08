@@ -91,10 +91,8 @@
 		CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8202B8FC411007953EF /* LandingPage.swift */; };
 		CDA1E8272B90EF24007953EF /* AppFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8262B90EF24007953EF /* AppFlow.swift */; };
 		CDA1E8542B952C3D007953EF /* StateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8532B952C3D007953EF /* StateManager.swift */; };
-		CDA8A00B2BE43CB30022F7ED /* Interactable2Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA8A00A2BE43CB30022F7ED /* Interactable2Providing+Extensions.swift */; };
 		CDC199EA2BE449790077B4F1 /* Interactable1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC199E92BE449790077B4F1 /* Interactable1Providing+Extensions.swift */; };
 		CDC199EC2BE449EA0077B4F1 /* Post1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC199EB2BE449EA0077B4F1 /* Post1Providing+Extensions.swift */; };
-		CDC199EE2BE44A200077B4F1 /* Post2Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC199ED2BE44A200077B4F1 /* Post2Providing+Extensions.swift */; };
 		CDF9EF332AB2845C003F885B /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF9EF322AB2845C003F885B /* Icons.swift */; };
 /* End PBXBuildFile section */
 
@@ -194,10 +192,8 @@
 		CDA1E8202B8FC411007953EF /* LandingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPage.swift; sourceTree = "<group>"; };
 		CDA1E8262B90EF24007953EF /* AppFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlow.swift; sourceTree = "<group>"; };
 		CDA1E8532B952C3D007953EF /* StateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateManager.swift; sourceTree = "<group>"; };
-		CDA8A00A2BE43CB30022F7ED /* Interactable2Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Interactable2Providing+Extensions.swift"; sourceTree = "<group>"; };
 		CDC199E92BE449790077B4F1 /* Interactable1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Interactable1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		CDC199EB2BE449EA0077B4F1 /* Post1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post1Providing+Extensions.swift"; sourceTree = "<group>"; };
-		CDC199ED2BE44A200077B4F1 /* Post2Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post2Providing+Extensions.swift"; sourceTree = "<group>"; };
 		CDF9EF322AB2845C003F885B /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -608,10 +604,8 @@
 		CDA8A0052BE43B350022F7ED /* Content Models */ = {
 			isa = PBXGroup;
 			children = (
-				CDA8A00A2BE43CB30022F7ED /* Interactable2Providing+Extensions.swift */,
 				CDC199E92BE449790077B4F1 /* Interactable1Providing+Extensions.swift */,
 				CDC199EB2BE449EA0077B4F1 /* Post1Providing+Extensions.swift */,
-				CDC199ED2BE44A200077B4F1 /* Post2Providing+Extensions.swift */,
 			);
 			path = "Content Models";
 			sourceTree = "<group>";
@@ -824,7 +818,6 @@
 				CD4D58A52B86BD1B00B82964 /* PersistenceRepository.swift in Sources */,
 				CD1446252A5B357900610EF1 /* Document.swift in Sources */,
 				CD4D58972B86BAD900B82964 /* EnvironmentValues+TabReselectionHashValue.swift in Sources */,
-				CDA8A00B2BE43CB30022F7ED /* Interactable2Providing+Extensions.swift in Sources */,
 				CD4D591C2B87B43D00B82964 /* Task+Extensions.swift in Sources */,
 				CD4D58AA2B86BE5900B82964 /* AccountListView.swift in Sources */,
 				CD4D58B92B86D9F800B82964 /* AccountButtonView.swift in Sources */,
@@ -863,7 +856,6 @@
 				CD4D590E2B87B23F00B82964 /* Error+Extensions.swift in Sources */,
 				63DF71F12A02999C002AC14E /* AppConstants.swift in Sources */,
 				03D3A1D42BB88EF1009DE55E /* Action.swift in Sources */,
-				CDC199EE2BE44A200077B4F1 /* Post2Providing+Extensions.swift in Sources */,
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
 				CDA1E8272B90EF24007953EF /* AppFlow.swift in Sources */,
 				035BE0892BDD901B00F77D73 /* NavigationPage.swift in Sources */,

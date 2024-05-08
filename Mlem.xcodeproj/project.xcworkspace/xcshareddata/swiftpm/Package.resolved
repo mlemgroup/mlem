@@ -19,12 +19,12 @@
       }
     },
     {
-      "identity" : "mlemmiddleware",
+      "identity" : "lemmymarkdownui",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mlemgroup/MlemMiddleware.git",
+      "location" : "https://github.com/mlemgroup/LemmyMarkdownUI",
       "state" : {
-        "branch" : "master",
-        "revision" : "82bae530b51ad208ae1fce11bab3276ec80c5b76"
+        "branch" : "main",
+        "revision" : "a5ef8e49e9db253afd49e9e38805fa2e89649b32"
       }
     },
     {
