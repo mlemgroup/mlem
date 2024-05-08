@@ -13,6 +13,8 @@ protocol PaletteProviding {
     var upvoteColor: Color { get }
     var downvoteColor: Color { get }
     var saveColor: Color { get }
+    
+    var uiAccent: UIColor { get }
 }
 
 extension PaletteProviding {
@@ -38,6 +40,7 @@ class PaletteProvider: PaletteProviding {
     var systemBackground: Color { palette.systemBackground }
     var secondarySystemBackground: Color { palette.secondarySystemBackground }
     var tertiarySystemBackground: Color { palette.tertiarySystemBackground }
+    var uiAccent: UIColor { palette.uiAccent }
 
     var upvoteColor: Color { palette.upvoteColor }
     var downvoteColor: Color { palette.downvoteColor }

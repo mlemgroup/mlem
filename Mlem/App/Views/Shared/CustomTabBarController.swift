@@ -29,12 +29,16 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setTintColor(to newTint: UIColor) {
+        tabBar.tintColor = newTint
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
         hidesBottomBarWhenPushed = true
         
-        tabBar.tintColor = .systemBlue
+        tabBar.tintColor = PaletteProvider.main.uiAccent // .systemBlue
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressGestureTriggered(_:)))
         tabBar.addGestureRecognizer(longPressRecognizer)
         
@@ -77,6 +81,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
             print("\(item.rootView.title) tab re-selected")
         }
         selectedIndexBinding = viewControllers?.firstIndex(of: viewController) ?? 0
+        
         return true
     }
 }

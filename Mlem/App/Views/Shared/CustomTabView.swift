@@ -35,7 +35,15 @@ struct CustomTabView: UIViewControllerRepresentable {
         _ uiViewController: UITabBarController,
         context: UIViewControllerRepresentableContext<CustomTabView>
     ) {
-        // no-op
+        withObservationTracking {
+            _ = PaletteProvider.main.uiAccent
+        } onChange: {
+            if let controller = uiViewController as? CustomTabBarController {
+                Task { @MainActor in
+                    controller.setTintColor(to: PaletteProvider.main.uiAccent)
+                }
+            }
+        }
     }
     
     func makeCoordinator() -> Coordinator {

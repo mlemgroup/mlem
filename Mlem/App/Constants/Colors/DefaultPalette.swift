@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct DefaultPalette: PaletteProviding {
+    let uiAccent = UIColor.systemBlue
+    
     let upvoteColor = Color.blue
     let downvoteColor = Color.red
     let saveColor = Color.green
