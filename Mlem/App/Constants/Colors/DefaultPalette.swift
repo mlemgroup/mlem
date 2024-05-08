@@ -11,4 +11,8 @@ struct DefaultPalette: PaletteProviding {
     let upvoteColor = Color.blue
     let downvoteColor = Color.red
     let saveColor = Color.green
+    
+    var background: Color { Color(UIColor.systemBackground) }
+    var secondaryBackground: Color { Color(UIColor.secondarySystemBackground) }
+    var tertiaryBackground: Color { Color(UIColor.tertiarySystemBackground) }
 }

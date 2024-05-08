@@ -12,4 +12,8 @@ struct MonochromePalette: PaletteProviding {
     let upvoteColor = Color.black
     let downvoteColor = Color.black
     let saveColor = Color.black
+    
+    var background: Color { Color(UIColor.systemBackground) }
+    var secondaryBackground: Color { Color(UIColor.secondarySystemBackground) }
+    var tertiaryBackground: Color { Color(UIColor.tertiarySystemBackground) }
 }

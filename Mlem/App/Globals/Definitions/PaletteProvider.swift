@@ -13,12 +13,10 @@ protocol PaletteProviding {
     var upvoteColor: Color { get }
     var downvoteColor: Color { get }
     var saveColor: Color { get }
-}
-
-extension PaletteProviding {
-    var systemBackground: Color { Color(UIColor.systemBackground) }
-    var secondarySystemBackground: Color { Color(UIColor.secondarySystemBackground) }
-    var tertiarySystemBackground: Color { Color(UIColor.tertiarySystemBackground) }
+    
+    var background: Color { get }
+    var secondaryBackground: Color { get }
+    var tertiaryBackground: Color { get }
 }
 
 @Observable
@@ -32,9 +30,9 @@ class PaletteProvider: PaletteProviding {
     }
     
     // ColorProviding conformance
-    var systemBackground: Color { palette.systemBackground }
-    var secondarySystemBackground: Color { palette.secondarySystemBackground }
-    var tertiarySystemBackground: Color { palette.tertiarySystemBackground }
+    var background: Color { palette.background }
+    var secondaryBackground: Color { palette.secondaryBackground }
+    var tertiaryBackground: Color { palette.tertiaryBackground }
 
     var upvoteColor: Color { palette.upvoteColor }
     var downvoteColor: Color { palette.downvoteColor }

@@ -245,7 +245,7 @@ private struct Toast: View {
     
     @ViewBuilder
     var background: some View {
-        paletteProvider.secondarySystemBackground
+        paletteProvider.secondaryBackground
             .clipShape(Capsule())
             .overlay(Capsule().stroke(Color.gray.opacity(0.2), lineWidth: 1))
     }
