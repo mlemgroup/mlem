@@ -49,11 +49,11 @@ struct BasicAction: Action {
     }
     
     static func upvote(isOn: Bool, callback: (() -> Void)? = nil) -> BasicAction {
-        @Dependency(\.paletteProvider) var paletteProvider
+        @Dependency(\.palette) var palette
         return .init(
             isOn: isOn,
             label: isOn ? "Undo Upvote" : "Upvote",
-            color: paletteProvider.upvoteColor,
+            color: palette.upvoteColor,
             icon: Icons.upvote,
             menuIcon: isOn ? Icons.upvoteSquareFill : Icons.upvoteSquare,
             swipeIcon1: isOn ? Icons.resetVoteSquare : Icons.upvoteSquare,
@@ -63,11 +63,11 @@ struct BasicAction: Action {
     }
     
     static func downvote(isOn: Bool, callback: (() -> Void)? = nil) -> BasicAction {
-        @Dependency(\.paletteProvider) var paletteProvider
+        @Dependency(\.palette) var palette
         return .init(
             isOn: isOn,
             label: isOn ? "Undo Downvote" : "Downvote",
-            color: paletteProvider.downvoteColor,
+            color: palette.downvoteColor,
             icon: Icons.downvote,
             menuIcon: isOn ? Icons.downvoteSquareFill : Icons.downvoteSquare,
             swipeIcon1: isOn ? Icons.resetVoteSquare : Icons.downvoteSquare,
@@ -77,11 +77,11 @@ struct BasicAction: Action {
     }
     
     static func save(isOn: Bool, callback: (() -> Void)? = nil) -> BasicAction {
-        @Dependency(\.paletteProvider) var paletteProvider
+        @Dependency(\.palette) var palette
         return .init(
             isOn: isOn,
             label: isOn ? "Unsave" : "Save",
-            color: paletteProvider.saveColor,
+            color: palette.saveColor,
             icon: isOn ? Icons.saveFill : Icons.save,
             menuIcon: isOn ? Icons.saveFill : Icons.save,
             swipeIcon1: isOn ? Icons.unsave : Icons.save,

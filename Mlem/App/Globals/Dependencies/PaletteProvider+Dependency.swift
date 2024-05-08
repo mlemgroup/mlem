@@ -13,7 +13,7 @@ extension PaletteProvider: DependencyKey {
 }
 
 extension DependencyValues {
-    var paletteProvider: PaletteProvider {
+    var palette: PaletteProvider {
         get { self[PaletteProvider.self] }
         set { self[PaletteProvider.self] = newValue }
     }

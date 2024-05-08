@@ -25,7 +25,7 @@ struct FeedsView: View {
 
 struct MinimalPostFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
-    @Dependency(\.paletteProvider) var paletteProvider
+    @Dependency(\.palette) var palette
     
     @Environment(AppState.self) var appState
     
@@ -103,11 +103,11 @@ struct MinimalPostFeedView: View {
         ScrollView {
             LazyVStack(spacing: 0) {
                 Button("Monochrome") {
-                    paletteProvider.changePalette(to: MonochromePalette())
+                    palette.changePalette(to: MonochromePalette())
                 }
                 
                 Button("Default") {
-                    paletteProvider.changePalette(to: DefaultPalette())
+                    palette.changePalette(to: DefaultPalette())
                 }
                 
                 ForEach(postTracker.items, id: \.uid) { post in
@@ -122,7 +122,7 @@ struct MinimalPostFeedView: View {
                             .foregroundStyle(post.isRead ? .secondary : .primary)
                     }
                     .padding(10)
-                    .background(Color(uiColor: .systemBackground))
+                    .background(palette.background)
                     .contentShape(.rect)
                     .contextMenu {
                         ForEach(post.menuActions.children, id: \.id) { action in

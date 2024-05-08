@@ -9,11 +9,13 @@ import Foundation
 import SwiftUI
 
 struct MonochromePalette: PaletteProviding {
+    let background = Color(UIColor.systemBackground)
+    let secondaryBackground = Color(UIColor.secondarySystemBackground)
+    let tertiaryBackground = Color(UIColor.tertiarySystemBackground)
+    let accent = Color.black
+    let uiAccent = UIColor.black
+    
     let upvoteColor = Color.black
     let downvoteColor = Color.black
     let saveColor = Color.black
-    
-    var background: Color { Color(UIColor.systemBackground) }
-    var secondaryBackground: Color { Color(UIColor.secondarySystemBackground) }
-    var tertiaryBackground: Color { Color(UIColor.tertiarySystemBackground) }
 }
