@@ -6,17 +6,20 @@
 //
 
 import Foundation
-import UIKit
+import SwiftUI
 
 class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
+    @Binding var selectedIndexBinding: Int
     let swipeGestureCallback: () -> Void
     
     init(
+        selectedIndex: Binding<Int>,
         swipeGestureCallback: @escaping () -> Void,
         nibName: String? = nil,
         bundle: Bundle? = nil
     ) {
         self.swipeGestureCallback = swipeGestureCallback
+        self._selectedIndexBinding = selectedIndex
         super.init(nibName: nibName, bundle: bundle)
     }
     
@@ -73,6 +76,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
            let item = viewController as? CustomTabViewHostingController {
             print("\(item.rootView.title) tab re-selected")
         }
+        selectedIndexBinding = viewControllers?.firstIndex(of: viewController) ?? 0
         return true
     }
 }

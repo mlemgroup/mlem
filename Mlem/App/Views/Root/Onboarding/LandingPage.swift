@@ -14,7 +14,9 @@ struct LandingPage: View {
     @Dependency(\.accountsTracker) var accountsTracker
     
     @Environment(AppState.self) var appState
+    @Environment(\.dismiss) var dismiss
     
+    @State var isSubmitting: Bool = false
     @State var instance: String = ""
     @State var username: String = ""
     @State var password: String = ""
@@ -23,12 +25,17 @@ struct LandingPage: View {
         Form {
             TextField("Instance", text: $instance)
             TextField("Username", text: $username)
-            TextField("Password", text: $password)
+            SecureField("Password", text: $password)
             Button("Submit") {
+                isSubmitting = true
                 Task {
                     await tryToAddAccount()
+                    DispatchQueue.main.async {
+                        dismiss()
+                    }
                 }
             }
+            .disabled(isSubmitting)
         }
         .autocorrectionDisabled()
         .textInputAutocapitalization(.never)

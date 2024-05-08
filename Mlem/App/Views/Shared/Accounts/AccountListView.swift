@@ -14,6 +14,7 @@ struct AccountListView: View {
     @AppStorage("groupAccountSort") var groupAccountSort: Bool = false
     
     @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
     @Environment(\.dismiss) var dismiss
     
     let accountsTracker: AccountsTracker
@@ -71,8 +72,7 @@ struct AccountListView: View {
                 }
                 Section {
                     Button {
-                        // isShowingInstanceAdditionSheet = true
-                        appState.enterOnboarding()
+                        navigation.openSheet(.addAccount)
                     } label: {
                         Label("Add Account", systemImage: "plus")
                     }
