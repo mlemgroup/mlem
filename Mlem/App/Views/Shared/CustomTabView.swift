@@ -12,15 +12,21 @@ struct CustomTabView: UIViewControllerRepresentable {
     var viewControllers: [CustomTabViewHostingController]
     let swipeGestureCallback: () -> Void
     
-    init(tabs: [CustomTabItem], onSwipeUp: @escaping () -> Void) {
+    @Binding var selectedIndex: Int
+    
+    init(selectedIndex: Binding<Int>, tabs: [CustomTabItem], onSwipeUp: @escaping () -> Void) {
         self.viewControllers = tabs.enumerated().map { CustomTabViewHostingController(rootView: $1, index: $0) }
         self.swipeGestureCallback = onSwipeUp
+        self._selectedIndex = selectedIndex
     }
     
     func makeUIViewController(
         context: UIViewControllerRepresentableContext<CustomTabView>
     ) -> UITabBarController {
-        let tabBarController = CustomTabBarController(swipeGestureCallback: swipeGestureCallback)
+        let tabBarController = CustomTabBarController(
+            selectedIndex: $selectedIndex,
+            swipeGestureCallback: swipeGestureCallback
+        )
         tabBarController.viewControllers = viewControllers
         return tabBarController
     }

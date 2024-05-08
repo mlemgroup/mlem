@@ -14,8 +14,8 @@ class CustomTabViewHostingController: UIHostingController<CustomTabItem> {
         
         self.tabBarItem = UITabBarItem(
             title: rootView.title,
-            image: UIImage(systemName: rootView.systemImage),
-            tag: index
+            image: UIImage(systemName: rootView.image),
+            selectedImage: UIImage(systemName: rootView.selectedImage)
         )
     }
     
