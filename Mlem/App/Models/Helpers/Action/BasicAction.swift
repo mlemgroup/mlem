@@ -46,43 +46,4 @@ struct BasicAction: Action {
         self.swipeIcon2 = swipeIcon2 ?? icon
         self.callback = enabled ? callback : nil
     }
-    
-    static func upvote(isOn: Bool, callback: (() -> Void)? = nil) -> BasicAction {
-        .init(
-            isOn: isOn,
-            label: isOn ? "Undo Upvote" : "Upvote",
-            color: Colors.upvoteColor,
-            icon: Icons.upvote,
-            menuIcon: isOn ? Icons.upvoteSquareFill : Icons.upvoteSquare,
-            swipeIcon1: isOn ? Icons.resetVoteSquare : Icons.upvoteSquare,
-            swipeIcon2: isOn ? Icons.resetVoteSquareFill : Icons.upvoteSquareFill,
-            callback: callback
-        )
-    }
-    
-    static func downvote(isOn: Bool, callback: (() -> Void)? = nil) -> BasicAction {
-        .init(
-            isOn: isOn,
-            label: isOn ? "Undo Downvote" : "Downvote",
-            color: Colors.downvoteColor,
-            icon: Icons.downvote,
-            menuIcon: isOn ? Icons.downvoteSquareFill : Icons.downvoteSquare,
-            swipeIcon1: isOn ? Icons.resetVoteSquare : Icons.downvoteSquare,
-            swipeIcon2: isOn ? Icons.resetVoteSquareFill : Icons.downvoteSquareFill,
-            callback: callback
-        )
-    }
-    
-    static func save(isOn: Bool, callback: (() -> Void)? = nil) -> BasicAction {
-        .init(
-            isOn: isOn,
-            label: isOn ? "Unsave" : "Save",
-            color: Colors.saveColor,
-            icon: isOn ? Icons.saveFill : Icons.save,
-            menuIcon: isOn ? Icons.saveFill : Icons.save,
-            swipeIcon1: isOn ? Icons.unsave : Icons.save,
-            swipeIcon2: isOn ? Icons.unsaveFill : Icons.saveFill,
-            callback: callback
-        )
-    }
 }
