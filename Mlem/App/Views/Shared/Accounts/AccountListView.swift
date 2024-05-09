@@ -59,6 +59,9 @@ struct AccountListView: View {
                             }
                         }
                     }
+                } else if accounts.isEmpty {
+                    Text("You don't have any accounts.")
+                        .foregroundStyle(.secondary)
                 } else {
                     Section(header: topHeader()) {
                         ForEach(accounts, id: \.self) { account in

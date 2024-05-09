@@ -69,4 +69,6 @@ class NavigationLayer {
             hasNavigationStack: hasNavigationStack ?? page.hasNavigationStack
         )
     }
+    
+    var isInsideSheet: Bool { index != -1 }
 }

@@ -14,31 +14,43 @@ struct AvatarStackView: View {
     let spacing: CGFloat
     let outlineWidth: CGFloat
     
+    var showPlusIcon: Bool = false
+    
     var body: some View {
         HStack(spacing: 0) {
             Spacer().aspectRatio(1 / 2, contentMode: .fit)
             HStack(spacing: spacing) {
-                ForEach(urls.dropLast(), id: \.self) { url in
+                ForEach(showPlusIcon ? urls : urls.dropLast(), id: \.self) { url in
                     avatarView(url: url)
                         .frame(maxWidth: 0)
                         .padding(outlineWidth)
                         .mask {
-                            ZStack(alignment: .trailing) {
-                                Rectangle()
-                                Circle()
-                                    .padding(.trailing, -spacing)
-                                    .blendMode(.destinationOut)
-                            }
-                            .compositingGroup()
-                            .aspectRatio(contentMode: .fill)
+                            Rectangle()
+                                .subtracting(.circle.offset(x: spacing))
+                                .aspectRatio(contentMode: .fill)
                         }
                 }
-                avatarView(url: urls.last ?? nil)
-                    .frame(maxWidth: 0)
-                    .padding(outlineWidth)
+                if showPlusIcon {
+                    plusIconView()
+                        .frame(maxWidth: 0)
+                        .padding(outlineWidth)
+                } else {
+                    avatarView(url: urls.last ?? nil)
+                        .frame(maxWidth: 0)
+                        .padding(outlineWidth)
+                }
             }
             Spacer().aspectRatio(1 / 2, contentMode: .fit)
         }
+    }
+    
+    @ViewBuilder
+    func plusIconView() -> some View {
+        Image(systemName: "plus.circle.fill")
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .symbolRenderingMode(.hierarchical)
+            .foregroundStyle(.secondary, Color(uiColor: .tertiaryLabel))
     }
     
     @ViewBuilder
@@ -47,7 +59,7 @@ struct AvatarStackView: View {
             url: url,
             type: type
         )
-        .fixedSize(horizontal: true, vertical: false)
+        .aspectRatio(contentMode: .fill)
     }
 }
 

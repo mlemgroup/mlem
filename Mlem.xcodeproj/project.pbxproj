@@ -18,6 +18,9 @@
 		03134A522BEAD69F002662CC /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A512BEAD69F002662CC /* SettingsPage.swift */; };
 		03134A582BEC1C46002662CC /* AccountListSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A572BEC1C46002662CC /* AccountListSettingsView.swift */; };
 		03134A5A2BEC2253002662CC /* AvatarStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A592BEC2253002662CC /* AvatarStackView.swift */; };
+		03267D822BED489C009D6268 /* AvatarBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D812BED489C009D6268 /* AvatarBannerView.swift */; };
+		03267D842BED49CE009D6268 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D832BED49CE009D6268 /* AccountSettingsView.swift */; };
+		03267D862BED4ACA009D6268 /* ProfileProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D852BED4ACA009D6268 /* ProfileProviding+Extensions.swift */; };
 		035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */; };
 		035BE0892BDD901B00F77D73 /* NavigationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0882BDD901B00F77D73 /* NavigationPage.swift */; };
 		035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE08A2BDD903100F77D73 /* NavigationModel.swift */; };
@@ -131,6 +134,9 @@
 		03134A512BEAD69F002662CC /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
 		03134A572BEC1C46002662CC /* AccountListSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListSettingsView.swift; sourceTree = "<group>"; };
 		03134A592BEC2253002662CC /* AvatarStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarStackView.swift; sourceTree = "<group>"; };
+		03267D812BED489C009D6268 /* AvatarBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarBannerView.swift; sourceTree = "<group>"; };
+		03267D832BED49CE009D6268 /* AccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
+		03267D852BED4ACA009D6268 /* ProfileProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileProviding+Extensions.swift"; sourceTree = "<group>"; };
 		035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRootView.swift; sourceTree = "<group>"; };
 		035BE0882BDD901B00F77D73 /* NavigationPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPage.swift; sourceTree = "<group>"; };
 		035BE08A2BDD903100F77D73 /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
@@ -252,6 +258,7 @@
 			isa = PBXGroup;
 			children = (
 				03134A4A2BEACF50002662CC /* SettingsView.swift */,
+				03267D832BED49CE009D6268 /* AccountSettingsView.swift */,
 				03134A572BEC1C46002662CC /* AccountListSettingsView.swift */,
 			);
 			path = Settings;
@@ -263,6 +270,16 @@
 				03134A4F2BEAD245002662CC /* NavigationLink+NavigationPage.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		03267D802BED4714009D6268 /* Avatar */ = {
+			isa = PBXGroup;
+			children = (
+				03134A4C2BEAD058002662CC /* AvatarView.swift */,
+				03267D812BED489C009D6268 /* AvatarBannerView.swift */,
+				03134A592BEC2253002662CC /* AvatarStackView.swift */,
+			);
+			path = Avatar;
 			sourceTree = "<group>";
 		};
 		035BE0852BDD8D9100F77D73 /* Navigation */ = {
@@ -435,8 +452,6 @@
 				6363D5C627EE196700E34822 /* ContentView.swift */,
 				6363D5C427EE196700E34822 /* MlemApp.swift */,
 				B157E0C32A507B8000B02C8B /* FlowRoot.swift */,
-				03134A4C2BEAD058002662CC /* AvatarView.swift */,
-				03134A592BEC2253002662CC /* AvatarStackView.swift */,
 				CDA1E81A2B8FC39A007953EF /* Onboarding */,
 				6363D5F427EE1BAE00E34822 /* Tabs */,
 			);
@@ -495,6 +510,7 @@
 				03D3A1E22BB8A40A009DE55E /* EmptyButtonStyle.swift */,
 				037386402BDAF3F7007492B5 /* Markdown.swift */,
 				03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */,
+				03267D802BED4714009D6268 /* Avatar */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -643,6 +659,7 @@
 				CDC199E92BE449790077B4F1 /* Interactable1Providing+Extensions.swift */,
 				CDC199EB2BE449EA0077B4F1 /* Post1Providing+Extensions.swift */,
 				CDC199ED2BE44A200077B4F1 /* Post2Providing+Extensions.swift */,
+				03267D852BED4ACA009D6268 /* ProfileProviding+Extensions.swift */,
 			);
 			path = "Content Models";
 			sourceTree = "<group>";
@@ -883,6 +900,8 @@
 				CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */,
 				CD4D59012B87B16400B82964 /* ErrorAlert.swift in Sources */,
 				6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */,
+				03267D822BED489C009D6268 /* AvatarBannerView.swift in Sources */,
+				03267D862BED4ACA009D6268 /* ProfileProviding+Extensions.swift in Sources */,
 				CDF9EF332AB2845C003F885B /* Icons.swift in Sources */,
 				CD4D58DA2B86E11D00B82964 /* Mockable.swift in Sources */,
 				CD4D590A2B87B1DC00B82964 /* NotificationMessage.swift in Sources */,
@@ -904,6 +923,7 @@
 				CDA1E8272B90EF24007953EF /* AppFlow.swift in Sources */,
 				035BE0892BDD901B00F77D73 /* NavigationPage.swift in Sources */,
 				035BE08F2BDE911900F77D73 /* NavigationLayer.swift in Sources */,
+				03267D842BED49CE009D6268 /* AccountSettingsView.swift in Sources */,
 				030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */,
 				CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */,
 				030FF67F2BC8544700F6BFAC /* CustomTabBarController.swift in Sources */,

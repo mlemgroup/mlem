@@ -14,6 +14,7 @@ struct AccountButtonView: View {
     @Environment(\.dismiss) var dismiss
     
     @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
     
     @State var showingSignOutConfirmation: Bool = false
     @Binding var isSwitching: Bool
@@ -64,7 +65,9 @@ struct AccountButtonView: View {
         Button {
             if appState.firstAccount.actorId != account.actorId {
                 appState.changeUser(to: account)
-                dismiss()
+                if navigation.isInsideSheet {
+                    dismiss()
+                }
             }
         } label: {
             HStack(alignment: .center, spacing: 10) {

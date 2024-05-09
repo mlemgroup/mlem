@@ -8,13 +8,15 @@
 import SwiftUI
 
 enum SettingsPage: Hashable {
-    case root, accounts
+    case root, accounts, account
     
     @ViewBuilder
     func view() -> some View {
         switch self {
         case .root:
             SettingsView()
+        case .account:
+            AccountSettingsView()
         case .accounts:
             AccountListSettingsView()
         }

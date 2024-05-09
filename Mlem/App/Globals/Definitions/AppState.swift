@@ -69,6 +69,7 @@ class ActiveAccount: Hashable {
   
     init(userStub: UserStub) {
         self.api = userStub.api
+        self.userStub = userStub
         api.permissions = .all
         Task {
             try await self.api.fetchSiteVersion(task: Task {
