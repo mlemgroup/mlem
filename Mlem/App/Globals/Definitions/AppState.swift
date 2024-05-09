@@ -28,6 +28,13 @@ class AppState {
         guestAccount = .init(instanceUrl: instanceUrl)
     }
     
+    func deactivate(userStub: UserStub) {
+        if let index = AppState.main.activeAccounts.firstIndex(where: { $0.userStub === userStub }) {
+            activeAccounts[index].deactivate()
+            activeAccounts.remove(at: index)
+        }
+    }
+    
     func enterOnboarding() {
         activeAccounts.removeAll()
     }

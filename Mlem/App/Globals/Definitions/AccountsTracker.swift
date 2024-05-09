@@ -48,6 +48,7 @@ class AccountsTracker {
         }
         savedAccounts.remove(at: index)
         saveAccounts()
+        AppState.main.deactivate(userStub: account)
     }
     
     func saveAccounts() {

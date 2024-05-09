@@ -21,6 +21,7 @@
 		03267D822BED489C009D6268 /* AvatarBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D812BED489C009D6268 /* AvatarBannerView.swift */; };
 		03267D842BED49CE009D6268 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D832BED49CE009D6268 /* AccountSettingsView.swift */; };
 		03267D862BED4ACA009D6268 /* ProfileProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D852BED4ACA009D6268 /* ProfileProviding+Extensions.swift */; };
+		03267D892BED5F34009D6268 /* UserProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D882BED5F34009D6268 /* UserProviding+Extensions.swift */; };
 		035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */; };
 		035BE0892BDD901B00F77D73 /* NavigationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0882BDD901B00F77D73 /* NavigationPage.swift */; };
 		035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE08A2BDD903100F77D73 /* NavigationModel.swift */; };
@@ -660,6 +661,7 @@
 				CDC199EB2BE449EA0077B4F1 /* Post1Providing+Extensions.swift */,
 				CDC199ED2BE44A200077B4F1 /* Post2Providing+Extensions.swift */,
 				03267D852BED4ACA009D6268 /* ProfileProviding+Extensions.swift */,
+				03267D882BED5F34009D6268 /* UserProviding+Extensions.swift */,
 			);
 			path = "Content Models";
 			sourceTree = "<group>";
@@ -908,6 +910,7 @@
 				CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */,
 				CD4D59082B87B1B400B82964 /* NotificationDisplayer.swift in Sources */,
 				B157E0C42A507B8000B02C8B /* FlowRoot.swift in Sources */,
+				03267D892BED5F34009D6268 /* UserProviding+Extensions.swift in Sources */,
 				036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */,
 				03134A502BEAD245002662CC /* NavigationLink+NavigationPage.swift in Sources */,
 				CDC199EA2BE449790077B4F1 /* Interactable1Providing+Extensions.swift in Sources */,

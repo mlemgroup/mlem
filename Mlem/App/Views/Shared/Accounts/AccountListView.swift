@@ -79,7 +79,9 @@ struct AccountListView: View {
                     .accessibilityLabel("Add a new account.")
                     Button {
                         appState.enterGuestMode(for: URL(string: "https://lemmy.world")!)
-                        dismiss()
+                        if navigation.isInsideSheet {
+                            dismiss()
+                        }
                     } label: {
                         Label("Enter Guest Mode", systemImage: Icons.person)
                     }

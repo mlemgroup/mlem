@@ -113,22 +113,9 @@ struct AccountButtonView: View {
         }
         .confirmationDialog("Really sign out of \(account.nickname ?? account.name)?", isPresented: $showingSignOutConfirmation) {
             Button("Sign Out", role: .destructive) {
-                Task {
-                    print("TODO: SIGN OUT")
-//                    if let currentAccount = appState.apiSource {
-//                        print("DEBUG YES")
-//                        accountsTracker.removeAccount(account: account)
-//                        if currentAccount.actorId == account.actorId {
-//                            if let first = accountsTracker.savedAccounts.first {
-//                                appState.apiSource = first
-//                            } else {
-//                                appState.isOnboarding = true
-//                            }
-//                            dismiss()
-//                        }
-//                    } else {
-//                        print("DEBUG NO")
-//                    }
+                account.signOut()
+                if navigation.isInsideSheet {
+                    dismiss()
                 }
             }
         } message: {
