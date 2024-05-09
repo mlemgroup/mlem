@@ -86,7 +86,7 @@ struct MinimalPostFeedView: View {
     func actionButton(_ action: BasicAction) -> some View {
         Button(action: action.callback ?? {}) {
             Image(systemName: action.barIcon)
-                .foregroundColor(action.isOn ? .white : .primary)
+                .foregroundColor(action.isOn ? .white : palette.primary)
                 .padding(2)
                 .background(
                     RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
@@ -102,14 +102,6 @@ struct MinimalPostFeedView: View {
     var content: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
-                Button("Monochrome") {
-                    palette.changePalette(to: MonochromePalette())
-                }
-                
-                Button("Default") {
-                    palette.changePalette(to: DefaultPalette())
-                }
-                
                 ForEach(postTracker.items, id: \.uid) { post in
                     HStack {
                         actionButton(post.upvoteAction)

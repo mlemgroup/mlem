@@ -10,6 +10,7 @@ import SwiftUI
 
 protocol PaletteProviding {
     // basics
+    var primary: Color { get }
     var background: Color { get }
     var secondaryBackground: Color { get }
     var tertiaryBackground: Color { get }
@@ -17,29 +18,48 @@ protocol PaletteProviding {
     var uiAccent: UIColor { get }
     
     // interactions
-    var upvoteColor: Color { get }
-    var downvoteColor: Color { get }
-    var saveColor: Color { get }
+    var upvote: Color { get }
+    var downvote: Color { get }
+    var save: Color { get }
+}
+
+enum Palette: String {
+    case standard, monochrome
+    
+    var palette: any PaletteProviding {
+        switch self {
+        case .standard:
+            StandardPalette()
+        case .monochrome:
+            MonochromePalette()
+        }
+    }
 }
 
 @Observable
 class PaletteProvider: PaletteProviding {
     /// Current color palette
-    private var palette: any PaletteProviding = MonochromePalette() // DefaultPalette()
+    private var palette: any PaletteProviding
+    
+    init() {
+        @AppStorage("colorPalette") var colorPalette: Palette = .standard
+        self.palette = colorPalette.palette
+    }
     
     /// Updates the current color palette
-    func changePalette(to newPalette: any PaletteProviding) {
-        palette = newPalette
+    func changePalette(to newPalette: Palette) {
+        palette = newPalette.palette
     }
     
     // ColorProviding conformance
+    var primary: Color { palette.primary }
     var background: Color { palette.background }
     var secondaryBackground: Color { palette.secondaryBackground }
     var tertiaryBackground: Color { palette.tertiaryBackground }
     var accent: Color { palette.accent }
     var uiAccent: UIColor { palette.uiAccent }
 
-    var upvoteColor: Color { palette.upvoteColor }
-    var downvoteColor: Color { palette.downvoteColor }
-    var saveColor: Color { palette.saveColor }
+    var upvote: Color { palette.upvote }
+    var downvote: Color { palette.downvote }
+    var save: Color { palette.save }
 }

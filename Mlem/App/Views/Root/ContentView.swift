@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @AppStorage("colorPalette") var colorPalette: Palette = .standard
+    
     let timer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
 
     // globals
