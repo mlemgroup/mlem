@@ -16,7 +16,7 @@ enum SettingsPage: Hashable {
         case .root:
             SettingsView()
         case .accounts:
-            Text("Accounts")
+            AccountListSettingsView()
         }
     }
 }

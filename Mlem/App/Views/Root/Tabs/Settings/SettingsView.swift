@@ -15,7 +15,7 @@ struct SettingsView: View {
         Form {
             Section {
                 accountSettingsLink()
-                accountListLink()
+                NavigationLink("Accounts", destination: .settings(.accounts))
             }
         }
         .navigationTitle("Settings")
@@ -45,18 +45,6 @@ struct SettingsView: View {
                 }
                 Spacer()
             }
-        }
-    }
-    
-    @ViewBuilder
-    func accountListLink() -> some View {
-        switch AccountsTracker.main.savedAccounts.count {
-        case 0:
-            Button("Sign In") { navigation.openSheet(.addAccount) }
-        case 1:
-            Button("Add Another Account") { navigation.openSheet(.addAccount) }
-        default:
-            NavigationLink("Accounts", destination: .settings(.accounts))
         }
     }
 }

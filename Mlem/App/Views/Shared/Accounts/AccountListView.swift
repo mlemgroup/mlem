@@ -5,10 +5,10 @@
 //  Created by Sjmarf on 22/12/2023.
 //
 
-import Dependencies
 import MlemMiddleware
 import SwiftUI
 
+/// This view is a component used as a child of ``QuickSwitcherView`` and ``AccountListSettingsView``.
 struct AccountListView: View {
     @AppStorage("accountSort") var accountSort: AccountSortMode = .custom
     @AppStorage("groupAccountSort") var groupAccountSort: Bool = false
@@ -83,9 +83,6 @@ struct AccountListView: View {
                 }
             }
         }
-//        .sheet(isPresented: $isShowingInstanceAdditionSheet) {
-//            AddSavedInstanceView(onboarding: false)
-//        }
     }
     
     @ViewBuilder

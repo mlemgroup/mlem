@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 07/05/2024.
 //
 
+import MlemMiddleware
 import NukeUI
 import SwiftUI
 
@@ -23,5 +24,11 @@ struct AvatarView: View {
             }
         }
         .aspectRatio(1, contentMode: .fit)
+    }
+}
+
+extension AvatarView {
+    init(_ userStub: UserStub) {
+        self.init(url: userStub.avatarUrl, type: .person)
     }
 }

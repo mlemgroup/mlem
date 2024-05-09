@@ -16,6 +16,8 @@
 		03134A4D2BEAD058002662CC /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A4C2BEAD058002662CC /* AvatarView.swift */; };
 		03134A502BEAD245002662CC /* NavigationLink+NavigationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A4F2BEAD245002662CC /* NavigationLink+NavigationPage.swift */; };
 		03134A522BEAD69F002662CC /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A512BEAD69F002662CC /* SettingsPage.swift */; };
+		03134A582BEC1C46002662CC /* AccountListSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A572BEC1C46002662CC /* AccountListSettingsView.swift */; };
+		03134A5A2BEC2253002662CC /* AvatarStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A592BEC2253002662CC /* AvatarStackView.swift */; };
 		035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */; };
 		035BE0892BDD901B00F77D73 /* NavigationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0882BDD901B00F77D73 /* NavigationPage.swift */; };
 		035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE08A2BDD903100F77D73 /* NavigationModel.swift */; };
@@ -127,6 +129,8 @@
 		03134A4C2BEAD058002662CC /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		03134A4F2BEAD245002662CC /* NavigationLink+NavigationPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationLink+NavigationPage.swift"; sourceTree = "<group>"; };
 		03134A512BEAD69F002662CC /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
+		03134A572BEC1C46002662CC /* AccountListSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListSettingsView.swift; sourceTree = "<group>"; };
+		03134A592BEC2253002662CC /* AvatarStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarStackView.swift; sourceTree = "<group>"; };
 		035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRootView.swift; sourceTree = "<group>"; };
 		035BE0882BDD901B00F77D73 /* NavigationPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPage.swift; sourceTree = "<group>"; };
 		035BE08A2BDD903100F77D73 /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
@@ -248,6 +252,7 @@
 			isa = PBXGroup;
 			children = (
 				03134A4A2BEACF50002662CC /* SettingsView.swift */,
+				03134A572BEC1C46002662CC /* AccountListSettingsView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -431,6 +436,7 @@
 				6363D5C427EE196700E34822 /* MlemApp.swift */,
 				B157E0C32A507B8000B02C8B /* FlowRoot.swift */,
 				03134A4C2BEAD058002662CC /* AvatarView.swift */,
+				03134A592BEC2253002662CC /* AvatarStackView.swift */,
 				CDA1E81A2B8FC39A007953EF /* Onboarding */,
 				6363D5F427EE1BAE00E34822 /* Tabs */,
 			);
@@ -832,6 +838,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03134A582BEC1C46002662CC /* AccountListSettingsView.swift in Sources */,
 				03D3A1F12BB9D48E009DE55E /* BasicAction.swift in Sources */,
 				CD4D58992B86BB0300B82964 /* EnvironmentValues+TabSelectionHashValue.swift in Sources */,
 				CD4D590C2B87B1E700B82964 /* Notifier.swift in Sources */,
@@ -859,6 +866,7 @@
 				CD4D58B52B86BFFB00B82964 /* PersistenceRepository+Dependency.swift in Sources */,
 				CD4D58EB2B86E63300B82964 /* AssociatedColor.swift in Sources */,
 				CD4D591A2B87B3D100B82964 /* ErrorHandler+Dependency.swift in Sources */,
+				03134A5A2BEC2253002662CC /* AvatarStackView.swift in Sources */,
 				03D3A1F32BB9D49B009DE55E /* ActionGroup.swift in Sources */,
 				CD4D58FD2B87B14D00B82964 /* ContextualError.swift in Sources */,
 				CD4D58C82B86DCED00B82964 /* AvatarType.swift in Sources */,
