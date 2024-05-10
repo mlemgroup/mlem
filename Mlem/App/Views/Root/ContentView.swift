@@ -20,6 +20,7 @@ struct ContentView: View {
     
     var body: some View {
         content
+            .tint(Color(uiColor: colorProvider.uiAccent))
             .onReceive(timer) { _ in
                 appState.cleanCaches()
             }
