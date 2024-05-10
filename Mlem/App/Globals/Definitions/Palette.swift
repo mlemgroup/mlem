@@ -23,7 +23,7 @@ protocol PaletteProviding {
     var save: Color { get }
 }
 
-enum Palette: String {
+enum PaletteOption: String {
     case standard, monochrome
     
     var palette: any PaletteProviding {
@@ -37,17 +37,19 @@ enum Palette: String {
 }
 
 @Observable
-class PaletteProvider: PaletteProviding {
+class Palette: PaletteProviding {
     /// Current color palette
     private var palette: any PaletteProviding
     
     init() {
-        @AppStorage("colorPalette") var colorPalette: Palette = .standard
+        @AppStorage("colorPalette") var colorPalette: PaletteOption = .standard
         self.palette = colorPalette.palette
     }
     
+    static var main: Palette { .init() }
+    
     /// Updates the current color palette
-    func changePalette(to newPalette: Palette) {
+    func changePalette(to newPalette: PaletteOption) {
         palette = newPalette.palette
     }
     

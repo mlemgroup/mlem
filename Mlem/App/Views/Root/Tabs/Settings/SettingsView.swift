@@ -10,10 +10,11 @@ import Foundation
 import SwiftUI
 
 struct SettingsView: View {
-    @Dependency(\.palette) var palette
+    @Environment(Palette.self) var palette
     
-    @AppStorage("colorPalette") var colorPalette: Palette = .standard {
+    @AppStorage("colorPalette") var colorPalette: PaletteOption = .standard {
         didSet {
+            print("updating palette to \(colorPalette)")
             palette.changePalette(to: colorPalette)
         }
     }

@@ -12,7 +12,7 @@ struct StandardPalette: PaletteProviding {
     let background = Color(UIColor.systemBackground)
     let secondaryBackground = Color(UIColor.secondarySystemBackground)
     let tertiaryBackground = Color(UIColor.tertiarySystemBackground)
-    let accent = Color.black
+    let accent = Color.accentColor
     let uiAccent = UIColor.systemBlue
     
     let upvote = Color.blue

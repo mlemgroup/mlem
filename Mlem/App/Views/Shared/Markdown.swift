@@ -11,7 +11,7 @@ import Nuke
 import SwiftUI
 
 struct Markdown: View {
-    @Dependency(\.palette) var palette
+    @Environment(Palette.self) var palette
     
     let markdown: String
     

@@ -9,25 +9,25 @@ import Dependencies
 import SwiftUI
 
 struct ContentView: View {
-    @AppStorage("colorPalette") var colorPalette: Palette = .standard
-    
-    @Dependency(\.palette) var palette: PaletteProvider
+    @AppStorage("colorPalette") var colorPalette: PaletteOption = .standard
     
     let timer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
 
     // globals
     var appState: AppState { .main }
     
+    var palette: Palette = .main
     @State var selectedTabIndex: Int = 0
     
     @State var navigationModel: NavigationModel = .init()
     
     var body: some View {
         content
-            .tint(palette.accent)
+            .tint(Palette.main.accent)
             .onReceive(timer) { _ in
                 appState.cleanCaches()
             }
+            .environment(palette)
             .environment(appState)
     }
     

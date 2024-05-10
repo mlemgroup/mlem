@@ -203,7 +203,7 @@ enum NotificationDisplayer {
 /// A simple toast view
 /// - Note: This view is private as it should only be created via the notification process
 private struct Toast: View {
-    @Dependency(\.palette) var palette
+    @Environment(Palette.self) var palette
     
     enum Style {
         case success
