@@ -35,9 +35,9 @@ struct SettingsView: View {
                     .padding(.vertical, -6)
                     .padding(.leading, 3)
                 VStack(alignment: .leading, spacing: 3) {
-                    Text(account.userStub?.nickname ?? account.userStub?.name ?? "")
+                    Text(account.userStub?.nickname ?? account.userStub?.name ?? "Guest")
                         .font(.title2)
-                    if let hostName = account.userStub?.api.baseUrl.host() {
+                    if let hostName = account.api.baseUrl.host() {
                         Text("@\(hostName)")
                             .foregroundStyle(.secondary)
                             .font(.caption)
