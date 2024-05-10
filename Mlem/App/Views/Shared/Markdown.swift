@@ -11,8 +11,6 @@ import Nuke
 import SwiftUI
 
 struct Markdown: View {
-    @Dependency(\.palette) var palette
-    
     let markdown: String
     
     init(_ markdown: String) {
@@ -40,7 +38,7 @@ struct Markdown: View {
                 .frame(maxWidth: .infinity)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(palette.secondaryBackground)
+                        .fill(PaletteProvider.main.secondaryBackground)
                 )
         )
     }

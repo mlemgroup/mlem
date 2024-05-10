@@ -25,9 +25,9 @@ struct FeedsView: View {
 
 struct MinimalPostFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
-    @Dependency(\.palette) var palette
     
     @Environment(AppState.self) var appState
+    @Environment(PaletteProvider.self) var palette
     
     @State var postTracker: StandardPostFeedLoader
     
@@ -86,7 +86,7 @@ struct MinimalPostFeedView: View {
     func actionButton(_ action: BasicAction) -> some View {
         Button(action: action.callback ?? {}) {
             Image(systemName: action.barIcon)
-                .foregroundColor(action.isOn ? .white : palette.primary)
+                .foregroundColor(action.isOn ? .white : PaletteProvider.main.primary)
                 .padding(2)
                 .background(
                     RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
@@ -102,6 +102,14 @@ struct MinimalPostFeedView: View {
     var content: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
+                Button("Monochrome") {
+                    palette.changePalette(to: .monochrome)
+                }
+                
+                Button("Default") {
+                    palette.changePalette(to: .standard)
+                }
+                
                 ForEach(postTracker.items, id: \.uid) { post in
                     HStack {
                         actionButton(post.upvoteAction)
@@ -114,7 +122,7 @@ struct MinimalPostFeedView: View {
                             .foregroundStyle(post.isRead ? .secondary : .primary)
                     }
                     .padding(10)
-                    .background(palette.background)
+                    .background(PaletteProvider.main.background)
                     .contentShape(.rect)
                     .contextMenu {
                         ForEach(post.menuActions.children, id: \.id) { action in

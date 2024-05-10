@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 struct SettingsView: View {
-    @Dependency(\.palette) var palette
+    @Environment(PaletteProvider.self) var palette
     
     @AppStorage("colorPalette") var colorPalette: Palette = .standard {
         didSet {

@@ -203,8 +203,6 @@ enum NotificationDisplayer {
 /// A simple toast view
 /// - Note: This view is private as it should only be created via the notification process
 private struct Toast: View {
-    @Dependency(\.palette) var palette
-    
     enum Style {
         case success
         case error
@@ -245,7 +243,7 @@ private struct Toast: View {
     
     @ViewBuilder
     var background: some View {
-        palette.secondaryBackground
+        PaletteProvider.main.secondaryBackground
             .clipShape(Capsule())
             .overlay(Capsule().stroke(Color.gray.opacity(0.2), lineWidth: 1))
     }

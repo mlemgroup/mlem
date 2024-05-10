@@ -46,6 +46,9 @@ class PaletteProvider: PaletteProviding {
         self.palette = colorPalette.palette
     }
     
+    /// Static ColorProvider to make it available in contexts were @Environment is unavailable
+    static var main: PaletteProvider = .init()
+    
     /// Updates the current color palette
     func changePalette(to newPalette: Palette) {
         palette = newPalette.palette

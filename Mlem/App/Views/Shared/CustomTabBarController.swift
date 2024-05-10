@@ -10,12 +10,6 @@ import Foundation
 import SwiftUI
 
 class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
-    @Dependency(\.palette) var palette
-    
-//    let cancellable = palette.objectWillChange.sink { _ in
-//        print("Change Received")
-//    }
-    
     @Binding var selectedIndexBinding: Int
     let swipeGestureCallback: () -> Void
     
@@ -41,7 +35,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         delegate = self
         hidesBottomBarWhenPushed = true
         
-        tabBar.tintColor = palette.uiAccent
+        tabBar.tintColor = PaletteProvider.main.uiAccent
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressGestureTriggered(_:)))
         tabBar.addGestureRecognizer(longPressRecognizer)
         

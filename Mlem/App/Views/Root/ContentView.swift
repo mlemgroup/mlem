@@ -10,13 +10,13 @@ import SwiftUI
 
 struct ContentView: View {
     @AppStorage("colorPalette") var colorPalette: Palette = .standard
-    
-    @Dependency(\.palette) var palette: PaletteProvider
-    
+
     let timer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
 
     // globals
     var appState: AppState { .main }
+    
+    @State var palette: PaletteProvider = .main
     
     @State var selectedTabIndex: Int = 0
     
@@ -28,6 +28,7 @@ struct ContentView: View {
             .onReceive(timer) { _ in
                 appState.cleanCaches()
             }
+            .environment(palette)
             .environment(appState)
     }
     
