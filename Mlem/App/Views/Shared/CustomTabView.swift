@@ -10,6 +10,8 @@ import Foundation
 import SwiftUI
 
 struct CustomTabView: UIViewControllerRepresentable {
+    @Environment(Palette.self) var palette
+    
     var viewControllers: [CustomTabViewHostingController]
     let swipeGestureCallback: () -> Void
     
@@ -37,11 +39,11 @@ struct CustomTabView: UIViewControllerRepresentable {
         context: UIViewControllerRepresentableContext<CustomTabView>
     ) {
         withObservationTracking {
-            _ = Palette.main.uiAccent
+            _ = palette.uiAccent
         } onChange: {
             if let controller = uiViewController as? CustomTabBarController {
                 Task { @MainActor in
-                    controller.tabBar.tintColor = Palette.main.uiAccent
+                    controller.tabBar.tintColor = palette.uiAccent
                 }
             }
         }

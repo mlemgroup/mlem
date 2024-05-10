@@ -46,7 +46,7 @@ class Palette: PaletteProviding {
         self.palette = colorPalette.palette
     }
     
-    static var main: Palette { .init() }
+    static var main: Palette = .init() // { .init() }
     
     /// Updates the current color palette
     func changePalette(to newPalette: PaletteOption) {
