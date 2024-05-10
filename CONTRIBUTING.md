@@ -75,6 +75,19 @@ Further notes:
 - Prefer `var helper: some View` to `func helper() -> some View` unless the helper view takes in parameters.
 - Helper views should always appear lower in the file than the view they help.
 
+## Global Objects
+
+There are several objects (e.g., `AppState`) that need to be available anywhere in the app. Normally this is handled with `@Environment`, but this is not available outside of the context of a `View`. To address this, globals that need to be availalbe outside of a `View` define a `static var main: GlobalObject = .init()`, allowing them to be referenced as `GlobalObject.main`.
+
+This pattern should be used only where necessary, and should not be blindly applied to any global object. Likewise, if possible, these objects should be referenced via `@Environment(GlobalObject.self) var globalObject`; the static singleton should be considered a last resort.
+
+## Colors
+
+Colors are managed using the globally available `Palette` object, which enables color themes. The following conventions apply:
+
+- Avoid referencing `Color` directly; always use a `Palette` color.
+- Prefer semantic over literal colors (e.g., `.upvote` over `.blue`).
+
 ## Testing
 
 We operate a Lemmy Instance at https://test-mlem.jo.wtf/ which you may use for testing purposes. Please note that, as of 2024-05-10, it is running Lemmy v17, which is no longer used by any major Lemmy instance and thus we do not bother maintaining compatibility for. You may wish to use a local Lemmy instance instead.
