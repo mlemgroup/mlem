@@ -20,7 +20,7 @@ struct AvatarView: View {
                     .resizable()
                     .clipShape(Circle())
             } else {
-                DefaultAvatarView(avatarType: .person)
+                DefaultAvatarView(avatarType: type)
             }
         }
         .aspectRatio(1, contentMode: .fit)
