@@ -16,14 +16,14 @@ struct ContentView: View {
     // globals
     var appState: AppState { .main }
     
-    var palette: Palette = .main
+    @State var palette: Palette = .main
     @State var selectedTabIndex: Int = 0
     
     @State var navigationModel: NavigationModel = .init()
     
     var body: some View {
         content
-            .tint(Palette.main.accent)
+            .tint(palette.accent)
             .onReceive(timer) { _ in
                 appState.cleanCaches()
             }
