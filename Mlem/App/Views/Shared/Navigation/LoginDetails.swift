@@ -9,9 +9,9 @@ import Foundation
 import MlemMiddleware
 
 struct LoginDetails: Hashable {
-    private(set) var instance: (any Instance)? = nil
-    private(set) var username: String? = nil
-    private(set) var password: String? = nil
+    private(set) var instance: (any Instance)?
+    private(set) var username: String?
+    private(set) var password: String?
     
     init() {}
     

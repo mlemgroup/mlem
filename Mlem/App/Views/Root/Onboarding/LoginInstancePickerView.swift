@@ -1,5 +1,5 @@
 //
-//  InstanceField.swift
+//  LoginInstancePickerView.swift
 //  Mlem
 //
 //  Created by Sjmarf on 10/05/2024.
@@ -24,10 +24,13 @@ struct LoginInstancePickerView: View {
         "lemmy.world",
         "literature.cafe",
         "lemmy.ca",
+        "feddit.de",
+        "lemmy.zip",
         "startrek.site"
     ]
     
     var body: some View {
+        let filteredSuggestions = suggestions.filter { $0.starts(with: instance) && $0 != instance }
         VStack {
             Image(systemName: "globe")
                 .resizable()
@@ -41,8 +44,14 @@ struct LoginInstancePickerView: View {
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 5)
-            instanceSuggestionsBox
-                .padding()
+            instanceSuggestionsBox(suggestions: filteredSuggestions)
+                .padding(filteredSuggestions.isEmpty ? [.horizontal, .top] : .all)
+            if filteredSuggestions.isEmpty {
+                Button("Next") {}
+                    .buttonStyle(.borderedProminent)
+                    .buttonBorderShape(.roundedRectangle(radius: 16))
+                    .disabled(!instance.contains(/.*\..+$/))
+            }
             Spacer()
         }
         .toolbar {
@@ -57,13 +66,14 @@ struct LoginInstancePickerView: View {
         .interactiveDismissDisabled(!instance.isEmpty)
     }
     
-    var instanceSuggestionsBox: some View {
+    @ViewBuilder
+    func instanceSuggestionsBox(suggestions: [String]) -> some View {
         VStack(spacing: 0) {
             instanceField
             if !instance.isEmpty {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
-                        ForEach(suggestions.filter { $0.starts(with: instance) && $0 != instance }, id: \.self) { text in
+                        ForEach(suggestions, id: \.self) { text in
                             Divider()
                             Button {
                                 instance = text

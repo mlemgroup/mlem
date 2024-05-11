@@ -50,8 +50,6 @@ struct LandingPage: View {
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 5)
-            InstanceField(instance: $instance, instanceValidity: $instanceValidity)
-                .padding()
             Spacer()
         }
         .toolbar {

@@ -11,7 +11,7 @@ import SwiftUI
 enum NavigationPage: Hashable {
     case settings(_ page: SettingsPage = .root)
     case feeds, profile, inbox, search
-    case quickSwitcher, addAccount
+    case quickSwitcher
     /// Ask the user to login. If no instance if provided, one will be
     case login(_ details: LoginDetails)
 }
@@ -39,14 +39,12 @@ extension NavigationPage {
         case .quickSwitcher:
             QuickSwitcherView()
                 .presentationDetents([.medium, .large])
-        case .addAccount:
-            LandingPage()
         }
     }
     
     var hasNavigationStack: Bool {
         switch self {
-        case .quickSwitcher, .addAccount:
+        case .quickSwitcher:
             false
         default:
             true
