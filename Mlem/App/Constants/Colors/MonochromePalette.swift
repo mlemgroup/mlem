@@ -8,15 +8,15 @@
 import Foundation
 import SwiftUI
 
-struct MonochromePalette: PaletteProviding {
-    let primary = Color.primary
-    let background = Color(UIColor.systemBackground)
-    let secondaryBackground = Color(UIColor.secondarySystemBackground)
-    let tertiaryBackground = Color(UIColor.tertiarySystemBackground)
-    let accent = Color.black
-    let uiAccent = UIColor.black
-    
-    let upvote = Color.black
-    let downvote = Color.black
-    let save = Color.black
+extension ColorPalette {
+    static let monochrome: ColorPalette = .init(
+        primary: .primary,
+        background: Color(UIColor.systemBackground),
+        secondaryBackground: Color(UIColor.secondarySystemBackground),
+        tertiaryBackground: Color(UIColor.tertiarySystemBackground),
+        accent: .primary,
+        upvote: .primary,
+        downvote: .primary,
+        save: .primary
+    )
 }

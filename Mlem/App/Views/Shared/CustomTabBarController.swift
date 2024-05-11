@@ -35,7 +35,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         delegate = self
         hidesBottomBarWhenPushed = true
         
-        tabBar.tintColor = Palette.main.uiAccent
+        tabBar.tintColor = UIColor(Palette.main.accent)
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressGestureTriggered(_:)))
         tabBar.addGestureRecognizer(longPressRecognizer)
         

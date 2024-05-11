@@ -15,7 +15,6 @@ protocol PaletteProviding {
     var secondaryBackground: Color { get }
     var tertiaryBackground: Color { get }
     var accent: Color { get }
-    var uiAccent: UIColor { get }
     
     // interactions
     var upvote: Color { get }
@@ -26,20 +25,30 @@ protocol PaletteProviding {
 enum PaletteOption: String {
     case standard, monochrome
     
-    var palette: any PaletteProviding {
+    var palette: ColorPalette {
         switch self {
-        case .standard:
-            StandardPalette()
-        case .monochrome:
-            MonochromePalette()
+        case .standard: ColorPalette.standard
+        case .monochrome: ColorPalette.monochrome
         }
     }
+}
+
+struct ColorPalette: PaletteProviding {
+    var primary: Color
+    var background: Color
+    var secondaryBackground: Color
+    var tertiaryBackground: Color
+    var accent: Color
+
+    var upvote: Color
+    var downvote: Color
+    var save: Color
 }
 
 @Observable
 class Palette: PaletteProviding {
     /// Current color palette
-    private var palette: any PaletteProviding
+    private var palette: ColorPalette
     
     init() {
         @AppStorage("colorPalette") var colorPalette: PaletteOption = .standard
@@ -59,8 +68,7 @@ class Palette: PaletteProviding {
     var secondaryBackground: Color { palette.secondaryBackground }
     var tertiaryBackground: Color { palette.tertiaryBackground }
     var accent: Color { palette.accent }
-    var uiAccent: UIColor { palette.uiAccent }
-
+    
     var upvote: Color { palette.upvote }
     var downvote: Color { palette.downvote }
     var save: Color { palette.save }

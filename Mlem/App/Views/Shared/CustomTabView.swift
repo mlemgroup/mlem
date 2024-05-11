@@ -38,11 +38,11 @@ struct CustomTabView: UIViewControllerRepresentable {
         context: UIViewControllerRepresentableContext<CustomTabView>
     ) {
         withObservationTracking {
-            _ = palette.uiAccent
+            _ = palette.accent
         } onChange: {
             if let controller = uiViewController as? CustomTabBarController {
                 Task { @MainActor in
-                    controller.tabBar.tintColor = palette.uiAccent
+                    controller.tabBar.tintColor = UIColor(palette.accent)
                 }
             }
         }

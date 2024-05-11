@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-struct StandardPalette: PaletteProviding {
-    let primary = Color.primary
-    let background = Color(UIColor.systemBackground)
-    let secondaryBackground = Color(UIColor.secondarySystemBackground)
-    let tertiaryBackground = Color(UIColor.tertiarySystemBackground)
-    let accent = Color.accentColor
-    let uiAccent = UIColor.systemBlue
-    
-    let upvote = Color.blue
-    let downvote = Color.red
-    let save = Color.green
+extension ColorPalette {
+    static let standard: ColorPalette = .init(
+        primary: .primary,
+        background: Color(UIColor.systemBackground),
+        secondaryBackground: Color(UIColor.secondarySystemBackground),
+        tertiaryBackground: Color(UIColor.tertiarySystemBackground),
+        accent: .accentColor,
+        upvote: .blue,
+        downvote: .red,
+        save: .green
+    )
 }
