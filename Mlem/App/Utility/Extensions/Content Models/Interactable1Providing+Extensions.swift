@@ -16,7 +16,7 @@ extension Interactable1Providing {
         return .init(
             isOn: isOn,
             label: isOn ? "Undo Upvote" : "Upvote",
-            color: Colors.upvoteColor,
+            color: Palette.main.upvote,
             icon: Icons.upvote,
             menuIcon: isOn ? Icons.upvoteSquareFill : Icons.upvoteSquare,
             swipeIcon1: isOn ? Icons.resetVoteSquare : Icons.upvoteSquare,
@@ -30,7 +30,7 @@ extension Interactable1Providing {
         return .init(
             isOn: isOn,
             label: isOn ? "Undo Downvote" : "Downvote",
-            color: Colors.downvoteColor,
+            color: Palette.main.downvote,
             icon: Icons.downvote,
             menuIcon: isOn ? Icons.downvoteSquareFill : Icons.downvoteSquare,
             swipeIcon1: isOn ? Icons.resetVoteSquare : Icons.downvoteSquare,
@@ -44,7 +44,7 @@ extension Interactable1Providing {
         return .init(
             isOn: isOn,
             label: isOn ? "Unsave" : "Save",
-            color: Colors.saveColor,
+            color: Palette.main.save,
             icon: isOn ? Icons.saveFill : Icons.save,
             menuIcon: isOn ? Icons.saveFill : Icons.save,
             swipeIcon1: isOn ? Icons.unsave : Icons.save,

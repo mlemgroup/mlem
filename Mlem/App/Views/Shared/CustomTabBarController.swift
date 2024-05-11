@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 11/04/2024.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
 
@@ -34,7 +35,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         delegate = self
         hidesBottomBarWhenPushed = true
         
-        tabBar.tintColor = .systemBlue
+        tabBar.tintColor = UIColor(Palette.main.accent)
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressGestureTriggered(_:)))
         tabBar.addGestureRecognizer(longPressRecognizer)
         

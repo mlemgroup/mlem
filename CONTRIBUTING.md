@@ -23,7 +23,7 @@ With these steps completed each time you build your code will be linted, and eac
 
 ## Getting started
 
-To avoid having multiple in-flight tasks working on the same part of the codebase, we have a set procedure for claiming and performing work. If you don't follow it, your PR will *probably* be rejected (unless it's really *that* good).
+To avoid having multiple in-flight tasks working on the same part of the codebase, we have a set procedure for claiming and performing work. If you don't follow it, your PR will _probably_ be rejected (unless it's really _that_ good).
 
 1. Go to our [project board](https://github.com/orgs/mlemgroup/projects/1/views/1).
 2. Find an unassigned issue under the "Todo" section that you'd like to work on.
@@ -39,10 +39,58 @@ When your code is approved, it can be merged into the `dev` branch by a member o
 ## Conventions
 
 Please develop according to the following principles:
-- One View per file. A file containing a View struct must end in "View". We're yet to decide on an official naming scheme for files - feel free to offer your thoughts [here](https://github.com/mlemgroup/mlem/issues/55).
+
+- Files should be named according to the following patterns:
+  - All files: `TitleCase`. If the file contains extensions, it should be named `BaseEntity+Extensions`.
+  - `View` files: file name must end in `View` (e.g., `FeedsView`)
+- One View per file.
 - Within reason, any complex of views that renders a single component of a larger view should be placed in a descriptively named function, computed property or `@ViewBuilder` variable beneath the body of the View. This keeps pyramids from piling up and makes our accessibility experts' work easier.
 - If you can reuse code, do. Prefer abstracting common components to a generic struct and common logic to a generic function.
 
+## View Structure
+
+All `View` structs should be organized according to the following template:
+
+```
+struct SomeView: View {
+  @AppStorage values
+  @Environment entities
+  @Binding variables
+  @State variables
+  Normal variables
+  Computed properties
+
+  // if necessary
+  init() { ... }
+
+  var body: some View { ... }
+
+  // if necessary
+  var content: some View { ... }
+
+  Helper views
+}
+```
+
+Further notes:
+
+- If the view has modifiers that are attached to the entire body, place the view definition in `content` and attach these modifiers to it in `body` (see `ContentView.swift` for an example).
+- Prefer `var helper: some View` to `func helper() -> some View` unless the helper view takes in parameters.
+- Helper views should always appear lower in the file than the view they help.
+
+## Global Objects
+
+There are several objects (e.g., `AppState`) that need to be available anywhere in the app. Normally this is handled with `@Environment`, but this is not available outside of the context of a `View`. To address this, globals that need to be available outside of a `View` define a `static var main: GlobalObject = .init()`, allowing them to be referenced as `GlobalObject.main`. This definition should be placed immediately above the initializer.
+
+This pattern should be used only where necessary, and should not be blindly applied to any global object. Likewise, if possible, these objects should be referenced via `@Environment(GlobalObject.self) var globalObject`; the static singleton should be considered a last resort.
+
+## Colors
+
+Colors are managed using the globally available `Palette` object, which enables color themes. The following conventions apply:
+
+- Avoid referencing `Color` directly; always use a `Palette` color.
+- Prefer semantic over literal colors (e.g., `.upvote` over `.blue`).
+
 ## Testing
 
-We operate a Lemmy Instance at https://test-mlem.jo.wtf/ which you may use for testing purposes.
+We operate a Lemmy Instance at https://test-mlem.jo.wtf/ which you may use for testing purposes. Please note that, as of 2024-05-10, it is running Lemmy v17, which is no longer used by any major Lemmy instance and thus we do not bother maintaining compatibility for. You may wish to use a local Lemmy instance instead.

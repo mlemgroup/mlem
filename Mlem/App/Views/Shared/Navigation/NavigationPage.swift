@@ -24,7 +24,7 @@ extension NavigationPage {
         case .search:
             SubscriptionListView()
         case .settings:
-            Text("Settings")
+            SettingsView()
         case .quickSwitcher:
             QuickSwitcherView()
                 .presentationDetents([.medium, .large])

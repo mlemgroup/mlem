@@ -19,12 +19,21 @@
       }
     },
     {
+      "identity" : "lemmymarkdownui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mlemgroup/LemmyMarkdownUI",
+      "state" : {
+        "branch" : "main",
+        "revision" : "a5ef8e49e9db253afd49e9e38805fa2e89649b32"
+      }
+    },
+    {
       "identity" : "mlemmiddleware",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware.git",
       "state" : {
-        "branch" : "master",
-        "revision" : "82bae530b51ad208ae1fce11bab3276ec80c5b76"
+        "revision" : "3fc9bdebc74909dfdea2fcd51afb645d5d1ed2b6",
+        "version" : "0.1.0"
       }
     },
     {
