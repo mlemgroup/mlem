@@ -295,9 +295,9 @@
 				035BE08A2BDD903100F77D73 /* NavigationModel.swift */,
 				035BE08E2BDE911900F77D73 /* NavigationLayer.swift */,
 				035BE0882BDD901B00F77D73 /* NavigationPage.swift */,
-				031E2D572BEFBF4B0003BC45 /* LoginDetails.swift */,
-				03134A512BEAD69F002662CC /* SettingsPage.swift */,
 				035BE0902BDEA01E00F77D73 /* NavigationPage+View.swift */,
+				03134A512BEAD69F002662CC /* SettingsPage.swift */,
+				031E2D572BEFBF4B0003BC45 /* LoginDetails.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";

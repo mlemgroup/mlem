@@ -23,7 +23,11 @@ extension NavigationPage {
         case let .settings(page):
             page.view()
         case let .login(details):
-            LoginInstancePickerView()
+            if details.instance != nil {
+                EmptyView()
+            } else {
+                LoginInstancePickerView()
+            }
         case .feeds:
             FeedsView()
         case .profile:
