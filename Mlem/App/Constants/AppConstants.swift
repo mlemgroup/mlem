@@ -36,7 +36,9 @@ enum AppConstants {
     static let smallAvatarSize: CGFloat = 16
     static let defaultAvatarSize: CGFloat = 24
     static let largeAvatarSpacing: CGFloat = 10
-    static let postAndCommentSpacing: CGFloat = 10 // standard spacing for the app
+    static let standardSpacing: CGFloat = 10
+    static let halfSpacing: CGFloat = 5
+    static let doubleSpacing: CGFloat = 20
     static let compactSpacing: CGFloat = 6 // standard spacing for compact things
     static let appIconCornerRadius: CGFloat = 10
     static let largeItemCornerRadius: CGFloat = 8 // posts, website previews, etc

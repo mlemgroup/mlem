@@ -31,7 +31,7 @@ struct AvatarStackView: View {
                         }
                 }
                 if showPlusIcon {
-                    plusIconView()
+                    plusIconView
                         .frame(maxWidth: 0)
                         .padding(outlineWidth)
                 } else {

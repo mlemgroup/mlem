@@ -110,7 +110,7 @@ struct MinimalPostFeedView: View {
                         Text(post.title)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal)
-                            .foregroundStyle(post.isRead ? .secondary : .primary)
+                            .foregroundStyle(post.read ? .secondary : .primary)
                     }
                     .padding(10)
                     .background(Color(uiColor: .systemBackground))

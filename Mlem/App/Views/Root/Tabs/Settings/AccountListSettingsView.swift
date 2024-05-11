@@ -13,7 +13,7 @@ struct AccountListSettingsView: View {
     
     var body: some View {
         Form {
-            headerView()
+            headerView
             AccountListView()
         }
     }
