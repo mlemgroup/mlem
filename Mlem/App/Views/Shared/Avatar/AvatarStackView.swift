@@ -45,7 +45,7 @@ struct AvatarStackView: View {
     }
     
     @ViewBuilder
-    func plusIconView() -> some View {
+    var plusIconView: some View {
         Image(systemName: "plus.circle.fill")
             .resizable()
             .aspectRatio(contentMode: .fill)

@@ -40,7 +40,7 @@ struct AvatarBannerView: View {
     static let avatarPadding: CGFloat = AppConstants.postAndCommentSpacing
     
     @ViewBuilder
-    func avatarView() -> some View {
+    var avatarView: some View {
         AvatarView(url: model?.avatar, type: type)
             .frame(height: AvatarBannerView.avatarSize)
     }
