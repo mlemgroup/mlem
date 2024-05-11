@@ -12,6 +12,7 @@
 		030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */; };
 		030FF67F2BC8544700F6BFAC /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF67E2BC8544600F6BFAC /* CustomTabBarController.swift */; };
 		030FF6812BC859FD00F6BFAC /* CustomTabViewHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF6802BC859FD00F6BFAC /* CustomTabViewHostingController.swift */; };
+		031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */; };
 		035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */; };
 		035BE0892BDD901B00F77D73 /* NavigationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0882BDD901B00F77D73 /* NavigationPage.swift */; };
 		035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE08A2BDD903100F77D73 /* NavigationModel.swift */; };
@@ -122,6 +123,7 @@
 		030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabItem.swift; sourceTree = "<group>"; };
 		030FF67E2BC8544600F6BFAC /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		030FF6802BC859FD00F6BFAC /* CustomTabViewHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabViewHostingController.swift; sourceTree = "<group>"; };
+		031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListView.swift; sourceTree = "<group>"; };
 		035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRootView.swift; sourceTree = "<group>"; };
 		035BE0882BDD901B00F77D73 /* NavigationPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPage.swift; sourceTree = "<group>"; };
 		035BE08A2BDD903100F77D73 /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
@@ -381,6 +383,7 @@
 			isa = PBXGroup;
 			children = (
 				CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */,
+				031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */,
 			);
 			path = Feeds;
 			sourceTree = "<group>";
@@ -846,6 +849,7 @@
 				CD4D59142B87B36B00B82964 /* InternetConnectionManager.swift in Sources */,
 				03D3A1EF2BB9CA1D009DE55E /* MenuButton.swift in Sources */,
 				CDC199EC2BE449EA0077B4F1 /* Post1Providing+Extensions.swift in Sources */,
+				031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */,
 				030FF67B2BC8521600F6BFAC /* CustomTabView.swift in Sources */,
 				CD4D59162B87B38C00B82964 /* UIApplication+Extensions.swift in Sources */,
 				CDA1E8542B952C3D007953EF /* StateManager.swift in Sources */,
