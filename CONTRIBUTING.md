@@ -80,7 +80,7 @@ Further notes:
 
 ## Global Objects
 
-There are several objects (e.g., `AppState`) that need to be available anywhere in the app. Normally this is handled with `@Environment`, but this is not available outside of the context of a `View`. To address this, globals that need to be available outside of a `View` define a `static var main: GlobalObject = .init()`, allowing them to be referenced as `GlobalObject.main`.
+There are several objects (e.g., `AppState`) that need to be available anywhere in the app. Normally this is handled with `@Environment`, but this is not available outside of the context of a `View`. To address this, globals that need to be available outside of a `View` define a `static var main: GlobalObject = .init()`, allowing them to be referenced as `GlobalObject.main`. This definition should be placed immediately above the initializer.
 
 This pattern should be used only where necessary, and should not be blindly applied to any global object. Likewise, if possible, these objects should be referenced via `@Environment(GlobalObject.self) var globalObject`; the static singleton should be considered a last resort.
 

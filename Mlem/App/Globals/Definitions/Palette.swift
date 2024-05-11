@@ -50,12 +50,12 @@ class Palette: PaletteProviding {
     /// Current color palette
     private var palette: ColorPalette
     
+    static var main: Palette = .init()
+    
     init() {
         @AppStorage("colorPalette") var colorPalette: PaletteOption = .standard
         self.palette = colorPalette.palette
     }
-    
-    static var main: Palette = .init()
     
     /// Updates the current color palette
     func changePalette(to newPalette: PaletteOption) {
