@@ -13,7 +13,7 @@ struct ContentView: View {
     var appState: AppState { .main }
     
     @State var selectedTabIndex: Int = 0
-    
+    @State var tabReselectTracker: TabReselectTracker = .main
     @State var navigationModel: NavigationModel = .init()
     
     var body: some View {
@@ -21,6 +21,7 @@ struct ContentView: View {
             .onReceive(timer) { _ in
                 appState.cleanCaches()
             }
+            .environment(tabReselectTracker)
             .environment(appState)
     }
     

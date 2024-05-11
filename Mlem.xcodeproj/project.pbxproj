@@ -56,8 +56,7 @@
 		CD4D58412B86858100B82964 /* MlemUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58402B86858100B82964 /* MlemUITests.swift */; };
 		CD4D58742B86B4AA00B82964 /* AccountsTracker+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58732B86B4AA00B82964 /* AccountsTracker+Dependency.swift */; };
 		CD4D58932B86BA5C00B82964 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58922B86BA5C00B82964 /* Colors.swift */; };
-		CD4D58972B86BAD900B82964 /* EnvironmentValues+TabReselectionHashValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58962B86BAD900B82964 /* EnvironmentValues+TabReselectionHashValue.swift */; };
-		CD4D58992B86BB0300B82964 /* EnvironmentValues+TabSelectionHashValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58982B86BB0300B82964 /* EnvironmentValues+TabSelectionHashValue.swift */; };
+		CD4D58972B86BAD900B82964 /* TabReselectTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58962B86BAD900B82964 /* TabReselectTracker.swift */; };
 		CD4D58A52B86BD1B00B82964 /* PersistenceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58A42B86BD1B00B82964 /* PersistenceRepository.swift */; };
 		CD4D58AA2B86BE5900B82964 /* AccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58A92B86BE5900B82964 /* AccountListView.swift */; };
 		CD4D58AD2B86BE7100B82964 /* QuickSwitcherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58AC2B86BE7100B82964 /* QuickSwitcherView.swift */; };
@@ -160,8 +159,7 @@
 		CD4D58402B86858100B82964 /* MlemUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemUITests.swift; sourceTree = "<group>"; };
 		CD4D58732B86B4AA00B82964 /* AccountsTracker+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountsTracker+Dependency.swift"; sourceTree = "<group>"; };
 		CD4D58922B86BA5C00B82964 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
-		CD4D58962B86BAD900B82964 /* EnvironmentValues+TabReselectionHashValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+TabReselectionHashValue.swift"; sourceTree = "<group>"; };
-		CD4D58982B86BB0300B82964 /* EnvironmentValues+TabSelectionHashValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+TabSelectionHashValue.swift"; sourceTree = "<group>"; };
+		CD4D58962B86BAD900B82964 /* TabReselectTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabReselectTracker.swift; sourceTree = "<group>"; };
 		CD4D58A42B86BD1B00B82964 /* PersistenceRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenceRepository.swift; sourceTree = "<group>"; };
 		CD4D58A92B86BE5900B82964 /* AccountListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListView.swift; sourceTree = "<group>"; };
 		CD4D58AC2B86BE7100B82964 /* QuickSwitcherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSwitcherView.swift; sourceTree = "<group>"; };
@@ -436,19 +434,9 @@
 			isa = PBXGroup;
 			children = (
 				CD4D59212B87BD0800B82964 /* Definitions */,
-				CD4D58952B86BAC400B82964 /* EnvironmentValues */,
 				CD4D58672B86B38600B82964 /* Dependencies */,
 			);
 			path = Globals;
-			sourceTree = "<group>";
-		};
-		CD4D58952B86BAC400B82964 /* EnvironmentValues */ = {
-			isa = PBXGroup;
-			children = (
-				CD4D58982B86BB0300B82964 /* EnvironmentValues+TabSelectionHashValue.swift */,
-				CD4D58962B86BAD900B82964 /* EnvironmentValues+TabReselectionHashValue.swift */,
-			);
-			path = EnvironmentValues;
 			sourceTree = "<group>";
 		};
 		CD4D58A82B86BE4C00B82964 /* Shared */ = {
@@ -577,6 +565,7 @@
 		CD4D59212B87BD0800B82964 /* Definitions */ = {
 			isa = PBXGroup;
 			children = (
+				CD4D58962B86BAD900B82964 /* TabReselectTracker.swift */,
 				CD4D58B22B86BFD400B82964 /* AccountsTracker.swift */,
 				036CC3AE2B8145C30098B6A1 /* AppState.swift */,
 				CD4D58A42B86BD1B00B82964 /* PersistenceRepository.swift */,
@@ -806,7 +795,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				03D3A1F12BB9D48E009DE55E /* BasicAction.swift in Sources */,
-				CD4D58992B86BB0300B82964 /* EnvironmentValues+TabSelectionHashValue.swift in Sources */,
 				CD4D590C2B87B1E700B82964 /* Notifier.swift in Sources */,
 				035BE08D2BDE88EC00F77D73 /* NavigationLayerView.swift in Sources */,
 				035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */,
@@ -822,7 +810,7 @@
 				CD4D58FF2B87B15700B82964 /* EquatableError.swift in Sources */,
 				CD4D58A52B86BD1B00B82964 /* PersistenceRepository.swift in Sources */,
 				CD1446252A5B357900610EF1 /* Document.swift in Sources */,
-				CD4D58972B86BAD900B82964 /* EnvironmentValues+TabReselectionHashValue.swift in Sources */,
+				CD4D58972B86BAD900B82964 /* TabReselectTracker.swift in Sources */,
 				CD4D591C2B87B43D00B82964 /* Task+Extensions.swift in Sources */,
 				CD4D58AA2B86BE5900B82964 /* AccountListView.swift in Sources */,
 				CD4D58B92B86D9F800B82964 /* AccountButtonView.swift in Sources */,
