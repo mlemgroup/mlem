@@ -5,11 +5,18 @@
 //  Created by Sjmarf on 10/05/2024.
 //
 
-import Combine
 import MlemMiddleware
 import SwiftUI
 
-struct InstanceField: View {
+struct LoginInstancePickerView: View {
+    @Environment(\.dismiss) var dismiss
+    @Environment(NavigationLayer.self) var navigation
+    
+    @State var instance: String = ""
+    
+    @State private var scrollViewContentSize: CGSize = .zero
+    @FocusState private var focused: Bool
+    
     // Temporary - before 2.0 release this should be a list of all major instances
     let suggestions: [String] = [
         "lemmy.ml",
@@ -20,29 +27,39 @@ struct InstanceField: View {
         "startrek.site"
     ]
     
-    @Binding var instance: String
-    @Binding var instanceValidity: LandingPage.InstanceValidationProgress
-    
-    @State private var scrollViewContentSize: CGSize = .zero
-    @FocusState private var focused: Bool
-    
-    @State private var relay = PassthroughSubject<String, Never>()
-    @State private var debouncedPublisher: AnyPublisher<String, Never>
-    
-    init(instance: Binding<String>, instanceValidity: Binding<LandingPage.InstanceValidationProgress>) {
-        self._instance = instance
-        self._instanceValidity = instanceValidity
-        let relay = PassthroughSubject<String, Never>()
-        self._relay = .init(wrappedValue: relay)
-        self._debouncedPublisher = .init(wrappedValue: relay
-            .debounce(for: 0.3, scheduler: RunLoop.main)
-            .eraseToAnyPublisher()
-        )
+    var body: some View {
+        VStack {
+            Image(systemName: "globe")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(height: 50)
+                .foregroundStyle(.blue)
+            Text("Sign In to Lemmy")
+                .font(.title)
+                .bold()
+            Text("Enter your instance's domain name below.")
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.bottom, 5)
+            instanceSuggestionsBox
+                .padding()
+            Spacer()
+        }
+        .toolbar {
+            if navigation.isInsideSheet {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+        .interactiveDismissDisabled(!instance.isEmpty)
     }
     
-    var body: some View {
+    var instanceSuggestionsBox: some View {
         VStack(spacing: 0) {
-            instanceField()
+            instanceField
             if !instance.isEmpty {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
@@ -74,7 +91,7 @@ struct InstanceField: View {
     }
     
     @ViewBuilder
-    func instanceField() -> some View {
+    var instanceField: some View {
         TextField(
             "Domain",
             text: $instance,
@@ -88,31 +105,6 @@ struct InstanceField: View {
         .padding()
         .onTapGesture { focused = true }
         .onAppear { focused = true }
-        .onChange(of: instance) {
-            print("CHANGEOF")
-            instanceValidity = .debouncing
-            relay.send(instance)
-        }
-        .overlay(alignment: .trailing) {
-            Group {
-                switch instanceValidity {
-                case .success:
-                    Image(systemName: "checkmark.circle.fill")
-                        .foregroundStyle(.green)
-                case .failure:
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.red)
-                case .waiting:
-                    ProgressView()
-                case .debouncing:
-                    EmptyView()
-                }
-            }
-            .padding(.trailing)
-            .transition(.opacity)
-        }
-        .animation(.easeOut(duration: 0.1), value: instanceValidity)
-        .onReceive(debouncedPublisher, perform: checkInstanceValidity)
     }
     
     func geometryReaderBackground(geo: GeometryProxy) -> some View {
@@ -122,26 +114,26 @@ struct InstanceField: View {
         return Color.clear
     }
     
-    func checkInstanceValidity(domain: String) {
-        var domain = domain
-        if domain.contains(/.*\..+$/) {
-            if !domain.contains("://") {
-                domain = "https://\(domain)"
-            }
-            if let url = URL(string: domain) {
-                instanceValidity = .waiting
-                Task {
-                    let apiClient = ApiClient.getApiClient(for: url, with: nil)
-                    do {
-                        _ = try await apiClient.getSite()
-                        instanceValidity = .success
-                    } catch {
-                        instanceValidity = .failure
-                    }
-                }
-            }
-        }
-    }
+//    func checkInstanceValidity(domain: String) {
+//        var domain = domain
+//        if domain.contains(/.*\..+$/) {
+//            if !domain.contains("://") {
+//                domain = "https://\(domain)"
+//            }
+//            if let url = URL(string: domain) {
+//                instanceValidity = .waiting
+//                Task {
+//                    let apiClient = ApiClient.getApiClient(for: url, with: nil)
+//                    do {
+//                        _ = try await apiClient.getSite()
+//                        instanceValidity = .success
+//                    } catch {
+//                        instanceValidity = .failure
+//                    }
+//                }
+//            }
+//        }
+//    }
     
     func attributedString(suggestion string: String) -> AttributedString {
         var attributedString = AttributedString(stringLiteral: string)

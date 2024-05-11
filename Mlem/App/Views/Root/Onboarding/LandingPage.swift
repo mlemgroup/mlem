@@ -5,8 +5,6 @@
 //  Created by Eric Andrews on 2024-02-28.
 //
 
-import Combine
-import Dependencies
 import Foundation
 import MlemMiddleware
 import SwiftUI

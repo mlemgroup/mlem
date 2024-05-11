@@ -5,12 +5,15 @@
 //  Created by Sjmarf on 27/04/2024.
 //
 
+import MlemMiddleware
 import SwiftUI
 
 enum NavigationPage: Hashable {
     case settings(_ page: SettingsPage = .root)
     case feeds, profile, inbox, search
     case quickSwitcher, addAccount
+    /// Ask the user to login. If no instance if provided, one will be
+    case login(_ details: LoginDetails)
 }
 
 extension NavigationPage {
@@ -19,6 +22,8 @@ extension NavigationPage {
         switch self {
         case let .settings(page):
             page.view()
+        case let .login(details):
+            LoginInstancePickerView()
         case .feeds:
             FeedsView()
         case .profile:
