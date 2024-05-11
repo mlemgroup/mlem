@@ -20,6 +20,9 @@ struct SettingsView: View {
                 accountSettingsLink()
                 accountListLink()
             }
+            Section {
+                NavigationLink("Theme", destination: .settings(.theme))
+            }
         }
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)

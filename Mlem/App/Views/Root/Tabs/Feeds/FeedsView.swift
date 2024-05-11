@@ -27,6 +27,7 @@ struct MinimalPostFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
     
     @Environment(AppState.self) var appState
+    @Environment(Palette.self) var palette
     
     @State var postTracker: StandardPostFeedLoader
     
@@ -85,7 +86,7 @@ struct MinimalPostFeedView: View {
     func actionButton(_ action: BasicAction) -> some View {
         Button(action: action.callback ?? {}) {
             Image(systemName: action.barIcon)
-                .foregroundColor(action.isOn ? .white : .primary)
+                .foregroundColor(action.isOn ? palette.selectedInteractionBarItem : palette.primary)
                 .padding(2)
                 .background(
                     RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
@@ -113,7 +114,7 @@ struct MinimalPostFeedView: View {
                             .foregroundStyle(post.read ? .secondary : .primary)
                     }
                     .padding(10)
-                    .background(Color(uiColor: .systemBackground))
+                    .background(palette.background)
                     .contentShape(.rect)
                     .contextMenu {
                         ForEach(post.menuActions.children, id: \.id) { action in

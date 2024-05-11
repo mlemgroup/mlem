@@ -33,6 +33,9 @@ class AppState {
         if let index = AppState.main.activeAccounts.firstIndex(where: { $0.userStub === userStub }) {
             activeAccounts[index].deactivate()
             activeAccounts.remove(at: index)
+            if activeAccounts.isEmpty, let defaultAccount = AccountsTracker.main.defaultAccount {
+                changeUser(to: defaultAccount)
+            }
         }
     }
     

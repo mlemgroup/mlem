@@ -113,10 +113,10 @@ struct AccountButtonView: View {
         }
         .confirmationDialog("Really sign out of \(account.nickname ?? account.name)?", isPresented: $showingSignOutConfirmation) {
             Button("Sign Out", role: .destructive) {
-                account.signOut()
-                if navigation.isInsideSheet {
+                if navigation.isInsideSheet, appState.activeAccounts.contains(where: { $0.userStub === account }) {
                     dismiss()
                 }
+                account.signOut()
             }
         } message: {
             Text("Really sign out?")

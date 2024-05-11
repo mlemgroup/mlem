@@ -5,11 +5,14 @@
 //  Created by Sjmarf on 25/04/2024.
 //
 
+import Dependencies
 import LemmyMarkdownUI
 import Nuke
 import SwiftUI
 
 struct Markdown: View {
+    @Environment(Palette.self) var palette
+    
     let markdown: String
     
     init(_ markdown: String) {
@@ -37,7 +40,7 @@ struct Markdown: View {
                 .frame(maxWidth: .infinity)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(Color(uiColor: .secondarySystemBackground))
+                        .fill(palette.secondaryBackground)
                 )
         )
     }

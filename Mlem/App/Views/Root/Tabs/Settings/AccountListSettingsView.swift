@@ -13,13 +13,13 @@ struct AccountListSettingsView: View {
     
     var body: some View {
         Form {
-            headerView()
+            headerView
             AccountListView()
         }
     }
     
     @ViewBuilder
-    func headerView() -> some View {
+    var headerView: some View {
         Section {
             VStack(alignment: .center) {
                 Group {

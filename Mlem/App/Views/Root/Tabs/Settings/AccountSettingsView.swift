@@ -13,7 +13,7 @@ struct AccountSettingsView: View {
     var body: some View {
         Form {
             Section {
-                VStack(spacing: AppConstants.postAndCommentSpacing) {
+                VStack(spacing: AppConstants.standardSpacing) {
                     AvatarBannerView(appState.firstAccount.user)
                     VStack(spacing: 5) {
                         Text(appState.firstAccount.user?.displayName ?? "Guest")

@@ -18,13 +18,9 @@ class AccountsTracker {
     static let main: AccountsTracker = .init()
     
     @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
-    @ObservationIgnored @AppStorage("defaultAccountId") var defaultAccountId: Int?
     
     var savedAccounts: [UserStub] = .init()
-    
-    var defaultAccount: UserStub? {
-        savedAccounts.first(where: { $0.id == defaultAccountId })
-    }
+    var defaultAccount: UserStub? { savedAccounts.first }
     
     private var cancellables = Set<AnyCancellable>()
     

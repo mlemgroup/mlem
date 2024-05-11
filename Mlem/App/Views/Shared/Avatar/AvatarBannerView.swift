@@ -37,13 +37,7 @@ struct AvatarBannerView: View {
     static let bannerHeight: CGFloat = 170
     static let avatarOverdraw: CGFloat = 40
     static let avatarSize: CGFloat = 108
-    static let avatarPadding: CGFloat = AppConstants.postAndCommentSpacing
-    
-    @ViewBuilder
-    func avatarView() -> some View {
-        AvatarView(url: model?.avatar, type: type)
-            .frame(height: AvatarBannerView.avatarSize)
-    }
+    static let avatarPadding: CGFloat = AppConstants.standardSpacing
     
     var body: some View {
         Group {
@@ -85,7 +79,7 @@ struct AvatarBannerView: View {
                     }
                     .overlay {
                         if showAvatar {
-                            avatarView()
+                            avatarView
                                 .frame(maxHeight: .infinity, alignment: .bottom)
                         }
                     }
@@ -93,10 +87,16 @@ struct AvatarBannerView: View {
                 .frame(height: AvatarBannerView.bannerHeight + (showAvatar ? AvatarBannerView.avatarOverdraw : 0))
             } else {
                 if showAvatar {
-                    avatarView()
+                    avatarView
                         .padding(.top)
                 }
             }
         }
+    }
+    
+    @ViewBuilder
+    var avatarView: some View {
+        AvatarView(url: model?.avatar, type: type)
+            .frame(height: AvatarBannerView.avatarSize)
     }
 }
