@@ -40,7 +40,10 @@ When your code is approved, it can be merged into the `dev` branch by a member o
 
 Please develop according to the following principles:
 
-- One View per file. A file containing a View struct must end in "View". We're yet to decide on an official naming scheme for files - feel free to offer your thoughts [here](https://github.com/mlemgroup/mlem/issues/55).
+- Files should be named according to the following patterns:
+  - All files: `TitleCase`. If the file contains extensions, it should be named `BaseEntity+Extensions`.
+  - `View` files: file name must end in `View` (e.g., `FeedsView`)
+- One View per file.
 - Within reason, any complex of views that renders a single component of a larger view should be placed in a descriptively named function, computed property or `@ViewBuilder` variable beneath the body of the View. This keeps pyramids from piling up and makes our accessibility experts' work easier.
 - If you can reuse code, do. Prefer abstracting common components to a generic struct and common logic to a generic function.
 
