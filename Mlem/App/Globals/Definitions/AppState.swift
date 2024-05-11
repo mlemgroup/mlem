@@ -8,6 +8,7 @@
 import Dependencies
 import Foundation
 import MlemMiddleware
+import SwiftUI
 
 @Observable
 class AppState {
@@ -71,6 +72,10 @@ class ActiveAccount: Hashable {
     private(set) var userStub: UserStub?
     private(set) var user: User?
     private(set) var instance: Instance3?
+    private(set) var subscriptions: SubscriptionList?
+    
+    // TODO: Store this in a file; make sure to translate 1.0 favorites to 2.0 favorites
+    private var favorites: Set<Int> = []
     
     var actorId: URL? { userStub?.actorId }
   
@@ -78,6 +83,11 @@ class ActiveAccount: Hashable {
         self.api = userStub.api
         self.userStub = userStub
         api.permissions = .all
+        self.subscriptions = api.setupSubscriptionList(
+            getFavorites: { self.favorites },
+            setFavorites: { self.favorites = $0 }
+        )
+        
         Task {
             try await self.api.fetchSiteVersion(task: Task {
                 let (user, instance) = try await self.api.getMyUser(userStub: userStub)
@@ -87,6 +97,8 @@ class ActiveAccount: Hashable {
                 self.instance = instance
                 return instance.version
             })
+            
+            try await self.api.getSubscriptionList()
         }
     }
     

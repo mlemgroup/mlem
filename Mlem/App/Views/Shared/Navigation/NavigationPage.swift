@@ -26,7 +26,7 @@ extension NavigationPage {
         case .inbox:
             Text("Inbox")
         case .search:
-            Text("Search")
+            SubscriptionListView()
         case .quickSwitcher:
             QuickSwitcherView()
                 .presentationDetents([.medium, .large])
