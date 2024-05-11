@@ -13,19 +13,15 @@ struct SettingsView: View {
     @Environment(NavigationLayer.self) var navigation
     
     var accounts: [UserStub] { AccountsTracker.main.savedAccounts }
-
-    @AppStorage("colorPalette") var colorPalette: PaletteOption = .standard {
-        didSet {
-            print("updating palette to \(colorPalette)")
-            palette.changePalette(to: colorPalette)
-        }
-    }
     
     var body: some View {
         Form {
             Section {
                 accountSettingsLink()
                 accountListLink()
+            }
+            Section {
+                NavigationLink("Theme", destination: .settings(.theme))
             }
         }
         .navigationTitle("Settings")

@@ -22,7 +22,7 @@ protocol PaletteProviding {
     var save: Color { get }
 }
 
-enum PaletteOption: String {
+enum PaletteOption: String, CaseIterable {
     case standard, monochrome
     
     var palette: ColorPalette {
