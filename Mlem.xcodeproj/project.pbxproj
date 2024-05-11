@@ -12,6 +12,7 @@
 		030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */; };
 		030FF67F2BC8544700F6BFAC /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF67E2BC8544600F6BFAC /* CustomTabBarController.swift */; };
 		030FF6812BC859FD00F6BFAC /* CustomTabViewHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF6802BC859FD00F6BFAC /* CustomTabViewHostingController.swift */; };
+		031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */; };
 		035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */; };
 		035BE0892BDD901B00F77D73 /* NavigationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0882BDD901B00F77D73 /* NavigationPage.swift */; };
 		035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE08A2BDD903100F77D73 /* NavigationModel.swift */; };
@@ -22,6 +23,7 @@
 		037386412BDAF3F7007492B5 /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037386402BDAF3F7007492B5 /* Markdown.swift */; };
 		037386442BDAF574007492B5 /* LemmyMarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 037386432BDAF574007492B5 /* LemmyMarkdownUI */; };
 		037386472BDAFE81007492B5 /* LemmyMarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 037386462BDAFE81007492B5 /* LemmyMarkdownUI */; };
+		037658DF2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037658DE2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift */; };
 		03D3A1D42BB88EF1009DE55E /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1D32BB88EF1009DE55E /* Action.swift */; };
 		03D3A1E32BB8A40A009DE55E /* EmptyButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1E22BB8A40A009DE55E /* EmptyButtonStyle.swift */; };
 		03D3A1E52BB8B7A3009DE55E /* ActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1E42BB8B7A3009DE55E /* ActionType.swift */; };
@@ -122,6 +124,7 @@
 		030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabItem.swift; sourceTree = "<group>"; };
 		030FF67E2BC8544600F6BFAC /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		030FF6802BC859FD00F6BFAC /* CustomTabViewHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabViewHostingController.swift; sourceTree = "<group>"; };
+		031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListView.swift; sourceTree = "<group>"; };
 		035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRootView.swift; sourceTree = "<group>"; };
 		035BE0882BDD901B00F77D73 /* NavigationPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPage.swift; sourceTree = "<group>"; };
 		035BE08A2BDD903100F77D73 /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
@@ -129,8 +132,8 @@
 		035BE08E2BDE911900F77D73 /* NavigationLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLayer.swift; sourceTree = "<group>"; };
 		035BE0902BDEA01E00F77D73 /* NavigationPage+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationPage+View.swift"; sourceTree = "<group>"; };
 		036CC3AE2B8145C30098B6A1 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
-		0373863F2BDAE6DB007492B5 /* LemmyMarkdownUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LemmyMarkdownUI; path = ../../LemmyMarkdownUI; sourceTree = "<group>"; };
 		037386402BDAF3F7007492B5 /* Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
+		037658DE2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		03D3A1D32BB88EF1009DE55E /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		03D3A1E22BB8A40A009DE55E /* EmptyButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyButtonStyle.swift; sourceTree = "<group>"; };
 		03D3A1E42BB8B7A3009DE55E /* ActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionType.swift; sourceTree = "<group>"; };
@@ -306,7 +309,6 @@
 		6363D5C327EE196700E34822 /* Mlem */ = {
 			isa = PBXGroup;
 			children = (
-				0373863F2BDAE6DB007492B5 /* LemmyMarkdownUI */,
 				CD4D583B2B867BB300B82964 /* App */,
 				6363D5C827EE196A00E34822 /* Assets.xcassets */,
 				630D753C27F65E44006E60C9 /* Info.plist */,
@@ -393,6 +395,7 @@
 			isa = PBXGroup;
 			children = (
 				CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */,
+				031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */,
 			);
 			path = Feeds;
 			sourceTree = "<group>";
@@ -624,6 +627,7 @@
 			isa = PBXGroup;
 			children = (
 				CDC199E92BE449790077B4F1 /* Interactable1Providing+Extensions.swift */,
+				037658DE2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift */,
 				CDC199EB2BE449EA0077B4F1 /* Post1Providing+Extensions.swift */,
 			);
 			path = "Content Models";
@@ -838,6 +842,7 @@
 				037386412BDAF3F7007492B5 /* Markdown.swift in Sources */,
 				CD4D58CF2B86DDEC00B82964 /* AccountSortMode.swift in Sources */,
 				CD4D59062B87B1A400B82964 /* Notifiable.swift in Sources */,
+				037658DF2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift in Sources */,
 				CD4D58C02B86DBD100B82964 /* DefaultAvatarView.swift in Sources */,
 				CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */,
 				CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */,
@@ -864,6 +869,7 @@
 				CD4D59142B87B36B00B82964 /* InternetConnectionManager.swift in Sources */,
 				03D3A1EF2BB9CA1D009DE55E /* MenuButton.swift in Sources */,
 				CDC199EC2BE449EA0077B4F1 /* Post1Providing+Extensions.swift in Sources */,
+				031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */,
 				030FF67B2BC8521600F6BFAC /* CustomTabView.swift in Sources */,
 				CD4D59162B87B38C00B82964 /* UIApplication+Extensions.swift in Sources */,
 				CDA1E8542B952C3D007953EF /* StateManager.swift in Sources */,
@@ -1320,8 +1326,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				branch = master;
-				kind = branch;
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.1.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

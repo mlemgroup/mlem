@@ -40,7 +40,7 @@ extension Interactable1Providing {
     }
 
     var saveAction: BasicAction {
-        let isOn: Bool = self2?.isSaved ?? false
+        let isOn: Bool = self2?.saved ?? false
         return .init(
             isOn: isOn,
             label: isOn ? "Unsave" : "Save",

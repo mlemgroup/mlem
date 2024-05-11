@@ -22,7 +22,7 @@ extension NavigationPage {
         case .inbox:
             Text("Inbox")
         case .search:
-            Text("Search")
+            SubscriptionListView()
         case .settings:
             SettingsView()
         case .quickSwitcher:
