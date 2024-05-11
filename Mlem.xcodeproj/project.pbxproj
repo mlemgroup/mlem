@@ -89,6 +89,8 @@
 		CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591F2B87B63300B82964 /* SettingsOptions.swift */; };
 		CD4E03532BE42E6F009D11D6 /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CD4E03522BE42E6F009D11D6 /* MlemMiddleware */; };
 		CD59DE2C2BE467E600445EED /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CD59DE2B2BE467E600445EED /* MlemMiddleware */; };
+		CD9B19F32BEFCD05005E9BB5 /* ScrollToView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9B19F22BEFCD05005E9BB5 /* ScrollToView.swift */; };
+		CD9B19F62BEFCF86005E9BB5 /* View+TabReselectionConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9B19F52BEFCF86005E9BB5 /* View+TabReselectionConsumer.swift */; };
 		CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8202B8FC411007953EF /* LandingPage.swift */; };
 		CDA1E8272B90EF24007953EF /* AppFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8262B90EF24007953EF /* AppFlow.swift */; };
 		CDA1E8542B952C3D007953EF /* StateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8532B952C3D007953EF /* StateManager.swift */; };
@@ -190,6 +192,8 @@
 		CD4D59192B87B3D100B82964 /* ErrorHandler+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ErrorHandler+Dependency.swift"; sourceTree = "<group>"; };
 		CD4D591B2B87B43D00B82964 /* Task+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+Extensions.swift"; sourceTree = "<group>"; };
 		CD4D591F2B87B63300B82964 /* SettingsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOptions.swift; sourceTree = "<group>"; };
+		CD9B19F22BEFCD05005E9BB5 /* ScrollToView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollToView.swift; sourceTree = "<group>"; };
+		CD9B19F52BEFCF86005E9BB5 /* View+TabReselectionConsumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+TabReselectionConsumer.swift"; sourceTree = "<group>"; };
 		CDA1E8202B8FC411007953EF /* LandingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPage.swift; sourceTree = "<group>"; };
 		CDA1E8262B90EF24007953EF /* AppFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlow.swift; sourceTree = "<group>"; };
 		CDA1E8532B952C3D007953EF /* StateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateManager.swift; sourceTree = "<group>"; };
@@ -452,6 +456,7 @@
 				03D3A1E22BB8A40A009DE55E /* EmptyButtonStyle.swift */,
 				037386402BDAF3F7007492B5 /* Markdown.swift */,
 				03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */,
+				CD9B19F22BEFCD05005E9BB5 /* ScrollToView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -478,6 +483,7 @@
 		CD4D58C22B86DC5800B82964 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				CD9B19F42BEFCF79005E9BB5 /* View Modifiers */,
 				CDA8A0052BE43B350022F7ED /* Content Models */,
 				CD4D590D2B87B23F00B82964 /* Error+Extensions.swift */,
 				CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */,
@@ -574,6 +580,14 @@
 				CDA1E8262B90EF24007953EF /* AppFlow.swift */,
 			);
 			path = Definitions;
+			sourceTree = "<group>";
+		};
+		CD9B19F42BEFCF79005E9BB5 /* View Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				CD9B19F52BEFCF86005E9BB5 /* View+TabReselectionConsumer.swift */,
+			);
+			path = "View Modifiers";
 			sourceTree = "<group>";
 		};
 		CDA1E81A2B8FC39A007953EF /* Onboarding */ = {
@@ -800,6 +814,7 @@
 				035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */,
 				03D3A1E32BB8A40A009DE55E /* EmptyButtonStyle.swift in Sources */,
 				CD4D59102B87B31200B82964 /* Notifier+Dependency.swift in Sources */,
+				CD9B19F62BEFCF86005E9BB5 /* View+TabReselectionConsumer.swift in Sources */,
 				037386412BDAF3F7007492B5 /* Markdown.swift in Sources */,
 				CD4D58CF2B86DDEC00B82964 /* AccountSortMode.swift in Sources */,
 				CD4D59062B87B1A400B82964 /* Notifiable.swift in Sources */,
@@ -816,6 +831,7 @@
 				CD4D58B92B86D9F800B82964 /* AccountButtonView.swift in Sources */,
 				CD4D58B32B86BFD400B82964 /* AccountsTracker.swift in Sources */,
 				CD4D58B52B86BFFB00B82964 /* PersistenceRepository+Dependency.swift in Sources */,
+				CD9B19F32BEFCD05005E9BB5 /* ScrollToView.swift in Sources */,
 				CD4D58EB2B86E63300B82964 /* AssociatedColor.swift in Sources */,
 				CD4D591A2B87B3D100B82964 /* ErrorHandler+Dependency.swift in Sources */,
 				03D3A1F32BB9D49B009DE55E /* ActionGroup.swift in Sources */,

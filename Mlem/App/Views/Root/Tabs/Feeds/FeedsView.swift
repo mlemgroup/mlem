@@ -28,7 +28,10 @@ struct MinimalPostFeedView: View {
     
     @Environment(AppState.self) var appState
     
-    @State var postTracker: StandardPostFeedLoader
+    @State var loader: StandardPostFeedLoader
+    @State private var scrollToTopAppeared = false
+    
+    @Namespace var scrollToTop
     
     init() {
         // need to grab some stuff from app storage to initialize with
@@ -39,7 +42,7 @@ struct MinimalPostFeedView: View {
         
         @Dependency(\.persistenceRepository) var persistenceRepository
         
-        _postTracker = .init(initialValue: .init(
+        _loader = .init(initialValue: .init(
             pageSize: internetSpeed.pageSize,
             sortType: defaultPostSorting,
             showReadPosts: showReadPosts,
@@ -52,32 +55,43 @@ struct MinimalPostFeedView: View {
     }
     
     var body: some View {
-        content
-            .navigationTitle("Feeds")
-            .task {
-                if postTracker.items.isEmpty, postTracker.loadingState == .idle {
-                    print("Loading initial PostTracker page...")
+        ScrollViewReader { scrollProxy in
+            content
+                .navigationTitle("Feeds")
+                .task {
+                    if loader.items.isEmpty, loader.loadingState == .idle {
+                        print("Loading initial PostTracker page...")
+                        do {
+                            try await loader.loadMoreItems()
+                        } catch {
+                            errorHandler.handle(error)
+                        }
+                    }
+                }
+                .task(id: appState.firstApi) {
                     do {
-                        try await postTracker.loadMoreItems()
+                        try await loader.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
                     } catch {
                         errorHandler.handle(error)
                     }
                 }
-            }
-            .task(id: appState.firstApi) {
-                do {
-                    try await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
-                } catch {
-                    errorHandler.handle(error)
+                .refreshable {
+                    do {
+                        try await loader.refresh(clearBeforeRefresh: false)
+                    } catch {
+                        errorHandler.handle(error)
+                    }
                 }
-            }
-            .refreshable {
-                do {
-                    try await postTracker.refresh(clearBeforeRefresh: false)
-                } catch {
-                    errorHandler.handle(error)
+                .onReselectTab {
+                    if scrollToTopAppeared {
+                        print("time to dismiss")
+                    } else {
+                        withAnimation {
+                            scrollProxy.scrollTo(scrollToTop)
+                        }
+                    }
                 }
-            }
+        }
     }
     
     // This is a proof-of-concept; in the real frontend this code will go in InteractionBarView
@@ -101,7 +115,10 @@ struct MinimalPostFeedView: View {
     var content: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
-                ForEach(postTracker.items, id: \.uid) { post in
+                ScrollToView(appeared: $scrollToTopAppeared)
+                    .id(scrollToTop)
+                
+                ForEach(loader.items, id: \.uid) { post in
                     HStack {
                         actionButton(post.upvoteAction)
                         actionButton(post.downvoteAction)
@@ -124,7 +141,7 @@ struct MinimalPostFeedView: View {
                 }
             }
             
-            switch postTracker.loadingState {
+            switch loader.loadingState {
             case .loading:
                 Text("Loading...")
             case .done:
