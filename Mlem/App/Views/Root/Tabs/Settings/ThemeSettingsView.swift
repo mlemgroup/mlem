@@ -8,13 +8,7 @@
 import SwiftUI
 
 struct ThemeSettingsView: View {
-    @AppStorage("colorPalette") var colorPalette: PaletteOption = .standard {
-        didSet {
-            print("updating palette to \(colorPalette)")
-            palette.changePalette(to: colorPalette)
-        }
-    }
-    
+    @AppStorage("colorPalette") var colorPalette: PaletteOption = .standard
     @Environment(Palette.self) var palette
     
     var body: some View {
@@ -22,9 +16,13 @@ struct ThemeSettingsView: View {
             Picker("Theme", selection: $colorPalette) {
                 ForEach(PaletteOption.allCases, id: \.rawValue) { item in
                     Text(item.rawValue)
+                        .tag(item)
                 }
             }
             .pickerStyle(.inline)
+        }
+        .onChange(of: colorPalette) {
+            palette.changePalette(to: colorPalette)
         }
     }
 }
