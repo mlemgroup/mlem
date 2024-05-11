@@ -5,10 +5,10 @@
 //  Created by Sjmarf on 22/12/2023.
 //
 
-import Dependencies
 import MlemMiddleware
 import SwiftUI
 
+/// This view is a component used as a child of ``QuickSwitcherView`` and ``AccountListSettingsView``.
 struct AccountListView: View {
     @AppStorage("accountSort") var accountSort: AccountSortMode = .custom
     @AppStorage("groupAccountSort") var groupAccountSort: Bool = false
@@ -17,7 +17,7 @@ struct AccountListView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.dismiss) var dismiss
     
-    let accountsTracker: AccountsTracker
+    var accountsTracker: AccountsTracker { .main }
     
     @State private var isShowingInstanceAdditionSheet: Bool = false
     
@@ -31,9 +31,6 @@ struct AccountListView: View {
     let isQuickSwitcher: Bool
     
     init(isQuickSwitcher: Bool = false) {
-        // We have to create an ObservedObject here so that changes to the accounts list create view updates
-        @Dependency(\.accountsTracker) var accountsTracker: AccountsTracker
-        self.accountsTracker = accountsTracker
         self.isQuickSwitcher = isQuickSwitcher
     }
     
@@ -62,6 +59,9 @@ struct AccountListView: View {
                             }
                         }
                     }
+                } else if accounts.isEmpty {
+                    Text("You don't have any accounts.")
+                        .foregroundStyle(.secondary)
                 } else {
                     Section(header: topHeader()) {
                         ForEach(accounts, id: \.self) { account in
@@ -79,16 +79,15 @@ struct AccountListView: View {
                     .accessibilityLabel("Add a new account.")
                     Button {
                         appState.enterGuestMode(for: URL(string: "https://lemmy.world")!)
-                        dismiss()
+                        if navigation.isInsideSheet {
+                            dismiss()
+                        }
                     } label: {
                         Label("Enter Guest Mode", systemImage: Icons.person)
                     }
                 }
             }
         }
-//        .sheet(isPresented: $isShowingInstanceAdditionSheet) {
-//            AddSavedInstanceView(onboarding: false)
-//        }
     }
     
     @ViewBuilder

@@ -17,7 +17,7 @@ struct QuickSwitcherView: View {
             AccountListView(isQuickSwitcher: true)
         }
         .onChange(of: scenePhase) {
-            // when app moves into background, hide the account switcher. This prevents the app from reopening with the switcher enabled.
+            // when app moves into background, hide the account switcher. This prevents the app from reopening with the switcher presented.
             if scenePhase != .active {
                 navigation.dismissIfOnTop()
             }

@@ -2,40 +2,74 @@
 //  SettingsView.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-05-09.
+//  Created by Sjmarf on 07/05/2024.
 //
 
-import Dependencies
-import Foundation
+import MlemMiddleware
 import SwiftUI
 
 struct SettingsView: View {
-    @Environment(Palette.self) var palette
+    @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
     
-    @AppStorage("colorPalette") var colorPalette: PaletteOption = .standard {
-        didSet {
-            print("updating palette to \(colorPalette)")
-            palette.changePalette(to: colorPalette)
-        }
-    }
+    var accounts: [UserStub] { AccountsTracker.main.savedAccounts }
     
     var body: some View {
         Form {
-            colorSettings
+            Section {
+                accountSettingsLink()
+                accountListLink()
+            }
+            Section {
+                NavigationLink("Theme", destination: .settings(.theme))
+            }
+        }
+        .navigationTitle("Settings")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    @ViewBuilder
+    func accountSettingsLink() -> some View {
+        NavigationLink(.settings(.account)) {
+            let account = appState.firstAccount
+            HStack(spacing: 23) {
+                AvatarView(account.userStub)
+                    .frame(width: 54)
+                    .padding(.vertical, -6)
+                    .padding(.leading, 3)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(account.userStub?.nickname ?? account.userStub?.name ?? "Guest")
+                        .font(.title2)
+                    if let hostName = account.api.baseUrl.host() {
+                        Text("@\(hostName)")
+                            .foregroundStyle(.secondary)
+                            .font(.caption)
+                    }
+                }
+                Spacer()
+            }
         }
     }
     
-    var colorSettings: some View {
-        Section {
-            Button("Default") {
-                colorPalette = .standard
+    @ViewBuilder
+    func accountListLink() -> some View {
+        NavigationLink(.settings(.accounts)) {
+            HStack(spacing: 10) {
+                AvatarStackView(
+                    urls: accounts.prefix(4).map(\.avatarUrl),
+                    type: .person,
+                    spacing: accounts.count <= 3 ? 18 : 14,
+                    outlineWidth: 0.7,
+                    showPlusIcon: accounts.count == 1
+                )
+                .frame(height: 28)
+                .frame(minWidth: 80)
+                .padding(.leading, -10)
+                Text("Accounts")
+                Spacer()
+                Text("\(accounts.count)")
+                    .foregroundStyle(.secondary)
             }
-            
-            Button("Monochrome") {
-                colorPalette = .monochrome
-            }
-        } header: {
-            Text("Theme")
         }
     }
 }

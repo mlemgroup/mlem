@@ -29,15 +29,24 @@ class AppState {
         guestAccount = .init(instanceUrl: instanceUrl)
     }
     
+    func deactivate(userStub: UserStub) {
+        if let index = AppState.main.activeAccounts.firstIndex(where: { $0.userStub === userStub }) {
+            activeAccounts[index].deactivate()
+            activeAccounts.remove(at: index)
+            if activeAccounts.isEmpty, let defaultAccount = AccountsTracker.main.defaultAccount {
+                changeUser(to: defaultAccount)
+            }
+        }
+    }
+    
     func enterOnboarding() {
         activeAccounts.removeAll()
     }
     
     private init() {
-        @Dependency(\.accountsTracker) var accountsTracker
-        if let user = accountsTracker.defaultAccount {
+        if let user = AccountsTracker.main.defaultAccount {
             changeUser(to: user)
-        } else if let user = accountsTracker.savedAccounts.first {
+        } else if let user = AccountsTracker.main.savedAccounts.first {
             changeUser(to: user)
         }
     }
@@ -75,6 +84,7 @@ class ActiveAccount: Hashable {
   
     init(userStub: UserStub) {
         self.api = userStub.api
+        self.userStub = userStub
         api.permissions = .all
         self.subscriptions = api.setupSubscriptionList(
             getFavorites: { self.favorites },

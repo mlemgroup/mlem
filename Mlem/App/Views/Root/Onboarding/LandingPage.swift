@@ -11,8 +11,6 @@ import MlemMiddleware
 import SwiftUI
 
 struct LandingPage: View {
-    @Dependency(\.accountsTracker) var accountsTracker
-    
     @Environment(AppState.self) var appState
     @Environment(\.dismiss) var dismiss
     
@@ -81,7 +79,7 @@ struct LandingPage: View {
             // MARK: Save the account's credentials into the keychain
 
             AppConstants.keychain["\(newAccount.id)_accessToken"] = response.jwt
-            accountsTracker.addAccount(account: newAccount)
+            AccountsTracker.main.addAccount(account: newAccount)
 
             appState.changeUser(to: newAccount)
 //

@@ -11,10 +11,10 @@ import NukeUI
 import SwiftUI
 
 struct AccountButtonView: View {
-    @Dependency(\.accountsTracker) var accountsTracker: AccountsTracker
     @Environment(\.dismiss) var dismiss
     
     @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
     
     @State var showingSignOutConfirmation: Bool = false
     @Binding var isSwitching: Bool
@@ -65,7 +65,9 @@ struct AccountButtonView: View {
         Button {
             if appState.firstAccount.actorId != account.actorId {
                 appState.changeUser(to: account)
-                dismiss()
+                if navigation.isInsideSheet {
+                    dismiss()
+                }
             }
         } label: {
             HStack(alignment: .center, spacing: 10) {
@@ -111,23 +113,10 @@ struct AccountButtonView: View {
         }
         .confirmationDialog("Really sign out of \(account.nickname ?? account.name)?", isPresented: $showingSignOutConfirmation) {
             Button("Sign Out", role: .destructive) {
-                Task {
-                    print("TODO: SIGN OUT")
-//                    if let currentAccount = appState.apiSource {
-//                        print("DEBUG YES")
-//                        accountsTracker.removeAccount(account: account)
-//                        if currentAccount.actorId == account.actorId {
-//                            if let first = accountsTracker.savedAccounts.first {
-//                                appState.apiSource = first
-//                            } else {
-//                                appState.isOnboarding = true
-//                            }
-//                            dismiss()
-//                        }
-//                    } else {
-//                        print("DEBUG NO")
-//                    }
+                if navigation.isInsideSheet, appState.activeAccounts.contains(where: { $0.userStub === account }) {
+                    dismiss()
                 }
+                account.signOut()
             }
         } message: {
             Text("Really sign out?")
