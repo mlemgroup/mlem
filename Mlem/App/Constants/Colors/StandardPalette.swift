@@ -16,6 +16,7 @@ extension ColorPalette {
         accent: .accentColor,
         upvote: .blue,
         downvote: .red,
-        save: .green
+        save: .green,
+        selectedInteractionBarItem: .white
     )
 }

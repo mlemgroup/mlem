@@ -86,7 +86,7 @@ struct MinimalPostFeedView: View {
     func actionButton(_ action: BasicAction) -> some View {
         Button(action: action.callback ?? {}) {
             Image(systemName: action.barIcon)
-                .foregroundColor(action.isOn ? .white : palette.primary)
+                .foregroundColor(action.isOn ? palette.selectedInteractionBarItem : palette.primary)
                 .padding(2)
                 .background(
                     RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)

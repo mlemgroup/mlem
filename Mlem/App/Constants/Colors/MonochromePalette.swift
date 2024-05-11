@@ -17,6 +17,7 @@ extension ColorPalette {
         accent: .primary,
         upvote: .primary,
         downvote: .primary,
-        save: .primary
+        save: .primary,
+        selectedInteractionBarItem: Color(UIColor.systemBackground)
     )
 }

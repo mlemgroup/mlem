@@ -34,15 +34,18 @@ enum PaletteOption: String {
 }
 
 struct ColorPalette: PaletteProviding {
+    // basics
     var primary: Color
     var background: Color
     var secondaryBackground: Color
     var tertiaryBackground: Color
     var accent: Color
 
+    // interactions
     var upvote: Color
     var downvote: Color
     var save: Color
+    var selectedInteractionBarItem: Color
 }
 
 @Observable
@@ -72,4 +75,5 @@ class Palette: PaletteProviding {
     var upvote: Color { palette.upvote }
     var downvote: Color { palette.downvote }
     var save: Color { palette.save }
+    var selectedInteractionBarItem: Color { palette.selectedInteractionBarItem }
 }
