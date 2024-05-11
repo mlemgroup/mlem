@@ -20,12 +20,22 @@ struct SettingsView: View {
     }
     
     var body: some View {
-        Button("Monochrome") {
-            colorPalette = .monochrome
+        Form {
+            colorSettings
         }
-        
-        Button("Default") {
-            colorPalette = .standard
+    }
+    
+    var colorSettings: some View {
+        Section {
+            Button("Default") {
+                colorPalette = .standard
+            }
+            
+            Button("Monochrome") {
+                colorPalette = .monochrome
+            }
+        } header: {
+            Text("Theme")
         }
     }
 }
