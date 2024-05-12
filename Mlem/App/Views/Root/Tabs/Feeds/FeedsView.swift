@@ -84,9 +84,7 @@ struct MinimalPostFeedView: View {
                     }
                 }
                 .onReselectTab {
-                    if scrollToTopAppeared {
-                        print("time to dismiss")
-                    } else {
+                    if !scrollToTopAppeared {
                         withAnimation {
                             scrollProxy.scrollTo(scrollToTop)
                         }
