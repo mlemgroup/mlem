@@ -13,7 +13,7 @@ extension ColorPalette {
         background: Color(UIColor.systemBackground),
         secondaryBackground: Color(UIColor.secondarySystemBackground),
         tertiaryBackground: Color(UIColor.tertiarySystemBackground),
-        accent: .accentColor,
+        accent: .blue,
         upvote: .blue,
         downvote: .red,
         save: .green,
