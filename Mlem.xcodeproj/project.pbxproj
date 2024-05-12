@@ -37,6 +37,8 @@
 		037386472BDAFE81007492B5 /* LemmyMarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 037386462BDAFE81007492B5 /* LemmyMarkdownUI */; };
 		037658DF2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037658DE2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift */; };
 		039EFEC32BEEBEE0003AC372 /* LoginInstancePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */; };
+		03C93CF02BEFFB1A00327BFE /* LoginCredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C93CEF2BEFFB1A00327BFE /* LoginCredentialsView.swift */; };
+		03C93CF22BF0256700327BFE /* EnvironmentValue+IsFirstPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C93CF12BF0256700327BFE /* EnvironmentValue+IsFirstPage.swift */; };
 		03D3A1D42BB88EF1009DE55E /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1D32BB88EF1009DE55E /* Action.swift */; };
 		03D3A1E32BB8A40A009DE55E /* EmptyButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1E22BB8A40A009DE55E /* EmptyButtonStyle.swift */; };
 		03D3A1E52BB8B7A3009DE55E /* ActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1E42BB8B7A3009DE55E /* ActionType.swift */; };
@@ -157,6 +159,9 @@
 		037386402BDAF3F7007492B5 /* Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
 		037658DE2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInstancePickerView.swift; sourceTree = "<group>"; };
+		03C93CEF2BEFFB1A00327BFE /* LoginCredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCredentialsView.swift; sourceTree = "<group>"; };
+		03C93CF12BF0256700327BFE /* EnvironmentValue+IsFirstPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValue+IsFirstPage.swift"; sourceTree = "<group>"; };
+		03C93CF32BF1084300327BFE /* MlemMiddleware */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MlemMiddleware; path = ../MlemMiddleware; sourceTree = "<group>"; };
 		03D3A1D32BB88EF1009DE55E /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		03D3A1E22BB8A40A009DE55E /* EmptyButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyButtonStyle.swift; sourceTree = "<group>"; };
 		03D3A1E42BB8B7A3009DE55E /* ActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionType.swift; sourceTree = "<group>"; };
@@ -299,10 +304,10 @@
 			children = (
 				035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */,
 				035BE08C2BDE88EC00F77D73 /* NavigationLayerView.swift */,
+				03C93CF12BF0256700327BFE /* EnvironmentValue+IsFirstPage.swift */,
 				035BE08A2BDD903100F77D73 /* NavigationModel.swift */,
 				035BE08E2BDE911900F77D73 /* NavigationLayer.swift */,
 				035BE0882BDD901B00F77D73 /* NavigationPage.swift */,
-				03134A512BEAD69F002662CC /* SettingsPage.swift */,
 				035BE0902BDEA01E00F77D73 /* NavigationPage+View.swift */,
 				03134A512BEAD69F002662CC /* SettingsPage.swift */,
 				031E2D572BEFBF4B0003BC45 /* LoginDetails.swift */,
@@ -340,6 +345,7 @@
 		6363D5B827EE196700E34822 = {
 			isa = PBXGroup;
 			children = (
+				03C93CF32BF1084300327BFE /* MlemMiddleware */,
 				6363D5C327EE196700E34822 /* Mlem */,
 				6363D5D927EE196A00E34822 /* MlemTests */,
 				6363D5E327EE196A00E34822 /* MlemUITests */,
@@ -664,6 +670,7 @@
 			children = (
 				CDA1E8202B8FC411007953EF /* LandingPage.swift */,
 				039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */,
+				03C93CEF2BEFFB1A00327BFE /* LoginCredentialsView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -883,6 +890,7 @@
 				03134A582BEC1C46002662CC /* AccountListSettingsView.swift in Sources */,
 				031E2D5B2BEFC9460003BC45 /* ThemeSettingsView.swift in Sources */,
 				03D3A1F12BB9D48E009DE55E /* BasicAction.swift in Sources */,
+				03C93CF02BEFFB1A00327BFE /* LoginCredentialsView.swift in Sources */,
 				CD4D58992B86BB0300B82964 /* EnvironmentValues+TabSelectionHashValue.swift in Sources */,
 				CD4D590C2B87B1E700B82964 /* Notifier.swift in Sources */,
 				035BE08D2BDE88EC00F77D73 /* NavigationLayerView.swift in Sources */,
@@ -893,6 +901,7 @@
 				037386412BDAF3F7007492B5 /* Markdown.swift in Sources */,
 				CD4D58CF2B86DDEC00B82964 /* AccountSortMode.swift in Sources */,
 				03134A522BEAD69F002662CC /* SettingsPage.swift in Sources */,
+				03C93CF22BF0256700327BFE /* EnvironmentValue+IsFirstPage.swift in Sources */,
 				CD4D59062B87B1A400B82964 /* Notifiable.swift in Sources */,
 				037658DF2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift in Sources */,
 				CD4D58C02B86DBD100B82964 /* DefaultAvatarView.swift in Sources */,
@@ -949,7 +958,6 @@
 				CD4D590E2B87B23F00B82964 /* Error+Extensions.swift in Sources */,
 				63DF71F12A02999C002AC14E /* AppConstants.swift in Sources */,
 				03D3A1D42BB88EF1009DE55E /* Action.swift in Sources */,
-				03134A4B2BEACF50002662CC /* SettingsView.swift in Sources */,
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
 				CDA1E8272B90EF24007953EF /* AppFlow.swift in Sources */,
 				035BE0892BDD901B00F77D73 /* NavigationPage.swift in Sources */,

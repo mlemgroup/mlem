@@ -10,6 +10,7 @@ import MlemMiddleware
 
 struct LoginDetails: Hashable {
     private(set) var instance: (any Instance)?
+    private(set) var user: UserStub?
     private(set) var username: String?
     private(set) var password: String?
     
@@ -19,9 +20,8 @@ struct LoginDetails: Hashable {
         self.instance = instance
     }
     
-    init(instance: any Instance, username: String) {
-        self.instance = instance
-        self.username = username
+    init(user: UserStub) {
+        self.user = user
     }
     
     init(instance: any Instance, username: String, password: String) {
@@ -31,13 +31,13 @@ struct LoginDetails: Hashable {
     }
     
     static func == (lhs: LoginDetails, rhs: LoginDetails) -> Bool {
-        lhs.instance?.name == rhs.instance?.name
+        lhs.instance?.name == rhs.instance?.host
             && lhs.username == rhs.username
             && lhs.password == rhs.password
     }
     
     func hash(into hasher: inout Hasher) {
-        hasher.combine(instance?.name)
+        hasher.combine(instance?.host)
         hasher.combine(username)
         hasher.combine(password)
     }
@@ -52,8 +52,8 @@ extension NavigationPage {
         .login(.init(instance: instance))
     }
     
-    static func login(instance: any Instance, username: String) -> Self {
-        .login(.init(instance: instance, username: username))
+    static func login(user: UserStub) -> Self {
+        .login(.init(user: user))
     }
     
     static func login(instance: any Instance, username: String, password: String) -> Self {

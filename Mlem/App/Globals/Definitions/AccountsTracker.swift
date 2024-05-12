@@ -44,6 +44,7 @@ class AccountsTracker {
         }
         savedAccounts.remove(at: index)
         saveAccounts()
+        account.deleteTokenFromKeychain()
         AppState.main.deactivate(userStub: account)
     }
     

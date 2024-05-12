@@ -10,14 +10,17 @@ import SwiftUI
 
 struct LoginInstancePickerView: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(\.isFirstPage) var isFirstPage
     @Environment(NavigationLayer.self) var navigation
     
-    @State var instance: String = ""
+    @State var domain: String = ""
     
+    @State var connecting: Bool = false
     @State private var scrollViewContentSize: CGSize = .zero
     @FocusState private var focused: Bool
     
-    // Temporary - before 2.0 release this should be a list of all major instances
+    // Temporary - before 2.0 release this should be a list of all major instances fetched dynamically.
+    // In 1.0 we kept a list of top instances for use in the search homepage - we can reuse that list here.
     let suggestions: [String] = [
         "lemmy.ml",
         "sh.itjust.works",
@@ -26,11 +29,28 @@ struct LoginInstancePickerView: View {
         "lemmy.ca",
         "feddit.de",
         "lemmy.zip",
-        "startrek.site"
+        "startrek.website"
     ]
     
     var body: some View {
-        let filteredSuggestions = suggestions.filter { $0.starts(with: instance) && $0 != instance }
+        content
+            .interactiveDismissDisabled(!domain.isEmpty)
+            .background(Color(uiColor: .systemGroupedBackground).ignoresSafeArea())
+            .toolbar {
+                if navigation.isInsideSheet, isFirstPage {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button("Cancel") {
+                            dismiss()
+                        }
+                    }
+                }
+            }
+    }
+    
+    @ViewBuilder
+    var content: some View {
+        let filteredSuggestions = suggestions.filter { $0.starts(with: domain) && $0 != domain }
+        let showSuggestions = !(filteredSuggestions.isEmpty || domain.isEmpty || !focused)
         VStack {
             Image(systemName: "globe")
                 .resizable()
@@ -45,38 +65,27 @@ struct LoginInstancePickerView: View {
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 5)
             instanceSuggestionsBox(suggestions: filteredSuggestions)
-                .padding(filteredSuggestions.isEmpty ? [.horizontal, .top] : .all)
-            if filteredSuggestions.isEmpty {
-                Button("Next") {}
-                    .buttonStyle(.borderedProminent)
-                    .buttonBorderShape(.roundedRectangle(radius: 16))
-                    .disabled(!instance.contains(/.*\..+$/))
+                .padding(showSuggestions ? .vertical : .top)
+            if !showSuggestions {
+                nextButton
+                    .padding(.top, 5)
             }
             Spacer()
         }
-        .toolbar {
-            if navigation.isInsideSheet {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                }
-            }
-        }
-        .interactiveDismissDisabled(!instance.isEmpty)
+        .padding(.horizontal)
     }
     
     @ViewBuilder
     func instanceSuggestionsBox(suggestions: [String]) -> some View {
         VStack(spacing: 0) {
             instanceField
-            if !instance.isEmpty {
+            if !suggestions.isEmpty, !domain.isEmpty, focused {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
                         ForEach(suggestions, id: \.self) { text in
                             Divider()
                             Button {
-                                instance = text
+                                domain = text
                                 focused = false
                             } label: {
                                 Text(attributedString(suggestion: text))
@@ -104,17 +113,34 @@ struct LoginInstancePickerView: View {
     var instanceField: some View {
         TextField(
             "Domain",
-            text: $instance,
+            text: $domain,
             prompt: Text("example.com")
         )
+        .disabled(connecting)
         .focused($focused)
         .keyboardType(.URL)
         .textInputAutocapitalization(.never)
         .autocorrectionDisabled()
         .scrollDismissesKeyboard(.never)
         .padding()
-        .onTapGesture { focused = true }
+        .onTapGesture {
+            if !connecting { focused = true }
+        }
         .onAppear { focused = true }
+    }
+    
+    @ViewBuilder
+    var nextButton: some View {
+        Button(action: attemptToConnect) {
+            Text(connecting ? "Connecting..." : "Next")
+                .padding(.vertical, 10)
+                .frame(maxWidth: .infinity)
+                .transaction { $0.animation = .none }
+        }
+        .buttonStyle(.borderedProminent)
+        .buttonBorderShape(.roundedRectangle(radius: 16))
+        .transaction { $0.animation = .none }
+        .disabled(!domain.contains(/.+\..+$/) || connecting)
     }
     
     func geometryReaderBackground(geo: GeometryProxy) -> some View {
@@ -124,32 +150,37 @@ struct LoginInstancePickerView: View {
         return Color.clear
     }
     
-//    func checkInstanceValidity(domain: String) {
-//        var domain = domain
-//        if domain.contains(/.*\..+$/) {
-//            if !domain.contains("://") {
-//                domain = "https://\(domain)"
-//            }
-//            if let url = URL(string: domain) {
-//                instanceValidity = .waiting
-//                Task {
-//                    let apiClient = ApiClient.getApiClient(for: url, with: nil)
-//                    do {
-//                        _ = try await apiClient.getSite()
-//                        instanceValidity = .success
-//                    } catch {
-//                        instanceValidity = .failure
-//                    }
-//                }
-//            }
-//        }
-//    }
+    func attemptToConnect() {
+        guard !connecting else { return }
+        var domain = domain
+        if !domain.contains("://") {
+            domain = "https://\(domain)"
+        }
+        if let url = URL(string: domain) {
+            focused = false
+            connecting = true
+            Task {
+                let apiClient = ApiClient.getApiClient(for: url, with: nil)
+                do {
+                    let instance = try await apiClient.getSite()
+                    DispatchQueue.main.async {
+                        navigation.push(.login(instance: instance))
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        connecting = false
+                    }
+                } catch {
+                    DispatchQueue.main.async { connecting = false }
+                }
+            }
+        }
+    }
     
     func attributedString(suggestion string: String) -> AttributedString {
         var attributedString = AttributedString(stringLiteral: string)
         attributedString.foregroundColor = .secondary
-        if string.starts(with: instance) {
-            let range = ..<attributedString.index(attributedString.startIndex, offsetByCharacters: instance.count)
+        if string.starts(with: domain) {
+            let range = ..<attributedString.index(attributedString.startIndex, offsetByCharacters: domain.count)
             attributedString[range].foregroundColor = .primary
         }
         return attributedString

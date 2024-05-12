@@ -9,12 +9,19 @@ import MlemMiddleware
 import SwiftUI
 
 struct AccountListSettingsView: View {
+    @Environment(NavigationLayer.self) var navigation
+    
     var accounts: [UserStub] { AccountsTracker.main.savedAccounts }
     
     var body: some View {
         Form {
             headerView
             AccountListView()
+            Button("Test") {
+                if let first = accounts.first {
+                    navigation.openSheet(.login(user: first))
+                }
+            }
         }
     }
     

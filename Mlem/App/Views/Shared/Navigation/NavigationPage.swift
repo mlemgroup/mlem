@@ -23,8 +23,10 @@ extension NavigationPage {
         case let .settings(page):
             page.view()
         case let .login(details):
-            if details.instance != nil {
-                EmptyView()
+            if let instance = details.instance {
+                LoginCredentialsView(instance: instance)
+            } else if let user = details.user {
+                LoginCredentialsView(userStub: user)
             } else {
                 LoginInstancePickerView()
             }
