@@ -30,6 +30,9 @@ struct MinimalPostFeedView: View {
     @Environment(Palette.self) var palette
     
     @State var postTracker: StandardPostFeedLoader
+    @State private var scrollToTopAppeared = false
+    
+    @Namespace var scrollToTop
     
     init() {
         // need to grab some stuff from app storage to initialize with
@@ -53,32 +56,41 @@ struct MinimalPostFeedView: View {
     }
     
     var body: some View {
-        content
-            .navigationTitle("Feeds")
-            .task {
-                if postTracker.items.isEmpty, postTracker.loadingState == .idle {
-                    print("Loading initial PostTracker page...")
+        ScrollViewReader { scrollProxy in
+            content
+                .navigationTitle("Feeds")
+                .task {
+                    if postTracker.items.isEmpty, postTracker.loadingState == .idle {
+                        print("Loading initial PostTracker page...")
+                        do {
+                            try await postTracker.loadMoreItems()
+                        } catch {
+                            errorHandler.handle(error)
+                        }
+                    }
+                }
+                .task(id: appState.firstApi) {
                     do {
-                        try await postTracker.loadMoreItems()
+                        try await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
                     } catch {
                         errorHandler.handle(error)
                     }
                 }
-            }
-            .task(id: appState.firstApi) {
-                do {
-                    try await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
-                } catch {
-                    errorHandler.handle(error)
+                .refreshable {
+                    do {
+                        try await postTracker.refresh(clearBeforeRefresh: false)
+                    } catch {
+                        errorHandler.handle(error)
+                    }
                 }
-            }
-            .refreshable {
-                do {
-                    try await postTracker.refresh(clearBeforeRefresh: false)
-                } catch {
-                    errorHandler.handle(error)
+                .onReselectTab {
+                    if !scrollToTopAppeared {
+                        withAnimation {
+                            scrollProxy.scrollTo(scrollToTop)
+                        }
+                    }
                 }
-            }
+        }
     }
     
     // This is a proof-of-concept; in the real frontend this code will go in InteractionBarView
@@ -102,25 +114,31 @@ struct MinimalPostFeedView: View {
     var content: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
+                ScrollToView(appeared: $scrollToTopAppeared)
+                    .id(scrollToTop)
+                
                 ForEach(postTracker.items, id: \.uid) { post in
-                    HStack {
-                        actionButton(post.upvoteAction)
-                        actionButton(post.downvoteAction)
-                        actionButton(post.saveAction)
-                        
-                        Text(post.title)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal)
-                            .foregroundStyle(post.read ? .secondary : .primary)
-                    }
-                    .padding(10)
-                    .background(palette.background)
-                    .contentShape(.rect)
-                    .contextMenu {
-                        ForEach(post.menuActions.children, id: \.id) { action in
-                            MenuButton(action: action)
+                    NavigationLink(value: NavigationPage.expandedPost(post)) {
+                        HStack {
+                            actionButton(post.upvoteAction)
+                            actionButton(post.downvoteAction)
+                            actionButton(post.saveAction)
+                            
+                            Text(post.title)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.horizontal)
+                                .foregroundStyle(post.read ? .secondary : .primary)
+                        }
+                        .padding(10)
+                        .background(palette.background)
+                        .contentShape(.rect)
+                        .contextMenu {
+                            ForEach(post.menuActions.children, id: \.id) { action in
+                                MenuButton(action: action)
+                            }
                         }
                     }
+                    .buttonStyle(.plain)
                     Divider()
                 }
             }
