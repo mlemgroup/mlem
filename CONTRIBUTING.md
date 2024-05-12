@@ -57,6 +57,7 @@ struct SomeView: View {
   @Environment entities
   @Binding variables
   @State variables
+  @Namespace variables
   Normal variables
   Computed properties
 

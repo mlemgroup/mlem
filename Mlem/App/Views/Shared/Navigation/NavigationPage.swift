@@ -5,12 +5,14 @@
 //  Created by Sjmarf on 27/04/2024.
 //
 
+import MlemMiddleware
 import SwiftUI
 
 enum NavigationPage: Hashable {
     case settings(_ page: SettingsPage = .root)
     case feeds, profile, inbox, search
     case quickSwitcher, addAccount
+    case expandedPost(_ post: Post2)
 }
 
 extension NavigationPage {
@@ -32,6 +34,8 @@ extension NavigationPage {
                 .presentationDetents([.medium, .large])
         case .addAccount:
             LandingPage()
+        case let .expandedPost(post):
+            ExpandedPostView(post: post)
         }
     }
     
