@@ -11,27 +11,36 @@ import SwiftUI
 
 struct ContentLoader<Content: View, Model: Upgradable>: View {
     let model: any Upgradable
+    var content: (Model.MinimumRenderable) -> Content
     
-    var content: (Model.Upgraded) -> Content
-    
-    init(model: Model, content: @escaping (Model.Upgraded) -> Content) {
+    init(model: Model, content: @escaping (Model.MinimumRenderable) -> Content) {
         self.model = model
         self.content = content
     }
     
     var body: some View {
-        if let upgradedModel = model.upgraded as? Model.Upgraded {
-            content(upgradedModel)
+        if let modelValue = model.wrappedValue as? Model.MinimumRenderable {
+            content(modelValue)
+                .task {
+                    if !model.isUpgraded {
+                        await upgradeModel()
+                    }
+                }
         } else {
             ProgressView()
                 .task {
-                    print("upgrading...")
-                    do {
-                        try await model.upgrade()
-                    } catch {
-                        print(error)
-                    }
+                    print("model not renderable!")
+                    await upgradeModel()
                 }
+        }
+    }
+    
+    func upgradeModel() async {
+        print("upgrading model...")
+        do {
+            try await model.upgrade()
+        } catch {
+            print(error)
         }
     }
 }

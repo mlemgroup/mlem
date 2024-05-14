@@ -20,8 +20,8 @@ struct ExpandedPostView: View {
     
     var body: some View {
         ScrollViewReader { scrollProxy in
-            ContentLoader(model: post) { post2 in
-                content(for: post2)
+            ContentLoader(model: post) { postStub in
+                content(for: postStub)
             }
             .onReselectTab {
                 if scrollToTopAppeared {
@@ -35,7 +35,7 @@ struct ExpandedPostView: View {
         }
     }
     
-    func content(for post: any Post2Providing) -> some View {
+    func content(for post: any Post1Providing) -> some View {
         ScrollView {
             VStack {
                 ScrollToView(appeared: $scrollToTopAppeared)
