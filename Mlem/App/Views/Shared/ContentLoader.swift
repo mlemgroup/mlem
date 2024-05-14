@@ -20,7 +20,6 @@ struct ContentLoader<Content: View, Model>: View {
         } else {
             Text("Loading")
                 .task {
-                    print("Content not present, loading...")
                     do {
                         model = try await upgrade()
                     } catch {
