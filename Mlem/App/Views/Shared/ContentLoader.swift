@@ -10,9 +10,9 @@ import MlemMiddleware
 import SwiftUI
 
 struct ContentLoader<Content: View, Model>: View {
-    var model: Model?
+    @Binding var model: Model?
+    var upgrade: () async throws -> Model
     var content: (Model) -> Content
-    var upgrade: () async throws -> Void
     
     var body: some View {
         if let model {
@@ -20,8 +20,9 @@ struct ContentLoader<Content: View, Model>: View {
         } else {
             Text("Loading")
                 .task {
+                    print("Content not present, loading...")
                     do {
-                        try await upgrade()
+                        model = try await upgrade()
                     } catch {
                         print(error)
                     }

@@ -29,27 +29,9 @@ struct ExpandedPostView: View {
     
     var body: some View {
         ScrollViewReader { _ in
-            ContentLoader(model: post) { post2 in
+            ContentLoader(model: $post, upgrade: postStub.upgrade) { post2 in
                 content(for: post2)
-            } upgrade: {
-                post = try await postStub.upgrade()
             }
-        }
-    }
-    
-    @ViewBuilder
-    var contentLoader: some View {
-        if let post {
-            content(for: post)
-        } else {
-            Text("Loading...")
-                .task {
-                    do {
-                        post = try await postStub.upgrade()
-                    } catch {
-                        print(error)
-                    }
-                }
         }
     }
     
