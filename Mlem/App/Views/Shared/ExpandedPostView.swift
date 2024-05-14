@@ -13,27 +13,47 @@ struct ExpandedPostView: View {
     @Environment(\.dismiss) var dismiss
     
     @State private var scrollToTopAppeared = false
+    @State private var post: (any Post2Providing)?
     
     @Namespace var scrollToTop
     
-    let post: any Post2Providing
+    let postStub: any PostStubProviding
+    
+    init(postStub: any PostStubProviding) {
+        if let post = postStub as? any Post2Providing {
+            self._post = .init(wrappedValue: post)
+        }
+        
+        self.postStub = postStub
+    }
     
     var body: some View {
-        ScrollViewReader { scrollProxy in
-            content
-                .onReselectTab {
-                    if scrollToTopAppeared {
-                        dismiss()
-                    } else {
-                        withAnimation {
-                            scrollProxy.scrollTo(scrollToTop)
-                        }
+        ScrollViewReader { _ in
+            ContentLoader(model: post) { post2 in
+                content(for: post2)
+            } upgrade: {
+                post = try await postStub.upgrade()
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var contentLoader: some View {
+        if let post {
+            content(for: post)
+        } else {
+            Text("Loading...")
+                .task {
+                    do {
+                        post = try await postStub.upgrade()
+                    } catch {
+                        print(error)
                     }
                 }
         }
     }
     
-    var content: some View {
+    func content(for post: any Post2Providing) -> some View {
         ScrollView {
             VStack {
                 ScrollToView(appeared: $scrollToTopAppeared)
