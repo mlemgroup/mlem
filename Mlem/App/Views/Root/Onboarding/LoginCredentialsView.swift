@@ -21,6 +21,7 @@ struct LoginCredentialsView: View {
     @State var password: String = ""
     
     @State var authenticating: Bool = false
+    @State private var failureReason: FailureReason?
     
     enum FocusedField { case username, password }
     @FocusState private var focused: FocusedField?
@@ -43,12 +44,14 @@ struct LoginCredentialsView: View {
         content
             .frame(maxWidth: .infinity)
             .background(Color(uiColor: .systemGroupedBackground).ignoresSafeArea())
+            .interactiveDismissDisabled((!username.isEmpty && showUsernameField) || !password.isEmpty)
             .toolbar {
                 if navigation.isInsideSheet, isFirstPage {
                     ToolbarItem(placement: .topBarLeading) {
                         Button("Cancel") {
                             dismiss()
                         }
+                        .disabled(authenticating)
                     }
                 }
             }
@@ -67,8 +70,10 @@ struct LoginCredentialsView: View {
                 textFields
                 nextButton
                     .padding(.top, 5)
-                Text("")
-                    .foregroundStyle(.red)
+                if let failureReason {
+                    Text(failureReason.label)
+                        .foregroundStyle(.red)
+                }
             }
             .frame(maxWidth: .infinity)
             .padding(.horizontal)
@@ -135,6 +140,8 @@ struct LoginCredentialsView: View {
                 .fill(Color(uiColor: .secondarySystemGroupedBackground))
         )
         .onAppear { focused = showUsernameField ? .username : .password }
+        .onChange(of: username) { failureReason = nil }
+        .onChange(of: password) { failureReason = nil }
     }
     
     @ViewBuilder
@@ -169,13 +176,31 @@ struct LoginCredentialsView: View {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             authenticating = false
                         }
+                    case ApiClientError.invalidSession:
+                        failureReason = .incorrectPassword
                     default:
-                        DispatchQueue.main.async {
-                            authenticating = false
-                        }
+                        print("LOGIN ERROR", error)
+                        failureReason = .other
+                    }
+                    DispatchQueue.main.async {
+                        authenticating = false
                     }
                 }
             }
+        }
+    }
+}
+
+private enum FailureReason {
+    case incorrectPassword
+    case other
+    
+    var label: String {
+        switch self {
+        case .incorrectPassword:
+            "Username or password is incorrect."
+        case .other:
+            "Something went wrong."
         }
     }
 }

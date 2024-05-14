@@ -10,6 +10,7 @@ import SwiftUI
 
 struct AccountListSettingsView: View {
     @Environment(NavigationLayer.self) var navigation
+    @Environment(AppState.self) var appState
     
     var accounts: [UserStub] { AccountsTracker.main.savedAccounts }
     
@@ -17,9 +18,9 @@ struct AccountListSettingsView: View {
         Form {
             headerView
             AccountListView()
-            Button("Re-authenticate") {
-                if let first = accounts.first {
-                    navigation.openSheet(.login(.reauth(first)))
+            Button("Re-authenticate", systemImage: "arrow.2.circlepath") {
+                if let user = appState.firstAccount.userStub {
+                    navigation.openSheet(.login(.reauth(user)))
                 }
             }
         }

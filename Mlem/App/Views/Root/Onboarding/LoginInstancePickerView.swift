@@ -42,6 +42,7 @@ struct LoginInstancePickerView: View {
                         Button("Cancel") {
                             dismiss()
                         }
+                        .disabled(connecting)
                     }
                 }
             }
