@@ -105,7 +105,6 @@
 		CD4D591A2B87B3D100B82964 /* ErrorHandler+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59192B87B3D100B82964 /* ErrorHandler+Dependency.swift */; };
 		CD4D591C2B87B43D00B82964 /* Task+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591B2B87B43D00B82964 /* Task+Extensions.swift */; };
 		CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591F2B87B63300B82964 /* SettingsOptions.swift */; };
-		CD4E03532BE42E6F009D11D6 /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CD4E03522BE42E6F009D11D6 /* MlemMiddleware */; };
 		CD59DE2C2BE467E600445EED /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CD59DE2B2BE467E600445EED /* MlemMiddleware */; };
 		CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8202B8FC411007953EF /* LandingPage.swift */; };
 		CDA1E8272B90EF24007953EF /* AppFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8262B90EF24007953EF /* AppFlow.swift */; };
@@ -161,7 +160,6 @@
 		039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInstancePickerView.swift; sourceTree = "<group>"; };
 		03C93CEF2BEFFB1A00327BFE /* LoginCredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCredentialsView.swift; sourceTree = "<group>"; };
 		03C93CF12BF0256700327BFE /* EnvironmentValue+IsFirstPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValue+IsFirstPage.swift"; sourceTree = "<group>"; };
-		03C93CF32BF1084300327BFE /* MlemMiddleware */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MlemMiddleware; path = ../MlemMiddleware; sourceTree = "<group>"; };
 		03CCDA9F2BF2795300C0C851 /* LoginPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPage.swift; sourceTree = "<group>"; };
 		03CCDAA32BF2852E00C0C851 /* LoginTotpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTotpView.swift; sourceTree = "<group>"; };
 		03D3A1D32BB88EF1009DE55E /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
@@ -250,7 +248,6 @@
 				CD4368C12AE23FD400BD8BD1 /* Semaphore in Frameworks */,
 				B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */,
 				B104A6DC2A59BF3C00B3E725 /* NukeUI in Frameworks */,
-				CD4E03532BE42E6F009D11D6 /* MlemMiddleware in Frameworks */,
 				CD59DE2C2BE467E600445EED /* MlemMiddleware in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -347,7 +344,6 @@
 		6363D5B827EE196700E34822 = {
 			isa = PBXGroup;
 			children = (
-				03C93CF32BF1084300327BFE /* MlemMiddleware */,
 				6363D5C327EE196700E34822 /* Mlem */,
 				6363D5D927EE196A00E34822 /* MlemTests */,
 				6363D5E327EE196A00E34822 /* MlemUITests */,
@@ -738,7 +734,6 @@
 				030FF6782BC84F7E00F6BFAC /* SwiftUIIntrospect */,
 				037386432BDAF574007492B5 /* LemmyMarkdownUI */,
 				037386462BDAFE81007492B5 /* LemmyMarkdownUI */,
-				CD4E03522BE42E6F009D11D6 /* MlemMiddleware */,
 				CD59DE2B2BE467E600445EED /* MlemMiddleware */,
 			);
 			productName = Mlem;
@@ -1398,8 +1393,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 0.1.0;
+				branch = "sjmarf/keychain-actorid";
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1453,10 +1448,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */;
 			productName = Semaphore;
-		};
-		CD4E03522BE42E6F009D11D6 /* MlemMiddleware */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = MlemMiddleware;
 		};
 		CD59DE2B2BE467E600445EED /* MlemMiddleware */ = {
 			isa = XCSwiftPackageProductDependency;
