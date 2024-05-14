@@ -13,17 +13,6 @@ enum NavigationPage: Hashable {
         lhs.hashValue == rhs.hashValue
     }
     
-    func hash(into hasher: inout Hasher) {
-        switch self {
-        case let .settings(settingsPage):
-            hasher.combine(settingsPage)
-        case let .expandedPost(post):
-            hasher.combine(post)
-        default:
-            hasher.combine(self)
-        }
-    }
-    
     case settings(_ page: SettingsPage = .root)
     case feeds, profile, inbox, search
     case quickSwitcher, addAccount
@@ -54,7 +43,7 @@ extension NavigationPage {
         case .addAccount:
             LandingPage()
         case let .expandedPost(post):
-            ExpandedPostView(postStub: post.post)
+            ExpandedPostView(post: post)
         }
     }
     

@@ -13,24 +13,24 @@ struct ExpandedPostView: View {
     @Environment(\.dismiss) var dismiss
     
     @State private var scrollToTopAppeared = false
-    @State private var post: (any Post2Providing)?
     
     @Namespace var scrollToTop
     
-    let postStub: any PostStubProviding
-    
-    init(postStub: any PostStubProviding) {
-        if let post = postStub as? any Post2Providing {
-            self._post = .init(wrappedValue: post)
-        }
-        
-        self.postStub = postStub
-    }
+    let post: AnyPost
     
     var body: some View {
-        ScrollViewReader { _ in
-            ContentLoader(model: $post, upgrade: postStub.upgrade) { post2 in
+        ScrollViewReader { scrollProxy in
+            ContentLoader(model: post) { post2 in
                 content(for: post2)
+            }
+            .onReselectTab {
+                if scrollToTopAppeared {
+                    dismiss()
+                } else {
+                    withAnimation {
+                        scrollProxy.scrollTo(scrollToTop)
+                    }
+                }
             }
         }
     }
@@ -44,7 +44,7 @@ struct ExpandedPostView: View {
                 Text(post.title)
                 
                 Text("Some content really far below to scroll to")
-                    .padding(.top, 700)
+                    .padding([.top, .bottom], 700)
             }
         }
     }

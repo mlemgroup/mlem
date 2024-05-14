@@ -9,19 +9,25 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-struct ContentLoader<Content: View, Model>: View {
-    @Binding var model: Model?
-    var upgrade: () async throws -> Model
-    var content: (Model) -> Content
+struct ContentLoader<Content: View, Model: Upgradable>: View {
+    let model: any Upgradable
+    
+    var content: (Model.Upgraded) -> Content
+    
+    init(model: Model, content: @escaping (Model.Upgraded) -> Content) {
+        self.model = model
+        self.content = content
+    }
     
     var body: some View {
-        if let model {
-            content(model)
+        if let upgradedModel = model.upgraded as? Model.Upgraded {
+            content(upgradedModel)
         } else {
-            Text("Loading")
+            ProgressView()
                 .task {
+                    print("upgrading...")
                     do {
-                        model = try await upgrade()
+                        try await model.upgrade()
                     } catch {
                         print(error)
                     }
