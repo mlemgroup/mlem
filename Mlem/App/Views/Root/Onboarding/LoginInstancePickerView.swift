@@ -123,6 +123,12 @@ struct LoginInstancePickerView: View {
         .autocorrectionDisabled()
         .scrollDismissesKeyboard(.never)
         .padding()
+        .submitLabel(.go)
+        .onSubmit {
+            if !domain.isEmpty {
+                attemptToConnect()
+            }
+        }
         .onTapGesture {
             if !connecting { focused = true }
         }
@@ -164,7 +170,7 @@ struct LoginInstancePickerView: View {
                 do {
                     let instance = try await apiClient.getSite()
                     DispatchQueue.main.async {
-                        navigation.push(.login(instance: instance))
+                        navigation.push(.login(.instance(instance)))
                     }
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         connecting = false

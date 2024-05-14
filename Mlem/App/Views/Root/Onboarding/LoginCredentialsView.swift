@@ -9,10 +9,6 @@ import MlemMiddleware
 import SwiftUI
 
 struct LoginCredentialsView: View {
-    enum FocusedField {
-        case username, password
-    }
-    
     @Environment(\.dismiss) var dismiss
     @Environment(\.isFirstPage) var isFirstPage
     @Environment(NavigationLayer.self) var navigation
@@ -25,6 +21,8 @@ struct LoginCredentialsView: View {
     @State var password: String = ""
     
     @State var authenticating: Bool = false
+    
+    enum FocusedField { case username, password }
     @FocusState private var focused: FocusedField?
     
     var showUsernameField: Bool { userStub == nil }
@@ -43,6 +41,7 @@ struct LoginCredentialsView: View {
     
     var body: some View {
         content
+            .frame(maxWidth: .infinity)
             .background(Color(uiColor: .systemGroupedBackground).ignoresSafeArea())
             .toolbar {
                 if navigation.isInsideSheet, isFirstPage {
@@ -59,17 +58,12 @@ struct LoginCredentialsView: View {
     var content: some View {
         ScrollView {
             VStack {
-                Group {
-                    if showUsernameField {
-                        AvatarView(instance, type: .instance)
-                    } else {
-                        AvatarView(userStub)
-                    }
+                if let instance {
+                    instanceHeader(instance)
+                } else if let userStub {
+                    reauthHeader(userStub)
+                        .padding(.bottom, 15)
                 }
-                .frame(height: 50)
-                Text((showUsernameField ? instance?.displayName : userStub?.fullName) ?? "Sign In")
-                    .font(.title)
-                    .bold()
                 textFields
                 nextButton
                     .padding(.top, 5)
@@ -80,7 +74,30 @@ struct LoginCredentialsView: View {
             .padding(.horizontal)
         }
         .scrollBounceBehavior(.basedOnSize)
-        .frame(maxWidth: .infinity)
+    }
+    
+    @ViewBuilder
+    func instanceHeader(_ instance: any Instance) -> some View {
+        AvatarView(instance)
+            .frame(height: 50)
+        Text(instance.displayName)
+            .font(.title)
+            .bold()
+    }
+    
+    @ViewBuilder
+    func reauthHeader(_ userStub: UserStub) -> some View {
+        VStack {
+            AvatarView(userStub)
+                .frame(height: 50)
+            Text(userStub.fullName ?? "Sign In")
+                .font(.title)
+                .bold()
+                .padding(.bottom, 5)
+            Text("Your session has expired. Enter your password to authenticate a new session.")
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
     }
     
     @ViewBuilder
@@ -108,6 +125,7 @@ struct LoginCredentialsView: View {
                     .focused($focused, equals: .password)
                     .padding(.trailing)
                     .onSubmit(attemptToLogin)
+                    .submitLabel(.go)
             }
         }
         .textInputAutocapitalization(.never)
@@ -122,7 +140,7 @@ struct LoginCredentialsView: View {
     @ViewBuilder
     var nextButton: some View {
         Button(action: attemptToLogin) {
-            Text(authenticating ? "Authenticating..." : "Next")
+            Text(authenticating ? "Authenticating..." : "Sign In")
                 .padding(.vertical, 10)
                 .frame(maxWidth: .infinity)
                 .transaction { $0.animation = .none }
@@ -138,36 +156,23 @@ struct LoginCredentialsView: View {
             authenticating = true
             Task {
                 do {
-                    let unauthenticatedApi = ApiClient.getApiClient(for: url, with: nil)
-                    let response = try await unauthenticatedApi.login(
-                        username: username,
-                        password: password,
-                        totpToken: nil
-                    )
-                    guard let token = response.jwt else {
-                        DispatchQueue.main.async {
-                            authenticating = false
-                        }
-                        return
-                    }
-
-                    let authenticatedApiClient = ApiClient.getApiClient(for: url, with: token)
-                    
-                    // Check if account exists already
-                    if let user = AccountsTracker.main.savedAccounts.first(where: { $0.api === authenticatedApiClient }) {
-                        user.updateToken(token)
-                        appState.changeUser(to: user)
-                    } else {
-                        let user = try await authenticatedApiClient.loadUser()
-                        AccountsTracker.main.addAccount(account: user)
-                        appState.changeUser(to: user)
-                    }
-                    DispatchQueue.main.async {
+                    let user = try await AccountsTracker.main.login(url: url, username: username, password: password)
+                    appState.changeUser(to: user)
+                    if navigation.isTopSheet {
                         navigation.dismissSheet()
                     }
                 } catch {
-                    DispatchQueue.main.async {
-                        authenticating = false
+                    print("ERROR", error)
+                    switch error {
+                    case let ApiClientError.response(response, _) where response.error == "missing_totp_token":
+                        navigation.push(.login(.totp(url: url, username: username, password: password)))
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            authenticating = false
+                        }
+                    default:
+                        DispatchQueue.main.async {
+                            authenticating = false
+                        }
                     }
                 }
             }

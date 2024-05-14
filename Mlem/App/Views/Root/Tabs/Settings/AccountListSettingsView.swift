@@ -17,9 +17,9 @@ struct AccountListSettingsView: View {
         Form {
             headerView
             AccountListView()
-            Button("Test") {
+            Button("Re-authenticate") {
                 if let first = accounts.first {
-                    navigation.openSheet(.login(user: first))
+                    navigation.openSheet(.login(.reauth(first)))
                 }
             }
         }

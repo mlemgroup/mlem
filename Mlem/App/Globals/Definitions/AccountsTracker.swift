@@ -48,6 +48,33 @@ class AccountsTracker {
         AppState.main.deactivate(userStub: account)
     }
     
+    @discardableResult
+    func login(url: URL, username: String, password: String, totpToken: String? = nil) async throws -> UserStub {
+        let unauthenticatedApi = ApiClient.getApiClient(for: url, with: nil)
+        let response = try await unauthenticatedApi.login(
+            username: username,
+            password: password,
+            totpToken: totpToken
+        )
+        guard let token = response.jwt else {
+            throw ApiClientError.invalidSession
+        }
+
+        let authenticatedApiClient = ApiClient.getApiClient(for: url, with: token)
+        
+        // Check if account exists already
+        if let user = savedAccounts.first(where: {
+            $0.name == username && $0.host == url.host()
+        }) {
+            user.updateToken(token)
+            return user
+        } else {
+            let user = try await authenticatedApiClient.loadUser()
+            AccountsTracker.main.addAccount(account: user)
+            return user
+        }
+    }
+    
     func saveAccounts() {
         Task {
             try await self.persistenceRepository.saveAccounts(savedAccounts)

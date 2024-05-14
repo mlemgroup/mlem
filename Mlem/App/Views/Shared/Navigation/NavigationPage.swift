@@ -10,10 +10,9 @@ import SwiftUI
 
 enum NavigationPage: Hashable {
     case settings(_ page: SettingsPage = .root)
+    case login(_ page: LoginPage = .pickInstance)
     case feeds, profile, inbox, search
     case quickSwitcher
-    /// Ask the user to login. If no instance if provided, one will be
-    case login(_ details: LoginDetails)
 }
 
 extension NavigationPage {
@@ -22,14 +21,8 @@ extension NavigationPage {
         switch self {
         case let .settings(page):
             page.view()
-        case let .login(details):
-            if let instance = details.instance {
-                LoginCredentialsView(instance: instance)
-            } else if let user = details.user {
-                LoginCredentialsView(userStub: user)
-            } else {
-                LoginInstancePickerView()
-            }
+        case let .login(page):
+            page.view()
         case .feeds:
             FeedsView()
         case .profile:
