@@ -1388,7 +1388,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				branch = eric/upgradable;
+				branch = "eric/hashable-content";
 				kind = branch;
 			};
 		};
