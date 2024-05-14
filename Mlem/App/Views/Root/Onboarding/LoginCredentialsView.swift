@@ -169,7 +169,6 @@ struct LoginCredentialsView: View {
                         navigation.dismissSheet()
                     }
                 } catch {
-                    print("ERROR", error)
                     switch error {
                     case let ApiClientError.response(response, _) where response.error == "missing_totp_token":
                         navigation.push(.login(.totp(url: url, username: username, password: password)))
