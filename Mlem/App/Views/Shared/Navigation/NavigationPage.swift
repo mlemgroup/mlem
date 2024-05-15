@@ -38,6 +38,7 @@ extension NavigationPage {
         case let .expandedPost(post):
             ExpandedPostView(post: post)
         }
+    }
     
     var hasNavigationStack: Bool {
         switch self {

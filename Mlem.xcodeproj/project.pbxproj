@@ -24,6 +24,7 @@
 		03267D842BED49CE009D6268 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D832BED49CE009D6268 /* AccountSettingsView.swift */; };
 		03267D862BED4ACA009D6268 /* ProfileProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D852BED4ACA009D6268 /* ProfileProviding+Extensions.swift */; };
 		03267D892BED5F34009D6268 /* UserProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D882BED5F34009D6268 /* UserProviding+Extensions.swift */; };
+		03500C1F2BF5198A00CAA076 /* Notifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C1E2BF5198A00CAA076 /* Notifier.swift */; };
 		035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */; };
 		035BE0892BDD901B00F77D73 /* NavigationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0882BDD901B00F77D73 /* NavigationPage.swift */; };
 		035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE08A2BDD903100F77D73 /* NavigationModel.swift */; };
@@ -94,7 +95,6 @@
 		CD4D59062B87B1A400B82964 /* Notifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59052B87B1A400B82964 /* Notifiable.swift */; };
 		CD4D59082B87B1B400B82964 /* NotificationDisplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59072B87B1B400B82964 /* NotificationDisplayer.swift */; };
 		CD4D590A2B87B1DC00B82964 /* NotificationMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59092B87B1DC00B82964 /* NotificationMessage.swift */; };
-		CD4D590C2B87B1E700B82964 /* Notifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D590B2B87B1E700B82964 /* Notifier.swift */; };
 		CD4D590E2B87B23F00B82964 /* Error+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D590D2B87B23F00B82964 /* Error+Extensions.swift */; };
 		CD4D59102B87B31200B82964 /* Notifier+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D590F2B87B31200B82964 /* Notifier+Dependency.swift */; };
 		CD4D59142B87B36B00B82964 /* InternetConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59132B87B36B00B82964 /* InternetConnectionManager.swift */; };
@@ -150,6 +150,7 @@
 		03267D832BED49CE009D6268 /* AccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
 		03267D852BED4ACA009D6268 /* ProfileProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileProviding+Extensions.swift"; sourceTree = "<group>"; };
 		03267D882BED5F34009D6268 /* UserProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserProviding+Extensions.swift"; sourceTree = "<group>"; };
+		03500C1E2BF5198A00CAA076 /* Notifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifier.swift; sourceTree = "<group>"; };
 		035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRootView.swift; sourceTree = "<group>"; };
 		035BE0882BDD901B00F77D73 /* NavigationPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPage.swift; sourceTree = "<group>"; };
 		035BE08A2BDD903100F77D73 /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
@@ -216,7 +217,6 @@
 		CD4D59052B87B1A400B82964 /* Notifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifiable.swift; sourceTree = "<group>"; };
 		CD4D59072B87B1B400B82964 /* NotificationDisplayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDisplayer.swift; sourceTree = "<group>"; };
 		CD4D59092B87B1DC00B82964 /* NotificationMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationMessage.swift; sourceTree = "<group>"; };
-		CD4D590B2B87B1E700B82964 /* Notifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifier.swift; sourceTree = "<group>"; };
 		CD4D590D2B87B23F00B82964 /* Error+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Extensions.swift"; sourceTree = "<group>"; };
 		CD4D590F2B87B31200B82964 /* Notifier+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifier+Dependency.swift"; sourceTree = "<group>"; };
 		CD4D59132B87B36B00B82964 /* InternetConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetConnectionManager.swift; sourceTree = "<group>"; };
@@ -622,10 +622,10 @@
 		CD4D59042B87B19100B82964 /* Notifier */ = {
 			isa = PBXGroup;
 			children = (
+				03500C1E2BF5198A00CAA076 /* Notifier.swift */,
 				CD4D59052B87B1A400B82964 /* Notifiable.swift */,
 				CD4D59072B87B1B400B82964 /* NotificationDisplayer.swift */,
 				CD4D59092B87B1DC00B82964 /* NotificationMessage.swift */,
-				CD4D590B2B87B1E700B82964 /* Notifier.swift */,
 			);
 			path = Notifier;
 			sourceTree = "<group>";
@@ -916,6 +916,7 @@
 				CD4D58A52B86BD1B00B82964 /* PersistenceRepository.swift in Sources */,
 				CD1446252A5B357900610EF1 /* Document.swift in Sources */,
 				CD4D591C2B87B43D00B82964 /* Task+Extensions.swift in Sources */,
+				03500C1F2BF5198A00CAA076 /* Notifier.swift in Sources */,
 				03134A4D2BEAD058002662CC /* AvatarView.swift in Sources */,
 				CD4D58AA2B86BE5900B82964 /* AccountListView.swift in Sources */,
 				CD4D58B92B86D9F800B82964 /* AccountButtonView.swift in Sources */,
