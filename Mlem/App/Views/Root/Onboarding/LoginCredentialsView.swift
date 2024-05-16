@@ -181,7 +181,7 @@ struct LoginCredentialsView: View {
                         print("LOGIN ERROR", error)
                         failureReason = .other
                     }
-                    DispatchQueue.main.async {
+                    Task { @MainActor in
                         authenticating = false
                     }
                 }
