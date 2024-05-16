@@ -20,8 +20,8 @@ struct ExpandedPostView: View {
     
     var body: some View {
         ScrollViewReader { scrollProxy in
-            ContentLoader(model: post) { postStub in
-                content(for: postStub)
+            ContentLoader(model: post) { post1 in
+                content(for: post1)
             }
             .onReselectTab {
                 if scrollToTopAppeared {
