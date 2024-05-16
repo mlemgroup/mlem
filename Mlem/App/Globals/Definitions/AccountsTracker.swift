@@ -70,7 +70,7 @@ class AccountsTracker {
             return user
         } else {
             let user = try await authenticatedApiClient.loadUser()
-            AccountsTracker.main.addAccount(account: user)
+            addAccount(account: user)
             return user
         }
     }
