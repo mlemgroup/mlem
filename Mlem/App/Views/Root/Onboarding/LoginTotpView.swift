@@ -118,7 +118,7 @@ struct LoginTotpView: View {
                     navigation.dismissSheet()
                 }
             } catch {
-                DispatchQueue.main.async {
+                Task { @MainActor in
                     authenticating = false
                     totpToken = ""
                     focused = true
