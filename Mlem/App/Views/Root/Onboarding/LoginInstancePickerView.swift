@@ -16,6 +16,7 @@ struct LoginInstancePickerView: View {
     @State var domain: String = ""
     
     @State var connecting: Bool = false
+    @State var invalidInstance: Bool = false
     @State private var scrollViewContentSize: CGSize = .zero
     @FocusState private var focused: Bool
     
@@ -71,6 +72,11 @@ struct LoginInstancePickerView: View {
                 nextButton
                     .padding(.top, 5)
             }
+            if invalidInstance {
+                Text("Failed to connect to \(domain)")
+                    .foregroundStyle(.red)
+                    .multilineTextAlignment(.center)
+            }
             Spacer()
         }
         .padding(.horizontal)
@@ -88,6 +94,7 @@ struct LoginInstancePickerView: View {
                             Button {
                                 domain = text
                                 focused = false
+                                attemptToConnect()
                             } label: {
                                 Text(attributedString(suggestion: text))
                                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -134,6 +141,9 @@ struct LoginInstancePickerView: View {
             if !connecting { focused = true }
         }
         .onAppear { focused = true }
+        .onChange(of: domain) {
+            invalidInstance = false
+        }
     }
     
     @ViewBuilder
@@ -166,7 +176,7 @@ struct LoginInstancePickerView: View {
         if let url = URL(string: domain) {
             focused = false
             connecting = true
-            Task {
+            let fetchTask = Task {
                 let apiClient = ApiClient.getApiClient(for: url, with: nil)
                 do {
                     let instance = try await apiClient.getSite()
@@ -177,8 +187,15 @@ struct LoginInstancePickerView: View {
                         connecting = false
                     }
                 } catch {
-                    Task { @MainActor in connecting = false }
+                    Task { @MainActor in
+                        connecting = false
+                        invalidInstance = true
+                    }
                 }
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                fetchTask.cancel()
+                invalidInstance = true
             }
         }
     }
