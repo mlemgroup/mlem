@@ -71,26 +71,5 @@ class NavigationLayer {
         )
     }
     
-    func showToast(_ toast: Toast, group: ToastGroup? = nil) {
-        if let group {
-            group.activeToast = toast
-            toasts.append(group)
-        } else {
-            toasts.append(.init(toast))
-        }
-    }
-    
     var isInsideSheet: Bool { index != -1 }
-    
-    func handleErrors(_ operation: () throws -> Void) {
-        do {
-            try operation()
-        } catch {
-            handleError(error)
-        }
-    }
-    
-    func handleError(_ error: Error) {
-        print("ERROR", error)
-    }
 }

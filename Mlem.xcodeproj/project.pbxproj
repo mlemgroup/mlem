@@ -88,7 +88,6 @@
 		CD4D59142B87B36B00B82964 /* InternetConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59132B87B36B00B82964 /* InternetConnectionManager.swift */; };
 		CD4D59162B87B38C00B82964 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */; };
 		CD4D59182B87B3B000B82964 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59172B87B3B000B82964 /* UIViewController+Extensions.swift */; };
-		CD4D591A2B87B3D100B82964 /* ErrorHandler+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59192B87B3D100B82964 /* ErrorHandler+Dependency.swift */; };
 		CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591F2B87B63300B82964 /* SettingsOptions.swift */; };
 		CD4E03532BE42E6F009D11D6 /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CD4E03522BE42E6F009D11D6 /* MlemMiddleware */; };
 		CD4ED8472BF110FA00EFA0A2 /* TabReselectTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED8462BF110FA00EFA0A2 /* TabReselectTracker.swift */; };
@@ -198,7 +197,6 @@
 		CD4D59132B87B36B00B82964 /* InternetConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetConnectionManager.swift; sourceTree = "<group>"; };
 		CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		CD4D59172B87B3B000B82964 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
-		CD4D59192B87B3D100B82964 /* ErrorHandler+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ErrorHandler+Dependency.swift"; sourceTree = "<group>"; };
 		CD4D591F2B87B63300B82964 /* SettingsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOptions.swift; sourceTree = "<group>"; };
 		CD4ED8462BF110FA00EFA0A2 /* TabReselectTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabReselectTracker.swift; sourceTree = "<group>"; };
 		CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+TabReselectConsumer.swift"; sourceTree = "<group>"; };
@@ -279,6 +277,15 @@
 			path = Avatar;
 			sourceTree = "<group>";
 		};
+		03500C252BF694A800CAA076 /* Toast */ = {
+			isa = PBXGroup;
+			children = (
+				03500C212BF5594100CAA076 /* Toast.swift */,
+				03500C232BF55D0E00CAA076 /* ToastGroup.swift */,
+			);
+			path = Toast;
+			sourceTree = "<group>";
+		};
 		035BE0852BDD8D9100F77D73 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
@@ -286,8 +293,6 @@
 				035BE08C2BDE88EC00F77D73 /* NavigationLayerView.swift */,
 				035BE08A2BDD903100F77D73 /* NavigationModel.swift */,
 				035BE08E2BDE911900F77D73 /* NavigationLayer.swift */,
-				03500C212BF5594100CAA076 /* Toast.swift */,
-				03500C232BF55D0E00CAA076 /* ToastGroup.swift */,
 				035BE0882BDD901B00F77D73 /* NavigationPage.swift */,
 				03134A512BEAD69F002662CC /* SettingsPage.swift */,
 				035BE0902BDEA01E00F77D73 /* NavigationPage+View.swift */,
@@ -480,7 +485,6 @@
 			isa = PBXGroup;
 			children = (
 				CD4D58B42B86BFFA00B82964 /* PersistenceRepository+Dependency.swift */,
-				CD4D59192B87B3D100B82964 /* ErrorHandler+Dependency.swift */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -497,6 +501,7 @@
 		CD4D58A82B86BE4C00B82964 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				03500C252BF694A800CAA076 /* Toast */,
 				035BE0852BDD8D9100F77D73 /* Navigation */,
 				CD4D58BE2B86DBC900B82964 /* Avatars */,
 				CD4D58AB2B86BE6100B82964 /* Accounts */,
@@ -865,7 +870,6 @@
 				CD4D58B52B86BFFB00B82964 /* PersistenceRepository+Dependency.swift in Sources */,
 				CD4D58EB2B86E63300B82964 /* AssociatedColor.swift in Sources */,
 				CD317D4C2BE97FED008F63E2 /* Palette.swift in Sources */,
-				CD4D591A2B87B3D100B82964 /* ErrorHandler+Dependency.swift in Sources */,
 				03134A5A2BEC2253002662CC /* AvatarStackView.swift in Sources */,
 				03D3A1F32BB9D49B009DE55E /* ActionGroup.swift in Sources */,
 				CD4D58C82B86DCED00B82964 /* AvatarType.swift in Sources */,

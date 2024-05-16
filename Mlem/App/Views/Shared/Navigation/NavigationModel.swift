@@ -40,16 +40,4 @@ class NavigationModel {
     func showFullScreenCover(_ page: NavigationPage, hasNavigationStack: Bool? = nil) {
         openSheet(page, hasNavigationStack: hasNavigationStack, isFullScreenCover: true)
     }
-    
-    func handleErrors(_ operation: () throws -> Void) {
-        do {
-            try operation()
-        } catch {
-            handleError(error)
-        }
-    }
-    
-    func handleError(_ error: Error) {
-        layers.last?.handleError(error)
-    }
 }
