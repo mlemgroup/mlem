@@ -30,7 +30,7 @@
     {
       "identity" : "mlemmiddleware",
       "kind" : "remoteSourceControl",
-      "location" : "git@github.com:mlemgroup/MlemMiddleware.git",
+      "location" : "https://github.com/mlemgroup/MlemMiddleware",
       "state" : {
         "revision" : "8a8784c789683df9248662108721a573e41ba6b8",
         "version" : "0.1.2"
