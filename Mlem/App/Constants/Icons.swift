@@ -130,6 +130,7 @@ enum Icons {
     static let successCircle: String = "checkmark.circle"
     static let successSquareFill: String = "checkmark.square.fill"
     static let failure: String = "xmark"
+    static let failureCircle: String = "xmark.circle"
     static let present: String = "circle.fill" // that's present as in "here," not as in "gift"
     static let absent: String = "circle"
     static let warning: String = "exclamationmark.triangle"

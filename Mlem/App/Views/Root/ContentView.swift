@@ -20,7 +20,7 @@ struct ContentView: View {
     @State var selectedTabIndex: Int = 0
     @State var tabReselectTracker: TabReselectTracker = .main
     
-    @State var navigationModel: NavigationModel = .init()
+    var navigationModel: NavigationModel { .main }
     
     var body: some View {
         content

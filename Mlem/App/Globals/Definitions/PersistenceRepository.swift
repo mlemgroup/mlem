@@ -48,7 +48,6 @@ private enum DiskAccess {
 
 class PersistenceRepository {
     @Dependency(\.date) private var date
-    @Dependency(\.errorHandler) private var errorHandler
     
     private var keychainAccess: (String) -> String?
     private var read: (URL) throws -> Data
@@ -152,8 +151,7 @@ class PersistenceRepository {
             
             return try JSONDecoder().decode(T.self, from: data)
         } catch {
-            errorHandler.handle(error)
-            
+            NavigationModel.main.handleError(error)
             return nil
         }
     }
@@ -174,7 +172,7 @@ class PersistenceRepository {
             let data = try JSONEncoder().encode(value)
             try await write(data, path)
         } catch {
-            errorHandler.handle(error)
+            NavigationModel.main.handleError(error)
         }
     }
 }

@@ -34,6 +34,10 @@ struct ProfileView: View {
                 Toggle("Upvote On Save", isOn: $upvoteOnSave)
                     .padding(.horizontal, 50)
                 Divider()
+                Button("Show notification") {
+                    navigation.showToast(.success())
+                }
+                Divider()
                 Markdown(markdown)
                     .padding()
                 Divider()
