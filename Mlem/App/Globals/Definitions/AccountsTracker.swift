@@ -64,7 +64,7 @@ class AccountsTracker {
         
         // Check if account exists already
         if let user = savedAccounts.first(where: {
-            $0.name == username && $0.host == url.host()
+            $0.name.caseInsensitiveCompare(username) == .orderedSame && $0.host == url.host()
         }) {
             user.updateToken(token)
             return user
