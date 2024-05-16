@@ -46,9 +46,9 @@ enum LoginPage: Hashable {
     func hash(into hasher: inout Hasher) {
         switch self {
         case .pickInstance:
-            hasher.combine(0)
+            hasher.combine("pickInstance")
         case .totp:
-            hasher.combine(1)
+            hasher.combine("totp")
         case let .instance(instance):
             hasher.combine(instance.actorId)
         case let .reauth(user):
