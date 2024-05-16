@@ -177,7 +177,7 @@ struct LoginInstancePickerView: View {
                         connecting = false
                     }
                 } catch {
-                    DispatchQueue.main.async { connecting = false }
+                    Task { @MainActor in connecting = false }
                 }
             }
         }
