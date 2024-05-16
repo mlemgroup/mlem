@@ -104,7 +104,7 @@ struct LoginInstancePickerView: View {
                     }
                     .background(
                         GeometryReader { geo in
-                            geometryReaderBackground(geo: geo)
+                            geometryReaderBackground(geoSize: geo.size)
                         }
                     )
                 }
@@ -160,9 +160,9 @@ struct LoginInstancePickerView: View {
         .disabled(!domain.contains(/.+\..+$/) || connecting)
     }
     
-    func geometryReaderBackground(geo: GeometryProxy) -> some View {
+    func geometryReaderBackground(geoSize: CGSize) -> some View {
         Task { @MainActor in
-            scrollViewContentSize = geo.size
+            scrollViewContentSize = geoSize
         }
         return Color.clear
     }
