@@ -151,7 +151,7 @@ struct LoginInstancePickerView: View {
     }
     
     func geometryReaderBackground(geo: GeometryProxy) -> some View {
-        DispatchQueue.main.async {
+        Task { @MainActor in
             scrollViewContentSize = geo.size
         }
         return Color.clear
