@@ -18,13 +18,16 @@ struct NavigationLayerView: View {
                 set: { layer.path = $0 }
             )) {
                 rootView()
-                    .environment(\.isFirstPage, true)
-                    .navigationDestination(for: NavigationPage.self) { $0.view().environment(\.isFirstPage, false) }
+                    .environment(\.isRootView, true)
+                    .navigationDestination(for: NavigationPage.self) {
+                        $0.view()
+                            .environment(\.isRootView, false)
+                    }
             }
             .environment(layer)
         } else {
             rootView()
-                .environment(\.isFirstPage, true)
+                .environment(\.isRootView, true)
                 .environment(layer)
         }
     }

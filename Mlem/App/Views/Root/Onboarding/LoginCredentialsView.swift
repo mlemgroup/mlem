@@ -10,7 +10,7 @@ import SwiftUI
 
 struct LoginCredentialsView: View {
     @Environment(\.dismiss) var dismiss
-    @Environment(\.isFirstPage) var isFirstPage
+    @Environment(\.isRootView) var isRootView
     @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
     
@@ -46,7 +46,7 @@ struct LoginCredentialsView: View {
             .background(Color(uiColor: .systemGroupedBackground).ignoresSafeArea())
             .interactiveDismissDisabled((!username.isEmpty && showUsernameField) || !password.isEmpty)
             .toolbar {
-                if navigation.isInsideSheet, isFirstPage {
+                if navigation.isInsideSheet, isRootView {
                     ToolbarItem(placement: .topBarLeading) {
                         Button("Cancel") {
                             dismiss()

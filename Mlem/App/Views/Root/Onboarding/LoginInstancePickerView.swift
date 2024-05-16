@@ -10,7 +10,7 @@ import SwiftUI
 
 struct LoginInstancePickerView: View {
     @Environment(\.dismiss) var dismiss
-    @Environment(\.isFirstPage) var isFirstPage
+    @Environment(\.isRootView) var isRootView
     @Environment(NavigationLayer.self) var navigation
     
     @State var domain: String = ""
@@ -37,7 +37,7 @@ struct LoginInstancePickerView: View {
             .interactiveDismissDisabled(!domain.isEmpty)
             .background(Color(uiColor: .systemGroupedBackground).ignoresSafeArea())
             .toolbar {
-                if navigation.isInsideSheet, isFirstPage {
+                if navigation.isInsideSheet, isRootView {
                     ToolbarItem(placement: .topBarLeading) {
                         Button("Cancel") {
                             dismiss()
