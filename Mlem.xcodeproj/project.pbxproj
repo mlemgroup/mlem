@@ -26,6 +26,7 @@
 		03267D892BED5F34009D6268 /* UserProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D882BED5F34009D6268 /* UserProviding+Extensions.swift */; };
 		03500C222BF5594100CAA076 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C212BF5594100CAA076 /* Toast.swift */; };
 		03500C242BF55D0E00CAA076 /* ToastGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C232BF55D0E00CAA076 /* ToastGroup.swift */; };
+		03500C272BF69D1D00CAA076 /* ToastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C262BF69D1D00CAA076 /* ToastModel.swift */; };
 		035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */; };
 		035BE0892BDD901B00F77D73 /* NavigationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0882BDD901B00F77D73 /* NavigationPage.swift */; };
 		035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE08A2BDD903100F77D73 /* NavigationModel.swift */; };
@@ -139,6 +140,7 @@
 		03267D882BED5F34009D6268 /* UserProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserProviding+Extensions.swift"; sourceTree = "<group>"; };
 		03500C212BF5594100CAA076 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		03500C232BF55D0E00CAA076 /* ToastGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastGroup.swift; sourceTree = "<group>"; };
+		03500C262BF69D1D00CAA076 /* ToastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastModel.swift; sourceTree = "<group>"; };
 		035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRootView.swift; sourceTree = "<group>"; };
 		035BE0882BDD901B00F77D73 /* NavigationPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPage.swift; sourceTree = "<group>"; };
 		035BE08A2BDD903100F77D73 /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 		03500C252BF694A800CAA076 /* Toast */ = {
 			isa = PBXGroup;
 			children = (
+				03500C262BF69D1D00CAA076 /* ToastModel.swift */,
 				03500C212BF5594100CAA076 /* Toast.swift */,
 				03500C232BF55D0E00CAA076 /* ToastGroup.swift */,
 			);
@@ -895,6 +898,7 @@
 				CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */,
 				B157E0C42A507B8000B02C8B /* FlowRoot.swift in Sources */,
 				03267D892BED5F34009D6268 /* UserProviding+Extensions.swift in Sources */,
+				03500C272BF69D1D00CAA076 /* ToastModel.swift in Sources */,
 				036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */,
 				03134A502BEAD245002662CC /* NavigationLink+NavigationPage.swift in Sources */,
 				CDC199EA2BE449790077B4F1 /* Interactable1Providing+Extensions.swift in Sources */,

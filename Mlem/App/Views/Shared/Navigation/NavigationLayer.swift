@@ -14,7 +14,6 @@ class NavigationLayer {
     
     var root: NavigationPage
     var path: [NavigationPage] = .init()
-    var toasts: [ToastGroup] = .init()
     var hasNavigationStack: Bool
     var isFullScreenCover: Bool
     
