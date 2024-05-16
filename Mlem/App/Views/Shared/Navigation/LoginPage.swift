@@ -12,7 +12,7 @@ enum LoginPage: Hashable {
     case pickInstance
     case instance(_ instance: any Instance)
     case reauth(_ userStub: UserStub)
-    case totp(url: URL, username: String, password: String)
+    case totp(client: ApiClient, username: String, password: String)
     
     @ViewBuilder
     func view() -> some View {
@@ -23,8 +23,8 @@ enum LoginPage: Hashable {
             LoginCredentialsView(instance: instance)
         case let .reauth(userStub):
             LoginCredentialsView(userStub: userStub)
-        case let .totp(url, username, password):
-            LoginTotpView(url: url, username: username, password: password)
+        case let .totp(client, username, password):
+            LoginTotpView(client: client, username: username, password: password)
         }
     }
     

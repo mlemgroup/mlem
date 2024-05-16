@@ -49,8 +49,12 @@ class AccountsTracker {
     }
     
     @discardableResult
-    func login(url: URL, username: String, password: String, totpToken: String? = nil) async throws -> UserStub {
-        let unauthenticatedApi = ApiClient.getApiClient(for: url, with: nil)
+    func login(
+        client unauthenticatedApi: ApiClient,
+        username: String,
+        password: String,
+        totpToken: String? = nil
+    ) async throws -> UserStub {
         let response = try await unauthenticatedApi.login(
             username: username,
             password: password,
@@ -60,11 +64,11 @@ class AccountsTracker {
             throw ApiClientError.invalidSession
         }
 
-        let authenticatedApiClient = ApiClient.getApiClient(for: url, with: token)
+        let authenticatedApiClient = ApiClient.getApiClient(for: unauthenticatedApi.baseUrl, with: token)
         
         // Check if account exists already
         if let user = savedAccounts.first(where: {
-            $0.name.caseInsensitiveCompare(username) == .orderedSame && $0.host == url.host()
+            $0.name.caseInsensitiveCompare(username) == .orderedSame && $0.api.baseUrl == authenticatedApiClient.baseUrl
         }) {
             user.updateToken(token)
             return user

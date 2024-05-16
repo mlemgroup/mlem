@@ -159,11 +159,11 @@ struct LoginCredentialsView: View {
     
     func attemptToLogin() {
         guard !username.isEmpty, !password.isEmpty else { return }
-        if let domain = instance?.host ?? userStub?.host, let url = URL(string: "https://\(domain)") {
+        if let client = instance?.guestApi ?? userStub?.api.loggedOut() {
             authenticating = true
             Task {
                 do {
-                    let user = try await AccountsTracker.main.login(url: url, username: username, password: password)
+                    let user = try await AccountsTracker.main.login(client: client, username: username, password: password)
                     appState.changeUser(to: user)
                     if navigation.isTopSheet {
                         navigation.dismissSheet()
@@ -171,7 +171,7 @@ struct LoginCredentialsView: View {
                 } catch {
                     switch error {
                     case let ApiClientError.response(response, _) where response.error == "missing_totp_token":
-                        navigation.push(.login(.totp(url: url, username: username, password: password)))
+                        navigation.push(.login(.totp(client: client, username: username, password: password)))
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             authenticating = false
                         }

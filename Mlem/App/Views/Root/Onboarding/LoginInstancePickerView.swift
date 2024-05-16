@@ -157,7 +157,7 @@ struct LoginInstancePickerView: View {
         .buttonStyle(.borderedProminent)
         .buttonBorderShape(.roundedRectangle(radius: 16))
         .transaction { $0.animation = .none }
-        .disabled(!domain.contains(/.+\..+$/) || connecting)
+        .disabled(!(domain.contains(/.+\..+$/) || domain.starts(with: "localhost:")) || connecting)
     }
     
     func geometryReaderBackground(geoSize: CGSize) -> some View {
@@ -171,7 +171,7 @@ struct LoginInstancePickerView: View {
         guard !connecting else { return }
         var domain = domain
         if !domain.contains("://") {
-            domain = "https://\(domain)"
+            domain = domain.starts(with: "localhost:") ? "http://\(domain)" : "https://\(domain)"
         }
         if let url = URL(string: domain) {
             focused = false

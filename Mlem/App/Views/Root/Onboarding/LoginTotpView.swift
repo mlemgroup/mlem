@@ -12,7 +12,7 @@ struct LoginTotpView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     
-    let url: URL
+    let client: ApiClient
     let username: String
     let password: String
     
@@ -108,7 +108,7 @@ struct LoginTotpView: View {
         Task {
             do {
                 let user = try await AccountsTracker.main.login(
-                    url: url,
+                    client: client,
                     username: username,
                     password: password,
                     totpToken: totpToken
