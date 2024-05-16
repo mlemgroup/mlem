@@ -36,20 +36,24 @@ To avoid having multiple in-flight tasks working on the same part of the codebas
 
 When your code is approved, it can be merged into the `dev` branch by a member of the development team. If you need to tinker with your changes post-approval, please make a comment that you are doing so. PRs that sit approved for more than 12 hours with no input from the dev may be merged if they are blocking other work.
 
-## Conventions
+## Testing
 
-Please develop according to the following principles:
+We operate a Lemmy Instance at https://test-mlem.jo.wtf/ which you may use for testing purposes. Please note that, as of 2024-05-10, it is running Lemmy v17, which is no longer used by any major Lemmy instance and thus we do not bother maintaining compatibility for. You may wish to use a local Lemmy instance instead.
+
+## Coding Conventions
+
+### General Principles
 
 - Files should be named according to the following patterns:
   - All files: `TitleCase`. If the file contains extensions, it should be named `BaseEntity+Extensions`.
   - `View` files: file name must end in `View` (e.g., `FeedsView`)
-- One View per file.
-- Within reason, any complex of views that renders a single component of a larger view should be placed in a descriptively named function, computed property or `@ViewBuilder` variable beneath the body of the View. This keeps pyramids from piling up and makes our accessibility experts' work easier.
 - If you can reuse code, do. Prefer abstracting common components to a generic struct and common logic to a generic function.
 
-## View Structure
+### Views
 
-All `View` structs should be organized according to the following template:
+- Only one `View` struct should be defined per file
+- Within reason, any complex of views that renders a single component of a larger view should be placed in a descriptively named function, computed property or `@ViewBuilder` variable beneath the body of the View. This keeps pyramids from piling up and makes our accessibility experts' work easier.
+- All `View` structs should be organized according to the following template:
 
 ```
 struct SomeView: View {
@@ -73,25 +77,32 @@ struct SomeView: View {
 }
 ```
 
-Further notes:
-
 - If the view has modifiers that are attached to the entire body, place the view definition in `content` and attach these modifiers to it in `body` (see `ContentView.swift` for an example).
 - Prefer `var helper: some View` to `func helper() -> some View` unless the helper view takes in parameters.
 - Helper views should always appear lower in the file than the view they help.
 
-## Global Objects
+### Global Objects
 
 There are several objects (e.g., `AppState`) that need to be available anywhere in the app. Normally this is handled with `@Environment`, but this is not available outside of the context of a `View`. To address this, globals that need to be available outside of a `View` define a `static var main: GlobalObject = .init()`, allowing them to be referenced as `GlobalObject.main`. This definition should be placed immediately above the initializer.
 
 This pattern should be used only where necessary, and should not be blindly applied to any global object. Likewise, if possible, these objects should be referenced via `@Environment(GlobalObject.self) var globalObject`; the static singleton should be considered a last resort.
 
-## Colors
+### Colors
 
 Colors are managed using the globally available `Palette` object, which enables color themes. The following conventions apply:
 
 - Avoid referencing `Color` directly; always use a `Palette` color.
 - Prefer semantic over literal colors (e.g., `.upvote` over `.blue`).
 
-## Testing
+### Main Actor
 
-We operate a Lemmy Instance at https://test-mlem.jo.wtf/ which you may use for testing purposes. Please note that, as of 2024-05-10, it is running Lemmy v17, which is no longer used by any major Lemmy instance and thus we do not bother maintaining compatibility for. You may wish to use a local Lemmy instance instead.
+To run code on the main actor, use either:
+
+- `@MainActor` annotated method
+- `Task { @MainActor in ... }`
+
+If you need to execute code after a delay, use `DispatchQueue.main.asyncAfter`.
+
+### Hashable
+
+Explicit `hash` functions for `enum`s should, in the absence of associated values, use a descriptive string to identify each case rather than an integer.
