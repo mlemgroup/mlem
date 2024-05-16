@@ -170,7 +170,7 @@ struct LoginInstancePickerView: View {
                 let apiClient = ApiClient.getApiClient(for: url, with: nil)
                 do {
                     let instance = try await apiClient.getSite()
-                    DispatchQueue.main.async {
+                    Task { @MainActor in
                         navigation.push(.login(.instance(instance)))
                     }
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
