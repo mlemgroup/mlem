@@ -118,8 +118,7 @@ struct MinimalPostFeedView: View {
                     .id(scrollToTop)
                 
                 ForEach(postTracker.items, id: \.uid) { post in
-                    // NavigationLink(value: NavigationPage.expandedPost(post)) {
-                    NavigationLink(value: NavigationPage.expandedPost(PostStub(api: post.api, actorId: post.actorId))) {
+                    NavigationLink(value: NavigationPage.expandedPost(post)) {
                         HStack {
                             actionButton(post.upvoteAction)
                             actionButton(post.downvoteAction)
