@@ -13,6 +13,8 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
     let model: any Upgradable
     var content: (Model.MinimumRenderable) -> Content
     
+    @State var upgradeState: LoadingState = .idle
+    
     init(model: Model, content: @escaping (Model.MinimumRenderable) -> Content) {
         self.model = model
         self.content = content
@@ -29,17 +31,22 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
         } else {
             ProgressView()
                 .task {
-                    print("model not renderable!")
                     await upgradeModel()
                 }
         }
     }
     
     func upgradeModel() async {
-        print("upgrading model...")
+        // prevent multiple upgrades simultaneously
+        guard upgradeState == .idle else { return }
+        upgradeState = .loading
+        
         do {
             try await model.upgrade()
+            upgradeState = .done
         } catch {
+            // if the task is cancelled or the call fails, reset upgradeState--upgrade will be retried on next render
+            upgradeState = .idle
             print(error)
         }
     }
