@@ -9,7 +9,20 @@ import SwiftUI
 
 @Observable
 class ToastModel {
-    var toasts: [ToastGroup] = .init()
+    private var groups: [ToastGroup] = .init()
+    
+    var activeGroup: ToastGroup? { groups.first }
+    var activeToast: Toast? { groups.first?.activeToast }
     
     static let main: ToastModel = .init()
+    
+    func add(_ toast: Toast) {
+        groups.append(.init(toast))
+    }
+    
+    func removeFirst() {
+        if !groups.isEmpty {
+            groups.removeFirst()
+        }
+    }
 }

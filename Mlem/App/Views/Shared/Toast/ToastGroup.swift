@@ -8,14 +8,12 @@
 import Foundation
 
 @Observable
-class ToastGroup: Equatable {
+class ToastGroup {
     var activeToast: Toast
+    
+    var activeId: UUID = .init()
     
     init(_ activeToast: Toast) {
         self.activeToast = activeToast
-    }
-    
-    static func == (lhs: ToastGroup, rhs: ToastGroup) -> Bool {
-        lhs.activeToast == rhs.activeToast
     }
 }

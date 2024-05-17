@@ -31,6 +31,21 @@ struct ContentView: View {
             .environment(palette)
             .environment(tabReselectTracker)
             .environment(appState)
+            .sheet(isPresented: Binding(
+                get: { !(navigationModel.layers.first?.isFullScreenCover ?? true) },
+                set: { if !$0 { navigationModel.layers.removeAll() } }
+            )) {
+                NavigationLayerView(layer: navigationModel.layers[0], hasSheetModifiers: true)
+            }
+            .fullScreenCover(isPresented: Binding(
+                get: { navigationModel.layers.first?.isFullScreenCover ?? false },
+                set: { if !$0 { navigationModel.layers.removeAll() } }
+            )) {
+                NavigationLayerView(layer: navigationModel.layers[0], hasSheetModifiers: true)
+            }
+            .overlay(alignment: .top) {
+                ToastOverlayView()
+            }
     }
     
     var content: some View {
@@ -63,17 +78,5 @@ struct ContentView: View {
             navigationModel.openSheet(.quickSwitcher)
         })
         .ignoresSafeArea()
-        .sheet(isPresented: Binding(
-            get: { !(navigationModel.layers.first?.isFullScreenCover ?? true) },
-            set: { if !$0 { navigationModel.layers.removeAll() } }
-        )) {
-            NavigationLayerView(layer: navigationModel.layers[0], hasSheetModifiers: true)
-        }
-        .fullScreenCover(isPresented: Binding(
-            get: { navigationModel.layers.first?.isFullScreenCover ?? false },
-            set: { if !$0 { navigationModel.layers.removeAll() } }
-        )) {
-            NavigationLayerView(layer: navigationModel.layers[0], hasSheetModifiers: true)
-        }
     }
 }

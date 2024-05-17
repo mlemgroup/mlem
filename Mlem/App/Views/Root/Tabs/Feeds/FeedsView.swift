@@ -63,7 +63,7 @@ struct MinimalPostFeedView: View {
                         do {
                             try await postTracker.loadMoreItems()
                         } catch {
-                            errorHandler.handle(error)
+                            // errorHandler.handle(error)
                         }
                     }
                 }
@@ -71,14 +71,14 @@ struct MinimalPostFeedView: View {
                     do {
                         try await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
                     } catch {
-                        errorHandler.handle(error)
+                        // errorHandler.handle(error)
                     }
                 }
                 .refreshable {
                     do {
                         try await postTracker.refresh(clearBeforeRefresh: false)
                     } catch {
-                        errorHandler.handle(error)
+                        // errorHandler.handle(error)
                     }
                 }
                 .onReselectTab {

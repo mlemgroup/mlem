@@ -27,6 +27,8 @@
 		03500C222BF5594100CAA076 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C212BF5594100CAA076 /* Toast.swift */; };
 		03500C242BF55D0E00CAA076 /* ToastGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C232BF55D0E00CAA076 /* ToastGroup.swift */; };
 		03500C272BF69D1D00CAA076 /* ToastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C262BF69D1D00CAA076 /* ToastModel.swift */; };
+		03500C2B2BF7F1B100CAA076 /* ToastOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C2A2BF7F1B100CAA076 /* ToastOverlayView.swift */; };
+		03500C2D2BF7FC2500CAA076 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C2C2BF7FC2500CAA076 /* ToastView.swift */; };
 		035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */; };
 		035BE0892BDD901B00F77D73 /* NavigationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0882BDD901B00F77D73 /* NavigationPage.swift */; };
 		035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE08A2BDD903100F77D73 /* NavigationModel.swift */; };
@@ -85,7 +87,6 @@
 		CD4D58DA2B86E11D00B82964 /* Mockable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58D92B86E11D00B82964 /* Mockable.swift */; };
 		CD4D58EB2B86E63300B82964 /* AssociatedColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58EA2B86E63300B82964 /* AssociatedColor.swift */; };
 		CD4D58F82B87B0D100B82964 /* InternetSpeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58F72B87B0D100B82964 /* InternetSpeed.swift */; };
-		CD4D590E2B87B23F00B82964 /* Error+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D590D2B87B23F00B82964 /* Error+Extensions.swift */; };
 		CD4D59142B87B36B00B82964 /* InternetConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59132B87B36B00B82964 /* InternetConnectionManager.swift */; };
 		CD4D59162B87B38C00B82964 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */; };
 		CD4D59182B87B3B000B82964 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59172B87B3B000B82964 /* UIViewController+Extensions.swift */; };
@@ -141,6 +142,8 @@
 		03500C212BF5594100CAA076 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		03500C232BF55D0E00CAA076 /* ToastGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastGroup.swift; sourceTree = "<group>"; };
 		03500C262BF69D1D00CAA076 /* ToastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastModel.swift; sourceTree = "<group>"; };
+		03500C2A2BF7F1B100CAA076 /* ToastOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastOverlayView.swift; sourceTree = "<group>"; };
+		03500C2C2BF7FC2500CAA076 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRootView.swift; sourceTree = "<group>"; };
 		035BE0882BDD901B00F77D73 /* NavigationPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPage.swift; sourceTree = "<group>"; };
 		035BE08A2BDD903100F77D73 /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
@@ -195,7 +198,6 @@
 		CD4D58D92B86E11D00B82964 /* Mockable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mockable.swift; sourceTree = "<group>"; };
 		CD4D58EA2B86E63300B82964 /* AssociatedColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssociatedColor.swift; sourceTree = "<group>"; };
 		CD4D58F72B87B0D100B82964 /* InternetSpeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetSpeed.swift; sourceTree = "<group>"; };
-		CD4D590D2B87B23F00B82964 /* Error+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Extensions.swift"; sourceTree = "<group>"; };
 		CD4D59132B87B36B00B82964 /* InternetConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetConnectionManager.swift; sourceTree = "<group>"; };
 		CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		CD4D59172B87B3B000B82964 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
@@ -283,6 +285,8 @@
 			isa = PBXGroup;
 			children = (
 				03500C262BF69D1D00CAA076 /* ToastModel.swift */,
+				03500C2A2BF7F1B100CAA076 /* ToastOverlayView.swift */,
+				03500C2C2BF7FC2500CAA076 /* ToastView.swift */,
 				03500C212BF5594100CAA076 /* Toast.swift */,
 				03500C232BF55D0E00CAA076 /* ToastGroup.swift */,
 			);
@@ -546,7 +550,6 @@
 			children = (
 				03134A4E2BEAD23A002662CC /* Views */,
 				CDA8A0052BE43B350022F7ED /* Content Models */,
-				CD4D590D2B87B23F00B82964 /* Error+Extensions.swift */,
 				CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */,
 				CD4D59172B87B3B000B82964 /* UIViewController+Extensions.swift */,
 			);
@@ -893,6 +896,7 @@
 				6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */,
 				03267D822BED489C009D6268 /* AvatarBannerView.swift in Sources */,
 				03267D862BED4ACA009D6268 /* ProfileProviding+Extensions.swift in Sources */,
+				03500C2D2BF7FC2500CAA076 /* ToastView.swift in Sources */,
 				CDF9EF332AB2845C003F885B /* Icons.swift in Sources */,
 				CD4D58DA2B86E11D00B82964 /* Mockable.swift in Sources */,
 				CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */,
@@ -902,9 +906,9 @@
 				036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */,
 				03134A502BEAD245002662CC /* NavigationLink+NavigationPage.swift in Sources */,
 				CDC199EA2BE449790077B4F1 /* Interactable1Providing+Extensions.swift in Sources */,
+				03500C2B2BF7F1B100CAA076 /* ToastOverlayView.swift in Sources */,
 				CD4D59182B87B3B000B82964 /* UIViewController+Extensions.swift in Sources */,
 				03D3A1E52BB8B7A3009DE55E /* ActionType.swift in Sources */,
-				CD4D590E2B87B23F00B82964 /* Error+Extensions.swift in Sources */,
 				63DF71F12A02999C002AC14E /* AppConstants.swift in Sources */,
 				03D3A1D42BB88EF1009DE55E /* Action.swift in Sources */,
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
