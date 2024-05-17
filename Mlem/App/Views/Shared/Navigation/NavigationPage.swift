@@ -9,10 +9,18 @@ import MlemMiddleware
 import SwiftUI
 
 enum NavigationPage: Hashable {
+    static func == (lhs: NavigationPage, rhs: NavigationPage) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
+    
     case settings(_ page: SettingsPage = .root)
     case feeds, profile, inbox, search
     case quickSwitcher, addAccount
-    case expandedPost(_ post: Post2)
+    case expandedPost(_ post: AnyPost)
+    
+    static func expandedPost(_ post: any PostStubProviding) -> NavigationPage {
+        expandedPost(.init(post: post))
+    }
 }
 
 extension NavigationPage {
