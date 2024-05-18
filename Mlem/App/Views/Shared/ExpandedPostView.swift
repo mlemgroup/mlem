@@ -16,24 +16,26 @@ struct ExpandedPostView: View {
     
     @Namespace var scrollToTop
     
-    let post: any Post2Providing
+    let post: AnyPost
     
     var body: some View {
         ScrollViewReader { scrollProxy in
-            content
-                .onReselectTab {
-                    if scrollToTopAppeared {
-                        dismiss()
-                    } else {
-                        withAnimation {
-                            scrollProxy.scrollTo(scrollToTop)
-                        }
+            ContentLoader(model: post) { post1 in
+                content(for: post1)
+            }
+            .onReselectTab {
+                if scrollToTopAppeared {
+                    dismiss()
+                } else {
+                    withAnimation {
+                        scrollProxy.scrollTo(scrollToTop)
                     }
                 }
+            }
         }
     }
     
-    var content: some View {
+    func content(for post: any Post1Providing) -> some View {
         ScrollView {
             VStack {
                 ScrollToView(appeared: $scrollToTopAppeared)
@@ -42,7 +44,7 @@ struct ExpandedPostView: View {
                 Text(post.title)
                 
                 Text("Some content really far below to scroll to")
-                    .padding(.top, 700)
+                    .padding([.top, .bottom], 700)
             }
         }
     }
