@@ -44,10 +44,12 @@ class NavigationLayer {
         }
     }
     
-    func dismissIfOnTop() {
-        if index == (model?.layers.count ?? 0) - 1 {
-            model?.closeSheets(aboveIndex: index)
-        }
+    func dismissSheet() {
+        model?.closeSheets(aboveIndex: index)
+    }
+    
+    var isTopSheet: Bool {
+        isInsideSheet && index == (model?.layers.count ?? 0) - 1
     }
     
     func popToRoot() {

@@ -29,6 +29,7 @@
 		03500C272BF69D1D00CAA076 /* ToastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C262BF69D1D00CAA076 /* ToastModel.swift */; };
 		03500C2B2BF7F1B100CAA076 /* ToastOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C2A2BF7F1B100CAA076 /* ToastOverlayView.swift */; };
 		03500C2D2BF7FC2500CAA076 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C2C2BF7FC2500CAA076 /* ToastView.swift */; };
+		03500C2E2BF8C2A700CAA076 /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CD59DE2B2BE467E600445EED /* MlemMiddleware */; };
 		035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */; };
 		035BE0892BDD901B00F77D73 /* NavigationPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0882BDD901B00F77D73 /* NavigationPage.swift */; };
 		035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE08A2BDD903100F77D73 /* NavigationModel.swift */; };
@@ -40,6 +41,11 @@
 		037386442BDAF574007492B5 /* LemmyMarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 037386432BDAF574007492B5 /* LemmyMarkdownUI */; };
 		037386472BDAFE81007492B5 /* LemmyMarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 037386462BDAFE81007492B5 /* LemmyMarkdownUI */; };
 		037658DF2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037658DE2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift */; };
+		039EFEC32BEEBEE0003AC372 /* LoginInstancePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */; };
+		03C93CF02BEFFB1A00327BFE /* LoginCredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C93CEF2BEFFB1A00327BFE /* LoginCredentialsView.swift */; };
+		03C93CF22BF0256700327BFE /* EnvironmentValue+IsRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C93CF12BF0256700327BFE /* EnvironmentValue+IsRootView.swift */; };
+		03CCDAA02BF2795300C0C851 /* LoginPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CCDA9F2BF2795300C0C851 /* LoginPage.swift */; };
+		03CCDAA42BF2852E00C0C851 /* LoginTotpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CCDAA32BF2852E00C0C851 /* LoginTotpView.swift */; };
 		03D3A1D42BB88EF1009DE55E /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1D32BB88EF1009DE55E /* Action.swift */; };
 		03D3A1E32BB8A40A009DE55E /* EmptyButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1E22BB8A40A009DE55E /* EmptyButtonStyle.swift */; };
 		03D3A1E52BB8B7A3009DE55E /* ActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1E42BB8B7A3009DE55E /* ActionType.swift */; };
@@ -69,6 +75,7 @@
 		CD317D4C2BE97FED008F63E2 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD317D4B2BE97FED008F63E2 /* Palette.swift */; };
 		CD317D4F2BE983ED008F63E2 /* MonochromePalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD317D4E2BE983ED008F63E2 /* MonochromePalette.swift */; };
 		CD4368C12AE23FD400BD8BD1 /* Semaphore in Frameworks */ = {isa = PBXBuildFile; productRef = CD4368C02AE23FD400BD8BD1 /* Semaphore */; };
+		CD43E8B32BF2C24E007C3D71 /* ContentLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */; };
 		CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */; };
 		CD4D583F2B86855F00B82964 /* MlemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D583E2B86855F00B82964 /* MlemTests.swift */; };
 		CD4D58412B86858100B82964 /* MlemUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58402B86858100B82964 /* MlemUITests.swift */; };
@@ -91,12 +98,10 @@
 		CD4D59162B87B38C00B82964 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */; };
 		CD4D59182B87B3B000B82964 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59172B87B3B000B82964 /* UIViewController+Extensions.swift */; };
 		CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591F2B87B63300B82964 /* SettingsOptions.swift */; };
-		CD4E03532BE42E6F009D11D6 /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CD4E03522BE42E6F009D11D6 /* MlemMiddleware */; };
 		CD4ED8472BF110FA00EFA0A2 /* TabReselectTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED8462BF110FA00EFA0A2 /* TabReselectTracker.swift */; };
 		CD4ED84A2BF1113800EFA0A2 /* View+TabReselectConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */; };
 		CD4ED84C2BF111BA00EFA0A2 /* ScrollToView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED84B2BF111BA00EFA0A2 /* ScrollToView.swift */; };
 		CD4ED84E2BF113C800EFA0A2 /* ExpandedPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED84D2BF113C800EFA0A2 /* ExpandedPostView.swift */; };
-		CD59DE2C2BE467E600445EED /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CD59DE2B2BE467E600445EED /* MlemMiddleware */; };
 		CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8202B8FC411007953EF /* LandingPage.swift */; };
 		CDA1E8272B90EF24007953EF /* AppFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8262B90EF24007953EF /* AppFlow.swift */; };
 		CDA1E8542B952C3D007953EF /* StateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8532B952C3D007953EF /* StateManager.swift */; };
@@ -153,6 +158,11 @@
 		036CC3AE2B8145C30098B6A1 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		037386402BDAF3F7007492B5 /* Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
 		037658DE2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community1Providing+Extensions.swift"; sourceTree = "<group>"; };
+		039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInstancePickerView.swift; sourceTree = "<group>"; };
+		03C93CEF2BEFFB1A00327BFE /* LoginCredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCredentialsView.swift; sourceTree = "<group>"; };
+		03C93CF12BF0256700327BFE /* EnvironmentValue+IsRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValue+IsRootView.swift"; sourceTree = "<group>"; };
+		03CCDA9F2BF2795300C0C851 /* LoginPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPage.swift; sourceTree = "<group>"; };
+		03CCDAA32BF2852E00C0C851 /* LoginTotpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTotpView.swift; sourceTree = "<group>"; };
 		03D3A1D32BB88EF1009DE55E /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		03D3A1E22BB8A40A009DE55E /* EmptyButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyButtonStyle.swift; sourceTree = "<group>"; };
 		03D3A1E42BB8B7A3009DE55E /* ActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionType.swift; sourceTree = "<group>"; };
@@ -180,6 +190,7 @@
 		CD1446262A5B36DA00610EF1 /* EULA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EULA.swift; sourceTree = "<group>"; };
 		CD317D4B2BE97FED008F63E2 /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
 		CD317D4E2BE983ED008F63E2 /* MonochromePalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonochromePalette.swift; sourceTree = "<group>"; };
+		CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentLoader.swift; sourceTree = "<group>"; };
 		CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedsView.swift; sourceTree = "<group>"; };
 		CD4D583E2B86855F00B82964 /* MlemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemTests.swift; sourceTree = "<group>"; };
 		CD4D58402B86858100B82964 /* MlemUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemUITests.swift; sourceTree = "<group>"; };
@@ -219,6 +230,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03500C2E2BF8C2A700CAA076 /* MlemMiddleware in Frameworks */,
 				030FF6792BC84F7E00F6BFAC /* SwiftUIIntrospect in Frameworks */,
 				B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */,
 				037386472BDAFE81007492B5 /* LemmyMarkdownUI in Frameworks */,
@@ -229,8 +241,6 @@
 				CD4368C12AE23FD400BD8BD1 /* Semaphore in Frameworks */,
 				B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */,
 				B104A6DC2A59BF3C00B3E725 /* NukeUI in Frameworks */,
-				CD4E03532BE42E6F009D11D6 /* MlemMiddleware in Frameworks */,
-				CD59DE2C2BE467E600445EED /* MlemMiddleware in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,11 +308,13 @@
 			children = (
 				035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */,
 				035BE08C2BDE88EC00F77D73 /* NavigationLayerView.swift */,
+				03C93CF12BF0256700327BFE /* EnvironmentValue+IsRootView.swift */,
 				035BE08A2BDD903100F77D73 /* NavigationModel.swift */,
 				035BE08E2BDE911900F77D73 /* NavigationLayer.swift */,
 				035BE0882BDD901B00F77D73 /* NavigationPage.swift */,
-				03134A512BEAD69F002662CC /* SettingsPage.swift */,
 				035BE0902BDEA01E00F77D73 /* NavigationPage+View.swift */,
+				03134A512BEAD69F002662CC /* SettingsPage.swift */,
+				03CCDA9F2BF2795300C0C851 /* LoginPage.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -522,6 +534,7 @@
 				03267D802BED4714009D6268 /* Avatar */,
 				CD4ED84B2BF111BA00EFA0A2 /* ScrollToView.swift */,
 				CD4ED84D2BF113C800EFA0A2 /* ExpandedPostView.swift */,
+				CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -634,6 +647,9 @@
 			isa = PBXGroup;
 			children = (
 				CDA1E8202B8FC411007953EF /* LandingPage.swift */,
+				039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */,
+				03C93CEF2BEFFB1A00327BFE /* LoginCredentialsView.swift */,
+				03CCDAA32BF2852E00C0C851 /* LoginTotpView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -698,7 +714,6 @@
 				030FF6782BC84F7E00F6BFAC /* SwiftUIIntrospect */,
 				037386432BDAF574007492B5 /* LemmyMarkdownUI */,
 				037386462BDAFE81007492B5 /* LemmyMarkdownUI */,
-				CD4E03522BE42E6F009D11D6 /* MlemMiddleware */,
 				CD59DE2B2BE467E600445EED /* MlemMiddleware */,
 			);
 			productName = Mlem;
@@ -782,7 +797,7 @@
 				CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */,
 				0392826E2BC84E480097F91A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				037386452BDAFE81007492B5 /* XCRemoteSwiftPackageReference "LemmyMarkdownUI" */,
-				CD59DE2A2BE467E600445EED /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
+				CD03D8D72BF6A44C00D1FB5D /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -853,13 +868,17 @@
 				03134A582BEC1C46002662CC /* AccountListSettingsView.swift in Sources */,
 				031E2D5B2BEFC9460003BC45 /* ThemeSettingsView.swift in Sources */,
 				03D3A1F12BB9D48E009DE55E /* BasicAction.swift in Sources */,
+				03C93CF02BEFFB1A00327BFE /* LoginCredentialsView.swift in Sources */,
 				CD4ED84E2BF113C800EFA0A2 /* ExpandedPostView.swift in Sources */,
 				035BE08D2BDE88EC00F77D73 /* NavigationLayerView.swift in Sources */,
 				035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */,
 				03D3A1E32BB8A40A009DE55E /* EmptyButtonStyle.swift in Sources */,
+				039EFEC32BEEBEE0003AC372 /* LoginInstancePickerView.swift in Sources */,
+				03C93CF22BF0256700327BFE /* EnvironmentValue+IsRootView.swift in Sources */,
 				037386412BDAF3F7007492B5 /* Markdown.swift in Sources */,
 				CD4D58CF2B86DDEC00B82964 /* AccountSortMode.swift in Sources */,
 				03134A522BEAD69F002662CC /* SettingsPage.swift in Sources */,
+				03CCDAA02BF2795300C0C851 /* LoginPage.swift in Sources */,
 				037658DF2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift in Sources */,
 				CD4D58C02B86DBD100B82964 /* DefaultAvatarView.swift in Sources */,
 				CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */,
@@ -880,7 +899,9 @@
 				03D3A1F32BB9D49B009DE55E /* ActionGroup.swift in Sources */,
 				CD4D58C82B86DCED00B82964 /* AvatarType.swift in Sources */,
 				CD4D58BB2B86DA7D00B82964 /* AccountListView+Logic.swift in Sources */,
+				CD43E8B32BF2C24E007C3D71 /* ContentLoader.swift in Sources */,
 				031E2D5D2BEFCC630003BC45 /* SettingsView.swift in Sources */,
+				03CCDAA42BF2852E00C0C851 /* LoginTotpView.swift in Sources */,
 				CD4ED8472BF110FA00EFA0A2 /* TabReselectTracker.swift in Sources */,
 				035BE0912BDEA01E00F77D73 /* NavigationPage+View.swift in Sources */,
 				CD4D59142B87B36B00B82964 /* InternetConnectionManager.swift in Sources */,
@@ -1336,6 +1357,14 @@
 				minimumVersion = 12.1.2;
 			};
 		};
+		CD03D8D72BF6A44C00D1FB5D /* XCRemoteSwiftPackageReference "MlemMiddleware" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.3.0;
+			};
+		};
 		CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/groue/Semaphore";
@@ -1349,7 +1378,7 @@
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.1.0;
+				minimumVersion = 0.3.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1403,10 +1432,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */;
 			productName = Semaphore;
-		};
-		CD4E03522BE42E6F009D11D6 /* MlemMiddleware */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = MlemMiddleware;
 		};
 		CD59DE2B2BE467E600445EED /* MlemMiddleware */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -9,10 +9,19 @@ import MlemMiddleware
 import SwiftUI
 
 enum NavigationPage: Hashable {
+    static func == (lhs: NavigationPage, rhs: NavigationPage) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
+    
     case settings(_ page: SettingsPage = .root)
+    case login(_ page: LoginPage = .pickInstance)
     case feeds, profile, inbox, search
-    case quickSwitcher, addAccount
-    case expandedPost(_ post: Post2)
+    case quickSwitcher
+    case expandedPost(_ post: AnyPost)
+    
+    static func expandedPost(_ post: any PostStubProviding) -> NavigationPage {
+        expandedPost(.init(post: post))
+    }
 }
 
 extension NavigationPage {
@@ -20,6 +29,8 @@ extension NavigationPage {
     func view() -> some View {
         switch self {
         case let .settings(page):
+            page.view()
+        case let .login(page):
             page.view()
         case .feeds:
             FeedsView()
@@ -32,8 +43,6 @@ extension NavigationPage {
         case .quickSwitcher:
             QuickSwitcherView()
                 .presentationDetents([.medium, .large])
-        case .addAccount:
-            LandingPage()
         case let .expandedPost(post):
             ExpandedPostView(post: post)
         }
@@ -41,7 +50,7 @@ extension NavigationPage {
     
     var hasNavigationStack: Bool {
         switch self {
-        case .quickSwitcher, .addAccount:
+        case .quickSwitcher:
             false
         default:
             true

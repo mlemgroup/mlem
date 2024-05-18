@@ -26,6 +26,7 @@ struct NavigationSplitRootView<Content: View>: View {
                     }
                 )) {
                     layer.root.view()
+                        .environment(\.isRootView, true)
                         .navigationDestination(for: NavigationPage.self) { $0.view() }
                 }
             }

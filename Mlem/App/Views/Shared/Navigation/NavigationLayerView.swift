@@ -12,15 +12,22 @@ struct NavigationLayerView: View {
     let hasSheetModifiers: Bool
     
     var body: some View {
-        Group {
-            if layer.hasNavigationStack {
-                NavigationStack(path: Binding(
-                    get: { layer.path },
-                    set: { layer.path = $0 }
-                )) {
-                    rootView()
-                        .navigationDestination(for: NavigationPage.self) { $0.view() }
-                }
+        if layer.hasNavigationStack {
+            NavigationStack(path: Binding(
+                get: { layer.path },
+                set: { layer.path = $0 }
+            )) {
+                rootView()
+                    .environment(\.isRootView, true)
+                    .navigationDestination(for: NavigationPage.self) {
+                        $0.view()
+                            .environment(\.isRootView, false)
+                    }
+            }
+            .environment(layer)
+        } else {
+            rootView()
+                .environment(\.isRootView, true)
                 .environment(layer)
             } else {
                 rootView()
