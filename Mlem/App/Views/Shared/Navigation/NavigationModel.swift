@@ -20,7 +20,8 @@ class NavigationModel {
                 model: self,
                 index: layers.count,
                 hasNavigationStack: hasNavigationStack ?? page.hasNavigationStack,
-                isFullScreenCover: isFullScreenCover
+                isFullScreenCover: isFullScreenCover,
+                canDisplayToasts: page.canDisplayToasts
             )
         )
     }

@@ -151,7 +151,7 @@ class PersistenceRepository {
             
             return try JSONDecoder().decode(T.self, from: data)
         } catch {
-            // NavigationModel.main.handleError(error)
+            handleError(error)
             return nil
         }
     }
@@ -172,7 +172,7 @@ class PersistenceRepository {
             let data = try JSONEncoder().encode(value)
             try await write(data, path)
         } catch {
-            // NavigationModel.main.handleError(error)
+            handleError(error)
         }
     }
 }

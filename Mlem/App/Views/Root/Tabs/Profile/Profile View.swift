@@ -14,6 +14,8 @@ struct ProfileView: View {
     @Environment(NavigationLayer.self) var navigation
     @AppStorage("upvoteOnSave") var upvoteOnSave = false
     
+    let toastGroup = ToastGroup()
+    
     var body: some View {
         content
             .navigationTitle("Profile")
@@ -41,8 +43,26 @@ struct ProfileView: View {
 //                Markdown(markdown)
 //                    .padding()
 //                Divider()
-                Button("Show notification") {
-                    ToastModel.main.add(.success("Hello"))
+                VStack(spacing: 20) {
+                    Button("Success") {
+                        ToastModel.main.add(.success())
+                    }
+                    Button("Failure") {
+                        ToastModel.main.add(.failure(), group: toastGroup)
+                    }
+                    Button("Undoable") {
+                        ToastModel.main.add(
+                            .undoable(
+                                title: "Unfavorited Community",
+                                systemImage: "star.slash.fill",
+                                callback: {},
+                                color: .blue
+                            )
+                        )
+                    }
+                    Button("Error") {
+                        handleError(ApiClientError.cancelled)
+                    }
                 }
             }
         }

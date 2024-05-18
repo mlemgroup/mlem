@@ -29,10 +29,6 @@ struct NavigationLayerView: View {
             rootView()
                 .environment(\.isRootView, true)
                 .environment(layer)
-            } else {
-                rootView()
-                    .environment(layer)
-            }
         }
     }
     
@@ -41,6 +37,13 @@ struct NavigationLayerView: View {
         if hasSheetModifiers {
             layer.root
                 .viewWithModifiers(layer: layer)
+                .overlay(alignment: .top) {
+                    if layer.canDisplayToasts {
+                        ToastOverlayView(shouldDisplayNewToasts: layer.isToastDisplayer)
+                            .padding(.top, 8)
+                            .ignoresSafeArea(edges: .top)
+                    }
+                }
         } else {
             layer.root.view()
         }

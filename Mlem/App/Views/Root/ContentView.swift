@@ -44,7 +44,10 @@ struct ContentView: View {
                 NavigationLayerView(layer: navigationModel.layers[0], hasSheetModifiers: true)
             }
             .overlay(alignment: .top) {
-                ToastOverlayView()
+                ToastOverlayView(
+                    shouldDisplayNewToasts: navigationModel.layers.allSatisfy { !$0.canDisplayToasts }
+                )
+                .padding(.top, -6)
             }
     }
     

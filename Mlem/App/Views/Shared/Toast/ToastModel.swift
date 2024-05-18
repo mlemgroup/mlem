@@ -16,6 +16,13 @@ class ToastModel {
     
     static let main: ToastModel = .init()
     
+    func add(_ toast: Toast, group: ToastGroup) {
+        group.setToast(toast)
+        if !groups.contains(group) {
+            groups.append(group)
+        }
+    }
+    
     func add(_ toast: Toast) {
         groups.append(.init(toast))
     }

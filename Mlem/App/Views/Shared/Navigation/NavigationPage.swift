@@ -56,4 +56,13 @@ extension NavigationPage {
             true
         }
     }
+    
+    var canDisplayToasts: Bool {
+        switch self {
+        case .quickSwitcher:
+            false
+        default:
+            true
+        }
+    }
 }

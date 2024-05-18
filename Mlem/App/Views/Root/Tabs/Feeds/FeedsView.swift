@@ -45,7 +45,8 @@ struct MinimalPostFeedView: View {
             pageSize: internetSpeed.pageSize,
             sortType: defaultPostSorting,
             showReadPosts: showReadPosts,
-            filteredKeywords: persistenceRepository.loadFilteredKeywords(),
+            // Don't load from PersistenceRepository directly here, as we'll be reading from file every time the view is initialized, which can happen frequently
+            filteredKeywords: [],
             feedType: .aggregateFeed(AppState.main.firstApi, type: .subscribed),
             smallAvatarSize: AppConstants.smallAvatarSize,
             largeAvatarSize: AppConstants.largeAvatarSize,
@@ -63,7 +64,7 @@ struct MinimalPostFeedView: View {
                         do {
                             try await postTracker.loadMoreItems()
                         } catch {
-                            // errorHandler.handle(error)
+                            handleError(error)
                         }
                     }
                 }
@@ -71,14 +72,14 @@ struct MinimalPostFeedView: View {
                     do {
                         try await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
                     } catch {
-                        // errorHandler.handle(error)
+                        handleError(error)
                     }
                 }
                 .refreshable {
                     do {
                         try await postTracker.refresh(clearBeforeRefresh: false)
                     } catch {
-                        // errorHandler.handle(error)
+                        handleError(error)
                     }
                 }
                 .onReselectTab {
