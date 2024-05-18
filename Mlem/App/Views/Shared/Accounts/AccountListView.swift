@@ -72,7 +72,7 @@ struct AccountListView: View {
                 }
                 Section {
                     Button {
-                        navigation.openSheet(.addAccount)
+                        navigation.openSheet(.login())
                     } label: {
                         Label("Add Account", systemImage: "plus")
                     }

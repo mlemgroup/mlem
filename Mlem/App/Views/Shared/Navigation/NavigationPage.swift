@@ -14,8 +14,9 @@ enum NavigationPage: Hashable {
     }
     
     case settings(_ page: SettingsPage = .root)
+    case login(_ page: LoginPage = .pickInstance)
     case feeds, profile, inbox, search
-    case quickSwitcher, addAccount
+    case quickSwitcher
     case expandedPost(_ post: AnyPost)
     
     static func expandedPost(_ post: any PostStubProviding) -> NavigationPage {
@@ -29,6 +30,8 @@ extension NavigationPage {
         switch self {
         case let .settings(page):
             page.view()
+        case let .login(page):
+            page.view()
         case .feeds:
             FeedsView()
         case .profile:
@@ -40,8 +43,6 @@ extension NavigationPage {
         case .quickSwitcher:
             QuickSwitcherView()
                 .presentationDetents([.medium, .large])
-        case .addAccount:
-            LandingPage()
         case let .expandedPost(post):
             ExpandedPostView(post: post)
         }
@@ -49,7 +50,7 @@ extension NavigationPage {
     
     var hasNavigationStack: Bool {
         switch self {
-        case .quickSwitcher, .addAccount:
+        case .quickSwitcher:
             false
         default:
             true
