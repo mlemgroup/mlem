@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ToastOverlayView: View {
     @State var activeToast: Toast?
-    @State var shouldFadeOut: Bool = false
     @State var activeId: UUID?
     
     var toastModel: ToastModel { .main }
@@ -20,23 +19,16 @@ struct ToastOverlayView: View {
                 ToastView(toast: activeToast)
                     .id(activeId)
                     .transition(
-                        .asymmetric(
-                            insertion: .move(edge: .top),
-                            removal: shouldFadeOut ? .identity : .move(edge: .top)
-                        )
-                        .combined(with: .opacity)
+                        .move(edge: .top)
+                            .combined(with: .opacity)
                     )
                     .padding(.top, -6)
             }
         }
         .animation(.easeOut(duration: 0.2), value: activeId)
         .onChange(of: toastModel.activeGroup?.activeId) { _, newValue in
-            print("NEWVALUE", newValue)
-            shouldFadeOut = newValue != nil
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                activeId = newValue
-                activeToast = toastModel.activeToast
-            }
+            activeId = newValue
+            activeToast = toastModel.activeToast
         }
         .task(id: activeId) {
             do {
