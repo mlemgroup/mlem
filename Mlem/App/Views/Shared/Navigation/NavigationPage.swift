@@ -37,7 +37,7 @@ extension NavigationPage {
         case .profile:
             ProfileView()
         case .inbox:
-            Text("Inbox")
+            InboxView()
         case .search:
             SubscriptionListView()
         case .quickSwitcher:

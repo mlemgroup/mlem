@@ -37,6 +37,7 @@
 		035BE08F2BDE911900F77D73 /* NavigationLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE08E2BDE911900F77D73 /* NavigationLayer.swift */; };
 		035BE0912BDEA01E00F77D73 /* NavigationPage+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0902BDEA01E00F77D73 /* NavigationPage+View.swift */; };
 		0369B3532BFA514B001EFEDF /* ToastLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0369B3522BFA514B001EFEDF /* ToastLocation.swift */; };
+		0369B3562BFA6824001EFEDF /* InboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0369B3552BFA6824001EFEDF /* InboxView.swift */; };
 		036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CC3AE2B8145C30098B6A1 /* AppState.swift */; };
 		037386412BDAF3F7007492B5 /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037386402BDAF3F7007492B5 /* Markdown.swift */; };
 		037386442BDAF574007492B5 /* LemmyMarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 037386432BDAF574007492B5 /* LemmyMarkdownUI */; };
@@ -160,6 +161,7 @@
 		035BE08E2BDE911900F77D73 /* NavigationLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLayer.swift; sourceTree = "<group>"; };
 		035BE0902BDEA01E00F77D73 /* NavigationPage+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationPage+View.swift"; sourceTree = "<group>"; };
 		0369B3522BFA514B001EFEDF /* ToastLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastLocation.swift; sourceTree = "<group>"; };
+		0369B3552BFA6824001EFEDF /* InboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxView.swift; sourceTree = "<group>"; };
 		036CC3AE2B8145C30098B6A1 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		037386402BDAF3F7007492B5 /* Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
 		037658DE2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community1Providing+Extensions.swift"; sourceTree = "<group>"; };
@@ -328,6 +330,14 @@
 			path = Navigation;
 			sourceTree = "<group>";
 		};
+		0369B3542BFA681B001EFEDF /* Inbox */ = {
+			isa = PBXGroup;
+			children = (
+				0369B3552BFA6824001EFEDF /* InboxView.swift */,
+			);
+			path = Inbox;
+			sourceTree = "<group>";
+		};
 		037386422BDAF574007492B5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -426,6 +436,7 @@
 		6363D5F427EE1BAE00E34822 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
+				0369B3542BFA681B001EFEDF /* Inbox */,
 				03134A492BEACF46002662CC /* Settings */,
 				CD4BAD382B4C6C1B00A1E726 /* Feeds */,
 				6DE1183A2A4A215F00810C7E /* Profile */,
@@ -916,6 +927,7 @@
 				CDC199EC2BE449EA0077B4F1 /* Post1Providing+Extensions.swift in Sources */,
 				031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */,
 				030FF67B2BC8521600F6BFAC /* CustomTabView.swift in Sources */,
+				0369B3562BFA6824001EFEDF /* InboxView.swift in Sources */,
 				CD4D59162B87B38C00B82964 /* UIApplication+Extensions.swift in Sources */,
 				035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */,
 				CD4D58CB2B86DD3D00B82964 /* AssociatedIcon.swift in Sources */,

@@ -14,8 +14,6 @@ struct ProfileView: View {
     @Environment(NavigationLayer.self) var navigation
     @AppStorage("upvoteOnSave") var upvoteOnSave = false
     
-    let toastGroup = ToastGroup()
-    
     var body: some View {
         content
             .navigationTitle("Profile")
@@ -36,42 +34,8 @@ struct ProfileView: View {
                 Toggle("Upvote On Save", isOn: $upvoteOnSave)
                     .padding(.horizontal, 50)
                 Divider()
-//                Button("Show notification") {
-//                    navigation.showToast(.success())
-//                }
-//                Divider()
-//                Markdown(markdown)
-//                    .padding()
-//                Divider()
-                VStack(spacing: 20) {
-                    Button("Success") {
-                        ToastModel.main.add(.success())
-                    }
-                    Button("Failure") {
-                        ToastModel.main.add(.failure(), group: toastGroup)
-                    }
-                    Button("Profile") {
-                        if let userStub = AppState.main.firstAccount.userStub {
-                            ToastModel.main.add(.user(userStub))
-                        }
-                    }
-                    Button("Undoable") {
-                        ToastModel.main.add(
-                            .undoable(
-                                title: "Unfavorited Community",
-                                systemImage: "star.slash.fill",
-                                callback: {},
-                                color: .blue
-                            )
-                        )
-                    }
-                    Button("Error") {
-                        handleError(ApiClientError.cancelled)
-                    }
-                    Button("Open Sheet") {
-                        navigation.openSheet(.profile)
-                    }
-                }
+                Markdown(markdown)
+                    .padding()
             }
         }
     }
