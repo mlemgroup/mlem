@@ -24,8 +24,8 @@
 		03267D842BED49CE009D6268 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D832BED49CE009D6268 /* AccountSettingsView.swift */; };
 		03267D862BED4ACA009D6268 /* ProfileProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D852BED4ACA009D6268 /* ProfileProviding+Extensions.swift */; };
 		03267D892BED5F34009D6268 /* UserProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D882BED5F34009D6268 /* UserProviding+Extensions.swift */; };
-		03500C222BF5594100CAA076 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C212BF5594100CAA076 /* Toast.swift */; };
-		03500C242BF55D0E00CAA076 /* ToastGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C232BF55D0E00CAA076 /* ToastGroup.swift */; };
+		03500C222BF5594100CAA076 /* ToastType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C212BF5594100CAA076 /* ToastType.swift */; };
+		03500C242BF55D0E00CAA076 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C232BF55D0E00CAA076 /* Toast.swift */; };
 		03500C272BF69D1D00CAA076 /* ToastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C262BF69D1D00CAA076 /* ToastModel.swift */; };
 		03500C2B2BF7F1B100CAA076 /* ToastOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C2A2BF7F1B100CAA076 /* ToastOverlayView.swift */; };
 		03500C2D2BF7FC2500CAA076 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C2C2BF7FC2500CAA076 /* ToastView.swift */; };
@@ -149,8 +149,8 @@
 		03267D832BED49CE009D6268 /* AccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
 		03267D852BED4ACA009D6268 /* ProfileProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileProviding+Extensions.swift"; sourceTree = "<group>"; };
 		03267D882BED5F34009D6268 /* UserProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserProviding+Extensions.swift"; sourceTree = "<group>"; };
-		03500C212BF5594100CAA076 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
-		03500C232BF55D0E00CAA076 /* ToastGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastGroup.swift; sourceTree = "<group>"; };
+		03500C212BF5594100CAA076 /* ToastType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastType.swift; sourceTree = "<group>"; };
+		03500C232BF55D0E00CAA076 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		03500C262BF69D1D00CAA076 /* ToastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastModel.swift; sourceTree = "<group>"; };
 		03500C2A2BF7F1B100CAA076 /* ToastOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastOverlayView.swift; sourceTree = "<group>"; };
 		03500C2C2BF7FC2500CAA076 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
@@ -307,9 +307,9 @@
 				03500C262BF69D1D00CAA076 /* ToastModel.swift */,
 				03500C2A2BF7F1B100CAA076 /* ToastOverlayView.swift */,
 				03500C2C2BF7FC2500CAA076 /* ToastView.swift */,
-				03500C212BF5594100CAA076 /* Toast.swift */,
+				03500C212BF5594100CAA076 /* ToastType.swift */,
 				0369B3522BFA514B001EFEDF /* ToastLocation.swift */,
-				03500C232BF55D0E00CAA076 /* ToastGroup.swift */,
+				03500C232BF55D0E00CAA076 /* Toast.swift */,
 			);
 			path = Toast;
 			sourceTree = "<group>";
@@ -901,7 +901,7 @@
 				03FE140C2BF953B000A8377F /* HandleError.swift in Sources */,
 				CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */,
 				CD4ED84A2BF1113800EFA0A2 /* View+TabReselectConsumer.swift in Sources */,
-				03500C222BF5594100CAA076 /* Toast.swift in Sources */,
+				03500C222BF5594100CAA076 /* ToastType.swift in Sources */,
 				CD4D58A52B86BD1B00B82964 /* PersistenceRepository.swift in Sources */,
 				CD1446252A5B357900610EF1 /* Document.swift in Sources */,
 				03134A4D2BEAD058002662CC /* AvatarView.swift in Sources */,
@@ -959,7 +959,7 @@
 				03FE14082BF94FFB00A8377F /* ErrorView.swift in Sources */,
 				030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */,
 				CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */,
-				03500C242BF55D0E00CAA076 /* ToastGroup.swift in Sources */,
+				03500C242BF55D0E00CAA076 /* Toast.swift in Sources */,
 				030FF67F2BC8544700F6BFAC /* CustomTabBarController.swift in Sources */,
 				CD4D58F82B87B0D100B82964 /* InternetSpeed.swift in Sources */,
 				CD4D58932B86BA5C00B82964 /* StandardPalette.swift in Sources */,

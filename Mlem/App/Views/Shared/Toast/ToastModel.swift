@@ -9,29 +9,31 @@ import SwiftUI
 
 @Observable
 class ToastModel {
-    private var groups: [ToastGroup] = .init()
+    private var toasts: [Toast] = .init()
     
     static let main: ToastModel = .init()
     
-    func activeGroup(location: ToastLocation) -> ToastGroup? {
-        groups.first(where: { $0.location == location })
+    func activeToast(location: ToastLocation) -> Toast? {
+        toasts.first(where: { $0.location == location })
     }
     
-    func add(_ toast: Toast, group: ToastGroup) {
-        group.setToast(toast)
-        if !groups.contains(group) {
-            groups.append(group)
+    func add(_ type: ToastType, location: ToastLocation? = nil, group: String? = nil) {
+        let newToast: Toast = .init(
+            type: type,
+            location: location ?? type.location,
+            group: group
+        )
+        if let group, let index = toasts.firstIndex(where: { $0.group == group }) {
+            toasts[index] = newToast
+        } else {
+            toasts.append(newToast)
         }
     }
     
-    func add(_ toast: Toast, location: ToastLocation? = nil) {
-        groups.append(.init(toast, location: location ?? toast.location))
-    }
-    
     func removeFirst(location: ToastLocation) {
-        if !groups.isEmpty {
-            if let index = groups.firstIndex(where: { $0.location == location }) {
-                groups.remove(at: index)
+        if !toasts.isEmpty {
+            if let index = toasts.firstIndex(where: { $0.location == location }) {
+                toasts.remove(at: index)
             }
         }
     }

@@ -12,7 +12,6 @@ struct ToastOverlayView: View {
     let location: ToastLocation
     
     @State var activeToast: Toast?
-    @State var activeId: UUID?
     @State var shouldTimeout: Bool = true
     
     var toastModel: ToastModel { .main }
@@ -22,29 +21,27 @@ struct ToastOverlayView: View {
             if let activeToast {
                 ToastView(
                     toast: activeToast,
-                    location: location,
                     shouldTimeout: $shouldTimeout
                 )
-                .id(activeId)
+                .id(activeToast)
                 .transition(
                     .move(edge: location.edge)
                         .combined(with: .opacity)
                 )
             }
         }
-        .animation(.snappy(duration: 0.3, extraBounce: 0.2), value: activeId)
+        .animation(.snappy(duration: 0.3, extraBounce: 0.2), value: activeToast)
         .onChange(of: onChangeHash) {
-            let activeGroup = toastModel.activeGroup(location: location)
-            if shouldDisplayNewToasts || activeGroup?.activeToast == nil {
-                activeId = activeGroup?.activeId
-                activeToast = activeGroup?.activeToast
+            let toast = toastModel.activeToast(location: location)
+            if shouldDisplayNewToasts || toast == nil {
+                activeToast = toast
             }
             shouldTimeout = true
         }
         .task(id: taskHash) {
             do {
                 try await Task.sleep(
-                    nanoseconds: UInt64(1_000_000_000 * (activeToast?.duration ?? 1.0))
+                    nanoseconds: UInt64(1_000_000_000 * (activeToast?.type.duration ?? 1.0))
                 )
                 if shouldTimeout, activeToast != nil {
                     toastModel.removeFirst(location: location)
@@ -60,12 +57,10 @@ struct ToastOverlayView: View {
         // When sheet disappears, remove toast
         .onDisappear(perform: removeToast)
         .task {
-            if shouldDisplayNewToasts, activeId == nil {
+            if shouldDisplayNewToasts, activeToast == nil {
                 do {
                     try await Task.sleep(nanoseconds: UInt64(500_000_000))
-                    let activeGroup = toastModel.activeGroup(location: location)
-                    activeId = activeGroup?.activeId
-                    activeToast = activeGroup?.activeToast
+                    activeToast = toastModel.activeToast(location: location)
                 } catch {}
             }
         }
@@ -74,21 +69,20 @@ struct ToastOverlayView: View {
     func removeToast() {
         if activeToast != nil {
             toastModel.removeFirst(location: location)
-            activeId = nil
             activeToast = nil
         }
     }
     
     var onChangeHash: Int {
         var hasher = Hasher()
-        hasher.combine(toastModel.activeGroup(location: location)?.activeId)
+        hasher.combine(toastModel.activeToast(location: location))
         hasher.combine(shouldDisplayNewToasts)
         return hasher.finalize()
     }
     
     var taskHash: Int {
         var hasher = Hasher()
-        hasher.combine(activeId)
+        hasher.combine(activeToast)
         hasher.combine(shouldTimeout)
         return hasher.finalize()
     }

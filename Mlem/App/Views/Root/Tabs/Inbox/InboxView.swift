@@ -11,15 +11,13 @@ import SwiftUI
 struct InboxView: View {
     @Environment(NavigationLayer.self) var navigation
     
-    let toastGroup: ToastGroup = .init()
-    
     var body: some View {
         VStack(spacing: 20) {
             Button("Success") {
                 ToastModel.main.add(.success())
             }
             Button("Failure (Grouped)") {
-                ToastModel.main.add(.failure(), group: toastGroup)
+                ToastModel.main.add(.failure(), group: "group1")
             }
             Button("Profile") {
                 if let userStub = AppState.main.firstAccount.userStub {

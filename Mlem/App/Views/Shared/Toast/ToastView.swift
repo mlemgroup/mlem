@@ -11,23 +11,20 @@ struct ToastView: View {
     @Environment(\.colorScheme) var colorScheme
     
     let toast: Toast
-    let location: ToastLocation
     @Binding var shouldTimeout: Bool
     @State var isExpanded: Bool = false
     
     init(
         toast: Toast,
-        location: ToastLocation = .top,
         shouldTimeout: Binding<Bool> = .constant(false)
     ) {
         self.toast = toast
-        self.location = location
         self._shouldTimeout = shouldTimeout
     }
     
     var body: some View {
         HStack {
-            switch toast {
+            switch toast.type {
             case let .basic(
                 title: title,
                 subtitle: subtitle,
@@ -49,7 +46,7 @@ struct ToastView: View {
             ):
                 Button {
                     callback()
-                    ToastModel.main.removeFirst(location: location)
+                    ToastModel.main.removeFirst(location: toast.location)
                 } label: {
                     regularView(
                         title: title ?? "Undo",
@@ -137,7 +134,7 @@ struct ToastView: View {
                     
                     if isExpanded {
                         CloseButtonView(size: 28, callback: {
-                            ToastModel.main.removeFirst(location: location)
+                            ToastModel.main.removeFirst(location: toast.location)
                         })
                         .padding(.trailing, 10)
                     }
@@ -184,19 +181,25 @@ struct ToastView: View {
     }
 }
 
+extension ToastView {
+    init(_ type: ToastType) {
+        self.init(toast: .init(type: type, location: .top, group: nil))
+    }
+}
+
 #Preview {
     VStack {
-        ToastView(toast: .success())
-        ToastView(toast: .failure())
-        ToastView(toast: .undoable(callback: {}))
+        ToastView(.success())
+        ToastView(.failure())
+        ToastView(.undoable(callback: {}))
         ToastView(
-            toast: .undoable(
+            .undoable(
                 title: "Unfavorited Community",
                 systemImage: "star.slash.fill",
                 callback: {},
                 color: .blue
             )
         )
-        ToastView(toast: .error(.init()))
+        ToastView(.error(.init()))
     }
 }
