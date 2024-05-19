@@ -28,9 +28,6 @@ struct ContentView: View {
             .onReceive(timer) { _ in
                 appState.cleanCaches()
             }
-            .environment(palette)
-            .environment(tabReselectTracker)
-            .environment(appState)
             .sheet(isPresented: Binding(
                 get: { !(navigationModel.layers.first?.isFullScreenCover ?? true) },
                 set: { if !$0 { navigationModel.layers.removeAll() } }
@@ -50,6 +47,9 @@ struct ContentView: View {
                 )
                 .padding(.top, -6)
             }
+            .environment(palette)
+            .environment(tabReselectTracker)
+            .environment(appState)
     }
 
     var shouldDisplayToasts: Bool {
