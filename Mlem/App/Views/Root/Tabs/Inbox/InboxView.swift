@@ -38,7 +38,7 @@ struct InboxView: View {
                 handleError(ApiClientError.cancelled)
             }
             Button("Open Sheet") {
-                navigation.openSheet(.profile)
+                navigation.openSheet(.inbox)
             }
         }
     }
