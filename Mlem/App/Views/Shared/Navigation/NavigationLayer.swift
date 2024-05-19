@@ -56,7 +56,9 @@ class NavigationLayer {
     }
     
     var isToastDisplayer: Bool {
-        isInsideSheet && model?.layers.last(where: { $0.canDisplayToasts }) === self
+        isInsideSheet
+            && canDisplayToasts
+            && model?.layers.last(where: { $0.canDisplayToasts }) === self
     }
     
     func popToRoot() {

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ToastOverlayView: View {
     let shouldDisplayNewToasts: Bool
+    let location: ToastLocation
     
     @State var activeToast: Toast?
     @State var activeId: UUID?
@@ -17,20 +18,27 @@ struct ToastOverlayView: View {
     var toastModel: ToastModel { .main }
     
     var body: some View {
-        Group {
+        VStack {
             if let activeToast {
-                ToastView(toast: activeToast, shouldTimeout: $shouldTimeout)
-                    .id(activeId)
-                    .transition(
-                        .move(edge: .top)
-                            .combined(with: .opacity)
-                    )
+                ToastView(
+                    toast: activeToast,
+                    location: location,
+                    shouldTimeout: $shouldTimeout
+                )
+                .id(activeId)
+                .transition(
+                    .move(edge: location.edge)
+                        .combined(with: .opacity)
+                )
             }
         }
         .animation(.snappy(duration: 0.3, extraBounce: 0.2), value: activeId)
-        .onChange(of: toastModel.activeGroup?.activeId) { _, newValue in
-            activeId = newValue
-            activeToast = shouldDisplayNewToasts ? toastModel.activeToast : nil
+        .onChange(of: onChangeHash) {
+            let activeGroup = toastModel.activeGroup(location: location)
+            if shouldDisplayNewToasts || activeGroup?.activeToast == nil {
+                activeId = activeGroup?.activeId
+                activeToast = activeGroup?.activeToast
+            }
             shouldTimeout = true
         }
         .task(id: taskHash) {
@@ -38,13 +46,44 @@ struct ToastOverlayView: View {
                 try await Task.sleep(
                     nanoseconds: UInt64(1_000_000_000 * (activeToast?.duration ?? 1.0))
                 )
-                if shouldTimeout {
-                    toastModel.removeFirst()
+                if shouldTimeout, activeToast != nil {
+                    toastModel.removeFirst(location: location)
                 }
-            } catch {
-                print("Task cancelled early")
+            } catch {}
+        }
+        // When sheet moves to background, remove toast
+        .onChange(of: shouldDisplayNewToasts) { _, newValue in
+            if !newValue {
+                removeToast()
             }
         }
+        // When sheet disappears, remove toast
+        .onDisappear(perform: removeToast)
+        .task {
+            if shouldDisplayNewToasts, activeId == nil {
+                do {
+                    try await Task.sleep(nanoseconds: UInt64(500_000_000))
+                    let activeGroup = toastModel.activeGroup(location: location)
+                    activeId = activeGroup?.activeId
+                    activeToast = activeGroup?.activeToast
+                } catch {}
+            }
+        }
+    }
+    
+    func removeToast() {
+        if activeToast != nil {
+            toastModel.removeFirst(location: location)
+            activeId = nil
+            activeToast = nil
+        }
+    }
+    
+    var onChangeHash: Int {
+        var hasher = Hasher()
+        hasher.combine(toastModel.activeGroup(location: location)?.activeId)
+        hasher.combine(shouldDisplayNewToasts)
+        return hasher.finalize()
     }
     
     var taskHash: Int {
@@ -73,6 +112,9 @@ struct ToastOverlayView: View {
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .overlay(alignment: .top) {
-        ToastOverlayView(shouldDisplayNewToasts: true)
+        ToastOverlayView(shouldDisplayNewToasts: true, location: .top)
+    }
+    .overlay(alignment: .bottom) {
+        ToastOverlayView(shouldDisplayNewToasts: true, location: .bottom)
     }
 }

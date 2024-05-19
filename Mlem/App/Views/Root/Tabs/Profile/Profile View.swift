@@ -50,6 +50,11 @@ struct ProfileView: View {
                     Button("Failure") {
                         ToastModel.main.add(.failure(), group: toastGroup)
                     }
+                    Button("Profile") {
+                        if let userStub = AppState.main.firstAccount.userStub {
+                            ToastModel.main.add(.user(userStub))
+                        }
+                    }
                     Button("Undoable") {
                         ToastModel.main.add(
                             .undoable(
@@ -62,6 +67,9 @@ struct ProfileView: View {
                     }
                     Button("Error") {
                         handleError(ApiClientError.cancelled)
+                    }
+                    Button("Open Sheet") {
+                        navigation.openSheet(.profile)
                     }
                 }
             }

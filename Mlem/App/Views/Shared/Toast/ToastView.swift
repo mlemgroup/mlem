@@ -11,11 +11,17 @@ struct ToastView: View {
     @Environment(\.colorScheme) var colorScheme
     
     let toast: Toast
+    let location: ToastLocation
     @Binding var shouldTimeout: Bool
     @State var isExpanded: Bool = false
     
-    init(toast: Toast, shouldTimeout: Binding<Bool> = .constant(false)) {
+    init(
+        toast: Toast,
+        location: ToastLocation = .top,
+        shouldTimeout: Binding<Bool> = .constant(false)
+    ) {
         self.toast = toast
+        self.location = location
         self._shouldTimeout = shouldTimeout
     }
     
@@ -43,12 +49,12 @@ struct ToastView: View {
             ):
                 Button {
                     callback()
-                    ToastModel.main.removeFirst()
+                    ToastModel.main.removeFirst(location: location)
                 } label: {
                     regularView(
-                        title: title,
-                        subtitle: "Tap to Undo",
-                        systemImage: systemImage,
+                        title: title ?? "Undo",
+                        subtitle: title == nil ? nil : "Tap to Undo",
+                        systemImage: systemImage ?? "arrow.uturn.backward.circle.fill",
                         imageColor: color,
                         subtitleColor: .blue
                     )
@@ -57,8 +63,15 @@ struct ToastView: View {
                 .buttonStyle(EmptyButtonStyle())
             case let .error(details):
                 errorView(details)
-            default:
-                Text("???")
+            case let .user(user):
+                HStack {
+                    AvatarView(user.wrappedValue.stub, showLoadingPlaceholder: false)
+                        .frame(height: 28)
+                        .padding(.leading, 10)
+                    Text(user.wrappedValue.nickname ?? user.wrappedValue.name)
+                        .frame(minWidth: 100)
+                        .padding(.trailing)
+                }
             }
         }
         .frame(height: isExpanded ? nil : 47)
@@ -124,7 +137,7 @@ struct ToastView: View {
                     
                     if isExpanded {
                         CloseButtonView(size: 28, callback: {
-                            ToastModel.main.removeFirst()
+                            ToastModel.main.removeFirst(location: location)
                         })
                         .padding(.trailing, 10)
                     }
@@ -175,11 +188,12 @@ struct ToastView: View {
     VStack {
         ToastView(toast: .success())
         ToastView(toast: .failure())
+        ToastView(toast: .undoable(callback: {}))
         ToastView(
             toast: .undoable(
                 title: "Unfavorited Community",
                 systemImage: "star.slash.fill",
-                callback: { },
+                callback: {},
                 color: .blue
             )
         )

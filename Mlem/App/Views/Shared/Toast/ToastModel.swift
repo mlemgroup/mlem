@@ -11,10 +11,11 @@ import SwiftUI
 class ToastModel {
     private var groups: [ToastGroup] = .init()
     
-    var activeGroup: ToastGroup? { groups.first }
-    var activeToast: Toast? { groups.first?.activeToast }
-    
     static let main: ToastModel = .init()
+    
+    func activeGroup(location: ToastLocation) -> ToastGroup? {
+        groups.first(where: { $0.location == location })
+    }
     
     func add(_ toast: Toast, group: ToastGroup) {
         group.setToast(toast)
@@ -23,13 +24,15 @@ class ToastModel {
         }
     }
     
-    func add(_ toast: Toast) {
-        groups.append(.init(toast))
+    func add(_ toast: Toast, location: ToastLocation? = nil) {
+        groups.append(.init(toast, location: location ?? toast.location))
     }
     
-    func removeFirst() {
+    func removeFirst(location: ToastLocation) {
         if !groups.isEmpty {
-            groups.removeFirst()
+            if let index = groups.firstIndex(where: { $0.location == location }) {
+                groups.remove(at: index)
+            }
         }
     }
 }

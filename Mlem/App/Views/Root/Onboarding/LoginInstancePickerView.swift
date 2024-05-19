@@ -85,9 +85,6 @@ struct LoginInstancePickerView: View {
     @ViewBuilder
     func instanceSuggestionsBox(suggestions: [String]) -> some View {
         VStack(spacing: 0) {
-            Button("Success") {
-                ToastModel.main.add(.success())
-            }
             instanceField
             if !suggestions.isEmpty, !domain.isEmpty, focused {
                 ScrollView {

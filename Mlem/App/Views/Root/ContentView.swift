@@ -45,10 +45,15 @@ struct ContentView: View {
             }
             .overlay(alignment: .top) {
                 ToastOverlayView(
-                    shouldDisplayNewToasts: navigationModel.layers.allSatisfy { !$0.canDisplayToasts }
+                    shouldDisplayNewToasts: shouldDisplayToasts,
+                    location: .top
                 )
                 .padding(.top, -6)
             }
+    }
+
+    var shouldDisplayToasts: Bool {
+        navigationModel.layers.allSatisfy { !$0.canDisplayToasts }
     }
     
     var content: some View {
@@ -80,6 +85,13 @@ struct ContentView: View {
         ], onSwipeUp: {
             navigationModel.openSheet(.quickSwitcher)
         })
+        .overlay(alignment: .bottom) {
+            ToastOverlayView(
+                shouldDisplayNewToasts: shouldDisplayToasts,
+                location: .bottom
+            )
+            .padding(.bottom, 100)
+        }
         .ignoresSafeArea()
     }
 }

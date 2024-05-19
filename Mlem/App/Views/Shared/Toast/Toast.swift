@@ -18,15 +18,15 @@ enum Toast: Hashable {
     )
     
     case undoable(
-        title: String,
+        title: String? = nil,
         systemImage: String? = nil,
         callback: () -> Void,
-        color: Color
+        color: Color = .blue
     )
     
     case error(_ details: ErrorDetails)
     
-    case profile(AnyProfileProviding)
+    case user(AnyUserProviding)
     
     var duration: Double {
         switch self {
@@ -34,10 +34,19 @@ enum Toast: Hashable {
             duration
         case .undoable:
             2.5
-        case .profile:
-            0.5
-        case .error:
+        case .user:
             1.0
+        case .error:
+            1.5
+        }
+    }
+    
+    var location: ToastLocation {
+        switch self {
+        case .undoable:
+            .bottom
+        default:
+            .top
         }
     }
     
@@ -61,8 +70,8 @@ enum Toast: Hashable {
         )
     }
     
-    static func profile(_ model: any ProfileProviding) -> Self {
-        .profile(.init(wrappedValue: model))
+    static func user(_ model: any UserProviding) -> Self {
+        .user(.init(wrappedValue: model))
     }
     
     func hash(into hasher: inout Hasher) {
@@ -82,7 +91,7 @@ enum Toast: Hashable {
         case let .error(details):
             hasher.combine("error")
             hasher.combine(details)
-        case let .profile(profile):
+        case let .user(profile):
             hasher.combine("profile")
             hasher.combine(profile)
         }
@@ -93,14 +102,14 @@ enum Toast: Hashable {
     }
 }
 
-struct AnyProfileProviding: Hashable {
-    let wrappedValue: any ProfileProviding
+struct AnyUserProviding: Hashable {
+    let wrappedValue: any UserProviding
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(wrappedValue.actorId)
     }
     
-    static func == (lhs: AnyProfileProviding, rhs: AnyProfileProviding) -> Bool {
+    static func == (lhs: AnyUserProviding, rhs: AnyUserProviding) -> Bool {
         lhs.wrappedValue.actorId == rhs.wrappedValue.actorId
     }
 }

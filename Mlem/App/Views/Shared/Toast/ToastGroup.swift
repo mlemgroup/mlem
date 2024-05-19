@@ -11,10 +11,13 @@ import Foundation
 class ToastGroup: Identifiable, Equatable {
     private(set) var activeToast: Toast?
     
+    let location: ToastLocation
+    
     var activeId: UUID = .init()
     
-    init(_ activeToast: Toast? = nil) {
+    init(_ activeToast: Toast? = nil, location: ToastLocation = .top) {
         self.activeToast = activeToast
+        self.location = location
     }
     
     func setToast(_ toast: Toast) {
