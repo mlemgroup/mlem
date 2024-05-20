@@ -24,7 +24,9 @@ class ToastModel {
             location: location ?? type.location,
             important: important
         )
-        if !important, let index = toasts.firstIndex(where: { !$0.important }) {
+        if !important, let index = toasts.firstIndex(
+            where: { !$0.important && $0.location == location }
+        ) {
             toasts.remove(at: index)
         }
         toasts.append(newToast)
