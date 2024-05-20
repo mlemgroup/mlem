@@ -11,17 +11,13 @@ struct ToastOverlayView: View {
     let shouldDisplayNewToasts: Bool
     let location: ToastLocation
     
-    @State var activeToasts: [Toast] = [] {
-        didSet {
-            print("SET", oldValue.count, activeToasts.count)
-        }
-    }
+    @State var activeToasts: [Toast] = []
     
     var toastModel: ToastModel { .main }
     
     var body: some View {
         VStack {
-            ForEach(activeToasts, id: \.id) { toast in
+            ForEach(location == .top ? activeToasts : activeToasts.reversed(), id: \.id) { toast in
                 ToastView(toast: toast)
                     .transition(
                         activeToasts.count <= 1 ? .move(edge: location.edge).combined(with: .opacity) : .opacity
@@ -35,7 +31,6 @@ struct ToastOverlayView: View {
                 addNewToasts(toasts)
             }
         }
-        // When sheet moves to background, remove toasts
         .onChange(of: shouldDisplayNewToasts) { _, newValue in
             if !newValue {
                 activeToasts.forEach { $0.kill() }
