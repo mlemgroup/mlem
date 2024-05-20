@@ -13,12 +13,14 @@ struct CompactPost: View {
     let post: any Post1Providing
     
     var body: some View {
+        content
+            .padding(AppConstants.standardSpacing)
+    }
+    
+    var content: some View {
         // TODO: this PR thumbnail location
         HStack(alignment: .top, spacing: AppConstants.standardSpacing) {
-            // TODO: this PR move this to ThumbnailImageView
-            Image(systemName: "photo")
-                .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
-                .background(Color.gray)
+            ThumbnailImageView(post: post)
             
             VStack(alignment: .leading, spacing: AppConstants.compactSpacing) {
                 HStack {
@@ -35,6 +37,5 @@ struct CompactPost: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(AppConstants.standardSpacing)
     }
 }

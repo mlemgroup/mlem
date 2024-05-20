@@ -16,6 +16,7 @@ protocol PaletteProviding {
     var background: Color { get }
     var secondaryBackground: Color { get }
     var tertiaryBackground: Color { get }
+    var thumbnailBackground: Color { get }
     var accent: Color { get }
     
     // interactions
@@ -43,6 +44,7 @@ struct ColorPalette: PaletteProviding {
     var background: Color
     var secondaryBackground: Color
     var tertiaryBackground: Color
+    var thumbnailBackground: Color
     var accent: Color
 
     // interactions
@@ -76,6 +78,7 @@ class Palette: PaletteProviding {
     var background: Color { palette.background }
     var secondaryBackground: Color { palette.secondaryBackground }
     var tertiaryBackground: Color { palette.tertiaryBackground }
+    var thumbnailBackground: Color { palette.thumbnailBackground }
     var accent: Color { palette.accent }
     
     var upvote: Color { palette.upvote }
