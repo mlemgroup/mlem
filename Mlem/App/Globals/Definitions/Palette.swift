@@ -11,6 +11,8 @@ import SwiftUI
 protocol PaletteProviding {
     // basics
     var primary: Color { get }
+    var secondary: Color { get }
+    var tertiary: Color { get }
     var background: Color { get }
     var secondaryBackground: Color { get }
     var tertiaryBackground: Color { get }
@@ -36,6 +38,8 @@ enum PaletteOption: String, CaseIterable {
 struct ColorPalette: PaletteProviding {
     // basics
     var primary: Color
+    var secondary: Color
+    var tertiary: Color
     var background: Color
     var secondaryBackground: Color
     var tertiaryBackground: Color
@@ -67,6 +71,8 @@ class Palette: PaletteProviding {
     
     // ColorProviding conformance
     var primary: Color { palette.primary }
+    var secondary: Color { palette.secondary }
+    var tertiary: Color { palette.tertiary }
     var background: Color { palette.background }
     var secondaryBackground: Color { palette.secondaryBackground }
     var tertiaryBackground: Color { palette.tertiaryBackground }

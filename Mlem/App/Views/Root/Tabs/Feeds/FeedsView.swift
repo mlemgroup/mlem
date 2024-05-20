@@ -117,26 +117,28 @@ struct MinimalPostFeedView: View {
                 ScrollToView(appeared: $scrollToTopAppeared)
                     .id(scrollToTop)
                 
+                Divider()
                 ForEach(postTracker.items, id: \.uid) { post in
                     NavigationLink(value: NavigationPage.expandedPost(post)) {
-                        HStack {
-                            actionButton(post.upvoteAction)
-                            actionButton(post.downvoteAction)
-                            actionButton(post.saveAction)
-                            
-                            Text(post.title)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.horizontal)
-                                .foregroundStyle(post.read ? .secondary : .primary)
-                        }
-                        .padding(10)
-                        .background(palette.background)
-                        .contentShape(.rect)
-                        .contextMenu {
-                            ForEach(post.menuActions.children, id: \.id) { action in
-                                MenuButton(action: action)
-                            }
-                        }
+                        FeedPost(post: .init(post: post))
+//                        HStack {
+//                            actionButton(post.upvoteAction)
+//                            actionButton(post.downvoteAction)
+//                            actionButton(post.saveAction)
+//
+//                            Text(post.title)
+//                                .frame(maxWidth: .infinity, alignment: .leading)
+//                                .padding(.horizontal)
+//                                .foregroundStyle(post.read ? .secondary : .primary)
+//                        }
+//                        .padding(10)
+//                        .background(palette.background)
+//                        .contentShape(.rect)
+//                        .contextMenu {
+//                            ForEach(post.menuActions.children, id: \.id) { action in
+//                                MenuButton(action: action)
+//                            }
+//                        }
                     }
                     .buttonStyle(.plain)
                     Divider()
