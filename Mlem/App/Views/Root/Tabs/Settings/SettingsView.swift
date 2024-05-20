@@ -12,7 +12,7 @@ struct SettingsView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     
-    var accounts: [UserStub] { AccountsTracker.main.savedAccounts }
+    var accounts: [Account] { AccountsTracker.main.savedAccounts }
     
     var body: some View {
         Form {
@@ -33,12 +33,12 @@ struct SettingsView: View {
         NavigationLink(.settings(.account)) {
             let account = appState.firstAccount
             HStack(spacing: 23) {
-                AvatarView(account.userStub)
+                AvatarView(account.account)
                     .frame(width: 54)
                     .padding(.vertical, -6)
                     .padding(.leading, 3)
                 VStack(alignment: .leading, spacing: 3) {
-                    Text(account.userStub?.nickname ?? account.userStub?.name ?? "Guest")
+                    Text(account.account?.nickname ?? account.account?.name ?? "Guest")
                         .font(.title2)
                     if let hostName = account.api.baseUrl.host() {
                         Text("@\(hostName)")
@@ -56,7 +56,7 @@ struct SettingsView: View {
         NavigationLink(.settings(.accounts)) {
             HStack(spacing: 10) {
                 AvatarStackView(
-                    urls: accounts.prefix(4).map(\.avatarUrl),
+                    urls: accounts.prefix(4).map(\.avatar),
                     type: .person,
                     spacing: accounts.count <= 3 ? 18 : 14,
                     outlineWidth: 0.7,

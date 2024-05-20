@@ -23,10 +23,10 @@ struct AccountButtonView: View {
         case instanceOnly, timeOnly, instanceAndTime
     }
     
-    let account: UserStub
+    let account: Account
     let caption: CaptionState
     
-    init(account: UserStub, caption: CaptionState = .instanceAndTime, isSwitching: Binding<Bool>) {
+    init(account: Account, caption: CaptionState = .instanceAndTime, isSwitching: Binding<Bool>) {
         self.account = account
         self.caption = caption
         self._isSwitching = isSwitching
@@ -72,7 +72,7 @@ struct AccountButtonView: View {
         } label: {
             HStack(alignment: .center, spacing: 10) {
                 // Using AvatarView or CachedImage here causes the quick switcher sheet to be locked to `.large` on iOS 17. To avoid this, we're using LazyImage directly instead - Sjmarf
-                LazyImage(url: account.avatarUrl) { state in
+                LazyImage(url: account.avatar) { state in
                     if let imageContainer = state.imageContainer {
                         Image(uiImage: imageContainer.image)
                             .resizable()
@@ -113,7 +113,7 @@ struct AccountButtonView: View {
         }
         .confirmationDialog("Really sign out of \(account.nickname ?? account.name)?", isPresented: $showingSignOutConfirmation) {
             Button("Sign Out", role: .destructive) {
-                if navigation.isInsideSheet, appState.activeAccounts.contains(where: { $0.userStub === account }) {
+                if navigation.isInsideSheet, appState.activeAccounts.contains(where: { $0.account === account }) {
                     dismiss()
                 }
                 account.signOut()

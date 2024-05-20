@@ -19,8 +19,8 @@ class AccountsTracker {
     
     @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
     
-    var savedAccounts: [UserStub] = .init()
-    var defaultAccount: UserStub? { savedAccounts.first }
+    var savedAccounts: [Account] = .init()
+    var defaultAccount: Account? { savedAccounts.first }
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -28,7 +28,7 @@ class AccountsTracker {
         self.savedAccounts = persistenceRepository.loadAccounts()
     }
     
-    func addAccount(account: UserStub) {
+    func addAccount(account: Account) {
         guard !savedAccounts.contains(where: { account.id == $0.id }) else {
             assertionFailure("Tried to add a duplicate account to the tracker")
             return
@@ -37,7 +37,7 @@ class AccountsTracker {
         saveAccounts()
     }
 
-    func removeAccount(account: UserStub) {
+    func removeAccount(account: Account) {
         guard let index = savedAccounts.firstIndex(where: { account.id == $0.id }) else {
             assertionFailure("Tried to remove an account that does not exist")
             return
@@ -45,7 +45,7 @@ class AccountsTracker {
         savedAccounts.remove(at: index)
         saveAccounts()
         account.deleteTokenFromKeychain()
-        AppState.main.deactivate(userStub: account)
+        AppState.main.deactivate(account: account)
     }
     
     @discardableResult
@@ -54,7 +54,7 @@ class AccountsTracker {
         username: String,
         password: String,
         totpToken: String? = nil
-    ) async throws -> UserStub {
+    ) async throws -> Account {
         let response = try await unauthenticatedApi.login(
             username: username,
             password: password,
@@ -67,15 +67,19 @@ class AccountsTracker {
         let authenticatedApiClient = ApiClient.getApiClient(for: unauthenticatedApi.baseUrl, with: token)
         
         // Check if account exists already
-        if let user = savedAccounts.first(where: {
+        if let account = savedAccounts.first(where: {
             $0.name.caseInsensitiveCompare(username) == .orderedSame && $0.api.baseUrl == authenticatedApiClient.baseUrl
         }) {
-            user.updateToken(token)
-            return user
+            account.updateToken(token)
+            return account
         } else {
-            let user = try await authenticatedApiClient.loadUser()
-            addAccount(account: user)
-            return user
+            let response = try await authenticatedApiClient.getMyPerson()
+            guard let person = response.person else {
+                throw ApiClientError.invalidSession
+            }
+            let account = Account(person: person, instance: response.instance)
+            addAccount(account: account)
+            return account
         }
     }
     
