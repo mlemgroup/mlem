@@ -50,6 +50,15 @@ enum ToastType: Hashable {
         }
     }
     
+    var important: Bool {
+        switch self {
+        case .error:
+            true
+        default:
+            false
+        }
+    }
+    
     static func success(_ message: String? = nil) -> Self {
         .basic(
             title: message ?? "Success",

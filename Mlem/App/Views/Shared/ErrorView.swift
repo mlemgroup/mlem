@@ -22,7 +22,6 @@ struct ErrorView: View {
         .autoconnect()
     
     init(_ errorDetails: ErrorDetails) {
-        var errorDetails = errorDetails
         _errorDetails = State(wrappedValue: errorDetails)
     }
 

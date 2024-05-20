@@ -16,8 +16,8 @@ struct InboxView: View {
             Button("Success") {
                 ToastModel.main.add(.success())
             }
-            Button("Failure (Grouped)") {
-                ToastModel.main.add(.failure(), group: "group1")
+            Button("Failure") {
+                ToastModel.main.add(.failure())
             }
             Button("Profile") {
                 if let userStub = AppState.main.firstAccount.userStub {

@@ -13,28 +13,26 @@ class ToastModel {
     
     static let main: ToastModel = .init()
     
-    func activeToast(location: ToastLocation) -> Toast? {
-        toasts.first(where: { $0.location == location })
+    func activeToasts(location: ToastLocation) -> [Toast] {
+        Array(toasts.lazy.filter { $0.location == location }.prefix(3))
     }
     
-    func add(_ type: ToastType, location: ToastLocation? = nil, group: String? = nil) {
+    func add(_ type: ToastType, location: ToastLocation? = nil, important: Bool? = nil) {
+        let important = important ?? type.important
         let newToast: Toast = .init(
             type: type,
             location: location ?? type.location,
-            group: group
+            important: important
         )
-        if let group, let index = toasts.firstIndex(where: { $0.group == group }) {
-            toasts[index] = newToast
-        } else {
-            toasts.append(newToast)
+        if !important, let index = toasts.firstIndex(where: { !$0.important }) {
+            toasts.remove(at: index)
         }
+        toasts.append(newToast)
     }
     
-    func removeFirst(location: ToastLocation) {
-        if !toasts.isEmpty {
-            if let index = toasts.firstIndex(where: { $0.location == location }) {
-                toasts.remove(at: index)
-            }
+    func removeToast(id: UUID) {
+        if let index = toasts.firstIndex(where: { $0.id == id }) {
+            toasts.remove(at: index)
         }
     }
 }

@@ -11,79 +11,75 @@ struct ToastOverlayView: View {
     let shouldDisplayNewToasts: Bool
     let location: ToastLocation
     
-    @State var activeToast: Toast?
-    @State var shouldTimeout: Bool = true
+    @State var activeToasts: [Toast] = [] {
+        didSet {
+            print("SET", oldValue.count, activeToasts.count)
+        }
+    }
     
     var toastModel: ToastModel { .main }
     
     var body: some View {
         VStack {
-            if let activeToast {
-                ToastView(
-                    toast: activeToast,
-                    shouldTimeout: $shouldTimeout
-                )
-                .id(activeToast)
-                .transition(
-                    .move(edge: location.edge)
-                        .combined(with: .opacity)
-                )
+            ForEach(activeToasts, id: \.id) { toast in
+                ToastView(toast: toast)
+                    .transition(
+                        activeToasts.count <= 1 ? .move(edge: location.edge).combined(with: .opacity) : .opacity
+                    )
             }
         }
-        .animation(.snappy(duration: 0.3, extraBounce: 0.2), value: activeToast)
+        .animation(.snappy(duration: 0.3, extraBounce: 0.2), value: activeToasts)
         .onChange(of: onChangeHash) {
-            let toast = toastModel.activeToast(location: location)
-            if shouldDisplayNewToasts || toast == nil {
-                activeToast = toast
+            let toasts = toastModel.activeToasts(location: location)
+            if shouldDisplayNewToasts || toasts.isEmpty {
+                addNewToasts(toasts)
             }
-            shouldTimeout = true
         }
-        .task(id: taskHash) {
-            do {
-                try await Task.sleep(
-                    nanoseconds: UInt64(1_000_000_000 * (activeToast?.type.duration ?? 1.0))
-                )
-                if shouldTimeout, activeToast != nil {
-                    toastModel.removeFirst(location: location)
-                }
-            } catch {}
-        }
-        // When sheet moves to background, remove toast
+        // When sheet moves to background, remove toasts
         .onChange(of: shouldDisplayNewToasts) { _, newValue in
             if !newValue {
-                removeToast()
+                activeToasts.forEach { $0.kill() }
+                activeToasts = []
+            } else {
+                Task {
+                    try await Task.sleep(nanoseconds: UInt64(100_000_000))
+                    Task { @MainActor in
+                        addNewToasts(toastModel.activeToasts(location: location), startTimersAgain: true)
+                    }
+                }
             }
         }
-        // When sheet disappears, remove toast
-        .onDisappear(perform: removeToast)
+        .onDisappear {
+            activeToasts.forEach { $0.kill() }
+        }
         .task {
-            if shouldDisplayNewToasts, activeToast == nil {
+            if shouldDisplayNewToasts, activeToasts.isEmpty {
                 do {
                     try await Task.sleep(nanoseconds: UInt64(500_000_000))
-                    activeToast = toastModel.activeToast(location: location)
+                    addNewToasts(toastModel.activeToasts(location: location), startTimersAgain: true)
                 } catch {}
             }
         }
     }
     
-    func removeToast() {
-        if activeToast != nil {
-            toastModel.removeFirst(location: location)
-            activeToast = nil
+    func addNewToasts(_ toasts: [Toast], startTimersAgain: Bool = true) {
+        for toast in toasts where startTimersAgain || !toast.killTaskStarted {
+            toast.startKillTask()
         }
+        activeToasts = toasts
     }
     
     var onChangeHash: Int {
         var hasher = Hasher()
-        hasher.combine(toastModel.activeToast(location: location))
+        hasher.combine(toastModel.activeToasts(location: location).map(\.id))
         hasher.combine(shouldDisplayNewToasts)
         return hasher.finalize()
     }
     
     var taskHash: Int {
         var hasher = Hasher()
-        hasher.combine(activeToast)
-        hasher.combine(shouldTimeout)
+        hasher.combine(activeToasts.map(\.id))
+        hasher.combine(activeToasts.map(\.shouldTimeout))
         return hasher.finalize()
     }
 }

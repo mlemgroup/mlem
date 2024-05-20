@@ -7,16 +7,60 @@
 
 import Foundation
 
-struct Toast: Identifiable, Equatable, Hashable {
+class Toast: Identifiable, Hashable {
     let type: ToastType
     let location: ToastLocation
-    let group: String?
-    let id: UUID?
+    let important: Bool
+    let id: UUID
     
-    init(type: ToastType, location: ToastLocation, group: String?) {
+    private var killTask: Task<Void, Error>?
+    
+    var killTaskStarted: Bool { killTask != nil }
+    
+    var shouldTimeout: Bool = true {
+        didSet {
+            if shouldTimeout {
+                startKillTask()
+            } else {
+                killTask?.cancel()
+                killTask = nil
+            }
+        }
+    }
+    
+    init(type: ToastType, location: ToastLocation, important: Bool = false) {
         self.type = type
         self.location = location
-        self.group = group
+        self.important = important
         self.id = .init()
+    }
+    
+    func kill() {
+        ToastModel.main.removeToast(id: id)
+        killTask?.cancel()
+        killTask = nil
+    }
+    
+    func startKillTask() {
+        if shouldTimeout {
+            killTask?.cancel()
+            killTask = Task {
+                try await Task.sleep(
+                    nanoseconds: UInt64(1_000_000_000 * type.duration)
+                )
+                self.kill()
+            }
+        }
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(type)
+        hasher.combine(location)
+        hasher.combine(important)
+    }
+    
+    static func == (lhs: Toast, rhs: Toast) -> Bool {
+        lhs.hashValue == rhs.hashValue
     }
 }

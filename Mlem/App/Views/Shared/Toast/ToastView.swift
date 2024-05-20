@@ -11,16 +11,8 @@ struct ToastView: View {
     @Environment(\.colorScheme) var colorScheme
     
     let toast: Toast
-    @Binding var shouldTimeout: Bool
-    @State var isExpanded: Bool = false
-    
-    init(
-        toast: Toast,
-        shouldTimeout: Binding<Bool> = .constant(false)
-    ) {
-        self.toast = toast
-        self._shouldTimeout = shouldTimeout
-    }
+    @State private var isExpanded: Bool = false
+    @State private var didUndo: Bool = false
     
     var body: some View {
         HStack {
@@ -45,13 +37,18 @@ struct ToastView: View {
                 color: color
             ):
                 Button {
-                    callback()
-                    ToastModel.main.removeFirst(location: toast.location)
+                    if !didUndo {
+                        didUndo = true
+                        callback()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                            toast.kill()
+                        }
+                    }
                 } label: {
                     regularView(
                         title: title ?? "Undo",
                         subtitle: title == nil ? nil : "Tap to Undo",
-                        systemImage: systemImage ?? "arrow.uturn.backward.circle.fill",
+                        systemImage: didUndo ? "checkmark.circle.fill" : (systemImage ?? "arrow.uturn.backward.circle.fill"),
                         imageColor: color,
                         subtitleColor: .blue
                     )
@@ -92,6 +89,7 @@ struct ToastView: View {
         HStack {
             if let systemImage {
                 image(systemImage, color: imageColor)
+                    .contentTransition(.symbolEffect(.replace, options: .speed(4)))
             }
             Group {
                 if let subtitle {
@@ -119,7 +117,7 @@ struct ToastView: View {
             if details.error != nil {
                 withAnimation(.bouncy(duration: 0.2)) {
                     isExpanded = true
-                    shouldTimeout = false
+                    toast.shouldTimeout = false
                 }
             }
         } label: {
@@ -134,7 +132,7 @@ struct ToastView: View {
                     
                     if isExpanded {
                         CloseButtonView(size: 28, callback: {
-                            ToastModel.main.removeFirst(location: toast.location)
+                            toast.kill()
                         })
                         .padding(.trailing, 10)
                     }
@@ -183,7 +181,7 @@ struct ToastView: View {
 
 extension ToastView {
     init(_ type: ToastType) {
-        self.init(toast: .init(type: type, location: .top, group: nil))
+        self.init(toast: .init(type: type, location: .top))
     }
 }
 

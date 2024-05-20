@@ -11,7 +11,6 @@ import SwiftUI
 func handleError(
     _ error: Error,
     errorDetails: Binding<ErrorDetails?>? = nil,
-    toastGroup: String? = nil,
     file: StaticString = #fileID,
     function: StaticString = #function,
     line: Int = #line
@@ -45,7 +44,7 @@ func handleError(
         if let errorDetails {
             errorDetails.wrappedValue = .init(error: error)
         } else {
-            ToastModel.main.add(.error(.init(error: error)), group: toastGroup)
+            ToastModel.main.add(.error(.init(error: error)))
         }
     }
 }

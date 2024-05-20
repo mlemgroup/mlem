@@ -25,11 +25,10 @@ struct NavigationLayerView: View {
                                 .environment(\.isRootView, false)
                         }
                 }
-                .environment(layer)
+               
             } else {
                 rootView()
                     .environment(\.isRootView, true)
-                    .environment(layer)
             }
         }
         .overlay(alignment: .top) {
@@ -47,6 +46,7 @@ struct NavigationLayerView: View {
             )
             .padding(.bottom, 8)
         }
+        .environment(layer)
     }
     
     @ViewBuilder
