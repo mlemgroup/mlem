@@ -156,12 +156,12 @@ struct ToastView: View {
                         .font(.caption)
                         .buttonStyle(.borderedProminent)
                         .buttonBorderShape(.capsule)
-                        .tint(.red)
-                        .padding(10)
+                        .tint(Palette.main.failure)
+                        .padding(AppConstants.standardSpacing)
                     }
                 }
                 .frame(maxHeight: .infinity, alignment: .leading)
-                .background(isExpanded ? .red.opacity(0.15) : .clear)
+                .background(isExpanded ? Palette.main.failure.opacity(0.15) : .clear)
             }
         }
         .buttonStyle(EmptyButtonStyle())
@@ -175,7 +175,7 @@ struct ToastView: View {
             .fontWeight(.semibold)
             .symbolRenderingMode(.hierarchical)
             .foregroundStyle(color)
-            .padding([.vertical, .leading], 10)
+            .padding([.vertical, .leading], AppConstants.standardSpacing)
     }
 }
 
