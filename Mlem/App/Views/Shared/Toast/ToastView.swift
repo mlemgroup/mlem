@@ -71,8 +71,8 @@ struct ToastView: View {
         }
         .frame(height: isExpanded ? nil : 47)
         .frame(maxHeight: isExpanded ? 230 : nil)
-        .background(colorScheme == .dark ? Palette.main.secondaryBackground : Palette.main.background
-        )
+        .background((colorScheme == .dark ? Palette.main.secondaryBackground : Palette.main.background).opacity(0.5))
+        .background(.regularMaterial)
         .clipShape(.rect(cornerRadius: 25))
         .shadow(color: .black.opacity(0.1), radius: 5)
         .shadow(color: .black.opacity(0.1), radius: 1)
@@ -202,5 +202,15 @@ extension ToastView {
             )
         )
         ToastView(.error(.init()))
+    }
+    .environment(Palette.main)
+    .background {
+        VStack(spacing: 0) {
+            Color.clear
+            HStack(spacing: 0) {
+                Color.red
+                Color.blue
+            }
+        }
     }
 }
