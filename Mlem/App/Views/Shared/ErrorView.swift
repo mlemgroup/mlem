@@ -11,7 +11,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct ErrorView: View {
-    @AppStorage("developerMode") var developerMode: Bool = false
+    @AppStorage("dev.developerMode") var developerMode: Bool = false
     
     @State var errorDetails: ErrorDetails
     
@@ -117,7 +117,7 @@ struct ErrorView: View {
             }
             .buttonStyle(.plain)
         }
-        .padding(10)
+        .padding(AppConstants.standardSpacing)
         .background(Color(.secondarySystemGroupedBackground))
         .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
     }
