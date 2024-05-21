@@ -21,7 +21,7 @@ enum ToastType: Hashable {
         title: String? = nil,
         systemImage: String? = nil,
         callback: () -> Void,
-        color: Color = .blue
+        color: Color = Palette.main.accent
     )
     
     case error(_ details: ErrorDetails)

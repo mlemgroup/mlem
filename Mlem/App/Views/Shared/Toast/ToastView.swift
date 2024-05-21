@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ToastView: View {
+    @Environment(Palette.self) var palette
     @Environment(\.colorScheme) var colorScheme
     
     let toast: Toast
@@ -46,11 +47,11 @@ struct ToastView: View {
                     }
                 } label: {
                     regularView(
-                        title: title ?? "Undo",
-                        subtitle: title == nil ? nil : "Tap to Undo",
-                        systemImage: didUndo ? "checkmark.circle.fill" : (systemImage ?? "arrow.uturn.backward.circle.fill"),
+                        title: title ?? (didUndo ? "Undone!" : "Undo"),
+                        subtitle: title == nil ? nil : (didUndo ? "Undone!" : "Tap to Undo"),
+                        systemImage: didUndo ? Icons.successCircleFill : (systemImage ?? Icons.undoCircleFill),
                         imageColor: color,
-                        subtitleColor: .blue
+                        subtitleColor: Palette.main.accent
                     )
                     .contentShape(.rect)
                 }
@@ -97,10 +98,12 @@ struct ToastView: View {
                         Text(title)
                             .font(.caption)
                             .fontWeight(.semibold)
+                            .contentTransition(.opacity)
                         Text(subtitle)
                             .font(.caption)
                             .fontWeight(.semibold)
                             .foregroundStyle(subtitleColor)
+                            .contentTransition(.opacity)
                     }
                 } else {
                     Text(title)
@@ -123,7 +126,7 @@ struct ToastView: View {
         } label: {
             VStack(spacing: 0) {
                 HStack {
-                    image(details.systemImage ?? "exclamationmark.circle.fill", color: .red)
+                    image(details.systemImage ?? Icons.errorCircleFill, color: palette.failure)
                     
                     Text(details.title ?? "Error")
                         .frame(minWidth: 100)

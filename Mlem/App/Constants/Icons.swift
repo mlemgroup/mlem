@@ -153,6 +153,8 @@ enum Icons {
     static let closeCircle: String = "xmark.circle"
     static let closeCircleFill: String = "xmark.circle.fill"
     static let cakeDay: String = "birthday.cake"
+    static let undoCircleFill: String = "arrow.uturn.backward.circle.fill"
+    static let errorCircleFill: String = "exclamationmark.circle.fill"
     
     // end of feed
     static let endOfFeedHobbit: String = "figure.climbing"
