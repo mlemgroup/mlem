@@ -24,7 +24,7 @@ struct CompactPost: View {
             
             VStack(alignment: .leading, spacing: AppConstants.compactSpacing) {
                 HStack {
-                    UserLabelView(person: post.creator_)
+                    UserLabelView(person: post.creator_, showAvatar: true)
                     Spacer()
                     // TODO: this PR EllipsisMenu
                     Image(systemName: "ellipsis")
