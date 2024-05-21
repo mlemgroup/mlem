@@ -22,7 +22,7 @@ struct CloseButtonView: View {
                 dismiss()
             }
         } label: {
-            Image(systemName: "xmark.circle.fill")
+            Image(systemName: Icons.closeCircleFill)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(height: size)

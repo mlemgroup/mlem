@@ -63,8 +63,8 @@ enum ToastType: Hashable {
         .basic(
             title: message ?? "Success",
             subtitle: nil,
-            systemImage: "checkmark.circle.fill",
-            color: .green,
+            systemImage: Icons.successCircleFill,
+            color: Palette.main.success,
             duration: 1
         )
     }
@@ -73,8 +73,8 @@ enum ToastType: Hashable {
         .basic(
             title: message ?? "Failed",
             subtitle: nil,
-            systemImage: "xmark.circle.fill",
-            color: .red,
+            systemImage: Icons.failureCircleFill,
+            color: Palette.main.failure,
             duration: 1
         )
     }

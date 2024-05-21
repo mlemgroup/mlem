@@ -11,6 +11,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct ErrorView: View {
+    @Environment(Palette.self) var palette
     @AppStorage("developerMode") var developerMode: Bool = false
     
     @State var errorDetails: ErrorDetails
@@ -44,7 +45,7 @@ struct ErrorView: View {
                 }
                 Text(errorDetails.title ?? "Something went wrong.")
                     .font(.title3.bold())
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(palette.primary)
                 
                 if let body = errorDetails.body {
                     Text(body)
