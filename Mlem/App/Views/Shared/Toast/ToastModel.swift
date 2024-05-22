@@ -18,14 +18,13 @@ class ToastModel {
     }
     
     func add(_ type: ToastType, location: ToastLocation? = nil, important: Bool? = nil) {
-        let important = important ?? type.important
         let newToast: Toast = .init(
             type: type,
             location: location ?? type.location,
-            important: important
+            important: important ?? type.important
         )
-        if !important, let index = toasts.firstIndex(
-            where: { !$0.important && $0.location == location }
+        if !newToast.important, let index = toasts.firstIndex(
+            where: { !$0.important && $0.location == newToast.location }
         ) {
             toasts.remove(at: index)
         }
