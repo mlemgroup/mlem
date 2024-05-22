@@ -31,7 +31,7 @@ struct AvatarView: View {
 }
 
 extension AvatarView {
-    init<T: ProfileProviding>(
+    init<T: Profile1Providing>(
         _ model: T?,
         showLoadingPlaceholder: Bool = true
     ) {
@@ -43,7 +43,7 @@ extension AvatarView {
     }
 
     init(
-        _ model: any ProfileProviding,
+        _ model: any Profile1Providing,
         showLoadingPlaceholder: Bool = true
     ) {
         self.init(
@@ -54,7 +54,7 @@ extension AvatarView {
     }
     
     init(
-        _ model: (any ProfileProviding)?,
+        _ model: (any Profile1Providing)?,
         type: AvatarType,
         showLoadingPlaceholder: Bool = true
     ) {

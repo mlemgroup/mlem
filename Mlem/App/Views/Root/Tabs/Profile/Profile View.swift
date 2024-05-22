@@ -27,9 +27,9 @@ struct ProfileView: View {
     var content: some View {
         ScrollView {
             VStack {
-                Text("\(appState.firstAccount.user?.name ?? "No User")")
+                Text("\(appState.firstAccount.person?.name ?? "No User")")
                 Text("\(appState.firstApi.baseUrl)")
-                Text(appState.firstAccount.user?.displayName ?? "...")
+                Text(appState.firstAccount.person?.displayName ?? "...")
                 Divider()
                 Toggle("Upvote On Save", isOn: $upvoteOnSave)
                     .padding(.horizontal, 50)

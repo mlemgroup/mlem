@@ -10,25 +10,25 @@ import NukeUI
 import SwiftUI
 
 struct AvatarBannerView: View {
-    var model: (any ProfileProviding)?
+    var model: (any Profile2Providing)?
     var type: AvatarType
     var showEmptyBanner: Bool = false
     var showBanner: Bool = true
     var showAvatar: Bool = true
 
-    init<T: ProfileProviding>(_ model: T?, showEmptyBanner: Bool = false) {
+    init<T: Profile2Providing>(_ model: T?, showEmptyBanner: Bool = false) {
         self.model = model
         self.type = T.avatarType
         self.showEmptyBanner = showEmptyBanner
     }
     
-    init(_ model: any ProfileProviding, showEmptyBanner: Bool = false) {
+    init(_ model: any Profile2Providing, showEmptyBanner: Bool = false) {
         self.model = model
         self.type = Swift.type(of: model).avatarType
         self.showEmptyBanner = showEmptyBanner
     }
     
-    init(_ model: (any ProfileProviding)?, type: AvatarType, showEmptyBanner: Bool = false) {
+    init(_ model: (any Profile2Providing)?, type: AvatarType, showEmptyBanner: Bool = false) {
         self.model = model
         self.type = type
         self.showEmptyBanner = showEmptyBanner

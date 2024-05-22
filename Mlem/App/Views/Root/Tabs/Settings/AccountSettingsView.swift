@@ -14,15 +14,15 @@ struct AccountSettingsView: View {
         Form {
             Section {
                 VStack(spacing: AppConstants.standardSpacing) {
-                    AvatarBannerView(appState.firstAccount.user)
+                    AvatarBannerView(appState.firstAccount.person)
                     VStack(spacing: 5) {
-                        Text(appState.firstAccount.user?.displayName ?? "Guest")
+                        Text(appState.firstAccount.person?.displayName ?? "Guest")
                             .font(.title)
                             .fontWeight(.semibold)
                             .lineLimit(1)
                             .minimumScaleFactor(0.01)
-                        if let user = appState.firstAccount.user, let hostName = user.host {
-                            Text("@\(user.name)@\(hostName)")
+                        if let person = appState.firstAccount.person, let hostName = person.host {
+                            Text("@\(person.name)@\(hostName)")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
