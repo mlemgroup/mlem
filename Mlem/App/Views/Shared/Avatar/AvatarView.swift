@@ -28,19 +28,15 @@ struct AvatarView: View {
 }
 
 extension AvatarView {
-    init<T: ProfileProviding>(_ model: T?) {
+    init<T: Profile1Providing>(_ model: T?) {
         self.init(url: model?.avatar, type: T.avatarType)
     }
-
-    init(_ model: any ProfileProviding) {
+    
+    init(_ model: any Profile1Providing) {
         self.init(url: model.avatar, type: Swift.type(of: model).avatarType)
     }
     
-    init(_ model: (any ProfileProviding)?, type: AvatarType) {
+    init(_ model: (any Profile1Providing)?, type: AvatarType) {
         self.init(url: model?.avatar, type: type)
-    }
-    
-    init(_ userStub: UserStub?) {
-        self.init(url: userStub?.avatarUrl, type: .person)
     }
 }

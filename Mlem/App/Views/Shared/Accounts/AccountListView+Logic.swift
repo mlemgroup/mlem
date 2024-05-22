@@ -9,7 +9,7 @@ import MlemMiddleware
 import SwiftUI
 
 extension AccountListView {
-    var accounts: [UserStub] {
+    var accounts: [Account] {
         let accountSort = accountsTracker.savedAccounts.count == 2 ? .custom : accountSort
         switch accountSort {
         case .custom:
@@ -20,7 +20,7 @@ extension AccountListView {
             return accountsTracker.savedAccounts.sorted { $0.instanceSortKey < $1.instanceSortKey }
         case .mostRecent:
             return accountsTracker.savedAccounts.sorted { left, right in
-                if appState.firstAccount.user?.actorId == left.actorId {
+                if appState.firstAccount.person?.actorId == left.actorId {
                     return true
                 } else if appState.firstAccount.actorId == right.actorId {
                     return false
@@ -30,7 +30,7 @@ extension AccountListView {
         }
     }
     
-    func getNameCategory(account: UserStub) -> String {
+    func getNameCategory(account: Account) -> String {
         guard let first = (account.nickname ?? account.name).first else { return "Unknown" }
         if first.isLetter {
             return String(first.lowercased())
@@ -66,9 +66,9 @@ extension AccountListView {
             )
             return array
         case .mostRecent:
-            var today = [UserStub]()
-            var last30Days = [UserStub]()
-            var older = [UserStub]()
+            var today = [Account]()
+            var last30Days = [Account]()
+            var older = [Account]()
             for account in accountsTracker.savedAccounts {
                 if account.actorId == appState.firstAccount.actorId {
                     continue
@@ -95,8 +95,8 @@ extension AccountListView {
             var groups = [AccountGroup]()
             
             today.sort { $0.lastLoggedIn ?? .distantPast > $1.lastLoggedIn ?? .distantPast }
-            if let user = appState.firstAccount.user {
-                today.prepend(user.stub)
+            if let account = appState.firstAccount.account {
+                today.prepend(account)
             }
             
             if !today.isEmpty {

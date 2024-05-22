@@ -12,15 +12,15 @@ struct AccountListSettingsView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
     
-    var accounts: [UserStub] { AccountsTracker.main.savedAccounts }
+    var accounts: [Account] { AccountsTracker.main.savedAccounts }
     
     var body: some View {
         Form {
             headerView
             AccountListView()
             Button("Re-authenticate", systemImage: "arrow.2.circlepath") {
-                if let user = appState.firstAccount.userStub {
-                    navigation.openSheet(.login(.reauth(user)))
+                if let account = appState.firstAccount.account {
+                    navigation.openSheet(.login(.reauth(account)))
                 }
             }
         }
@@ -33,7 +33,7 @@ struct AccountListSettingsView: View {
                 Group {
                     if accounts.count >= 2 {
                         AvatarStackView(
-                            urls: accounts.map(\.avatarUrl),
+                            urls: accounts.map(\.avatar),
                             type: .person,
                             spacing: 42,
                             outlineWidth: 1

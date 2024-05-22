@@ -179,7 +179,7 @@ struct LoginInstancePickerView: View {
             let fetchTask = Task {
                 let apiClient = ApiClient.getApiClient(for: url, with: nil)
                 do {
-                    let instance = try await apiClient.getSite()
+                    let instance = try await apiClient.getMyInstance()
                     Task { @MainActor in
                         navigation.push(.login(.instance(instance)))
                     }
