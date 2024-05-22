@@ -11,6 +11,7 @@ import SwiftUI
 
 struct CompactPost: View {
     let post: any Post1Providing
+    let showUsername: Bool
     
     var body: some View {
         content
@@ -24,7 +25,11 @@ struct CompactPost: View {
             
             VStack(alignment: .leading, spacing: AppConstants.compactSpacing) {
                 HStack {
-                    UserLabelView(person: post.creator_, showAvatar: true)
+                    if showUsername {
+                        FullyQualifiedLabelView(entity: post.creator_, showAvatar: false, instanceLocation: .trailing)
+                    } else {
+                        FullyQualifiedLabelView(entity: post.community_, showAvatar: false, instanceLocation: .trailing)
+                    }
                     Spacer()
                     // TODO: this PR EllipsisMenu
                     Image(systemName: "ellipsis")

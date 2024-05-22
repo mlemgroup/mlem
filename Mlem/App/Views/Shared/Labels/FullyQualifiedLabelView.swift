@@ -1,5 +1,5 @@
 //
-//  UserLabelView.swift
+//  FullyQualifiedLabelView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-05-19.
@@ -9,18 +9,20 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-struct UserLabelView: View {
+/// View for rendering fully qualified labels (i.e., user or community names)
+struct FullyQualifiedLabelView: View {
     let avatar: URL?
     let showAvatar: Bool
-    let username: String?
+    let name: String?
     let instance: String?
-    
     let instanceLocation: InstanceLocation
     
     var spacing: CGFloat
     var avatarSize: CGFloat
     
-    init(person: (any Person1Providing)?, showAvatar: Bool, instanceLocation: InstanceLocation) {
+    // TODO: future handle flairs. These require post, comment, and community context; to avoid the "bucket brigade" anti-pattern, those should be made available as @Environment properties
+    
+    init(entity: (any CommunityOrPersonStub & ProfileProviding)?, showAvatar: Bool, instanceLocation: InstanceLocation) {
         if instanceLocation == .bottom {
             self.spacing = AppConstants.largeAvatarSize
             self.avatarSize = AppConstants.largeAvatarSize
@@ -31,11 +33,10 @@ struct UserLabelView: View {
         self.instanceLocation = instanceLocation
         self.showAvatar = showAvatar
 
-        self.avatar = person?.avatar
+        self.avatar = entity?.avatar
         
-        // TODO: this PR get this from Person1Providing
-        self.username = person?.name
-        self.instance = person?.actorId.host()
+        self.name = entity?.name
+        self.instance = entity?.host
     }
     
     var body: some View {
@@ -45,7 +46,7 @@ struct UserLabelView: View {
                     .frame(width: avatarSize, height: avatarSize)
             }
             
-            FullyQualifiedNameView(name: nil, instance: nil, instanceLocation: instanceLocation)
+            FullyQualifiedNameView(name: name, instance: instance, instanceLocation: instanceLocation)
         }
     }
 }

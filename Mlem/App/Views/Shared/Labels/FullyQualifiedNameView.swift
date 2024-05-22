@@ -23,26 +23,7 @@ struct FullyQualifiedNameView: View {
         if let name, let instance {
             nameText(name: name) + instanceText(instance: instance)
         } else {
-            VStack(alignment: .leading, spacing: capsuleSpacing) {
-                Capsule()
-                    .fill(LinearGradient(
-                        colors: [palette.secondary.opacity(0.7), palette.secondary.opacity(0.5)],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    ))
-                    .frame(width: instanceLocation == .bottom ? 100 : 160, height: capsuleHeight)
-                
-                if instanceLocation == .bottom {
-                    Capsule()
-                        .fill(LinearGradient(
-                            colors: [palette.tertiary.opacity(0.7), palette.tertiary.opacity(0.5)],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        ))
-                        .frame(width: 60, height: capsuleHeight * 0.8)
-                        .padding(.vertical, capsuleHeight * 0.2)
-                }
-            }
+            placeholder
         }
     }
     
@@ -55,12 +36,35 @@ struct FullyQualifiedNameView: View {
     
     func instanceText(instance: String) -> Text {
         if instanceLocation != .disabled {
-            // prepend a newline if location is bottom, again for easy concatenation
+            // prepend a newline if location is bottom for easy concatenation
             Text("\(instanceLocation == .bottom ? "\n" : "")@\(instance)")
                 .font(.footnote)
                 .foregroundStyle(palette.tertiary)
         } else {
             Text("") // return empty Text for easy concatenation
+        }
+    }
+    
+    var placeholder: some View {
+        VStack(alignment: .leading, spacing: capsuleSpacing) {
+            Capsule()
+                .fill(LinearGradient(
+                    colors: [palette.secondary.opacity(0.7), palette.secondary.opacity(0.5)],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                ))
+                .frame(width: instanceLocation == .bottom ? 100 : 160, height: capsuleHeight)
+            
+            if instanceLocation == .bottom {
+                Capsule()
+                    .fill(LinearGradient(
+                        colors: [palette.tertiary.opacity(0.7), palette.tertiary.opacity(0.5)],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    ))
+                    .frame(width: 60, height: capsuleHeight * 0.8)
+                    .padding(.vertical, capsuleHeight * 0.2)
+            }
         }
     }
 }
