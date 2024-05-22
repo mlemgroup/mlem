@@ -64,15 +64,4 @@ extension AvatarView {
             showLoadingPlaceholder: showLoadingPlaceholder
         )
     }
-    
-    init(
-        _ userStub: UserStub?,
-        showLoadingPlaceholder: Bool = true
-    ) {
-        self.init(
-            url: userStub?.avatarUrl,
-            type: .person,
-            showLoadingPlaceholder: showLoadingPlaceholder
-        )
-    }
 }

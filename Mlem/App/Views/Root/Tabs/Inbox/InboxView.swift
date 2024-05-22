@@ -20,8 +20,8 @@ struct InboxView: View {
                 ToastModel.main.add(.failure())
             }
             Button("Profile") {
-                if let userStub = AppState.main.firstAccount.userStub {
-                    ToastModel.main.add(.user(userStub))
+                if let account = AppState.main.firstAccount.account {
+                    ToastModel.main.add(.account(account))
                 }
             }
             Button("Undoable") {

@@ -26,7 +26,7 @@ enum ToastType: Hashable {
     
     case error(_ details: ErrorDetails)
     
-    case user(AnyUserProviding)
+    case account(Account)
     
     var duration: Double {
         switch self {
@@ -34,7 +34,7 @@ enum ToastType: Hashable {
             duration
         case .undoable:
             2.5
-        case .user:
+        case .account:
             1.0
         case .error:
             1.5
@@ -79,10 +79,6 @@ enum ToastType: Hashable {
         )
     }
     
-    static func user(_ model: any UserProviding) -> Self {
-        .user(.init(wrappedValue: model))
-    }
-    
     func hash(into hasher: inout Hasher) {
         switch self {
         case let .basic(title, subtitle, systemImage, color, duration):
@@ -100,25 +96,13 @@ enum ToastType: Hashable {
         case let .error(details):
             hasher.combine("error")
             hasher.combine(details)
-        case let .user(profile):
-            hasher.combine("profile")
-            hasher.combine(profile)
+        case let .account(account):
+            hasher.combine("account")
+            hasher.combine(account)
         }
     }
     
     static func == (lhs: ToastType, rhs: ToastType) -> Bool {
         lhs.hashValue == rhs.hashValue
-    }
-}
-
-struct AnyUserProviding: Hashable {
-    let wrappedValue: any UserProviding
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(wrappedValue.actorId)
-    }
-    
-    static func == (lhs: AnyUserProviding, rhs: AnyUserProviding) -> Bool {
-        lhs.wrappedValue.actorId == rhs.wrappedValue.actorId
     }
 }

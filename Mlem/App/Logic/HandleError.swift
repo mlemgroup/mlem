@@ -24,7 +24,7 @@ func handleError(
     switch error {
     // TODO: Modify MlemMiddleware to attach the ApiClient throwing the error to ApiClientError.invalidSession, so that we can access the relevant UserStub in a multi-account context
     case ApiClientError.invalidSession:
-        if let user = AppState.main.firstAccount.userStub {
+        if let user = AppState.main.firstAccount.account {
             for layer in NavigationModel.main.layers {
                 switch layer.path.first {
                 case let .login(page):

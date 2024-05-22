@@ -58,12 +58,12 @@ struct ToastView: View {
                 .buttonStyle(EmptyButtonStyle())
             case let .error(details):
                 errorView(details)
-            case let .user(user):
+            case let .account(account):
                 HStack {
-                    AvatarView(user.wrappedValue.stub, showLoadingPlaceholder: false)
+                    AvatarView(account, showLoadingPlaceholder: false)
                         .frame(height: 28)
                         .padding(.leading, 10)
-                    Text(user.wrappedValue.nickname ?? user.wrappedValue.name)
+                    Text(account.nickname ?? account.name)
                         .frame(minWidth: 100)
                         .padding(.trailing)
                 }
