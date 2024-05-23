@@ -16,16 +16,21 @@ struct AvatarView: View {
     
     var body: some View {
         LazyImage(url: url) { state in
-            // Using an `if` statement to conditionally show the `Image` doesn't play well with SwiftUI animations/transitions, so do this instead
-            Image(uiImage: state.imageContainer?.image ?? .init())
+            state.image?
                 .resizable()
                 .clipShape(Circle())
-                .background {
-                    if url == nil || (showLoadingPlaceholder && state.isLoading) {
-                        DefaultAvatarView(avatarType: type)
-                    }
-                }
         }
+//        LazyImage(url: url) { state in
+//            // Using an `if` statement to conditionally show the `Image` doesn't play well with SwiftUI animations/transitions, so do this instead
+//            Image(uiImage: state.imageContainer?.image ?? .init())
+//                .resizable()
+//                .clipShape(Circle())
+//                .background {
+//                    if url == nil || (showLoadingPlaceholder && state.isLoading) {
+//                        DefaultAvatarView(avatarType: type)
+//                    }
+//                }
+//        }
         .aspectRatio(1, contentMode: .fit)
     }
 }

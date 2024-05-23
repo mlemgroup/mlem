@@ -11,6 +11,8 @@ import SwiftUI
 
 struct HeadlinePost: View {
     @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
+    @AppStorage("user.showAvatar") var showUserAvatar: Bool = true
+    @AppStorage("community.showAvatar") var showCommunityAvatar: Bool = false
     
     @Environment(Palette.self) var palette: Palette
     
@@ -24,7 +26,7 @@ struct HeadlinePost: View {
     var content: some View {
         VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
             HStack {
-                FullyQualifiedLabelView(entity: post.community_, showAvatar: false, instanceLocation: .bottom)
+                FullyQualifiedLabelView(entity: post.community_, showAvatar: showCommunityAvatar, instanceLocation: .bottom)
                 
                 Spacer()
                 
@@ -39,10 +41,11 @@ struct HeadlinePost: View {
                 
                 title
                     .font(.headline)
+                    .imageScale(.small)
                     .fixedSize(horizontal: false, vertical: true)
             }
             
-            FullyQualifiedLabelView(entity: post.creator_, showAvatar: false, instanceLocation: .bottom)
+            FullyQualifiedLabelView(entity: post.creator_, showAvatar: showUserAvatar, instanceLocation: .bottom)
         }
     }
     
@@ -51,6 +54,6 @@ struct HeadlinePost: View {
             postTag(active: post.pinnedInstance, icon: Icons.pinFill, color: palette.administration) +
             postTag(active: post.pinnedCommunity, icon: Icons.pinFill, color: palette.moderation) +
             postTag(active: post.locked, icon: Icons.lockFill, color: palette.orange) +
-            Text(post.title)
+            Text(" \(post.title)")
     }
 }
