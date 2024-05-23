@@ -11,6 +11,10 @@ import SwiftUI
 
 /// View for rendering fully qualified labels (i.e., user or community names)
 struct FullyQualifiedLabelView: View {
+    // these aren't used now but they will be for flairs
+    @Environment(\.postContext) var postContext: (any Post1Providing)?
+    @Environment(\.communityContext) var communityContext: (any Community3Providing)?
+    
     let avatar: URL?
     let showAvatar: Bool
     let name: String?
@@ -19,8 +23,6 @@ struct FullyQualifiedLabelView: View {
     
     var spacing: CGFloat
     var avatarSize: CGFloat
-    
-    // TODO: future handle flairs. These require post, comment, and community context; to avoid the "bucket brigade" anti-pattern, those should be made available as @Environment properties
     
     init(entity: (any CommunityOrPersonStub & ProfileProviding)?, showAvatar: Bool, instanceLocation: InstanceLocation) {
         if instanceLocation == .bottom {
@@ -47,6 +49,21 @@ struct FullyQualifiedLabelView: View {
             }
             
             FullyQualifiedNameView(name: name, instance: instance, instanceLocation: instanceLocation)
+            // FullyQualifiedNameView(name: nil, instance: nil, instanceLocation: .bottom)
         }
     }
+    
+    // TODO: flairs, comment context
+    // the basic idea here is:
+    //
+    // if entity is PersonStubProviding:
+    //   ContentLoader { person.flairs(contexts) }
+    //
+    // to compute bannedFromCommunity:
+    //
+    // if commentContext, commentContext is Comment2Providing: commentContext.creatorBannedFromCommunity
+    // else if postContext, postContext is Post2Providing: postContext.creatorBannedFromCommunity
+    //
+    // since in a comment, both commentContext and postContext will be present--need to make sure above logic is implemented such that
+    // postContext is only checked if commentContext isn't present, regardless of commentContext upgrade level
 }

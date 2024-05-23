@@ -21,6 +21,7 @@ struct FeedPost: View {
     var body: some View {
         ContentLoader(model: post) { post in
             content(for: post)
+                .environment(\.postContext, post)
         }
     }
     

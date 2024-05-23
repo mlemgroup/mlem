@@ -109,6 +109,8 @@
 		CD4ED84A2BF1113800EFA0A2 /* View+TabReselectConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */; };
 		CD4ED84C2BF111BA00EFA0A2 /* ScrollToView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED84B2BF111BA00EFA0A2 /* ScrollToView.swift */; };
 		CD4ED84E2BF113C800EFA0A2 /* ExpandedPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED84D2BF113C800EFA0A2 /* ExpandedPostView.swift */; };
+		CD7882A22BFE4B47002E1A30 /* PostContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882A12BFE4B47002E1A30 /* PostContext.swift */; };
+		CD7882A52BFE94D2002E1A30 /* CommunityContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882A42BFE94D2002E1A30 /* CommunityContext.swift */; };
 		CD83295A2BFC4D2600D52F4A /* InstanceLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8329592BFC4D2600D52F4A /* InstanceLocation.swift */; };
 		CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8202B8FC411007953EF /* LandingPage.swift */; };
 		CDA1E8272B90EF24007953EF /* AppFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8262B90EF24007953EF /* AppFlow.swift */; };
@@ -240,6 +242,8 @@
 		CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+TabReselectConsumer.swift"; sourceTree = "<group>"; };
 		CD4ED84B2BF111BA00EFA0A2 /* ScrollToView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollToView.swift; sourceTree = "<group>"; };
 		CD4ED84D2BF113C800EFA0A2 /* ExpandedPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedPostView.swift; sourceTree = "<group>"; };
+		CD7882A12BFE4B47002E1A30 /* PostContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostContext.swift; sourceTree = "<group>"; };
+		CD7882A42BFE94D2002E1A30 /* CommunityContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityContext.swift; sourceTree = "<group>"; };
 		CD8329592BFC4D2600D52F4A /* InstanceLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceLocation.swift; sourceTree = "<group>"; };
 		CDA1E8202B8FC411007953EF /* LandingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPage.swift; sourceTree = "<group>"; };
 		CDA1E8262B90EF24007953EF /* AppFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlow.swift; sourceTree = "<group>"; };
@@ -485,6 +489,7 @@
 		CD4D583B2B867BB300B82964 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				CD7882A02BFE4B30002E1A30 /* Environment Values */,
 				CD4D583D2B867DA900B82964 /* Constants */,
 				CD14461F2A5B328600610EF1 /* Data */,
 				CD4D58C62B86DCE500B82964 /* Enums */,
@@ -694,6 +699,15 @@
 			path = "View Modifiers";
 			sourceTree = "<group>";
 		};
+		CD7882A02BFE4B30002E1A30 /* Environment Values */ = {
+			isa = PBXGroup;
+			children = (
+				CD7882A12BFE4B47002E1A30 /* PostContext.swift */,
+				CD7882A42BFE94D2002E1A30 /* CommunityContext.swift */,
+			);
+			path = "Environment Values";
+			sourceTree = "<group>";
+		};
 		CDA1E81A2B8FC39A007953EF /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
@@ -869,7 +883,7 @@
 				CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */,
 				0392826E2BC84E480097F91A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				037386452BDAFE81007492B5 /* XCRemoteSwiftPackageReference "LemmyMarkdownUI" */,
-				CD03D8D72BF6A44C00D1FB5D /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
+				CD7882A32BFE5EB5002E1A30 /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -992,6 +1006,7 @@
 				031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */,
 				030FF67B2BC8521600F6BFAC /* CustomTabView.swift in Sources */,
 				CDB2EC8A2BFAEFDF00DBC0EF /* ThumbnailImageView.swift in Sources */,
+				CD7882A52BFE94D2002E1A30 /* CommunityContext.swift in Sources */,
 				CD4D59162B87B38C00B82964 /* UIApplication+Extensions.swift in Sources */,
 				CDA1E8542B952C3D007953EF /* StateManager.swift in Sources */,
 				035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */,
@@ -1005,6 +1020,7 @@
 				CDF9EF332AB2845C003F885B /* Icons.swift in Sources */,
 				CD4D58DA2B86E11D00B82964 /* Mockable.swift in Sources */,
 				CD4D590A2B87B1DC00B82964 /* NotificationMessage.swift in Sources */,
+				CD7882A22BFE4B47002E1A30 /* PostContext.swift in Sources */,
 				CD83295A2BFC4D2600D52F4A /* InstanceLocation.swift in Sources */,
 				CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */,
 				CD4D59082B87B1B400B82964 /* NotificationDisplayer.swift in Sources */,
@@ -1445,14 +1461,6 @@
 				minimumVersion = 12.1.2;
 			};
 		};
-		CD03D8D72BF6A44C00D1FB5D /* XCRemoteSwiftPackageReference "MlemMiddleware" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
-			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 0.3.0;
-			};
-		};
 		CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/groue/Semaphore";
@@ -1467,6 +1475,14 @@
 			requirement = {
 				kind = upToNextMinorVersion;
 				minimumVersion = 0.3.0;
+			};
+		};
+		CD7882A32BFE5EB5002E1A30 /* XCRemoteSwiftPackageReference "MlemMiddleware" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
+			requirement = {
+				branch = "eric/feed-post";
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

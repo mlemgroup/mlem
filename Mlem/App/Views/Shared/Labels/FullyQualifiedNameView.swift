@@ -11,6 +11,7 @@ import SwiftUI
 struct FullyQualifiedNameView: View {
     @Environment(Palette.self) var palette
     
+    // parameters
     let name: String?
     let instance: String?
     let instanceLocation: InstanceLocation
@@ -18,6 +19,10 @@ struct FullyQualifiedNameView: View {
     // scale placeholder capsule height and spacing according to font size
     @ScaledMetric(relativeTo: .footnote) var capsuleHeight: CGFloat = 13
     @ScaledMetric(relativeTo: .footnote) var capsuleSpacing: CGFloat = 5
+    
+    // capsule color gradient configuration
+    let gradientBegin: CGFloat = 0.55
+    let gradientEnd: CGFloat = 0.45
     
     var body: some View {
         if let name, let instance {
@@ -49,7 +54,7 @@ struct FullyQualifiedNameView: View {
         VStack(alignment: .leading, spacing: capsuleSpacing) {
             Capsule()
                 .fill(LinearGradient(
-                    colors: [palette.secondary.opacity(0.7), palette.secondary.opacity(0.5)],
+                    colors: [palette.secondary.opacity(gradientBegin), palette.secondary.opacity(gradientEnd)],
                     startPoint: .leading,
                     endPoint: .trailing
                 ))
@@ -58,7 +63,7 @@ struct FullyQualifiedNameView: View {
             if instanceLocation == .bottom {
                 Capsule()
                     .fill(LinearGradient(
-                        colors: [palette.tertiary.opacity(0.7), palette.tertiary.opacity(0.5)],
+                        colors: [palette.tertiary.opacity(gradientBegin), palette.tertiary.opacity(gradientEnd)],
                         startPoint: .leading,
                         endPoint: .trailing
                     ))

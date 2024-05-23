@@ -6,10 +6,15 @@
 //
 
 import Foundation
+import MlemMiddleware
 import SwiftUI
 
 struct HeadlinePost: View {
+    let post: any Post1Providing
+    
     var body: some View {
-        Text("Headline post")
+        Text("Headlie post")
     }
+    
+    var content: some View {}
 }
