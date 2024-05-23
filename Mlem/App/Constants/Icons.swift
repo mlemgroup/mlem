@@ -50,9 +50,14 @@ enum Icons {
     static let unreadReplies: String = "text.bubble"
     static let textPost: String = "text.book.closed"
     static let titleOnlyPost: String = "character.bubble"
-    static let pinned: String = "pin.fill"
+    static let pin: String = "pin"
+    static let pinFill: String = "pin.fill"
     static let websiteIcon: String = "globe"
     static let read: String = "book"
+    static let lock: String = "lock"
+    static let lockFill: String = "lock.fill"
+    static let remove: String = "xmark.bin"
+    static let removeFill: String = "xmark.bin.fill"
     
     // post sizes
     static let postSizeSetting: String = "rectangle.expand.vertical"

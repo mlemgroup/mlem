@@ -21,6 +21,9 @@ extension ColorPalette {
         upvote: .primary,
         downvote: .primary,
         save: .primary,
-        selectedInteractionBarItem: Color(UIColor.systemBackground)
+        selectedInteractionBarItem: Color(UIColor.systemBackground),
+        administration: .primary,
+        moderation: .primary,
+        orange: .primary
     )
 }

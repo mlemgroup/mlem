@@ -23,6 +23,14 @@ protocol PaletteProviding {
     var upvote: Color { get }
     var downvote: Color { get }
     var save: Color { get }
+    var selectedInteractionBarItem: Color { get }
+    
+    // entities
+    var administration: Color { get }
+    var moderation: Color { get }
+    
+    // literals
+    var orange: Color { get }
 }
 
 enum PaletteOption: String, CaseIterable {
@@ -52,6 +60,13 @@ struct ColorPalette: PaletteProviding {
     var downvote: Color
     var save: Color
     var selectedInteractionBarItem: Color
+    
+    // entities
+    var administration: Color
+    var moderation: Color
+    
+    // literals
+    var orange: Color
 }
 
 @Observable
@@ -85,4 +100,9 @@ class Palette: PaletteProviding {
     var downvote: Color { palette.downvote }
     var save: Color { palette.save }
     var selectedInteractionBarItem: Color { palette.selectedInteractionBarItem }
+    
+    var administration: Color { palette.administration }
+    var moderation: Color { palette.moderation }
+    
+    var orange: Color { palette.orange }
 }
