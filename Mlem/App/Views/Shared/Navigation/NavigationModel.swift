@@ -9,8 +9,10 @@ import SwiftUI
 
 @Observable
 class NavigationModel {
+    static let main: NavigationModel = .init()
+    
     var layers: [NavigationLayer] = .init()
-
+    
     private func openSheet(_ page: NavigationPage, hasNavigationStack: Bool? = nil, isFullScreenCover: Bool) {
         layers.append(
             .init(
@@ -18,7 +20,8 @@ class NavigationModel {
                 model: self,
                 index: layers.count,
                 hasNavigationStack: hasNavigationStack ?? page.hasNavigationStack,
-                isFullScreenCover: isFullScreenCover
+                isFullScreenCover: isFullScreenCover,
+                canDisplayToasts: page.canDisplayToasts
             )
         )
     }

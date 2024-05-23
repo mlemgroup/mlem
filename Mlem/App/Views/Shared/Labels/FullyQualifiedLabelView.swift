@@ -24,7 +24,7 @@ struct FullyQualifiedLabelView: View {
     var spacing: CGFloat
     var avatarSize: CGFloat
     
-    init(entity: (any CommunityOrPersonStub & ProfileProviding)?, showAvatar: Bool, instanceLocation: InstanceLocation) {
+    init(entity: (any CommunityOrPersonStub & Profile2Providing)?, showAvatar: Bool, instanceLocation: InstanceLocation) {
         if instanceLocation == .bottom {
             self.spacing = AppConstants.largeAvatarSize
             self.avatarSize = AppConstants.largeAvatarSize

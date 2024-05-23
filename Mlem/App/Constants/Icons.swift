@@ -133,8 +133,11 @@ enum Icons {
     // information/status
     static let success: String = "checkmark"
     static let successCircle: String = "checkmark.circle"
+    static let successCircleFill: String = "checkmark.circle.fill"
     static let successSquareFill: String = "checkmark.square.fill"
     static let failure: String = "xmark"
+    static let failureCircle: String = "xmark.circle"
+    static let failureCircleFill: String = "xmark.circle.fill"
     static let present: String = "circle.fill" // that's present as in "here," not as in "gift"
     static let absent: String = "circle"
     static let warning: String = "exclamationmark.triangle"
@@ -152,7 +155,11 @@ enum Icons {
     static let person: String = "person"
     static let personFill: String = "person.fill"
     static let close: String = "multiply"
+    static let closeCircle: String = "xmark.circle"
+    static let closeCircleFill: String = "xmark.circle.fill"
     static let cakeDay: String = "birthday.cake"
+    static let undoCircleFill: String = "arrow.uturn.backward.circle.fill"
+    static let errorCircleFill: String = "exclamationmark.circle.fill"
     
     // end of feed
     static let endOfFeedHobbit: String = "figure.climbing"

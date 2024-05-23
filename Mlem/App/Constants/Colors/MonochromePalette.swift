@@ -18,6 +18,8 @@ extension ColorPalette {
         tertiaryBackground: Color(UIColor.tertiarySystemBackground),
         thumbnailBackground: Color(UIColor.systemGray4),
         accent: .primary,
+        success: .primary,
+        failure: .primary,
         upvote: .primary,
         downvote: .primary,
         save: .primary,

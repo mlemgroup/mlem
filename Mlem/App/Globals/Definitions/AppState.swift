@@ -15,8 +15,9 @@ class AppState {
     private(set) var guestAccount: ActiveAccount = .init(instanceUrl: URL(string: "https://lemmy.world")!)
     private(set) var activeAccounts: [ActiveAccount] = []
 
-    func changeUser(to userStub: UserStub) {
-        let newAccount = ActiveAccount(userStub: userStub)
+    func changeUser(to account: Account) {
+        ToastModel.main.add(.account(account))
+        let newAccount = ActiveAccount(account: account)
         activeAccounts.forEach { $0.deactivate() }
         guestAccount.deactivate()
         activeAccounts = [newAccount]
@@ -29,8 +30,8 @@ class AppState {
         guestAccount = .init(instanceUrl: instanceUrl)
     }
     
-    func deactivate(userStub: UserStub) {
-        if let index = AppState.main.activeAccounts.firstIndex(where: { $0.userStub === userStub }) {
+    func deactivate(account: Account) {
+        if let index = AppState.main.activeAccounts.firstIndex(where: { $0.account === account }) {
             activeAccounts[index].deactivate()
             activeAccounts.remove(at: index)
             if activeAccounts.isEmpty, let defaultAccount = AccountsTracker.main.defaultAccount {
@@ -56,7 +57,7 @@ class AppState {
     
     func accountThatModerates(actorId: URL) -> ActiveAccount? {
         activeAccounts.first(where: { account in
-            account.user?.moderatedCommunities.contains { $0.actorId == actorId } ?? false
+            account.person?.moderatedCommunities.contains { $0.actorId == actorId } ?? false
         })
     }
     
@@ -72,19 +73,19 @@ class AppState {
 @Observable
 class ActiveAccount: Hashable {
     private(set) var api: ApiClient
-    private(set) var userStub: UserStub?
-    private(set) var user: User?
+    private(set) var account: Account?
+    private(set) var person: Person4?
     private(set) var instance: Instance3?
     private(set) var subscriptions: SubscriptionList?
     
     // TODO: Store this in a file; make sure to translate 1.0 favorites to 2.0 favorites
     private var favorites: Set<Int> = []
     
-    var actorId: URL? { userStub?.actorId }
+    var actorId: URL? { account?.actorId }
   
-    init(userStub: UserStub) {
-        self.api = userStub.api
-        self.userStub = userStub
+    init(account: Account) {
+        self.api = account.api
+        self.account = account
         api.permissions = .all
         self.subscriptions = api.setupSubscriptionList(
             getFavorites: { self.favorites },
@@ -93,9 +94,10 @@ class ActiveAccount: Hashable {
         
         Task {
             try await self.api.fetchSiteVersion(task: Task {
-                let (user, instance) = try await self.api.getMyUser(userStub: userStub)
-                if let user {
-                    self.user = user
+                let (person, instance) = try await self.api.getMyPerson()
+                if let person {
+                    self.account?.update(person: person, instance: instance)
+                    self.person = person
                 }
                 self.instance = instance
                 return instance.version

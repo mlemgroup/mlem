@@ -10,37 +10,58 @@ import NukeUI
 import SwiftUI
 
 struct AvatarView: View {
-    var url: URL?
-    var type: AvatarType
+    let url: URL?
+    let type: AvatarType
+    var showLoadingPlaceholder: Bool = true
     
     var body: some View {
         LazyImage(url: url) { state in
-            if let imageContainer = state.imageContainer {
-                Image(uiImage: imageContainer.image)
-                    .resizable()
-                    .clipShape(Circle())
-            } else {
-                DefaultAvatarView(avatarType: type)
-            }
+            // Using an `if` statement to conditionally show the `Image` doesn't play well with SwiftUI animations/transitions, so do this instead
+            Image(uiImage: state.imageContainer?.image ?? .init())
+                .resizable()
+                .clipShape(Circle())
+                .background {
+                    if url == nil || (showLoadingPlaceholder && state.isLoading) {
+                        DefaultAvatarView(avatarType: type)
+                    }
+                }
         }
         .aspectRatio(1, contentMode: .fit)
     }
 }
 
 extension AvatarView {
-    init<T: ProfileProviding>(_ model: T?) {
-        self.init(url: model?.avatar, type: T.avatarType)
+    init<T: Profile1Providing>(
+        _ model: T?,
+        showLoadingPlaceholder: Bool = true
+    ) {
+        self.init(
+            url: model?.avatar,
+            type: T.avatarType,
+            showLoadingPlaceholder: showLoadingPlaceholder
+        )
     }
 
-    init(_ model: any ProfileProviding) {
-        self.init(url: model.avatar, type: Swift.type(of: model).avatarType)
+    init(
+        _ model: any Profile1Providing,
+        showLoadingPlaceholder: Bool = true
+    ) {
+        self.init(
+            url: model.avatar,
+            type: Swift.type(of: model).avatarType,
+            showLoadingPlaceholder: showLoadingPlaceholder
+        )
     }
     
-    init(_ model: (any ProfileProviding)?, type: AvatarType) {
-        self.init(url: model?.avatar, type: type)
-    }
-    
-    init(_ userStub: UserStub?) {
-        self.init(url: userStub?.avatarUrl, type: .person)
+    init(
+        _ model: (any Profile1Providing)?,
+        type: AvatarType,
+        showLoadingPlaceholder: Bool = true
+    ) {
+        self.init(
+            url: model?.avatar,
+            type: type,
+            showLoadingPlaceholder: showLoadingPlaceholder
+        )
     }
 }

@@ -48,7 +48,6 @@ private enum DiskAccess {
 
 class PersistenceRepository {
     @Dependency(\.date) private var date
-    @Dependency(\.errorHandler) private var errorHandler
     
     private var keychainAccess: (String) -> String?
     private var read: (URL) throws -> Data
@@ -69,11 +68,11 @@ class PersistenceRepository {
     
     // MARK: - Public methods
     
-    func loadAccounts() -> [UserStub] {
-        load([UserStub].self, from: Path.savedAccounts) ?? []
+    func loadAccounts() -> [Account] {
+        load([Account].self, from: Path.savedAccounts) ?? []
     }
     
-    func saveAccounts(_ value: [UserStub]) async throws {
+    func saveAccounts(_ value: [Account]) async throws {
         try await save(value, to: Path.savedAccounts)
     }
     
@@ -152,8 +151,7 @@ class PersistenceRepository {
             
             return try JSONDecoder().decode(T.self, from: data)
         } catch {
-            errorHandler.handle(error)
-            
+            handleError(error)
             return nil
         }
     }
@@ -174,7 +172,7 @@ class PersistenceRepository {
             let data = try JSONEncoder().encode(value)
             try await write(data, path)
         } catch {
-            errorHandler.handle(error)
+            handleError(error)
         }
     }
 }

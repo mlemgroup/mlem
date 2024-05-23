@@ -15,7 +15,7 @@ struct LoginCredentialsView: View {
     @Environment(AppState.self) var appState
     
     let instance: (any Instance)?
-    let userStub: UserStub?
+    let account: Account?
     
     @State var username: String
     @State var password: String = ""
@@ -26,18 +26,18 @@ struct LoginCredentialsView: View {
     enum FocusedField { case username, password }
     @FocusState private var focused: FocusedField?
     
-    var showUsernameField: Bool { userStub == nil }
+    var showUsernameField: Bool { account == nil }
     
     init(instance: any Instance) {
         self.instance = instance
-        self.userStub = nil
+        self.account = nil
         self._username = .init(wrappedValue: "")
     }
     
-    init(userStub: UserStub) {
+    init(account: Account) {
         self.instance = nil
-        self.userStub = userStub
-        self._username = .init(wrappedValue: userStub.name)
+        self.account = account
+        self._username = .init(wrappedValue: account.name)
     }
     
     var body: some View {
@@ -63,8 +63,8 @@ struct LoginCredentialsView: View {
             VStack {
                 if let instance {
                     instanceHeader(instance)
-                } else if let userStub {
-                    reauthHeader(userStub)
+                } else if let account {
+                    reauthHeader(account)
                         .padding(.bottom, 15)
                 }
                 textFields
@@ -91,11 +91,11 @@ struct LoginCredentialsView: View {
     }
     
     @ViewBuilder
-    func reauthHeader(_ userStub: UserStub) -> some View {
+    func reauthHeader(_ account: Account) -> some View {
         VStack {
-            AvatarView(userStub)
+            AvatarView(account)
                 .frame(height: 50)
-            Text(userStub.fullName ?? "Sign In")
+            Text(account.fullName ?? "Sign In")
                 .font(.title)
                 .bold()
                 .padding(.bottom, 5)
@@ -159,7 +159,7 @@ struct LoginCredentialsView: View {
     
     func attemptToLogin() {
         guard !username.isEmpty, !password.isEmpty else { return }
-        if let client = instance?.guestApi ?? userStub?.api.loggedOut() {
+        if let client = instance?.guestApi ?? account?.api.loggedOut() {
             authenticating = true
             Task {
                 do {

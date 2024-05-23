@@ -20,7 +20,7 @@ struct ContentView: View {
     @State var selectedTabIndex: Int = 0
     @State var tabReselectTracker: TabReselectTracker = .main
     
-    @State var navigationModel: NavigationModel = .init()
+    var navigationModel: NavigationModel { .main }
     
     var body: some View {
         content
@@ -28,9 +28,32 @@ struct ContentView: View {
             .onReceive(timer) { _ in
                 appState.cleanCaches()
             }
+            .sheet(isPresented: Binding(
+                get: { !(navigationModel.layers.first?.isFullScreenCover ?? true) },
+                set: { if !$0 { navigationModel.layers.removeAll() } }
+            )) {
+                NavigationLayerView(layer: navigationModel.layers[0], hasSheetModifiers: true)
+            }
+            .fullScreenCover(isPresented: Binding(
+                get: { navigationModel.layers.first?.isFullScreenCover ?? false },
+                set: { if !$0 { navigationModel.layers.removeAll() } }
+            )) {
+                NavigationLayerView(layer: navigationModel.layers[0], hasSheetModifiers: true)
+            }
+            .overlay(alignment: .top) {
+                ToastOverlayView(
+                    shouldDisplayNewToasts: shouldDisplayToasts,
+                    location: .top
+                )
+                .padding(.top, -6)
+            }
             .environment(palette)
             .environment(tabReselectTracker)
             .environment(appState)
+    }
+
+    var shouldDisplayToasts: Bool {
+        navigationModel.layers.allSatisfy { !$0.canDisplayToasts }
     }
     
     var content: some View {
@@ -62,18 +85,13 @@ struct ContentView: View {
         ], onSwipeUp: {
             navigationModel.openSheet(.quickSwitcher)
         })
+        .overlay(alignment: .bottom) {
+            ToastOverlayView(
+                shouldDisplayNewToasts: shouldDisplayToasts,
+                location: .bottom
+            )
+            .padding(.bottom, 100)
+        }
         .ignoresSafeArea()
-        .sheet(isPresented: Binding(
-            get: { !(navigationModel.layers.first?.isFullScreenCover ?? true) },
-            set: { if !$0 { navigationModel.layers.removeAll() } }
-        )) {
-            NavigationLayerView(layer: navigationModel.layers[0], hasSheetModifiers: true)
-        }
-        .fullScreenCover(isPresented: Binding(
-            get: { navigationModel.layers.first?.isFullScreenCover ?? false },
-            set: { if !$0 { navigationModel.layers.removeAll() } }
-        )) {
-            NavigationLayerView(layer: navigationModel.layers[0], hasSheetModifiers: true)
-        }
     }
 }
