@@ -16,6 +16,7 @@ class AppState {
     private(set) var activeAccounts: [ActiveAccount] = []
 
     func changeUser(to account: Account) {
+        ToastModel.main.add(.account(account))
         let newAccount = ActiveAccount(account: account)
         activeAccounts.forEach { $0.deactivate() }
         guestAccount.deactivate()

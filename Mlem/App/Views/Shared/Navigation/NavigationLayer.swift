@@ -16,19 +16,22 @@ class NavigationLayer {
     var path: [NavigationPage] = .init()
     var hasNavigationStack: Bool
     var isFullScreenCover: Bool
+    var canDisplayToasts: Bool
     
     init(
         root: NavigationPage,
         model: NavigationModel,
         index: Int = -1,
         hasNavigationStack: Bool = true,
-        isFullScreenCover: Bool = false
+        isFullScreenCover: Bool = false,
+        canDisplayToasts: Bool = true
     ) {
         self.model = model
         self.index = index
         self.root = root
         self.hasNavigationStack = hasNavigationStack
         self.isFullScreenCover = isFullScreenCover
+        self.canDisplayToasts = canDisplayToasts
     }
     
     func push(_ page: NavigationPage) {
@@ -50,6 +53,12 @@ class NavigationLayer {
     
     var isTopSheet: Bool {
         isInsideSheet && index == (model?.layers.count ?? 0) - 1
+    }
+    
+    var isToastDisplayer: Bool {
+        isInsideSheet
+            && canDisplayToasts
+            && model?.layers.last(where: { $0.canDisplayToasts }) === self
     }
     
     func popToRoot() {

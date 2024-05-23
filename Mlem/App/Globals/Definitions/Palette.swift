@@ -16,6 +16,9 @@ protocol PaletteProviding {
     var tertiaryBackground: Color { get }
     var accent: Color { get }
     
+    var success: Color { get }
+    var failure: Color { get }
+    
     // interactions
     var upvote: Color { get }
     var downvote: Color { get }
@@ -41,6 +44,9 @@ struct ColorPalette: PaletteProviding {
     var tertiaryBackground: Color
     var accent: Color
 
+    var success: Color
+    var failure: Color
+    
     // interactions
     var upvote: Color
     var downvote: Color
@@ -71,6 +77,9 @@ class Palette: PaletteProviding {
     var secondaryBackground: Color { palette.secondaryBackground }
     var tertiaryBackground: Color { palette.tertiaryBackground }
     var accent: Color { palette.accent }
+    
+    var success: Color { palette.success }
+    var failure: Color { palette.failure }
     
     var upvote: Color { palette.upvote }
     var downvote: Color { palette.downvote }

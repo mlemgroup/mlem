@@ -37,7 +37,7 @@ extension NavigationPage {
         case .profile:
             ProfileView()
         case .inbox:
-            Text("Inbox")
+            InboxView()
         case .search:
             SubscriptionListView()
         case .quickSwitcher:
@@ -49,6 +49,15 @@ extension NavigationPage {
     }
     
     var hasNavigationStack: Bool {
+        switch self {
+        case .quickSwitcher:
+            false
+        default:
+            true
+        }
+    }
+    
+    var canDisplayToasts: Bool {
         switch self {
         case .quickSwitcher:
             false

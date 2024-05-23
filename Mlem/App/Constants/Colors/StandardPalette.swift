@@ -14,6 +14,8 @@ extension ColorPalette {
         secondaryBackground: Color(UIColor.secondarySystemBackground),
         tertiaryBackground: Color(UIColor.tertiarySystemBackground),
         accent: .blue,
+        success: .green,
+        failure: .red,
         upvote: .blue,
         downvote: .red,
         save: .green,
