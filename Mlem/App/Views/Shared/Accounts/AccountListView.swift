@@ -19,13 +19,15 @@ struct AccountListView: View {
     
     var accountsTracker: AccountsTracker { .main }
     
-    @State private var isShowingInstanceAdditionSheet: Bool = false
-    
     @State var isSwitching: Bool = false
+    
+    @State private var isShowingAddAccountDialogue: Bool = false
+    @State private var isShowingAddGuestAlert: Bool = false
+    @State private var newGuestDomain: String = ""
     
     struct AccountGroup {
         let header: String
-        let accounts: [Account]
+        let accounts: [any Account]
     }
     
     let isQuickSwitcher: Bool
@@ -42,49 +44,71 @@ struct AccountListView: View {
         Group {
             if !isSwitching {
                 if accountsTracker.savedAccounts.count > 3, groupAccountSort {
-                    ForEach(Array(accountGroups.enumerated()), id: \.offset) { offset, group in
-                        Section {
-                            ForEach(group.accounts, id: \.self) { account in
-                                AccountButtonView(
-                                    account: account,
-                                    caption: accountSort != .instance || group.header == "Other" ? .instanceAndTime : .timeOnly,
-                                    isSwitching: $isSwitching
-                                )
-                            }
-                        } header: {
-                            if offset == 0 {
-                                topHeader(text: group.header)
-                            } else {
-                                Text(group.header)
-                            }
-                        }
-                    }
+                    userAccountList
                 } else if accounts.isEmpty {
                     Text("You don't have any accounts.")
                         .foregroundStyle(.secondary)
                 } else {
                     Section(header: topHeader()) {
-                        ForEach(accounts, id: \.self) { account in
+                        ForEach(accounts, id: \.actorId) { account in
                             AccountButtonView(account: account, isSwitching: $isSwitching)
                         }
                         .onMove(perform: shouldAllowReordering ? reorderAccount : nil)
                     }
+                    addAccountButton
                 }
-                Section {
-                    Button {
-                        navigation.openSheet(.login())
-                    } label: {
-                        Label("Add Account", systemImage: "plus")
+            }
+        }
+        .alert("Enter domain name", isPresented: $isShowingAddGuestAlert) {
+            TextField("lemmy.world", text: $newGuestDomain)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+            Button("OK") {
+                if !newGuestDomain.isEmpty, let url = URL(string: "https://\(newGuestDomain)") {
+                    AppState.main.changeAccount(to: GuestAccount(url: url))
+                    if navigation.isInsideSheet {
+                        dismiss()
                     }
-                    .accessibilityLabel("Add a new account.")
-                    Button {
-                        appState.enterGuestMode(for: URL(string: "https://lemmy.world")!)
-                        if navigation.isInsideSheet {
-                            dismiss()
-                        }
-                    } label: {
-                        Label("Enter Guest Mode", systemImage: Icons.person)
-                    }
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var userAccountList: some View {
+        ForEach(Array(accountGroups.enumerated()), id: \.offset) { offset, group in
+            Section {
+                ForEach(group.accounts, id: \.actorId) { account in
+                    AccountButtonView(
+                        account: account,
+                        complications: accountSort != .instance || group.header == "Other" ? .withTime : .timeOnly,
+                        isSwitching: $isSwitching
+                    )
+                }
+            } header: {
+                if offset == 0 {
+                    topHeader(text: group.header)
+                } else {
+                    Text(group.header)
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var addAccountButton: some View {
+        Section {
+            Button { isShowingAddAccountDialogue = true } label: {
+                Label("Add Account", systemImage: "plus")
+            }
+            .accessibilityLabel("Add a new account.")
+            .confirmationDialog("", isPresented: $isShowingAddAccountDialogue) {
+                Button("Log In") {
+                    navigation.openSheet(.login())
+                }
+                // Button("Sign Up") { }
+                Button("Add Guest") {
+                    isShowingAddGuestAlert = true
                 }
             }
         }

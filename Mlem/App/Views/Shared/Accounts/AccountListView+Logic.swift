@@ -9,7 +9,7 @@ import MlemMiddleware
 import SwiftUI
 
 extension AccountListView {
-    var accounts: [Account] {
+    var accounts: [any Account] {
         let accountSort = accountsTracker.savedAccounts.count == 2 ? .custom : accountSort
         switch accountSort {
         case .custom:
@@ -20,17 +20,17 @@ extension AccountListView {
             return accountsTracker.savedAccounts.sorted { $0.instanceSortKey < $1.instanceSortKey }
         case .mostRecent:
             return accountsTracker.savedAccounts.sorted { left, right in
-                if appState.firstAccount.person?.actorId == left.actorId {
+                if appState.firstAccount.actorId == left.actorId {
                     return true
                 } else if appState.firstAccount.actorId == right.actorId {
                     return false
                 }
-                return left.lastLoggedIn ?? .distantPast > right.lastLoggedIn ?? .distantPast
+                return left.lastUsed ?? .distantPast > right.lastUsed ?? .distantPast
             }
         }
     }
     
-    func getNameCategory(account: Account) -> String {
+    func getNameCategory(account: any Account) -> String {
         guard let first = (account.nickname ?? account.name).first else { return "Unknown" }
         if first.isLetter {
             return String(first.lowercased())
@@ -66,9 +66,9 @@ extension AccountListView {
             )
             return array
         case .mostRecent:
-            var today = [Account]()
-            var last30Days = [Account]()
-            var older = [Account]()
+            var today = [any Account]()
+            var last30Days = [any Account]()
+            var older = [any Account]()
             for account in accountsTracker.savedAccounts {
                 if account.actorId == appState.firstAccount.actorId {
                     continue
@@ -80,7 +80,7 @@ extension AccountListView {
                 dateComponents.second = 0
                 let todayDate = Calendar.current.date(from: dateComponents) ?? .distantFuture
                 
-                if let date = account.lastLoggedIn {
+                if let date = account.lastUsed {
                     if date > todayDate {
                         today.append(account)
                     } else if date.timeIntervalSinceNow <= 60 * 60 * 24 * 7 {
@@ -94,10 +94,8 @@ extension AccountListView {
             }
             var groups = [AccountGroup]()
             
-            today.sort { $0.lastLoggedIn ?? .distantPast > $1.lastLoggedIn ?? .distantPast }
-            if let account = appState.firstAccount.account {
-                today.prepend(account)
-            }
+            today.sort { $0.lastUsed ?? .distantPast > $1.lastUsed ?? .distantPast }
+            today.prepend(appState.firstAccount.account)
             
             if !today.isEmpty {
                 groups.append(
@@ -111,7 +109,7 @@ extension AccountListView {
                 groups.append(
                     AccountGroup(
                         header: "Last 30 days",
-                        accounts: last30Days.sorted { $0.lastLoggedIn ?? .distantPast > $1.lastLoggedIn ?? .distantPast }
+                        accounts: last30Days.sorted { $0.lastUsed ?? .distantPast > $1.lastUsed ?? .distantPast }
                     )
                 )
             }
@@ -119,7 +117,7 @@ extension AccountListView {
                 groups.append(
                     AccountGroup(
                         header: "Older",
-                        accounts: older.sorted { $0.lastLoggedIn ?? .distantPast > $1.lastLoggedIn ?? .distantPast }
+                        accounts: older.sorted { $0.lastUsed ?? .distantPast > $1.lastUsed ?? .distantPast }
                     )
                 )
             }

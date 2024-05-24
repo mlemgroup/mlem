@@ -20,9 +20,7 @@ struct InboxView: View {
                 ToastModel.main.add(.failure())
             }
             Button("Profile") {
-                if let account = AppState.main.firstAccount.account {
-                    ToastModel.main.add(.account(account))
-                }
+                ToastModel.main.add(.account(AppState.main.firstAccount.account))
             }
             Button("Undoable") {
                 ToastModel.main.add(
@@ -37,9 +35,13 @@ struct InboxView: View {
             Button("Error") {
                 handleError(ApiClientError.cancelled)
             }
+            Button("Super Long Text") {
+                ToastModel.main.add(.success("Super long text"))
+            }
             Button("Open Sheet") {
                 navigation.openSheet(.inbox)
             }
+            ToastView(.success("Really super long text"))
         }
     }
 }

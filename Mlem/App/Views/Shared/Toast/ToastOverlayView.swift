@@ -102,4 +102,5 @@ struct ToastOverlayView: View {
     .overlay(alignment: .bottom) {
         ToastOverlayView(shouldDisplayNewToasts: true, location: .bottom)
     }
+    .environment(Palette.main)
 }

@@ -14,18 +14,20 @@ struct AccountSettingsView: View {
         Form {
             Section {
                 VStack(spacing: AppConstants.standardSpacing) {
-                    AvatarBannerView(appState.firstAccount.person)
+                    if let userAccount = appState.firstAccount as? ActiveUserAccount {
+                        AvatarBannerView(userAccount.person)
+                    } else {
+                        AvatarBannerView(appState.firstAccount.instance)
+                    }
                     VStack(spacing: 5) {
-                        Text(appState.firstAccount.person?.displayName ?? "Guest")
+                        Text(title)
                             .font(.title)
                             .fontWeight(.semibold)
                             .lineLimit(1)
                             .minimumScaleFactor(0.01)
-                        if let person = appState.firstAccount.person, let hostName = person.host {
-                            Text("@\(person.name)@\(hostName)")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
+                        Text(subtitle)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
                     }
                 }
                 .frame(maxWidth: .infinity)
@@ -35,5 +37,20 @@ struct AccountSettingsView: View {
             }
         }
         .navigationTitle("Account")
+    }
+    
+    var title: String {
+        if let userAccount = appState.firstAccount as? ActiveUserAccount {
+            return userAccount.person?.displayName ?? "Account"
+        } else {
+            return appState.firstAccount.instance?.displayName ?? "User"
+        }
+    }
+    
+    var subtitle: String {
+        if let userAccount = appState.firstAccount as? ActiveUserAccount {
+            return userAccount.person?.fullNameWithPrefix ?? "Loading..."
+        }
+        return appState.firstAccount.instance?.name ?? "Loading..."
     }
 }

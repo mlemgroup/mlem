@@ -19,8 +19,8 @@ class AccountsTracker {
     
     @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
     
-    var savedAccounts: [Account] = .init()
-    var defaultAccount: Account? { savedAccounts.first }
+    var savedAccounts: [UserAccount] = .init()
+    var defaultAccount: UserAccount? { savedAccounts.first }
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -28,7 +28,7 @@ class AccountsTracker {
         self.savedAccounts = persistenceRepository.loadAccounts()
     }
     
-    func addAccount(account: Account) {
+    func addAccount(account: UserAccount) {
         guard !savedAccounts.contains(where: { account.id == $0.id }) else {
             assertionFailure("Tried to add a duplicate account to the tracker")
             return
@@ -37,7 +37,8 @@ class AccountsTracker {
         saveAccounts()
     }
 
-    func removeAccount(account: Account) {
+    func removeAccount(account: any Account) {
+        guard let account = account as? UserAccount else { return }
         guard let index = savedAccounts.firstIndex(where: { account.id == $0.id }) else {
             assertionFailure("Tried to remove an account that does not exist")
             return
@@ -54,7 +55,7 @@ class AccountsTracker {
         username: String,
         password: String,
         totpToken: String? = nil
-    ) async throws -> Account {
+    ) async throws -> UserAccount {
         let response = try await unauthenticatedApi.login(
             username: username,
             password: password,
@@ -77,7 +78,7 @@ class AccountsTracker {
             guard let person = response.person else {
                 throw ApiClientError.invalidSession
             }
-            let account = Account(person: person, instance: response.instance)
+            let account = UserAccount(person: person, instance: response.instance)
             addAccount(account: account)
             return account
         }

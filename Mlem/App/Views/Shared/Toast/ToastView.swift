@@ -63,7 +63,7 @@ struct ToastView: View {
                     AvatarView(account, showLoadingPlaceholder: false)
                         .frame(height: 28)
                         .padding(.leading, 10)
-                    Text(account.nickname ?? account.name)
+                    Text(account.nickname)
                         .frame(minWidth: 100)
                         .padding(.trailing)
                 }
@@ -202,6 +202,7 @@ extension ToastView {
             )
         )
         ToastView(.error(.init()))
+        ToastView(.success("Really super long text"))
     }
     .environment(Palette.main)
     .background {

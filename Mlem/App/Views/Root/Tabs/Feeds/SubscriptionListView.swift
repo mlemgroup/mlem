@@ -33,20 +33,22 @@ struct SubscriptionListView: View {
     
     var body: some View {
         List {
-            ForEach(appState.firstAccount.subscriptions?.visibleSections ?? .init()) { section in
-                Section(section.label) {
-                    ForEach(section.communities) { community in
-                        HStack {
-                            Text(community.name)
-                            Spacer()
-                            let action = community.favoriteAction
-                            Button(action: action.callback ?? {}) {
-                                Image(systemName: action.menuIcon)
-                                    .foregroundStyle(action.isOn ? action.color : .primary)
+            if let subscriptions = (appState.firstAccount as? ActiveUserAccount)?.subscriptions {
+                ForEach(subscriptions.visibleSections) { section in
+                    Section(section.label) {
+                        ForEach(section.communities) { community in
+                            HStack {
+                                Text(community.name)
+                                Spacer()
+                                let action = community.favoriteAction
+                                Button(action: action.callback ?? {}) {
+                                    Image(systemName: action.menuIcon)
+                                        .foregroundStyle(action.isOn ? action.color : .primary)
+                                }
+                                .buttonStyle(EmptyButtonStyle())
+                                .disabled(action.callback == nil)
+                                .opacity(action.callback == nil ? 0.5 : 1)
                             }
-                            .buttonStyle(EmptyButtonStyle())
-                            .disabled(action.callback == nil)
-                            .opacity(action.callback == nil ? 0.5 : 1)
                         }
                     }
                 }
