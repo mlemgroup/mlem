@@ -36,7 +36,7 @@ struct InboxView: View {
                 handleError(ApiClientError.cancelled)
             }
             Button("Super Long Text") {
-                ToastModel.main.add(.success("Super long text"))
+                ToastModel.main.add(.success("Really Super Long Text"))
             }
             Button("Open Sheet") {
                 navigation.openSheet(.inbox)
