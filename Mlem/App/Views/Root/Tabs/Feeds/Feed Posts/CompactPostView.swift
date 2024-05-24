@@ -30,13 +30,17 @@ struct CompactPost: View {
             VStack(alignment: .leading, spacing: AppConstants.compactSpacing) {
                 HStack {
                     if communityContext != nil {
-                        FullyQualifiedLabelView(entity: post.creator_, showAvatar: false, instanceLocation: .trailing)
+                        NavigationLink(value: NavigationPage.profile) {
+                            FullyQualifiedLabelView(entity: post.creator_, showAvatar: false, instanceLocation: .trailing)
+                        }
                     } else {
-                        FullyQualifiedLabelView(entity: post.community_, showAvatar: false, instanceLocation: .trailing)
+                        NavigationLink(value: NavigationPage.profile) {
+                            FullyQualifiedLabelView(entity: post.community_, showAvatar: false, instanceLocation: .trailing)
+                        }
                     }
                     Spacer()
-                    // TODO: EllipsisMenu
-                    Image(systemName: "ellipsis")
+                    
+                    EllipsisMenu(actions: post.menuActions, size: 24)
                 }
                 
                 Text(post.title)

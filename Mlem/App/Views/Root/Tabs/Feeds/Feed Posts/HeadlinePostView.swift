@@ -14,6 +14,7 @@ struct HeadlinePost: View {
     @AppStorage("user.showAvatar") var showUserAvatar: Bool = true
     @AppStorage("community.showAvatar") var showCommunityAvatar: Bool = false
     
+    @Environment(\.communityContext) var communityContext: (any Community3Providing)?
     @Environment(Palette.self) var palette: Palette
     
     let post: any Post1Providing
@@ -52,7 +53,7 @@ struct HeadlinePost: View {
     var title: Text {
         postTag(active: post.removed, icon: Icons.removeFill, color: .red) +
             postTag(active: post.pinnedInstance, icon: Icons.pinFill, color: palette.administration) +
-            postTag(active: post.pinnedCommunity, icon: Icons.pinFill, color: palette.moderation) +
+            postTag(active: communityContext != nil && post.pinnedCommunity, icon: Icons.pinFill, color: palette.moderation) +
             postTag(active: post.locked, icon: Icons.lockFill, color: palette.orange) +
             Text(" \(post.title)")
     }
