@@ -6,32 +6,58 @@
 //
 
 import MlemMiddleware
+import Nuke
 import NukeUI
 import SwiftUI
 
 struct AvatarView: View {
     let url: URL?
     let type: AvatarType
-    var showLoadingPlaceholder: Bool = true
+    var showLoadingPlaceholder: Bool
+    
+    @State var uiImage: UIImage
+    @State var loading: Bool
+    
+    init(
+        url: URL?,
+        type: AvatarType,
+        showLoadingPlaceholder: Bool = true
+    ) {
+        self.url = url
+        self.type = type
+        self.showLoadingPlaceholder = showLoadingPlaceholder
+    
+        self._uiImage = .init(wrappedValue: .init())
+        self._loading = .init(wrappedValue: url != nil)
+    }
     
     var body: some View {
-        LazyImage(url: url) { state in
-            state.image?
-                .resizable()
-                .clipShape(Circle())
+        Image(uiImage: uiImage)
+            .resizable()
+            .clipShape(Circle())
+            .background {
+                if url != nil, loading {
+                    ProgressView()
+                } else if url == nil {
+                    DefaultAvatarView(avatarType: type)
+                }
+            }
+            .task {
+                await loadImage()
+            }
+            .aspectRatio(1, contentMode: .fit)
+    }
+    
+    func loadImage() async {
+        guard let url else { return }
+        
+        do {
+            let imageTask = ImagePipeline.shared.imageTask(with: url)
+            uiImage = try await imageTask.image
+            loading = false
+        } catch {
+            print(error)
         }
-//        LazyImage(url: url) { state in
-//            // Using an `if` statement to conditionally show the `Image` doesn't play well with SwiftUI animations/transitions, so do this instead
-//            Image(uiImage: state.imageContainer?.image ?? .init())
-//                .resizable()
-//                .clipShape(Circle())
-//                .background {
-//                    if url == nil || (showLoadingPlaceholder && state.isLoading) {
-//                        DefaultAvatarView(avatarType: type)
-//                    }
-//                }
-//        }
-        .aspectRatio(1, contentMode: .fit)
     }
 }
 
