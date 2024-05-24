@@ -7,7 +7,6 @@
 
 import MlemMiddleware
 import Nuke
-import NukeUI
 import SwiftUI
 
 struct AvatarView: View {
