@@ -41,9 +41,6 @@ struct AccountListRow: View {
                     showingSignOutConfirmation = true
                 }
                 .tint(.red)
-            } else {
-                Button("Keep") {}
-                    .tint(.blue)
             }
         }
         .confirmationDialog("Really sign out of \(account.nickname)?", isPresented: $showingSignOutConfirmation) {
