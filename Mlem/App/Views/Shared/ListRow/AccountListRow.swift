@@ -1,5 +1,5 @@
 //
-//  AccountButtonView.swift
+//  AccountListRow.swift
 //  Mlem
 //
 //  Created by Sjmarf on 22/12/2023.
@@ -10,7 +10,7 @@ import MlemMiddleware
 import NukeUI
 import SwiftUI
 
-struct AccountButtonView: View {
+struct AccountListRow: View {
     @Environment(\.dismiss) private var dismiss
     
     @Environment(AppState.self) private var appState
@@ -24,7 +24,7 @@ struct AccountButtonView: View {
 
     var body: some View {
         Button {
-            if appState.firstAccount.actorId != account.actorId, let account = account as? UserAccount {
+            if appState.firstSession.actorId != account.actorId, let account = account as? UserAccount {
                 appState.changeAccount(to: account)
                 if navigation.isInsideSheet {
                     dismiss()
@@ -36,14 +36,19 @@ struct AccountButtonView: View {
         .buttonStyle(.plain)
         .accessibilityLabel(accessibilityLabel)
         .swipeActions {
-            Button("Sign Out") {
-                showingSignOutConfirmation = true
+            if (account as? GuestAccount)?.isSaved ?? true {
+                Button("Sign Out") {
+                    showingSignOutConfirmation = true
+                }
+                .tint(.red)
+            } else {
+                Button("Keep") {}
+                    .tint(.blue)
             }
-            .tint(.red)
         }
         .confirmationDialog("Really sign out of \(account.nickname)?", isPresented: $showingSignOutConfirmation) {
             Button("Sign Out", role: .destructive) {
-                if navigation.isInsideSheet, appState.activeAccounts.contains(where: { $0.account === account }) {
+                if navigation.isInsideSheet, appState.activeSessions.contains(where: { $0.account === account }) {
                     dismiss()
                 }
                 account.signOut()
@@ -61,7 +66,7 @@ struct AccountButtonView: View {
             text = "guest"
         }
         
-        if appState.firstAccount.actorId == account.actorId {
+        if appState.firstSession.actorId == account.actorId {
             text += ", active"
         }
         return text

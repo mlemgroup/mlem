@@ -1,5 +1,5 @@
 //
-//  ActiveAccount.swift
+//  Session.swift
 //  Mlem
 //
 //  Created by Sjmarf on 24/05/2024.
@@ -9,7 +9,7 @@ import Foundation
 import MlemMiddleware
 import Observation
 
-protocol ActiveAccount: ActorIdentifiable, Hashable {
+protocol Session: ActorIdentifiable, Hashable {
     associatedtype AccountType: Account
     
     var api: ApiClient { get }
@@ -19,7 +19,7 @@ protocol ActiveAccount: ActorIdentifiable, Hashable {
     func deactivate()
 }
 
-extension ActiveAccount {
+extension Session {
     var api: ApiClient { account.api }
     var actorId: URL { account.actorId }
     var host: String? { actorId.host() }

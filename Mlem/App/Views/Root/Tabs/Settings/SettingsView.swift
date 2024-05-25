@@ -35,14 +35,14 @@ struct SettingsView: View {
     
     var accountSettingsLink: some View {
         NavigationLink(.settings(.account)) {
-            let account = appState.firstAccount
+            let account = appState.firstSession
             HStack(spacing: 23) {
                 AvatarView(account.account)
                     .frame(width: 54)
                     .padding(.vertical, -6)
                     .padding(.leading, 3)
                 VStack(alignment: .leading, spacing: 3) {
-                    Text(account is ActiveUserAccount ? account.account.nickname : "Guest")
+                    Text(account is UserSession ? account.account.nickname : "Guest")
                         .font(.title2)
                     Text(accountSettingsLinkSubtitle)
                         .foregroundStyle(.secondary)
@@ -54,7 +54,7 @@ struct SettingsView: View {
     }
     
     var accountSettingsLinkSubtitle: String {
-        let account = appState.firstAccount
+        let account = appState.firstSession
         if let host = account.account.host {
             return "@\(host)"
         }

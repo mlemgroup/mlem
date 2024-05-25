@@ -83,7 +83,11 @@ class GuestAccount: Account {
         actorId.host() ?? "unknown"
     }
     
-    var isActive: Bool { AppState.main.guestAccount === self }
+    var isActive: Bool { AppState.main.guestSession === self }
+    
+    var isSaved: Bool {
+        false
+    }
     
     var nicknameSortKey: String { storedNickname ?? name }
     var instanceSortKey: String { host ?? "" }

@@ -51,9 +51,14 @@ struct AccountListView: View {
                 } else {
                     Section(header: topHeader()) {
                         ForEach(accounts, id: \.actorId) { account in
-                            AccountButtonView(account: account, isSwitching: $isSwitching)
+                            AccountListRow(account: account, isSwitching: $isSwitching)
                         }
                         .onMove(perform: shouldAllowReordering ? reorderAccount : nil)
+                    }
+                    Section {
+                        if let activeAccount = appState.firstSession as? GuestSession {
+                            AccountListRow(account: activeAccount.account, isSwitching: $isSwitching)
+                        }
                     }
                     addAccountButton
                 }
@@ -79,7 +84,7 @@ struct AccountListView: View {
         ForEach(Array(accountGroups.enumerated()), id: \.offset) { offset, group in
             Section {
                 ForEach(group.accounts, id: \.actorId) { account in
-                    AccountButtonView(
+                    AccountListRow(
                         account: account,
                         complications: accountSort != .instance || group.header == "Other" ? .withTime : .timeOnly,
                         isSwitching: $isSwitching

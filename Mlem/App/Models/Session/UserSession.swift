@@ -1,5 +1,5 @@
 //
-//  ActiveUserAccount.swift
+//  UserSession.swift
 //  Mlem
 //
 //  Created by Sjmarf on 24/05/2024.
@@ -10,7 +10,7 @@ import MlemMiddleware
 import Observation
 
 @Observable
-class ActiveUserAccount: ActiveAccount {
+class UserSession: Session {
     typealias AccountType = UserAccount
     
     private(set) var account: UserAccount
@@ -55,7 +55,7 @@ class ActiveUserAccount: ActiveAccount {
         hasher.combine(actorId)
     }
     
-    static func == (lhs: ActiveUserAccount, rhs: ActiveUserAccount) -> Bool {
+    static func == (lhs: UserSession, rhs: UserSession) -> Bool {
         lhs.actorId == rhs.actorId
     }
 }

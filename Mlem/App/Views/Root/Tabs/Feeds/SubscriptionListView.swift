@@ -33,7 +33,7 @@ struct SubscriptionListView: View {
     
     var body: some View {
         List {
-            if let subscriptions = (appState.firstAccount as? ActiveUserAccount)?.subscriptions {
+            if let subscriptions = (appState.firstSession as? UserSession)?.subscriptions {
                 ForEach(subscriptions.visibleSections) { section in
                     Section(section.label) {
                         ForEach(section.communities) { community in

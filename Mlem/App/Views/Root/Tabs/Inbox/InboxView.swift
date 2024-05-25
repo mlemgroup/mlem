@@ -20,7 +20,7 @@ struct InboxView: View {
                 ToastModel.main.add(.failure())
             }
             Button("Profile") {
-                ToastModel.main.add(.account(AppState.main.firstAccount.account))
+                ToastModel.main.add(.account(AppState.main.firstSession.account))
             }
             Button("Undoable") {
                 ToastModel.main.add(
@@ -41,7 +41,6 @@ struct InboxView: View {
             Button("Open Sheet") {
                 navigation.openSheet(.inbox)
             }
-            ToastView(.success("Really super long text"))
         }
     }
 }

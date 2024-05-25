@@ -12,34 +12,34 @@ import SwiftUI
 
 @Observable
 class AppState {
-    private(set) var guestAccount: ActiveGuestAccount = .init(url: URL(string: "https://lemmy.world")!)
-    private(set) var activeAccounts: [ActiveUserAccount] = []
+    private(set) var guestSession: GuestSession = .init(url: URL(string: "https://lemmy.world")!)
+    private(set) var activeSessions: [UserSession] = []
 
     func changeAccount(to account: any Account) {
         ToastModel.main.add(.account(account))
         
-        activeAccounts.forEach { $0.deactivate() }
-        guestAccount.deactivate()
+        activeSessions.forEach { $0.deactivate() }
+        guestSession.deactivate()
         
         // Save because we updated `lastUsed` in the above `deactivate()` calls
         AccountsTracker.main.saveAccounts()
         
         if let account = account as? UserAccount {
-            let activeAccount = ActiveUserAccount(account: account)
-            activeAccounts = [activeAccount]
+            let activeAccount = UserSession(account: account)
+            activeSessions = [activeAccount]
         } else if let account = account as? GuestAccount {
-            activeAccounts = []
-            guestAccount = .init(account: account)
+            activeSessions = []
+            guestSession = .init(account: account)
         } else {
             assertionFailure()
         }
     }
     
     func deactivate(account: UserAccount) {
-        if let index = AppState.main.activeAccounts.firstIndex(where: { $0.account === account }) {
-            activeAccounts[index].deactivate()
-            activeAccounts.remove(at: index)
-            if activeAccounts.isEmpty, let defaultAccount = AccountsTracker.main.defaultAccount {
+        if let index = AppState.main.activeSessions.firstIndex(where: { $0.account === account }) {
+            activeSessions[index].deactivate()
+            activeSessions.remove(at: index)
+            if activeSessions.isEmpty, let defaultAccount = AccountsTracker.main.defaultAccount {
                 changeAccount(to: defaultAccount)
             } else {
                 AccountsTracker.main.saveAccounts()
@@ -48,7 +48,7 @@ class AppState {
     }
     
     func enterOnboarding() {
-        activeAccounts.removeAll()
+        activeSessions.removeAll()
     }
     
     private init() {
@@ -59,18 +59,19 @@ class AppState {
         }
     }
     
-    var firstAccount: any ActiveAccount { activeAccounts.first ?? guestAccount }
-    var firstApi: ApiClient { firstAccount.api }
+    var firstSession: any Session { activeSessions.first ?? guestSession }
+    var firstAccount: any Account { firstSession.account }
+    var firstApi: ApiClient { firstSession.api }
     
-    func accountThatModerates(actorId: URL) -> ActiveUserAccount? {
-        activeAccounts.first(where: { account in
-            account.person?.moderatedCommunities.contains { $0.actorId == actorId } ?? false
+    func accountThatModerates(actorId: URL) -> UserSession? {
+        activeSessions.first(where: { session in
+            session.person?.moderatedCommunities.contains { $0.actorId == actorId } ?? false
         })
     }
     
     func cleanCaches() {
-        for account in activeAccounts {
-            account.api.cleanCaches()
+        for session in activeSessions {
+            session.api.cleanCaches()
         }
     }
     

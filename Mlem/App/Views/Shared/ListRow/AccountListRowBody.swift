@@ -42,7 +42,7 @@ struct AccountListRowBody: View {
             }
             .padding(.vertical, -2)
             Spacer()
-            if appState.firstAccount.actorId == account.actorId {
+            if appState.firstSession.actorId == account.actorId {
                 Image(systemName: Icons.present)
                     .foregroundStyle(.green)
                     .font(.system(size: 10.0))
@@ -52,7 +52,7 @@ struct AccountListRowBody: View {
     }
     
     var timeText: String? {
-        if account.actorId == appState.firstAccount.actorId {
+        if account.actorId == appState.firstSession.actorId {
             return "Now"
         }
         if let time = account.lastUsed {
@@ -67,22 +67,22 @@ struct AccountListRowBody: View {
     }
     
     var captionText: String? {
-        let host = account.api.baseUrl.host
-        let timeText = timeText
-        var complications = complications
-        if timeText == nil {
-            complications = .instanceOnly
+        var output: [String] = []
+        if complications.contains(.instance) {
+            if account is GuestAccount {
+                output.append("Guest")
+            } else {
+                output.append("@\(account.api.baseUrl.host ?? "unknown")")
+            }
         }
-        switch complications {
-        case [.instance]:
-            return "@\(host ?? "unknown")"
-        case [.lastUsed]:
-            return timeText ?? ""
-        case [.instance, .lastUsed]:
-            return "@\(host ?? "unknown") ∙ \(timeText ?? "")"
-        default:
-            return ""
+        if complications.contains(.lastUsed), let timeText {
+            if (account as? GuestAccount)?.isSaved ?? true {
+                output.append(timeText)
+            } else {
+                output.append("Temporary")
+            }
         }
+        return output.joined(separator: " • ")
     }
 }
 

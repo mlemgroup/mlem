@@ -14,10 +14,10 @@ struct AccountSettingsView: View {
         Form {
             Section {
                 VStack(spacing: AppConstants.standardSpacing) {
-                    if let userAccount = appState.firstAccount as? ActiveUserAccount {
+                    if let userAccount = appState.firstSession as? UserSession {
                         AvatarBannerView(userAccount.person)
                     } else {
-                        AvatarBannerView(appState.firstAccount.instance)
+                        AvatarBannerView(appState.firstSession.instance)
                     }
                     VStack(spacing: 5) {
                         Text(title)
@@ -40,17 +40,17 @@ struct AccountSettingsView: View {
     }
     
     var title: String {
-        if let userAccount = appState.firstAccount as? ActiveUserAccount {
+        if let userAccount = appState.firstSession as? UserSession {
             return userAccount.person?.displayName ?? "Account"
         } else {
-            return appState.firstAccount.instance?.displayName ?? "User"
+            return appState.firstSession.instance?.displayName ?? "User"
         }
     }
     
     var subtitle: String {
-        if let userAccount = appState.firstAccount as? ActiveUserAccount {
+        if let userAccount = appState.firstSession as? UserSession {
             return userAccount.person?.fullNameWithPrefix ?? "Loading..."
         }
-        return appState.firstAccount.instance?.name ?? "Loading..."
+        return appState.firstSession.instance?.name ?? "Loading..."
     }
 }

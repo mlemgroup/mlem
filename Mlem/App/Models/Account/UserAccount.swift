@@ -115,7 +115,7 @@ class UserAccount: Account, CommunityOrPersonStub {
         try? AppConstants.keychain.remove(getKeychainId(id: id))
     }
     
-    var isActive: Bool { AppState.main.activeAccounts.contains(where: { $0 === self }) }
+    var isActive: Bool { AppState.main.activeSessions.contains(where: { $0 === self }) }
     
     var nicknameSortKey: String { nickname + (actorId.host() ?? "") }
     var instanceSortKey: String { (actorId.host() ?? "") + nickname }
