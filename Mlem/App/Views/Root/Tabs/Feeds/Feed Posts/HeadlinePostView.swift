@@ -31,8 +31,7 @@ struct HeadlinePost: View {
                 
                 Spacer()
                 
-                // TODO: EllipsisMenu
-                Image(systemName: "ellipsis")
+                EllipsisMenu(actions: post.menuActions, size: 24)
             }
             
             HStack(alignment: .top, spacing: AppConstants.standardSpacing) {
@@ -40,21 +39,17 @@ struct HeadlinePost: View {
                     ThumbnailImageView(post: post)
                 }
                 
-                title
+                post.taggedTitle(communityContext: communityContext)
                     .font(.headline)
                     .imageScale(.small)
-                    .fixedSize(horizontal: false, vertical: true)
+                // .fixedSize(horizontal: false, vertical: true)
+                
+                if thumbnailLocation == .right {
+                    ThumbnailImageView(post: post)
+                }
             }
             
             FullyQualifiedLabelView(entity: post.creator_, showAvatar: showUserAvatar, instanceLocation: .bottom)
         }
-    }
-    
-    var title: Text {
-        postTag(active: post.removed, icon: Icons.removeFill, color: .red) +
-            postTag(active: post.pinnedInstance, icon: Icons.pinFill, color: palette.administration) +
-            postTag(active: communityContext != nil && post.pinnedCommunity, icon: Icons.pinFill, color: palette.moderation) +
-            postTag(active: post.locked, icon: Icons.lockFill, color: palette.orange) +
-            Text(" \(post.title)")
     }
 }

@@ -34,16 +34,15 @@ struct CompactPost: View {
                             FullyQualifiedLabelView(entity: post.creator_, showAvatar: false, instanceLocation: .trailing)
                         }
                     } else {
-                        NavigationLink(value: NavigationPage.profile) {
-                            FullyQualifiedLabelView(entity: post.community_, showAvatar: false, instanceLocation: .trailing)
-                        }
+                        FullyQualifiedLabelView(entity: post.community_, showAvatar: false, instanceLocation: .trailing)
                     }
                     Spacer()
                     
-                    EllipsisMenu(actions: post.menuActions, size: 24)
+                    EllipsisMenu(actions: post.menuActions, size: 18)
                 }
                 
-                Text(post.title)
+                post.taggedTitle(communityContext: communityContext)
+                    .imageScale(.small)
                     .font(.subheadline)
                 
                 // TODO: info stack

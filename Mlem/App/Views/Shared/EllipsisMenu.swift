@@ -23,9 +23,8 @@ struct EllipsisMenu: View {
             Image(systemName: Icons.menu)
                 .frame(width: 24, height: size)
                 .foregroundColor(actions.children.isEmpty ? palette.secondary : palette.primary)
-                .background(RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
-                    .aspectRatio(1, contentMode: .fit)
-                    .foregroundColor(.clear))
+                .contentShape(.rect)
         }
+        .onTapGesture {} // prevent NavigationLink from disabling menu (thanks Swift)
     }
 }

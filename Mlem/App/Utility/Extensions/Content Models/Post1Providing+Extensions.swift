@@ -7,6 +7,7 @@
 
 import Foundation
 import MlemMiddleware
+import SwiftUI
 
 extension Post1Providing {
     var menuActions: ActionGroup {
@@ -16,5 +17,20 @@ extension Post1Providing {
             ),
             saveAction
         ])
+    }
+    
+    func taggedTitle(communityContext: (any Community3Providing)?) -> Text {
+        let hasTags = true
+//        let hasTags: Bool = removed
+//        || pinnedInstance
+//        || (communityContext != nil && pinnedCommunity)
+//        || locked
+        
+        return postTag(active: true, icon: Icons.nsfw, color: .red) +
+            postTag(active: removed, icon: Icons.removeFill, color: .red) +
+            postTag(active: pinnedInstance, icon: Icons.pinFill, color: Palette.main.administration) +
+            postTag(active: communityContext != nil && pinnedCommunity, icon: Icons.pinFill, color: Palette.main.moderation) +
+            postTag(active: locked, icon: Icons.lockFill, color: Palette.main.orange) +
+            Text("\(hasTags ? " " : "")\(title)")
     }
 }
