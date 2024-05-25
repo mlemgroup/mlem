@@ -37,14 +37,14 @@ struct AccountListView: View {
     }
     
     var shouldAllowReordering: Bool {
-        (accountSort == .custom || accountsTracker.savedAccounts.count == 2) && !isQuickSwitcher
+        (accountSort == .custom || accountsTracker.userAccounts.count == 2) && !isQuickSwitcher
     }
     
     var body: some View {
         Group {
             if !isSwitching {
-                if accountsTracker.savedAccounts.count > 3, groupAccountSort {
-                    userAccountList
+                if accountsTracker.userAccounts.count > 3, groupAccountSort {
+                    groupedUserAccountList
                 } else if accounts.isEmpty {
                     Text("You don't have any accounts.")
                         .foregroundStyle(.secondary)
@@ -55,13 +55,22 @@ struct AccountListView: View {
                         }
                         .onMove(perform: shouldAllowReordering ? reorderAccount : nil)
                     }
-                    Section {
-                        if let activeAccount = appState.firstSession as? GuestSession {
-                            AccountListRow(account: activeAccount.account, isSwitching: $isSwitching)
-                        }
-                    }
-                    addAccountButton
                 }
+                if let account = (appState.firstSession as? GuestSession)?.account, !account.isSaved {
+                    Section {
+                        AccountListRow(account: account, isSwitching: $isSwitching)
+                    }
+                }
+                Section {
+                    ForEach(accountsTracker.guestAccounts, id: \.actorId) { account in
+                        AccountListRow(
+                            account: account,
+                            complications: .withTime,
+                            isSwitching: $isSwitching
+                        )
+                    }
+                }
+                addAccountButton
             }
         }
         .alert("Enter domain name", isPresented: $isShowingAddGuestAlert) {
@@ -70,7 +79,9 @@ struct AccountListView: View {
                 .autocorrectionDisabled()
             Button("OK") {
                 if !newGuestDomain.isEmpty, let url = URL(string: "https://\(newGuestDomain)") {
-                    AppState.main.changeAccount(to: GuestAccount(url: url))
+                    let guest = AccountsTracker.main.loginGuest(url: url)
+                    AccountsTracker.main.addAccount(account: guest)
+                    AppState.main.changeAccount(to: guest)
                     if navigation.isInsideSheet {
                         dismiss()
                     }
@@ -80,7 +91,7 @@ struct AccountListView: View {
     }
     
     @ViewBuilder
-    var userAccountList: some View {
+    var groupedUserAccountList: some View {
         ForEach(Array(accountGroups.enumerated()), id: \.offset) { offset, group in
             Section {
                 ForEach(group.accounts, id: \.actorId) { account in
@@ -125,7 +136,7 @@ struct AccountListView: View {
             if let text {
                 Text(text)
             }
-            if !isQuickSwitcher, accountsTracker.savedAccounts.count > 2 {
+            if !isQuickSwitcher, accountsTracker.userAccounts.count > 2 {
                 Spacer()
                 sortModeMenu()
             }
@@ -145,7 +156,7 @@ struct AccountListView: View {
                     groupAccountSort = false
                 }
             }
-            if accountsTracker.savedAccounts.count > 3 {
+            if accountsTracker.userAccounts.count > 3 {
                 Divider()
                 Toggle(isOn: $groupAccountSort) {
                     Label("Grouped", systemImage: "square.stack.3d.up.fill")

@@ -12,7 +12,7 @@ struct AccountListRowBody: View {
     @Environment(AppState.self) private var appState
     
     enum Complication: CaseIterable {
-        case instance, lastUsed
+        case instance, lastUsed, isActive
     }
     
     let account: any Account
@@ -20,18 +20,9 @@ struct AccountListRowBody: View {
     
     var body: some View {
         HStack(alignment: .center, spacing: 10) {
-            // Using AvatarView or CachedImage here causes the quick switcher sheet to be locked to `.large` on iOS 17. To avoid this, we're using LazyImage directly instead - Sjmarf
-            LazyImage(url: account.avatar) { state in
-                if let imageContainer = state.imageContainer {
-                    Image(uiImage: imageContainer.image)
-                        .resizable()
-                        .clipShape(Circle())
-                } else {
-                    DefaultAvatarView(avatarType: .person)
-                }
-            }
-            .frame(width: 40, height: 40)
-            .padding(.leading, -5)
+            AvatarView(account)
+                .frame(height: 40)
+                .padding(.leading, -5)
             VStack(alignment: .leading) {
                 Text(account.nickname)
                 if let captionText {
@@ -42,7 +33,7 @@ struct AccountListRowBody: View {
             }
             .padding(.vertical, -2)
             Spacer()
-            if appState.firstSession.actorId == account.actorId {
+            if complications.contains(.isActive), appState.firstSession.actorId == account.actorId {
                 Image(systemName: Icons.present)
                     .foregroundStyle(.green)
                     .font(.system(size: 10.0))
@@ -87,7 +78,7 @@ struct AccountListRowBody: View {
 }
 
 extension Set<AccountListRowBody.Complication> {
-    static let withTime: Self = [.instance, .lastUsed]
-    static let instanceOnly: Self = [.instance]
-    static let timeOnly: Self = [.lastUsed]
+    static let withTime: Self = [.instance, .lastUsed, .isActive]
+    static let instanceOnly: Self = [.instance, .isActive]
+    static let timeOnly: Self = [.lastUsed, .isActive]
 }

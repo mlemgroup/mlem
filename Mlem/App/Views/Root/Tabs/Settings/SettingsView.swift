@@ -14,7 +14,7 @@ struct SettingsView: View {
     
     @AppStorage("upvoteOnSave") var upvoteOnSave = false
     
-    var accounts: [UserAccount] { AccountsTracker.main.savedAccounts }
+    var accounts: [UserAccount] { AccountsTracker.main.userAccounts }
     
     var body: some View {
         Form {

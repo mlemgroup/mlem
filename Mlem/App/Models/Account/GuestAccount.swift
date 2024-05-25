@@ -23,6 +23,11 @@ class GuestAccount: Account {
         self.api = .getApiClient(for: url, with: nil)
     }
     
+    init(api: ApiClient) {
+        self.api = api
+        self.actorId = api.actorId
+    }
+    
     init(instance: Instance3) {
         self.api = instance.guestApi
         self.actorId = instance.actorId
@@ -75,7 +80,7 @@ class GuestAccount: Account {
             shouldSave = true
         }
         if shouldSave {
-            AccountsTracker.main.saveAccounts()
+            AccountsTracker.main.saveAccounts(ofType: .guest)
         }
     }
     
@@ -86,9 +91,16 @@ class GuestAccount: Account {
     var isActive: Bool { AppState.main.guestSession === self }
     
     var isSaved: Bool {
-        false
+        AccountsTracker.main.guestAccounts.contains(where: { $0 === self })
     }
     
     var nicknameSortKey: String { storedNickname ?? name }
     var instanceSortKey: String { host ?? "" }
+    
+    func resetStoredSettings(withSave: Bool = true) {
+        storedNickname = nil
+        if withSave {
+            AccountsTracker.main.saveAccounts(ofType: .guest)
+        }
+    }
 }

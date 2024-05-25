@@ -98,7 +98,7 @@ class UserAccount: Account, CommunityOrPersonStub {
             shouldSave = true
         }
         if shouldSave {
-            AccountsTracker.main.saveAccounts()
+            AccountsTracker.main.saveAccounts(ofType: .guest)
         }
     }
     

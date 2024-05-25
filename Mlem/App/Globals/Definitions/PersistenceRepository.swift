@@ -24,7 +24,8 @@ private enum Path {
         return path
     }()
 
-    static var savedAccounts = root.appendingPathComponent("Saved Accounts", conformingTo: .json)
+    static var userAccounts = root.appendingPathComponent("Saved Accounts", conformingTo: .json)
+    static var guestAccounts = root.appendingPathComponent("Guest Accounts", conformingTo: .json)
     static var filteredKeywords = root.appendingPathComponent("Blocked Keywords", conformingTo: .json)
     static var favoriteCommunities = root.appendingPathComponent("Favorite Communities", conformingTo: .json)
     static var recentSearches = root.appendingPathComponent("Recent Searches", conformingTo: .json)
@@ -68,12 +69,20 @@ class PersistenceRepository {
     
     // MARK: - Public methods
     
-    func loadAccounts() -> [UserAccount] {
-        load([UserAccount].self, from: Path.savedAccounts) ?? []
+    func loadUserAccounts() -> [UserAccount] {
+        load([UserAccount].self, from: Path.userAccounts) ?? []
     }
     
-    func saveAccounts(_ value: [UserAccount]) async throws {
-        try await save(value, to: Path.savedAccounts)
+    func saveUserAccounts(_ value: [UserAccount]) async throws {
+        try await save(value, to: Path.userAccounts)
+    }
+    
+    func loadGuestAccounts() -> [GuestAccount] {
+        load([GuestAccount].self, from: Path.guestAccounts) ?? []
+    }
+    
+    func saveGuestAccounts(_ value: [GuestAccount]) async throws {
+        try await save(value, to: Path.guestAccounts)
     }
     
     func loadRecentSearches(for accountId: String) -> [ContentModelIdentifier] {

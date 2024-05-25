@@ -24,7 +24,7 @@ struct AccountListRow: View {
 
     var body: some View {
         Button {
-            if appState.firstSession.actorId != account.actorId, let account = account as? UserAccount {
+            if appState.firstSession.actorId != account.actorId {
                 appState.changeAccount(to: account)
                 if navigation.isInsideSheet {
                     dismiss()

@@ -10,16 +10,16 @@ import SwiftUI
 
 extension AccountListView {
     var accounts: [any Account] {
-        let accountSort = accountsTracker.savedAccounts.count == 2 ? .custom : accountSort
+        let accountSort = accountsTracker.userAccounts.count == 2 ? .custom : accountSort
         switch accountSort {
         case .custom:
-            return accountsTracker.savedAccounts
+            return accountsTracker.userAccounts
         case .name:
-            return accountsTracker.savedAccounts.sorted { $0.nicknameSortKey < $1.nicknameSortKey }
+            return accountsTracker.userAccounts.sorted { $0.nicknameSortKey < $1.nicknameSortKey }
         case .instance:
-            return accountsTracker.savedAccounts.sorted { $0.instanceSortKey < $1.instanceSortKey }
+            return accountsTracker.userAccounts.sorted { $0.instanceSortKey < $1.instanceSortKey }
         case .mostRecent:
-            return accountsTracker.savedAccounts.sorted { left, right in
+            return accountsTracker.userAccounts.sorted { left, right in
                 if appState.firstSession.actorId == left.actorId {
                     return true
                 } else if appState.firstSession.actorId == right.actorId {
@@ -41,16 +41,16 @@ extension AccountListView {
     var accountGroups: [AccountGroup] {
         switch accountSort {
         case .custom:
-            return [.init(header: "Custom", accounts: accountsTracker.savedAccounts)]
+            return [.init(header: "Custom", accounts: accountsTracker.userAccounts)]
         case .name:
             return Dictionary(
-                grouping: accountsTracker.savedAccounts,
+                grouping: accountsTracker.userAccounts,
                 by: { getNameCategory(account: $0) }
             ).map { AccountGroup(header: $0, accounts: $1.sorted { $0.nicknameSortKey < $1.nicknameSortKey }) }
                 .sorted { $0.header < $1.header }
         case .instance:
             let dict = Dictionary(
-                grouping: accountsTracker.savedAccounts,
+                grouping: accountsTracker.userAccounts,
                 by: { $0.host ?? "Unknown" }
             )
             let uniqueInstances = dict.filter { $1.count == 1 }.values.map { $0.first! }
@@ -69,7 +69,7 @@ extension AccountListView {
             var today = [any Account]()
             var last30Days = [any Account]()
             var older = [any Account]()
-            for account in accountsTracker.savedAccounts {
+            for account in accountsTracker.userAccounts {
                 if account.actorId == appState.firstSession.actorId {
                     continue
                 }
@@ -126,6 +126,6 @@ extension AccountListView {
     }
     
     func reorderAccount(fromOffsets: IndexSet, toOffset: Int) {
-        accountsTracker.savedAccounts.move(fromOffsets: fromOffsets, toOffset: toOffset)
+        accountsTracker.userAccounts.move(fromOffsets: fromOffsets, toOffset: toOffset)
     }
 }

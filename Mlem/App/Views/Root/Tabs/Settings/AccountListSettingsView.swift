@@ -11,7 +11,7 @@ import SwiftUI
 struct AccountListSettingsView: View {
     @Environment(AppState.self) var appState
     
-    var accounts: [UserAccount] { AccountsTracker.main.savedAccounts }
+    var accounts: [UserAccount] { AccountsTracker.main.userAccounts }
     
     var body: some View {
         Form {

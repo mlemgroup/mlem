@@ -22,7 +22,7 @@ class AppState {
         guestSession.deactivate()
         
         // Save because we updated `lastUsed` in the above `deactivate()` calls
-        AccountsTracker.main.saveAccounts()
+        AccountsTracker.main.saveAccounts(ofType: .all)
         
         if let account = account as? UserAccount {
             let activeAccount = UserSession(account: account)
@@ -42,7 +42,7 @@ class AppState {
             if activeSessions.isEmpty, let defaultAccount = AccountsTracker.main.defaultAccount {
                 changeAccount(to: defaultAccount)
             } else {
-                AccountsTracker.main.saveAccounts()
+                AccountsTracker.main.saveAccounts(ofType: .all)
             }
         }
     }
@@ -54,7 +54,7 @@ class AppState {
     private init() {
         if let user = AccountsTracker.main.defaultAccount {
             changeAccount(to: user)
-        } else if let user = AccountsTracker.main.savedAccounts.first {
+        } else if let user = AccountsTracker.main.userAccounts.first {
             changeAccount(to: user)
         }
     }
