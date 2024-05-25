@@ -18,23 +18,13 @@ class GuestAccount: Account {
     var avatar: URL?
     var lastUsed: Date?
     
-    init(url: URL) {
+    fileprivate init(url: URL) {
         self.actorId = url
         self.api = .getApiClient(for: url, with: nil)
     }
     
-    init(api: ApiClient) {
-        self.api = api
-        self.actorId = api.actorId
-    }
-    
-    init(instance: Instance3) {
-        self.api = instance.guestApi
-        self.actorId = instance.actorId
-        self.storedNickname = nil
-        self.cachedSiteVersion = instance.version
-        self.avatar = instance.avatar
-        self.lastUsed = .now
+    static func getGuestAccount(url: URL) -> GuestAccount {
+        GuestAccountCache.main.getAccount(url: url)
     }
     
     enum CodingKeys: String, CodingKey {
@@ -58,6 +48,7 @@ class GuestAccount: Account {
         self.actorId = instanceLink
         
         self.api = ApiClient.getApiClient(for: instanceLink, with: nil)
+        GuestAccountCache.main.cachedItems[cacheId] = .init(content: self)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -102,5 +93,22 @@ class GuestAccount: Account {
         if withSave {
             AccountsTracker.main.saveAccounts(ofType: .guest)
         }
+    }
+}
+
+extension GuestAccount: CacheIdentifiable {
+    var cacheId: Int { actorId.hashValue }
+}
+
+class GuestAccountCache: CoreCache<GuestAccount> {
+    static let main: GuestAccountCache = .init()
+    
+    func getAccount(url: URL) -> GuestAccount {
+        if let account = retrieveModel(cacheId: url.hashValue) {
+            return account
+        }
+        let account = GuestAccount(url: url)
+        cachedItems[account.cacheId] = .init(content: account)
+        return account
     }
 }

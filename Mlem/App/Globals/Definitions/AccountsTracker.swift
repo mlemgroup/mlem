@@ -25,7 +25,10 @@ class AccountsTracker {
     
     var userAccounts: [UserAccount] = .init()
     var guestAccounts: [GuestAccount] = .init()
-    var defaultAccount: UserAccount? { userAccounts.first }
+    var defaultAccount: any Account { userAccounts.first ?? defaultGuestAccount }
+    var defaultGuestAccount: GuestAccount {
+        guestAccounts.first ?? .getGuestAccount(url: URL(string: "https://lemmy.world")!)
+    }
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -63,7 +66,6 @@ class AccountsTracker {
             userAccounts.remove(at: index)
             saveAccounts(ofType: .user)
             account.deleteTokenFromKeychain()
-            AppState.main.deactivate(account: account)
         } else if let account = account as? GuestAccount {
             guard let index = guestAccounts.firstIndex(where: { $0 === account }) else {
                 assertionFailure("Tried to remove an account that does not exist")
@@ -75,6 +77,7 @@ class AccountsTracker {
         } else {
             assertionFailure()
         }
+        AppState.main.deactivate(account: account)
     }
     
     @discardableResult
@@ -110,17 +113,6 @@ class AccountsTracker {
             addAccount(account: account)
             return account
         }
-    }
-    
-    @discardableResult
-    func loginGuest(url: URL) -> GuestAccount {
-        if let account = guestAccounts.first(where: { $0.actorId == url }) {
-            return account
-        }
-        if AppState.main.guestSession.account.actorId == url {
-            return AppState.main.guestSession.account
-        }
-        return GuestAccount(url: url)
     }
     
     func saveAccounts(ofType type: SaveType) {

@@ -73,14 +73,16 @@ struct AccountListView: View {
                 addAccountButton
             }
         }
-        .alert("Enter domain name", isPresented: $isShowingAddGuestAlert) {
+        .alert("Enter Domain Name", isPresented: $isShowingAddGuestAlert) {
             TextField("lemmy.world", text: $newGuestDomain)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
             Button("OK") {
                 if !newGuestDomain.isEmpty, let url = URL(string: "https://\(newGuestDomain)") {
-                    let guest = AccountsTracker.main.loginGuest(url: url)
-                    AccountsTracker.main.addAccount(account: guest)
+                    let guest = GuestAccount.getGuestAccount(url: url)
+                    if !guest.isSaved {
+                        AccountsTracker.main.addAccount(account: guest)
+                    }
                     AppState.main.changeAccount(to: guest)
                     if navigation.isInsideSheet {
                         dismiss()

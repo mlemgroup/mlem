@@ -30,7 +30,7 @@ class GuestSession: Session {
     }
     
     convenience init(url: URL) {
-        self.init(account: .init(url: url))
+        self.init(account: .getGuestAccount(url: url))
     }
     
     func deactivate() {
