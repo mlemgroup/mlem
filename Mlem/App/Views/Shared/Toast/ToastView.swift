@@ -100,6 +100,7 @@ struct ToastView: View {
                     }
                 } else {
                     Text(title)
+                        .lineLimit(1)
                         .frame(minWidth: 80)
                 }
             }
@@ -115,6 +116,7 @@ struct ToastView: View {
                 .frame(height: 27)
                 .padding(.leading, 10)
             Text(account.nickname)
+                .lineLimit(1)
                 .frame(minWidth: 80)
                 .padding(.trailing, AppConstants.doubleSpacing)
         }
