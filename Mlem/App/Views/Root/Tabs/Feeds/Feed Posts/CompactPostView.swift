@@ -40,6 +40,7 @@ struct CompactPost: View {
                     
                     EllipsisMenu(actions: post.menuActions, size: 18)
                 }
+                .padding(.bottom, -2)
                 
                 post.taggedTitle(communityContext: communityContext)
                     .imageScale(.small)

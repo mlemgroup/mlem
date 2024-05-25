@@ -142,7 +142,7 @@ enum Icons {
     static let absent: String = "circle"
     static let warning: String = "exclamationmark.triangle"
     static let hide: String = "eye.slash"
-    static let nsfw: String = "eye.trianglebadge.exclamationmark.fill"
+    static let nsfwTag: String = "nsfw"
     static let show: String = "eye"
     static let blurNsfw: String = "eye.trianglebadge.exclamationmark"
     static let noContent: String = "binoculars"

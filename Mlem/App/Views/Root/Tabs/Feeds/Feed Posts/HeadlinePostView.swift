@@ -42,7 +42,8 @@ struct HeadlinePost: View {
                 post.taggedTitle(communityContext: communityContext)
                     .font(.headline)
                     .imageScale(.small)
-                // .fixedSize(horizontal: false, vertical: true)
+                
+//                Image("nsfw")
                 
                 if thumbnailLocation == .right {
                     ThumbnailImageView(post: post)

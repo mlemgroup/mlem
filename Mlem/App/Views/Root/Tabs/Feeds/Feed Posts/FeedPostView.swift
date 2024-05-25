@@ -11,7 +11,7 @@ import SwiftUI
 
 /// View for rendering posts in feed
 struct FeedPost: View {
-    @AppStorage("post.size") var size: PostSize = .compact
+    @AppStorage("post.size") var size: PostSize = .headline
     
     let post: AnyPost
     

@@ -20,13 +20,13 @@ extension Post1Providing {
     }
     
     func taggedTitle(communityContext: (any Community3Providing)?) -> Text {
-        let hasTags = true
-//        let hasTags: Bool = removed
-//        || pinnedInstance
-//        || (communityContext != nil && pinnedCommunity)
-//        || locked
+        let hasTags: Bool = nsfw
+            || removed
+            || pinnedInstance
+            || (communityContext != nil && pinnedCommunity)
+            || locked
         
-        return postTag(active: true, icon: Icons.nsfw, color: .red) +
+        return postTag(active: nsfw, icon: Icons.nsfwTag, color: .red) +
             postTag(active: removed, icon: Icons.removeFill, color: .red) +
             postTag(active: pinnedInstance, icon: Icons.pinFill, color: Palette.main.administration) +
             postTag(active: communityContext != nil && pinnedCommunity, icon: Icons.pinFill, color: Palette.main.moderation) +
