@@ -13,7 +13,6 @@ func postTag(active: Bool, icon: String, color: Color) -> Text {
         if icon == Icons.nsfwTag {
             Text(Image(icon))
                 .foregroundStyle(color)
-                .fontWeight(.regular)
         } else {
             Text(Image(systemName: icon))
                 .foregroundStyle(color)

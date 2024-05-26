@@ -31,6 +31,12 @@ struct HeadlinePost: View {
                 
                 Spacer()
                 
+                if post.nsfw {
+                    Image(Icons.nsfwTag)
+                        .foregroundStyle(palette.warning)
+                        .imageScale(.small)
+                }
+                
                 EllipsisMenu(actions: post.menuActions, size: 24)
             }
             
@@ -38,12 +44,10 @@ struct HeadlinePost: View {
                 if thumbnailLocation == .left {
                     ThumbnailImageView(post: post)
                 }
-                
+  
                 post.taggedTitle(communityContext: communityContext)
                     .font(.headline)
                     .imageScale(.small)
-                
-//                Image("nsfw")
                 
                 if thumbnailLocation == .right {
                     ThumbnailImageView(post: post)

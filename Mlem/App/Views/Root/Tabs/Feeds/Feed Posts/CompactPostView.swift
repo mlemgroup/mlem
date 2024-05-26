@@ -13,6 +13,7 @@ struct CompactPost: View {
     @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
     
     @Environment(\.communityContext) var communityContext: (any Community3Providing)?
+    @Environment(Palette.self) var palette: Palette
     
     let post: any Post1Providing
     
@@ -28,7 +29,7 @@ struct CompactPost: View {
             }
             
             VStack(alignment: .leading, spacing: AppConstants.compactSpacing) {
-                HStack {
+                HStack(spacing: 4) {
                     if communityContext != nil {
                         NavigationLink(value: NavigationPage.profile) {
                             FullyQualifiedLabelView(entity: post.creator_, showAvatar: false, instanceLocation: .trailing)
@@ -38,10 +39,19 @@ struct CompactPost: View {
                     }
                     Spacer()
                     
+                    if post.nsfw {
+                        Image(Icons.nsfwTag)
+                            .foregroundStyle(palette.warning)
+                            .imageScale(.small)
+                    }
+                    
+                    Image(systemName: Icons.moderation)
+                        .imageScale(.small)
+                    
                     EllipsisMenu(actions: post.menuActions, size: 18)
                 }
                 .padding(.bottom, -2)
-                
+  
                 post.taggedTitle(communityContext: communityContext)
                     .imageScale(.small)
                     .font(.subheadline)

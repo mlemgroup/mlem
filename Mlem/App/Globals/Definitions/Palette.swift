@@ -19,8 +19,9 @@ protocol PaletteProviding {
     var thumbnailBackground: Color { get }
     var accent: Color { get }
     
-    var success: Color { get }
-    var failure: Color { get }
+    var positive: Color { get }
+    var negative: Color { get }
+    var warning: Color { get }
     
     // interactions
     var upvote: Color { get }
@@ -58,8 +59,9 @@ struct ColorPalette: PaletteProviding {
     var thumbnailBackground: Color
     var accent: Color
 
-    var success: Color
-    var failure: Color
+    var positive: Color
+    var negative: Color
+    var warning: Color
     
     // interactions
     var upvote: Color
@@ -102,8 +104,9 @@ class Palette: PaletteProviding {
     var thumbnailBackground: Color { palette.thumbnailBackground }
     var accent: Color { palette.accent }
     
-    var success: Color { palette.success }
-    var failure: Color { palette.failure }
+    var positive: Color { palette.positive }
+    var negative: Color { palette.negative }
+    var warning: Color { palette.warning }
     
     var upvote: Color { palette.upvote }
     var downvote: Color { palette.downvote }

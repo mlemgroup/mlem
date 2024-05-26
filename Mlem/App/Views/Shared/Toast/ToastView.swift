@@ -126,7 +126,7 @@ struct ToastView: View {
         } label: {
             VStack(spacing: 0) {
                 HStack {
-                    image(details.systemImage ?? Icons.errorCircleFill, color: palette.failure)
+                    image(details.systemImage ?? Icons.errorCircleFill, color: palette.negative)
                     
                     Text(details.title ?? "Error")
                         .frame(minWidth: 100)
@@ -159,12 +159,12 @@ struct ToastView: View {
                         .font(.caption)
                         .buttonStyle(.borderedProminent)
                         .buttonBorderShape(.capsule)
-                        .tint(Palette.main.failure)
+                        .tint(Palette.main.negative)
                         .padding(AppConstants.standardSpacing)
                     }
                 }
                 .frame(maxHeight: .infinity, alignment: .leading)
-                .background(isExpanded ? Palette.main.failure.opacity(0.15) : .clear)
+                .background(isExpanded ? Palette.main.negative.opacity(0.15) : .clear)
             }
         }
         .buttonStyle(EmptyButtonStyle())
