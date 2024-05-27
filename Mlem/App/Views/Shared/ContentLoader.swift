@@ -10,10 +10,12 @@ import MlemMiddleware
 import SwiftUI
 
 struct ContentLoader<Content: View, Model: Upgradable>: View {
-    let model: any Upgradable
-    var content: (Model.MinimumRenderable) -> Content
+    @Environment(Palette.self) var palette: Palette
     
     @State var upgradeState: LoadingState = .idle
+    
+    let model: any Upgradable
+    var content: (Model.MinimumRenderable) -> Content
     
     init(model: Model, content: @escaping (Model.MinimumRenderable) -> Content) {
         self.model = model
@@ -30,6 +32,7 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
                 }
         } else {
             ProgressView()
+                .tint(palette.secondary)
                 .task {
                     await upgradeModel()
                 }
