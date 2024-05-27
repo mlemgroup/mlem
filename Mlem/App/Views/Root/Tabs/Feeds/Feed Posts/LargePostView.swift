@@ -10,7 +10,6 @@ import MlemMiddleware
 import SwiftUI
 
 struct LargePost: View {
-    @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
     @AppStorage("post.showCreator") var showCreator: Bool = false
     @AppStorage("user.showAvatar") var showUserAvatar: Bool = true
     @AppStorage("community.showAvatar") var showCommunityAvatar: Bool = true

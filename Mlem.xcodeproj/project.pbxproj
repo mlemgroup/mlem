@@ -123,8 +123,9 @@
 		CDB2EC8A2BFAEFDF00DBC0EF /* ThumbnailImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC892BFAEFDF00DBC0EF /* ThumbnailImageView.swift */; };
 		CDBFCB632C037F3C008CD468 /* Profile1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB622C037F3C008CD468 /* Profile1Providing+Extensions.swift */; };
 		CDBFCB652C03920C008CD468 /* PostLinkHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB642C03920C008CD468 /* PostLinkHostView.swift */; };
+		CDBFCB6A2C04EFFE008CD468 /* PostSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */; };
 		CDC199EA2BE449790077B4F1 /* Interactable1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC199E92BE449790077B4F1 /* Interactable1Providing+Extensions.swift */; };
-		CDE021AD2BFA43380052FD61 /* FeedPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE021AC2BFA43380052FD61 /* FeedPostView.swift */; };
+		CDE021AD2BFA43380052FD61 /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE021AC2BFA43380052FD61 /* Content.swift */; };
 		CDF9EF332AB2845C003F885B /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF9EF322AB2845C003F885B /* Icons.swift */; };
 /* End PBXBuildFile section */
 
@@ -257,8 +258,9 @@
 		CDB2EC892BFAEFDF00DBC0EF /* ThumbnailImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailImageView.swift; sourceTree = "<group>"; };
 		CDBFCB622C037F3C008CD468 /* Profile1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		CDBFCB642C03920C008CD468 /* PostLinkHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLinkHostView.swift; sourceTree = "<group>"; };
+		CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSettingsView.swift; sourceTree = "<group>"; };
 		CDC199E92BE449790077B4F1 /* Interactable1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Interactable1Providing+Extensions.swift"; sourceTree = "<group>"; };
-		CDE021AC2BFA43380052FD61 /* FeedPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostView.swift; sourceTree = "<group>"; };
+		CDE021AC2BFA43380052FD61 /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
 		CDF9EF322AB2845C003F885B /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -304,6 +306,7 @@
 				03267D832BED49CE009D6268 /* AccountSettingsView.swift */,
 				03134A572BEC1C46002662CC /* AccountListSettingsView.swift */,
 				031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */,
+				CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -762,7 +765,7 @@
 			isa = PBXGroup;
 			children = (
 				CDBFCB662C04EA59008CD468 /* Feed Post Components */,
-				CDE021AC2BFA43380052FD61 /* FeedPostView.swift */,
+				CDE021AC2BFA43380052FD61 /* Content.swift */,
 				CDB2EC7C2BFADAB300DBC0EF /* CompactPostView.swift */,
 				CDB2EC7E2BFADACC00DBC0EF /* HeadlinePostView.swift */,
 				CDB2EC802BFADADF00DBC0EF /* LargePostView.swift */,
@@ -1002,6 +1005,7 @@
 				03D3A1F32BB9D49B009DE55E /* ActionGroup.swift in Sources */,
 				CD7882A92BFFDFC7002E1A30 /* PostTag.swift in Sources */,
 				CD7882AB2C013005002E1A30 /* EllipsisMenu.swift in Sources */,
+				CDBFCB6A2C04EFFE008CD468 /* PostSettingsView.swift in Sources */,
 				CD4D58C82B86DCED00B82964 /* AvatarType.swift in Sources */,
 				CD4D58BB2B86DA7D00B82964 /* AccountListView+Logic.swift in Sources */,
 				CD43E8B32BF2C24E007C3D71 /* ContentLoader.swift in Sources */,
@@ -1020,7 +1024,7 @@
 				035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */,
 				CD4D58CB2B86DD3D00B82964 /* AssociatedIcon.swift in Sources */,
 				CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */,
-				CDE021AD2BFA43380052FD61 /* FeedPostView.swift in Sources */,
+				CDE021AD2BFA43380052FD61 /* Content.swift in Sources */,
 				6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */,
 				03267D822BED489C009D6268 /* AvatarBannerView.swift in Sources */,
 				03500C2D2BF7FC2500CAA076 /* ToastView.swift in Sources */,

@@ -7,6 +7,6 @@
 
 import Foundation
 
-enum PostSize: String {
+enum PostSize: String, CaseIterable {
     case compact, headline, large
 }

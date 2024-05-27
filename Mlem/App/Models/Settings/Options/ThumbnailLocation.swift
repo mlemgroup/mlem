@@ -7,6 +7,6 @@
 
 import Foundation
 
-enum ThumbnailLocation: String {
+enum ThumbnailLocation: String, CaseIterable {
     case left, right, none
 }

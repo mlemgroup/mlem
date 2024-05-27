@@ -61,6 +61,7 @@ struct CompactPost: View {
                 
                 // TODO: info stack
             }
+            .frame(maxWidth: .infinity)
             
             if thumbnailLocation == .right {
                 ThumbnailImageView(post: post)

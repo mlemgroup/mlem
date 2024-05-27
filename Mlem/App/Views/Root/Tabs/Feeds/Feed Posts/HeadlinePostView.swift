@@ -55,6 +55,7 @@ struct HeadlinePost: View {
                 }
                 
                 if thumbnailLocation == .right {
+                    Spacer()
                     ThumbnailImageView(post: post)
                 }
             }

@@ -119,7 +119,7 @@ struct MinimalPostFeedView: View {
                 Divider()
                 ForEach(postTracker.items, id: \.uid) { post in
                     NavigationLink(value: NavigationPage.expandedPost(post)) {
-                        FeedPost(post: .init(post: post))
+                        FeedPostView(post: .init(post: post))
                     }
                     .buttonStyle(EmptyButtonStyle())
                     Divider()
