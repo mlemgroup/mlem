@@ -11,8 +11,9 @@ import SwiftUI
 
 struct HeadlinePost: View {
     @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
+    @AppStorage("post.showCreator") var showCreator: Bool = false
     @AppStorage("user.showAvatar") var showUserAvatar: Bool = true
-    @AppStorage("community.showAvatar") var showCommunityAvatar: Bool = false
+    @AppStorage("community.showAvatar") var showCommunityAvatar: Bool = true
     
     @Environment(\.communityContext) var communityContext: (any Community3Providing)?
     @Environment(Palette.self) var palette: Palette
@@ -27,14 +28,13 @@ struct HeadlinePost: View {
     var content: some View {
         VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
             HStack {
-                FullyQualifiedLabelView(entity: post.community_, showAvatar: showCommunityAvatar, instanceLocation: .bottom)
+                FullyQualifiedLabelView(entity: post.community_, labelStyle: .medium(showAvatar: showCommunityAvatar))
                 
                 Spacer()
                 
                 if post.nsfw {
                     Image(Icons.nsfwTag)
                         .foregroundStyle(palette.warning)
-                        .imageScale(.small)
                 }
                 
                 EllipsisMenu(actions: post.menuActions, size: 24)
@@ -45,16 +45,23 @@ struct HeadlinePost: View {
                     ThumbnailImageView(post: post)
                 }
   
-                post.taggedTitle(communityContext: communityContext)
-                    .font(.headline)
-                    .imageScale(.small)
+                VStack(alignment: .leading, spacing: AppConstants.halfSpacing) {
+                    post.taggedTitle(communityContext: communityContext)
+                        .font(.headline)
+                        .imageScale(.small)
+                    
+                    PostLinkHostView(host: post.linkHost)
+                        .font(.subheadline)
+                }
                 
                 if thumbnailLocation == .right {
                     ThumbnailImageView(post: post)
                 }
             }
             
-            FullyQualifiedLabelView(entity: post.creator_, showAvatar: showUserAvatar, instanceLocation: .bottom)
+            if showCreator {
+                FullyQualifiedLabelView(entity: post.creator_, labelStyle: .medium(showAvatar: showUserAvatar))
+            }
         }
     }
 }

@@ -31,4 +31,16 @@ extension Post1Providing {
             postTag(active: locked, icon: Icons.lockFill, color: Palette.main.orange) +
             Text("\(hasTags ? "  " : "")\(title)")
     }
+    
+    var linkHost: String? {
+        guard case .link = postType else {
+            return nil
+        }
+        
+        if var host = linkUrl?.host() {
+            host.trimPrefix("www.")
+            return host
+        }
+        return "website"
+    }
 }

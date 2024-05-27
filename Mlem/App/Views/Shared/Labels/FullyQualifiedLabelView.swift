@@ -9,47 +9,53 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
+enum FullyQualifiedLabelStyle {
+    case small(showAvatar: Bool)
+    case medium(showAvatar: Bool)
+    case large(showAvatar: Bool)
+    
+    var avatarSize: CGFloat {
+        switch self {
+        case .small: AppConstants.smallAvatarSize
+        case .medium: AppConstants.mediumAvatarSize
+        case .large: AppConstants.largeAvatarSize
+        }
+    }
+    
+    var showAvatar: Bool {
+        switch self {
+        case let .small(showAvatar): showAvatar
+        case let .medium(showAvatar): showAvatar
+        case let .large(showAvatar): showAvatar
+        }
+    }
+    
+    var instanceLocation: InstanceLocation {
+        switch self {
+        case .small: .trailing
+        case .medium: .trailing
+        case .large: .bottom
+        }
+    }
+}
+
 /// View for rendering fully qualified labels (i.e., user or community names)
 struct FullyQualifiedLabelView: View {
     // these aren't used now but they will be for flairs
     @Environment(\.postContext) var postContext: (any Post1Providing)?
     @Environment(\.communityContext) var communityContext: (any Community3Providing)?
-    
-    let avatar: URL?
-    let showAvatar: Bool
-    let name: String?
-    let instance: String?
-    let instanceLocation: InstanceLocation
-    
-    var spacing: CGFloat
-    var avatarSize: CGFloat
-    
-    init(entity: (any CommunityOrPersonStub & Profile2Providing)?, showAvatar: Bool, instanceLocation: InstanceLocation) {
-        if instanceLocation == .bottom {
-            self.spacing = AppConstants.largeAvatarSize
-            self.avatarSize = AppConstants.largeAvatarSize
-        } else {
-            self.spacing = 8
-            self.avatarSize = AppConstants.smallAvatarSize
-        }
-        self.instanceLocation = instanceLocation
-        self.showAvatar = showAvatar
-
-        self.avatar = entity?.avatar
-        
-        self.name = entity?.name
-        self.instance = entity?.host
-    }
+  
+    let entity: (any CommunityOrPersonStub & Profile2Providing)?
+    let labelStyle: FullyQualifiedLabelStyle
     
     var body: some View {
         HStack {
-            if showAvatar {
-                AvatarView(url: avatar, type: .person)
-                    .frame(width: avatarSize, height: avatarSize)
+            if labelStyle.showAvatar {
+                AvatarView(url: entity?.avatar, type: .person)
+                    .frame(width: labelStyle.avatarSize, height: labelStyle.avatarSize)
             }
             
-            FullyQualifiedNameView(name: name, instance: instance, instanceLocation: instanceLocation)
-            // FullyQualifiedNameView(name: nil, instance: nil, instanceLocation: .bottom)
+            FullyQualifiedNameView(name: entity?.name, instance: entity?.host, instanceLocation: labelStyle.instanceLocation)
         }
     }
     

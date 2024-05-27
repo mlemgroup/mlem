@@ -6,10 +6,87 @@
 //
 
 import Foundation
+import MlemMiddleware
 import SwiftUI
 
 struct LargePost: View {
+    @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
+    @AppStorage("post.showCreator") var showCreator: Bool = false
+    @AppStorage("user.showAvatar") var showUserAvatar: Bool = true
+    @AppStorage("community.showAvatar") var showCommunityAvatar: Bool = true
+    
+    @Environment(\.communityContext) var communityContext: (any Community3Providing)?
+    @Environment(Palette.self) var palette: Palette
+    
+    let post: any Post1Providing
+    
     var body: some View {
-        Text("Large Post")
+        content
+            .padding(AppConstants.standardSpacing)
+    }
+    
+    var content: some View {
+        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+            HStack {
+                FullyQualifiedLabelView(entity: post.community_, labelStyle: .large(showAvatar: showCommunityAvatar))
+                
+                Spacer()
+                
+                if post.nsfw {
+                    Image(Icons.nsfwTag)
+                        .foregroundStyle(palette.warning)
+                }
+                
+                EllipsisMenu(actions: post.menuActions, size: 24)
+            }
+            
+            post.taggedTitle(communityContext: communityContext)
+                .font(.headline)
+                .imageScale(.small)
+            
+            postDetail
+            
+            if showCreator {
+                FullyQualifiedLabelView(entity: post.creator_, labelStyle: .large(showAvatar: showUserAvatar))
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var postDetail: some View {
+        switch post.postType {
+        case let .text(text):
+            Markdown(text)
+                .lineLimit(8)
+                .foregroundStyle(palette.secondary)
+        case .image:
+            mockImage
+        case let .link(url):
+            if let url {
+                mockWebsiteComplex(url: url)
+            }
+        case .titleOnly:
+            EmptyView()
+        }
+    }
+    
+    var mockImage: some View {
+        Image(systemName: "photo.artframe")
+            .resizable()
+            .scaledToFit()
+            .frame(maxWidth: .infinity)
+            .foregroundStyle(palette.secondary)
+    }
+    
+    func mockWebsiteComplex(url: URL) -> some View {
+        Text(url.host ?? "no host found")
+            .foregroundStyle(palette.secondary)
+            .padding(AppConstants.standardSpacing)
+            .frame(maxWidth: .infinity)
+            .overlay {
+                RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
+                    .stroke(lineWidth: 1)
+                    .foregroundStyle(palette.secondary)
+            }
     }
 }
