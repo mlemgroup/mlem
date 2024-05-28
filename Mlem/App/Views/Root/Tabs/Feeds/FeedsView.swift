@@ -60,7 +60,7 @@ struct MinimalPostFeedView: View {
     var body: some View {
         ScrollViewReader { scrollProxy in
             content
-                .background(postSize == .tile ? palette.secondaryBackground : palette.background)
+                .background(postSize == .tile ? Color(uiColor: .systemGroupedBackground) : palette.background)
                 .navigationTitle("Feeds")
                 .onChange(of: postSize, initial: true) { _, newValue in
                     columns = newValue.columns
