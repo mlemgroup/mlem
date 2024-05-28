@@ -24,11 +24,14 @@ struct FeedsView: View {
 }
 
 struct MinimalPostFeedView: View {
+    @AppStorage("post.size") var postSize: PostSize = .large
+    
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
     @State var postTracker: StandardPostFeedLoader
     @State private var scrollToTopAppeared = false
+    @State var columns: [GridItem] = [GridItem(.flexible())]
     
     @Namespace var scrollToTop
     
@@ -58,6 +61,9 @@ struct MinimalPostFeedView: View {
         ScrollViewReader { scrollProxy in
             content
                 .navigationTitle("Feeds")
+                .onChange(of: postSize, initial: true) { _, newValue in
+                    columns = newValue.columns
+                }
                 .task {
                     if postTracker.items.isEmpty, postTracker.loadingState == .idle {
                         print("Loading initial PostTracker page...")
@@ -92,6 +98,39 @@ struct MinimalPostFeedView: View {
         }
     }
     
+    @ViewBuilder
+    var content: some View {
+        ScrollView {
+            VStack(spacing: 0) { // does this massacre performance?
+                ScrollToView(appeared: $scrollToTopAppeared)
+                    .id(scrollToTop)
+                Divider()
+                
+                LazyVGrid(columns: columns, spacing: 0) {
+                    ForEach(postTracker.items, id: \.uid) { post in
+                        VStack(spacing: 0) { // this improves performance O_o
+                            NavigationLink(value: NavigationPage.expandedPost(post)) {
+                                FeedPostView(post: .init(post: post))
+                                    .contentShape(.rect)
+                            }
+                            .buttonStyle(EmptyButtonStyle())
+                            Divider()
+                        }
+                    }
+                }
+                
+                switch postTracker.loadingState {
+                case .loading:
+                    Text("Loading...")
+                case .done:
+                    Text("Done")
+                case .idle:
+                    Text("Idle")
+                }
+            }
+        }
+    }
+    
     // This is a proof-of-concept; in the real frontend this code will go in InteractionBarView
     @ViewBuilder
     func actionButton(_ action: BasicAction) -> some View {
@@ -107,34 +146,5 @@ struct MinimalPostFeedView: View {
         .buttonStyle(EmptyButtonStyle())
         .disabled(action.callback == nil)
         .opacity(action.callback == nil ? 0.5 : 1)
-    }
-    
-    @ViewBuilder
-    var content: some View {
-        ScrollView {
-            LazyVStack(spacing: 0) {
-                ScrollToView(appeared: $scrollToTopAppeared)
-                    .id(scrollToTop)
-                
-                Divider()
-                ForEach(postTracker.items, id: \.uid) { post in
-                    NavigationLink(value: NavigationPage.expandedPost(post)) {
-                        FeedPostView(post: .init(post: post))
-                            .contentShape(.rect)
-                    }
-                    .buttonStyle(EmptyButtonStyle())
-                    Divider()
-                }
-            }
-            
-            switch postTracker.loadingState {
-            case .loading:
-                Text("Loading...")
-            case .done:
-                Text("Done")
-            case .idle:
-                Text("Idle")
-            }
-        }
     }
 }

@@ -34,6 +34,8 @@ struct FeedPostView: View {
             switch size {
             case .compact:
                 CompactPost(post: post)
+            case .tile:
+                TilePost(post: post)
             case .headline:
                 HeadlinePost(post: post)
             case .large:

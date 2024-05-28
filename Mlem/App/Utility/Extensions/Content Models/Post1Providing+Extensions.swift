@@ -43,4 +43,17 @@ extension Post1Providing {
         }
         return "website"
     }
+    
+    var placeholderImageName: String {
+        switch postType {
+        case .text:
+            Icons.textPost
+        case .image:
+            Icons.photo
+        case .link:
+            Icons.websiteIcon
+        case .titleOnly:
+            Icons.titleOnlyPost
+        }
+    }
 }

@@ -16,21 +16,8 @@ struct ThumbnailImageView: View {
     
     let post: any Post1Providing
     
-    var placeholderImage: String {
-        switch post.postType {
-        case .text:
-            Icons.textPost
-        case .image:
-            "photo" // pending image handling
-        case .link:
-            "globe" // pending image handling
-        case .titleOnly:
-            Icons.titleOnlyPost
-        }
-    }
-    
     var body: some View {
-        Image(systemName: placeholderImage)
+        Image(systemName: post.placeholderImageName)
             .font(.title)
             .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
             .foregroundStyle(palette.secondary)
