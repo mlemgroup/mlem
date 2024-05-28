@@ -23,9 +23,9 @@ struct TilePost: View {
     var body: some View {
         content
             .frame(width: dimension, height: dimension)
-            .clipShape(.rect(cornerRadius: outerCornerRadius))
+            .clipShape(.rect(cornerRadius: 16))
             .background {
-                RoundedRectangle(cornerRadius: outerCornerRadius)
+                RoundedRectangle(cornerRadius: 16)
                     .fill(palette.background)
             }
     }
@@ -35,45 +35,55 @@ struct TilePost: View {
             BaseImage(post: post)
                 .overlay {
                     VStack(alignment: .leading, spacing: AppConstants.compactSpacing) {
-                        info
-                            .lineLimit(1)
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
-                            .padding(2)
-                            .padding(.horizontal, 4)
-                            .background {
-                                Capsule()
-                                    .fill(.regularMaterial)
-                                    .overlay(Capsule().fill(palette.background.opacity(0.25)))
+                        HStack {
+                            if let communityName = post.community_?.name {
+                                Text(communityName)
+                                    .lineLimit(1)
+                                    .font(.caption)
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(palette.secondary)
                             }
+                            
+                            Spacer()
+                            
+                            info
+                                .lineLimit(1)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(AppConstants.compactSpacing)
+                        .background {
+                            Rectangle()
+                                .fill(.regularMaterial)
+                                .overlay(Rectangle().fill(palette.background.opacity(0.25)))
+                        }
                         
                         Spacer()
                         
-                        PostLinkHostView(host: post.linkHost)
-                            .font(.caption)
-                            .padding(2)
-                            .padding(.horizontal, 4)
-                            .background {
-                                Capsule()
-                                    .fill(.regularMaterial)
-                                    .overlay(Capsule().fill(palette.background.opacity(0.25)))
-                            }
+//                        PostLinkHostView(host: post.linkHost)
+//                            .font(.caption)
+//                            .padding(2)
+//                            .padding(.horizontal, 4)
+//                            .background {
+//                                Capsule()
+//                                    .fill(.regularMaterial)
+//                                    .overlay(Capsule().fill(palette.background.opacity(0.25)))
+//                            }
                         
                         Text(post.title)
                             .lineLimit(2)
                             .font(.footnote)
                             .fontWeight(.semibold)
-                            .padding(2)
-                            .padding(.horizontal, 4)
-                            .background {
-                                RoundedRectangle(cornerRadius: cornerRadius)
-                                    .fill(.regularMaterial)
-                                    .overlay(RoundedRectangle(cornerRadius: cornerRadius).fill(palette.background.opacity(0.25)))
-                            }
+                            .padding(AppConstants.compactSpacing)
                             .frame(maxWidth: .infinity, alignment: .leading)
+                            .background {
+                                Rectangle()
+                                    .fill(.regularMaterial)
+                                    .overlay(Rectangle().fill(palette.background.opacity(0.25)))
+                            }
                     }
                     .frame(maxWidth: .infinity)
-                    .padding(AppConstants.standardSpacing)
                 }
         }
     }
@@ -123,11 +133,13 @@ struct TilePost: View {
     // TODO: this should be fleshed out to use live values--requires some middleware work to make those conveniently available. This is just a quick-and-dirty way to mock up how it would look.
     var info: Text {
         Text(Image(systemName: Icons.upvoteSquare)) +
-            Text("34") +
-            Text("  ") +
-            Text(Image(systemName: Icons.save)) +
-            Text("  ") +
-            Text(Image(systemName: Icons.replies)) +
-            Text("12")
+            Text(" 34")
+//        Text(Image(systemName: Icons.upvoteSquare)) +
+//            Text("34") +
+//            Text("  ") +
+//            Text(Image(systemName: Icons.save)) +
+//            Text("  ") +
+//            Text(Image(systemName: Icons.replies)) +
+//            Text("12")
     }
 }
