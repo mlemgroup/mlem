@@ -7,10 +7,12 @@
 
 import Foundation
 import MlemMiddleware
+import Nuke
 import NukeUI
 import SwiftUI
 
 struct TilePost: View {
+    @Environment(\.self) var environment
     @Environment(Palette.self) var palette: Palette
     
     let post: any Post1Providing
@@ -30,94 +32,43 @@ struct TilePost: View {
             }
     }
     
+    @State var color: Color = .clear
+    
     var content: some View {
         HStack(alignment: .top, spacing: 0) {
-            BaseImage(post: post)
-                .overlay {
-                    VStack(alignment: .leading, spacing: AppConstants.compactSpacing) {
-                        info
-                            .lineLimit(1)
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
-                            .padding(2)
-                            .padding(.horizontal, 4)
-                            .background {
-                                Capsule()
-                                    .fill(.regularMaterial)
-                                    .overlay(Capsule().fill(palette.background.opacity(0.25)))
-                            }
-                        
-                        Spacer()
-                        
-                        PostLinkHostView(host: post.linkHost)
-                            .font(.caption)
-                            .padding(2)
-                            .padding(.horizontal, 4)
-                            .background {
-                                Capsule()
-                                    .fill(.regularMaterial)
-                                    .overlay(Capsule().fill(palette.background.opacity(0.25)))
-                            }
-                        
+            TilePostImage(post: post, color: $color)
+                .overlay(alignment: .bottom) {
+                    VStack(alignment: .leading, spacing: 2) {
                         Text(post.title)
+                            .font(.caption)
+                            .fontWeight(.bold)
                             .lineLimit(2)
-                            .font(.footnote)
-                            .fontWeight(.semibold)
-                            .padding(2)
-                            .padding(.horizontal, 4)
-                            .background {
-                                RoundedRectangle(cornerRadius: cornerRadius)
-                                    .fill(.regularMaterial)
-                                    .overlay(RoundedRectangle(cornerRadius: cornerRadius).fill(palette.background.opacity(0.25)))
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundStyle(foregroundColor)
+                        HStack(spacing: 2) {
+                            Text(post.community_?.name ?? "")
+                                .lineLimit(1)
+                            Spacer()
+                            Image(systemName: "arrow.up")
+                            Text("\(Int.random(in: 100 ... 1000))")
+                        }
+                        .fontWeight(.semibold)
+                        .font(.caption)
+                        .foregroundStyle(foregroundColor.opacity(0.6))
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding(AppConstants.standardSpacing)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.bottom, 6)
+                    .padding(.horizontal, 10)
                 }
         }
     }
     
-    struct BaseImage: View {
-        @Environment(Palette.self) var palette: Palette
-        
-        let post: any Post1Providing
-        
-        var dimension: CGFloat { UIScreen.main.bounds.width / 2 - (AppConstants.standardSpacing * 1.5) }
-        
-        var body: some View {
-            switch post.postType {
-            case .text, .titleOnly:
-                Image(systemName: post.placeholderImageName)
-                    .resizable()
-                    .scaledToFit()
-                    .foregroundStyle(palette.secondary)
-                    .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            case let .image(url):
-                LazyImage(url: url) { state in
-                    if let imageContainer = state.imageContainer {
-                        Image(uiImage: imageContainer.image)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: dimension, height: dimension)
-                    } else {
-                        ProgressView()
-                    }
-                }
-            case let .link(url):
-                LazyImage(url: url) { state in
-                    if let imageContainer = state.imageContainer {
-                        Image(uiImage: imageContainer.image)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: dimension, height: dimension)
-                    } else {
-                        ProgressView()
-                    }
-                }
-            }
-        }
+    var foregroundColor: Color {
+        isBlack ? .black : .white
+    }
+    
+    var isBlack: Bool {
+        let resolved = color.resolve(in: environment)
+        return (resolved.red * 0.299 + resolved.green * 0.587 + resolved.blue * 0.114) > (186 / 255)
     }
     
     // TODO: this should be fleshed out to use live values--requires some middleware work to make those conveniently available. This is just a quick-and-dirty way to mock up how it would look.
