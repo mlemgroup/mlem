@@ -16,11 +16,15 @@ struct PostLinkHostView: View {
     var body: some View {
         if let host {
             Group {
-                Text(Image(systemName: Icons.browser)) +
-                    Text(" \(host)")
+                content
+                    .lineLimit(1)
             }
             .imageScale(.small)
             .foregroundStyle(palette.secondary)
         }
+    }
+    
+    var content: Text {
+        Text(Image(systemName: Icons.browser)) + Text(" \(host ?? "unknown")")
     }
 }

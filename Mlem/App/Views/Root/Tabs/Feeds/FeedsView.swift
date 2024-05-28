@@ -60,6 +60,7 @@ struct MinimalPostFeedView: View {
     var body: some View {
         ScrollViewReader { scrollProxy in
             content
+                .background(postSize == .tile ? palette.secondaryBackground : palette.background)
                 .navigationTitle("Feeds")
                 .onChange(of: postSize, initial: true) { _, newValue in
                     columns = newValue.columns
@@ -104,9 +105,9 @@ struct MinimalPostFeedView: View {
             VStack(spacing: 0) { // does this massacre performance?
                 ScrollToView(appeared: $scrollToTopAppeared)
                     .id(scrollToTop)
-                Divider()
+                // Divider()
                 
-                LazyVGrid(columns: columns, spacing: 0) {
+                LazyVGrid(columns: columns, spacing: 10) {
                     ForEach(postTracker.items, id: \.uid) { post in
                         VStack(spacing: 0) { // this improves performance O_o
                             NavigationLink(value: NavigationPage.expandedPost(post)) {
@@ -114,10 +115,11 @@ struct MinimalPostFeedView: View {
                                     .contentShape(.rect)
                             }
                             .buttonStyle(EmptyButtonStyle())
-                            Divider()
+                            // Divider()
                         }
                     }
                 }
+                .padding(.horizontal, 5)
                 
                 switch postTracker.loadingState {
                 case .loading:
