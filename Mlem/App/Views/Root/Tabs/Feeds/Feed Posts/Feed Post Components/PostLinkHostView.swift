@@ -11,20 +11,18 @@ import SwiftUI
 struct PostLinkHostView: View {
     @Environment(Palette.self) var palette
     
-    let host: String?
+    let host: String
     
     var body: some View {
-        if let host {
-            Group {
-                content
-                    .lineLimit(1)
-            }
-            .imageScale(.small)
-            .foregroundStyle(palette.secondary)
+        Group {
+            content
+                .lineLimit(1)
         }
+        .imageScale(.small)
+        .foregroundStyle(palette.secondary)
     }
     
     var content: Text {
-        Text(Image(systemName: Icons.browser)) + Text(" \(host ?? "unknown")")
+        Text(Image(systemName: Icons.browser)) + Text(" \(host)")
     }
 }

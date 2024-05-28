@@ -50,8 +50,10 @@ struct HeadlinePost: View {
                         .font(.headline)
                         .imageScale(.small)
                     
-                    PostLinkHostView(host: post.linkHost)
-                        .font(.subheadline)
+                    if let host = post.linkHost {
+                        PostLinkHostView(host: host)
+                            .font(.subheadline)
+                    }
                 }
                 
                 if thumbnailLocation == .right {

@@ -56,8 +56,10 @@ struct CompactPost: View {
                     .imageScale(.small)
                     .font(.subheadline)
                 
-                PostLinkHostView(host: post.linkHost)
-                    .font(.caption)
+                if let host = post.linkHost {
+                    PostLinkHostView(host: host)
+                        .font(.caption)
+                }
                 
                 // TODO: info stack
             }

@@ -15,6 +15,7 @@ struct TilePost: View {
     
     let post: any Post1Providing
 
+    @ScaledMetric(relativeTo: .footnote) var oneLineHeight: CGFloat = 18
     // magic number alert! ((footnote size + leading) / 2) + (vertical padding on capsules) = (18 / 2) + (2) = 11
     @ScaledMetric(relativeTo: .footnote) var cornerRadius: CGFloat = 11
     var dimension: CGFloat { UIScreen.main.bounds.width / 2 - (AppConstants.standardSpacing * 1.5) }
@@ -22,67 +23,83 @@ struct TilePost: View {
     
     var body: some View {
         content
-            .frame(width: dimension, height: dimension)
+            .frame(width: dimension, height: dimension + (oneLineHeight * 2) + (AppConstants.standardSpacing * 3) + 2)
             .background(palette.background)
             .clipShape(RoundedRectangle(cornerRadius: 16))
-            .shadow(color: palette.primary.opacity(0.05), radius: 3)
+            .shadow(color: palette.primary.opacity(0.1), radius: 3)
     }
     
     var content: some View {
-        BaseImage(post: post)
-            .overlay {
-                VStack(alignment: .trailing, spacing: AppConstants.compactSpacing) {
-                    HStack {
-                        if let communityName = post.community_?.name {
-                            Text(communityName)
-                                .lineLimit(1)
-                                .font(.caption)
-                                .fontWeight(.semibold)
-                                .foregroundStyle(palette.secondary)
-                        }
-                        
-                        Spacer()
-                        
-                        info
-                            .lineLimit(1)
+        VStack(alignment: .leading, spacing: 0) {
+            BaseImage(post: post)
+                .overlay {
+                    if let host = post.linkHost {
+                        PostLinkHostView(host: host)
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .padding(2)
+                            .padding(.horizontal, 4)
+                            .background {
+                                Capsule()
+                                    .fill(.regularMaterial)
+                                    .overlay(Capsule().fill(palette.background.opacity(0.25)))
+                            }
+                            .padding(AppConstants.compactSpacing)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding(AppConstants.compactSpacing)
-                    .background {
-                        Rectangle()
-                            .fill(.regularMaterial)
-                            .overlay(Rectangle().fill(palette.background.opacity(0.25)))
-                    }
-                    
-                    Spacer()
-                    
-                    PostLinkHostView(host: post.linkHost)
-                        .font(.caption)
-                        .padding(2)
-                        .padding(.horizontal, 4)
-                        .background {
-                            Capsule()
-                                .fill(.regularMaterial)
-                                .overlay(Capsule().fill(palette.background.opacity(0.25)))
-                        }
-                        .padding(.horizontal, AppConstants.compactSpacing)
-                    
-                    Text(post.title)
-                        .lineLimit(2)
-                        .font(.footnote)
-                        .fontWeight(.semibold)
-                        .padding(AppConstants.compactSpacing)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background {
-                            Rectangle()
-                                .fill(.regularMaterial)
-                                .overlay(Rectangle().fill(palette.background.opacity(0.25)))
-                        }
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            
+            Divider()
+            
+            titleSection
+                .padding(AppConstants.standardSpacing)
+        }
+    }
+    
+    @ViewBuilder
+    var titleSection: some View {
+        if case .text = post.postType {
+            VStack(spacing: 2) {
+                Text(post.title)
+                    .font(.footnote)
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .frame(minHeight: oneLineHeight * 2, maxHeight: .infinity, alignment: .top)
+                
+                communityAndInfo
             }
+            .frame(idealHeight: 0)
+        } else {
+            VStack(spacing: 2) {
+                Text(post.title)
+                    .lineLimit(2)
+                    .font(.footnote)
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .frame(height: oneLineHeight * 2, alignment: .top)
+                
+                communityAndInfo
+            }
+        }
+    }
+    
+    var communityAndInfo: some View {
+        HStack {
+            if let communityName = post.community_?.name {
+                Text(communityName)
+                    .lineLimit(1)
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(palette.secondary)
+            }
+            
+            Spacer()
+            
+            info
+                .lineLimit(1)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity)
     }
     
     struct BaseImage: View {
@@ -94,7 +111,15 @@ struct TilePost: View {
         
         var body: some View {
             switch post.postType {
-            case .text, .titleOnly:
+            case let .text(text):
+                Markdown(text)
+                    .lineLimit(1)
+                    .font(.caption)
+                    .foregroundStyle(palette.secondary)
+                    .padding(AppConstants.standardSpacing)
+                    .frame(maxWidth: .infinity, maxHeight: dimension, alignment: .topLeading)
+                    .clipped()
+            case .titleOnly:
                 Image(systemName: post.placeholderImageName)
                     .resizable()
                     .scaledToFit()
@@ -113,6 +138,7 @@ struct TilePost: View {
                     }
                 }
                 .frame(width: dimension, height: dimension)
+                .clipped()
             case let .link(url):
                 LazyImage(url: url) { state in
                     if let imageContainer = state.imageContainer {
@@ -125,6 +151,7 @@ struct TilePost: View {
                     }
                 }
                 .frame(width: dimension, height: dimension)
+                .clipped()
             }
         }
     }
