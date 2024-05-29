@@ -78,6 +78,7 @@ class AccountsTracker {
             assertionFailure()
         }
         AppState.main.deactivate(account: account)
+        GuestAccountCache.main.clean()
     }
     
     @discardableResult

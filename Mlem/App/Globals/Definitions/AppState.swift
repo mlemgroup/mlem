@@ -52,17 +52,12 @@ class AppState {
             if let index = AppState.main.activeSessions.firstIndex(where: { $0.account === account }) {
                 activeSessions[index].deactivate()
                 activeSessions.remove(at: index)
-            }
+            } else { return }
         } else if let account = account as? GuestAccount {
-            guard account == guestSession.account else {
-                assertionFailure("Tried to deactivate a non-active GuestAccount")
-                return
-            }
+            guard account == guestSession.account else { return }
             guestSession = .init(account: AccountsTracker.main.defaultGuestAccount)
-            GuestAccountCache.main.clean()
         }
         changeAccount(to: AccountsTracker.main.defaultAccount)
-        AccountsTracker.main.saveAccounts(ofType: .all)
     }
     
     var firstSession: any Session { activeSessions.first ?? guestSession }
