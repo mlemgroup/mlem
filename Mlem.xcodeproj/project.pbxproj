@@ -1500,8 +1500,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.2;
+				branch = "eric/actor-feed-loader";
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

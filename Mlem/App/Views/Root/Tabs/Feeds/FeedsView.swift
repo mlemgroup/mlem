@@ -37,7 +37,7 @@ struct MinimalPostFeedView: View {
     
     init() {
         // need to grab some stuff from app storage to initialize with
-        @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+        @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .dev
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
         @AppStorage("showReadPosts") var showReadPosts = true
         @AppStorage("defaultPostSorting") var defaultPostSorting: ApiSortType = .hot
@@ -114,6 +114,13 @@ struct MinimalPostFeedView: View {
                             }
                             .buttonStyle(EmptyButtonStyle())
                             if postSize != .tile { Divider() }
+                        }
+                        .onAppear {
+                            do {
+                                try postTracker.loadIfThreshold(post)
+                            } catch {
+                                handleError(error)
+                            }
                         }
                     }
                     
