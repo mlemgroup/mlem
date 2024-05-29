@@ -10,20 +10,23 @@ import MlemMiddleware
 import NukeUI
 import SwiftUI
 
-struct TilePost: View {
+struct CardPost: View {
     @Environment(Palette.self) var palette: Palette
     
     let post: any Post1Providing
 
-    @ScaledMetric(relativeTo: .footnote) var oneLineHeight: CGFloat = 18
-    // magic number alert! ((footnote size + leading) / 2) + (vertical padding on capsules) = (18 / 2) + (2) = 11
-    @ScaledMetric(relativeTo: .footnote) var cornerRadius: CGFloat = 11
-    var dimension: CGFloat { UIScreen.main.bounds.width / 2 - (AppConstants.standardSpacing * 1.5) }
-    var outerCornerRadius: CGFloat { cornerRadius + AppConstants.compactSpacing }
+    @ScaledMetric(relativeTo: .footnote) var minTitleHeight: CGFloat = 36 // (2 * .footnote height), including built-in spacing
+    var dimension: CGFloat { (UIScreen.main.bounds.width / 2) - (AppConstants.standardSpacing * 1.5) }
+    var frameHeight: CGFloat {
+        dimension + // picture
+            minTitleHeight + // title section
+            (AppConstants.standardSpacing * 3) + // vertical spacing--not actually sure why it has to be 3 instead of 2, but it does
+            2 // spacing between title and community
+    }
     
     var body: some View {
         content
-            .frame(width: dimension, height: dimension + (oneLineHeight * 2) + (AppConstants.standardSpacing * 3) + 2)
+            .frame(width: dimension, height: frameHeight)
             .background(palette.background)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .shadow(color: palette.primary.opacity(0.1), radius: 3)
@@ -63,7 +66,7 @@ struct TilePost: View {
                     .font(.footnote)
                     .fontWeight(.semibold)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .frame(minHeight: oneLineHeight * 2, maxHeight: .infinity, alignment: .top)
+                    .frame(minHeight: minTitleHeight, maxHeight: .infinity, alignment: .top)
                 
                 communityAndInfo
             }
@@ -75,7 +78,7 @@ struct TilePost: View {
                     .font(.footnote)
                     .fontWeight(.semibold)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .frame(height: oneLineHeight * 2, alignment: .top)
+                    .frame(height: minTitleHeight, alignment: .top)
                 
                 communityAndInfo
             }
@@ -83,7 +86,7 @@ struct TilePost: View {
     }
     
     var communityAndInfo: some View {
-        HStack {
+        HStack(spacing: 6) {
             if let communityName = post.community_?.name {
                 Text(communityName)
                     .lineLimit(1)
@@ -94,10 +97,7 @@ struct TilePost: View {
             
             Spacer()
             
-            info
-                .lineLimit(1)
-                .font(.caption)
-                .foregroundStyle(.secondary)
+            score
         }
         .frame(maxWidth: .infinity)
     }
@@ -113,7 +113,6 @@ struct TilePost: View {
             switch post.postType {
             case let .text(text):
                 Markdown(text)
-                    .lineLimit(1)
                     .font(.caption)
                     .foregroundStyle(palette.secondary)
                     .padding(AppConstants.standardSpacing)
@@ -157,15 +156,21 @@ struct TilePost: View {
     }
     
     // TODO: this should be fleshed out to use live values--requires some middleware work to make those conveniently available. This is just a quick-and-dirty way to mock up how it would look.
-    var info: Text {
-        Text(Image(systemName: Icons.upvoteSquare)) +
-            Text(" 34")
-//        Text(Image(systemName: Icons.upvoteSquare)) +
-//            Text("34") +
-//            Text("  ") +
-//            Text(Image(systemName: Icons.save)) +
-//            Text("  ") +
-//            Text(Image(systemName: Icons.replies)) +
-//            Text("12")
+    var score: some View {
+        Menu {
+            ForEach(post.menuActions.children, id: \.id) { action in
+                MenuButton(action: action)
+            }
+        } label: {
+            Group {
+                Text(Image(systemName: Icons.upvoteSquare)) +
+                    Text(" 34")
+            }
+            .lineLimit(1)
+            .font(.caption)
+            .foregroundStyle(.secondary)
+        }
+        .contentShape(.rect)
+        .onTapGesture {}
     }
 }

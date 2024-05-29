@@ -35,7 +35,7 @@ struct FeedPostView: View {
             case .compact:
                 CompactPost(post: post)
             case .tile:
-                TilePost(post: post)
+                CardPost(post: post)
             case .headline:
                 HeadlinePost(post: post)
             case .large:

@@ -102,12 +102,10 @@ struct MinimalPostFeedView: View {
     @ViewBuilder
     var content: some View {
         ScrollView {
-            VStack(spacing: 0) { // does this massacre performance?
-                ScrollToView(appeared: $scrollToTopAppeared)
-                    .id(scrollToTop)
-                // Divider()
-                
-                LazyVGrid(columns: columns, spacing: 10) {
+            LazyVGrid(columns: columns, spacing: postSize == .tile ? AppConstants.standardSpacing : 0) {
+                Section {
+                    if postSize != .tile { Divider() }
+                    
                     ForEach(postTracker.items, id: \.uid) { post in
                         VStack(spacing: 0) { // this improves performance O_o
                             NavigationLink(value: NavigationPage.expandedPost(post)) {
@@ -115,21 +113,25 @@ struct MinimalPostFeedView: View {
                                     .contentShape(.rect)
                             }
                             .buttonStyle(EmptyButtonStyle())
-                            // Divider()
+                            if postSize != .tile { Divider() }
                         }
                     }
-                }
-                .padding(.horizontal, 5)
-                
-                switch postTracker.loadingState {
-                case .loading:
-                    Text("Loading...")
-                case .done:
-                    Text("Done")
-                case .idle:
-                    Text("Idle")
+                    
+                    switch postTracker.loadingState {
+                    case .loading:
+                        Text("Loading...")
+                    case .done:
+                        Text("Done")
+                    case .idle:
+                        Text("Idle")
+                    }
+                } header: {
+                    // putting this in a section header makes it play nice with any number of columns
+                    ScrollToView(appeared: $scrollToTopAppeared)
+                        .id(scrollToTop)
                 }
             }
+            .padding(.horizontal, postSize == .tile ? AppConstants.halfSpacing : 0)
         }
     }
     
