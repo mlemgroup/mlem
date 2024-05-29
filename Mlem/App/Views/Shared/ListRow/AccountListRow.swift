@@ -37,21 +37,33 @@ struct AccountListRow: View {
         .accessibilityLabel(accessibilityLabel)
         .swipeActions {
             if (account as? GuestAccount)?.isSaved ?? true {
-                Button("Sign Out") {
+                Button(signOutLabel) {
                     showingSignOutConfirmation = true
                 }
                 .tint(.red)
             }
         }
-        .confirmationDialog("Really sign out of \(account.nickname)?", isPresented: $showingSignOutConfirmation) {
-            Button("Sign Out", role: .destructive) {
+        .confirmationDialog(signOutPrompt, isPresented: $showingSignOutConfirmation) {
+            Button(signOutLabel, role: .destructive) {
                 if navigation.isInsideSheet, appState.activeSessions.contains(where: { $0.account === account }) {
                     dismiss()
                 }
                 account.signOut()
             }
         } message: {
-            Text("Really sign out?")
+            Text(signOutPrompt)
+        }
+    }
+    
+    var signOutLabel: String {
+        account is UserAccount ? "Sign Out" : "Remove"
+    }
+    
+    var signOutPrompt: String {
+        if account is UserAccount {
+            "Really sign out of \(account.nickname)?"
+        } else {
+            "Really remove \(account.nickname)?"
         }
     }
     
