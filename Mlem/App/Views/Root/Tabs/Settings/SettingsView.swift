@@ -54,8 +54,7 @@ struct SettingsView: View {
     }
     
     var accountSettingsLinkSubtitle: String {
-        let account = appState.firstSession
-        if let host = account.account.host {
+        if let host = appState.firstSession.account.host {
             return "@\(host)"
         }
         return ""
