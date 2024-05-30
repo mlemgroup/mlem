@@ -23,8 +23,8 @@ struct FancyScrollView<Content: View>: View {
     private let model: ScrollViewModel = .init()
     
     init(
-        reselectAction: (() -> Void)? = nil,
         isAtTop: Binding<Bool> = .constant(false),
+        reselectAction: (() -> Void)? = nil,
         @ViewBuilder content: @escaping () -> Content
     ) {
         self.content = content
