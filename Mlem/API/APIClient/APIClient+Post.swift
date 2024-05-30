@@ -36,8 +36,13 @@ extension APIClient {
 
     // swiftlint:enable function_parameter_count
     
-    func markPostAsRead(for postId: Int, read: Bool) async throws -> SuccessResponse {
-        let request = try MarkPostReadRequest(session: session, postId: postId, read: read)
+    func markPostAsRead(for postId: Int, read: Bool, version: SiteVersion?) async throws -> SuccessResponse {
+        let request: MarkPostReadRequest
+        if (version ?? .infinity) < .init("0.19.0") {
+            request = try MarkPostReadRequest(session: session, postId: postId, read: read)
+        } else {
+            request = try MarkPostReadRequest(session: session, postIds: [postId], read: read)
+        }
         // TODO: 0.18 deprecation simply return result of perform
         let compatibilityResponse = try await perform(request: request)
         return SuccessResponse(from: compatibilityResponse)
