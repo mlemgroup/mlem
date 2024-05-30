@@ -17,6 +17,7 @@ enum UserError: Error {
 
 @Observable
 final class Account: Codable, CommunityOrPersonStub, Profile1Providing {
+    public static let tierNumber: Int = 1
     static let identifierPrefix: String = "@"
     
     var api: ApiClient

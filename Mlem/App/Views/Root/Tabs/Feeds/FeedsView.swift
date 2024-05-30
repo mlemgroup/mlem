@@ -116,7 +116,7 @@ struct MinimalPostFeedView: View {
                 ScrollToView(appeared: $scrollToTopAppeared)
                     .id(scrollToTop)
                 
-                ForEach(postTracker.items, id: \.uid) { post in
+                ForEach(postTracker.items, id: \.uid) { (post: Post2) in
                     NavigationLink(value: NavigationPage.expandedPost(post)) {
                         HStack {
                             actionButton(post.upvoteAction)
@@ -127,6 +127,8 @@ struct MinimalPostFeedView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.horizontal)
                                 .foregroundStyle(post.read ? .secondary : .primary)
+                            
+                            NavigationLink("Creator", destination: .person(post.creator))
                         }
                         .padding(10)
                         .background(palette.background)
