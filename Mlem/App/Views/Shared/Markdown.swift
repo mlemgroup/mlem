@@ -13,52 +13,20 @@ import SwiftUI
 struct Markdown: View {
     @Environment(Palette.self) var palette
     
-    let markdown: String
+    let blocks: [BlockNode]
     
     init(_ markdown: String) {
-        self.markdown = markdown
+        self.blocks = .init(markdown)
+    }
+    
+    init(_ blocks: [BlockNode]) {
+        self.blocks = blocks
     }
     
     var body: some View {
         LemmyMarkdownUI.Markdown(
-            markdown,
-            configuration: configuration
+            blocks,
+            configuration: .default
         )
-    }
-    
-    var configuration: MarkdownConfiguration {
-        .init(inlineImageLoader: loadInlineImage, imageBlockView: imageBlockView)
-    }
-    
-    @ViewBuilder
-    func imageBlockView(_ image: InlineImage) -> AnyView {
-        AnyView(
-            Image(systemName: "photo")
-                .imageScale(.large)
-                .foregroundStyle(.secondary)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(palette.secondaryBackground)
-                )
-        )
-    }
-    
-    func loadInlineImage(inlineImage: InlineImage) async {
-        guard inlineImage.image == nil else { return }
-        let imageTask = ImagePipeline.shared.imageTask(with: inlineImage.url)
-        guard let image: UIImage = try? await imageTask.image else { return }
-        let height = inlineImage.fontSize
-        let width = image.size.width * (height / image.size.height)
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 2.0)
-        defer { UIGraphicsEndImageContext() }
-        image.draw(in: CGRect(x: 0, y: 0, width: width, height: height))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        if let newImage {
-            DispatchQueue.main.async {
-                inlineImage.image = Image(uiImage: newImage)
-            }
-        }
     }
 }

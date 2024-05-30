@@ -24,16 +24,7 @@
       "location" : "https://github.com/mlemgroup/LemmyMarkdownUI",
       "state" : {
         "branch" : "main",
-        "revision" : "a5ef8e49e9db253afd49e9e38805fa2e89649b32"
-      }
-    },
-    {
-      "identity" : "mlemmiddleware",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mlemgroup/MlemMiddleware.git",
-      "state" : {
-        "revision" : "aad754bf914107114e7e3ee74591b46190a8cdcc",
-        "version" : "0.6.0"
+        "revision" : "76ae3501245f5981577a91cb053c26087c3c0bb4"
       }
     },
     {
