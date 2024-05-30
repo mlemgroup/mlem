@@ -8,120 +8,73 @@
 import Dependencies
 import Foundation
 import MlemMiddleware
-import SwiftUI
+import Observation
 
 @Observable
 class AppState {
-    private(set) var guestAccount: ActiveAccount = .init(instanceUrl: URL(string: "https://lemmy.world")!)
-    private(set) var activeAccounts: [ActiveAccount] = []
-
-    func changeUser(to account: Account) {
-        ToastModel.main.add(.account(account))
-        let newAccount = ActiveAccount(account: account)
-        activeAccounts.forEach { $0.deactivate() }
-        guestAccount.deactivate()
-        activeAccounts = [newAccount]
-    }
-    
-    func enterGuestMode(for instanceUrl: URL) {
-        activeAccounts.forEach { $0.deactivate() }
-        activeAccounts = []
-        guestAccount.deactivate()
-        guestAccount = .init(instanceUrl: instanceUrl)
-    }
-    
-    func deactivate(account: Account) {
-        if let index = AppState.main.activeAccounts.firstIndex(where: { $0.account === account }) {
-            activeAccounts[index].deactivate()
-            activeAccounts.remove(at: index)
-            if activeAccounts.isEmpty, let defaultAccount = AccountsTracker.main.defaultAccount {
-                changeUser(to: defaultAccount)
-            }
-        }
-    }
-    
-    func enterOnboarding() {
-        activeAccounts.removeAll()
-    }
+    private(set) var guestSession: GuestSession!
+    private(set) var activeSessions: [UserSession] = []
     
     private init() {
-        if let user = AccountsTracker.main.defaultAccount {
-            changeUser(to: user)
-        } else if let user = AccountsTracker.main.savedAccounts.first {
-            changeUser(to: user)
+        self.guestSession = .init(account: AccountsTracker.main.defaultGuestAccount)
+        changeAccount(to: AccountsTracker.main.defaultAccount, deactivateOldGuest: false)
+    }
+    
+    func changeAccount(to account: any Account) {
+        changeAccount(to: account, deactivateOldGuest: true)
+    }
+    
+    private func changeAccount(to account: any Account, deactivateOldGuest: Bool) {
+        ToastModel.main.add(.account(account))
+        
+        activeSessions.forEach { $0.deactivate() }
+        if deactivateOldGuest {
+            guestSession?.deactivate()
+        }
+        
+        // Save because we updated `lastUsed` in the above `deactivate()` calls
+        AccountsTracker.main.saveAccounts(ofType: .all)
+        
+        if let account = account as? UserAccount {
+            let activeAccount = UserSession(account: account)
+            activeSessions = [activeAccount]
+        } else if let account = account as? GuestAccount {
+            activeSessions = []
+            guestSession = .init(account: account)
+            GuestAccountCache.main.clean()
+        } else {
+            assertionFailure()
         }
     }
     
-    var firstAccount: ActiveAccount { activeAccounts.first ?? guestAccount }
-    var firstApi: ApiClient { firstAccount.api }
+    func deactivate(account: any Account) {
+        if let account = account as? UserAccount {
+            if let index = AppState.main.activeSessions.firstIndex(where: { $0.account === account }) {
+                activeSessions[index].deactivate()
+                activeSessions.remove(at: index)
+            } else { return }
+        } else if let account = account as? GuestAccount {
+            guard account == guestSession.account else { return }
+            guestSession = .init(account: AccountsTracker.main.defaultGuestAccount)
+        }
+        changeAccount(to: AccountsTracker.main.defaultAccount)
+    }
     
-    func accountThatModerates(actorId: URL) -> ActiveAccount? {
-        activeAccounts.first(where: { account in
-            account.person?.moderatedCommunities.contains { $0.actorId == actorId } ?? false
+    var firstSession: any Session { activeSessions.first ?? guestSession }
+    var firstAccount: any Account { firstSession.account }
+    var firstApi: ApiClient { firstSession.api }
+    
+    func accountThatModerates(actorId: URL) -> UserSession? {
+        activeSessions.first(where: { session in
+            session.person?.moderatedCommunities.contains { $0.actorId == actorId } ?? false
         })
     }
     
     func cleanCaches() {
-        for account in activeAccounts {
-            account.api.cleanCaches()
+        for session in activeSessions {
+            session.api.cleanCaches()
         }
     }
     
     static var main: AppState = .init()
-}
-
-@Observable
-class ActiveAccount: Hashable {
-    private(set) var api: ApiClient
-    private(set) var account: Account?
-    private(set) var person: Person4?
-    private(set) var instance: Instance3?
-    private(set) var subscriptions: SubscriptionList?
-    
-    // TODO: Store this in a file; make sure to translate 1.0 favorites to 2.0 favorites
-    private var favorites: Set<Int> = []
-    
-    var actorId: URL? { account?.actorId }
-  
-    init(account: Account) {
-        self.api = account.api
-        self.account = account
-        api.permissions = .all
-        self.subscriptions = api.setupSubscriptionList(
-            getFavorites: { self.favorites },
-            setFavorites: { self.favorites = $0 }
-        )
-        
-        Task {
-            try await self.api.fetchSiteVersion(task: Task {
-                let (person, instance) = try await self.api.getMyPerson()
-                if let person {
-                    self.account?.update(person: person, instance: instance)
-                    self.person = person
-                }
-                self.instance = instance
-                return instance.version
-            })
-            
-            try await self.api.getSubscriptionList()
-        }
-    }
-    
-    init(instanceUrl: URL) {
-        self.api = .getApiClient(for: instanceUrl, with: nil)
-        api.permissions = .all // should this be .getOnly?
-    }
-    
-    func deactivate() {
-        api.permissions = .getOnly
-        api.cleanCaches()
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(actorId)
-    }
-    
-    static func == (lhs: ActiveAccount, rhs: ActiveAccount) -> Bool {
-        lhs.actorId == rhs.actorId
-    }
 }

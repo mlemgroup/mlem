@@ -12,47 +12,55 @@ struct SettingsView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     
-    var accounts: [Account] { AccountsTracker.main.savedAccounts }
+    @AppStorage("upvoteOnSave") var upvoteOnSave = false
+    
+    var accounts: [UserAccount] { AccountsTracker.main.userAccounts }
     
     var body: some View {
         Form {
             Section {
-                accountSettingsLink()
-                accountListLink()
+                accountSettingsLink
+                accountListLink
             }
             Section {
                 NavigationLink("Theme", destination: .settings(.theme))
+            }
+            Section {
+                Toggle("Upvote On Save", isOn: $upvoteOnSave)
             }
         }
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
     }
     
-    @ViewBuilder
-    func accountSettingsLink() -> some View {
+    var accountSettingsLink: some View {
         NavigationLink(.settings(.account)) {
-            let account = appState.firstAccount
+            let account = appState.firstSession
             HStack(spacing: 23) {
                 AvatarView(account.account)
                     .frame(width: 54)
                     .padding(.vertical, -6)
                     .padding(.leading, 3)
                 VStack(alignment: .leading, spacing: 3) {
-                    Text(account.account?.nickname ?? account.account?.name ?? "Guest")
+                    Text(account is UserSession ? account.account.nickname : "Guest")
                         .font(.title2)
-                    if let hostName = account.api.baseUrl.host() {
-                        Text("@\(hostName)")
-                            .foregroundStyle(.secondary)
-                            .font(.caption)
-                    }
+                    Text(accountSettingsLinkSubtitle)
+                        .foregroundStyle(.secondary)
+                        .font(.caption)
                 }
                 Spacer()
             }
         }
     }
     
-    @ViewBuilder
-    func accountListLink() -> some View {
+    var accountSettingsLinkSubtitle: String {
+        if let host = appState.firstSession.account.host {
+            return "@\(host)"
+        }
+        return ""
+    }
+    
+    var accountListLink: some View {
         NavigationLink(.settings(.accounts)) {
             HStack(spacing: 10) {
                 AvatarStackView(

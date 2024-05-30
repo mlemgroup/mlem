@@ -24,7 +24,6 @@ struct ContentView: View {
     
     var body: some View {
         content
-            .tint(palette.accent)
             .onReceive(timer) { _ in
                 appState.cleanCaches()
             }
@@ -40,13 +39,7 @@ struct ContentView: View {
             )) {
                 NavigationLayerView(layer: navigationModel.layers[0], hasSheetModifiers: true)
             }
-            .overlay(alignment: .top) {
-                ToastOverlayView(
-                    shouldDisplayNewToasts: shouldDisplayToasts,
-                    location: .top
-                )
-                .padding(.top, -6)
-            }
+            .tint(palette.accent)
             .environment(palette)
             .environment(tabReselectTracker)
             .environment(appState)
@@ -93,5 +86,11 @@ struct ContentView: View {
             .padding(.bottom, 100)
         }
         .ignoresSafeArea()
+        .overlay(alignment: .top) {
+            ToastOverlayView(
+                shouldDisplayNewToasts: shouldDisplayToasts,
+                location: .top
+            )
+        }
     }
 }
