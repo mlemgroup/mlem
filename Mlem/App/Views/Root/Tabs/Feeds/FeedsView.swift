@@ -28,9 +28,6 @@ struct MinimalPostFeedView: View {
     @Environment(Palette.self) var palette
     
     @State var postTracker: StandardPostFeedLoader
-    @State private var scrollToTopAppeared = false
-    
-    @Namespace var scrollToTop
     
     init() {
         // need to grab some stuff from app storage to initialize with
@@ -55,41 +52,33 @@ struct MinimalPostFeedView: View {
     }
     
     var body: some View {
-        ScrollViewReader { scrollProxy in
-            content
-                .navigationTitle("Feeds")
-                .task {
-                    if postTracker.items.isEmpty, postTracker.loadingState == .idle {
-                        print("Loading initial PostTracker page...")
-                        do {
-                            try await postTracker.loadMoreItems()
-                        } catch {
-                            handleError(error)
-                        }
-                    }
-                }
-                .task(id: appState.firstApi) {
+        content
+            .navigationTitle("Feeds")
+            .navigationBarTitleDisplayMode(.inline)
+            .task {
+                if postTracker.items.isEmpty, postTracker.loadingState == .idle {
+                    print("Loading initial PostTracker page...")
                     do {
-                        try await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
+                        try await postTracker.loadMoreItems()
                     } catch {
                         handleError(error)
                     }
                 }
-                .refreshable {
-                    do {
-                        try await postTracker.refresh(clearBeforeRefresh: false)
-                    } catch {
-                        handleError(error)
-                    }
+            }
+            .task(id: appState.firstApi) {
+                do {
+                    try await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
+                } catch {
+                    handleError(error)
                 }
-                .onReselectTab {
-                    if !scrollToTopAppeared {
-                        withAnimation {
-                            scrollProxy.scrollTo(scrollToTop)
-                        }
-                    }
+            }
+            .refreshable {
+                do {
+                    try await postTracker.refresh(clearBeforeRefresh: false)
+                } catch {
+                    handleError(error)
                 }
-        }
+            }
     }
     
     // This is a proof-of-concept; in the real frontend this code will go in InteractionBarView
@@ -111,11 +100,8 @@ struct MinimalPostFeedView: View {
     
     @ViewBuilder
     var content: some View {
-        ScrollView {
+        FancyScrollView {
             LazyVStack(spacing: 0) {
-                ScrollToView(appeared: $scrollToTopAppeared)
-                    .id(scrollToTop)
-                
                 ForEach(postTracker.items, id: \.uid) { (post: Post2) in
                     NavigationLink(value: NavigationPage.expandedPost(post)) {
                         HStack {
