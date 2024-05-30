@@ -15,7 +15,7 @@ struct LoginCredentialsView: View {
     @Environment(AppState.self) var appState
     
     let instance: (any Instance)?
-    let account: Account?
+    let account: UserAccount?
     
     @State var username: String
     @State var password: String = ""
@@ -34,7 +34,7 @@ struct LoginCredentialsView: View {
         self._username = .init(wrappedValue: "")
     }
     
-    init(account: Account) {
+    init(account: UserAccount) {
         self.instance = nil
         self.account = account
         self._username = .init(wrappedValue: account.name)
@@ -91,7 +91,7 @@ struct LoginCredentialsView: View {
     }
     
     @ViewBuilder
-    func reauthHeader(_ account: Account) -> some View {
+    func reauthHeader(_ account: UserAccount) -> some View {
         VStack {
             AvatarView(account)
                 .frame(height: 50)
@@ -164,7 +164,7 @@ struct LoginCredentialsView: View {
             Task {
                 do {
                     let user = try await AccountsTracker.main.login(client: client, username: username, password: password)
-                    appState.changeUser(to: user)
+                    appState.changeAccount(to: user)
                     if navigation.isTopSheet {
                         navigation.dismissSheet()
                     }

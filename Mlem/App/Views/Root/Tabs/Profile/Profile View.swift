@@ -12,7 +12,6 @@ import SwiftUI
 struct ProfileView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    @AppStorage("upvoteOnSave") var upvoteOnSave = false
     
     var body: some View {
         content
@@ -26,17 +25,8 @@ struct ProfileView: View {
     
     var content: some View {
         ScrollView {
-            VStack {
-                Text("\(appState.firstAccount.person?.name ?? "No User")")
-                Text("\(appState.firstApi.baseUrl)")
-                Text(appState.firstAccount.person?.displayName ?? "...")
-                Divider()
-                Toggle("Upvote On Save", isOn: $upvoteOnSave)
-                    .padding(.horizontal, 50)
-                Divider()
-                Markdown(markdown)
-                    .padding()
-            }
+            Markdown(markdown)
+                .padding()
         }
     }
 }

@@ -9,20 +9,14 @@ import MlemMiddleware
 import SwiftUI
 
 struct AccountListSettingsView: View {
-    @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
     
-    var accounts: [Account] { AccountsTracker.main.savedAccounts }
+    var accounts: [UserAccount] { AccountsTracker.main.userAccounts }
     
     var body: some View {
         Form {
             headerView
             AccountListView()
-            Button("Re-authenticate", systemImage: "arrow.2.circlepath") {
-                if let account = appState.firstAccount.account {
-                    navigation.openSheet(.login(.reauth(account)))
-                }
-            }
         }
     }
     

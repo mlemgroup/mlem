@@ -47,6 +47,12 @@
 		03C93CF22BF0256700327BFE /* EnvironmentValue+IsRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C93CF12BF0256700327BFE /* EnvironmentValue+IsRootView.swift */; };
 		03CCDAA02BF2795300C0C851 /* LoginPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CCDA9F2BF2795300C0C851 /* LoginPage.swift */; };
 		03CCDAA42BF2852E00C0C851 /* LoginTotpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CCDAA32BF2852E00C0C851 /* LoginTotpView.swift */; };
+		03D2A6372C00F92400ED4FF2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2A6362C00F92400ED4FF2 /* Session.swift */; };
+		03D2A6392C00FAE000ED4FF2 /* UserAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2A6382C00FAE000ED4FF2 /* UserAccount.swift */; };
+		03D2A63B2C010B7500ED4FF2 /* GuestAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2A63A2C010B7500ED4FF2 /* GuestAccount.swift */; };
+		03D2A63D2C010CD400ED4FF2 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2A63C2C010CD400ED4FF2 /* UserSession.swift */; };
+		03D2A63F2C010DBF00ED4FF2 /* GuestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2A63E2C010DBF00ED4FF2 /* GuestSession.swift */; };
+		03D2A6422C011F4A00ED4FF2 /* AccountListRowBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2A6412C011F4A00ED4FF2 /* AccountListRowBody.swift */; };
 		03D3A1D42BB88EF1009DE55E /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1D32BB88EF1009DE55E /* Action.swift */; };
 		03D3A1E32BB8A40A009DE55E /* EmptyButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1E22BB8A40A009DE55E /* EmptyButtonStyle.swift */; };
 		03D3A1E52BB8B7A3009DE55E /* ActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1E42BB8B7A3009DE55E /* ActionType.swift */; };
@@ -90,7 +96,7 @@
 		CD4D58AD2B86BE7100B82964 /* QuickSwitcherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58AC2B86BE7100B82964 /* QuickSwitcherView.swift */; };
 		CD4D58B32B86BFD400B82964 /* AccountsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58B22B86BFD400B82964 /* AccountsTracker.swift */; };
 		CD4D58B52B86BFFB00B82964 /* PersistenceRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58B42B86BFFA00B82964 /* PersistenceRepository+Dependency.swift */; };
-		CD4D58B92B86D9F800B82964 /* AccountButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58B82B86D9F800B82964 /* AccountButtonView.swift */; };
+		CD4D58B92B86D9F800B82964 /* AccountListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58B82B86D9F800B82964 /* AccountListRow.swift */; };
 		CD4D58BB2B86DA7D00B82964 /* AccountListView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58BA2B86DA7D00B82964 /* AccountListView+Logic.swift */; };
 		CD4D58C02B86DBD100B82964 /* DefaultAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58BF2B86DBD100B82964 /* DefaultAvatarView.swift */; };
 		CD4D58C82B86DCED00B82964 /* AvatarType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58C72B86DCED00B82964 /* AvatarType.swift */; };
@@ -168,6 +174,12 @@
 		03C93CF12BF0256700327BFE /* EnvironmentValue+IsRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValue+IsRootView.swift"; sourceTree = "<group>"; };
 		03CCDA9F2BF2795300C0C851 /* LoginPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPage.swift; sourceTree = "<group>"; };
 		03CCDAA32BF2852E00C0C851 /* LoginTotpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTotpView.swift; sourceTree = "<group>"; };
+		03D2A6362C00F92400ED4FF2 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		03D2A6382C00FAE000ED4FF2 /* UserAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccount.swift; sourceTree = "<group>"; };
+		03D2A63A2C010B7500ED4FF2 /* GuestAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestAccount.swift; sourceTree = "<group>"; };
+		03D2A63C2C010CD400ED4FF2 /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
+		03D2A63E2C010DBF00ED4FF2 /* GuestSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestSession.swift; sourceTree = "<group>"; };
+		03D2A6412C011F4A00ED4FF2 /* AccountListRowBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListRowBody.swift; sourceTree = "<group>"; };
 		03D3A1D32BB88EF1009DE55E /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		03D3A1E22BB8A40A009DE55E /* EmptyButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyButtonStyle.swift; sourceTree = "<group>"; };
 		03D3A1E42BB8B7A3009DE55E /* ActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionType.swift; sourceTree = "<group>"; };
@@ -209,7 +221,7 @@
 		CD4D58AC2B86BE7100B82964 /* QuickSwitcherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSwitcherView.swift; sourceTree = "<group>"; };
 		CD4D58B22B86BFD400B82964 /* AccountsTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsTracker.swift; sourceTree = "<group>"; };
 		CD4D58B42B86BFFA00B82964 /* PersistenceRepository+Dependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PersistenceRepository+Dependency.swift"; sourceTree = "<group>"; };
-		CD4D58B82B86D9F800B82964 /* AccountButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountButtonView.swift; sourceTree = "<group>"; };
+		CD4D58B82B86D9F800B82964 /* AccountListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListRow.swift; sourceTree = "<group>"; };
 		CD4D58BA2B86DA7D00B82964 /* AccountListView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountListView+Logic.swift"; sourceTree = "<group>"; };
 		CD4D58BF2B86DBD100B82964 /* DefaultAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAvatarView.swift; sourceTree = "<group>"; };
 		CD4D58C72B86DCED00B82964 /* AvatarType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarType.swift; sourceTree = "<group>"; };
@@ -338,6 +350,8 @@
 			isa = PBXGroup;
 			children = (
 				0369B35A2BFB86E3001EFEDF /* Account.swift */,
+				03D2A6382C00FAE000ED4FF2 /* UserAccount.swift */,
+				03D2A63A2C010B7500ED4FF2 /* GuestAccount.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -347,6 +361,25 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		03D2A6352C00F91A00ED4FF2 /* Session */ = {
+			isa = PBXGroup;
+			children = (
+				03D2A6362C00F92400ED4FF2 /* Session.swift */,
+				03D2A63C2C010CD400ED4FF2 /* UserSession.swift */,
+				03D2A63E2C010DBF00ED4FF2 /* GuestSession.swift */,
+			);
+			path = Session;
+			sourceTree = "<group>";
+		};
+		03D2A6402C011F3E00ED4FF2 /* ListRow */ = {
+			isa = PBXGroup;
+			children = (
+				CD4D58B82B86D9F800B82964 /* AccountListRow.swift */,
+				03D2A6412C011F4A00ED4FF2 /* AccountListRowBody.swift */,
+			);
+			path = ListRow;
 			sourceTree = "<group>";
 		};
 		03D3A1EB2BB8CDFB009DE55E /* Action */ = {
@@ -363,6 +396,7 @@
 		6318EDC427EE4E0500BFCAE8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				03D2A6352C00F91A00ED4FF2 /* Session */,
 				03D3A1EB2BB8CDFB009DE55E /* Action */,
 				0369B3592BFB86C6001EFEDF /* Account */,
 				CD4D58CC2B86DDC300B82964 /* Settings */,
@@ -546,6 +580,7 @@
 		CD4D58A82B86BE4C00B82964 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				03D2A6402C011F3E00ED4FF2 /* ListRow */,
 				03500C252BF694A800CAA076 /* Toast */,
 				035BE0852BDD8D9100F77D73 /* Navigation */,
 				CD4D58BE2B86DBC900B82964 /* Avatars */,
@@ -572,7 +607,6 @@
 			children = (
 				CD4D58A92B86BE5900B82964 /* AccountListView.swift */,
 				CD4D58AC2B86BE7100B82964 /* QuickSwitcherView.swift */,
-				CD4D58B82B86D9F800B82964 /* AccountButtonView.swift */,
 				CD4D58BA2B86DA7D00B82964 /* AccountListView+Logic.swift */,
 			);
 			path = Accounts;
@@ -886,6 +920,7 @@
 				03FE14042BF93FDD00A8377F /* ErrorDetails.swift in Sources */,
 				031E2D5B2BEFC9460003BC45 /* ThemeSettingsView.swift in Sources */,
 				03D3A1F12BB9D48E009DE55E /* BasicAction.swift in Sources */,
+				03D2A6392C00FAE000ED4FF2 /* UserAccount.swift in Sources */,
 				03C93CF02BEFFB1A00327BFE /* LoginCredentialsView.swift in Sources */,
 				CD4ED84E2BF113C800EFA0A2 /* ExpandedPostView.swift in Sources */,
 				035BE08D2BDE88EC00F77D73 /* NavigationLayerView.swift in Sources */,
@@ -895,6 +930,7 @@
 				03C93CF22BF0256700327BFE /* EnvironmentValue+IsRootView.swift in Sources */,
 				037386412BDAF3F7007492B5 /* Markdown.swift in Sources */,
 				CD4D58CF2B86DDEC00B82964 /* AccountSortMode.swift in Sources */,
+				03D2A6372C00F92400ED4FF2 /* Session.swift in Sources */,
 				03134A522BEAD69F002662CC /* SettingsPage.swift in Sources */,
 				03CCDAA02BF2795300C0C851 /* LoginPage.swift in Sources */,
 				037658DF2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift in Sources */,
@@ -902,19 +938,21 @@
 				CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */,
 				03FE140C2BF953B000A8377F /* HandleError.swift in Sources */,
 				CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */,
+				03D2A63B2C010B7500ED4FF2 /* GuestAccount.swift in Sources */,
 				CD4ED84A2BF1113800EFA0A2 /* View+TabReselectConsumer.swift in Sources */,
 				03500C222BF5594100CAA076 /* ToastType.swift in Sources */,
 				CD4D58A52B86BD1B00B82964 /* PersistenceRepository.swift in Sources */,
 				CD1446252A5B357900610EF1 /* Document.swift in Sources */,
 				03134A4D2BEAD058002662CC /* AvatarView.swift in Sources */,
 				CD4D58AA2B86BE5900B82964 /* AccountListView.swift in Sources */,
-				CD4D58B92B86D9F800B82964 /* AccountButtonView.swift in Sources */,
+				CD4D58B92B86D9F800B82964 /* AccountListRow.swift in Sources */,
 				CD4D58B32B86BFD400B82964 /* AccountsTracker.swift in Sources */,
 				CD317D4F2BE983ED008F63E2 /* MonochromePalette.swift in Sources */,
 				CD4D58B52B86BFFB00B82964 /* PersistenceRepository+Dependency.swift in Sources */,
 				CD4D58EB2B86E63300B82964 /* AssociatedColor.swift in Sources */,
 				CD317D4C2BE97FED008F63E2 /* Palette.swift in Sources */,
 				03FE14062BF9445F00A8377F /* CloseButtonView.swift in Sources */,
+				03D2A6422C011F4A00ED4FF2 /* AccountListRowBody.swift in Sources */,
 				03134A5A2BEC2253002662CC /* AvatarStackView.swift in Sources */,
 				03D3A1F32BB9D49B009DE55E /* ActionGroup.swift in Sources */,
 				CD4D58C82B86DCED00B82964 /* AvatarType.swift in Sources */,
@@ -951,6 +989,7 @@
 				03500C2B2BF7F1B100CAA076 /* ToastOverlayView.swift in Sources */,
 				CD4D59182B87B3B000B82964 /* UIViewController+Extensions.swift in Sources */,
 				03D3A1E52BB8B7A3009DE55E /* ActionType.swift in Sources */,
+				03D2A63D2C010CD400ED4FF2 /* UserSession.swift in Sources */,
 				63DF71F12A02999C002AC14E /* AppConstants.swift in Sources */,
 				03D3A1D42BB88EF1009DE55E /* Action.swift in Sources */,
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
@@ -966,6 +1005,7 @@
 				CD4D58F82B87B0D100B82964 /* InternetSpeed.swift in Sources */,
 				CD4D58932B86BA5C00B82964 /* StandardPalette.swift in Sources */,
 				CD4ED84C2BF111BA00EFA0A2 /* ScrollToView.swift in Sources */,
+				03D2A63F2C010DBF00ED4FF2 /* GuestSession.swift in Sources */,
 				030FF6812BC859FD00F6BFAC /* CustomTabViewHostingController.swift in Sources */,
 				CD4D58AD2B86BE7100B82964 /* QuickSwitcherView.swift in Sources */,
 				6363D5C527EE196700E34822 /* MlemApp.swift in Sources */,
@@ -1384,7 +1424,7 @@
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.4.0;
+				minimumVersion = 0.6.0;
 			};
 		};
 		CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */ = {

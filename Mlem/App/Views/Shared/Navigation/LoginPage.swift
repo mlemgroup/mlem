@@ -11,7 +11,7 @@ import SwiftUI
 enum LoginPage: Hashable {
     case pickInstance
     case instance(_ instance: any Instance)
-    case reauth(_ account: Account)
+    case reauth(_ account: UserAccount)
     case totp(client: ApiClient, username: String, password: String)
     
     @ViewBuilder
