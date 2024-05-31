@@ -14,10 +14,8 @@ struct PostLinkHostView: View {
     let host: String
     
     var body: some View {
-        Group {
-            content
-                .lineLimit(1)
-        }
+        content
+            .lineLimit(1)
         .imageScale(.small)
         .foregroundStyle(palette.secondary)
     }
