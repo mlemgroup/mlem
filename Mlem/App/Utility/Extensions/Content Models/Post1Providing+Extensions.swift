@@ -28,7 +28,7 @@ extension Post1Providing {
         return postTag(active: removed, icon: Icons.removeFill, color: Palette.main.negative) +
             postTag(active: pinnedInstance, icon: Icons.pinFill, color: Palette.main.administration) +
             postTag(active: communityContext != nil && pinnedCommunity, icon: Icons.pinFill, color: Palette.main.moderation) +
-            postTag(active: locked, icon: Icons.lockFill, color: Palette.main.orange) +
+            postTag(active: locked, icon: Icons.lockFill, color: Palette.main.secondaryAccent) +
             Text("\(hasTags ? "  " : "")\(title)")
     }
     

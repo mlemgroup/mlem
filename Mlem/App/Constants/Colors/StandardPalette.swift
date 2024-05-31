@@ -28,6 +28,6 @@ extension ColorPalette {
         selectedInteractionBarItem: .white,
         administration: .teal,
         moderation: .cyan,
-        orange: .orange
+        secondaryAccent: .orange
     )
 }

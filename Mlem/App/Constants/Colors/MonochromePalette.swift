@@ -29,6 +29,6 @@ extension ColorPalette {
         selectedInteractionBarItem: Color(UIColor.systemBackground),
         administration: .primary,
         moderation: .primary,
-        orange: .primary
+        secondaryAccent: .primary
     )
 }

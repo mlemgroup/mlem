@@ -35,8 +35,8 @@ protocol PaletteProviding {
     var administration: Color { get }
     var moderation: Color { get }
     
-    // literals
-    var orange: Color { get }
+    // accents
+    var secondaryAccent: Color { get }
 }
 
 enum PaletteOption: String, CaseIterable {
@@ -78,7 +78,7 @@ struct ColorPalette: PaletteProviding {
     var moderation: Color
     
     // literals
-    var orange: Color
+    var secondaryAccent: Color
 }
 
 @Observable
@@ -122,5 +122,5 @@ class Palette: PaletteProviding {
     var administration: Color { palette.administration }
     var moderation: Color { palette.moderation }
     
-    var orange: Color { palette.orange }
+    var secondaryAccent: Color { palette.secondaryAccent }
 }
