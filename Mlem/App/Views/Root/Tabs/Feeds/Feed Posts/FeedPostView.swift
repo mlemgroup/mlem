@@ -23,6 +23,7 @@ struct FeedPostView: View {
     
     private struct Content: View {
         @AppStorage("post.size") var size: PostSize = .large
+        @AppStorage("beta.tilePosts") var tilePosts: Bool = false
         
         let post: any Post1Providing
         
@@ -31,15 +32,17 @@ struct FeedPostView: View {
         }
         
         var body: some View {
-            switch size {
-            case .compact:
-                CompactPostView(post: post)
-            case .tile:
+            if tilePosts {
                 TilePostView(post: post)
-            case .headline:
-                HeadlinePostView(post: post)
-            case .large:
-                LargePostView(post: post)
+            } else {
+                switch size {
+                case .compact:
+                    CompactPostView(post: post)
+                case .headline:
+                    HeadlinePostView(post: post)
+                case .large:
+                    LargePostView(post: post)
+                }
             }
         }
     }

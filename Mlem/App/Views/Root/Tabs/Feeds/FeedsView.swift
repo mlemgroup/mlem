@@ -25,15 +25,23 @@ struct FeedsView: View {
 
 struct MinimalPostFeedView: View {
     @AppStorage("post.size") var postSize: PostSize = .large
+    @AppStorage("beta.tilePosts") var tilePosts: Bool = false
     
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
     @State var postTracker: StandardPostFeedLoader
     @State private var scrollToTopAppeared = false
-    @State var columns: [GridItem] = [GridItem(.flexible())]
     
     @Namespace var scrollToTop
+    
+    var columns: [GridItem] {
+        if tilePosts {
+            [GridItem(.flexible(), spacing: 0), GridItem(.flexible(), spacing: 0)]
+        } else {
+            [GridItem(.flexible())]
+        }
+    }
     
     init() {
         // need to grab some stuff from app storage to initialize with
@@ -60,11 +68,11 @@ struct MinimalPostFeedView: View {
     var body: some View {
         ScrollViewReader { scrollProxy in
             content
-                .background(postSize == .tile ? palette.groupedBackground : palette.background)
+                .background(tilePosts ? palette.groupedBackground : palette.background)
                 .navigationTitle("Feeds")
-                .onChange(of: postSize, initial: true) { _, newValue in
-                    columns = newValue.columns
-                }
+//                .onChange(of: postSize, initial: true) { _, newValue in
+//                    columns = newValue.columns
+//                }
                 .task {
                     if postTracker.items.isEmpty, postTracker.loadingState == .idle {
                         print("Loading initial PostTracker page...")
@@ -102,9 +110,9 @@ struct MinimalPostFeedView: View {
     @ViewBuilder
     var content: some View {
         ScrollView {
-            LazyVGrid(columns: columns, spacing: postSize == .tile ? AppConstants.standardSpacing : 0) {
+            LazyVGrid(columns: columns, spacing: tilePosts ? AppConstants.standardSpacing : 0) {
                 Section {
-                    if postSize != .tile { Divider() }
+                    if !tilePosts { Divider() }
                     
                     ForEach(postTracker.items, id: \.uid) { post in
                         VStack(spacing: 0) { // this improves performance O_o
@@ -113,7 +121,7 @@ struct MinimalPostFeedView: View {
                                     .contentShape(.rect)
                             }
                             .buttonStyle(EmptyButtonStyle())
-                            if postSize != .tile { Divider() }
+                            if !tilePosts { Divider() }
                         }
                     }
                     
@@ -131,7 +139,7 @@ struct MinimalPostFeedView: View {
                         .id(scrollToTop)
                 }
             }
-            .padding(.horizontal, postSize == .tile ? AppConstants.halfSpacing : 0)
+            .padding(.horizontal, tilePosts ? AppConstants.halfSpacing : 0)
         }
     }
     
