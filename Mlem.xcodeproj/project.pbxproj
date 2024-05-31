@@ -112,7 +112,6 @@
 		CD7882A92BFFDFC7002E1A30 /* PostTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882A82BFFDFC7002E1A30 /* PostTag.swift */; };
 		CD7882AB2C013005002E1A30 /* EllipsisMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882AA2C013005002E1A30 /* EllipsisMenu.swift */; };
 		CD7882AD2C0131CC002E1A30 /* Post1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882AC2C0131CC002E1A30 /* Post1Providing+Extensions.swift */; };
-		CD83295A2BFC4D2600D52F4A /* InstanceLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8329592BFC4D2600D52F4A /* InstanceLocation.swift */; };
 		CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8202B8FC411007953EF /* LandingPage.swift */; };
 		CDB2EC7B2BFADA8B00DBC0EF /* PostSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7A2BFADA8B00DBC0EF /* PostSize.swift */; };
 		CDB2EC7D2BFADAB300DBC0EF /* CompactPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7C2BFADAB300DBC0EF /* CompactPostView.swift */; };
@@ -248,7 +247,6 @@
 		CD7882A82BFFDFC7002E1A30 /* PostTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTag.swift; sourceTree = "<group>"; };
 		CD7882AA2C013005002E1A30 /* EllipsisMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EllipsisMenu.swift; sourceTree = "<group>"; };
 		CD7882AC2C0131CC002E1A30 /* Post1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post1Providing+Extensions.swift"; sourceTree = "<group>"; };
-		CD8329592BFC4D2600D52F4A /* InstanceLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceLocation.swift; sourceTree = "<group>"; };
 		CDA1E8202B8FC411007953EF /* LandingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPage.swift; sourceTree = "<group>"; };
 		CDB2EC7A2BFADA8B00DBC0EF /* PostSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSize.swift; sourceTree = "<group>"; };
 		CDB2EC7C2BFADAB300DBC0EF /* CompactPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactPostView.swift; sourceTree = "<group>"; };
@@ -670,7 +668,6 @@
 				CD4D58F72B87B0D100B82964 /* InternetSpeed.swift */,
 				CD4D591F2B87B63300B82964 /* SettingsOptions.swift */,
 				CDB2EC7A2BFADA8B00DBC0EF /* PostSize.swift */,
-				CD8329592BFC4D2600D52F4A /* InstanceLocation.swift */,
 				CD7882A62BFFD1A3002E1A30 /* ThumbnailLocation.swift */,
 			);
 			path = Options;
@@ -1034,7 +1031,6 @@
 				CDF9EF332AB2845C003F885B /* Icons.swift in Sources */,
 				CD4D58DA2B86E11D00B82964 /* Mockable.swift in Sources */,
 				CD7882A22BFE4B47002E1A30 /* PostContext.swift in Sources */,
-				CD83295A2BFC4D2600D52F4A /* InstanceLocation.swift in Sources */,
 				CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */,
 				B157E0C42A507B8000B02C8B /* FlowRoot.swift in Sources */,
 				CDB2EC882BFAE14800DBC0EF /* FullyQualifiedNameView.swift in Sources */,

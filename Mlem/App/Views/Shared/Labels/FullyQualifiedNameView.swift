@@ -8,6 +8,12 @@
 import Foundation
 import SwiftUI
 
+enum InstanceLocation: String, CaseIterable {
+    case disabled
+    case trailing
+    case bottom
+}
+
 struct FullyQualifiedNameView: View {
     @Environment(Palette.self) var palette
     
