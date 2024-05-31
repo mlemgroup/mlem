@@ -12,7 +12,7 @@ import SwiftUI
 struct CompactPostView: View {
     @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
     
-    @Environment(\.communityContext) var communityContext: (any Community3Providing)?
+    @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(Palette.self) var palette: Palette
     
     let post: any Post1Providing

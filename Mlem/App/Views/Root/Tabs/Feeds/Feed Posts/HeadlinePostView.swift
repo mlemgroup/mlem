@@ -15,7 +15,7 @@ struct HeadlinePostView: View {
     @AppStorage("user.showAvatar") var showUserAvatar: Bool = true
     @AppStorage("community.showAvatar") var showCommunityAvatar: Bool = true
     
-    @Environment(\.communityContext) var communityContext: (any Community3Providing)?
+    @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(Palette.self) var palette: Palette
     
     let post: any Post1Providing

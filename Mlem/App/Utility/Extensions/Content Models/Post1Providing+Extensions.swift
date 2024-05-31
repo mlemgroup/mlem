@@ -19,7 +19,7 @@ extension Post1Providing {
         ])
     }
     
-    func taggedTitle(communityContext: (any Community3Providing)?) -> Text {
+    func taggedTitle(communityContext: (any Community1Providing)?) -> Text {
         let hasTags: Bool = removed
             || pinnedInstance
             || (communityContext != nil && pinnedCommunity)

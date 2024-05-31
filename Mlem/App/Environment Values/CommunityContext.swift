@@ -9,11 +9,11 @@ import MlemMiddleware
 import SwiftUI
 
 struct CommunityContext: EnvironmentKey {
-    static let defaultValue: (any Community3Providing)? = nil
+    static let defaultValue: (any Community1Providing)? = nil
 }
 
 extension EnvironmentValues {
-    var communityContext: (any Community3Providing)? {
+    var communityContext: (any Community1Providing)? {
         get { self[CommunityContext.self] }
         set { self[CommunityContext.self] = newValue }
     }

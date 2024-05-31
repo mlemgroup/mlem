@@ -43,7 +43,7 @@ enum FullyQualifiedLabelStyle {
 struct FullyQualifiedLabelView: View {
     // these aren't used now but they will be for flairs
     @Environment(\.postContext) var postContext: (any Post1Providing)?
-    @Environment(\.communityContext) var communityContext: (any Community3Providing)?
+    @Environment(\.communityContext) var communityContext: (any Community1Providing)?
   
     let entity: (any CommunityOrPersonStub & Profile2Providing)?
     let labelStyle: FullyQualifiedLabelStyle
