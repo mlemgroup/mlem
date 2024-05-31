@@ -504,7 +504,6 @@
 			isa = PBXGroup;
 			children = (
 				CD4D58A82B86BE4C00B82964 /* Shared */,
-				034B947C2C0908E600039AF4 /* Pages */,
 				CD4D583C2B867C2900B82964 /* Root */,
 			);
 			path = Views;
@@ -1004,7 +1003,6 @@
 				CD4D59142B87B36B00B82964 /* InternetConnectionManager.swift in Sources */,
 				03D3A1EF2BB9CA1D009DE55E /* MenuButton.swift in Sources */,
 				CDC199EC2BE449EA0077B4F1 /* Post1Providing+Extensions.swift in Sources */,
-				034B947A2C09015300039AF4 /* PersonView.swift in Sources */,
 				031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */,
 				030FF67B2BC8521600F6BFAC /* CustomTabView.swift in Sources */,
 				0369B3562BFA6824001EFEDF /* InboxView.swift in Sources */,

@@ -113,8 +113,6 @@ struct MinimalPostFeedView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.horizontal)
                                 .foregroundStyle(post.read ? .secondary : .primary)
-                            
-                            NavigationLink("Creator", destination: .person(post.creator))
                         }
                         .padding(10)
                         .background(palette.background)

@@ -18,14 +18,9 @@ enum NavigationPage: Hashable {
     case feeds, profile, inbox, search
     case quickSwitcher
     case expandedPost(_ post: AnyPost)
-    case person(_ person: AnyPerson)
     
     static func expandedPost(_ post: any PostStubProviding) -> NavigationPage {
-        .expandedPost(.init(post: post))
-    }
-    
-    static func person(_ person: any PersonStubProviding) -> NavigationPage {
-        .person(.init(person: person))
+        expandedPost(.init(post: post))
     }
 }
 
@@ -50,8 +45,6 @@ extension NavigationPage {
                 .presentationDetents([.medium, .large])
         case let .expandedPost(post):
             ExpandedPostView(post: post)
-        case let .person(person):
-            PersonView(person: person.person)
         }
     }
     
