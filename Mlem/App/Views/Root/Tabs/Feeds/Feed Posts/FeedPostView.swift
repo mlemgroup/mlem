@@ -33,13 +33,13 @@ struct FeedPostView: View {
         var body: some View {
             switch size {
             case .compact:
-                CompactPost(post: post)
+                CompactPostView(post: post)
             case .tile:
-                CardPost(post: post)
+                TilePostView(post: post)
             case .headline:
-                HeadlinePost(post: post)
+                HeadlinePostView(post: post)
             case .large:
-                LargePost(post: post)
+                LargePostView(post: post)
             }
         }
     }

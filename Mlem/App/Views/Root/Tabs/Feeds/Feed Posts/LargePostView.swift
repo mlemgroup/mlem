@@ -9,7 +9,7 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-struct LargePost: View {
+struct LargePostView: View {
     @AppStorage("post.showCreator") var showCreator: Bool = false
     @AppStorage("user.showAvatar") var showUserAvatar: Bool = true
     @AppStorage("community.showAvatar") var showCommunityAvatar: Bool = true

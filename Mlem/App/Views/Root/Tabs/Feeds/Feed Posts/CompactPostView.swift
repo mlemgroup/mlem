@@ -9,7 +9,7 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-struct CompactPost: View {
+struct CompactPostView: View {
     @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
     
     @Environment(\.communityContext) var communityContext: (any Community3Providing)?

@@ -9,7 +9,7 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-struct HeadlinePost: View {
+struct HeadlinePostView: View {
     @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
     @AppStorage("post.showCreator") var showCreator: Bool = false
     @AppStorage("user.showAvatar") var showUserAvatar: Bool = true

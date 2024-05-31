@@ -10,7 +10,7 @@ import MlemMiddleware
 import NukeUI
 import SwiftUI
 
-struct CardPost: View {
+struct TilePostView: View {
     @Environment(Palette.self) var palette: Palette
     
     let post: any Post1Providing
