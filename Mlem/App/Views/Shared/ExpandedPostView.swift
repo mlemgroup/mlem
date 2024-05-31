@@ -12,37 +12,18 @@ import SwiftUI
 struct ExpandedPostView: View {
     @Environment(\.dismiss) var dismiss
     
-    @State private var scrollToTopAppeared = false
-    
-    @Namespace var scrollToTop
-    
     let post: AnyPost
     
     var body: some View {
-        ScrollViewReader { scrollProxy in
-            ContentLoader(model: post) { post1 in
-                content(for: post1)
-            }
-            .onReselectTab {
-                if scrollToTopAppeared {
-                    dismiss()
-                } else {
-                    withAnimation {
-                        scrollProxy.scrollTo(scrollToTop)
-                    }
-                }
-            }
+        ContentLoader(model: post) { post1 in
+            content(for: post1)
         }
     }
     
     func content(for post: any Post1Providing) -> some View {
-        ScrollView {
+        FancyScrollView {
             VStack {
-                ScrollToView(appeared: $scrollToTopAppeared)
-                    .id(scrollToTop)
-                
                 Text(post.title)
-                
                 Text("Some content really far below to scroll to")
                     .padding([.top, .bottom], 700)
             }

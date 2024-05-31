@@ -31,9 +31,6 @@ struct MinimalPostFeedView: View {
     @Environment(Palette.self) var palette
     
     @State var postTracker: StandardPostFeedLoader
-    @State private var scrollToTopAppeared = false
-    
-    @Namespace var scrollToTop
     
     @State var columns: [GridItem] = [GridItem(.flexible())]
     
@@ -60,81 +57,74 @@ struct MinimalPostFeedView: View {
     }
     
     var body: some View {
-        ScrollViewReader { scrollProxy in
-            content
-                .background(tilePosts ? palette.groupedBackground : palette.background)
-                .navigationTitle("Feeds")
-                .onChange(of: tilePosts, initial: true) { _, newValue in
-                    if newValue {
-                        columns = [GridItem(.flexible(), spacing: 0), GridItem(.flexible(), spacing: 0)]
-                    } else {
-                        columns = [GridItem(.flexible())]
-                    }
+        content
+            .background(tilePosts ? palette.groupedBackground : palette.background)
+            .navigationTitle("Feeds")
+            .navigationBarTitleDisplayMode(.inline)
+            .onChange(of: tilePosts, initial: true) { _, newValue in
+                if newValue {
+                    columns = [GridItem(.flexible(), spacing: 0), GridItem(.flexible(), spacing: 0)]
+                } else {
+                    columns = [GridItem(.flexible())]
                 }
-                .task {
-                    if postTracker.items.isEmpty, postTracker.loadingState == .idle {
-                        print("Loading initial PostTracker page...")
-                        do {
-                            try await postTracker.loadMoreItems()
-                        } catch {
-                            handleError(error)
-                        }
-                    }
-                }
-                .task(id: appState.firstApi) {
+            }
+            .task {
+                if postTracker.items.isEmpty, postTracker.loadingState == .idle {
+                    print("Loading initial PostTracker page...")
                     do {
-                        try await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
+                        try await postTracker.loadMoreItems()
                     } catch {
                         handleError(error)
                     }
                 }
-                .refreshable {
-                    do {
-                        try await postTracker.refresh(clearBeforeRefresh: false)
-                    } catch {
-                        handleError(error)
-                    }
+            }
+            .task(id: appState.firstApi) {
+                do {
+                    try await postTracker.loadMoreItems()
+                } catch {
+                    handleError(error)
                 }
-                .onReselectTab {
-                    if !scrollToTopAppeared {
-                        withAnimation {
-                            scrollProxy.scrollTo(scrollToTop)
-                        }
-                    }
+            }
+            .task(id: appState.firstApi) {
+                do {
+                    try await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
+                } catch {
+                    handleError(error)
                 }
-        }
+            }
+            .refreshable {
+                do {
+                    try await postTracker.refresh(clearBeforeRefresh: false)
+                } catch {
+                    handleError(error)
+                }
+            }
     }
     
     @ViewBuilder
     var content: some View {
-        ScrollView {
+        FancyScrollView {
             LazyVGrid(columns: columns, spacing: tilePosts ? AppConstants.standardSpacing : 0) {
-                Section {
-                    if !tilePosts { Divider() }
-                    
-                    ForEach(postTracker.items, id: \.uid) { post in
-                        VStack(spacing: 0) { // this improves performance O_o
-                            NavigationLink(value: NavigationPage.expandedPost(post)) {
-                                FeedPostView(post: .init(post: post))
-                                    .contentShape(.rect)
-                            }
-                            .buttonStyle(EmptyButtonStyle())
-                            if !tilePosts { Divider() }
+                if !tilePosts { Divider() }
+                
+                ForEach(postTracker.items, id: \.uid) { post in
+                    VStack(spacing: 0) { // this improves performance O_o
+                        NavigationLink(value: NavigationPage.expandedPost(post)) {
+                            FeedPostView(post: .init(post: post))
+                                .contentShape(.rect)
                         }
+                        .buttonStyle(EmptyButtonStyle())
+                        if !tilePosts { Divider() }
                     }
-                    
-                    switch postTracker.loadingState {
-                    case .loading:
-                        Text("Loading...")
-                    case .done:
-                        Text("Done")
-                    case .idle:
-                        Text("Idle")
-                    }
-                } header: {
-                    // putting this in a section header makes it play nice with any number of columns
-                    ScrollToView(appeared: $scrollToTopAppeared)
-                        .id(scrollToTop)
+                }
+                
+                switch postTracker.loadingState {
+                case .loading:
+                    Text("Loading...")
+                case .done:
+                    Text("Done")
+                case .idle:
+                    Text("Idle")
                 }
             }
             .padding(.horizontal, tilePosts ? AppConstants.halfSpacing : 0)
