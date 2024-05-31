@@ -28,7 +28,7 @@ struct HeadlinePostView: View {
     var content: some View {
         VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
             HStack {
-                FullyQualifiedLabelView(entity: post.community_, labelStyle: .medium(showAvatar: showCommunityAvatar))
+                FullyQualifiedLabelView(entity: post.community_, labelStyle: .medium, showAvatar: showCommunityAvatar)
                 
                 Spacer()
                 
@@ -63,7 +63,7 @@ struct HeadlinePostView: View {
             }
             
             if showCreator {
-                FullyQualifiedLabelView(entity: post.creator_, labelStyle: .medium(showAvatar: showUserAvatar))
+                FullyQualifiedLabelView(entity: post.creator_, labelStyle: .medium, showAvatar: showUserAvatar)
             }
         }
     }

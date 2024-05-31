@@ -10,23 +10,15 @@ import MlemMiddleware
 import SwiftUI
 
 enum FullyQualifiedLabelStyle {
-    case small(showAvatar: Bool)
-    case medium(showAvatar: Bool)
-    case large(showAvatar: Bool)
+    case small
+    case medium
+    case large
     
     var avatarSize: CGFloat {
         switch self {
         case .small: AppConstants.smallAvatarSize
         case .medium: AppConstants.mediumAvatarSize
         case .large: AppConstants.largeAvatarSize
-        }
-    }
-    
-    var showAvatar: Bool {
-        switch self {
-        case let .small(showAvatar): showAvatar
-        case let .medium(showAvatar): showAvatar
-        case let .large(showAvatar): showAvatar
         }
     }
     
@@ -47,10 +39,11 @@ struct FullyQualifiedLabelView: View {
   
     let entity: (any CommunityOrPersonStub & Profile2Providing)?
     let labelStyle: FullyQualifiedLabelStyle
+    let showAvatar: Bool
     
     var body: some View {
         HStack {
-            if labelStyle.showAvatar {
+            if showAvatar {
                 AvatarView(url: entity?.avatar, type: .person)
                     .frame(width: labelStyle.avatarSize, height: labelStyle.avatarSize)
             }
