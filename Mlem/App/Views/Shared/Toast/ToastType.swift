@@ -26,7 +26,7 @@ enum ToastType: Hashable {
     
     case error(_ details: ErrorDetails)
     
-    case account(Account)
+    case account(any Account)
     
     var duration: Double {
         switch self {

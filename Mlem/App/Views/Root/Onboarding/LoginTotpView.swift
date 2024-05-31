@@ -113,7 +113,7 @@ struct LoginTotpView: View {
                     password: password,
                     totpToken: totpToken
                 )
-                appState.changeUser(to: user)
+                appState.changeAccount(to: user)
                 if navigation.isTopSheet {
                     navigation.dismissSheet()
                 }

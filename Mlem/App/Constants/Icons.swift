@@ -185,6 +185,7 @@ enum Icons {
     static let edit: String = "pencil"
     static let delete: String = "trash"
     static let copy: String = "doc.on.doc"
+    static let signOut: String = "minus.circle"
     
     // settings
     static let upvoteOnSave: String = "arrow.up.heart"

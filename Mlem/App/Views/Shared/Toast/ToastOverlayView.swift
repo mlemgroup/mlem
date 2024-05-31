@@ -22,13 +22,16 @@ struct ToastOverlayView: View {
                     .transition(
                         activeToasts.count <= 1 ? .move(edge: location.edge).combined(with: .opacity) : .opacity
                     )
+                    .onAppear {
+                        toast.startKillTask()
+                    }
             }
         }
         .animation(.snappy(duration: 0.3, extraBounce: 0.2), value: activeToasts)
         .onChange(of: onChangeHash) {
             let toasts = toastModel.activeToasts(location: location)
             if shouldDisplayNewToasts || toasts.isEmpty {
-                addNewToasts(toasts)
+                activeToasts = toasts
             }
         }
         .onChange(of: shouldDisplayNewToasts) { _, newValue in
@@ -61,7 +64,6 @@ struct ToastOverlayView: View {
         for toast in toasts where startTimersAgain || !toast.killTaskStarted {
             toast.startKillTask()
         }
-        activeToasts = toasts
     }
     
     var onChangeHash: Int {
@@ -102,4 +104,5 @@ struct ToastOverlayView: View {
     .overlay(alignment: .bottom) {
         ToastOverlayView(shouldDisplayNewToasts: true, location: .bottom)
     }
+    .environment(Palette.main)
 }

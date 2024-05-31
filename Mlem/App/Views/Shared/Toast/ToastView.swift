@@ -59,14 +59,7 @@ struct ToastView: View {
             case let .error(details):
                 errorView(details)
             case let .account(account):
-                HStack {
-                    AvatarView(account, showLoadingPlaceholder: false)
-                        .frame(height: 28)
-                        .padding(.leading, 10)
-                    Text(account.nickname ?? account.name)
-                        .frame(minWidth: 100)
-                        .padding(.trailing)
-                }
+                accountView(account)
             }
         }
         .frame(height: isExpanded ? nil : 47)
@@ -87,7 +80,7 @@ struct ToastView: View {
         imageColor: Color,
         subtitleColor: Color = .secondary
     ) -> some View {
-        HStack {
+        HStack(spacing: AppConstants.doubleSpacing) {
             if let systemImage {
                 image(systemImage, color: imageColor)
                     .contentTransition(.symbolEffect(.replace, options: .speed(4)))
@@ -107,11 +100,27 @@ struct ToastView: View {
                     }
                 } else {
                     Text(title)
+                        .lineLimit(1)
+                        .frame(minWidth: 80)
                 }
             }
-            .frame(minWidth: 100)
-            .padding(.trailing)
+            .padding(.trailing, AppConstants.doubleSpacing)
         }
+        .frame(minWidth: 157)
+    }
+    
+    @ViewBuilder
+    func accountView(_ account: any Account) -> some View {
+        HStack(spacing: AppConstants.doubleSpacing) {
+            AvatarView(account, showLoadingPlaceholder: false)
+                .frame(height: 27)
+                .padding(.leading, 10)
+            Text(account.nickname)
+                .lineLimit(1)
+                .frame(minWidth: 80)
+                .padding(.trailing, AppConstants.doubleSpacing)
+        }
+        .frame(minWidth: 157)
     }
     
     @ViewBuilder
@@ -202,6 +211,7 @@ extension ToastView {
             )
         )
         ToastView(.error(.init()))
+        ToastView(.success("Really super long text"))
     }
     .environment(Palette.main)
     .background {

@@ -19,13 +19,15 @@ struct AccountListView: View {
     
     var accountsTracker: AccountsTracker { .main }
     
-    @State private var isShowingInstanceAdditionSheet: Bool = false
-    
     @State var isSwitching: Bool = false
+    
+    @State private var isShowingAddAccountDialogue: Bool = false
+    @State private var isShowingAddGuestAlert: Bool = false
+    @State private var newGuestDomain: String = ""
     
     struct AccountGroup {
         let header: String
-        let accounts: [Account]
+        let accounts: [any Account]
     }
     
     let isQuickSwitcher: Bool
@@ -35,56 +37,96 @@ struct AccountListView: View {
     }
     
     var shouldAllowReordering: Bool {
-        (accountSort == .custom || accountsTracker.savedAccounts.count == 2) && !isQuickSwitcher
+        (accountSort == .custom || accountsTracker.userAccounts.count == 2) && !isQuickSwitcher
     }
     
     var body: some View {
         Group {
             if !isSwitching {
-                if accountsTracker.savedAccounts.count > 3, groupAccountSort {
-                    ForEach(Array(accountGroups.enumerated()), id: \.offset) { offset, group in
-                        Section {
-                            ForEach(group.accounts, id: \.self) { account in
-                                AccountButtonView(
-                                    account: account,
-                                    caption: accountSort != .instance || group.header == "Other" ? .instanceAndTime : .timeOnly,
-                                    isSwitching: $isSwitching
-                                )
-                            }
-                        } header: {
-                            if offset == 0 {
-                                topHeader(text: group.header)
-                            } else {
-                                Text(group.header)
-                            }
-                        }
-                    }
+                if accountsTracker.userAccounts.count > 3, groupAccountSort {
+                    groupedUserAccountList
                 } else if accounts.isEmpty {
                     Text("You don't have any accounts.")
                         .foregroundStyle(.secondary)
                 } else {
                     Section(header: topHeader()) {
-                        ForEach(accounts, id: \.self) { account in
-                            AccountButtonView(account: account, isSwitching: $isSwitching)
+                        ForEach(accounts, id: \.actorId) { account in
+                            AccountListRow(account: account, isSwitching: $isSwitching)
                         }
                         .onMove(perform: shouldAllowReordering ? reorderAccount : nil)
                     }
                 }
+                if let account = (appState.firstSession as? GuestSession)?.account, !account.isSaved {
+                    Section {
+                        AccountListRow(account: account, isSwitching: $isSwitching)
+                    }
+                }
                 Section {
-                    Button {
-                        navigation.openSheet(.login())
-                    } label: {
-                        Label("Add Account", systemImage: "plus")
+                    ForEach(accountsTracker.guestAccounts, id: \.actorId) { account in
+                        AccountListRow(
+                            account: account,
+                            complications: .withTime,
+                            isSwitching: $isSwitching
+                        )
                     }
-                    .accessibilityLabel("Add a new account.")
-                    Button {
-                        appState.enterGuestMode(for: URL(string: "https://lemmy.world")!)
-                        if navigation.isInsideSheet {
-                            dismiss()
-                        }
-                    } label: {
-                        Label("Enter Guest Mode", systemImage: Icons.person)
+                }
+                addAccountButton
+            }
+        }
+        .alert("Enter Domain Name", isPresented: $isShowingAddGuestAlert) {
+            TextField("lemmy.world", text: $newGuestDomain)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+            Button("OK") {
+                if !newGuestDomain.isEmpty, let url = URL(string: "https://\(newGuestDomain)") {
+                    let guest = GuestAccount.getGuestAccount(url: url)
+                    if !guest.isSaved {
+                        AccountsTracker.main.addAccount(account: guest)
                     }
+                    AppState.main.changeAccount(to: guest)
+                    if navigation.isInsideSheet {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var groupedUserAccountList: some View {
+        ForEach(Array(accountGroups.enumerated()), id: \.offset) { offset, group in
+            Section {
+                ForEach(group.accounts, id: \.actorId) { account in
+                    AccountListRow(
+                        account: account,
+                        complications: accountSort != .instance || group.header == "Other" ? .withTime : .timeOnly,
+                        isSwitching: $isSwitching
+                    )
+                }
+            } header: {
+                if offset == 0 {
+                    topHeader(text: group.header)
+                } else {
+                    Text(group.header)
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var addAccountButton: some View {
+        Section {
+            Button { isShowingAddAccountDialogue = true } label: {
+                Label("Add Account", systemImage: "plus")
+            }
+            .accessibilityLabel("Add a new account.")
+            .confirmationDialog("", isPresented: $isShowingAddAccountDialogue) {
+                Button("Log In") {
+                    navigation.openSheet(.login())
+                }
+                // Button("Sign Up") { }
+                Button("Add Guest") {
+                    isShowingAddGuestAlert = true
                 }
             }
         }
@@ -96,7 +138,7 @@ struct AccountListView: View {
             if let text {
                 Text(text)
             }
-            if !isQuickSwitcher, accountsTracker.savedAccounts.count > 2 {
+            if !isQuickSwitcher, accountsTracker.userAccounts.count > 2 {
                 Spacer()
                 sortModeMenu()
             }
@@ -116,7 +158,7 @@ struct AccountListView: View {
                     groupAccountSort = false
                 }
             }
-            if accountsTracker.savedAccounts.count > 3 {
+            if accountsTracker.userAccounts.count > 3 {
                 Divider()
                 Toggle(isOn: $groupAccountSort) {
                     Label("Grouped", systemImage: "square.stack.3d.up.fill")
