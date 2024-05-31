@@ -24,8 +24,8 @@ extension ColorPalette {
         downvote: .red,
         save: .green,
         selectedInteractionBarItem: .white,
-        administration: .cyan,
-        moderation: .red,
+        administration: .teal,
+        moderation: .cyan,
         orange: .orange
     )
 }
