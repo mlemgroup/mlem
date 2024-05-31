@@ -35,13 +35,7 @@ struct MinimalPostFeedView: View {
     
     @Namespace var scrollToTop
     
-    var columns: [GridItem] {
-        if tilePosts {
-            [GridItem(.flexible(), spacing: 0), GridItem(.flexible(), spacing: 0)]
-        } else {
-            [GridItem(.flexible())]
-        }
-    }
+    @State var columns: [GridItem] = [GridItem(.flexible())]
     
     init() {
         // need to grab some stuff from app storage to initialize with
@@ -70,9 +64,13 @@ struct MinimalPostFeedView: View {
             content
                 .background(tilePosts ? palette.groupedBackground : palette.background)
                 .navigationTitle("Feeds")
-//                .onChange(of: postSize, initial: true) { _, newValue in
-//                    columns = newValue.columns
-//                }
+                .onChange(of: tilePosts, initial: true) { _, newValue in
+                    if newValue {
+                        columns = [GridItem(.flexible(), spacing: 0), GridItem(.flexible(), spacing: 0)]
+                    } else {
+                        columns = [GridItem(.flexible())]
+                    }
+                }
                 .task {
                     if postTracker.items.isEmpty, postTracker.loadingState == .idle {
                         print("Loading initial PostTracker page...")
