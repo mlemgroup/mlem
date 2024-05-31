@@ -27,7 +27,7 @@ struct CardPost: View {
     var body: some View {
         content
             .frame(width: dimension, height: frameHeight)
-            .background(palette.background)
+            .background(palette.secondaryGroupedBackground)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .shadow(color: palette.primary.opacity(0.1), radius: 3)
     }
