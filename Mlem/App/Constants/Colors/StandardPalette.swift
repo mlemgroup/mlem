@@ -10,15 +10,24 @@ import SwiftUI
 extension ColorPalette {
     static let standard: ColorPalette = .init(
         primary: .primary,
+        secondary: .secondary,
+        tertiary: Color(UIColor.tertiaryLabel),
         background: Color(UIColor.systemBackground),
         secondaryBackground: Color(UIColor.secondarySystemBackground),
         tertiaryBackground: Color(UIColor.tertiarySystemBackground),
+        groupedBackground: Color(UIColor.systemGroupedBackground),
+        secondaryGroupedBackground: Color(UIColor.secondarySystemGroupedBackground),
+        thumbnailBackground: Color(UIColor.systemGray4),
         accent: .blue,
-        success: .green,
-        failure: .red,
+        positive: .green,
+        negative: .red,
+        warning: .red,
         upvote: .blue,
         downvote: .red,
         save: .green,
-        selectedInteractionBarItem: .white
+        selectedInteractionBarItem: .white,
+        administration: .teal,
+        moderation: .cyan,
+        secondaryAccent: .orange
     )
 }
