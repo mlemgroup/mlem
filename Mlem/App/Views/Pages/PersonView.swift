@@ -28,16 +28,28 @@ struct PersonView: View {
                     ProfileHeaderView(person, type: .person)
                         .padding(.horizontal, AppConstants.standardSpacing)
                     bio(person: person)
-                    personContent(person: person)
+                    if let person = person as? any Person3Providing {
+                        VStack(spacing: 0) {
+                            personContent(person: person)
+                        }
+                        .transition(.opacity)
+                    } else {
+                        VStack(spacing: 0) {
+                            Divider()
+                            ProgressView()
+                                .padding(.top)
+                        }
+                        .transition(.opacity)
+                    }
                 }
+                .animation(.easeOut(duration: 0.2), value: person is any Person3Providing)
             }
             .navigationTitle(isAtTop ? "" : (person.displayName_ ?? person.name))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    ToolbarEllipsisMenu {
-                        Button("Edit", systemImage: Icons.edit) {}
-                    }
+                    // TODO:
+                    ToolbarEllipsisMenu {}
                 }
             }
         }
@@ -77,7 +89,7 @@ struct PersonView: View {
     }
     
     @ViewBuilder
-    func personContent(person: any Person) -> some View {
+    func personContent(person: any Person3Providing) -> some View {
         BubblePicker(
             Tab.allCases,
             selected: $selectedTab,
@@ -86,17 +98,15 @@ struct PersonView: View {
             value: { tab in
                 switch tab {
                 case .posts:
-                    person.postCount_ ?? 0
+                    person.postCount
                 case .comments:
-                    person.commentCount_ ?? 0
+                    person.commentCount
                 case .communities:
-                    person.moderatedCommunities_?.count ?? 0
+                    person.moderatedCommunities.count
                 default:
                     nil
                 }
             }
         )
-        Text("Footer")
-            .padding(.top, 1000)
     }
 }

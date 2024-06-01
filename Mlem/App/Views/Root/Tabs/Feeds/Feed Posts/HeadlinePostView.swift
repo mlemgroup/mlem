@@ -63,7 +63,7 @@ struct HeadlinePostView: View {
             }
             
             if showCreator {
-                FullyQualifiedLabelView(entity: post.creator_, labelStyle: .medium, showAvatar: showUserAvatar)
+                FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showUserAvatar)
             }
         }
     }

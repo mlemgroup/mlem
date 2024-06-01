@@ -62,9 +62,14 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                                 .background(.blue)
                                 .allowsHitTesting(false)
                                 .mask(alignment: .leading) {
-                                    Capsule()
-                                        .offset(x: sizes[currentTabIndex].offset + AppConstants.standardSpacing)
-                                        .frame(width: max(sizes[currentTabIndex].width - AppConstants.doubleSpacing, 0), height: 30)
+                                    // This `if` statement prevents the size of the capsule animating from 0 to `width` when transitioning in
+                                    if sizes[currentTabIndex].width != 0 {
+                                        Capsule()
+                                            .offset(x: sizes[currentTabIndex].offset + AppConstants.standardSpacing)
+                                            .frame(width: max(sizes[currentTabIndex].width - AppConstants.doubleSpacing, 0), height: 30)
+                                    } else {
+                                        Color.clear
+                                    }
                                 }
                         }
                         .coordinateSpace(name: spaceName)

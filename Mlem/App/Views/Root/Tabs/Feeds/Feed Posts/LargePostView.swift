@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
 
@@ -46,7 +47,7 @@ struct LargePostView: View {
             postDetail
             
             if showCreator {
-                FullyQualifiedLabelView(entity: post.creator_, labelStyle: .large, showAvatar: showUserAvatar)
+                FullyQualifiedLinkView(entity: post.creator_, labelStyle: .large, showAvatar: showUserAvatar)
             }
         }
     }
@@ -55,7 +56,7 @@ struct LargePostView: View {
     var postDetail: some View {
         switch post.postType {
         case let .text(text):
-            Markdown(text)
+            Markdown(text, configuration: .default)
                 .lineLimit(8)
                 .foregroundStyle(palette.secondary)
         case .image:
