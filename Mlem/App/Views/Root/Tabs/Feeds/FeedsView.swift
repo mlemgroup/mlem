@@ -24,10 +24,15 @@ struct FeedsView: View {
 }
 
 struct MinimalPostFeedView: View {
+    @AppStorage("post.size") var postSize: PostSize = .large
+    @AppStorage("beta.tilePosts") var tilePosts: Bool = false
+    
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
     @State var postTracker: StandardPostFeedLoader
+    
+    @State var columns: [GridItem] = [GridItem(.flexible())]
     
     init() {
         // need to grab some stuff from app storage to initialize with
@@ -53,8 +58,16 @@ struct MinimalPostFeedView: View {
     
     var body: some View {
         content
+            .background(tilePosts ? palette.groupedBackground : palette.background)
             .navigationTitle("Feeds")
             .navigationBarTitleDisplayMode(.inline)
+            .onChange(of: tilePosts, initial: true) { _, newValue in
+                if newValue {
+                    columns = [GridItem(.flexible(), spacing: 0), GridItem(.flexible(), spacing: 0)]
+                } else {
+                    columns = [GridItem(.flexible())]
+                }
+            }
             .task {
                 if postTracker.items.isEmpty, postTracker.loadingState == .idle {
                     print("Loading initial PostTracker page...")
@@ -63,6 +76,13 @@ struct MinimalPostFeedView: View {
                     } catch {
                         handleError(error)
                     }
+                }
+            }
+            .task(id: appState.firstApi) {
+                do {
+                    try await postTracker.loadMoreItems()
+                } catch {
+                    handleError(error)
                 }
             }
             .task(id: appState.firstApi) {
@@ -81,6 +101,36 @@ struct MinimalPostFeedView: View {
             }
     }
     
+    @ViewBuilder
+    var content: some View {
+        FancyScrollView {
+            LazyVGrid(columns: columns, spacing: tilePosts ? AppConstants.standardSpacing : 0) {
+                if !tilePosts { Divider() }
+                
+                ForEach(postTracker.items, id: \.uid) { post in
+                    VStack(spacing: 0) { // this improves performance O_o
+                        NavigationLink(value: NavigationPage.expandedPost(post)) {
+                            FeedPostView(post: .init(post: post))
+                                .contentShape(.rect)
+                        }
+                        .buttonStyle(EmptyButtonStyle())
+                        if !tilePosts { Divider() }
+                    }
+                }
+                
+                switch postTracker.loadingState {
+                case .loading:
+                    Text("Loading...")
+                case .done:
+                    Text("Done")
+                case .idle:
+                    Text("Idle")
+                }
+            }
+            .padding(.horizontal, tilePosts ? AppConstants.halfSpacing : 0)
+        }
+    }
+    
     // This is a proof-of-concept; in the real frontend this code will go in InteractionBarView
     @ViewBuilder
     func actionButton(_ action: BasicAction) -> some View {
@@ -96,46 +146,5 @@ struct MinimalPostFeedView: View {
         .buttonStyle(EmptyButtonStyle())
         .disabled(action.callback == nil)
         .opacity(action.callback == nil ? 0.5 : 1)
-    }
-    
-    @ViewBuilder
-    var content: some View {
-        FancyScrollView {
-            LazyVStack(spacing: 0) {
-                ForEach(postTracker.items, id: \.uid) { (post: Post2) in
-                    NavigationLink(value: NavigationPage.expandedPost(post)) {
-                        HStack {
-                            actionButton(post.upvoteAction)
-                            actionButton(post.downvoteAction)
-                            actionButton(post.saveAction)
-                            
-                            Text(post.title)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.horizontal)
-                                .foregroundStyle(post.read ? .secondary : .primary)
-                        }
-                        .padding(10)
-                        .background(palette.background)
-                        .contentShape(.rect)
-                        .contextMenu {
-                            ForEach(post.menuActions.children, id: \.id) { action in
-                                MenuButton(action: action)
-                            }
-                        }
-                    }
-                    .buttonStyle(.plain)
-                    Divider()
-                }
-            }
-            
-            switch postTracker.loadingState {
-            case .loading:
-                Text("Loading...")
-            case .done:
-                Text("Done")
-            case .idle:
-                Text("Idle")
-            }
-        }
     }
 }

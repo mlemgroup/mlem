@@ -64,7 +64,7 @@ enum ToastType: Hashable {
             title: message ?? "Success",
             subtitle: nil,
             systemImage: Icons.successCircleFill,
-            color: Palette.main.success,
+            color: Palette.main.positive,
             duration: 1
         )
     }
@@ -74,7 +74,7 @@ enum ToastType: Hashable {
             title: message ?? "Failed",
             subtitle: nil,
             systemImage: Icons.failureCircleFill,
-            color: Palette.main.failure,
+            color: Palette.main.negative,
             duration: 1
         )
     }
