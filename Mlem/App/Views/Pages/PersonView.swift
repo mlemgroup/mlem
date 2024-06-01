@@ -38,19 +38,34 @@ struct PersonView: View {
     var bio: some View {
         if let bio = person.description_ {
             Divider()
-            
-            let blocks: [BlockNode] = .init(bio)
-            Group {
-                // If there is only a single paragraph, render it centered
-                if let first = blocks.first, case let .paragraph(inlines) = first {
-                    InlineMarkdown(inlines, configuration: .default)
+            VStack(spacing: AppConstants.standardSpacing) {
+                let blocks: [BlockNode] = .init(bio)
+                if blocks.isSimpleParagraphs {
+                    Text(blocks, configuration: .default)
                         .multilineTextAlignment(.center)
-                    
+                        .padding(.horizontal, AppConstants.standardSpacing)
+                    dateLabel
+                        .frame(maxWidth: .infinity, alignment: .center)
                 } else {
                     Markdown(blocks)
+                        .padding(.horizontal, AppConstants.standardSpacing)
+                    dateLabel
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
-            .padding(AppConstants.standardSpacing)
+            .padding(.top, AppConstants.halfSpacing)
+        } else {
+            dateLabel
+                .frame(maxWidth: .infinity, alignment: .center)
+        }
+    }
+    
+    @ViewBuilder
+    var dateLabel: some View {
+        if let person = person as? any Person1Providing {
+            ProfileDateView(profilable: person)
+                .padding(.horizontal, AppConstants.standardSpacing)
+                .padding(.vertical, 2)
         }
     }
     
