@@ -14,10 +14,6 @@ struct ProfileDateView: View {
     var body: some View {
         HStack {
             Label(format(profilable.created), systemImage: Icons.cakeDay)
-            if let updated = profilable.updated {
-                Label(format(updated), systemImage: Icons.edit)
-                    .foregroundStyle(Color(uiColor: .tertiaryLabel))
-            }
         }
         .foregroundStyle(.secondary)
         .font(.footnote)

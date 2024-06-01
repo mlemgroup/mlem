@@ -17,60 +17,67 @@ struct PersonView: View {
         var label: String { rawValue.capitalized }
     }
     
-    @State var person: any PersonStubProviding
+    @State var person: AnyPerson
     @State var selectedTab: Tab = .overview
     @State var isAtTop: Bool = true
     
     var body: some View {
-        FancyScrollView(isAtTop: $isAtTop) {
-            VStack(spacing: AppConstants.standardSpacing) {
-                ProfileHeaderView(person as? any Profile1Providing, type: .person)
-                    .padding(.horizontal, AppConstants.standardSpacing)
-                bio
-                personContent
+        ContentLoader(model: person) { person in
+            FancyScrollView(isAtTop: $isAtTop) {
+                VStack(spacing: AppConstants.standardSpacing) {
+                    ProfileHeaderView(person, type: .person)
+                        .padding(.horizontal, AppConstants.standardSpacing)
+                    bio(person: person)
+                    personContent(person: person)
+                }
+            }
+            .navigationTitle(isAtTop ? "" : (person.displayName_ ?? person.name))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    ToolbarEllipsisMenu {
+                        Button("Edit", systemImage: Icons.edit) {}
+                    }
+                }
             }
         }
-        .navigationTitle(isAtTop ? "" : person.name)
-        .navigationBarTitleDisplayMode(.inline)
     }
     
     @ViewBuilder
-    var bio: some View {
+    func bio(person: any Person) -> some View {
         if let bio = person.description_ {
             Divider()
             VStack(spacing: AppConstants.standardSpacing) {
                 let blocks: [BlockNode] = .init(bio)
                 if blocks.isSimpleParagraphs {
-                    Text(blocks, configuration: .default)
+                    MarkdownText(blocks, configuration: .default)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, AppConstants.standardSpacing)
-                    dateLabel
+                    dateLabel(person: person)
                         .frame(maxWidth: .infinity, alignment: .center)
                 } else {
-                    Markdown(blocks)
+                    Markdown(blocks, configuration: .default)
                         .padding(.horizontal, AppConstants.standardSpacing)
-                    dateLabel
+                    dateLabel(person: person)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
             .padding(.top, AppConstants.halfSpacing)
         } else {
-            dateLabel
+            dateLabel(person: person)
                 .frame(maxWidth: .infinity, alignment: .center)
         }
     }
     
     @ViewBuilder
-    var dateLabel: some View {
-        if let person = person as? any Person1Providing {
-            ProfileDateView(profilable: person)
-                .padding(.horizontal, AppConstants.standardSpacing)
-                .padding(.vertical, 2)
-        }
+    func dateLabel(person: any Person) -> some View {
+        ProfileDateView(profilable: person)
+            .padding(.horizontal, AppConstants.standardSpacing)
+            .padding(.vertical, 2)
     }
     
     @ViewBuilder
-    var personContent: some View {
+    func personContent(person: any Person) -> some View {
         BubblePicker(
             Tab.allCases,
             selected: $selectedTab,

@@ -21,11 +21,11 @@ enum NavigationPage: Hashable {
     case person(_ person: AnyPerson)
     
     static func expandedPost(_ post: any PostStubProviding) -> NavigationPage {
-        expandedPost(.init(post: post))
+        expandedPost(.init(post))
     }
     
     static func person(_ post: any PersonStubProviding) -> NavigationPage {
-        person(.init(person: post))
+        person(.init(post))
     }
 }
 
@@ -51,7 +51,7 @@ extension NavigationPage {
         case let .expandedPost(post):
             ExpandedPostView(post: post)
         case let .person(person):
-            PersonView(person: person.person)
+            PersonView(person: person)
         }
     }
     
