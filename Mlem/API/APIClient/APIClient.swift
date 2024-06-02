@@ -42,7 +42,8 @@ extension APIClientError: CustomStringConvertible {
         case .invalidSession:
             return "Invalid session"
         case let .decoding(data, error):
-            guard let string = String(data: data, encoding: .utf8) else {
+            let string = String(decoding: data, as: UTF8.self)
+            guard !string.isEmpty else {
                 return localizedDescription
             }
             

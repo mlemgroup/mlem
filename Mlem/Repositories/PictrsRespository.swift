@@ -46,8 +46,8 @@ class PictrsRespository {
                 print("Upload failed (2): \(error)")
                 switch error {
                 case let APIClientError.decoding(data, _):
-                    let text = String(data: data, encoding: .utf8)
-                    if text?.contains("413 Request Entity Too Large") ?? false {
+                    let text = String(decoding: data, as: UTF8.self)
+                    if text.contains("413 Request Entity Too Large") {
                         imageModel.state = .failed("Image too large")
                     } else {
                         imageModel.state = .failed(text)

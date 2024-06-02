@@ -56,7 +56,8 @@ struct InstanceMetadataParser {
     // MARK: - Public Methods
     
     static func parse(from data: Data) throws -> [InstanceMetadata] {
-        guard let string = String(data: data, encoding: .utf8), !string.isEmpty else {
+        let string = String(decoding: data, as: UTF8.self)
+        guard !string.isEmpty else {
             throw ParsingError.invalidData
         }
         
