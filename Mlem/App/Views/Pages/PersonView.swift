@@ -23,34 +23,39 @@ struct PersonView: View {
     
     var body: some View {
         ContentLoader(model: person) { person in
-            FancyScrollView(isAtTop: $isAtTop) {
-                VStack(spacing: AppConstants.standardSpacing) {
-                    ProfileHeaderView(person, type: .person)
-                        .padding(.horizontal, AppConstants.standardSpacing)
-                    bio(person: person)
-                    if let person = person as? any Person3Providing {
-                        VStack(spacing: 0) {
-                            personContent(person: person)
-                        }
-                        .transition(.opacity)
-                    } else {
-                        VStack(spacing: 0) {
-                            Divider()
-                            ProgressView()
-                                .padding(.top)
-                        }
-                        .transition(.opacity)
+            content(person: person)
+        }
+        .navigationTitle(isAtTop ? "" : (person.wrappedValue.displayName_ ?? person.wrappedValue.name))
+        .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    @ViewBuilder
+    func content(person: any Person) -> some View {
+        FancyScrollView(isAtTop: $isAtTop) {
+            VStack(spacing: AppConstants.standardSpacing) {
+                ProfileHeaderView(person, type: .person)
+                    .padding(.horizontal, AppConstants.standardSpacing)
+                bio(person: person)
+                if let person = person as? any Person3Providing {
+                    VStack(spacing: 0) {
+                        personContent(person: person)
                     }
+                    .transition(.opacity)
+                } else {
+                    VStack(spacing: 0) {
+                        Divider()
+                        ProgressView()
+                            .padding(.top)
+                    }
+                    .transition(.opacity)
                 }
-                .animation(.easeOut(duration: 0.2), value: person is any Person3Providing)
             }
-            .navigationTitle(isAtTop ? "" : (person.displayName_ ?? person.name))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    // TODO:
-                    ToolbarEllipsisMenu {}
-                }
+            .animation(.easeOut(duration: 0.2), value: person is any Person3Providing)
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                // TODO:
+                ToolbarEllipsisMenu {}
             }
         }
     }
