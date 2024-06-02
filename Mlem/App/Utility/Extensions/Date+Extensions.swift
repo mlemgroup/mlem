@@ -1,5 +1,5 @@
 //
-//  Date+RelativeTime.swift
+//  Date+Extensions.swift
 //  Mlem
 //
 //  Created by Jake Shirley on 6/22/23.

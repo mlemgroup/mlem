@@ -1,5 +1,5 @@
 //
-//  Int+Abbreviated.swift
+//  Int+Extensions.swift
 //  Mlem
 //
 //  Created by Sjmarf on 13/04/2024.
