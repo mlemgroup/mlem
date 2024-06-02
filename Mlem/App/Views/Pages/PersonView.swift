@@ -91,7 +91,7 @@ struct PersonView: View {
     @ViewBuilder
     func personContent(person: any Person3Providing) -> some View {
         BubblePicker(
-            Tab.allCases,
+            tabs(person: person),
             selected: $selectedTab,
             withDividers: [.top, .bottom],
             label: \.label,
