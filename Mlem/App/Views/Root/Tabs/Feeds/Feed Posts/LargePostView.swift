@@ -54,7 +54,7 @@ struct LargePostView: View {
     
     @ViewBuilder
     var postDetail: some View {
-        switch post.postType {
+        switch post.type {
         case let .text(text):
             Markdown(text, configuration: .default)
                 .lineLimit(8)
