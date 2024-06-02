@@ -25,7 +25,8 @@ extension InstanceView {
                     }
                 } catch let APIClientError.decoding(data, error) {
                     withAnimation(.easeOut(duration: 0.2)) {
-                        if let content = String(data: data, encoding: .utf8) {
+                        let content = String(decoding: data, as: UTF8.self)
+                        if !content.isEmpty {
                             if content.contains("<div class=\"kbin-container\">") {
                                 errorDetails = ErrorDetails(
                                     title: "KBin Instance",
