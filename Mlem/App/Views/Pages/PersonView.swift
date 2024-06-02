@@ -61,7 +61,7 @@ struct PersonView: View {
             Divider()
             VStack(spacing: AppConstants.standardSpacing) {
                 let blocks: [BlockNode] = .init(bio)
-                if blocks.isSimpleParagraphs {
+                if blocks.isSimpleParagraphs, bio.count < 300 {
                     MarkdownText(blocks, configuration: .default)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, AppConstants.standardSpacing)
@@ -108,5 +108,13 @@ struct PersonView: View {
                 }
             }
         )
+    }
+    
+    func tabs(person: any Person3Providing) -> [Tab] {
+        var output: [Tab] = [.overview, .posts, .comments]
+        if !person.moderatedCommunities.isEmpty {
+            output.append(.communities)
+        }
+        return output
     }
 }
