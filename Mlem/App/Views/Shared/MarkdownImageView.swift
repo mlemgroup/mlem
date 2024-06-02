@@ -16,7 +16,7 @@ struct MarkdownImageView: View {
     var body: some View {
         Image(systemName: "photo")
             .imageScale(.large)
-            .foregroundStyle(.secondary)
+            .foregroundStyle(palette.secondary)
             .padding()
             .frame(maxWidth: .infinity)
             .background(

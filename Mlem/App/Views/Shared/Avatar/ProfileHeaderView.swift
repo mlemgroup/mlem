@@ -35,7 +35,7 @@ struct ProfileHeaderView: View {
             Button {
                 (profilable as? any CommunityOrPersonStub)?.copyFullNameWithPrefix()
             } label: {
-                VStack(spacing: 5) {
+                VStack(spacing: AppConstants.halfSpacing) {
                     Text(profilable?.displayName_ ?? profilable?.name ?? "")
                         .font(.title)
                         .fontWeight(.semibold)
@@ -43,7 +43,7 @@ struct ProfileHeaderView: View {
                         .minimumScaleFactor(0.01)
                     Text(subtitle)
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(palette.secondary)
                 }
             }
             .buttonStyle(.plain)

@@ -15,7 +15,7 @@ struct ProfileDateView: View {
         HStack {
             Label(format(profilable.created), systemImage: Icons.cakeDay)
         }
-        .foregroundStyle(.secondary)
+        .foregroundStyle(palette.secondary)
         .font(.footnote)
     }
     
