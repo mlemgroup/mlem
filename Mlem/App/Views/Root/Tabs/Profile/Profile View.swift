@@ -15,10 +15,8 @@ struct ProfileView: View {
     @Environment(NavigationLayer.self) var navigation
     
     var body: some View {
-        Group {
-            if let person = (appState.firstSession as? UserSession)?.person {
-                PersonView(person: .init(person))
-            }
+        if let person = (appState.firstSession as? UserSession)?.person {
+            PersonView(person: .init(person))
         }
     }
 }
