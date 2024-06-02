@@ -59,7 +59,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                     buttonStack(scrollProxy: scrollProxy, isSelected: false)
                         .overlay {
                             buttonStack(isSelected: true)
-                                .background(.blue)
+                                .background(palette.accent)
                                 .allowsHitTesting(false)
                                 .mask(alignment: .leading) {
                                     // This `if` statement prevents the size of the capsule animating from 0 to `width` when transitioning in
@@ -143,13 +143,13 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
             Text(label(tab))
                 .font(.subheadline)
                 .fontWeight(.semibold)
-                .foregroundColor(isSelected ? .white : .primary)
+                .foregroundColor(isSelected ? .white : palette.primary)
             if let value {
                 Text(value.abbreviated)
                     .monospacedDigit()
                     .font(.subheadline)
                     .fontWeight(.medium)
-                    .foregroundColor(isSelected ? .white.opacity(0.8) : .secondary)
+                    .foregroundColor(isSelected ? .white.opacity(0.8) : palette.secondary)
             }
         })
         .padding(.horizontal, 22)
@@ -167,14 +167,14 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
             Text(label(tab))
                 .font(.subheadline)
                 .fontWeight(.semibold)
-                .foregroundColor(isSelected ? .white : .primary)
+                .foregroundColor(isSelected ? .white : palette.primary)
             // .padding(value == nil ? .horizontal : .leading, 22
             if let value {
                 Text(value.abbreviated)
                     .monospacedDigit()
                     .font(.subheadline)
                     .fontWeight(.medium)
-                    .foregroundColor(isSelected ? .white.opacity(0.8) : .secondary)
+                    .foregroundColor(isSelected ? .white.opacity(0.8) : palette.secondary)
                     .padding(.horizontal, 5)
                     .frame(minWidth: 22)
                     .frame(height: 22)
@@ -187,7 +187,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                             }
                         }
                         .foregroundStyle(
-                            isSelected ? Color(uiColor: .systemBackground).opacity(0.3) : Color(uiColor: .secondarySystemBackground)
+                            isSelected ? palette.background.opacity(0.3) : palette.secondaryBackground
                         )
                     )
             }
