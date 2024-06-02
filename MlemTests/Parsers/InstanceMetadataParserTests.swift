@@ -12,11 +12,11 @@ import XCTest
 final class InstanceMetadataParserTests: XCTestCase {
     func testParserHandlesExpectedData() throws {
         // construct some test data
-        let data = """
+        let data = Data("""
         Instance,NU,NC,Fed,Adult,↓V,Users,BI,BB,UT,MO,Version
         [Lemmy.world](https://lemmy.world),Yes,Yes,Yes,Yes,Yes,18431,53,3,97%,2,0.18.4
         [lemm.ee](https://lemm.ee),Yes,No,Yes,No,Yes,3710,34,0,100%,2,0.1.2
-        """.data(using: .utf8)!
+        """.utf8)
         
         // ask the parser to parse it
         let metadata = try InstanceMetadataParser.parse(from: data)
@@ -57,11 +57,11 @@ final class InstanceMetadataParserTests: XCTestCase {
     
     func testParserIsNotReliantOnHeaderFieldOrder() throws {
         // construct some test data with some the fields moved around
-        let data = """
+        let data = Data("""
         Users,NU,NC,Fed,Version,Adult,↓V,BI,BB,UT,MO,Instance
         18431,Yes,Yes,Yes,0.18.4,Yes,Yes,53,3,97%,2,[Lemmy.world](https://lemmy.world)
         3710,Yes,No,Yes,0.1.2,No,Yes,34,0,100%,2,[lemm.ee](https://lemm.ee)
-        """.data(using: .utf8)!
+        """.utf8)
         
         // ask the parser to parse it
         let metadata = try InstanceMetadataParser.parse(from: data)

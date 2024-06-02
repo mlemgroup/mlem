@@ -55,8 +55,12 @@ class PostRepository {
     /// - Parameters:
     ///   - post: PostModel to attempt to read
     ///   - read: Intended read state of the post model (true to mark read, false to mark unread)
-    func markRead(post: PostModel, read: Bool) async throws -> PostModel {
-        let success = try await apiClient.markPostAsRead(for: post.postId, read: read).success
+    func markRead(post: PostModel, read: Bool, version: SiteVersion?) async throws -> PostModel {
+        let success = try await apiClient.markPostAsRead(
+            for: post.postId,
+            read: read,
+            version: version
+        ).success
         return PostModel(from: post, read: success ? read : post.read)
     }
     

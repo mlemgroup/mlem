@@ -197,7 +197,11 @@ class PostModel: ContentIdentifiable, Removable, Purgable, ObservableObject {
         
         // API call
         do {
-            let updatedPost = try await postRepository.markRead(post: self, read: newRead)
+            let updatedPost = try await postRepository.markRead(
+                post: self,
+                read: newRead,
+                version: SiteInformationTracker.liveValue.version
+            )
             await reinit(from: updatedPost)
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
