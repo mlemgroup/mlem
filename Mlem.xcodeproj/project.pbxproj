@@ -1602,8 +1602,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.6.0;
+				branch = "sjmarf/person-changes";
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
