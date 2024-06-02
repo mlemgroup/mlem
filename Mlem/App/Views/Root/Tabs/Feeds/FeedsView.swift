@@ -56,7 +56,7 @@ struct MinimalPostFeedView: View {
         ))
     }
     
-    var bofidy: some View {
+    var body: some View {
         content
             .background(tilePosts ? palette.groupedBackground : palette.background)
             .navigationTitle("Feeds")
