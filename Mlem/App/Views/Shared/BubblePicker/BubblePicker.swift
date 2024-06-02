@@ -17,6 +17,8 @@ struct BubblePickerItemFrame: Equatable {
 }
 
 struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
+    @Environment(Palette.self) var palette
+    
     @Binding var selected: Value
     let tabs: [Value]
     let dividers: Set<DividerPlacement>
