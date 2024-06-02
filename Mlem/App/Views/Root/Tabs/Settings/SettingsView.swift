@@ -25,6 +25,11 @@ struct SettingsView: View {
             Section {
                 NavigationLink("Theme", destination: .settings(.theme))
             }
+            
+            Section {
+                NavigationLink("Posts", destination: .settings(.post))
+            }
+            
             Section {
                 Toggle("Upvote On Save", isOn: $upvoteOnSave)
             }

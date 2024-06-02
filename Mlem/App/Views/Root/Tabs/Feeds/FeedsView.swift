@@ -24,13 +24,15 @@ struct FeedsView: View {
 }
 
 struct MinimalPostFeedView: View {
+    @AppStorage("post.size") var postSize: PostSize = .large
+    @AppStorage("beta.tilePosts") var tilePosts: Bool = false
+    
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
     @State var postTracker: StandardPostFeedLoader
-    @State private var scrollToTopAppeared = false
     
-    @Namespace var scrollToTop
+    @State var columns: [GridItem] = [GridItem(.flexible())]
     
     init() {
         // need to grab some stuff from app storage to initialize with
@@ -55,40 +57,77 @@ struct MinimalPostFeedView: View {
     }
     
     var body: some View {
-        ScrollViewReader { scrollProxy in
-            content
-                .navigationTitle("Feeds")
-                .task {
-                    if postTracker.items.isEmpty, postTracker.loadingState == .idle {
-                        print("Loading initial PostTracker page...")
-                        do {
-                            try await postTracker.loadMoreItems()
-                        } catch {
-                            handleError(error)
-                        }
-                    }
+        content
+            .background(tilePosts ? palette.groupedBackground : palette.background)
+            .navigationTitle("Feeds")
+            .navigationBarTitleDisplayMode(.inline)
+            .onChange(of: tilePosts, initial: true) { _, newValue in
+                if newValue {
+                    columns = [GridItem(.flexible(), spacing: 0), GridItem(.flexible(), spacing: 0)]
+                } else {
+                    columns = [GridItem(.flexible())]
                 }
-                .task(id: appState.firstApi) {
+            }
+            .task {
+                if postTracker.items.isEmpty, postTracker.loadingState == .idle {
+                    print("Loading initial PostTracker page...")
                     do {
-                        try await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
+                        try await postTracker.loadMoreItems()
                     } catch {
                         handleError(error)
                     }
                 }
-                .refreshable {
-                    do {
-                        try await postTracker.refresh(clearBeforeRefresh: false)
-                    } catch {
-                        handleError(error)
-                    }
+            }
+            .task(id: appState.firstApi) {
+                do {
+                    try await postTracker.loadMoreItems()
+                } catch {
+                    handleError(error)
                 }
-                .onReselectTab {
-                    if !scrollToTopAppeared {
-                        withAnimation {
-                            scrollProxy.scrollTo(scrollToTop)
+            }
+            .task(id: appState.firstApi) {
+                do {
+                    try await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
+                } catch {
+                    handleError(error)
+                }
+            }
+            .refreshable {
+                do {
+                    try await postTracker.refresh(clearBeforeRefresh: false)
+                } catch {
+                    handleError(error)
+                }
+            }
+    }
+    
+    @ViewBuilder
+    var content: some View {
+        FancyScrollView {
+            LazyVGrid(columns: columns, spacing: tilePosts ? AppConstants.standardSpacing : 0) {
+                if !tilePosts { Divider() }
+                
+                ForEach(postTracker.items, id: \.uid) { post in
+                    VStack(spacing: 0) { // this improves performance O_o
+                        NavigationLink(value: NavigationPage.expandedPost(post)) {
+                            FeedPostView(post: .init(post: post))
+                                .contentShape(.rect)
                         }
+                        .buttonStyle(EmptyButtonStyle())
+                        if !tilePosts { Divider() }
                     }
                 }
+                
+                switch postTracker.loadingState {
+                case .loading:
+                    Text("Loading...")
+                case .done:
+                    Text("Done")
+                case .idle:
+                    Text("Idle")
+                }
+            }
+            .padding(.horizontal, tilePosts ? AppConstants.halfSpacing : 0)
         }
     }
     
@@ -107,49 +146,5 @@ struct MinimalPostFeedView: View {
         .buttonStyle(EmptyButtonStyle())
         .disabled(action.callback == nil)
         .opacity(action.callback == nil ? 0.5 : 1)
-    }
-    
-    @ViewBuilder
-    var content: some View {
-        ScrollView {
-            LazyVStack(spacing: 0) {
-                ScrollToView(appeared: $scrollToTopAppeared)
-                    .id(scrollToTop)
-                
-                ForEach(postTracker.items, id: \.uid) { post in
-                    NavigationLink(value: NavigationPage.expandedPost(post)) {
-                        HStack {
-                            actionButton(post.upvoteAction)
-                            actionButton(post.downvoteAction)
-                            actionButton(post.saveAction)
-                            
-                            Text(post.title)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.horizontal)
-                                .foregroundStyle(post.read ? .secondary : .primary)
-                        }
-                        .padding(10)
-                        .background(palette.background)
-                        .contentShape(.rect)
-                        .contextMenu {
-                            ForEach(post.menuActions.children, id: \.id) { action in
-                                MenuButton(action: action)
-                            }
-                        }
-                    }
-                    .buttonStyle(.plain)
-                    Divider()
-                }
-            }
-            
-            switch postTracker.loadingState {
-            case .loading:
-                Text("Loading...")
-            case .done:
-                Text("Done")
-            case .idle:
-                Text("Idle")
-            }
-        }
     }
 }

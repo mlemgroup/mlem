@@ -11,15 +11,24 @@ import SwiftUI
 extension ColorPalette {
     static let monochrome: ColorPalette = .init(
         primary: .primary,
+        secondary: .secondary,
+        tertiary: Color(UIColor.tertiaryLabel),
         background: Color(UIColor.systemBackground),
         secondaryBackground: Color(UIColor.secondarySystemBackground),
         tertiaryBackground: Color(UIColor.tertiarySystemBackground),
+        groupedBackground: Color(UIColor.systemGroupedBackground),
+        secondaryGroupedBackground: Color(UIColor.secondarySystemGroupedBackground),
+        thumbnailBackground: Color(UIColor.systemGray4),
         accent: .primary,
-        success: .primary,
-        failure: .primary,
+        positive: .primary,
+        negative: .primary,
+        warning: .primary,
         upvote: .primary,
         downvote: .primary,
         save: .primary,
-        selectedInteractionBarItem: Color(UIColor.systemBackground)
+        selectedInteractionBarItem: Color(UIColor.systemBackground),
+        administration: .primary,
+        moderation: .primary,
+        secondaryAccent: .primary
     )
 }
