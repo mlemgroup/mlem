@@ -9,6 +9,8 @@ import MlemMiddleware
 import SwiftUI
 
 struct ProfileDateView: View {
+    @Environment(Palette.self) var palette
+
     var profilable: any Profile2Providing
     
     var body: some View {
