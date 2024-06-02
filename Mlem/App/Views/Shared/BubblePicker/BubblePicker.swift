@@ -168,7 +168,6 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                 .font(.subheadline)
                 .fontWeight(.semibold)
                 .foregroundColor(isSelected ? .white : .primary)
-            // .padding(value == nil ? .horizontal : .leading, 22
             if let value {
                 Text(value.abbreviated)
                     .monospacedDigit()
