@@ -12,7 +12,12 @@ import SwiftUI
 struct ContentLoader<Content: View, Model: Upgradable>: View {
     @Environment(Palette.self) var palette: Palette
     
-    @State var upgradeState: LoadingState = .idle
+    enum UpgradeState {
+        case idle, loading, done, failed
+    }
+        
+    @State var upgradeState: UpgradeState = .idle
+    @State var error: Error?
     
     let model: any Upgradable
     var content: (Model.MinimumRenderable) -> Content
@@ -23,19 +28,19 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
     }
     
     var body: some View {
-        if let modelValue = model.wrappedValue as? Model.MinimumRenderable {
-            content(modelValue)
-                .task {
-                    if !model.isUpgraded {
-                        await upgradeModel()
-                    }
-                }
-        } else {
-            ProgressView()
-                .tint(palette.secondary)
-                .task {
-                    await upgradeModel()
-                }
+        VStack {
+            if let modelValue = model.wrappedValue as? Model.MinimumRenderable {
+                content(modelValue)
+            } else {
+                ProgressView()
+                    .tint(palette.secondary)
+            }
+        }
+        .animation(.easeOut(duration: 0.2), value: model.wrappedValue is Model.MinimumRenderable)
+        .task {
+            if !model.isUpgraded {
+                await upgradeModel()
+            }
         }
     }
     
@@ -43,14 +48,19 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
         // prevent multiple upgrades simultaneously
         guard upgradeState == .idle else { return }
         upgradeState = .loading
-        
         do {
-            try await model.upgrade()
+            do {
+                try await model.upgrade()
+            } catch ApiClientError.noEntityFound {
+                try await model.upgradeFromLocal()
+            }
             upgradeState = .done
-        } catch {
-            // if the task is cancelled or the call fails, reset upgradeState--upgrade will be retried on next render
+        } catch ApiClientError.cancelled {
+            // if the task is cancelled, reset upgradeState--upgrade will be retried on next render
             upgradeState = .idle
-            print(error)
+        } catch {
+            upgradeState = .failed
+            self.error = error
         }
     }
 }
