@@ -52,8 +52,6 @@
 		0382A7F22C0A758E00C79DDA /* ProfileDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0382A7F12C0A758E00C79DDA /* ProfileDateView.swift */; };
 		0382A7F42C0A76A900C79DDA /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0382A7F32C0A76A900C79DDA /* Date+Extensions.swift */; };
 		039EFEC32BEEBEE0003AC372 /* LoginInstancePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */; };
-		03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */; };
-		03A82FA32C0D1F2400D01A5C /* View+ExternalApiWarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A82FA22C0D1F2400D01A5C /* View+ExternalApiWarning.swift */; };
 		03C93CF02BEFFB1A00327BFE /* LoginCredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C93CEF2BEFFB1A00327BFE /* LoginCredentialsView.swift */; };
 		03C93CF22BF0256700327BFE /* EnvironmentValue+IsRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C93CF12BF0256700327BFE /* EnvironmentValue+IsRootView.swift */; };
 		03CCDAA02BF2795300C0C851 /* LoginPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CCDA9F2BF2795300C0C851 /* LoginPage.swift */; };
@@ -209,8 +207,6 @@
 		0382A7F12C0A758E00C79DDA /* ProfileDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDateView.swift; sourceTree = "<group>"; };
 		0382A7F32C0A76A900C79DDA /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInstancePickerView.swift; sourceTree = "<group>"; };
-		03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiClient+Extensions.swift"; sourceTree = "<group>"; };
-		03A82FA22C0D1F2400D01A5C /* View+ExternalApiWarning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ExternalApiWarning.swift"; sourceTree = "<group>"; };
 		03C93CEF2BEFFB1A00327BFE /* LoginCredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCredentialsView.swift; sourceTree = "<group>"; };
 		03C93CF12BF0256700327BFE /* EnvironmentValue+IsRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValue+IsRootView.swift"; sourceTree = "<group>"; };
 		03CCDA9F2BF2795300C0C851 /* LoginPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPage.swift; sourceTree = "<group>"; };
@@ -716,7 +712,6 @@
 				03134A4E2BEAD23A002662CC /* Views */,
 				CDA8A0052BE43B350022F7ED /* Content Models */,
 				CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */,
-				03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */,
 				034B94882C09360A00039AF4 /* Int+Extensions.swift */,
 				0382A7F32C0A76A900C79DDA /* Date+Extensions.swift */,
 				CD4D59172B87B3B000B82964 /* UIViewController+Extensions.swift */,
@@ -797,7 +792,6 @@
 			isa = PBXGroup;
 			children = (
 				CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */,
-				03A82FA22C0D1F2400D01A5C /* View+ExternalApiWarning.swift */,
 			);
 			path = "View Modifiers";
 			sourceTree = "<group>";
@@ -1056,7 +1050,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */,
 				03E614E22C0BCC4300F692A4 /* Profile1Providing+Extensions.swift in Sources */,
 				03134A582BEC1C46002662CC /* AccountListSettingsView.swift in Sources */,
 				03E614E52C0BCCAA00F692A4 /* PostSize.swift in Sources */,
@@ -1161,7 +1154,6 @@
 				035BE0892BDD901B00F77D73 /* NavigationPage.swift in Sources */,
 				035BE08F2BDE911900F77D73 /* NavigationLayer.swift in Sources */,
 				03267D842BED49CE009D6268 /* AccountSettingsView.swift in Sources */,
-				03A82FA32C0D1F2400D01A5C /* View+ExternalApiWarning.swift in Sources */,
 				0369B3532BFA514B001EFEDF /* ToastLocation.swift in Sources */,
 				03FE14082BF94FFB00A8377F /* ErrorView.swift in Sources */,
 				030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */,

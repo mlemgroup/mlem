@@ -41,14 +41,6 @@ struct InboxView: View {
             Button("Open Sheet") {
                 navigation.openSheet(.inbox)
             }
-            Button("Open Hexbear User") {
-                navigation.push(
-                    .person(PersonStub(
-                        api: AppState.main.firstApi,
-                        actorId: .init(string: "https://hexbear.net/u/Angel")!
-                    ))
-                )
-            }
         }
     }
 }

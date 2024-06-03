@@ -24,7 +24,6 @@ struct PersonView: View {
     var body: some View {
         ContentLoader(model: person) { person in
             content(person: person)
-                .externalApiWarning(entity: person)
         }
         .navigationTitle(isAtTop ? "" : (person.wrappedValue.displayName_ ?? person.wrappedValue.name))
         .navigationBarTitleDisplayMode(.inline)
