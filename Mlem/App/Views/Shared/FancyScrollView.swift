@@ -47,7 +47,7 @@ struct FancyScrollView<Content: View>: View {
                     model.scrollView = scrollView
                     model.observation = scrollView.observe(\.contentOffset) { scrollView, _ in
                         Task { @MainActor [self] in
-                            let newValue = scrollView.contentOffset.y <= -scrollView.safeAreaInsets.top
+                            let newValue = Int(scrollView.contentOffset.y) <= -Int(scrollView.safeAreaInsets.top)
                             if newValue != isAtTop {
                                 isAtTop = newValue
                             }
@@ -57,7 +57,7 @@ struct FancyScrollView<Content: View>: View {
             }
             .onReselectTab {
                 if let scrollView = model.scrollView {
-                    if scrollView.contentOffset.y <= -scrollView.safeAreaInsets.top {
+                    if Int(scrollView.contentOffset.y) <= Int(-scrollView.safeAreaInsets.top) {
                         if let reselectAction {
                             reselectAction()
                         } else {
