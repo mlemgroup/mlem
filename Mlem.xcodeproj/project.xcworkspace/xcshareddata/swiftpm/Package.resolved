@@ -24,7 +24,7 @@
       "location" : "https://github.com/mlemgroup/LemmyMarkdownUI",
       "state" : {
         "branch" : "main",
-        "revision" : "76ae3501245f5981577a91cb053c26087c3c0bb4"
+        "revision" : "dcd523f5e98bc891ab96b4eca7b95c876eda0aaa"
       }
     },
     {
@@ -33,7 +33,7 @@
       "location" : "https://github.com/mlemgroup/MlemMiddleware.git",
       "state" : {
         "branch" : "eric/new-filtering",
-        "revision" : "13e2bb3b652d57859f570bee557855d5649d28cb"
+        "revision" : "15d44a9ceae4607a02954108dfd5f4876f642e82"
       }
     },
     {
@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kean/Nuke",
       "state" : {
-        "revision" : "8e431251dea0081b6ab154dab61a6ec74e4b6577",
-        "version" : "12.6.0"
+        "revision" : "2efd206503e99dd3a88a4dc433a76f98ce8cc198",
+        "version" : "12.7.1"
       }
     },
     {

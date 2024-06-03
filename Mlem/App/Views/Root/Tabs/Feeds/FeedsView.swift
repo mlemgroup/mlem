@@ -25,6 +25,7 @@ struct FeedsView: View {
 
 struct MinimalPostFeedView: View {
     @AppStorage("post.size") var postSize: PostSize = .large
+    @AppStorage("feed.showRead") var showRead: Bool = true
     @AppStorage("beta.tilePosts") var tilePosts: Bool = false
     
     @Environment(AppState.self) var appState
@@ -38,14 +39,14 @@ struct MinimalPostFeedView: View {
         // need to grab some stuff from app storage to initialize with
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
-        @AppStorage("showReadPosts") var showReadPosts = true
+        @AppStorage("feed.showRead") var showReadPosts = true
         @AppStorage("defaultPostSorting") var defaultPostSorting: ApiSortType = .hot
         
         @Dependency(\.persistenceRepository) var persistenceRepository
         
         _postTracker = .init(initialValue: .init(
             pageSize: internetSpeed.pageSize,
-            sortType: defaultPostSorting,
+            sortType: .topYear, // defaultPostSorting,
             showReadPosts: showReadPosts,
             // Don't load from PersistenceRepository directly here, as we'll be reading from file every time the view is initialized, which can happen frequently
             filteredKeywords: [],
@@ -78,20 +79,31 @@ struct MinimalPostFeedView: View {
                     }
                 }
             }
-            .task(id: appState.firstApi) {
+            .task(id: showRead) {
                 do {
-                    try await postTracker.loadMoreItems()
+                    if showRead {
+                        try await postTracker.removeFilter(.read)
+                    } else {
+                        try await postTracker.addFilter(.read)
+                    }
                 } catch {
                     handleError(error)
                 }
             }
-            .task(id: appState.firstApi) {
-                do {
-                    try await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
-                } catch {
-                    handleError(error)
-                }
-            }
+//            .task(id: appState.firstApi) {
+//                do {
+//                    try await postTracker.loadMoreItems()
+//                } catch {
+//                    handleError(error)
+//                }
+//            }
+//            .task(id: appState.firstApi) {
+//                do {
+//                    // try await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
+//                } catch {
+//                    handleError(error)
+//                }
+//            }
             .refreshable {
                 do {
                     try await postTracker.refresh(clearBeforeRefresh: false)
@@ -107,14 +119,20 @@ struct MinimalPostFeedView: View {
             LazyVGrid(columns: columns, spacing: tilePosts ? AppConstants.standardSpacing : 0) {
                 if !tilePosts { Divider() }
                 
+                Button("\(showRead ? "Hide" : "Show") read") {
+                    showRead = !showRead
+                }
+                
                 ForEach(postTracker.items, id: \.uid) { post in
-                    VStack(spacing: 0) { // this improves performance O_o
-                        NavigationLink(value: NavigationPage.expandedPost(post)) {
-                            FeedPostView(post: .init(post: post))
-                                .contentShape(.rect)
+                    if !post.read || showRead {
+                        VStack(spacing: 0) { // this improves performance O_o
+                            NavigationLink(value: NavigationPage.expandedPost(post)) {
+                                FeedPostView(post: .init(post: post))
+                                    .contentShape(.rect)
+                            }
+                            .buttonStyle(EmptyButtonStyle())
+                            if !tilePosts { Divider() }
                         }
-                        .buttonStyle(EmptyButtonStyle())
-                        if !tilePosts { Divider() }
                     }
                 }
                 

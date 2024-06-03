@@ -63,6 +63,7 @@ struct TilePostView: View {
         if case .text = post.postType {
             VStack(spacing: 2) {
                 Text(post.title)
+                    .foregroundStyle(post.read_ ?? false ? .secondary : .primary)
                     .font(.footnote)
                     .fontWeight(.semibold)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -74,6 +75,7 @@ struct TilePostView: View {
         } else {
             VStack(spacing: 2) {
                 Text(post.title)
+                    .foregroundStyle(post.read_ ?? false ? .secondary : .primary)
                     .lineLimit(2)
                     .font(.footnote)
                     .fontWeight(.semibold)
@@ -169,8 +171,8 @@ struct TilePostView: View {
             .lineLimit(1)
             .font(.caption)
             .foregroundStyle(.secondary)
+            .contentShape(.rect)
         }
-        .contentShape(.rect)
         .onTapGesture {}
     }
 }

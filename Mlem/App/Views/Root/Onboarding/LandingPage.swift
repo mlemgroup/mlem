@@ -112,7 +112,9 @@ struct LandingPage: View {
 //
 //            let newAccount = try await authenticatedApiClient.loadUser()
 //
-//            // MARK: Save the account's credentials into the keychain
+
+    // MARK: Save the account's credentials into the keychain
+
 //
 //            AppConstants.keychain["\(newAccount.id)_accessToken"] = response.jwt
 //            AccountsTracker.main.addAccount(account: newAccount)
