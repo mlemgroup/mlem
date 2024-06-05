@@ -11,6 +11,7 @@ import Observation
 
 @Observable
 class UserAccount: Account, CommunityOrPersonStub {
+    static let tierNumber: Int = 1
     static let identifierPrefix: String = "@"
     
     let actorId: URL

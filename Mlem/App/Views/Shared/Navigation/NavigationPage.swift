@@ -20,7 +20,7 @@ enum NavigationPage: Hashable {
     case expandedPost(_ post: AnyPost)
     
     static func expandedPost(_ post: any PostStubProviding) -> NavigationPage {
-        expandedPost(.init(post: post))
+        expandedPost(.init(post))
     }
 }
 

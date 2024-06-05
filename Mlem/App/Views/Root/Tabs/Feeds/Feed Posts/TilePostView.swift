@@ -62,7 +62,7 @@ struct TilePostView: View {
     var titleSection: some View {
         VStack(spacing: 4) {
             Text(post.title)
-                .lineLimit(post.postType.lineLimit)
+                .lineLimit(post.type.lineLimit)
                 .foregroundStyle(post.read_ ?? false ? .secondary : .primary)
                 .font(.footnote)
                 .fontWeight(.semibold)
@@ -74,7 +74,7 @@ struct TilePostView: View {
     
     var titleText: some View {
         Text(post.title)
-            .lineLimit(post.postType.lineLimit)
+            .lineLimit(post.type.lineLimit)
             .foregroundStyle(post.read_ ?? false ? .secondary : .primary)
             .font(.footnote)
             .fontWeight(.semibold)
@@ -106,7 +106,7 @@ struct TilePostView: View {
         var dimension: CGFloat { UIScreen.main.bounds.width / 2 - (AppConstants.standardSpacing * 1.5) }
         
         var body: some View {
-            switch post.postType {
+            switch post.type {
             case let .text(text):
                 Markdown(text)
                     .font(.caption)
