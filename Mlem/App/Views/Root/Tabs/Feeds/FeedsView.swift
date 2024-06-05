@@ -31,7 +31,7 @@ struct MinimalPostFeedView: View {
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
-    @State var postTracker: StandardPostFeedLoader
+    @State var postFeedLoader: StandardPostFeedLoader
     
     @State var columns: [GridItem] = [GridItem(.flexible())]
     
@@ -44,7 +44,7 @@ struct MinimalPostFeedView: View {
         
         @Dependency(\.persistenceRepository) var persistenceRepository
         
-        _postTracker = .init(initialValue: .init(
+        _postFeedLoader = .init(initialValue: .init(
             pageSize: internetSpeed.pageSize,
             sortType: .topYear, // defaultPostSorting,
             showReadPosts: showReadPosts,
@@ -69,44 +69,34 @@ struct MinimalPostFeedView: View {
                     columns = [GridItem(.flexible())]
                 }
             }
-            .task {
-                if postTracker.items.isEmpty, postTracker.loadingState == .idle {
-                    print("Loading initial PostTracker page...")
-                    do {
-                        try await postTracker.loadMoreItems()
-                    } catch {
-                        handleError(error)
-                    }
-                }
-            }
             .task(id: showRead) {
                 do {
                     if showRead {
-                        try await postTracker.removeFilter(.read)
+                        try await postFeedLoader.removeFilter(.read)
                     } else {
-                        try await postTracker.addFilter(.read)
+                        try await postFeedLoader.addFilter(.read)
                     }
                 } catch {
                     handleError(error)
                 }
             }
-//            .task(id: appState.firstApi) {
-//                do {
-//                    try await postTracker.loadMoreItems()
-//                } catch {
-//                    handleError(error)
-//                }
-//            }
-//            .task(id: appState.firstApi) {
-//                do {
-//                    // try await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
-//                } catch {
-//                    handleError(error)
-//                }
-//            }
+            .task(id: appState.firstApi) {
+                do {
+                    try await postFeedLoader.refresh(clearBeforeRefresh: true)
+                } catch {
+                    handleError(error)
+                }
+            }
+            .task(id: appState.firstApi) {
+                do {
+                    try await postFeedLoader.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
+                } catch {
+                    handleError(error)
+                }
+            }
             .refreshable {
                 do {
-                    try await postTracker.refresh(clearBeforeRefresh: false)
+                    try await postFeedLoader.refresh(clearBeforeRefresh: false)
                 } catch {
                     handleError(error)
                 }
@@ -123,7 +113,7 @@ struct MinimalPostFeedView: View {
                     showRead = !showRead
                 }
                 
-                ForEach(postTracker.items, id: \.uid) { post in
+                ForEach(postFeedLoader.items, id: \.uid) { post in
                     if !post.read || showRead {
                         VStack(spacing: 0) { // this improves performance O_o
                             NavigationLink(value: NavigationPage.expandedPost(post)) {
@@ -136,7 +126,7 @@ struct MinimalPostFeedView: View {
                     }
                 }
                 
-                switch postTracker.loadingState {
+                switch postFeedLoader.loadingState {
                 case .loading:
                     Text("Loading...")
                 case .done:

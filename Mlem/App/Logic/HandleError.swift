@@ -17,7 +17,11 @@ func handleError(
 ) {
     #if DEBUG
         print("☠️ ERROR ☠️")
-        print("📝 -> \(error.localizedDescription)")
+        if let apiError = error as? ApiClientError {
+            print("📝 -> \(apiError.description)")
+        } else {
+            print("📝 -> \(error.localizedDescription)")
+        }
         print("📂 -> \(file) | \(function) | line: \(line)")
     #endif
     

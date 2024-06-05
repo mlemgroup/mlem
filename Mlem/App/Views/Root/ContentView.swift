@@ -25,7 +25,7 @@ struct ContentView: View {
     var body: some View {
         content
             .onReceive(timer) { _ in
-                // appState.cleanCaches()
+                appState.cleanCaches()
             }
             .sheet(isPresented: Binding(
                 get: { !(navigationModel.layers.first?.isFullScreenCover ?? true) },

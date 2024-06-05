@@ -60,31 +60,25 @@ struct TilePostView: View {
     
     @ViewBuilder
     var titleSection: some View {
-        if case .text = post.postType {
-            VStack(spacing: 2) {
-                Text(post.title)
-                    .foregroundStyle(post.read_ ?? false ? .secondary : .primary)
-                    .font(.footnote)
-                    .fontWeight(.semibold)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .frame(minHeight: minTitleHeight, maxHeight: .infinity, alignment: .top)
-                
-                communityAndInfo
-            }
-            .frame(idealHeight: 0)
-        } else {
-            VStack(spacing: 2) {
-                Text(post.title)
-                    .foregroundStyle(post.read_ ?? false ? .secondary : .primary)
-                    .lineLimit(2)
-                    .font(.footnote)
-                    .fontWeight(.semibold)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .frame(height: minTitleHeight, alignment: .top)
-                
-                communityAndInfo
-            }
+        VStack(spacing: 4) {
+            Text(post.title)
+                .lineLimit(post.postType.lineLimit)
+                .foregroundStyle(post.read_ ?? false ? .secondary : .primary)
+                .font(.footnote)
+                .fontWeight(.semibold)
+                .frame(maxWidth: .infinity, minHeight: minTitleHeight, alignment: .topLeading)
+            
+            communityAndInfo
         }
+    }
+    
+    var titleText: some View {
+        Text(post.title)
+            .lineLimit(post.postType.lineLimit)
+            .foregroundStyle(post.read_ ?? false ? .secondary : .primary)
+            .font(.footnote)
+            .fontWeight(.semibold)
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
     
     var communityAndInfo: some View {
