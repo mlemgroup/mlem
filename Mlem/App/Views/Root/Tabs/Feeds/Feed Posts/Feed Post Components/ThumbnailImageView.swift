@@ -23,7 +23,9 @@ struct ThumbnailImageView: View {
             .foregroundStyle(palette.secondary)
             .background(palette.thumbnailBackground)
             .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
-            .overlay(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
-            .stroke(palette.secondaryBackground, lineWidth: 1))
+            .overlay(
+                RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
+                    .stroke(palette.secondaryBackground, lineWidth: 1)
+            )
     }
 }

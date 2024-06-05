@@ -33,7 +33,7 @@ extension Post1Providing {
     }
     
     var linkHost: String? {
-        guard case .link = postType else {
+        guard case .link = type else {
             return nil
         }
         
@@ -45,7 +45,7 @@ extension Post1Providing {
     }
     
     var placeholderImageName: String {
-        switch postType {
+        switch type {
         case .text:
             Icons.textPost
         case .image:

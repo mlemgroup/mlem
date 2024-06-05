@@ -16,8 +16,8 @@ struct PostLinkHostView: View {
     var body: some View {
         content
             .lineLimit(1)
-        .imageScale(.small)
-        .foregroundStyle(palette.secondary)
+            .imageScale(.small)
+            .foregroundStyle(palette.secondary)
     }
     
     var content: Text {

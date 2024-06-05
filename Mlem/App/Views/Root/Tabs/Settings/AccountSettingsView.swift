@@ -13,24 +13,13 @@ struct AccountSettingsView: View {
     var body: some View {
         Form {
             Section {
-                VStack(spacing: AppConstants.standardSpacing) {
+                Group {
                     if let userAccount = appState.firstSession as? UserSession {
-                        AvatarBannerView(userAccount.person)
+                        ProfileHeaderView(userAccount.person)
                     } else {
-                        AvatarBannerView(appState.firstSession.instance)
-                    }
-                    VStack(spacing: 5) {
-                        Text(title)
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.01)
-                        Text(subtitle)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                        ProfileHeaderView(appState.firstSession.instance)
                     }
                 }
-                .frame(maxWidth: .infinity)
                 .listRowBackground(Color(.systemGroupedBackground))
                 .padding(.vertical, -12)
                 .padding(.horizontal, -16)

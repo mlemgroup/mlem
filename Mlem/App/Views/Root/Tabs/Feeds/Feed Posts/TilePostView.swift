@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import LemmyMarkdownUI
 import MlemMiddleware
 import NukeUI
 import SwiftUI
@@ -60,7 +61,7 @@ struct TilePostView: View {
     
     @ViewBuilder
     var titleSection: some View {
-        if case .text = post.postType {
+        if case .text = post.type {
             VStack(spacing: 2) {
                 Text(post.title)
                     .font(.footnote)
@@ -110,9 +111,9 @@ struct TilePostView: View {
         var dimension: CGFloat { UIScreen.main.bounds.width / 2 - (AppConstants.standardSpacing * 1.5) }
         
         var body: some View {
-            switch post.postType {
+            switch post.type {
             case let .text(text):
-                Markdown(text)
+                Markdown(text, configuration: .default)
                     .font(.caption)
                     .foregroundStyle(palette.secondary)
                     .padding(AppConstants.standardSpacing)

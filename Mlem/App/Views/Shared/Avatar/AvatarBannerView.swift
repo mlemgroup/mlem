@@ -10,25 +10,25 @@ import NukeUI
 import SwiftUI
 
 struct AvatarBannerView: View {
-    var model: (any Profile2Providing)?
+    var model: (any Profile1Providing)?
     var type: AvatarType
     var showEmptyBanner: Bool = false
     var showBanner: Bool = true
     var showAvatar: Bool = true
 
-    init<T: Profile2Providing>(_ model: T?, showEmptyBanner: Bool = false) {
+    init<T: Profile1Providing>(_ model: T?, showEmptyBanner: Bool = false) {
         self.model = model
         self.type = T.avatarType
         self.showEmptyBanner = showEmptyBanner
     }
     
-    init(_ model: any Profile2Providing, showEmptyBanner: Bool = false) {
+    init(_ model: any Profile1Providing, showEmptyBanner: Bool = false) {
         self.model = model
         self.type = Swift.type(of: model).avatarType
         self.showEmptyBanner = showEmptyBanner
     }
     
-    init(_ model: (any Profile2Providing)?, type: AvatarType, showEmptyBanner: Bool = false) {
+    init(_ model: (any Profile1Providing)?, type: AvatarType, showEmptyBanner: Bool = false) {
         self.model = model
         self.type = type
         self.showEmptyBanner = showEmptyBanner
@@ -41,10 +41,10 @@ struct AvatarBannerView: View {
     
     var body: some View {
         Group {
-            if model?.banner != nil || showEmptyBanner, showBanner {
+            if model?.banner_ != nil || showEmptyBanner, showBanner {
                 ZStack(alignment: .bottom) {
                     VStack {
-                        LazyImage(url: model?.banner) { state in
+                        LazyImage(url: model?.banner_) { state in
                             VStack {
                                 if let image = state.image {
                                     image

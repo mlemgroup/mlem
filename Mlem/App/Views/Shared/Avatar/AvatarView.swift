@@ -33,6 +33,7 @@ struct AvatarView: View {
     var body: some View {
         Image(uiImage: uiImage)
             .resizable()
+            .aspectRatio(1, contentMode: .fill)
             .clipShape(Circle())
             .background {
                 if url != nil, loading {
