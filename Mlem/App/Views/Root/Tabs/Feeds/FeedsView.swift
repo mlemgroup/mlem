@@ -15,7 +15,6 @@ struct FeedsView: View {
     
     var body: some View {
         content
-            .navigationTitle("Feeds")
     }
     
     var content: some View {
@@ -60,8 +59,19 @@ struct MinimalPostFeedView: View {
     var body: some View {
         content
             .background(tilePosts ? palette.groupedBackground : palette.background)
-            .navigationTitle("Feeds")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarEllipsisMenu {
+                    MenuButton(action: BasicAction(
+                        isOn: showRead,
+                        label: showRead ? "Hide Read" : "Show Read",
+                        color: palette.primary,
+                        icon: Icons.read
+                    ) {
+                        showRead = !showRead
+                    })
+                }
+            }
             .onChange(of: tilePosts, initial: true) { _, newValue in
                 if newValue {
                     columns = [GridItem(.flexible(), spacing: 0), GridItem(.flexible(), spacing: 0)]
@@ -106,36 +116,78 @@ struct MinimalPostFeedView: View {
     @ViewBuilder
     var content: some View {
         FancyScrollView {
-            LazyVGrid(columns: columns, spacing: tilePosts ? AppConstants.standardSpacing : 0) {
-                if !tilePosts { Divider() }
-                
-                Button("\(showRead ? "Hide" : "Show") read") {
-                    showRead = !showRead
-                }
-                
-                ForEach(postFeedLoader.items, id: \.uid) { post in
-                    if !post.read || showRead {
-                        VStack(spacing: 0) { // this improves performance O_o
-                            NavigationLink(value: NavigationPage.expandedPost(post)) {
-                                FeedPostView(post: .init(post))
-                                    .contentShape(.rect)
+            Section {
+                LazyVGrid(columns: columns, spacing: tilePosts ? AppConstants.standardSpacing : 0) {
+                    if !tilePosts { Divider() }
+                    
+                    ForEach(postFeedLoader.items, id: \.uid) { post in
+                        if !post.read || showRead {
+                            VStack(spacing: 0) { // this improves performance O_o
+                                NavigationLink(value: NavigationPage.expandedPost(post)) {
+                                    FeedPostView(post: .init(post))
+                                        .contentShape(.rect)
+                                }
+                                .buttonStyle(EmptyButtonStyle())
+                                if !tilePosts { Divider() }
                             }
-                            .buttonStyle(EmptyButtonStyle())
-                            if !tilePosts { Divider() }
                         }
                     }
+                    
+                    switch postFeedLoader.loadingState {
+                    case .loading:
+                        Text("Loading...")
+                    case .done:
+                        Text("Done")
+                    case .idle:
+                        Text("Idle")
+                    }
                 }
-                
-                switch postFeedLoader.loadingState {
-                case .loading:
-                    Text("Loading...")
-                case .done:
-                    Text("Done")
-                case .idle:
-                    Text("Idle")
+            } header: {
+                if tilePosts {
+                    feedHeaderMockup
+                        .padding(.vertical, AppConstants.standardSpacing)
+                        .background(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                        .shadow(color: palette.primary.opacity(0.1), radius: 3)
+                        .padding(.horizontal, AppConstants.halfSpacing)
+                        .padding(.vertical, AppConstants.standardSpacing)
                 }
             }
             .padding(.horizontal, tilePosts ? AppConstants.halfSpacing : 0)
+        }
+    }
+    
+    @ViewBuilder
+    var feedHeaderMockup: some View {
+        HStack(alignment: .center, spacing: AppConstants.standardSpacing) {
+            Circle()
+                .fill(.red)
+                .frame(width: 44, height: 44)
+                .overlay {
+                    Image(systemName: Icons.subscribedFeedFill)
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundStyle(.white)
+                        .frame(width: 22, height: 22)
+                }
+                .padding(.leading, AppConstants.standardSpacing)
+            
+            VStack(alignment: .leading, spacing: 0) {
+                HStack(spacing: AppConstants.halfSpacing) {
+                    Text("Subscribed")
+                        .fontWeight(.bold)
+                    
+                    Image(systemName: Icons.dropdown)
+                        .foregroundStyle(palette.secondary)
+                }
+                .font(.title2)
+                
+                Text("Posts from all subscribed communities")
+                    .font(.footnote)
+                    .foregroundStyle(palette.secondary)
+            }
+            .frame(height: 44)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
     
