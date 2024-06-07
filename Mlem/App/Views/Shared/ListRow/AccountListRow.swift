@@ -34,19 +34,20 @@ struct AccountListRow: View {
         .buttonStyle(.plain)
         .accessibilityLabel(accessibilityLabel)
         .swipeActions(edge: .leading, allowsFullSwipe: true) {
-            Group {
-                if keepPlace {
-                    Button("Reload", systemImage: Icons.accountSwitchReload) {
-                        changeAccount(keepPlace: false)
-                    }
-                } else {
-                    Button("Keep Place", systemImage: Icons.accountSwitchKeepPlace) {
-                        changeAccount(keepPlace: true)
+            if appState.firstSession.actorId != account.actorId {
+                Group {
+                    if keepPlace {
+                        Button("Reload", systemImage: Icons.accountSwitchReload) {
+                            changeAccount(keepPlace: false)
+                        }
+                    } else {
+                        Button("Keep Place", systemImage: Icons.accountSwitchKeepPlace) {
+                            changeAccount(keepPlace: true)
+                        }
                     }
                 }
+                .tint(.blue)
             }
-            .tint(.blue)
-            .disabled(appState.firstSession.actorId == account.actorId)
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             if (account as? GuestAccount)?.isSaved ?? true {
@@ -54,7 +55,6 @@ struct AccountListRow: View {
                     showingSignOutConfirmation = true
                 }
                 .tint(.red)
-                .disabled(appState.firstSession.actorId == account.actorId)
             }
         }
         .contextMenu {
