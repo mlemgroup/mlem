@@ -23,26 +23,28 @@ struct ContentView: View {
     var navigationModel: NavigationModel { .main }
     
     var body: some View {
-        content
-            .onReceive(timer) { _ in
-                appState.cleanCaches()
-            }
-            .sheet(isPresented: Binding(
-                get: { !(navigationModel.layers.first?.isFullScreenCover ?? true) },
-                set: { if !$0 { navigationModel.layers.removeAll() } }
-            )) {
-                NavigationLayerView(layer: navigationModel.layers[0], hasSheetModifiers: true)
-            }
-            .fullScreenCover(isPresented: Binding(
-                get: { navigationModel.layers.first?.isFullScreenCover ?? false },
-                set: { if !$0 { navigationModel.layers.removeAll() } }
-            )) {
-                NavigationLayerView(layer: navigationModel.layers[0], hasSheetModifiers: true)
-            }
-            .tint(palette.accent)
-            .environment(palette)
-            .environment(tabReselectTracker)
-            .environment(appState)
+        if appState.appRefreshToggle {
+            content
+                .onReceive(timer) { _ in
+                    appState.cleanCaches()
+                }
+                .sheet(isPresented: Binding(
+                    get: { !(navigationModel.layers.first?.isFullScreenCover ?? true) },
+                    set: { if !$0 { navigationModel.layers.removeAll() } }
+                )) {
+                    NavigationLayerView(layer: navigationModel.layers[0], hasSheetModifiers: true)
+                }
+                .fullScreenCover(isPresented: Binding(
+                    get: { navigationModel.layers.first?.isFullScreenCover ?? false },
+                    set: { if !$0 { navigationModel.layers.removeAll() } }
+                )) {
+                    NavigationLayerView(layer: navigationModel.layers[0], hasSheetModifiers: true)
+                }
+                .tint(palette.accent)
+                .environment(palette)
+                .environment(tabReselectTracker)
+                .environment(appState)
+        }
     }
 
     var shouldDisplayToasts: Bool {

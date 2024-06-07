@@ -14,7 +14,7 @@ class ToastModel {
     static let main: ToastModel = .init()
     
     func activeToasts(location: ToastLocation) -> [Toast] {
-        Array(toasts.lazy.filter { $0.location == location }.prefix(3))
+        Array(toasts.filter { $0.location == location }.prefix(3))
     }
     
     func add(_ type: ToastType, location: ToastLocation? = nil, important: Bool? = nil) {
@@ -34,6 +34,8 @@ class ToastModel {
     func removeToast(id: UUID) {
         if let index = toasts.firstIndex(where: { $0.id == id }) {
             toasts.remove(at: index)
+        } else {
+            print("No Toast Index")
         }
     }
 }

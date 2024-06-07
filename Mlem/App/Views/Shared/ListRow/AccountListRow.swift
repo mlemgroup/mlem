@@ -15,6 +15,7 @@ struct AccountListRow: View {
     
     @Environment(AppState.self) private var appState
     @Environment(NavigationLayer.self) private var navigation
+    @AppStorage("accounts.keepPlace") var keepPlace: Bool = false
     
     @State private var showingSignOutConfirmation: Bool = false
     
@@ -25,23 +26,46 @@ struct AccountListRow: View {
     var body: some View {
         Button {
             if appState.firstSession.actorId != account.actorId {
-                appState.changeAccount(to: account)
-                if navigation.isInsideSheet {
-                    dismiss()
-                }
+                changeAccount(keepPlace: keepPlace)
             }
         } label: {
             AccountListRowBody(account: account, complications: complications)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(accessibilityLabel)
-        .swipeActions {
+        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+            Group {
+                if keepPlace {
+                    Button("Reload", systemImage: Icons.accountSwitchReload) {
+                        changeAccount(keepPlace: false)
+                    }
+                } else {
+                    Button("Keep Place", systemImage: Icons.accountSwitchKeepPlace) {
+                        changeAccount(keepPlace: true)
+                    }
+                }
+            }
+            .tint(.blue)
+        }
+        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             if (account as? GuestAccount)?.isSaved ?? true {
                 Button(signOutLabel) {
                     showingSignOutConfirmation = true
                 }
                 .tint(.red)
+                .disabled(appState.firstSession.actorId == account.actorId)
             }
+        }
+        .contextMenu {
+            Section("Switch to this account and...") {
+                Button("Reload", systemImage: Icons.accountSwitchReload) {
+                    changeAccount(keepPlace: false)
+                }
+                Button("Keep Place", systemImage: Icons.accountSwitchKeepPlace) {
+                    changeAccount(keepPlace: true)
+                }
+            }
+            .disabled(appState.firstSession.actorId == account.actorId)
         }
         .confirmationDialog(signOutPrompt, isPresented: $showingSignOutConfirmation) {
             Button(signOutLabel, role: .destructive) {
@@ -52,6 +76,19 @@ struct AccountListRow: View {
             }
         } message: {
             Text(signOutPrompt)
+        }
+    }
+    
+    func changeAccount(keepPlace: Bool) {
+        appState.changeAccount(to: account, keepPlace: keepPlace)
+        if navigation.isInsideSheet {
+            if keepPlace {
+                dismiss()
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    dismiss()
+                }
+            }
         }
     }
     

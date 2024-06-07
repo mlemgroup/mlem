@@ -228,4 +228,6 @@ enum Icons {
     static let noFile: String = "questionmark.folder"
     static let forward: String = "chevron.right"
     static let imageDetails: String = "doc.badge.ellipsis"
+    static let accountSwitchReload: String = "arrow.2.circlepath"
+    static let accountSwitchKeepPlace: String = "checkmark.diamond"
 }

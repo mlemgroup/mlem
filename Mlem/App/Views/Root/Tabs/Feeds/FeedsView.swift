@@ -80,13 +80,6 @@ struct MinimalPostFeedView: View {
             }
             .task(id: appState.firstApi) {
                 do {
-                    try await postTracker.loadMoreItems()
-                } catch {
-                    handleError(error)
-                }
-            }
-            .task(id: appState.firstApi) {
-                do {
                     try await postTracker.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
                 } catch {
                     handleError(error)
