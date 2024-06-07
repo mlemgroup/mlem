@@ -31,7 +31,7 @@ class AppState {
     }
     
     /// ``ContentView`` watches this for changes. When it is toggled, the app is refreshed.
-    private(set) var appRefreshToggle: Bool = true
+    var appRefreshToggle: Bool = true
     
     private init() {
         self.guestSession = .init(account: AccountsTracker.main.defaultGuestAccount)
@@ -46,17 +46,8 @@ class AppState {
             setAccount(to: account)
         } else {
             transition(account)
-            // The delays between these events are necessary to stop SwiftUIIntrospect from causing a lag spike.
-            // That library seems to not like us adding subviews to the window directly. For some reason adding
-            // these delays fixes that.
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.appRefreshToggle = false
-            }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
                 self.setAccount(to: account)
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                self.appRefreshToggle = true
             }
         }
     }

@@ -20,6 +20,8 @@ extension AppState {
             window.addSubview(transitionView)
             UIView.animate(withDuration: 0.15) {
                 transitionView.alpha = 1
+            } completion: { _ in
+                self.appRefreshToggle = false
             }
             
             transitionView.translatesAutoresizingMaskIntoConstraints = false
@@ -31,6 +33,7 @@ extension AppState {
                     transitionView.alpha = 0
                 } completion: { _ in
                     transitionView.removeFromSuperview()
+                    self.appRefreshToggle = true
                 }
             }
         }
