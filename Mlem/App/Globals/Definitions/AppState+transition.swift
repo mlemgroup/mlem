@@ -20,20 +20,17 @@ extension AppState {
             window.addSubview(transitionView)
             UIView.animate(withDuration: 0.15) {
                 transitionView.alpha = 1
-            } completion: { _ in
-                self.appRefreshToggle = false
             }
             
             transitionView.translatesAutoresizingMaskIntoConstraints = false
             transitionView.heightAnchor.constraint(equalTo: window.heightAnchor).isActive = true
             transitionView.widthAnchor.constraint(equalTo: window.widthAnchor).isActive = true
-            
+                    
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 UIView.animate(withDuration: 0.3) {
                     transitionView.alpha = 0
                 } completion: { _ in
                     transitionView.removeFromSuperview()
-                    self.appRefreshToggle = true
                 }
             }
         }

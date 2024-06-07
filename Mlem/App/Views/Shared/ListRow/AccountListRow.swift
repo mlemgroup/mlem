@@ -46,6 +46,7 @@ struct AccountListRow: View {
                 }
             }
             .tint(.blue)
+            .disabled(appState.firstSession.actorId == account.actorId)
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             if (account as? GuestAccount)?.isSaved ?? true {
