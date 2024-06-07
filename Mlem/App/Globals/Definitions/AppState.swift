@@ -46,6 +46,9 @@ class AppState {
             setAccount(to: account)
         } else {
             transition(account)
+            // The delays between these events are necessary to stop SwiftUIIntrospect from causing a lag spike.
+            // That library seems to not like us adding subviews to the window directly. For some reason adding
+            // these delays fixes that.
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.appRefreshToggle = false
             }
