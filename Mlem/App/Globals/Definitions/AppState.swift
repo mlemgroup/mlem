@@ -35,7 +35,7 @@ class AppState {
     
     private init() {
         self.guestSession = .init(account: AccountsTracker.main.defaultGuestAccount)
-        changeAccount(to: AccountsTracker.main.defaultAccount)
+        setAccount(to: AccountsTracker.main.defaultAccount)
     }
     
     /// If `keepPlace` is `nil`, use the value from `UserDefaults`.
