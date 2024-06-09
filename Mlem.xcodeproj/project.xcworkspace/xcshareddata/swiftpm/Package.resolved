@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware.git",
       "state" : {
-        "branch" : "eric/new-filtering",
-        "revision" : "00bc6762dbee1bd3cb46b58f72905f9c36c4aca4"
+        "revision" : "bb59eadb4ad98124f95a510d09f674bb5aa5e875",
+        "version" : "0.8.0"
       }
     },
     {
