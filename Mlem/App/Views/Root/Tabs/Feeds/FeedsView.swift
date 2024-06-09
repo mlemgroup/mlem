@@ -82,7 +82,12 @@ struct MinimalPostFeedView: View {
             }
             .onChange(of: tilePosts, initial: true) { _, newValue in
                 if newValue {
-                    columns = [GridItem(.flexible(), spacing: 0), GridItem(.flexible(), spacing: 0)]
+                    // leading/trailing alignment makes them want to stick to each other, allowing the AppConstants.halfSpacing padding applied below
+                    // to push them apart by a sum of AppConstants.standardSpacing
+                    columns = [
+                        GridItem(.flexible(), spacing: 0, alignment: .trailing),
+                        GridItem(.flexible(), spacing: 0, alignment: .leading)
+                    ]
                 } else {
                     columns = [GridItem(.flexible())]
                 }
@@ -124,15 +129,14 @@ struct MinimalPostFeedView: View {
     @ViewBuilder
     var content: some View {
         FancyScrollView(isAtTop: $isAtTop) {
-            Section {} header: {
-                feedHeaderMockup
-                    .padding(.bottom, AppConstants.halfSpacing)
-            }
-            
-            Section {
-                LazyVGrid(columns: columns, spacing: tilePosts ? AppConstants.standardSpacing : 0, pinnedViews: [.sectionHeaders]) {
-                    if !tilePosts { Divider() }
-                    
+            LazyVGrid(columns: columns, spacing: tilePosts ? AppConstants.standardSpacing : 0, pinnedViews: [.sectionHeaders]) {
+                Section {} header: {
+                    feedHeaderMockup
+                }
+                
+                if !tilePosts { Divider() }
+                
+                Section {
                     ForEach(postFeedLoader.items, id: \.uid) { post in
                         if !post.read || showRead {
                             VStack(spacing: 0) { // this improves performance O_o
@@ -143,50 +147,49 @@ struct MinimalPostFeedView: View {
                                 .buttonStyle(EmptyButtonStyle())
                                 if !tilePosts { Divider() }
                             }
+                            .padding(.horizontal, tilePosts ? AppConstants.halfSpacing : 0)
                         }
                     }
-                }
-                // .padding(.vertical, tilePosts ? AppConstants.standardSpacing : 0)
-                .padding(.bottom, tilePosts ? AppConstants.standardSpacing : 0)
-                .padding(.top, tilePosts ? AppConstants.halfSpacing : 0)
-                .padding(.horizontal, tilePosts ? AppConstants.halfSpacing : 0)
-                // .background(postFeedLoader.items.isEmpty ? palette.background : palette.groupedBackground)
-            } header: {
-                VStack(spacing: 0) {
-//                    feedHeaderMockup
-//                        .padding(.bottom, AppConstants.halfSpacing)
-                    // .padding(.bottom, AppConstants.standardSpacing)
-                    // .background(palette.background)
-                    
-                    // Divider()
-                    
+                } header: {
                     BubblePicker(DummyBubble.allCases, selected: $dummyBubble) { $0.rawValue.capitalized }
-                    
-                    // Divider()
-                }
-                
-//                if tilePosts {
-//                    feedHeaderMockup
-//                        .padding(.vertical, AppConstants.standardSpacing)
-//                        .background(.white)
-//                        .clipShape(RoundedRectangle(cornerRadius: 16))
-//                        .shadow(color: palette.primary.opacity(0.1), radius: 3)
-//                        .padding(.horizontal, AppConstants.halfSpacing)
-//                        .padding(.vertical, AppConstants.standardSpacing)
-//                }
-            } footer: {
-                Group {
-                    switch postFeedLoader.loadingState {
-                    case .loading:
-                        Text("Loading...")
-                    case .done:
-                        Text("Done")
-                    case .idle:
-                        Text("Idle")
+                        .background { pickerBackground }
+//                        .background {
+//                            if !isAtTop {
+//                                Material.bar
+//                        }
+//                        .background {
+//                            Group {
+//                                if isAtTop {
+//                                    Color.clear
+//                                } else {
+//                                    Material.bar
+//                                }
+//                            }
+//                    }
+                } footer: {
+                    Group {
+                        switch postFeedLoader.loadingState {
+                        case .loading:
+                            Text("Loading...")
+                        case .done:
+                            Text("Done")
+                        case .idle:
+                            Text("Idle")
+                        }
                     }
+                    .frame(maxWidth: .infinity)
                 }
-                .frame(maxWidth: .infinity)
             }
+        }
+    }
+    
+    @ViewBuilder
+    var pickerBackground: some View {
+        if isAtTop {
+            EmptyView()
+        } else {
+            Color.clear
+                .background(Material.bar)
         }
     }
     

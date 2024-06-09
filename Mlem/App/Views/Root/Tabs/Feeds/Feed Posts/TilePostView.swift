@@ -16,7 +16,7 @@ struct TilePostView: View {
     let post: any Post1Providing
 
     @ScaledMetric(relativeTo: .footnote) var minTitleHeight: CGFloat = 36 // (2 * .footnote height), including built-in spacing
-    var dimension: CGFloat { (UIScreen.main.bounds.width / 2) - (AppConstants.standardSpacing * 1.5) }
+    var dimension: CGFloat { (UIScreen.main.bounds.width - (AppConstants.standardSpacing * 3)) / 2 }
     var frameHeight: CGFloat {
         dimension + // picture
             minTitleHeight + // title section
