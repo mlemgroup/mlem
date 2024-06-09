@@ -10,7 +10,7 @@ import SwiftUI
 extension AppState {
     func transition(_ account: any Account) {
         Task { @MainActor in
-            let transition = TransitionView(accountName: account.nickname)
+            let transition = TransitionView(account: account)
             guard let transitionView = UIHostingController(rootView: transition).view,
                   let window = UIApplication.shared.firstKeyWindow else {
                 return

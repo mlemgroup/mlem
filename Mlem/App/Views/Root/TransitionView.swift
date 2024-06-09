@@ -9,23 +9,19 @@ import Foundation
 import SwiftUI
 
 struct TransitionView: View {
-    let accountName: String?
+    let account: any Account
     @State var accountNameOpacity: CGFloat = .zero
     
     var body: some View {
         VStack(spacing: 24) {
-            if let accountName {
-                Text("Welcome")
-                    .onAppear {
-                        withAnimation(.easeIn(duration: 0.5)) {
-                            accountNameOpacity = 1.0
-                        }
+            Text(account is UserAccount ? "Welcome" : "Welcome to")
+                .onAppear {
+                    withAnimation(.easeIn(duration: 0.5)) {
+                        accountNameOpacity = 1.0
                     }
-                Text(accountName)
-                    .opacity(accountNameOpacity)
-            } else {
-                Text("Goodbye!")
-            }
+                }
+            Text(account.nickname)
+                .opacity(accountNameOpacity)
         }
         .font(.largeTitle)
         .bold()

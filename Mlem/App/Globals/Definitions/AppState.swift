@@ -8,7 +8,7 @@
 import Dependencies
 import Foundation
 import MlemMiddleware
-import Observation
+import SwiftUI
 
 @Observable
 class AppState {
@@ -40,7 +40,8 @@ class AppState {
     
     /// If `keepPlace` is `nil`, use the value from `UserDefaults`.
     func changeAccount(to account: any Account, keepPlace: Bool? = nil) {
-        let keepPlace = keepPlace ?? UserDefaults.standard.bool(forKey: "accounts.keepPlace")
+        @AppStorage("accounts.keepPlace") var keepPlaceSetting = false
+        let keepPlace = keepPlace ?? keepPlaceSetting
         if keepPlace {
             ToastModel.main.add(.account(account))
             setAccount(to: account)
