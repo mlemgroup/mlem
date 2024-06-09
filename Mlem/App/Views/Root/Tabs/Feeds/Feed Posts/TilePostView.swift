@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import LemmyMarkdownUI
 import MlemMiddleware
 import NukeUI
 import SwiftUI
@@ -72,15 +73,6 @@ struct TilePostView: View {
         }
     }
     
-    var titleText: some View {
-        Text(post.title)
-            .lineLimit(post.type.lineLimit)
-            .foregroundStyle(post.read_ ?? false ? .secondary : .primary)
-            .font(.footnote)
-            .fontWeight(.semibold)
-            .frame(maxWidth: .infinity, alignment: .leading)
-    }
-    
     var communityAndInfo: some View {
         HStack(spacing: 6) {
             if let communityName = post.community_?.name {
@@ -108,7 +100,7 @@ struct TilePostView: View {
         var body: some View {
             switch post.type {
             case let .text(text):
-                Markdown(text)
+                Markdown(text, configuration: .default)
                     .font(.caption)
                     .foregroundStyle(palette.secondary)
                     .padding(AppConstants.standardSpacing)
