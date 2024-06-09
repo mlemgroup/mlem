@@ -123,10 +123,10 @@ struct MinimalPostFeedView: View {
     var content: some View {
         FancyScrollView(scrollToTopTrigger: $scrollToTopTrigger) {
             LazyVGrid(columns: columns, spacing: tilePosts ? AppConstants.standardSpacing : 0) {
-                if !tilePosts { Divider() }
-                
                 // Section lets the header and loading footer play nice regardless of column count
                 Section {
+                    if !tilePosts { Divider() }
+                    
                     ForEach(postFeedLoader.items, id: \.uid) { post in
                         if !post.read || showRead {
                             VStack(spacing: 0) { // this improves performance O_o
@@ -149,6 +149,7 @@ struct MinimalPostFeedView: View {
                     }
                 } header: {
                     feedHeaderMockup
+                        .padding(.bottom, tilePosts ? 0 : AppConstants.standardSpacing)
                 } footer: {
                     Group {
                         switch postFeedLoader.loadingState {
