@@ -18,17 +18,21 @@ struct FancyScrollView<Content: View>: View {
     
     @ViewBuilder var content: () -> Content
     @Binding var isAtTop: Bool
+    @Binding var scrollToTopTrigger: Bool
     var reselectAction: (() -> Void)?
 
     private let model: ScrollViewModel = .init()
+    private let topId: String = "scrollToTop"
     
     init(
         isAtTop: Binding<Bool> = .constant(false),
+        scrollToTopTrigger: Binding<Bool> = .constant(false),
         reselectAction: (() -> Void)? = nil,
         @ViewBuilder content: @escaping () -> Content
     ) {
         self.content = content
         self._isAtTop = isAtTop
+        self._scrollToTopTrigger = scrollToTopTrigger
         self.reselectAction = reselectAction
     }
     
@@ -38,7 +42,7 @@ struct FancyScrollView<Content: View>: View {
                 VStack(spacing: 0) {
                     Spacer()
                         .frame(height: 0)
-                        .id("scrollToTop")
+                        .id(topId)
                     content()
                 }
             }
@@ -68,9 +72,14 @@ struct FancyScrollView<Content: View>: View {
                         // but it acts weirdly when the ScrollView contains a long LazyVStack :(
                         // - Sjmarf 2024-05-31
                         withAnimation {
-                            proxy.scrollTo("scrollToTop")
+                            proxy.scrollTo(topId)
                         }
                     }
+                }
+            }
+            .onChange(of: scrollToTopTrigger) {
+                withAnimation {
+                    proxy.scrollTo(topId)
                 }
             }
         }

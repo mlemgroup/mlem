@@ -22,12 +22,6 @@ struct FeedsView: View {
     }
 }
 
-enum DummyBubble: String, CaseIterable, Identifiable {
-    var id: Self { self }
-    
-    case option, another, third
-}
-
 struct MinimalPostFeedView: View {
     @AppStorage("post.size") var postSize: PostSize = .large
     @AppStorage("feed.showRead") var showRead: Bool = true
@@ -37,22 +31,21 @@ struct MinimalPostFeedView: View {
     @Environment(Palette.self) var palette
     
     @State var postFeedLoader: StandardPostFeedLoader
-    @State var isAtTop: Bool = true
     @State var columns: [GridItem] = [GridItem(.flexible())]
-    @State var dummyBubble: DummyBubble = .option
+    @State var scrollToTopTrigger: Bool = false
     
     init() {
         // need to grab some stuff from app storage to initialize with
-        @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
-        @AppStorage("upvoteOnSave") var upvoteOnSave = false
+        @AppStorage("behavior.internetSpeed") var internetSpeed: InternetSpeed = .fast
+        @AppStorage("behavior.upvoteOnSave") var upvoteOnSave = false
         @AppStorage("feed.showRead") var showReadPosts = true
-        @AppStorage("defaultPostSorting") var defaultPostSorting: ApiSortType = .hot
+        @AppStorage("post.defaultSort") var defaultSort: ApiSortType = .topYear // .hot
         
         @Dependency(\.persistenceRepository) var persistenceRepository
         
         _postFeedLoader = .init(initialValue: .init(
             pageSize: internetSpeed.pageSize,
-            sortType: .topYear, // defaultPostSorting,
+            sortType: defaultSort,
             showReadPosts: showReadPosts,
             // Don't load from PersistenceRepository directly here, as we'll be reading from file every time the view is initialized, which can happen frequently
             filteredKeywords: [],
@@ -65,7 +58,6 @@ struct MinimalPostFeedView: View {
     
     var body: some View {
         content
-            // .background(tilePosts && !isAtTop ? palette.groupedBackground : palette.background)
             .background(tilePosts ? palette.groupedBackground : palette.background)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -93,6 +85,7 @@ struct MinimalPostFeedView: View {
                 }
             }
             .task(id: showRead) {
+                scrollToTopTrigger.toggle()
                 do {
                     if showRead {
                         try await postFeedLoader.removeFilter(.read)
@@ -128,14 +121,11 @@ struct MinimalPostFeedView: View {
     
     @ViewBuilder
     var content: some View {
-        FancyScrollView(isAtTop: $isAtTop) {
-            LazyVGrid(columns: columns, spacing: tilePosts ? AppConstants.standardSpacing : 0, pinnedViews: [.sectionHeaders]) {
-                Section {} header: {
-                    feedHeaderMockup
-                }
-                
+        FancyScrollView(scrollToTopTrigger: $scrollToTopTrigger) {
+            LazyVGrid(columns: columns, spacing: tilePosts ? AppConstants.standardSpacing : 0) {
                 if !tilePosts { Divider() }
                 
+                // Section lets the header and loading footer play nice regardless of column count
                 Section {
                     ForEach(postFeedLoader.items, id: \.uid) { post in
                         if !post.read || showRead {
@@ -148,24 +138,17 @@ struct MinimalPostFeedView: View {
                                 if !tilePosts { Divider() }
                             }
                             .padding(.horizontal, tilePosts ? AppConstants.halfSpacing : 0)
+                            .onAppear {
+                                do {
+                                    try postFeedLoader.loadIfThreshold(post)
+                                } catch {
+                                    handleError(error)
+                                }
+                            }
                         }
                     }
                 } header: {
-                    BubblePicker(DummyBubble.allCases, selected: $dummyBubble) { $0.rawValue.capitalized }
-                        .background { pickerBackground }
-//                        .background {
-//                            if !isAtTop {
-//                                Material.bar
-//                        }
-//                        .background {
-//                            Group {
-//                                if isAtTop {
-//                                    Color.clear
-//                                } else {
-//                                    Material.bar
-//                                }
-//                            }
-//                    }
+                    feedHeaderMockup
                 } footer: {
                     Group {
                         switch postFeedLoader.loadingState {
@@ -180,16 +163,6 @@ struct MinimalPostFeedView: View {
                     .frame(maxWidth: .infinity)
                 }
             }
-        }
-    }
-    
-    @ViewBuilder
-    var pickerBackground: some View {
-        if isAtTop {
-            EmptyView()
-        } else {
-            Color.clear
-                .background(Material.bar)
         }
     }
     
