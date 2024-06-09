@@ -22,6 +22,12 @@ struct FeedsView: View {
     }
 }
 
+enum DummyBubble: String, CaseIterable, Identifiable {
+    var id: Self { self }
+    
+    case option, another, third
+}
+
 struct MinimalPostFeedView: View {
     @AppStorage("post.size") var postSize: PostSize = .large
     @AppStorage("feed.showRead") var showRead: Bool = true
@@ -31,8 +37,9 @@ struct MinimalPostFeedView: View {
     @Environment(Palette.self) var palette
     
     @State var postFeedLoader: StandardPostFeedLoader
-    
+    @State var isAtTop: Bool = true
     @State var columns: [GridItem] = [GridItem(.flexible())]
+    @State var dummyBubble: DummyBubble = .option
     
     init() {
         // need to grab some stuff from app storage to initialize with
@@ -58,6 +65,7 @@ struct MinimalPostFeedView: View {
     
     var body: some View {
         content
+            // .background(tilePosts && !isAtTop ? palette.groupedBackground : palette.background)
             .background(tilePosts ? palette.groupedBackground : palette.background)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -115,9 +123,14 @@ struct MinimalPostFeedView: View {
     
     @ViewBuilder
     var content: some View {
-        FancyScrollView {
+        FancyScrollView(isAtTop: $isAtTop) {
+            Section {} header: {
+                feedHeaderMockup
+                    .padding(.bottom, AppConstants.halfSpacing)
+            }
+            
             Section {
-                LazyVGrid(columns: columns, spacing: tilePosts ? AppConstants.standardSpacing : 0) {
+                LazyVGrid(columns: columns, spacing: tilePosts ? AppConstants.standardSpacing : 0, pinnedViews: [.sectionHeaders]) {
                     if !tilePosts { Divider() }
                     
                     ForEach(postFeedLoader.items, id: \.uid) { post in
@@ -132,7 +145,37 @@ struct MinimalPostFeedView: View {
                             }
                         }
                     }
+                }
+                // .padding(.vertical, tilePosts ? AppConstants.standardSpacing : 0)
+                .padding(.bottom, tilePosts ? AppConstants.standardSpacing : 0)
+                .padding(.top, tilePosts ? AppConstants.halfSpacing : 0)
+                .padding(.horizontal, tilePosts ? AppConstants.halfSpacing : 0)
+                // .background(postFeedLoader.items.isEmpty ? palette.background : palette.groupedBackground)
+            } header: {
+                VStack(spacing: 0) {
+//                    feedHeaderMockup
+//                        .padding(.bottom, AppConstants.halfSpacing)
+                    // .padding(.bottom, AppConstants.standardSpacing)
+                    // .background(palette.background)
                     
+                    // Divider()
+                    
+                    BubblePicker(DummyBubble.allCases, selected: $dummyBubble) { $0.rawValue.capitalized }
+                    
+                    // Divider()
+                }
+                
+//                if tilePosts {
+//                    feedHeaderMockup
+//                        .padding(.vertical, AppConstants.standardSpacing)
+//                        .background(.white)
+//                        .clipShape(RoundedRectangle(cornerRadius: 16))
+//                        .shadow(color: palette.primary.opacity(0.1), radius: 3)
+//                        .padding(.horizontal, AppConstants.halfSpacing)
+//                        .padding(.vertical, AppConstants.standardSpacing)
+//                }
+            } footer: {
+                Group {
                     switch postFeedLoader.loadingState {
                     case .loading:
                         Text("Loading...")
@@ -142,18 +185,8 @@ struct MinimalPostFeedView: View {
                         Text("Idle")
                     }
                 }
-            } header: {
-                if tilePosts {
-                    feedHeaderMockup
-                        .padding(.vertical, AppConstants.standardSpacing)
-                        .background(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
-                        .shadow(color: palette.primary.opacity(0.1), radius: 3)
-                        .padding(.horizontal, AppConstants.halfSpacing)
-                        .padding(.vertical, AppConstants.standardSpacing)
-                }
+                .frame(maxWidth: .infinity)
             }
-            .padding(.horizontal, tilePosts ? AppConstants.halfSpacing : 0)
         }
     }
     

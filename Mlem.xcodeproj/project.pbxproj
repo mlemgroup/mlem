@@ -120,6 +120,9 @@
 		CD7882A92BFFDFC7002E1A30 /* PostTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882A82BFFDFC7002E1A30 /* PostTag.swift */; };
 		CD7882AB2C013005002E1A30 /* EllipsisMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882AA2C013005002E1A30 /* EllipsisMenu.swift */; };
 		CD7882AD2C0131CC002E1A30 /* Post1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882AC2C0131CC002E1A30 /* Post1Providing+Extensions.swift */; };
+		CD869FCC2C15F8AC00FC8B5B /* BubblePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD869FCB2C15F8AC00FC8B5B /* BubblePickerView.swift */; };
+		CD869FCE2C15F90C00FC8B5B /* ChildSizeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD869FCD2C15F90C00FC8B5B /* ChildSizeReader.swift */; };
+		CD869FD02C15F92E00FC8B5B /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD869FCF2C15F92E00FC8B5B /* Int+Extensions.swift */; };
 		CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8202B8FC411007953EF /* LandingPage.swift */; };
 		CDB2EC7B2BFADA8B00DBC0EF /* PostSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7A2BFADA8B00DBC0EF /* PostSize.swift */; };
 		CDB2EC7D2BFADAB300DBC0EF /* CompactPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7C2BFADAB300DBC0EF /* CompactPostView.swift */; };
@@ -263,6 +266,9 @@
 		CD7882A82BFFDFC7002E1A30 /* PostTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTag.swift; sourceTree = "<group>"; };
 		CD7882AA2C013005002E1A30 /* EllipsisMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EllipsisMenu.swift; sourceTree = "<group>"; };
 		CD7882AC2C0131CC002E1A30 /* Post1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post1Providing+Extensions.swift"; sourceTree = "<group>"; };
+		CD869FCB2C15F8AC00FC8B5B /* BubblePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubblePickerView.swift; sourceTree = "<group>"; };
+		CD869FCD2C15F90C00FC8B5B /* ChildSizeReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildSizeReader.swift; sourceTree = "<group>"; };
+		CD869FCF2C15F92E00FC8B5B /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 		CDA1E8202B8FC411007953EF /* LandingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPage.swift; sourceTree = "<group>"; };
 		CDB2EC7A2BFADA8B00DBC0EF /* PostSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSize.swift; sourceTree = "<group>"; };
 		CDB2EC7C2BFADAB300DBC0EF /* CompactPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactPostView.swift; sourceTree = "<group>"; };
@@ -619,6 +625,7 @@
 		CD4D58A82B86BE4C00B82964 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				CD869FCA2C15F8A100FC8B5B /* Bubble Picker */,
 				CDB2EC842BFADD5E00DBC0EF /* Labels */,
 				03D2A6402C011F3E00ED4FF2 /* ListRow */,
 				03500C252BF694A800CAA076 /* Toast */,
@@ -670,6 +677,7 @@
 				CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */,
 				CD4D59172B87B3B000B82964 /* UIViewController+Extensions.swift */,
 				CD0E06F62C0E739F00445849 /* PostType+Extensions.swift */,
+				CD869FCF2C15F92E00FC8B5B /* Int+Extensions.swift */,
 			);
 			name = Extensions;
 			path = Utility/Extensions;
@@ -757,6 +765,15 @@
 				CD7882A42BFE94D2002E1A30 /* CommunityContext.swift */,
 			);
 			path = "Environment Values";
+			sourceTree = "<group>";
+		};
+		CD869FCA2C15F8A100FC8B5B /* Bubble Picker */ = {
+			isa = PBXGroup;
+			children = (
+				CD869FCB2C15F8AC00FC8B5B /* BubblePickerView.swift */,
+				CD869FCD2C15F90C00FC8B5B /* ChildSizeReader.swift */,
+			);
+			path = "Bubble Picker";
 			sourceTree = "<group>";
 		};
 		CDA1E81A2B8FC39A007953EF /* Onboarding */ = {
@@ -1020,6 +1037,7 @@
 				037386412BDAF3F7007492B5 /* Markdown.swift in Sources */,
 				CD4D58CF2B86DDEC00B82964 /* AccountSortMode.swift in Sources */,
 				03D2A6372C00F92400ED4FF2 /* Session.swift in Sources */,
+				CD869FCE2C15F90C00FC8B5B /* ChildSizeReader.swift in Sources */,
 				03134A522BEAD69F002662CC /* SettingsPage.swift in Sources */,
 				03CCDAA02BF2795300C0C851 /* LoginPage.swift in Sources */,
 				037658DF2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift in Sources */,
@@ -1085,6 +1103,7 @@
 				036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */,
 				03134A502BEAD245002662CC /* NavigationLink+NavigationPage.swift in Sources */,
 				CDC199EA2BE449790077B4F1 /* Interactable1Providing+Extensions.swift in Sources */,
+				CD869FD02C15F92E00FC8B5B /* Int+Extensions.swift in Sources */,
 				03500C2B2BF7F1B100CAA076 /* ToastOverlayView.swift in Sources */,
 				CD4D59182B87B3B000B82964 /* UIViewController+Extensions.swift in Sources */,
 				03D3A1E52BB8B7A3009DE55E /* ActionType.swift in Sources */,
@@ -1097,6 +1116,7 @@
 				035BE0892BDD901B00F77D73 /* NavigationPage.swift in Sources */,
 				035BE08F2BDE911900F77D73 /* NavigationLayer.swift in Sources */,
 				CD7882AD2C0131CC002E1A30 /* Post1Providing+Extensions.swift in Sources */,
+				CD869FCC2C15F8AC00FC8B5B /* BubblePickerView.swift in Sources */,
 				03267D842BED49CE009D6268 /* AccountSettingsView.swift in Sources */,
 				0369B3532BFA514B001EFEDF /* ToastLocation.swift in Sources */,
 				03FE14082BF94FFB00A8377F /* ErrorView.swift in Sources */,
