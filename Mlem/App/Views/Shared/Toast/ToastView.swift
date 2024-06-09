@@ -154,7 +154,7 @@ struct ToastView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     if isExpanded {
                         ScrollView {
-                            Text(details.error?.localizedDescription ?? "")
+                            Text(details.errorText)
                                 .foregroundStyle(.red)
                                 .padding(8)
                         }
