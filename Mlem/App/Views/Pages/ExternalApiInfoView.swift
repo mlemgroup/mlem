@@ -9,14 +9,15 @@ import MlemMiddleware
 import SwiftUI
 
 struct ExternalApiInfoView: View {
-    enum FederationBlame {
-        case both, external, `internal`, unknown
+    enum Blame {
+        case bothDefederated, externalDefederated, internalDefederated, unknown
     }
     
     @Environment(AppState.self) var appState
     
     @State var isLoading: Bool = true
-    @State var blame: FederationBlame = .unknown
+    @State var blame: Blame = .unknown
+    @State var externalInstance: Instance3?
     
     let entity: any ContentStub
     
@@ -26,28 +27,52 @@ struct ExternalApiInfoView: View {
                 ProgressView()
                     .foregroundStyle(.secondary)
             } else {
-                Text("Hello")
+                avatars
             }
-        }.task {
-            do {
-                let externalApi = entity.api
-                let internalApi = appState.firstApi
-                
-                async let externalFederated = try await externalApi.federatedWith(with: internalApi.baseUrl)
-                async let internalFederated = try await internalApi.federatedWith(with: externalApi.baseUrl)
-                
-                switch try await (externalFederated, internalFederated) {
-                case (false, false):
-                    blame = .both
-                case (false, _):
-                    blame = .external
-                case (_, false):
-                    blame = .internal
-                default:
-                    blame = .unknown
-                }
-                
-            } catch {}
+        }.task(loadData)
+    }
+    
+    @ViewBuilder
+    var avatars: some View {
+        Line()
+            .stroke(style: StrokeStyle(lineWidth: 2, dash: [5]))
+            .frame(height: 2)
+            .foregroundStyle(Color(uiColor: .systemGroupedBackground))
+            .frame(width: 200, height: 30)
+    }
+    
+    @Sendable
+    func loadData() async {
+        do {
+            let externalApi = entity.api
+            let internalApi = appState.firstApi
+            
+            async let externalFederated = await externalApi.federatedWith(with: internalApi.baseUrl)
+            async let internalFederated = await internalApi.federatedWith(with: externalApi.baseUrl)
+            
+            let externalInstance = try await externalApi.getMyInstance()
+            
+            let blame: Blame
+            switch try await (externalFederated, internalFederated) {
+            case (false, false):
+                blame = .bothDefederated
+            case (false, _):
+                blame = .externalDefederated
+            case (_, false):
+                blame = .internalDefederated
+            default:
+                blame = .unknown
+            }
+            Task { @MainActor in
+                self.blame = blame
+                self.externalInstance = externalInstance
+                isLoading = false
+            }
+            
+        } catch {
+            Task { @MainActor in
+                isLoading = false
+            }
         }
     }
 }
