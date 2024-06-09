@@ -1,5 +1,5 @@
 //
-//  AppState+transition.swift
+//  AppState+Transition.swift
 //  Mlem
 //
 //  Created by Sjmarf on 05/06/2024.
