@@ -65,7 +65,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                     buttonStack(scrollProxy: scrollProxy, isSelected: false)
                         .overlay {
                             buttonStack(isSelected: true)
-                                .background(.blue)
+                                .background(palette.accent)
                                 .allowsHitTesting(false)
                                 .mask(alignment: .leading) {
                                     // This `if` statement prevents the size of the capsule animating from 0 to `width` when transitioning in
