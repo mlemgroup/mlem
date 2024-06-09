@@ -18,7 +18,7 @@ struct FullyQualifiedLinkView: View {
     var body: some View {
         Button {
             if let person = entity as? any PersonStubProviding {
-                navigation.push(.person(PersonStub(api: AppState.main.firstApi, actorId: person.actorId)))
+                navigation.push(.person(person))
             }
         } label: {
             FullyQualifiedLabelView(entity: entity, labelStyle: labelStyle, showAvatar: showAvatar)
