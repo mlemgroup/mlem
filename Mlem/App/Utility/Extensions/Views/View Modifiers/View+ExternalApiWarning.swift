@@ -10,6 +10,7 @@ import SwiftUI
 
 private struct ExternalApiWarningModifier: ViewModifier {
     @Environment(Palette.self) var palette
+    @Environment(NavigationLayer.self) var navigation
     
     let entity: any ContentStub
 
@@ -44,9 +45,10 @@ private struct ExternalApiWarningModifier: ViewModifier {
             )
             .foregroundStyle(palette.primary.opacity(0.5))
             Spacer()
-            Button("More Info", systemImage: "questionmark.circle") {}
-            
-                .labelStyle(.iconOnly)
+            Button("More Info", systemImage: "questionmark.circle") {
+                navigation.openSheet(.externalApiInfo(api: entity.api))
+            }
+            .labelStyle(.iconOnly)
         }
     }
 }

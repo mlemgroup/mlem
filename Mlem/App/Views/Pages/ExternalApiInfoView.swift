@@ -13,13 +13,14 @@ struct ExternalApiInfoView: View {
         case bothDefederated, externalDefederated, internalDefederated, unknown
     }
     
-    @Environment(AppState.self) var appState
+    @Environment(AppState.self) private var appState
+    @Environment(Palette.self) private var palette
     
-    @State var isLoading: Bool = true
-    @State var blame: Blame = .unknown
-    @State var externalInstance: Instance3?
+    @State private var isLoading: Bool = true
+    @State private var blame: Blame = .unknown
+    @State private var externalInstance: Instance3?
     
-    let entity: any ContentStub
+    let api: ApiClient
     
     var body: some View {
         VStack {
@@ -35,16 +36,25 @@ struct ExternalApiInfoView: View {
     @ViewBuilder
     var avatars: some View {
         Line()
-            .stroke(style: StrokeStyle(lineWidth: 2, dash: [5]))
+            .stroke(style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [5]))
             .frame(height: 2)
-            .foregroundStyle(Color(uiColor: .systemGroupedBackground))
-            .frame(width: 200, height: 30)
+            .foregroundStyle(palette.tertiary)
+            .frame(width: 150, height: 30)
+            .overlay {
+                HStack {
+                    Image(systemName: Icons.failure)
+                        .bold()
+                        .foregroundStyle(.red)
+                        .imageScale(.large)
+                        .frame(maxWidth: .infinity)
+                }
+            }
     }
     
     @Sendable
     func loadData() async {
         do {
-            let externalApi = entity.api
+            let externalApi = api
             let internalApi = appState.firstApi
             
             async let externalFederated = await externalApi.federatedWith(with: internalApi.baseUrl)
