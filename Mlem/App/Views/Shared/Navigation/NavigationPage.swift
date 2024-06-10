@@ -50,7 +50,6 @@ extension NavigationPage {
             ExternalApiInfoView(api: api)
         case .quickSwitcher:
             QuickSwitcherView()
-                .presentationDetents([.medium, .large])
         case let .expandedPost(post):
             ExpandedPostView(post: post)
         case let .person(person):
@@ -60,7 +59,7 @@ extension NavigationPage {
     
     var hasNavigationStack: Bool {
         switch self {
-        case .quickSwitcher:
+        case .quickSwitcher, .externalApiInfo:
             false
         default:
             true
@@ -69,7 +68,7 @@ extension NavigationPage {
     
     var canDisplayToasts: Bool {
         switch self {
-        case .quickSwitcher:
+        case .quickSwitcher, .externalApiInfo:
             false
         default:
             true
