@@ -64,7 +64,7 @@ struct LoginTotpView: View {
             TextField("", text: Binding(
                 get: { totpToken },
                 set: { newValue in
-                    let trimmedValue = String(newValue.prefix(6))
+                    let trimmedValue = String((newValue ?? "").prefix(6))
                     totpToken = trimmedValue
                     if trimmedValue.count == 6, !authenticating {
                         focused = false

@@ -22,7 +22,7 @@ struct TilePostView: View {
         dimension + // picture
             minTitleHeight + // title section
             (AppConstants.standardSpacing * 3) + // vertical spacing--not actually sure why it has to be 3 instead of 2, but it does
-            2 // spacing between title and community
+            4 // spacing between title and community
     }
     
     var body: some View {

@@ -138,13 +138,13 @@ struct MinimalPostFeedView: View {
                                 if !tilePosts { Divider() }
                             }
                             .padding(.horizontal, tilePosts ? AppConstants.halfSpacing : 0)
-                            .onAppear {
-                                do {
-                                    try postFeedLoader.loadIfThreshold(post)
-                                } catch {
-                                    handleError(error)
-                                }
-                            }
+//                            .onAppear {
+//                                do {
+//                                    try postFeedLoader.loadIfThreshold(post)
+//                                } catch {
+//                                    handleError(error)
+//                                }
+//                            }
                         }
                     }
                 } header: {

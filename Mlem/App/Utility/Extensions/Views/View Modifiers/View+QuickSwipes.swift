@@ -7,6 +7,7 @@
 
 import Dependencies
 import SwiftUI
+import SwiftUIX
 
 public struct SwipeConfiguration {
     /// In ascending order of appearance.
@@ -82,122 +83,142 @@ struct QuickSwipeView: ViewModifier {
         _trailingSwipeSymbol = State(initialValue: primaryTrailingAction?.swipeIcon1)
     }
     
-    // swiftlint:disable function_body_length
     func body(content: Content) -> some View {
-        content
-            // add a little shadow under the edge
-            .background {
-                Rectangle()
-                    .foregroundStyle(.clear)
-                    .border(width: 10, edges: [.leading, .trailing], color: .black)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
-                    .shadow(radius: 5)
-                    .opacity(dragState == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
-                // .clipShape(RoundedRectangle(cornerRadius: 16))
-//                GeometryReader { proxy in
-//                    Rectangle()
-//                        .foregroundColor(.clear)
-//                        .border(width: 10, edges: [.leading, .trailing], color: .black)
-//                        .shadow(radius: 5)
-//                        .mask(RoundedRectangle(cornerRadius: 16).frame(width: proxy.size.width + 20)) // clip top/bottom
-//                        // .clipShape(RoundedRectangle(cornerRadius: 16))
-//                        .opacity(dragState == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
+        CocoaScrollView(.horizontal) {
+//            HStack {
+//                Rectangle()
+//                    .frame(width: 10)
+//                    .padding(.trailing, 20)
+//
+            content
+                .border(.red)
+//                    .background {
+//                        GeometryReader { proxy in
+//                            Color.black.opacity(0.0000000001)
+//                                .onChange(of: proxy.size, initial: true) {
+//                                    frameWidth = proxy.size.width
+//                                    frameHeight = proxy.size.height
+//                                }
+//                        }
+//                    }
+//                    .id("content")
+//                    .onAppear {
+//                        print("CONTENT!")
+//                    }
+                
+//                Rectangle()
+//                    .frame(width: 10)
+//                    .padding(.leading, 20)
+        }
+        .frame(width: UIScreen.main.bounds.width, height: 200)
+//        .scrollIndicators(.hidden)
+        // .background(.green)
+        // .frame(width: frameWidth, height: frameHeight)
+        // .clipShape(RoundedRectangle(cornerRadius: 16))
+        
+//            // add a little shadow under the edge
+//            .background {
+//                Rectangle()
+//                    .foregroundStyle(.clear)
+//                    .border(width: 10, edges: [.leading, .trailing], color: .black)
+//                    .clipShape(RoundedRectangle(cornerRadius: 16))
+//                    .shadow(radius: 5)
+//                    .opacity(dragState == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
+//            }
+//            .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
+//            // needs to be high priority or else dragging on links leads to navigating to the link at conclusion of drag
+//            .highPriorityGesture(
+//                DragGesture(minimumDistance: 20, coordinateSpace: .global) // min distance prevents conflict with scrolling drag gesture
+//                    .updating($dragState) { value, state, _ in
+//                        // this check adds a dead zone to the left side of the screen so it doesn't interfere with navigation
+//                        if dragState == .zero && abs(value.translation.height) * 1.7 > abs(value.translation.width) {
+//                            return
+//                        }
+//                        if dragState != .zero || value.location.x > 70 {
+//                            state = value.translation.width
+//                        }
+//                    }
+//            )
+//            .onChange(of: dragState) {
+//                // if dragState changes and is now 0, gesture has ended; compute action based on last detected position
+//                if dragState == .zero {
+//                    draggingDidEnd()
+//                } else {
+//                    guard shouldRespondToDragPosition(dragState) else {
+//                        // as swipe actions are optional we don't allow dragging without a primary action
+//                        return
+//                    }
+//
+//                    // update position
+//                    dragPosition = dragState
+//
+//                    let edgeForActions = edgeForActions(at: dragPosition)
+//                    let actionIndex = actionIndex(edge: edgeForActions, at: dragPosition)
+//                    let action = action(edge: edgeForActions, index: actionIndex)
+//                    let threshold = actionThreshold(edge: edgeForActions, index: actionIndex)
+//
+//                    // update color and symbol. If crossed an edge, play a gentle haptic
+//                    switch edgeForActions {
+//                    case .leading:
+//                        if actionIndex == nil {
+//                            leadingSwipeSymbol = primaryLeadingAction?.swipeIcon1
+//                            dragBackground = primaryLeadingAction?.color.opacity(dragPosition / threshold)
+//                            iconColor = nil
+//                        } else {
+//                            leadingSwipeSymbol = action?.swipeIcon2
+//                            dragBackground = action?.color.opacity(dragPosition / threshold)
+//                            iconColor = nil
+//                        }
+//                    case .trailing:
+//                        if actionIndex == nil {
+//                            trailingSwipeSymbol = primaryTrailingAction?.swipeIcon1
+//                            dragBackground = primaryTrailingAction?.color.opacity(dragPosition / threshold)
+//                            iconColor = nil
+//                        } else {
+//                            trailingSwipeSymbol = action?.swipeIcon2
+//                            dragBackground = action?.color.opacity(dragPosition / threshold)
+//                            iconColor = nil
+//                        }
+//                    }
+//
+//                    // If crossed an edge, play a gentle haptic
+//                    let previousIndex = self.actionIndex(edge: edgeForActions, at: prevDragPosition)
+//                    let currentIndex = self.actionIndex(edge: edgeForActions, at: dragPosition)
+//                    if let hapticInfo = hapticInfo(transitioningFrom: previousIndex, to: currentIndex) {
+//                        HapticManager.main.play(haptic: hapticInfo.0, priority: hapticInfo.1)
+//                    }
+//
+//                    prevDragPosition = dragPosition
 //                }
-            }
-            .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
-            // needs to be high priority or else dragging on links leads to navigating to the link at conclusion of drag
-            .highPriorityGesture(
-                DragGesture(minimumDistance: 20, coordinateSpace: .global) // min distance prevents conflict with scrolling drag gesture
-                    .updating($dragState) { value, state, _ in
-                        // this check adds a dead zone to the left side of the screen so it doesn't interfere with navigation
-                        if dragState == .zero && abs(value.translation.height) * 1.7 > abs(value.translation.width) {
-                            return
-                        }
-                        if dragState != .zero || value.location.x > 70 {
-                            state = value.translation.width
-                        }
-                    }
-            )
-            .onChange(of: dragState) {
-                // if dragState changes and is now 0, gesture has ended; compute action based on last detected position
-                if dragState == .zero {
-                    draggingDidEnd()
-                } else {
-                    guard shouldRespondToDragPosition(dragState) else {
-                        // as swipe actions are optional we don't allow dragging without a primary action
-                        return
-                    }
-                    
-                    // update position
-                    dragPosition = dragState
-                    
-                    let edgeForActions = edgeForActions(at: dragPosition)
-                    let actionIndex = actionIndex(edge: edgeForActions, at: dragPosition)
-                    let action = action(edge: edgeForActions, index: actionIndex)
-                    let threshold = actionThreshold(edge: edgeForActions, index: actionIndex)
-                    
-                    // update color and symbol. If crossed an edge, play a gentle haptic
-                    switch edgeForActions {
-                    case .leading:
-                        if actionIndex == nil {
-                            leadingSwipeSymbol = primaryLeadingAction?.swipeIcon1
-                            dragBackground = primaryLeadingAction?.color.opacity(dragPosition / threshold)
-                            iconColor = nil
-                        } else {
-                            leadingSwipeSymbol = action?.swipeIcon2
-                            dragBackground = action?.color.opacity(dragPosition / threshold)
-                            iconColor = nil
-                        }
-                    case .trailing:
-                        if actionIndex == nil {
-                            trailingSwipeSymbol = primaryTrailingAction?.swipeIcon1
-                            dragBackground = primaryTrailingAction?.color.opacity(dragPosition / threshold)
-                            iconColor = nil
-                        } else {
-                            trailingSwipeSymbol = action?.swipeIcon2
-                            dragBackground = action?.color.opacity(dragPosition / threshold)
-                            iconColor = nil
-                        }
-                    }
-                    
-                    // If crossed an edge, play a gentle haptic
-                    let previousIndex = self.actionIndex(edge: edgeForActions, at: prevDragPosition)
-                    let currentIndex = self.actionIndex(edge: edgeForActions, at: dragPosition)
-                    if let hapticInfo = hapticInfo(transitioningFrom: previousIndex, to: currentIndex) {
-                        HapticManager.main.play(haptic: hapticInfo.0, priority: hapticInfo.1)
-                    }
-                                  
-                    prevDragPosition = dragPosition
-                }
-            }
-            .background {
-                dragBackground
-                    .overlay {
-                        HStack(spacing: 0) {
-                            Image(systemName: leadingSwipeSymbol ?? Icons.warning)
-                                .font(.title)
-                                .frame(width: 20, height: 20)
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 20)
-                            Spacer()
-                            Image(systemName: trailingSwipeSymbol ?? Icons.warning)
-                                .font(.title)
-                                .frame(width: 20, height: 20)
-                                .foregroundColor(iconColor ?? .white)
-                                .padding(.horizontal, 20)
-                        }
-                        .accessibilityHidden(true) // prevent these from popping up in VO
-                        .opacity(dragState == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
-                    }
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
-            }
-            // prevents various animation glitches
-            .transaction { transaction in
-                transaction.disablesAnimations = true
-            }
-            // disables links from highlighting when tapped
-            .buttonStyle(EmptyButtonStyle())
-            .clipShape(RoundedRectangle(cornerRadius: 16))
+//            }
+//            .background {
+//                dragBackground
+//                    .overlay {
+//                        HStack(spacing: 0) {
+//                            Image(systemName: leadingSwipeSymbol ?? Icons.warning)
+//                                .font(.title)
+//                                .frame(width: 20, height: 20)
+//                                .foregroundColor(.white)
+//                                .padding(.horizontal, 20)
+//                            Spacer()
+//                            Image(systemName: trailingSwipeSymbol ?? Icons.warning)
+//                                .font(.title)
+//                                .frame(width: 20, height: 20)
+//                                .foregroundColor(iconColor ?? .white)
+//                                .padding(.horizontal, 20)
+//                        }
+//                        .accessibilityHidden(true) // prevent these from popping up in VO
+//                        .opacity(dragState == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
+//                    }
+//                    .clipShape(RoundedRectangle(cornerRadius: 16))
+//            }
+//            // prevents various animation glitches
+//            .transaction { transaction in
+//                transaction.disablesAnimations = true
+//            }
+//            // disables links from highlighting when tapped
+//            .buttonStyle(EmptyButtonStyle())
+//            .clipShape(RoundedRectangle(cornerRadius: 16))
     }
     
     private func draggingDidEnd() {
@@ -367,7 +388,8 @@ extension View {
             QuickSwipeView(
                 configuration: .init(
                     leadingActions: leading,
-                    trailingActions: trailing
+                    trailingActions: trailing,
+                    dragThresholds: dragThresholds
                 )
             )
         )

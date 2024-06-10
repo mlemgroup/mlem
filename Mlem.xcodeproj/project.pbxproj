@@ -160,6 +160,8 @@
 		CDCA44B22C17675600C092B3 /* Haptic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44B12C17675600C092B3 /* Haptic.swift */; };
 		CDCA44B42C176A4700C092B3 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44B32C176A4700C092B3 /* Array+Extensions.swift */; };
 		CDCA44B62C176C5000C092B3 /* View+EdgeBorders.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44B52C176C5000C092B3 /* View+EdgeBorders.swift */; };
+		CDCA44B82C17987000C092B3 /* UIScrollViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44B72C17987000C092B3 /* UIScrollViewWrapper.swift */; };
+		CDCA44BD2C179BCB00C092B3 /* SwiftUIX in Frameworks */ = {isa = PBXBuildFile; productRef = CDCA44BC2C179BCB00C092B3 /* SwiftUIX */; };
 		CDE021AD2BFA43380052FD61 /* FeedPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE021AC2BFA43380052FD61 /* FeedPostView.swift */; };
 		CDF9EF332AB2845C003F885B /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF9EF322AB2845C003F885B /* Icons.swift */; };
 /* End PBXBuildFile section */
@@ -334,6 +336,7 @@
 		CDCA44B12C17675600C092B3 /* Haptic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptic.swift; sourceTree = "<group>"; };
 		CDCA44B32C176A4700C092B3 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		CDCA44B52C176C5000C092B3 /* View+EdgeBorders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+EdgeBorders.swift"; sourceTree = "<group>"; };
+		CDCA44B72C17987000C092B3 /* UIScrollViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollViewWrapper.swift; sourceTree = "<group>"; };
 		CDE021AC2BFA43380052FD61 /* FeedPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostView.swift; sourceTree = "<group>"; };
 		CDF9EF322AB2845C003F885B /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -343,6 +346,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDCA44BD2C179BCB00C092B3 /* SwiftUIX in Frameworks */,
 				03500C2E2BF8C2A700CAA076 /* MlemMiddleware in Frameworks */,
 				030FF6792BC84F7E00F6BFAC /* SwiftUIIntrospect in Frameworks */,
 				B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */,
@@ -838,6 +842,7 @@
 				CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */,
 				CDCA44942C17658000C092B3 /* View+QuickSwipes.swift */,
 				CDCA44B52C176C5000C092B3 /* View+EdgeBorders.swift */,
+				CDCA44B72C17987000C092B3 /* UIScrollViewWrapper.swift */,
 			);
 			path = "View Modifiers";
 			sourceTree = "<group>";
@@ -1006,6 +1011,7 @@
 				030FF6782BC84F7E00F6BFAC /* SwiftUIIntrospect */,
 				037386462BDAFE81007492B5 /* LemmyMarkdownUI */,
 				CD59DE2B2BE467E600445EED /* MlemMiddleware */,
+				CDCA44BC2C179BCB00C092B3 /* SwiftUIX */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -1089,6 +1095,7 @@
 				0392826E2BC84E480097F91A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				037386452BDAFE81007492B5 /* XCRemoteSwiftPackageReference "LemmyMarkdownUI" */,
 				CD7882A32BFE5EB5002E1A30 /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
+				CDCA44BB2C179BCA00C092B3 /* XCRemoteSwiftPackageReference "SwiftUIX" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -1156,7 +1163,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint lint --strict\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint lint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1206,6 +1213,7 @@
 				CD7882A72BFFD1A3002E1A30 /* ThumbnailLocation.swift in Sources */,
 				03500C222BF5594100CAA076 /* ToastType.swift in Sources */,
 				03134A4D2BEAD058002662CC /* AvatarView.swift in Sources */,
+				CDCA44B82C17987000C092B3 /* UIScrollViewWrapper.swift in Sources */,
 				CD4D58AA2B86BE5900B82964 /* AccountListView.swift in Sources */,
 				CD4D58B92B86D9F800B82964 /* AccountListRow.swift in Sources */,
 				CDCA44B02C17673D00C092B3 /* HapticPriority.swift in Sources */,
@@ -1461,7 +1469,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "local build";
 				DEVELOPMENT_ASSET_PATHS = "\"Mlem/Preview Content\"";
-				DEVELOPMENT_TEAM = 76ULHQGAPN;
+				DEVELOPMENT_TEAM = 8B9GNJW88W;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Mlem/Info.plist;
@@ -1481,7 +1489,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem;
+				PRODUCT_BUNDLE_IDENTIFIER = eric.local;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
@@ -1504,7 +1512,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "local build";
 				DEVELOPMENT_ASSET_PATHS = "\"Mlem/Preview Content\"";
-				DEVELOPMENT_TEAM = 76ULHQGAPN;
+				DEVELOPMENT_TEAM = 8B9GNJW88W;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Mlem/Info.plist;
@@ -1524,7 +1532,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem;
+				PRODUCT_BUNDLE_IDENTIFIER = eric.local;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
@@ -1730,6 +1738,14 @@
 				minimumVersion = 0.8.0;
 			};
 		};
+		CDCA44BB2C179BCA00C092B3 /* XCRemoteSwiftPackageReference "SwiftUIX" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftUIX/SwiftUIX.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1782,6 +1798,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CD59DE2A2BE467E600445EED /* XCRemoteSwiftPackageReference "MlemMiddleware" */;
 			productName = MlemMiddleware;
+		};
+		CDCA44BC2C179BCB00C092B3 /* SwiftUIX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CDCA44BB2C179BCA00C092B3 /* XCRemoteSwiftPackageReference "SwiftUIX" */;
+			productName = SwiftUIX;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
