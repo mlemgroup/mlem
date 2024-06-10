@@ -17,6 +17,7 @@ struct ContentView: View {
     var appState: AppState { .main }
     
     @State var palette: Palette = .main
+    
     @State var selectedTabIndex: Int = 0
     @State var tabReselectTracker: TabReselectTracker = .main
     

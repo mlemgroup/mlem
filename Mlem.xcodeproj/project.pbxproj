@@ -145,6 +145,21 @@
 		CDBFCB6A2C04EFFE008CD468 /* PostSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */; };
 		CDBFCB6C2C054AA7008CD468 /* TilePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB6B2C054AA7008CD468 /* TilePostView.swift */; };
 		CDC199EA2BE449790077B4F1 /* Interactable1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC199E92BE449790077B4F1 /* Interactable1Providing+Extensions.swift */; };
+		CDCA44952C17658000C092B3 /* View+QuickSwipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44942C17658000C092B3 /* View+QuickSwipes.swift */; };
+		CDCA44972C17666C00C092B3 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44962C17666C00C092B3 /* HapticManager.swift */; };
+		CDCA449B2C1766CF00C092B3 /* Failure.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CDCA449A2C1766CF00C092B3 /* Failure.ahap */; };
+		CDCA44A62C1766D500C092B3 /* Firm Info.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CDCA449D2C1766D500C092B3 /* Firm Info.ahap */; };
+		CDCA44A72C1766D500C092B3 /* Mushy Info.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CDCA449E2C1766D500C092B3 /* Mushy Info.ahap */; };
+		CDCA44A82C1766D500C092B3 /* Rigid Info.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CDCA449F2C1766D500C092B3 /* Rigid Info.ahap */; };
+		CDCA44A92C1766D500C092B3 /* Gentle Info.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CDCA44A02C1766D500C092B3 /* Gentle Info.ahap */; };
+		CDCA44AA2C1766D500C092B3 /* Light Success.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CDCA44A22C1766D500C092B3 /* Light Success.ahap */; };
+		CDCA44AB2C1766D500C092B3 /* Destructive Success.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CDCA44A32C1766D500C092B3 /* Destructive Success.ahap */; };
+		CDCA44AC2C1766D500C092B3 /* Success.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CDCA44A42C1766D500C092B3 /* Success.ahap */; };
+		CDCA44AD2C1766D500C092B3 /* Violent Success.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CDCA44A52C1766D500C092B3 /* Violent Success.ahap */; };
+		CDCA44B02C17673D00C092B3 /* HapticPriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44AF2C17673D00C092B3 /* HapticPriority.swift */; };
+		CDCA44B22C17675600C092B3 /* Haptic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44B12C17675600C092B3 /* Haptic.swift */; };
+		CDCA44B42C176A4700C092B3 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44B32C176A4700C092B3 /* Array+Extensions.swift */; };
+		CDCA44B62C176C5000C092B3 /* View+EdgeBorders.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44B52C176C5000C092B3 /* View+EdgeBorders.swift */; };
 		CDE021AD2BFA43380052FD61 /* FeedPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE021AC2BFA43380052FD61 /* FeedPostView.swift */; };
 		CDF9EF332AB2845C003F885B /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF9EF322AB2845C003F885B /* Icons.swift */; };
 /* End PBXBuildFile section */
@@ -304,6 +319,21 @@
 		CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSettingsView.swift; sourceTree = "<group>"; };
 		CDBFCB6B2C054AA7008CD468 /* TilePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TilePostView.swift; sourceTree = "<group>"; };
 		CDC199E92BE449790077B4F1 /* Interactable1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Interactable1Providing+Extensions.swift"; sourceTree = "<group>"; };
+		CDCA44942C17658000C092B3 /* View+QuickSwipes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+QuickSwipes.swift"; sourceTree = "<group>"; };
+		CDCA44962C17666C00C092B3 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
+		CDCA449A2C1766CF00C092B3 /* Failure.ahap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Failure.ahap; sourceTree = "<group>"; };
+		CDCA449D2C1766D500C092B3 /* Firm Info.ahap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Firm Info.ahap"; sourceTree = "<group>"; };
+		CDCA449E2C1766D500C092B3 /* Mushy Info.ahap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Mushy Info.ahap"; sourceTree = "<group>"; };
+		CDCA449F2C1766D500C092B3 /* Rigid Info.ahap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Rigid Info.ahap"; sourceTree = "<group>"; };
+		CDCA44A02C1766D500C092B3 /* Gentle Info.ahap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Gentle Info.ahap"; sourceTree = "<group>"; };
+		CDCA44A22C1766D500C092B3 /* Light Success.ahap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Light Success.ahap"; sourceTree = "<group>"; };
+		CDCA44A32C1766D500C092B3 /* Destructive Success.ahap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Destructive Success.ahap"; sourceTree = "<group>"; };
+		CDCA44A42C1766D500C092B3 /* Success.ahap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Success.ahap; sourceTree = "<group>"; };
+		CDCA44A52C1766D500C092B3 /* Violent Success.ahap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Violent Success.ahap"; sourceTree = "<group>"; };
+		CDCA44AF2C17673D00C092B3 /* HapticPriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticPriority.swift; sourceTree = "<group>"; };
+		CDCA44B12C17675600C092B3 /* Haptic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptic.swift; sourceTree = "<group>"; };
+		CDCA44B32C176A4700C092B3 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		CDCA44B52C176C5000C092B3 /* View+EdgeBorders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+EdgeBorders.swift"; sourceTree = "<group>"; };
 		CDE021AC2BFA43380052FD61 /* FeedPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostView.swift; sourceTree = "<group>"; };
 		CDF9EF322AB2845C003F885B /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -728,6 +758,7 @@
 				CD0E06F62C0E739F00445849 /* PostType+Extensions.swift */,
 				CD869FCF2C15F92E00FC8B5B /* Int+Extensions.swift */,
 				034B94822C09340A00039AF4 /* MarkdownConfiguration+Extensions.swift */,
+				CDCA44B32C176A4700C092B3 /* Array+Extensions.swift */,
 			);
 			name = Extensions;
 			path = Utility/Extensions;
@@ -791,6 +822,7 @@
 		CD4D59212B87BD0800B82964 /* Definitions */ = {
 			isa = PBXGroup;
 			children = (
+				CDCA44AE2C17672900C092B3 /* HapticManager */,
 				CD4D58B22B86BFD400B82964 /* AccountsTracker.swift */,
 				036CC3AE2B8145C30098B6A1 /* AppState.swift */,
 				CD317D4B2BE97FED008F63E2 /* Palette.swift */,
@@ -804,6 +836,8 @@
 			isa = PBXGroup;
 			children = (
 				CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */,
+				CDCA44942C17658000C092B3 /* View+QuickSwipes.swift */,
+				CDCA44B52C176C5000C092B3 /* View+EdgeBorders.swift */,
 			);
 			path = "View Modifiers";
 			sourceTree = "<group>";
@@ -867,6 +901,57 @@
 				CDBFCB642C03920C008CD468 /* PostLinkHostView.swift */,
 			);
 			path = "Feed Post Components";
+			sourceTree = "<group>";
+		};
+		CDCA44982C1766BF00C092B3 /* Haptics */ = {
+			isa = PBXGroup;
+			children = (
+				CDCA449C2C1766D500C092B3 /* Info */,
+				CDCA44A12C1766D500C092B3 /* Success */,
+				CDCA44992C1766CF00C092B3 /* Failure */,
+			);
+			path = Haptics;
+			sourceTree = "<group>";
+		};
+		CDCA44992C1766CF00C092B3 /* Failure */ = {
+			isa = PBXGroup;
+			children = (
+				CDCA449A2C1766CF00C092B3 /* Failure.ahap */,
+			);
+			path = Failure;
+			sourceTree = "<group>";
+		};
+		CDCA449C2C1766D500C092B3 /* Info */ = {
+			isa = PBXGroup;
+			children = (
+				CDCA449D2C1766D500C092B3 /* Firm Info.ahap */,
+				CDCA449E2C1766D500C092B3 /* Mushy Info.ahap */,
+				CDCA449F2C1766D500C092B3 /* Rigid Info.ahap */,
+				CDCA44A02C1766D500C092B3 /* Gentle Info.ahap */,
+			);
+			path = Info;
+			sourceTree = "<group>";
+		};
+		CDCA44A12C1766D500C092B3 /* Success */ = {
+			isa = PBXGroup;
+			children = (
+				CDCA44A22C1766D500C092B3 /* Light Success.ahap */,
+				CDCA44A32C1766D500C092B3 /* Destructive Success.ahap */,
+				CDCA44A42C1766D500C092B3 /* Success.ahap */,
+				CDCA44A52C1766D500C092B3 /* Violent Success.ahap */,
+			);
+			path = Success;
+			sourceTree = "<group>";
+		};
+		CDCA44AE2C17672900C092B3 /* HapticManager */ = {
+			isa = PBXGroup;
+			children = (
+				CDCA44982C1766BF00C092B3 /* Haptics */,
+				CDCA44962C17666C00C092B3 /* HapticManager.swift */,
+				CDCA44AF2C17673D00C092B3 /* HapticPriority.swift */,
+				CDCA44B12C17675600C092B3 /* Haptic.swift */,
+			);
+			path = HapticManager;
 			sourceTree = "<group>";
 		};
 		CDE021AB2BFA43220052FD61 /* Feed Posts */ = {
@@ -1021,8 +1106,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDCA44A62C1766D500C092B3 /* Firm Info.ahap in Resources */,
+				CDCA44AB2C1766D500C092B3 /* Destructive Success.ahap in Resources */,
 				6363D5CC27EE196A00E34822 /* Preview Assets.xcassets in Resources */,
+				CDCA44A82C1766D500C092B3 /* Rigid Info.ahap in Resources */,
+				CDCA44A72C1766D500C092B3 /* Mushy Info.ahap in Resources */,
+				CDCA44AC2C1766D500C092B3 /* Success.ahap in Resources */,
 				50CC4A702A9BD2480074C845 /* instance_metadata.json in Resources */,
+				CDCA44AD2C1766D500C092B3 /* Violent Success.ahap in Resources */,
+				CDCA44AA2C1766D500C092B3 /* Light Success.ahap in Resources */,
+				CDCA44A92C1766D500C092B3 /* Gentle Info.ahap in Resources */,
+				CDCA449B2C1766CF00C092B3 /* Failure.ahap in Resources */,
 				6332FDBD27EFAF7C0009A98A /* Settings.bundle in Resources */,
 				6363D5C927EE196A00E34822 /* Assets.xcassets in Resources */,
 			);
@@ -1104,9 +1198,9 @@
 				0382A7F42C0A76A900C79DDA /* Date+Extensions.swift in Sources */,
 				03D2A63B2C010B7500ED4FF2 /* GuestAccount.swift in Sources */,
 				CD4ED84A2BF1113800EFA0A2 /* View+TabReselectConsumer.swift in Sources */,
-				034B948C2C09364000039AF4 /* ChildSizeReader.swift in Sources */,
 				03500C222BF5594100CAA076 /* ToastType.swift in Sources */,
 				CD4D58A52B86BD1B00B82964 /* PersistenceRepository.swift in Sources */,
+				CDCA44B62C176C5000C092B3 /* View+EdgeBorders.swift in Sources */,
 				CD1446252A5B357900610EF1 /* Document.swift in Sources */,
 				CDB2EC812BFADADF00DBC0EF /* LargePostView.swift in Sources */,
 				CD7882A72BFFD1A3002E1A30 /* ThumbnailLocation.swift in Sources */,
@@ -1114,9 +1208,9 @@
 				03134A4D2BEAD058002662CC /* AvatarView.swift in Sources */,
 				CD4D58AA2B86BE5900B82964 /* AccountListView.swift in Sources */,
 				CD4D58B92B86D9F800B82964 /* AccountListRow.swift in Sources */,
+				CDCA44B02C17673D00C092B3 /* HapticPriority.swift in Sources */,
 				CD4D58B32B86BFD400B82964 /* AccountsTracker.swift in Sources */,
 				CD317D4F2BE983ED008F63E2 /* MonochromePalette.swift in Sources */,
-				034B94872C09350500039AF4 /* BubblePicker.swift in Sources */,
 				034B948E2C0937BA00039AF4 /* FancyScrollView.swift in Sources */,
 				CD4D58B52B86BFFB00B82964 /* PersistenceRepository+Dependency.swift in Sources */,
 				CD4D58EB2B86E63300B82964 /* AssociatedColor.swift in Sources */,
@@ -1133,6 +1227,7 @@
 				CD4D58BB2B86DA7D00B82964 /* AccountListView+Logic.swift in Sources */,
 				CD43E8B32BF2C24E007C3D71 /* ContentLoader.swift in Sources */,
 				031E2D5D2BEFCC630003BC45 /* SettingsView.swift in Sources */,
+				CDCA44B42C176A4700C092B3 /* Array+Extensions.swift in Sources */,
 				03CCDAA42BF2852E00C0C851 /* LoginTotpView.swift in Sources */,
 				CD4ED8472BF110FA00EFA0A2 /* TabReselectTracker.swift in Sources */,
 				035BE0912BDEA01E00F77D73 /* NavigationPage+View.swift in Sources */,
@@ -1144,6 +1239,7 @@
 				CD7882A52BFE94D2002E1A30 /* CommunityContext.swift in Sources */,
 				0369B3562BFA6824001EFEDF /* InboxView.swift in Sources */,
 				CD4D59162B87B38C00B82964 /* UIApplication+Extensions.swift in Sources */,
+				CDCA44B22C17675600C092B3 /* Haptic.swift in Sources */,
 				035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */,
 				CD4D58CB2B86DD3D00B82964 /* AssociatedIcon.swift in Sources */,
 				CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */,
@@ -1184,12 +1280,14 @@
 				03FE14082BF94FFB00A8377F /* ErrorView.swift in Sources */,
 				030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */,
 				CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */,
+				CDCA44972C17666C00C092B3 /* HapticManager.swift in Sources */,
 				03500C242BF55D0E00CAA076 /* Toast.swift in Sources */,
 				030FF67F2BC8544700F6BFAC /* CustomTabBarController.swift in Sources */,
 				CD4D58F82B87B0D100B82964 /* InternetSpeed.swift in Sources */,
 				0382A7F02C09F0F800C79DDA /* PersonView.swift in Sources */,
 				CDBFCB6C2C054AA7008CD468 /* TilePostView.swift in Sources */,
 				CD4D58932B86BA5C00B82964 /* StandardPalette.swift in Sources */,
+				CDCA44952C17658000C092B3 /* View+QuickSwipes.swift in Sources */,
 				03D2A63F2C010DBF00ED4FF2 /* GuestSession.swift in Sources */,
 				030FF6812BC859FD00F6BFAC /* CustomTabViewHostingController.swift in Sources */,
 				03E614DB2C0B596900F692A4 /* ToolbarEllipsisMenu.swift in Sources */,

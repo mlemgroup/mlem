@@ -18,6 +18,16 @@ struct FeedPostView: View {
         ContentLoader(model: post) { post in
             Content(for: post)
                 .environment(\.postContext, post)
+                .quickSwipes(leading: [.init(
+                    isOn: true,
+                    label: "Test",
+                    color: .green,
+                    icon: Icons.save,
+                    swipeIcon1: Icons.save,
+                    swipeIcon2: Icons.saveFill
+                ) {
+                    print("swiped!")
+                }])
         }
     }
     
