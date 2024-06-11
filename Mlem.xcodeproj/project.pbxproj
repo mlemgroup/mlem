@@ -97,6 +97,7 @@
 		CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446202A5B328E00610EF1 /* Privacy Policy.swift */; };
 		CD1446252A5B357900610EF1 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446242A5B357900610EF1 /* Document.swift */; };
 		CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446262A5B36DA00610EF1 /* EULA.swift */; };
+		CD17B24B2C19109A001E174B /* SwipeConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD17B24A2C19108B001E174B /* SwipeConfiguration.swift */; };
 		CD317D4C2BE97FED008F63E2 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD317D4B2BE97FED008F63E2 /* Palette.swift */; };
 		CD317D4F2BE983ED008F63E2 /* MonochromePalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD317D4E2BE983ED008F63E2 /* MonochromePalette.swift */; };
 		CD4368C12AE23FD400BD8BD1 /* Semaphore in Frameworks */ = {isa = PBXBuildFile; productRef = CD4368C02AE23FD400BD8BD1 /* Semaphore */; };
@@ -269,6 +270,7 @@
 		CD1446202A5B328E00610EF1 /* Privacy Policy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Privacy Policy.swift"; sourceTree = "<group>"; };
 		CD1446242A5B357900610EF1 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		CD1446262A5B36DA00610EF1 /* EULA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EULA.swift; sourceTree = "<group>"; };
+		CD17B24A2C19108B001E174B /* SwipeConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeConfiguration.swift; sourceTree = "<group>"; };
 		CD317D4B2BE97FED008F63E2 /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
 		CD317D4E2BE983ED008F63E2 /* MonochromePalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonochromePalette.swift; sourceTree = "<group>"; };
 		CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentLoader.swift; sourceTree = "<group>"; };
@@ -628,6 +630,15 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
+		CD17B2492C191073001E174B /* Quick Swipes */ = {
+			isa = PBXGroup;
+			children = (
+				CD17B24A2C19108B001E174B /* SwipeConfiguration.swift */,
+				CDCA44942C17658000C092B3 /* View+QuickSwipes.swift */,
+			);
+			path = "Quick Swipes";
+			sourceTree = "<group>";
+		};
 		CD317D4D2BE97FFB008F63E2 /* Colors */ = {
 			isa = PBXGroup;
 			children = (
@@ -835,8 +846,8 @@
 		CD4ED8482BF1112A00EFA0A2 /* View Modifiers */ = {
 			isa = PBXGroup;
 			children = (
+				CD17B2492C191073001E174B /* Quick Swipes */,
 				CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */,
-				CDCA44942C17658000C092B3 /* View+QuickSwipes.swift */,
 				CDCA44B52C176C5000C092B3 /* View+EdgeBorders.swift */,
 			);
 			path = "View Modifiers";
@@ -1244,6 +1255,7 @@
 				CD4D58CB2B86DD3D00B82964 /* AssociatedIcon.swift in Sources */,
 				CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */,
 				CDE021AD2BFA43380052FD61 /* FeedPostView.swift in Sources */,
+				CD17B24B2C19109A001E174B /* SwipeConfiguration.swift in Sources */,
 				6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */,
 				03267D822BED489C009D6268 /* AvatarBannerView.swift in Sources */,
 				03500C2D2BF7FC2500CAA076 /* ToastView.swift in Sources */,

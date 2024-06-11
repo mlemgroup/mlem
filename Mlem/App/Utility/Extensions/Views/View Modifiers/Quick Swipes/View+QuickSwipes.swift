@@ -8,66 +8,6 @@
 import Dependencies
 import SwiftUI
 
-public struct SwipeConfiguration {
-    /// In ascending order of appearance.
-    let leadingActions: [BasicAction]
-    /// In ascending order of appearance.
-    let trailingActions: [BasicAction]
-    
-    let behavior: SwipeBehavior
-    
-    init(
-        leadingActions: [BasicAction] = [],
-        trailingActions: [BasicAction] = [],
-        behavior: SwipeBehavior = .standard
-    ) {
-        assert(
-            leadingActions.count <= 3 && trailingActions.count <= 3,
-            "Too many swipe actions!"
-        )
-        self.leadingActions = leadingActions.compactMap { $0 }
-        self.trailingActions = trailingActions.compactMap { $0 }
-        self.behavior = behavior
-    }
-}
-
-// MARK: - Drag Action Thresholds
-
-struct SwipeBehavior {
-    /// Minimum distance to trigger the primary action
-    let primaryThreshold: CGFloat
-    /// Minimum distance to trigger the secondary action
-    let secondaryThreshold: CGFloat
-    /// Minimum distance to trigger the tertiary action
-    let tertiaryThreshold: CGFloat
-    
-    var thresholds: [CGFloat] { [primaryThreshold, secondaryThreshold, tertiaryThreshold] }
-    
-    /// Minimum distance to trigger drag gesture
-    let minimumDrag: CGFloat
-    
-    /// Corner radius to clip the swipe view into
-    let cornerRadius: CGFloat
-    
-    static let standard: SwipeBehavior = .init(
-        primaryThreshold: 60,
-        secondaryThreshold: 150,
-        tertiaryThreshold: 240,
-        minimumDrag: 20,
-        cornerRadius: 0
-    )
-    
-    static let tile: SwipeBehavior = .init(
-        primaryThreshold: 40,
-        secondaryThreshold: 100,
-        tertiaryThreshold: 160,
-        minimumDrag: 10,
-        cornerRadius: AppConstants.tilePostCornerRadius
-    )
-}
-
-// MARK: -
-
 struct QuickSwipeView: ViewModifier {
     @Environment(Palette.self) var palette
     
@@ -80,13 +20,19 @@ struct QuickSwipeView: ViewModifier {
     @State var leadingSwipeSymbol: String?
     @State var trailingSwipeSymbol: String?
     
+    let config: SwipeConfiguration
+    
+    private let iconWidth: CGFloat
+    
     private var primaryLeadingAction: BasicAction? { config.leadingActions.first }
     private var primaryTrailingAction: BasicAction? { config.trailingActions.first }
     
-    let config: SwipeConfiguration
-    
     init(config: SwipeConfiguration) {
         self.config = config
+        
+        // this sets the icon to always be centered between the edge of the background and the edge of the swipeable item, as this is
+        // both the width of the icon's frame and its padding. the actual icon size is done using fonts.
+        self.iconWidth = config.behavior.primaryThreshold / 3
         
         _leadingSwipeSymbol = State(initialValue: primaryLeadingAction?.swipeIcon1)
         _trailingSwipeSymbol = State(initialValue: primaryTrailingAction?.swipeIcon1)
@@ -94,10 +40,7 @@ struct QuickSwipeView: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            // add a little shadow under the edge
-            .background {
-                shadowBackground
-            }
+            .background(shadowBackground)
             .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
             // needs to be high priority or else dragging on links leads to navigating to the link at conclusion of drag
             .highPriorityGesture(
@@ -115,12 +58,8 @@ struct QuickSwipeView: ViewModifier {
                     }
                 }
             )
-            .onChange(of: dragState) {
-                draggingUpdated()
-            }
-            .background {
-                iconBackground
-            }
+            .background(iconBackground)
+            .onChange(of: dragState, draggingUpdated)
             // prevents various animation glitches
             .transaction { transaction in
                 transaction.disablesAnimations = true
@@ -130,8 +69,8 @@ struct QuickSwipeView: ViewModifier {
             .clipShape(RoundedRectangle(cornerRadius: config.behavior.cornerRadius))
     }
     
-    /// Background that creates a little shadow under the edge of the swipable view
     var shadowBackground: some View {
+        // creates a shadow under the edge of the view
         Rectangle()
             .foregroundStyle(.clear)
             .border(width: 10, edges: [.leading, .trailing], color: .black)
@@ -140,25 +79,24 @@ struct QuickSwipeView: ViewModifier {
             .opacity(dragState == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
     }
     
-    /// Background that provides the icons and background color
     var iconBackground: some View {
         dragBackground
             .overlay {
                 HStack(spacing: 0) {
                     if dragState > 0 {
                         Image(systemName: leadingSwipeSymbol ?? Icons.warning)
-                            .font(.title)
-                            .frame(width: 20, height: 20)
+                            .font(.system(size: config.behavior.iconSize))
                             .foregroundColor(.white)
-                            .padding(.horizontal, 20)
+                            .frame(width: iconWidth)
+                            .padding(.horizontal, iconWidth)
                     }
                     Spacer()
                     if dragState < 0 {
                         Image(systemName: trailingSwipeSymbol ?? Icons.warning)
-                            .font(.title)
-                            .frame(width: 20, height: 20)
+                            .font(.system(size: config.behavior.iconSize))
                             .foregroundColor(iconColor ?? .white)
-                            .padding(.horizontal, 20)
+                            .frame(width: iconWidth)
+                            .padding(.horizontal, iconWidth)
                     }
                 }
                 .accessibilityHidden(true) // prevent these from popping up in VO

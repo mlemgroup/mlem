@@ -12,28 +12,67 @@ import SwiftUI
 /// View for rendering posts in feed
 /// The Loader/Content pattern is required to ensure that FeedPostView accurately picks up on changes to `@AppStorage("post.size")`; the raw ContentLoader doesn't evaluate `size` when deciding whether to re-render, so putting content in a simple `@ViewBuilder` function will not properly re-render on settings toggle.
 struct FeedPostView: View {
+    @AppStorage("beta.tilePosts") var tilePosts: Bool = false
+    
     let post: AnyPost
+    
+    var leadingActions: [BasicAction] {
+        [.init(
+            isOn: true,
+            label: "Test",
+            color: .blue,
+            icon: Icons.upvoteSquare,
+            swipeIcon1: Icons.upvoteSquare,
+            swipeIcon2: Icons.upvoteSquareFill
+        ) {
+            print("upvoted!")
+        },
+        .init(
+            isOn: true,
+            label: "Test",
+            color: .red,
+            icon: Icons.downvoteSquare,
+            swipeIcon1: Icons.downvoteSquare,
+            swipeIcon2: Icons.downvoteSquareFill
+        ) {
+            print("downvoted!")
+        }]
+    }
+    
+    var trailingActions: [BasicAction] {
+        [.init(
+            isOn: true,
+            label: "Test",
+            color: .green,
+            icon: Icons.save,
+            swipeIcon1: Icons.save,
+            swipeIcon2: Icons.saveFill
+        ) {
+            print("saved!")
+        }]
+    }
+    
+    var swipeConfiguration: SwipeConfiguration {
+        if tilePosts {
+            SwipeConfiguration(leadingActions: leadingActions, trailingActions: trailingActions, behavior: .tile)
+        } else {
+            SwipeConfiguration(leadingActions: leadingActions, trailingActions: trailingActions, behavior: .standard)
+        }
+    }
     
     var body: some View {
         ContentLoader(model: post) { post in
             Content(for: post)
                 .environment(\.postContext, post)
-                .quickSwipes(leading: [.init(
-                    isOn: true,
-                    label: "Test",
-                    color: .green,
-                    icon: Icons.save,
-                    swipeIcon1: Icons.save,
-                    swipeIcon2: Icons.saveFill
-                ) {
-                    print("swiped!")
-                }])
+                .quickSwipes(swipeConfiguration)
         }
     }
     
     private struct Content: View {
         @AppStorage("post.size") var size: PostSize = .large
         @AppStorage("beta.tilePosts") var tilePosts: Bool = false
+        
+        @Environment(Palette.self) var palette
         
         let post: any Post1Providing
         
