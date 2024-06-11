@@ -18,7 +18,7 @@ struct FancyScrollView<Content: View>: View {
     
     @ViewBuilder var content: () -> Content
     @Binding var isAtTop: Bool
-    @Binding var scrollToTopTrigger: Bool
+    @Binding var scrollToTopTrigger: Bool // TODO: investigate unifying this and isAtTop
     var reselectAction: (() -> Void)?
 
     private let model: ScrollViewModel = .init()
