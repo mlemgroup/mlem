@@ -87,8 +87,21 @@ struct QuickSwipeView: ViewModifier {
         ScrollViewReader { scrollProxy in
             ScrollView(.horizontal) {
                 HStack {
+                    Rectangle()
+                        .frame(width: 5)
+                        .padding(.trailing, 60)
+                        .onScrollVisibilityChange(threshold: 1.0) { visible in
+                            // put edge detection logic in here
+                            if visible {
+                                print("leading 1 visible")
+                            } else {
+                                print("leading 1 invisible")
+                            }
+                        }
+                    
                     content
                         .id("content")
+                        .background(palette.background)
                         .background {
                             Rectangle()
                                 .foregroundStyle(.clear)
@@ -97,20 +110,9 @@ struct QuickSwipeView: ViewModifier {
                                 .shadow(radius: 5)
                             // .opacity(dragState == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
                         }
-                        .background {
-                            GeometryReader { geoProxy in
-                                Rectangle()
-                                    .fill(Color.clear)
-                                    .onChange(of: geoProxy.frame(in: .named("swipeCoords"))) {
-                                        // put edge detection logic here
-                                        print("DEBUG \(geoProxy.frame(in: .named("swipeCoords")))")
-                                    }
-                            }
-                        }
                 }
                 .padding(.horizontal, UIScreen.main.bounds.width)
             }
-            .coordinateSpace(name: "swipeCoords")
             .onAppear {
                 scrollProxy.scrollTo("content")
             }
