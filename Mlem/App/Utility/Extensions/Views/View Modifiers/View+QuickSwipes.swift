@@ -84,8 +84,42 @@ struct QuickSwipeView: ViewModifier {
     
     // swiftlint:disable function_body_length
     func body(content: Content) -> some View {
-        ScrollView(.horizontal) {
-            content
+        ScrollViewReader { scrollProxy in
+            ScrollView(.horizontal) {
+                HStack {
+                    content
+                        .id("content")
+                        .background {
+                            Rectangle()
+                                .foregroundStyle(.clear)
+                                .border(width: 10, edges: [.leading, .trailing], color: .black)
+                                // .clipShape(RoundedRectangle(cornerRadius: 16))
+                                .shadow(radius: 5)
+                            // .opacity(dragState == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
+                        }
+                        .background {
+                            GeometryReader { geoProxy in
+                                Rectangle()
+                                    .fill(Color.clear)
+                                    .onChange(of: geoProxy.frame(in: .named("swipeCoords"))) {
+                                        // put edge detection logic here
+                                        print("DEBUG \(geoProxy.frame(in: .named("swipeCoords")))")
+                                    }
+                            }
+                        }
+                }
+                .padding(.horizontal, UIScreen.main.bounds.width)
+            }
+            .coordinateSpace(name: "swipeCoords")
+            .onAppear {
+                scrollProxy.scrollTo("content")
+            }
+            .onScrollPhaseChange { _, newPhase in
+                if [.decelerating, .animating, .idle].contains(newPhase) {
+                    // put action here
+                    scrollProxy.scrollTo("content")
+                }
+            }
         }
 //            // add a little shadow under the edge
 //            .background {

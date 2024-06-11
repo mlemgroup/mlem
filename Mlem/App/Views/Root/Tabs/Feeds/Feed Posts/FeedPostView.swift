@@ -45,14 +45,17 @@ struct FeedPostView: View {
             if tilePosts {
                 TilePostView(post: post)
             } else {
-                switch size {
-                case .compact:
-                    CompactPostView(post: post)
-                case .headline:
-                    HeadlinePostView(post: post)
-                case .large:
-                    LargePostView(post: post)
+                Group {
+                    switch size {
+                    case .compact:
+                        CompactPostView(post: post)
+                    case .headline:
+                        HeadlinePostView(post: post)
+                    case .large:
+                        LargePostView(post: post)
+                    }
                 }
+                .frame(width: UIScreen.main.bounds.width)
             }
         }
     }
