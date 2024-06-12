@@ -1,10 +1,11 @@
 //
-//  SearchTabPicker.swift
+//  BubblePickerView.swift
 //  Mlem
 //
 //  Created by Sjmarf on 18/09/2023.
 //
- 
+
+import Dependencies
 import SwiftUI
 
 enum DividerPlacement {
@@ -17,17 +18,20 @@ struct BubblePickerItemFrame: Equatable {
 }
 
 struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
+    // @Dependency(\.hapticManager) var hapticManager
+    
     @Environment(Palette.self) var palette
     
     @Binding var selected: Value
-    let tabs: [Value]
-    let dividers: Set<DividerPlacement>
-    let label: (Value) -> String
-    let value: (Value) -> Int?
     
     // currentTabIndex is used to drive the capsule animation; it is tracked separately from selected so that the capsule animations can be triggered independently of any animation (or lack thereof) that is desired on selected
     @State var currentTabIndex: Int
     @State var sizes: [BubblePickerItemFrame]
+    
+    let tabs: [Value]
+    let dividers: Set<DividerPlacement>
+    let label: (Value) -> String
+    let value: (Value) -> Int?
     let spaceName: String = UUID().uuidString
     
     init(
@@ -77,8 +81,8 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                         .coordinateSpace(name: spaceName)
                 }
                 .scrollIndicators(.hidden)
-                .onChange(of: selected) { newValue in
-                    let newIndex = tabs.firstIndex(of: newValue) ?? 0
+                .onChange(of: selected) {
+                    let newIndex = tabs.firstIndex(of: selected) ?? 0
                     withAnimation(.interactiveSpring(response: 0.2, dampingFraction: 0.8)) {
                         currentTabIndex = newIndex
                         scrollProxy.scrollTo(newIndex)
@@ -127,7 +131,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
     ) -> some View {
         Button {
             selected = tab
-//            hapticManager.play(haptic: .gentleInfo, priority: .low)
+            // hapticManager.play(haptic: .gentleInfo, priority: .low)
         } label: {
             bubbleButtonLabel(tab: tab, isSelected: isSelected)
         }
@@ -169,7 +173,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
             Text(label(tab))
                 .font(.subheadline)
                 .fontWeight(.semibold)
-                .foregroundColor(isSelected ? .white : .primary)
+                .foregroundColor(isSelected ? .white : palette.primary)
             if let value {
                 Text(value.abbreviated)
                     .monospacedDigit()
@@ -198,3 +202,26 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
         .contentShape(Rectangle())
     }
 }
+
+// #Preview {
+//    @State var selected: InstanceViewTab = .administration
+//    return BubblePicker(
+//        InstanceViewTab.allCases,
+//        selected: $selected,
+//        label: { $0.label },
+//        value: { item in
+//            switch item {
+//            case .about:
+//                0
+//            case .administration:
+//                5
+//            case .details:
+//                9_950_000
+//            case .uptime:
+//                10_000_000
+//            default:
+//                nil
+//            }
+//        }
+//    )
+// }

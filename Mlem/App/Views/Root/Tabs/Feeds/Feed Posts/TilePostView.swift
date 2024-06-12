@@ -17,7 +17,7 @@ struct TilePostView: View {
     let post: any Post1Providing
 
     @ScaledMetric(relativeTo: .footnote) var minTitleHeight: CGFloat = 36 // (2 * .footnote height), including built-in spacing
-    var dimension: CGFloat { (UIScreen.main.bounds.width / 2) - (AppConstants.standardSpacing * 1.5) }
+    var dimension: CGFloat { (UIScreen.main.bounds.width - (AppConstants.standardSpacing * 3)) / 2 }
     var frameHeight: CGFloat {
         dimension + // picture
             minTitleHeight + // title section
@@ -62,28 +62,15 @@ struct TilePostView: View {
     
     @ViewBuilder
     var titleSection: some View {
-        if case .text = post.type {
-            VStack(spacing: 2) {
-                Text(post.title)
-                    .font(.footnote)
-                    .fontWeight(.semibold)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .frame(minHeight: minTitleHeight, maxHeight: .infinity, alignment: .top)
-                
-                communityAndInfo
-            }
-            .frame(idealHeight: 0)
-        } else {
-            VStack(spacing: 2) {
-                Text(post.title)
-                    .lineLimit(2)
-                    .font(.footnote)
-                    .fontWeight(.semibold)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .frame(height: minTitleHeight, alignment: .top)
-                
-                communityAndInfo
-            }
+        VStack(spacing: 4) {
+            Text(post.title)
+                .lineLimit(post.type.lineLimit)
+                .foregroundStyle(post.read_ ?? false ? .secondary : .primary)
+                .font(.footnote)
+                .fontWeight(.semibold)
+                .frame(maxWidth: .infinity, minHeight: minTitleHeight, alignment: .topLeading)
+            
+            communityAndInfo
         }
     }
     
@@ -171,8 +158,8 @@ struct TilePostView: View {
             .lineLimit(1)
             .font(.caption)
             .foregroundStyle(.secondary)
+            .contentShape(.rect)
         }
-        .contentShape(.rect)
         .onTapGesture {}
     }
 }
