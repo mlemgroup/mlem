@@ -98,16 +98,21 @@ struct MinimalPostFeedView: View {
             }
             .task(id: appState.firstApi) {
                 do {
-                    try await postFeedLoader.refresh(clearBeforeRefresh: true)
+                    try await postFeedLoader.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
                 } catch {
                     handleError(error)
                 }
             }
-            .task(id: appState.firstApi) {
-                do {
-                    try await postFeedLoader.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
-                } catch {
-                    handleError(error)
+            .task {
+                // NOTE: this is here due to an error in StandardPostFeedLoader where changing feed type doesn't properly reload, resulting in
+                // the first render not triggering a load. I'm currently working on a fix, but it's OOS for filtering
+                // -Eric
+                if postFeedLoader.items.isEmpty, postFeedLoader.loadingState == .idle {
+                    do {
+                        try await postFeedLoader.refresh(clearBeforeRefresh: true)
+                    } catch {
+                        handleError(error)
+                    }
                 }
             }
             .refreshable {

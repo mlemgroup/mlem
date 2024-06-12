@@ -36,7 +36,7 @@ struct AvatarView: View {
             .aspectRatio(1, contentMode: .fill)
             .clipShape(Circle())
             .background {
-                if url != nil, loading {
+                if url != nil, loading, showLoadingPlaceholder {
                     ProgressView()
                 } else if url == nil {
                     DefaultAvatarView(avatarType: type)

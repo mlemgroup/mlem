@@ -8,30 +8,61 @@
 import Dependencies
 import Foundation
 import MlemMiddleware
-import Observation
+import SwiftUI
 
 @Observable
 class AppState {
-    private(set) var guestSession: GuestSession!
-    private(set) var activeSessions: [UserSession] = []
+    private(set) var guestSession: GuestSession! {
+        didSet {
+            if oldValue != guestSession {
+                oldValue?.deactivate()
+            }
+        }
+    }
+    
+    private(set) var activeSessions: [UserSession] = [] {
+        didSet {
+            if oldValue != activeSessions {
+                for session in Set(oldValue).subtracting(activeSessions) {
+                    session.deactivate()
+                }
+            }
+        }
+    }
+    
+    /// ``ContentView`` watches this for changes. When it is toggled, the app is refreshed.
+    var appRefreshToggle: Bool = true
     
     private init() {
         self.guestSession = .init(account: AccountsTracker.main.defaultGuestAccount)
-        changeAccount(to: AccountsTracker.main.defaultAccount, deactivateOldGuest: false)
+        setAccount(to: AccountsTracker.main.defaultAccount)
     }
     
-    func changeAccount(to account: any Account) {
-        changeAccount(to: account, deactivateOldGuest: true)
-    }
-    
-    private func changeAccount(to account: any Account, deactivateOldGuest: Bool) {
-        ToastModel.main.add(.account(account))
-        
-        activeSessions.forEach { $0.deactivate() }
-        if deactivateOldGuest {
-            guestSession?.deactivate()
+    /// If `keepPlace` is `nil`, use the value from `UserDefaults`.
+    func changeAccount(to account: any Account, keepPlace: Bool? = nil) {
+        @AppStorage("accounts.keepPlace") var keepPlaceSetting = false
+        let keepPlace = keepPlace ?? keepPlaceSetting
+        if keepPlace {
+            ToastModel.main.add(.account(account))
+            setAccount(to: account)
+        } else {
+            transition(account)
+            // The delays between these events are necessary to stop SwiftUIIntrospect from causing a lag spike.
+            // That library seems to not like us adding subviews to the window directly. For some reason adding
+            // these delays fixes that.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.appRefreshToggle = false
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                self.setAccount(to: account)
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                self.appRefreshToggle = true
+            }
         }
-        
+    }
+    
+    private func setAccount(to account: any Account) {
         // Save because we updated `lastUsed` in the above `deactivate()` calls
         AccountsTracker.main.saveAccounts(ofType: .all)
         

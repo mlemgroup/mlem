@@ -6,6 +6,7 @@
 //
 
 import Combine
+import MlemMiddleware
 import SwiftUI
 import UniformTypeIdentifiers
 
@@ -30,5 +31,12 @@ struct ErrorDetails: Hashable {
 
     static func == (lhs: ErrorDetails, rhs: ErrorDetails) -> Bool {
         lhs.hashValue == rhs.hashValue
+    }
+    
+    var errorText: String {
+        if let error = error as? ApiClientError {
+            return error.description
+        }
+        return error?.localizedDescription ?? ""
     }
 }
