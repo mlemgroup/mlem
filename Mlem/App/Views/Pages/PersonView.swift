@@ -27,11 +27,9 @@ struct PersonView: View {
     var body: some View {
         if #available(iOS 17.1, *) {
             Self._printChanges()
-        } else {
-            // Fallback on earlier versions
         }
         return ContentLoader(model: person) { person, isLoading in
-            // print("REFRESH3", posts.count)
+            // print("REFRESH", posts.count)
             content(person: person)
                 .externalApiWarning(entity: person, isLoading: isLoading)
                 .toolbar {
@@ -61,8 +59,7 @@ struct PersonView: View {
     
     @ViewBuilder
     func content(person: any Person) -> some View {
-        print("REFRESH4")
-        return FancyScrollView(isAtTop: $isAtTop) {
+        FancyScrollView(isAtTop: $isAtTop) {
             VStack(spacing: AppConstants.standardSpacing) {
                 ProfileHeaderView(person, type: .person)
                     .padding(.horizontal, AppConstants.standardSpacing)
@@ -120,8 +117,7 @@ struct PersonView: View {
     
     @ViewBuilder
     func personContent(person: any Person3Providing) -> some View {
-        print("REFRESH5")
-        return VStack {
+        VStack {
             BubblePicker(
                 tabs(person: person),
                 selected: $selectedTab,

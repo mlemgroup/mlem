@@ -35,8 +35,7 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
     }
     
     var body: some View {
-        print("REFRESH2")
-        return VStack {
+        VStack {
             if let modelValue = model.wrappedValue as? Model.MinimumRenderable {
                 content(modelValue, upgradeState == .loading)
             } else {
