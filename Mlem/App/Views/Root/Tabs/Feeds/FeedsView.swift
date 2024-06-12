@@ -84,16 +84,18 @@ struct MinimalPostFeedView: View {
                     columns = [GridItem(.flexible())]
                 }
             }
-            .task(id: showRead) {
+            .onChange(of: showRead) {
                 scrollToTopTrigger.toggle()
-                do {
-                    if showRead {
-                        try await postFeedLoader.removeFilter(.read)
-                    } else {
-                        try await postFeedLoader.addFilter(.read)
+                Task {
+                    do {
+                        if showRead {
+                            try await postFeedLoader.removeFilter(.read)
+                        } else {
+                            try await postFeedLoader.addFilter(.read)
+                        }
+                    } catch {
+                        handleError(error)
                     }
-                } catch {
-                    handleError(error)
                 }
             }
             .task(id: appState.firstApi) {
