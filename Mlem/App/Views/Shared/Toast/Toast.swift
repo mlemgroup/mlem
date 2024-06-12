@@ -19,11 +19,13 @@ class Toast: Identifiable, Hashable {
     
     var shouldTimeout: Bool = true {
         didSet {
-            if shouldTimeout {
-                startKillTask()
-            } else {
-                killTask?.cancel()
-                killTask = nil
+            if oldValue != shouldTimeout {
+                if shouldTimeout {
+                    startKillTask()
+                } else {
+                    killTask?.cancel()
+                    killTask = nil
+                }
             }
         }
     }
@@ -48,7 +50,9 @@ class Toast: Identifiable, Hashable {
                 try await Task.sleep(
                     nanoseconds: UInt64(1_000_000_000 * type.duration)
                 )
-                self.kill()
+                Task { @MainActor in
+                    self.kill()
+                }
             }
         }
     }
@@ -58,6 +62,7 @@ class Toast: Identifiable, Hashable {
         hasher.combine(type)
         hasher.combine(location)
         hasher.combine(important)
+        hasher.combine(shouldTimeout)
     }
     
     static func == (lhs: Toast, rhs: Toast) -> Bool {
