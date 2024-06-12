@@ -136,11 +136,11 @@ struct PersonView: View {
                     }
                 }
             )
-            ForEach(posts, id: \.id) { post in
-                Text(post.title)
-                // FeedPostView(post: post)
-                Divider()
-            }
+            // I was going to render this, but there's some weird view update issues going on with ContentLoader that we'll need to work out first...
+//            ForEach(posts, id: \.id) { post in
+//                FeedPostView(post: post)
+//                Divider()
+//            }
         }
     }
     
