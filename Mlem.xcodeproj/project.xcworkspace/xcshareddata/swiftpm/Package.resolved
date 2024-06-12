@@ -1,5 +1,4 @@
 {
-  "originHash" : "b159f0a20b9c47bf2fae7b8e8322b8f3fff96046592270bf1b94b96530aa91b0",
   "pins" : [
     {
       "identity" : "combine-schedulers",
@@ -16,7 +15,7 @@
       "location" : "https://github.com/kishikawakatsumi/KeychainAccess.git",
       "state" : {
         "branch" : "master",
-        "revision" : "ecb18d8ce4d88277cc4fb103973352d91e18c535"
+        "revision" : "e0c7eebc5a4465a3c4680764f26b7a61f567cdaf"
       }
     },
     {
@@ -42,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kean/Nuke",
       "state" : {
-        "revision" : "2efd206503e99dd3a88a4dc433a76f98ce8cc198",
-        "version" : "12.7.1"
+        "revision" : "084076db4f9b9ee4db51177ef5a4879689c1aa09",
+        "version" : "12.7.2"
       }
     },
     {
@@ -87,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/siteline/SwiftUI-Introspect",
       "state" : {
-        "revision" : "0cd2a5a5895306bc21d54a2254302d24a9a571e4",
-        "version" : "1.1.3"
+        "revision" : "7dc5b287f8040e4ad5038739850b758e78f77808",
+        "version" : "1.1.4"
       }
     },
     {
@@ -101,5 +100,5 @@
       }
     }
   ],
-  "version" : 3
+  "version" : 2
 }
