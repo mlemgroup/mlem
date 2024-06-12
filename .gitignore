@@ -40,9 +40,6 @@ Temporary Items
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
-## Package.resolved
-Package.resolved
-
 ## User settings
 xcuserdata/
 
