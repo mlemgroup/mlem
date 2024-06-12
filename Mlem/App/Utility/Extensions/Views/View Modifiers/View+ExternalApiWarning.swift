@@ -47,7 +47,10 @@ private struct ExternalApiWarningModifier: ViewModifier {
             .foregroundStyle(palette.primary.opacity(0.5))
             Spacer()
             Button("More Info", systemImage: "questionmark.circle") {
-                navigation.openSheet(.externalApiInfo(api: entity.api))
+                navigation.openSheet(.externalApiInfo(
+                    api: entity.api,
+                    actorId: entity.actorId
+                ))
             }
             .labelStyle(.iconOnly)
         }

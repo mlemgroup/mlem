@@ -17,7 +17,18 @@ struct ExternalApiInfoView: View {
     @State private var externalFederationStatus: FederationStatus?
     @State private var externalInstance: Instance3?
     
-    let api: ApiClient
+    /// The ``ApiClient`` of the model being inspected.
+    let fallbackApi: ApiClient
+    /// The `host` of the model being inspected.
+    let entityActorId: URL
+    /// The local ``ApiClient`` of the model, created using `entityHost`.
+    let entityLocalApi: ApiClient
+    
+    init(api: ApiClient, actorId: URL) {
+        self.fallbackApi = api
+        self.entityActorId = actorId
+        self.entityLocalApi = .getApiClient(for: actorId.removingPathComponents(), with: nil)
+    }
     
     var body: some View {
         VStack {
@@ -45,7 +56,7 @@ struct ExternalApiInfoView: View {
                 if internalFederationStatus?.isAllowed ?? false, externalFederationStatus?.isAllowed ?? false {
                     Text(
                         // swiftlint:disable:next line_length
-                        "Your instance and **\(api.host ?? "")** appear to be federating with one another, but we weren't able to access this content from your instance. This could be because the content is new, and hasn't federated to your instance yet. Or, it could be because your instance has purged this content."
+                        "Your instance and **\(entityLocalApi.host ?? "")** appear to be federating with one another, but we weren't able to access this content from your instance. This could be because the content is new, and hasn't federated to your instance yet. Or, it could be because your instance has purged this content."
                     )
                     .padding(.horizontal, AppConstants.standardSpacing)
                 } else {
@@ -57,7 +68,7 @@ struct ExternalApiInfoView: View {
                 }
             }
             box(alignment: .leading) {
-                Text("To work around this, we're accessing this content from **\(api.host ?? "")** instead of your instance.")
+                Text("To work around this, we're accessing this content from **\(fallbackApi.host ?? "")** instead of your instance.")
                     .padding(.horizontal, AppConstants.standardSpacing)
             }
             box(alignment: .leading, spacing: 6) {
@@ -115,7 +126,7 @@ struct ExternalApiInfoView: View {
     }
     
     var text: LocalizedStringKey {
-        let externalHost = api.host ?? ""
+        let externalHost = entityLocalApi.host ?? ""
         let internalHost = appState.firstApi.host ?? ""
         switch (externalFederationStatus?.isAllowed ?? false, internalFederationStatus?.isAllowed ?? false) {
         case (false, false):
@@ -138,30 +149,22 @@ struct ExternalApiInfoView: View {
     }
     
     @Sendable
+    @MainActor
     func loadData() async {
         do {
-            let externalApi = api
+            let externalApi = entityLocalApi
             let internalApi = appState.firstApi
             
             async let externalFederationStatus = await externalApi.federatedWith(with: internalApi.baseUrl)
             async let internalFederationStatus = await internalApi.federatedWith(with: externalApi.baseUrl)
             async let externalInstance = await externalApi.getMyInstance()
             
-            let externalInstanceResponse = try await externalInstance
-            let externalFederationStatusResponse = try await externalFederationStatus
-            let internalFederationStatusResponse = try await internalFederationStatus
-            
-            Task { @MainActor in
-                self.externalFederationStatus = externalFederationStatusResponse
-                self.internalFederationStatus = internalFederationStatusResponse
-                self.externalInstance = externalInstanceResponse
-                isLoading = false
-            }
-            
+            self.externalFederationStatus = try await externalFederationStatus
+            self.internalFederationStatus = try await internalFederationStatus
+            self.externalInstance = try await externalInstance
+            isLoading = false
         } catch {
-            Task { @MainActor in
-                isLoading = false
-            }
+            isLoading = false
         }
     }
 }
