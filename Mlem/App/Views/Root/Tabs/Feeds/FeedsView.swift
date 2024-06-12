@@ -103,8 +103,14 @@ struct MinimalPostFeedView: View {
                 ForEach(postTracker.items, id: \.uid) { post in
                     VStack(spacing: 0) { // this improves performance O_o
                         NavigationLink(value: NavigationPage.expandedPost(post)) {
-                            FeedPostView(post: .init(post))
-                                .contentShape(.rect)
+                            Group {
+                                if tilePosts {
+                                    TilePostView(post: post)
+                                } else {
+                                    FeedPostView(post: post)
+                                }
+                            }
+                            .contentShape(.rect)
                         }
                         .buttonStyle(EmptyButtonStyle())
                         if !tilePosts { Divider() }

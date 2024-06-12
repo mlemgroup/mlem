@@ -41,21 +41,30 @@ struct ExternalApiInfoView: View {
     @ViewBuilder
     var content: some View {
         VStack(spacing: 16) {
-            box(spacing: 0) {
-                avatars
-                    .padding(.horizontal, 16)
-                Spacer()
-                Text(text)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 16)
+            box(spacing: 16) {
+                if internalFederationStatus?.isAllowed ?? false, externalFederationStatus?.isAllowed ?? false {
+                    Text(
+                        // swiftlint:disable:next line_length
+                        "Your instance and **\(api.host ?? "")** appear to be federating with one another, but we weren't able to access this content from your instance. This could be because the content is new, and hasn't federated to your instance yet. Or, it could be because your instance has purged this content."
+                    )
+                    .padding(.horizontal, AppConstants.standardSpacing)
+                } else {
+                    avatars
+                        .padding(.horizontal, 16)
+                    Text(text)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 16)
+                }
             }
-            box(alignment: .leading, spacing: 2) {
+            box(alignment: .leading) {
+                Text("To work around this, we're accessing this content from **\(api.host ?? "")** instead of your instance.")
+                    .padding(.horizontal, AppConstants.standardSpacing)
+            }
+            box(alignment: .leading, spacing: 6) {
                 Text("What is Federation?")
                     .font(.title2)
-                    .fontWeight(.semibold)
+                    .fontWeight(.bold)
                     .padding(.horizontal, AppConstants.standardSpacing)
-                
-                Divider()
                 
                 Text(
                     // swiftlint:disable:next line_length
@@ -136,14 +145,16 @@ struct ExternalApiInfoView: View {
             
             async let externalFederationStatus = await externalApi.federatedWith(with: internalApi.baseUrl)
             async let internalFederationStatus = await internalApi.federatedWith(with: externalApi.baseUrl)
+            async let externalInstance = await externalApi.getMyInstance()
             
-            let externalInstance = try await externalApi.getMyInstance()
-            let resolvedExternalFederationStatus = try await externalFederationStatus
-            let resolvedInternalFederationStatus = try await internalFederationStatus
+            let externalInstanceResponse = try await externalInstance
+            let externalFederationStatusResponse = try await externalFederationStatus
+            let internalFederationStatusResponse = try await internalFederationStatus
+            
             Task { @MainActor in
-                self.externalFederationStatus = resolvedExternalFederationStatus
-                self.internalFederationStatus = resolvedInternalFederationStatus
-                self.externalInstance = externalInstance
+                self.externalFederationStatus = externalFederationStatusResponse
+                self.internalFederationStatus = internalFederationStatusResponse
+                self.externalInstance = externalInstanceResponse
                 isLoading = false
             }
             

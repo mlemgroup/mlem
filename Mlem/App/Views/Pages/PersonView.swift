@@ -18,13 +18,42 @@ struct PersonView: View {
     }
     
     @State var person: AnyPerson
-    @State var selectedTab: Tab = .overview
-    @State var isAtTop: Bool = true
+    @State private var selectedTab: Tab = .overview
+    @State private var isAtTop: Bool = true
+    
+    // This will a post tracker in future - this is just a proof-of-concept for post loading
+    @State var posts: [Post2] = []
     
     var body: some View {
-        ContentLoader(model: person) { person in
+        if #available(iOS 17.1, *) {
+            Self._printChanges()
+        } else {
+            // Fallback on earlier versions
+        }
+        return ContentLoader(model: person) { person, isLoading in
+            // print("REFRESH3", posts.count)
             content(person: person)
-                .externalApiWarning(entity: person)
+                .externalApiWarning(entity: person, isLoading: isLoading)
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        if person is any Person3Providing, isLoading {
+                            ProgressView()
+                        } else {
+                            ToolbarEllipsisMenu {}
+                        }
+                    }
+                }
+        } upgradeOperation: { model, api in
+            try await model.upgrade(api: api) { entity in
+                if let entity = entity as? any Person1Providing {
+                    let response = try await entity.getPosts(page: 1, limit: 3)
+                    Task { @MainActor in
+                        posts = response.posts
+                    }
+                    return response.person
+                }
+                return try await entity.upgrade()
+            }
         }
         .navigationTitle(isAtTop ? "" : (person.wrappedValue.displayName_ ?? person.wrappedValue.name))
         .navigationBarTitleDisplayMode(.inline)
@@ -32,7 +61,8 @@ struct PersonView: View {
     
     @ViewBuilder
     func content(person: any Person) -> some View {
-        FancyScrollView(isAtTop: $isAtTop) {
+        print("REFRESH4")
+        return FancyScrollView(isAtTop: $isAtTop) {
             VStack(spacing: AppConstants.standardSpacing) {
                 ProfileHeaderView(person, type: .person)
                     .padding(.horizontal, AppConstants.standardSpacing)
@@ -52,12 +82,6 @@ struct PersonView: View {
                 }
             }
             .animation(.easeOut(duration: 0.2), value: person is any Person3Providing)
-        }
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                // TODO:
-                ToolbarEllipsisMenu {}
-            }
         }
     }
     
@@ -96,24 +120,32 @@ struct PersonView: View {
     
     @ViewBuilder
     func personContent(person: any Person3Providing) -> some View {
-        BubblePicker(
-            tabs(person: person),
-            selected: $selectedTab,
-            withDividers: [.top, .bottom],
-            label: \.label,
-            value: { tab in
-                switch tab {
-                case .posts:
-                    person.postCount
-                case .comments:
-                    person.commentCount
-                case .communities:
-                    person.moderatedCommunities.count
-                default:
-                    nil
+        print("REFRESH5")
+        return VStack {
+            BubblePicker(
+                tabs(person: person),
+                selected: $selectedTab,
+                withDividers: [.top, .bottom],
+                label: \.label,
+                value: { tab in
+                    switch tab {
+                    case .posts:
+                        person.postCount
+                    case .comments:
+                        person.commentCount
+                    case .communities:
+                        person.moderatedCommunities.count
+                    default:
+                        nil
+                    }
                 }
+            )
+            ForEach(posts, id: \.id) { post in
+                Text(post.title)
+                // FeedPostView(post: post)
+                Divider()
             }
-        )
+        }
     }
     
     func tabs(person: any Person3Providing) -> [Tab] {

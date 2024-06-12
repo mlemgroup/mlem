@@ -13,11 +13,12 @@ private struct ExternalApiWarningModifier: ViewModifier {
     @Environment(NavigationLayer.self) var navigation
     
     let entity: any ContentStub
+    let isLoading: Bool
 
     func body(content: Content) -> some View {
         content
             .safeAreaInset(edge: .top) {
-                if !entity.api.isActive {
+                if !isLoading, !entity.api.isActive {
                     label
                         .padding(8)
                         .frame(maxWidth: .infinity)
@@ -40,7 +41,7 @@ private struct ExternalApiWarningModifier: ViewModifier {
         HStack {
             (
                 Text("Viewing ")
-                    + Text(entity.host ?? "page").fontWeight(.semibold)
+                    + Text(entity.api.host ?? "page").fontWeight(.semibold)
                     + Text(" as guest")
             )
             .foregroundStyle(palette.primary.opacity(0.5))
@@ -54,7 +55,7 @@ private struct ExternalApiWarningModifier: ViewModifier {
 }
 
 extension View {
-    func externalApiWarning(entity: any ContentStub) -> some View {
-        modifier(ExternalApiWarningModifier(entity: entity))
+    func externalApiWarning(entity: any ContentStub, isLoading: Bool) -> some View {
+        modifier(ExternalApiWarningModifier(entity: entity, isLoading: isLoading))
     }
 }

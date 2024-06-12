@@ -15,7 +15,7 @@ struct ExpandedPostView: View {
     let post: AnyPost
     
     var body: some View {
-        ContentLoader(model: post) { post1 in
+        ContentLoader(model: post) { post1, _ in
             content(for: post1)
         }
     }
