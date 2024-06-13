@@ -11,6 +11,61 @@ import Observation
 
 // TODO: need a StoredUserAccount that is codable but has no ApiClient; this can then have an async initializer. Remove the Codable conformance from Account.
 
+struct StoredAccount: Codable {
+    let actorId: URL
+    let id: Int
+    let name: String
+    var storedNickname: String?
+    var cachedSiteVersion: SiteVersion?
+    var avatar: URL?
+    var lastUsed: Date?
+    let baseUrl: URL
+    
+    enum CodingKeys: String, CodingKey {
+        // These key names don't match the identifiers of their corresponding properties - this is because these key names must match the property names used in SavedAccount pre-1.3 in order to maintain compatibility
+        case id, username, storedNickname, instanceLink, siteVersion, avatarUrl, lastUsed
+    }
+    
+    enum DecodingError: Error {
+        case cannotRemoveExtraneousPathComponents
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        // copy simple values
+        self.id = try values.decode(Int.self, forKey: .id)
+        self.name = try values.decode(String.self, forKey: .username)
+        self.storedNickname = try values.decode(String?.self, forKey: .storedNickname)
+        self.cachedSiteVersion = try values.decode(SiteVersion?.self, forKey: .siteVersion)
+        self.avatar = try values.decode(URL?.self, forKey: .avatarUrl)
+        self.lastUsed = try values.decode(Date?.self, forKey: .lastUsed)
+
+        // parse instance link
+        let instanceLink = try values.decode(URL.self, forKey: .instanceLink)
+        // Remove the "api/v3" path that we attached to the instanceLink pre-2.0
+        var components = URLComponents(url: instanceLink, resolvingAgainstBaseURL: false)!
+        components.path = ""
+        guard let instanceLink = components.url else { throw DecodingError.cannotRemoveExtraneousPathComponents }
+        self.baseUrl = instanceLink
+        
+        // parse actor id
+        let actorId = parseActorId(instanceLink: instanceLink, name: name)
+        self.actorId = actorId
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(name, forKey: .username)
+        try container.encode(storedNickname, forKey: .storedNickname)
+        try container.encode(cachedSiteVersion, forKey: .siteVersion)
+        try container.encode(avatar, forKey: .avatarUrl)
+        try container.encode(lastUsed, forKey: .lastUsed)
+        try container.encode(baseUrl, forKey: .instanceLink)
+    }
+}
+
 @Observable
 class UserAccount: Account, CommunityOrPersonStub {
     static let tierNumber: Int = 1
@@ -36,55 +91,76 @@ class UserAccount: Account, CommunityOrPersonStub {
         self.lastUsed = .now
     }
     
-    enum CodingKeys: String, CodingKey {
-        // These key names don't match the identifiers of their corresponding properties - this is because these key names must match the property names used in SavedAccount pre-1.3 in order to maintain compatibility
-        case id, username, storedNickname, instanceLink, siteVersion, avatarUrl, lastUsed
+    enum AccountError: Error {
+        case noTokenInKeychain
     }
     
-    enum DecodingError: Error {
-        case cannotRemoveExtraneousPathComponents, noTokenInKeychain
-    }
-    
-    required init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        
-        // copy simple values
-        self.id = try values.decode(Int.self, forKey: .id)
-        self.name = try values.decode(String.self, forKey: .username)
-        self.storedNickname = try values.decode(String?.self, forKey: .storedNickname)
-        self.cachedSiteVersion = try values.decode(SiteVersion?.self, forKey: .siteVersion)
-        self.avatar = try values.decode(URL?.self, forKey: .avatarUrl)
-        self.lastUsed = try values.decode(Date?.self, forKey: .lastUsed)
-
-        // parse instance link
-        let instanceLink = try values.decode(URL.self, forKey: .instanceLink)
-        // Remove the "api/v3" path that we attached to the instanceLink pre-2.0
-        var components = URLComponents(url: instanceLink, resolvingAgainstBaseURL: false)!
-        components.path = ""
-        guard let instanceLink = components.url else { throw DecodingError.cannotRemoveExtraneousPathComponents }
-        
-        // parse actor id
-        let actorId = parseActorId(instanceLink: instanceLink, name: name)
-        self.actorId = actorId
+    init(storedAccount: StoredAccount) async throws {
+        self.actorId = storedAccount.actorId
+        self.id = storedAccount.id
+        self.name = storedAccount.name
+        self.storedNickname = storedAccount.storedNickname
+        self.cachedSiteVersion = storedAccount.cachedSiteVersion
+        self.avatar = storedAccount.avatar
+        self.lastUsed = storedAccount.lastUsed
         
         // retrive token and initialize ApiClient
         guard let token = AppConstants.keychain[getKeychainId(actorId: actorId)] ?? AppConstants.keychain[getKeychainId(id: id)] else {
-            throw DecodingError.noTokenInKeychain
+            throw AccountError.noTokenInKeychain
         }
-        self.api = ApiClient.getApiClient(for: instanceLink, with: token)
+        
+        self.api = await ApiClient.getApiClient(for: storedAccount.baseUrl, with: token)
     }
     
-    func encode(to encoder: Encoder) throws {
-        saveTokenToKeychain()
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
-        try container.encode(name, forKey: .username)
-        try container.encode(storedNickname, forKey: .storedNickname)
-        try container.encode(cachedSiteVersion, forKey: .siteVersion)
-        try container.encode(avatar, forKey: .avatarUrl)
-        try container.encode(lastUsed, forKey: .lastUsed)
-        try container.encode(api.baseUrl, forKey: .instanceLink)
-    }
+//    enum CodingKeys: String, CodingKey {
+//        // These key names don't match the identifiers of their corresponding properties - this is because these key names must match the property names used in SavedAccount pre-1.3 in order to maintain compatibility
+//        case id, username, storedNickname, instanceLink, siteVersion, avatarUrl, lastUsed
+//    }
+//
+//    enum DecodingError: Error {
+//        case cannotRemoveExtraneousPathComponents, noTokenInKeychain
+//    }
+    
+//    required init(from decoder: Decoder) throws {
+//        let values = try decoder.container(keyedBy: CodingKeys.self)
+//
+//        // copy simple values
+//        self.id = try values.decode(Int.self, forKey: .id)
+//        self.name = try values.decode(String.self, forKey: .username)
+//        self.storedNickname = try values.decode(String?.self, forKey: .storedNickname)
+//        self.cachedSiteVersion = try values.decode(SiteVersion?.self, forKey: .siteVersion)
+//        self.avatar = try values.decode(URL?.self, forKey: .avatarUrl)
+//        self.lastUsed = try values.decode(Date?.self, forKey: .lastUsed)
+//
+//        // parse instance link
+//        let instanceLink = try values.decode(URL.self, forKey: .instanceLink)
+//        // Remove the "api/v3" path that we attached to the instanceLink pre-2.0
+//        var components = URLComponents(url: instanceLink, resolvingAgainstBaseURL: false)!
+//        components.path = ""
+//        guard let instanceLink = components.url else { throw DecodingError.cannotRemoveExtraneousPathComponents }
+//
+//        // parse actor id
+//        let actorId = parseActorId(instanceLink: instanceLink, name: name)
+//        self.actorId = actorId
+//
+//        // retrive token and initialize ApiClient
+//        guard let token = AppConstants.keychain[getKeychainId(actorId: actorId)] ?? AppConstants.keychain[getKeychainId(id: id)] else {
+//            throw DecodingError.noTokenInKeychain
+//        }
+//        self.api = ApiClient.getApiClient(for: instanceLink, with: token)
+//    }
+    
+//    func encode(to encoder: Encoder) throws {
+//        saveTokenToKeychain()
+//        var container = encoder.container(keyedBy: CodingKeys.self)
+//        try container.encode(id, forKey: .id)
+//        try container.encode(name, forKey: .username)
+//        try container.encode(storedNickname, forKey: .storedNickname)
+//        try container.encode(cachedSiteVersion, forKey: .siteVersion)
+//        try container.encode(avatar, forKey: .avatarUrl)
+//        try container.encode(lastUsed, forKey: .lastUsed)
+//        try container.encode(api.baseUrl, forKey: .instanceLink)
+//    }
     
     var keychainId: String {
         getKeychainId(actorId: actorId)
@@ -105,8 +181,8 @@ class UserAccount: Account, CommunityOrPersonStub {
         }
     }
     
-    func updateToken(_ newToken: String) {
-        api.updateToken(newToken)
+    func updateToken(_ newToken: String) async {
+        await api.updateToken(newToken)
     }
     
     func saveTokenToKeychain() {
