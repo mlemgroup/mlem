@@ -53,6 +53,7 @@ struct ImageView: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(maxWidth: 50)
+                                .padding(4)
                                 .foregroundStyle(palette.tertiary)
                         }
                     }

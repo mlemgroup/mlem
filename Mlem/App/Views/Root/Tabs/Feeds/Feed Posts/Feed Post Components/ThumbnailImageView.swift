@@ -17,13 +17,22 @@ struct ThumbnailImageView: View {
     let post: any Post1Providing
     
     var body: some View {
-        Image(systemName: post.placeholderImageName)
-            .font(.title)
-            .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
-            .foregroundStyle(palette.secondary)
-            .background(palette.thumbnailBackground)
-            .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
-            .overlay(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
-                .stroke(palette.secondaryBackground, lineWidth: 1))
+        switch post.type {
+        case let .image(url):
+            TappableImageView(url: url)
+                .aspectRatio(contentMode: .fill)
+                .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
+                .background(palette.secondaryBackground)
+                .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
+        default:
+            Image(systemName: post.placeholderImageName)
+                .font(.title)
+                .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
+                .foregroundStyle(palette.secondary)
+                .background(palette.thumbnailBackground)
+                .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
+                .overlay(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
+                    .stroke(palette.secondaryBackground, lineWidth: 1))
+        }
     }
 }
