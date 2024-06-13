@@ -10,7 +10,7 @@ import KeychainAccess
 import MlemMiddleware
 import SwiftUI
 
-protocol Account: AnyObject, Codable, ContentStub, Profile1Providing {
+protocol Account: AnyObject, ContentStub, Profile1Providing {
     // Stored
     var name: String { get }
     var storedNickname: String? { get }
@@ -27,8 +27,8 @@ protocol Account: AnyObject, Codable, ContentStub, Profile1Providing {
 }
 
 extension Account {
-    func signOut() {
-        AccountsTracker.main.removeAccount(account: self)
+    func signOut() async {
+        await AccountsTracker.main.removeAccount(account: self)
     }
     
     func logActivity() {

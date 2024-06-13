@@ -69,11 +69,13 @@ class PersistenceRepository {
     
     // MARK: - Public methods
     
-    func loadUserAccounts() -> [UserAccount] {
-        load([UserAccount].self, from: Path.userAccounts) ?? []
+    func loadUserAccounts() async throws -> [UserAccount] {
+        let storedAccounts = load([StoredAccount].self, from: Path.userAccounts) ?? []
+        return try await storedAccounts.asyncMap { try await UserAccount(storedAccount: $0) }
     }
     
     func saveUserAccounts(_ value: [UserAccount]) async throws {
+        value.forEach { $0.saveTokenToKeychain() }
         try await save(value, to: Path.userAccounts)
     }
     
