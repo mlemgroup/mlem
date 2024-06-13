@@ -217,6 +217,7 @@
 		0382A7F12C0A758E00C79DDA /* ProfileDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDateView.swift; sourceTree = "<group>"; };
 		0382A7F32C0A76A900C79DDA /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInstancePickerView.swift; sourceTree = "<group>"; };
+		03AF91D82C1A4ED500E56644 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		03AF91DA2C1B21F800E56644 /* TappableImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TappableImageView.swift; sourceTree = "<group>"; };
 		03AF91DC2C1B23E500E56644 /* ImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewer.swift; sourceTree = "<group>"; };
 		03AF91DE2C1B243D00E56644 /* ZoomableContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableContainer.swift; sourceTree = "<group>"; };
@@ -445,6 +446,7 @@
 			isa = PBXGroup;
 			children = (
 				0382A7EF2C09F0F800C79DDA /* PersonView.swift */,
+				03AF91DC2C1B23E500E56644 /* ImageViewer.swift */,
 			);
 			name = Pages;
 			path = Mlem/App/Views/Pages;
@@ -698,6 +700,8 @@
 				03267D802BED4714009D6268 /* Avatar */,
 				034B948D2C0937BA00039AF4 /* FancyScrollView.swift */,
 				CD4ED84D2BF113C800EFA0A2 /* ExpandedPostView.swift */,
+				03AF91D82C1A4ED500E56644 /* ImageView.swift */,
+				03AF91DA2C1B21F800E56644 /* TappableImageView.swift */,
 				03AF91DE2C1B243D00E56644 /* ZoomableContainer.swift */,
 				0382A7F12C0A758E00C79DDA /* ProfileDateView.swift */,
 				CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */,

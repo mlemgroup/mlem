@@ -11,14 +11,15 @@ import MlemMiddleware
 import SwiftUI
 
 struct LargePostView: View {
-    @AppStorage("post.showCreator") var showCreator: Bool = false
-    @AppStorage("user.showAvatar") var showUserAvatar: Bool = true
-    @AppStorage("community.showAvatar") var showCommunityAvatar: Bool = true
+    @AppStorage("post.showCreator") private var showCreator: Bool = false
+    @AppStorage("user.showAvatar") private var showUserAvatar: Bool = true
+    @AppStorage("community.showAvatar") private var showCommunityAvatar: Bool = true
     
-    @Environment(\.communityContext) var communityContext: (any Community1Providing)?
-    @Environment(Palette.self) var palette: Palette
+    @Environment(\.communityContext) private var communityContext: (any Community1Providing)?
+    @Environment(Palette.self) private var palette: Palette
     
     let post: any Post1Providing
+    var isExpanded: Bool = false
     
     var body: some View {
         content
@@ -68,9 +69,13 @@ struct LargePostView: View {
             EmptyView()
         }
         if let content = post.content {
-            // Cut down on compute time for very long text posts by only rendering the first 4 blocks
-            MarkdownText(Array([BlockNode](content).prefix(4)), configuration: .dimmed)
-                .lineLimit(post.linkUrl == nil ? 8 : 4)
+            if isExpanded {
+                Markdown(content, configuration: .default)
+            } else {
+                // Cut down on compute time for very long text posts by only rendering the first 4 blocks
+                MarkdownText(Array([BlockNode](content).prefix(4)), configuration: .dimmed)
+                    .lineLimit(post.linkUrl == nil ? 8 : 4)
+            }
         }
     }
     

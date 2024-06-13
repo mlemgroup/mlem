@@ -22,11 +22,7 @@ struct ExpandedPostView: View {
     
     func content(for post: any Post1Providing) -> some View {
         FancyScrollView {
-            VStack {
-                Text(post.title)
-                Text("Some content really far below to scroll to")
-                    .padding([.top, .bottom], 700)
-            }
+            LargePostView(post: post, isExpanded: true)
         }
     }
 }
