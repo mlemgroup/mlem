@@ -129,7 +129,7 @@ struct LoginCredentialsView: View {
                 SecureField("Password", text: $password, prompt: Text(""))
                     .focused($focused, equals: .password)
                     .padding(.trailing)
-                    .onSubmit(attemptToLogin)
+                    .onSubmit(attemptToLoginSyncWrapper)
                     .submitLabel(.go)
             }
         }
@@ -146,7 +146,7 @@ struct LoginCredentialsView: View {
     
     @ViewBuilder
     var nextButton: some View {
-        Button(action: attemptToLogin) {
+        Button(action: attemptToLoginSyncWrapper) {
             Text(authenticating ? "Authenticating..." : "Sign In")
                 .padding(.vertical, 10)
                 .frame(maxWidth: .infinity)
@@ -157,9 +157,17 @@ struct LoginCredentialsView: View {
         .disabled(username.isEmpty || password.isEmpty || authenticating)
     }
     
-    func attemptToLogin() {
+    func attemptToLoginSyncWrapper() {
+        Task {
+            await attemptToLogin()
+        }
+    }
+    
+    func attemptToLogin() async {
         guard !username.isEmpty, !password.isEmpty else { return }
-        if let client = instance?.guestApi ?? account?.api.loggedOut() {
+        let guestClient = await instance?.guestApi()
+        let loggedOutClient = await account?.api.loggedOut()
+        if let client = guestClient ?? loggedOutClient {
             authenticating = true
             Task {
                 do {

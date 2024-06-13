@@ -72,7 +72,9 @@ class AppState {
         } else if let account = account as? GuestAccount {
             activeSessions = []
             guestSession = .init(account: account)
-            GuestAccountCache.main.clean()
+            Task {
+                await GuestAccountCache.main.clean()
+            }
         } else {
             assertionFailure()
         }
@@ -103,7 +105,9 @@ class AppState {
     
     func cleanCaches() {
         for session in activeSessions {
-            session.api.cleanCaches()
+            Task {
+                await session.api.cleanCaches()
+            }
         }
     }
     

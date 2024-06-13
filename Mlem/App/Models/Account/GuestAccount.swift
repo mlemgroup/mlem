@@ -19,9 +19,9 @@ class GuestAccount: Account {
     var avatar: URL?
     var lastUsed: Date?
     
-    fileprivate init(url: URL) {
+    fileprivate init(url: URL) async {
         self.actorId = url
-        self.api = .getApiClient(for: url, with: nil)
+        self.api = await .getApiClient(for: url, with: nil)
     }
     
     static func getGuestAccount(url: URL) -> GuestAccount {
@@ -37,7 +37,7 @@ class GuestAccount: Account {
         case cannotRemoveExtraneousPathComponents, noTokenInKeychain
     }
     
-    required init(from decoder: Decoder) throws {
+    required init(from decoder: Decoder) async throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         self.storedNickname = try values.decode(String?.self, forKey: .storedNickname)
@@ -48,8 +48,8 @@ class GuestAccount: Account {
         let instanceLink = try values.decode(URL.self, forKey: .instanceLink)
         self.actorId = instanceLink
         
-        self.api = ApiClient.getApiClient(for: instanceLink, with: nil)
-        GuestAccountCache.main.cachedItems[cacheId] = .init(content: self)
+        self.api = await ApiClient.getApiClient(for: instanceLink, with: nil)
+        await GuestAccountCache.main.put(self)
     }
     
     func encode(to encoder: Encoder) throws {

@@ -48,7 +48,9 @@ class UserSession: Session {
     func deactivate() {
         account.logActivity()
         api.permissions = .getOnly
-        api.cleanCaches()
+        Task {
+            await api.cleanCaches()
+        }
     }
     
     func hash(into hasher: inout Hasher) {

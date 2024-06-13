@@ -9,6 +9,8 @@ import Foundation
 import MlemMiddleware
 import Observation
 
+// TODO: need a StoredUserAccount that is codable but has no ApiClient; this can then have an async initializer. Remove the Codable conformance from Account.
+
 @Observable
 class UserAccount: Account, CommunityOrPersonStub {
     static let tierNumber: Int = 1
