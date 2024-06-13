@@ -49,7 +49,7 @@ struct LargePostView: View {
             
             postDetail
             
-            if showCreator {
+            if showCreator || isExpanded {
                 FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showUserAvatar)
             }
         }
