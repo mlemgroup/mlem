@@ -120,7 +120,7 @@ struct TilePostView: View {
                     .background(palette.secondaryBackground)
                     .clipped()
             case let .link(url):
-                TappableImageView(url: url)
+                ImageView(url: url)
                     .aspectRatio(contentMode: .fill)
                     .frame(width: dimension, height: dimension)
                     .background(palette.secondaryBackground)

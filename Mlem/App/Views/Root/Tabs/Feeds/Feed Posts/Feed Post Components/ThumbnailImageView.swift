@@ -11,15 +11,19 @@ import SwiftUI
 
 struct ThumbnailImageView: View {
     @Environment(Palette.self) var palette
-    
-    // TODO: (pending image handling) actually put an image in here
-    
+        
     let post: any Post1Providing
     
     var body: some View {
         switch post.type {
         case let .image(url):
             TappableImageView(url: url)
+                .aspectRatio(contentMode: .fill)
+                .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
+                .background(palette.secondaryBackground)
+                .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
+        case let .link(url):
+            ImageView(url: url)
                 .aspectRatio(contentMode: .fill)
                 .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
                 .background(palette.secondaryBackground)
