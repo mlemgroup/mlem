@@ -114,31 +114,17 @@ struct TilePostView: View {
                     .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             case let .image(url):
-                LazyImage(url: url) { state in
-                    if let imageContainer = state.imageContainer {
-                        Image(uiImage: imageContainer.image)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: dimension, height: dimension)
-                    } else {
-                        ProgressView()
-                    }
-                }
-                .frame(width: dimension, height: dimension)
-                .clipped()
+                TappableImageView(url: url)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: dimension, height: dimension)
+                    .background(palette.secondaryBackground)
+                    .clipped()
             case let .link(url):
-                LazyImage(url: url) { state in
-                    if let imageContainer = state.imageContainer {
-                        Image(uiImage: imageContainer.image)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: dimension, height: dimension)
-                    } else {
-                        ProgressView()
-                    }
-                }
-                .frame(width: dimension, height: dimension)
-                .clipped()
+                TappableImageView(url: url)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: dimension, height: dimension)
+                    .background(palette.secondaryBackground)
+                    .clipped()
             }
         }
     }
