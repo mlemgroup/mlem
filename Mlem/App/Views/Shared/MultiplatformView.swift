@@ -9,14 +9,14 @@ import Foundation
 import SwiftUI
 
 struct MultiplatformView<Content: View>: View {
-    let ios: () -> Content
-    let ipad: () -> Content
+    let phone: () -> Content
+    let pad: () -> Content
     
     var body: some View {
         if UIDevice.current.userInterfaceIdiom == .phone {
-            ios()
+            phone()
         } else if UIDevice.current.userInterfaceIdiom == .pad {
-            ipad()
+            pad()
         } else {
             preconditionFailure("Unsupported platform!")
         }
