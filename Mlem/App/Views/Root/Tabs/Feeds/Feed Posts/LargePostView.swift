@@ -38,7 +38,9 @@ struct LargePostView: View {
                         .foregroundStyle(palette.warning)
                 }
                 
-                EllipsisMenu(actions: post.menuActions, size: 24)
+                if !isExpanded {
+                    EllipsisMenu(actions: post.menuActions, size: 24)
+                }
             }
             
             post.taggedTitle(communityContext: communityContext)
