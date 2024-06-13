@@ -35,7 +35,9 @@ class GuestSession: Session {
     
     func deactivate() {
         account.logActivity()
-        api.cleanCaches()
+        Task {
+            api.cleanCaches()
+        }
     }
     
     func hash(into hasher: inout Hasher) {
