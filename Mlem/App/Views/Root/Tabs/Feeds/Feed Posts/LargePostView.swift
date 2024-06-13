@@ -28,7 +28,7 @@ struct LargePostView: View {
     var content: some View {
         VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
             HStack {
-                FullyQualifiedLabelView(entity: post.community_, labelStyle: .large, showAvatar: showCommunityAvatar)
+                FullyQualifiedLabelView(entity: post.community_, labelStyle: .medium, showAvatar: showCommunityAvatar)
                 
                 Spacer()
                 
@@ -47,7 +47,7 @@ struct LargePostView: View {
             postDetail
             
             if showCreator {
-                FullyQualifiedLinkView(entity: post.creator_, labelStyle: .large, showAvatar: showUserAvatar)
+                FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showUserAvatar)
             }
         }
     }
@@ -55,18 +55,22 @@ struct LargePostView: View {
     @ViewBuilder
     var postDetail: some View {
         switch post.type {
-        case let .text(text):
-            Markdown(text, configuration: .default)
-                .lineLimit(8)
-                .foregroundStyle(palette.secondary)
-        case .image:
-            mockImage
+        case let .image(url):
+            TappableImageView(url: url)
+                // Set maximum image height to 1.2 * width
+                .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
+                .frame(maxWidth: .infinity)
         case let .link(url):
             if let url {
                 mockWebsiteComplex(url: url)
             }
-        case .titleOnly:
+        default:
             EmptyView()
+        }
+        if let content = post.content {
+            // Cut down on compute time for very long text posts by only rendering the first 4 blocks
+            MarkdownText(Array([BlockNode](content).prefix(4)), configuration: .dimmed)
+                .lineLimit(post.linkUrl == nil ? 8 : 4)
         }
     }
     

@@ -19,6 +19,7 @@ enum NavigationPage: Hashable {
     case quickSwitcher
     case expandedPost(_ post: AnyPost)
     case person(_ person: AnyPerson)
+    case imageViewer(_ url: URL)
     
     static func expandedPost(_ post: any PostStubProviding) -> NavigationPage {
         expandedPost(.init(post))
@@ -45,6 +46,8 @@ extension NavigationPage {
             InboxView()
         case .search:
             SubscriptionListView()
+        case let .imageViewer(url):
+            ImageViewer(url: url)
         case .quickSwitcher:
             QuickSwitcherView()
                 .presentationDetents([.medium, .large])
