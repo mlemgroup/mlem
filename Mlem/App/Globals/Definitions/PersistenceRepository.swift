@@ -81,7 +81,14 @@ class PersistenceRepository {
     
     func loadGuestAccounts() async -> [GuestAccount] {
         let storedAccounts = load([StoredAccount].self, from: Path.guestAccounts) ?? []
-        return await storedAccounts.asyncMap { await GuestAccount(storedAccount: $0) }
+        return await storedAccounts.asyncCompactMap { storedAccount in
+            do {
+                return try await GuestAccount(storedAccount: storedAccount)
+            } catch {
+                handleError(error)
+                return nil
+            }
+        }
     }
     
     func saveGuestAccounts(_ value: [GuestAccount]) async throws {

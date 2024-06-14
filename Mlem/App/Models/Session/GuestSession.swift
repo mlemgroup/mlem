@@ -23,7 +23,7 @@ class GuestSession: Session {
             try await self.api.fetchSiteVersion(task: Task {
                 let (_, instance) = try await self.api.getMyPerson()
                 self.instance = instance
-                self.account.update(instance: instance)
+                await self.account.update(instance: instance)
                 return instance.version
             })
         }
@@ -34,8 +34,8 @@ class GuestSession: Session {
     }
     
     func deactivate() {
-        account.logActivity()
         Task {
+            await account.logActivity()
             await api.cleanCaches()
         }
     }
