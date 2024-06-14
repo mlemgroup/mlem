@@ -79,13 +79,15 @@ struct AccountListView: View {
                 .autocorrectionDisabled()
             Button("OK") {
                 if !newGuestDomain.isEmpty, let url = URL(string: "https://\(newGuestDomain)") {
-                    let guest = GuestAccount.getGuestAccount(url: url)
-                    if !guest.isSaved {
-                        AccountsTracker.main.addAccount(account: guest)
-                    }
-                    AppState.main.changeAccount(to: guest)
-                    if navigation.isInsideSheet {
-                        dismiss()
+                    Task {
+                        let guest = await GuestAccount.getGuestAccount(url: url)
+                        if !guest.isSaved {
+                            AccountsTracker.main.addAccount(account: guest)
+                        }
+                        AppState.main.changeAccount(to: guest)
+                        if navigation.isInsideSheet {
+                            dismiss()
+                        }
                     }
                 }
             }
