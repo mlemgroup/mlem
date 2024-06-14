@@ -42,7 +42,7 @@
 		035BE0912BDEA01E00F77D73 /* NavigationPage+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0902BDEA01E00F77D73 /* NavigationPage+View.swift */; };
 		0369B3532BFA514B001EFEDF /* ToastLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0369B3522BFA514B001EFEDF /* ToastLocation.swift */; };
 		0369B3562BFA6824001EFEDF /* InboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0369B3552BFA6824001EFEDF /* InboxView.swift */; };
-		0369B35D2BFB86E3001EFEDF /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0369B35A2BFB86E3001EFEDF /* Account.swift */; };
+		0369B35D2BFB86E3001EFEDF /* AccountProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0369B35A2BFB86E3001EFEDF /* AccountProviding.swift */; };
 		036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CC3AE2B8145C30098B6A1 /* AppState.swift */; };
 		037386472BDAFE81007492B5 /* LemmyMarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 037386462BDAFE81007492B5 /* LemmyMarkdownUI */; };
 		037658DF2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037658DE2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift */; };
@@ -130,6 +130,7 @@
 		CD4ED84A2BF1113800EFA0A2 /* View+TabReselectConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */; };
 		CD4ED84E2BF113C800EFA0A2 /* ExpandedPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED84D2BF113C800EFA0A2 /* ExpandedPostView.swift */; };
 		CD7743812C1BEF5B0085BB43 /* StoredAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7743802C1BEF5B0085BB43 /* StoredAccount.swift */; };
+		CD7743832C1CD1F70085BB43 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7743822C1CD1F70085BB43 /* Account.swift */; };
 		CD7882A22BFE4B47002E1A30 /* PostContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882A12BFE4B47002E1A30 /* PostContext.swift */; };
 		CD7882A52BFE94D2002E1A30 /* CommunityContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882A42BFE94D2002E1A30 /* CommunityContext.swift */; };
 		CD7882A72BFFD1A3002E1A30 /* ThumbnailLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882A62BFFD1A3002E1A30 /* ThumbnailLocation.swift */; };
@@ -220,7 +221,7 @@
 		035BE0902BDEA01E00F77D73 /* NavigationPage+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationPage+View.swift"; sourceTree = "<group>"; };
 		0369B3522BFA514B001EFEDF /* ToastLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastLocation.swift; sourceTree = "<group>"; };
 		0369B3552BFA6824001EFEDF /* InboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxView.swift; sourceTree = "<group>"; };
-		0369B35A2BFB86E3001EFEDF /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		0369B35A2BFB86E3001EFEDF /* AccountProviding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountProviding.swift; sourceTree = "<group>"; };
 		036CC3AE2B8145C30098B6A1 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		037658DE2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		0380965E2C10AA80003ED1D8 /* AppState+Transition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppState+Transition.swift"; sourceTree = "<group>"; };
@@ -303,6 +304,7 @@
 		CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+TabReselectConsumer.swift"; sourceTree = "<group>"; };
 		CD4ED84D2BF113C800EFA0A2 /* ExpandedPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedPostView.swift; sourceTree = "<group>"; };
 		CD7743802C1BEF5B0085BB43 /* StoredAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredAccount.swift; sourceTree = "<group>"; };
+		CD7743822C1CD1F70085BB43 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		CD7882A12BFE4B47002E1A30 /* PostContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostContext.swift; sourceTree = "<group>"; };
 		CD7882A42BFE94D2002E1A30 /* CommunityContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityContext.swift; sourceTree = "<group>"; };
 		CD7882A62BFFD1A3002E1A30 /* ThumbnailLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailLocation.swift; sourceTree = "<group>"; };
@@ -452,10 +454,11 @@
 		0369B3592BFB86C6001EFEDF /* Account */ = {
 			isa = PBXGroup;
 			children = (
-				0369B35A2BFB86E3001EFEDF /* Account.swift */,
+				0369B35A2BFB86E3001EFEDF /* AccountProviding.swift */,
 				03D2A6382C00FAE000ED4FF2 /* UserAccount.swift */,
 				03D2A63A2C010B7500ED4FF2 /* GuestAccount.swift */,
 				CD7743802C1BEF5B0085BB43 /* StoredAccount.swift */,
+				CD7743822C1CD1F70085BB43 /* Account.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -1218,6 +1221,7 @@
 				CD4D58AA2B86BE5900B82964 /* AccountListView.swift in Sources */,
 				CD4D58B92B86D9F800B82964 /* AccountListRow.swift in Sources */,
 				CDCA44B02C17673D00C092B3 /* HapticPriority.swift in Sources */,
+				CD7743832C1CD1F70085BB43 /* Account.swift in Sources */,
 				CD4D58B32B86BFD400B82964 /* AccountsTracker.swift in Sources */,
 				CD317D4F2BE983ED008F63E2 /* MonochromePalette.swift in Sources */,
 				034B948E2C0937BA00039AF4 /* FancyScrollView.swift in Sources */,
@@ -1265,7 +1269,7 @@
 				B157E0C42A507B8000B02C8B /* FlowRoot.swift in Sources */,
 				CDB2EC882BFAE14800DBC0EF /* FullyQualifiedNameView.swift in Sources */,
 				03500C272BF69D1D00CAA076 /* ToastModel.swift in Sources */,
-				0369B35D2BFB86E3001EFEDF /* Account.swift in Sources */,
+				0369B35D2BFB86E3001EFEDF /* AccountProviding.swift in Sources */,
 				036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */,
 				03134A502BEAD245002662CC /* NavigationLink+NavigationPage.swift in Sources */,
 				CD7743812C1BEF5B0085BB43 /* StoredAccount.swift in Sources */,
@@ -1473,7 +1477,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "local build";
 				DEVELOPMENT_ASSET_PATHS = "\"Mlem/Preview Content\"";
-				DEVELOPMENT_TEAM = 76ULHQGAPN;
+				DEVELOPMENT_TEAM = 8B9GNJW88W;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Mlem/Info.plist;
@@ -1493,7 +1497,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem;
+				PRODUCT_BUNDLE_IDENTIFIER = eric.local;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
@@ -1516,7 +1520,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "local build";
 				DEVELOPMENT_ASSET_PATHS = "\"Mlem/Preview Content\"";
-				DEVELOPMENT_TEAM = 76ULHQGAPN;
+				DEVELOPMENT_TEAM = 8B9GNJW88W;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Mlem/Info.plist;
@@ -1536,7 +1540,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem;
+				PRODUCT_BUNDLE_IDENTIFIER = eric.local;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;

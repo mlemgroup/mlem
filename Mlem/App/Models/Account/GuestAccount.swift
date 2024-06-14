@@ -11,57 +11,34 @@ import Observation
 
 @Observable
 class GuestAccount: Account {
-    static let tierNumber: Int = 1
-    
-    var storedAccount: StoredAccount
-    let api: ApiClient
-    
-    var actorId: URL { storedAccount.actorId }
-    var name: String { storedAccount.name }
-    var storedNickname: String? {
-        get { storedAccount.storedNickname }
-        set(newValue) { storedAccount.storedNickname = newValue }
-    }
-
-    var cachedSiteVersion: SiteVersion? {
-        get { storedAccount.cachedSiteVersion }
-        set(newValue) { storedAccount.cachedSiteVersion = newValue }
-    }
-
-    var avatar: URL? {
-        get { storedAccount.avatar }
-        set(newValue) { storedAccount.avatar = newValue }
-    }
-
-    var lastUsed: Date? {
-        get { storedAccount.lastUsed }
-        set(newValue) { storedAccount.lastUsed = newValue }
-    }
-    
-    init(storedAccount: StoredAccount) async {
-        self.storedAccount = storedAccount
-        self.api = await ApiClient.getApiClient(for: storedAccount.baseUrl, with: nil)
+    init(storedAccount: StoredAccount) async throws {
+        try await super.init(storedAccount: storedAccount, token: nil)
         await GuestAccountCache.main.put(self)
     }
     
     fileprivate init(url: URL) async {
-        self.storedAccount = .init(
-            actorId: url,
-            id: -1, // dummy value
-            name: url.host() ?? "unknown",
-            baseUrl: url
+        await super.init(
+            storedAccount: .init(
+                actorId: url,
+                id: -1, // dummy value
+                name: url.host() ?? "unknown",
+                baseUrl: url
+            ),
+            api: .getApiClient(for: url, with: nil)
         )
-        self.api = await .getApiClient(for: url, with: nil)
     }
   
     /// Bootstrap initializer to provide synchronous access to a default guest account
     fileprivate init() {
-        self.api = .bootstrapApiClient()
-        self.storedAccount = .init(
-            actorId: api.baseUrl,
-            id: -1, // dummy value
-            name: api.baseUrl.host() ?? "unknown",
-            baseUrl: api.baseUrl
+        let newApi = ApiClient.bootstrapApiClient()
+        super.init(
+            storedAccount: .init(
+                actorId: newApi.baseUrl,
+                id: -1, // dummy value
+                name: newApi.baseUrl.host() ?? "unknown",
+                baseUrl: newApi.baseUrl
+            ),
+            api: newApi
         )
         
         Task {
@@ -75,14 +52,14 @@ class GuestAccount: Account {
         await GuestAccountCache.main.getAccount(url: url)
     }
     
-    func update(instance: Instance3) {
+    func update(instance: Instance3) async {
         var shouldSave = false
         if avatar != instance.avatar {
-            avatar = instance.avatar
+            await setAvatar(instance.avatar)
             shouldSave = true
         }
         if cachedSiteVersion != instance.version {
-            cachedSiteVersion = instance.version
+            await setCachedSiteVersion(instance.version)
             shouldSave = true
         }
         if shouldSave {
@@ -99,8 +76,8 @@ class GuestAccount: Account {
     var nicknameSortKey: String { storedNickname ?? name }
     var instanceSortKey: String { host ?? "" }
     
-    func resetStoredSettings(withSave: Bool = true) {
-        storedNickname = nil
+    func resetStoredSettings(withSave: Bool = true) async {
+        await setStoredNickname(nil)
         if withSave {
             AccountsTracker.main.saveAccounts(ofType: .guest)
         }

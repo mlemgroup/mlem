@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct TransitionView: View {
-    let account: any Account
+    let account: any AccountProviding
     @State var accountNameOpacity: CGFloat = .zero
     
     var body: some View {

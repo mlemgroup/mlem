@@ -27,7 +27,7 @@ struct AccountListView: View {
     
     struct AccountGroup {
         let header: String
-        let accounts: [any Account]
+        let accounts: [any AccountProviding]
     }
     
     let isQuickSwitcher: Bool
