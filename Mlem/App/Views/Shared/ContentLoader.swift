@@ -13,8 +13,6 @@ import SwiftUI
 struct ContentLoader<Content: View, Model: Upgradable>: View {
     @Environment(Palette.self) var palette: Palette
     
-    @State var upgradeState: LoadingState = .idle
-    
     private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
     
     let model: any Upgradable
@@ -48,14 +46,9 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
         // if model upgraded, noop
         guard !model.isUpgraded else { return }
         
-        upgradeState = .loading
-        
         do {
             try await model.upgrade()
-            upgradeState = .done
         } catch {
-            // if the task is cancelled or the call fails, reset upgradeState--upgrade will be retried on next render
-            upgradeState = .idle
             print(error)
         }
     }
