@@ -71,11 +71,17 @@ class UserAccount: Account, CommunityOrPersonStub {
     static let tierNumber: Int = 1
     static let identifierPrefix: String = "@"
     
-    let actorId: URL
-    let id: Int
+    let storedAccount: StoredAccount
     let api: ApiClient
-    let name: String
-    var storedNickname: String?
+    
+    var actorId: URL { storedAccount.actorId }
+    var id: Int { storedAccount.id }
+    var name: String { storedAccount.name }
+    var storedNickname: String? {
+        get { storedAccount.storedNickname }
+        set { storedAccount.storedNickname = $0 }
+    }
+
     var cachedSiteVersion: SiteVersion?
     var avatar: URL?
     var lastUsed: Date?
