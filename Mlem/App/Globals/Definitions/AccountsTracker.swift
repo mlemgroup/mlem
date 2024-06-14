@@ -23,60 +23,31 @@ class AccountsTracker {
     
     @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
     
-//    var userAccounts: [UserAccount] = .init()
-//    var guestAccounts: [GuestAccount] = .init()
+    var userAccounts: [UserAccount] = .init()
+    var guestAccounts: [GuestAccount] = .init()
     
-    private var userAccountsTask: Task<[UserAccount], Error>!
-    private var guestAccountsTask: Task<[GuestAccount], Error>!
-    
-    var userAccounts: [UserAccount] {
-        get async throws {
-            try await userAccountsTask.value
-        }
-    }
-    
-    var guestAccounts: [GuestAccount] {
-        get async throws {
-            try await guestAccountsTask.value
-        }
-    }
-    
-    var defaultAccount: any Account {
-        get async throws {
-            if let firstUser = try await userAccounts.first {
-                return firstUser
-            }
-            return try await defaultGuestAccount
-        }
-    }
-    
-    var defaultGuestAccount: GuestAccount {
-        get async throws {
-            if let firstGuest = try await guestAccounts.first {
-                return firstGuest
-            }
-            return await GuestAccount.getGuestAccount(url: URL(string: "https://lemmy.world")!)
-        }
-    }
+    var defaultAccount: any Account { userAccounts.first ?? defaultGuestAccount }
+    var defaultGuestAccount: GuestAccount
     
     private var cancellables = Set<AnyCancellable>()
     
     private init() {
-        self.userAccountsTask = Task {
+        self.defaultGuestAccount = .getDefaultGuestAccount()
+        Task {
             do {
-                return try await persistenceRepository.loadUserAccounts()
+                self.userAccounts = try await persistenceRepository.loadUserAccounts()
             } catch {
                 handleError(error)
             }
         }
-        self.guestAccountsTask = Task {
-            await persistenceRepository.loadGuestAccounts()
+        Task {
+            self.guestAccounts = await persistenceRepository.loadGuestAccounts()
         }
     }
     
-    func addAccount(account: any Account) async throws {
+    func addAccount(account: any Account) {
         if let account = account as? UserAccount {
-            guard try await !userAccounts.contains(where: { $0 === account }) else {
+            guard !userAccounts.contains(where: { $0 === account }) else {
                 assertionFailure("Tried to add a duplicate account to the tracker")
                 return
             }
@@ -134,13 +105,13 @@ class AccountsTracker {
             throw ApiClientError.invalidSession
         }
         
-        let authenticatedApiClient = ApiClient.getApiClient(for: unauthenticatedApi.baseUrl, with: token)
+        let authenticatedApiClient = await ApiClient.getApiClient(for: unauthenticatedApi.baseUrl, with: token)
         
         // Check if account exists already
         if let account = userAccounts.first(where: {
             $0.name.caseInsensitiveCompare(username) == .orderedSame && $0.api.baseUrl == authenticatedApiClient.baseUrl
         }) {
-            account.updateToken(token)
+            await account.updateToken(token)
             return account
         } else {
             let response = try await authenticatedApiClient.getMyPerson()

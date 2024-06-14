@@ -29,14 +29,14 @@ class GuestSession: Session {
         }
     }
     
-    convenience init(url: URL) {
-        self.init(account: .getGuestAccount(url: url))
+    convenience init(url: URL) async {
+        await self.init(account: .getGuestAccount(url: url))
     }
     
     func deactivate() {
         account.logActivity()
         Task {
-            api.cleanCaches()
+            await api.cleanCaches()
         }
     }
     

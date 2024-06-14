@@ -53,34 +53,44 @@ struct ContentView: View {
     }
     
     var content: some View {
-        CustomTabView(selectedIndex: $selectedTabIndex, tabs: [
-            CustomTabItem(title: "Feeds", image: Icons.feeds, selectedImage: Icons.feedsFill) {
-                NavigationLayerView(layer: .init(root: .feeds, model: navigationModel), hasSheetModifiers: false)
-            },
-            CustomTabItem(title: "Inbox", image: Icons.inbox, selectedImage: Icons.inboxFill) {
-                NavigationLayerView(layer: .init(root: .inbox, model: navigationModel), hasSheetModifiers: false)
-            },
-            CustomTabItem(
-                title: "Profile",
-                image: Icons.user,
-                selectedImage: Icons.userFill,
-                onLongPress: {
-                    // TODO: haptics here
-                    navigationModel.openSheet(.quickSwitcher)
-                },
-                content: {
-                    NavigationLayerView(layer: .init(root: .profile, model: navigationModel), hasSheetModifiers: false)
+        TabView {
+            NavigationLayerView(layer: .init(root: .feeds, model: navigationModel), hasSheetModifiers: false)
+                .tabItem {
+                    Label("Feeds", systemImage: Icons.feedsFill)
                 }
-            ),
-            CustomTabItem(title: "Search", image: Icons.search, selectedImage: Icons.searchActive) {
-                NavigationLayerView(layer: .init(root: .search, model: navigationModel), hasSheetModifiers: false)
-            },
-            CustomTabItem(title: "Settings", image: Icons.settings) {
-                NavigationLayerView(layer: .init(root: .settings(), model: navigationModel), hasSheetModifiers: false)
-            }
-        ], onSwipeUp: {
-            navigationModel.openSheet(.quickSwitcher)
-        })
+            NavigationLayerView(layer: .init(root: .settings(), model: navigationModel), hasSheetModifiers: false)
+                .tabItem {
+                    Label("Settings", systemImage: Icons.settings)
+                }
+        }
+//        CustomTabView(selectedIndex: $selectedTabIndex, tabs: [
+//            CustomTabItem(title: "Feeds", image: Icons.feeds, selectedImage: Icons.feedsFill) {
+//                NavigationLayerView(layer: .init(root: .feeds, model: navigationModel), hasSheetModifiers: false)
+//            },
+//            CustomTabItem(title: "Inbox", image: Icons.inbox, selectedImage: Icons.inboxFill) {
+//                NavigationLayerView(layer: .init(root: .inbox, model: navigationModel), hasSheetModifiers: false)
+//            },
+//            CustomTabItem(
+//                title: "Profile",
+//                image: Icons.user,
+//                selectedImage: Icons.userFill,
+//                onLongPress: {
+//                    // TODO: haptics here
+//                    navigationModel.openSheet(.quickSwitcher)
+//                },
+//                content: {
+//                    NavigationLayerView(layer: .init(root: .profile, model: navigationModel), hasSheetModifiers: false)
+//                }
+//            ),
+//            CustomTabItem(title: "Search", image: Icons.search, selectedImage: Icons.searchActive) {
+//                NavigationLayerView(layer: .init(root: .search, model: navigationModel), hasSheetModifiers: false)
+//            },
+//            CustomTabItem(title: "Settings", image: Icons.settings) {
+//                NavigationLayerView(layer: .init(root: .settings(), model: navigationModel), hasSheetModifiers: false)
+//            }
+//        ], onSwipeUp: {
+//            navigationModel.openSheet(.quickSwitcher)
+//        })
         .overlay(alignment: .bottom) {
             ToastOverlayView(
                 shouldDisplayNewToasts: shouldDisplayToasts,
