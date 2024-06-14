@@ -10,7 +10,7 @@ import MlemMiddleware
 import Observation
 
 protocol Session: ActorIdentifiable, Hashable {
-    associatedtype AccountType: Account
+    associatedtype AccountType: AccountProviding
     
     var api: ApiClient { get }
     var account: AccountType { get }

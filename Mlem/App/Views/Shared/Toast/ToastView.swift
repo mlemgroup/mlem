@@ -110,7 +110,7 @@ struct ToastView: View {
     }
     
     @ViewBuilder
-    func accountView(_ account: any Account) -> some View {
+    func accountView(_ account: any AccountProviding) -> some View {
         HStack(spacing: AppConstants.doubleSpacing) {
             AvatarView(account, showLoadingPlaceholder: false)
                 .frame(height: 27)

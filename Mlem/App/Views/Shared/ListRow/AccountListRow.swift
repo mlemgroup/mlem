@@ -19,7 +19,7 @@ struct AccountListRow: View {
     
     @State private var showingSignOutConfirmation: Bool = false
     
-    let account: any Account
+    let account: any AccountProviding
     var complications: Set<AccountListRowBody.Complication> = .withTime
     @Binding var isSwitching: Bool
 

@@ -15,7 +15,7 @@ struct AccountListRowBody: View {
         case instance, lastUsed, isActive
     }
     
-    let account: any Account
+    let account: any AccountProviding
     var complications: Set<Complication> = .withTime
     
     var body: some View {

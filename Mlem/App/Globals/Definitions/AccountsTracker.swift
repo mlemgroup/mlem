@@ -26,7 +26,7 @@ class AccountsTracker {
     var userAccounts: [UserAccount] = .init()
     var guestAccounts: [GuestAccount] = .init()
     
-    var defaultAccount: any Account { userAccounts.first ?? defaultGuestAccount }
+    var defaultAccount: any AccountProviding { userAccounts.first ?? defaultGuestAccount }
     var defaultGuestAccount: GuestAccount
     
     private var cancellables = Set<AnyCancellable>()
@@ -35,17 +35,19 @@ class AccountsTracker {
         self.defaultGuestAccount = .getDefaultGuestAccount()
         Task {
             do {
-                self.userAccounts = try await persistenceRepository.loadUserAccounts()
+                let newUserAccounts = try await persistenceRepository.loadUserAccounts()
+                let newGuestAccounts = await persistenceRepository.loadGuestAccounts()
+                Task { @MainActor in
+                    self.userAccounts = newUserAccounts
+                    self.guestAccounts = newGuestAccounts
+                }
             } catch {
                 handleError(error)
             }
         }
-        Task {
-            self.guestAccounts = await persistenceRepository.loadGuestAccounts()
-        }
     }
     
-    func addAccount(account: any Account) {
+    func addAccount(account: any AccountProviding) {
         if let account = account as? UserAccount {
             guard !userAccounts.contains(where: { $0 === account }) else {
                 assertionFailure("Tried to add a duplicate account to the tracker")
@@ -65,7 +67,7 @@ class AccountsTracker {
         }
     }
     
-    func removeAccount(account: any Account) async {
+    func removeAccount(account: any AccountProviding) async {
         if let account = account as? UserAccount {
             guard let index = userAccounts.firstIndex(where: { $0 === account }) else {
                 assertionFailure("Tried to remove an account that does not exist")

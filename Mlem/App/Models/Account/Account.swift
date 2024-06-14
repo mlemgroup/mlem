@@ -1,39 +1,64 @@
 //
-//  NewSavedUser.swift
+//  Account.swift
 //  Mlem
 //
-//  Created by Sjmarf on 10/02/2024.
+//  Created by Eric Andrews on 2024-06-14.
 //
 
 import Foundation
-import KeychainAccess
 import MlemMiddleware
-import SwiftUI
+import Observation
 
-protocol Account: AnyObject, ContentStub, Profile1Providing {
-    // Stored
-    var name: String { get }
-    var storedNickname: String? { get }
-    var cachedSiteVersion: SiteVersion? { get }
-    var avatar: URL? { get }
-    var lastUsed: Date? { get set }
+@Observable
+class Account: AccountProviding {
+    static let tierNumber: Int = 1
     
-    // Computed
-    var nickname: String { get }
-    var nicknameSortKey: String { get }
-    var instanceSortKey: String { get }
-    var host: String? { get }
-    var isActive: Bool { get }
-}
-
-extension Account {
-    func signOut() async {
-        await AccountsTracker.main.removeAccount(account: self)
+    var storedAccount: StoredAccount
+    var api: ApiClient
+    
+    var actorId: URL { storedAccount.actorId }
+    
+    var name: String { storedAccount.name }
+    var storedNickname: String? { storedAccount.storedNickname }
+    var cachedSiteVersion: SiteVersion? { storedAccount.cachedSiteVersion }
+    var avatar: URL? { storedAccount.avatar }
+    var lastUsed: Date? { storedAccount.lastUsed }
+    
+    func getNicknameSortKey() -> String {
+        storedNickname ?? name
     }
     
-    func logActivity() {
-        lastUsed = .now
+    func getInstanceSortKey() -> String {
+        host ?? ""
     }
     
-    var nickname: String { storedNickname ?? name }
+    func isActive() -> Bool {
+        preconditionFailure("This method must be implemented by the inheriting class")
+    }
+    
+    @MainActor func setStoredNickname(_ newValue: String?) {
+        storedAccount.storedNickname = newValue
+    }
+    
+    @MainActor func setCachedSiteVersion(_ newValue: SiteVersion?) {
+        storedAccount.cachedSiteVersion = newValue
+    }
+    
+    @MainActor func setAvatar(_ newValue: URL?) {
+        storedAccount.avatar = newValue
+    }
+    
+    @MainActor func setLastUsed(_ newValue: Date) {
+        storedAccount.lastUsed = newValue
+    }
+    
+    init(storedAccount: StoredAccount, token: String?) async throws {
+        self.storedAccount = storedAccount
+        self.api = await ApiClient.getApiClient(for: storedAccount.baseUrl, with: token)
+    }
+    
+    init(storedAccount: StoredAccount, api: ApiClient) {
+        self.storedAccount = storedAccount
+        self.api = api
+    }
 }

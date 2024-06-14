@@ -9,7 +9,7 @@ import MlemMiddleware
 import SwiftUI
 
 extension AccountListView {
-    var accounts: [any Account] {
+    var accounts: [any AccountProviding] {
         let accountSort = accountsTracker.userAccounts.count == 2 ? .custom : accountSort
         switch accountSort {
         case .custom:
@@ -30,7 +30,7 @@ extension AccountListView {
         }
     }
     
-    func getNameCategory(account: any Account) -> String {
+    func getNameCategory(account: any AccountProviding) -> String {
         guard let first = (account.nickname ?? account.name).first else { return "Unknown" }
         if first.isLetter {
             return String(first.lowercased())
@@ -66,9 +66,9 @@ extension AccountListView {
             )
             return array
         case .mostRecent:
-            var today = [any Account]()
-            var last30Days = [any Account]()
-            var older = [any Account]()
+            var today = [any AccountProviding]()
+            var last30Days = [any AccountProviding]()
+            var older = [any AccountProviding]()
             for account in accountsTracker.userAccounts {
                 if account.actorId == appState.firstSession.actorId {
                     continue

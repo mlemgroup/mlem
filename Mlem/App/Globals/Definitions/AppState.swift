@@ -39,7 +39,7 @@ class AppState {
     }
     
     /// If `keepPlace` is `nil`, use the value from `UserDefaults`.
-    func changeAccount(to account: any Account, keepPlace: Bool? = nil) {
+    func changeAccount(to account: any AccountProviding, keepPlace: Bool? = nil) {
         @AppStorage("accounts.keepPlace") var keepPlaceSetting = false
         let keepPlace = keepPlace ?? keepPlaceSetting
         if keepPlace {
@@ -62,7 +62,7 @@ class AppState {
         }
     }
     
-    private func setAccount(to account: any Account) {
+    private func setAccount(to account: any AccountProviding) {
         // Save because we updated `lastUsed` in the above `deactivate()` calls
         AccountsTracker.main.saveAccounts(ofType: .all)
         
@@ -80,7 +80,7 @@ class AppState {
         }
     }
     
-    func deactivate(account: any Account) {
+    func deactivate(account: any AccountProviding) {
         if let account = account as? UserAccount {
             if let index = AppState.main.activeSessions.firstIndex(where: { $0.account === account }) {
                 activeSessions[index].deactivate()
@@ -94,7 +94,7 @@ class AppState {
     }
     
     var firstSession: any Session { activeSessions.first ?? guestSession }
-    var firstAccount: any Account { firstSession.account }
+    var firstAccount: any AccountProviding { firstSession.account }
     var firstApi: ApiClient { firstSession.api }
     
     func accountThatModerates(actorId: URL) -> UserSession? {

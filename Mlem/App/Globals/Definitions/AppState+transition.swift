@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension AppState {
-    func transition(_ account: any Account) {
+    func transition(_ account: any AccountProviding) {
         Task { @MainActor in
             let transition = TransitionView(account: account)
             guard let transitionView = UIHostingController(rootView: transition).view,
