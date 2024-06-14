@@ -34,7 +34,7 @@ class UserSession: Session {
             try await self.api.fetchSiteVersion(task: Task {
                 let (person, instance) = try await self.api.getMyPerson()
                 if let person {
-                    self.account.update(person: person, instance: instance)
+                    await self.account.update(person: person, instance: instance)
                     self.person = person
                 }
                 self.instance = instance
@@ -46,9 +46,9 @@ class UserSession: Session {
     }
     
     func deactivate() {
-        account.logActivity()
         api.permissions = .getOnly
         Task {
+            await account.logActivity()
             await api.cleanCaches()
         }
     }

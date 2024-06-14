@@ -15,9 +15,9 @@ extension AccountListView {
         case .custom:
             return accountsTracker.userAccounts
         case .name:
-            return accountsTracker.userAccounts.sorted { $0.nicknameSortKey < $1.nicknameSortKey }
+            return accountsTracker.userAccounts.sorted { $0.getNicknameSortKey() < $1.getNicknameSortKey() }
         case .instance:
-            return accountsTracker.userAccounts.sorted { $0.instanceSortKey < $1.instanceSortKey }
+            return accountsTracker.userAccounts.sorted { $0.getInstanceSortKey() < $1.getInstanceSortKey() }
         case .mostRecent:
             return accountsTracker.userAccounts.sorted { left, right in
                 if appState.firstSession.actorId == left.actorId {
@@ -46,7 +46,7 @@ extension AccountListView {
             return Dictionary(
                 grouping: accountsTracker.userAccounts,
                 by: { getNameCategory(account: $0) }
-            ).map { AccountGroup(header: $0, accounts: $1.sorted { $0.nicknameSortKey < $1.nicknameSortKey }) }
+            ).map { AccountGroup(header: $0, accounts: $1.sorted { $0.getNicknameSortKey() < $1.getNicknameSortKey() }) }
                 .sorted { $0.header < $1.header }
         case .instance:
             let dict = Dictionary(
@@ -56,12 +56,12 @@ extension AccountListView {
             let uniqueInstances = dict.filter { $1.count == 1 }.values.map { $0.first! }
             var array = dict
                 .filter { $1.count > 1 }
-                .map { AccountGroup(header: $0, accounts: $1.sorted { $0.nicknameSortKey < $1.nicknameSortKey }) }
+                .map { AccountGroup(header: $0, accounts: $1.sorted { $0.getNicknameSortKey() < $1.getNicknameSortKey() }) }
                 .sorted { $0.header < $1.header }
             array.append(
                 AccountGroup(
                     header: "Other",
-                    accounts: uniqueInstances.sorted { $0.instanceSortKey < $1.instanceSortKey }
+                    accounts: uniqueInstances.sorted { $0.getInstanceSortKey() < $1.getInstanceSortKey() }
                 )
             )
             return array

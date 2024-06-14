@@ -82,7 +82,7 @@ class AccountsTracker {
                 return
             }
             guestAccounts.remove(at: index)
-            account.resetStoredSettings(withSave: false)
+            await account.resetStoredSettings(withSave: false)
             saveAccounts(ofType: .guest)
         } else {
             assertionFailure()
