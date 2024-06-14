@@ -53,6 +53,23 @@ class GuestAccount: Account {
         )
         self.api = await .getApiClient(for: url, with: nil)
     }
+  
+    /// Bootstrap initializer to provide synchronous access to a default guest account
+    fileprivate init() {
+        self.api = .bootstrapApiClient()
+        self.storedAccount = .init(
+            actorId: api.baseUrl,
+            id: -1, // dummy value
+            name: api.baseUrl.host() ?? "unknown",
+            baseUrl: api.baseUrl
+        )
+        
+        Task {
+            await GuestAccountCache.main.put(self)
+        }
+    }
+    
+    static func getDefaultGuestAccount() -> GuestAccount { .init() }
     
     static func getGuestAccount(url: URL) async -> GuestAccount {
         await GuestAccountCache.main.getAccount(url: url)
