@@ -73,7 +73,9 @@ struct AccountListRow: View {
                 if navigation.isInsideSheet, appState.activeSessions.contains(where: { $0.account === account }) {
                     dismiss()
                 }
-                account.signOut()
+                Task {
+                    await account.signOut()
+                }
             }
         } message: {
             Text(signOutPrompt)

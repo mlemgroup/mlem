@@ -12,53 +12,50 @@ import Observation
 @Observable
 class GuestAccount: Account {
     static let tierNumber: Int = 1
-    let actorId: URL
+    
+    var storedAccount: StoredAccount
     let api: ApiClient
-    var storedNickname: String?
-    var cachedSiteVersion: SiteVersion?
-    var avatar: URL?
-    var lastUsed: Date?
     
-    fileprivate init(url: URL) async {
-        self.actorId = url
-        self.api = await .getApiClient(for: url, with: nil)
+    var actorId: URL { storedAccount.actorId }
+    var name: String { storedAccount.name }
+    var storedNickname: String? {
+        get { storedAccount.storedNickname }
+        set(newValue) { storedAccount.storedNickname = newValue }
     }
-    
-    static func getGuestAccount(url: URL) -> GuestAccount {
-        GuestAccountCache.main.getAccount(url: url)
-    }
-    
-    enum CodingKeys: String, CodingKey {
-        // Keys are named this way to be consistent with the `UserAccount.CodingKey` cases
-        case storedNickname, instanceLink, siteVersion, avatarUrl, lastUsed
-    }
-    
-    enum DecodingError: Error {
-        case cannotRemoveExtraneousPathComponents, noTokenInKeychain
-    }
-    
-    required init(from decoder: Decoder) async throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.storedNickname = try values.decode(String?.self, forKey: .storedNickname)
-        self.cachedSiteVersion = try values.decode(SiteVersion?.self, forKey: .siteVersion)
-        self.avatar = try values.decode(URL?.self, forKey: .avatarUrl)
-        self.lastUsed = try values.decode(Date?.self, forKey: .lastUsed)
 
-        let instanceLink = try values.decode(URL.self, forKey: .instanceLink)
-        self.actorId = instanceLink
-        
-        self.api = await ApiClient.getApiClient(for: instanceLink, with: nil)
+    var cachedSiteVersion: SiteVersion? {
+        get { storedAccount.cachedSiteVersion }
+        set(newValue) { storedAccount.cachedSiteVersion = newValue }
+    }
+
+    var avatar: URL? {
+        get { storedAccount.avatar }
+        set(newValue) { storedAccount.avatar = newValue }
+    }
+
+    var lastUsed: Date? {
+        get { storedAccount.lastUsed }
+        set(newValue) { storedAccount.lastUsed = newValue }
+    }
+    
+    init(storedAccount: StoredAccount) async {
+        self.storedAccount = storedAccount
+        self.api = await ApiClient.getApiClient(for: storedAccount.baseUrl, with: nil)
         await GuestAccountCache.main.put(self)
     }
     
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(storedNickname, forKey: .storedNickname)
-        try container.encode(cachedSiteVersion, forKey: .siteVersion)
-        try container.encode(avatar, forKey: .avatarUrl)
-        try container.encode(lastUsed, forKey: .lastUsed)
-        try container.encode(api.baseUrl, forKey: .instanceLink)
+    fileprivate init(url: URL) async {
+        self.storedAccount = .init(
+            actorId: url,
+            id: -1, // dummy value
+            name: url.host() ?? "unknown",
+            baseUrl: url
+        )
+        self.api = await .getApiClient(for: url, with: nil)
+    }
+    
+    static func getGuestAccount(url: URL) async -> GuestAccount {
+        await GuestAccountCache.main.getAccount(url: url)
     }
     
     func update(instance: Instance3) {
@@ -74,10 +71,6 @@ class GuestAccount: Account {
         if shouldSave {
             AccountsTracker.main.saveAccounts(ofType: .guest)
         }
-    }
-    
-    var name: String {
-        actorId.host() ?? "unknown"
     }
     
     var isActive: Bool { AppState.main.guestSession === self }
@@ -104,12 +97,12 @@ extension GuestAccount: CacheIdentifiable {
 class GuestAccountCache: CoreCache<GuestAccount> {
     static let main: GuestAccountCache = .init()
     
-    func getAccount(url: URL) -> GuestAccount {
-        if let account = retrieveModel(cacheId: url.hashValue) {
+    func getAccount(url: URL) async -> GuestAccount {
+        if let account = await get(url.hashValue) {
             return account
         }
-        let account = GuestAccount(url: url)
-        cachedItems[account.cacheId] = .init(content: account)
+        let account = await GuestAccount(url: url)
+        await put(account)
         return account
     }
 }

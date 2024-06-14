@@ -76,15 +76,16 @@ class PersistenceRepository {
     
     func saveUserAccounts(_ value: [UserAccount]) async throws {
         value.forEach { $0.saveTokenToKeychain() }
-        try await save(value, to: Path.userAccounts)
+        try await save(value.map(\.storedAccount), to: Path.userAccounts)
     }
     
-    func loadGuestAccounts() -> [GuestAccount] {
-        load([GuestAccount].self, from: Path.guestAccounts) ?? []
+    func loadGuestAccounts() async -> [GuestAccount] {
+        let storedAccounts = load([StoredAccount].self, from: Path.guestAccounts) ?? []
+        return await storedAccounts.asyncMap { await GuestAccount(storedAccount: $0) }
     }
     
     func saveGuestAccounts(_ value: [GuestAccount]) async throws {
-        try await save(value, to: Path.guestAccounts)
+        try await save(value.map(\.storedAccount), to: Path.guestAccounts)
     }
     
     func loadRecentSearches(for accountId: String) -> [ContentModelIdentifier] {

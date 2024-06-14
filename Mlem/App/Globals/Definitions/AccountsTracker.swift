@@ -23,23 +23,60 @@ class AccountsTracker {
     
     @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
     
-    var userAccounts: [UserAccount] = .init()
-    var guestAccounts: [GuestAccount] = .init()
-    var defaultAccount: any Account { userAccounts.first ?? defaultGuestAccount }
+//    var userAccounts: [UserAccount] = .init()
+//    var guestAccounts: [GuestAccount] = .init()
+    
+    private var userAccountsTask: Task<[UserAccount], Error>!
+    private var guestAccountsTask: Task<[GuestAccount], Error>!
+    
+    var userAccounts: [UserAccount] {
+        get async throws {
+            try await userAccountsTask.value
+        }
+    }
+    
+    var guestAccounts: [GuestAccount] {
+        get async throws {
+            try await guestAccountsTask.value
+        }
+    }
+    
+    var defaultAccount: any Account {
+        get async throws {
+            if let firstUser = try await userAccounts.first {
+                return firstUser
+            }
+            return try await defaultGuestAccount
+        }
+    }
+    
     var defaultGuestAccount: GuestAccount {
-        guestAccounts.first ?? .getGuestAccount(url: URL(string: "https://lemmy.world")!)
+        get async throws {
+            if let firstGuest = try await guestAccounts.first {
+                return firstGuest
+            }
+            return await GuestAccount.getGuestAccount(url: URL(string: "https://lemmy.world")!)
+        }
     }
     
     private var cancellables = Set<AnyCancellable>()
     
     private init() {
-        self.userAccounts = persistenceRepository.loadUserAccounts()
-        self.guestAccounts = persistenceRepository.loadGuestAccounts()
+        self.userAccountsTask = Task {
+            do {
+                return try await persistenceRepository.loadUserAccounts()
+            } catch {
+                handleError(error)
+            }
+        }
+        self.guestAccountsTask = Task {
+            await persistenceRepository.loadGuestAccounts()
+        }
     }
     
-    func addAccount(account: any Account) {
+    func addAccount(account: any Account) async throws {
         if let account = account as? UserAccount {
-            guard !userAccounts.contains(where: { $0 === account }) else {
+            guard try await !userAccounts.contains(where: { $0 === account }) else {
                 assertionFailure("Tried to add a duplicate account to the tracker")
                 return
             }
