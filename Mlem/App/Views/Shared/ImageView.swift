@@ -1,5 +1,5 @@
 //
-//  TappableImageView.swift
+//  ImageView.swift
 //  Mlem
 //
 //  Created by Sjmarf on 12/06/2024.
