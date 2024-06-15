@@ -12,7 +12,24 @@ import SwiftUI
 extension MarkdownConfiguration {
     static let `default`: Self = .init(
         inlineImageLoader: loadInlineImage,
-        imageBlockView: { AnyView(MarkdownImageView(image: $0)) }
+        imageBlockView: imageView,
+        primaryColor: Palette.main.primary,
+        secondaryColor: Palette.main.secondary
+    )
+    
+    static let dimmed: Self = .init(
+        inlineImageLoader: loadInlineImage,
+        imageBlockView: imageView,
+        primaryColor: Palette.main.secondary,
+        secondaryColor: Palette.main.tertiary
+    )
+}
+
+private func imageView(_ inlineImage: InlineImage) -> AnyView {
+    AnyView(
+        TappableImageView(url: inlineImage.url)
+            .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
+            .frame(maxWidth: .infinity)
     )
 }
 
