@@ -49,7 +49,7 @@ class GuestAccount: Account {
         self.actorId = instanceLink
         
         self.api = ApiClient.getApiClient(for: instanceLink, with: nil)
-        GuestAccountCache.main.cachedItems[cacheId] = .init(content: self)
+        GuestAccountCache.main.itemCache.put(self)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -109,7 +109,7 @@ class GuestAccountCache: CoreCache<GuestAccount> {
             return account
         }
         let account = GuestAccount(url: url)
-        cachedItems[account.cacheId] = .init(content: account)
+        itemCache.put(account)
         return account
     }
 }
