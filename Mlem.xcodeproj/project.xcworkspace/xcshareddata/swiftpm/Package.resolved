@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware.git",
       "state" : {
-        "revision" : "bb59eadb4ad98124f95a510d09f674bb5aa5e875",
-        "version" : "0.8.0"
+        "branch" : "eric/thread-safe-caches-2",
+        "revision" : "8e3d5a0554539c5a5a2685800691fd75f39b7c04"
       }
     },
     {
