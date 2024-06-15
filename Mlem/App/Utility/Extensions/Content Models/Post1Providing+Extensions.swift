@@ -19,6 +19,28 @@ extension Post1Providing {
         ])
     }
     
+    func action(type: PostActionType) -> any Action {
+        switch type {
+        case .upvote:
+            upvoteAction
+        case .downvote:
+            downvoteAction
+        case .save:
+            saveAction
+        }
+    }
+    
+    func counter(type: PostCounterType) -> Counter {
+        switch type {
+        case .score:
+            scoreCounter
+        case .upvote:
+            upvoteCounter
+        case .downvote:
+            downvoteCounter
+        }
+    }
+    
     func taggedTitle(communityContext: (any Community1Providing)?) -> Text {
         let hasTags: Bool = removed
             || pinnedInstance

@@ -134,11 +134,11 @@ struct MinimalPostFeedView: View {
                 Section {
                     if !tilePosts { Divider() }
                     
-                    ForEach(postFeedLoader.items, id: \.uid) { post in
+                    ForEach(postFeedLoader.items, id: \.hashValue) { post in
                         if !post.read || showRead {
                             VStack(spacing: 0) { // this improves performance O_o
                                 NavigationLink(value: NavigationPage.expandedPost(post)) {
-                                    FeedPostView(post: .init(post))
+                                    FeedPostView(post: post)
                                         .contentShape(.rect)
                                 }
                                 .buttonStyle(EmptyButtonStyle())

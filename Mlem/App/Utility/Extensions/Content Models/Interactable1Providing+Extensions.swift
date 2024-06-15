@@ -11,6 +11,34 @@ import MlemMiddleware
 extension Interactable1Providing {
     private var self2: (any Interactable2Providing)? { self as? any Interactable2Providing }
         
+    // MARK: Counters
+    
+    var upvoteCounter: Counter {
+        .init(
+            value: self2?.votes.upvotes,
+            leadingAction: upvoteAction,
+            trailingAction: nil
+        )
+    }
+    
+    var downvoteCounter: Counter {
+        .init(
+            value: self2?.votes.downvotes,
+            leadingAction: downvoteAction,
+            trailingAction: nil
+        )
+    }
+    
+    var scoreCounter: Counter {
+        .init(
+            value: self2?.votes.total,
+            leadingAction: upvoteAction,
+            trailingAction: downvoteAction
+        )
+    }
+    
+    // MARK: Actions
+    
     var upvoteAction: BasicAction {
         let isOn: Bool = (self2?.votes.myVote ?? .none == .upvote)
         return .init(

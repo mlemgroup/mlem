@@ -52,6 +52,15 @@ struct LargePostView: View {
             if showCreator || isExpanded {
                 FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showUserAvatar)
             }
+            
+            InteractionBarView(
+                post: post,
+                configuration: .init(
+                    leading: [.counter(.score)],
+                    trailing: [.action(.save)]
+                )
+            )
+            .padding(.vertical, 2)
         }
     }
     
