@@ -26,6 +26,9 @@ struct ContentView: View {
     var body: some View {
         if appState.appRefreshToggle {
             content
+                .onAppear {
+                    HapticManager.main.initEngine()
+                }
                 .onReceive(timer) { _ in
                     appState.cleanCaches()
                 }
