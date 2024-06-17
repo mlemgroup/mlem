@@ -88,6 +88,7 @@ struct QuickSwipeView: ViewModifier {
                             .font(.system(size: config.behavior.iconSize))
                             .foregroundColor(.white)
                             .frame(width: iconWidth)
+                            .frame(width: config.behavior.primaryThreshold, alignment: .center)
                             .padding(.horizontal, iconWidth)
                     }
                     Spacer()
