@@ -57,7 +57,7 @@ class AccountsTracker {
         }
     }
     
-    func removeAccount(account: any Account) async {
+    func removeAccount(account: any Account) {
         if let account = account as? UserAccount {
             guard let index = userAccounts.firstIndex(where: { $0 === account }) else {
                 assertionFailure("Tried to remove an account that does not exist")
@@ -78,7 +78,7 @@ class AccountsTracker {
             assertionFailure()
         }
         AppState.main.deactivate(account: account)
-        await GuestAccountCache.main.clean()
+        GuestAccountCache.main.clean()
     }
     
     @discardableResult

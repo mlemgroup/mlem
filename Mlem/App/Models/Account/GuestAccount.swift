@@ -19,9 +19,9 @@ class GuestAccount: Account {
     var avatar: URL?
     var lastUsed: Date?
     
-    fileprivate init(url: URL) async {
+    fileprivate init(url: URL) {
         self.actorId = url
-        self.api = await .getApiClient(for: url, with: nil)
+        self.api = .getApiClient(for: url, with: nil)
     }
     
     static func getGuestAccount(url: URL) -> GuestAccount {
@@ -37,7 +37,7 @@ class GuestAccount: Account {
         case cannotRemoveExtraneousPathComponents, noTokenInKeychain
     }
     
-    required init(from decoder: Decoder) async throws {
+    required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         self.storedNickname = try values.decode(String?.self, forKey: .storedNickname)
