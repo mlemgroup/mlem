@@ -137,13 +137,12 @@ struct TilePostView: View {
             }
         } label: {
             Group {
-                Text(Image(systemName: Icons.upvoteSquare)) +
-                    // Text(" \(post.votes_?.total.abbreviated ?? "0")")
-                    Text(" \(post.upvoteCount_?.abbreviated ?? "0")")
+                Text(Image(systemName: post.votes_?.iconName ?? Icons.upvoteSquare)) +
+                    Text(" \(post.votes_?.total.abbreviated ?? "0")")
             }
             .lineLimit(1)
             .font(.caption)
-            .foregroundStyle(.secondary)
+            .foregroundStyle(post.votes_?.iconColor ?? palette.secondary)
             .contentShape(.rect)
         }
         .onTapGesture {}

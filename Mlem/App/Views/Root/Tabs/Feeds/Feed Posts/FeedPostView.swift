@@ -16,55 +16,11 @@ struct FeedPostView: View {
     
     let post: AnyPost
     
-    var leadingActions: [BasicAction] {
-        [.init(
-            isOn: true,
-            label: "Test",
-            color: .blue,
-            icon: Icons.upvoteSquare,
-            swipeIcon1: Icons.upvoteSquare,
-            swipeIcon2: Icons.upvoteSquareFill
-        ) {
-            print("upvoted!")
-        },
-        .init(
-            isOn: true,
-            label: "Test",
-            color: .red,
-            icon: Icons.downvoteSquare,
-            swipeIcon1: Icons.downvoteSquare,
-            swipeIcon2: Icons.downvoteSquareFill
-        ) {
-            print("downvoted!")
-        }]
-    }
-    
-    var trailingActions: [BasicAction] {
-        [.init(
-            isOn: true,
-            label: "Test",
-            color: .green,
-            icon: Icons.save,
-            swipeIcon1: Icons.save,
-            swipeIcon2: Icons.saveFill
-        ) {
-            print("saved!")
-        }]
-    }
-    
-    var swipeConfiguration: SwipeConfiguration {
-        if tilePosts {
-            SwipeConfiguration(leadingActions: leadingActions, trailingActions: trailingActions, behavior: .tile)
-        } else {
-            SwipeConfiguration(leadingActions: leadingActions, trailingActions: trailingActions, behavior: .standard)
-        }
-    }
-    
     var body: some View {
         ContentLoader(model: post) { post in
             Content(for: post)
                 .environment(\.postContext, post)
-                .quickSwipes(swipeConfiguration)
+                .quickSwipes(post.swipeActions(behavior: tilePosts ? .tile : .standard))
         }
     }
     
