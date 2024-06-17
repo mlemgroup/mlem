@@ -27,7 +27,7 @@ struct ReplyToMessage: ResponseEditorModel {
     
     func sendResponse(responseContents: String) async throws {
         do {
-            _ = try await inboxRepository.sendMessage(content: responseContents, recipientId: message.creator.id)
+            _ = try await inboxRepository.sendMessage(content: responseContents, recipientId: message.creator.userId)
             hapticManager.play(haptic: .success, priority: .high)
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
