@@ -33,7 +33,7 @@ struct WebsitePreviewView: View {
     var body: some View {
         content
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(AppConstants.standardSpacing)
+            .clipShape(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius))
             .overlay {
                 RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
                     .stroke(palette.secondaryBackground, lineWidth: 1)
@@ -41,9 +41,9 @@ struct WebsitePreviewView: View {
     }
     
     var content: some View {
-        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+        VStack(alignment: .leading, spacing: 0) {
             if let url = post.thumbnailUrl {
-                ImageView(url: url)
+                ImageView(url: url, cornerRadius: 0)
                     .overlay(alignment: .bottomLeading) {
                         host
                             .padding(AppConstants.halfSpacing)
@@ -62,6 +62,7 @@ struct WebsitePreviewView: View {
             Text(linkLabel)
                 .font(.subheadline)
                 .fontWeight(.semibold)
+                .padding(AppConstants.standardSpacing)
         }
     }
     

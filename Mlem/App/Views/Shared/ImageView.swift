@@ -25,10 +25,16 @@ struct ImageView: View {
     @State var error: Error?
     
     let url: URL?
+    let cornerRadius: CGFloat
     let onLoadingStateChange: (_ newValue: LoadingState) -> Void
     
-    init(url: URL?, onLoadingStateChange: @escaping (_ newValue: LoadingState) -> Void = { _ in }) {
+    init(
+        url: URL?,
+        cornerRadius: CGFloat = AppConstants.largeItemCornerRadius,
+        onLoadingStateChange: @escaping (_ newValue: LoadingState) -> Void = { _ in }
+    ) {
         self.url = url
+        self.cornerRadius = cornerRadius
         self.onLoadingStateChange = onLoadingStateChange
         if let image = ImagePipeline.shared.cache.cachedImage(for: .init(url: url))?.image {
             self._uiImage = .init(wrappedValue: image)
@@ -59,7 +65,7 @@ struct ImageView: View {
                     }
             }
             .task(loadImage)
-            .clipShape(.rect(cornerRadius: AppConstants.largeItemCornerRadius))
+            .clipShape(.rect(cornerRadius: cornerRadius))
             .onAppear {
                 onLoadingStateChange(loading)
             }
