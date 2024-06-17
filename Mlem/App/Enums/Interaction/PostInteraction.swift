@@ -15,6 +15,7 @@ struct PostBarConfiguration {
     
     let leading: [Item]
     let trailing: [Item]
+    let readouts: [PostReadoutType]
 }
 
 enum PostCounterType {
@@ -27,4 +28,11 @@ enum PostActionType {
     case upvote
     case downvote
     case save
+}
+
+enum PostReadoutType: CaseIterable {
+    case created
+    case score
+    case upvote
+    case downvote
 }

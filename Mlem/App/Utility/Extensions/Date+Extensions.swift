@@ -22,4 +22,18 @@ extension Date {
         dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "ddMMYY", options: 0, locale: Locale.current)
         return dateFormatter.string(from: self)
     }
+    
+    func getShortRelativeTime(date: Date = .now, unitsStyle: DateComponentsFormatter.UnitsStyle = .abbreviated) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = unitsStyle
+        formatter.maximumUnitCount = 1
+        
+        let interval = date.timeIntervalSince(self)
+        if interval < 1 {
+            return "Now"
+        }
+    
+        let value = formatter.string(from: interval)
+        return value ?? "Unknown"
+    }
 }

@@ -63,6 +63,7 @@ struct MinimalPostFeedView: View {
             .toolbar {
                 ToolbarEllipsisMenu {
                     MenuButton(action: BasicAction(
+                        id: "read",
                         isOn: showRead,
                         label: showRead ? "Hide Read" : "Show Read",
                         color: palette.primary,

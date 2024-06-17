@@ -11,12 +11,13 @@ import SwiftUI
 
 extension Post1Providing {
     var menuActions: ActionGroup {
-        ActionGroup(children: [
-            ActionGroup(
-                children: [upvoteAction, downvoteAction]
-            ),
-            saveAction
-        ])
+        ActionGroup(
+            children: [
+                ActionGroup(
+                    children: [upvoteAction, downvoteAction]
+                ),
+                saveAction
+            ])
     }
     
     func action(type: PostActionType) -> any Action {
@@ -38,6 +39,19 @@ extension Post1Providing {
             upvoteCounter
         case .downvote:
             downvoteCounter
+        }
+    }
+    
+    func readout(type: PostReadoutType) -> Readout {
+        switch type {
+        case .created:
+            createdReadout
+        case .score:
+            scoreReadout
+        case .upvote:
+            upvoteReadout
+        case .downvote:
+            downvoteReadout
         }
     }
     

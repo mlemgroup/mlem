@@ -57,7 +57,8 @@ struct LargePostView: View {
                 post: post,
                 configuration: .init(
                     leading: [.counter(.score)],
-                    trailing: [.action(.save)]
+                    trailing: [.action(.save)],
+                    readouts: [.created, .upvote, .downvote]
                 )
             )
             .padding(.vertical, 2)
