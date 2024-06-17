@@ -39,7 +39,7 @@ struct MinimalPostFeedView: View {
         @AppStorage("behavior.internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("behavior.upvoteOnSave") var upvoteOnSave = false
         @AppStorage("feed.showRead") var showReadPosts = true
-        @AppStorage("post.defaultSort") var defaultSort: ApiSortType = .topYear // .hot
+        @AppStorage("post.defaultSort") var defaultSort: ApiSortType = .hot
         
         @Dependency(\.persistenceRepository) var persistenceRepository
         

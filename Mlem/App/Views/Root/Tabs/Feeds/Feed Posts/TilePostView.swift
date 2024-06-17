@@ -36,7 +36,7 @@ struct TilePostView: View {
     var content: some View {
         VStack(alignment: .leading, spacing: 0) {
             BaseImage(post: post)
-                .overlay {
+                .overlay(alignment: .bottomTrailing) {
                     if let host = post.linkHost {
                         PostLinkHostView(host: host)
                             .font(.caption)
@@ -48,7 +48,6 @@ struct TilePostView: View {
                                     .overlay(Capsule().fill(palette.background.opacity(0.25)))
                             }
                             .padding(AppConstants.compactSpacing)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
                     }
                 }
             
