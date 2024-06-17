@@ -31,7 +31,7 @@ extension AccountListView {
     }
     
     func getNameCategory(account: any Account) -> String {
-        guard let first = (account.nickname ?? account.name).first else { return "Unknown" }
+        guard let first = account.nickname.first else { return "Unknown" }
         if first.isLetter {
             return String(first.lowercased())
         }

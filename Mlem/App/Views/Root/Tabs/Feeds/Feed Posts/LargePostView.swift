@@ -11,14 +11,15 @@ import MlemMiddleware
 import SwiftUI
 
 struct LargePostView: View {
-    @AppStorage("post.showCreator") var showCreator: Bool = false
-    @AppStorage("user.showAvatar") var showUserAvatar: Bool = true
-    @AppStorage("community.showAvatar") var showCommunityAvatar: Bool = true
+    @AppStorage("post.showCreator") private var showCreator: Bool = false
+    @AppStorage("user.showAvatar") private var showUserAvatar: Bool = true
+    @AppStorage("community.showAvatar") private var showCommunityAvatar: Bool = true
     
-    @Environment(\.communityContext) var communityContext: (any Community1Providing)?
-    @Environment(Palette.self) var palette: Palette
+    @Environment(\.communityContext) private var communityContext: (any Community1Providing)?
+    @Environment(Palette.self) private var palette: Palette
     
     let post: any Post1Providing
+    var isExpanded: Bool = false
     
     var body: some View {
         content
@@ -29,7 +30,7 @@ struct LargePostView: View {
     var content: some View {
         VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
             HStack {
-                FullyQualifiedLabelView(entity: post.community_, labelStyle: .large, showAvatar: showCommunityAvatar)
+                FullyQualifiedLabelView(entity: post.community_, labelStyle: .medium, showAvatar: showCommunityAvatar)
                 
                 Spacer()
                 
@@ -38,7 +39,9 @@ struct LargePostView: View {
                         .foregroundStyle(palette.warning)
                 }
                 
-                EllipsisMenu(actions: post.menuActions, size: 24)
+                if !isExpanded {
+                    EllipsisMenu(actions: post.menuActions, size: 24)
+                }
             }
             
             post.taggedTitle(communityContext: communityContext)
@@ -47,8 +50,8 @@ struct LargePostView: View {
             
             postDetail
             
-            if showCreator {
-                FullyQualifiedLinkView(entity: post.creator_, labelStyle: .large, showAvatar: showUserAvatar)
+            if showCreator || isExpanded {
+                FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showUserAvatar)
             }
         }
     }
@@ -56,18 +59,26 @@ struct LargePostView: View {
     @ViewBuilder
     var postDetail: some View {
         switch post.type {
-        case let .text(text):
-            Markdown(text, configuration: .default)
-                .lineLimit(8)
-                .foregroundStyle(palette.secondary)
-        case .image:
-            mockImage
+        case let .image(url):
+            TappableImageView(url: url)
+                // Set maximum image height to 1.2 * width
+                .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
+                .frame(maxWidth: .infinity)
         case let .link(url):
             if let url {
                 mockWebsiteComplex(url: url)
             }
-        case .titleOnly:
+        default:
             EmptyView()
+        }
+        if let content = post.content {
+            if isExpanded {
+                Markdown(content, configuration: .default)
+            } else {
+                // Cut down on compute time for very long text posts by only rendering the first 4 blocks
+                MarkdownText(Array([BlockNode](content).prefix(4)), configuration: .dimmed)
+                    .lineLimit(post.linkUrl == nil ? 8 : 4)
+            }
         }
     }
     
