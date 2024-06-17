@@ -99,7 +99,6 @@ class APIClient {
     @discardableResult
     func perform<Request: APIRequest>(request: Request, overrideToken: String? = nil) async throws -> Request.Response {
         let urlRequest = try urlRequest(from: request, overrideToken: overrideToken)
-
         let (data, response) = try await execute(urlRequest)
         
         if let response = response as? HTTPURLResponse {
@@ -489,13 +488,6 @@ extension APIClient {
     func reportPrivateMessage(id: Int, reason: String) async throws -> APIPrivateMessageReportView {
         let request = try CreatePrivateMessageReportRequest(session: session, privateMessageId: id, reason: reason)
         return try await perform(request: request).privateMessageReportView
-    }
-    
-    @available(*, deprecated, message: "Use id-based sendPrivateMessage instead")
-    @discardableResult
-    func sendPrivateMessage(content: String, recipient: APIPerson) async throws -> PrivateMessageResponse {
-        let request = try CreatePrivateMessageRequest(session: session, content: content, recipient: recipient)
-        return try await perform(request: request)
     }
     
     @discardableResult
