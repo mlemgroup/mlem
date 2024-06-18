@@ -33,7 +33,7 @@ struct InboxView: View {
                 )
             }
             Button("Error") {
-                handleError(ApiClientError.cancelled)
+                handleError(ApiClientError.invalidInput)
             }
             Button("Super Long Text") {
                 ToastModel.main.add(.success("Really Super Long Text"))
