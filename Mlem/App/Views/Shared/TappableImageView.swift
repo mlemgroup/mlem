@@ -18,7 +18,7 @@ struct TappableImageView: View {
             .onTapGesture {
                 if loading == .done, let url {
                     // Sheets don't cover the whole screen on iPad, so use a fullScreenCover instead
-                    if UIDevice.isIPad {
+                    if UIDevice.isPad {
                         navigation.showFullScreenCover(.imageViewer(url))
                     } else {
                         navigation.openSheet(.imageViewer(url))
