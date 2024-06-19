@@ -32,8 +32,8 @@ enum NavigationPage: Hashable {
 }
 
 extension NavigationPage {
-    @ViewBuilder
-    func view() -> some View {
+    // swiftlint:disable:next cyclomatic_complexity
+    @ViewBuilder func view() -> some View {
         switch self {
         case let .settings(page):
             page.view()
