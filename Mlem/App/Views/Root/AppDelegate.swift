@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Nuke
 import SwiftUI
 
 // TODO: we need to do a bit of work to ensure we also switch tab when responding to these
@@ -23,10 +24,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIWindowSceneDelegate {
         if let shortcutItem = options.shortcutItem {
             shortcutItemToProcess = shortcutItem
         }
-
+        
         let sceneConfiguration = UISceneConfiguration(name: "Custom Configuration", sessionRole: connectingSceneSession.role)
         sceneConfiguration.delegateClass = CustomSceneDelegate.self
-
+        
         return sceneConfiguration
     }
 }

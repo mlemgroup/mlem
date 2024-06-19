@@ -134,6 +134,7 @@
 		CD4ED84A2BF1113800EFA0A2 /* View+TabReselectConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */; };
 		CD4ED84E2BF113C800EFA0A2 /* ExpandedPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED84D2BF113C800EFA0A2 /* ExpandedPostView.swift */; };
 		CD77437F2C1BA5CE0085BB43 /* MultiplatformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD77437E2C1BA5CE0085BB43 /* MultiplatformView.swift */; };
+		CD77438B2C2320F20085BB43 /* TestVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD77438A2C2320F20085BB43 /* TestVideoView.swift */; };
 		CD7882A22BFE4B47002E1A30 /* PostContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882A12BFE4B47002E1A30 /* PostContext.swift */; };
 		CD7882A52BFE94D2002E1A30 /* CommunityContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882A42BFE94D2002E1A30 /* CommunityContext.swift */; };
 		CD7882A72BFFD1A3002E1A30 /* ThumbnailLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882A62BFFD1A3002E1A30 /* ThumbnailLocation.swift */; };
@@ -296,6 +297,7 @@
 		CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+TabReselectConsumer.swift"; sourceTree = "<group>"; };
 		CD4ED84D2BF113C800EFA0A2 /* ExpandedPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedPostView.swift; sourceTree = "<group>"; };
 		CD77437E2C1BA5CE0085BB43 /* MultiplatformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplatformView.swift; sourceTree = "<group>"; };
+		CD77438A2C2320F20085BB43 /* TestVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestVideoView.swift; sourceTree = "<group>"; };
 		CD7882A12BFE4B47002E1A30 /* PostContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostContext.swift; sourceTree = "<group>"; };
 		CD7882A42BFE94D2002E1A30 /* CommunityContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityContext.swift; sourceTree = "<group>"; };
 		CD7882A62BFFD1A3002E1A30 /* ThumbnailLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailLocation.swift; sourceTree = "<group>"; };
@@ -423,6 +425,7 @@
 			isa = PBXGroup;
 			children = (
 				0369B3552BFA6824001EFEDF /* InboxView.swift */,
+				CD77438A2C2320F20085BB43 /* TestVideoView.swift */,
 			);
 			path = Inbox;
 			sourceTree = "<group>";
@@ -1133,6 +1136,7 @@
 				CD4D58B92B86D9F800B82964 /* AccountListRow.swift in Sources */,
 				CD4D58B32B86BFD400B82964 /* AccountsTracker.swift in Sources */,
 				CD317D4F2BE983ED008F63E2 /* MonochromePalette.swift in Sources */,
+				CD77438B2C2320F20085BB43 /* TestVideoView.swift in Sources */,
 				034B948E2C0937BA00039AF4 /* FancyScrollView.swift in Sources */,
 				CD4D58B52B86BFFB00B82964 /* PersistenceRepository+Dependency.swift in Sources */,
 				CD4D58EB2B86E63300B82964 /* AssociatedColor.swift in Sources */,
@@ -1646,8 +1650,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.9.0;
+				kind = exactVersion;
+				version = 0.9.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

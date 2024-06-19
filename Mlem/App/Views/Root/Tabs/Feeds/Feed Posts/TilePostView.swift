@@ -98,34 +98,35 @@ struct TilePostView: View {
         var dimension: CGFloat { UIScreen.main.bounds.width / 2 - (AppConstants.standardSpacing * 1.5) }
         
         var body: some View {
-            switch post.type {
-            case let .text(text):
-                Markdown(text, configuration: .default)
-                    .font(.caption)
-                    .foregroundStyle(palette.secondary)
-                    .padding(AppConstants.standardSpacing)
-                    .frame(maxWidth: .infinity, maxHeight: dimension, alignment: .topLeading)
-                    .clipped()
-            case .titleOnly:
-                Image(systemName: post.placeholderImageName)
-                    .resizable()
-                    .scaledToFit()
-                    .foregroundStyle(palette.secondary)
-                    .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            case let .image(url):
-                TappableImageView(url: url)
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: dimension, height: dimension)
-                    .background(palette.secondaryBackground)
-                    .clipped()
-            case let .link(url):
-                ImageView(url: url)
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: dimension, height: dimension)
-                    .background(palette.secondaryBackground)
-                    .clipped()
-            }
+            TestVideoView(url: URL(string: "https://kean.github.io/videos/cat_video.mp4")!)
+//            switch post.type {
+//            case let .text(text):
+//                Markdown(text, configuration: .default)
+//                    .font(.caption)
+//                    .foregroundStyle(palette.secondary)
+//                    .padding(AppConstants.standardSpacing)
+//                    .frame(maxWidth: .infinity, maxHeight: dimension, alignment: .topLeading)
+//                    .clipped()
+//            case .titleOnly:
+//                Image(systemName: post.placeholderImageName)
+//                    .resizable()
+//                    .scaledToFit()
+//                    .foregroundStyle(palette.secondary)
+//                    .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
+//                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+//            case let .image(url):
+//                TappableImageView(url: url)
+//                    .aspectRatio(contentMode: .fill)
+//                    .frame(width: dimension, height: dimension)
+//                    .background(palette.secondaryBackground)
+//                    .clipped()
+//            case let .link(url):
+//                ImageView(url: url)
+//                    .aspectRatio(contentMode: .fill)
+//                    .frame(width: dimension, height: dimension)
+//                    .background(palette.secondaryBackground)
+//                    .clipped()
+//            }
         }
     }
     
