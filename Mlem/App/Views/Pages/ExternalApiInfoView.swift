@@ -56,7 +56,7 @@ struct ExternalApiInfoView: View {
                 if internalFederationStatus?.isAllowed ?? false, externalFederationStatus?.isAllowed ?? false {
                     Text(
                         // swiftlint:disable:next line_length
-                        "Your instance and **\(entityLocalApi.host ?? "")** appear to be federating with one another, but we weren't able to access this content from your instance. This could be because the content is new, and hasn't federated to your instance yet. Or, it could be because your instance has purged this content."
+                        "Your instance and **\(entityLocalApi.host ?? "")** federate, but the content could not be loaded. It may not have federated yet, or your instance may have purged it."
                     )
                     .padding(.horizontal, AppConstants.standardSpacing)
                 } else {
@@ -68,7 +68,7 @@ struct ExternalApiInfoView: View {
                 }
             }
             box(alignment: .leading) {
-                Text("To work around this, we're accessing this content from **\(fallbackApi.host ?? "")** instead of your instance.")
+                Text("This content will be loaded from **\(fallbackApi.host ?? "")** instead.")
                     .padding(.horizontal, AppConstants.standardSpacing)
             }
             box(alignment: .leading, spacing: 6) {
@@ -79,7 +79,7 @@ struct ExternalApiInfoView: View {
                 
                 Text(
                     // swiftlint:disable:next line_length
-                    "Lemmy instances talk to each other so that content can be shared across sites. This is called \"federation\". Instance administrators can choose which other instances they would like their instance to federate with. Some instances will federate with all other instances, except those on a \"block-list\" curated by the administrators. Other instances might only federate to instances on an \"allow-list\"."
+                    "Lemmy instances talk to each other so that content can be shared across sites. This is called \"federation\". Instance administrators can choose which other instances they would like their instance to federate with. Some instances federate with all but a curated \"block-list\" of other instances; other instances might only federate with instances on an \"allow-list\"."
                 )
                 .padding(.horizontal, AppConstants.standardSpacing)
             }
@@ -99,7 +99,7 @@ struct ExternalApiInfoView: View {
         .padding(.vertical, 16)
         .frame(maxWidth: .infinity)
         .background(
-            Color(uiColor: .secondarySystemGroupedBackground),
+            palette.secondaryGroupedBackground,
             in: .rect(cornerRadius: AppConstants.largeItemCornerRadius)
         )
     }
