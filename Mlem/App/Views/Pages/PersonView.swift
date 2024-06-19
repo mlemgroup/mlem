@@ -25,11 +25,7 @@ struct PersonView: View {
     @State var posts: [Post2] = []
     
     var body: some View {
-        if #available(iOS 17.1, *) {
-            Self._printChanges()
-        }
-        return ContentLoader(model: person) { person, isLoading in
-            // print("REFRESH", posts.count)
+        ContentLoader(model: person) { person, isLoading in
             content(person: person)
                 .externalApiWarning(entity: person, isLoading: isLoading)
                 .toolbar {
