@@ -6,6 +6,7 @@
 //
 
 import MlemMiddleware
+import Nuke
 import SwiftUI
 
 struct SettingsView: View {
@@ -32,6 +33,12 @@ struct SettingsView: View {
             
             Section {
                 Toggle("Upvote On Save", isOn: $upvoteOnSave)
+            }
+            Section {
+                Button("Clear Cache") {
+                    URLCache.shared.removeAllCachedResponses()
+                    ImagePipeline.shared.cache.removeAll()
+                }
             }
         }
         .navigationTitle("Settings")

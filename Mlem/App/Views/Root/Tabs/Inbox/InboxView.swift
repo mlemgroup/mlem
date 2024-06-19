@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 19/05/2024.
 //
 
+import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
 

@@ -7,6 +7,7 @@
 
 import Foundation
 import MlemMiddleware
+import Semaphore
 import SwiftUI
 
 struct ContentLoader<Content: View, Model: Upgradable>: View {
@@ -19,6 +20,8 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
         
     @State var upgradeState: UpgradeState = .idle
     @State var error: Error?
+    
+    private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
     
     let model: Model
     @ViewBuilder var content: (_ model: Model.MinimumRenderable, _ isLoading: Bool) -> Content
@@ -62,6 +65,9 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
     }
     
     func upgradeModel(api: ApiClient? = nil) async {
+        // critical function, only one thread allowed!
+        await loadingSemaphore.wait()
+        defer { loadingSemaphore.signal() }
         upgradeState = .loading
         do {
             do {

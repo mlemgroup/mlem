@@ -20,6 +20,7 @@ enum NavigationPage: Hashable {
     case expandedPost(_ post: AnyPost)
     case person(_ person: AnyPerson)
     case externalApiInfo(api: ApiClient, actorId: URL)
+    case imageViewer(_ url: URL)
     
     static func expandedPost(_ post: any PostStubProviding) -> NavigationPage {
         expandedPost(.init(post))
@@ -48,6 +49,8 @@ extension NavigationPage {
             SubscriptionListView()
         case let .externalApiInfo(api: api, actorId: actorId):
             ExternalApiInfoView(api: api, actorId: actorId)
+        case let .imageViewer(url):
+            ImageViewer(url: url)
         case .quickSwitcher:
             QuickSwitcherView()
         case let .expandedPost(post):
