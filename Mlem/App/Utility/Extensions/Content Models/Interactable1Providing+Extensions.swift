@@ -5,8 +5,8 @@
 //  Created by Eric Andrews on 2024-05-02.
 //
 
-import Foundation
 import MlemMiddleware
+import SwiftUI
 
 extension Interactable1Providing {
     private var self2: (any Interactable2Providing)? { self as? any Interactable2Providing }
@@ -96,34 +96,43 @@ extension Interactable1Providing {
     
     var scoreReadout: Readout {
         let icon: String
+        let color: Color?
         switch self2?.votes.myVote {
         case .upvote:
             icon = Icons.upvoteSquareFill
+            color = Palette.main.upvote
         case .downvote:
             icon = Icons.downvoteSquareFill
+            color = Palette.main.downvote
         default:
             icon = Icons.upvoteSquare
+            color = nil
         }
         return Readout(
             id: "score\(actorId)",
             label: self2?.votes.total.description,
-            icon: icon
+            icon: icon,
+            color: color
         )
     }
     
     var upvoteReadout: Readout {
-        Readout(
+        let isOn = self2?.votes.myVote == .upvote
+        return Readout(
             id: "upvote\(actorId)",
             label: self2?.votes.upvotes.description,
-            icon: self2?.votes.myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvoteSquare
+            icon: isOn ? Icons.upvoteSquareFill : Icons.upvoteSquare,
+            color: isOn ? Palette.main.upvote : nil
         )
     }
     
     var downvoteReadout: Readout {
-        Readout(
+        let isOn = self2?.votes.myVote == .downvote
+        return Readout(
             id: "downvote\(actorId)",
             label: self2?.votes.downvotes.description,
-            icon: self2?.votes.myVote == .downvote ? Icons.downvoteSquareFill : Icons.downvoteSquare
+            icon: isOn ? Icons.downvoteSquareFill : Icons.downvoteSquare,
+            color: isOn ? Palette.main.downvote : nil
         )
     }
 }

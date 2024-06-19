@@ -15,7 +15,7 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
     
     private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
     
-    let model: any Upgradable
+    let model: Model
     var content: (Model.MinimumRenderable) -> Content
     
     init(model: Model, content: @escaping (Model.MinimumRenderable) -> Content) {
@@ -47,7 +47,7 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
         guard !model.isUpgraded else { return }
         
         do {
-            try await model.upgrade()
+            try await model.upgrade(api: nil, upgradeOperation: nil)
         } catch {
             print(error)
         }

@@ -5,10 +5,12 @@
 //  Created by Sjmarf on 16/06/2024.
 //
 
+import MlemMiddleware
 import SwiftUI
 
 struct InfoStackView: View {
-    @Environment(Palette.self) var palette
+    @Environment(Palette.self) private var palette
+    
     let readouts: [Readout]
     let showColor: Bool
     
@@ -20,12 +22,19 @@ struct InfoStackView: View {
                     Text(readout.label ?? " ")
                         .monospacedDigit()
                         .contentTransition(.numericText(value: Double(readout.label ?? "") ?? 0))
-                        .animation(.default, value: readout.label)
                 }
-                .foregroundStyle(palette.secondary)
+                .foregroundStyle((showColor ? readout.color : nil) ?? palette.secondary)
+                .animation(.default, value: readout.label)
             }
         }
         .font(.footnote)
+    }
+}
+
+extension InfoStackView {
+    init(post: any Post1Providing, readouts: [PostReadoutType], showColor: Bool) {
+        self.readouts = readouts.map { post.readout(type: $0) }
+        self.showColor = showColor
     }
 }
 
