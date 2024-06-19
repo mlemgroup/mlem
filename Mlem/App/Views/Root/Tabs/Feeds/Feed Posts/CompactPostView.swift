@@ -20,6 +20,7 @@ struct CompactPostView: View {
     var body: some View {
         content
             .padding(AppConstants.standardSpacing)
+            .environment(\.postContext, post)
     }
     
     var content: some View {

@@ -10,12 +10,14 @@ import Nuke
 import SwiftUI
 
 struct AvatarView: View {
+    @Environment(Palette.self) var palette
+    
+    @State private var uiImage: UIImage
+    @State private var loading: Bool
+    
     let url: URL?
     let type: AvatarType
     var showLoadingPlaceholder: Bool
-    
-    @State var uiImage: UIImage
-    @State var loading: Bool
     
     init(
         url: URL?,
@@ -31,23 +33,30 @@ struct AvatarView: View {
     }
     
     var body: some View {
-        Image(uiImage: uiImage)
-            .resizable()
-            .aspectRatio(1, contentMode: .fill)
-            .clipShape(Circle())
-            .background {
-                if url != nil, loading, showLoadingPlaceholder {
-                    ProgressView()
-                } else if url == nil {
-                    DefaultAvatarView(avatarType: type)
-                }
+        Group {
+            if url == nil {
+                DefaultAvatarView(avatarType: type)
+            } else {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .aspectRatio(1, contentMode: .fill)
+                    .background {
+                        if loading {
+                            if showLoadingPlaceholder {
+                                ProgressView()
+                            }
+                        } else {
+                            palette.secondaryBackground
+                        }
+                    }
+                    .clipShape(Circle())
+                    .task(loadImage)
             }
-            .task {
-                await loadImage()
-            }
-            .aspectRatio(1, contentMode: .fit)
+        }
+        .aspectRatio(1, contentMode: .fit)
     }
     
+    @Sendable
     func loadImage() async {
         guard let url else { return }
         

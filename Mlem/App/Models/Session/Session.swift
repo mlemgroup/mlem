@@ -22,5 +22,4 @@ protocol Session: ActorIdentifiable, Hashable {
 extension Session {
     var api: ApiClient { account.api }
     var actorId: URL { account.actorId }
-    var host: String? { actorId.host() }
 }

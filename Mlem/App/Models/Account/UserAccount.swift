@@ -10,10 +10,7 @@ import MlemMiddleware
 import Observation
 
 @Observable
-class UserAccount: Account, CommunityOrPersonStub {
-    static let tierNumber: Int = 1
-    static let identifierPrefix: String = "@"
-    
+class UserAccount: Account {
     let actorId: URL
     let id: Int
     let api: ApiClient
@@ -120,6 +117,16 @@ class UserAccount: Account, CommunityOrPersonStub {
     
     var nicknameSortKey: String { nickname + (actorId.host() ?? "") }
     var instanceSortKey: String { (actorId.host() ?? "") + nickname }
+    
+    var fullName: String? {
+        guard let host else { return nil }
+        return "\(name)@\(host)"
+    }
+    
+    var fullNameWithPrefix: String? {
+        guard let host else { return nil }
+        return "@\(name)@\(host)"
+    }
 }
 
 private func getKeychainId(actorId: URL) -> String {

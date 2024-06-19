@@ -18,12 +18,36 @@ struct PersonView: View {
     }
     
     @State var person: AnyPerson
-    @State var selectedTab: Tab = .overview
-    @State var isAtTop: Bool = true
+    @State private var selectedTab: Tab = .overview
+    @State private var isAtTop: Bool = true
+    
+    // This will a post tracker in future - this is just a proof-of-concept for post loading
+    @State var posts: [Post2] = []
     
     var body: some View {
-        ContentLoader(model: person) { person in
+        ContentLoader(model: person) { person, isLoading in
             content(person: person)
+                .externalApiWarning(entity: person, isLoading: isLoading)
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        if person is any Person3Providing, isLoading {
+                            ProgressView()
+                        } else {
+                            ToolbarEllipsisMenu {}
+                        }
+                    }
+                }
+        } upgradeOperation: { model, api in
+            try await model.upgrade(api: api) { entity in
+                if let entity = entity as? any Person1Providing {
+                    let response = try await entity.getPosts(page: 1, limit: 3)
+                    Task { @MainActor in
+                        posts = response.posts
+                    }
+                    return response.person
+                }
+                return try await entity.upgrade()
+            }
         }
         .navigationTitle(isAtTop ? "" : (person.wrappedValue.displayName_ ?? person.wrappedValue.name))
         .navigationBarTitleDisplayMode(.inline)
@@ -51,12 +75,6 @@ struct PersonView: View {
                 }
             }
             .animation(.easeOut(duration: 0.2), value: person is any Person3Providing)
-        }
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                // TODO:
-                ToolbarEllipsisMenu {}
-            }
         }
     }
     
@@ -95,24 +113,31 @@ struct PersonView: View {
     
     @ViewBuilder
     func personContent(person: any Person3Providing) -> some View {
-        BubblePicker(
-            tabs(person: person),
-            selected: $selectedTab,
-            withDividers: [.top, .bottom],
-            label: \.label,
-            value: { tab in
-                switch tab {
-                case .posts:
-                    person.postCount
-                case .comments:
-                    person.commentCount
-                case .communities:
-                    person.moderatedCommunities.count
-                default:
-                    nil
+        VStack {
+            BubblePicker(
+                tabs(person: person),
+                selected: $selectedTab,
+                withDividers: [.top, .bottom],
+                label: \.label,
+                value: { tab in
+                    switch tab {
+                    case .posts:
+                        person.postCount
+                    case .comments:
+                        person.commentCount
+                    case .communities:
+                        person.moderatedCommunities.count
+                    default:
+                        nil
+                    }
                 }
-            }
-        )
+            )
+            // I was going to render this, but there's some weird view update issues going on with ContentLoader that we'll need to work out first...
+//            ForEach(posts, id: \.id) { post in
+//                FeedPostView(post: post)
+//                Divider()
+//            }
+        }
     }
     
     func tabs(person: any Person3Providing) -> [Tab] {
