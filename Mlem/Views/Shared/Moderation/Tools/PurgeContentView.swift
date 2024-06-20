@@ -10,6 +10,8 @@ import SwiftUI
 
 protocol Purgable: ContentIdentifiable {
     mutating func purge(reason: String?) async -> Bool
+    
+    func canPurge() -> Bool
 }
 
 struct PurgeContentView: View {
@@ -102,6 +104,11 @@ struct PurgeContentView: View {
     }
     
     private func confirm() {
+        guard content.canPurge() else {
+            assertionFailure("Opened PurgeContentView with unpurgable content!")
+            return
+        }
+        
         isWaiting = true
         
         Task {

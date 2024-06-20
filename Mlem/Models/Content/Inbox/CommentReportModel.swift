@@ -265,6 +265,8 @@ extension CommentReportModel: Removable, Purgable {
         }
         return false
     }
+    
+    func canPurge() -> Bool { true }
 }
 
 extension CommentReportModel: Hashable, Equatable {

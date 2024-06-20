@@ -73,6 +73,7 @@ class SiteInformationTracker: ObservableObject {
                     }
                 }
                 myUserInfo = response.myUser
+                print("DEBUG purg set myUserInfo")
                 allLanguages = response.allLanguages
                 if let userInfo = response.myUser {
                     myUser = UserModel(from: userInfo.localUserView.person)

@@ -285,7 +285,8 @@ extension PostModel {
                 })
             }
             
-            if siteInformation.isAdmin {
+            if creator.canPurge() {
+                print("can purge creator \(creator.name)")
                 functions.append(MenuFunction.standardMenuFunction(
                     text: "Purge User",
                     imageName: Icons.purge,

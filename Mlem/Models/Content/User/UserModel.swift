@@ -237,6 +237,42 @@ struct UserModel: Purgable {
         return false
     }
     
+    func canPurge() -> Bool {
+        guard siteInformation.isAdmin else {
+            print("Cannot purge, you is not an admin")
+            return false
+        }
+        
+        guard let instanceAdmins = siteInformation.instance?.administrators else {
+            print("Cannot determine purgability, instance admin information unavailable")
+            return false
+        }
+        
+        guard let myUserId = siteInformation.userId else {
+            print("Cannot determine purgability, user id unavailable")
+            return false
+        }
+        
+        guard myUserId != userId else {
+            print("Cannot purge self!")
+            return false
+        }
+        
+        guard let myAdminRank = instanceAdmins.firstIndex(where: { $0.userId == myUserId }) else {
+            print("Cannot determinie purgability, admin rank undetermined")
+            return false
+        }
+        
+        if let targetAdminRank = instanceAdmins.firstIndex(where: { $0.userId == userId }),
+           targetAdminRank < myAdminRank {
+            print("Cannot purge, user is higher ranked moderator (you are \(myAdminRank), they are \(targetAdminRank))")
+            return false
+        }
+        
+        print("Can purge!")
+        return true
+    }
+    
     mutating func addModeratedCommunity(_ newCommunity: CommunityModel) {
         var newCommunities = moderatedCommunities ?? .init()
         newCommunities.append(newCommunity)
