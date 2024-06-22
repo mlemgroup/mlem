@@ -12,11 +12,21 @@ import SwiftUI
 /// View for rendering posts in feed
 struct FeedPostView: View {
     @AppStorage("post.size") var size: PostSize = .large
+    @AppStorage("beta.tilePosts") var tilePosts: Bool = false
     
     let post: any Post1Providing
     
     var body: some View {
-        Group {
+        content
+            .contentShape(.rect)
+            .quickSwipes(post.swipeActions(behavior: tilePosts ? .tile : .standard))
+    }
+    
+    @ViewBuilder
+    var content: some View {
+        if tilePosts {
+            TilePostView(post: post)
+        } else {
             switch size {
             case .compact:
                 CompactPostView(post: post)

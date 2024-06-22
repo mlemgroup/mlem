@@ -42,6 +42,7 @@ enum AppConstants {
     static let doubleSpacing: CGFloat = 20
     static let compactSpacing: CGFloat = 6 // standard spacing for compact things
     static let appIconCornerRadius: CGFloat = 10
+    static let tilePostCornerRadius: CGFloat = 16
     static let largeItemCornerRadius: CGFloat = 8 // posts, website previews, etc
     static let smallItemCornerRadius: CGFloat = 6 // settings items, compact thumbnails
     static let tinyItemCornerRadius: CGFloat = 4 // buttons

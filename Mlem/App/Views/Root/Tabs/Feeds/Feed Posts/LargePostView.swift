@@ -24,6 +24,7 @@ struct LargePostView: View {
     var body: some View {
         content
             .padding(AppConstants.standardSpacing)
+            .background(palette.background)
             .environment(\.postContext, post)
     }
     
