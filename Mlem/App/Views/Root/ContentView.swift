@@ -17,6 +17,7 @@ struct ContentView: View {
     var appState: AppState { .main }
     
     @State var palette: Palette = .main
+    
     @State var selectedTabIndex: Int = 0
     @State var tabReselectTracker: TabReselectTracker = .main
     
@@ -25,6 +26,9 @@ struct ContentView: View {
     var body: some View {
         if appState.appRefreshToggle {
             content
+                .onAppear {
+                    HapticManager.main.initEngine()
+                }
                 .onReceive(timer) { _ in
                     appState.cleanCaches()
                 }

@@ -29,7 +29,7 @@ struct TilePostView: View {
         content
             .frame(width: dimension, height: frameHeight)
             .background(palette.secondaryGroupedBackground)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .clipShape(RoundedRectangle(cornerRadius: AppConstants.tilePostCornerRadius))
             .shadow(color: palette.primary.opacity(0.1), radius: 3)
             .environment(\.postContext, post)
     }
@@ -138,12 +138,12 @@ struct TilePostView: View {
             }
         } label: {
             Group {
-                Text(Image(systemName: Icons.upvoteSquare)) +
-                    Text(" 34")
+                Text(Image(systemName: post.votes_?.iconName ?? Icons.upvoteSquare)) +
+                    Text(" \(post.votes_?.total.abbreviated ?? "0")")
             }
             .lineLimit(1)
             .font(.caption)
-            .foregroundStyle(.secondary)
+            .foregroundStyle(post.votes_?.iconColor ?? palette.secondary)
             .contentShape(.rect)
         }
         .onTapGesture {}

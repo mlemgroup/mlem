@@ -10,6 +10,13 @@ import MlemMiddleware
 import SwiftUI
 
 extension Post1Providing {
+    func swipeActions(behavior: SwipeBehavior) -> SwipeConfiguration {
+        let leadingActions: [BasicAction] = api.willSendToken ? [upvoteAction, downvoteAction] : .init()
+        let trailingActions: [BasicAction] = api.willSendToken ? [saveAction] : .init()
+        
+        return .init(leadingActions: leadingActions, trailingActions: trailingActions, behavior: behavior)
+    }
+    
     var menuActions: ActionGroup {
         ActionGroup(
             children: [
