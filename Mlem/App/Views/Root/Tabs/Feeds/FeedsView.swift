@@ -139,8 +139,14 @@ struct MinimalPostFeedView: View {
                         if !post.read || showRead {
                             VStack(spacing: 0) { // this improves performance O_o
                                 NavigationLink(value: NavigationPage.expandedPost(post)) {
-                                    FeedPostView(post: post)
-                                        .contentShape(.rect)
+                                    Group {
+                                        if tilePosts {
+                                            TilePostView(post: post)
+                                        } else {
+                                            FeedPostView(post: post)
+                                        }
+                                    }
+                                    .contentShape(.rect)
                                 }
                                 .buttonStyle(EmptyButtonStyle())
                                 if !tilePosts { Divider() }

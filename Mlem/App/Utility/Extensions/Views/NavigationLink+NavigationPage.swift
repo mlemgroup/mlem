@@ -15,4 +15,8 @@ extension NavigationLink where Destination == Never {
     init(_ titleKey: LocalizedStringKey, destination: NavigationPage) where Label == Text {
         self.init(value: destination) { Text(titleKey) }
     }
+    
+    init(_ titleKey: LocalizedStringKey, systemImage: String, destination: NavigationPage) where Label == SwiftUI.Label<Text, Image> {
+        self.init(value: destination) { Label(titleKey, systemImage: systemImage) }
+    }
 }

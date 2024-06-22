@@ -10,8 +10,9 @@ import KeychainAccess
 import MlemMiddleware
 import SwiftUI
 
-protocol Account: AnyObject, Codable, ContentStub, Profile1Providing {
+protocol Account: AnyObject, Codable, ActorIdentifiable, Profile1Providing {
     // Stored
+    var api: ApiClient { get }
     var name: String { get }
     var storedNickname: String? { get }
     var cachedSiteVersion: SiteVersion? { get }
@@ -22,7 +23,6 @@ protocol Account: AnyObject, Codable, ContentStub, Profile1Providing {
     var nickname: String { get }
     var nicknameSortKey: String { get }
     var instanceSortKey: String { get }
-    var host: String? { get }
     var isActive: Bool { get }
 }
 

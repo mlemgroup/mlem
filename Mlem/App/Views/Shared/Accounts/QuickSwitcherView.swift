@@ -22,5 +22,6 @@ struct QuickSwitcherView: View {
                 navigation.dismissSheet()
             }
         }
+        .presentationDetents([.medium, .large])
     }
 }
