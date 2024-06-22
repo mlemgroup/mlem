@@ -19,6 +19,7 @@ enum NavigationPage: Hashable {
     case quickSwitcher
     case expandedPost(_ post: AnyPost)
     case person(_ person: AnyPerson)
+    case externalApiInfo(api: ApiClient, actorId: URL)
     case imageViewer(_ url: URL)
     
     static func expandedPost(_ post: any PostStubProviding) -> NavigationPage {
@@ -31,8 +32,8 @@ enum NavigationPage: Hashable {
 }
 
 extension NavigationPage {
-    @ViewBuilder
-    func view() -> some View {
+    // swiftlint:disable:next cyclomatic_complexity
+    @ViewBuilder func view() -> some View {
         switch self {
         case let .settings(page):
             page.view()
@@ -46,11 +47,12 @@ extension NavigationPage {
             InboxView()
         case .search:
             SubscriptionListView()
+        case let .externalApiInfo(api: api, actorId: actorId):
+            ExternalApiInfoView(api: api, actorId: actorId)
         case let .imageViewer(url):
             ImageViewer(url: url)
         case .quickSwitcher:
             QuickSwitcherView()
-                .presentationDetents([.medium, .large])
         case let .expandedPost(post):
             ExpandedPostView(post: post)
         case let .person(person):
@@ -60,7 +62,7 @@ extension NavigationPage {
     
     var hasNavigationStack: Bool {
         switch self {
-        case .quickSwitcher:
+        case .quickSwitcher, .externalApiInfo:
             false
         default:
             true
@@ -69,7 +71,7 @@ extension NavigationPage {
     
     var canDisplayToasts: Bool {
         switch self {
-        case .quickSwitcher:
+        case .quickSwitcher, .externalApiInfo:
             false
         default:
             true

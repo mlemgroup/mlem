@@ -10,44 +10,20 @@ import MlemMiddleware
 import SwiftUI
 
 /// View for rendering posts in feed
-/// The Loader/Content pattern is required to ensure that FeedPostView accurately picks up on changes to `@AppStorage("post.size")`; the raw ContentLoader doesn't evaluate `size` when deciding whether to re-render, so putting content in a simple `@ViewBuilder` function will not properly re-render on settings toggle.
 struct FeedPostView: View {
-    @AppStorage("beta.tilePosts") var tilePosts: Bool = false
+    @AppStorage("post.size") var size: PostSize = .large
     
-    let post: AnyPost
+    let post: any Post1Providing
     
     var body: some View {
-        ContentLoader(model: post) { post in
-            Content(for: post)
-                .environment(\.postContext, post)
-                .quickSwipes(post.swipeActions(behavior: tilePosts ? .tile : .standard))
-        }
-    }
-    
-    private struct Content: View {
-        @AppStorage("post.size") var size: PostSize = .large
-        @AppStorage("beta.tilePosts") var tilePosts: Bool = false
-        
-        @Environment(Palette.self) var palette
-        
-        let post: any Post1Providing
-        
-        init(for post: any Post1Providing) {
-            self.post = post
-        }
-        
-        var body: some View {
-            if tilePosts {
-                TilePostView(post: post)
-            } else {
-                switch size {
-                case .compact:
-                    CompactPostView(post: post)
-                case .headline:
-                    HeadlinePostView(post: post)
-                case .large:
-                    LargePostView(post: post)
-                }
+        Group {
+            switch size {
+            case .compact:
+                CompactPostView(post: post)
+            case .headline:
+                HeadlinePostView(post: post)
+            case .large:
+                LargePostView(post: post)
             }
         }
     }

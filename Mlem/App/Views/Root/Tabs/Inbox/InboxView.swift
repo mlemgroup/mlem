@@ -34,13 +34,21 @@ struct InboxView: View {
                 )
             }
             Button("Error") {
-                handleError(ApiClientError.cancelled)
+                handleError(ApiClientError.invalidInput)
             }
             Button("Super Long Text") {
                 ToastModel.main.add(.success("Really Super Long Text"))
             }
             Button("Open Sheet") {
                 navigation.openSheet(.inbox)
+            }
+            Button("Open lemmy.world User") {
+                navigation.push(
+                    .person(PersonStub(
+                        api: AppState.main.firstApi,
+                        actorId: .init(string: "https://lemmy.world/u/FlyingSquid")!
+                    ))
+                )
             }
         }
     }

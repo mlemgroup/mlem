@@ -31,6 +31,7 @@ struct TilePostView: View {
             .background(palette.secondaryGroupedBackground)
             .clipShape(RoundedRectangle(cornerRadius: AppConstants.tilePostCornerRadius))
             .shadow(color: palette.primary.opacity(0.1), radius: 3)
+            .environment(\.postContext, post)
     }
     
     var content: some View {

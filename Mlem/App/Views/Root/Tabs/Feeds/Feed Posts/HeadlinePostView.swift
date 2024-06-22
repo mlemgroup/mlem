@@ -24,6 +24,7 @@ struct HeadlinePostView: View {
         content
             .padding(AppConstants.standardSpacing)
             .background(palette.background)
+            .environment(\.postContext, post)
     }
     
     var content: some View {
