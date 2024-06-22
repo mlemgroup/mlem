@@ -135,4 +135,12 @@ extension Interactable1Providing {
             color: isOn ? Palette.main.downvote : nil
         )
     }
+    
+    var commentReadout: Readout {
+        .init(
+            id: "comment\(actorId)",
+            label: self2?.commentCount.description,
+            icon: Icons.replies
+        )
+    }
 }

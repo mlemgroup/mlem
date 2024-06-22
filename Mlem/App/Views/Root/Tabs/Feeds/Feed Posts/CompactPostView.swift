@@ -61,7 +61,7 @@ struct CompactPostView: View {
                         .font(.caption)
                 }
                 
-                InfoStackView(post: post, readouts: [.created, .score], showColor: true)
+                InfoStackView(post: post, readouts: [.created, .score, .comment], showColor: true)
             }
             .frame(maxWidth: .infinity)
             

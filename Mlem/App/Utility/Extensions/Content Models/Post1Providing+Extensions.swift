@@ -52,6 +52,8 @@ extension Post1Providing {
             upvoteReadout
         case .downvote:
             downvoteReadout
+        case .comment:
+            commentReadout
         }
     }
     

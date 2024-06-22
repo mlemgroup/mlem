@@ -71,7 +71,7 @@ struct HeadlinePostView: View {
                 configuration: .init(
                     leading: [.counter(.score)],
                     trailing: [.action(.save)],
-                    readouts: [.created, .upvote, .downvote]
+                    readouts: [.created, .score, .comment]
                 )
             )
             .padding(.vertical, 2)

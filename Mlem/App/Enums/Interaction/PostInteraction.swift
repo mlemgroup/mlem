@@ -35,4 +35,5 @@ enum PostReadoutType: CaseIterable {
     case score
     case upvote
     case downvote
+    case comment
 }
