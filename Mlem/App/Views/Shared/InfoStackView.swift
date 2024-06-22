@@ -39,11 +39,5 @@ extension InfoStackView {
 }
 
 private extension Readout {
-    var viewId: Int {
-        var hasher = Hasher()
-        hasher.combine(id)
-        // hasher.combine(self.icon)
-        // hasher.combine(self.label)
-        return hasher.finalize()
-    }
+    var viewId: Int { id.hashValue }
 }
