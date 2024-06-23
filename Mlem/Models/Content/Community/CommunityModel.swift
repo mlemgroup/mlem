@@ -5,6 +5,8 @@
 //  Created by Sjmarf on 20/09/2023.
 //
 
+// swiftlint:disable file_length
+
 import Dependencies
 import SwiftUI
 
@@ -295,7 +297,12 @@ struct CommunityModel: Purgable {
         return false
     }
     
-    func canBeAdministrated() -> Bool { true }
+    func canBeAdministrated() -> Bool {
+        // can administrate community if top rank mod can be administrated or if top rank mod is self
+        guard let topMod = moderators?.first, let myUserId = siteInformation.userId else { return false }
+        if myUserId == topMod.userId { return true }
+        return siteInformation.canAdministrate(user: topMod)
+    }
     
     func banUser(
         userId: Int,
@@ -395,3 +402,5 @@ extension CommunityModel: Hashable {
         hasher.combine(moderators?.map(\.id) ?? [])
     }
 }
+
+// swiftlint:enable file_length

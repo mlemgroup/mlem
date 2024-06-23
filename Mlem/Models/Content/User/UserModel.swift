@@ -246,48 +246,7 @@ struct UserModel: Purgable {
     
     /// Checks whether the current user can perform admin actions on this UserModel
     func canBeAdministrated() -> Bool {
-        guard siteInformation.isAdmin else { return false }
-        
-        guard let instanceAdmins = siteInformation.instance?.administrators else { return false }
-        
-        guard let myUserId = siteInformation.myUser?.userId else { return false }
-        
-        guard myUserId != userId else { return false }
-        
-        guard let myAdminRank = instanceAdmins.firstIndex(where: { $0.userId == myUserId }) else { return false }
-        
-        if let targetAdminRank = instanceAdmins.firstIndex(where: { $0.userId == userId }),
-           targetAdminRank < myAdminRank { return false }
-        
-        return true
-    }
-    
-    /// Checks whether the current user can perform moderator actions on this UserModel
-    func canBeModerated(in community: CommunityModel) -> Bool {
-        // admins can moderate anybody but higher rank admins
-        if siteInformation.isAdmin {
-            if fallbackIsAdmin {
-                return canBeAdministrated()
-            }
-            return true
-        }
-        
-        guard siteInformation.isMod(communityId: community.communityId) else { return false }
-        
-        guard let moderators = community.moderators else { return false }
-        
-        guard let myUserId = siteInformation.userId else { return false }
-        
-        guard myUserId != userId else { return false }
-        
-        guard let myModRank = moderators.firstIndex(where: { $0.userId == myUserId }) else { return false }
-        
-        if let targetModRank = moderators.firstIndex(where: { $0.userId == userId }),
-           targetModRank < myModRank {
-            return false
-        }
-        
-        return true
+        siteInformation.canAdministrate(user: self)
     }
     
     mutating func addModeratedCommunity(_ newCommunity: CommunityModel) {

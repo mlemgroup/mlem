@@ -20,7 +20,7 @@ extension BanUserView {
                 assertionFailure("banFromInstance false but communityContext nil!")
                 return
             }
-            guard user.canBeModerated(in: community) else {
+            guard siteInformation.canModerate(user: user, in: community.communityId) else {
                 assertionFailure("BanUserView opened with non-moderatable user!")
                 return
             }

@@ -334,7 +334,9 @@ class PostModel: ContentIdentifiable, Removable, Purgable, ObservableObject {
         return false
     }
     
-    func canBeAdministrated() -> Bool { true }
+    func canBeAdministrated() -> Bool {
+        siteInformation.canAdministrate(user: creator)
+    }
     
     // MARK: Utility Methods
     

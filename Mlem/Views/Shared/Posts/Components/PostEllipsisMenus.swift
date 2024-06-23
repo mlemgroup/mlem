@@ -19,7 +19,6 @@ struct PostEllipsisMenus: View {
     
     let postModel: PostModel
     let postTracker: StandardPostTracker?
-    let communityContext: CommunityModel?
     
     var size: CGFloat = 24
     
@@ -32,7 +31,7 @@ struct PostEllipsisMenus: View {
             editorTracker: editorTracker,
             showSelectText: postSize == .large,
             postTracker: postTracker,
-            community: isMod ? communityContext : nil,
+            community: isMod ? postModel.community : nil,
             modToolTracker: isMod ? modToolTracker : nil
         )
     }

@@ -50,7 +50,6 @@ struct FeedPost: View {
 
     @ObservedObject var postModel: PostModel
     var postTracker: StandardPostTracker?
-    let community: CommunityModel?
     let showPostCreator: Bool
     let showCommunity: Bool
     let enableSwipeActions: Bool
@@ -58,14 +57,12 @@ struct FeedPost: View {
     init(
         post: PostModel,
         postTracker: StandardPostTracker?,
-        community: CommunityModel? = nil,
         showPostCreator: Bool = true,
         showCommunity: Bool = true,
         enableSwipeActions: Bool = true
     ) {
         self.postModel = post
         self.postTracker = postTracker
-        self.community = community
         self.showPostCreator = showPostCreator
         self.showCommunity = showCommunity
         self.enableSwipeActions = enableSwipeActions
@@ -88,7 +85,7 @@ struct FeedPost: View {
             editorTracker: editorTracker,
             showSelectText: postSize == .large,
             postTracker: postTracker,
-            community: isMod ? community : nil,
+            community: isMod ? postModel.community : nil,
             modToolTracker: isMod ? modToolTracker : nil
         )
     }
@@ -183,7 +180,7 @@ struct FeedPost: View {
                         if showCheck {
                             ReadCheck()
                         }
-                        PostEllipsisMenus(postModel: postModel, postTracker: postTracker, communityContext: community)
+                        PostEllipsisMenus(postModel: postModel, postTracker: postTracker)
                     }
 
                     if postSize == .headline {
@@ -200,8 +197,7 @@ struct FeedPost: View {
                         UserLinkView(
                             user: postModel.creator,
                             serverInstanceLocation: userServerInstanceLocation,
-                            bannedFromCommunity: postModel.creatorBannedFromCommunity,
-                            communityContext: community
+                            bannedFromCommunity: postModel.creatorBannedFromCommunity
                         )
                     }
                 }

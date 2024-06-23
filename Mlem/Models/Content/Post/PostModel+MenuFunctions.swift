@@ -219,7 +219,7 @@ extension PostModel {
             }
         }
         
-        if creator.canBeModerated(in: community) {
+        if siteInformation.canModerate(user: creator, in: community.communityId) {
             functions.append(MenuFunction.toggleableMenuFunction(
                 toggle: post.removed,
                 trueText: "Restore",
@@ -249,7 +249,7 @@ extension PostModel {
             }
             
             // for admins, default to instance ban iff not a moderator of this community
-            if creator.canBeAdministrated(), !siteInformation.moderatedCommunities.contains(community.communityId) {
+            if creator.canBeAdministrated(), !siteInformation.isMod(communityId: community.communityId) {
                 functions.append(MenuFunction.toggleableMenuFunction(
                     toggle: creator.banned,
                     trueText: "Unban User",
@@ -266,7 +266,7 @@ extension PostModel {
                         userRemovalWalker: .init(postTracker: postTracker, commentTracker: commentTracker)
                     )
                 })
-            } else if creator.canBeModerated(in: community) {
+            } else if siteInformation.canModerate(user: creator, in: community.communityId) {
                 functions.append(MenuFunction.toggleableMenuFunction(
                     toggle: creatorBannedFromCommunity,
                     trueText: "Unban User",

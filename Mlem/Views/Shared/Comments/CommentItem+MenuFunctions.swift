@@ -168,7 +168,7 @@ extension CommentItem {
             ))
         }
         
-        if let community, creator.canBeModerated(in: community) {
+        if let community, siteInformation.canModerate(user: creator, in: community.communityId) {
             functions.append(.toggleableMenuFunction(
                 toggle: hierarchicalComment.commentView.comment.removed,
                 trueText: "Restore",
@@ -198,12 +198,12 @@ extension CommentItem {
             functions.append(.divider)
         }
         
-        if let community, creator.canBeModerated(in: community) {
+        if let community, siteInformation.canModerate(user: creator, in: community.communityId) {
             let creatorBannedFromCommunity = hierarchicalComment.commentView.creatorBannedFromCommunity
             let creatorBannedFromInstance = hierarchicalComment.commentView.creator.banned
             
             // for admins, default to instance ban iff not a moderator of this community
-            if siteInformation.isAdmin, !siteInformation.moderatedCommunities.contains(hierarchicalComment.commentView.community.id) {
+            if siteInformation.isAdmin, !siteInformation.isMod(communityId: hierarchicalComment.commentView.community.id) {
                 functions.append(MenuFunction.toggleableMenuFunction(
                     toggle: creatorBannedFromInstance,
                     trueText: "Unban User",
