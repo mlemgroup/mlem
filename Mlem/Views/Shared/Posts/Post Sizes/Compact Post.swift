@@ -79,7 +79,7 @@ struct CompactPost: View {
                     
                     if showReadCheck { ReadCheck() }
                     
-                    PostEllipsisMenus(postModel: post, postTracker: postTracker, size: 12)
+                    PostEllipsisMenus(postModel: post, postTracker: postTracker, communityContext: community, size: 12)
                         .padding(.trailing, 6)
                 }
                 .padding(.bottom, -2)

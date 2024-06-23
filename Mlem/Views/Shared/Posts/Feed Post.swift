@@ -84,11 +84,12 @@ struct FeedPost: View {
     }
     
     var combinedMenuFunctions: [MenuFunction] {
+        // print("moderators: \(community?.moderators?.count)")
         postModel.combinedMenuFunctions(
             editorTracker: editorTracker,
             showSelectText: postSize == .large,
             postTracker: postTracker,
-            community: isMod ? postModel.community : nil,
+            community: isMod ? community : nil,
             modToolTracker: isMod ? modToolTracker : nil
         )
     }
@@ -183,7 +184,7 @@ struct FeedPost: View {
                         if showCheck {
                             ReadCheck()
                         }
-                        PostEllipsisMenus(postModel: postModel, postTracker: postTracker)
+                        PostEllipsisMenus(postModel: postModel, postTracker: postTracker, communityContext: community)
                     }
 
                     if postSize == .headline {
