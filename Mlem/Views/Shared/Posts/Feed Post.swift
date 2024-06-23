@@ -84,7 +84,6 @@ struct FeedPost: View {
     }
     
     var combinedMenuFunctions: [MenuFunction] {
-        // print("moderators: \(community?.moderators?.count)")
         postModel.combinedMenuFunctions(
             editorTracker: editorTracker,
             showSelectText: postSize == .large,

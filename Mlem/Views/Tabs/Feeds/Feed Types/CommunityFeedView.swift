@@ -77,9 +77,6 @@ struct CommunityFeedView: View {
     
     var body: some View {
         content
-            .onChange(of: communityModel) { newValue in
-                print("There are now \(newValue.moderators?.count) moderators")
-            }
             .onAppear {
                 if communityModel.moderators == nil {
                     Task(priority: .userInitiated) {
