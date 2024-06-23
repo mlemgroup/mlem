@@ -49,6 +49,7 @@ struct FeedPost: View {
     // MARK: Parameters
 
     @ObservedObject var postModel: PostModel
+    let community: CommunityModel?
     var postTracker: StandardPostTracker?
     let showPostCreator: Bool
     let showCommunity: Bool
@@ -57,12 +58,14 @@ struct FeedPost: View {
     init(
         post: PostModel,
         postTracker: StandardPostTracker?,
+        community: CommunityModel? = nil,
         showPostCreator: Bool = true,
         showCommunity: Bool = true,
         enableSwipeActions: Bool = true
     ) {
         self.postModel = post
         self.postTracker = postTracker
+        self.community = community
         self.showPostCreator = showPostCreator
         self.showCommunity = showCommunity
         self.enableSwipeActions = enableSwipeActions
@@ -197,7 +200,8 @@ struct FeedPost: View {
                         UserLinkView(
                             user: postModel.creator,
                             serverInstanceLocation: userServerInstanceLocation,
-                            bannedFromCommunity: postModel.creatorBannedFromCommunity
+                            bannedFromCommunity: postModel.creatorBannedFromCommunity,
+                            communityContext: community
                         )
                     }
                 }

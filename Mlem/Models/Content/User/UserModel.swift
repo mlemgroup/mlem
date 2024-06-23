@@ -49,13 +49,6 @@ struct UserModel: Purgable {
     
     // From APIPersonView
     var isAdmin: Bool?
-    // more reliable admin check
-    var fallbackIsAdmin: Bool {
-        isAdmin ??
-            siteInformation.instance?.administrators?.contains(where: { $0.userId == userId }) ??
-            false
-    }
-
     var postCount: Int?
     var commentCount: Int?
     

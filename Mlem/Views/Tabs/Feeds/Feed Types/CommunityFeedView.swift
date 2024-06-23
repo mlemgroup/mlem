@@ -77,6 +77,17 @@ struct CommunityFeedView: View {
     
     var body: some View {
         content
+            .onAppear {
+                if communityModel.moderators == nil {
+                    Task(priority: .userInitiated) {
+                        do {
+                            communityModel = try await communityRepository.loadDetails(for: communityModel.communityId)
+                        } catch {
+                            errorHandler.handle(error)
+                        }
+                    }
+                }
+            }
             .refreshable {
                 await Task {
                     do {

@@ -111,15 +111,6 @@ struct ExpandedPost: View {
             .task {
                 await post.markRead(true)
             }
-            .task {
-                if community?.moderators == nil {
-                    do {
-                        community = try await communityRepository.loadDetails(for: post.community.communityId)
-                    } catch {
-                        errorHandler.handle(error)
-                    }
-                }
-            }
             .refreshable { await refreshComments() }
             .onChange(of: commentSortingType) { newSortingType in
                 withAnimation(.easeIn(duration: 0.4)) {
