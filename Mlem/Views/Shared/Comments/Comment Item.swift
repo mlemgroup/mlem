@@ -100,7 +100,6 @@ struct CommentItem: View {
         commentTracker: CommentTracker?,
         hierarchicalComment: HierarchicalComment,
         postContext: PostModel?,
-        communityContext: CommunityModel?,
         indentBehaviour: IndentBehaviour = .standard,
         showPostContext: Bool,
         showCommentCreator: Bool,

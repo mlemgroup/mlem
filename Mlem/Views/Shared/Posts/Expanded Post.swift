@@ -302,7 +302,6 @@ struct ExpandedPost: View {
                     commentTracker: commentTracker,
                     hierarchicalComment: comment,
                     postContext: post,
-                    communityContext: community,
                     showPostContext: false,
                     showCommentCreator: true
                 )

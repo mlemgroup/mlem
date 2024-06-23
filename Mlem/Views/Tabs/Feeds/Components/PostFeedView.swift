@@ -130,6 +130,7 @@ struct PostFeedView: View {
                 FeedPost(
                     post: post,
                     postTracker: postTracker,
+                    community: communityContext,
                     showPostCreator: shouldShowPostCreator,
                     showCommunity: showCommunity
                 )

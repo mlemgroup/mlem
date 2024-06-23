@@ -79,6 +79,7 @@ struct UserContentFeedView: View {
                 FeedPost(
                     post: postModel,
                     postTracker: nil, // TODO: enable filtering on these posts--low priority because sort of silly to filter your saved feed
+                    community: nil,
                     showPostCreator: shouldShowPostCreator,
                     showCommunity: true
                 )
@@ -100,7 +101,6 @@ struct UserContentFeedView: View {
                     commentTracker: nil,
                     hierarchicalComment: hierarchicalComment,
                     postContext: nil,
-                    communityContext: nil,
                     indentBehaviour: .never,
                     showPostContext: true,
                     showCommentCreator: false

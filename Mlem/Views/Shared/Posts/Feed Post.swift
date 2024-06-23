@@ -49,8 +49,8 @@ struct FeedPost: View {
     // MARK: Parameters
 
     @ObservedObject var postModel: PostModel
-    let community: CommunityModel?
     var postTracker: StandardPostTracker?
+    let community: CommunityModel?
     let showPostCreator: Bool
     let showCommunity: Bool
     let enableSwipeActions: Bool
