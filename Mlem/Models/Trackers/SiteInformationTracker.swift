@@ -123,12 +123,8 @@ class SiteInformationTracker: ObservableObject {
                     
                     if let communities = response.myUser?.moderates {
                         myUser?.moderatedCommunities = communities.map { CommunityModel(from: $0.community) }
-                        
-                        for community in communities {
-                            moderatedCommunities[community.community.id] = try await communityRepository.loadDetails(for: community.community.id)
-                        }
-                        
-                        // moderatedCommunities = Set(communities.map(\.community.id))
+  
+                        moderatedCommunities = try await communityRepository.batchLoadDetails(for: communities.map(\.community.id))
                     } else {
                         moderatedCommunities = .init(minimumCapacity: 1)
                     }
