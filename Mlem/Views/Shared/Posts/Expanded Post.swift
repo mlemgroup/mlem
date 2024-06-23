@@ -114,7 +114,6 @@ struct ExpandedPost: View {
             .task {
                 if community?.moderators == nil {
                     do {
-                        print("DEBUG loading mods")
                         community = try await communityRepository.loadDetails(for: post.community.communityId)
                     } catch {
                         errorHandler.handle(error)

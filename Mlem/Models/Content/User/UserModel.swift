@@ -240,38 +240,19 @@ struct UserModel: Purgable {
     
     /// Checks whether the current user can perform admin actions on this UserModel
     func canBeAdministrated() -> Bool {
-        guard siteInformation.isAdmin else {
-            print("Cannot administrate, you are not an admin")
-            return false
-        }
+        guard siteInformation.isAdmin else { return false }
         
-        guard let instanceAdmins = siteInformation.instance?.administrators else {
-            print("Cannot determine administratability, instance admin information unavailable")
-            return false
-        }
+        guard let instanceAdmins = siteInformation.instance?.administrators else { return false }
         
-        guard let myUserId = siteInformation.myUser?.userId else {
-            print("Cannot determine administratability, user id unavailable")
-            return false
-        }
+        guard let myUserId = siteInformation.myUser?.userId else { return false }
         
-        guard myUserId != userId else {
-            print("Cannot administrate self!")
-            return false
-        }
+        guard myUserId != userId else { return false }
         
-        guard let myAdminRank = instanceAdmins.firstIndex(where: { $0.userId == myUserId }) else {
-            print("Cannot determinie administratability, admin rank undetermined")
-            return false
-        }
+        guard let myAdminRank = instanceAdmins.firstIndex(where: { $0.userId == myUserId }) else { return false }
         
         if let targetAdminRank = instanceAdmins.firstIndex(where: { $0.userId == userId }),
-           targetAdminRank < myAdminRank {
-            print("Cannot administrate, user is higher ranked admin (you are \(myAdminRank), they are \(targetAdminRank))")
-            return false
-        }
+           targetAdminRank < myAdminRank { return false }
         
-        print("Can administrate!")
         return true
     }
     
@@ -285,38 +266,21 @@ struct UserModel: Purgable {
             return true
         }
         
-        guard siteInformation.isMod(communityId: community.communityId) else {
-            print("Cannot moderate, you are not a moderator or administrator")
-            return false
-        }
+        guard siteInformation.isMod(communityId: community.communityId) else { return false }
         
-        guard let moderators = community.moderators else {
-            print("Canot determine moderatability, community moderators unavailable")
-            return false
-        }
+        guard let moderators = community.moderators else { return false }
         
-        guard let myUserId = siteInformation.userId else {
-            print("Cannot determine moderatability, user id unavailable")
-            return false
-        }
+        guard let myUserId = siteInformation.userId else { return false }
         
-        guard myUserId != userId else {
-            print("Cannot moderate self!")
-            return false
-        }
+        guard myUserId != userId else { return false }
         
-        guard let myModRank = moderators.firstIndex(where: { $0.userId == myUserId }) else {
-            print("Cannot determine moderatability, moderator rank undetermined")
-            return false
-        }
+        guard let myModRank = moderators.firstIndex(where: { $0.userId == myUserId }) else { return false }
         
         if let targetModRank = moderators.firstIndex(where: { $0.userId == userId }),
            targetModRank < myModRank {
-            print("Cannot moderate, user is higher ranked moderator (you are \(myModRank), they are \(targetModRank)")
             return false
         }
         
-        print("Can moderate!")
         return true
     }
     
