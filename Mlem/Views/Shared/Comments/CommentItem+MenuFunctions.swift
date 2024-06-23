@@ -11,7 +11,7 @@ import SwiftUI
 // swiftlint:disable function_body_length
 
 extension CommentItem {
-    func combinedMenuFunctions() -> [MenuFunction] {
+    func combinedMenuFunctions(community: CommunityModel?) -> [MenuFunction] {
         @AppStorage("moderatorActionGrouping") var moderatorActionGrouping: ModerationActionGroupingMode = .none
         let isMod = siteInformation.isModOrAdmin(communityId: hierarchicalComment.commentView.post.communityId)
         
@@ -21,10 +21,14 @@ extension CommentItem {
         if isMod {
             if moderatorActionGrouping != .none {
                 functions.append(
-                    .groupMenuFunction(text: "Moderation", imageName: Icons.moderation, children: modMenuFunctions())
+                    .groupMenuFunction(
+                        text: "Moderation",
+                        imageName: Icons.moderation,
+                        children: modMenuFunctions(community: community)
+                    )
                 )
             } else {
-                functions.append(contentsOf: modMenuFunctions())
+                functions.append(contentsOf: modMenuFunctions(community: community))
             }
         }
         return functions
@@ -149,7 +153,7 @@ extension CommentItem {
         return [.controlGroupMenuFunction(children: functions)]
     }
     
-    func modMenuFunctions() -> [MenuFunction] {
+    func modMenuFunctions(community: CommunityModel?) -> [MenuFunction] {
         let isOwnComment = appState.isCurrentAccountId(hierarchicalComment.commentView.creator.id)
         
         var functions: [MenuFunction] = .init()
@@ -179,7 +183,9 @@ extension CommentItem {
             })
         }
         
-        if siteInformation.isAdmin {
+        let creator: UserModel = .init(from: hierarchicalComment.commentView.creator)
+        
+        if creator.canBeAdministrated() {
             functions.append(.standardMenuFunction(
                 text: "Purge",
                 imageName: Icons.purge,
@@ -193,7 +199,7 @@ extension CommentItem {
             functions.append(.divider)
         }
         
-        if !isOwnComment {
+        if let community, creator.canBeModerated(in: community) {
             let creatorBannedFromCommunity = hierarchicalComment.commentView.creatorBannedFromCommunity
             let creatorBannedFromInstance = hierarchicalComment.commentView.creator.banned
             

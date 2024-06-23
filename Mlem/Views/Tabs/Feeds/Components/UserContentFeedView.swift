@@ -101,6 +101,7 @@ struct UserContentFeedView: View {
                     commentTracker: nil,
                     hierarchicalComment: hierarchicalComment,
                     postContext: nil,
+                    communityContext: nil,
                     indentBehaviour: .never,
                     showPostContext: true,
                     showCommentCreator: false

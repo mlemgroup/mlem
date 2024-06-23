@@ -249,7 +249,7 @@ extension PostModel {
             }
             
             // for admins, default to instance ban iff not a moderator of this community
-            if siteInformation.isAdmin, !siteInformation.moderatedCommunities.contains(community.communityId) {
+            if creator.canBeAdministrated(), !siteInformation.moderatedCommunities.contains(community.communityId) {
                 functions.append(MenuFunction.toggleableMenuFunction(
                     toggle: creator.banned,
                     trueText: "Unban User",
@@ -266,7 +266,7 @@ extension PostModel {
                         userRemovalWalker: .init(postTracker: postTracker, commentTracker: commentTracker)
                     )
                 })
-            } else {
+            } else if creator.canBeModerated(in: community) {
                 functions.append(MenuFunction.toggleableMenuFunction(
                     toggle: creatorBannedFromCommunity,
                     trueText: "Unban User",
@@ -285,8 +285,7 @@ extension PostModel {
                 })
             }
             
-            if creator.canPurge() {
-                print("can purge creator \(creator.name)")
+            if creator.canBeAdministrated() {
                 functions.append(MenuFunction.standardMenuFunction(
                     text: "Purge User",
                     imageName: Icons.purge,

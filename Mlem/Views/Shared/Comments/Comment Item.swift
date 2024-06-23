@@ -68,6 +68,7 @@ struct CommentItem: View {
     let commentTracker: CommentTracker?
     @ObservedObject var hierarchicalComment: HierarchicalComment
     let postContext: PostModel? // TODO: redundant with comment.post?
+    let communityContext: CommunityModel?
     let indentBehaviour: IndentBehaviour
     var depth: Int { hierarchicalComment.depth < 0 ? 0 : hierarchicalComment.depth }
     let showPostContext: Bool
@@ -100,6 +101,7 @@ struct CommentItem: View {
         commentTracker: CommentTracker?,
         hierarchicalComment: HierarchicalComment,
         postContext: PostModel?,
+        communityContext: CommunityModel?,
         indentBehaviour: IndentBehaviour = .standard,
         showPostContext: Bool,
         showCommentCreator: Bool,
@@ -109,6 +111,7 @@ struct CommentItem: View {
         self.commentTracker = commentTracker
         self.hierarchicalComment = hierarchicalComment
         self.postContext = postContext
+        self.communityContext = communityContext
         self.indentBehaviour = indentBehaviour
         self.showPostContext = showPostContext
         self.showCommentCreator = showCommentCreator
@@ -161,9 +164,9 @@ struct CommentItem: View {
                     isParentCollapsed: $hierarchicalComment.isParentCollapsed,
                     isCollapsed: $hierarchicalComment.isCollapsed,
                     showPostContext: showPostContext,
-                    combinedMenuFunctions: combinedMenuFunctions(),
+                    combinedMenuFunctions: combinedMenuFunctions(community: communityContext),
                     personalMenuFunctions: personalMenuFunctions(),
-                    modMenuFunctions: modMenuFunctions(),
+                    modMenuFunctions: modMenuFunctions(community: communityContext),
                     links: hierarchicalComment.links
                 )
                 // top and bottom spacing uses default even when compact--it's *too* compact otherwise
@@ -207,7 +210,7 @@ struct CommentItem: View {
         )
         .border(width: borderWidth, edges: [.leading], color: threadingColors[depth % threadingColors.count])
         .contextMenu {
-            ForEach(combinedMenuFunctions()) { item in
+            ForEach(combinedMenuFunctions(community: communityContext)) { item in
                 MenuButton(menuFunction: item, menuFunctionPopup: $menuFunctionPopup)
             }
         }

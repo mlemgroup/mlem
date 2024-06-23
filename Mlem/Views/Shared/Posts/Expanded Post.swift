@@ -93,7 +93,7 @@ struct ExpandedPost: View {
                             editorTracker: editorTracker,
                             postTracker: postTracker,
                             commentTracker: commentTracker,
-                            community: isMod ? post.community : nil,
+                            community: isMod ? community : nil,
                             modToolTracker: isMod ? modToolTracker : nil
                         )
                         ForEach(menuFunctions) { child in
@@ -110,6 +110,16 @@ struct ExpandedPost: View {
             }
             .task {
                 await post.markRead(true)
+            }
+            .task {
+                if community?.moderators == nil {
+                    do {
+                        print("DEBUG loading mods")
+                        community = try await communityRepository.loadDetails(for: post.community.communityId)
+                    } catch {
+                        errorHandler.handle(error)
+                    }
+                }
             }
             .refreshable { await refreshComments() }
             .onChange(of: commentSortingType) { newSortingType in
@@ -302,6 +312,7 @@ struct ExpandedPost: View {
                     commentTracker: commentTracker,
                     hierarchicalComment: comment,
                     postContext: post,
+                    communityContext: community,
                     showPostContext: false,
                     showCommentCreator: true
                 )

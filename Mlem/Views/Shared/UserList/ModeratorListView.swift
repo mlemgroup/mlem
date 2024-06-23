@@ -81,7 +81,7 @@ struct ModeratorListView: View {
     
     func genSwipeyActions(for user: UserModel) -> SwipeConfiguration {
         // disable swipey actions if user is not admin or moderator
-        guard canEditModList else {
+        guard user.canBeModerated(in: community) else {
             return .init()
         }
         

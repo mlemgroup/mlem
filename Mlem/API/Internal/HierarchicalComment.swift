@@ -66,7 +66,7 @@ class HierarchicalComment: Purgable, ObservableObject {
         return false
     }
     
-    func canPurge() -> Bool { true }
+    func canBeAdministrated() -> Bool { true }
 }
 
 extension HierarchicalComment: Identifiable {

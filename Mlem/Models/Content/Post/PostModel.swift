@@ -334,7 +334,7 @@ class PostModel: ContentIdentifiable, Removable, Purgable, ObservableObject {
         return false
     }
     
-    func canPurge() -> Bool { true }
+    func canBeAdministrated() -> Bool { true }
     
     // MARK: Utility Methods
     

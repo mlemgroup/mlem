@@ -107,11 +107,9 @@ extension UserModel {
         // This has to be outside of the below `if` statement so that it shows when "Appoint As Moderator" is appended
         functions.append(.divider)
         
-        if !isOwnUser, canPurge() {
-            if siteInformation.isAdmin, !(isAdmin ?? false), let modToolTracker {
-                functions.append(banMenuFunction(modToolTracker: modToolTracker))
-                functions.append(purgeMenuFunction(modToolTracker: modToolTracker))
-            }
+        if canBeAdministrated(), let modToolTracker {
+            functions.append(banMenuFunction(modToolTracker: modToolTracker))
+            functions.append(purgeMenuFunction(modToolTracker: modToolTracker))
         }
         return functions
     }

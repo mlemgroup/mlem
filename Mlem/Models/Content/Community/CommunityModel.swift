@@ -295,7 +295,7 @@ struct CommunityModel: Purgable {
         return false
     }
     
-    func canPurge() -> Bool { true }
+    func canBeAdministrated() -> Bool { true }
     
     func banUser(
         userId: Int,

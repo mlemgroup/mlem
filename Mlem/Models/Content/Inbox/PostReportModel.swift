@@ -274,5 +274,5 @@ extension PostReportModel: Removable, Purgable {
         return false
     }
     
-    func canPurge() -> Bool { true }
+    func canBeAdministrated() -> Bool { true }
 }
