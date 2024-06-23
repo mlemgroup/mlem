@@ -9,7 +9,6 @@ import Dependencies
 import Foundation
 import SwiftUI
 
-// swiftlint:disable:next type_body_length
 struct UserModel: Purgable {
     @Dependency(\.personRepository) var personRepository
     @Dependency(\.hapticManager) var hapticManager
@@ -50,6 +49,13 @@ struct UserModel: Purgable {
     
     // From APIPersonView
     var isAdmin: Bool?
+    // more reliable admin check
+    var fallbackIsAdmin: Bool {
+        isAdmin ??
+            siteInformation.instance?.administrators?.contains(where: { $0.userId == userId }) ??
+            false
+    }
+
     var postCount: Int?
     var commentCount: Int?
     
@@ -260,7 +266,7 @@ struct UserModel: Purgable {
     func canBeModerated(in community: CommunityModel) -> Bool {
         // admins can moderate anybody but higher rank admins
         if siteInformation.isAdmin {
-            if isAdmin ?? false {
+            if fallbackIsAdmin {
                 return canBeAdministrated()
             }
             return true

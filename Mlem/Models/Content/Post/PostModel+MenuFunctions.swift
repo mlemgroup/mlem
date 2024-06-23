@@ -219,7 +219,7 @@ extension PostModel {
             }
         }
         
-        if creator.userId != siteInformation.userId {
+        if creator.canBeModerated(in: community) {
             functions.append(MenuFunction.toggleableMenuFunction(
                 toggle: post.removed,
                 trueText: "Restore",
@@ -232,7 +232,7 @@ extension PostModel {
             })
         }
         
-        if siteInformation.isAdmin {
+        if creator.canBeAdministrated() {
             functions.append(MenuFunction.standardMenuFunction(
                 text: "Purge",
                 imageName: Icons.purge,

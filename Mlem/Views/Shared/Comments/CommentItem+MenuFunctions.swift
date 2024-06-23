@@ -155,6 +155,7 @@ extension CommentItem {
     
     func modMenuFunctions(community: CommunityModel?) -> [MenuFunction] {
         let isOwnComment = appState.isCurrentAccountId(hierarchicalComment.commentView.creator.id)
+        let creator: UserModel = .init(from: hierarchicalComment.commentView.creator)
         
         var functions: [MenuFunction] = .init()
         
@@ -167,7 +168,7 @@ extension CommentItem {
             ))
         }
         
-        if !isOwnComment {
+        if let community, creator.canBeModerated(in: community) {
             functions.append(.toggleableMenuFunction(
                 toggle: hierarchicalComment.commentView.comment.removed,
                 trueText: "Restore",
@@ -182,8 +183,6 @@ extension CommentItem {
                 )
             })
         }
-        
-        let creator: UserModel = .init(from: hierarchicalComment.commentView.creator)
         
         if creator.canBeAdministrated() {
             functions.append(.standardMenuFunction(
