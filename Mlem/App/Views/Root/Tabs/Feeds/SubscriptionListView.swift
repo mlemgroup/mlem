@@ -57,7 +57,7 @@ struct SubscriptionListView: View {
                                     buttonLabel(community, section: section)
                                 }
                             }
-                            .contextMenu(actions: community.menuActions.children)
+                            .contextMenu(actions: community.menuActions(feedback: [.toast]).children)
                             .padding(.trailing, sectionIndicesShown ? 5 : 0)
                         }
                     }

@@ -11,30 +11,35 @@ import SwiftUI
 
 extension Post1Providing {
     func swipeActions(behavior: SwipeBehavior) -> SwipeConfiguration {
-        let leadingActions: [BasicAction] = api.willSendToken ? [upvoteAction, downvoteAction] : .init()
-        let trailingActions: [BasicAction] = api.willSendToken ? [saveAction] : .init()
+        let leadingActions: [BasicAction] = api.willSendToken ? [
+            upvoteAction(feedback: [.haptic]),
+            downvoteAction(feedback: [.haptic])
+        ] : .init()
+        let trailingActions: [BasicAction] = api.willSendToken ? [
+            saveAction(feedback: [.haptic])
+        ] : .init()
         
         return .init(leadingActions: leadingActions, trailingActions: trailingActions, behavior: behavior)
     }
     
-    var menuActions: ActionGroup {
+    func menuActions(feedback: Set<FeedbackType> = []) -> ActionGroup {
         ActionGroup(
             children: [
                 ActionGroup(
-                    children: [upvoteAction, downvoteAction]
+                    children: [upvoteAction(feedback: feedback), downvoteAction(feedback: feedback)]
                 ),
-                saveAction
+                saveAction(feedback: feedback)
             ])
     }
     
-    func action(type: PostActionType) -> any Action {
+    func action(type: PostActionType, feedback: Set<FeedbackType> = []) -> any Action {
         switch type {
         case .upvote:
-            upvoteAction
+            upvoteAction(feedback: feedback)
         case .downvote:
-            downvoteAction
+            downvoteAction(feedback: feedback)
         case .save:
-            saveAction
+            saveAction(feedback: feedback)
         }
     }
     
