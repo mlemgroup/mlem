@@ -49,7 +49,7 @@ extension Interactable1Providing {
     var upvoteCounter: Counter {
         .init(
             value: self2?.votes.upvotes,
-            leadingAction: upvoteAction(),
+            leadingAction: upvoteAction(feedback: [.haptic]),
             trailingAction: nil
         )
     }
@@ -57,7 +57,7 @@ extension Interactable1Providing {
     var downvoteCounter: Counter {
         .init(
             value: self2?.votes.downvotes,
-            leadingAction: downvoteAction(),
+            leadingAction: downvoteAction(feedback: [.haptic]),
             trailingAction: nil
         )
     }
@@ -65,8 +65,8 @@ extension Interactable1Providing {
     var scoreCounter: Counter {
         .init(
             value: self2?.votes.total,
-            leadingAction: upvoteAction(),
-            trailingAction: downvoteAction()
+            leadingAction: upvoteAction(feedback: [.haptic]),
+            trailingAction: downvoteAction(feedback: [.haptic])
         )
     }
     

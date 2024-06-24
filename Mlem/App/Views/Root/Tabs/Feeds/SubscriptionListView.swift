@@ -28,7 +28,7 @@ struct SubscriptionListView: View {
                     .listStyle(.plain)
             }
         }
-        .navigationTitle("Subscription List")
+        .navigationTitle("Feeds")
         .navigationBarTitleDisplayMode(.inline)
     }
     
