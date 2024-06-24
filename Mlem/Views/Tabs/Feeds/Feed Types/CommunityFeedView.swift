@@ -92,7 +92,6 @@ struct CommunityFeedView: View {
                 await Task {
                     do {
                         communityModel = try await communityRepository.loadDetails(for: communityModel.communityId)
-                        print(communityModel.moderators?.count)
                         _ = try await postTracker.refresh(clearBeforeRefresh: false)
                     } catch {
                         errorHandler.handle(error)

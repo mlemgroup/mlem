@@ -57,7 +57,7 @@ struct BanUserView: View {
         var instanceBan: Bool = siteInformation.isAdmin && shouldBan != user.banned
         if siteInformation.isAdmin,
            let communityId = communityContext?.communityId,
-           siteInformation.moderatedCommunities.contains(communityId) {
+           siteInformation.isMod(communityId: communityId) {
             instanceBan = false
         }
         

@@ -237,6 +237,11 @@ struct UserModel: Purgable {
         return false
     }
     
+    /// Checks whether the current user can perform admin actions on this UserModel
+    func canBeAdministrated() -> Bool {
+        siteInformation.canAdministrate(user: self)
+    }
+    
     mutating func addModeratedCommunity(_ newCommunity: CommunityModel) {
         var newCommunities = moderatedCommunities ?? .init()
         newCommunities.append(newCommunity)

@@ -14,6 +14,7 @@ class HierarchicalComment: Purgable, ObservableObject {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.siteInformation) var siteInformation
     
     @Published var commentView: APICommentView
     @Published var purged: Bool = false
@@ -64,6 +65,10 @@ class HierarchicalComment: Purgable, ObservableObject {
             }
         }
         return false
+    }
+    
+    func canBeAdministrated() -> Bool {
+        siteInformation.canAdministrate(user: .init(from: commentView.creator))
     }
 }
 

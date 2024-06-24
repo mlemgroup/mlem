@@ -265,6 +265,10 @@ extension CommentReportModel: Removable, Purgable {
         }
         return false
     }
+    
+    func canBeAdministrated() -> Bool {
+        siteInformation.canAdministrate(user: commentCreator)
+    }
 }
 
 extension CommentReportModel: Hashable, Equatable {

@@ -27,7 +27,7 @@ struct ModeratorListView: View {
     
     var canEditModList: Bool {
         siteInformation.myUser?.isAdmin ?? false ||
-            siteInformation.moderatedCommunities.contains(community.communityId)
+            siteInformation.isMod(communityId: community.communityId)
     }
     
     init(community: Binding<CommunityModel>, navigationEnabled: Bool = true) {
@@ -81,7 +81,7 @@ struct ModeratorListView: View {
     
     func genSwipeyActions(for user: UserModel) -> SwipeConfiguration {
         // disable swipey actions if user is not admin or moderator
-        guard canEditModList else {
+        guard siteInformation.canModerate(user: user, in: community.communityId) else {
             return .init()
         }
         

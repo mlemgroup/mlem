@@ -76,7 +76,7 @@ struct AddModView: View {
                         }
                         
                         // users can only add mod to communities they moderate
-                        return siteInformation.moderatedCommunities.contains(community.communityId)
+                        return siteInformation.isMod(communityId: community.communityId)
                     },
                     callback: { community in
                         self.community = community
