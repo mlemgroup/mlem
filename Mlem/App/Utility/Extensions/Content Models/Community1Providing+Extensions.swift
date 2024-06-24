@@ -49,6 +49,10 @@ extension Community1Providing {
                         color: .blue
                     )
                 )
+            } else {
+                ToastModel.main.add(
+                    .basic(title: "Favorited", systemImage: "star.fill", color: .blue)
+                )
             }
             self2.toggleFavorite()
         } else {
