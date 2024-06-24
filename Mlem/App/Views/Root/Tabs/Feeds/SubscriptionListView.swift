@@ -59,6 +59,13 @@ struct SubscriptionListView: View {
                                 }
                             }
                             .contextMenu(actions: community.menuActions(feedback: [.toast]).children)
+                            .swipeActions(edge: .trailing) {
+                                Button("Unsubscribe", systemImage: "xmark") {
+                                    community.toggleSubscribe(feedback: [.toast])
+                                }
+                                .labelStyle(.iconOnly)
+                                .tint(.red)
+                            }
                             .padding(.trailing, sectionIndicesShown ? 5 : 0)
                         }
                     }
@@ -171,19 +178,18 @@ struct SubscriptionListSection: Identifiable {
 }
 
 private extension SubscriptionList {
+    @MainActor
     func visibleSections(sort: SubscriptionListSort) -> [SubscriptionListSection] {
         var sections: [SubscriptionListSection] = .init()
         if !favorites.isEmpty {
-            sections.append(.init(label: "Favorites", systemImage: "star.fill", communities: favorites))
+            sections.append(.init(label: "Favorites", systemImage: Icons.favoriteFill, communities: favorites))
         }
         switch sort {
         case .alphabetical:
-            let alphabeticSections = alphabeticSections
             for section in alphabeticSections.sorted(by: { $0.key ?? "~" < $1.key ?? "~" }) {
                 sections.append(.init(label: section.key ?? "#", communities: section.value))
             }
         case .instance:
-            let instanceSections = instanceSections
             for section in instanceSections.sorted(by: { $0.key ?? "~" < $1.key ?? "~" }) {
                 sections.append(.init(label: section.key ?? "Other", communities: section.value))
             }
