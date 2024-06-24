@@ -10,7 +10,7 @@ import Foundation
 struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
     let id: Int
     let instanceLink: URL
-    var accessToken: String = "redacted"
+    let accessToken: String
     var siteVersion: SiteVersion?
     let username: String
     var storedNickname: String?
@@ -59,6 +59,29 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         self.avatarUrl = avatarUrl ?? account.avatarUrl
         self.siteVersion = siteVersion ?? account.siteVersion
         self.lastUsed = lastUsed ?? account.lastUsed
+    }
+    
+    enum CodingKeys: CodingKey {
+        case id
+        case instanceLink
+        case accessToken
+        case siteVersion
+        case username
+        case storedNickname
+        case avatarUrl
+        case lastUsed
+    }
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(Int.self, forKey: .id)
+        self.instanceLink = try container.decode(URL.self, forKey: .instanceLink)
+        self.accessToken = try container.decode(String?.self, forKey: .accessToken) ?? "redacted"
+        self.siteVersion = try container.decodeIfPresent(SiteVersion.self, forKey: .siteVersion)
+        self.username = try container.decode(String.self, forKey: .username)
+        self.storedNickname = try container.decodeIfPresent(String.self, forKey: .storedNickname)
+        self.avatarUrl = try container.decodeIfPresent(URL.self, forKey: .avatarUrl)
+        self.lastUsed = try container.decodeIfPresent(Date.self, forKey: .lastUsed)
     }
   
     // convenience
