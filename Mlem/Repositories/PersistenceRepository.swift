@@ -69,12 +69,19 @@ class PersistenceRepository {
     // MARK: - Public methods
     
     func loadAccounts() -> [SavedAccount] {
+        print(Path.savedAccounts)
         let accounts = load([SavedAccount].self, from: Path.savedAccounts) ?? []
         return accounts.compactMap { account -> SavedAccount? in
-            guard let token = keychainAccess("\(account.id)_accessToken") ?? keychainAccess("\(account.stableIdString)_accessToken") else {
+            var actorComponents = URLComponents(url: account.instanceLink, resolvingAgainstBaseURL: false)!
+            actorComponents.path = "/u/\(account.username)"
+            let url = actorComponents.url!
+            guard let token = keychainAccess("\(account.id)_accessToken")
+                ?? keychainAccess("\(url.absoluteString)_accessToken") else {
                 return nil
             }
-            return SavedAccount(from: account, accessToken: token, avatarUrl: account.avatarUrl)
+            let acc = SavedAccount(from: account, accessToken: token, avatarUrl: account.avatarUrl)
+            print("TOKEN", acc.accessToken)
+            return acc
         }
     }
     
