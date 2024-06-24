@@ -76,7 +76,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(Int.self, forKey: .id)
         self.instanceLink = try container.decode(URL.self, forKey: .instanceLink)
-        self.accessToken = try container.decode(String?.self, forKey: .accessToken) ?? "redacted"
+        self.accessToken = (try? container.decode(String.self, forKey: .accessToken)) ?? "redacted"
         self.siteVersion = try container.decodeIfPresent(SiteVersion.self, forKey: .siteVersion)
         self.username = try container.decode(String.self, forKey: .username)
         self.storedNickname = try container.decodeIfPresent(String.self, forKey: .storedNickname)
