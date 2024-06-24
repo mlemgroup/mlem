@@ -1815,7 +1815,7 @@
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.11.0;
+				minimumVersion = 0.12.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
