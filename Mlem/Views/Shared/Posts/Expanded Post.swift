@@ -93,7 +93,7 @@ struct ExpandedPost: View {
                             editorTracker: editorTracker,
                             postTracker: postTracker,
                             commentTracker: commentTracker,
-                            community: isMod ? community : nil,
+                            community: isMod ? post.community : nil,
                             modToolTracker: isMod ? modToolTracker : nil
                         )
                         ForEach(menuFunctions) { child in

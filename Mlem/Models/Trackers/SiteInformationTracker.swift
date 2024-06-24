@@ -71,9 +71,10 @@ class SiteInformationTracker: ObservableObject {
             return true
         }
         
-        guard let userId else { return false }
+        guard let moderators = moderatedCommunities[community]?.moderators,
+              let userId else { return false }
         
-        guard let moderators = moderatedCommunities[community]?.moderators else { return false }
+        guard userId != user.userId else { return false }
         
         guard let myModRank = moderators.firstIndex(where: { $0.userId == userId }) else { return false }
         
