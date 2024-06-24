@@ -45,7 +45,8 @@ struct SubscriptionListView: View {
     
     @ViewBuilder
     var content: some View {
-        let sections = (appState.firstSession as? UserSession)?.subscriptions?.visibleSections(sort: sort) ?? []
+        let subscriptions = (appState.firstSession as? UserSession)?.subscriptions
+        let sections = subscriptions?.visibleSections(sort: sort) ?? []
         
         ScrollViewReader { proxy in
             List(selection: selection) {
@@ -87,6 +88,13 @@ struct SubscriptionListView: View {
                 }
             }
             .scrollIndicators(sectionIndicesShown ? .hidden : .visible)
+            .refreshable {
+                do {
+                    try await subscriptions?.refresh()
+                } catch {
+                    handleError(error)
+                }
+            }
         }
     }
     

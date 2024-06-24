@@ -22,7 +22,7 @@ extension Post1Providing {
         return .init(leadingActions: leadingActions, trailingActions: trailingActions, behavior: behavior)
     }
     
-    func menuActions(feedback: Set<FeedbackType> = []) -> ActionGroup {
+    func menuActions(feedback: Set<FeedbackType> = [.haptic]) -> ActionGroup {
         ActionGroup(
             children: [
                 ActionGroup(

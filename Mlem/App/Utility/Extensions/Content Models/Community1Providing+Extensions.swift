@@ -12,23 +12,25 @@ extension Community1Providing {
     private var self2: (any Community2Providing)? { self as? any Community2Providing }
     
     func toggleSubscribe(feedback: Set<FeedbackType>) {
-        if let self2, feedback.contains(.toast) {
-            let wasFavorited = self2.favorited
-            if self2.subscribed {
-                ToastModel.main.add(
-                    .undoable(
-                        title: "Unsubscribed",
-                        systemImage: "person.slash.fill",
-                        callback: {
-                            if wasFavorited {
-                                self2.updateFavorite(true)
-                            } else {
-                                self2.updateSubscribe(true)
-                            }
-                        },
-                        color: .blue
+        if let self2 {
+            if feedback.contains(.toast) {
+                let wasFavorited = self2.favorited
+                if self2.subscribed {
+                    ToastModel.main.add(
+                        .undoable(
+                            title: "Unsubscribed",
+                            systemImage: "person.slash.fill",
+                            callback: {
+                                if wasFavorited {
+                                    self2.updateFavorite(true)
+                                } else {
+                                    self2.updateSubscribe(true)
+                                }
+                            },
+                            color: .blue
+                        )
                     )
-                )
+                }
             }
             self2.toggleSubscribe()
         } else {
@@ -37,22 +39,24 @@ extension Community1Providing {
     }
     
     func toggleFavorite(feedback: Set<FeedbackType>) {
-        if let self2, feedback.contains(.toast) {
-            if self2.favorited {
-                ToastModel.main.add(
-                    .undoable(
-                        title: "Unfavorited",
-                        systemImage: "star.slash.fill",
-                        callback: {
-                            self2.updateFavorite(true)
-                        },
-                        color: .blue
+        if let self2 {
+            if feedback.contains(.toast) {
+                if self2.favorited {
+                    ToastModel.main.add(
+                        .undoable(
+                            title: "Unfavorited",
+                            systemImage: "star.slash.fill",
+                            callback: {
+                                self2.updateFavorite(true)
+                            },
+                            color: .blue
+                        )
                     )
-                )
-            } else {
-                ToastModel.main.add(
-                    .basic(title: "Favorited", systemImage: "star.fill", color: .blue)
-                )
+                } else {
+                    ToastModel.main.add(
+                        .basic(title: "Favorited", systemImage: "star.fill", color: .blue)
+                    )
+                }
             }
             self2.toggleFavorite()
         } else {
@@ -60,7 +64,7 @@ extension Community1Providing {
         }
     }
     
-    func menuActions(feedback: Set<FeedbackType> = []) -> ActionGroup {
+    func menuActions(feedback: Set<FeedbackType> = [.haptic]) -> ActionGroup {
         ActionGroup(
             children: [
                 subscribeAction(feedback: feedback),

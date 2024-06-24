@@ -41,7 +41,7 @@ struct LargePostView: View {
                 }
                 
                 if !isExpanded {
-                    EllipsisMenu(actions: post.menuActions(), size: 24)
+                    EllipsisMenu(actions: post.menuActions(feedback: [.haptic]), size: 24)
                 }
             }
             

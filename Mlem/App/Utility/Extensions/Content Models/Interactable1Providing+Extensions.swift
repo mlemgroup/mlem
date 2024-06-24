@@ -12,8 +12,10 @@ extension Interactable1Providing {
     private var self2: (any Interactable2Providing)? { self as? any Interactable2Providing }
 
     func toggleUpvote(feedback: Set<FeedbackType>) {
-        if let self2, feedback.contains(.haptic) {
-            HapticManager.main.play(haptic: .lightSuccess, priority: .low)
+        if let self2 {
+            if feedback.contains(.haptic) {
+                HapticManager.main.play(haptic: .lightSuccess, priority: .low)
+            }
             self2.toggleUpvote()
         } else {
             print("DEBUG no self2 found in toggleUpvote!")
@@ -21,8 +23,10 @@ extension Interactable1Providing {
     }
     
     func toggleDownvote(feedback: Set<FeedbackType>) {
-        if let self2, feedback.contains(.haptic) {
-            HapticManager.main.play(haptic: .lightSuccess, priority: .low)
+        if let self2 {
+            if feedback.contains(.haptic) {
+                HapticManager.main.play(haptic: .lightSuccess, priority: .low)
+            }
             self2.toggleDownvote()
         } else {
             print("DEBUG no self2 found in toggleDownvote!")
@@ -30,8 +34,10 @@ extension Interactable1Providing {
     }
     
     func toggleSave(feedback: Set<FeedbackType>) {
-        if let self2, feedback.contains(.haptic) {
-            HapticManager.main.play(haptic: .success, priority: .low)
+        if let self2 {
+            if feedback.contains(.haptic) {
+                HapticManager.main.play(haptic: .success, priority: .low)
+            }
             self2.toggleSave()
         } else {
             print("DEBUG no self2 found in toggleSave!")
