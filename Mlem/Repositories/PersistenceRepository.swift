@@ -71,7 +71,7 @@ class PersistenceRepository {
     func loadAccounts() -> [SavedAccount] {
         let accounts = load([SavedAccount].self, from: Path.savedAccounts) ?? []
         return accounts.compactMap { account -> SavedAccount? in
-            guard let token = keychainAccess("\(account.id)_accessToken") else {
+            guard let token = keychainAccess("\(account.id)_accessToken") ?? keychainAccess("\(account.stableIdString)_accessToken") else {
                 return nil
             }
             return SavedAccount(from: account, accessToken: token, avatarUrl: account.avatarUrl)

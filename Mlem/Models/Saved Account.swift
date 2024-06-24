@@ -10,7 +10,7 @@ import Foundation
 struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
     let id: Int
     let instanceLink: URL
-    let accessToken: String
+    var accessToken: String = "redacted"
     var siteVersion: SiteVersion?
     let username: String
     var storedNickname: String?
