@@ -18,6 +18,7 @@ enum NavigationPage: Hashable {
     case feeds, profile, inbox, search
     case quickSwitcher
     case expandedPost(_ post: AnyPost)
+    case community(_ community: AnyCommunity)
     case person(_ person: AnyPerson)
     case externalApiInfo(api: ApiClient, actorId: URL)
     case imageViewer(_ url: URL)
@@ -26,8 +27,12 @@ enum NavigationPage: Hashable {
         expandedPost(.init(post))
     }
     
-    static func person(_ post: any PersonStubProviding) -> NavigationPage {
-        person(.init(post))
+    static func person(_ person: any PersonStubProviding) -> NavigationPage {
+        Self.person(.init(person))
+    }
+    
+    static func community(_ community: any CommunityStubProviding) -> NavigationPage {
+        Self.community(.init(community))
     }
 }
 
@@ -41,12 +46,14 @@ extension NavigationPage {
             page.view()
         case .feeds:
             FeedsView()
+        case .community:
+            FeedsView()
         case .profile:
             ProfileView()
         case .inbox:
             InboxView()
         case .search:
-            SubscriptionListView()
+            EmptyView()
         case let .externalApiInfo(api: api, actorId: actorId):
             ExternalApiInfoView(api: api, actorId: actorId)
         case let .imageViewer(url):

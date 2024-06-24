@@ -11,6 +11,14 @@ import MlemMiddleware
 extension Community1Providing {
     private var self2: (any Community2Providing)? { self as? any Community2Providing }
     
+    var menuActions: ActionGroup {
+        ActionGroup(
+            children: [
+                subscribeAction,
+                favoriteAction
+            ])
+    }
+    
     var subscribeAction: BasicAction {
         let isOn: Bool = self2?.subscribed ?? false
         return .init(
@@ -18,6 +26,7 @@ extension Community1Providing {
             isOn: isOn,
             label: isOn ? "Unsubscribe" : "Subscribe",
             color: isOn ? .green : .red,
+            isDestructive: isOn,
             icon: isOn ? Icons.unsubscribe : Icons.subscribe,
             barIcon: Icons.subscribe,
             swipeIcon1: isOn ? Icons.unsubscribePerson : Icons.subscribePerson,

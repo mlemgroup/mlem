@@ -17,18 +17,16 @@ struct NavigationSplitRootView<Content: View>: View {
     var body: some View {
         NavigationSplitView(
             columnVisibility: $columnVisibility,
-            sidebar: sidebar,
+            sidebar: {
+                sidebar()
+//                    .navigationDestination(for: NavigationPage.self) { root in
+//                        layer.popToRoot()
+//                        layer.root = root
+//                        return NavigationLayerView(layer: layer, hasSheetModifiers: false)
+//                    }
+            },
             detail: {
-                NavigationStack(path: Binding(
-                    get: { layer.path },
-                    set: {
-                        layer.path = $0
-                    }
-                )) {
-                    layer.root.view()
-                        .environment(\.isRootView, true)
-                        .navigationDestination(for: NavigationPage.self) { $0.view() }
-                }
+                NavigationLayerView(layer: layer, hasSheetModifiers: false)
             }
         )
         .environment(layer)
