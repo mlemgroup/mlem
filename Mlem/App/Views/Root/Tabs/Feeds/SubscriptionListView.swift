@@ -58,11 +58,21 @@ struct SubscriptionListView: View {
                                 }
                             }
                             .contextMenu(actions: community.menuActions.children)
+                            .padding(.trailing, sectionIndicesShown ? 5 : 0)
                         }
                     }
                     .id(section.label)
                 }
                 .scrollTargetLayout()
+            }
+            .overlay(alignment: .trailing) {
+                if sectionIndicesShown {
+                    SectionIndexTitles(
+                        proxy: proxy,
+                        sections: [.init(label: "Favorites", systemImage: "star.fill")]
+                            + "ABCDEFGHIJKLMNOPQRSTUVWYZ#".map { .init(label: String($0)) }
+                    )
+                }
             }
             .toolbar {
                 Picker("Sort", selection: $sort) {
@@ -76,6 +86,7 @@ struct SubscriptionListView: View {
                     proxy.scrollTo(sections.first?.label)
                 }
             }
+            .scrollIndicators(sectionIndicesShown ? .hidden : .visible)
         }
     }
     
@@ -113,6 +124,10 @@ struct SubscriptionListView: View {
         }
     }
     
+    var sectionIndicesShown: Bool {
+        !UIDevice.isPad && sort == .alphabetical
+    }
+    
     private func instanceLocation(section: SubscriptionListSection) -> InstanceLocation {
         switch sort {
         case .alphabetical:
@@ -139,8 +154,9 @@ private enum SubscriptionListSort: String, CaseIterable {
     }
 }
 
-private struct SubscriptionListSection: Identifiable {
+struct SubscriptionListSection: Identifiable {
     let label: String
+    var systemImage: String?
     let communities: [Community2]
     
     var id: String { label }
@@ -150,14 +166,16 @@ private extension SubscriptionList {
     func visibleSections(sort: SubscriptionListSort) -> [SubscriptionListSection] {
         var sections: [SubscriptionListSection] = .init()
         if !favorites.isEmpty {
-            sections.append(.init(label: "Favorites", communities: favorites))
+            sections.append(.init(label: "Favorites", systemImage: "star.fill", communities: favorites))
         }
         switch sort {
         case .alphabetical:
+            let alphabeticSections = alphabeticSections
             for section in alphabeticSections.sorted(by: { $0.key ?? "~" < $1.key ?? "~" }) {
                 sections.append(.init(label: section.key ?? "#", communities: section.value))
             }
         case .instance:
+            let instanceSections = instanceSections
             for section in instanceSections.sorted(by: { $0.key ?? "~" < $1.key ?? "~" }) {
                 sections.append(.init(label: section.key ?? "Other", communities: section.value))
             }
