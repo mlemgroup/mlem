@@ -15,7 +15,19 @@ class MlemStats {
     private var loadingState: LoadingState = .idle
     
     private(set) var instances: [InstanceSummary]?
-    private(set) var hosts: Set<String>?
+    
+    // This set is queried for use in link-handling.
+    // Some of the largest instances are hard-coded just in-case GitHub is down.
+    private(set) var hosts: Set<String> = [
+        "lemm.ee",
+        "lemmy.world",
+        "lemmy.ml",
+        "sh.itjust.works",
+        "beehaw.org",
+        "lemmy.blahaj.zone",
+        "sopuli.xyz",
+        "programming.dev"
+    ]
     
     static let main: MlemStats = .init()
     
@@ -29,8 +41,9 @@ class MlemStats {
                 if let data = try? await urlSession.data(from: url).0 {
                     let instances = try decoder.decode([InstanceSummary].self, from: data)
                     self.instances = instances
-                    hosts = Set(instances.lazy.map(\.host))
+                    hosts.formUnion(Set(instances.lazy.map(\.host)))
                     loadingState = .done
+                    return
                 }
             }
             throw MlemStatsApiClientError.failed

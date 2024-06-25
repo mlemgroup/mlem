@@ -103,6 +103,8 @@ enum ToastType: Hashable {
         case let .account(account):
             hasher.combine("account")
             hasher.combine(account)
+        case .loading:
+            hasher.combine("loading")
         }
     }
     
