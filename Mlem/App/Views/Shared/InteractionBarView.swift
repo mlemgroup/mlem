@@ -15,6 +15,8 @@ struct InteractionBarView: View {
     private let trailing: [EnrichedWidget]
     private let readouts: [Readout]
     
+    static let weightedSymbols: Set<String> = [Icons.save]
+    
     init(post: any Post1Providing, configuration: PostBarConfiguration) {
         self.leading = .init(post: post, items: configuration.leading)
         self.trailing = .init(post: post, items: configuration.trailing)
@@ -95,7 +97,7 @@ struct InteractionBarView: View {
         let isOn = ((action as? BasicAction)?.disabled ?? false) ? false : action.isOn
         Image(systemName: action.barIcon)
             .resizable()
-            .fontWeight(.medium)
+            .fontWeight(Self.weightedSymbols.contains(action.barIcon) ? .medium : .regular)
             .symbolVariant(isOn ? .fill : .none)
             .scaledToFit()
             .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)
