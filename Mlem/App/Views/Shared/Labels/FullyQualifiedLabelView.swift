@@ -24,9 +24,9 @@ enum FullyQualifiedLabelStyle {
     
     var avatarResolution: Int {
         switch self {
-        case .small: 64
-        case .medium: 96
-        case .large: 128
+        case .small: 32
+        case .medium: 64
+        case .large: 96
         }
     }
     
