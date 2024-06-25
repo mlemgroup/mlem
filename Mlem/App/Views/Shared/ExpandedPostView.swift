@@ -11,6 +11,7 @@ import SwiftUI
 
 struct ExpandedPostView: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(Palette.self) var palette
     
     let post: AnyPost
     @State var comments: [CommentWrapper] = []
@@ -23,20 +24,18 @@ struct ExpandedPostView: View {
                     guard loadingState == .idle else { return }
                     loadingState = .loading
                     do {
-                        let comments = try await post1.getComments(page: 1, limit: 50)
+                        let comments = try await post1.getComments(sort: .top, page: 1, maxDepth: 8, limit: 50)
                         
                         var output: [CommentWrapper] = []
-                        var parent: CommentWrapper?
+                        var keyedById: [Int: CommentWrapper] = [:]
+                        
                         for comment in comments {
+                            let wrapper: CommentWrapper = .init(comment)
+                            keyedById[comment.id] = wrapper
                             if comment.depth == 0 {
-                                let wrapper = CommentWrapper(comment)
                                 output.append(wrapper)
-                                parent = wrapper
-                            } else if comment.depth > (parent?.comment.depth ?? 0) {
-                                parent?.addChild(.init(comment))
-                            } else if comment.depth < (parent?.comment.depth ?? 0) {
-                                parent = parent?.parent
-                                parent?.addChild(.init(comment))
+                            } else if let parentId = comment.parentCommentIds.last {
+                                keyedById[parentId]?.addChild(wrapper)
                             }
                         }
                         self.comments = output
@@ -48,16 +47,17 @@ struct ExpandedPostView: View {
         }
     }
     
+    @ViewBuilder
     func content(for post: any Post1Providing) -> some View {
         FancyScrollView {
             LazyVStack(alignment: .leading, spacing: 0) {
                 LargePostView(post: post, isExpanded: true)
                 Divider()
-                ForEach(comments) { comment in
-                    ForEach(comment.tree()) { child in
-                        CommentView(comment: child.comment)
-                        Divider()
-                    }
+                ForEach(Array(comments.reduce([]) { $0 + $1.tree() }.enumerated()), id: \.element.id) { index, comment in
+                    CommentView(comment: comment)
+                        .transition(.blurReplace)
+                        .background(palette.background)
+                        .zIndex(comment.depth == 0 ? 1000 : Double(index))
                 }
             }
         }

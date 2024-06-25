@@ -9,16 +9,18 @@ import MlemMiddleware
 import SwiftUI
 
 @Observable
-class CommentWrapper: Identifiable {
-    let comment: Comment2
-    private(set) var children: [CommentWrapper]
-    weak var parent: CommentWrapper?
+class CommentWrapper: Identifiable, Comment2Providing {
+    static var tierNumber: Int = 100
     
-    var id: Int { comment.id }
+    let comment2: Comment2
+    private(set) var children: [CommentWrapper] = []
+    weak var parent: CommentWrapper?
+    var collapsed: Bool = false
+    
+    var id: Int { comment2.id }
     
     init(_ comment: Comment2) {
-        self.comment = comment
-        self.children = []
+        self.comment2 = comment
     }
     
     func addChild(_ child: CommentWrapper) {
@@ -27,6 +29,9 @@ class CommentWrapper: Identifiable {
     }
     
     func tree() -> [CommentWrapper] {
-        children.reduce([self]) { $0 + $1.tree() }
+        if collapsed { return [self] }
+        return children.reduce([self]) { $0 + $1.tree() }
     }
+    
+    var api: ApiClient { comment2.api }
 }
