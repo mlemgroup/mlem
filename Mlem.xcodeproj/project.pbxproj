@@ -24,6 +24,7 @@
 		03267D842BED49CE009D6268 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D832BED49CE009D6268 /* AccountSettingsView.swift */; };
 		033F84C32C2B12AA002E3EDF /* InstanceSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84C22C2B12AA002E3EDF /* InstanceSummary.swift */; };
 		033F84C82C2B193D002E3EDF /* MlemStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84C72C2B193D002E3EDF /* MlemStats.swift */; };
+		033F84CC2C2B1E46002E3EDF /* HandleLemmyLinksModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84CB2C2B1E46002E3EDF /* HandleLemmyLinksModifier.swift */; };
 		034B947F2C091EDD00039AF4 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034B947E2C091EDD00039AF4 /* ProfileHeaderView.swift */; };
 		034B94812C09306D00039AF4 /* CommunityOrPersonStub+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034B94802C09306D00039AF4 /* CommunityOrPersonStub+Extensions.swift */; };
 		034B94832C09340A00039AF4 /* MarkdownConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034B94822C09340A00039AF4 /* MarkdownConfiguration+Extensions.swift */; };
@@ -215,6 +216,7 @@
 		03267D852BED4ACA009D6268 /* Profile1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		033F84C22C2B12AA002E3EDF /* InstanceSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceSummary.swift; sourceTree = "<group>"; };
 		033F84C72C2B193D002E3EDF /* MlemStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemStats.swift; sourceTree = "<group>"; };
+		033F84CB2C2B1E46002E3EDF /* HandleLemmyLinksModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandleLemmyLinksModifier.swift; sourceTree = "<group>"; };
 		034B947E2C091EDD00039AF4 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		034B94802C09306D00039AF4 /* CommunityOrPersonStub+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunityOrPersonStub+Extensions.swift"; sourceTree = "<group>"; };
 		034B94822C09340A00039AF4 /* MarkdownConfiguration+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MarkdownConfiguration+Extensions.swift"; sourceTree = "<group>"; };
@@ -773,6 +775,7 @@
 				03AF91DA2C1B21F800E56644 /* TappableImageView.swift */,
 				03AF91DE2C1B243D00E56644 /* ZoomableContainer.swift */,
 				0382A7F12C0A758E00C79DDA /* ProfileDateView.swift */,
+				033F84CB2C2B1E46002E3EDF /* HandleLemmyLinksModifier.swift */,
 				CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */,
 				03E614DA2C0B596900F692A4 /* ToolbarEllipsisMenu.swift */,
 				03FE14052BF9445F00A8377F /* CloseButtonView.swift */,
@@ -1271,6 +1274,7 @@
 				CD4D58B92B86D9F800B82964 /* AccountListRow.swift in Sources */,
 				CDCA44B02C17673D00C092B3 /* HapticPriority.swift in Sources */,
 				CD4D58B32B86BFD400B82964 /* AccountsTracker.swift in Sources */,
+				033F84CC2C2B1E46002E3EDF /* HandleLemmyLinksModifier.swift in Sources */,
 				CD317D4F2BE983ED008F63E2 /* MonochromePalette.swift in Sources */,
 				034B948E2C0937BA00039AF4 /* FancyScrollView.swift in Sources */,
 				CD4D58B52B86BFFB00B82964 /* PersistenceRepository+Dependency.swift in Sources */,

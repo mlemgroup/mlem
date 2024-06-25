@@ -13,6 +13,6 @@ struct InstanceSummary: Codable {
     let name: String
     let host: String
     let userCount: Int
-    let avatar: URL
+    let avatar: URL?
     let version: SiteVersion
 }
