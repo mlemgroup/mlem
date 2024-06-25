@@ -13,7 +13,7 @@ struct ExpandedPostView: View {
     @Environment(\.dismiss) var dismiss
     
     let post: AnyPost
-    @State var comments: [Comment2] = []
+    @State var comments: [CommentWrapper] = []
     @State var loadingState: LoadingState = .idle
     
     var body: some View {
@@ -23,7 +23,23 @@ struct ExpandedPostView: View {
                     guard loadingState == .idle else { return }
                     loadingState = .loading
                     do {
-                        comments = try await post1.getComments(page: 1, limit: 3)
+                        let comments = try await post1.getComments(page: 1, limit: 50)
+                        
+                        var output: [CommentWrapper] = []
+                        var parent: CommentWrapper?
+                        for comment in comments {
+                            if comment.depth == 0 {
+                                let wrapper = CommentWrapper(comment)
+                                output.append(wrapper)
+                                parent = wrapper
+                            } else if comment.depth > (parent?.comment.depth ?? 0) {
+                                parent?.addChild(.init(comment))
+                            } else if comment.depth < (parent?.comment.depth ?? 0) {
+                                parent = parent?.parent
+                                parent?.addChild(.init(comment))
+                            }
+                        }
+                        self.comments = output
                         loadingState = .done
                     } catch {
                         handleError(error)
@@ -34,12 +50,12 @@ struct ExpandedPostView: View {
     
     func content(for post: any Post1Providing) -> some View {
         FancyScrollView {
-            LazyVStack(alignment: .leading) {
+            LazyVStack(alignment: .leading, spacing: 0) {
                 LargePostView(post: post, isExpanded: true)
                 Divider()
                 ForEach(comments) { comment in
-                    VStack(alignment: .leading) {
-                        Text(comment.content)
+                    ForEach(comment.tree()) { child in
+                        CommentView(comment: child.comment)
                         Divider()
                     }
                 }

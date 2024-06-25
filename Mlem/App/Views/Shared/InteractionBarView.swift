@@ -20,6 +20,12 @@ struct InteractionBarView: View {
         self.trailing = .init(post: post, items: configuration.trailing)
         self.readouts = configuration.readouts.map { post.readout(type: $0) }
     }
+    
+    init(comment: any Comment1Providing, configuration: CommentBarConfiguration) {
+        self.leading = .init(comment: comment, items: configuration.leading)
+        self.trailing = .init(comment: comment, items: configuration.trailing)
+        self.readouts = configuration.readouts.map { comment.readout(type: $0) }
+    }
 
     var body: some View {
         HStack(spacing: AppConstants.standardSpacing) {
@@ -143,6 +149,17 @@ extension [EnrichedWidget] {
                 return .action(post.action(type: action))
             case let .counter(counter):
                 return .counter(post.counter(type: counter))
+            }
+        }
+    }
+    
+    init(comment: any Comment1Providing, items: [CommentBarConfiguration.Item]) {
+        self = items.map { item in
+            switch item {
+            case let .action(action):
+                return .action(comment.action(type: action))
+            case let .counter(counter):
+                return .counter(comment.counter(type: counter))
             }
         }
     }
