@@ -17,7 +17,8 @@ class ToastModel {
         Array(toasts.filter { $0.location == location }.prefix(3))
     }
     
-    func add(_ type: ToastType, location: ToastLocation? = nil, important: Bool? = nil) {
+    @discardableResult
+    func add(_ type: ToastType, location: ToastLocation? = nil, important: Bool? = nil) -> UUID {
         let newToast: Toast = .init(
             type: type,
             location: location ?? type.location,
@@ -29,6 +30,7 @@ class ToastModel {
             toasts.remove(at: index)
         }
         toasts.append(newToast)
+        return newToast.id
     }
     
     func removeToast(id: UUID) {
