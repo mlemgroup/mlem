@@ -37,23 +37,25 @@ struct AvatarView: View {
             if url == nil {
                 DefaultAvatarView(avatarType: type)
             } else {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .aspectRatio(1, contentMode: .fill)
-                    .background {
-                        if loading {
-                            if showLoadingPlaceholder {
-                                ProgressView()
-                            }
-                        } else {
-                            palette.secondaryBackground
+                VStack {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                }
+                .aspectRatio(1, contentMode: .fit)
+                .background {
+                    if loading {
+                        if showLoadingPlaceholder {
+                            ProgressView()
                         }
+                    } else {
+                        palette.secondaryBackground
                     }
-                    .clipShape(Circle())
-                    .task(loadImage)
+                }
+                .clipShape(Circle())
+                .task(loadImage)
             }
         }
-        .aspectRatio(1, contentMode: .fit)
     }
     
     @Sendable
