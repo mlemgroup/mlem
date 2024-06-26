@@ -37,23 +37,21 @@ struct AvatarView: View {
             if url == nil {
                 DefaultAvatarView(avatarType: type)
             } else {
-                VStack {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                }
-                .aspectRatio(1, contentMode: .fit)
-                .background {
-                    if loading {
-                        if showLoadingPlaceholder {
-                            ProgressView()
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .aspectRatio(1, contentMode: .fit)
+                    .background {
+                        if loading {
+                            if showLoadingPlaceholder {
+                                ProgressView()
+                            }
+                        } else {
+                            palette.secondaryBackground
                         }
-                    } else {
-                        palette.secondaryBackground
                     }
-                }
-                .clipShape(Circle())
-                .task(loadImage)
+                    .clipShape(Circle())
+                    .task(loadImage)
             }
         }
     }
