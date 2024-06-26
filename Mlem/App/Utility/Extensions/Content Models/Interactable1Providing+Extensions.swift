@@ -49,6 +49,32 @@ extension Interactable1Providing {
     var upvoteCounter: Counter {
         .init(
             value: self2?.votes.upvotes,
+            leadingAction: upvoteAction,
+            trailingAction: nil
+        )
+    }
+    
+    var downvoteCounter: Counter {
+        .init(
+            value: self2?.votes.downvotes,
+            leadingAction: downvoteAction,
+            trailingAction: nil
+        )
+    }
+    
+    var scoreCounter: Counter {
+        .init(
+            value: self2?.votes.total,
+            leadingAction: upvoteAction,
+            trailingAction: downvoteAction
+        )
+    }
+    
+    // MARK: Actions
+    
+    var upvoteCounter: Counter {
+        .init(
+            value: self2?.votes.upvotes,
             leadingAction: upvoteAction(feedback: [.haptic]),
             trailingAction: nil
         )
@@ -114,6 +140,66 @@ extension Interactable1Providing {
             swipeIcon1: isOn ? Icons.unsave : Icons.save,
             swipeIcon2: isOn ? Icons.unsaveFill : Icons.saveFill,
             callback: api.willSendToken ? { self.self2?.toggleSave(feedback: feedback) } : nil
+        )
+    }
+    
+    // MARK: Readouts
+    
+    var createdReadout: Readout {
+        .init(
+            id: "created\(actorId)",
+            label: (updated ?? created).getShortRelativeTime(),
+            icon: updated == nil ? Icons.time : Icons.updated
+        )
+    }
+    
+    var scoreReadout: Readout {
+        let icon: String
+        let color: Color?
+        switch self2?.votes.myVote {
+        case .upvote:
+            icon = Icons.upvoteSquareFill
+            color = Palette.main.upvote
+        case .downvote:
+            icon = Icons.downvoteSquareFill
+            color = Palette.main.downvote
+        default:
+            icon = Icons.upvoteSquare
+            color = nil
+        }
+        return Readout(
+            id: "score\(actorId)",
+            label: self2?.votes.total.description,
+            icon: icon,
+            color: color
+        )
+    }
+    
+    var upvoteReadout: Readout {
+        let isOn = self2?.votes.myVote == .upvote
+        return Readout(
+            id: "upvote\(actorId)",
+            label: self2?.votes.upvotes.description,
+            icon: isOn ? Icons.upvoteSquareFill : Icons.upvoteSquare,
+            color: isOn ? Palette.main.upvote : nil
+        )
+    }
+    
+    var downvoteReadout: Readout {
+        let isOn = self2?.votes.myVote == .downvote
+        return Readout(
+            id: "downvote\(actorId)",
+            label: self2?.votes.downvotes.description,
+            icon: isOn ? Icons.downvoteSquareFill : Icons.downvoteSquare,
+            color: isOn ? Palette.main.downvote : nil
+        )
+    }
+    
+    var commentReadout: Readout {
+        .init(
+            id: "comment\(actorId)",
+            label: self2?.commentCount.description,
+            icon: Icons.replies
         )
     }
     
