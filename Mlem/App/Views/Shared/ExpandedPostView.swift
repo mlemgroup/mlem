@@ -32,10 +32,10 @@ struct ExpandedPostView: View {
                         for comment in comments {
                             let wrapper: CommentWrapper = .init(comment)
                             keyedById[comment.id] = wrapper
-                            if comment.depth == 0 {
-                                output.append(wrapper)
-                            } else if let parentId = comment.parentCommentIds.last {
+                            if let parentId = comment.parentCommentIds.last {
                                 keyedById[parentId]?.addChild(wrapper)
+                            } else {
+                                output.append(wrapper)
                             }
                         }
                         self.comments = output
@@ -53,11 +53,10 @@ struct ExpandedPostView: View {
             LazyVStack(alignment: .leading, spacing: 0) {
                 LargePostView(post: post, isExpanded: true)
                 Divider()
-                ForEach(Array(comments.reduce([]) { $0 + $1.tree() }.enumerated()), id: \.element.id) { index, comment in
+                ForEach(comments.reduce([]) { $0 + $1.tree() }) { comment in
                     CommentView(comment: comment)
-                        .transition(.blurReplace)
-                        .background(palette.background)
-                        .zIndex(comment.depth == 0 ? 1000 : Double(index))
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                        .zIndex(1000 - Double(comment.depth))
                 }
             }
         }

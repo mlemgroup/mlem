@@ -39,19 +39,19 @@ struct CommentView: View {
                 }
             }
             .padding(AppConstants.standardSpacing)
-            Divider()
-        }
-        .border(width: comment.depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[comment.depth % threadingColors.count])
-        .clipped()
-        .background(palette.background)
-        .quickSwipes(comment.swipeActions(behavior: .standard))
-        .contentShape(.rect)
-        .onTapGesture {
-            if let comment = comment as? CommentWrapper {
-                withAnimation {
-                    comment.collapsed.toggle()
+            .clipped()
+            .background(palette.background)
+            .border(width: comment.depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[comment.depth % threadingColors.count])
+            .quickSwipes(comment.swipeActions(behavior: .standard))
+            .contentShape(.rect)
+            .onTapGesture {
+                if let comment = comment as? CommentWrapper {
+                    withAnimation {
+                        comment.collapsed.toggle()
+                    }
                 }
             }
+            Divider()
         }
         .padding(.leading, CGFloat(comment.depth) * indent)
     }
