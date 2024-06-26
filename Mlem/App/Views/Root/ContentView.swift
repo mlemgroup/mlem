@@ -68,7 +68,7 @@ struct ContentView: View {
                 image: Icons.user,
                 selectedImage: Icons.userFill,
                 onLongPress: {
-                    // TODO: haptics here
+                    HapticManager.main.play(haptic: .rigidInfo, priority: .high)
                     navigationModel.openSheet(.quickSwitcher)
                 },
                 content: {

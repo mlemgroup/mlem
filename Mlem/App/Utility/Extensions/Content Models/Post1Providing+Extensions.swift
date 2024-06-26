@@ -18,12 +18,50 @@ extension Post1Providing {
     }
     
     var menuActions: ActionGroup {
-        ActionGroup(children: [
-            ActionGroup(
-                children: [upvoteAction, downvoteAction]
-            ),
+        ActionGroup(
+            children: [
+                ActionGroup(
+                    children: [upvoteAction, downvoteAction]
+                ),
+                saveAction
+            ])
+    }
+    
+    func action(type: PostActionType) -> any Action {
+        switch type {
+        case .upvote:
+            upvoteAction
+        case .downvote:
+            downvoteAction
+        case .save:
             saveAction
-        ])
+        }
+    }
+    
+    func counter(type: PostCounterType) -> Counter {
+        switch type {
+        case .score:
+            scoreCounter
+        case .upvote:
+            upvoteCounter
+        case .downvote:
+            downvoteCounter
+        }
+    }
+    
+    func readout(type: PostReadoutType) -> Readout {
+        switch type {
+        case .created:
+            createdReadout
+        case .score:
+            scoreReadout
+        case .upvote:
+            upvoteReadout
+        case .downvote:
+            downvoteReadout
+        case .comment:
+            commentReadout
+        }
     }
     
     func taggedTitle(communityContext: (any Community1Providing)?) -> Text {

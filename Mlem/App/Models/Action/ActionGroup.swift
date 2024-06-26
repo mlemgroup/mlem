@@ -12,7 +12,7 @@ enum ActionGroupMode {
 }
 
 struct ActionGroup: Action {
-    let id: UUID = .init()
+    let id: String = UUID().uuidString
     
     let isOn: Bool
     
