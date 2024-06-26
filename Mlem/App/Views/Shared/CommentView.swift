@@ -23,8 +23,9 @@ struct CommentView: View {
                 HStack {
                     FullyQualifiedLinkView(entity: comment.creator_, labelStyle: .small, showAvatar: true)
                     Spacer()
-                    EllipsisMenu(actions: comment.menuActions, size: 24)
+                    EllipsisMenu(actions: comment.menuActions, size: 10)
                 }
+                .padding(.top, 2)
                 if !((comment as? CommentWrapper)?.collapsed ?? false) {
                     Markdown(comment.content, configuration: .default)
                     InteractionBarView(
