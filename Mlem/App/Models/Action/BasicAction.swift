@@ -9,7 +9,7 @@ import Dependencies
 import SwiftUI
 
 struct BasicAction: Action {
-    let id: UUID = .init()
+    let id: String
     let isOn: Bool
     
     let label: String
@@ -24,7 +24,12 @@ struct BasicAction: Action {
     /// If this is nil, the BasicAction is disabled
     var callback: (() -> Void)?
     
+    var disabled: Bool { callback == nil }
+    
+    /// - Parameter id: This must be unique to the action AND contain the model's unique ID.
+    /// If you don't do this, SwiftUI can get confused in a lazy view.
     init(
+        id: String,
         isOn: Bool,
         label: String,
         color: Color,
@@ -37,6 +42,7 @@ struct BasicAction: Action {
         enabled: Bool = true,
         callback: (() -> Void)? = nil
     ) {
+        self.id = id
         self.isOn = isOn
         self.label = label
         self.isDestructive = isDestructive

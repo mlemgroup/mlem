@@ -67,6 +67,16 @@ struct HeadlinePostView: View {
             if showCreator {
                 FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showUserAvatar)
             }
+            
+            InteractionBarView(
+                post: post,
+                configuration: .init(
+                    leading: [.counter(.score)],
+                    trailing: [.action(.save)],
+                    readouts: [.created, .score, .comment]
+                )
+            )
+            .padding(.vertical, 2)
         }
     }
 }

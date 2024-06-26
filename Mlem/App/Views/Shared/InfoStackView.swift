@@ -1,0 +1,43 @@
+//
+//  InfoStackView.swift
+//  Mlem
+//
+//  Created by Sjmarf on 16/06/2024.
+//
+
+import MlemMiddleware
+import SwiftUI
+
+struct InfoStackView: View {
+    @Environment(Palette.self) private var palette
+    
+    let readouts: [Readout]
+    let showColor: Bool
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            ForEach(readouts, id: \.viewId) { readout in
+                HStack(spacing: 2) {
+                    Image(systemName: readout.icon)
+                    Text(readout.label ?? " ")
+                        .monospacedDigit()
+                        .contentTransition(.numericText(value: Double(readout.label ?? "") ?? 0))
+                }
+                .foregroundStyle((showColor ? readout.color : nil) ?? palette.secondary)
+                .animation(.default, value: readout.label)
+            }
+        }
+        .font(.footnote)
+    }
+}
+
+extension InfoStackView {
+    init(post: any Post1Providing, readouts: [PostReadoutType], showColor: Bool) {
+        self.readouts = readouts.map { post.readout(type: $0) }
+        self.showColor = showColor
+    }
+}
+
+private extension Readout {
+    var viewId: Int { id.hashValue }
+}

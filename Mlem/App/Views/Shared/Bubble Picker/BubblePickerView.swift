@@ -18,8 +18,6 @@ struct BubblePickerItemFrame: Equatable {
 }
 
 struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
-    // @Dependency(\.hapticManager) var hapticManager
-    
     @Environment(Palette.self) var palette
     
     @Binding var selected: Value
@@ -131,7 +129,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
     ) -> some View {
         Button {
             selected = tab
-            // hapticManager.play(haptic: .gentleInfo, priority: .low)
+            HapticManager.main.play(haptic: .gentleInfo, priority: .low)
         } label: {
             bubbleButtonLabel(tab: tab, isSelected: isSelected)
         }
