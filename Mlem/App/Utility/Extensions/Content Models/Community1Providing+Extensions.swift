@@ -14,6 +14,7 @@ extension Community1Providing {
     var subscribeAction: BasicAction {
         let isOn: Bool = self2?.subscribed ?? false
         return .init(
+            id: "subscribe\(actorId.absoluteString)",
             isOn: isOn,
             label: isOn ? "Unsubscribe" : "Subscribe",
             color: isOn ? .green : .red,
@@ -28,6 +29,7 @@ extension Community1Providing {
     var favoriteAction: BasicAction {
         let isOn: Bool = self2?.favorited ?? false
         return .init(
+            id: "favorite\(actorId.absoluteString)",
             isOn: isOn,
             label: isOn ? "Unfavorite" : "Favorite",
             color: .blue,

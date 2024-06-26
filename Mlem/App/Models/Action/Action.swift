@@ -8,7 +8,7 @@
 import SwiftUI
 
 protocol Action: Identifiable {
-    var id: UUID { get }
+    var id: String { get }
     
     var isOn: Bool { get }
     
