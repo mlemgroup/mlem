@@ -10,11 +10,21 @@ import SwiftUI
 extension BanUserView {
     func confirm() {
         if banFromInstance {
+            guard user.canBeAdministrated() else {
+                assertionFailure("BanUserView opened with non-administratable user!")
+                return
+            }
             instanceBan()
-        } else if let communityContext {
-            communityBan(from: communityContext)
         } else {
-            assertionFailure("banFromInstance false but communityContext nil!")
+            guard let community = communityContext else {
+                assertionFailure("banFromInstance false but communityContext nil!")
+                return
+            }
+            guard siteInformation.canModerate(user: user, in: community.communityId) else {
+                assertionFailure("BanUserView opened with non-moderatable user!")
+                return
+            }
+            communityBan(from: community)
         }
     }
     
