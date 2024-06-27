@@ -142,7 +142,7 @@ extension [EnrichedWidget] {
         self = items.map { item in
             switch item {
             case let .action(action):
-                return .action(post.action(type: action))
+                return .action(post.action(type: action, feedback: [.haptic]))
             case let .counter(counter):
                 return .counter(post.counter(type: counter))
             }

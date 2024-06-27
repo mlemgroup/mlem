@@ -207,21 +207,4 @@ struct MinimalPostFeedView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
-    
-    // This is a proof-of-concept; in the real frontend this code will go in InteractionBarView
-    @ViewBuilder
-    func actionButton(_ action: BasicAction) -> some View {
-        Button(action: action.callback ?? {}) {
-            Image(systemName: action.barIcon)
-                .foregroundColor(action.isOn ? palette.selectedInteractionBarItem : palette.primary)
-                .padding(2)
-                .background(
-                    RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
-                        .fill(action.isOn ? action.color : .clear)
-                )
-        }
-        .buttonStyle(EmptyButtonStyle())
-        .disabled(action.callback == nil)
-        .opacity(action.callback == nil ? 0.5 : 1)
-    }
 }

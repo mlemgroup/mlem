@@ -28,6 +28,7 @@ struct SettingsView: View {
             }
             
             Section {
+                NavigationLink("Subscription List", destination: .settings(.subscriptionList))
                 NavigationLink("Posts", destination: .settings(.post))
             }
             
