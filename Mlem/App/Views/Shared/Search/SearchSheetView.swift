@@ -1,0 +1,94 @@
+//
+//  SearchSheetView.swift
+//  Mlem
+//
+//  Created by Sjmarf on 27/06/2024.
+//
+
+import Combine
+import MlemMiddleware
+import SwiftUI
+
+protocol Searchable: Identifiable {
+    static func search(api: ApiClient, query: String, page: Int, limit: Int) async throws -> [Self]
+}
+
+extension Community2: Searchable {
+    static func search(api: ApiClient, query: String, page: Int, limit: Int) async throws -> [Community2] {
+        try await api.searchCommunities(query: query, page: page, limit: limit)
+    }
+}
+
+struct SearchSheetView<Item: Searchable, Content: View>: View {
+    @Environment(AppState.self) var appState
+    @Environment(\.dismiss) var dismiss
+    
+    enum CloseButtonLabel: String {
+        case cancel, done
+    }
+    
+    @ViewBuilder let content: ([Item], DismissAction) -> Content
+    let closeButtonLabel: CloseButtonLabel
+    
+    @State var query: String = ""
+    @State var results: [Item] = []
+    
+    @State var editing: Bool = true
+    @State var focused: Bool = true
+    
+    init(
+        closeButtonLabel: CloseButtonLabel = .cancel,
+        @ViewBuilder content: @escaping ([Item], DismissAction) -> Content
+    ) {
+        self.content = content
+        self.closeButtonLabel = closeButtonLabel
+    }
+    
+    var body: some View {
+        content(results, dismiss)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    HStack(spacing: 0) {
+                        SearchBar("Search", text: $query, isEditing: $editing)
+                            .isInitialFirstResponder(true)
+                            .focused($focused)
+                    }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(closeButtonLabel.rawValue.capitalized) {
+                        dismiss()
+                    }
+                }
+            }
+            .task(id: query, priority: .userInitiated) {
+                do {
+                    if !query.isEmpty {
+                        try await Task.sleep(for: .seconds(0.2))
+                    }
+                    results = try await Item.search(
+                        api: appState.firstApi,
+                        query: query,
+                        page: 1,
+                        limit: 20
+                    )
+                } catch {
+                    handleError(error)
+                }
+            }
+    }
+}
+
+extension SearchSheetView {
+    init<Content2: View>(
+        closeButtonLabel: CloseButtonLabel = .cancel,
+        @ViewBuilder content: @escaping (Item, DismissAction) -> Content2
+    ) where Content == SearchResultsView<Item, Content2> {
+        self.closeButtonLabel = closeButtonLabel
+        self.content = { (results: [Item], dismiss: DismissAction) in
+            SearchResultsView(results: results) { item in
+                content(item, dismiss)
+            }
+        }
+    }
+}

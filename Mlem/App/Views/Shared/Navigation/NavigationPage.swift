@@ -9,10 +9,6 @@ import MlemMiddleware
 import SwiftUI
 
 enum NavigationPage: Hashable {
-    static func == (lhs: NavigationPage, rhs: NavigationPage) -> Bool {
-        lhs.hashValue == rhs.hashValue
-    }
-    
     case settings(_ page: SettingsPage = .root)
     case login(_ page: LoginPage = .pickInstance)
     case feeds, profile, inbox, search
@@ -21,6 +17,8 @@ enum NavigationPage: Hashable {
     case person(_ person: AnyPerson)
     case externalApiInfo(api: ApiClient, actorId: URL)
     case imageViewer(_ url: URL)
+    case communityPicker(callback: HashWrapper<(Community2) -> Void>)
+    case communitySubscriptionManager
     
     static func expandedPost(_ post: any PostStubProviding) -> NavigationPage {
         expandedPost(.init(post))
@@ -57,6 +55,17 @@ extension NavigationPage {
             ExpandedPostView(post: post)
         case let .person(person):
             PersonView(person: person)
+        case let .communityPicker(callback: callback):
+            SearchSheetView { (community: Community2, dismiss: DismissAction) in
+                CommunityListRowBody(community)
+                    .onTapGesture {
+                        callback.wrappedValue(community)
+                        dismiss()
+                    }
+                    .padding(.vertical, 6)
+            }
+        case .communitySubscriptionManager:
+            EmptyView()
         }
     }
     
@@ -76,5 +85,18 @@ extension NavigationPage {
         default:
             true
         }
+    }
+}
+
+struct HashWrapper<Value>: Hashable, Identifiable {
+    let wrappedValue: Value
+    let id = UUID()
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: HashWrapper, rhs: HashWrapper) -> Bool {
+        lhs.id == rhs.id
     }
 }

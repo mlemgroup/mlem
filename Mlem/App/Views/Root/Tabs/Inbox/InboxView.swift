@@ -50,6 +50,9 @@ struct InboxView: View {
                     ))
                 )
             }
+            Button("Search communities") {
+                navigation.openSheet(.picker(.community(updateSelection: { print($0) })))
+            }
         }
     }
 }
