@@ -51,8 +51,8 @@ final class PersistenceRepositoryTests: XCTestCase {
     
     func testSaveAccounts() async throws {
         let accounts: [SavedAccount] = [
-            .init(id: 0, instanceLink: URL(string: "https://mlem.group")!, accessToken: "token_0", username: "User0"),
-            .init(id: 1, instanceLink: URL(string: "https://mlem.group")!, accessToken: "token_1", username: "User1")
+            .init(id: 0, instanceLink: URL(string: "https://mlem.group/api/v3")!, accessToken: "token_0", username: "User0"),
+            .init(id: 1, instanceLink: URL(string: "https://mlem.group/api/v3")!, accessToken: "token_1", username: "User1")
         ]
         
         XCTAssert(disk.keys.isEmpty) // confirm we have a blank slate
@@ -80,8 +80,8 @@ final class PersistenceRepositoryTests: XCTestCase {
     
     func testLoadAccounts() async throws {
         let accounts: [SavedAccount] = [
-            .init(id: 0, instanceLink: URL(string: "https://mlem.group")!, accessToken: "token_0", username: "User0"),
-            .init(id: 1, instanceLink: URL(string: "https://mlem.group")!, accessToken: "token_1", username: "User1")
+            .init(id: 0, instanceLink: URL(string: "https://mlem.group/api/v3")!, accessToken: "token_0", username: "User0"),
+            .init(id: 1, instanceLink: URL(string: "https://mlem.group/api/v3")!, accessToken: "token_1", username: "User1")
         ]
         
         // as we are testing the `.loadAccounts` method, we need to supply tokens
@@ -102,8 +102,8 @@ final class PersistenceRepositoryTests: XCTestCase {
     
     func testAccountsWithoutTokensAreOmitted() async throws {
         let accounts: [SavedAccount] = [
-            .init(id: 0, instanceLink: URL(string: "https://mlem.group")!, accessToken: "token_0", username: "User0"),
-            .init(id: 1, instanceLink: URL(string: "https://mlem.group")!, accessToken: "token_1", username: "User1")
+            .init(id: 0, instanceLink: URL(string: "https://mlem.group/api/v3")!, accessToken: "token_0", username: "User0"),
+            .init(id: 1, instanceLink: URL(string: "https://mlem.group/api/v3")!, accessToken: "token_1", username: "User1")
         ]
         
         // only provide a token for the first account in this test

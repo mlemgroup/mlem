@@ -219,7 +219,7 @@ extension PostModel {
             }
         }
         
-        if creator.userId != siteInformation.userId {
+        if siteInformation.canModerate(user: creator, in: community.communityId) {
             functions.append(MenuFunction.toggleableMenuFunction(
                 toggle: post.removed,
                 trueText: "Restore",
@@ -232,7 +232,7 @@ extension PostModel {
             })
         }
         
-        if siteInformation.isAdmin {
+        if creator.canBeAdministrated() {
             functions.append(MenuFunction.standardMenuFunction(
                 text: "Purge",
                 imageName: Icons.purge,
@@ -249,7 +249,7 @@ extension PostModel {
             }
             
             // for admins, default to instance ban iff not a moderator of this community
-            if siteInformation.isAdmin, !siteInformation.moderatedCommunities.contains(community.communityId) {
+            if creator.canBeAdministrated(), !siteInformation.isMod(communityId: community.communityId) {
                 functions.append(MenuFunction.toggleableMenuFunction(
                     toggle: creator.banned,
                     trueText: "Unban User",
@@ -266,7 +266,7 @@ extension PostModel {
                         userRemovalWalker: .init(postTracker: postTracker, commentTracker: commentTracker)
                     )
                 })
-            } else {
+            } else if siteInformation.canModerate(user: creator, in: community.communityId) {
                 functions.append(MenuFunction.toggleableMenuFunction(
                     toggle: creatorBannedFromCommunity,
                     trueText: "Unban User",
@@ -285,7 +285,7 @@ extension PostModel {
                 })
             }
             
-            if siteInformation.isAdmin {
+            if creator.canBeAdministrated() {
                 functions.append(MenuFunction.standardMenuFunction(
                     text: "Purge User",
                     imageName: Icons.purge,

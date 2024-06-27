@@ -73,6 +73,24 @@ struct CommunityRepository {
         try await subscriptions(apiClient)
     }
     
+    func batchLoadDetails(for ids: [Int]) async throws -> [Int: CommunityModel] {
+        try await withThrowingTaskGroup(of: CommunityModel.self) { group -> [Int: CommunityModel] in
+            for id in ids {
+                group.addTask {
+                    try await loadDetails(for: id)
+                }
+            }
+            
+            var ret: [Int: CommunityModel] = .init()
+            
+            for try await value in group {
+                ret[value.communityId] = value
+            }
+        
+            return ret
+        }
+    }
+    
     func loadDetails(for id: Int) async throws -> GetCommunityResponse {
         try await details(apiClient, id)
     }

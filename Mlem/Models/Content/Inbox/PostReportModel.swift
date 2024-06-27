@@ -273,4 +273,8 @@ extension PostReportModel: Removable, Purgable {
         }
         return false
     }
+    
+    func canBeAdministrated() -> Bool {
+        siteInformation.canAdministrate(user: postCreator)
+    }
 }

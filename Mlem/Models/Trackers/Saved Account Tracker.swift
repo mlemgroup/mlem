@@ -22,7 +22,7 @@ class SavedAccountTracker: ObservableObject {
     @Published var savedAccounts = [SavedAccount]()
     
     var defaultAccount: SavedAccount? {
-        savedAccounts.first(where: { $0.id == defaultAccountId })
+        savedAccounts.first(where: { $0.id == defaultAccountId }) ?? savedAccounts.first
     }
     
     private var cancellables = Set<AnyCancellable>()

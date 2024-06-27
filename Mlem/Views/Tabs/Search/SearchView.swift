@@ -59,6 +59,9 @@ struct SearchView: View {
     
     var body: some View {
         content
+            .toolbar {
+                PasteLinkButtonView()
+            }
             .handleLemmyViews()
             .navigationBarColor()
             .navigationTitle("Search")
