@@ -63,6 +63,7 @@ struct MinimalPostFeedView: View {
             .toolbar {
                 ToolbarEllipsisMenu {
                     MenuButton(action: BasicAction(
+                        id: "read",
                         isOn: showRead,
                         label: showRead ? "Hide Read" : "Show Read",
                         color: palette.primary,
@@ -134,7 +135,7 @@ struct MinimalPostFeedView: View {
                 Section {
                     if !tilePosts { Divider() }
                     
-                    ForEach(postFeedLoader.items, id: \.uid) { post in
+                    ForEach(postFeedLoader.items, id: \.hashValue) { post in
                         if !post.read || showRead {
                             VStack(spacing: 0) { // this improves performance O_o
                                 NavigationLink(value: NavigationPage.expandedPost(post)) {

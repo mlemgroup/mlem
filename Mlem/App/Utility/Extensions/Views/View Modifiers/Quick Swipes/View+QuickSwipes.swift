@@ -41,6 +41,7 @@ struct QuickSwipeView: ViewModifier {
     func body(content: Content) -> some View {
         content
             .background(shadowBackground)
+            .geometryGroup()
             .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
             // needs to be high priority or else dragging on links leads to navigating to the link at conclusion of drag
             .highPriorityGesture(
@@ -60,10 +61,6 @@ struct QuickSwipeView: ViewModifier {
             )
             .background(iconBackground)
             .onChange(of: dragState, draggingUpdated)
-            // prevents various animation glitches
-            .transaction { transaction in
-                transaction.disablesAnimations = true
-            }
             // disables links from highlighting when tapped
             .buttonStyle(EmptyButtonStyle())
             .clipShape(RoundedRectangle(cornerRadius: config.behavior.cornerRadius))
