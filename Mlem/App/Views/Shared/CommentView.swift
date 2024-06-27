@@ -18,15 +18,21 @@ struct CommentView: View {
     let comment: any Comment1Providing
     
     var body: some View {
+        let collapsed = (comment as? CommentWrapper)?.collapsed ?? false
+        
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
                 HStack {
                     FullyQualifiedLinkView(entity: comment.creator_, labelStyle: .small, showAvatar: true)
                     Spacer()
-                    EllipsisMenu(actions: comment.menuActions, size: 10)
+                    if collapsed {
+                        Image(systemName: "arrow.up.and.line.horizontal.and.arrow.down")
+                            .frame(height: 10)
+                    } else {
+                        EllipsisMenu(actions: comment.menuActions, size: 10)
+                    }
                 }
-                .padding(.top, 2)
-                if !((comment as? CommentWrapper)?.collapsed ?? false) {
+                if !collapsed {
                     Markdown(comment.content, configuration: .default)
                     InteractionBarView(
                         comment: comment,
@@ -36,9 +42,10 @@ struct CommentView: View {
                             readouts: [.created, .score, .comment]
                         )
                     )
-                    .padding(.vertical, 2)
+                    .padding(.top, 2)
                 }
             }
+            .padding(.vertical, 2)
             .padding(AppConstants.standardSpacing)
             .clipped()
             .background(palette.background)
