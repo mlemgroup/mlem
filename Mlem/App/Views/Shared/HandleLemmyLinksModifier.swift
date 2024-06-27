@@ -11,8 +11,6 @@ import SwiftUI
 
 /// Modifier that overrides the `openURL` environment variable and attempts to open Lemmy links in-app.
 struct HandleLemmyLinksModifier: ViewModifier {
-    // TODO: Consider handling links to alternative frontends such as `old.lemmy.world`
-    
     @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
     
@@ -40,6 +38,11 @@ struct HandleLemmyLinksModifier: ViewModifier {
     
     @MainActor
     func didReceiveURL(_ url: URL) -> OpenURLAction.Result {
+        // We don't need to decode `/c/comm@example.com` or `!comm@example.com` formats in this method
+        // - LemmyMarkdownUI converts those links into `https://example.com/c/comm` format during parsing.
+        
+        // TODO: Consider handling links to alternative frontends such as `old.lemmy.world` or `oldsh.itjust.works`.
+        
         guard let scheme = url.scheme else {
             openRegularLink(url: url)
             return .handled
@@ -58,16 +61,14 @@ struct HandleLemmyLinksModifier: ViewModifier {
             return .handled
         }
         
-        // If the link is in our host-list, push a page to the NavigationStack straight away
-        if isLemmyHost(host) {
-            if interpretLemmyUrlPath(url: url) {
-                return .handled
-            }
+        // If the link is in our Lemmy domain list, push a page to the NavigationStack straight away
+        if isLemmyHost(host), interpretLemmyUrlPath(url: url) {
+            return .handled
         }
         
         let components = url.pathComponents.dropFirst()
         
-        // Super-small instances may not appear in the host-list, in which case we show a
+        // Super-small instances may not appear in the Lemmy domain list, in which case we show a
         // "Loading..." toast whilst we attempt to work out if it's actually a Lemmy link
         if ["u", "c", "post", "comment"].contains(components.first) {
             // The "@" check ensures that KBin links are excluded
@@ -95,17 +96,18 @@ struct HandleLemmyLinksModifier: ViewModifier {
             return true
         case "c":
             // TODO: community
-            break
+            return true
         case "post":
             if components.count == 2 {
                 navigation.push(.expandedPost(PostStub(api: appState.firstApi, actorId: url)))
                 return true
             } else if components.count == 3 {
                 // TODO: comment in format `lemmy.world/post/21312/34534`
+                return true
             }
         case "comment":
             // TODO: comment
-            break
+            return true
         default:
             break
         }
