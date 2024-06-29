@@ -39,7 +39,8 @@ struct FeedsView: View {
             feedType: .aggregateFeed(AppState.main.firstApi, type: .subscribed),
             smallAvatarSize: AppConstants.smallAvatarSize,
             largeAvatarSize: AppConstants.largeAvatarSize,
-            urlCache: AppConstants.urlCache
+            urlCache: AppConstants.urlCache,
+            loadImmediately: true
         ))
     }
     
@@ -79,18 +80,6 @@ struct FeedsView: View {
                     try await postFeedLoader.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
                 } catch {
                     handleError(error)
-                }
-            }
-            .task {
-                // NOTE: this is here due to an error in StandardPostFeedLoader where changing feed type doesn't properly reload, resulting in
-                // the first render not triggering a load. I'm currently working on a fix, but it's OOS for filtering
-                // -Eric
-                if postFeedLoader.items.isEmpty, postFeedLoader.loadingState == .idle {
-                    do {
-                        try await postFeedLoader.refresh(clearBeforeRefresh: true)
-                    } catch {
-                        handleError(error)
-                    }
                 }
             }
             .refreshable {
