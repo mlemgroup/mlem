@@ -157,6 +157,7 @@
 		CD9CFA2C2C2E1EF300739BBC /* FeedIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9CFA2B2C2E1EF300739BBC /* FeedIconView.swift */; };
 		CD9CFA302C2E22F600739BBC /* FeedDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9CFA2F2C2E22F600739BBC /* FeedDescription.swift */; };
 		CD9CFA322C2E568700739BBC /* FeedsView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9CFA312C2E568700739BBC /* FeedsView+Logic.swift */; };
+		CD9CFA372C306DAB00739BBC /* PostGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9CFA362C306DAB00739BBC /* PostGridView.swift */; };
 		CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8202B8FC411007953EF /* LandingPage.swift */; };
 		CDB2EC7D2BFADAB300DBC0EF /* CompactPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7C2BFADAB300DBC0EF /* CompactPostView.swift */; };
 		CDB2EC7F2BFADACC00DBC0EF /* HeadlinePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7E2BFADACC00DBC0EF /* HeadlinePostView.swift */; };
@@ -350,6 +351,7 @@
 		CD9CFA2B2C2E1EF300739BBC /* FeedIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedIconView.swift; sourceTree = "<group>"; };
 		CD9CFA2F2C2E22F600739BBC /* FeedDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDescription.swift; sourceTree = "<group>"; };
 		CD9CFA312C2E568700739BBC /* FeedsView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedsView+Logic.swift"; sourceTree = "<group>"; };
+		CD9CFA362C306DAB00739BBC /* PostGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGridView.swift; sourceTree = "<group>"; };
 		CDA1E8202B8FC411007953EF /* LandingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPage.swift; sourceTree = "<group>"; };
 		CDB2EC7A2BFADA8B00DBC0EF /* PostSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSize.swift; sourceTree = "<group>"; };
 		CDB2EC7C2BFADAB300DBC0EF /* CompactPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactPostView.swift; sourceTree = "<group>"; };
@@ -798,6 +800,7 @@
 				0382A7EE2C09F0F800C79DDA /* Pages */,
 				03500C252BF694A800CAA076 /* Toast */,
 				CD0E07002C12707700445849 /* ToolbarEllipsisMenu.swift */,
+				CD9CFA362C306DAB00739BBC /* PostGridView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1396,6 +1399,7 @@
 				0380965F2C10AA80003ED1D8 /* AppState+Transition.swift in Sources */,
 				CD4D58932B86BA5C00B82964 /* StandardPalette.swift in Sources */,
 				CDCA44952C17658000C092B3 /* View+QuickSwipes.swift in Sources */,
+				CD9CFA372C306DAB00739BBC /* PostGridView.swift in Sources */,
 				03D2A63F2C010DBF00ED4FF2 /* GuestSession.swift in Sources */,
 				030FF6812BC859FD00F6BFAC /* CustomTabViewHostingController.swift in Sources */,
 				03E614DB2C0B596900F692A4 /* ToolbarEllipsisMenu.swift in Sources */,

@@ -9,10 +9,10 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-extension FeedsView {
-    var headerMenuActions: [BasicAction] {
-        [
-            .init(id: "subscribed", isOn: postFeedLoader.feedType == ., label: <#T##String#>, color: <#T##Color#>, icon: <#T##String#>)
-        ]
-    }
-}
+// extension FeedsView {
+//    var headerMenuActions: [BasicAction] {
+//        [
+//            .init(id: "subscribed", isOn: postFeedLoader.feedType == ., label: <#T##String#>, color: <#T##Color#>, icon: <#T##String#>)
+//        ]
+//    }
+// }
