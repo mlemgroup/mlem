@@ -26,8 +26,9 @@ struct CommentView: View {
                     FullyQualifiedLinkView(entity: comment.creator_, labelStyle: .small, showAvatar: true)
                     Spacer()
                     if collapsed {
-                        Image(systemName: "arrow.up.and.line.horizontal.and.arrow.down")
+                        Image(systemName: Icons.expandComment)
                             .frame(height: 10)
+                            .imageScale(.small)
                     } else {
                         EllipsisMenu(actions: comment.menuActions, size: 10)
                     }
