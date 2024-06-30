@@ -56,6 +56,11 @@
 		035EDEF52C2DE94B00F51144 /* SearchBarExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDEF02C2DE94B00F51144 /* SearchBarExtensions.swift */; };
 		035EDEFB2C2DF98700F51144 /* CommunityListRowBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDEFA2C2DF98700F51144 /* CommunityListRowBody.swift */; };
 		035EDEFD2C2E026800F51144 /* SubscriptionManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDEFC2C2E026800F51144 /* SubscriptionManagementView.swift */; };
+		035EDEFF2C2E037D00F51144 /* MlemMiddleware in Resources */ = {isa = PBXBuildFile; fileRef = 035EDEFE2C2E037D00F51144 /* MlemMiddleware */; };
+		035EDF012C2ECFE000F51144 /* Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDF002C2ECFE000F51144 /* Searchable.swift */; };
+		035EDF032C2ED0DE00F51144 /* PersonListRowBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDF022C2ED0DE00F51144 /* PersonListRowBody.swift */; };
+		035EDF052C2ED35500F51144 /* Person1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDF042C2ED35500F51144 /* Person1Providing+Extensions.swift */; };
+		035EDF072C2ED3CD00F51144 /* PersonFlair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDF062C2ED3CD00F51144 /* PersonFlair.swift */; };
 		0369B3532BFA514B001EFEDF /* ToastLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0369B3522BFA514B001EFEDF /* ToastLocation.swift */; };
 		0369B3562BFA6824001EFEDF /* InboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0369B3552BFA6824001EFEDF /* InboxView.swift */; };
 		0369B35D2BFB86E3001EFEDF /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0369B35A2BFB86E3001EFEDF /* Account.swift */; };
@@ -263,6 +268,11 @@
 		035EDEF02C2DE94B00F51144 /* SearchBarExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarExtensions.swift; sourceTree = "<group>"; };
 		035EDEFA2C2DF98700F51144 /* CommunityListRowBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListRowBody.swift; sourceTree = "<group>"; };
 		035EDEFC2C2E026800F51144 /* SubscriptionManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManagementView.swift; sourceTree = "<group>"; };
+		035EDEFE2C2E037D00F51144 /* MlemMiddleware */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MlemMiddleware; path = ../MlemMiddleware; sourceTree = "<group>"; };
+		035EDF002C2ECFE000F51144 /* Searchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Searchable.swift; sourceTree = "<group>"; };
+		035EDF022C2ED0DE00F51144 /* PersonListRowBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonListRowBody.swift; sourceTree = "<group>"; };
+		035EDF042C2ED35500F51144 /* Person1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Person1Providing+Extensions.swift"; sourceTree = "<group>"; };
+		035EDF062C2ED3CD00F51144 /* PersonFlair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonFlair.swift; sourceTree = "<group>"; };
 		0369B3522BFA514B001EFEDF /* ToastLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastLocation.swift; sourceTree = "<group>"; };
 		0369B3552BFA6824001EFEDF /* InboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxView.swift; sourceTree = "<group>"; };
 		0369B35A2BFB86E3001EFEDF /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -492,6 +502,7 @@
 				03531EED2C2D9298004A3464 /* SearchSheetView.swift */,
 				03531EF02C2DA298004A3464 /* SearchResultsView.swift */,
 				035EDEFC2C2E026800F51144 /* SubscriptionManagementView.swift */,
+				035EDF002C2ECFE000F51144 /* Searchable.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -529,6 +540,7 @@
 			isa = PBXGroup;
 			children = (
 				035EDEFA2C2DF98700F51144 /* CommunityListRowBody.swift */,
+				035EDF022C2ED0DE00F51144 /* PersonListRowBody.swift */,
 			);
 			path = Results;
 			sourceTree = "<group>";
@@ -634,6 +646,7 @@
 		6363D5B827EE196700E34822 = {
 			isa = PBXGroup;
 			children = (
+				035EDEFE2C2E037D00F51144 /* MlemMiddleware */,
 				6363D5C327EE196700E34822 /* Mlem */,
 				6363D5D927EE196A00E34822 /* MlemTests */,
 				6363D5E327EE196A00E34822 /* MlemUITests */,
@@ -891,6 +904,7 @@
 			children = (
 				CD4D58C72B86DCED00B82964 /* AvatarType.swift */,
 				03AF91E62C1C65AE00E56644 /* Interaction */,
+				035EDF062C2ED3CD00F51144 /* PersonFlair.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -1006,6 +1020,7 @@
 				03E614E32C0BCC7B00F692A4 /* Post1Providing+Extensions.swift */,
 				034B94802C09306D00039AF4 /* CommunityOrPersonStub+Extensions.swift */,
 				CD7743882C20EDEE0085BB43 /* VotesModel+Extensions.swift */,
+				035EDF042C2ED35500F51144 /* Person1Providing+Extensions.swift */,
 			);
 			path = "Content Models";
 			sourceTree = "<group>";
@@ -1242,6 +1257,7 @@
 				50CC4A702A9BD2480074C845 /* instance_metadata.json in Resources */,
 				CDCA44AD2C1766D500C092B3 /* Violent Success.ahap in Resources */,
 				CDCA44AA2C1766D500C092B3 /* Light Success.ahap in Resources */,
+				035EDEFF2C2E037D00F51144 /* MlemMiddleware in Resources */,
 				CDCA44A92C1766D500C092B3 /* Gentle Info.ahap in Resources */,
 				CDCA449B2C1766CF00C092B3 /* Failure.ahap in Resources */,
 				6332FDBD27EFAF7C0009A98A /* Settings.bundle in Resources */,
@@ -1292,6 +1308,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				035EDF052C2ED35500F51144 /* Person1Providing+Extensions.swift in Sources */,
 				03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */,
 				03E614E22C0BCC4300F692A4 /* Profile1Providing+Extensions.swift in Sources */,
 				03134A582BEC1C46002662CC /* AccountListSettingsView.swift in Sources */,
@@ -1305,6 +1322,7 @@
 				03D3A1F12BB9D48E009DE55E /* BasicAction.swift in Sources */,
 				03D2A6392C00FAE000ED4FF2 /* UserAccount.swift in Sources */,
 				03C93CF02BEFFB1A00327BFE /* LoginCredentialsView.swift in Sources */,
+				035EDF032C2ED0DE00F51144 /* PersonListRowBody.swift in Sources */,
 				CDBFCB652C03920C008CD468 /* PostLinkHostView.swift in Sources */,
 				CD4ED84E2BF113C800EFA0A2 /* ExpandedPostView.swift in Sources */,
 				03AF91DB2C1B21F800E56644 /* TappableImageView.swift in Sources */,
@@ -1347,6 +1365,7 @@
 				CDCA44B62C176C5000C092B3 /* View+EdgeBorders.swift in Sources */,
 				CD1446252A5B357900610EF1 /* Document.swift in Sources */,
 				033F84B12C29907F002E3EDF /* FeedbackType.swift in Sources */,
+				035EDF072C2ED3CD00F51144 /* PersonFlair.swift in Sources */,
 				CDB2EC812BFADADF00DBC0EF /* LargePostView.swift in Sources */,
 				CD7882A72BFFD1A3002E1A30 /* ThumbnailLocation.swift in Sources */,
 				03500C222BF5594100CAA076 /* ToastType.swift in Sources */,
@@ -1446,6 +1465,7 @@
 				CDCA44952C17658000C092B3 /* View+QuickSwipes.swift in Sources */,
 				03D2A63F2C010DBF00ED4FF2 /* GuestSession.swift in Sources */,
 				030FF6812BC859FD00F6BFAC /* CustomTabViewHostingController.swift in Sources */,
+				035EDF012C2ECFE000F51144 /* Searchable.swift in Sources */,
 				03E614DB2C0B596900F692A4 /* ToolbarEllipsisMenu.swift in Sources */,
 				CD7743892C20EDEE0085BB43 /* VotesModel+Extensions.swift in Sources */,
 				CD4D58AD2B86BE7100B82964 /* QuickSwitcherView.swift in Sources */,

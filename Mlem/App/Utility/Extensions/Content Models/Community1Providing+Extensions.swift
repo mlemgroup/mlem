@@ -13,6 +13,9 @@ extension Community1Providing {
     
     func toggleSubscribe(feedback: Set<FeedbackType>) {
         if let self2 {
+            if feedback.contains(.haptic) {
+                HapticManager.main.play(haptic: .lightSuccess, priority: .low)
+            }
             if feedback.contains(.toast) {
                 let wasFavorited = self2.favorited
                 if self2.subscribed {

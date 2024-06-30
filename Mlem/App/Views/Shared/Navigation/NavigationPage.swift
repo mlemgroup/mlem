@@ -32,6 +32,10 @@ enum NavigationPage: Hashable {
     static func community(_ community: any CommunityStubProviding) -> NavigationPage {
         Self.community(.init(community))
     }
+    
+    static func communityPicker(callback: @escaping (Community2) -> Void) -> NavigationPage {
+        communityPicker(callback: .init(wrappedValue: callback))
+    }
 }
 
 extension NavigationPage {
@@ -72,7 +76,7 @@ extension NavigationPage {
                     .padding(.vertical, 6)
             }
         case .communitySubscriptionManager:
-            EmptyView()
+            SubscriptionManagementView()
         }
     }
     

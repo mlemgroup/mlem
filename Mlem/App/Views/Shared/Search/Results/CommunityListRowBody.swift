@@ -8,16 +8,25 @@
 import MlemMiddleware
 import SwiftUI
 
-struct CommunityListRowBody: View {
+struct CommunityListRowBody<Content: View>: View {
+    enum Complication { case instance, subscriberCount }
+    
     let community: any Community
     let showBlockStatus: Bool
+    let complications: [Complication]
+    
+    @ViewBuilder let content: () -> Content
 
     init(
         _ community: any Community,
-        showBlockStatus: Bool = true
+        complications: [Complication] = [.instance],
+        showBlockStatus: Bool = true,
+        @ViewBuilder content: @escaping () -> Content = { EmptyView() }
     ) {
         self.community = community
         self.showBlockStatus = showBlockStatus
+        self.content = content
+        self.complications = complications
     }
     
     var title: String {
@@ -30,9 +39,9 @@ struct CommunityListRowBody: View {
         }
         return community.name + suffix
     }
-    
+
     var body: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: AppConstants.standardSpacing) {
             if community.blocked, showBlockStatus {
                 Image(systemName: Icons.hide)
                     .resizable()
@@ -48,14 +57,39 @@ struct CommunityListRowBody: View {
                 Text(title)
                     .lineLimit(1)
                     .foregroundStyle(community.nsfw ? .red : .primary)
-                Text("@\(community.host ?? "unknown")")
+                caption
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
             }
             Spacer()
+            content()
         }
         .padding(.horizontal)
         .contentShape(Rectangle())
+    }
+    
+    @ViewBuilder
+    var caption: some View {
+        HStack(spacing: 2) {
+            ForEach(Array(complications.enumerated()), id: \.element) { index, complication in
+                if index != 0 {
+                    Text("∙")
+                }
+                Group {
+                    switch complication {
+                    case .instance:
+                        if let host = community.host {
+                            Text("@\(host)")
+                        }
+                    case .subscriberCount:
+                        if let subscriberCount = community.subscriberCount_ {
+                            Image(systemName: Icons.person)
+                            Text(subscriberCount.abbreviated)
+                        }
+                    }
+                }
+            }
+        }
     }
 }

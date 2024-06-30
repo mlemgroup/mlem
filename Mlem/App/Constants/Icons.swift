@@ -110,7 +110,8 @@ enum Icons {
     static let adminFlair: String = "crown.fill"
     static let botFlair: String = "terminal.fill"
     static let opFlair: String = "person.fill"
-    static let bannedFlair: String = "multiply.circle"
+    static let instanceBannedFlair: String = "xmark.circle.fill"
+    static let communityBannedFlair: String = "xmark.shield.fill"
     
     // entities/general Lemmy concepts
     static let federation: String = "point.3.filled.connected.trianglepath.dotted"

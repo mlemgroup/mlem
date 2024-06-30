@@ -134,7 +134,9 @@ import SwiftUI
                     searchController.hidesNavigationBarDuringPresentation = hideNavigationBarDuringPresentation
                 }
             
-                (searchController.searchResultsController as? UIHostingController<SearchResultsContent>)?.rootView = base.searchResultsContent()
+                (
+                    searchController.searchResultsController as? UIHostingController<SearchResultsContent>
+                )?.rootView = base.searchResultsContent()
             
                 if let hidesSearchBarWhenScrolling = base.hidesSearchBarWhenScrolling {
                     uiViewController.hidesSearchBarWhenScrolling = hidesSearchBarWhenScrolling

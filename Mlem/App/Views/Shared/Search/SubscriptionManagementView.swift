@@ -9,17 +9,21 @@ import MlemMiddleware
 import SwiftUI
 
 struct SubscriptionManagementView: View {
+    @Environment(Palette.self) var palette
+    
     var body: some View {
-        SearchSheetView { (community: Community2, _: DismissAction) in
-            HStack {
-                CommunityListRowBody(community)
+        SearchSheetView(closeButtonLabel: .done) { (community: Community2, _: DismissAction) in
+            CommunityListRowBody(community, complications: [.instance, .subscriberCount]) {
                 Button {
-                    community.toggleSubscribe()
+                    community.toggleSubscribe(feedback: [.haptic])
                 } label: {
                     Image(systemName: community.subscribed ? "checkmark.circle.fill" : "plus.circle")
-                        .contentTransition(.symbolEffect(.replace))
-                        .animation(.default, value: community.subscribed)
+                        .imageScale(.large)
+                        .contentTransition(.symbolEffect(.replace, options: .speed(5)))
+                        .padding(.trailing, 8)
+                        .foregroundStyle(palette.accent)
                 }
+                .buttonStyle(EmptyButtonStyle())
             }
             .padding(.vertical, 6)
         }

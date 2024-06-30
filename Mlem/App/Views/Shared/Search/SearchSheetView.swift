@@ -9,16 +9,6 @@ import Combine
 import MlemMiddleware
 import SwiftUI
 
-protocol Searchable: Identifiable {
-    static func search(api: ApiClient, query: String, page: Int, limit: Int) async throws -> [Self]
-}
-
-extension Community2: Searchable {
-    static func search(api: ApiClient, query: String, page: Int, limit: Int) async throws -> [Community2] {
-        try await api.searchCommunities(query: query, page: page, limit: limit)
-    }
-}
-
 struct SearchSheetView<Item: Searchable, Content: View>: View {
     @Environment(AppState.self) var appState
     @Environment(\.dismiss) var dismiss
@@ -61,7 +51,7 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
                     }
                 }
             }
-            .task(id: query, priority: .userInitiated) {
+            .task(id: query, priority: .userInitiated) { @MainActor in
                 do {
                     if !query.isEmpty {
                         try await Task.sleep(for: .seconds(0.2))

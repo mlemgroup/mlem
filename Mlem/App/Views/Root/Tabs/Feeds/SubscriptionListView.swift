@@ -83,9 +83,16 @@ struct SubscriptionListView: View {
                 }
             }
             .toolbar {
-                Picker("Sort", selection: $sort) {
-                    ForEach(SubscriptionListSort.allCases, id: \.self) { item in
-                        Label(item.label, systemImage: item.systemImage)
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Add Communities", systemImage: "plus") {
+                        navigation.openSheet(.communitySubscriptionManager)
+                    }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Picker("Sort", selection: $sort) {
+                        ForEach(SubscriptionListSort.allCases, id: \.self) { item in
+                            Label(item.label, systemImage: item.systemImage)
+                        }
                     }
                 }
             }
