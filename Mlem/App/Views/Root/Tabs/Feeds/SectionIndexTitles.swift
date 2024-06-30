@@ -20,8 +20,8 @@ struct SectionIndexTitles: View {
     let sections: [Section]
     @GestureState private var dragLocation: CGPoint = .zero
 
-    // Track which sidebar label we picked last to we
-    // only haptic when selecting a new one
+    // Track which sidebar label we picked last so we
+    // only send a haptic when selecting a new one
     @State var lastSelectedLabel: String = ""
 
     var body: some View {
@@ -33,9 +33,8 @@ struct SectionIndexTitles: View {
         }
         .overlay {
             GeometryReader { geo in
-                // Color.clear doesn't register gestures (presumably because it never gets drawn), so we fake it
-                Color.black
-                    .opacity(0.00000000001)
+                Color.clear
+                    .contentShape(.rect)
                     .gesture(
                         DragGesture(minimumDistance: 0, coordinateSpace: .local)
                             .updating($dragLocation) { value, _, _ in

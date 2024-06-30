@@ -178,7 +178,6 @@ struct SubscriptionListSection: Identifiable {
 }
 
 private extension SubscriptionList {
-    @MainActor
     func visibleSections(sort: SubscriptionListSort) -> [SubscriptionListSection] {
         var sections: [SubscriptionListSection] = .init()
         if !favorites.isEmpty {

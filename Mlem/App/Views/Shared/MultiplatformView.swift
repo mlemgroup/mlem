@@ -8,9 +8,9 @@
 import Foundation
 import SwiftUI
 
-struct MultiplatformView<Content: View>: View {
+struct MultiplatformView<Content: View, Content2: View>: View {
     let phone: () -> Content
-    let pad: () -> Content
+    let pad: () -> Content2
     
     var body: some View {
         if UIDevice.current.userInterfaceIdiom == .phone {
