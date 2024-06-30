@@ -17,6 +17,8 @@ struct PersonView: View {
         var label: String { rawValue.capitalized }
     }
     
+    @Environment(Palette.self) var palette
+    
     @State var person: AnyPerson
     @State private var selectedTab: Tab = .overview
     @State private var isAtTop: Bool = true
@@ -38,6 +40,9 @@ struct PersonView: View {
                             }
                         }
                     }
+            } else {
+                ProgressView()
+                    .tint(palette.secondary)
             }
         } upgradeOperation: { model, api in
             try await model.upgrade(api: api) { entity in

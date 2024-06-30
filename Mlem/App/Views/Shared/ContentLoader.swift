@@ -29,30 +29,23 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
     }
     
     var body: some View {
-        VStack {
-            if let modelValue = proxy.model.wrappedValue as? Model.MinimumRenderable {
-                content
-            } else {
-                ProgressView()
-                    .tint(palette.secondary)
-            }
-        }
-        .animation(.easeOut(duration: 0.2), value: proxy.model.wrappedValue is Model.MinimumRenderable)
-        .task {
-            if !proxy.model.isUpgraded, proxy.upgradeState == .idle {
-                await proxy.upgradeModel(upgradeOperation: upgradeOperation)
-            }
-        }
-        .onChange(of: appState.firstApi.actorId) {
-            if proxy.upgradeState != .loading {
-                // This code is needed here despite also being in `upgradeModel` to
-                // ensure that `upgradeState` is changed fast enough
-                proxy.upgradeState = .loading
-                Task { @MainActor in
-                    await proxy.upgradeModel(api: appState.firstApi, upgradeOperation: upgradeOperation)
+        content
+            .animation(.easeOut(duration: 0.2), value: proxy.model.wrappedValue is Model.MinimumRenderable)
+            .task {
+                if !proxy.model.isUpgraded, proxy.upgradeState == .idle {
+                    await proxy.upgradeModel(upgradeOperation: upgradeOperation)
                 }
             }
-        }
+            .onChange(of: appState.firstApi.actorId) {
+                if proxy.upgradeState != .loading {
+                    // This code is needed here despite also being in `upgradeModel` to
+                    // ensure that `upgradeState` is changed fast enough
+                    proxy.upgradeState = .loading
+                    Task { @MainActor in
+                        await proxy.upgradeModel(api: appState.firstApi, upgradeOperation: upgradeOperation)
+                    }
+                }
+            }
     }
 }
 

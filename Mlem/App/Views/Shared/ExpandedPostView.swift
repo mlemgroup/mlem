@@ -10,6 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct ExpandedPostView: View {
+    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
     let post: AnyPost
@@ -18,6 +19,9 @@ struct ExpandedPostView: View {
         ContentLoader(model: post) { proxy in
             if let post = proxy.entity {
                 content(for: post)
+            } else {
+                ProgressView()
+                    .tint(palette.secondary)
             }
         }
     }
