@@ -15,8 +15,10 @@ struct ExpandedPostView: View {
     let post: AnyPost
     
     var body: some View {
-        ContentLoader(model: post) { post1, _ in
-            content(for: post1)
+        ContentLoader(model: post) { proxy in
+            if let post = proxy.entity {
+                content(for: post)
+            }
         }
     }
     

@@ -25,18 +25,20 @@ struct PersonView: View {
     @State var posts: [Post2] = []
     
     var body: some View {
-        ContentLoader(model: person) { person, isLoading in
-            content(person: person)
-                .externalApiWarning(entity: person, isLoading: isLoading)
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        if person is any Person3Providing, isLoading {
-                            ProgressView()
-                        } else {
-                            ToolbarEllipsisMenu {}
+        ContentLoader(model: person) { proxy in
+            if let person = proxy.entity {
+                content(person: person)
+                    .externalApiWarning(entity: person, isLoading: proxy.isLoading)
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            if person is any Person3Providing, proxy.isLoading {
+                                ProgressView()
+                            } else {
+                                ToolbarEllipsisMenu {}
+                            }
                         }
                     }
-                }
+            }
         } upgradeOperation: { model, api in
             try await model.upgrade(api: api) { entity in
                 if let entity = entity as? any Person1Providing {
@@ -113,7 +115,7 @@ struct PersonView: View {
     
     @ViewBuilder
     func personContent(person: any Person3Providing) -> some View {
-        VStack {
+        VStack(spacing: 0) {
             BubblePicker(
                 tabs(person: person),
                 selected: $selectedTab,
@@ -133,10 +135,10 @@ struct PersonView: View {
                 }
             )
             // I was going to render this, but there's some weird view update issues going on with ContentLoader that we'll need to work out first...
-//            ForEach(posts, id: \.id) { post in
-//                FeedPostView(post: post)
-//                Divider()
-//            }
+            ForEach(posts, id: \.id) { post in
+                FeedPostView(post: post)
+                Divider()
+            }
         }
     }
     
