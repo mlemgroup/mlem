@@ -12,7 +12,6 @@ import SwiftUI
 struct ExpandedPostView: View {
     @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
-    @Environment(Palette.self) var palette
     
     let post: AnyPost
     @State var comments: [CommentWrapper] = []
@@ -26,7 +25,7 @@ struct ExpandedPostView: View {
                         guard loadingState == .idle else { return }
                         loadingState = .loading
                         do {
-                            let comments = try await post1.getComments(sort: .top, page: 1, maxDepth: 8, limit: 50)
+                            let comments = try await post.getComments(sort: .top, page: 1, maxDepth: 8, limit: 50)
                             
                             var output: [CommentWrapper] = []
                             var keyedById: [Int: CommentWrapper] = [:]
