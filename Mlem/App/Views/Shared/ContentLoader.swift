@@ -14,57 +14,66 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
     @Environment(Palette.self) var palette: Palette
     @Environment(AppState.self) var appState: AppState
     
-    enum UpgradeState: String {
-        case idle, loading, done, failed
-    }
-        
-    @State var upgradeState: UpgradeState = .idle
-    @State var error: Error?
-    
-    private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
-    
-    let model: Model
-    @ViewBuilder var content: (_ model: Model.MinimumRenderable, _ isLoading: Bool) -> Content
+    let proxy: ContentLoaderProxy<Model>
+    let content: Content
     var upgradeOperation: ((_ model: Model, _ api: ApiClient) async throws -> Void)?
     
     init(
         model: Model,
-        @ViewBuilder content: @escaping (_ model: Model.MinimumRenderable, _ isLoading: Bool) -> Content,
+        @ViewBuilder content: @escaping (_ proxy: ContentLoaderProxy<Model>) -> Content,
         upgradeOperation: ((_ model: Model, _ api: ApiClient) async throws -> Void)? = nil
     ) {
-        self.model = model
-        self.content = content
+        self.proxy = .init(model: model)
         self.upgradeOperation = upgradeOperation
+        self.content = content(proxy)
     }
     
     var body: some View {
-        VStack {
-            if let modelValue = model.wrappedValue as? Model.MinimumRenderable {
-                content(modelValue, upgradeState == .loading)
-            } else {
-                ProgressView()
-                    .tint(palette.secondary)
-            }
-        }
-        .animation(.easeOut(duration: 0.2), value: model.wrappedValue is Model.MinimumRenderable)
-        .task {
-            if !model.isUpgraded, upgradeState == .idle {
-                await upgradeModel()
-            }
-        }
-        .onChange(of: appState.firstApi.actorId) {
-            if upgradeState != .loading {
-                // This code is needed here despite also being in `upgradeModel` to
-                // ensure that `upgradeState` is changed fast enough
-                upgradeState = .loading
-                Task { @MainActor in
-                    await upgradeModel(api: appState.firstApi)
+        content
+            .animation(.easeOut(duration: 0.2), value: proxy.model.wrappedValue is Model.MinimumRenderable)
+            .task {
+                if !proxy.model.isUpgraded, proxy.upgradeState == .idle {
+                    await proxy.upgradeModel(upgradeOperation: upgradeOperation)
                 }
             }
-        }
+            .onChange(of: appState.firstApi.actorId) {
+                if proxy.upgradeState != .loading {
+                    // This code is needed here despite also being in `upgradeModel` to
+                    // ensure that `upgradeState` is changed fast enough
+                    proxy.upgradeState = .loading
+                    Task { @MainActor in
+                        await proxy.upgradeModel(api: appState.firstApi, upgradeOperation: upgradeOperation)
+                    }
+                }
+            }
+    }
+}
+
+@Observable
+class ContentLoaderProxy<Model: Upgradable> {
+    fileprivate enum UpgradeState: String {
+        case idle, loading, done, failed
     }
     
-    func upgradeModel(api: ApiClient? = nil) async {
+    fileprivate var model: Model
+    fileprivate var upgradeState: UpgradeState = .idle
+    var error: Error?
+    private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
+    
+    init(model: Model) {
+        self.model = model
+    }
+    
+    var entity: (Model.MinimumRenderable)? {
+        model.wrappedValue as? Model.MinimumRenderable
+    }
+    
+    var isLoading: Bool { upgradeState == .loading }
+    
+    func upgradeModel(
+        api: ApiClient? = nil,
+        upgradeOperation: ((_ model: Model, _ api: ApiClient) async throws -> Void)?
+    ) async {
         // critical function, only one thread allowed!
         await loadingSemaphore.wait()
         defer { loadingSemaphore.signal() }
