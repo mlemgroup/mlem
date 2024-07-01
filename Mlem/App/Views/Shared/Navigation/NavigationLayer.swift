@@ -35,7 +35,11 @@ class NavigationLayer {
     }
     
     func push(_ page: NavigationPage) {
-        path.append(page)
+        if hasNavigationStack {
+            path.append(page)
+        } else {
+            openSheet(page)
+        }
     }
     
     func pop() {

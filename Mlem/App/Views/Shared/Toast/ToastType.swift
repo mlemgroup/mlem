@@ -24,6 +24,8 @@ enum ToastType: Hashable {
         color: Color = Palette.main.accent
     )
     
+    case loading
+    
     case error(_ details: ErrorDetails)
     
     case account(any Account)
@@ -38,6 +40,8 @@ enum ToastType: Hashable {
             1.0
         case .error:
             1.5
+        case .loading:
+            10
         }
     }
     
@@ -99,6 +103,8 @@ enum ToastType: Hashable {
         case let .account(account):
             hasher.combine("account")
             hasher.combine(account)
+        case .loading:
+            hasher.combine("loading")
         }
     }
     

@@ -24,10 +24,11 @@ struct SettingsView: View {
                 accountListLink
             }
             Section {
-                NavigationLink("Theme", destination: .settings(.theme))
+                NavigationLink("Links", destination: .settings(.links))
             }
             
             Section {
+                NavigationLink("Theme", destination: .settings(.theme))
                 NavigationLink("Posts", destination: .settings(.post))
             }
             

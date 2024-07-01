@@ -46,6 +46,7 @@ struct NavigationLayerView: View {
             )
             .padding(.bottom, 8)
         }
+        .modifier(HandleLemmyLinksModifier())
         .environment(layer)
     }
     
