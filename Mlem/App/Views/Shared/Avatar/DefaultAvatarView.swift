@@ -29,7 +29,7 @@ struct DefaultAvatarView: View {
         default:
             Image(systemName: avatarType.iconNameFill)
                 .resizable()
-                .scaledToFill()
+                .scaledToFit()
                 .symbolRenderingMode(.multicolor)
                 .foregroundStyle(Color.gray.gradient, .white)
         }
