@@ -83,7 +83,7 @@ struct QuickSwipeView: ViewModifier {
                     if dragState > 0 {
                         Image(systemName: leadingSwipeSymbol ?? Icons.warning)
                             .font(.system(size: config.behavior.iconSize))
-                            .foregroundColor(.white)
+                            .foregroundColor(palette.selectedInteractionBarItem)
                             .frame(width: iconWidth)
                             .padding(.horizontal, iconWidth)
                     }

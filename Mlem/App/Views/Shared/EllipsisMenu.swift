@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct EllipsisMenu: View {
-    @Environment(Palette.self) var palette: Palette
+    @Environment(Palette.self) private var palette: Palette
     
     let actions: ActionGroup
     let size: CGFloat

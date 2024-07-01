@@ -13,13 +13,14 @@ class NavigationLayer {
     var index: Int
     
     var root: NavigationPage
-    var path: [NavigationPage] = .init()
+    var path: [NavigationPage]
     var hasNavigationStack: Bool
     var isFullScreenCover: Bool
     var canDisplayToasts: Bool
     
     init(
         root: NavigationPage,
+        path: [NavigationPage] = [],
         model: NavigationModel,
         index: Int = -1,
         hasNavigationStack: Bool = true,
@@ -29,6 +30,7 @@ class NavigationLayer {
         self.model = model
         self.index = index
         self.root = root
+        self.path = path
         self.hasNavigationStack = hasNavigationStack
         self.isFullScreenCover = isFullScreenCover
         self.canDisplayToasts = canDisplayToasts

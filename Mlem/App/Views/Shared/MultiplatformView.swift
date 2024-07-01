@@ -8,17 +8,27 @@
 import Foundation
 import SwiftUI
 
-struct MultiplatformView<Content: View>: View {
-    let phone: () -> Content
-    let pad: () -> Content
+struct MultiplatformView<PhoneContent: View, PadContent: View>: View {
+    let phone: PhoneContent?
+    let pad: PadContent?
+    
+    init(@ViewBuilder phone: () -> PhoneContent, @ViewBuilder pad: () -> PadContent) {
+        if UIDevice.isPad {
+            self.phone = nil
+            self.pad = pad()
+        } else {
+            self.phone = phone()
+            self.pad = nil
+        }
+    }
     
     var body: some View {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            phone()
-        } else if UIDevice.current.userInterfaceIdiom == .pad {
-            pad()
+        if let phone {
+            phone
+        } else if let pad {
+            pad
         } else {
-            preconditionFailure("Unsupported platform!")
+            Text("MultiplatformView: Unsupported platform")
         }
     }
 }
