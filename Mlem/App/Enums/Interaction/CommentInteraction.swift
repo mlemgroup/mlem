@@ -1,5 +1,5 @@
 //
-//  PostInteraction.swift
+//  CommentInteraction.swift
 //  Mlem
 //
 //  Created by Sjmarf on 14/06/2024.
@@ -7,30 +7,30 @@
 
 import Foundation
 
-struct PostBarConfiguration {
+struct CommentBarConfiguration {
     enum Item {
-        case action(PostActionType)
-        case counter(PostCounterType)
+        case action(CommentActionType)
+        case counter(CommentCounterType)
     }
     
     let leading: [Item]
     let trailing: [Item]
-    let readouts: [PostReadoutType]
+    let readouts: [CommentReadoutType]
 }
 
-enum PostCounterType {
+enum CommentCounterType {
     case score
     case upvote
     case downvote
 }
 
-enum PostActionType {
+enum CommentActionType {
     case upvote
     case downvote
     case save
 }
 
-enum PostReadoutType: CaseIterable {
+enum CommentReadoutType: CaseIterable {
     case created
     case score
     case upvote

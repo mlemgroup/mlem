@@ -30,6 +30,14 @@ extension ColorPalette {
         selectedInteractionBarItem: Color(UIColor.systemBackground),
         administration: .primary,
         moderation: .primary,
-        secondaryAccent: .primary
+        secondaryAccent: .primary,
+        commentIndentColors: [
+            Color(uiColor: .systemGray),
+            Color(uiColor: .systemGray2),
+            Color(uiColor: .systemGray3),
+            Color(uiColor: .systemGray4),
+            Color(uiColor: .systemGray5),
+            Color(uiColor: .systemGray6)
+        ]
     )
 }

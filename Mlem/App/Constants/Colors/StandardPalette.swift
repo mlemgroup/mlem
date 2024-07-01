@@ -29,6 +29,7 @@ extension ColorPalette {
         selectedInteractionBarItem: .white,
         administration: .teal,
         moderation: .cyan,
-        secondaryAccent: .orange
+        secondaryAccent: .orange,
+        commentIndentColors: [Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple]
     )
 }

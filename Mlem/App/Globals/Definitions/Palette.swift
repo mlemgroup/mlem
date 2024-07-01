@@ -37,6 +37,8 @@ protocol PaletteProviding {
     
     // accents
     var secondaryAccent: Color { get }
+    
+    var commentIndentColors: [Color] { get }
 }
 
 enum PaletteOption: String, CaseIterable {
@@ -80,6 +82,8 @@ struct ColorPalette: PaletteProviding {
     
     // literals
     var secondaryAccent: Color
+    
+    var commentIndentColors: [Color]
 }
 
 @Observable
@@ -125,4 +129,6 @@ class Palette: PaletteProviding {
     var moderation: Color { palette.moderation }
     
     var secondaryAccent: Color { palette.secondaryAccent }
+    
+    var commentIndentColors: [Color] { palette.commentIndentColors }
 }
