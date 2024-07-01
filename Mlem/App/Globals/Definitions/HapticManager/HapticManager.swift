@@ -5,6 +5,7 @@
 //  Created by Eric Andrews on 2023-07-17.
 //
 
+import AVFAudio
 import CoreHaptics
 import Foundation
 import SwiftUI
@@ -39,11 +40,20 @@ class HapticManager {
         }
     }
 
+    /// Starts the haptic engine, if present; call at app initialization to avoid lag on first haptic
+    func preheat() {
+        do {
+            try hapticEngine?.start()
+        } catch {
+            handleError(error)
+        }
+    }
+    
     /// If this device supports haptics, creates and returns a CHHaptic engine; otherwise returns nil
-    @discardableResult func initEngine() -> CHHapticEngine? {
+    func initEngine() -> CHHapticEngine? {
         if CHHapticEngine.capabilitiesForHardware().supportsHaptics {
             do {
-                let ret = try CHHapticEngine()
+                let ret = try CHHapticEngine(audioSession: AVAudioSession.sharedInstance())
                 try ret.start()
                 return ret
             } catch {
