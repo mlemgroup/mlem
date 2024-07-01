@@ -19,15 +19,13 @@ struct SubscriptionListView: View {
     @State var noDetail: Bool = false
     
     var body: some View {
-        Group {
-            if UIDevice.isPad {
-                content
-                    .listStyle(.sidebar)
-            } else {
-                content
-                    .listStyle(.plain)
-            }
-        }
+        MultiplatformView(phone: {
+            content
+                .listStyle(.sidebar)
+        }, pad: {
+            content
+                .listStyle(.plain)
+        })
         .navigationTitle("Feeds")
         .navigationBarTitleDisplayMode(.inline)
     }
