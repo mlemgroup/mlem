@@ -10,6 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct ExpandedPostView: View {
+    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     @Environment(Palette.self) var palette
     
@@ -18,32 +19,37 @@ struct ExpandedPostView: View {
     @State var loadingState: LoadingState = .idle
     
     var body: some View {
-        ContentLoader(model: post) { post1, _ in
-            content(for: post1)
-                .task {
-                    guard loadingState == .idle else { return }
-                    loadingState = .loading
-                    do {
-                        let comments = try await post1.getComments(sort: .top, page: 1, maxDepth: 8, limit: 50)
-                        
-                        var output: [CommentWrapper] = []
-                        var keyedById: [Int: CommentWrapper] = [:]
-                        
-                        for comment in comments {
-                            let wrapper: CommentWrapper = .init(comment)
-                            keyedById[comment.id] = wrapper
-                            if let parentId = comment.parentCommentIds.last {
-                                keyedById[parentId]?.addChild(wrapper)
-                            } else {
-                                output.append(wrapper)
+        ContentLoader(model: post) { proxy in
+            if let post = proxy.entity {
+                content(for: post)
+                    .task {
+                        guard loadingState == .idle else { return }
+                        loadingState = .loading
+                        do {
+                            let comments = try await post1.getComments(sort: .top, page: 1, maxDepth: 8, limit: 50)
+                            
+                            var output: [CommentWrapper] = []
+                            var keyedById: [Int: CommentWrapper] = [:]
+                            
+                            for comment in comments {
+                                let wrapper: CommentWrapper = .init(comment)
+                                keyedById[comment.id] = wrapper
+                                if let parentId = comment.parentCommentIds.last {
+                                    keyedById[parentId]?.addChild(wrapper)
+                                } else {
+                                    output.append(wrapper)
+                                }
                             }
+                            self.comments = output
+                            loadingState = .done
+                        } catch {
+                            handleError(error)
                         }
-                        self.comments = output
-                        loadingState = .done
-                    } catch {
-                        handleError(error)
                     }
-                }
+            } else {
+                ProgressView()
+                    .tint(palette.secondary)
+            }
         }
     }
     
