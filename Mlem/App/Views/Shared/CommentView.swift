@@ -12,7 +12,6 @@ import SwiftUI
 struct CommentView: View {
     @Environment(Palette.self) private var palette
     
-    private let threadingColors = [Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple]
     private let indent: CGFloat = 10
     
     let comment: any Comment1Providing
@@ -50,7 +49,10 @@ struct CommentView: View {
             .padding(AppConstants.standardSpacing)
             .clipped()
             .background(palette.background)
-            .border(width: comment.depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[comment.depth % threadingColors.count])
+            .border(
+                width: comment.depth == 0 ? 0 : 2, edges: [.leading],
+                color: palette.commentIndentColors[comment.depth % palette.commentIndentColors.count]
+            )
             .quickSwipes(comment.swipeActions(behavior: .standard))
             .contentShape(.rect)
             .onTapGesture {

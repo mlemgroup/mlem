@@ -20,7 +20,7 @@ struct InfoStackView: View {
                 HStack(spacing: 2) {
                     Image(systemName: readout.icon)
                     Text(readout.label ?? " ")
-                        .monospacedDigit()
+                        .monospaced(readout.label?.allSatisfy(\.isNumber) ?? false)
                         .contentTransition(.numericText(value: Double(readout.label ?? "") ?? 0))
                 }
                 .foregroundStyle((showColor ? readout.color : nil) ?? palette.secondary)
