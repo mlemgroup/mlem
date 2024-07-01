@@ -12,11 +12,22 @@ struct PersonListRowBody<Content: View>: View {
     enum Complication { case instance, date }
     
     let person: any Person
-    let communityContext: (any Community)?
     let complications: [Complication]
     var showBlockStatus: Bool = true
     
     @ViewBuilder let content: () -> Content
+
+    init(
+        _ person: any Person,
+        complications: [Complication] = [.instance],
+        showBlockStatus: Bool = true,
+        @ViewBuilder content: @escaping () -> Content = { EmptyView() }
+    ) {
+        self.person = person
+        self.showBlockStatus = showBlockStatus
+        self.content = content
+        self.complications = complications
+    }
     
     var title: String {
         if person.blocked, showBlockStatus {
@@ -35,20 +46,12 @@ struct PersonListRowBody<Content: View>: View {
                     .frame(width: 30, height: 30)
                     .padding(9)
             } else {
-                AvatarView(person)
+                AvatarView(url: person.avatar?.withIconSize(128), type: .community)
                     .frame(height: 46)
             }
-            let flairs = person.getFlairs(communityContext: communityContext)
             VStack(alignment: .leading, spacing: 4) {
-                HStack(spacing: 4) {
-                    ForEach(flairs, id: \.self) { flair in
-                        Image(systemName: flair.icon)
-                            .imageScale(.small)
-                            .foregroundStyle(flair.color)
-                    }
-                    Text(title)
-                        .lineLimit(1)
-                }
+                Text(title)
+                    .lineLimit(1)
                 caption
                     .font(.footnote)
                     .foregroundStyle(.secondary)
@@ -57,8 +60,8 @@ struct PersonListRowBody<Content: View>: View {
             Spacer()
             content()
         }
-        padding(.horizontal)
-            .contentShape(Rectangle())
+        .padding(.horizontal)
+        .contentShape(Rectangle())
     }
     
     var dateFormatter: DateFormatter {

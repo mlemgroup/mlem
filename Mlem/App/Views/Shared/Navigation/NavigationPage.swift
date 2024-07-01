@@ -19,6 +19,7 @@ enum NavigationPage: Hashable {
     case externalApiInfo(api: ApiClient, actorId: URL)
     case imageViewer(_ url: URL)
     case communityPicker(callback: HashWrapper<(Community2) -> Void>)
+    case personPicker(callback: HashWrapper<(Person2) -> Void>)
     case communitySubscriptionManager
     
     static func expandedPost(_ post: any PostStubProviding) -> NavigationPage {
@@ -35,6 +36,10 @@ enum NavigationPage: Hashable {
     
     static func communityPicker(callback: @escaping (Community2) -> Void) -> NavigationPage {
         communityPicker(callback: .init(wrappedValue: callback))
+    }
+    
+    static func personPicker(callback: @escaping (Person2) -> Void) -> NavigationPage {
+        personPicker(callback: .init(wrappedValue: callback))
     }
 }
 
@@ -71,6 +76,15 @@ extension NavigationPage {
                 CommunityListRowBody(community)
                     .onTapGesture {
                         callback.wrappedValue(community)
+                        dismiss()
+                    }
+                    .padding(.vertical, 6)
+            }
+        case let .personPicker(callback: callback):
+            SearchSheetView { (person: Person2, dismiss: DismissAction) in
+                PersonListRowBody(person)
+                    .onTapGesture {
+                        callback.wrappedValue(person)
                         dismiss()
                     }
                     .padding(.vertical, 6)

@@ -49,7 +49,7 @@ struct CommunityListRowBody<Content: View>: View {
                     .frame(width: 30, height: 30)
                     .padding(9)
             } else {
-                AvatarView(community)
+                AvatarView(url: community.avatar?.withIconSize(128), type: .community)
                     .frame(height: 46)
             }
             

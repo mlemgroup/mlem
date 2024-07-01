@@ -84,18 +84,19 @@ class PersistenceRepository {
     func saveGuestAccounts(_ value: [GuestAccount]) async throws {
         try await save(value, to: Path.guestAccounts)
     }
-    
-    func loadRecentSearches(for accountId: String) -> [ContentModelIdentifier] {
-        let searches = load([String: [ContentModelIdentifier]].self, from: Path.recentSearches) ?? [:]
-        return searches[accountId] ?? []
-    }
-    
-    func saveRecentSearches(for accountId: String, with searches: [ContentModelIdentifier]) async throws {
-        var extant = load([String: [ContentModelIdentifier]].self, from: Path.recentSearches) ?? [:]
-        extant[accountId] = searches
-        try await save(extant, to: Path.recentSearches)
-    }
-    
+
+//
+//    func loadRecentSearches(for accountId: String) -> [ContentModelIdentifier] {
+//        let searches = load([String: [ContentModelIdentifier]].self, from: Path.recentSearches) ?? [:]
+//        return searches[accountId] ?? []
+//    }
+//
+//    func saveRecentSearches(for accountId: String, with searches: [ContentModelIdentifier]) async throws {
+//        var extant = load([String: [ContentModelIdentifier]].self, from: Path.recentSearches) ?? [:]
+//        extant[accountId] = searches
+//        try await save(extant, to: Path.recentSearches)
+//    }
+//
 //    func loadFavoriteCommunities() -> [FavoriteCommunity] {
 //        load([FavoriteCommunity].self, from: Path.favoriteCommunities) ?? []
 //    }
