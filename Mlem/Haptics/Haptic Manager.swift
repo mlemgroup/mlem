@@ -8,6 +8,7 @@
 import CoreHaptics
 import Foundation
 import SwiftUI
+import AVFAudio
 
 class HapticManager {
     // MARK: Members and init
@@ -43,7 +44,7 @@ class HapticManager {
     @discardableResult func initEngine() -> CHHapticEngine? {
         if CHHapticEngine.capabilitiesForHardware().supportsHaptics {
             do {
-                let ret = try CHHapticEngine()
+                let ret = try CHHapticEngine(audioSession: AVAudioSession.sharedInstance())
                 try ret.start()
                 return ret
             } catch {
