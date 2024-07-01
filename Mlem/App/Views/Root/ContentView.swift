@@ -22,13 +22,14 @@ struct ContentView: View {
     @State var tabReselectTracker: TabReselectTracker = .main
     
     var navigationModel: NavigationModel { .main }
+  
+    init() {
+        HapticManager.main.preheat()
+    }
     
     var body: some View {
         if appState.appRefreshToggle {
             content
-                .onAppear {
-                    HapticManager.main.initEngine()
-                }
                 .onReceive(timer) { _ in
                     appState.cleanCaches()
                 }
