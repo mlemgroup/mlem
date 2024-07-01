@@ -21,22 +21,35 @@ struct SubscriptionListView: View {
     var body: some View {
         MultiplatformView(phone: {
             content
-                .listStyle(.sidebar)
+                .listStyle(.plain)
         }, pad: {
             content
-                .listStyle(.plain)
+                .listStyle(.sidebar)
         })
         .navigationTitle("Feeds")
         .navigationBarTitleDisplayMode(.inline)
     }
     
     var selection: Binding<NavigationPage?> {
-        .init(get: { noDetail ? nil : navigation.root }, set: { newValue in
-            if let newValue {
-                navigation.root = newValue
-                noDetail = false
+        .init(get: {
+            if UIDevice.isPad {
+                noDetail ? nil : navigation.root
             } else {
-                noDetail = true
+                navigation.path.first
+            }
+        }, set: { newValue in
+            if UIDevice.isPad {
+                if let newValue {
+                    navigation.root = newValue
+                    noDetail = false
+                } else {
+                    noDetail = true
+                }
+            } else {
+                navigation.popToRoot()
+                if let newValue {
+                    navigation.push(newValue)
+                }
             }
         })
     }

@@ -22,6 +22,7 @@ enum NavigationPage: Hashable {
     case person(_ person: AnyPerson)
     case externalApiInfo(api: ApiClient, actorId: URL)
     case imageViewer(_ url: URL)
+    case subscriptionList
     
     static func expandedPost(_ post: any PostStubProviding) -> NavigationPage {
         expandedPost(.init(post))
@@ -40,6 +41,8 @@ extension NavigationPage {
     // swiftlint:disable:next cyclomatic_complexity
     @ViewBuilder func view() -> some View {
         switch self {
+        case .subscriptionList:
+            SubscriptionListView()
         case let .settings(page):
             page.view()
         case let .login(page):

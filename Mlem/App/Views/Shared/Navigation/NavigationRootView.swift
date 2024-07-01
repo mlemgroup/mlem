@@ -7,26 +7,36 @@
 
 import SwiftUI
 
-struct NavigationSplitRootView<Content: View>: View {
+struct NavigationSplitRootView: View {
     @State var layer: NavigationLayer
+    let sidebar: NavigationPage
     
     @State var columnVisibility: NavigationSplitViewVisibility = .all
     
-    @ViewBuilder var sidebar: () -> Content
+    init(sidebar: NavigationPage, root: NavigationPage) {
+        self._layer = .init(wrappedValue: .init(
+            root: UIDevice.isPad ? root : sidebar,
+            path: UIDevice.isPad ? [] : [root],
+            model: .main
+        ))
+        self.sidebar = sidebar
+    }
     
     var body: some View {
-        NavigationSplitView(
-            columnVisibility: $columnVisibility,
-            sidebar: {
-                sidebar()
-//                    .navigationDestination(for: NavigationPage.self) { root in
-//                        layer.popToRoot()
-//                        layer.root = root
-//                        return NavigationLayerView(layer: layer, hasSheetModifiers: false)
-//                    }
-            },
-            detail: {
+        MultiplatformView(
+            phone: {
                 NavigationLayerView(layer: layer, hasSheetModifiers: false)
+            },
+            pad: {
+                NavigationSplitView(
+                    columnVisibility: $columnVisibility,
+                    sidebar: {
+                        sidebar.view()
+                    },
+                    detail: {
+                        NavigationLayerView(layer: layer, hasSheetModifiers: false)
+                    }
+                )
             }
         )
         .environment(layer)

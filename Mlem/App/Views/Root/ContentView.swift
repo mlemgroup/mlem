@@ -58,9 +58,7 @@ struct ContentView: View {
     var content: some View {
         CustomTabView(selectedIndex: $selectedTabIndex, tabs: [
             CustomTabItem(title: "Feeds", image: Icons.feeds, selectedImage: Icons.feedsFill) {
-                NavigationSplitRootView(layer: .init(root: .feeds, model: navigationModel)) {
-                    SubscriptionListView()
-                }
+                NavigationSplitRootView(sidebar: .subscriptionList, root: .feeds)
             },
             CustomTabItem(title: "Inbox", image: Icons.inbox, selectedImage: Icons.inboxFill) {
                 NavigationLayerView(layer: .init(root: .inbox, model: navigationModel), hasSheetModifiers: false)
