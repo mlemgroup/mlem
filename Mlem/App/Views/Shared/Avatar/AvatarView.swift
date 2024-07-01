@@ -39,7 +39,8 @@ struct AvatarView: View {
             } else {
                 Image(uiImage: uiImage)
                     .resizable()
-                    .aspectRatio(1, contentMode: .fill)
+                    .aspectRatio(contentMode: .fill)
+                    .aspectRatio(1, contentMode: .fit)
                     .background {
                         if loading {
                             if showLoadingPlaceholder {
@@ -53,7 +54,6 @@ struct AvatarView: View {
                     .task(loadImage)
             }
         }
-        .aspectRatio(1, contentMode: .fit)
     }
     
     @Sendable

@@ -22,6 +22,14 @@ enum FullyQualifiedLabelStyle {
         }
     }
     
+    var avatarResolution: Int {
+        switch self {
+        case .small: 32
+        case .medium: 64
+        case .large: 96
+        }
+    }
+    
     var instanceLocation: InstanceLocation {
         switch self {
         case .small: .trailing
@@ -44,7 +52,7 @@ struct FullyQualifiedLabelView: View {
     var body: some View {
         HStack {
             if showAvatar {
-                AvatarView(url: entity?.avatar, type: .person)
+                AvatarView(url: entity?.avatar?.withIconSize(labelStyle.avatarResolution), type: .person)
                     .frame(width: labelStyle.avatarSize, height: labelStyle.avatarSize)
             }
             
