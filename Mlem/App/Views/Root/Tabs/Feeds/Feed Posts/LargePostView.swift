@@ -59,7 +59,7 @@ struct LargePostView: View {
                 post: post,
                 configuration: .init(
                     leading: [.counter(.score)],
-                    trailing: [.action(.save), .action(.share), .action(.selectText)],
+                    trailing: [.action(.save), .action(.reply)],
                     readouts: [.created, .score, .comment]
                 )
             )
