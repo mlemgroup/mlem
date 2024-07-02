@@ -11,34 +11,34 @@ import SwiftUI
 extension Interactable1Providing {
     private var self2: (any Interactable2Providing)? { self as? any Interactable2Providing }
 
-    func toggleUpvote(feedback: Set<FeedbackType>) {
+    func toggleUpvoted(feedback: Set<FeedbackType>) {
         if let self2 {
             if feedback.contains(.haptic) {
                 HapticManager.main.play(haptic: .lightSuccess, priority: .low)
             }
-            self2.toggleUpvote()
+            self2.toggleUpvoted()
         } else {
             print("DEBUG no self2 found in toggleUpvote!")
         }
     }
     
-    func toggleDownvote(feedback: Set<FeedbackType>) {
+    func toggleDownvoted(feedback: Set<FeedbackType>) {
         if let self2 {
             if feedback.contains(.haptic) {
                 HapticManager.main.play(haptic: .lightSuccess, priority: .low)
             }
-            self2.toggleDownvote()
+            self2.toggleDownvoted()
         } else {
             print("DEBUG no self2 found in toggleDownvote!")
         }
     }
     
-    func toggleSave(feedback: Set<FeedbackType>) {
+    func toggleSaved(feedback: Set<FeedbackType>) {
         if let self2 {
             if feedback.contains(.haptic) {
                 HapticManager.main.play(haptic: .success, priority: .low)
             }
-            self2.toggleSave()
+            self2.toggleSaved()
         } else {
             print("DEBUG no self2 found in toggleSave!")
         }
@@ -83,7 +83,7 @@ extension Interactable1Providing {
             menuIcon: isOn ? Icons.upvoteSquareFill : Icons.upvoteSquare,
             swipeIcon1: isOn ? Icons.resetVoteSquare : Icons.upvoteSquare,
             swipeIcon2: isOn ? Icons.resetVoteSquareFill : Icons.upvoteSquareFill,
-            callback: api.willSendToken ? { self.self2?.toggleUpvote(feedback: feedback) } : nil
+            callback: api.willSendToken ? { self.self2?.toggleUpvoted(feedback: feedback) } : nil
         )
     }
     
@@ -98,7 +98,7 @@ extension Interactable1Providing {
             menuIcon: isOn ? Icons.downvoteSquareFill : Icons.downvoteSquare,
             swipeIcon1: isOn ? Icons.resetVoteSquare : Icons.downvoteSquare,
             swipeIcon2: isOn ? Icons.resetVoteSquareFill : Icons.downvoteSquareFill,
-            callback: api.willSendToken ? { self.self2?.toggleDownvote(feedback: feedback) } : nil
+            callback: api.willSendToken ? { self.self2?.toggleDownvoted(feedback: feedback) } : nil
         )
     }
 
@@ -113,7 +113,34 @@ extension Interactable1Providing {
             menuIcon: isOn ? Icons.saveFill : Icons.save,
             swipeIcon1: isOn ? Icons.unsave : Icons.save,
             swipeIcon2: isOn ? Icons.unsaveFill : Icons.saveFill,
-            callback: api.willSendToken ? { self.self2?.toggleSave(feedback: feedback) } : nil
+            callback: api.willSendToken ? { self.self2?.toggleSaved(feedback: feedback) } : nil
+        )
+    }
+    
+    func replyAction() -> BasicAction {
+        .init(
+            id: "reply\(actorId.absoluteString)",
+            isOn: false,
+            label: "Reply",
+            color: Palette.main.accent,
+            icon: Icons.reply,
+            menuIcon: Icons.reply,
+            swipeIcon1: Icons.reply,
+            swipeIcon2: Icons.replyFill,
+            callback: nil
+        )
+    }
+    
+    func blockCreatorAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
+        .init(
+            id: "blockCreator\(actorId.absoluteString)",
+            isOn: false,
+            label: "Block User",
+            color: Palette.main.negative,
+            isDestructive: true,
+            confirmationPrompt: showConfirmation ? "Really block this user?" : nil,
+            icon: Icons.hide,
+            callback: api.willSendToken ? { self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
         )
     }
     

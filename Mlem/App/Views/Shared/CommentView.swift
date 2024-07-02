@@ -29,7 +29,7 @@ struct CommentView: View {
                             .frame(height: 10)
                             .imageScale(.small)
                     } else {
-                        EllipsisMenu(actions: comment.menuActions, size: 10)
+                        EllipsisMenu(actions: comment.menuActions(), size: 10)
                     }
                 }
                 if !collapsed {
@@ -38,7 +38,7 @@ struct CommentView: View {
                         comment: comment,
                         configuration: .init(
                             leading: [.counter(.score)],
-                            trailing: [.action(.save)],
+                            trailing: [.action(.save), .action(.reply)],
                             readouts: [.created, .score, .comment]
                         )
                     )
@@ -62,6 +62,7 @@ struct CommentView: View {
                     }
                 }
             }
+            .contextMenu(actionGroup: comment.menuActions(feedback: [.haptic]))
             Divider()
         }
         .padding(.leading, CGFloat(comment.depth) * indent)

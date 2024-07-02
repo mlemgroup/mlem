@@ -136,7 +136,7 @@ struct MinimalPostFeedView: View {
                     if !tilePosts { Divider() }
                     
                     ForEach(postFeedLoader.items, id: \.hashValue) { post in
-                        if !post.read || showRead {
+                        if !post.read || showRead, !post.creator.blocked, !post.community.blocked {
                             VStack(spacing: 0) { // this improves performance O_o
                                 NavigationLink(value: NavigationPage.expandedPost(post)) {
                                     FeedPostView(post: post)

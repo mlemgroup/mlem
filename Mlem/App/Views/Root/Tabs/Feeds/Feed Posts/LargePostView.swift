@@ -41,7 +41,7 @@ struct LargePostView: View {
                 }
                 
                 if !isExpanded {
-                    EllipsisMenu(actions: post.menuActions(feedback: [.haptic]), size: 24)
+                    EllipsisMenu(actions: post.menuActions(), size: 24)
                 }
             }
             
@@ -59,7 +59,7 @@ struct LargePostView: View {
                 post: post,
                 configuration: .init(
                     leading: [.counter(.score)],
-                    trailing: [.action(.save)],
+                    trailing: [.action(.save), .action(.share), .action(.selectText)],
                     readouts: [.created, .score, .comment]
                 )
             )

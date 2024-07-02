@@ -10,25 +10,36 @@ import MlemMiddleware
 import SwiftUI
 
 extension Post1Providing {
+    private var self2: (any Post2Providing)? { self as? any Post2Providing }
+    
     func swipeActions(behavior: SwipeBehavior) -> SwipeConfiguration {
-        let leadingActions: [BasicAction] = api.willSendToken ? [
+        let leadingActions: [any Action] = api.willSendToken ? [
             upvoteAction(feedback: [.haptic]),
             downvoteAction(feedback: [.haptic])
         ] : .init()
-        let trailingActions: [BasicAction] = api.willSendToken ? [
-            saveAction(feedback: [.haptic])
+        let trailingActions: [any Action] = api.willSendToken ? [
+            saveAction(feedback: [.haptic]),
+            replyAction()
         ] : .init()
         
         return .init(leadingActions: leadingActions, trailingActions: trailingActions, behavior: behavior)
     }
     
-    func menuActions(feedback: Set<FeedbackType> = [.haptic]) -> ActionGroup {
+    func menuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> ActionGroup {
         ActionGroup(
             children: [
                 ActionGroup(
-                    children: [upvoteAction(feedback: feedback), downvoteAction(feedback: feedback)]
-                ),
-                saveAction(feedback: feedback)
+                    children: [
+                        upvoteAction(feedback: feedback),
+                        downvoteAction(feedback: feedback),
+                        saveAction(feedback: feedback),
+                        replyAction(),
+                        selectTextAction(),
+                        shareAction(),
+                        blockAction(feedback: feedback)
+                    ],
+                    displayMode: .compactSection
+                )
             ])
     }
     
@@ -40,6 +51,12 @@ extension Post1Providing {
             downvoteAction(feedback: feedback)
         case .save:
             saveAction(feedback: feedback)
+        case .reply:
+            replyAction()
+        case .share:
+            shareAction()
+        case .selectText:
+            selectTextAction()
         }
     }
     
@@ -105,5 +122,36 @@ extension Post1Providing {
         case .titleOnly:
             Icons.titleOnlyPost
         }
+    }
+    
+    // MARK: Actions
+    
+    func blockAction(feedback: Set<FeedbackType>) -> ActionGroup {
+        .init(
+            label: "Block...",
+            prompt: "Block User or Community?",
+            color: Palette.main.negative,
+            isDestructive: true,
+            icon: Icons.hide,
+            disabled: !api.willSendToken,
+            children: [
+                blockCreatorAction(feedback: feedback, showConfirmation: false),
+                blockCommunityAction(feedback: feedback, showConfirmation: false)
+            ],
+            displayMode: .popup
+        )
+    }
+    
+    func blockCommunityAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
+        .init(
+            id: "blockCommunity\(actorId.absoluteString)",
+            isOn: false,
+            label: "Block Community",
+            color: Palette.main.negative,
+            isDestructive: true,
+            confirmationPrompt: showConfirmation ? "Really block this community?" : nil,
+            icon: Icons.hide,
+            callback: api.willSendToken ? { self.self2?.community.toggleBlocked(feedback: feedback) } : nil
+        )
     }
 }

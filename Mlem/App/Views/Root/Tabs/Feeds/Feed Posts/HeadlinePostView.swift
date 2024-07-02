@@ -39,7 +39,7 @@ struct HeadlinePostView: View {
                         .foregroundStyle(palette.warning)
                 }
                 
-                EllipsisMenu(actions: post.menuActions(feedback: [.haptic]), size: 24)
+                EllipsisMenu(actions: post.menuActions(), size: 24)
             }
             
             HStack(alignment: .top, spacing: AppConstants.standardSpacing) {
@@ -72,7 +72,7 @@ struct HeadlinePostView: View {
                 post: post,
                 configuration: .init(
                     leading: [.counter(.score)],
-                    trailing: [.action(.save)],
+                    trailing: [.action(.save), .action(.reply)],
                     readouts: [.created, .score, .comment]
                 )
             )

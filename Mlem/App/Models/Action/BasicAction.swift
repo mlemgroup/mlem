@@ -14,6 +14,7 @@ struct BasicAction: Action {
     
     let label: String
     let isDestructive: Bool
+    let confirmationPrompt: String?
     let color: Color
     
     let barIcon: String
@@ -34,6 +35,7 @@ struct BasicAction: Action {
         label: String,
         color: Color,
         isDestructive: Bool = false,
+        confirmationPrompt: String? = nil,
         icon: String,
         barIcon: String? = nil,
         menuIcon: String? = nil,
@@ -46,11 +48,24 @@ struct BasicAction: Action {
         self.isOn = isOn
         self.label = label
         self.isDestructive = isDestructive
+        self.confirmationPrompt = confirmationPrompt
         self.color = color
         self.barIcon = barIcon ?? icon
         self.menuIcon = menuIcon ?? icon
         self.swipeIcon1 = swipeIcon1 ?? icon
         self.swipeIcon2 = swipeIcon2 ?? icon
         self.callback = enabled ? callback : nil
+    }
+    
+    func callbackWithConfirmation(navigation: NavigationLayer) {
+        if let callback {
+            if let confirmationPrompt {
+                navigation.showPopup(ActionGroup(label: "Confirm", prompt: confirmationPrompt, children: [
+                    BasicAction(id: "", isOn: false, label: "Yes", color: .red, isDestructive: true, icon: "", callback: callback)
+                ]))
+            } else {
+                callback()
+            }
+        }
     }
 }

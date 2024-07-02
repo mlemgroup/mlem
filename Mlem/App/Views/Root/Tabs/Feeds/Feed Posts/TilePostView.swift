@@ -29,7 +29,8 @@ struct TilePostView: View {
         content
             .frame(width: dimension, height: frameHeight)
             .background(palette.secondaryGroupedBackground)
-            .clipShape(RoundedRectangle(cornerRadius: AppConstants.tilePostCornerRadius))
+            .clipShape(.rect(cornerRadius: AppConstants.tilePostCornerRadius))
+            .contentShape(.contextMenuPreview, .rect(cornerRadius: AppConstants.tilePostCornerRadius))
             .shadow(color: palette.primary.opacity(0.1), radius: 3)
             .environment(\.postContext, post)
     }
@@ -133,7 +134,7 @@ struct TilePostView: View {
     // TODO: this should be fleshed out to use live values--requires some middleware work to make those conveniently available. This is just a quick-and-dirty way to mock up how it would look.
     var score: some View {
         Menu {
-            ForEach(post.menuActions(feedback: [.haptic]).children, id: \.id) { action in
+            ForEach(post.menuActions().children, id: \.id) { action in
                 MenuButton(action: action)
             }
         } label: {
