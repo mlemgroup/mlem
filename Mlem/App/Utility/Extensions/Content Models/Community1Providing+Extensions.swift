@@ -66,7 +66,7 @@ extension Community1Providing {
     
     func toggleBlocked(feedback: Set<FeedbackType>) {
         if feedback.contains(.toast) {
-            if !self.blocked {
+            if !blocked {
                 ToastModel.main.add(
                     .undoable(
                         title: "Blocked",
@@ -75,11 +75,11 @@ extension Community1Providing {
                             self.updateBlocked(false)
                         },
                         color: Palette.main.negative
-                        )
                     )
+                )
             }
         }
-        self.toggleBlocked()
+        toggleBlocked()
     }
     
     func menuActions(feedback: Set<FeedbackType> = [.haptic]) -> ActionGroup {
