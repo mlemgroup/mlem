@@ -15,7 +15,8 @@ extension Comment1Providing {
             downvoteAction(feedback: [.haptic])
         ] : .init()
         let trailingActions: [BasicAction] = api.willSendToken ? [
-            saveAction(feedback: [.haptic])
+            saveAction(feedback: [.haptic]),
+            replyAction()
         ] : .init()
         
         return .init(leadingActions: leadingActions, trailingActions: trailingActions, behavior: behavior)
