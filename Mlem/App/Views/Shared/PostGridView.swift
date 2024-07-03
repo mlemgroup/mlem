@@ -15,6 +15,8 @@ struct PostGridView: View {
     @AppStorage("beta.tilePosts") var tilePosts: Bool = false
     @AppStorage("feed.showRead") var showRead: Bool = true
     
+    @Environment(AppState.self) var appState
+    
     @State var columns: [GridItem] = [GridItem(.flexible())]
     
     let postFeedLoader: StandardPostFeedLoader
@@ -83,9 +85,9 @@ struct PostGridView: View {
         switch postFeedLoader.feedType {
         case let .aggregateFeed(_, type):
             switch type {
-            case .all: FeedHeaderView(feedDescription: .all)
-            case .local: FeedHeaderView(feedDescription: .local)
-            case .subscribed: FeedHeaderView(feedDescription: .subscribed)
+            case .all: FeedHeaderView(feedDescription: .all, actions: headerMenuActions)
+            case .local: FeedHeaderView(feedDescription: .local, actions: headerMenuActions)
+            case .subscribed: FeedHeaderView(feedDescription: .subscribed, actions: headerMenuActions)
             case .moderatorView: FeedHeaderView(feedDescription: .moderated)
             }
         case .community: FeedHeaderView(feedDescription: .subscribed) // TODO:

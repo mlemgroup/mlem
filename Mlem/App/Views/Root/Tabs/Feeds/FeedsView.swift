@@ -10,6 +10,25 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
+enum FeedSelection {
+    case subscribed, local, all
+}
+
+extension StandardPostFeedLoader.FeedType {
+    var feedSelection: FeedSelection {
+        switch self {
+        case let .aggregateFeed(_, type):
+            switch type {
+            case .all: .all
+            case .local: .local
+            case .subscribed: .subscribed
+            case .moderatorView: .subscribed // TODO:
+            }
+        case .community: .subscribed // TODO:
+        }
+    }
+}
+
 struct FeedsView: View {
     @AppStorage("post.size") var postSize: PostSize = .large
     @AppStorage("feed.showRead") var showRead: Bool = true
@@ -26,7 +45,7 @@ struct FeedsView: View {
         @AppStorage("behavior.internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("behavior.upvoteOnSave") var upvoteOnSave = false
         @AppStorage("feed.showRead") var showReadPosts = true
-        @AppStorage("post.defaultSort") var defaultSort: ApiSortType = .topYear // .hot
+        @AppStorage("post.defaultSort") var defaultSort: ApiSortType = .hot
         
         @Dependency(\.persistenceRepository) var persistenceRepository
         
