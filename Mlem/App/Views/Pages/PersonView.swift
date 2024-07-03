@@ -140,7 +140,10 @@ struct PersonView: View {
                 }
             )
             ForEach(posts, id: \.id) { post in
-                FeedPostView(post: post)
+                NavigationLink(value: NavigationPage.expandedPost(post)) {
+                    FeedPostView(post: post)
+                }
+                .buttonStyle(EmptyButtonStyle())
                 Divider()
             }
         }
