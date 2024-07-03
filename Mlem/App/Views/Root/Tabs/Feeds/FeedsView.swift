@@ -113,7 +113,38 @@ struct FeedsView: View {
     @ViewBuilder
     var content: some View {
         FancyScrollView(scrollToTopTrigger: $scrollToTopTrigger) {
-            PostGridView(postFeedLoader: postFeedLoader)
+            Section {
+                if !tilePosts { Divider() }
+                PostGridView(postFeedLoader: postFeedLoader)
+            } header: {
+                header
+            } footer: {
+                Group {
+                    switch postFeedLoader.loadingState {
+                    case .loading:
+                        Text("Loading...")
+                    case .done:
+                        Text("Done")
+                    case .idle:
+                        Text("Idle")
+                    }
+                }
+                .frame(maxWidth: .infinity)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var header: some View {
+        switch postFeedLoader.feedType {
+        case let .aggregateFeed(_, type):
+            switch type {
+            case .all: FeedHeaderView(feedDescription: .all, actions: headerMenuActions)
+            case .local: FeedHeaderView(feedDescription: .local, actions: headerMenuActions)
+            case .subscribed: FeedHeaderView(feedDescription: .subscribed, actions: headerMenuActions)
+            case .moderatorView: FeedHeaderView(feedDescription: .moderated)
+            }
+        case .community: FeedHeaderView(feedDescription: .subscribed) // TODO:
         }
     }
 }

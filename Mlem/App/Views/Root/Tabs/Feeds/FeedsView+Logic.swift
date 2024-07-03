@@ -9,7 +9,7 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-extension PostGridView {
+extension FeedsView {
     var headerMenuActions: [BasicAction] {
         [
             .init(
