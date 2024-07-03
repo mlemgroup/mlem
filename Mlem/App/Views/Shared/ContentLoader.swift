@@ -16,15 +16,20 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
     
     let proxy: ContentLoaderProxy<Model>
     let content: Content
-    var upgradeOperation: ((_ model: Model, _ api: ApiClient) async throws -> Void)?
+    var upgradeOperation: ((_ model: Model.Base) async throws -> Model.Base)?
+    var ifUpgradeNotNeeded: ((_ entity: Model.Upgraded) async -> Void)?
+    
+    @State var calledUpgradeNotNeeded: Bool = false
     
     init(
         model: Model,
         @ViewBuilder content: @escaping (_ proxy: ContentLoaderProxy<Model>) -> Content,
-        upgradeOperation: ((_ model: Model, _ api: ApiClient) async throws -> Void)? = nil
+        upgradeOperation: ((_ model: Model.Base) async throws -> Model.Base)? = nil,
+        ifUpgradeNotNeeded: ((_ entity: Model.Upgraded) async -> Void)? = nil
     ) {
         self.proxy = .init(model: model)
         self.upgradeOperation = upgradeOperation
+        self.ifUpgradeNotNeeded = ifUpgradeNotNeeded
         self.content = content(proxy)
     }
     
@@ -32,7 +37,10 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
         content
             .animation(.easeOut(duration: 0.2), value: proxy.model.wrappedValue is Model.MinimumRenderable)
             .task {
-                if !proxy.model.isUpgraded, proxy.upgradeState == .idle {
+                if !calledUpgradeNotNeeded, let entity = proxy.model.wrappedValue as? Model.Upgraded {
+                    calledUpgradeNotNeeded = true
+                    await ifUpgradeNotNeeded?(entity)
+                } else if !proxy.model.isUpgraded, proxy.upgradeState == .idle {
                     await proxy.upgradeModel(upgradeOperation: upgradeOperation)
                 }
             }
@@ -44,6 +52,13 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
                     Task { @MainActor in
                         await proxy.upgradeModel(api: appState.firstApi, upgradeOperation: upgradeOperation)
                     }
+                }
+            }
+            .refreshable {
+                do {
+                    try await proxy.model.refresh(upgradeOperation: upgradeOperation)
+                } catch {
+                    handleError(error)
                 }
             }
     }
@@ -72,7 +87,7 @@ class ContentLoaderProxy<Model: Upgradable> {
     
     func upgradeModel(
         api: ApiClient? = nil,
-        upgradeOperation: ((_ model: Model, _ api: ApiClient) async throws -> Void)?
+        upgradeOperation: ((_ model: Model.Base) async throws -> Model.Base)?
     ) async {
         // critical function, only one thread allowed!
         await loadingSemaphore.wait()
@@ -85,7 +100,7 @@ class ContentLoaderProxy<Model: Upgradable> {
                     return
                 }
                 if let upgradeOperation {
-                    try await upgradeOperation(model, api ?? modelApi)
+                    try await model.upgrade(api: api, upgradeOperation: upgradeOperation)
                 } else {
                     try await model.upgrade(api: api ?? modelApi, upgradeOperation: nil)
                 }

@@ -44,16 +44,16 @@ struct PersonView: View {
                 ProgressView()
                     .tint(palette.secondary)
             }
-        } upgradeOperation: { model, api in
-            try await model.upgrade(api: api) { entity in
-                if let entity = entity as? any Person1Providing {
-                    let response = try await entity.getPosts(page: 1, limit: 3)
-                    Task { @MainActor in
-                        posts = response.posts
-                    }
-                    return response.person
-                }
-                return try await entity.upgrade()
+        } upgradeOperation: { entity in
+            if let entity = entity as? any Person {
+                return try await loadPosts(entity)
+            }
+            return try await entity.upgrade()
+        } ifUpgradeNotNeeded: { person in
+            do {
+                try await loadPosts(person)
+            } catch {
+                handleError(error)
             }
         }
         .navigationTitle(isAtTop ? "" : (person.wrappedValue.displayName_ ?? person.wrappedValue.name))
@@ -139,7 +139,6 @@ struct PersonView: View {
                     }
                 }
             )
-            // I was going to render this, but there's some weird view update issues going on with ContentLoader that we'll need to work out first...
             ForEach(posts, id: \.id) { post in
                 FeedPostView(post: post)
                 Divider()
@@ -153,5 +152,14 @@ struct PersonView: View {
             output.append(.communities)
         }
         return output
+    }
+    
+    @discardableResult
+    func loadPosts(_ person: any Person) async throws -> Person3 {
+        let response = try await person.getPosts(page: 1, limit: 3)
+        Task { @MainActor in
+            posts = response.posts
+        }
+        return response.person
     }
 }

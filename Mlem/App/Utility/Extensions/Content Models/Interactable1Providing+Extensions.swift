@@ -16,7 +16,7 @@ extension Interactable1Providing {
             if feedback.contains(.haptic) {
                 HapticManager.main.play(haptic: .lightSuccess, priority: .low)
             }
-            self2.toggleUpvote()
+            self2.toggleUpvoted()
         } else {
             print("DEBUG no self2 found in toggleUpvote!")
         }
@@ -27,7 +27,7 @@ extension Interactable1Providing {
             if feedback.contains(.haptic) {
                 HapticManager.main.play(haptic: .lightSuccess, priority: .low)
             }
-            self2.toggleDownvote()
+            self2.toggleDownvoted()
         } else {
             print("DEBUG no self2 found in toggleDownvote!")
         }
@@ -38,7 +38,7 @@ extension Interactable1Providing {
             if feedback.contains(.haptic) {
                 HapticManager.main.play(haptic: .success, priority: .low)
             }
-            self2.toggleSave()
+            self2.toggleSaved()
         } else {
             print("DEBUG no self2 found in toggleSave!")
         }
