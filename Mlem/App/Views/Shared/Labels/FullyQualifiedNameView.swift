@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MlemMiddleware
 import SwiftUI
 
 enum InstanceLocation: String, CaseIterable {
@@ -77,5 +78,11 @@ struct FullyQualifiedNameView: View {
                     .padding(.vertical, capsuleHeight * 0.2)
             }
         }
+    }
+}
+
+extension FullyQualifiedNameView {
+    init(_ entity: any CommunityOrPersonStub, instanceLocation: InstanceLocation) {
+        self.init(name: entity.name, instance: entity.host ?? "unknown", instanceLocation: instanceLocation)
     }
 }

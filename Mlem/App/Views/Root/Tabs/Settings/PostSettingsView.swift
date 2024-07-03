@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 // note: this is a very lazy categorization of "properties that affect posts"
-struct PostSettings: View {
+struct PostSettingsView: View {
     @AppStorage("post.size") var postSize: PostSize = .large
     @AppStorage("beta.tilePosts") var tilePosts: Bool = false
     @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
