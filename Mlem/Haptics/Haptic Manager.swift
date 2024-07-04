@@ -5,10 +5,10 @@
 //  Created by Eric Andrews on 2023-07-17.
 //
 
+import AVFAudio
 import CoreHaptics
 import Foundation
 import SwiftUI
-import AVFAudio
 
 class HapticManager {
     // MARK: Members and init
@@ -44,7 +44,7 @@ class HapticManager {
     @discardableResult func initEngine() -> CHHapticEngine? {
         if CHHapticEngine.capabilitiesForHardware().supportsHaptics {
             do {
-                let ret = try CHHapticEngine(audioSession: AVAudioSession.sharedInstance())
+                let ret = try CHHapticEngine(audioSession: nil)
                 try ret.start()
                 return ret
             } catch {
