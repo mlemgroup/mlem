@@ -12,7 +12,7 @@ private struct ExternalApiWarningModifier: ViewModifier {
     @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     
-    let entity: any ContentStub
+    let entity: any ContentModel & ActorIdentifiable
     let isLoading: Bool
 
     func body(content: Content) -> some View {
@@ -58,7 +58,7 @@ private struct ExternalApiWarningModifier: ViewModifier {
 }
 
 extension View {
-    func externalApiWarning(entity: any ContentStub, isLoading: Bool) -> some View {
+    func externalApiWarning(entity: any ContentModel & ActorIdentifiable, isLoading: Bool) -> some View {
         modifier(ExternalApiWarningModifier(entity: entity, isLoading: isLoading))
     }
 }
