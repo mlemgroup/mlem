@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - APIRequest
 
-enum APIRequestError: Error {
+enum APIRequestError: Error 
     case authenticationRequired
     case undefinedSession
 }
