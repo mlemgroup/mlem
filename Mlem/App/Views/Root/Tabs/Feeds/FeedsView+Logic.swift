@@ -18,7 +18,7 @@ extension FeedsView {
                     id: "all",
                     isOn: type != .all,
                     label: "All",
-                    color: .blue,
+                    color: palette.federatedFeed,
                     icon: type == .all ? Icons.federatedFeedFill : Icons.federatedFeed
                 ) {
                     Task {
@@ -33,7 +33,7 @@ extension FeedsView {
                     id: "local",
                     isOn: type != .local,
                     label: "Local",
-                    color: .purple,
+                    color: palette.localFeed,
                     icon: type == .local ? Icons.localFeedFill : Icons.localFeed
                 ) {
                     Task {
@@ -48,7 +48,7 @@ extension FeedsView {
                     id: "subscribed",
                     isOn: type != .subscribed,
                     label: "Subscribed",
-                    color: .red,
+                    color: palette.subscribedFeed,
                     icon: type == .subscribed ? Icons.subscribedFeedFill : Icons.subscribedFeed
                 ) {
                     Task {

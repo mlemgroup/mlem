@@ -12,6 +12,7 @@ struct FeedHeaderView: View {
     @AppStorage("beta.tilePosts") var tilePosts: Bool = false
     
     @Environment(AppState.self) var appState
+    @Environment(Palette.self) var palette
     
     let feedDescription: FeedDescription
     let actions: [any Action]
@@ -61,12 +62,12 @@ struct FeedHeaderView: View {
                         
                         if !actions.isEmpty {
                             Image(systemName: Icons.dropdown)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(palette.secondary)
                                 .overlay(alignment: .topTrailing) {
                                     if showDropdownBadge {
                                         Circle()
                                             .frame(width: 6, height: 6)
-                                            .foregroundStyle(.red)
+                                            .foregroundStyle(palette.warning)
                                     }
                                 }
                         }
@@ -75,7 +76,7 @@ struct FeedHeaderView: View {
                         
                     Text(subtitle)
                         .font(.footnote)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(palette.secondary)
                 }
                 .frame(height: 44)
                 .frame(maxWidth: .infinity, alignment: .leading)
