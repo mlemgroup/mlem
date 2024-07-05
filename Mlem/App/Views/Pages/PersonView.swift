@@ -89,7 +89,6 @@ struct PersonView: View {
                 }
             }
             .animation(.easeOut(duration: 0.2), value: person is any Person3Providing)
-            .padding(.bottom, 1000)
         }
     }
     

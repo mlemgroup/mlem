@@ -15,15 +15,15 @@ extension FeedsView {
         case let .aggregateFeed(_, type):
             [
                 .init(
-                    id: "subscribed",
-                    isOn: type != .subscribed,
-                    label: "Subscribed",
-                    color: .red,
-                    icon: type == .subscribed ? Icons.subscribedFeedFill : Icons.subscribedFeed
+                    id: "all",
+                    isOn: type != .all,
+                    label: "All",
+                    color: .blue,
+                    icon: type == .all ? Icons.federatedFeedFill : Icons.federatedFeed
                 ) {
                     Task {
                         do {
-                            try await postFeedLoader.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
+                            try await postFeedLoader.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .all))
                         } catch {
                             handleError(error)
                         }
@@ -45,15 +45,15 @@ extension FeedsView {
                     }
                 },
                 .init(
-                    id: "all",
-                    isOn: type != .all,
-                    label: "All",
-                    color: .blue,
-                    icon: type == .all ? Icons.federatedFeedFill : Icons.federatedFeed
+                    id: "subscribed",
+                    isOn: type != .subscribed,
+                    label: "Subscribed",
+                    color: .red,
+                    icon: type == .subscribed ? Icons.subscribedFeedFill : Icons.subscribedFeed
                 ) {
                     Task {
                         do {
-                            try await postFeedLoader.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .all))
+                            try await postFeedLoader.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
                         } catch {
                             handleError(error)
                         }
