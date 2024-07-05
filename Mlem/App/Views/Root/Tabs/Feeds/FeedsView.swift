@@ -10,25 +10,6 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-enum FeedSelection {
-    case subscribed, local, all
-}
-
-extension StandardPostFeedLoader.FeedType {
-    var feedSelection: FeedSelection {
-        switch self {
-        case let .aggregateFeed(_, type):
-            switch type {
-            case .all: .all
-            case .local: .local
-            case .subscribed: .subscribed
-            case .moderatorView: .subscribed // TODO:
-            }
-        case .community: .subscribed // TODO:
-        }
-    }
-}
-
 struct FeedsView: View {
     @AppStorage("post.size") var postSize: PostSize = .large
     @AppStorage("feed.showRead") var showRead: Bool = true
@@ -58,8 +39,7 @@ struct FeedsView: View {
             feedType: .aggregateFeed(AppState.main.firstApi, type: .subscribed),
             smallAvatarSize: AppConstants.smallAvatarSize,
             largeAvatarSize: AppConstants.largeAvatarSize,
-            urlCache: AppConstants.urlCache,
-            loadImmediately: true
+            urlCache: AppConstants.urlCache
         ))
     }
     
@@ -80,6 +60,7 @@ struct FeedsView: View {
                     })
                 }
             }
+            .preheatFeedLoader(postFeedLoader)
             .onChange(of: showRead) {
                 scrollToTopTrigger.toggle()
                 Task {
@@ -94,11 +75,13 @@ struct FeedsView: View {
                     }
                 }
             }
-            .task(id: appState.firstApi) {
-                do {
-                    try await postFeedLoader.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
-                } catch {
-                    handleError(error)
+            .onChange(of: appState.firstApi, initial: false) { newValue, _ in
+                Task {
+                    do {
+                        try await postFeedLoader.changeFeedType(to: .aggregateFeed(newValue, type: .subscribed))
+                    } catch {
+                        handleError(error)
+                    }
                 }
             }
             .refreshable {
