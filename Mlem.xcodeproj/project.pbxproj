@@ -17,6 +17,7 @@
 		03134A522BEAD69F002662CC /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A512BEAD69F002662CC /* SettingsPage.swift */; };
 		03134A582BEC1C46002662CC /* AccountListSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A572BEC1C46002662CC /* AccountListSettingsView.swift */; };
 		03134A5A2BEC2253002662CC /* AvatarStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A592BEC2253002662CC /* AvatarStackView.swift */; };
+		0316CD642C382A6A009EA8EA /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0316CD632C382A6A009EA8EA /* MessageView.swift */; };
 		031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */; };
 		031E2D5B2BEFC9460003BC45 /* ThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */; };
 		031E2D5D2BEFCC630003BC45 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D5C2BEFCC630003BC45 /* SettingsView.swift */; };
@@ -25,6 +26,9 @@
 		03267D822BED489C009D6268 /* AvatarBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D812BED489C009D6268 /* AvatarBannerView.swift */; };
 		03267D842BED49CE009D6268 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D832BED49CE009D6268 /* AccountSettingsView.swift */; };
 		032C32122C36C31400595286 /* MlemMiddleware in Resources */ = {isa = PBXBuildFile; fileRef = 032C32112C36C31400595286 /* MlemMiddleware */; };
+		032C32162C36F65500595286 /* ReplyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032C32152C36F65500595286 /* ReplyView.swift */; };
+		032C32182C36F70300595286 /* InboxConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032C32172C36F70300595286 /* InboxConfiguration.swift */; };
+		032C321A2C36F75800595286 /* Reply1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032C32192C36F75800595286 /* Reply1Providing+Extensions.swift */; };
 		033F84AD2C298466002E3EDF /* SectionIndexTitles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84AC2C298466002E3EDF /* SectionIndexTitles.swift */; };
 		033F84B12C29907F002E3EDF /* FeedbackType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84B02C29907F002E3EDF /* FeedbackType.swift */; };
 		033F84BB2C2ACB96002E3EDF /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84BA2C2ACB96002E3EDF /* CommentView.swift */; };
@@ -219,6 +223,7 @@
 		03134A512BEAD69F002662CC /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
 		03134A572BEC1C46002662CC /* AccountListSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListSettingsView.swift; sourceTree = "<group>"; };
 		03134A592BEC2253002662CC /* AvatarStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarStackView.swift; sourceTree = "<group>"; };
+		0316CD632C382A6A009EA8EA /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListView.swift; sourceTree = "<group>"; };
 		031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
 		031E2D5C2BEFCC630003BC45 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -228,6 +233,9 @@
 		03267D832BED49CE009D6268 /* AccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
 		03267D852BED4ACA009D6268 /* Profile1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		032C32112C36C31400595286 /* MlemMiddleware */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MlemMiddleware; path = ../MlemMiddleware; sourceTree = "<group>"; };
+		032C32152C36F65500595286 /* ReplyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyView.swift; sourceTree = "<group>"; };
+		032C32172C36F70300595286 /* InboxConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxConfiguration.swift; sourceTree = "<group>"; };
+		032C32192C36F75800595286 /* Reply1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reply1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		033F84AC2C298466002E3EDF /* SectionIndexTitles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionIndexTitles.swift; sourceTree = "<group>"; };
 		033F84B02C29907F002E3EDF /* FeedbackType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackType.swift; sourceTree = "<group>"; };
 		033F84BA2C2ACB96002E3EDF /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
@@ -531,6 +539,7 @@
 			children = (
 				03AF91E42C1C61FA00E56644 /* PostInteraction.swift */,
 				033F84BC2C2ACC5F002E3EDF /* CommentInteraction.swift */,
+				032C32172C36F70300595286 /* InboxConfiguration.swift */,
 			);
 			path = Interaction;
 			sourceTree = "<group>";
@@ -800,6 +809,8 @@
 				0355F9482C16406E00605248 /* Line.swift */,
 				CD4ED84D2BF113C800EFA0A2 /* ExpandedPostView.swift */,
 				033F84BA2C2ACB96002E3EDF /* CommentView.swift */,
+				032C32152C36F65500595286 /* ReplyView.swift */,
+				0316CD632C382A6A009EA8EA /* MessageView.swift */,
 				03AF91D82C1A4ED500E56644 /* ImageView.swift */,
 				03AF91DA2C1B21F800E56644 /* TappableImageView.swift */,
 				03AF91DE2C1B243D00E56644 /* ZoomableContainer.swift */,
@@ -965,6 +976,7 @@
 				03267D852BED4ACA009D6268 /* Profile1Providing+Extensions.swift */,
 				03E614E32C0BCC7B00F692A4 /* Post1Providing+Extensions.swift */,
 				033F84BE2C2ACC9F002E3EDF /* Comment1Providing+Extensions.swift */,
+				032C32192C36F75800595286 /* Reply1Providing+Extensions.swift */,
 				034B94802C09306D00039AF4 /* CommunityOrPersonStub+Extensions.swift */,
 				CD7743882C20EDEE0085BB43 /* VotesModel+Extensions.swift */,
 			);
@@ -1273,6 +1285,7 @@
 				035BE08D2BDE88EC00F77D73 /* NavigationLayerView.swift in Sources */,
 				035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */,
 				CDB2EC7F2BFADACC00DBC0EF /* HeadlinePostView.swift in Sources */,
+				032C32162C36F65500595286 /* ReplyView.swift in Sources */,
 				03D3A1E32BB8A40A009DE55E /* EmptyButtonStyle.swift in Sources */,
 				03AF91E12C1B25DE00E56644 /* UIDevice+Extensions.swift in Sources */,
 				039EFEC32BEEBEE0003AC372 /* LoginInstancePickerView.swift in Sources */,
@@ -1288,6 +1301,7 @@
 				03CCDAA02BF2795300C0C851 /* LoginPage.swift in Sources */,
 				03AF91D92C1A4ED500E56644 /* ImageView.swift in Sources */,
 				037658DF2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift in Sources */,
+				032C32182C36F70300595286 /* InboxConfiguration.swift in Sources */,
 				CD4D58C02B86DBD100B82964 /* DefaultAvatarView.swift in Sources */,
 				CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */,
 				03FE140C2BF953B000A8377F /* HandleError.swift in Sources */,
@@ -1354,6 +1368,7 @@
 				6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */,
 				03267D822BED489C009D6268 /* AvatarBannerView.swift in Sources */,
 				03500C2D2BF7FC2500CAA076 /* ToastView.swift in Sources */,
+				0316CD642C382A6A009EA8EA /* MessageView.swift in Sources */,
 				CDF9EF332AB2845C003F885B /* Icons.swift in Sources */,
 				03AF91E32C1C616F00E56644 /* InteractionBarView.swift in Sources */,
 				CD4D58DA2B86E11D00B82964 /* Mockable.swift in Sources */,
@@ -1389,6 +1404,7 @@
 				03267D842BED49CE009D6268 /* AccountSettingsView.swift in Sources */,
 				03A82FA32C0D1F2400D01A5C /* View+ExternalApiWarning.swift in Sources */,
 				0369B3532BFA514B001EFEDF /* ToastLocation.swift in Sources */,
+				032C321A2C36F75800595286 /* Reply1Providing+Extensions.swift in Sources */,
 				03FE14082BF94FFB00A8377F /* ErrorView.swift in Sources */,
 				030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */,
 				CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */,

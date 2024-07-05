@@ -10,7 +10,7 @@ import SwiftUI
 struct FancyScrollView<Content: View>: View {
     @Environment(\.dismiss) var dismiss
     
-    @ViewBuilder var content: () -> Content
+    var content: Content
     @Binding var isAtTop: Bool
     @Binding var scrollToTopTrigger: Bool // TODO: investigate unifying this and isAtTop
     var reselectAction: (() -> Void)?
@@ -23,7 +23,7 @@ struct FancyScrollView<Content: View>: View {
         reselectAction: (() -> Void)? = nil,
         @ViewBuilder content: @escaping () -> Content
     ) {
-        self.content = content
+        self.content = content()
         self._isAtTop = isAtTop
         self._scrollToTopTrigger = scrollToTopTrigger
         self.reselectAction = reselectAction
@@ -41,7 +41,7 @@ struct FancyScrollView<Content: View>: View {
                         .frame(width: 0, height: 0)
                         .id(topId)
                     }
-                    content()
+                    content
                 }
             }
             .onReselectTab {
