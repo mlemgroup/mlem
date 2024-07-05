@@ -60,7 +60,7 @@ struct SubscriptionListView: View {
         let sections = subscriptions?.visibleSections(sort: sort) ?? []
         
         ScrollViewReader { proxy in
-            List(selection: selection) {
+            List {
                 ForEach(sections) { section in
                     Section(section.label) {
                         ForEach(section.communities) { (community: Community2) in
