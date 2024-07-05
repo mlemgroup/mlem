@@ -53,7 +53,7 @@ class HapticManager {
     func initEngine() -> CHHapticEngine? {
         if CHHapticEngine.capabilitiesForHardware().supportsHaptics {
             do {
-                let ret = try CHHapticEngine(audioSession: AVAudioSession.sharedInstance())
+                let ret = try CHHapticEngine(audioSession: nil)
                 try ret.start()
                 return ret
             } catch {

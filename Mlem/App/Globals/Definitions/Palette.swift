@@ -37,6 +37,8 @@ protocol PaletteProviding {
     
     // accents
     var secondaryAccent: Color { get }
+    
+    var commentIndentColors: [Color] { get }
 }
 
 enum PaletteOption: String, CaseIterable {
@@ -71,6 +73,7 @@ struct ColorPalette: PaletteProviding {
     var upvote: Color
     var downvote: Color
     var save: Color
+    var favorite: Color
     var selectedInteractionBarItem: Color
     
     // entities
@@ -79,6 +82,8 @@ struct ColorPalette: PaletteProviding {
     
     // literals
     var secondaryAccent: Color
+    
+    var commentIndentColors: [Color]
 }
 
 @Observable
@@ -117,10 +122,13 @@ class Palette: PaletteProviding {
     var upvote: Color { palette.upvote }
     var downvote: Color { palette.downvote }
     var save: Color { palette.save }
+    var favorite: Color { palette.favorite }
     var selectedInteractionBarItem: Color { palette.selectedInteractionBarItem }
     
     var administration: Color { palette.administration }
     var moderation: Color { palette.moderation }
     
     var secondaryAccent: Color { palette.secondaryAccent }
+    
+    var commentIndentColors: [Color] { palette.commentIndentColors }
 }

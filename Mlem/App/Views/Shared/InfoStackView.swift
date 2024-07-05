@@ -19,9 +19,15 @@ struct InfoStackView: View {
             ForEach(readouts, id: \.viewId) { readout in
                 HStack(spacing: 2) {
                     Image(systemName: readout.icon)
-                    Text(readout.label ?? " ")
-                        .monospacedDigit()
-                        .contentTransition(.numericText(value: Double(readout.label ?? "") ?? 0))
+                    Group {
+                        if readout.label?.allSatisfy(\.isNumber) ?? false {
+                            Text(readout.label ?? " ")
+                                .monospacedDigit()
+                        } else {
+                            Text(readout.label ?? " ")
+                        }
+                    }
+                    .contentTransition(.numericText(value: Double(readout.label ?? "") ?? 0))
                 }
                 .foregroundStyle((showColor ? readout.color : nil) ?? palette.secondary)
                 .animation(.default, value: readout.label)
