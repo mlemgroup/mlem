@@ -15,6 +15,7 @@ struct FeedsView: View {
     @AppStorage("feed.showRead") var showRead: Bool = true
     @AppStorage("beta.tilePosts") var tilePosts: Bool = false
     
+    @Environment(\.dismiss) var dismiss
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
