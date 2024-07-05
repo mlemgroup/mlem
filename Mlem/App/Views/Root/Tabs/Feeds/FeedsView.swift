@@ -61,7 +61,7 @@ struct FeedsView: View {
                     })
                 }
             }
-            .preheatFeedLoader(postFeedLoader)
+            .loadFeed(postFeedLoader)
             .onChange(of: showRead) {
                 scrollToTopTrigger.toggle()
                 Task {
