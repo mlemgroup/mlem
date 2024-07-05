@@ -12,14 +12,16 @@ import SwiftUI
 struct FeedDescription {
     var label: String
     var subtitle: String
-    var color: Color?
+    var color: (Palette) -> Color? // makes color change when palette changes
+    var iconName: String
     var iconNameFill: String
     var iconScaleFactor: CGFloat
     
     static var all: FeedDescription = .init(
         label: "All",
         subtitle: "Posts from all federated instances",
-        color: Palette.main.federatedFeed,
+        color: { $0.federatedFeed },
+        iconName: Icons.federatedFeed,
         iconNameFill: Icons.federatedFeedFill,
         iconScaleFactor: 0.6
     )
@@ -27,7 +29,8 @@ struct FeedDescription {
     static var local: FeedDescription = .init(
         label: "Local",
         subtitle: "Posts from \(AppState.main.firstApi.host ?? "your instance's") communities",
-        color: Palette.main.localFeed,
+        color: { $0.localFeed },
+        iconName: Icons.localFeed,
         iconNameFill: Icons.localFeedFill,
         iconScaleFactor: 0.6
     )
@@ -35,7 +38,8 @@ struct FeedDescription {
     static var subscribed: FeedDescription = .init(
         label: "Subscribed",
         subtitle: "Posts from communities you subscribe to",
-        color: Palette.main.subscribedFeed,
+        color: { $0.subscribedFeed },
+        iconName: Icons.subscribedFeed,
         iconNameFill: Icons.subscribedFeedFill,
         iconScaleFactor: 0.5
     )
@@ -43,7 +47,8 @@ struct FeedDescription {
     static var moderated: FeedDescription = .init(
         label: "Moderated",
         subtitle: "Posts from communities you moderate",
-        color: Palette.main.moderatedFeed,
+        color: { $0.moderatedFeed },
+        iconName: Icons.moderation,
         iconNameFill: Icons.moderationFill,
         iconScaleFactor: 0.5
     )
@@ -51,8 +56,9 @@ struct FeedDescription {
     static var saved: FeedDescription = .init(
         label: "Saved",
         subtitle: "Your saved posts and comments",
-        color: Palette.main.savedFeed,
-        iconNameFill: Icons.moderationFill,
+        color: { $0.savedFeed },
+        iconName: Icons.savedFeed,
+        iconNameFill: Icons.savedFeedFill,
         iconScaleFactor: 0.55
     )
 }

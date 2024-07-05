@@ -20,7 +20,40 @@ struct FeedsView: View {
     @Environment(Palette.self) var palette
     
     @State var postFeedLoader: StandardPostFeedLoader
+    @State var feedSelection: FeedSelection {
+        didSet {
+            Task {
+                do {
+                    try await postFeedLoader.changeFeedType(to: .aggregateFeed(appState.firstApi, type: feedSelection.associatedApiType))
+                } catch {
+                    handleError(error)
+                }
+            }
+        }
+    }
+
     @State var scrollToTopTrigger: Bool = false
+    
+    enum FeedSelection: CaseIterable {
+        case all, local, subscribed
+        // TODO: moderated, saved
+        
+        var description: FeedDescription {
+            switch self {
+            case .all: .all
+            case .local: .local
+            case .subscribed: .subscribed
+            }
+        }
+        
+        var associatedApiType: ApiListingType {
+            switch self {
+            case .all: .all
+            case .local: .local
+            case .subscribed: .subscribed
+            }
+        }
+    }
     
     init() {
         // need to grab some stuff from app storage to initialize with
@@ -31,13 +64,15 @@ struct FeedsView: View {
         
         @Dependency(\.persistenceRepository) var persistenceRepository
         
+        let initialFeedSelection: FeedSelection = .subscribed
+        _feedSelection = .init(initialValue: initialFeedSelection)
         _postFeedLoader = .init(initialValue: .init(
             pageSize: internetSpeed.pageSize,
             sortType: defaultSort,
             showReadPosts: showReadPosts,
             // Don't load from PersistenceRepository directly here, as we'll be reading from file every time the view is initialized, which can happen frequently
             filteredKeywords: [],
-            feedType: .aggregateFeed(AppState.main.firstApi, type: .subscribed),
+            feedType: .aggregateFeed(AppState.main.firstApi, type: initialFeedSelection.associatedApiType),
             smallAvatarSize: AppConstants.smallAvatarSize,
             largeAvatarSize: AppConstants.largeAvatarSize,
             urlCache: AppConstants.urlCache
@@ -79,7 +114,7 @@ struct FeedsView: View {
             .onChange(of: appState.firstApi, initial: false) { newValue, _ in
                 Task {
                     do {
-                        try await postFeedLoader.changeFeedType(to: .aggregateFeed(newValue, type: .subscribed))
+                        try await postFeedLoader.changeFeedType(to: .aggregateFeed(newValue, type: feedSelection.associatedApiType))
                     } catch {
                         handleError(error)
                     }
@@ -101,7 +136,19 @@ struct FeedsView: View {
                 if !tilePosts { Divider() }
                 PostGridView(postFeedLoader: postFeedLoader)
             } header: {
-                header
+                Menu {
+                    ForEach(FeedSelection.allCases, id: \.self) { feed in
+                        Button(
+                            feed.description.label,
+                            systemImage: feedSelection == feed ? feed.description.iconNameFill : feed.description.iconName
+                        ) {
+                            feedSelection = feed
+                        }
+                    }
+                } label: {
+                    FeedHeaderView(feedDescription: feedSelection.description, dropdownStyle: .enabled(showBadge: false))
+                }
+                .buttonStyle(.plain)
             } footer: {
                 Group {
                     switch postFeedLoader.loadingState {
@@ -115,20 +162,6 @@ struct FeedsView: View {
                 }
                 .frame(maxWidth: .infinity)
             }
-        }
-    }
-    
-    @ViewBuilder
-    var header: some View {
-        switch postFeedLoader.feedType {
-        case let .aggregateFeed(_, type):
-            switch type {
-            case .all: FeedHeaderView(feedDescription: .all, actions: headerMenuActions)
-            case .local: FeedHeaderView(feedDescription: .local, actions: headerMenuActions)
-            case .subscribed: FeedHeaderView(feedDescription: .subscribed, actions: headerMenuActions)
-            case .moderatorView: FeedHeaderView(feedDescription: .moderated)
-            }
-        case .community: FeedHeaderView(feedDescription: .subscribed) // TODO:
         }
     }
 }

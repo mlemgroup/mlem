@@ -23,7 +23,7 @@ struct FeedIconView: View {
     
     var body: some View {
         Circle()
-            .fill(feedDescription.color ?? palette.accent)
+            .fill(feedDescription.color(palette) ?? palette.accent)
             .frame(width: size, height: size)
             .overlay {
                 Image(systemName: feedDescription.iconNameFill)

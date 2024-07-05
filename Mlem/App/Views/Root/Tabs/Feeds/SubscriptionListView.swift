@@ -31,7 +31,7 @@ struct SubscriptionListView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
     
-    var isDisplayed: Bool {
+    var detailDisplayed: Bool {
         if UIDevice.isPad {
             noDetail ? false : navigation.path.isEmpty
         } else {
@@ -113,7 +113,7 @@ struct SubscriptionListView: View {
             }
             .onChange(of: tabReselectTracker.flag) {
                 // normal reselect tracker does not work here thanks to NavigationSplitView, so we need to implement a custom one
-                if isDisplayed, tabReselectTracker.flag {
+                if detailDisplayed, tabReselectTracker.flag {
                     tabReselectTracker.reset()
                     withAnimation {
                         proxy.scrollTo(sections.first?.label)
