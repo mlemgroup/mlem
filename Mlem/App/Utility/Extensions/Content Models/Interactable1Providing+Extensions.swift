@@ -11,30 +11,36 @@ import SwiftUI
 extension Interactable1Providing {
     private var self2: (any Interactable2Providing)? { self as? any Interactable2Providing }
 
-    func toggleUpvoteWithHaptics() {
+    func toggleUpvote(feedback: Set<FeedbackType>) {
         if let self2 {
-            HapticManager.main.play(haptic: .lightSuccess, priority: .low)
+            if feedback.contains(.haptic) {
+                HapticManager.main.play(haptic: .lightSuccess, priority: .low)
+            }
             self2.toggleUpvote()
         } else {
-            print("DEBUG no self2 found in toggleUpvoteWithHaptics!")
+            print("DEBUG no self2 found in toggleUpvote!")
         }
     }
     
-    func toggleDownvoteWithHaptics() {
+    func toggleDownvote(feedback: Set<FeedbackType>) {
         if let self2 {
-            HapticManager.main.play(haptic: .lightSuccess, priority: .low)
+            if feedback.contains(.haptic) {
+                HapticManager.main.play(haptic: .lightSuccess, priority: .low)
+            }
             self2.toggleDownvote()
         } else {
-            print("DEBUG no self2 found in toggleDownvoteWithHaptics!")
+            print("DEBUG no self2 found in toggleDownvote!")
         }
     }
     
-    func toggleSaveWithHaptics() {
+    func toggleSave(feedback: Set<FeedbackType>) {
         if let self2 {
-            HapticManager.main.play(haptic: .success, priority: .low)
+            if feedback.contains(.haptic) {
+                HapticManager.main.play(haptic: .success, priority: .low)
+            }
             self2.toggleSave()
         } else {
-            print("DEBUG no self2 found in toggleSaveWithHaptics!")
+            print("DEBUG no self2 found in toggleSave!")
         }
     }
         
@@ -43,7 +49,7 @@ extension Interactable1Providing {
     var upvoteCounter: Counter {
         .init(
             value: self2?.votes.upvotes,
-            leadingAction: upvoteAction,
+            leadingAction: upvoteAction(feedback: [.haptic]),
             trailingAction: nil
         )
     }
@@ -51,7 +57,7 @@ extension Interactable1Providing {
     var downvoteCounter: Counter {
         .init(
             value: self2?.votes.downvotes,
-            leadingAction: downvoteAction,
+            leadingAction: downvoteAction(feedback: [.haptic]),
             trailingAction: nil
         )
     }
@@ -59,14 +65,14 @@ extension Interactable1Providing {
     var scoreCounter: Counter {
         .init(
             value: self2?.votes.total,
-            leadingAction: upvoteAction,
-            trailingAction: downvoteAction
+            leadingAction: upvoteAction(feedback: [.haptic]),
+            trailingAction: downvoteAction(feedback: [.haptic])
         )
     }
     
     // MARK: Actions
     
-    var upvoteAction: BasicAction {
+    func upvoteAction(feedback: Set<FeedbackType> = []) -> BasicAction {
         let isOn: Bool = (self2?.votes.myVote ?? .none == .upvote)
         return .init(
             id: "upvote\(actorId.absoluteString)",
@@ -77,11 +83,11 @@ extension Interactable1Providing {
             menuIcon: isOn ? Icons.upvoteSquareFill : Icons.upvoteSquare,
             swipeIcon1: isOn ? Icons.resetVoteSquare : Icons.upvoteSquare,
             swipeIcon2: isOn ? Icons.resetVoteSquareFill : Icons.upvoteSquareFill,
-            callback: api.willSendToken ? toggleUpvoteWithHaptics : nil
+            callback: api.willSendToken ? { self.self2?.toggleUpvote(feedback: feedback) } : nil
         )
     }
     
-    var downvoteAction: BasicAction {
+    func downvoteAction(feedback: Set<FeedbackType> = []) -> BasicAction {
         let isOn: Bool = (self2?.votes.myVote ?? .none == .downvote)
         return .init(
             id: "downvote\(actorId.absoluteString)",
@@ -92,11 +98,11 @@ extension Interactable1Providing {
             menuIcon: isOn ? Icons.downvoteSquareFill : Icons.downvoteSquare,
             swipeIcon1: isOn ? Icons.resetVoteSquare : Icons.downvoteSquare,
             swipeIcon2: isOn ? Icons.resetVoteSquareFill : Icons.downvoteSquareFill,
-            callback: api.willSendToken ? self2?.toggleDownvoteWithHaptics : nil
+            callback: api.willSendToken ? { self.self2?.toggleDownvote(feedback: feedback) } : nil
         )
     }
 
-    var saveAction: BasicAction {
+    func saveAction(feedback: Set<FeedbackType> = []) -> BasicAction {
         let isOn: Bool = self2?.saved ?? false
         return .init(
             id: "save\(actorId.absoluteString)",
@@ -107,7 +113,7 @@ extension Interactable1Providing {
             menuIcon: isOn ? Icons.saveFill : Icons.save,
             swipeIcon1: isOn ? Icons.unsave : Icons.save,
             swipeIcon2: isOn ? Icons.unsaveFill : Icons.saveFill,
-            callback: api.willSendToken ? self2?.toggleSaveWithHaptics : nil
+            callback: api.willSendToken ? { self.self2?.toggleSave(feedback: feedback) } : nil
         )
     }
     

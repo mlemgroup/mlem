@@ -25,9 +25,11 @@ extension ColorPalette {
         upvote: .blue,
         downvote: .red,
         save: .green,
+        favorite: .blue,
         selectedInteractionBarItem: .white,
         administration: .teal,
         moderation: .cyan,
-        secondaryAccent: .orange
+        secondaryAccent: .orange,
+        commentIndentColors: [Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple]
     )
 }

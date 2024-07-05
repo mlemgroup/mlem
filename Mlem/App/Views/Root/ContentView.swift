@@ -22,13 +22,14 @@ struct ContentView: View {
     @State var tabReselectTracker: TabReselectTracker = .main
     
     var navigationModel: NavigationModel { .main }
+  
+    init() {
+        HapticManager.main.preheat()
+    }
     
     var body: some View {
         if appState.appRefreshToggle {
             content
-                .onAppear {
-                    HapticManager.main.initEngine()
-                }
                 .onReceive(timer) { _ in
                     appState.cleanCaches()
                 }
@@ -58,7 +59,7 @@ struct ContentView: View {
     var content: some View {
         CustomTabView(selectedIndex: $selectedTabIndex, tabs: [
             CustomTabItem(title: "Feeds", image: Icons.feeds, selectedImage: Icons.feedsFill) {
-                NavigationLayerView(layer: .init(root: .feeds, model: navigationModel), hasSheetModifiers: false)
+                NavigationSplitRootView(sidebar: .subscriptionList, root: .feeds)
             },
             CustomTabItem(title: "Inbox", image: Icons.inbox, selectedImage: Icons.inboxFill) {
                 NavigationLayerView(layer: .init(root: .inbox, model: navigationModel), hasSheetModifiers: false)

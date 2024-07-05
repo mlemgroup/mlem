@@ -36,24 +36,24 @@ struct AvatarView: View {
         Group {
             if url == nil {
                 DefaultAvatarView(avatarType: type)
+                    .aspectRatio(1, contentMode: .fit)
             } else {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .aspectRatio(1, contentMode: .fill)
-                    .background {
-                        if loading {
-                            if showLoadingPlaceholder {
-                                ProgressView()
-                            }
+                palette.secondaryBackground
+                    .aspectRatio(1, contentMode: .fit)
+                    .overlay {
+                        if loading, showLoadingPlaceholder {
+                            ProgressView()
+                                .tint(.secondary)
                         } else {
-                            palette.secondaryBackground
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFill()
                         }
                     }
                     .clipShape(Circle())
                     .task(loadImage)
             }
         }
-        .aspectRatio(1, contentMode: .fit)
     }
     
     @Sendable
