@@ -164,7 +164,6 @@
 		CD7882AB2C013005002E1A30 /* EllipsisMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882AA2C013005002E1A30 /* EllipsisMenu.swift */; };
 		CD869FCC2C15F8AC00FC8B5B /* BubblePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD869FCB2C15F8AC00FC8B5B /* BubblePickerView.swift */; };
 		CD869FCE2C15F90C00FC8B5B /* ChildSizeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD869FCD2C15F90C00FC8B5B /* ChildSizeReader.swift */; };
-		CD869FD02C15F92E00FC8B5B /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD869FCF2C15F92E00FC8B5B /* Int+Extensions.swift */; };
 		CD9CFA2A2C2E1E8400739BBC /* FeedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9CFA292C2E1E8400739BBC /* FeedHeaderView.swift */; };
 		CD9CFA2C2C2E1EF300739BBC /* FeedIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9CFA2B2C2E1EF300739BBC /* FeedIconView.swift */; };
 		CD9CFA302C2E22F600739BBC /* FeedDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9CFA2F2C2E22F600739BBC /* FeedDescription.swift */; };
@@ -808,7 +807,6 @@
 			isa = PBXGroup;
 			children = (
 				03FE14052BF9445F00A8377F /* CloseButtonView.swift */,
-				CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */,
 				030FF67E2BC8544600F6BFAC /* CustomTabBarController.swift */,
 				030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */,
 				030FF67A2BC8521600F6BFAC /* CustomTabView.swift */,
@@ -820,13 +818,8 @@
 				034B948D2C0937BA00039AF4 /* FancyScrollView.swift */,
 				033F84BA2C2ACB96002E3EDF /* CommentView.swift */,
 				03AF91D82C1A4ED500E56644 /* ImageView.swift */,
-				03AF91DA2C1B21F800E56644 /* TappableImageView.swift */,
-				03AF91DE2C1B243D00E56644 /* ZoomableContainer.swift */,
-				0382A7F12C0A758E00C79DDA /* ProfileDateView.swift */,
 				033F84CB2C2B1E46002E3EDF /* HandleLemmyLinksModifier.swift */,
 				CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */,
-				03E614DA2C0B596900F692A4 /* ToolbarEllipsisMenu.swift */,
-				03AF91E22C1C616F00E56644 /* InteractionBarView.swift */,
 				0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */,
 				03AF91E22C1C616F00E56644 /* InteractionBarView.swift */,
 				0355F9482C16406E00605248 /* Line.swift */,
