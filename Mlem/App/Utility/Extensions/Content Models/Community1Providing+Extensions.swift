@@ -30,7 +30,7 @@ extension Community1Providing {
                                     self2.updateSubscribe(true)
                                 }
                             },
-                            color: .blue
+                            color: Palette.main.accent
                         )
                     )
                 }
@@ -52,7 +52,7 @@ extension Community1Providing {
                             callback: {
                                 self2.updateFavorite(true)
                             },
-                            color: .blue
+                            color: Palette.main.favorite
                         )
                     )
                 } else {

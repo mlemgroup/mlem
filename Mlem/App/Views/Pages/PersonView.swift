@@ -27,6 +27,13 @@ struct PersonView: View {
     @State var posts: [Post2] = []
     
     var body: some View {
+        content
+            .onPreferenceChange(IsAtTopPreferenceKey.self, perform: { value in
+                isAtTop = value
+            })
+    }
+    
+    var content: some View {
         ContentLoader(model: person) { proxy in
             if let person = proxy.entity {
                 content(person: person)
@@ -62,7 +69,7 @@ struct PersonView: View {
     
     @ViewBuilder
     func content(person: any Person) -> some View {
-        FancyScrollView(isAtTop: $isAtTop) {
+        FancyScrollView {
             VStack(spacing: AppConstants.standardSpacing) {
                 ProfileHeaderView(person, type: .person)
                     .padding(.horizontal, AppConstants.standardSpacing)

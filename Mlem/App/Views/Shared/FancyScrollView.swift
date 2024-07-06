@@ -7,24 +7,27 @@
 
 import SwiftUI
 
+struct IsAtTopPreferenceKey: PreferenceKey {
+    static var defaultValue: Bool = false
+    static func reduce(value: inout Bool, nextValue: () -> Bool) {}
+}
+
 struct FancyScrollView<Content: View>: View {
     @Environment(\.dismiss) var dismiss
     
     @ViewBuilder var content: () -> Content
-    @Binding var isAtTop: Bool
+    @State var isAtTop: Bool = true
     @Binding var scrollToTopTrigger: Bool // TODO: investigate unifying this and isAtTop
     var reselectAction: (() -> Void)?
 
     private let topId: String = "scrollToTop"
     
     init(
-        isAtTop: Binding<Bool> = .constant(false),
         scrollToTopTrigger: Binding<Bool> = .constant(false),
         reselectAction: (() -> Void)? = nil,
         @ViewBuilder content: @escaping () -> Content
     ) {
         self.content = content
-        self._isAtTop = isAtTop
         self._scrollToTopTrigger = scrollToTopTrigger
         self.reselectAction = reselectAction
     }
@@ -69,6 +72,7 @@ struct FancyScrollView<Content: View>: View {
                 }
             }
         }
+        .preference(key: IsAtTopPreferenceKey.self, value: isAtTop)
     }
 }
 

@@ -19,7 +19,6 @@ protocol PaletteProviding {
     var groupedBackground: Color { get }
     var secondaryGroupedBackground: Color { get }
     var thumbnailBackground: Color { get }
-    var accent: Color { get }
     
     var positive: Color { get }
     var negative: Color { get }
@@ -35,7 +34,15 @@ protocol PaletteProviding {
     var administration: Color { get }
     var moderation: Color { get }
     
+    // feeds
+    var federatedFeed: Color { get }
+    var localFeed: Color { get }
+    var subscribedFeed: Color { get }
+    var moderatedFeed: Color { get }
+    var savedFeed: Color { get }
+    
     // accents
+    var accent: Color { get }
     var secondaryAccent: Color { get }
     
     var commentIndentColors: [Color] { get }
@@ -63,8 +70,7 @@ struct ColorPalette: PaletteProviding {
     var groupedBackground: Color
     var secondaryGroupedBackground: Color
     var thumbnailBackground: Color
-    var accent: Color
-
+    
     var positive: Color
     var negative: Color
     var warning: Color
@@ -73,16 +79,83 @@ struct ColorPalette: PaletteProviding {
     var upvote: Color
     var downvote: Color
     var save: Color
+    var favorite: Color
     var selectedInteractionBarItem: Color
     
     // entities
     var administration: Color
     var moderation: Color
     
-    // literals
+    // feeds
+    var federatedFeed: Color
+    var localFeed: Color
+    var subscribedFeed: Color
+    var moderatedFeed: Color
+    var savedFeed: Color
+    
+    // accents
+    var accent: Color
     var secondaryAccent: Color
     
     var commentIndentColors: [Color]
+    
+    init(
+        primary: Color,
+        secondary: Color,
+        tertiary: Color,
+        background: Color,
+        secondaryBackground: Color,
+        tertiaryBackground: Color,
+        groupedBackground: Color,
+        secondaryGroupedBackground: Color,
+        thumbnailBackground: Color,
+        positive: Color,
+        negative: Color,
+        warning: Color,
+        upvote: Color,
+        downvote: Color,
+        save: Color,
+        favorite: Color,
+        selectedInteractionBarItem: Color,
+        administration: Color,
+        moderation: Color,
+        federatedFeed: Color,
+        localFeed: Color,
+        subscribedFeed: Color,
+        moderatedFeed: Color? = nil,
+        savedFeed: Color? = nil,
+        accent: Color,
+        secondaryAccent: Color,
+        commentIndentColors: [Color]
+    ) {
+        self.primary = primary
+        self.secondary = secondary
+        self.tertiary = tertiary
+        self.background = background
+        self.secondaryBackground = secondaryBackground
+        self.tertiaryBackground = tertiaryBackground
+        self.groupedBackground = groupedBackground
+        self.secondaryGroupedBackground = secondaryGroupedBackground
+        self.thumbnailBackground = thumbnailBackground
+        self.positive = positive
+        self.negative = negative
+        self.warning = warning
+        self.upvote = upvote
+        self.downvote = downvote
+        self.save = save
+        self.favorite = favorite
+        self.selectedInteractionBarItem = selectedInteractionBarItem
+        self.administration = administration
+        self.moderation = moderation
+        self.federatedFeed = federatedFeed
+        self.localFeed = localFeed
+        self.subscribedFeed = subscribedFeed
+        self.moderatedFeed = moderatedFeed ?? moderation
+        self.savedFeed = savedFeed ?? save
+        self.accent = accent
+        self.secondaryAccent = secondaryAccent
+        self.commentIndentColors = commentIndentColors
+    }
 }
 
 @Observable
@@ -112,7 +185,6 @@ class Palette: PaletteProviding {
     var groupedBackground: Color { palette.groupedBackground }
     var secondaryGroupedBackground: Color { palette.secondaryGroupedBackground }
     var thumbnailBackground: Color { palette.thumbnailBackground }
-    var accent: Color { palette.accent }
     
     var positive: Color { palette.positive }
     var negative: Color { palette.negative }
@@ -121,11 +193,19 @@ class Palette: PaletteProviding {
     var upvote: Color { palette.upvote }
     var downvote: Color { palette.downvote }
     var save: Color { palette.save }
+    var favorite: Color { palette.favorite }
     var selectedInteractionBarItem: Color { palette.selectedInteractionBarItem }
     
     var administration: Color { palette.administration }
     var moderation: Color { palette.moderation }
     
+    var federatedFeed: Color { palette.federatedFeed }
+    var localFeed: Color { palette.localFeed }
+    var subscribedFeed: Color { palette.subscribedFeed }
+    var moderatedFeed: Color { palette.moderatedFeed }
+    var savedFeed: Color { palette.savedFeed }
+    
+    var accent: Color { palette.accent }
     var secondaryAccent: Color { palette.secondaryAccent }
     
     var commentIndentColors: [Color] { palette.commentIndentColors }

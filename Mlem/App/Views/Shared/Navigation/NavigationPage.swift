@@ -21,6 +21,7 @@ enum NavigationPage: Hashable {
     case communityPicker(callback: HashWrapper<(Community2) -> Void>)
     case personPicker(callback: HashWrapper<(Person2) -> Void>)
     case communitySubscriptionManager
+    case subscriptionList
     
     static func expandedPost(_ post: any PostStubProviding) -> NavigationPage {
         expandedPost(.init(post))
@@ -47,6 +48,8 @@ extension NavigationPage {
     // swiftlint:disable:next cyclomatic_complexity
     @ViewBuilder func view() -> some View {
         switch self {
+        case .subscriptionList:
+            SubscriptionListView()
         case let .settings(page):
             page.view()
         case let .login(page):

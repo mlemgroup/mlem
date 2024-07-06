@@ -11,6 +11,7 @@ import SwiftUI
 struct SubscriptionListView: View {
     @Environment(AppState.self) private var appState
     @Environment(NavigationLayer.self) private var navigation
+    @Environment(TabReselectTracker.self) var tabReselectTracker
     
     @AppStorage("subscriptions.sort") private var sort: SubscriptionListSort = .alphabetical
     @AppStorage("subscriptions.instanceLocation")
@@ -19,26 +20,47 @@ struct SubscriptionListView: View {
     @State var noDetail: Bool = false
     
     var body: some View {
-        Group {
-            if UIDevice.isPad {
-                content
-                    .listStyle(.sidebar)
-            } else {
-                content
-                    .listStyle(.plain)
-            }
-        }
+        MultiplatformView(phone: {
+            content
+                .listStyle(.plain)
+        }, pad: {
+            content
+                .listStyle(.sidebar)
+        })
         .navigationTitle("Feeds")
         .navigationBarTitleDisplayMode(.inline)
     }
     
+    var detailDisplayed: Bool {
+        if UIDevice.isPad {
+            noDetail ? false : navigation.path.isEmpty
+        } else {
+            navigation.path.isEmpty
+        }
+    }
+    
     var selection: Binding<NavigationPage?> {
-        .init(get: { noDetail ? nil : navigation.root }, set: { newValue in
-            if let newValue {
-                navigation.root = newValue
-                noDetail = false
+        .init(get: {
+            if UIDevice.isPad {
+                noDetail ? nil : navigation.root
             } else {
-                noDetail = true
+                navigation.path.first
+            }
+        }, set: { newValue in
+            Task { @MainActor in
+                if UIDevice.isPad {
+                    if let newValue {
+                        navigation.root = newValue
+                        noDetail = false
+                    } else {
+                        noDetail = true
+                    }
+                } else {
+                    navigation.popToRoot()
+                    if let newValue {
+                        navigation.push(newValue)
+                    }
+                }
             }
         })
     }
@@ -49,7 +71,7 @@ struct SubscriptionListView: View {
         let sections = subscriptions?.visibleSections(sort: sort) ?? []
         
         ScrollViewReader { proxy in
-            List(selection: selection) {
+            List {
                 ForEach(sections) { section in
                     Section(section.label) {
                         ForEach(section.communities) { (community: Community2) in
@@ -83,22 +105,19 @@ struct SubscriptionListView: View {
                 }
             }
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Add Communities", systemImage: "plus") {
-                        navigation.openSheet(.communitySubscriptionManager)
-                    }
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Picker("Sort", selection: $sort) {
-                        ForEach(SubscriptionListSort.allCases, id: \.self) { item in
-                            Label(item.label, systemImage: item.systemImage)
-                        }
+                Picker("Sort", selection: $sort) {
+                    ForEach(SubscriptionListSort.allCases, id: \.self) { item in
+                        Label(item.label, systemImage: item.systemImage)
                     }
                 }
             }
-            .onReselectTab {
-                withAnimation {
-                    proxy.scrollTo(sections.first?.label)
+            .onChange(of: tabReselectTracker.flag) {
+                // normal reselect tracker does not work here thanks to NavigationSplitView, so we need to implement a custom one
+                if detailDisplayed, tabReselectTracker.flag {
+                    tabReselectTracker.reset()
+                    withAnimation {
+                        proxy.scrollTo(sections.first?.label)
+                    }
                 }
             }
             .scrollIndicators(sectionIndicesShown ? .hidden : .visible)
@@ -185,7 +204,6 @@ struct SubscriptionListSection: Identifiable {
 }
 
 private extension SubscriptionList {
-    @MainActor
     func visibleSections(sort: SubscriptionListSort) -> [SubscriptionListSection] {
         var sections: [SubscriptionListSection] = .init()
         if !favorites.isEmpty {

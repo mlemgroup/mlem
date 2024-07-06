@@ -58,6 +58,14 @@ struct ToastView: View {
                 .buttonStyle(EmptyButtonStyle())
             case let .error(details):
                 errorView(details)
+            case .loading:
+                HStack {
+                    ProgressView()
+                        .tint(palette.secondary)
+                        .padding(.leading)
+                    Text("Loading...")
+                        .padding(.horizontal, 30)
+                }
             case let .account(account):
                 accountView(account)
             }
