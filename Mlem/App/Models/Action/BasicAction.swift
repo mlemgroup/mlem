@@ -61,7 +61,7 @@ struct BasicAction: Action {
         if let callback {
             if let confirmationPrompt {
                 navigation.showPopup(ActionGroup(label: "Confirm", prompt: confirmationPrompt, children: [
-                    BasicAction(id: "", isOn: false, label: "Yes", color: .red, isDestructive: true, icon: "", callback: callback)
+                    BasicAction(id: "", isOn: false, label: "Yes", color: Palette.main.warning, isDestructive: true, icon: "", callback: callback)
                 ]))
             } else {
                 callback()

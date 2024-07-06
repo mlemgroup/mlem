@@ -65,8 +65,7 @@ extension Community1Providing {
     }
     
     func toggleBlocked(feedback: Set<FeedbackType>) {
-        if feedback.contains(.toast) {
-            if !blocked {
+        if !blocked, feedback.contains(.toast) {
                 ToastModel.main.add(
                     .undoable(
                         title: "Blocked",
