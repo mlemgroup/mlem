@@ -18,7 +18,6 @@ extension ColorPalette {
         groupedBackground: Color(UIColor.systemGroupedBackground),
         secondaryGroupedBackground: Color(UIColor.secondarySystemGroupedBackground),
         thumbnailBackground: Color(UIColor.systemGray4),
-        accent: .blue,
         positive: .green,
         negative: .red,
         warning: .red,
@@ -29,6 +28,10 @@ extension ColorPalette {
         selectedInteractionBarItem: .white,
         administration: .teal,
         moderation: .cyan,
+        federatedFeed: .blue,
+        localFeed: .purple,
+        subscribedFeed: .red,
+        accent: .blue,
         secondaryAccent: .orange,
         commentIndentColors: [Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple]
     )
