@@ -20,7 +20,7 @@ enum NavigationPage: Hashable {
     case imageViewer(_ url: URL)
     case communityPicker(callback: HashWrapper<(Community2) -> Void>)
     case personPicker(callback: HashWrapper<(Person2) -> Void>)
-    case communitySubscriptionManager
+    case instancePicker(callback: HashWrapper<(InstanceSummary) -> Void>)
     case subscriptionList
     
     static func expandedPost(_ post: any PostStubProviding) -> NavigationPage {
@@ -42,10 +42,14 @@ enum NavigationPage: Hashable {
     static func personPicker(callback: @escaping (Person2) -> Void) -> NavigationPage {
         personPicker(callback: .init(wrappedValue: callback))
     }
+    
+    static func instancePicker(callback: @escaping (InstanceSummary) -> Void) -> NavigationPage {
+        instancePicker(callback: .init(wrappedValue: callback))
+    }
 }
 
 extension NavigationPage {
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     @ViewBuilder func view() -> some View {
         switch self {
         case .subscriptionList:
@@ -63,7 +67,7 @@ extension NavigationPage {
         case .inbox:
             InboxView()
         case .search:
-            EmptyView()
+            SearchView()
         case let .externalApiInfo(api: api, actorId: actorId):
             ExternalApiInfoView(api: api, actorId: actorId)
         case let .imageViewer(url):
@@ -92,8 +96,15 @@ extension NavigationPage {
                     }
                     .padding(.vertical, 6)
             }
-        case .communitySubscriptionManager:
-            SubscriptionManagementView()
+        case let .instancePicker(callback: callback):
+            SearchSheetView { (instance: InstanceSummary, dismiss: DismissAction) in
+                InstanceListRowBody(instance)
+                    .onTapGesture {
+                        callback.wrappedValue(instance)
+                        dismiss()
+                    }
+                    .padding(.vertical, 6)
+            }
         }
     }
     

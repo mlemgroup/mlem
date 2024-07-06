@@ -11,20 +11,23 @@ import SwiftUI
 struct SearchResultsView<Item: Searchable, Content: View>: View {
     @ViewBuilder let content: (Item) -> Content
     let results: [Item]
+    let dividerPadding: CGFloat
     
-    init(results: [Item], @ViewBuilder content: @escaping (Item) -> Content) {
+    init(
+        results: [Item],
+        dividerPadding: Bool = true,
+        @ViewBuilder content: @escaping (Item) -> Content
+    ) {
         self.results = results
+        self.dividerPadding = dividerPadding ? 71 : 0
         self.content = content
     }
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
-                ForEach(results) { item in
-                    content(item)
-                    Divider()
-                }
-            }
+        ForEach(results) { item in
+            content(item)
+            Divider()
+                .padding(.leading, dividerPadding)
         }
     }
 }

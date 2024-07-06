@@ -57,6 +57,10 @@ struct InboxView: View {
             Button("Search People") {
                 navigation.openSheet(.personPicker(callback: { print($0.name) }))
             }
+            
+            Button("Search Instances") {
+                navigation.openSheet(.instancePicker(callback: { print($0.name) }))
+            }
         }
     }
 }

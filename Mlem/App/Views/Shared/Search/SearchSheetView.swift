@@ -35,37 +35,41 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
     }
     
     var body: some View {
-        content(results, dismiss)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    HStack(spacing: 0) {
-                        SearchBar("Search", text: $query, isEditing: $editing)
-                            .isInitialFirstResponder(true)
-                            .focused($focused)
-                    }
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(closeButtonLabel.rawValue.capitalized) {
-                        dismiss()
-                    }
+        ScrollView {
+            VStack(alignment: .leading, spacing: 0) {
+                content(results, dismiss)
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                HStack(spacing: 0) {
+                    SearchBar("Search", text: $query, isEditing: $editing)
+                        .isInitialFirstResponder(true)
+                        .focused($focused)
                 }
             }
-            .task(id: query, priority: .userInitiated) { @MainActor in
-                do {
-                    if !query.isEmpty {
-                        try await Task.sleep(for: .seconds(0.2))
-                    }
-                    results = try await Item.search(
-                        api: appState.firstApi,
-                        query: query,
-                        page: 1,
-                        limit: 20
-                    )
-                } catch {
-                    handleError(error)
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(closeButtonLabel.rawValue.capitalized) {
+                    dismiss()
                 }
             }
+        }
+        .task(id: query, priority: .userInitiated) { @MainActor in
+            do {
+                if !query.isEmpty {
+                    try await Task.sleep(for: .seconds(0.2))
+                }
+                results = try await Item.search(
+                    api: appState.firstApi,
+                    query: query,
+                    page: 1,
+                    limit: 20
+                )
+            } catch {
+                handleError(error)
+            }
+        }
     }
 }
 

@@ -10,10 +10,14 @@ import SwiftUI
 
 struct CommunityListRowBody<Content: View>: View {
     enum Complication { case instance, subscriberCount }
+    enum Readout { case subscribers }
+    
+    @Environment(Palette.self) var palette
     
     let community: any Community
     let showBlockStatus: Bool
     let complications: [Complication]
+    let readout: Readout?
     
     @ViewBuilder let content: () -> Content
 
@@ -21,11 +25,25 @@ struct CommunityListRowBody<Content: View>: View {
         _ community: any Community,
         complications: [Complication] = [.instance],
         showBlockStatus: Bool = true,
-        @ViewBuilder content: @escaping () -> Content = { EmptyView() }
+        @ViewBuilder content: @escaping () -> Content
     ) {
         self.community = community
         self.showBlockStatus = showBlockStatus
+        self.readout = nil
         self.content = content
+        self.complications = complications
+    }
+    
+    init(
+        _ community: any Community,
+        complications: [Complication] = [.instance],
+        showBlockStatus: Bool = true,
+        readout: Readout? = nil
+    ) where Content == EmptyView {
+        self.community = community
+        self.showBlockStatus = showBlockStatus
+        self.readout = readout
+        self.content = { EmptyView() }
         self.complications = complications
     }
     
@@ -63,7 +81,12 @@ struct CommunityListRowBody<Content: View>: View {
                     .lineLimit(1)
             }
             Spacer()
-            content()
+            switch readout {
+            case .subscribers:
+                subscriberCountReadout
+            case nil:
+                content()
+            }
         }
         .padding(.horizontal)
         .contentShape(Rectangle())
@@ -91,5 +114,29 @@ struct CommunityListRowBody<Content: View>: View {
                 }
             }
         }
+    }
+    
+    var subscriberCountReadout: some View {
+        let image: String
+        let color: Color
+        switch community.subscriptionTier_ {
+        case .favorited:
+            color = palette.favorite
+            image = Icons.favoriteFill
+        case .subscribed:
+            color = palette.positive
+            image = Icons.successCircleFill
+        case .unsubscribed, nil:
+            color = palette.secondary
+            image = Icons.personFill
+        }
+        return HStack {
+            Text((community.subscriberCount_ ?? 0).abbreviated)
+            Image(systemName: image)
+                .fontWeight(.semibold)
+        }
+        .monospacedDigit()
+        .foregroundStyle(color)
+        .symbolRenderingMode(.hierarchical)
     }
 }

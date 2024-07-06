@@ -10,10 +10,14 @@ import SwiftUI
 
 struct PersonListRowBody<Content: View>: View {
     enum Complication { case instance, date }
+    enum Readout { case postsAndComments }
+    
+    @Environment(Palette.self) var palette
     
     let person: any Person
-    let complications: [Complication]
     var showBlockStatus: Bool = true
+    let complications: [Complication]
+    let readout: Readout?
     
     @ViewBuilder let content: () -> Content
 
@@ -21,11 +25,25 @@ struct PersonListRowBody<Content: View>: View {
         _ person: any Person,
         complications: [Complication] = [.instance],
         showBlockStatus: Bool = true,
-        @ViewBuilder content: @escaping () -> Content = { EmptyView() }
+        @ViewBuilder content: @escaping () -> Content
     ) {
         self.person = person
         self.showBlockStatus = showBlockStatus
+        self.readout = nil
         self.content = content
+        self.complications = complications
+    }
+    
+    init(
+        _ person: any Person,
+        complications: [Complication] = [.instance],
+        showBlockStatus: Bool = true,
+        readout: Readout? = nil
+    ) where Content == EmptyView {
+        self.person = person
+        self.showBlockStatus = showBlockStatus
+        self.readout = readout
+        self.content = { EmptyView() }
         self.complications = complications
     }
     
@@ -58,7 +76,12 @@ struct PersonListRowBody<Content: View>: View {
                     .lineLimit(1)
             }
             Spacer()
-            content()
+            switch readout {
+            case .postsAndComments:
+                postsAndCommentsReadout
+            case nil:
+                content()
+            }
         }
         .padding(.horizontal)
         .contentShape(Rectangle())
@@ -89,5 +112,24 @@ struct PersonListRowBody<Content: View>: View {
                 }
             }
         }
+    }
+    
+    @ViewBuilder
+    var postsAndCommentsReadout: some View {
+        HStack(spacing: 5) {
+            VStack(alignment: .trailing, spacing: 6) {
+                Text((person.postCount_ ?? 0).abbreviated)
+                Text((person.commentCount_ ?? 0).abbreviated)
+            }
+            .foregroundStyle(.secondary)
+            .font(.subheadline)
+            .monospacedDigit()
+            VStack(spacing: 10) {
+                Image(systemName: Icons.posts)
+                Image(systemName: Icons.replies)
+            }
+            .imageScale(.small)
+        }
+        .foregroundStyle(palette.secondary)
     }
 }

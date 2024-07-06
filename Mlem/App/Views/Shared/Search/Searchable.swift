@@ -22,3 +22,11 @@ extension Person2: Searchable {
         try await api.searchPeople(query: query, page: page, limit: limit)
     }
 }
+
+extension InstanceSummary: Searchable, Identifiable {
+    var id: String { host }
+    
+    static func search(api _: ApiClient, query: String, page _: Int, limit _: Int) async throws -> [InstanceSummary] {
+        try await MlemStats.main.searchInstances(query: query)
+    }
+}
