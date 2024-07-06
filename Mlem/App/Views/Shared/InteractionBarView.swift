@@ -38,6 +38,7 @@ struct InteractionBarView: View {
             ForEach(trailing, id: \.viewId, content: widgetView)
         }
         .frame(height: AppConstants.barIconSize)
+        .geometryGroup()
     }
     
     var infoStackAlignment: Alignment {
