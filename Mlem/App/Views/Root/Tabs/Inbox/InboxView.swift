@@ -178,6 +178,7 @@ struct InboxView: View {
                 }
             } label: {
                 Label("Refresh", systemImage: Icons.refresh)
+                    .foregroundStyle(palette.selectedInteractionBarItem)
                     .fontWeight(.semibold)
                     .padding(.vertical, 4)
                     .padding(.horizontal, 10)
