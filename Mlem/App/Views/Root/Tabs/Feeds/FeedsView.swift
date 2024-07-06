@@ -11,45 +11,68 @@ import MlemMiddleware
 import SwiftUI
 
 struct FeedsView: View {
-    @Environment(AppState.self) var appState
-    
-    var body: some View {
-        content
-    }
-    
-    var content: some View {
-        MinimalPostFeedView()
-    }
-}
-
-struct MinimalPostFeedView: View {
     @AppStorage("post.size") var postSize: PostSize = .large
     @AppStorage("feed.showRead") var showRead: Bool = true
     @AppStorage("beta.tilePosts") var tilePosts: Bool = false
     
+    @Environment(\.dismiss) var dismiss
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
     @State var postFeedLoader: StandardPostFeedLoader
-    @State var columns: [GridItem] = [GridItem(.flexible())]
+    @State var feedSelection: FeedSelection {
+        didSet {
+            Task {
+                do {
+                    try await postFeedLoader.changeFeedType(to: .aggregateFeed(appState.firstApi, type: feedSelection.associatedApiType))
+                } catch {
+                    handleError(error)
+                }
+            }
+        }
+    }
+
     @State var scrollToTopTrigger: Bool = false
+    
+    enum FeedSelection: CaseIterable {
+        case all, local, subscribed
+        // TODO: moderated, saved
+        
+        var description: FeedDescription {
+            switch self {
+            case .all: .all
+            case .local: .local
+            case .subscribed: .subscribed
+            }
+        }
+        
+        var associatedApiType: ApiListingType {
+            switch self {
+            case .all: .all
+            case .local: .local
+            case .subscribed: .subscribed
+            }
+        }
+    }
     
     init() {
         // need to grab some stuff from app storage to initialize with
         @AppStorage("behavior.internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("behavior.upvoteOnSave") var upvoteOnSave = false
         @AppStorage("feed.showRead") var showReadPosts = true
-        @AppStorage("post.defaultSort") var defaultSort: ApiSortType = .topYear // .hot
+        @AppStorage("post.defaultSort") var defaultSort: ApiSortType = .hot
         
         @Dependency(\.persistenceRepository) var persistenceRepository
         
+        let initialFeedSelection: FeedSelection = .subscribed
+        _feedSelection = .init(initialValue: initialFeedSelection)
         _postFeedLoader = .init(initialValue: .init(
             pageSize: internetSpeed.pageSize,
             sortType: defaultSort,
             showReadPosts: showReadPosts,
             // Don't load from PersistenceRepository directly here, as we'll be reading from file every time the view is initialized, which can happen frequently
             filteredKeywords: [],
-            feedType: .aggregateFeed(AppState.main.firstApi, type: .subscribed),
+            feedType: .aggregateFeed(AppState.main.firstApi, type: initialFeedSelection.associatedApiType),
             smallAvatarSize: AppConstants.smallAvatarSize,
             largeAvatarSize: AppConstants.largeAvatarSize,
             urlCache: AppConstants.urlCache
@@ -73,18 +96,7 @@ struct MinimalPostFeedView: View {
                     })
                 }
             }
-            .onChange(of: tilePosts, initial: true) { _, newValue in
-                if newValue {
-                    // leading/trailing alignment makes them want to stick to each other, allowing the AppConstants.halfSpacing padding applied below
-                    // to push them apart by a sum of AppConstants.standardSpacing
-                    columns = [
-                        GridItem(.flexible(), spacing: 0, alignment: .trailing),
-                        GridItem(.flexible(), spacing: 0, alignment: .leading)
-                    ]
-                } else {
-                    columns = [GridItem(.flexible())]
-                }
-            }
+            .loadFeed(postFeedLoader)
             .onChange(of: showRead) {
                 scrollToTopTrigger.toggle()
                 Task {
@@ -99,20 +111,10 @@ struct MinimalPostFeedView: View {
                     }
                 }
             }
-            .task(id: appState.firstApi) {
-                do {
-                    try await postFeedLoader.changeFeedType(to: .aggregateFeed(appState.firstApi, type: .subscribed))
-                } catch {
-                    handleError(error)
-                }
-            }
-            .task {
-                // NOTE: this is here due to an error in StandardPostFeedLoader where changing feed type doesn't properly reload, resulting in
-                // the first render not triggering a load. I'm currently working on a fix, but it's OOS for filtering
-                // -Eric
-                if postFeedLoader.items.isEmpty, postFeedLoader.loadingState == .idle {
+            .onChange(of: appState.firstApi, initial: false) { newValue, _ in
+                Task {
                     do {
-                        try await postFeedLoader.refresh(clearBeforeRefresh: true)
+                        try await postFeedLoader.changeFeedType(to: .aggregateFeed(newValue, type: feedSelection.associatedApiType))
                     } catch {
                         handleError(error)
                     }
@@ -130,81 +132,36 @@ struct MinimalPostFeedView: View {
     @ViewBuilder
     var content: some View {
         FancyScrollView(scrollToTopTrigger: $scrollToTopTrigger) {
-            LazyVGrid(columns: columns, spacing: tilePosts ? AppConstants.standardSpacing : 0) {
-                // Section lets the header and loading footer play nice regardless of column count
-                Section {
-                    if !tilePosts { Divider() }
-                    
-                    ForEach(postFeedLoader.items, id: \.hashValue) { post in
-                        if !post.read || showRead {
-                            VStack(spacing: 0) { // this improves performance O_o
-                                NavigationLink(value: NavigationPage.expandedPost(post)) {
-                                    FeedPostView(post: post)
-                                }
-                                .buttonStyle(EmptyButtonStyle())
-                                if !tilePosts { Divider() }
-                            }
-                            .padding(.horizontal, tilePosts ? AppConstants.halfSpacing : 0)
-                            .onAppear {
-                                do {
-                                    try postFeedLoader.loadIfThreshold(post)
-                                } catch {
-                                    handleError(error)
-                                }
-                            }
+            Section {
+                if !tilePosts { Divider() }
+                PostGridView(postFeedLoader: postFeedLoader)
+            } header: {
+                Menu {
+                    ForEach(FeedSelection.allCases, id: \.self) { feed in
+                        Button(
+                            feed.description.label,
+                            systemImage: feedSelection == feed ? feed.description.iconNameFill : feed.description.iconName
+                        ) {
+                            feedSelection = feed
                         }
                     }
-                } header: {
-                    feedHeaderMockup
-                        .padding(.bottom, tilePosts ? 0 : AppConstants.standardSpacing)
-                } footer: {
-                    Group {
-                        switch postFeedLoader.loadingState {
-                        case .loading:
-                            Text("Loading...")
-                        case .done:
-                            Text("Done")
-                        case .idle:
-                            Text("Idle")
-                        }
+                } label: {
+                    FeedHeaderView(feedDescription: feedSelection.description, dropdownStyle: .enabled(showBadge: false))
+                }
+                .buttonStyle(.plain)
+            } footer: {
+                Group {
+                    switch postFeedLoader.loadingState {
+                    case .loading:
+                        Text("Loading...")
+                    case .done:
+                        Text("Done")
+                    case .idle:
+                        Text("Idle")
                     }
-                    .frame(maxWidth: .infinity)
                 }
+                .frame(maxWidth: .infinity)
             }
-        }
-    }
-    
-    @ViewBuilder
-    var feedHeaderMockup: some View {
-        HStack(alignment: .center, spacing: AppConstants.standardSpacing) {
-            Circle()
-                .fill(.red)
-                .frame(width: 44, height: 44)
-                .overlay {
-                    Image(systemName: Icons.subscribedFeedFill)
-                        .resizable()
-                        .scaledToFit()
-                        .foregroundStyle(.white)
-                        .frame(width: 22, height: 22)
-                }
-                .padding(.leading, AppConstants.standardSpacing)
-            
-            VStack(alignment: .leading, spacing: 0) {
-                HStack(spacing: AppConstants.halfSpacing) {
-                    Text("Subscribed")
-                        .fontWeight(.bold)
-                    
-                    Image(systemName: Icons.dropdown)
-                        .foregroundStyle(palette.secondary)
-                }
-                .font(.title2)
-                
-                Text("Posts from all subscribed communities")
-                    .font(.footnote)
-                    .foregroundStyle(palette.secondary)
-            }
-            .frame(height: 44)
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }
