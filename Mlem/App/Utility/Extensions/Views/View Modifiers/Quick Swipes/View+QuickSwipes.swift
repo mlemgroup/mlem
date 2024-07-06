@@ -16,7 +16,6 @@ struct QuickSwipeView: ViewModifier {
     @State var dragPosition: CGFloat = .zero
     @State var prevDragPosition: CGFloat = .zero
     @State var dragBackground: Color? = Palette.main.background
-    @State var iconColor: Color? = .white
     @State var leadingSwipeSymbol: String?
     @State var trailingSwipeSymbol: String?
     
@@ -91,7 +90,7 @@ struct QuickSwipeView: ViewModifier {
                     if dragState < 0 {
                         Image(systemName: trailingSwipeSymbol ?? Icons.warning)
                             .font(.system(size: config.behavior.iconSize))
-                            .foregroundColor(iconColor ?? .white)
+                            .foregroundColor(palette.selectedInteractionBarItem)
                             .frame(width: iconWidth)
                             .padding(.horizontal, iconWidth)
                     }
@@ -125,21 +124,17 @@ struct QuickSwipeView: ViewModifier {
                 if actionIndex == nil {
                     leadingSwipeSymbol = primaryLeadingAction?.swipeIcon1
                     dragBackground = primaryLeadingAction?.color.opacity(dragPosition / threshold)
-                    iconColor = nil
                 } else {
                     leadingSwipeSymbol = action?.swipeIcon2
                     dragBackground = action?.color.opacity(dragPosition / threshold)
-                    iconColor = nil
                 }
             case .trailing:
                 if actionIndex == nil {
                     trailingSwipeSymbol = primaryTrailingAction?.swipeIcon1
                     dragBackground = primaryTrailingAction?.color.opacity(dragPosition / threshold)
-                    iconColor = nil
                 } else {
                     trailingSwipeSymbol = action?.swipeIcon2
                     dragBackground = action?.color.opacity(dragPosition / threshold)
-                    iconColor = nil
                 }
             }
             
@@ -169,7 +164,6 @@ struct QuickSwipeView: ViewModifier {
             leadingSwipeSymbol = primaryLeadingAction?.swipeIcon1
             trailingSwipeSymbol = primaryTrailingAction?.swipeIcon1
             dragBackground = palette.background
-            iconColor = .white
         }
     }
     
