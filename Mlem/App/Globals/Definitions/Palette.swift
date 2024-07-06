@@ -116,6 +116,7 @@ struct ColorPalette: PaletteProviding {
         upvote: Color,
         downvote: Color,
         save: Color,
+        read: Color,
         favorite: Color,
         selectedInteractionBarItem: Color,
         administration: Color,
@@ -144,6 +145,7 @@ struct ColorPalette: PaletteProviding {
         self.upvote = upvote
         self.downvote = downvote
         self.save = save
+        self.read = read
         self.favorite = favorite
         self.selectedInteractionBarItem = selectedInteractionBarItem
         self.administration = administration

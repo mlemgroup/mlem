@@ -15,8 +15,8 @@ struct IsAtTopPreferenceKey: PreferenceKey {
 struct FancyScrollView<Content: View>: View {
     @Environment(\.dismiss) var dismiss
     
-    var content: Content
-    @Binding var isAtTop: Bool
+    @ViewBuilder var content: () -> Content
+    @State var isAtTop: Bool = true
     @Binding var scrollToTopTrigger: Bool // TODO: investigate unifying this and isAtTop
     var reselectAction: (() -> Void)?
 
@@ -27,8 +27,7 @@ struct FancyScrollView<Content: View>: View {
         reselectAction: (() -> Void)? = nil,
         @ViewBuilder content: @escaping () -> Content
     ) {
-        self.content = content()
-        self._isAtTop = isAtTop
+        self.content = content
         self._scrollToTopTrigger = scrollToTopTrigger
         self.reselectAction = reselectAction
     }
@@ -45,7 +44,7 @@ struct FancyScrollView<Content: View>: View {
                         .frame(width: 0, height: 0)
                         .id(topId)
                     }
-                    content
+                    content()
                 }
             }
             .onReselectTab {

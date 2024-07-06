@@ -106,7 +106,7 @@ struct InboxView: View {
     
     @ViewBuilder
     var content: some View {
-        FancyScrollView(isAtTop: $isAtTop) {
+        FancyScrollView {
             LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
                 Section {
                     Divider()
@@ -162,6 +162,9 @@ struct InboxView: View {
                 }
             }
         }
+        .onPreferenceChange(IsAtTopPreferenceKey.self, perform: { value in
+            isAtTop = value
+        })
     }
     
     @ViewBuilder
@@ -188,6 +191,8 @@ struct InboxView: View {
         }
         .padding(4)
         .background(palette.secondaryBackground, in: .capsule)
+        .shadow(color: .black.opacity(0.1), radius: 5)
+        .shadow(color: .black.opacity(0.1), radius: 1)
         .padding()
     }
     
