@@ -10,8 +10,8 @@ import MlemMiddleware
 import SwiftUI
 
 struct MessageView: View {
-    @Environment(Palette.self) var palette
-    @Environment(AppState.self) var appState
+    @Environment(Palette.self) private var palette
+    @Environment(AppState.self) private var appState
     
     var isOwnMessage: Bool { (appState.firstAccount as? UserAccount)?.id == message.creatorId }
     
@@ -38,5 +38,6 @@ struct MessageView: View {
         .clipped()
         .background(palette.background)
         .contentShape(.rect)
+        .quickSwipes(message.swipeActions(behavior: .standard))
     }
 }

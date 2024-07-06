@@ -66,6 +66,10 @@
 		0382A7F02C09F0F800C79DDA /* PersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0382A7EF2C09F0F800C79DDA /* PersonView.swift */; };
 		0382A7F22C0A758E00C79DDA /* ProfileDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0382A7F12C0A758E00C79DDA /* ProfileDateView.swift */; };
 		0382A7F42C0A76A900C79DDA /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0382A7F32C0A76A900C79DDA /* Date+Extensions.swift */; };
+		0389DDC32C38907C0005B808 /* Message1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDC22C38907C0005B808 /* Message1Providing+Extensions.swift */; };
+		0389DDC52C38917A0005B808 /* InboxItemProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDC42C38917A0005B808 /* InboxItemProviding+Extensions.swift */; };
+		0389DDC72C389F840005B808 /* UnreadCount+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDC62C389F840005B808 /* UnreadCount+Extensions.swift */; };
+		0389DDC92C39658E0005B808 /* Binding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDC82C39658E0005B808 /* Binding+Extensions.swift */; };
 		039EFEC32BEEBEE0003AC372 /* LoginInstancePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */; };
 		03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */; };
 		03A82FA32C0D1F2400D01A5C /* View+ExternalApiWarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A82FA22C0D1F2400D01A5C /* View+ExternalApiWarning.swift */; };
@@ -271,6 +275,10 @@
 		0382A7EF2C09F0F800C79DDA /* PersonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonView.swift; sourceTree = "<group>"; };
 		0382A7F12C0A758E00C79DDA /* ProfileDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDateView.swift; sourceTree = "<group>"; };
 		0382A7F32C0A76A900C79DDA /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		0389DDC22C38907C0005B808 /* Message1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message1Providing+Extensions.swift"; sourceTree = "<group>"; };
+		0389DDC42C38917A0005B808 /* InboxItemProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InboxItemProviding+Extensions.swift"; sourceTree = "<group>"; };
+		0389DDC62C389F840005B808 /* UnreadCount+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UnreadCount+Extensions.swift"; sourceTree = "<group>"; };
+		0389DDC82C39658E0005B808 /* Binding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extensions.swift"; sourceTree = "<group>"; };
 		039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInstancePickerView.swift; sourceTree = "<group>"; };
 		03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiClient+Extensions.swift"; sourceTree = "<group>"; };
 		03A82FA22C0D1F2400D01A5C /* View+ExternalApiWarning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ExternalApiWarning.swift"; sourceTree = "<group>"; };
@@ -844,6 +852,7 @@
 				CDA8A0052BE43B350022F7ED /* Content Models */,
 				CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */,
 				03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */,
+				0389DDC82C39658E0005B808 /* Binding+Extensions.swift */,
 				034B94882C09360A00039AF4 /* Int+Extensions.swift */,
 				03AF91E02C1B25DE00E56644 /* UIDevice+Extensions.swift */,
 				0382A7F32C0A76A900C79DDA /* Date+Extensions.swift */,
@@ -977,8 +986,11 @@
 				03E614E32C0BCC7B00F692A4 /* Post1Providing+Extensions.swift */,
 				033F84BE2C2ACC9F002E3EDF /* Comment1Providing+Extensions.swift */,
 				032C32192C36F75800595286 /* Reply1Providing+Extensions.swift */,
+				0389DDC22C38907C0005B808 /* Message1Providing+Extensions.swift */,
+				0389DDC42C38917A0005B808 /* InboxItemProviding+Extensions.swift */,
 				034B94802C09306D00039AF4 /* CommunityOrPersonStub+Extensions.swift */,
 				CD7743882C20EDEE0085BB43 /* VotesModel+Extensions.swift */,
+				0389DDC62C389F840005B808 /* UnreadCount+Extensions.swift */,
 			);
 			path = "Content Models";
 			sourceTree = "<group>";
@@ -1288,6 +1300,7 @@
 				032C32162C36F65500595286 /* ReplyView.swift in Sources */,
 				03D3A1E32BB8A40A009DE55E /* EmptyButtonStyle.swift in Sources */,
 				03AF91E12C1B25DE00E56644 /* UIDevice+Extensions.swift in Sources */,
+				0389DDC52C38917A0005B808 /* InboxItemProviding+Extensions.swift in Sources */,
 				039EFEC32BEEBEE0003AC372 /* LoginInstancePickerView.swift in Sources */,
 				034B94852C09348400039AF4 /* MarkdownImageView.swift in Sources */,
 				03C93CF22BF0256700327BFE /* EnvironmentValue+IsRootView.swift in Sources */,
@@ -1318,7 +1331,9 @@
 				CD1446252A5B357900610EF1 /* Document.swift in Sources */,
 				033F84B12C29907F002E3EDF /* FeedbackType.swift in Sources */,
 				CDB2EC812BFADADF00DBC0EF /* LargePostView.swift in Sources */,
+				0389DDC92C39658E0005B808 /* Binding+Extensions.swift in Sources */,
 				CD7882A72BFFD1A3002E1A30 /* ThumbnailLocation.swift in Sources */,
+				0389DDC32C38907C0005B808 /* Message1Providing+Extensions.swift in Sources */,
 				03500C222BF5594100CAA076 /* ToastType.swift in Sources */,
 				03AF91DF2C1B243D00E56644 /* ZoomableContainer.swift in Sources */,
 				03134A4D2BEAD058002662CC /* AvatarView.swift in Sources */,
@@ -1409,6 +1424,7 @@
 				030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */,
 				CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */,
 				CDCA44972C17666C00C092B3 /* HapticManager.swift in Sources */,
+				0389DDC72C389F840005B808 /* UnreadCount+Extensions.swift in Sources */,
 				03500C242BF55D0E00CAA076 /* Toast.swift in Sources */,
 				030FF67F2BC8544700F6BFAC /* CustomTabBarController.swift in Sources */,
 				CD4D58F82B87B0D100B82964 /* InternetSpeed.swift in Sources */,

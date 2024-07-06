@@ -13,6 +13,7 @@ struct CustomTabItem: View {
     var title: String
     var image: String
     var selectedImage: String
+    var badge: BadgeUpdater?
     
     var onLongPress: (() -> Void)?
     
@@ -20,6 +21,7 @@ struct CustomTabItem: View {
         title: String,
         image: String,
         selectedImage: String? = nil,
+        badge: BadgeUpdater? = nil,
         onLongPress: (() -> Void)? = nil,
         @ViewBuilder content: () -> some View
     ) {
@@ -27,8 +29,17 @@ struct CustomTabItem: View {
         self.image = image
         self.selectedImage = selectedImage ?? image
         self.onLongPress = onLongPress
+        self.badge = badge
         self.content = AnyView(content())
     }
     
     var body: some View { content }
+}
+
+// This is a janky workaround - if `badge` is simply included as a property in
+// `CustomTabItem`, the entire `ContentView` is reset  when the badge changes.
+
+@Observable
+class BadgeUpdater {
+    var wrappedValue: String?
 }

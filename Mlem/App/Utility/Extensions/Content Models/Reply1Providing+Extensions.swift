@@ -10,13 +10,6 @@ import MlemMiddleware
 extension Reply1Providing {
     private var self2: (any Reply2Providing)? { self as? any Reply2Providing }
     
-    func toggleRead(feedback: Set<FeedbackType>) {
-        if feedback.contains(.haptic) {
-            HapticManager.main.play(haptic: .lightSuccess, priority: .low)
-        }
-        toggleRead()
-    }
-    
     func swipeActions(behavior: SwipeBehavior) -> SwipeConfiguration {
         let leadingActions: [BasicAction] = api.willSendToken ? [
             upvoteAction(feedback: [.haptic]),
@@ -64,19 +57,5 @@ extension Reply1Providing {
         case .comment:
             commentReadout
         }
-    }
-    
-    func markReadAction(feedback: Set<FeedbackType> = []) -> BasicAction {
-        .init(
-            id: "markRead\(uid)",
-            isOn: read,
-            label: read ? "Mark Unread" : "Mark Read",
-            color: Palette.main.read,
-            icon: Icons.upvote,
-            menuIcon: read ? Icons.markReadFill : Icons.markRead,
-            swipeIcon1: read ? Icons.markRead : Icons.markUnread,
-            swipeIcon2: read ? Icons.markUnreadFill : Icons.markReadFill,
-            callback: api.willSendToken ? { self.self2?.toggleRead(feedback: feedback) } : nil
-        )
     }
 }

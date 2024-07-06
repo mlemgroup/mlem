@@ -192,6 +192,7 @@ enum Icons {
     static let signOut: String = "minus.circle"
     static let collapseComment: String = "arrow.down.and.line.horizontal.and.arrow.up"
     static let expandComment: String = "arrow.up.and.line.horizontal.and.arrow.down"
+    static let refresh: String = "arrow.clockwise"
     
     // settings
     static let upvoteOnSave: String = "arrow.up.heart"

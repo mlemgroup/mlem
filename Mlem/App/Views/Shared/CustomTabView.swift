@@ -11,12 +11,14 @@ import SwiftUI
 struct CustomTabView: UIViewControllerRepresentable {
     @Environment(Palette.self) var palette
     
+    let tabs: [CustomTabItem]
     var viewControllers: [CustomTabViewHostingController]
     let swipeGestureCallback: () -> Void
     
     @Binding var selectedIndex: Int
     
     init(selectedIndex: Binding<Int>, tabs: [CustomTabItem], onSwipeUp: @escaping () -> Void) {
+        self.tabs = tabs
         self.viewControllers = tabs.enumerated().map { CustomTabViewHostingController(rootView: $1, index: $0) }
         self.swipeGestureCallback = onSwipeUp
         self._selectedIndex = selectedIndex
@@ -43,6 +45,20 @@ struct CustomTabView: UIViewControllerRepresentable {
             if let controller = uiViewController as? CustomTabBarController {
                 Task { @MainActor in
                     controller.tabBar.tintColor = UIColor(palette.accent)
+                }
+            }
+        }
+                
+        withObservationTracking {
+            for tab in tabs {
+                let item = tab.badge?.wrappedValue
+            }
+        } onChange: {
+            if let controller = uiViewController as? CustomTabBarController {
+                Task { @MainActor in
+                    for (badge, item) in zip(tabs.map(\.badge), controller.tabBar.items ?? []) {
+                        item.badgeValue = badge?.wrappedValue
+                    }
                 }
             }
         }

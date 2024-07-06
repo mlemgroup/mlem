@@ -11,7 +11,7 @@ import SwiftUI
 
 struct InboxView: View {
     enum Tab: String, CaseIterable, Identifiable {
-        case replies, mentions, messages
+        case all, replies, mentions, messages
         
         var id: String { rawValue }
     }
@@ -26,13 +26,86 @@ struct InboxView: View {
     @State var loadingState: LoadingState = .idle
     
     @State var isAtTop: Bool = true
-    @State var selectedTab: Tab = .replies
+    @State var selectedTab: Tab = .all
     
     @State var replies: [Reply2] = []
     @State var mentions: [Reply2] = []
     @State var messages: [Message2] = []
+    @State var combined: [any InboxItemProviding] = []
+    
+    @State var showRefreshPopup: Bool = false
+    
+    var items: [any InboxItemProviding] {
+        switch selectedTab {
+        case .all:
+            combined
+        case .replies:
+            replies
+        case .mentions:
+            mentions
+        case .messages:
+            messages
+        }
+    }
     
     var body: some View {
+        content
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarEllipsisMenu {
+                    Button("Mark All as Read", systemImage: Icons.markRead) {
+                        Task {
+                            do {
+                                try await appState.firstApi.markAllAsRead()
+                                if !showRead {
+                                    removeAll()
+                                }
+                            } catch {
+                                handleError(error)
+                            }
+                        }
+                    }
+                    Toggle(isOn: $showRead.invert()) {
+                        Label("Hide Read", systemImage: Icons.read)
+                    }
+                }
+            }
+            .onChange(of: taskId) {
+                Task { @MainActor in
+                    removeAll()
+                    await loadReplies()
+                }
+            }
+            .refreshable {
+                _ = await Task {
+                    await loadReplies()
+                }.result
+            }
+            .onAppear {
+                guard !hasDoneInitialLoad else { return }
+                hasDoneInitialLoad = true
+                Task { @MainActor in
+                    await loadReplies()
+                }
+            }
+            .onChange(of: (appState.firstSession as? UserSession)?.unreadCount?.updateId) {
+                if loadingState == .done {
+                    showRefreshPopup = true
+                }
+            }
+            .overlay(alignment: .bottom) {
+                Group {
+                    if showRefreshPopup {
+                        refreshPopup
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
+                }
+                .animation(.bouncy, value: showRefreshPopup)
+            }
+    }
+    
+    @ViewBuilder
+    var content: some View {
         FancyScrollView(isAtTop: $isAtTop) {
             LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
                 Section {
@@ -43,71 +116,78 @@ struct InboxView: View {
                             .padding()
                             .tint(palette.secondary)
                     } else {
-                        if selectedTab == .messages {
-                            if messages.isEmpty {
-                                Text("Nothing to see here")
-                                    .foregroundStyle(palette.secondary)
-                                    .padding()
-                            } else {
-                                ForEach(messages) { message in
-                                    VStack(alignment: .leading, spacing: 0) {
-                                        MessageView(message: message)
-                                        Divider()
-                                    }
-                                }
-                            }
+                        if items.isEmpty {
+                            Text("Nothing to see here")
+                                .foregroundStyle(palette.secondary)
+                                .padding()
                         } else {
-                            let items = selectedTab == .replies ? replies : mentions
-                            if items.isEmpty {
-                                Text("Nothing to see here")
-                                    .foregroundStyle(palette.secondary)
-                                    .padding()
-                            } else {
-                                ForEach(items) { reply in
-                                    VStack(alignment: .leading, spacing: 0) {
+                            ForEach(items, id: \.id) { item in
+                                VStack(alignment: .leading, spacing: 0) {
+                                    if let reply = item as? Reply2 {
                                         ReplyView(reply: reply)
-                                        Divider()
                                     }
+                                    if let message = item as? Message2 {
+                                        MessageView(message: message)
+                                    }
+                                    Divider()
                                 }
                             }
                         }
                     }
                 } header: {
-                    BubblePicker(Tab.allCases, selected: $selectedTab) { tab in
-                        tab.rawValue.capitalized
-                    }
+                    BubblePicker(
+                        Tab.allCases,
+                        selected: $selectedTab,
+                        label: { tab in
+                            tab.rawValue.capitalized
+                        },
+                        value: { tab in
+                            if let unreadCount = (appState.firstSession as? UserSession)?.unreadCount {
+                                switch tab {
+                                case .all:
+                                    return unreadCount.total
+                                case .replies:
+                                    return unreadCount.replies
+                                case .mentions:
+                                    return unreadCount.mentions
+                                case .messages:
+                                    return unreadCount.messages
+                                }
+                            }
+                            return 0
+                        }
+                    )
                     .background(palette.background.opacity(isAtTop ? 1 : 0))
                     .background(.bar)
                 }
             }
         }
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarEllipsisMenu {
-                Toggle(isOn: $showRead) {
-                    Label("Show Read", systemImage: Icons.read)
+    }
+    
+    @ViewBuilder
+    var refreshPopup: some View {
+        HStack(spacing: 0) {
+            Text("Inbox is outdated")
+                .padding(.horizontal, 10)
+            Button {
+                showRefreshPopup = false
+                HapticManager.main.play(haptic: .lightSuccess, priority: .high)
+                Task { @MainActor in
+                    removeAll()
+                    await loadReplies()
                 }
+            } label: {
+                Label("Refresh", systemImage: Icons.refresh)
+                    .fontWeight(.semibold)
+                    .padding(.vertical, 4)
+                    .padding(.horizontal, 10)
+                    .background(palette.accent, in: .capsule)
             }
+            .buttonStyle(.plain)
         }
-        .onChange(of: taskId) {
-            Task { @MainActor in
-                replies.removeAll()
-                mentions.removeAll()
-                messages.removeAll()
-                await loadReplies()
-            }
-        }
-        .refreshable {
-            guard loadingState != .loading else { return }
-            await loadReplies()
-        }
-        .onAppear {
-            guard !hasDoneInitialLoad else { return }
-            hasDoneInitialLoad = true
-            Task { @MainActor in
-                await loadReplies()
-            }
-        }
+        .padding(4)
+        .background(palette.secondaryBackground, in: .capsule)
+        .padding()
     }
     
     var taskId: Int {
@@ -117,15 +197,24 @@ struct InboxView: View {
         return hasher.finalize()
     }
     
+    func removeAll() {
+        replies.removeAll()
+        mentions.removeAll()
+        messages.removeAll()
+        combined.removeAll()
+    }
+    
     func loadReplies() async {
         loadingState = .loading
         do {
-            async let replies = try await appState.firstApi.getReplies(page: 1, limit: 50, unreadOnly: !showRead)
-            async let mentions = try await appState.firstApi.getMentions(page: 1, limit: 50, unreadOnly: !showRead)
-            async let messages = try await appState.firstApi.getMessages(page: 1, limit: 50, unreadOnly: !showRead)
+            async let replies = appState.firstApi.getReplies(page: 1, limit: 50, unreadOnly: !showRead)
+            async let mentions = appState.firstApi.getMentions(page: 1, limit: 50, unreadOnly: !showRead)
+            async let messages = appState.firstApi.getMessages(page: 1, limit: 50, unreadOnly: !showRead)
+            try await (appState.firstSession as? UserSession)?.unreadCount?.refresh()
             self.replies = try await replies
             self.mentions = try await mentions
             self.messages = try await messages
+            combined = (self.replies + self.mentions + self.messages).sorted(by: { $0.created > $1.created })
             loadingState = .done
         } catch {
             handleError(error)
