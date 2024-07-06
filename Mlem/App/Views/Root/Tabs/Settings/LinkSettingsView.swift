@@ -23,18 +23,8 @@ struct LinkSettingsView: View {
             }
             
             Section {
-                Toggle(
-                    "Open in Reader",
-                    isOn: Binding(
-                        get: {
-                            !openLinksInBrowser && openLinksInReaderMode
-                        },
-                        set: { newValue in
-                            openLinksInReaderMode = newValue
-                        }
-                    )
-                )
-                .disabled(openLinksInBrowser)
+                Toggle("Open in Reader", isOn: $openLinksInReaderMode)
+                    .disabled(openLinksInBrowser)
             } footer: {
                 Text("Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser.")
             }
