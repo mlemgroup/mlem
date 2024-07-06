@@ -62,7 +62,7 @@ struct CommentView: View {
                     }
                 }
             }
-            .contextMenu(actionGroup: comment.menuActions(feedback: [.haptic]))
+            .contextMenu(actionGroup: comment.menuActions())
             Divider()
         }
         .padding(.leading, CGFloat(comment.depth) * indent)
