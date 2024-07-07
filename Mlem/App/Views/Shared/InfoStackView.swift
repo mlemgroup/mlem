@@ -28,12 +28,13 @@ struct InfoStackView: View {
                         }
                     }
                     .contentTransition(.numericText(value: Double(readout.label ?? "") ?? 0))
+                    .animation(.default, value: readout.label)
                 }
                 .foregroundStyle((showColor ? readout.color : nil) ?? palette.secondary)
-                .animation(.default, value: readout.label)
             }
         }
         .font(.footnote)
+        .geometryGroup()
     }
 }
 

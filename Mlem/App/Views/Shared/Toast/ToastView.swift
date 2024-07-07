@@ -34,6 +34,7 @@ struct ToastView: View {
             case let .undoable(
                 title: title,
                 systemImage: systemImage,
+                successSystemImage: successSystemImage,
                 callback: callback,
                 color: color
             ):
@@ -49,7 +50,7 @@ struct ToastView: View {
                     regularView(
                         title: title ?? (didUndo ? "Undone!" : "Undo"),
                         subtitle: title == nil ? nil : (didUndo ? "Undone!" : "Tap to Undo"),
-                        systemImage: didUndo ? Icons.successCircleFill : (systemImage ?? Icons.undoCircleFill),
+                        systemImage: didUndo ? (successSystemImage ?? Icons.successCircleFill) : (systemImage ?? Icons.undoCircleFill),
                         imageColor: color,
                         subtitleColor: Palette.main.accent
                     )
@@ -106,6 +107,7 @@ struct ToastView: View {
                             .foregroundStyle(subtitleColor)
                             .contentTransition(.opacity)
                     }
+                    .frame(minWidth: 80)
                 } else {
                     Text(title)
                         .lineLimit(1)

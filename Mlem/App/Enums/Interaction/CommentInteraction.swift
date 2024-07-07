@@ -28,6 +28,9 @@ enum CommentActionType {
     case upvote
     case downvote
     case save
+    case reply
+    case share
+    case selectText
 }
 
 enum CommentReadoutType: CaseIterable {

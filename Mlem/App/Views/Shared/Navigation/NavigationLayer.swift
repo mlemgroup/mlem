@@ -14,6 +14,8 @@ class NavigationLayer {
     
     var root: NavigationPage
     var path: [NavigationPage]
+    private(set) var popup: ActionGroup?
+    var shareUrl: URL?
     var hasNavigationStack: Bool
     var isFullScreenCover: Bool
     var canDisplayToasts: Bool
@@ -42,6 +44,21 @@ class NavigationLayer {
         } else {
             openSheet(page)
         }
+    }
+    
+    func showPopup(_ actionGroup: ActionGroup) {
+        if popup == nil {
+            popup = actionGroup
+        } else {
+            popup = nil
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                self.popup = actionGroup
+            }
+        }
+    }
+    
+    func dismissPopup() {
+        popup = nil
     }
     
     func pop() {

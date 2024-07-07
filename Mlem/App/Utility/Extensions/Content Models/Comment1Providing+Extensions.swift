@@ -15,22 +15,28 @@ extension Comment1Providing {
             downvoteAction(feedback: [.haptic])
         ] : .init()
         let trailingActions: [BasicAction] = api.willSendToken ? [
-            saveAction(feedback: [.haptic])
+            saveAction(feedback: [.haptic]),
+            replyAction()
         ] : .init()
         
         return .init(leadingActions: leadingActions, trailingActions: trailingActions, behavior: behavior)
     }
     
-    var menuActions: ActionGroup {
+    func menuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> ActionGroup {
         ActionGroup(
             children: [
                 ActionGroup(
                     children: [
-                        upvoteAction(feedback: [.haptic]),
-                        downvoteAction(feedback: [.haptic])
-                    ]
-                ),
-                saveAction(feedback: [.haptic])
+                        upvoteAction(feedback: feedback),
+                        downvoteAction(feedback: feedback),
+                        saveAction(feedback: feedback),
+                        replyAction(),
+                        selectTextAction(),
+                        shareAction(),
+                        blockCreatorAction(feedback: feedback)
+                    ],
+                    displayMode: .compactSection
+                )
             ])
     }
     
@@ -42,6 +48,12 @@ extension Comment1Providing {
             downvoteAction(feedback: [.haptic])
         case .save:
             saveAction(feedback: [.haptic])
+        case .reply:
+            replyAction()
+        case .share:
+            shareAction()
+        case .selectText:
+            selectTextAction()
         }
     }
     

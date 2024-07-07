@@ -46,6 +46,40 @@ struct NavigationLayerView: View {
             )
             .padding(.bottom, 8)
         }
+        .confirmationDialog(
+            layer.popup?.label ?? "",
+            isPresented: Binding(
+                get: { layer.popup != nil },
+                set: {
+                    if !$0 { layer.dismissPopup() }
+                }
+            )
+        ) {
+            ForEach(layer.popup?.children ?? [], id: \.id) { action in
+                MenuButton(action: action)
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text(layer.popup?.prompt ?? "")
+        }
+        // https://stackoverflow.com/questions/69693871/how-to-open-share-sheet-from-presented-sheet
+        .background(SharingViewController(
+            isPresenting: Binding(get: { layer.shareUrl != nil }, set: { if !$0 { layer.shareUrl = nil }})
+        ) {
+            let activityView = UIActivityViewController(
+                activityItems: [layer.shareUrl ?? URL(string: "www.apple.com")!],
+                applicationActivities: nil
+            )
+          
+            if UIDevice.isPad {
+                activityView.popoverPresentationController?.sourceView = UIView()
+            }
+
+            activityView.completionWithItemsHandler = { _, _, _, _ in
+                layer.shareUrl = nil
+            }
+            return activityView
+        })
         .modifier(HandleLemmyLinksModifier())
         .environment(layer)
     }
@@ -57,6 +91,21 @@ struct NavigationLayerView: View {
                 .viewWithModifiers(layer: layer)
         } else {
             layer.root.view()
+        }
+    }
+}
+
+private struct SharingViewController: UIViewControllerRepresentable {
+    @Binding var isPresenting: Bool
+    var content: () -> UIViewController
+
+    func makeUIViewController(context: Context) -> UIViewController {
+        UIViewController()
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+        if isPresenting {
+            uiViewController.present(content(), animated: true, completion: { isPresenting = false })
         }
     }
 }

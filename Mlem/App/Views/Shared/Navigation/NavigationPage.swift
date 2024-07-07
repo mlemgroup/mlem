@@ -21,6 +21,7 @@ enum NavigationPage: Hashable {
     case communityPicker(callback: HashWrapper<(Community2) -> Void>)
     case personPicker(callback: HashWrapper<(Person2) -> Void>)
     case instancePicker(callback: HashWrapper<(InstanceSummary) -> Void>)
+    case selectText(_ string: String)
     case subscriptionList
     
     static func expandedPost(_ post: any PostStubProviding) -> NavigationPage {
@@ -54,6 +55,8 @@ extension NavigationPage {
         switch self {
         case .subscriptionList:
             SubscriptionListView()
+        case let .selectText(string):
+            SelectTextView(text: string)
         case let .settings(page):
             page.view()
         case let .login(page):
@@ -110,7 +113,7 @@ extension NavigationPage {
     
     var hasNavigationStack: Bool {
         switch self {
-        case .quickSwitcher, .externalApiInfo:
+        case .quickSwitcher, .externalApiInfo, .selectText:
             false
         default:
             true
@@ -119,7 +122,7 @@ extension NavigationPage {
     
     var canDisplayToasts: Bool {
         switch self {
-        case .quickSwitcher, .externalApiInfo:
+        case .quickSwitcher, .externalApiInfo, .selectText:
             false
         default:
             true
