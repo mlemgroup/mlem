@@ -37,7 +37,7 @@ struct CustomTabItem: View {
 }
 
 // This is a janky workaround - if `badge` is simply included as a property in
-// `CustomTabItem`, the entire `ContentView` is reset  when the badge changes.
+// `CustomTabItem`, the entire `ContentView` is reset when the badge changes.
 
 @Observable
 class BadgeUpdater {
