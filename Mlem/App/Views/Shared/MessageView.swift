@@ -27,6 +27,8 @@ struct MessageView: View {
                 Image(systemName: Icons.message)
                     .symbolVariant(message.read ? .none : .fill)
                     .foregroundStyle(palette.accent)
+                EllipsisMenu(actions: message.menuActions(), size: 24)
+                    .frame(height: 10)
             }
             Markdown(message.content, configuration: .default)
             Text("\(verb) \(message.created.getRelativeTime())")

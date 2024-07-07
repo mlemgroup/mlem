@@ -23,8 +23,8 @@ struct ReplyView: View {
                 Image(systemName: reply.isMention ? Icons.mention : Icons.reply)
                     .symbolVariant(reply.read ? .none : .fill)
                     .foregroundStyle(palette.accent)
-                // EllipsisMenu(actions: [], size: 10)
-//                    .frame(height: 10)
+                EllipsisMenu(actions: reply.menuActions(), size: 24)
+                    .frame(height: 10)
             }
           
             Markdown(reply.comment.content, configuration: .default)
