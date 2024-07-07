@@ -47,5 +47,6 @@ struct ReplyView: View {
             navigation.push(.expandedPost(reply.post, commentId: reply.commentId))
         }
         .quickSwipes(reply.swipeActions(behavior: .standard))
+        .contextMenu(actions: reply.menuActions())
     }
 }

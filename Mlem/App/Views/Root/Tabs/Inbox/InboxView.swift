@@ -123,10 +123,10 @@ struct InboxView: View {
                         } else {
                             ForEach(items, id: \.id) { item in
                                 VStack(alignment: .leading, spacing: 0) {
-                                    if let reply = item as? Reply2 {
+                                    if let reply = item as? Reply2, !reply.creator.blocked {
                                         ReplyView(reply: reply)
                                     }
-                                    if let message = item as? Message2 {
+                                    if let message = item as? Message2, !message.creator.blocked {
                                         MessageView(message: message)
                                     }
                                     Divider()

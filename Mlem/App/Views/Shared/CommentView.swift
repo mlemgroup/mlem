@@ -30,7 +30,7 @@ struct CommentView: View {
                             .frame(height: 10)
                             .imageScale(.small)
                     } else {
-                        EllipsisMenu(actions: comment.menuActions, size: 24)
+                        EllipsisMenu(actions: comment.menuActions(), size: 24)
                             .frame(height: 10)
                     }
                 }
@@ -65,7 +65,7 @@ struct CommentView: View {
                     }
                 }
             }
-            .contextMenu(actionGroup: comment.menuActions())
+            .contextMenu(actions: comment.menuActions())
             Divider()
         }
         .padding(.leading, CGFloat(comment.depth) * indent)

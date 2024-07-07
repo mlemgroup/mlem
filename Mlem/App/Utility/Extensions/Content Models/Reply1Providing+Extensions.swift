@@ -21,6 +21,22 @@ extension Reply1Providing {
         
         return .init(leadingActions: leadingActions, trailingActions: trailingActions, behavior: behavior)
     }
+    
+    @ActionBuilder
+    func menuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
+        ActionGroup(displayMode: .compactSection) {
+            upvoteAction(feedback: feedback)
+            downvoteAction(feedback: feedback)
+            saveAction(feedback: feedback)
+            replyAction()
+            markReadAction(feedback: feedback)
+            if let comment = self2?.comment {
+                comment.selectTextAction()
+                comment.shareAction()
+            }
+            blockCreatorAction(feedback: feedback)
+        }
+    }
 
     func action(type: InboxActionType) -> any Action {
         switch type {

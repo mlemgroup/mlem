@@ -119,7 +119,7 @@ extension Interactable1Providing {
     
     func replyAction() -> BasicAction {
         .init(
-            id: "reply\(actorId.absoluteString)",
+            id: "reply\(uid)",
             isOn: false,
             label: "Reply",
             color: Palette.main.accent,
@@ -133,7 +133,7 @@ extension Interactable1Providing {
     
     func blockCreatorAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
         .init(
-            id: "blockCreator\(actorId.absoluteString)",
+            id: "blockCreator\(uid)",
             isOn: false,
             label: "Block User",
             color: Palette.main.negative,

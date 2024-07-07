@@ -22,22 +22,17 @@ extension Comment1Providing {
         return .init(leadingActions: leadingActions, trailingActions: trailingActions, behavior: behavior)
     }
     
-    func menuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> ActionGroup {
-        ActionGroup(
-            children: [
-                ActionGroup(
-                    children: [
-                        upvoteAction(feedback: feedback),
-                        downvoteAction(feedback: feedback),
-                        saveAction(feedback: feedback),
-                        replyAction(),
-                        selectTextAction(),
-                        shareAction(),
-                        blockCreatorAction(feedback: feedback)
-                    ],
-                    displayMode: .compactSection
-                )
-            ])
+    @ActionBuilder
+    func menuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
+        ActionGroup(displayMode: .compactSection) {
+            upvoteAction(feedback: feedback)
+            downvoteAction(feedback: feedback)
+            saveAction(feedback: feedback)
+            replyAction()
+            selectTextAction()
+            shareAction()
+            blockCreatorAction(feedback: feedback)
+        }
     }
     
     func action(type: CommentActionType) -> any Action {

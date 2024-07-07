@@ -39,5 +39,6 @@ struct MessageView: View {
         .background(palette.background)
         .contentShape(.rect)
         .quickSwipes(message.swipeActions(behavior: .standard))
+        .contextMenu(actions: message.menuActions())
     }
 }
