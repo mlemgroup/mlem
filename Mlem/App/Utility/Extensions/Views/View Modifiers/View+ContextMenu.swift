@@ -15,4 +15,12 @@ extension View {
             }
         }
     }
+    
+    func contextMenu(actionGroup: ActionGroup) -> some View {
+        contextMenu {
+            ForEach(actionGroup.children, id: \.id) { action in
+                MenuButton(action: action)
+            }
+        }
+    }
 }

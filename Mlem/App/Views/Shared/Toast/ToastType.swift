@@ -20,6 +20,7 @@ enum ToastType: Hashable {
     case undoable(
         title: String? = nil,
         systemImage: String? = nil,
+        successSystemImage: String? = nil,
         callback: () -> Void,
         color: Color = Palette.main.accent
     )
@@ -92,10 +93,17 @@ enum ToastType: Hashable {
             hasher.combine(systemImage)
             hasher.combine(color)
             hasher.combine(duration)
-        case let .undoable(title: title, systemImage: systemImage, callback: _, color: color):
+        case let .undoable(
+            title: title,
+            systemImage: systemImage,
+            successSystemImage: successSystemImage,
+            callback: _,
+            color: color
+        ):
             hasher.combine("undoable")
             hasher.combine(title)
             hasher.combine(systemImage)
+            hasher.combine(successSystemImage)
             hasher.combine(color)
         case let .error(details):
             hasher.combine("error")

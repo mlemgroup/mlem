@@ -22,6 +22,7 @@ enum NavigationPage: Hashable {
     case person(_ person: AnyPerson)
     case externalApiInfo(api: ApiClient, actorId: URL)
     case imageViewer(_ url: URL)
+    case selectText(_ string: String)
     case subscriptionList
     
     static func expandedPost(_ post: any PostStubProviding, commentId: Int? = nil) -> NavigationPage {
@@ -43,6 +44,8 @@ extension NavigationPage {
         switch self {
         case .subscriptionList:
             SubscriptionListView()
+        case let .selectText(string):
+            SelectTextView(text: string)
         case let .settings(page):
             page.view()
         case let .login(page):
@@ -72,7 +75,7 @@ extension NavigationPage {
     
     var hasNavigationStack: Bool {
         switch self {
-        case .quickSwitcher, .externalApiInfo:
+        case .quickSwitcher, .externalApiInfo, .selectText:
             false
         default:
             true
@@ -81,7 +84,7 @@ extension NavigationPage {
     
     var canDisplayToasts: Bool {
         switch self {
-        case .quickSwitcher, .externalApiInfo:
+        case .quickSwitcher, .externalApiInfo, .selectText:
             false
         default:
             true

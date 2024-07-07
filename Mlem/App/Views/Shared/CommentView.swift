@@ -40,7 +40,7 @@ struct CommentView: View {
                         comment: comment,
                         configuration: .init(
                             leading: [.counter(.score)],
-                            trailing: [.action(.save)],
+                            trailing: [.action(.save), .action(.reply)],
                             readouts: [.created, .score, .comment]
                         )
                     )
@@ -65,6 +65,7 @@ struct CommentView: View {
                     }
                 }
             }
+            .contextMenu(actionGroup: comment.menuActions())
             Divider()
         }
         .padding(.leading, CGFloat(comment.depth) * indent)

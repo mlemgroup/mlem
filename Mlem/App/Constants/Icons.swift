@@ -146,8 +146,10 @@ enum Icons {
     static let absent: String = "circle"
     static let warning: String = "exclamationmark.triangle"
     static let hide: String = "eye.slash"
+    static let hideFill: String = "eye.slash.fill"
     static let nsfwTag: String = "nsfw"
     static let show: String = "eye"
+    static let showFill: String = "eye.fill"
     static let blurNsfw: String = "eye.trianglebadge.exclamationmark"
     static let noContent: String = "binoculars"
     static let noPosts: String = "text.bubble"
@@ -189,10 +191,12 @@ enum Icons {
     static let edit: String = "pencil"
     static let delete: String = "trash"
     static let copy: String = "doc.on.doc"
+    static let copyFill: String = "doc.on.doc.fill"
     static let signOut: String = "minus.circle"
     static let collapseComment: String = "arrow.down.and.line.horizontal.and.arrow.up"
     static let expandComment: String = "arrow.up.and.line.horizontal.and.arrow.down"
     static let refresh: String = "arrow.clockwise"
+    static let select: String = "selection.pin.in.out"
     
     // settings
     static let upvoteOnSave: String = "arrow.up.heart"

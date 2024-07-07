@@ -17,6 +17,7 @@ struct ActionGroup: Action {
     let isOn: Bool
     
     let label: String
+    let prompt: String?
     let isDestructive: Bool
     let color: Color
     
@@ -25,7 +26,7 @@ struct ActionGroup: Action {
     let swipeIcon1: String
     let swipeIcon2: String
     
-    let enabled: Bool
+    let disabled: Bool
     let children: [any Action]
     
     /// Represents how the children of the `ActionGroup` are presented.
@@ -34,6 +35,7 @@ struct ActionGroup: Action {
     init(
         isOn: Bool = false,
         label: String = "More...",
+        prompt: String? = nil,
         color: Color = .blue,
         isDestructive: Bool = false,
         icon: String = Icons.menuCircle,
@@ -41,19 +43,27 @@ struct ActionGroup: Action {
         menuIcon: String? = nil,
         swipeIcon1: String? = nil,
         swipeIcon2: String? = nil,
-        enabled: Bool = true,
+        disabled: Bool? = nil,
         children: [any Action],
         displayMode: ActionGroupMode = .section
     ) {
         self.isOn = isOn
         self.label = label
+        self.prompt = prompt
         self.isDestructive = isDestructive
         self.color = color
         self.barIcon = barIcon ?? icon
         self.menuIcon = menuIcon ?? icon
         self.swipeIcon1 = swipeIcon1 ?? icon
         self.swipeIcon2 = swipeIcon2 ?? icon
-        self.enabled = enabled
+        self.disabled = disabled ?? !children.allSatisfy { action in
+            if let action = action as? BasicAction {
+                return !action.disabled
+            } else if let action = action as? ActionGroup {
+                return !action.disabled
+            }
+            return true
+        }
         self.children = children
         self.displayMode = displayMode
     }

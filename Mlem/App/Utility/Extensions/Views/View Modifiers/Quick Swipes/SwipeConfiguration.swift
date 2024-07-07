@@ -9,15 +9,15 @@ import Foundation
 
 public struct SwipeConfiguration {
     /// In ascending order of appearance.
-    let leadingActions: [BasicAction]
+    let leadingActions: [any Action]
     /// In ascending order of appearance.
-    let trailingActions: [BasicAction]
+    let trailingActions: [any Action]
     
     let behavior: SwipeBehavior
     
     init(
-        leadingActions: [BasicAction] = [],
-        trailingActions: [BasicAction] = [],
+        leadingActions: [any Action] = [],
+        trailingActions: [any Action] = [],
         behavior: SwipeBehavior = .standard
     ) {
         assert(
