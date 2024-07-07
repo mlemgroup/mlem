@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct MenuButton: View {
+    @Environment(NavigationLayer.self) var navigation
+    
     let action: any Action
     
     init(action: any Action) {
@@ -17,12 +19,14 @@ struct MenuButton: View {
     var body: some View {
         if let action = action as? BasicAction {
             Button(
+                action.label,
+                systemImage: action.menuIcon,
                 role: action.isDestructive ? .destructive : nil,
-                action: action.callback ?? {}
-            ) {
-                Label(action.label, systemImage: action.menuIcon)
-            }
-            .disabled(action.callback == nil)
+                action: { action.callbackWithConfirmation(navigation: navigation) }
+            )
+            .disabled(action.disabled)
+        } else if let action = action as? ShareAction {
+            ShareLink(item: action.url)
         } else if let action = action as? ActionGroup {
             switch action.displayMode {
             case .section:
@@ -41,7 +45,15 @@ struct MenuButton: View {
                     Label(action.label, systemImage: action.menuIcon)
                 }
             case .popup:
-                Text("WIP")
+                Button(
+                    action.label,
+                    systemImage: action.menuIcon,
+                    role: action.isDestructive ? .destructive : nil,
+                    action: {
+                        navigation.showPopup(action)
+                    }
+                )
+                .disabled(action.disabled)
             }
         }
     }

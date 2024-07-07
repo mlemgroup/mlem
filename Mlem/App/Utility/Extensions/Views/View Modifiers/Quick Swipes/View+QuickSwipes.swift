@@ -9,6 +9,7 @@ import Dependencies
 import SwiftUI
 
 struct QuickSwipeView: ViewModifier {
+    @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     
     // state
@@ -24,8 +25,8 @@ struct QuickSwipeView: ViewModifier {
     
     private let iconWidth: CGFloat
     
-    private var primaryLeadingAction: BasicAction? { config.leadingActions.first }
-    private var primaryTrailingAction: BasicAction? { config.trailingActions.first }
+    private var primaryLeadingAction: (any Action)? { config.leadingActions.first }
+    private var primaryTrailingAction: (any Action)? { config.trailingActions.first }
     
     init(config: SwipeConfiguration) {
         self.config = config
@@ -159,7 +160,15 @@ struct QuickSwipeView: ViewModifier {
         
         reset()
         
-        swipeAction(at: finalDragPosition)?.callback?()
+        let action = swipeAction(at: finalDragPosition)
+        
+        if let action = action as? BasicAction {
+            action.callbackWithConfirmation(navigation: navigation)
+        } else if let action = action as? ShareAction {
+            navigation.shareUrl = action.url
+        } else if let action = action as? ActionGroup {
+            navigation.showPopup(action)
+        }
     }
     
     private func reset() {
@@ -189,7 +198,7 @@ struct QuickSwipeView: ViewModifier {
     
     /// Get the swipe action a specific drag position.
     /// - Parameter dragPosition: Along the x-axis.
-    private func swipeAction(at dragPosition: CGFloat) -> BasicAction? {
+    private func swipeAction(at dragPosition: CGFloat) -> (any Action)? {
         let edge = edgeForActions(at: dragPosition)
         let index = actionIndex(edge: edge, at: dragPosition)
         let action = action(edge: edge, index: index)
@@ -236,7 +245,7 @@ struct QuickSwipeView: ViewModifier {
     }
     
     /// Get the action associated with an edge at the specified index.
-    private func action(edge: HorizontalEdge, index actionIndex: Array<CGFloat>.Index?) -> BasicAction? {
+    private func action(edge: HorizontalEdge, index actionIndex: Array<CGFloat>.Index?) -> (any Action)? {
         guard let actionIndex else {
             return nil
         }
@@ -311,8 +320,8 @@ extension View {
     ///   - trailing: trailing edge quick swipes, ordered by ascending swipe distance from leading edge
     @ViewBuilder
     func quickSwipes(
-        leading: [BasicAction] = [],
-        trailing: [BasicAction] = [],
+        leading: [any Action] = [],
+        trailing: [any Action] = [],
         dragThresholds: SwipeBehavior = .standard
     ) -> some View {
         modifier(

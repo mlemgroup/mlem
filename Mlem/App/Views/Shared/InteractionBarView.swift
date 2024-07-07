@@ -15,7 +15,7 @@ struct InteractionBarView: View {
     private let trailing: [EnrichedWidget]
     private let readouts: [Readout]
     
-    static let weightedSymbols: Set<String> = [Icons.save]
+    static let unweightedSymbols: Set<String> = [Icons.upvote, Icons.downvote]
     
     init(post: any Post1Providing, configuration: PostBarConfiguration) {
         self.leading = .init(post: post, items: configuration.leading)
@@ -30,13 +30,15 @@ struct InteractionBarView: View {
     }
 
     var body: some View {
-        HStack(spacing: AppConstants.standardSpacing) {
+        HStack(spacing: AppConstants.doubleSpacing) {
             ForEach(leading, id: \.viewId, content: widgetView)
             InfoStackView(readouts: readouts, showColor: false)
                 .frame(maxWidth: .infinity, alignment: infoStackAlignment)
+                .padding(.horizontal, -AppConstants.doubleSpacing)
             ForEach(trailing, id: \.viewId, content: widgetView)
         }
         .frame(height: AppConstants.barIconSize)
+        .geometryGroup()
     }
     
     var infoStackAlignment: Alignment {
@@ -79,10 +81,20 @@ struct InteractionBarView: View {
     
     @ViewBuilder
     private func actionView(_ action: any Action) -> some View {
-        Button {
-            (action as? BasicAction)?.callback?()
-        } label: {
-            actionLabelView(action)
+        Group {
+            if let action = action as? ShareAction {
+                ShareLink(item: action.url) {
+                    actionLabelView(action)
+                }
+            } else {
+                Button {
+                    if let action = action as? BasicAction {
+                        action.callback?()
+                    }
+                } label: {
+                    actionLabelView(action)
+                }
+            }
         }
         .accessibilityLabel(action.label)
         .accessibilityAction(.default) {
@@ -103,7 +115,7 @@ struct InteractionBarView: View {
         let isOn = ((action as? BasicAction)?.disabled ?? false) ? false : action.isOn
         Image(systemName: action.barIcon)
             .resizable()
-            .fontWeight(Self.weightedSymbols.contains(action.barIcon) ? .medium : .regular)
+            .fontWeight(Self.unweightedSymbols.contains(action.barIcon) ? .regular : .medium)
             .symbolVariant(isOn ? .fill : .none)
             .scaledToFit()
             .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)

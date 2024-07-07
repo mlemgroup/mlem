@@ -29,6 +29,7 @@ class CommentWrapper: Identifiable, Comment2Providing {
     }
     
     func tree() -> [CommentWrapper] {
+        if creator.blocked { return [] }
         if collapsed { return [self] }
         return children.reduce([self]) { $0 + $1.tree() }
     }
