@@ -48,6 +48,7 @@ struct SearchView: View {
                         page = .home
                         query = ""
                         resultsScrollToTopTrigger.toggle()
+                        Task { await refresh() }
                     }
                     .focused($searchBarFocused)
             }
@@ -70,24 +71,7 @@ struct SearchView: View {
             .task(id: query, priority: .userInitiated) { @MainActor in
                 guard !hasAppeared || searchBarFocused else { return }
                 hasAppeared = true
-                do {
-                    if !query.isEmpty {
-                        try await Task.sleep(for: .seconds(0.2))
-                    }
-                    communities.removeAll()
-                    people.removeAll()
-                    instances.removeAll()
-                    switch selectedTab {
-                    case .communities:
-                        communities = try await appState.firstApi.searchCommunities(query: query, page: 1, limit: 20)
-                    case .users:
-                        people = try await appState.firstApi.searchPeople(query: query, page: 1, limit: 20)
-                    case .instances:
-                        instances = try await MlemStats.main.searchInstances(query: query)
-                    }
-                } catch {
-                    handleError(error)
-                }
+                await refresh()
             }
             .onChange(of: selectedTab) {
                 Task { @MainActor in
@@ -131,16 +115,37 @@ struct SearchView: View {
                     }
                 case .users:
                     SearchResultsView(results: people) { person in
-                        PersonListRowBody(person, readout: .postsAndComments)
+                        PersonListRow(person, complications: [.instance, .date], readout: .postsAndComments)
                             .padding(.vertical, 6)
                     }
                 case .instances:
                     SearchResultsView(results: instances) { instance in
-                        InstanceListRowBody(instance)
+                        InstanceListRow(instance)
                             .padding(.vertical, 6)
                     }
                 }
             }
+        }
+    }
+    
+    func refresh() async {
+        do {
+            if !query.isEmpty {
+                try await Task.sleep(for: .seconds(0.2))
+            }
+            communities.removeAll()
+            people.removeAll()
+            instances.removeAll()
+            switch selectedTab {
+            case .communities:
+                communities = try await appState.firstApi.searchCommunities(query: query, page: 1, limit: 20)
+            case .users:
+                people = try await appState.firstApi.searchPeople(query: query, page: 1, limit: 20)
+            case .instances:
+                instances = try await MlemStats.main.searchInstances(query: query)
+            }
+        } catch {
+            handleError(error)
         }
     }
 }
