@@ -49,6 +49,13 @@ struct ContentView: View {
                 .environment(palette)
                 .environment(tabReselectTracker)
                 .environment(appState)
+                .task {
+                    do {
+                        try await MlemStats.main.loadInstances()
+                    } catch {
+                        handleError(error)
+                    }
+                }
         }
     }
 
