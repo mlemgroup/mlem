@@ -152,18 +152,18 @@ struct HandleLemmyLinksModifier: ViewModifier {
     func isLemmyHost(_ host: String) -> Bool {
         MlemStats.main.hosts.contains(host)
     }
+}
+
+func openRegularLink(url: URL) {
+    @AppStorage("links.openInBrowser") var openLinksInBrowser = false
     
-    func openRegularLink(url: URL) {
-        @AppStorage("links.openInBrowser") var openLinksInBrowser = false
-        
-        if let scheme = url.scheme, scheme.hasPrefix("http"), !openLinksInBrowser {
-            Task { @MainActor in
-                let viewController = SFSafariViewController(url: url, configuration: .default)
-                UIApplication.shared.firstKeyWindow?.rootViewController?.topMostViewController().present(viewController, animated: true)
-            }
-        } else {
-            UIApplication.shared.open(url)
+    if let scheme = url.scheme, scheme.hasPrefix("http"), !openLinksInBrowser {
+        Task { @MainActor in
+            let viewController = SFSafariViewController(url: url, configuration: .default)
+            UIApplication.shared.firstKeyWindow?.rootViewController?.topMostViewController().present(viewController, animated: true)
         }
+    } else {
+        UIApplication.shared.open(url)
     }
 }
 

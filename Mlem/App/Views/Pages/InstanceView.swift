@@ -37,8 +37,7 @@ struct InstanceView: View {
     @State var selectedTab: Tab = .about
     
     var internalStub: InstanceStub {
-        if let internalInstance = internalInstance as? InstanceStub { return internalInstance }
-        return .init(api: appState.firstApi, actorId: internalInstance.actorId)
+        .init(api: appState.firstApi, actorId: internalInstance.actorId)
     }
     
     var displayInstance: any InstanceStubProviding {
@@ -101,7 +100,7 @@ struct InstanceView: View {
                 ProfileHeaderView(displayInstance, type: .instance)
                     .padding(.horizontal, AppConstants.standardSpacing)
                 BubblePicker(
-                    Tab.allCases,
+                    [.about, .administration, .details],
                     selected: $selectedTab,
                     withDividers: [.top, .bottom], label: { $0.label }
                 )
@@ -111,6 +110,10 @@ struct InstanceView: View {
                 }
             }
         }
-        .toolbar {}
+        .toolbar {
+            ToolbarEllipsisMenu(
+                (internalInstance as? any Instance)?.menuActions() ?? displayInstance.menuActions()
+            )
+        }
     }
 }

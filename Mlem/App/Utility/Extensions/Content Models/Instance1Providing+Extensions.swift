@@ -24,17 +24,33 @@ extension Instance1Providing {
         toggleBlocked()
     }
     
-    func menuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> ActionGroup {
-        ActionGroup(
-            children: [
-                blockAction(feedback: feedback)
-            ]
+    @ActionBuilder
+    func menuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
+        ActionGroup {
+            openInBrowserAction()
+            shareAction()
+        }
+        ActionGroup {
+            blockAction(feedback: feedback)
+        }
+    }
+    
+    func openInBrowserAction() -> BasicAction {
+        .init(
+            id: "openInstanceUrl\(uid)",
+            isOn: false,
+            label: "Open in Browser",
+            color: .gray,
+            icon: Icons.browser,
+            callback: {
+                openRegularLink(url: self.actorId)
+            }
         )
     }
     
     func blockAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
         .init(
-            id: "blockInstance\(actorId.absoluteString)",
+            id: "blockInstance\(uid)",
             isOn: false,
             label: "Block",
             color: Palette.main.negative,
