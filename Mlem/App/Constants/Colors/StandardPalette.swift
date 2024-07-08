@@ -24,6 +24,7 @@ extension ColorPalette {
         upvote: .blue,
         downvote: .red,
         save: .green,
+        read: .purple,
         favorite: .blue,
         selectedInteractionBarItem: .white,
         administration: .teal,

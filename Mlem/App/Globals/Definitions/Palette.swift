@@ -79,6 +79,7 @@ struct ColorPalette: PaletteProviding {
     var upvote: Color
     var downvote: Color
     var save: Color
+    var read: Color
     var favorite: Color
     var selectedInteractionBarItem: Color
     
@@ -115,6 +116,7 @@ struct ColorPalette: PaletteProviding {
         upvote: Color,
         downvote: Color,
         save: Color,
+        read: Color,
         favorite: Color,
         selectedInteractionBarItem: Color,
         administration: Color,
@@ -143,6 +145,7 @@ struct ColorPalette: PaletteProviding {
         self.upvote = upvote
         self.downvote = downvote
         self.save = save
+        self.read = read
         self.favorite = favorite
         self.selectedInteractionBarItem = selectedInteractionBarItem
         self.administration = administration
@@ -193,6 +196,7 @@ class Palette: PaletteProviding {
     var upvote: Color { palette.upvote }
     var downvote: Color { palette.downvote }
     var save: Color { palette.save }
+    var read: Color { palette.read }
     var favorite: Color { palette.favorite }
     var selectedInteractionBarItem: Color { palette.selectedInteractionBarItem }
     

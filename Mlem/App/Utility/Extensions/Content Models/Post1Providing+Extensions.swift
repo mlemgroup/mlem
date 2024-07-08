@@ -25,22 +25,17 @@ extension Post1Providing {
         return .init(leadingActions: leadingActions, trailingActions: trailingActions, behavior: behavior)
     }
     
-    func menuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> ActionGroup {
-        ActionGroup(
-            children: [
-                ActionGroup(
-                    children: [
-                        upvoteAction(feedback: feedback),
-                        downvoteAction(feedback: feedback),
-                        saveAction(feedback: feedback),
-                        replyAction(),
-                        selectTextAction(),
-                        shareAction(),
-                        blockAction(feedback: feedback)
-                    ],
-                    displayMode: .compactSection
-                )
-            ])
+    @ActionBuilder
+    func menuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
+        ActionGroup(displayMode: .compactSection) {
+            upvoteAction(feedback: feedback)
+            downvoteAction(feedback: feedback)
+            saveAction(feedback: feedback)
+            replyAction()
+            selectTextAction()
+            shareAction()
+            blockAction(feedback: feedback)
+        }
     }
     
     func action(type: PostActionType, feedback: Set<FeedbackType> = []) -> any Action {
@@ -134,12 +129,11 @@ extension Post1Providing {
             isDestructive: true,
             icon: Icons.hide,
             disabled: !api.willSendToken,
-            children: [
-                blockCreatorAction(feedback: feedback, showConfirmation: false),
-                blockCommunityAction(feedback: feedback, showConfirmation: false)
-            ],
             displayMode: .popup
-        )
+        ) {
+            blockCreatorAction(feedback: feedback, showConfirmation: false)
+            blockCommunityAction(feedback: feedback, showConfirmation: false)
+        }
     }
     
     func blockCommunityAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {

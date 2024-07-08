@@ -147,13 +147,13 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
             Text(label(tab))
                 .font(.subheadline)
                 .fontWeight(.semibold)
-                .foregroundColor(isSelected ? .white : palette.primary)
+                .foregroundColor(isSelected ? palette.selectedInteractionBarItem : palette.primary)
             if let value {
                 Text(value.abbreviated)
                     .monospacedDigit()
                     .font(.subheadline)
                     .fontWeight(.medium)
-                    .foregroundColor(isSelected ? .white.opacity(0.8) : palette.secondary)
+                    .foregroundColor(isSelected ? palette.selectedInteractionBarItem.opacity(0.8) : palette.secondary)
             }
         })
         .padding(.horizontal, 22)

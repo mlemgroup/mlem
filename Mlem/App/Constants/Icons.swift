@@ -44,6 +44,10 @@ enum Icons {
     static let moderationFill: String = "shield.fill"
     static let moderationReport: String = "exclamationmark.shield"
     
+    // inbox
+    static let mention: String = "quote.bubble"
+    static let message = "envelope"
+    
     // misc post
     static let posts: String = "doc.plaintext"
     static let replies: String = "bubble.left"
@@ -191,6 +195,7 @@ enum Icons {
     static let signOut: String = "minus.circle"
     static let collapseComment: String = "arrow.down.and.line.horizontal.and.arrow.up"
     static let expandComment: String = "arrow.up.and.line.horizontal.and.arrow.down"
+    static let refresh: String = "arrow.clockwise"
     static let select: String = "selection.pin.in.out"
     
     // settings

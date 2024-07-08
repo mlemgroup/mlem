@@ -6,12 +6,14 @@
 //
 
 import Dependencies
+import MlemMiddleware
 import SwiftUI
 
 struct ContentView: View {
     @AppStorage("colorPalette") var colorPalette: PaletteOption = .standard
     
-    let timer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
+    let cacheCleanTimer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
+    let unreadCountTimer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
 
     // globals
     var appState: AppState { .main }
@@ -20,6 +22,8 @@ struct ContentView: View {
     
     @State var selectedTabIndex: Int = 0
     @State var tabReselectTracker: TabReselectTracker = .main
+    
+    @State var badgeUpdater: BadgeUpdater = .init()
     
     var navigationModel: NavigationModel { .main }
   
@@ -30,8 +34,17 @@ struct ContentView: View {
     var body: some View {
         if appState.appRefreshToggle {
             content
-                .onReceive(timer) { _ in
+                .onReceive(cacheCleanTimer) { _ in
                     appState.cleanCaches()
+                }
+                .onReceive(unreadCountTimer) { _ in
+                    print("Refreshing unread count...")
+                    Task { @MainActor in
+                        try await (appState.firstSession as? UserSession)?.unreadCount?.refresh()
+                    }
+                }
+                .onChange(of: (appState.firstSession as? UserSession)?.unreadCount?.badgeLabel) { _, newValue in
+                    badgeUpdater.wrappedValue = newValue
                 }
                 .sheet(isPresented: Binding(
                     get: { !(navigationModel.layers.first?.isFullScreenCover ?? true) },
@@ -68,7 +81,12 @@ struct ContentView: View {
             CustomTabItem(title: "Feeds", image: Icons.feeds, selectedImage: Icons.feedsFill) {
                 NavigationSplitRootView(sidebar: .subscriptionList, root: .feeds)
             },
-            CustomTabItem(title: "Inbox", image: Icons.inbox, selectedImage: Icons.inboxFill) {
+            CustomTabItem(
+                title: "Inbox",
+                image: Icons.inbox,
+                selectedImage: Icons.inboxFill,
+                badge: badgeUpdater
+            ) {
                 NavigationLayerView(layer: .init(root: .inbox, model: navigationModel), hasSheetModifiers: false)
             },
             CustomTabItem(

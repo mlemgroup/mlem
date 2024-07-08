@@ -28,6 +28,12 @@ struct InteractionBarView: View {
         self.trailing = .init(comment: comment, items: configuration.trailing)
         self.readouts = configuration.readouts.map { comment.readout(type: $0) }
     }
+    
+    init(reply: any Reply1Providing, configuration: InboxBarConfiguration) {
+        self.leading = .init(reply: reply, items: configuration.leading)
+        self.trailing = .init(reply: reply, items: configuration.trailing)
+        self.readouts = configuration.readouts.map { reply.readout(type: $0) }
+    }
 
     var body: some View {
         HStack(spacing: AppConstants.doubleSpacing) {
@@ -174,6 +180,17 @@ extension [EnrichedWidget] {
                 return .action(comment.action(type: action))
             case let .counter(counter):
                 return .counter(comment.counter(type: counter))
+            }
+        }
+    }
+    
+    init(reply: any Reply1Providing, items: [InboxBarConfiguration.Item]) {
+        self = items.map { item in
+            switch item {
+            case let .action(action):
+                return .action(reply.action(type: action))
+            case let .counter(counter):
+                return .counter(reply.counter(type: counter))
             }
         }
     }

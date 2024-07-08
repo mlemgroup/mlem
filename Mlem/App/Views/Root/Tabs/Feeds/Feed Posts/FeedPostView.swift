@@ -20,7 +20,7 @@ struct FeedPostView: View {
         content
             .contentShape(.interaction, .rect)
             .quickSwipes(post.swipeActions(behavior: tilePosts ? .tile : .standard))
-            .contextMenu(actionGroup: post.menuActions())
+            .contextMenu(actions: post.menuActions())
     }
     
     @ViewBuilder
