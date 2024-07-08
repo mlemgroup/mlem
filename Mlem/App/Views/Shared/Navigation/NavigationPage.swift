@@ -20,6 +20,7 @@ enum NavigationPage: Hashable {
     case expandedPost(_ post: AnyPost)
     case community(_ community: AnyCommunity)
     case person(_ person: AnyPerson)
+    case instance(_ instance: InstanceHashWrapper)
     case externalApiInfo(api: ApiClient, actorId: URL)
     case imageViewer(_ url: URL)
     case selectText(_ string: String)
@@ -35,6 +36,10 @@ enum NavigationPage: Hashable {
     
     static func community(_ community: any CommunityStubProviding) -> NavigationPage {
         Self.community(.init(community))
+    }
+    
+    static func instance(_ instance: any InstanceStubProviding) -> NavigationPage {
+        Self.instance(.init(wrappedValue: instance))
     }
 }
 
@@ -70,6 +75,8 @@ extension NavigationPage {
             ExpandedPostView(post: post)
         case let .person(person):
             PersonView(person: person)
+        case let .instance(instance):
+            InstanceView(instance: instance.wrappedValue)
         }
     }
     
@@ -89,5 +96,18 @@ extension NavigationPage {
         default:
             true
         }
+    }
+}
+
+struct InstanceHashWrapper: Hashable {
+    var wrappedValue: any InstanceStubProviding
+    let id = UUID()
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: InstanceHashWrapper, rhs: InstanceHashWrapper) -> Bool {
+        lhs.id == rhs.id
     }
 }

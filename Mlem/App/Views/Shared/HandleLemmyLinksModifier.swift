@@ -88,7 +88,8 @@ struct HandleLemmyLinksModifier: ViewModifier {
     func interpretLemmyUrlPath(url: URL) -> Bool {
         let components = url.pathComponents.dropFirst()
         if components.isEmpty {
-            // TODO: instance
+            navigation.push(.instance(InstanceStub(api: appState.firstApi, actorId: url)))
+            return true
         }
         switch components.first {
         case "u":

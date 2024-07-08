@@ -53,6 +53,9 @@ struct ProfileHeaderView: View {
     }
     
     var subtitle: String {
-        (profilable as? any CommunityOrPersonStub)?.fullNameWithPrefix ?? profilable?.actorId.host() ?? ""
+        if let instance = profilable as? any Instance3Providing {
+            return "\(instance.host ?? "") • \(instance.version)"
+        }
+        return (profilable as? any CommunityOrPersonStub)?.fullNameWithPrefix ?? profilable?.host ?? ""
     }
 }
