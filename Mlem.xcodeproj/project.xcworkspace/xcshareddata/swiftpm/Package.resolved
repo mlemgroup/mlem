@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware.git",
       "state" : {
-        "branch" : "eric/post-feed-loader-cleanup",
-        "revision" : "5a7c2b054217bc27626870ade5395ea512b0115c"
+        "revision" : "35c32a69b209a095dfef0acd29991fab4a6c2706",
+        "version" : "0.14.1"
       }
     },
     {
