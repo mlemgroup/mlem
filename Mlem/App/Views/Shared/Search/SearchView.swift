@@ -111,17 +111,14 @@ struct SearchView: View {
                 case .communities:
                     SearchResultsView(results: communities) { community in
                         CommunityListRow(community, readout: .subscribers)
-                            .padding(.vertical, 6)
                     }
                 case .users:
                     SearchResultsView(results: people) { person in
                         PersonListRow(person, complications: [.instance, .date], readout: .postsAndComments)
-                            .padding(.vertical, 6)
                     }
                 case .instances:
                     SearchResultsView(results: instances) { instance in
                         InstanceListRow(instance)
-                            .padding(.vertical, 6)
                     }
                 }
             }

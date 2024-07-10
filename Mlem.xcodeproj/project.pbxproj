@@ -88,14 +88,14 @@
 		0382A7F02C09F0F800C79DDA /* PersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0382A7EF2C09F0F800C79DDA /* PersonView.swift */; };
 		0382A7F22C0A758E00C79DDA /* ProfileDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0382A7F12C0A758E00C79DDA /* ProfileDateView.swift */; };
 		0382A7F42C0A76A900C79DDA /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0382A7F32C0A76A900C79DDA /* Date+Extensions.swift */; };
-		0389DDCF2C39CB0E0005B808 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDCE2C39CB0E0005B808 /* SearchView.swift */; };
-		0389DDD12C39E1030005B808 /* InstanceListRowBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDD02C39E1030005B808 /* InstanceListRowBody.swift */; };
-		0389DDD32C39E4D40005B808 /* PasteLinkButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDD22C39E4D40005B808 /* PasteLinkButtonView.swift */; };
-		0389DDD52C39F1290005B808 /* CommunityListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDD42C39F1290005B808 /* CommunityListRow.swift */; };
 		0389DDC32C38907C0005B808 /* Message1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDC22C38907C0005B808 /* Message1Providing+Extensions.swift */; };
 		0389DDC52C38917A0005B808 /* InboxItemProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDC42C38917A0005B808 /* InboxItemProviding+Extensions.swift */; };
 		0389DDC72C389F840005B808 /* UnreadCount+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDC62C389F840005B808 /* UnreadCount+Extensions.swift */; };
 		0389DDC92C39658E0005B808 /* Binding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDC82C39658E0005B808 /* Binding+Extensions.swift */; };
+		0389DDCF2C39CB0E0005B808 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDCE2C39CB0E0005B808 /* SearchView.swift */; };
+		0389DDD12C39E1030005B808 /* InstanceListRowBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDD02C39E1030005B808 /* InstanceListRowBody.swift */; };
+		0389DDD32C39E4D40005B808 /* PasteLinkButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDD22C39E4D40005B808 /* PasteLinkButtonView.swift */; };
+		0389DDD52C39F1290005B808 /* CommunityListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDD42C39F1290005B808 /* CommunityListRow.swift */; };
 		0389DDDB2C3AB6340005B808 /* ActionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDDA2C3AB6340005B808 /* ActionBuilder.swift */; };
 		039EFEC32BEEBEE0003AC372 /* LoginInstancePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */; };
 		03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */; };
@@ -329,14 +329,14 @@
 		0382A7EF2C09F0F800C79DDA /* PersonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonView.swift; sourceTree = "<group>"; };
 		0382A7F12C0A758E00C79DDA /* ProfileDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDateView.swift; sourceTree = "<group>"; };
 		0382A7F32C0A76A900C79DDA /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
-		0389DDCE2C39CB0E0005B808 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
-		0389DDD02C39E1030005B808 /* InstanceListRowBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceListRowBody.swift; sourceTree = "<group>"; };
-		0389DDD22C39E4D40005B808 /* PasteLinkButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteLinkButtonView.swift; sourceTree = "<group>"; };
-		0389DDD42C39F1290005B808 /* CommunityListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListRow.swift; sourceTree = "<group>"; };
 		0389DDC22C38907C0005B808 /* Message1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		0389DDC42C38917A0005B808 /* InboxItemProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InboxItemProviding+Extensions.swift"; sourceTree = "<group>"; };
 		0389DDC62C389F840005B808 /* UnreadCount+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UnreadCount+Extensions.swift"; sourceTree = "<group>"; };
 		0389DDC82C39658E0005B808 /* Binding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extensions.swift"; sourceTree = "<group>"; };
+		0389DDCE2C39CB0E0005B808 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		0389DDD02C39E1030005B808 /* InstanceListRowBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceListRowBody.swift; sourceTree = "<group>"; };
+		0389DDD22C39E4D40005B808 /* PasteLinkButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteLinkButtonView.swift; sourceTree = "<group>"; };
+		0389DDD42C39F1290005B808 /* CommunityListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListRow.swift; sourceTree = "<group>"; };
 		0389DDDA2C3AB6340005B808 /* ActionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBuilder.swift; sourceTree = "<group>"; };
 		039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInstancePickerView.swift; sourceTree = "<group>"; };
 		03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiClient+Extensions.swift"; sourceTree = "<group>"; };
@@ -2041,7 +2041,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				branch = sjmarf/block-list;
+				branch = "sjmarf/block-list";
 				kind = branch;
 			};
 		};

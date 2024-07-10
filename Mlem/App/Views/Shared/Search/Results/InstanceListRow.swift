@@ -48,5 +48,6 @@ struct InstanceListRow<Content2: View>: View {
             // TODO:
             // navigation.push()
         }
+        .background(palette.background)
     }
 }

@@ -23,4 +23,25 @@ extension Person1Providing {
         }
         toggleBlocked()
     }
+    
+    @ActionBuilder
+    func menuActions(feedback: Set<FeedbackType> = [.haptic]) -> [any Action] {
+        openInstanceAction()
+        copyNameAction()
+        shareAction()
+        blockAction()
+    }
+    
+    func blockAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
+        .init(
+            id: "block\(uid)",
+            isOn: false,
+            label: blocked ? "Unblock" : "Block",
+            color: Palette.main.negative,
+            isDestructive: !blocked,
+            confirmationPrompt: (!blocked && showConfirmation) ? "Really block this user?" : nil,
+            icon: blocked ? Icons.show : Icons.hide,
+            callback: api.willSendToken ? { self.toggleBlocked(feedback: feedback) } : nil
+        )
+    }
 }

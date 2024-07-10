@@ -45,8 +45,11 @@ struct PersonListRow<Content2: View>: View {
                 .foregroundStyle(palette.tertiary)
         }
         .padding(.trailing)
+        .padding(.vertical, 6)
         .onTapGesture {
             navigation.push(.person(person))
         }
+        .background(palette.background)
+        .contextMenu(actions: person.menuActions())
     }
 }
