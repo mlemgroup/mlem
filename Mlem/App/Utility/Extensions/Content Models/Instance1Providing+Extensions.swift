@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 08/07/2024.
 //
 
+import Foundation
 import MlemMiddleware
 
 extension Instance1Providing {
@@ -25,13 +26,23 @@ extension Instance1Providing {
     }
     
     @ActionBuilder
-    func menuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
+    func menuActions(
+        feedback: Set<FeedbackType> = [.haptic, .toast],
+        externalBlockStatus: Bool = false,
+        externalBlockCallback: (() -> Void)? = nil
+    ) -> [any Action] {
         ActionGroup {
             openInBrowserAction()
             shareAction()
         }
-        ActionGroup {
-            blockAction(feedback: feedback)
+        if !local || externalBlockCallback != nil {
+            ActionGroup {
+                blockAction(
+                    feedback: feedback,
+                    externalBlockStatus: externalBlockStatus,
+                    externalBlockCallback: externalBlockCallback
+                )
+            }
         }
     }
     
@@ -48,16 +59,22 @@ extension Instance1Providing {
         )
     }
     
-    func blockAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
-        .init(
+    func blockAction(
+        feedback: Set<FeedbackType> = [],
+        showConfirmation: Bool = true,
+        externalBlockStatus: Bool = false,
+        externalBlockCallback: (() -> Void)? = nil
+    ) -> BasicAction {
+        let blocked = (api.token == nil ? externalBlockStatus : blocked)
+        return .init(
             id: "blockInstance\(uid)",
             isOn: false,
             label: blocked ? "Unblock" : "Block",
             color: Palette.main.negative,
             isDestructive: !blocked,
             confirmationPrompt: (!blocked && showConfirmation) ? "Really block this instance?" : nil,
-            icon: Icons.hide,
-            callback: api.willSendToken ? { self.toggleBlocked(feedback: feedback) } : nil
+            icon: blocked ? Icons.show : Icons.hide,
+            callback: api.willSendToken ? { self.toggleBlocked(feedback: feedback) } : externalBlockCallback
         )
     }
 }

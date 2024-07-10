@@ -64,7 +64,10 @@ extension NavigationPage {
         case .inbox:
             InboxView()
         case .search:
-            Link("Test", destination: URL(string: "https://lemmy.dbzer0.com")!)
+            VStack {
+                Link("Test", destination: URL(string: "https://lemmy.dbzer0.com")!)
+                Text("\((AppState.main.firstSession as? UserSession)?.blocks?.instanceCount)")
+            }
         case let .externalApiInfo(api: api, actorId: actorId):
             ExternalApiInfoView(api: api, actorId: actorId)
         case let .imageViewer(url):

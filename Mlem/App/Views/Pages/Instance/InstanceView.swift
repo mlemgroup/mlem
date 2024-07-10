@@ -29,61 +29,41 @@ struct InstanceView: View {
     @Environment(AppState.self) var appState
     @Environment(\.colorScheme) var colorScheme
     
-    @State var internalInstance: any InstanceStubProviding
-    @State var externalInstance: Instance3?
-    
-    @State var internalUpgradeState: LoadingState = .idle
-    @State var externalUpgradeState: LoadingState = .idle
+    // This is fetched from the instance itself, not from the logged-in account.
+    @State var instance: any InstanceStubProviding
+    @State var upgradeState: LoadingState = .idle
     
     @State var selectedTab: Tab = .about
     @State var isAtTop: Bool = true
     
-    var internalStub: InstanceStub {
-        .init(api: appState.firstApi, actorId: internalInstance.actorId)
-    }
+    // If != nil, blocking is in progress
+    @State var isBlocking: UUID?
     
     init(instance: any InstanceStubProviding) {
-        if instance.actorId == AppState.main.firstApi.actorId, AppState.main.firstSession.instance != nil {
-            self.externalInstance = AppState.main.firstSession.instance
-            self.internalInstance = AppState.main.firstSession.instance ?? instance
-            self.internalUpgradeState = .done
-            self.externalUpgradeState = .done
-        } else {
-            self.externalInstance = nil
-            self.internalInstance = instance
-        }
+        self.instance = instance
     }
     
     var body: some View {
         VStack {
-            if let externalInstance {
-                content(externalInstance)
-                    .navigationTitle(isAtTop ? "" : externalInstance.displayName)
+            if let instance = instance as? any Instance {
+                content(instance)
+                    .navigationTitle(isAtTop ? "" : instance.displayName)
             } else {
                 ProgressView()
                     .tint(palette.secondary)
             }
         }
-        .animation(.easeOut(duration: 0.2), value: externalInstance is any Instance)
+        .animation(.easeOut(duration: 0.2), value: instance is any Instance)
         .task {
-            guard internalUpgradeState == .idle else { return }
-            internalUpgradeState = .loading
+            guard upgradeState == .idle else { return }
+            upgradeState = .loading
             do {
-                internalInstance = try await internalStub.upgrade()
-                internalUpgradeState = .done
+                if !(instance is any Instance3Providing) {
+                    instance = try await instance.upgradeLocal()
+                }
+                upgradeState = .done
             } catch {
-                internalUpgradeState = .idle
-                handleError(error)
-            }
-        }
-        .task {
-            guard externalUpgradeState == .idle else { return }
-            externalUpgradeState = .loading
-            do {
-                externalInstance = try await internalStub.upgradeLocal()
-                externalUpgradeState = .done
-            } catch {
-                externalUpgradeState = .idle
+                upgradeState = .idle
                 handleError(error)
             }
         }
@@ -93,10 +73,14 @@ struct InstanceView: View {
     }
     
     @ViewBuilder
-    func content(_ externalInstance: any Instance) -> some View {
+    func content(_ instance: any Instance) -> some View {
         FancyScrollView {
-            ProfileHeaderView(externalInstance, type: .instance, blockedOverride: internalInstance.blocked_)
-                .padding([.horizontal, .bottom], AppConstants.standardSpacing)
+            ProfileHeaderView(
+                instance,
+                type: .instance,
+                blockedOverride: (appState.firstSession as? UserSession)?.blocks?.contains(instance)
+            )
+            .padding([.horizontal, .bottom], AppConstants.standardSpacing)
             BubblePicker(
                 [.about, .details],
                 selected: $selectedTab,
@@ -104,13 +88,13 @@ struct InstanceView: View {
             )
             switch selectedTab {
             case .about:
-                if let description = externalInstance.description {
+                if let description = instance.description {
                     Markdown(description, configuration: .default)
                         .padding(.horizontal, AppConstants.standardSpacing)
                         .padding(.vertical, 16)
                 }
             case .details:
-                InstanceDetailsView(instance: externalInstance)
+                InstanceDetailsView(instance: instance)
                     .padding(.vertical, 16)
                     .background(palette.groupedBackground)
                 if colorScheme == .light {
@@ -121,8 +105,13 @@ struct InstanceView: View {
             }
         }
         .toolbar {
+            let session = appState.firstSession as? UserSession
+            let enabled = !(session?.ongoingInstanceBlockRequests.contains(instance.actorId) ?? true)
             ToolbarEllipsisMenu(
-                (internalInstance as? any Instance)?.menuActions() ?? externalInstance.menuActions()
+                instance.menuActions(
+                    externalBlockStatus: session?.blocks?.contains(instance) ?? false,
+                    externalBlockCallback: enabled ? { session?.toggleInstanceBlock(actorId: instance.actorId) } : nil
+                )
             )
         }
     }

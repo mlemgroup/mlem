@@ -129,7 +129,7 @@ struct HandleLemmyLinksModifier: ViewModifier {
     }
     
     func showToastAndLoad(url: URL) async {
-        let toastId = ToastModel.main.add(.loading)
+        let toastId = ToastModel.main.add(.loading())
         var output = try? await appState.firstApi.resolve(actorId: url)
         if output == nil {
             // Retry on local instance, which is needed if there is a federation boundary
