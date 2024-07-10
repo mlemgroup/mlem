@@ -27,25 +27,19 @@ struct InstanceView: View {
     
     @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
+    @Environment(\.colorScheme) var colorScheme
     
     @State var internalInstance: any InstanceStubProviding
-    @State var externalInstance: (any InstanceStubProviding)?
+    @State var externalInstance: Instance3?
     
     @State var internalUpgradeState: LoadingState = .idle
     @State var externalUpgradeState: LoadingState = .idle
     
     @State var selectedTab: Tab = .about
+    @State var isAtTop: Bool = true
     
     var internalStub: InstanceStub {
         .init(api: appState.firstApi, actorId: internalInstance.actorId)
-    }
-    
-    var displayInstance: any InstanceStubProviding {
-        guard let externalInstance else { return internalInstance }
-        if type(of: internalInstance).tierNumber >= type(of: externalInstance).tierNumber {
-            return internalInstance
-        }
-        return externalInstance
     }
     
     init(instance: any InstanceStubProviding) {
@@ -62,13 +56,15 @@ struct InstanceView: View {
     
     var body: some View {
         VStack {
-            if let displayInstance = displayInstance as? any Instance {
-                content(displayInstance)
+            if let externalInstance {
+                content(externalInstance)
+                    .navigationTitle(isAtTop ? "" : externalInstance.displayName)
             } else {
                 ProgressView()
                     .tint(palette.secondary)
             }
         }
+        .animation(.easeOut(duration: 0.2), value: externalInstance is any Instance)
         .task {
             guard internalUpgradeState == .idle else { return }
             internalUpgradeState = .loading
@@ -91,28 +87,42 @@ struct InstanceView: View {
                 handleError(error)
             }
         }
+        .onPreferenceChange(IsAtTopPreferenceKey.self, perform: { value in
+            isAtTop = value
+        })
     }
     
     @ViewBuilder
-    func content(_ displayInstance: any Instance) -> some View {
+    func content(_ externalInstance: any Instance) -> some View {
         FancyScrollView {
-            VStack(spacing: AppConstants.standardSpacing) {
-                ProfileHeaderView(displayInstance, type: .instance)
-                    .padding(.horizontal, AppConstants.standardSpacing)
-                BubblePicker(
-                    [.about, .administration, .details],
-                    selected: $selectedTab,
-                    withDividers: [.top, .bottom], label: { $0.label }
-                )
-                if let description = displayInstance.description {
+            ProfileHeaderView(externalInstance, type: .instance, blockedOverride: internalInstance.blocked_)
+                .padding([.horizontal, .bottom], AppConstants.standardSpacing)
+            BubblePicker(
+                [.about, .details],
+                selected: $selectedTab,
+                withDividers: [.top, .bottom], label: { $0.label }
+            )
+            switch selectedTab {
+            case .about:
+                if let description = externalInstance.description {
                     Markdown(description, configuration: .default)
                         .padding(.horizontal, AppConstants.standardSpacing)
+                        .padding(.vertical, 16)
                 }
+            case .details:
+                InstanceDetailsView(instance: externalInstance)
+                    .padding(.vertical, 16)
+                    .background(palette.groupedBackground)
+                if colorScheme == .light {
+                    Divider()
+                }
+            default:
+                EmptyView()
             }
         }
         .toolbar {
             ToolbarEllipsisMenu(
-                (internalInstance as? any Instance)?.menuActions() ?? displayInstance.menuActions()
+                (internalInstance as? any Instance)?.menuActions() ?? externalInstance.menuActions()
             )
         }
     }

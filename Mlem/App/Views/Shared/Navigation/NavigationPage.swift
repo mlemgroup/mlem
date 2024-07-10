@@ -64,7 +64,7 @@ extension NavigationPage {
         case .inbox:
             InboxView()
         case .search:
-            EmptyView()
+            Link("Test", destination: URL(string: "https://lemmy.dbzer0.com")!)
         case let .externalApiInfo(api: api, actorId: actorId):
             ExternalApiInfoView(api: api, actorId: actorId)
         case let .imageViewer(url):

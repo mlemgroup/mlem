@@ -52,10 +52,10 @@ extension Instance1Providing {
         .init(
             id: "blockInstance\(uid)",
             isOn: false,
-            label: "Block",
+            label: blocked ? "Unblock" : "Block",
             color: Palette.main.negative,
-            isDestructive: true,
-            confirmationPrompt: showConfirmation ? "Really block this instance?" : nil,
+            isDestructive: !blocked,
+            confirmationPrompt: (!blocked && showConfirmation) ? "Really block this instance?" : nil,
             icon: Icons.hide,
             callback: api.willSendToken ? { self.toggleBlocked(feedback: feedback) } : nil
         )
