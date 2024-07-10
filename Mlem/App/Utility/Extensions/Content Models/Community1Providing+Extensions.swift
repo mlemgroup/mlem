@@ -120,7 +120,7 @@ extension Community1Providing {
             menuIcon: isOn ? Icons.favoriteFill : Icons.favorite,
             swipeIcon1: isOn ? Icons.unfavorite : Icons.favorite,
             swipeIcon2: isOn ? Icons.unfavoriteFill : Icons.favoriteFill,
-            callback: api.willSendToken ? { self2?.toggleFavorite(feedback: feedback) } : nil
+            callback: api.willSendToken ? { self.self2?.toggleFavorite(feedback: feedback) } : nil
         )
     }
 }

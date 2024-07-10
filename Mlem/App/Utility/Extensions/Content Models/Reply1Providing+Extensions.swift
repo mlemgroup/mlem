@@ -1,22 +1,22 @@
 //
-//  Comment1Providing+Extensions.swift
+//  Reply1Providing+Extensions.swift
 //  Mlem
 //
-//  Created by Sjmarf on 25/06/2024.
+//  Created by Sjmarf on 04/07/2024.
 //
 
-import Foundation
 import MlemMiddleware
 
-extension Comment1Providing {
+extension Reply1Providing {
+    private var self2: (any Reply2Providing)? { self as? any Reply2Providing }
+    
     func swipeActions(behavior: SwipeBehavior) -> SwipeConfiguration {
         let leadingActions: [BasicAction] = api.willSendToken ? [
             upvoteAction(feedback: [.haptic]),
             downvoteAction(feedback: [.haptic])
         ] : .init()
         let trailingActions: [BasicAction] = api.willSendToken ? [
-            saveAction(feedback: [.haptic]),
-            replyAction()
+            markReadAction(feedback: [.haptic])
         ] : .init()
         
         return .init(leadingActions: leadingActions, trailingActions: trailingActions, behavior: behavior)
@@ -29,13 +29,16 @@ extension Comment1Providing {
             downvoteAction(feedback: feedback)
             saveAction(feedback: feedback)
             replyAction()
-            selectTextAction()
-            shareAction()
+            markReadAction(feedback: feedback)
+            if let comment = self2?.comment {
+                comment.selectTextAction()
+                comment.shareAction()
+            }
             blockCreatorAction(feedback: feedback)
         }
     }
-    
-    func action(type: CommentActionType) -> any Action {
+
+    func action(type: InboxActionType) -> any Action {
         switch type {
         case .upvote:
             upvoteAction(feedback: [.haptic])
@@ -43,16 +46,10 @@ extension Comment1Providing {
             downvoteAction(feedback: [.haptic])
         case .save:
             saveAction(feedback: [.haptic])
-        case .reply:
-            replyAction()
-        case .share:
-            shareAction()
-        case .selectText:
-            selectTextAction()
         }
     }
     
-    func counter(type: CommentCounterType) -> Counter {
+    func counter(type: InboxCounterType) -> Counter {
         switch type {
         case .score:
             scoreCounter
@@ -63,7 +60,7 @@ extension Comment1Providing {
         }
     }
     
-    func readout(type: CommentReadoutType) -> Readout {
+    func readout(type: InboxReadoutType) -> Readout {
         switch type {
         case .created:
             createdReadout

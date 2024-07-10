@@ -44,8 +44,8 @@ struct ActionGroup: Action {
         swipeIcon1: String? = nil,
         swipeIcon2: String? = nil,
         disabled: Bool? = nil,
-        children: [any Action],
-        displayMode: ActionGroupMode = .section
+        displayMode: ActionGroupMode = .section,
+        children: [any Action]
     ) {
         self.isOn = isOn
         self.label = label
@@ -66,5 +66,37 @@ struct ActionGroup: Action {
         }
         self.children = children
         self.displayMode = displayMode
+    }
+    
+    init(
+        isOn: Bool = false,
+        label: String = "More...",
+        prompt: String? = nil,
+        color: Color = .blue,
+        isDestructive: Bool = false,
+        icon: String = Icons.menuCircle,
+        barIcon: String? = nil,
+        menuIcon: String? = nil,
+        swipeIcon1: String? = nil,
+        swipeIcon2: String? = nil,
+        disabled: Bool? = nil,
+        displayMode: ActionGroupMode = .section,
+        @ActionBuilder content: () -> [any Action]
+    ) {
+        self.init(
+            isOn: isOn,
+            label: label,
+            prompt: prompt,
+            color: color,
+            isDestructive: isDestructive,
+            icon: icon,
+            barIcon: barIcon,
+            menuIcon: menuIcon,
+            swipeIcon1: swipeIcon1,
+            swipeIcon2: swipeIcon2,
+            disabled: disabled,
+            displayMode: displayMode,
+            children: content()
+        )
     }
 }

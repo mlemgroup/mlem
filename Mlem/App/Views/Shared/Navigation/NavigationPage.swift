@@ -13,7 +13,7 @@ enum NavigationPage: Hashable {
     case login(_ page: LoginPage = .pickInstance)
     case feeds, profile, inbox, search
     case quickSwitcher
-    case expandedPost(_ post: AnyPost)
+    case expandedPost(_ post: AnyPost, commentId: Int? = nil)
     case community(_ community: AnyCommunity)
     case person(_ person: AnyPerson)
     case externalApiInfo(api: ApiClient, actorId: URL)
@@ -24,8 +24,8 @@ enum NavigationPage: Hashable {
     case selectText(_ string: String)
     case subscriptionList
     
-    static func expandedPost(_ post: any PostStubProviding) -> NavigationPage {
-        expandedPost(.init(post))
+    static func expandedPost(_ post: any PostStubProviding, commentId: Int? = nil) -> NavigationPage {
+        expandedPost(.init(post), commentId: commentId)
     }
     
     static func person(_ person: any PersonStubProviding) -> NavigationPage {
@@ -77,8 +77,8 @@ extension NavigationPage {
             ImageViewer(url: url)
         case .quickSwitcher:
             QuickSwitcherView()
-        case let .expandedPost(post):
-            ExpandedPostView(post: post)
+        case let .expandedPost(post, commentId):
+            ExpandedPostView(post: post, showCommentWithId: commentId)
         case let .person(person):
             PersonView(person: person)
         case let .communityPicker(callback: callback):
