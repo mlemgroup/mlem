@@ -43,7 +43,7 @@ struct PersonView: View {
                             if person is any Person3Providing, proxy.isLoading {
                                 ProgressView()
                             } else {
-                                ToolbarEllipsisMenu {}
+                                ToolbarEllipsisMenu(person.menuActions())
                             }
                         }
                     }

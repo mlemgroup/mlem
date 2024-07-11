@@ -25,11 +25,13 @@ extension Person1Providing {
     }
     
     @ActionBuilder
-    func menuActions(feedback: Set<FeedbackType> = [.haptic]) -> [any Action] {
+    func menuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
         openInstanceAction()
         copyNameAction()
         shareAction()
-        blockAction()
+        if (AppState.main.firstSession as? UserSession)?.person?.person1 !== person1 {
+            blockAction(feedback: feedback)
+        }
     }
     
     func blockAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {

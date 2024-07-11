@@ -21,7 +21,7 @@ class GuestSession: Session {
         
         Task {
             try await self.api.fetchSiteVersion(task: Task {
-                let (_, instance, _) = try await self.api.getMyPerson()
+                let (_, instance) = try await self.api.getMyPerson()
                 self.instance = instance
                 self.account.update(instance: instance)
                 return instance.version
