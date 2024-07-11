@@ -25,12 +25,24 @@ extension Instance1Providing {
         toggleBlocked()
     }
     
+    func visit() {
+        let account = GuestAccount.getGuestAccount(url: actorId)
+        AppState.main.changeAccount(to: account)
+    }
+    
+    var isVisiting: Bool {
+        AppState.main.firstApi.host == host && AppState.main.firstApi.token == nil
+    }
+    
     @ActionBuilder
     func menuActions(
         feedback: Set<FeedbackType> = [.haptic, .toast],
         externalBlockStatus: Bool = false,
         externalBlockCallback: (() -> Void)? = nil
     ) -> [any Action] {
+        ActionGroup {
+            visitAction()
+        }
         ActionGroup {
             openInBrowserAction()
             shareAction()
@@ -44,6 +56,17 @@ extension Instance1Providing {
                 )
             }
         }
+    }
+    
+    func visitAction() -> BasicAction {
+        .init(
+            id: "visit\(uid)",
+            isOn: false,
+            label: "Visit",
+            color: .gray,
+            icon: "arrow.right",
+            callback: isVisiting ? nil : visit
+        )
     }
     
     func openInBrowserAction() -> BasicAction {
