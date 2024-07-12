@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0300309D2C4163C9009A65FF /* ExpandedPostView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0300309C2C4163C9009A65FF /* ExpandedPostView+Logic.swift */; };
 		030FF6792BC84F7E00F6BFAC /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 030FF6782BC84F7E00F6BFAC /* SwiftUIIntrospect */; };
 		030FF67B2BC8521600F6BFAC /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF67A2BC8521600F6BFAC /* CustomTabView.swift */; };
 		030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */; };
@@ -230,6 +231,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0300309C2C4163C9009A65FF /* ExpandedPostView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExpandedPostView+Logic.swift"; sourceTree = "<group>"; };
 		030FF67A2BC8521600F6BFAC /* CustomTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
 		030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabItem.swift; sourceTree = "<group>"; };
 		030FF67E2BC8544600F6BFAC /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
@@ -834,6 +836,7 @@
 				03D3A1E22BB8A40A009DE55E /* EmptyButtonStyle.swift */,
 				03FE14072BF94FFB00A8377F /* ErrorView.swift */,
 				CD4ED84D2BF113C800EFA0A2 /* ExpandedPostView.swift */,
+				0300309C2C4163C9009A65FF /* ExpandedPostView+Logic.swift */,
 				034B948D2C0937BA00039AF4 /* FancyScrollView.swift */,
 				033F84BA2C2ACB96002E3EDF /* CommentView.swift */,
 				032C32152C36F65500595286 /* ReplyView.swift */,
@@ -1478,6 +1481,7 @@
 				03A82FA32C0D1F2400D01A5C /* View+ExternalApiWarning.swift in Sources */,
 				033F84C32C2B12AA002E3EDF /* InstanceSummary.swift in Sources */,
 				0369B3532BFA514B001EFEDF /* ToastLocation.swift in Sources */,
+				0300309D2C4163C9009A65FF /* ExpandedPostView+Logic.swift in Sources */,
 				032C321A2C36F75800595286 /* Reply1Providing+Extensions.swift in Sources */,
 				03FE14082BF94FFB00A8377F /* ErrorView.swift in Sources */,
 				030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */,

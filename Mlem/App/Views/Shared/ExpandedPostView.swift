@@ -21,6 +21,7 @@ struct ExpandedPostView: View {
     @State var commentsKeyedByActorId: [URL: CommentWrapper] = [:]
     
     @State var loadingState: LoadingState = .idle
+    @State var commentResolveLoading: Bool = false
     
     var body: some View {
         ContentLoader(model: post) { proxy in
@@ -52,12 +53,14 @@ struct ExpandedPostView: View {
                 }
                 .onChange(of: post.api.actorId) {
                     Task {
+                        commentResolveLoading = true
                         loadingState = .idle
                         await loadComments(post: post)
+                        commentResolveLoading = false
                     }
                 }
                 .toolbar {
-                    if proxy.isLoading || (!comments.isEmpty && comments.first?.api !== post.api) {
+                    if proxy.isLoading || commentResolveLoading {
                         ProgressView()
                     } else {
                         ToolbarEllipsisMenu(post.menuActions())
@@ -94,65 +97,6 @@ struct ExpandedPostView: View {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         self.showCommentWithId = nil
                     }
-                }
-            }
-        }
-    }
-    
-    func loadComments(post: any Post) async {
-        guard loadingState == .idle else { return }
-        loadingState = .loading
-        do {
-            let newComments = try await post.getComments(sort: .top, page: 1, maxDepth: 8, limit: 50)
-            if let first = comments.first, first.api != appState.firstApi {
-                resolveCommentTree(comments: newComments)
-            } else {
-                builtCommentTree(comments: newComments)
-            }
-            loadingState = .done
-        } catch {
-            handleError(error)
-        }
-    }
-    
-    func builtCommentTree(comments newComments: [Comment2]) {
-        var output: [CommentWrapper] = []
-        var commentsKeyedById: [Int: CommentWrapper] = [:]
-        var commentsKeyedByActorId: [URL: CommentWrapper] = [:]
-        
-        for comment in newComments {
-            let wrapper: CommentWrapper = .init(comment)
-            commentsKeyedById[comment.id] = wrapper
-            commentsKeyedByActorId[comment.actorId] = wrapper
-            if let parentId = comment.parentCommentIds.last {
-                commentsKeyedById[parentId]?.addChild(wrapper)
-            } else {
-                output.append(wrapper)
-            }
-        }
-        comments = output
-        self.commentsKeyedByActorId = commentsKeyedByActorId
-    }
-    
-    func resolveCommentTree(comments newComments: [Comment2]) {
-        var commentsKeyedById: [Int: CommentWrapper] = [:]
-        
-        for comment in newComments {
-            if let existing = commentsKeyedByActorId[comment.actorId] {
-                existing.comment2 = comment
-                commentsKeyedById[comment.id] = existing
-            } else {
-                let wrapper: CommentWrapper = .init(comment)
-                commentsKeyedById[comment.id] = wrapper
-                commentsKeyedByActorId[comment.actorId] = wrapper
-                if let parentId = comment.parentCommentIds.last {
-                    if let parent = commentsKeyedById[parentId] {
-                        parent.addChild(wrapper)
-                    } else {
-                        assertionFailure("This should never happen because the API returns comments in order of depth asc.")
-                    }
-                } else {
-                    comments.append(wrapper)
                 }
             }
         }
