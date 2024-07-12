@@ -111,18 +111,19 @@ struct FeedsView: View {
                     }
                 }
             }
-            .onChange(of: appState.firstApi, initial: false) { newValue, _ in
-                Task {
-                    do {
-                        try await postFeedLoader.changeFeedType(to: .aggregateFeed(newValue, type: feedSelection.associatedApiType))
-                    } catch {
-                        handleError(error)
-                    }
-                }
-            }
             .refreshable {
                 do {
-                    try await postFeedLoader.refresh(clearBeforeRefresh: false)
+                    let newFeedType: StandardPostFeedLoader.FeedType = .aggregateFeed(
+                        appState.firstApi,
+                        type: feedSelection.associatedApiType
+                    )
+                    
+                    // If the account has changed, we need to update the `feedType`.
+                    if postFeedLoader.feedType != newFeedType {
+                        try await postFeedLoader.changeFeedType(to: newFeedType)
+                    } else {
+                        try await postFeedLoader.refresh(clearBeforeRefresh: false)
+                    }
                 } catch {
                     handleError(error)
                 }

@@ -11,11 +11,15 @@ import SwiftUI
 
 struct ExpandedPostView: View {
     @Environment(Palette.self) var palette
+    @Environment(AppState.self) var appState
     @Environment(\.dismiss) var dismiss
     
     let post: AnyPost
     @State var showCommentWithId: Int?
+    
     @State var comments: [CommentWrapper] = []
+    @State var commentsKeyedByActorId: [URL: CommentWrapper] = [:]
+    
     @State var loadingState: LoadingState = .idle
     
     var body: some View {
@@ -41,7 +45,24 @@ struct ExpandedPostView: View {
                     }
                 }
                 .animation(.default, value: showLoadingSymbol)
-                .task { await loadComments(post: post) }
+                .task {
+                    if post.api == appState.firstApi {
+                        await loadComments(post: post)
+                    }
+                }
+                .onChange(of: post.api.actorId) {
+                    Task {
+                        loadingState = .idle
+                        await loadComments(post: post)
+                    }
+                }
+                .toolbar {
+                    if proxy.isLoading || (!comments.isEmpty && comments.first?.api !== post.api) {
+                        ProgressView()
+                    } else {
+                        ToolbarEllipsisMenu(post.menuActions())
+                    }
+                }
             } else {
                 ProgressView()
                     .tint(palette.secondary)
@@ -49,14 +70,14 @@ struct ExpandedPostView: View {
         }
     }
     
-    @ViewBuilder
+    // @ViewBuilder
     func content(for post: any Post1Providing) -> some View {
         ScrollViewReader { proxy in
             FancyScrollView {
                 LazyVStack(alignment: .leading, spacing: 0) {
                     LargePostView(post: post, isExpanded: true)
                     Divider()
-                    ForEach(comments.reduce([]) { $0 + $1.tree() }) { comment in
+                    ForEach(comments.tree()) { comment in
                         CommentView(comment: comment, highlight: showCommentWithId == comment.id)
                             .transition(.move(edge: .top).combined(with: .opacity))
                             .zIndex(1000 - Double(comment.depth))
@@ -82,24 +103,58 @@ struct ExpandedPostView: View {
         guard loadingState == .idle else { return }
         loadingState = .loading
         do {
-            let comments = try await post.getComments(sort: .top, page: 1, maxDepth: 8, limit: 50)
-            
-            var output: [CommentWrapper] = []
-            var keyedById: [Int: CommentWrapper] = [:]
-            
-            for comment in comments {
-                let wrapper: CommentWrapper = .init(comment)
-                keyedById[comment.id] = wrapper
-                if let parentId = comment.parentCommentIds.last {
-                    keyedById[parentId]?.addChild(wrapper)
-                } else {
-                    output.append(wrapper)
-                }
+            let newComments = try await post.getComments(sort: .top, page: 1, maxDepth: 8, limit: 50)
+            if let first = comments.first, first.api != appState.firstApi {
+                resolveCommentTree(comments: newComments)
+            } else {
+                builtCommentTree(comments: newComments)
             }
-            self.comments = output
             loadingState = .done
         } catch {
             handleError(error)
+        }
+    }
+    
+    func builtCommentTree(comments newComments: [Comment2]) {
+        var output: [CommentWrapper] = []
+        var commentsKeyedById: [Int: CommentWrapper] = [:]
+        var commentsKeyedByActorId: [URL: CommentWrapper] = [:]
+        
+        for comment in newComments {
+            let wrapper: CommentWrapper = .init(comment)
+            commentsKeyedById[comment.id] = wrapper
+            commentsKeyedByActorId[comment.actorId] = wrapper
+            if let parentId = comment.parentCommentIds.last {
+                commentsKeyedById[parentId]?.addChild(wrapper)
+            } else {
+                output.append(wrapper)
+            }
+        }
+        comments = output
+        self.commentsKeyedByActorId = commentsKeyedByActorId
+    }
+    
+    func resolveCommentTree(comments newComments: [Comment2]) {
+        var commentsKeyedById: [Int: CommentWrapper] = [:]
+        
+        for comment in newComments {
+            if let existing = commentsKeyedByActorId[comment.actorId] {
+                existing.comment2 = comment
+                commentsKeyedById[comment.id] = existing
+            } else {
+                let wrapper: CommentWrapper = .init(comment)
+                commentsKeyedById[comment.id] = wrapper
+                commentsKeyedByActorId[comment.actorId] = wrapper
+                if let parentId = comment.parentCommentIds.last {
+                    if let parent = commentsKeyedById[parentId] {
+                        parent.addChild(wrapper)
+                    } else {
+                        assertionFailure("This should never happen because the API returns comments in order of depth asc.")
+                    }
+                } else {
+                    comments.append(wrapper)
+                }
+            }
         }
     }
 }
