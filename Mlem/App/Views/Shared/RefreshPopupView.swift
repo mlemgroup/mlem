@@ -23,16 +23,16 @@ struct RefreshPopupView: View {
     var body: some View {
         Group {
             if isPresented {
-                HStack(spacing: 0) {
-                    Text(title)
-                        .padding(.horizontal, 10)
-                    Button {
-                        isPresented = false
-                        HapticManager.main.play(haptic: .lightSuccess, priority: .high)
-                        Task { @MainActor in
-                            callback()
-                        }
-                    } label: {
+                Button {
+                    isPresented = false
+                    HapticManager.main.play(haptic: .lightSuccess, priority: .high)
+                    Task { @MainActor in
+                        callback()
+                    }
+                } label: {
+                    HStack(spacing: 0) {
+                        Text(title)
+                            .padding(.horizontal, 10)
                         Label("Refresh", systemImage: Icons.refresh)
                             .foregroundStyle(palette.selectedInteractionBarItem)
                             .fontWeight(.semibold)
@@ -40,8 +40,8 @@ struct RefreshPopupView: View {
                             .padding(.horizontal, 10)
                             .background(palette.accent, in: .capsule)
                     }
-                    .buttonStyle(.plain)
                 }
+                .buttonStyle(EmptyButtonStyle())
                 .padding(4)
                 .background(palette.secondaryBackground, in: .capsule)
                 .shadow(color: .black.opacity(0.1), radius: 5)
