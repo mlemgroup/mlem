@@ -14,6 +14,7 @@ struct FeedsView: View {
     @AppStorage("post.size") var postSize: PostSize = .large
     @AppStorage("feed.showRead") var showRead: Bool = true
     @AppStorage("beta.tilePosts") var tilePosts: Bool = false
+    @AppStorage("accounts.keepPlace.reloadFeed") var reloadFeedOnAccountSwitch: Bool = true
     
     @Environment(\.dismiss) var dismiss
     @Environment(AppState.self) var appState
@@ -31,6 +32,8 @@ struct FeedsView: View {
             }
         }
     }
+
+    @State var showRefreshPopup: Bool = false
 
     @State var scrollToTopTrigger: Bool = false
     
@@ -111,6 +114,21 @@ struct FeedsView: View {
                     }
                 }
             }
+            .onChange(of: appState.firstApi) {
+                if reloadFeedOnAccountSwitch {
+                    Task {
+                        do {
+                            try await postFeedLoader.changeFeedType(
+                                to: .aggregateFeed(appState.firstApi, type: feedSelection.associatedApiType)
+                            )
+                        } catch {
+                            handleError(error)
+                        }
+                    }
+                } else {
+                    showRefreshPopup = true
+                }
+            }
             .refreshable {
                 do {
                     let newFeedType: StandardPostFeedLoader.FeedType = .aggregateFeed(
@@ -119,13 +137,26 @@ struct FeedsView: View {
                     )
                     
                     // If the account has changed, we need to update the `feedType`.
-                    if postFeedLoader.feedType != newFeedType {
+                    if !reloadFeedOnAccountSwitch, postFeedLoader.feedType != newFeedType {
                         try await postFeedLoader.changeFeedType(to: newFeedType)
                     } else {
                         try await postFeedLoader.refresh(clearBeforeRefresh: false)
                     }
                 } catch {
                     handleError(error)
+                }
+            }
+            .overlay(alignment: .bottom) {
+                RefreshPopupView("Feed is outdated", isPresented: $showRefreshPopup) {
+                    Task {
+                        do {
+                            try await postFeedLoader.changeFeedType(
+                                to: .aggregateFeed(appState.firstApi, type: feedSelection.associatedApiType)
+                            )
+                        } catch {
+                            handleError(error)
+                        }
+                    }
                 }
             }
     }

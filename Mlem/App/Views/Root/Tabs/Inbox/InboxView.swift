@@ -94,13 +94,12 @@ struct InboxView: View {
                 }
             }
             .overlay(alignment: .bottom) {
-                Group {
-                    if showRefreshPopup {
-                        refreshPopup
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                RefreshPopupView("Inbox is outdated", isPresented: $showRefreshPopup) {
+                    Task { @MainActor in
+                        removeAll()
+                        await loadReplies()
                     }
                 }
-                .animation(.bouncy, value: showRefreshPopup)
             }
     }
     
@@ -165,35 +164,6 @@ struct InboxView: View {
         .onPreferenceChange(IsAtTopPreferenceKey.self, perform: { value in
             isAtTop = value
         })
-    }
-    
-    @ViewBuilder
-    var refreshPopup: some View {
-        HStack(spacing: 0) {
-            Text("Inbox is outdated")
-                .padding(.horizontal, 10)
-            Button {
-                showRefreshPopup = false
-                HapticManager.main.play(haptic: .lightSuccess, priority: .high)
-                Task { @MainActor in
-                    removeAll()
-                    await loadReplies()
-                }
-            } label: {
-                Label("Refresh", systemImage: Icons.refresh)
-                    .foregroundStyle(palette.selectedInteractionBarItem)
-                    .fontWeight(.semibold)
-                    .padding(.vertical, 4)
-                    .padding(.horizontal, 10)
-                    .background(palette.accent, in: .capsule)
-            }
-            .buttonStyle(.plain)
-        }
-        .padding(4)
-        .background(palette.secondaryBackground, in: .capsule)
-        .shadow(color: .black.opacity(0.1), radius: 5)
-        .shadow(color: .black.opacity(0.1), radius: 1)
-        .padding()
     }
     
     var taskId: Int {

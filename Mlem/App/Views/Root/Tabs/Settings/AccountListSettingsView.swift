@@ -10,21 +10,14 @@ import SwiftUI
 
 struct AccountListSettingsView: View {
     @Environment(AppState.self) var appState
-    
-    @AppStorage("accounts.keepPlace") var keepPlace: Bool = false
-    
+
     var accounts: [UserAccount] { AccountsTracker.main.userAccounts }
     
     var body: some View {
         Form {
             headerView
             AccountListView()
-            Section {
-                Toggle(
-                    "Reload on Switch",
-                    isOn: Binding(get: { !keepPlace }, set: { keepPlace = !$0 })
-                )
-            }
+            NavigationLink("Account Switching", destination: .settings(.accountSwitching))
         }
     }
     
