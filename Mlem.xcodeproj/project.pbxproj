@@ -72,7 +72,6 @@
 		035EDEF42C2DE94B00F51144 /* SearchBar+NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDEEF2C2DE94B00F51144 /* SearchBar+NavigationView.swift */; };
 		035EDEF52C2DE94B00F51144 /* SearchBarExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDEF02C2DE94B00F51144 /* SearchBarExtensions.swift */; };
 		035EDEFB2C2DF98700F51144 /* CommunityListRowBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDEFA2C2DF98700F51144 /* CommunityListRowBody.swift */; };
-		035EDEFF2C2E037D00F51144 /* MlemMiddleware in Resources */ = {isa = PBXBuildFile; fileRef = 035EDEFE2C2E037D00F51144 /* MlemMiddleware */; };
 		035EDF012C2ECFE000F51144 /* Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDF002C2ECFE000F51144 /* Searchable.swift */; };
 		035EDF032C2ED0DE00F51144 /* PersonListRowBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDF022C2ED0DE00F51144 /* PersonListRowBody.swift */; };
 		035EDF052C2ED35500F51144 /* Person1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDF042C2ED35500F51144 /* Person1Providing+Extensions.swift */; };
@@ -314,7 +313,6 @@
 		035EDEEF2C2DE94B00F51144 /* SearchBar+NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchBar+NavigationView.swift"; sourceTree = "<group>"; };
 		035EDEF02C2DE94B00F51144 /* SearchBarExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarExtensions.swift; sourceTree = "<group>"; };
 		035EDEFA2C2DF98700F51144 /* CommunityListRowBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListRowBody.swift; sourceTree = "<group>"; };
-		035EDEFE2C2E037D00F51144 /* MlemMiddleware */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MlemMiddleware; path = ../MlemMiddleware; sourceTree = "<group>"; };
 		035EDF002C2ECFE000F51144 /* Searchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Searchable.swift; sourceTree = "<group>"; };
 		035EDF022C2ED0DE00F51144 /* PersonListRowBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonListRowBody.swift; sourceTree = "<group>"; };
 		035EDF042C2ED35500F51144 /* Person1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Person1Providing+Extensions.swift"; sourceTree = "<group>"; };
@@ -718,7 +716,6 @@
 		6363D5B827EE196700E34822 = {
 			isa = PBXGroup;
 			children = (
-				035EDEFE2C2E037D00F51144 /* MlemMiddleware */,
 				6363D5C327EE196700E34822 /* Mlem */,
 				6363D5D927EE196A00E34822 /* MlemTests */,
 				6363D5E327EE196A00E34822 /* MlemUITests */,
@@ -1363,7 +1360,6 @@
 				50CC4A702A9BD2480074C845 /* instance_metadata.json in Resources */,
 				CDCA44AD2C1766D500C092B3 /* Violent Success.ahap in Resources */,
 				CDCA44AA2C1766D500C092B3 /* Light Success.ahap in Resources */,
-				035EDEFF2C2E037D00F51144 /* MlemMiddleware in Resources */,
 				CDCA44A92C1766D500C092B3 /* Gentle Info.ahap in Resources */,
 				CDCA449B2C1766CF00C092B3 /* Failure.ahap in Resources */,
 				6332FDBD27EFAF7C0009A98A /* Settings.bundle in Resources */,
