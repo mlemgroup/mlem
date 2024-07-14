@@ -34,6 +34,8 @@ extension Account {
     static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.actorId == rhs.actorId
     }
+    
+    var blocked: Bool { false }
 }
 
 extension Account {
