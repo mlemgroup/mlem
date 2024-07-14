@@ -19,12 +19,12 @@ struct FeedsView: View {
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
-    @State var postFeedLoader: StandardPostFeedLoader
+    @State var postFeedLoader: AggregatePostFeedLoader
     @State var feedSelection: FeedSelection {
         didSet {
             Task {
                 do {
-                    try await postFeedLoader.changeFeedType(to: .aggregateFeed(appState.firstApi, type: feedSelection.associatedApiType))
+                    try await postFeedLoader.changeFeedType(to: feedSelection.associatedApiType)
                 } catch {
                     handleError(error)
                 }
@@ -72,10 +72,11 @@ struct FeedsView: View {
             showReadPosts: showReadPosts,
             // Don't load from PersistenceRepository directly here, as we'll be reading from file every time the view is initialized, which can happen frequently
             filteredKeywords: [],
-            feedType: .aggregateFeed(AppState.main.firstApi, type: initialFeedSelection.associatedApiType),
             smallAvatarSize: AppConstants.smallAvatarSize,
             largeAvatarSize: AppConstants.largeAvatarSize,
-            urlCache: AppConstants.urlCache
+            urlCache: AppConstants.urlCache,
+            api: AppState.main.firstApi,
+            feedType: initialFeedSelection.associatedApiType
         ))
     }
     
@@ -111,14 +112,8 @@ struct FeedsView: View {
                     }
                 }
             }
-            .onChange(of: appState.firstApi, initial: false) { newValue, _ in
-                Task {
-                    do {
-                        try await postFeedLoader.changeFeedType(to: .aggregateFeed(newValue, type: feedSelection.associatedApiType))
-                    } catch {
-                        handleError(error)
-                    }
-                }
+            .onChange(of: appState.firstApi, initial: false) {
+                postFeedLoader.api = appState.firstApi
             }
             .refreshable {
                 do {
