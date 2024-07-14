@@ -10,20 +10,29 @@ import MlemMiddleware
 extension Message1Providing {
     var self2: (any Message2Providing)? { self as? any Message2Providing }
     
+    var isOwnMessage: Bool { (AppState.main.firstAccount as? UserAccount)?.id == creatorId }
+    
     func swipeActions(behavior: SwipeBehavior) -> SwipeConfiguration {
-        let trailingActions: [BasicAction] = api.willSendToken ? [
-            markReadAction(feedback: [.haptic])
-        ] : .init()
-        
-        return .init(leadingActions: [], trailingActions: trailingActions, behavior: behavior)
+        .init(
+            behavior: behavior,
+            trailingActions: {
+                if api.willSendToken, !isOwnMessage {
+                    markReadAction(feedback: [.haptic])
+                }
+            }
+        )
     }
     
     @ActionBuilder
     func menuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
-        replyAction()
-        markReadAction(feedback: feedback)
+        if !isOwnMessage {
+            replyAction()
+            markReadAction(feedback: feedback)
+        }
         selectTextAction()
-        blockCreatorAction(feedback: feedback)
+        if !isOwnMessage {
+            blockCreatorAction(feedback: feedback)
+        }
     }
     
     // These actions are also defined in Interactable1Providing... another protocol for these may be a good idea

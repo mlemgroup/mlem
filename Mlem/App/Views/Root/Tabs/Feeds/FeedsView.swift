@@ -19,12 +19,12 @@ struct FeedsView: View {
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
-    @State var postFeedLoader: StandardPostFeedLoader
+    @State var postFeedLoader: AggregatePostFeedLoader
     @State var feedSelection: FeedSelection {
         didSet {
             Task {
                 do {
-                    try await postFeedLoader.changeFeedType(to: .aggregateFeed(appState.firstApi, type: feedSelection.associatedApiType))
+                    try await postFeedLoader.changeFeedType(to: feedSelection.associatedApiType)
                 } catch {
                     handleError(error)
                 }
@@ -74,10 +74,11 @@ struct FeedsView: View {
             showReadPosts: showReadPosts,
             // Don't load from PersistenceRepository directly here, as we'll be reading from file every time the view is initialized, which can happen frequently
             filteredKeywords: [],
-            feedType: .aggregateFeed(AppState.main.firstApi, type: initialFeedSelection.associatedApiType),
             smallAvatarSize: AppConstants.smallAvatarSize,
             largeAvatarSize: AppConstants.largeAvatarSize,
-            urlCache: AppConstants.urlCache
+            urlCache: AppConstants.urlCache,
+            api: AppState.main.firstApi,
+            feedType: initialFeedSelection.associatedApiType
         ))
     }
     
@@ -113,22 +114,14 @@ struct FeedsView: View {
                     }
                 }
             }
-            .onChange(of: appState.firstApi) {
+            .onChange(of: appState.firstApi, initial: false) {
+                postFeedLoader.api = appState.firstApi
                 showRefreshPopup = true
             }
             .refreshable {
                 do {
-                    let newFeedType: StandardPostFeedLoader.FeedType = .aggregateFeed(
-                        appState.firstApi,
-                        type: feedSelection.associatedApiType
-                    )
-                    
-                    // If the account has changed, we need to update the `feedType`.
-                    if postFeedLoader.feedType != newFeedType {
-                        try await postFeedLoader.changeFeedType(to: newFeedType)
-                    } else {
-                        try await postFeedLoader.refresh(clearBeforeRefresh: false)
-                    }
+                    showRefreshPopup = false
+                    try await postFeedLoader.refresh(clearBeforeRefresh: false)
                 } catch {
                     handleError(error)
                 }
@@ -137,9 +130,8 @@ struct FeedsView: View {
                 RefreshPopupView("Feed is outdated", isPresented: $showRefreshPopup) {
                     Task {
                         do {
-                            try await postFeedLoader.changeFeedType(
-                                to: .aggregateFeed(appState.firstApi, type: feedSelection.associatedApiType)
-                            )
+                            showRefreshPopup = false
+                            try await postFeedLoader.refresh(clearBeforeRefresh: true)
                         } catch {
                             handleError(error)
                         }

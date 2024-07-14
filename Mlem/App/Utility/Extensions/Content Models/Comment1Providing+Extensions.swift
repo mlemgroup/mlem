@@ -10,16 +10,21 @@ import MlemMiddleware
 
 extension Comment1Providing {
     func swipeActions(behavior: SwipeBehavior) -> SwipeConfiguration {
-        let leadingActions: [BasicAction] = api.willSendToken ? [
-            upvoteAction(feedback: [.haptic]),
-            downvoteAction(feedback: [.haptic])
-        ] : .init()
-        let trailingActions: [BasicAction] = api.willSendToken ? [
-            saveAction(feedback: [.haptic]),
-            replyAction()
-        ] : .init()
-        
-        return .init(leadingActions: leadingActions, trailingActions: trailingActions, behavior: behavior)
+        .init(
+            behavior: behavior,
+            leadingActions: {
+                if api.willSendToken {
+                    upvoteAction(feedback: [.haptic])
+                    downvoteAction(feedback: [.haptic])
+                }
+            },
+            trailingActions: {
+                if api.willSendToken {
+                    saveAction(feedback: [.haptic])
+                    replyAction()
+                }
+            }
+        )
     }
     
     @ActionBuilder

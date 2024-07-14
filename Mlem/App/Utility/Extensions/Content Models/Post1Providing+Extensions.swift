@@ -13,16 +13,21 @@ extension Post1Providing {
     private var self2: (any Post2Providing)? { self as? any Post2Providing }
     
     func swipeActions(behavior: SwipeBehavior) -> SwipeConfiguration {
-        let leadingActions: [any Action] = api.willSendToken ? [
-            upvoteAction(feedback: [.haptic]),
-            downvoteAction(feedback: [.haptic])
-        ] : .init()
-        let trailingActions: [any Action] = api.willSendToken ? [
-            saveAction(feedback: [.haptic]),
-            replyAction()
-        ] : .init()
-        
-        return .init(leadingActions: leadingActions, trailingActions: trailingActions, behavior: behavior)
+        .init(
+            behavior: behavior,
+            leadingActions: {
+                if api.willSendToken {
+                    upvoteAction(feedback: [.haptic])
+                    downvoteAction(feedback: [.haptic])
+                }
+            },
+            trailingActions: {
+                if api.willSendToken {
+                    saveAction(feedback: [.haptic])
+                    replyAction()
+                }
+            }
+        )
     }
     
     @ActionBuilder
