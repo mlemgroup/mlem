@@ -13,18 +13,16 @@ struct MessageView: View {
     @Environment(Palette.self) private var palette
     @Environment(AppState.self) private var appState
     
-    var isOwnMessage: Bool { (appState.firstAccount as? UserAccount)?.id == message.creatorId }
-    
     let message: any Message
     
-    var verb: String { isOwnMessage ? "Sent" : "Received" }
+    var verb: String { message.isOwnMessage ? "Sent" : "Received" }
     
     var body: some View {
         VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
             HStack {
                 FullyQualifiedLinkView(entity: message.creator_, labelStyle: .small, showAvatar: true)
                 Spacer()
-                Image(systemName: Icons.message)
+                Image(systemName: message.isOwnMessage ? Icons.send : Icons.message)
                     .symbolVariant(message.read ? .none : .fill)
                     .foregroundStyle(palette.accent)
                 EllipsisMenu(actions: message.menuActions(), size: 24)

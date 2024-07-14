@@ -62,11 +62,11 @@ struct ExpandedPostView: View {
                             .zIndex(1000 - Double(comment.depth))
                     }
                 }
-                .animation(.easeInOut(duration: 1.5), value: showCommentWithId)
+                .animation(.easeInOut(duration: 0.4), value: showCommentWithId)
             }
             .onAppear {
                 if let showCommentWithId {
-                    // The scroll destination isn' always accurate. Possibly due to the post image changing
+                    // The scroll destination isn't always accurate. Possibly due to the post image changing
                     // size on load? Using `anchor: .top` would be better here, but `anchor: .center` makes
                     // the inaccuracy less noticeable. See also the comment further up the file.
                     proxy.scrollTo(showCommentWithId, anchor: .center)

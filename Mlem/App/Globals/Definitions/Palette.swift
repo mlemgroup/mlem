@@ -93,6 +93,7 @@ struct ColorPalette: PaletteProviding {
     var subscribedFeed: Color
     var moderatedFeed: Color
     var savedFeed: Color
+    var inbox: Color
     
     // accents
     var accent: Color
@@ -126,6 +127,7 @@ struct ColorPalette: PaletteProviding {
         subscribedFeed: Color,
         moderatedFeed: Color? = nil,
         savedFeed: Color? = nil,
+        inbox: Color,
         accent: Color,
         secondaryAccent: Color,
         commentIndentColors: [Color]
@@ -155,6 +157,7 @@ struct ColorPalette: PaletteProviding {
         self.subscribedFeed = subscribedFeed
         self.moderatedFeed = moderatedFeed ?? moderation
         self.savedFeed = savedFeed ?? save
+        self.inbox = inbox
         self.accent = accent
         self.secondaryAccent = secondaryAccent
         self.commentIndentColors = commentIndentColors
@@ -208,6 +211,7 @@ class Palette: PaletteProviding {
     var subscribedFeed: Color { palette.subscribedFeed }
     var moderatedFeed: Color { palette.moderatedFeed }
     var savedFeed: Color { palette.savedFeed }
+    var inbox: Color { palette.inbox }
     
     var accent: Color { palette.accent }
     var secondaryAccent: Color { palette.secondaryAccent }
