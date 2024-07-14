@@ -11,15 +11,20 @@ extension Reply1Providing {
     private var self2: (any Reply2Providing)? { self as? any Reply2Providing }
     
     func swipeActions(behavior: SwipeBehavior) -> SwipeConfiguration {
-        let leadingActions: [BasicAction] = api.willSendToken ? [
-            upvoteAction(feedback: [.haptic]),
-            downvoteAction(feedback: [.haptic])
-        ] : .init()
-        let trailingActions: [BasicAction] = api.willSendToken ? [
-            markReadAction(feedback: [.haptic])
-        ] : .init()
-        
-        return .init(leadingActions: leadingActions, trailingActions: trailingActions, behavior: behavior)
+        .init(
+            behavior: behavior,
+            leadingActions: {
+                if api.willSendToken {
+                    upvoteAction(feedback: [.haptic])
+                    downvoteAction(feedback: [.haptic])
+                }
+            },
+            trailingActions: {
+                if api.willSendToken {
+                    markReadAction(feedback: [.haptic])
+                }
+            }
+        )
     }
     
     @ActionBuilder

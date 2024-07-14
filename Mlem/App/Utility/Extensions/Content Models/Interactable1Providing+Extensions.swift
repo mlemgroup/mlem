@@ -10,6 +10,7 @@ import SwiftUI
 
 extension Interactable1Providing {
     private var self2: (any Interactable2Providing)? { self as? any Interactable2Providing }
+    private var inboxItem: (any InboxItemProviding)? { self as? any InboxItemProviding }
 
     func toggleUpvoted(feedback: Set<FeedbackType>) {
         if let self2 {
@@ -17,6 +18,7 @@ extension Interactable1Providing {
                 HapticManager.main.play(haptic: .lightSuccess, priority: .low)
             }
             self2.toggleUpvoted()
+            inboxItem?.updateRead(true)
         } else {
             print("DEBUG no self2 found in toggleUpvote!")
         }
@@ -28,6 +30,7 @@ extension Interactable1Providing {
                 HapticManager.main.play(haptic: .lightSuccess, priority: .low)
             }
             self2.toggleDownvoted()
+            inboxItem?.updateRead(true)
         } else {
             print("DEBUG no self2 found in toggleDownvote!")
         }
@@ -39,6 +42,7 @@ extension Interactable1Providing {
                 HapticManager.main.play(haptic: .success, priority: .low)
             }
             self2.toggleSaved()
+            inboxItem?.updateRead(true)
         } else {
             print("DEBUG no self2 found in toggleSave!")
         }

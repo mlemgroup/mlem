@@ -17,8 +17,7 @@ struct MlemApp: App {
         imageConfig.imageDecodingQueue = OperationQueue(maxConcurrentCount: 8) // Let's use those CORES
         imageConfig.imageDecompressingQueue = OperationQueue(maxConcurrentCount: 8)
         
-        // I'm leaving that here for mormaer, once I get a handle on rate limites that's where we put em!
-        // imageConfig.isRateLimiterEnabled
+        // TODO: rate limiting
         ImagePipeline.shared = ImagePipeline(configuration: imageConfig)
         
         URLCache.shared = AppConstants.urlCache

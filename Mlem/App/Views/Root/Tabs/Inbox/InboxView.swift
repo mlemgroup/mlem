@@ -25,7 +25,7 @@ struct InboxView: View {
     @State var hasDoneInitialLoad: Bool = false
     @State var loadingState: LoadingState = .idle
     
-    @State var isAtTop: Bool = true
+    @State var headerPinned: Bool = false
     @State var selectedTab: Tab = .all
     
     @State var replies: [Reply2] = []
@@ -72,6 +72,7 @@ struct InboxView: View {
             }
             .onChange(of: taskId) {
                 Task { @MainActor in
+                    showRefreshPopup = false
                     removeAll()
                     await loadReplies()
                 }
@@ -88,8 +89,10 @@ struct InboxView: View {
                     await loadReplies()
                 }
             }
-            .onChange(of: (appState.firstSession as? UserSession)?.unreadCount?.updateId) {
-                if loadingState == .done {
+            .onChange(of: (appState.firstSession as? UserSession)?.unreadCount?.updateId ?? 0) { oldValue, newValue in
+                // The newValue > oldValue check stops the popup from appearing when the user switches accounts.
+                // This is a little janky, but it works
+                if newValue > oldValue, loadingState == .done {
                     showRefreshPopup = true
                 }
             }
@@ -108,8 +111,31 @@ struct InboxView: View {
     var content: some View {
         FancyScrollView {
             LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
+                FeedHeaderView(
+                    feedDescription: .init(
+                        label: "Inbox",
+                        subtitle: "Replies, mentions and messages",
+                        color: \.inbox,
+                        iconName: Icons.inbox,
+                        iconNameFill: Icons.inboxFill,
+                        iconScaleFactor: 0.5
+                    ),
+                    dropdownStyle: .disabled
+                )
+                GeometryReader { geo in
+                    Color.red.preference(
+                        key: ScrollOffsetKey.self,
+                        value: geo.frame(in: .named("inboxScrollView")).origin.y >= 0
+                    )
+                }
+                .frame(width: 0, height: 0)
+                .onPreferenceChange(ScrollOffsetKey.self, perform: { value in
+                    if value != headerPinned {
+                        headerPinned = value
+                    }
+                })
+                Divider()
                 Section {
-                    Divider()
                     if loadingState == .loading, replies.isEmpty, mentions.isEmpty {
                         ProgressView()
                             .controlSize(.large)
@@ -134,37 +160,39 @@ struct InboxView: View {
                             }
                         }
                     }
-                } header: {
-                    BubblePicker(
-                        Tab.allCases,
-                        selected: $selectedTab,
-                        label: { tab in
-                            tab.rawValue.capitalized
-                        },
-                        value: { tab in
-                            if let unreadCount = (appState.firstSession as? UserSession)?.unreadCount {
-                                switch tab {
-                                case .all:
-                                    return unreadCount.total
-                                case .replies:
-                                    return unreadCount.replies
-                                case .mentions:
-                                    return unreadCount.mentions
-                                case .messages:
-                                    return unreadCount.messages
-                                }
-                            }
-                            return 0
-                        }
-                    )
-                    .background(palette.background.opacity(isAtTop ? 1 : 0))
-                    .background(.bar)
-                }
+                } header: { sectionHeader }
             }
         }
-        .onPreferenceChange(IsAtTopPreferenceKey.self, perform: { value in
-            isAtTop = value
-        })
+        .coordinateSpace(name: "inboxScrollView")
+    }
+    
+    @ViewBuilder
+    var sectionHeader: some View {
+        BubblePicker(
+            Tab.allCases,
+            selected: $selectedTab,
+            withDividers: [.bottom],
+            label: { tab in
+                tab.rawValue.capitalized
+            },
+            value: { tab in
+                if let unreadCount = (appState.firstSession as? UserSession)?.unreadCount {
+                    switch tab {
+                    case .all:
+                        return unreadCount.total
+                    case .replies:
+                        return unreadCount.replies
+                    case .mentions:
+                        return unreadCount.mentions
+                    case .messages:
+                        return unreadCount.messages
+                    }
+                }
+                return 0
+            }
+        )
+        .background(palette.background.opacity(headerPinned ? 1 : 0))
+        .background(.bar)
     }
     
     @ViewBuilder
@@ -227,4 +255,10 @@ struct InboxView: View {
             loadingState = .idle
         }
     }
+}
+
+private struct ScrollOffsetKey: PreferenceKey {
+    typealias Value = Bool
+    static var defaultValue = false
+    static func reduce(value: inout Value, nextValue: () -> Value) {}
 }

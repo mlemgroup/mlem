@@ -16,9 +16,9 @@ public struct SwipeConfiguration {
     let behavior: SwipeBehavior
     
     init(
+        behavior: SwipeBehavior = .standard,
         leadingActions: [any Action] = [],
-        trailingActions: [any Action] = [],
-        behavior: SwipeBehavior = .standard
+        trailingActions: [any Action] = []
     ) {
         assert(
             leadingActions.count <= 3 && trailingActions.count <= 3,
@@ -27,6 +27,18 @@ public struct SwipeConfiguration {
         self.leadingActions = leadingActions.compactMap { $0 }
         self.trailingActions = trailingActions.compactMap { $0 }
         self.behavior = behavior
+    }
+    
+    init(
+        behavior: SwipeBehavior = .standard,
+        @ActionBuilder leadingActions: () -> [any Action] = { [] },
+        @ActionBuilder trailingActions: () -> [any Action] = { [] }
+    ) {
+        self.init(
+            behavior: behavior,
+            leadingActions: leadingActions(),
+            trailingActions: trailingActions()
+        )
     }
 }
 

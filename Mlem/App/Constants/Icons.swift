@@ -46,7 +46,7 @@ enum Icons {
     
     // inbox
     static let mention: String = "quote.bubble"
-    static let message = "envelope"
+    static let message: String = "envelope"
     
     // misc post
     static let posts: String = "doc.plaintext"
