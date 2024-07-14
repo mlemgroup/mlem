@@ -101,6 +101,19 @@ extension Community1Providing {
         blockAction()
     }
     
+    func swipeActions(behavior: SwipeBehavior) -> SwipeConfiguration {
+        .init(
+            behavior: behavior,
+            leadingActions: {},
+            trailingActions: {
+                if api.willSendToken {
+                    subscribeAction(feedback: [.haptic])
+                    favoriteAction(feedback: [.haptic])
+                }
+            }
+        )
+    }
+    
     // MARK: Actions
     
     func newPostAction() -> BasicAction {
@@ -121,7 +134,7 @@ extension Community1Providing {
             id: "subscribe\(actorId.absoluteString)",
             isOn: isOn,
             label: isOn ? "Unsubscribe" : "Subscribe",
-            color: isOn ? .green : .red,
+            color: isOn ? Palette.main.negative : Palette.main.positive,
             isDestructive: isOn,
             icon: isOn ? Icons.unsubscribe : Icons.subscribe,
             barIcon: Icons.subscribe,
@@ -137,7 +150,7 @@ extension Community1Providing {
             id: "favorite\(actorId.absoluteString)",
             isOn: isOn,
             label: isOn ? "Unfavorite" : "Favorite",
-            color: .blue,
+            color: Palette.main.favorite,
             icon: isOn ? Icons.unfavorite : Icons.favorite,
             barIcon: Icons.favorite,
             menuIcon: isOn ? Icons.favoriteFill : Icons.favorite,

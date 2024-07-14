@@ -46,9 +46,11 @@ struct SearchView: View {
                     .showsCancelButton(page != .home)
                     .onCancel {
                         page = .home
-                        query = ""
+                        if !query.isEmpty {
+                            query = ""
+                            Task { await refresh() }
+                        }
                         resultsScrollToTopTrigger.toggle()
-                        Task { await refresh() }
                     }
                     .focused($searchBarFocused)
             }
@@ -72,6 +74,11 @@ struct SearchView: View {
                 guard !hasAppeared || searchBarFocused else { return }
                 hasAppeared = true
                 await refresh()
+            }
+            .onChange(of: appState.firstApi.actorId) {
+                Task { @MainActor in
+                    await refresh()
+                }
             }
             .onChange(of: selectedTab) {
                 Task { @MainActor in
@@ -105,7 +112,7 @@ struct SearchView: View {
                 withDividers: [.bottom],
                 label: { $0.rawValue.capitalized }
             )
-            .padding(.top, -10)
+            .padding(.top, -8)
             LazyVStack(spacing: 0) {
                 switch selectedTab {
                 case .communities:
