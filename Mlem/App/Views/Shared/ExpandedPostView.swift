@@ -21,7 +21,7 @@ struct ExpandedPostView: View {
     var body: some View {
         ContentLoader(model: post) { proxy in
             if let post = proxy.entity {
-                let showLoadingSymbol = showCommentWithId == nil || self.post.isUpgraded && loadingState != .loading
+                let showLoadingSymbol = showCommentWithId == nil || (self.post.isUpgraded && loadingState != .loading)
                 VStack {
                     if showLoadingSymbol {
                         content(for: post)
