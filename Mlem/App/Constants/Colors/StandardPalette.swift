@@ -32,6 +32,7 @@ extension ColorPalette {
         federatedFeed: .blue,
         localFeed: .purple,
         subscribedFeed: .red,
+        inbox: .purple,
         accent: .blue,
         secondaryAccent: .orange,
         commentIndentColors: [Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple]
