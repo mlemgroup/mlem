@@ -56,11 +56,11 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         contentController.view.sizeToFit()
     
         placeholderLabel.text = prompt
-        placeholderLabel.font = .italicSystemFont(ofSize: (textView.font?.pointSize)!)
+        placeholderLabel.font = textView.font
         placeholderLabel.sizeToFit()
         textView.addSubview(placeholderLabel)
         placeholderLabel.frame.origin = CGPoint(x: 15, y: 1)
-        placeholderLabel.textColor = .tertiaryLabel
+        placeholderLabel.textColor = UIColor(Palette.main.tertiary)
         placeholderLabel.isHidden = !text.isEmpty
         
         // Makes the text wrap instead of going off-screen
