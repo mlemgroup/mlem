@@ -32,7 +32,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
  
     func makeUIView(context: Context) -> UITextView {
         textView.font = .preferredFont(forTextStyle: .body)
-        textView.textContainerInset = .init(top: 0, left: 10, bottom: 10, right: 10)
+        textView.textContainerInset = .init(top: 5, left: 10, bottom: 10, right: 10)
         textView.delegate = context.coordinator
         // textView.setContentHuggingPriority(.defaultLow, for: .vertical)
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -59,7 +59,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         placeholderLabel.font = textView.font
         placeholderLabel.sizeToFit()
         textView.addSubview(placeholderLabel)
-        placeholderLabel.frame.origin = CGPoint(x: 15, y: 1)
+        placeholderLabel.frame.origin = CGPoint(x: 15, y: 6)
         placeholderLabel.textColor = UIColor(Palette.main.tertiary)
         placeholderLabel.isHidden = !text.isEmpty
         

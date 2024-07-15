@@ -35,7 +35,7 @@ struct ResponseComposerView: View {
     }
         
     var minTextEditorHeight: CGFloat {
-        UIFont.preferredFont(forTextStyle: .body).lineHeight * 5
+        UIFont.preferredFont(forTextStyle: .body).lineHeight * 4 + 15
     }
 
     var body: some View {
@@ -78,10 +78,6 @@ struct ResponseComposerView: View {
     var content: some View {
         ScrollView {
             VStack(spacing: 0) {
-                // Without this the text editor appears slightly too high up
-                // initially and then jumps down shortly after appearing
-                Color.clear
-                    .frame(height: 5)
                 MarkdownTextEditor(
                     text: $text,
                     prompt: "Start writing...",
