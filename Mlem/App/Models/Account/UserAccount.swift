@@ -10,7 +10,10 @@ import MlemMiddleware
 import Observation
 
 @Observable
-class UserAccount: Account {
+class UserAccount: Account, CommunityOrPersonStub {
+    static var identifierPrefix: String = "@"
+    static var tierNumber: Int = 5
+    
     let actorId: URL
     let id: Int
     let api: ApiClient

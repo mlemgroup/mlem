@@ -9,27 +9,88 @@ import MlemMiddleware
 import SwiftUI
 
 struct ResponseComposerView: View {
+    @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
     let proxy: MarkdownTextEditorProxy = .init()
     
     @State var text: String = ""
     @FocusState var focused: Bool
     @State var presentationSelection: PresentationDetent = .large
+    var context: ResponseContext
+    
+    var accountsTracker: AccountsTracker { .main }
     
     var body: some View {
-        // No `ScrollView` here - `MarkdownTextEditor` (and the SwiftUI `TextEditor`) each have a built-in `ScrollView`.
-        // We need to use that `ScrollView`, so that the view scrolls down automatically when the cursor goes behind the
-        // keyboard. In iOS 17.4, there is a `UITextView.transfersVerticalScrollingToParent` property that we could maybe
-        // use to retain the SwiftUI ScrollView if we want to
-
-        //
         // Using `.toolbar` to do the keyboard toolbar doesn't work in sheets due to a bug in iOS 17.
         // Using UIKit instead.
-        MarkdownTextEditor(text: $text, proxy: proxy) { keyboardToolbar }
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 200, maxHeight: .infinity)
-            .toolbar {
+        ScrollView {
+            MarkdownTextEditor(
+                text: $text,
+                prompt: "Start writing...",
+                proxy: proxy
+            ) { keyboardToolbar }
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 105, maxHeight: .infinity)
+            Divider()
+            switch context {
+            case let .post(post):
+                LargePostBodyView(post: post, isExpanded: true)
+                    .padding(.horizontal, AppConstants.standardSpacing)
+            }
+        }
+        .scrollBounceBehavior(.basedOnSize)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                accountSwitcher
+            }
+            ToolbarItem(placement: .topBarTrailing) {
                 Button("Send", systemImage: Icons.send) {}
             }
-            .presentationDetents([.medium, .large], selection: $presentationSelection)
+        }
+        .presentationDetents([.medium, .large], selection: $presentationSelection)
+    }
+    
+    @ViewBuilder
+    var accountSwitcher: some View {
+        Menu {
+            Picker(
+                "Switch Account",
+                selection: Binding<UserAccount?>(
+                    get: { appState.firstAccount as? UserAccount },
+                    set: { newValue in
+                        if let newValue {
+                            appState.changeAccount(
+                                to: newValue,
+                                keepPlace: true,
+                                showAvatarPopup: false
+                            )
+                        }
+                    }
+                )
+            ) {
+                ForEach(accountsTracker.userAccounts, id: \.actorId) { account in
+                    Button {} label: {
+                        Label {
+                            Text(account.name)
+                        } icon: {
+                            SimpleAvatarView(url: account.avatar, type: .person)
+                        }
+                        Text("@\(account.host ?? "unknown")")
+                    }
+                    .tag(account as UserAccount?)
+                }
+            }
+            .pickerStyle(.inline)
+        } label: {
+            // This `Button` wrapper is necessary, otherwise the `Picker` won't work.
+            Button(action: {}, label: {
+                FullyQualifiedLabelView(
+                    entity: appState.firstAccount as? UserAccount, labelStyle: .small,
+                    showAvatar: true
+                )
+            })
+        }
+        .buttonStyle(.plain)
     }
     
     @ViewBuilder
@@ -77,5 +138,21 @@ struct ResponseComposerView: View {
         .buttonStyle(.plain)
         .foregroundStyle(.secondary)
         .labelStyle(.iconOnly)
+    }
+}
+
+enum ResponseContext: Hashable {
+    case post(any Post2Providing)
+    
+    static func == (lhs: ResponseContext, rhs: ResponseContext) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        switch self {
+        case let .post(post):
+            hasher.combine("post")
+            hasher.combine(post.hashValue)
+        }
     }
 }

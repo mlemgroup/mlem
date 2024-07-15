@@ -14,7 +14,9 @@ extension Interactable1Providing {
     
     func showReplySheet() {
         if let self2 {
-            NavigationModel.main.openSheet(.reply)
+            if let self = self as? any Post2Providing {
+                NavigationModel.main.openSheet(.reply(.post(self)))
+            }
         } else {
             print("DEBUG no self2 found in showReplySheet!")
         }

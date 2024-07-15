@@ -24,7 +24,7 @@ enum NavigationPage: Hashable {
     case imageViewer(_ url: URL)
     case selectText(_ string: String)
     case subscriptionList
-    case reply
+    case reply(_ context: ResponseContext)
     
     static func expandedPost(_ post: any PostStubProviding, commentId: Int? = nil) -> NavigationPage {
         expandedPost(.init(post), commentId: commentId)
@@ -71,8 +71,8 @@ extension NavigationPage {
             ExpandedPostView(post: post, showCommentWithId: commentId)
         case let .person(person):
             PersonView(person: person)
-        case .reply:
-            ResponseComposerView()
+        case let .reply(context):
+            ResponseComposerView(context: context)
         }
     }
     

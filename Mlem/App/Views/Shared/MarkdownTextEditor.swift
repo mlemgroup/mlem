@@ -10,10 +10,18 @@ import SwiftUI
 struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
     @Binding var text: String
     let content: Content
+    let prompt: String
     let proxy: MarkdownTextEditorProxy
+    let placeholderLabel: UILabel = .init()
     
-    init(text: Binding<String>, proxy: MarkdownTextEditorProxy, @ViewBuilder content: () -> Content) {
+    init(
+        text: Binding<String>,
+        prompt: String,
+        proxy: MarkdownTextEditorProxy,
+        @ViewBuilder content: () -> Content
+    ) {
         self._text = text
+        self.prompt = prompt
         self.proxy = proxy
         self.content = content()
     }
@@ -29,6 +37,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         textView.delegate = context.coordinator
         textView.setContentHuggingPriority(.defaultLow, for: .vertical)
         textView.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        textView.becomeFirstResponder()
         
         let contentController = UIHostingController(rootView: content)
         let contentView = contentController.view!
@@ -43,16 +52,18 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         textView.inputAccessoryView = inputView
         inputView.sizeToFit()
         contentController.view.sizeToFit()
+    
+        placeholderLabel.text = "Start typing..."
+        placeholderLabel.font = .italicSystemFont(ofSize: (textView.font?.pointSize)!)
+        placeholderLabel.sizeToFit()
+        textView.addSubview(placeholderLabel)
+        placeholderLabel.frame.origin = CGPoint(x: 15, y: 1)
+        placeholderLabel.textColor = .tertiaryLabel
+        placeholderLabel.isHidden = !text.isEmpty
         
         // Makes the text wrap instead of going off-screen
         textView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 
-        if #available(iOS 17.4, *) {
-            textView.transfersVerticalScrollingToParent = true
-            textView.transfersHorizontalScrollingToParent = true
-        } else {
-            // Fallback on earlier versions
-        }
         textView.isScrollEnabled = false
         
         proxy.undoManager = textView.undoManager
@@ -73,6 +84,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
  
         func textViewDidChange(_ textView: UITextView) {
             parent.text = textView.text
+            parent.placeholderLabel.isHidden = !textView.text.isEmpty
         }
     }
 }
