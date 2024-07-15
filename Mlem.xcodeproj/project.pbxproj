@@ -96,6 +96,10 @@
 		03B431B62C454D49001A1EB5 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431B52C454D49001A1EB5 /* UIImage+Extensions.swift */; };
 		03B431BA2C454EFB001A1EB5 /* SimpleAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431B92C454EFB001A1EB5 /* SimpleAvatarView.swift */; };
 		03B431BC2C455838001A1EB5 /* LargePostBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431BB2C455838001A1EB5 /* LargePostBodyView.swift */; };
+		03B431C02C45ABFB001A1EB5 /* UITextView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431BF2C45ABFB001A1EB5 /* UITextView+Extensions.swift */; };
+		03B431C22C45BA00001A1EB5 /* MarkdownEditorToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431C12C45BA00001A1EB5 /* MarkdownEditorToolbarView.swift */; };
+		03B431C42C45BA45001A1EB5 /* AccountPickerMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431C32C45BA45001A1EB5 /* AccountPickerMenu.swift */; };
+		03B431C62C45C09F001A1EB5 /* CollapsibleSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431C52C45C09F001A1EB5 /* CollapsibleSheetView.swift */; };
 		03B72B672C2888EE0023A6C4 /* View+ContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B72B662C2888EE0023A6C4 /* View+ContextMenu.swift */; };
 		03B72B6B2C28A0190023A6C4 /* SubscriptionListSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */; };
 		03C93CF02BEFFB1A00327BFE /* LoginCredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C93CEF2BEFFB1A00327BFE /* LoginCredentialsView.swift */; };
@@ -323,6 +327,10 @@
 		03B431B52C454D49001A1EB5 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		03B431B92C454EFB001A1EB5 /* SimpleAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleAvatarView.swift; sourceTree = "<group>"; };
 		03B431BB2C455838001A1EB5 /* LargePostBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargePostBodyView.swift; sourceTree = "<group>"; };
+		03B431BF2C45ABFB001A1EB5 /* UITextView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Extensions.swift"; sourceTree = "<group>"; };
+		03B431C12C45BA00001A1EB5 /* MarkdownEditorToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownEditorToolbarView.swift; sourceTree = "<group>"; };
+		03B431C32C45BA45001A1EB5 /* AccountPickerMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPickerMenu.swift; sourceTree = "<group>"; };
+		03B431C52C45C09F001A1EB5 /* CollapsibleSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleSheetView.swift; sourceTree = "<group>"; };
 		03B72B662C2888EE0023A6C4 /* View+ContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ContextMenu.swift"; sourceTree = "<group>"; };
 		03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListSettingsView.swift; sourceTree = "<group>"; };
 		03C93CEF2BEFFB1A00327BFE /* LoginCredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCredentialsView.swift; sourceTree = "<group>"; };
@@ -850,7 +858,9 @@
 				CD4ED84D2BF113C800EFA0A2 /* ExpandedPostView.swift */,
 				034B948D2C0937BA00039AF4 /* FancyScrollView.swift */,
 				033F84BA2C2ACB96002E3EDF /* CommentView.swift */,
+				03B431C12C45BA00001A1EB5 /* MarkdownEditorToolbarView.swift */,
 				032C32152C36F65500595286 /* ReplyView.swift */,
+				03B431C52C45C09F001A1EB5 /* CollapsibleSheetView.swift */,
 				0316CD632C382A6A009EA8EA /* MessageView.swift */,
 				03AF91D82C1A4ED500E56644 /* ImageView.swift */,
 				033F84CB2C2B1E46002E3EDF /* HandleLemmyLinksModifier.swift */,
@@ -859,6 +869,7 @@
 				032C32092C34495D00595286 /* SelectTextView.swift */,
 				03AF91E22C1C616F00E56644 /* InteractionBarView.swift */,
 				0355F9482C16406E00605248 /* Line.swift */,
+				03B431C32C45BA45001A1EB5 /* AccountPickerMenu.swift */,
 				034B94842C09348400039AF4 /* MarkdownImageView.swift */,
 				03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */,
 				CD77437E2C1BA5CE0085BB43 /* MultiplatformView.swift */,
@@ -897,6 +908,7 @@
 				03134A4E2BEAD23A002662CC /* Views */,
 				CDA8A0052BE43B350022F7ED /* Content Models */,
 				CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */,
+				03B431BF2C45ABFB001A1EB5 /* UITextView+Extensions.swift */,
 				03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */,
 				0389DDC82C39658E0005B808 /* Binding+Extensions.swift */,
 				034B94882C09360A00039AF4 /* Int+Extensions.swift */,
@@ -1387,6 +1399,7 @@
 				03B431B62C454D49001A1EB5 /* UIImage+Extensions.swift in Sources */,
 				CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */,
 				03FE140C2BF953B000A8377F /* HandleError.swift in Sources */,
+				03B431C62C45C09F001A1EB5 /* CollapsibleSheetView.swift in Sources */,
 				CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */,
 				038096612C10AAD8003ED1D8 /* TransitionView.swift in Sources */,
 				0382A7F42C0A76A900C79DDA /* Date+Extensions.swift in Sources */,
@@ -1404,6 +1417,7 @@
 				CD7882A72BFFD1A3002E1A30 /* ThumbnailLocation.swift in Sources */,
 				0389DDC32C38907C0005B808 /* Message1Providing+Extensions.swift in Sources */,
 				03B431B42C4481C3001A1EB5 /* MarkdownTextEditor.swift in Sources */,
+				03B431C42C45BA45001A1EB5 /* AccountPickerMenu.swift in Sources */,
 				03AF91DF2C1B243D00E56644 /* ZoomableContainer.swift in Sources */,
 				033F84C82C2B193D002E3EDF /* MlemStats.swift in Sources */,
 				03134A4D2BEAD058002662CC /* AvatarView.swift in Sources */,
@@ -1415,6 +1429,7 @@
 				033F84CC2C2B1E46002E3EDF /* HandleLemmyLinksModifier.swift in Sources */,
 				CD317D4F2BE983ED008F63E2 /* MonochromePalette.swift in Sources */,
 				03AF91EA2C1CE96600E56644 /* Counter.swift in Sources */,
+				03B431C22C45BA00001A1EB5 /* MarkdownEditorToolbarView.swift in Sources */,
 				034B948E2C0937BA00039AF4 /* FancyScrollView.swift in Sources */,
 				CD4D58B52B86BFFB00B82964 /* PersistenceRepository+Dependency.swift in Sources */,
 				CD4D58EB2B86E63300B82964 /* AssociatedColor.swift in Sources */,
@@ -1477,6 +1492,7 @@
 				CD4D59182B87B3B000B82964 /* UIViewController+Extensions.swift in Sources */,
 				034B94812C09306D00039AF4 /* CommunityOrPersonStub+Extensions.swift in Sources */,
 				03D3A1E52BB8B7A3009DE55E /* ActionType.swift in Sources */,
+				03B431C02C45ABFB001A1EB5 /* UITextView+Extensions.swift in Sources */,
 				034B947F2C091EDD00039AF4 /* ProfileHeaderView.swift in Sources */,
 				03E614E42C0BCC7B00F692A4 /* Post1Providing+Extensions.swift in Sources */,
 				CDB2EC862BFADD7C00DBC0EF /* FullyQualifiedLabelView.swift in Sources */,

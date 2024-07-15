@@ -11,133 +11,95 @@ import SwiftUI
 struct ResponseComposerView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
-    let proxy: MarkdownTextEditorProxy = .init()
+    @Environment(Palette.self) var palette
+    @Environment(\.dismiss) var dismiss
+    
+    let textView: UITextView = .init()
     
     @State var text: String = ""
     @FocusState var focused: Bool
-    @State var presentationSelection: PresentationDetent = .large
     var context: ResponseContext
     
-    var accountsTracker: AccountsTracker { .main }
+    @State var account: UserAccount
+    @State var presentationSelection: PresentationDetent = .large
     
+    init?(
+        context: ResponseContext
+    ) {
+        self.context = context
+        if let userAccount = (AppState.main.firstAccount as? UserAccount) {
+            self._account = .init(wrappedValue: userAccount)
+        } else {
+            return nil
+        }
+    }
+        
+    var minTextEditorHeight: CGFloat {
+        UIFont.preferredFont(forTextStyle: .body).lineHeight * 5
+    }
+
     var body: some View {
-        // Using `.toolbar` to do the keyboard toolbar doesn't work in sheets due to a bug in iOS 17.
-        // Using UIKit instead.
+        CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: text.isEmpty) {
+            NavigationStack {
+                content
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button("Cancel") {
+                                dismiss()
+                            }
+                        }
+                        ToolbarItem(placement: .principal) {
+                            AccountPickerMenu(account: $account) {
+                                HStack(spacing: 3) {
+                                    FullyQualifiedLabelView(entity: account, labelStyle: .medium, showAvatar: false)
+                                    Image(systemName: "chevron.down.circle.fill")
+                                        .symbolRenderingMode(.hierarchical)
+                                        .tint(palette.secondary)
+                                        .imageScale(.small)
+                                        .fontWeight(.bold)
+                                }
+                            }
+                        }
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button("Send", systemImage: Icons.send) {}
+                        }
+                    }
+            }
+        }
+        .onChange(of: presentationSelection) {
+            if presentationSelection == .large {
+                textView.becomeFirstResponder()
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var content: some View {
         ScrollView {
-            MarkdownTextEditor(
-                text: $text,
-                prompt: "Start writing...",
-                proxy: proxy
-            ) { keyboardToolbar }
-                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 105, maxHeight: .infinity)
-            Divider()
-            switch context {
-            case let .post(post):
-                LargePostBodyView(post: post, isExpanded: true)
-                    .padding(.horizontal, AppConstants.standardSpacing)
+            VStack(spacing: 0) {
+                // Without this the text editor appears slightly too high up
+                // initially and then jumps down shortly after appearing
+                Color.clear
+                    .frame(height: 5)
+                MarkdownTextEditor(
+                    text: $text,
+                    prompt: "Start writing...",
+                    textView: textView
+                ) {
+                    MarkdownEditorToolbarView(textView: textView)
+                }
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: minTextEditorHeight, maxHeight: .infinity)
+                Divider()
+                    .padding(.vertical, 10)
+                switch context {
+                case let .post(post):
+                    LargePostBodyView(post: post, isExpanded: true)
+                        .padding(.horizontal, AppConstants.standardSpacing)
+                }
             }
         }
         .scrollBounceBehavior(.basedOnSize)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                accountSwitcher
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("Send", systemImage: Icons.send) {}
-            }
-        }
-        .presentationDetents([.medium, .large], selection: $presentationSelection)
-    }
-    
-    @ViewBuilder
-    var accountSwitcher: some View {
-        Menu {
-            Picker(
-                "Switch Account",
-                selection: Binding<UserAccount?>(
-                    get: { appState.firstAccount as? UserAccount },
-                    set: { newValue in
-                        if let newValue {
-                            appState.changeAccount(
-                                to: newValue,
-                                keepPlace: true,
-                                showAvatarPopup: false
-                            )
-                        }
-                    }
-                )
-            ) {
-                ForEach(accountsTracker.userAccounts, id: \.actorId) { account in
-                    Button {} label: {
-                        Label {
-                            Text(account.name)
-                        } icon: {
-                            SimpleAvatarView(url: account.avatar, type: .person)
-                        }
-                        Text("@\(account.host ?? "unknown")")
-                    }
-                    .tag(account as UserAccount?)
-                }
-            }
-            .pickerStyle(.inline)
-        } label: {
-            // This `Button` wrapper is necessary, otherwise the `Picker` won't work.
-            Button(action: {}, label: {
-                FullyQualifiedLabelView(
-                    entity: appState.firstAccount as? UserAccount, labelStyle: .small,
-                    showAvatar: true
-                )
-            })
-        }
-        .buttonStyle(.plain)
-    }
-    
-    @ViewBuilder
-    var keyboardToolbar: some View {
-        ScrollView(.horizontal) {
-            Spacer()
-            HStack(spacing: 16) {
-                // iPad already shows these buttons
-                if !UIDevice.isPad {
-                    keyboardButton("Undo", systemImage: "arrow.uturn.backward") { proxy.undo() }
-                    keyboardButton("Redo", systemImage: "arrow.uturn.forward") { proxy.redo() }
-                    Divider()
-                }
-                keyboardButton("Bold", systemImage: "bold") { print("BOLD") }
-                keyboardButton("Italic", systemImage: "italic") {}
-                keyboardButton("Strikethrough", systemImage: "strikethrough") {}
-                keyboardButton("Heading", systemImage: "textformat.size") {}
-                keyboardButton("Superscript", systemImage: "textformat.superscript") {}
-                keyboardButton("Subscript", systemImage: "textformat.subscript") {}
-                keyboardButton("Quote", systemImage: "quote.bubble") {}
-                keyboardButton("Image", systemImage: "photo") {}
-                keyboardButton("Spoiler", systemImage: "eye") {}
-            }
-            .padding(.horizontal)
-            .padding(.bottom, 2)
-        }
-        .scrollIndicators(.hidden)
-        .frame(maxWidth: .infinity)
-        .frame(height: 32)
-    }
-    
-    @ViewBuilder
-    func keyboardButton(_ title: String, systemImage: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Label {
-                Text(title)
-            } icon: {
-                Image(systemName: systemImage)
-                    .imageScale(.large)
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fit)
-//                    .frame(height: 24)
-            }
-        }
-        .buttonStyle(.plain)
-        .foregroundStyle(.secondary)
-        .labelStyle(.iconOnly)
     }
 }
 

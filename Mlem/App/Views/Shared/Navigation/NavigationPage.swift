@@ -72,13 +72,17 @@ extension NavigationPage {
         case let .person(person):
             PersonView(person: person)
         case let .reply(context):
-            ResponseComposerView(context: context)
+            if let view = ResponseComposerView(context: context) {
+                view
+            } else {
+                Text("Error: No active UserAccount")
+            }
         }
     }
     
     var hasNavigationStack: Bool {
         switch self {
-        case .quickSwitcher, .externalApiInfo, .selectText:
+        case .quickSwitcher, .externalApiInfo, .selectText, .reply:
             false
         default:
             true

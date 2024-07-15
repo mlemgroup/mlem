@@ -11,18 +11,18 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
     @Binding var text: String
     let content: Content
     let prompt: String
-    let proxy: MarkdownTextEditorProxy
+    let textView: UITextView
     let placeholderLabel: UILabel = .init()
     
     init(
         text: Binding<String>,
         prompt: String,
-        proxy: MarkdownTextEditorProxy,
+        textView: UITextView,
         @ViewBuilder content: () -> Content
     ) {
         self._text = text
         self.prompt = prompt
-        self.proxy = proxy
+        self.textView = textView
         self.content = content()
     }
  
@@ -31,13 +31,15 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
     }
  
     func makeUIView(context: Context) -> UITextView {
-        let textView = UITextView()
         textView.font = .preferredFont(forTextStyle: .body)
         textView.textContainerInset = .init(top: 0, left: 10, bottom: 10, right: 10)
         textView.delegate = context.coordinator
-        textView.setContentHuggingPriority(.defaultLow, for: .vertical)
+        // textView.setContentHuggingPriority(.defaultLow, for: .vertical)
+        textView.translatesAutoresizingMaskIntoConstraints = false
         textView.setContentHuggingPriority(.defaultLow, for: .horizontal)
         textView.becomeFirstResponder()
+        textView.text = text
+        textView.sizeToFit()
         
         let contentController = UIHostingController(rootView: content)
         let contentView = contentController.view!
@@ -53,7 +55,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         inputView.sizeToFit()
         contentController.view.sizeToFit()
     
-        placeholderLabel.text = "Start typing..."
+        placeholderLabel.text = prompt
         placeholderLabel.font = .italicSystemFont(ofSize: (textView.font?.pointSize)!)
         placeholderLabel.sizeToFit()
         textView.addSubview(placeholderLabel)
@@ -66,13 +68,11 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
 
         textView.isScrollEnabled = false
         
-        proxy.undoManager = textView.undoManager
-    
         return textView
     }
  
-    func updateUIView(_ uiView: UITextView, context: Context) {
-        uiView.text = text
+    func updateUIView(_ textView: UITextView, context: Context) {
+        textView.text = text
     }
  
     class Coordinator: NSObject, UITextViewDelegate {
@@ -86,17 +86,5 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
             parent.text = textView.text
             parent.placeholderLabel.isHidden = !textView.text.isEmpty
         }
-    }
-}
-
-class MarkdownTextEditorProxy {
-    fileprivate var undoManager: UndoManager?
-    
-    func undo() {
-        undoManager?.undo()
-    }
-    
-    func redo() {
-        undoManager?.redo()
     }
 }
