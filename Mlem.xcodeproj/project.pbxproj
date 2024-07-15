@@ -90,6 +90,7 @@
 		03AF91E32C1C616F00E56644 /* InteractionBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AF91E22C1C616F00E56644 /* InteractionBarView.swift */; };
 		03AF91E52C1C61FA00E56644 /* PostInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AF91E42C1C61FA00E56644 /* PostInteraction.swift */; };
 		03AF91EA2C1CE96600E56644 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AF91E92C1CE96600E56644 /* Counter.swift */; };
+		03B431BE2C455F1B001A1EB5 /* InboxView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431BD2C455F1B001A1EB5 /* InboxView+Logic.swift */; };
 		03B72B672C2888EE0023A6C4 /* View+ContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B72B662C2888EE0023A6C4 /* View+ContextMenu.swift */; };
 		03B72B6B2C28A0190023A6C4 /* SubscriptionListSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */; };
 		03C93CF02BEFFB1A00327BFE /* LoginCredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C93CEF2BEFFB1A00327BFE /* LoginCredentialsView.swift */; };
@@ -311,6 +312,7 @@
 		03AF91E22C1C616F00E56644 /* InteractionBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarView.swift; sourceTree = "<group>"; };
 		03AF91E42C1C61FA00E56644 /* PostInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInteraction.swift; sourceTree = "<group>"; };
 		03AF91E92C1CE96600E56644 /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
+		03B431BD2C455F1B001A1EB5 /* InboxView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InboxView+Logic.swift"; sourceTree = "<group>"; };
 		03B72B662C2888EE0023A6C4 /* View+ContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ContextMenu.swift"; sourceTree = "<group>"; };
 		03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListSettingsView.swift; sourceTree = "<group>"; };
 		03C93CEF2BEFFB1A00327BFE /* LoginCredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCredentialsView.swift; sourceTree = "<group>"; };
@@ -544,6 +546,7 @@
 			isa = PBXGroup;
 			children = (
 				0369B3552BFA6824001EFEDF /* InboxView.swift */,
+				03B431BD2C455F1B001A1EB5 /* InboxView+Logic.swift */,
 			);
 			path = Inbox;
 			sourceTree = "<group>";
@@ -1494,6 +1497,7 @@
 				CD4D58932B86BA5C00B82964 /* StandardPalette.swift in Sources */,
 				CDCA44952C17658000C092B3 /* View+QuickSwipes.swift in Sources */,
 				CD9CFA372C306DAB00739BBC /* PostGridView.swift in Sources */,
+				03B431BE2C455F1B001A1EB5 /* InboxView+Logic.swift in Sources */,
 				03D2A63F2C010DBF00ED4FF2 /* GuestSession.swift in Sources */,
 				030FF6812BC859FD00F6BFAC /* CustomTabViewHostingController.swift in Sources */,
 				03E614DB2C0B596900F692A4 /* ToolbarEllipsisMenu.swift in Sources */,
