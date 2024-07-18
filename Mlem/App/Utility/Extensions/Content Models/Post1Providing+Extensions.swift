@@ -13,34 +13,34 @@ extension Post1Providing {
     private var self2: (any Post2Providing)? { self as? any Post2Providing }
     
     func swipeActions(behavior: SwipeBehavior) -> SwipeConfiguration {
-        let leadingActions: [any Action] = api.willSendToken ? [
-            upvoteAction(feedback: [.haptic]),
-            downvoteAction(feedback: [.haptic])
-        ] : .init()
-        let trailingActions: [any Action] = api.willSendToken ? [
-            saveAction(feedback: [.haptic]),
-            replyAction()
-        ] : .init()
-        
-        return .init(leadingActions: leadingActions, trailingActions: trailingActions, behavior: behavior)
+        .init(
+            behavior: behavior,
+            leadingActions: {
+                if api.willSendToken {
+                    upvoteAction(feedback: [.haptic])
+                    downvoteAction(feedback: [.haptic])
+                }
+            },
+            trailingActions: {
+                if api.willSendToken {
+                    saveAction(feedback: [.haptic])
+                    replyAction()
+                }
+            }
+        )
     }
     
-    func menuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> ActionGroup {
-        ActionGroup(
-            children: [
-                ActionGroup(
-                    children: [
-                        upvoteAction(feedback: feedback),
-                        downvoteAction(feedback: feedback),
-                        saveAction(feedback: feedback),
-                        replyAction(),
-                        selectTextAction(),
-                        shareAction(),
-                        blockAction(feedback: feedback)
-                    ],
-                    displayMode: .compactSection
-                )
-            ])
+    @ActionBuilder
+    func menuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
+        ActionGroup(displayMode: .compactSection) {
+            upvoteAction(feedback: feedback)
+            downvoteAction(feedback: feedback)
+            saveAction(feedback: feedback)
+            replyAction()
+            selectTextAction()
+            shareAction()
+            blockAction(feedback: feedback)
+        }
     }
     
     func action(type: PostActionType, feedback: Set<FeedbackType> = []) -> any Action {
@@ -134,12 +134,11 @@ extension Post1Providing {
             isDestructive: true,
             icon: Icons.hide,
             disabled: !api.willSendToken,
-            children: [
-                blockCreatorAction(feedback: feedback, showConfirmation: false),
-                blockCommunityAction(feedback: feedback, showConfirmation: false)
-            ],
             displayMode: .popup
-        )
+        ) {
+            blockCreatorAction(feedback: feedback, showConfirmation: false)
+            blockCommunityAction(feedback: feedback, showConfirmation: false)
+        }
     }
     
     func blockCommunityAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {

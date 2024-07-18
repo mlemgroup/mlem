@@ -10,7 +10,7 @@ import KeychainAccess
 import MlemMiddleware
 import SwiftUI
 
-protocol Account: AnyObject, Codable, ActorIdentifiable, Profile1Providing {
+protocol Account: AnyObject, Codable, ActorIdentifiable, Profile1Providing, Hashable {
     // Stored
     var api: ApiClient { get }
     var name: String { get }
@@ -24,6 +24,16 @@ protocol Account: AnyObject, Codable, ActorIdentifiable, Profile1Providing {
     var nicknameSortKey: String { get }
     var instanceSortKey: String { get }
     var isActive: Bool { get }
+}
+
+extension Account {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(actorId)
+    }
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.actorId == rhs.actorId
+    }
 }
 
 extension Account {

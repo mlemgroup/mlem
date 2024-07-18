@@ -10,6 +10,7 @@ import SwiftUI
 
 extension Interactable1Providing {
     private var self2: (any Interactable2Providing)? { self as? any Interactable2Providing }
+    private var inboxItem: (any InboxItemProviding)? { self as? any InboxItemProviding }
 
     func toggleUpvoted(feedback: Set<FeedbackType>) {
         if let self2 {
@@ -17,6 +18,7 @@ extension Interactable1Providing {
                 HapticManager.main.play(haptic: .lightSuccess, priority: .low)
             }
             self2.toggleUpvoted()
+            inboxItem?.updateRead(true)
         } else {
             print("DEBUG no self2 found in toggleUpvote!")
         }
@@ -28,6 +30,7 @@ extension Interactable1Providing {
                 HapticManager.main.play(haptic: .lightSuccess, priority: .low)
             }
             self2.toggleDownvoted()
+            inboxItem?.updateRead(true)
         } else {
             print("DEBUG no self2 found in toggleDownvote!")
         }
@@ -39,6 +42,7 @@ extension Interactable1Providing {
                 HapticManager.main.play(haptic: .success, priority: .low)
             }
             self2.toggleSaved()
+            inboxItem?.updateRead(true)
         } else {
             print("DEBUG no self2 found in toggleSave!")
         }
@@ -75,7 +79,7 @@ extension Interactable1Providing {
     func upvoteAction(feedback: Set<FeedbackType> = []) -> BasicAction {
         let isOn: Bool = (self2?.votes.myVote ?? .none == .upvote)
         return .init(
-            id: "upvote\(actorId.absoluteString)",
+            id: "upvote\(uid)",
             isOn: isOn,
             label: isOn ? "Undo Upvote" : "Upvote",
             color: Palette.main.upvote,
@@ -90,7 +94,7 @@ extension Interactable1Providing {
     func downvoteAction(feedback: Set<FeedbackType> = []) -> BasicAction {
         let isOn: Bool = (self2?.votes.myVote ?? .none == .downvote)
         return .init(
-            id: "downvote\(actorId.absoluteString)",
+            id: "downvote\(uid)",
             isOn: isOn,
             label: isOn ? "Undo Downvote" : "Downvote",
             color: Palette.main.downvote,
@@ -105,7 +109,7 @@ extension Interactable1Providing {
     func saveAction(feedback: Set<FeedbackType> = []) -> BasicAction {
         let isOn: Bool = self2?.saved ?? false
         return .init(
-            id: "save\(actorId.absoluteString)",
+            id: "save\(uid)",
             isOn: isOn,
             label: isOn ? "Unsave" : "Save",
             color: Palette.main.save,
@@ -119,7 +123,7 @@ extension Interactable1Providing {
     
     func replyAction() -> BasicAction {
         .init(
-            id: "reply\(actorId.absoluteString)",
+            id: "reply\(uid)",
             isOn: false,
             label: "Reply",
             color: Palette.main.accent,
@@ -133,7 +137,7 @@ extension Interactable1Providing {
     
     func blockCreatorAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
         .init(
-            id: "blockCreator\(actorId.absoluteString)",
+            id: "blockCreator\(uid)",
             isOn: false,
             label: "Block User",
             color: Palette.main.negative,
@@ -148,7 +152,7 @@ extension Interactable1Providing {
     
     var createdReadout: Readout {
         .init(
-            id: "created\(actorId)",
+            id: "created\(uid)",
             label: (updated ?? created).getShortRelativeTime(),
             icon: updated == nil ? Icons.time : Icons.updated
         )
@@ -169,7 +173,7 @@ extension Interactable1Providing {
             color = nil
         }
         return Readout(
-            id: "score\(actorId)",
+            id: "score\(uid)",
             label: self2?.votes.total.description,
             icon: icon,
             color: color
@@ -179,7 +183,7 @@ extension Interactable1Providing {
     var upvoteReadout: Readout {
         let isOn = self2?.votes.myVote == .upvote
         return Readout(
-            id: "upvote\(actorId)",
+            id: "upvote\(uid)",
             label: self2?.votes.upvotes.description,
             icon: isOn ? Icons.upvoteSquareFill : Icons.upvoteSquare,
             color: isOn ? Palette.main.upvote : nil
@@ -189,7 +193,7 @@ extension Interactable1Providing {
     var downvoteReadout: Readout {
         let isOn = self2?.votes.myVote == .downvote
         return Readout(
-            id: "downvote\(actorId)",
+            id: "downvote\(uid)",
             label: self2?.votes.downvotes.description,
             icon: isOn ? Icons.downvoteSquareFill : Icons.downvoteSquare,
             color: isOn ? Palette.main.downvote : nil
@@ -198,7 +202,7 @@ extension Interactable1Providing {
     
     var commentReadout: Readout {
         .init(
-            id: "comment\(actorId)",
+            id: "comment\(uid)",
             label: self2?.commentCount.description,
             icon: Icons.replies
         )

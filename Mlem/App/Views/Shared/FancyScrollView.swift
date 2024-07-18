@@ -41,9 +41,9 @@ struct FancyScrollView<Content: View>: View {
                             key: ScrollOffsetKey.self,
                             value: geo.frame(in: .named("scrollView")).origin.y >= 0
                         )
-                        .frame(width: 0, height: 0)
                         .id(topId)
                     }
+                    .frame(width: 0, height: 0)
                     content()
                 }
             }

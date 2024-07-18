@@ -80,7 +80,7 @@ class ContentLoaderProxy<Model: Upgradable> {
         upgradeState = .loading
         do {
             do {
-                guard let modelApi = (model.wrappedValue as? any ContentStub)?.api else {
+                guard let modelApi = (model.wrappedValue as? any ContentModel)?.api else {
                     assertionFailure()
                     return
                 }

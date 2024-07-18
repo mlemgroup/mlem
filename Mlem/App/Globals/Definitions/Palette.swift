@@ -79,6 +79,7 @@ struct ColorPalette: PaletteProviding {
     var upvote: Color
     var downvote: Color
     var save: Color
+    var read: Color
     var favorite: Color
     var selectedInteractionBarItem: Color
     
@@ -92,6 +93,7 @@ struct ColorPalette: PaletteProviding {
     var subscribedFeed: Color
     var moderatedFeed: Color
     var savedFeed: Color
+    var inbox: Color
     
     // accents
     var accent: Color
@@ -115,6 +117,7 @@ struct ColorPalette: PaletteProviding {
         upvote: Color,
         downvote: Color,
         save: Color,
+        read: Color,
         favorite: Color,
         selectedInteractionBarItem: Color,
         administration: Color,
@@ -124,6 +127,7 @@ struct ColorPalette: PaletteProviding {
         subscribedFeed: Color,
         moderatedFeed: Color? = nil,
         savedFeed: Color? = nil,
+        inbox: Color,
         accent: Color,
         secondaryAccent: Color,
         commentIndentColors: [Color]
@@ -143,6 +147,7 @@ struct ColorPalette: PaletteProviding {
         self.upvote = upvote
         self.downvote = downvote
         self.save = save
+        self.read = read
         self.favorite = favorite
         self.selectedInteractionBarItem = selectedInteractionBarItem
         self.administration = administration
@@ -152,6 +157,7 @@ struct ColorPalette: PaletteProviding {
         self.subscribedFeed = subscribedFeed
         self.moderatedFeed = moderatedFeed ?? moderation
         self.savedFeed = savedFeed ?? save
+        self.inbox = inbox
         self.accent = accent
         self.secondaryAccent = secondaryAccent
         self.commentIndentColors = commentIndentColors
@@ -193,6 +199,7 @@ class Palette: PaletteProviding {
     var upvote: Color { palette.upvote }
     var downvote: Color { palette.downvote }
     var save: Color { palette.save }
+    var read: Color { palette.read }
     var favorite: Color { palette.favorite }
     var selectedInteractionBarItem: Color { palette.selectedInteractionBarItem }
     
@@ -204,6 +211,7 @@ class Palette: PaletteProviding {
     var subscribedFeed: Color { palette.subscribedFeed }
     var moderatedFeed: Color { palette.moderatedFeed }
     var savedFeed: Color { palette.savedFeed }
+    var inbox: Color { palette.inbox }
     
     var accent: Color { palette.accent }
     var secondaryAccent: Color { palette.secondaryAccent }

@@ -15,6 +15,7 @@ struct CommentView: View {
     private let indent: CGFloat = 10
     
     let comment: any Comment1Providing
+    var highlight: Bool = false
     
     var body: some View {
         let collapsed = (comment as? CommentWrapper)?.collapsed ?? false
@@ -29,7 +30,8 @@ struct CommentView: View {
                             .frame(height: 10)
                             .imageScale(.small)
                     } else {
-                        EllipsisMenu(actions: comment.menuActions(), size: 10)
+                        EllipsisMenu(actions: comment.menuActions(), size: 24)
+                            .frame(height: 10)
                     }
                 }
                 if !collapsed {
@@ -48,6 +50,7 @@ struct CommentView: View {
             .padding(.vertical, 2)
             .padding(AppConstants.standardSpacing)
             .clipped()
+            .background(highlight ? palette.accent.opacity(0.2) : .clear)
             .background(palette.background)
             .border(
                 width: comment.depth == 0 ? 0 : 2, edges: [.leading],
@@ -62,7 +65,7 @@ struct CommentView: View {
                     }
                 }
             }
-            .contextMenu(actionGroup: comment.menuActions())
+            .contextMenu(actions: comment.menuActions())
             Divider()
         }
         .padding(.leading, CGFloat(comment.depth) * indent)

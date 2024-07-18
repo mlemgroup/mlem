@@ -25,6 +25,7 @@ extension ColorPalette {
         upvote: .primary,
         downvote: .primary,
         save: .primary,
+        read: .primary,
         favorite: .primary,
         selectedInteractionBarItem: Color(uiColor: .systemBackground),
         administration: .primary,
@@ -34,6 +35,7 @@ extension ColorPalette {
         subscribedFeed: Color(uiColor: .darkGray),
         moderatedFeed: Color(uiColor: .darkGray),
         savedFeed: Color(uiColor: .darkGray),
+        inbox: Color(uiColor: .darkGray),
         accent: .primary,
         secondaryAccent: .primary,
         commentIndentColors: [

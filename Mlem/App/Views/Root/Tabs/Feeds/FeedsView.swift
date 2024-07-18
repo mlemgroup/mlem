@@ -68,7 +68,7 @@ struct FeedsView: View {
         _feedSelection = .init(initialValue: initialFeedSelection)
         _postFeedLoader = .init(initialValue: .init(
             pageSize: internetSpeed.pageSize,
-            sortType: defaultSort,
+            sortType: .new,
             showReadPosts: showReadPosts,
             // Don't load from PersistenceRepository directly here, as we'll be reading from file every time the view is initialized, which can happen frequently
             filteredKeywords: [],
