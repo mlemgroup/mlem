@@ -101,29 +101,4 @@ struct ExpandedPostView: View {
             }
         }
     }
-    
-    func loadComments(post: any Post) async {
-        guard loadingState == .idle else { return }
-        loadingState = .loading
-        do {
-            let comments = try await post.getComments(sort: .top, page: 1, maxDepth: 8, limit: 50)
-            
-            var output: [CommentWrapper] = []
-            var keyedById: [Int: CommentWrapper] = [:]
-            
-            for comment in comments {
-                let wrapper: CommentWrapper = .init(comment)
-                keyedById[comment.id] = wrapper
-                if let parentId = comment.parentCommentIds.last {
-                    keyedById[parentId]?.addChild(wrapper)
-                } else {
-                    output.append(wrapper)
-                }
-            }
-            self.comments = output
-            loadingState = .done
-        } catch {
-            handleError(error)
-        }
-    }
 }
