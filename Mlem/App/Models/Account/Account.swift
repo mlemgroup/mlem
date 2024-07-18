@@ -42,6 +42,16 @@ extension Account {
 }
 
 extension Account {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(actorId)
+    }
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.actorId == rhs.actorId
+    }
+}
+
+extension Account {
     func signOut() {
         AccountsTracker.main.removeAccount(account: self)
     }
