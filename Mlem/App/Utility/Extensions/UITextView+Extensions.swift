@@ -93,19 +93,17 @@ extension UITextView {
                             )
                             allText.removeSubrange(firstTargetedNewLineIndex ..< endIndex)
                             
-                            let offset: Int
-                            switch stringIndex(from: selectedTextRange.start) {
-                            case firstTargetedNewLineIndex:
-                                offset = 0
-                            case allText.index(firstTargetedNewLineIndex, offsetBy: 1):
-                                offset = -1
-                            default:
-                                offset = -2
+                            var startDistance = 0
+                            var endDistance = 0
+                            if let startIndex = stringIndex(from: selectedTextRange.start),
+                               let endIndex = stringIndex(from: selectedTextRange.end) {
+                                startDistance = allText.distance(from: firstTargetedNewLineIndex, to: startIndex)
+                                endDistance = allText.distance(from: firstTargetedNewLineIndex, to: endIndex)
                             }
                             
                             let newStart = position(
                                 from: selectedTextRange.start,
-                                offset: offset
+                                offset: -min(startDistance, 2)
                             ) ?? beginningOfDocument
                             let newEnd = position(
                                 from: selectedTextRange.end,
