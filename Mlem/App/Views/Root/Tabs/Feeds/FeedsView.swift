@@ -20,8 +20,12 @@ struct FeedsView: View {
     @Environment(Palette.self) var palette
     
     @State var postFeedLoader: AggregatePostFeedLoader
+    @State var savedFeedLoader: SavedFeedLoader?
+    @State var feedOptions: [FeedSelection] = FeedSelection.guestCases
     @State var feedSelection: FeedSelection {
         didSet {
+            // ignore saved because it uses a different loader
+            guard feedSelection != .saved else { return }
             Task {
                 do {
                     try await postFeedLoader.changeFeedType(to: feedSelection.associatedApiType)
@@ -35,14 +39,19 @@ struct FeedsView: View {
     @State var scrollToTopTrigger: Bool = false
     
     enum FeedSelection: CaseIterable {
-        case all, local, subscribed
-        // TODO: moderated, saved
+        case all, local, subscribed, saved
+        // TODO: moderated
+        
+        static var guestCases: [FeedSelection] {
+            [.all, .local]
+        }
         
         var description: FeedDescription {
             switch self {
             case .all: .all
             case .local: .local
             case .subscribed: .subscribed
+            case .saved: .saved
             }
         }
         
@@ -51,6 +60,7 @@ struct FeedsView: View {
             case .all: .all
             case .local: .local
             case .subscribed: .subscribed
+            case .saved: .all // dummy value
             }
         }
     }
@@ -114,6 +124,21 @@ struct FeedsView: View {
             }
             .onChange(of: appState.firstApi, initial: false) {
                 postFeedLoader.api = appState.firstApi
+                if feedSelection == .saved, !appState.firstApi.willSendToken {
+                    feedSelection = .all
+                }
+            }
+            .onChange(of: appState.firstApi, initial: true) {
+                if let firstUser = appState.firstAccount as? UserAccount {
+                    savedFeedLoader = .init(
+                        api: appState.firstApi,
+                        sortType: .new,
+                        userId: firstUser.id
+                    )
+                    feedOptions = FeedSelection.allCases
+                } else {
+                    feedOptions = FeedSelection.guestCases
+                }
             }
             .refreshable {
                 do {
@@ -129,10 +154,19 @@ struct FeedsView: View {
         FancyScrollView(scrollToTopTrigger: $scrollToTopTrigger) {
             Section {
                 if !tilePosts { Divider() }
-                PostGridView(postFeedLoader: postFeedLoader)
+                
+                if let savedFeedLoader {
+                    if feedSelection == .saved {
+                        UserContentGridView(feedLoader: savedFeedLoader)
+                    } else {
+                        PostGridView(postFeedLoader: postFeedLoader)
+                    }
+                } else {
+                    PostGridView(postFeedLoader: postFeedLoader)
+                }
             } header: {
                 Menu {
-                    ForEach(FeedSelection.allCases, id: \.self) { feed in
+                    ForEach(feedOptions, id: \.self) { feed in
                         Button(
                             feed.description.label,
                             systemImage: feedSelection == feed ? feed.description.iconNameFill : feed.description.iconName
