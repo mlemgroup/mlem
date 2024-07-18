@@ -66,7 +66,86 @@ extension UITextView {
         }
     }
     
+    // swiftlint:disable:next function_body_length
     func toggleQuoteAtCursor() {
-        if let range = selectedTextRange, let text = text(in: range) {}
+        if let selectedTextRange, let selectedText = text(in: selectedTextRange) {
+            if let lookBehindRange = textRange(from: beginningOfDocument, to: selectedTextRange.start),
+               var lookBehindText = text(in: lookBehindRange) {
+                let firstTargetedNewLineIndex: String.Index?
+                
+                if let newlineIndex = lookBehindText.lastIndex(of: "\n") {
+                    firstTargetedNewLineIndex = lookBehindText.index(newlineIndex, offsetBy: 1, limitedBy: lookBehindText.endIndex)
+                } else {
+                    firstTargetedNewLineIndex = lookBehindText.startIndex
+                }
+                
+                if let firstTargetedNewLineIndex {
+                    // Remove "> " if exists
+                    var allText = text ?? ""
+                    if let endIndex = allText.index(firstTargetedNewLineIndex, offsetBy: 2, limitedBy: allText.endIndex) {
+                        if allText[firstTargetedNewLineIndex ..< endIndex] == "> " {
+                            let selectedEndIndex = allText.index(
+                                allText.endIndex,
+                                offsetBy: offset(from: selectedTextRange.end, to: selectedTextRange.end)
+                            )
+                            allText = allText.replacingOccurrences(
+                                of: "\n> ", with: "\n", range: firstTargetedNewLineIndex ..< selectedEndIndex
+                            )
+                            allText.removeSubrange(firstTargetedNewLineIndex ..< endIndex)
+                            
+                            let offset: Int
+                            switch stringIndex(from: selectedTextRange.start) {
+                            case firstTargetedNewLineIndex:
+                                offset = 0
+                            case allText.index(firstTargetedNewLineIndex, offsetBy: 1):
+                                offset = -1
+                            default:
+                                offset = -2
+                            }
+                            
+                            let newStart = position(
+                                from: selectedTextRange.start,
+                                offset: offset
+                            ) ?? beginningOfDocument
+                            let newEnd = position(
+                                from: selectedTextRange.end,
+                                offset: allText.count - text.count
+                            ) ?? endOfDocument
+                            
+                            text = allText
+                            self.selectedTextRange = textRange(from: newStart, to: newEnd)
+                            return
+                        }
+                    }
+                    
+                    // Insert "> " if it doesn't exist
+                    lookBehindText.insert(contentsOf: "> ", at: firstTargetedNewLineIndex)
+                    
+                    let newSelectedText = selectedText.replacingOccurrences(of: "\n", with: "\n> ")
+                    let finalText = lookBehindText + newSelectedText
+                    if let finalRange = textRange(from: beginningOfDocument, to: selectedTextRange.end) {
+                        replace(finalRange, withText: finalText)
+                        
+                        let newStart = position(
+                            from: selectedTextRange.start,
+                            offset: 2
+                        ) ?? beginningOfDocument
+                        let newEnd = position(
+                            from: selectedTextRange.end,
+                            offset: (newSelectedText.count - selectedText.count) + 2
+                        ) ?? endOfDocument
+                        self.selectedTextRange = textRange(from: newStart, to: newEnd)
+                    }
+                }
+            }
+        }
+    }
+    
+    // Helper function
+    private func stringIndex(from textPosition: UITextPosition) -> String.Index? {
+        guard let text else { return nil }
+        let offset = offset(from: beginningOfDocument, to: textPosition)
+        guard offset >= 0, offset <= text.utf16.count else { return nil }
+        return String.Index(utf16Offset: offset, in: text)
     }
 }

@@ -45,6 +45,9 @@ struct MarkdownEditorToolbarView: View {
                     textView.wrapSelectionWithDelimiters("`")
                 }
                 Divider()
+                Button("Quote", systemImage: "quote.opening") {
+                    textView.toggleQuoteAtCursor()
+                }
                 Button("Image", systemImage: "photo") {}
                 Button("Spoiler", systemImage: "eye") {
                     textView.wrapSelectionWithSpoiler()
