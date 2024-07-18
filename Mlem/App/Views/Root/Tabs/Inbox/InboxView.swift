@@ -99,7 +99,7 @@ struct InboxView: View {
                     feedDescription: .init(
                         label: "Inbox",
                         subtitle: "Replies, mentions and messages",
-                        color: \.inbox,
+                        color: { $0.inbox },
                         iconName: Icons.inbox,
                         iconNameFill: Icons.inboxFill,
                         iconScaleFactor: 0.5
