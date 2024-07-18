@@ -13,12 +13,10 @@ extension Interactable1Providing {
     private var inboxItem: (any InboxItemProviding)? { self as? any InboxItemProviding }
     
     func showReplySheet() {
-        if let self2 {
-            if let self = self as? any Post2Providing {
-                NavigationModel.main.openSheet(.reply(.post(self)))
-            }
+        if let self = self as? any Post2Providing {
+            NavigationModel.main.openSheet(.reply(.post(self)))
         } else {
-            print("DEBUG no self2 found in showReplySheet!")
+            print("DEBUG showReplySheet: cannot open sheet!")
         }
     }
 

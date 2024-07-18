@@ -33,7 +33,6 @@ struct MarkdownEditorToolbarView: View {
                 Button("Strikethrough", systemImage: "strikethrough") {
                     textView.wrapSelectionWithDelimiters("~~")
                 }
-                Button("Heading", systemImage: "textformat.size") {}
                 Button("Superscript", systemImage: "textformat.superscript") {
                     textView.wrapSelectionWithDelimiters("^")
                 }
