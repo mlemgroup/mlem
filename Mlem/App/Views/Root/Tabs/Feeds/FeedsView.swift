@@ -135,6 +135,13 @@ struct FeedsView: View {
                         sortType: .new,
                         userId: firstUser.id
                     )
+                    Task(priority: .userInitiated) {
+                        do {
+                            try await savedFeedLoader?.loadMoreItems()
+                        } catch {
+                            handleError(error)
+                        }
+                    }
                     feedOptions = FeedSelection.allCases
                 } else {
                     feedOptions = FeedSelection.guestCases
@@ -142,7 +149,12 @@ struct FeedsView: View {
             }
             .refreshable {
                 do {
-                    try await postFeedLoader.refresh(clearBeforeRefresh: false)
+                    switch feedSelection {
+                    case .all, .local, .subscribed:
+                        try await postFeedLoader.refresh(clearBeforeRefresh: false)
+                    case .saved:
+                        try await savedFeedLoader?.refresh(clearBeforeRefresh: false)
+                    }
                 } catch {
                     handleError(error)
                 }
