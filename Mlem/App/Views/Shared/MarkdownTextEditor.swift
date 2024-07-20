@@ -83,7 +83,6 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         }
  
         func textViewDidChange(_ textView: UITextView) {
-            print("DID CHANGE")
             parent.text = textView.text
             parent.placeholderLabel.isHidden = !textView.text.isEmpty
         }

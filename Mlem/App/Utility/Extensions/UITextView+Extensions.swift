@@ -94,11 +94,9 @@ extension UITextView {
                             allText.removeSubrange(firstTargetedNewLineIndex ..< endIndex)
                             
                             var startDistance = 0
-                            var endDistance = 0
                             if let startIndex = stringIndex(from: selectedTextRange.start),
                                let endIndex = stringIndex(from: selectedTextRange.end) {
                                 startDistance = allText.distance(from: firstTargetedNewLineIndex, to: startIndex)
-                                endDistance = allText.distance(from: firstTargetedNewLineIndex, to: endIndex)
                             }
                             
                             let newStart = position(
