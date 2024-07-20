@@ -178,6 +178,7 @@
 		CD7882A92BFFDFC7002E1A30 /* PostTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882A82BFFDFC7002E1A30 /* PostTag.swift */; };
 		CD7882AB2C013005002E1A30 /* EllipsisMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882AA2C013005002E1A30 /* EllipsisMenu.swift */; };
 		CD7DB9712C49C17200DCC542 /* UserContentGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9702C49C17200DCC542 /* UserContentGridView.swift */; };
+		CD7DB9732C4AEDDE00DCC542 /* TileCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */; };
 		CD869FCC2C15F8AC00FC8B5B /* BubblePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD869FCB2C15F8AC00FC8B5B /* BubblePickerView.swift */; };
 		CD869FCE2C15F90C00FC8B5B /* ChildSizeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD869FCD2C15F90C00FC8B5B /* ChildSizeReader.swift */; };
 		CD9CFA2A2C2E1E8400739BBC /* FeedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9CFA292C2E1E8400739BBC /* FeedHeaderView.swift */; };
@@ -398,6 +399,7 @@
 		CD7882A82BFFDFC7002E1A30 /* PostTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTag.swift; sourceTree = "<group>"; };
 		CD7882AA2C013005002E1A30 /* EllipsisMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EllipsisMenu.swift; sourceTree = "<group>"; };
 		CD7DB9702C49C17200DCC542 /* UserContentGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserContentGridView.swift; sourceTree = "<group>"; };
+		CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileCommentView.swift; sourceTree = "<group>"; };
 		CD869FCB2C15F8AC00FC8B5B /* BubblePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubblePickerView.swift; sourceTree = "<group>"; };
 		CD869FCD2C15F90C00FC8B5B /* ChildSizeReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildSizeReader.swift; sourceTree = "<group>"; };
 		CD869FCF2C15F92E00FC8B5B /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
@@ -831,6 +833,8 @@
 			isa = PBXGroup;
 			children = (
 				03FE14052BF9445F00A8377F /* CloseButtonView.swift */,
+				033F84BA2C2ACB96002E3EDF /* CommentView.swift */,
+				CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */,
 				030FF67E2BC8544600F6BFAC /* CustomTabBarController.swift */,
 				030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */,
 				030FF67A2BC8521600F6BFAC /* CustomTabView.swift */,
@@ -840,22 +844,23 @@
 				03FE14072BF94FFB00A8377F /* ErrorView.swift */,
 				CD4ED84D2BF113C800EFA0A2 /* ExpandedPostView.swift */,
 				034B948D2C0937BA00039AF4 /* FancyScrollView.swift */,
-				033F84BA2C2ACB96002E3EDF /* CommentView.swift */,
-				032C32152C36F65500595286 /* ReplyView.swift */,
-				0316CD632C382A6A009EA8EA /* MessageView.swift */,
-				03AF91D82C1A4ED500E56644 /* ImageView.swift */,
 				033F84CB2C2B1E46002E3EDF /* HandleLemmyLinksModifier.swift */,
-				CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */,
+				03AF91D82C1A4ED500E56644 /* ImageView.swift */,
 				0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */,
-				032C32092C34495D00595286 /* SelectTextView.swift */,
 				03AF91E22C1C616F00E56644 /* InteractionBarView.swift */,
 				0355F9482C16406E00605248 /* Line.swift */,
 				034B94842C09348400039AF4 /* MarkdownImageView.swift */,
 				03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */,
+				0316CD632C382A6A009EA8EA /* MessageView.swift */,
 				CD77437E2C1BA5CE0085BB43 /* MultiplatformView.swift */,
+				CD9CFA362C306DAB00739BBC /* PostGridView.swift */,
 				0382A7F12C0A758E00C79DDA /* ProfileDateView.swift */,
+				032C32152C36F65500595286 /* ReplyView.swift */,
+				032C32092C34495D00595286 /* SelectTextView.swift */,
 				03AF91DA2C1B21F800E56644 /* TappableImageView.swift */,
+				CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */,
 				03E614DA2C0B596900F692A4 /* ToolbarEllipsisMenu.swift */,
+				CD7DB9702C49C17200DCC542 /* UserContentGridView.swift */,
 				03AF91DE2C1B243D00E56644 /* ZoomableContainer.swift */,
 				CD4D58AB2B86BE6100B82964 /* Accounts */,
 				03267D802BED4714009D6268 /* Avatar */,
@@ -866,8 +871,6 @@
 				0382A7EE2C09F0F800C79DDA /* Pages */,
 				03500C252BF694A800CAA076 /* Toast */,
 				CD0E07002C12707700445849 /* ToolbarEllipsisMenu.swift */,
-				CD9CFA362C306DAB00739BBC /* PostGridView.swift */,
-				CD7DB9702C49C17200DCC542 /* UserContentGridView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1399,6 +1402,7 @@
 				0389DDC32C38907C0005B808 /* Message1Providing+Extensions.swift in Sources */,
 				03AF91DF2C1B243D00E56644 /* ZoomableContainer.swift in Sources */,
 				033F84C82C2B193D002E3EDF /* MlemStats.swift in Sources */,
+				CD7DB9732C4AEDDE00DCC542 /* TileCommentView.swift in Sources */,
 				03134A4D2BEAD058002662CC /* AvatarView.swift in Sources */,
 				CD4D58AA2B86BE5900B82964 /* AccountListView.swift in Sources */,
 				CD4D58B92B86D9F800B82964 /* AccountListRow.swift in Sources */,

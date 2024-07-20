@@ -66,7 +66,7 @@ struct TilePostView: View {
         VStack(spacing: 4) {
             Text(post.title)
                 .lineLimit(post.type.lineLimit)
-                .foregroundStyle(post.read_ ?? false ? .secondary : .primary)
+                .foregroundStyle(post.read_ ?? false ? palette.secondary : palette.primary)
                 .font(.footnote)
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity, minHeight: minTitleHeight, alignment: .topLeading)

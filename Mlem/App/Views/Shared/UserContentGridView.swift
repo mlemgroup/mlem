@@ -63,7 +63,13 @@ struct UserContentGridView: View {
                 FeedPostView(post: post)
             }
         case let .comment(comment):
-            Text(comment.content)
+            NavigationLink(value: NavigationPage.expandedPost(comment.post, commentId: comment.id)) {
+                if tilePosts {
+                    TileCommentView(comment: comment)
+                } else {
+                    CommentView(comment: comment)
+                }
+            }
         }
     }
 }
