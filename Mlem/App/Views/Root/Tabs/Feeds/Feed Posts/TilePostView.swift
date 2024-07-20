@@ -131,7 +131,6 @@ struct TilePostView: View {
         }
     }
     
-    // TODO: this should be fleshed out to use live values--requires some middleware work to make those conveniently available. This is just a quick-and-dirty way to mock up how it would look.
     var score: some View {
         Menu {
             ForEach(post.menuActions(), id: \.id) { action in

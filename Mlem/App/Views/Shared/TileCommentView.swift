@@ -51,11 +51,16 @@ struct TileCommentView: View {
     
     @ViewBuilder
     var titleSection: some View {
-        Text(comment.post.title)
+        (replyIcon + Text("  \(comment.post.title)"))
             .lineLimit(2)
             .foregroundStyle(palette.secondary)
             .font(.footnote)
             .fontWeight(.semibold)
             .frame(maxWidth: .infinity, minHeight: minTitleHeight, alignment: .topLeading)
+    }
+    
+    var replyIcon: Text {
+        Text(Image(systemName: Icons.reply))
+            .foregroundStyle(palette.accent)
     }
 }
