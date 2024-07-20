@@ -34,6 +34,8 @@ struct InboxView: View {
     @State var combined: [any InboxItemProviding] = []
     
     @State var showRefreshPopup: Bool = false
+    @State var waitingOnMarkAllAsRead: Bool = false
+    @State var markAllAsReadTrigger: Bool = false
     
     var items: [any InboxItemProviding] {
         switch selectedTab {
@@ -51,25 +53,7 @@ struct InboxView: View {
     var body: some View {
         content
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarEllipsisMenu {
-                    Button("Mark All as Read", systemImage: Icons.markRead) {
-                        Task {
-                            do {
-                                try await appState.firstApi.markAllAsRead()
-                                if !showRead {
-                                    removeAll()
-                                }
-                            } catch {
-                                handleError(error)
-                            }
-                        }
-                    }
-                    Toggle(isOn: $showRead.invert()) {
-                        Label("Hide Read", systemImage: Icons.read)
-                    }
-                }
-            }
+            .toolbar { toolbar }
             .onChange(of: taskId) {
                 Task { @MainActor in
                     showRefreshPopup = false
@@ -115,7 +99,7 @@ struct InboxView: View {
                     feedDescription: .init(
                         label: "Inbox",
                         subtitle: "Replies, mentions and messages",
-                        color: \.inbox,
+                        color: { $0.inbox },
                         iconName: Icons.inbox,
                         iconNameFill: Icons.inboxFill,
                         iconScaleFactor: 0.5
@@ -224,35 +208,61 @@ struct InboxView: View {
         .padding()
     }
     
-    var taskId: Int {
-        var hasher = Hasher()
-        hasher.combine(appState.firstApi.actorId)
-        hasher.combine(showRead)
-        return hasher.finalize()
+    @ToolbarContentBuilder
+    var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            Button {
+                showRead.toggle()
+            } label: {
+                Label("Hide Read", systemImage: Icons.filter)
+                    .symbolVariant(showRead ? .none : .fill)
+            }
+        }
+        ToolbarItem(placement: .topBarTrailing) {
+            markAllAsReadButton
+        }
     }
     
-    func removeAll() {
-        replies.removeAll()
-        mentions.removeAll()
-        messages.removeAll()
-        combined.removeAll()
-    }
-    
-    func loadReplies() async {
-        loadingState = .loading
-        do {
-            async let replies = appState.firstApi.getReplies(page: 1, limit: 50, unreadOnly: !showRead)
-            async let mentions = appState.firstApi.getMentions(page: 1, limit: 50, unreadOnly: !showRead)
-            async let messages = appState.firstApi.getMessages(page: 1, limit: 50, unreadOnly: !showRead)
-            try await (appState.firstSession as? UserSession)?.unreadCount?.refresh()
-            self.replies = try await replies
-            self.mentions = try await mentions
-            self.messages = try await messages
-            combined = (self.replies + self.mentions + self.messages).sorted(by: { $0.created > $1.created })
-            loadingState = .done
-        } catch {
-            handleError(error)
-            loadingState = .idle
+    @ViewBuilder
+    var markAllAsReadButton: some View {
+        let newMessagesExist = !waitingOnMarkAllAsRead && ((appState.firstSession as? UserSession)?.unreadCount?.total ?? 0) != 0
+        PhaseAnimator([0, 1], trigger: markAllAsReadTrigger) { value in
+            Button {
+                HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+                waitingOnMarkAllAsRead = true
+                markAllAsReadTrigger.toggle()
+                Task {
+                    do {
+                        try await appState.firstApi.markAllAsRead()
+                        if !showRead {
+                            removeAll()
+                        }
+                        try await Task.sleep(for: .seconds(0.05))
+                    } catch {
+                        handleError(error)
+                    }
+                    waitingOnMarkAllAsRead = false
+                }
+            } label: {
+                HStack {
+                    Image(systemName: Icons.markRead)
+                        .imageScale(.small)
+                    Text("All")
+                }
+                .opacity((value == 0 && newMessagesExist) ? 1 : 0)
+                .overlay {
+                    if value != 0 {
+                        Image(systemName: Icons.success)
+                            .imageScale(.small)
+                            .fontWeight(.semibold)
+                    }
+                }
+                .fixedSize()
+                .padding(.vertical, 2)
+                .padding(.horizontal, 10)
+                .background(.bar, in: .capsule)
+            }
+            .opacity((newMessagesExist || value != 0) ? 1 : 0)
         }
     }
 }
