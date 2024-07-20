@@ -18,6 +18,7 @@ struct TilePostView: View {
 
     @ScaledMetric(relativeTo: .footnote) var minTitleHeight: CGFloat = 36 // (2 * .footnote height), including built-in spacing
     var dimension: CGFloat { (UIScreen.main.bounds.width - (AppConstants.standardSpacing * 3)) / 2 }
+    // TODO: unify spacing with TileCommentView
     var frameHeight: CGFloat {
         dimension + // picture
             minTitleHeight + // title section

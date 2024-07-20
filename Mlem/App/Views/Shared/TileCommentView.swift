@@ -15,13 +15,13 @@ struct TileCommentView: View {
     
     let comment: any Comment2Providing
     
-    @ScaledMetric(relativeTo: .footnote) var minTitleHeight: CGFloat = 36 // (2 * .footnote height), including built-in spacing
+    @ScaledMetric(relativeTo: .footnote) var titleHeight: CGFloat = 36 // (2 * .footnote height), including built-in spacing
+    @ScaledMetric(relativeTo: .caption) var communityHeight: CGFloat = 16 // .caption height, including built-in spacing
     var dimension: CGFloat { (UIScreen.main.bounds.width - (AppConstants.standardSpacing * 3)) / 2 }
     var frameHeight: CGFloat {
         dimension + // picture
-            minTitleHeight + // title section
-            (AppConstants.standardSpacing * 3) + // vertical spacing--not actually sure why it has to be 3 instead of 2, but it does
-            2 // spacing between title and community
+            titleHeight + (AppConstants.standardSpacing * 2) - 3 + // title + padding
+            communityHeight + (AppConstants.standardSpacing) // community + padding
     }
     
     var body: some View {
@@ -36,16 +36,21 @@ struct TileCommentView: View {
     var content: some View {
         VStack(alignment: .leading, spacing: 0) {
             titleSection
-                .padding([.top, .horizontal], AppConstants.standardSpacing)
-                .padding(.bottom, 7)
+                .frame(height: titleHeight, alignment: .topLeading)
+                .padding(AppConstants.standardSpacing)
+                .padding(.bottom, -3)
             
             Divider()
             
             Markdown(comment.content, configuration: .default)
                 .font(.caption)
                 .padding(AppConstants.standardSpacing)
-            
-            Spacer()
+                .frame(height: dimension, alignment: .top)
+                .clipped()
+
+            communityAndInfo
+                .padding(.horizontal, AppConstants.standardSpacing)
+                .padding(.vertical, AppConstants.halfSpacing)
         }
     }
     
@@ -56,11 +61,46 @@ struct TileCommentView: View {
             .foregroundStyle(palette.secondary)
             .font(.footnote)
             .fontWeight(.semibold)
-            .frame(maxWidth: .infinity, minHeight: minTitleHeight, alignment: .topLeading)
+            .frame(maxWidth: .infinity, alignment: .topLeading)
     }
     
     var replyIcon: Text {
         Text(Image(systemName: Icons.reply))
             .foregroundStyle(palette.accent)
+    }
+    
+    var communityAndInfo: some View {
+        HStack(spacing: 6) {
+            if let communityName = comment.community_?.name {
+                Text(communityName)
+                    .lineLimit(1)
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(palette.secondary)
+            }
+            
+            Spacer()
+            
+            score
+        }
+        .frame(maxWidth: .infinity)
+    }
+    
+    var score: some View {
+        //        Menu {
+        //            ForEach(post.menuActions(), id: \.id) { action in
+        //                MenuButton(action: action)
+        //            }
+        //        } label: {
+        Group {
+            Text(Image(systemName: comment.votes_?.iconName ?? Icons.upvoteSquare)) +
+                Text(" \(comment.votes_?.total.abbreviated ?? "0")")
+        }
+        .lineLimit(1)
+        .font(.caption)
+        .foregroundStyle(comment.votes_?.iconColor ?? palette.secondary)
+        .contentShape(.rect)
+        //        }
+        //        .onTapGesture {}
     }
 }
