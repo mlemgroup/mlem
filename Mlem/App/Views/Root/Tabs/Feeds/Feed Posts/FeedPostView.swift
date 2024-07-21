@@ -14,6 +14,8 @@ struct FeedPostView: View {
     @AppStorage("post.size") var size: PostSize = .large
     @AppStorage("beta.tilePosts") var tilePosts: Bool = false
     
+    @Environment(Palette.self) var palette
+    
     let post: any Post1Providing
     
     var body: some View {
@@ -21,6 +23,7 @@ struct FeedPostView: View {
             .contentShape(.interaction, .rect)
             .quickSwipes(post.swipeActions(behavior: tilePosts ? .tile : .standard))
             .contextMenu(actions: post.menuActions())
+            .shadow(color: tilePosts ? palette.primary.opacity(0.1) : .clear, radius: 3) // after quickSwipes to prevent getting clipped
     }
     
     @ViewBuilder

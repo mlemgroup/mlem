@@ -17,20 +17,20 @@ struct TileCommentView: View {
     
     @ScaledMetric(relativeTo: .footnote) var titleHeight: CGFloat = 36 // (2 * .footnote height), including built-in spacing
     @ScaledMetric(relativeTo: .caption) var communityHeight: CGFloat = 16 // .caption height, including built-in spacing
-    var dimension: CGFloat { (UIScreen.main.bounds.width - (AppConstants.standardSpacing * 3)) / 2 }
+    var width: CGFloat { (UIScreen.main.bounds.width - (AppConstants.standardSpacing * 3)) / 2 }
+    var contentHeight: CGFloat { width - 20 }
     var frameHeight: CGFloat {
-        dimension + // picture
+        contentHeight + // content
             titleHeight + (AppConstants.standardSpacing * 2) - 3 + // title + padding
-            communityHeight + (AppConstants.standardSpacing) // community + padding
+            communityHeight + (AppConstants.standardSpacing * 2) // community + padding
     }
     
     var body: some View {
         content
-            .frame(width: dimension, height: frameHeight)
+            .frame(width: width, height: frameHeight)
             .background(palette.secondaryGroupedBackground)
             .clipShape(.rect(cornerRadius: AppConstants.tilePostCornerRadius))
             .contentShape(.contextMenuPreview, .rect(cornerRadius: AppConstants.tilePostCornerRadius))
-            .shadow(color: palette.primary.opacity(0.1), radius: 3)
     }
     
     var content: some View {
@@ -45,12 +45,11 @@ struct TileCommentView: View {
             Markdown(comment.content, configuration: .default)
                 .font(.caption)
                 .padding(AppConstants.standardSpacing)
-                .frame(height: dimension, alignment: .top)
+                .frame(height: contentHeight, alignment: .top)
                 .clipped()
 
             communityAndInfo
-                .padding(.horizontal, AppConstants.standardSpacing)
-                .padding(.vertical, AppConstants.halfSpacing)
+                .padding(AppConstants.standardSpacing)
         }
     }
     
@@ -87,20 +86,20 @@ struct TileCommentView: View {
     }
     
     var score: some View {
-        //        Menu {
-        //            ForEach(post.menuActions(), id: \.id) { action in
-        //                MenuButton(action: action)
-        //            }
-        //        } label: {
-        Group {
-            Text(Image(systemName: comment.votes_?.iconName ?? Icons.upvoteSquare)) +
-                Text(" \(comment.votes_?.total.abbreviated ?? "0")")
+        Menu {
+            ForEach(comment.menuActions(), id: \.id) { action in
+                MenuButton(action: action)
+            }
+        } label: {
+            Group {
+                Text(Image(systemName: comment.votes_?.iconName ?? Icons.upvoteSquare)) +
+                    Text(" \(comment.votes_?.total.abbreviated ?? "0")")
+            }
+            .lineLimit(1)
+            .font(.caption)
+            .foregroundStyle(comment.votes_?.iconColor ?? palette.secondary)
+            .contentShape(.rect)
         }
-        .lineLimit(1)
-        .font(.caption)
-        .foregroundStyle(comment.votes_?.iconColor ?? palette.secondary)
-        .contentShape(.rect)
-        //        }
-        //        .onTapGesture {}
+        .onTapGesture {}
     }
 }

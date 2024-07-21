@@ -16,7 +16,7 @@ struct UserContentGridView: View {
     
     @State var columns: [GridItem] = [GridItem(.flexible())]
     
-    var feedLoader: any FeedLoading<UserContent>
+    var feedLoader: UserContentFeedLoader
     
     var body: some View {
         content
@@ -64,11 +64,7 @@ struct UserContentGridView: View {
             }
         case let .comment(comment):
             NavigationLink(value: NavigationPage.expandedPost(comment.post, commentId: comment.id)) {
-                if tilePosts {
-                    TileCommentView(comment: comment)
-                } else {
-                    CommentView(comment: comment)
-                }
+                FeedCommentView(comment: comment)
             }
         }
     }

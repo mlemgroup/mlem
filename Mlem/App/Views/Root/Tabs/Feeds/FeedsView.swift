@@ -20,7 +20,7 @@ struct FeedsView: View {
     @Environment(Palette.self) var palette
     
     @State var postFeedLoader: AggregatePostFeedLoader
-    @State var savedFeedLoader: SavedFeedLoader?
+    @State var savedFeedLoader: UserContentFeedLoader?
     @State var feedOptions: [FeedSelection] = FeedSelection.guestCases
     @State var feedSelection: FeedSelection {
         didSet {
@@ -132,8 +132,9 @@ struct FeedsView: View {
                 if let firstUser = appState.firstAccount as? UserAccount {
                     savedFeedLoader = .init(
                         api: appState.firstApi,
+                        userId: firstUser.id,
                         sortType: .new,
-                        userId: firstUser.id
+                        savedOnly: true
                     )
                     Task(priority: .userInitiated) {
                         do {

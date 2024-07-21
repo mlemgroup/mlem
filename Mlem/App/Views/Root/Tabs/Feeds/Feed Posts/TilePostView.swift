@@ -16,29 +16,31 @@ struct TilePostView: View {
     
     let post: any Post1Providing
 
+    // Note that these dimensions above sum to precisely the height of TileCommentView, though due to the grouping of title and community here, we get a bonus 10px for the content
     @ScaledMetric(relativeTo: .footnote) var minTitleHeight: CGFloat = 36 // (2 * .footnote height), including built-in spacing
-    var dimension: CGFloat { (UIScreen.main.bounds.width - (AppConstants.standardSpacing * 3)) / 2 }
-    // TODO: unify spacing with TileCommentView
+    @ScaledMetric(relativeTo: .caption) var communityHeight: CGFloat = 16 // .caption height, including built-in spacing
+    var width: CGFloat { (UIScreen.main.bounds.width - (AppConstants.standardSpacing * 3)) / 2 }
+    var contentHeight: CGFloat { width - 10 }
     var frameHeight: CGFloat {
-        dimension + // picture
-            minTitleHeight + // title section
-            (AppConstants.standardSpacing * 3) + // vertical spacing--not actually sure why it has to be 3 instead of 2, but it does
-            2 // spacing between title and community
+        contentHeight + // content
+            minTitleHeight + // title
+            7 + // title : community separation
+            communityHeight + // community
+            (AppConstants.standardSpacing * 2) // (community + title) padding
     }
     
     var body: some View {
         content
-            .frame(width: dimension, height: frameHeight)
+            .frame(width: width, height: frameHeight)
             .background(palette.secondaryGroupedBackground)
             .clipShape(.rect(cornerRadius: AppConstants.tilePostCornerRadius))
             .contentShape(.contextMenuPreview, .rect(cornerRadius: AppConstants.tilePostCornerRadius))
-            .shadow(color: palette.primary.opacity(0.1), radius: 3)
             .environment(\.postContext, post)
     }
     
     var content: some View {
         VStack(alignment: .leading, spacing: 0) {
-            BaseImage(post: post)
+            BaseImage(post: post, width: width, height: contentHeight)
                 .overlay {
                     if let host = post.linkHost {
                         PostLinkHostView(host: host)
@@ -57,25 +59,25 @@ struct TilePostView: View {
             
             Divider()
             
-            titleSection
-                .padding(AppConstants.standardSpacing)
+            VStack(spacing: 7) {
+                titleSection
+                
+                communityAndInfo
+            }
+            .padding(AppConstants.standardSpacing)
         }
     }
     
     @ViewBuilder
     var titleSection: some View {
-        VStack(spacing: 4) {
-            Text(post.title)
-                .lineLimit(post.type.lineLimit)
-                .foregroundStyle(post.read_ ?? false ? palette.secondary : palette.primary)
-                .font(.footnote)
-                .fontWeight(.semibold)
-                .frame(maxWidth: .infinity, minHeight: minTitleHeight, alignment: .topLeading)
-            
-            communityAndInfo
-        }
+        Text(post.title)
+            .lineLimit(post.type.lineLimit)
+            .foregroundStyle(post.read_ ?? false ? palette.secondary : palette.primary)
+            .font(.footnote)
+            .fontWeight(.semibold)
+            .frame(maxWidth: .infinity, minHeight: minTitleHeight, alignment: .topLeading)
     }
-    
+
     var communityAndInfo: some View {
         HStack(spacing: 6) {
             if let communityName = post.community_?.name {
@@ -98,7 +100,8 @@ struct TilePostView: View {
         
         let post: any Post1Providing
         
-        var dimension: CGFloat { UIScreen.main.bounds.width / 2 - (AppConstants.standardSpacing * 1.5) }
+        let width: CGFloat
+        let height: CGFloat
         
         var body: some View {
             switch post.type {
@@ -107,7 +110,7 @@ struct TilePostView: View {
                     .font(.caption)
                     .foregroundStyle(palette.secondary)
                     .padding(AppConstants.standardSpacing)
-                    .frame(maxWidth: .infinity, maxHeight: dimension, alignment: .topLeading)
+                    .frame(maxWidth: .infinity, maxHeight: height, alignment: .topLeading)
                     .clipped()
             case .titleOnly:
                 Image(systemName: post.placeholderImageName)
@@ -119,13 +122,13 @@ struct TilePostView: View {
             case let .image(url):
                 TappableImageView(url: url)
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: dimension, height: dimension)
+                    .frame(width: width, height: height)
                     .background(palette.secondaryBackground)
                     .clipped()
             case let .link(url):
                 ImageView(url: url)
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: dimension, height: dimension)
+                    .frame(width: width, height: height)
                     .background(palette.secondaryBackground)
                     .clipped()
             }
