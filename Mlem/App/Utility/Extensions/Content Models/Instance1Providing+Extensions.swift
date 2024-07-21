@@ -28,6 +28,7 @@ extension Instance1Providing {
     func visit() {
         let account = GuestAccount.getGuestAccount(url: actorId)
         AppState.main.changeAccount(to: account)
+        AppState.main.contentViewTab = .feeds
     }
     
     var isVisiting: Bool {

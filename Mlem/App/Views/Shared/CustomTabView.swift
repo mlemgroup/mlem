@@ -48,6 +48,16 @@ struct CustomTabView: UIViewControllerRepresentable {
                 }
             }
         }
+        
+        withObservationTracking {
+            _ = AppState.main.contentViewTab
+        } onChange: {
+            if let controller = uiViewController as? CustomTabBarController {
+                Task { @MainActor in
+                    controller.selectedIndex = selectedIndex
+                }
+            }
+        }
                 
         withObservationTracking {
             for tab in tabs {
