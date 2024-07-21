@@ -29,19 +29,20 @@ struct InstanceDetailsView: View {
             HStack(spacing: 16) {
                 box {
                     Text("Users")
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(palette.secondary)
                     Text("\((instance.userCount_ ?? 0).abbreviated)")
                         .font(.title)
                         .fontWeight(.semibold)
+                        .foregroundStyle(palette.user)
                 }
                 
                 box {
                     Text("Communities")
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(palette.secondary)
                     Text("\((instance.communityCount_ ?? 0).abbreviated)")
                         .font(.title)
                         .fontWeight(.semibold)
-                        .foregroundStyle(.green)
+                        .foregroundStyle(palette.community)
                 }
             }
             .frame(maxWidth: .infinity)
@@ -49,20 +50,20 @@ struct InstanceDetailsView: View {
             HStack(spacing: 16) {
                 box {
                     Text("Posts")
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(palette.secondary)
                     Text("\((instance.postCount_ ?? 0).abbreviated)")
                         .font(.title)
                         .fontWeight(.semibold)
-                        .foregroundStyle(.pink)
+                        .foregroundStyle(palette.post)
                 }
                 
                 box {
                     Text("Comments")
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(palette.secondary)
                     Text("\((instance.commentCount_ ?? 0).abbreviated)")
                         .font(.title)
                         .fontWeight(.semibold)
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(palette.comment)
                 }
             }
             .frame(maxWidth: .infinity)
@@ -101,7 +102,7 @@ struct InstanceDetailsView: View {
                     "Registration",
                     systemImage: Icons.person,
                     value: instance.registrationMode_?.label ?? "Closed",
-                    color: instance.registrationMode_?.color ?? .red
+                    color: instance.registrationMode_?.color ?? palette.negative
                 )
                 if instance.registrationMode_ != .closed {
                     Divider()
@@ -160,7 +161,7 @@ struct InstanceDetailsView: View {
                                 "This probably contains foul language.",
                                 systemImage: Icons.warning
                             )
-                            .foregroundStyle(.orange)
+                            .foregroundStyle(palette.caution)
                         }
                     }
                     .font(.footnote)
@@ -233,7 +234,7 @@ struct InstanceDetailsView: View {
         _ label: String,
         systemImage: String,
         value: String,
-        color: Color = .primary
+        color: Color? = nil
     ) -> some View {
         HStack {
             Image(systemName: systemImage)
@@ -242,7 +243,7 @@ struct InstanceDetailsView: View {
             Text(label)
             Spacer()
             Text(value)
-                .foregroundStyle(color)
+                .foregroundStyle(color ?? palette.primary)
         }
         .padding(12)
     }
@@ -286,11 +287,11 @@ private extension ApiRegistrationMode {
     var color: Color {
         switch self {
         case .closed:
-            return .red
+            return Palette.main.negative
         case .requireApplication:
-            return .orange
+            return Palette.main.caution
         case .open:
-            return .green
+            return Palette.main.positive
         }
     }
 }

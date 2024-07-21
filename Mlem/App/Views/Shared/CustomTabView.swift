@@ -61,7 +61,7 @@ struct CustomTabView: UIViewControllerRepresentable {
                 
         withObservationTracking {
             for tab in tabs {
-                let item = tab.badge?.wrappedValue
+                _ = tab.badge?.wrappedValue
             }
         } onChange: {
             if let controller = uiViewController as? CustomTabBarController {

@@ -33,6 +33,10 @@ protocol PaletteProviding {
     // entities
     var administration: Color { get }
     var moderation: Color { get }
+    var post: Color { get }
+    var comment: Color { get }
+    var user: Color { get }
+    var community: Color { get }
     
     // feeds
     var federatedFeed: Color { get }
@@ -74,6 +78,7 @@ struct ColorPalette: PaletteProviding {
     var positive: Color
     var negative: Color
     var warning: Color
+    var caution: Color
     
     // interactions
     var upvote: Color
@@ -86,6 +91,10 @@ struct ColorPalette: PaletteProviding {
     // entities
     var administration: Color
     var moderation: Color
+    var post: Color
+    var comment: Color
+    var user: Color
+    var community: Color
     
     // feeds
     var federatedFeed: Color
@@ -114,6 +123,7 @@ struct ColorPalette: PaletteProviding {
         positive: Color,
         negative: Color,
         warning: Color,
+        caution: Color,
         upvote: Color,
         downvote: Color,
         save: Color,
@@ -122,6 +132,10 @@ struct ColorPalette: PaletteProviding {
         selectedInteractionBarItem: Color,
         administration: Color,
         moderation: Color,
+        post: Color,
+        comment: Color,
+        user: Color,
+        community: Color,
         federatedFeed: Color,
         localFeed: Color,
         subscribedFeed: Color,
@@ -144,6 +158,7 @@ struct ColorPalette: PaletteProviding {
         self.positive = positive
         self.negative = negative
         self.warning = warning
+        self.caution = caution
         self.upvote = upvote
         self.downvote = downvote
         self.save = save
@@ -152,6 +167,10 @@ struct ColorPalette: PaletteProviding {
         self.selectedInteractionBarItem = selectedInteractionBarItem
         self.administration = administration
         self.moderation = moderation
+        self.post = post
+        self.comment = comment
+        self.user = user
+        self.community = community
         self.federatedFeed = federatedFeed
         self.localFeed = localFeed
         self.subscribedFeed = subscribedFeed
@@ -195,6 +214,7 @@ class Palette: PaletteProviding {
     var positive: Color { palette.positive }
     var negative: Color { palette.negative }
     var warning: Color { palette.warning }
+    var caution: Color { palette.caution }
     
     var upvote: Color { palette.upvote }
     var downvote: Color { palette.downvote }
@@ -205,6 +225,10 @@ class Palette: PaletteProviding {
     
     var administration: Color { palette.administration }
     var moderation: Color { palette.moderation }
+    var post: Color { palette.post }
+    var comment: Color { palette.comment }
+    var user: Color { palette.user }
+    var community: Color { palette.community }
     
     var federatedFeed: Color { palette.federatedFeed }
     var localFeed: Color { palette.localFeed }
