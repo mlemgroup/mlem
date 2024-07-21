@@ -39,13 +39,17 @@ struct LargePostView: View {
                     Image(Icons.nsfwTag)
                         .foregroundStyle(palette.warning)
                 }
-                
+                if post.hidden_ ?? false {
+                    Image(systemName: Icons.hide)
+                        .foregroundStyle(palette.secondary)
+                }
                 if !isExpanded {
                     EllipsisMenu(actions: post.menuActions(), size: 24)
                 }
             }
             
             post.taggedTitle(communityContext: communityContext)
+                .foregroundStyle((post.read_ ?? false) ? palette.secondary : palette.primary)
                 .font(.headline)
                 .imageScale(.small)
             

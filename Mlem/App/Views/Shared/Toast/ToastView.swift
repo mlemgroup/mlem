@@ -15,6 +15,9 @@ struct ToastView: View {
     @State private var isExpanded: Bool = false
     @State private var didUndo: Bool = false
     
+    // These symbols only have a single hierarchical layer, so we render it as `.secondary`
+    static let dimmedSymbols: Set<String> = [Icons.blockFill]
+    
     var body: some View {
         HStack {
             switch toast.type {
@@ -196,6 +199,7 @@ struct ToastView: View {
             .aspectRatio(contentMode: .fit)
             .fontWeight(.semibold)
             .symbolRenderingMode(.hierarchical)
+            .foregroundStyle(ToastView.dimmedSymbols.contains(systemName) ? .secondary : .primary)
             .foregroundStyle(color)
             .padding([.vertical, .leading], AppConstants.standardSpacing)
     }

@@ -31,6 +31,7 @@ enum PostActionType {
     case reply
     case share
     case selectText
+    case hide
 }
 
 enum PostReadoutType: CaseIterable {
