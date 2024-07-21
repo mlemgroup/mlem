@@ -40,7 +40,7 @@ struct InstanceView: View {
     @State var isBlocking: UUID?
     
     init(instance: any InstanceStubProviding) {
-        self.instance = instance
+        self._instance = .init(wrappedValue: instance)
     }
     
     var body: some View {

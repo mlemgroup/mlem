@@ -66,7 +66,7 @@ extension NavigationPage {
         case .search:
             VStack {
                 Link("Test", destination: URL(string: "https://lemmy.dbzer0.com")!)
-                Text("\((AppState.main.firstSession as? UserSession)?.blocks?.instanceCount)")
+                Text("\((AppState.main.firstSession as? UserSession)?.blocks?.instanceCount ?? 0)")
             }
         case let .externalApiInfo(api: api, actorId: actorId):
             ExternalApiInfoView(api: api, actorId: actorId)
