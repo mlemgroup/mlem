@@ -1941,8 +1941,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 0.15.0;
+				branch = sjmarf/reply;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
