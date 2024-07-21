@@ -23,7 +23,7 @@ struct InstanceDetailsView: View {
                     Text("•")
                     Label(instance.created.getRelativeTime(unitsStyle: .abbreviated), systemImage: Icons.time)
                 }
-                .foregroundStyle(.secondary)
+                .foregroundStyle(palette.secondary)
                 .font(.footnote)
             }
             HStack(spacing: 16) {
@@ -71,7 +71,7 @@ struct InstanceDetailsView: View {
             if let activeUserCount = instance.activeUserCount_ {
                 box(spacing: 8) {
                     Text("Active Users")
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(palette.secondary)
                     HStack(spacing: 16) {
                         activeUserBox("6mo", value: activeUserCount.sixMonths)
                         activeUserBox("1mo", value: activeUserCount.month)
@@ -116,7 +116,7 @@ struct InstanceDetailsView: View {
                         "Captcha",
                         systemImage: Icons.photo,
                         value: captchaLabel,
-                        color: instance.captchaDifficulty_ == nil ? .red : .green
+                        color: instance.captchaDifficulty_ == nil ? palette.negative: palette.positive
                     )
                 }
             }
@@ -153,7 +153,7 @@ struct InstanceDetailsView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         if showingSlurRegex {
                             Text(regex)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(palette.secondary)
                                 .textSelection(.enabled)
                         } else {
                             Text("Tap to show slur filter regex.")
@@ -207,7 +207,7 @@ struct InstanceDetailsView: View {
                 )
             }
             .frame(maxWidth: .infinity)
-            .background(Color(uiColor: .secondarySystemGroupedBackground))
+            .background(palette.secondaryGroupedBackground)
             .cornerRadius(AppConstants.largeItemCornerRadius)
         }
         .padding(.horizontal, 16)
@@ -226,7 +226,7 @@ struct InstanceDetailsView: View {
         }
         .padding(.vertical, 10)
         .frame(maxWidth: .infinity)
-        .background(Color(uiColor: .secondarySystemGroupedBackground))
+        .background(palette.secondaryGroupedBackground)
         .cornerRadius(AppConstants.largeItemCornerRadius)
     }
     
@@ -238,7 +238,7 @@ struct InstanceDetailsView: View {
     ) -> some View {
         HStack {
             Image(systemName: systemImage)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(palette.secondary)
                 .frame(width: 30)
             Text(label)
             Spacer()
@@ -251,12 +251,12 @@ struct InstanceDetailsView: View {
     @ViewBuilder func settingRow(_ label: String, systemImage: String, value: Bool) -> some View {
         HStack {
             Image(systemName: systemImage)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(palette.secondary)
                 .frame(width: 30)
             Text(label)
             Spacer()
             Text(value ? "Yes" : "No")
-                .foregroundStyle(value ? .green : .red)
+                .foregroundStyle(value ? palette.positive: palette.negative)
         }
         .padding(12)
     }
@@ -268,7 +268,7 @@ struct InstanceDetailsView: View {
                 .font(.title3)
                 .fontWeight(.semibold)
             Text(label)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(palette.secondary)
         }
         .frame(maxWidth: .infinity)
     }
