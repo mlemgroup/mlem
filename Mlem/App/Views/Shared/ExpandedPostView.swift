@@ -73,7 +73,7 @@ struct ExpandedPostView: View {
         }
     }
     
-    // @ViewBuilder
+    @ViewBuilder
     func content(for post: any Post1Providing) -> some View {
         ScrollViewReader { proxy in
             FancyScrollView {
