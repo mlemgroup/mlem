@@ -12,6 +12,8 @@ import SwiftUI
 extension Post1Providing {
     private var self2: (any Post2Providing)? { self as? any Post2Providing }
     
+    var isOwnPost: Bool { creatorId == api.myPerson?.id }
+    
     func swipeActions(behavior: SwipeBehavior) -> SwipeConfiguration {
         .init(
             behavior: behavior,
@@ -39,7 +41,12 @@ extension Post1Providing {
             replyAction()
             selectTextAction()
             shareAction()
-            blockAction(feedback: feedback)
+            
+            if self.isOwnPost {
+                deleteAction(feedback: feedback)
+            } else {
+                blockAction(feedback: feedback)
+            }
         }
     }
     
@@ -88,11 +95,13 @@ extension Post1Providing {
     
     func taggedTitle(communityContext: (any Community1Providing)?) -> Text {
         let hasTags: Bool = removed
+            || deleted
             || pinnedInstance
             || (communityContext != nil && pinnedCommunity)
             || locked
         
         return postTag(active: removed, icon: Icons.removeFill, color: Palette.main.negative) +
+            postTag(active: deleted, icon: Icons.delete, color: Palette.main.negative) +
             postTag(active: pinnedInstance, icon: Icons.pinFill, color: Palette.main.administration) +
             postTag(active: communityContext != nil && pinnedCommunity, icon: Icons.pinFill, color: Palette.main.moderation) +
             postTag(active: locked, icon: Icons.lockFill, color: Palette.main.secondaryAccent) +
