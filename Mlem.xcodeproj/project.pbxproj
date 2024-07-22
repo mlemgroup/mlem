@@ -861,7 +861,6 @@
 				032C32152C36F65500595286 /* ReplyView.swift */,
 				032C32092C34495D00595286 /* SelectTextView.swift */,
 				03AF91DA2C1B21F800E56644 /* TappableImageView.swift */,
-				CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */,
 				03E614DA2C0B596900F692A4 /* ToolbarEllipsisMenu.swift */,
 				CD7DB9702C49C17200DCC542 /* UserContentGridView.swift */,
 				03AF91DE2C1B243D00E56644 /* ZoomableContainer.swift */,
@@ -1004,6 +1003,7 @@
 		CD7DB9742C4D6BEF00DCC542 /* Feed Comments */ = {
 			isa = PBXGroup;
 			children = (
+				CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */,
 				CD7DB9752C4D6C0A00DCC542 /* FeedCommentView.swift */,
 			);
 			path = "Feed Comments";

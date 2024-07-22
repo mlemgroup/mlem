@@ -18,12 +18,18 @@ struct TileCommentView: View {
     @ScaledMetric(relativeTo: .footnote) var titleHeight: CGFloat = 36 // (2 * .footnote height), including built-in spacing
     @ScaledMetric(relativeTo: .caption) var communityHeight: CGFloat = 16 // .caption height, including built-in spacing
     var width: CGFloat { (UIScreen.main.bounds.width - (AppConstants.standardSpacing * 3)) / 2 }
-    var contentHeight: CGFloat { width - 20 }
-    var frameHeight: CGFloat {
-        contentHeight + // content
-            titleHeight + (AppConstants.standardSpacing * 2) - 3 + // title + padding
-            communityHeight + (AppConstants.standardSpacing * 2) // community + padding
-    }
+    var contentHeight: CGFloat { width - 33 }
+    var frameHeight: CGFloat { width + titleHeight + communityHeight + 17 }
+    // Padding math
+    // Need to satisfy: padding + contentHeightModifier = 17
+    //
+    // VStack spacing = (2 * AppConstants.standardSpacing) = 20
+    // External padding = (2 * AppConstants.standardSpacing) = 20
+    // Internal titleSection padding = (2 * AppConstants.halfSpacing) = 10
+    //
+    // Total padding = 50
+    // 50 + contentHeightModifier = 17
+    // contentHeightModifier = -33
     
     var body: some View {
         content
@@ -34,28 +40,28 @@ struct TileCommentView: View {
     }
     
     var content: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
             titleSection
                 .frame(height: titleHeight, alignment: .topLeading)
-                .padding(AppConstants.standardSpacing)
-                .padding(.bottom, -3)
-            
-            Divider()
+                .padding(AppConstants.halfSpacing)
+                .background {
+                    RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
+                        .fill(palette.secondaryBackground)
+                }
             
             Markdown(comment.content, configuration: .default)
                 .font(.caption)
-                .padding(AppConstants.standardSpacing)
                 .frame(height: contentHeight, alignment: .top)
                 .clipped()
 
             communityAndInfo
-                .padding(AppConstants.standardSpacing)
         }
+        .padding(AppConstants.standardSpacing)
     }
     
     @ViewBuilder
     var titleSection: some View {
-        (replyIcon + Text("  \(comment.post.title)"))
+        Text(comment.post.title)
             .lineLimit(2)
             .foregroundStyle(palette.secondary)
             .font(.footnote)

@@ -17,18 +17,23 @@ struct TilePostView: View {
     let post: any Post1Providing
 
     // Note that these dimensions above sum to precisely the height of TileCommentView, though due to the grouping of title and community here, we get a bonus 10px for the content
+    // Total height in simplest form is:
+    // width + minTitleHeight + communityHeight + 17
     @ScaledMetric(relativeTo: .footnote) var minTitleHeight: CGFloat = 36 // (2 * .footnote height), including built-in spacing
     @ScaledMetric(relativeTo: .caption) var communityHeight: CGFloat = 16 // .caption height, including built-in spacing
     var width: CGFloat { (UIScreen.main.bounds.width - (AppConstants.standardSpacing * 3)) / 2 }
     var contentHeight: CGFloat { width - 10 }
-    var frameHeight: CGFloat {
-        contentHeight + // content
-            minTitleHeight + // title
-            7 + // title : community separation
-            communityHeight + // community
-            (AppConstants.standardSpacing * 2) // (community + title) padding
-    }
-    
+    var frameHeight: CGFloat { width + minTitleHeight + communityHeight + 17 }
+    // Padding math
+    // Need to satisfy: padding + contentHeightModifier = 17
+    //
+    // Title : community spacing = 7
+    // Title + community external padding = (2 * AppConstants.standardSpacing) = 20
+    //
+    // Total padding = 27
+    // 27 + contentHeightModifier = 17
+    // contentHeightModifier = 10
+
     var body: some View {
         content
             .frame(width: width, height: frameHeight)

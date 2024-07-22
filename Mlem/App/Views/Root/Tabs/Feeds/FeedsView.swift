@@ -88,6 +88,20 @@ struct FeedsView: View {
             api: AppState.main.firstApi,
             feedType: initialFeedSelection.associatedApiType
         ))
+        if let firstUser = AppState.main.firstAccount as? UserAccount {
+            _savedFeedLoader = .init(wrappedValue: .init(
+                api: AppState.main.firstApi,
+                userId: firstUser.id,
+                sortType: .new,
+                savedOnly: true,
+                smallAvatarSize: AppConstants.smallAvatarSize,
+                largeAvatarSize: AppConstants.largeAvatarSize,
+                urlCache: AppConstants.urlCache
+            ))
+            _feedOptions = .init(wrappedValue: FeedSelection.allCases)
+        } else {
+            _feedOptions = .init(wrappedValue: FeedSelection.guestCases)
+        }
     }
     
     var body: some View {
@@ -108,6 +122,7 @@ struct FeedsView: View {
                 }
             }
             .loadFeed(postFeedLoader)
+            .loadFeed(savedFeedLoader)
             .onChange(of: showRead) {
                 scrollToTopTrigger.toggle()
                 Task {
@@ -124,28 +139,23 @@ struct FeedsView: View {
             }
             .onChange(of: appState.firstApi, initial: false) {
                 postFeedLoader.api = appState.firstApi
-                if feedSelection == .saved, !appState.firstApi.willSendToken {
-                    feedSelection = .all
-                }
-            }
-            .onChange(of: appState.firstApi, initial: true) {
-                if let firstUser = appState.firstAccount as? UserAccount {
+                
+                if appState.firstApi.willSendToken, let firstUser = appState.firstAccount as? UserAccount {
                     savedFeedLoader = .init(
                         api: appState.firstApi,
                         userId: firstUser.id,
                         sortType: .new,
-                        savedOnly: true
+                        savedOnly: true,
+                        smallAvatarSize: AppConstants.smallAvatarSize,
+                        largeAvatarSize: AppConstants.largeAvatarSize,
+                        urlCache: AppConstants.urlCache
                     )
-                    Task(priority: .userInitiated) {
-                        do {
-                            try await savedFeedLoader?.loadMoreItems()
-                        } catch {
-                            handleError(error)
-                        }
-                    }
-                    feedOptions = FeedSelection.allCases
                 } else {
-                    feedOptions = FeedSelection.guestCases
+                    savedFeedLoader = nil
+                    // ensure we don't display saved feed with unathenticated user
+                    if feedSelection == .saved {
+                        feedSelection = .all
+                    }
                 }
             }
             .refreshable {
@@ -168,12 +178,8 @@ struct FeedsView: View {
             Section {
                 if !tilePosts { Divider() }
                 
-                if let savedFeedLoader {
-                    if feedSelection == .saved {
-                        UserContentGridView(feedLoader: savedFeedLoader)
-                    } else {
-                        PostGridView(postFeedLoader: postFeedLoader)
-                    }
+                if let savedFeedLoader, feedSelection == .saved {
+                    UserContentGridView(feedLoader: savedFeedLoader)
                 } else {
                     PostGridView(postFeedLoader: postFeedLoader)
                 }
