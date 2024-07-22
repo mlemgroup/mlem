@@ -42,7 +42,7 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
                     )
                 }
             }
-            .onChange(of: appState.firstApi.actorId) {
+            .onChange(of: appState.firstApi) {
                 if proxy.upgradeState != .loading {
                     // This code is needed here despite also being in `upgradeModel` to
                     // ensure that `upgradeState` is changed fast enough

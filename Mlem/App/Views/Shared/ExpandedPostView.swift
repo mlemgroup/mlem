@@ -51,7 +51,7 @@ struct ExpandedPostView: View {
                         await loadComments(post: post)
                     }
                 }
-                .onChange(of: post.api.actorId) {
+                .onChange(of: post.api) {
                     Task {
                         commentResolveLoading = true
                         loadingState = .idle
