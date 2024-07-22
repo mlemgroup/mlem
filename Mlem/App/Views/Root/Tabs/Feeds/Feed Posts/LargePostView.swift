@@ -39,10 +39,6 @@ struct LargePostView: View {
                     Image(Icons.nsfwTag)
                         .foregroundStyle(palette.warning)
                 }
-                if post.hidden_ ?? false {
-                    Image(systemName: Icons.hide)
-                        .foregroundStyle(palette.secondary)
-                }
                 if !isExpanded {
                     EllipsisMenu(actions: post.menuActions(), size: 24)
                 }
