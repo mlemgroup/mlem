@@ -84,7 +84,7 @@ struct LargePostView: View {
         }
         if let content = post.content {
             if isExpanded {
-                Markdown(content, configuration: .default)
+                Markdown(content, configuration: post.nsfw ? .defaultBlurred : .default)
             } else {
                 // Cut down on compute time for very long text posts by only rendering the first 4 blocks
                 MarkdownText(Array([BlockNode](content).prefix(4)), configuration: .dimmed)

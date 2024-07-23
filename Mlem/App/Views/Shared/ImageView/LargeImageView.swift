@@ -7,15 +7,22 @@
 
 import SwiftUI
 
-// ImageView for use in LargePost and inline images. Allows blurring NSFW.
-// In future this view would also handle alt-text display, and anything else
-// that can't go in thumbnail views etc.
+// ImageView for use in LargePost. Allows blurring NSFW.
+// In future this view would also handle alt-text display,
+// and anything else that can't go in thumbnail views etc.
 
 struct LargeImageView: View {
     @Environment(NavigationLayer.self) private var navigation
+    @AppStorage("safety.blurNsfw") var shouldBlur: Bool = true
 
     let url: URL?
     @State var blurred: Bool = false
+    
+    init(url: URL?, blurred: Bool) {
+        @AppStorage("safety.blurNsfw") var shouldBlur = true
+        self.url = url
+        self._blurred = .init(wrappedValue: shouldBlur ? blurred : false)
+    }
     
     @State private var loading: ImageView.LoadingState = .waiting
 
@@ -32,7 +39,7 @@ struct LargeImageView: View {
                             .fontWeight(.semibold)
                     }
                     .foregroundStyle(.white)
-                } else {
+                } else if shouldBlur {
                     Button {
                         blurred = true
                     } label: {
