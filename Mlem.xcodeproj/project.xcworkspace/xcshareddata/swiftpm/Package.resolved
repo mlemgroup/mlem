@@ -33,7 +33,7 @@
       "location" : "https://github.com/mlemgroup/MlemMiddleware.git",
       "state" : {
         "branch" : "eric/composite-feed-loader",
-        "revision" : "12e8ce2f4d40b3f1dcf2bce4bcb64ad878c0a341"
+        "revision" : "bf2db94158fa8da7a277e949e228bcfd28e78c4b"
       }
     },
     {
