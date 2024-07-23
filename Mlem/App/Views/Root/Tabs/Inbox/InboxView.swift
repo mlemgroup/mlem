@@ -81,13 +81,12 @@ struct InboxView: View {
                 }
             }
             .overlay(alignment: .bottom) {
-                Group {
-                    if showRefreshPopup {
-                        refreshPopup
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                RefreshPopupView("Inbox is outdated", isPresented: $showRefreshPopup) {
+                    Task { @MainActor in
+                        removeAll()
+                        await loadReplies()
                     }
                 }
-                .animation(.bouncy, value: showRefreshPopup)
             }
     }
     
