@@ -29,14 +29,14 @@ struct ThumbnailImageView: View {
                 .aspectRatio(contentMode: .fill)
                 .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
                 .background(palette.secondaryBackground)
-                .blur(radius: blurred ? 50 : 0, opaque: true)
+                .blur(radius: blurred ? 10 : 0, opaque: true)
                 .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
         case let .link(url):
             ImageView(url: url)
                 .aspectRatio(contentMode: .fill)
                 .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
                 .background(palette.secondaryBackground)
-                .blur(radius: blurred ? 50 : 0, opaque: true)
+                .blur(radius: blurred ? 10 : 0, opaque: true)
                 .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
         default:
             Image(systemName: post.placeholderImageName)
