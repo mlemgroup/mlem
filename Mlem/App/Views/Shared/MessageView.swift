@@ -28,7 +28,13 @@ struct MessageView: View {
                 EllipsisMenu(actions: message.menuActions(), size: 24)
                     .frame(height: 10)
             }
-            Markdown(message.content, configuration: .default)
+            if message.deleted {
+                Text("Message was deleted")
+                    .italic()
+                    .foregroundStyle(palette.secondary)
+            } else {
+                Markdown(message.content, configuration: .default)
+            }
             Text("\(verb) \(message.created.getRelativeTime())")
                 .font(.caption)
                 .foregroundStyle(palette.secondary)
