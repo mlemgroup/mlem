@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		030BCB1B2C3EA5FD0037680F /* InstanceDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030BCB1A2C3EA5FD0037680F /* InstanceDetailsView.swift */; };
 		0300309D2C4163C9009A65FF /* ExpandedPostView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0300309C2C4163C9009A65FF /* ExpandedPostView+Logic.swift */; };
 		030030A12C416B0B009A65FF /* RefreshPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030030A02C416B0B009A65FF /* RefreshPopupView.swift */; };
+		030BCB1B2C3EA5FD0037680F /* InstanceDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030BCB1A2C3EA5FD0037680F /* InstanceDetailsView.swift */; };
 		030FF6792BC84F7E00F6BFAC /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 030FF6782BC84F7E00F6BFAC /* SwiftUIIntrospect */; };
 		030FF67B2BC8521600F6BFAC /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF67A2BC8521600F6BFAC /* CustomTabView.swift */; };
 		030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */; };
@@ -236,9 +236,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		030BCB1A2C3EA5FD0037680F /* InstanceDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceDetailsView.swift; sourceTree = "<group>"; };
 		0300309C2C4163C9009A65FF /* ExpandedPostView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExpandedPostView+Logic.swift"; sourceTree = "<group>"; };
 		030030A02C416B0B009A65FF /* RefreshPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshPopupView.swift; sourceTree = "<group>"; };
+		030BCB1A2C3EA5FD0037680F /* InstanceDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceDetailsView.swift; sourceTree = "<group>"; };
 		030FF67A2BC8521600F6BFAC /* CustomTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
 		030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabItem.swift; sourceTree = "<group>"; };
 		030FF67E2BC8544600F6BFAC /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
@@ -1704,7 +1704,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "local build";
 				DEVELOPMENT_ASSET_PATHS = "\"Mlem/Preview Content\"";
-				DEVELOPMENT_TEAM = 76ULHQGAPN;
+				DEVELOPMENT_TEAM = V4747CQLU2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Mlem/Info.plist;
@@ -1724,7 +1724,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sjmarf.mlem1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
