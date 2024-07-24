@@ -44,6 +44,7 @@ struct InstanceListRow<Content2: View>: View {
                 .foregroundStyle(palette.tertiary)
         }
         .padding(.trailing)
+        .padding(.vertical, 6)
         .onTapGesture {
             // TODO:
             // navigation.push()
