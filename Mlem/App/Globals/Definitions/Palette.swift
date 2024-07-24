@@ -33,10 +33,6 @@ protocol PaletteProviding {
     // entities
     var administration: Color { get }
     var moderation: Color { get }
-    var post: Color { get }
-    var comment: Color { get }
-    var user: Color { get }
-    var community: Color { get }
     
     // feeds
     var federatedFeed: Color { get }
@@ -47,8 +43,10 @@ protocol PaletteProviding {
     
     // accents
     var accent: Color { get }
-    var secondaryAccent: Color { get }
-    
+    var accent2: Color { get }
+    var accent3: Color { get }
+    var accent4: Color { get }
+    var accent5: Color { get }
     var commentIndentColors: [Color] { get }
 }
 
@@ -91,10 +89,6 @@ struct ColorPalette: PaletteProviding {
     // entities
     var administration: Color
     var moderation: Color
-    var post: Color
-    var comment: Color
-    var user: Color
-    var community: Color
     
     // feeds
     var federatedFeed: Color
@@ -106,7 +100,10 @@ struct ColorPalette: PaletteProviding {
     
     // accents
     var accent: Color
-    var secondaryAccent: Color
+    var accent2: Color
+    var accent3: Color
+    var accent4: Color
+    var accent5: Color
     
     var commentIndentColors: [Color]
     
@@ -132,10 +129,6 @@ struct ColorPalette: PaletteProviding {
         selectedInteractionBarItem: Color,
         administration: Color,
         moderation: Color,
-        post: Color,
-        comment: Color,
-        user: Color,
-        community: Color,
         federatedFeed: Color,
         localFeed: Color,
         subscribedFeed: Color,
@@ -143,7 +136,10 @@ struct ColorPalette: PaletteProviding {
         savedFeed: Color? = nil,
         inbox: Color,
         accent: Color,
-        secondaryAccent: Color,
+        accent2: Color? = nil,
+        accent3: Color? = nil,
+        accent4: Color? = nil,
+        accent5: Color? = nil,
         commentIndentColors: [Color]
     ) {
         self.primary = primary
@@ -167,10 +163,6 @@ struct ColorPalette: PaletteProviding {
         self.selectedInteractionBarItem = selectedInteractionBarItem
         self.administration = administration
         self.moderation = moderation
-        self.post = post
-        self.comment = comment
-        self.user = user
-        self.community = community
         self.federatedFeed = federatedFeed
         self.localFeed = localFeed
         self.subscribedFeed = subscribedFeed
@@ -178,7 +170,10 @@ struct ColorPalette: PaletteProviding {
         self.savedFeed = savedFeed ?? save
         self.inbox = inbox
         self.accent = accent
-        self.secondaryAccent = secondaryAccent
+        self.accent2 = accent2 ?? accent
+        self.accent3 = accent3 ?? accent
+        self.accent4 = accent4 ?? accent
+        self.accent5 = accent5 ?? accent
         self.commentIndentColors = commentIndentColors
     }
 }
@@ -225,10 +220,6 @@ class Palette: PaletteProviding {
     
     var administration: Color { palette.administration }
     var moderation: Color { palette.moderation }
-    var post: Color { palette.post }
-    var comment: Color { palette.comment }
-    var user: Color { palette.user }
-    var community: Color { palette.community }
     
     var federatedFeed: Color { palette.federatedFeed }
     var localFeed: Color { palette.localFeed }
@@ -238,7 +229,16 @@ class Palette: PaletteProviding {
     var inbox: Color { palette.inbox }
     
     var accent: Color { palette.accent }
-    var secondaryAccent: Color { palette.secondaryAccent }
+    var accent2: Color { palette.accent2 }
+    var accent3: Color { palette.accent3 }
+    var accent4: Color { palette.accent4 }
+    var accent5: Color { palette.accent5 }
     
     var commentIndentColors: [Color] { palette.commentIndentColors }
+    
+    var commentAccent: Color { palette.accent2 }
+    var postAccent: Color { palette.accent3 }
+    var userAccent: Color { palette.accent4 }
+    var communityAccent: Color { palette.accent5 }
+    var lockAccent: Color { palette.accent2 }
 }

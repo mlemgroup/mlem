@@ -31,10 +31,6 @@ extension ColorPalette {
         selectedInteractionBarItem: Color(uiColor: .systemBackground),
         administration: .primary,
         moderation: .primary,
-        post: .primary,
-        comment: .primary,
-        user: .primary,
-        community: .primary,
         federatedFeed: Color(uiColor: .darkGray),
         localFeed: Color(uiColor: .darkGray),
         subscribedFeed: Color(uiColor: .darkGray),
@@ -42,7 +38,6 @@ extension ColorPalette {
         savedFeed: Color(uiColor: .darkGray),
         inbox: Color(uiColor: .darkGray),
         accent: .primary,
-        secondaryAccent: .primary,
         commentIndentColors: [
             Color(uiColor: .systemGray),
             Color(uiColor: .systemGray2),

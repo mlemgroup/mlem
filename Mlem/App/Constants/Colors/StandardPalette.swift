@@ -30,16 +30,15 @@ extension ColorPalette {
         selectedInteractionBarItem: .white,
         administration: .teal,
         moderation: .cyan,
-        post: .pink,
-        comment: .orange,
-        user: .blue,
-        community: .green,
         federatedFeed: .blue,
         localFeed: .purple,
         subscribedFeed: .red,
         inbox: .purple,
         accent: .blue,
-        secondaryAccent: .orange,
+        accent2: .orange,
+        accent3: .pink,
+        accent4: .blue,
+        accent5: .green,
         commentIndentColors: [Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple]
     )
 }

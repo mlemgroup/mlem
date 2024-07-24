@@ -33,7 +33,7 @@ struct InstanceDetailsView: View {
                     Text("\((instance.userCount_ ?? 0).abbreviated)")
                         .font(.title)
                         .fontWeight(.semibold)
-                        .foregroundStyle(palette.user)
+                        .foregroundStyle(palette.userAccent)
                 }
                 
                 box {
@@ -42,7 +42,7 @@ struct InstanceDetailsView: View {
                     Text("\((instance.communityCount_ ?? 0).abbreviated)")
                         .font(.title)
                         .fontWeight(.semibold)
-                        .foregroundStyle(palette.community)
+                        .foregroundStyle(palette.communityAccent)
                 }
             }
             .frame(maxWidth: .infinity)
@@ -54,7 +54,7 @@ struct InstanceDetailsView: View {
                     Text("\((instance.postCount_ ?? 0).abbreviated)")
                         .font(.title)
                         .fontWeight(.semibold)
-                        .foregroundStyle(palette.post)
+                        .foregroundStyle(palette.postAccent)
                 }
                 
                 box {
@@ -63,7 +63,7 @@ struct InstanceDetailsView: View {
                     Text("\((instance.commentCount_ ?? 0).abbreviated)")
                         .font(.title)
                         .fontWeight(.semibold)
-                        .foregroundStyle(palette.comment)
+                        .foregroundStyle(palette.commentAccent)
                 }
             }
             .frame(maxWidth: .infinity)
@@ -116,7 +116,7 @@ struct InstanceDetailsView: View {
                         "Captcha",
                         systemImage: Icons.photo,
                         value: captchaLabel,
-                        color: instance.captchaDifficulty_ == nil ? palette.negative: palette.positive
+                        color: instance.captchaDifficulty_ == nil ? palette.negative : palette.positive
                     )
                 }
             }
@@ -256,7 +256,7 @@ struct InstanceDetailsView: View {
             Text(label)
             Spacer()
             Text(value ? "Yes" : "No")
-                .foregroundStyle(value ? palette.positive: palette.negative)
+                .foregroundStyle(value ? palette.positive : palette.negative)
         }
         .padding(12)
     }
