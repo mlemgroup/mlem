@@ -13,14 +13,16 @@ import SwiftUI
 
 struct LargeImageView: View {
     @Environment(NavigationLayer.self) private var navigation
-    @AppStorage("safety.blurNsfw") var shouldBlur: Bool = true
+    @AppStorage("safety.blurNsfw") var blurNsfw: Bool = true
 
     let url: URL?
+    var shouldBlur: Bool
     @State var blurred: Bool = false
     
     init(url: URL?, blurred: Bool) {
         @AppStorage("safety.blurNsfw") var shouldBlur = true
         self.url = url
+        self.shouldBlur = shouldBlur ? blurred : false
         self._blurred = .init(wrappedValue: shouldBlur ? blurred : false)
     }
     
@@ -39,7 +41,7 @@ struct LargeImageView: View {
                             .fontWeight(.semibold)
                     }
                     .foregroundStyle(.white)
-                } else if shouldBlur {
+                } else if shouldBlur, blurNsfw {
                     Button {
                         blurred = true
                     } label: {
