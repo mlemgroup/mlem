@@ -95,7 +95,12 @@ extension UITextView {
                             
                             var startDistance = 0
                             if let startIndex = stringIndex(from: selectedTextRange.start) {
-                                startDistance = allText.distance(from: firstTargetedNewLineIndex, to: startIndex)
+                                // Avoid fatalError from `distance()`
+                                if startIndex > allText.endIndex {
+                                    startDistance = 2
+                                } else {
+                                    startDistance = allText.distance(from: firstTargetedNewLineIndex, to: startIndex)
+                                }
                             }
                             
                             let newStart = position(
