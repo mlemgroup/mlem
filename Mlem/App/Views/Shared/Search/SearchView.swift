@@ -33,9 +33,9 @@ struct SearchView: View {
     @State var selectedTab: Tab = .communities
     @State var resultsScrollToTopTrigger: Bool = false
     
-    @MainActor @State var communities: [Community2] = []
-    @MainActor @State var people: [Person2] = []
-    @MainActor @State var instances: [InstanceSummary] = []
+    @State var communities: [Community2] = []
+    @State var people: [Person2] = []
+    @State var instances: [InstanceSummary] = []
     
     var body: some View {
         content
@@ -86,15 +86,15 @@ struct SearchView: View {
                         switch selectedTab {
                         case .communities:
                             if communities.isEmpty {
-                                communities = try await appState.firstApi.searchCommunities(query: query, page: 1, limit: 20)
+                                try await setCommunities(appState.firstApi.searchCommunities(query: query, page: 1, limit: 20))
                             }
                         case .users:
                             if people.isEmpty {
-                                people = try await appState.firstApi.searchPeople(query: query, page: 1, limit: 20)
+                                try await setPeople(appState.firstApi.searchPeople(query: query, page: 1, limit: 20))
                             }
                         case .instances:
                             if instances.isEmpty {
-                                instances = try await MlemStats.main.searchInstances(query: query)
+                                try await setInstances(MlemStats.main.searchInstances(query: query))
                             }
                         }
                     } catch {
@@ -137,19 +137,34 @@ struct SearchView: View {
             if !query.isEmpty {
                 try await Task.sleep(for: .seconds(0.2))
             }
-            communities.removeAll()
-            people.removeAll()
-            instances.removeAll()
+            setCommunities(.init())
+            setPeople(.init())
+            setInstances(.init())
             switch selectedTab {
             case .communities:
-                communities = try await appState.firstApi.searchCommunities(query: query, page: 1, limit: 20)
+                try await setCommunities(appState.firstApi.searchCommunities(query: query, page: 1, limit: 20))
             case .users:
-                people = try await appState.firstApi.searchPeople(query: query, page: 1, limit: 20)
+                try await setPeople(appState.firstApi.searchPeople(query: query, page: 1, limit: 20))
             case .instances:
-                instances = try await MlemStats.main.searchInstances(query: query)
+                try await setInstances(MlemStats.main.searchInstances(query: query))
             }
         } catch {
             handleError(error)
         }
+    }
+    
+    @MainActor
+    func setCommunities(_ newValue: [Community2]) {
+        communities = newValue
+    }
+    
+    @MainActor
+    func setPeople(_ newValue: [Person2]) {
+        people = newValue
+    }
+    
+    @MainActor
+    func setInstances(_ newValue: [InstanceSummary]) {
+        instances = newValue
     }
 }
