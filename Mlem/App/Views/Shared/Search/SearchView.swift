@@ -33,9 +33,9 @@ struct SearchView: View {
     @State var selectedTab: Tab = .communities
     @State var resultsScrollToTopTrigger: Bool = false
     
-    @State var communities: [Community2] = []
-    @State var people: [Person2] = []
-    @State var instances: [InstanceSummary] = []
+    @MainActor @State var communities: [Community2] = []
+    @MainActor @State var people: [Person2] = []
+    @MainActor @State var instances: [InstanceSummary] = []
     
     var body: some View {
         content
@@ -76,12 +76,12 @@ struct SearchView: View {
                 await refresh()
             }
             .onChange(of: appState.firstApi.actorId) {
-                Task { @MainActor in
+                Task {
                     await refresh()
                 }
             }
             .onChange(of: selectedTab) {
-                Task { @MainActor in
+                Task {
                     do {
                         switch selectedTab {
                         case .communities:

@@ -73,7 +73,6 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
                 handleError(error)
             }
         }
-        }
     }
 }
 
