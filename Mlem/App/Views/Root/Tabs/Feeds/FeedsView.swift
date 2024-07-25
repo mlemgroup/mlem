@@ -32,6 +32,8 @@ struct FeedsView: View {
         }
     }
 
+    @State var showRefreshPopup: Bool = false
+
     @State var scrollToTopTrigger: Bool = false
     
     enum FeedSelection: CaseIterable {
@@ -114,12 +116,26 @@ struct FeedsView: View {
             }
             .onChange(of: appState.firstApi, initial: false) {
                 postFeedLoader.api = appState.firstApi
+                showRefreshPopup = true
             }
             .refreshable {
                 do {
+                    showRefreshPopup = false
                     try await postFeedLoader.refresh(clearBeforeRefresh: false)
                 } catch {
                     handleError(error)
+                }
+            }
+            .overlay(alignment: .bottom) {
+                RefreshPopupView("Feed is outdated", isPresented: $showRefreshPopup) {
+                    Task {
+                        do {
+                            showRefreshPopup = false
+                            try await postFeedLoader.refresh(clearBeforeRefresh: true)
+                        } catch {
+                            handleError(error)
+                        }
+                    }
                 }
             }
     }
