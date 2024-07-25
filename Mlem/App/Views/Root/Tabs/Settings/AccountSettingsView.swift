@@ -25,7 +25,7 @@ struct AccountSettingsView: View {
                 .padding(.horizontal, -16)
             }
         }
-        .navigationTitle("Account")
+        .navigationTitle(Text("Account"))
     }
     
     var title: String {

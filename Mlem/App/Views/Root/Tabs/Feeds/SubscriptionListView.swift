@@ -142,7 +142,7 @@ struct SubscriptionListView: View {
                 .frame(height: 28)
             (
                 Text(community.name)
-                    + Text("@\(community.host ?? "unknown")")
+                    + Text(verbatim: "@\(community.host ?? "unknown")")
                     .foregroundStyle(.secondary)
                     .font(.footnote)
             )
@@ -153,7 +153,7 @@ struct SubscriptionListView: View {
             VStack(alignment: .leading, spacing: 0) {
                 Text(community.name)
                     .lineLimit(1)
-                Text("@\(community.host ?? "")")
+                Text(verbatim: "@\(community.host ?? "")")
                     .foregroundStyle(.secondary)
                     .font(.footnote)
             }

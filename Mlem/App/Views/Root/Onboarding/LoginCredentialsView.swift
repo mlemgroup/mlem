@@ -116,7 +116,7 @@ struct LoginCredentialsView: View {
                 GridRow {
                     Text("Username")
                         .padding([.leading, .vertical])
-                    TextField("Username", text: $username, prompt: Text(""))
+                    TextField("Username", text: $username, prompt: Text(verbatim: ""))
                         .focused($focused, equals: .username)
                         .onSubmit { focused = .password }
                         .padding(.trailing)
@@ -126,7 +126,7 @@ struct LoginCredentialsView: View {
             GridRow {
                 Text("Password")
                     .padding([.leading, .vertical])
-                SecureField("Password", text: $password, prompt: Text(""))
+                SecureField("Password", text: $password, prompt: Text(verbatim: ""))
                     .focused($focused, equals: .password)
                     .padding(.trailing)
                     .onSubmit(attemptToLogin)

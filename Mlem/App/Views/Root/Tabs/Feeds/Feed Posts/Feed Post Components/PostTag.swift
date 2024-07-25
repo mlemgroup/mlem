@@ -18,6 +18,6 @@ func postTag(active: Bool, icon: String, color: Color) -> Text {
                 .foregroundStyle(color)
         }
     } else {
-        Text("")
+        Text(verbatim: "")
     }
 }

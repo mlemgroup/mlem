@@ -61,7 +61,7 @@ struct LoginTotpView: View {
     @ViewBuilder
     var codeInput: some View {
         ZStack {
-            TextField("", text: Binding(
+            TextField("Enter 2FA Code", text: Binding(
                 get: { totpToken },
                 set: { newValue in
                     let trimmedValue = String(newValue.prefix(6))

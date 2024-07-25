@@ -15,8 +15,6 @@ struct MessageView: View {
     
     let message: any Message
     
-    var verb: String { message.isOwnMessage ? "Sent" : "Received" }
-    
     var body: some View {
         VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
             HStack {
@@ -29,9 +27,15 @@ struct MessageView: View {
                     .frame(height: 10)
             }
             Markdown(message.content, configuration: .default)
-            Text("\(verb) \(message.created.getRelativeTime())")
-                .font(.caption)
-                .foregroundStyle(palette.secondary)
+            Group {
+                if message.isOwnMessage {
+                    Text("Sent \(message.created.getRelativeTime())")
+                } else {
+                    Text("Received \(message.created.getRelativeTime())")
+                }
+            }
+            .font(.caption)
+            .foregroundStyle(palette.secondary)
         }
         .padding(.vertical, 2)
         .padding(AppConstants.standardSpacing)

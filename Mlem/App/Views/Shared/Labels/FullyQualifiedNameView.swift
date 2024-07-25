@@ -49,11 +49,11 @@ struct FullyQualifiedNameView: View {
     func instanceText(instance: String) -> Text {
         if instanceLocation != .disabled {
             // prepend a newline if location is bottom for easy concatenation
-            Text("\(instanceLocation == .bottom ? "\n" : "")@\(instance)")
+            Text(verbatim: "\(instanceLocation == .bottom ? "\n" : "")@\(instance)")
                 .font(.footnote)
                 .foregroundStyle(palette.tertiary)
         } else {
-            Text("") // return empty Text for easy concatenation
+            Text(verbatim: "") // return empty Text for easy concatenation
         }
     }
     

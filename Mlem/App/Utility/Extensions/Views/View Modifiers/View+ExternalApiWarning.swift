@@ -39,12 +39,8 @@ private struct ExternalApiWarningModifier: ViewModifier {
     
     var label: some View {
         HStack {
-            (
-                Text("Viewing ")
-                    + Text(entity.api.host ?? "page").fontWeight(.semibold)
-                    + Text(" as guest")
-            )
-            .foregroundStyle(palette.primary.opacity(0.5))
+            Text(title)
+                .foregroundStyle(palette.primary.opacity(0.5))
             Spacer()
             Button("More Info", systemImage: "questionmark.circle") {
                 navigation.openSheet(.externalApiInfo(
@@ -53,6 +49,19 @@ private struct ExternalApiWarningModifier: ViewModifier {
                 ))
             }
             .labelStyle(.iconOnly)
+        }
+    }
+    
+    var title: AttributedString {
+        if let host = entity.api.host {
+            var attributedString = AttributedString(localized: "Viewing \(host) as guest")
+            
+            if let range = attributedString.range(of: host) {
+                attributedString[range].font = .body.weight(.semibold)
+            }
+            return attributedString
+        } else {
+            return .init(localized: "Viewing page as guest")
         }
     }
 }

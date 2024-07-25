@@ -96,7 +96,7 @@ extension Post1Providing {
             postTag(active: pinnedInstance, icon: Icons.pinFill, color: Palette.main.administration) +
             postTag(active: communityContext != nil && pinnedCommunity, icon: Icons.pinFill, color: Palette.main.moderation) +
             postTag(active: locked, icon: Icons.lockFill, color: Palette.main.secondaryAccent) +
-            Text("\(hasTags ? "  " : "")\(title)")
+            Text(verbatim: "\(hasTags ? "  " : "")\(title)")
     }
     
     var linkHost: String? {
