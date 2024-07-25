@@ -12,7 +12,7 @@ import SwiftUI
 class CommentWrapper: Identifiable, Comment2Providing {
     static var tierNumber: Int = 100
     
-    let comment2: Comment2
+    var comment2: Comment2
     private(set) var children: [CommentWrapper] = []
     weak var parent: CommentWrapper?
     var collapsed: Bool = false
@@ -35,4 +35,10 @@ class CommentWrapper: Identifiable, Comment2Providing {
     }
     
     var api: ApiClient { comment2.api }
+}
+
+extension [CommentWrapper] {
+    func tree() -> [CommentWrapper] {
+        reduce([]) { $0 + $1.tree() }
+    }
 }

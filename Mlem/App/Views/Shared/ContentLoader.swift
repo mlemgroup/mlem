@@ -15,15 +15,18 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
     @Environment(AppState.self) var appState: AppState
     
     let proxy: ContentLoaderProxy<Model>
+    let resolveIfModelExternal: Bool
     let content: Content
     var upgradeOperation: ((_ model: Model, _ api: ApiClient) async throws -> Void)?
     
     init(
         model: Model,
+        resolveIfModelExternal: Bool = true,
         @ViewBuilder content: @escaping (_ proxy: ContentLoaderProxy<Model>) -> Content,
         upgradeOperation: ((_ model: Model, _ api: ApiClient) async throws -> Void)? = nil
     ) {
         self.proxy = .init(model: model)
+        self.resolveIfModelExternal = resolveIfModelExternal
         self.upgradeOperation = upgradeOperation
         self.content = content(proxy)
     }
@@ -32,11 +35,14 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
         content
             .animation(.easeOut(duration: 0.2), value: proxy.model.wrappedValue is Model.MinimumRenderable)
             .task {
-                if !proxy.model.isUpgraded, proxy.upgradeState == .idle {
-                    await proxy.upgradeModel(upgradeOperation: upgradeOperation)
+                if resolveIfModelExternal || !proxy.model.isUpgraded, proxy.upgradeState == .idle {
+                    await proxy.upgradeModel(
+                        api: resolveIfModelExternal ? appState.firstApi : nil,
+                        upgradeOperation: upgradeOperation
+                    )
                 }
             }
-            .onChange(of: appState.firstApi.actorId) {
+            .onChange(of: appState.firstApi) {
                 if proxy.upgradeState != .loading {
                     // This code is needed here despite also being in `upgradeModel` to
                     // ensure that `upgradeState` is changed fast enough
@@ -57,6 +63,7 @@ class ContentLoaderProxy<Model: Upgradable> {
     
     fileprivate var model: Model
     fileprivate var upgradeState: UpgradeState = .idle
+    
     var error: Error?
     private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
     
@@ -77,6 +84,7 @@ class ContentLoaderProxy<Model: Upgradable> {
         // critical function, only one thread allowed!
         await loadingSemaphore.wait()
         defer { loadingSemaphore.signal() }
+        
         upgradeState = .loading
         do {
             do {
