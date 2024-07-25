@@ -34,7 +34,6 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         textView.font = .preferredFont(forTextStyle: .body)
         textView.textContainerInset = .init(top: 5, left: 10, bottom: 10, right: 10)
         textView.delegate = context.coordinator
-        // textView.setContentHuggingPriority(.defaultLow, for: .vertical)
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.setContentHuggingPriority(.defaultLow, for: .horizontal)
         textView.becomeFirstResponder()
