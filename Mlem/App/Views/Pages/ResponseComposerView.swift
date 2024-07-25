@@ -85,7 +85,13 @@ struct ResponseComposerView: View {
                 ) {
                     MarkdownEditorToolbarView(textView: textView)
                 }
-                .frame(minWidth: 0, maxWidth: .infinity, minHeight: minTextEditorHeight, maxHeight: .infinity)
+                .frame(
+                    minWidth: 0,
+                    maxWidth: .infinity,
+                    minHeight: minTextEditorHeight,
+                    maxHeight: .infinity,
+                    alignment: .topLeading
+                )
                 Divider()
                     .padding(.vertical, 10)
                 switch context {

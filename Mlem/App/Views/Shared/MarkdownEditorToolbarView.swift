@@ -28,7 +28,7 @@ struct MarkdownEditorToolbarView: View {
                     textView.wrapSelectionWithDelimiters("**")
                 }
                 Button("Italic", systemImage: "italic") {
-                    textView.wrapSelectionWithDelimiters("*")
+                    textView.wrapSelectionWithDelimiters("_")
                 }
                 Button("Strikethrough", systemImage: "strikethrough") {
                     textView.wrapSelectionWithDelimiters("~~")
