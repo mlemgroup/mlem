@@ -32,7 +32,12 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
  
     func makeUIView(context: Context) -> UITextView {
         textView.font = .preferredFont(forTextStyle: .body)
-        textView.textContainerInset = .init(top: AppConstants.halfSpacing, left: AppConstants.standardSpacing, bottom: AppConstants.standardSpacing, right: AppConstants.standardSpacing)
+        textView.textContainerInset = .init(
+            top: AppConstants.halfSpacing,
+            left: AppConstants.standardSpacing,
+            bottom: AppConstants.standardSpacing,
+            right: AppConstants.standardSpacing
+        )
         textView.delegate = context.coordinator
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.setContentHuggingPriority(.defaultLow, for: .horizontal)

@@ -39,7 +39,6 @@ struct MarkdownEditorToolbarView: View {
                 Button("Subscript", systemImage: Icons.subscript) {
                     textView.wrapSelectionWithDelimiters("~")
                 }
-                
                 Button("Code", systemImage: Icons.inlineCode) {
                     textView.wrapSelectionWithDelimiters("`")
                 }
