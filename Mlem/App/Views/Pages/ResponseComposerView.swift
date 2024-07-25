@@ -93,7 +93,7 @@ struct ResponseComposerView: View {
                     alignment: .topLeading
                 )
                 Divider()
-                    .padding(.vertical, 10)
+                    .padding(.vertical, AppConstants.standardSpacing)
                 switch context {
                 case let .post(post):
                     LargePostBodyView(post: post, isExpanded: true)
