@@ -24,32 +24,31 @@ struct MarkdownEditorToolbarView: View {
                     }
                     Divider()
                 }
-                Button("Bold", systemImage: "bold") {
+                Button("Bold", systemImage: Icons.bold) {
                     textView.wrapSelectionWithDelimiters("**")
                 }
-                Button("Italic", systemImage: "italic") {
+                Button("Italic", systemImage: Icons.italic) {
                     textView.wrapSelectionWithDelimiters("_")
                 }
-                Button("Strikethrough", systemImage: "strikethrough") {
+                Button("Strikethrough", systemImage: Icons.strikethrough) {
                     textView.wrapSelectionWithDelimiters("~~")
                 }
-                Button("Superscript", systemImage: "textformat.superscript") {
+                Button("Superscript", systemImage: Icons.superscript) {
                     textView.wrapSelectionWithDelimiters("^")
                 }
-                Button("Subscript", systemImage: "textformat.subscript") {
+                Button("Subscript", systemImage: Icons.subscript) {
                     textView.wrapSelectionWithDelimiters("~")
                 }
                 
-                // Potentially "chevron.left.chevron.right" is better, it's iOS 18+ though
-                Button("Code", systemImage: "chevron.left.forwardslash.chevron.right") {
+                Button("Code", systemImage: Icons.inlineCode) {
                     textView.wrapSelectionWithDelimiters("`")
                 }
                 Divider()
-                Button("Quote", systemImage: "quote.opening") {
+                Button("Quote", systemImage: Icons.quote) {
                     textView.toggleQuoteAtCursor()
                 }
-                Button("Image", systemImage: "photo") {}
-                Button("Spoiler", systemImage: "eye") {
+                Button("Image", systemImage: Icons.uploadImage) {}
+                Button("Spoiler", systemImage: Icons.spoiler) {
                     textView.wrapSelectionWithSpoiler()
                 }
             }
