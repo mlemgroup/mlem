@@ -103,6 +103,17 @@
     "Failed to connect to %@" : {
 
     },
+    "Federation Explanation" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lemmy instances talk to each other so that content can be shared across sites. This is called \"federation\". Instance administrators can choose which other instances they would like their instance to federate with. Some instances federate with all but a curated \"block-list\" of other instances; other instances might only federate with instances on an \"allow-list\"."
+          }
+        }
+      }
+    },
     "Feeds" : {
 
     },
@@ -131,9 +142,6 @@
 
     },
     "Label Style" : {
-
-    },
-    "Lemmy instances talk   to each other so that content can be shared across sites. This is called \"federation\". Instance administrators can choose which other instances they would like their instance to federate with. Some instances federate with all but a curated \"block-list\" of other instances; other instances might only federate with instances on an \"allow-list\"." : {
 
     },
     "lemmy.world" : {
