@@ -55,20 +55,24 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
                 }
             }
         }
-        .task(id: query, priority: .userInitiated) { @MainActor in
+        .task(id: query, priority: .userInitiated) {
             do {
                 if !query.isEmpty {
                     try await Task.sleep(for: .seconds(0.2))
                 }
-                results = try await Item.search(
+                let response = try await Item.search(
                     api: appState.firstApi,
                     query: query,
                     page: 1,
                     limit: 20
                 )
+                Task { @MainActor in
+                    results = response
+                }
             } catch {
                 handleError(error)
             }
+        }
         }
     }
 }

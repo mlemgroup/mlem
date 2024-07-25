@@ -27,7 +27,7 @@ enum PersonFlair {
         case .bot:
             return .indigo
         case .bannedFromInstance, .bannedFromCommunity:
-            return .red
+            return Palette.main.negative
         case .developer:
             return .purple
         }

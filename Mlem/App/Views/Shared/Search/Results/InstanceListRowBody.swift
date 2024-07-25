@@ -1,5 +1,5 @@
 //
-//  CommunityListRowBody.swift
+//  InstanceListRowBody.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-03-07.

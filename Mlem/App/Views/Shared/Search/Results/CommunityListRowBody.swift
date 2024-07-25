@@ -74,10 +74,10 @@ struct CommunityListRowBody<Content: View>: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
                     .lineLimit(1)
-                    .foregroundStyle(community.nsfw ? .red : .primary)
+                    .foregroundStyle(community.nsfw ? palette.warning: palette.primary)
                 caption
                     .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(palette.secondary)
                     .lineLimit(1)
             }
             Spacer()
