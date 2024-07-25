@@ -1,5 +1,5 @@
 //
-//  UserContentGridView.swift
+//  PersonContentGridView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-07-18.
@@ -9,14 +9,14 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-struct UserContentGridView: View {
+struct PersonContentGridView: View {
     @AppStorage("beta.tilePosts") var tilePosts: Bool = false
     
     @Environment(AppState.self) var appState
     
     @State var columns: [GridItem] = [GridItem(.flexible())]
     
-    var feedLoader: UserContentFeedLoader
+    var feedLoader: PersonContentFeedLoader
     
     var body: some View {
         content
@@ -56,7 +56,7 @@ struct UserContentGridView: View {
     }
     
     @ViewBuilder
-    func userContentItem(_ userContent: UserContent) -> some View {
+    func userContentItem(_ userContent: PersonContent) -> some View {
         switch userContent.wrappedValue {
         case let .post(post):
             NavigationLink(value: NavigationPage.expandedPost(post)) {

@@ -20,7 +20,7 @@ struct FeedsView: View {
     @Environment(Palette.self) var palette
     
     @State var postFeedLoader: AggregatePostFeedLoader
-    @State var savedFeedLoader: UserContentFeedLoader?
+    @State var savedFeedLoader: PersonContentFeedLoader?
     @State var feedOptions: [FeedSelection] = FeedSelection.guestCases
     @State var feedSelection: FeedSelection {
         didSet {
@@ -95,8 +95,7 @@ struct FeedsView: View {
                 sortType: .new,
                 savedOnly: true,
                 smallAvatarSize: AppConstants.smallAvatarSize,
-                largeAvatarSize: AppConstants.largeAvatarSize,
-                urlCache: AppConstants.urlCache
+                largeAvatarSize: AppConstants.largeAvatarSize
             ))
             _feedOptions = .init(wrappedValue: FeedSelection.allCases)
         } else {
@@ -147,8 +146,7 @@ struct FeedsView: View {
                         sortType: .new,
                         savedOnly: true,
                         smallAvatarSize: AppConstants.smallAvatarSize,
-                        largeAvatarSize: AppConstants.largeAvatarSize,
-                        urlCache: AppConstants.urlCache
+                        largeAvatarSize: AppConstants.largeAvatarSize
                     )
                 } else {
                     savedFeedLoader = nil
@@ -179,7 +177,7 @@ struct FeedsView: View {
                 if !tilePosts { Divider() }
                 
                 if let savedFeedLoader, feedSelection == .saved {
-                    UserContentGridView(feedLoader: savedFeedLoader)
+                    PersonContentGridView(feedLoader: savedFeedLoader)
                 } else {
                     PostGridView(postFeedLoader: postFeedLoader)
                 }
