@@ -63,7 +63,7 @@ struct ErrorView: View {
                         }
                     } label: {
                         HStack(spacing: 10) {
-                            Text(errorDetails.buttonText ?? "Try again")
+                            Text(errorDetails.buttonText ?? "Try Again")
                             if refreshInProgress {
                                 ProgressView()
                             }
@@ -75,7 +75,7 @@ struct ErrorView: View {
             }
             
             if errorDetails.error != nil, errorDetails.title == nil || developerMode {
-                Button("Show details") {
+                Button("Show Details") {
                     showingFullError.toggle()
                 }
                 .buttonStyle(.plain)

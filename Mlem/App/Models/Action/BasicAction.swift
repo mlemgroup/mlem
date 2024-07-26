@@ -12,7 +12,7 @@ struct BasicAction: Action {
     let id: String
     let isOn: Bool
     
-    let label: String
+    let label: LocalizedStringResource
     let isDestructive: Bool
     let confirmationPrompt: String?
     let color: Color
@@ -32,7 +32,7 @@ struct BasicAction: Action {
     init(
         id: String,
         isOn: Bool,
-        label: String,
+        label: LocalizedStringResource,
         color: Color,
         isDestructive: Bool = false,
         confirmationPrompt: String? = nil,

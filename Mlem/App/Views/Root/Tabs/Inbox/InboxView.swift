@@ -10,10 +10,19 @@ import MlemMiddleware
 import SwiftUI
 
 struct InboxView: View {
-    enum Tab: String, CaseIterable, Identifiable {
+    enum Tab: CaseIterable, Identifiable {
         case all, replies, mentions, messages
         
-        var id: String { rawValue }
+        var id: Tab { self }
+        
+        var label: LocalizedStringResource {
+            switch self {
+            case .all: "All"
+            case .replies: "Replies"
+            case .mentions: "Mentions"
+            case .messages: "Messages"
+            }
+        }
     }
     
     @Environment(NavigationLayer.self) var navigation
@@ -155,9 +164,7 @@ struct InboxView: View {
             Tab.allCases,
             selected: $selectedTab,
             withDividers: [.bottom],
-            label: { tab in
-                tab.rawValue.capitalized
-            },
+            label: \.label,
             value: { tab in
                 if let unreadCount = (appState.firstSession as? UserSession)?.unreadCount {
                     switch tab {

@@ -18,12 +18,12 @@ struct FeedHeaderView: View {
     }
     
     let feedDescription: FeedDescription
-    let subtitle: String
+    let subtitle: LocalizedStringResource
     let dropdownStyle: DropdownStyle
     
     init(
         feedDescription: FeedDescription,
-        customSubtitle: String? = nil,
+        customSubtitle: LocalizedStringResource? = nil,
         dropdownStyle: DropdownStyle
     ) {
         self.feedDescription = feedDescription

@@ -183,14 +183,17 @@ private enum SubscriptionListSort: String, CaseIterable {
     case alphabetical
     case instance
     
-    var label: String { rawValue.capitalized }
+    var label: String {
+        switch self {
+        case .alphabetical: "Alphabetical"
+        case .instance: "Instance"
+        }
+    }
     
     var systemImage: String {
         switch self {
-        case .alphabetical:
-            "textformat"
-        case .instance:
-            "at"
+        case .alphabetical: "textformat"
+        case .instance: "at"
         }
     }
 }

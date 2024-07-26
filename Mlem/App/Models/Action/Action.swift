@@ -12,7 +12,7 @@ protocol Action: Identifiable {
     
     var isOn: Bool { get }
     
-    var label: String { get }
+    var label: LocalizedStringResource { get }
     var isDestructive: Bool { get }
     var color: Color { get }
     

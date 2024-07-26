@@ -37,9 +37,6 @@
     "Accounts" : {
 
     },
-    "Add a new account." : {
-
-    },
     "Add Account" : {
 
     },
@@ -58,6 +55,18 @@
     "Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser." : {
 
     },
+    "Block Community" : {
+
+    },
+    "Block User" : {
+
+    },
+    "Block..." : {
+
+    },
+    "Bottom" : {
+
+    },
     "Cancel" : {
 
     },
@@ -65,6 +74,18 @@
 
     },
     "Clear Cache" : {
+
+    },
+    "Comments" : {
+
+    },
+    "Communities" : {
+
+    },
+    "Compact" : {
+
+    },
+    "Confirm" : {
 
     },
     "Connecting..." : {
@@ -79,6 +100,9 @@
     "Diagnosing..." : {
 
     },
+    "Disabled" : {
+
+    },
     "Dismiss" : {
 
     },
@@ -86,6 +110,9 @@
 
     },
     "Done" : {
+
+    },
+    "Downvote" : {
 
     },
     "Enter 2FA Code" : {
@@ -103,6 +130,12 @@
     "Failed to connect to %@" : {
 
     },
+    "Fast" : {
+
+    },
+    "Favorite" : {
+
+    },
     "Federation Explanation" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -114,10 +147,16 @@
         }
       }
     },
+    "Feed is outdated" : {
+
+    },
     "Feeds" : {
 
     },
     "Grouped" : {
+
+    },
+    "Headline" : {
 
     },
     "Hello world" : {
@@ -135,6 +174,9 @@
     "In-App" : {
 
     },
+    "Inbox" : {
+
+    },
     "Inbox is outdated" : {
 
     },
@@ -142,6 +184,12 @@
 
     },
     "Label Style" : {
+
+    },
+    "Large" : {
+
+    },
+    "Left" : {
 
     },
     "lemmy.world" : {
@@ -153,7 +201,28 @@
     "Loading..." : {
 
     },
+    "Local" : {
+
+    },
     "Log In" : {
+
+    },
+    "Mark Read" : {
+
+    },
+    "Mark Unread" : {
+
+    },
+    "Mentions" : {
+
+    },
+    "Messages" : {
+
+    },
+    "Moderated" : {
+
+    },
+    "Monochrome" : {
 
     },
     "More" : {
@@ -162,10 +231,16 @@
     "More Info" : {
 
     },
+    "More..." : {
+
+    },
     "MultiplatformView: Unsupported platform" : {
 
     },
     "Next" : {
+
+    },
+    "None" : {
 
     },
     "Nothing to see here" : {
@@ -183,6 +258,9 @@
     "Open in Reader" : {
 
     },
+    "Overview" : {
+
+    },
     "Password" : {
 
     },
@@ -190,6 +268,18 @@
 
     },
     "Posts" : {
+
+    },
+    "Posts from %@ communities" : {
+
+    },
+    "Posts from all federated instances" : {
+
+    },
+    "Posts from communities you moderate" : {
+
+    },
+    "Posts from communities you subscribe to" : {
 
     },
     "Received %@" : {
@@ -204,19 +294,46 @@
     "Reload on Switch" : {
 
     },
+    "Replies" : {
+
+    },
+    "Replies, mentions and messages" : {
+
+    },
+    "Reply" : {
+
+    },
+    "Right" : {
+
+    },
+    "Save" : {
+
+    },
+    "Saved" : {
+
+    },
+    "Select Text" : {
+
+    },
     "Sent %@" : {
 
     },
     "Settings" : {
 
     },
+    "Share..." : {
+
+    },
     "Show Community Avatar" : {
 
     },
-    "Show details" : {
+    "Show Details" : {
 
     },
     "Show Post Creator" : {
+
+    },
+    "Show Read" : {
 
     },
     "Show User Avatar" : {
@@ -228,10 +345,25 @@
     "Sign In to Lemmy" : {
 
     },
+    "Slow" : {
+
+    },
+    "Some" : {
+
+    },
     "Sort" : {
 
     },
     "Sort by: %@" : {
+
+    },
+    "Standard" : {
+
+    },
+    "Subscribe" : {
+
+    },
+    "Subscribed" : {
 
     },
     "Subscription List" : {
@@ -252,13 +384,31 @@
     "Tile Posts" : {
 
     },
+    "Trailing" : {
+
+    },
     "Two-Factor Authentication" : {
+
+    },
+    "Undo Downvote" : {
+
+    },
+    "Undo Upvote" : {
+
+    },
+    "Unfavorite" : {
 
     },
     "Unknown" : {
 
     },
+    "Unsave" : {
+
+    },
     "Unsubscribe" : {
+
+    },
+    "Upvote" : {
 
     },
     "Upvote On Save" : {
@@ -273,13 +423,32 @@
     "Viewing page as guest" : {
 
     },
-    "Welcome" : {
-
+    "Welcome %@" : {
+      "comment" : "Example: \"Welcome John\"",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bienvenue %@"
+          }
+        }
+      }
     },
-    "Welcome to" : {
-
+    "Welcome to %@" : {
+      "comment" : "Example: \"Welcome to lemmy.world\"",
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bienvenue à %@"
+          }
+        }
+      }
     },
     "What is Federation?" : {
+
+    },
+    "Yes" : {
 
     },
     "You don't have any accounts." : {
@@ -292,7 +461,7 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Your instance, **%1$@**, chose to defederate from **%2$@**."
           }
         }
@@ -307,6 +476,9 @@
           }
         }
       }
+    },
+    "Your saved posts and comments" : {
+
     },
     "Your session has expired. Enter your password to authenticate a new session." : {
 

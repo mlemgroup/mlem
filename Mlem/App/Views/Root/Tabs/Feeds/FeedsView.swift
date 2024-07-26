@@ -150,7 +150,7 @@ struct FeedsView: View {
                 Menu {
                     ForEach(FeedSelection.allCases, id: \.self) { feed in
                         Button(
-                            feed.description.label,
+                            feed.description.label.key,
                             systemImage: feedSelection == feed ? feed.description.iconNameFill : feed.description.iconName
                         ) {
                             feedSelection = feed

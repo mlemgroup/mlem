@@ -13,6 +13,14 @@ enum InstanceLocation: String, CaseIterable {
     case disabled
     case trailing
     case bottom
+    
+    var label: LocalizedStringResource {
+        switch self {
+        case .disabled: "Disabled"
+        case .trailing: "Trailing"
+        case .bottom: "Bottom"
+        }
+    }
 }
 
 struct FullyQualifiedNameView: View {

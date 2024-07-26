@@ -15,7 +15,7 @@ struct SubscriptionListSettingsView: View {
         Form {
             Picker("Label Style", selection: $instanceLocation) {
                 ForEach(InstanceLocation.allCases, id: \.self) { item in
-                    Text(item.rawValue.capitalized)
+                    Text(item.label)
                 }
             }
         }

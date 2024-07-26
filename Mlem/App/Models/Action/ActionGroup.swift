@@ -16,7 +16,7 @@ struct ActionGroup: Action {
     
     let isOn: Bool
     
-    let label: String
+    let label: LocalizedStringResource
     let prompt: String?
     let isDestructive: Bool
     let color: Color
@@ -34,7 +34,7 @@ struct ActionGroup: Action {
     
     init(
         isOn: Bool = false,
-        label: String = "More...",
+        label: LocalizedStringResource = "More...",
         prompt: String? = nil,
         color: Color = .blue,
         isDestructive: Bool = false,
@@ -70,7 +70,7 @@ struct ActionGroup: Action {
     
     init(
         isOn: Bool = false,
-        label: String = "More...",
+        label: LocalizedStringResource = "More...",
         prompt: String? = nil,
         color: Color = .blue,
         isDestructive: Bool = false,

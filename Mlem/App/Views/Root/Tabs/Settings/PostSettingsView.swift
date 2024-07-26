@@ -21,7 +21,7 @@ struct PostSettingsView: View {
         Form {
             Picker("Post Size", selection: $postSize) {
                 ForEach(PostSize.allCases, id: \.rawValue) { item in
-                    Text(item.rawValue).tag(item)
+                    Text(item.label).tag(item)
                 }
             }
             
@@ -31,7 +31,7 @@ struct PostSettingsView: View {
             
             Picker("Thumbnail Location", selection: $thumbnailLocation) {
                 ForEach(ThumbnailLocation.allCases, id: \.rawValue) { item in
-                    Text(item.rawValue).tag(item)
+                    Text(item.label).tag(item)
                 }
             }
             

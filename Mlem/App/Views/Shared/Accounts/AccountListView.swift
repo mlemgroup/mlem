@@ -119,7 +119,6 @@ struct AccountListView: View {
             Button { isShowingAddAccountDialogue = true } label: {
                 Label("Add Account", systemImage: "plus")
             }
-            .accessibilityLabel("Add a new account.")
             .confirmationDialog("Choose Account Type", isPresented: $isShowingAddAccountDialogue) {
                 Button("Log In") {
                     navigation.openSheet(.login())

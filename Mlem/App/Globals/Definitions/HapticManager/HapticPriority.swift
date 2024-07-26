@@ -26,11 +26,11 @@ enum HapticPriority: String, CaseIterable, Comparable {
 }
 
 extension HapticPriority: SettingsOptions {
-    var label: String {
+    var label: LocalizedStringResource {
         switch self {
-        case .sentinel: return "None"
-        case .high: return "Some"
-        case .low: return "All"
+        case .sentinel: "None"
+        case .high: "Some"
+        case .low: "All"
         }
     }
     
