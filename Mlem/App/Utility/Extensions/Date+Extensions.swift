@@ -30,10 +30,10 @@ extension Date {
         
         let interval = date.timeIntervalSince(self)
         if interval < 1 {
-            return "Now"
+            return String(localized: "Now")
         }
     
         let value = formatter.string(from: interval)
-        return value ?? "Unknown"
+        return value ?? String(localized: "Unknown")
     }
 }

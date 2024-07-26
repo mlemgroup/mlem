@@ -44,11 +44,11 @@ struct AccountListRowBody: View {
     
     var timeText: String? {
         if account.actorId == appState.firstSession.actorId {
-            return "Now"
+            return .init(localized: "Now")
         }
         if let time = account.lastUsed {
             if abs(time.timeIntervalSinceNow) < 5 {
-                return "Just Now"
+                return .init(localized: "Just Now")
             }
             let formatter = RelativeDateTimeFormatter()
             formatter.unitsStyle = .short
@@ -61,7 +61,7 @@ struct AccountListRowBody: View {
         var output: [String] = []
         if complications.contains(.instance) {
             if account is GuestAccount {
-                output.append("Guest")
+                output.append(.init(localized: "Guest"))
             } else {
                 output.append("@\(account.api.baseUrl.host ?? "unknown")")
             }
@@ -70,7 +70,7 @@ struct AccountListRowBody: View {
             if (account as? GuestAccount)?.isSaved ?? true {
                 output.append(timeText)
             } else {
-                output.append("Temporary")
+                output.append(.init(localized: "Temporary"))
             }
         }
         return output.joined(separator: " • ")
