@@ -199,6 +199,7 @@ struct ToastView: View {
             .aspectRatio(contentMode: .fit)
             .fontWeight(.semibold)
             .symbolRenderingMode(.hierarchical)
+            // Don't use palette here! - Sjmarf
             .foregroundStyle(ToastView.dimmedSymbols.contains(systemName) ? .secondary : .primary)
             .foregroundStyle(color)
             .frame(width: 27)
