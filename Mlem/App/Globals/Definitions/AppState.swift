@@ -30,6 +30,8 @@ class AppState {
         }
     }
     
+    var contentViewTab: ContentView.Tab = .feeds
+    
     /// ``ContentView`` watches this for changes. When it is toggled, the app is refreshed.
     var appRefreshToggle: Bool = true
     

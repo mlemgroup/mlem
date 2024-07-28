@@ -15,6 +15,9 @@ struct ToastView: View {
     @State private var isExpanded: Bool = false
     @State private var didUndo: Bool = false
     
+    // These symbols only have a single hierarchical layer, so we render it as `.secondary`
+    static let dimmedSymbols: Set<String> = [Icons.blockFill]
+    
     var body: some View {
         HStack {
             switch toast.type {
@@ -59,12 +62,12 @@ struct ToastView: View {
                 .buttonStyle(EmptyButtonStyle())
             case let .error(details):
                 errorView(details)
-            case .loading:
+            case let .loading(title):
                 HStack {
                     ProgressView()
                         .tint(palette.secondary)
                         .padding(.leading)
-                    Text("Loading...")
+                    Text(title)
                         .padding(.horizontal, 30)
                 }
             case let .account(account):
@@ -116,7 +119,7 @@ struct ToastView: View {
             }
             .padding(.trailing, AppConstants.doubleSpacing)
         }
-        .frame(minWidth: 157)
+        .frame(minWidth: 167)
     }
     
     @ViewBuilder
@@ -130,7 +133,7 @@ struct ToastView: View {
                 .frame(minWidth: 80)
                 .padding(.trailing, AppConstants.doubleSpacing)
         }
-        .frame(minWidth: 157)
+        .frame(minWidth: 167)
     }
     
     @ViewBuilder
@@ -196,8 +199,11 @@ struct ToastView: View {
             .aspectRatio(contentMode: .fit)
             .fontWeight(.semibold)
             .symbolRenderingMode(.hierarchical)
+            // Don't use palette here! - Sjmarf
+            .foregroundStyle(ToastView.dimmedSymbols.contains(systemName) ? .secondary : .primary)
             .foregroundStyle(color)
-            .padding([.vertical, .leading], AppConstants.standardSpacing)
+            .frame(width: 27)
+            .padding([.leading], AppConstants.standardSpacing)
     }
 }
 
