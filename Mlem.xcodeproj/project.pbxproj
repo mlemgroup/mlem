@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0300309D2C4163C9009A65FF /* ExpandedPostView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0300309C2C4163C9009A65FF /* ExpandedPostView+Logic.swift */; };
 		030030A12C416B0B009A65FF /* RefreshPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030030A02C416B0B009A65FF /* RefreshPopupView.swift */; };
+		030BCB1B2C3EA5FD0037680F /* InstanceDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030BCB1A2C3EA5FD0037680F /* InstanceDetailsView.swift */; };
 		030FF6792BC84F7E00F6BFAC /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 030FF6782BC84F7E00F6BFAC /* SwiftUIIntrospect */; };
 		030FF67B2BC8521600F6BFAC /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF67A2BC8521600F6BFAC /* CustomTabView.swift */; };
 		030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */; };
@@ -92,6 +93,8 @@
 		03AF91E32C1C616F00E56644 /* InteractionBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AF91E22C1C616F00E56644 /* InteractionBarView.swift */; };
 		03AF91E52C1C61FA00E56644 /* PostInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AF91E42C1C61FA00E56644 /* PostInteraction.swift */; };
 		03AF91EA2C1CE96600E56644 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AF91E92C1CE96600E56644 /* Counter.swift */; };
+		03AFD0E32C3C0C540054B8AD /* InstanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFD0E22C3C0C540054B8AD /* InstanceView.swift */; };
+		03AFD0E52C3C14D50054B8AD /* Instance1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFD0E42C3C14D50054B8AD /* Instance1Providing+Extensions.swift */; };
 		03B431BE2C455F1B001A1EB5 /* InboxView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431BD2C455F1B001A1EB5 /* InboxView+Logic.swift */; };
 		03B72B672C2888EE0023A6C4 /* View+ContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B72B662C2888EE0023A6C4 /* View+ContextMenu.swift */; };
 		03B72B6B2C28A0190023A6C4 /* SubscriptionListSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */; };
@@ -235,6 +238,7 @@
 /* Begin PBXFileReference section */
 		0300309C2C4163C9009A65FF /* ExpandedPostView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExpandedPostView+Logic.swift"; sourceTree = "<group>"; };
 		030030A02C416B0B009A65FF /* RefreshPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshPopupView.swift; sourceTree = "<group>"; };
+		030BCB1A2C3EA5FD0037680F /* InstanceDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceDetailsView.swift; sourceTree = "<group>"; };
 		030FF67A2BC8521600F6BFAC /* CustomTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
 		030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabItem.swift; sourceTree = "<group>"; };
 		030FF67E2BC8544600F6BFAC /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
@@ -316,6 +320,8 @@
 		03AF91E22C1C616F00E56644 /* InteractionBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarView.swift; sourceTree = "<group>"; };
 		03AF91E42C1C61FA00E56644 /* PostInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInteraction.swift; sourceTree = "<group>"; };
 		03AF91E92C1CE96600E56644 /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
+		03AFD0E22C3C0C540054B8AD /* InstanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceView.swift; sourceTree = "<group>"; };
+		03AFD0E42C3C14D50054B8AD /* Instance1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Instance1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		03B431BD2C455F1B001A1EB5 /* InboxView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InboxView+Logic.swift"; sourceTree = "<group>"; };
 		03B72B662C2888EE0023A6C4 /* View+ContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ContextMenu.swift"; sourceTree = "<group>"; };
 		03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListSettingsView.swift; sourceTree = "<group>"; };
@@ -473,6 +479,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		030BCB192C3EA5E20037680F /* Instance */ = {
+			isa = PBXGroup;
+			children = (
+				03AFD0E22C3C0C540054B8AD /* InstanceView.swift */,
+				030BCB1A2C3EA5FD0037680F /* InstanceDetailsView.swift */,
+			);
+			path = Instance;
+			sourceTree = "<group>";
+		};
 		03134A492BEACF46002662CC /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -576,6 +591,7 @@
 			isa = PBXGroup;
 			children = (
 				0382A7EF2C09F0F800C79DDA /* PersonView.swift */,
+				030BCB192C3EA5E20037680F /* Instance */,
 				0355F9452C150B2300605248 /* ExternalApiInfoView.swift */,
 				03AF91DC2C1B23E500E56644 /* ImageViewer.swift */,
 			);
@@ -1045,6 +1061,7 @@
 				03267D852BED4ACA009D6268 /* Profile1Providing+Extensions.swift */,
 				03E614E32C0BCC7B00F692A4 /* Post1Providing+Extensions.swift */,
 				033F84BE2C2ACC9F002E3EDF /* Comment1Providing+Extensions.swift */,
+				03AFD0E42C3C14D50054B8AD /* Instance1Providing+Extensions.swift */,
 				032C32192C36F75800595286 /* Reply1Providing+Extensions.swift */,
 				0389DDC22C38907C0005B808 /* Message1Providing+Extensions.swift */,
 				0389DDC42C38917A0005B808 /* InboxItemProviding+Extensions.swift */,
@@ -1343,6 +1360,7 @@
 				03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */,
 				032C32022C3438DB00595286 /* ShareAction.swift in Sources */,
 				03E614E22C0BCC4300F692A4 /* Profile1Providing+Extensions.swift in Sources */,
+				030BCB1B2C3EA5FD0037680F /* InstanceDetailsView.swift in Sources */,
 				03134A582BEC1C46002662CC /* AccountListSettingsView.swift in Sources */,
 				03E614E52C0BCCAA00F692A4 /* PostSize.swift in Sources */,
 				03B72B672C2888EE0023A6C4 /* View+ContextMenu.swift in Sources */,
@@ -1383,6 +1401,7 @@
 				032C32182C36F70300595286 /* InboxConfiguration.swift in Sources */,
 				CD4D58C02B86DBD100B82964 /* DefaultAvatarView.swift in Sources */,
 				CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */,
+				03AFD0E32C3C0C540054B8AD /* InstanceView.swift in Sources */,
 				03FE140C2BF953B000A8377F /* HandleError.swift in Sources */,
 				CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */,
 				038096612C10AAD8003ED1D8 /* TransitionView.swift in Sources */,
@@ -1443,6 +1462,7 @@
 				CDCA44B22C17675600C092B3 /* Haptic.swift in Sources */,
 				035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */,
 				033F84BB2C2ACB96002E3EDF /* CommentView.swift in Sources */,
+				03AFD0E52C3C14D50054B8AD /* Instance1Providing+Extensions.swift in Sources */,
 				CD4D58CB2B86DD3D00B82964 /* AssociatedIcon.swift in Sources */,
 				CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */,
 				CDE021AD2BFA43380052FD61 /* FeedPostView.swift in Sources */,
@@ -1950,7 +1970,7 @@
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.15.0;
+				minimumVersion = 0.16.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

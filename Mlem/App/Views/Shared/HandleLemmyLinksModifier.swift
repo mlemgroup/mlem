@@ -88,7 +88,8 @@ struct HandleLemmyLinksModifier: ViewModifier {
     func interpretLemmyUrlPath(url: URL) -> Bool {
         let components = url.pathComponents.dropFirst()
         if components.isEmpty {
-            // TODO: instance
+            navigation.push(.instance(InstanceStub(api: appState.firstApi, actorId: url)))
+            return true
         }
         switch components.first {
         case "u":
@@ -128,7 +129,7 @@ struct HandleLemmyLinksModifier: ViewModifier {
     }
     
     func showToastAndLoad(url: URL) async {
-        let toastId = ToastModel.main.add(.loading)
+        let toastId = ToastModel.main.add(.loading())
         var output = try? await appState.firstApi.resolve(actorId: url)
         if output == nil {
             // Retry on local instance, which is needed if there is a federation boundary
@@ -151,18 +152,18 @@ struct HandleLemmyLinksModifier: ViewModifier {
     func isLemmyHost(_ host: String) -> Bool {
         MlemStats.main.hosts.contains(host)
     }
+}
+
+func openRegularLink(url: URL) {
+    @AppStorage("links.openInBrowser") var openLinksInBrowser = false
     
-    func openRegularLink(url: URL) {
-        @AppStorage("links.openInBrowser") var openLinksInBrowser = false
-        
-        if let scheme = url.scheme, scheme.hasPrefix("http"), !openLinksInBrowser {
-            Task { @MainActor in
-                let viewController = SFSafariViewController(url: url, configuration: .default)
-                UIApplication.shared.firstKeyWindow?.rootViewController?.topMostViewController().present(viewController, animated: true)
-            }
-        } else {
-            UIApplication.shared.open(url)
+    if let scheme = url.scheme, scheme.hasPrefix("http"), !openLinksInBrowser {
+        Task { @MainActor in
+            let viewController = SFSafariViewController(url: url, configuration: .default)
+            UIApplication.shared.firstKeyWindow?.rootViewController?.topMostViewController().present(viewController, animated: true)
         }
+    } else {
+        UIApplication.shared.open(url)
     }
 }
 

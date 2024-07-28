@@ -10,6 +10,10 @@ import MlemMiddleware
 import SwiftUI
 
 struct ContentView: View {
+    enum Tab: CaseIterable {
+        case feeds, inbox, profile, search, settings
+    }
+    
     @AppStorage("colorPalette") var colorPalette: PaletteOption = .standard
     
     let cacheCleanTimer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
@@ -19,8 +23,6 @@ struct ContentView: View {
     var appState: AppState { .main }
     
     @State var palette: Palette = .main
-    
-    @State var selectedTabIndex: Int = 0
     @State var tabReselectTracker: TabReselectTracker = .main
     
     @State var badgeUpdater: BadgeUpdater = .init()
@@ -77,7 +79,11 @@ struct ContentView: View {
     }
     
     var content: some View {
-        CustomTabView(selectedIndex: $selectedTabIndex, tabs: [
+        CustomTabView(selectedIndex: Binding(get: {
+            Tab.allCases.firstIndex(of: appState.contentViewTab) ?? 0
+        }, set: {
+            appState.contentViewTab = Tab.allCases[$0]
+        }), tabs: [
             CustomTabItem(title: "Feeds", image: Icons.feeds, selectedImage: Icons.feedsFill) {
                 NavigationSplitRootView(sidebar: .subscriptionList, root: .feeds)
             },

@@ -59,7 +59,7 @@ struct ToastView: View {
                 .buttonStyle(EmptyButtonStyle())
             case let .error(details):
                 errorView(details)
-            case .loading:
+            case let .loading(title):
                 HStack {
                     ProgressView()
                         .tint(palette.secondary)
@@ -116,7 +116,7 @@ struct ToastView: View {
             }
             .padding(.trailing, AppConstants.doubleSpacing)
         }
-        .frame(minWidth: 157)
+        .frame(minWidth: 167)
     }
     
     @ViewBuilder
@@ -130,7 +130,7 @@ struct ToastView: View {
                 .frame(minWidth: 80)
                 .padding(.trailing, AppConstants.doubleSpacing)
         }
-        .frame(minWidth: 157)
+        .frame(minWidth: 167)
     }
     
     @ViewBuilder
@@ -197,7 +197,8 @@ struct ToastView: View {
             .fontWeight(.semibold)
             .symbolRenderingMode(.hierarchical)
             .foregroundStyle(color)
-            .padding([.vertical, .leading], AppConstants.standardSpacing)
+            .frame(width: 27)
+            .padding([.leading], AppConstants.standardSpacing)
     }
 }
 
