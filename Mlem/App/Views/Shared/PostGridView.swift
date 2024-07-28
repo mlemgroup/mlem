@@ -21,12 +21,10 @@ struct PostGridView: View {
     
     let postFeedLoader: AggregatePostFeedLoader
     
-    var tilePosts: Bool { postSize == .tile }
-    
     var body: some View {
         content
             .onChange(of: postSize, initial: true) { _, newValue in
-                if newValue == .tile {
+                if newValue.tiled {
                     // leading/trailing alignment makes them want to stick to each other, allowing the AppConstants.halfSpacing padding applied below
                     // to push them apart by a sum of AppConstants.standardSpacing
                     columns = [
@@ -40,7 +38,7 @@ struct PostGridView: View {
     }
     
     var content: some View {
-        LazyVGrid(columns: columns, spacing: postSize == .tile ? AppConstants.standardSpacing : 0) {
+        LazyVGrid(columns: columns, spacing: postSize.tiled ? AppConstants.standardSpacing : 0) {
             ForEach(postFeedLoader.items, id: \.hashValue) { post in
                 if !post.read || showRead, !post.creator.blocked, !post.community.blocked {
                     VStack(spacing: 0) { // this improves performance O_o
@@ -48,9 +46,9 @@ struct PostGridView: View {
                             FeedPostView(post: post)
                         }
                         .buttonStyle(EmptyButtonStyle())
-                        if !tilePosts { Divider() }
+                        if !postSize.tiled { Divider() }
                     }
-                    .padding(.horizontal, tilePosts ? AppConstants.halfSpacing : 0)
+                    .padding(.horizontal, postSize.tiled ? AppConstants.halfSpacing : 0)
                     .onAppear {
                         do {
                             try postFeedLoader.loadIfThreshold(post)

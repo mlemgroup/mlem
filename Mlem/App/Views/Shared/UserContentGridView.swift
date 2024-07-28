@@ -13,8 +13,6 @@ struct PersonContentGridView: View {
     @Environment(AppState.self) var appState
     @AppStorage("post.size") var postSize: PostSize = .large
     
-    var tilePosts: Bool { postSize == .tile }
-    
     @State var columns: [GridItem] = [GridItem(.flexible())]
     
     var feedLoader: PersonContentFeedLoader
@@ -22,7 +20,7 @@ struct PersonContentGridView: View {
     var body: some View {
         content
             .onChange(of: postSize, initial: true) { _, newValue in
-                if newValue == .tile {
+                if newValue.tiled {
                     // leading/trailing alignment makes them want to stick to each other, allowing the AppConstants.halfSpacing padding applied below
                     // to push them apart by a sum of AppConstants.standardSpacing
                     columns = [
@@ -36,14 +34,14 @@ struct PersonContentGridView: View {
     }
     
     var content: some View {
-        LazyVGrid(columns: columns, spacing: tilePosts ? AppConstants.standardSpacing : 0) {
+        LazyVGrid(columns: columns, spacing: postSize.tiled ? AppConstants.standardSpacing : 0) {
             ForEach(feedLoader.items, id: \.hashValue) { item in
                 VStack(spacing: 0) { // this improves performance O_o
                     userContentItem(item)
                         .buttonStyle(EmptyButtonStyle())
-                    if !tilePosts { Divider() }
+                    if !postSize.tiled { Divider() }
                 }
-                .padding(.horizontal, tilePosts ? AppConstants.halfSpacing : 0)
+                .padding(.horizontal, postSize.tiled ? AppConstants.halfSpacing : 0)
                 .onAppear {
                     do {
                         try feedLoader.loadIfThreshold(item)

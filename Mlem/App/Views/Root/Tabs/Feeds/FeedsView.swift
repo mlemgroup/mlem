@@ -39,8 +39,6 @@ struct FeedsView: View {
 
     @State var scrollToTopTrigger: Bool = false
     
-    var tilePosts: Bool { postSize == .tile }
-    
     enum FeedSelection: CaseIterable {
         case all, local, subscribed, saved
         // TODO: moderated
@@ -108,7 +106,7 @@ struct FeedsView: View {
     
     var body: some View {
         content
-            .background(tilePosts ? palette.groupedBackground : palette.background)
+            .background(postSize.tiled ? palette.groupedBackground : palette.background)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarEllipsisMenu {
@@ -185,7 +183,7 @@ struct FeedsView: View {
     var content: some View {
         FancyScrollView(scrollToTopTrigger: $scrollToTopTrigger) {
             Section {
-                if !tilePosts { Divider() }
+                if !postSize.tiled { Divider() }
                 
                 if let savedFeedLoader, feedSelection == .saved {
                     PersonContentGridView(feedLoader: savedFeedLoader)
