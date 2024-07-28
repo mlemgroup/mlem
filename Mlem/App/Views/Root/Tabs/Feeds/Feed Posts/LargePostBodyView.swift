@@ -19,6 +19,7 @@ struct LargePostBodyView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
             post.taggedTitle(communityContext: communityContext)
+                .foregroundStyle((post.read_ ?? false) ? palette.secondary : palette.primary)
                 .font(.headline)
                 .imageScale(.small)
             
