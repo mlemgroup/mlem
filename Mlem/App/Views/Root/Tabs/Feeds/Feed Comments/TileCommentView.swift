@@ -53,7 +53,7 @@ struct TileCommentView: View {
                         .fill(palette.secondaryBackground)
                 }
             
-            Markdown(comment.content, configuration: .default)
+            MarkdownText(comment.content, configuration: .default)
                 .font(.caption)
                 .frame(height: contentHeight, alignment: .top)
                 .clipped()
