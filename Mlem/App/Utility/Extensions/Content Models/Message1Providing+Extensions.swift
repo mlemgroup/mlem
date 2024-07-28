@@ -59,7 +59,7 @@ extension Message1Providing {
             color: Palette.main.negative,
             isDestructive: true,
             confirmationPrompt: showConfirmation ? "Really block this user?" : nil,
-            icon: Icons.hide,
+            icon: Icons.block,
             callback: api.willSendToken ? { self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
         )
     }

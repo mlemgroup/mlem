@@ -26,6 +26,11 @@ protocol Account: AnyObject, Codable, ActorIdentifiable, Profile1Providing, Hash
     var isActive: Bool { get }
 }
 
+// Profile1Providing conformance
+extension Account {
+    var blocked: Bool { false }
+}
+
 extension Account {
     func hash(into hasher: inout Hasher) {
         hasher.combine(actorId)

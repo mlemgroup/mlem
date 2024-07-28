@@ -40,7 +40,7 @@ class UserAccount: Account, CommunityOrPersonStub {
     }
     
     enum DecodingError: Error {
-        case cannotRemoveExtraneousPathComponents, noTokenInKeychain
+        case cannotModifyPathComponents, noTokenInKeychain
     }
     
     required init(from decoder: Decoder) throws {
@@ -58,8 +58,9 @@ class UserAccount: Account, CommunityOrPersonStub {
         let instanceLink = try values.decode(URL.self, forKey: .instanceLink)
         // Remove the "api/v3" path that we attached to the instanceLink pre-2.0
         var components = URLComponents(url: instanceLink, resolvingAgainstBaseURL: false)!
-        components.path = ""
-        guard let instanceLink = components.url else { throw DecodingError.cannotRemoveExtraneousPathComponents }
+        // Adding a slash is important! The API returns instance actor IDs with a trailing slash.
+        components.path = "/"
+        guard let instanceLink = components.url else { throw DecodingError.cannotModifyPathComponents }
         
         // parse actor id
         let actorId = parseActorId(instanceLink: instanceLink, name: name)
