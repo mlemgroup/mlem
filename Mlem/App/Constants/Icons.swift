@@ -122,7 +122,6 @@ enum Icons {
     static let instance: String = "server.rack"
     static let user: String = "person.crop.circle"
     static let userFill: String = "person.crop.circle.fill"
-    static let userBlock: String = "person.fill.xmark"
     static let community: String = "building.2.crop.circle"
     static let communityFill: String = "building.2.crop.circle.fill"
     
@@ -148,6 +147,10 @@ enum Icons {
     static let warning: String = "exclamationmark.triangle"
     static let hide: String = "eye.slash"
     static let hideFill: String = "eye.slash.fill"
+    static let block: String = "hand.raised"
+    static let blockFill: String = "hand.raised.fill"
+    static let unblock: String = "hand.raised.slash"
+    static let unblockFill: String = "hand.raised.slash.fill"
     static let nsfwTag: String = "nsfw"
     static let show: String = "eye"
     static let showFill: String = "eye.fill"

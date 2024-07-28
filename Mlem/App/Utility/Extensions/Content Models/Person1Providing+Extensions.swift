@@ -13,7 +13,7 @@ extension Person1Providing {
             ToastModel.main.add(
                 .undoable(
                     title: "Blocked",
-                    systemImage: Icons.hideFill,
+                    systemImage: Icons.blockFill,
                     callback: {
                         self.updateBlocked(false)
                     },

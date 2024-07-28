@@ -55,7 +55,7 @@ struct PersonView: View {
         } upgradeOperation: { model, api in
             try await model.upgrade(api: api) { entity in
                 if let entity = entity as? any Person1Providing {
-                    let response = try await entity.getPosts(page: 1, limit: 3)
+                    let response = try await entity.getContent(page: 1, limit: 3)
                     Task { @MainActor in
                         posts = response.posts
                     }
