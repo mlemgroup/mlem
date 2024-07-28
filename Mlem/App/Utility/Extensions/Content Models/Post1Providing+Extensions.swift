@@ -173,7 +173,7 @@ extension Post1Providing {
             prompt: "Block User or Community?",
             color: Palette.main.negative,
             isDestructive: true,
-            icon: "hand.raised",
+            icon: Icons.block,
             disabled: !api.willSendToken,
             displayMode: .popup
         ) {
@@ -190,7 +190,7 @@ extension Post1Providing {
             color: Palette.main.negative,
             isDestructive: true,
             confirmationPrompt: showConfirmation ? "Really block this community?" : nil,
-            icon: "xmark.circle.fill",
+            icon: Icons.block,
             callback: api.willSendToken ? { self.self2?.community.toggleBlocked(feedback: feedback) } : nil
         )
     }
