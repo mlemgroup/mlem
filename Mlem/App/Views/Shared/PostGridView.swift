@@ -12,7 +12,7 @@ import SwiftUI
 /// Renders the content of a given StandardPostFeedLoader. Responsible solely for post layout and triggering loading; scrolling, handling feed type
 /// changes, header, footer, rendering toolbar items, etc. should be handled by the parent view.
 struct PostGridView: View {
-    @AppStorage("beta.tilePosts") var tilePosts: Bool = false
+    @AppStorage("post.size") var postSize: PostSize = .large
     @AppStorage("feed.showRead") var showRead: Bool = true
     
     @Environment(AppState.self) var appState
@@ -21,10 +21,12 @@ struct PostGridView: View {
     
     let postFeedLoader: AggregatePostFeedLoader
     
+    var tilePosts: Bool { postSize == .tile }
+    
     var body: some View {
         content
-            .onChange(of: tilePosts, initial: true) { _, newValue in
-                if newValue {
+            .onChange(of: postSize, initial: true) { _, newValue in
+                if newValue == .tile {
                     // leading/trailing alignment makes them want to stick to each other, allowing the AppConstants.halfSpacing padding applied below
                     // to push them apart by a sum of AppConstants.standardSpacing
                     columns = [
@@ -38,7 +40,7 @@ struct PostGridView: View {
     }
     
     var content: some View {
-        LazyVGrid(columns: columns, spacing: tilePosts ? AppConstants.standardSpacing : 0) {
+        LazyVGrid(columns: columns, spacing: postSize == .tile ? AppConstants.standardSpacing : 0) {
             ForEach(postFeedLoader.items, id: \.hashValue) { post in
                 if !post.read || showRead, !post.creator.blocked, !post.community.blocked {
                     VStack(spacing: 0) { // this improves performance O_o

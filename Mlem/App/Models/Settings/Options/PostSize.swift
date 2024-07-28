@@ -9,5 +9,12 @@ import Foundation
 import SwiftUI
 
 enum PostSize: String, CaseIterable {
-    case compact, headline, large
+    case compact, tile, headline, large
+    
+    var swipeBehavior: SwipeBehavior {
+        switch self {
+        case .compact, .headline, .large: .standard
+        case .tile: .tile
+        }
+    }
 }

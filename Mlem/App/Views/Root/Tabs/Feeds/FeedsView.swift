@@ -13,7 +13,6 @@ import SwiftUI
 struct FeedsView: View {
     @AppStorage("post.size") var postSize: PostSize = .large
     @AppStorage("feed.showRead") var showRead: Bool = true
-    @AppStorage("beta.tilePosts") var tilePosts: Bool = false
     
     @Environment(\.dismiss) var dismiss
     @Environment(AppState.self) var appState
@@ -39,6 +38,8 @@ struct FeedsView: View {
     @State var showRefreshPopup: Bool = false
 
     @State var scrollToTopTrigger: Bool = false
+    
+    var tilePosts: Bool { postSize == .tile }
     
     enum FeedSelection: CaseIterable {
         case all, local, subscribed, saved

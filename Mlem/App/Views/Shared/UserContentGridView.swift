@@ -10,9 +10,10 @@ import MlemMiddleware
 import SwiftUI
 
 struct PersonContentGridView: View {
-    @AppStorage("beta.tilePosts") var tilePosts: Bool = false
-    
     @Environment(AppState.self) var appState
+    @AppStorage("post.size") var postSize: PostSize = .large
+    
+    var tilePosts: Bool { postSize == .tile }
     
     @State var columns: [GridItem] = [GridItem(.flexible())]
     
@@ -20,8 +21,8 @@ struct PersonContentGridView: View {
     
     var body: some View {
         content
-            .onChange(of: tilePosts, initial: true) { _, newValue in
-                if newValue {
+            .onChange(of: postSize, initial: true) { _, newValue in
+                if newValue == .tile {
                     // leading/trailing alignment makes them want to stick to each other, allowing the AppConstants.halfSpacing padding applied below
                     // to push them apart by a sum of AppConstants.standardSpacing
                     columns = [
