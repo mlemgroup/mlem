@@ -22,7 +22,7 @@ struct FeedPostView: View {
             .contentShape(.interaction, .rect)
             .quickSwipes(post.swipeActions(behavior: postSize.swipeBehavior))
             .contextMenu(actions: post.menuActions())
-            .shadow(color: postSize.tiled ? palette.primary.opacity(0.1) : .clear, radius: 3) // after quickSwipes to prevent getting clipped
+            .shadow(color: postSize.tiled ? palette.primary.opacity(0.1) : .clear, radius: 3) // after quickSwipes to prevent clipping
     }
     
     @ViewBuilder
