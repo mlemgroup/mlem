@@ -12,12 +12,16 @@ import SwiftUI
 
 struct TileCommentView: View {
     @Environment(Palette.self) var palette
+    @Environment(\.parentFrameWidth) var parentFrameWidth: CGFloat
     
     let comment: any Comment2Providing
     
     @ScaledMetric(relativeTo: .footnote) var titleHeight: CGFloat = 36 // (2 * .footnote height), including built-in spacing
     @ScaledMetric(relativeTo: .caption) var communityHeight: CGFloat = 16 // .caption height, including built-in spacing
-    var width: CGFloat { (UIScreen.main.bounds.width - (AppConstants.standardSpacing * 3)) / 2 }
+    
+    let contentHeightModifier: CGFloat = 33
+    // width cannot go below contentHeightModifier so contentWidth is never negative
+    var width: CGFloat { max(contentHeightModifier, (parentFrameWidth - (AppConstants.standardSpacing * 3)) / 2) }
     var contentHeight: CGFloat { width - 33 }
     var frameHeight: CGFloat { width + titleHeight + communityHeight + 17 }
     // Padding math

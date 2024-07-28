@@ -13,6 +13,7 @@ import SwiftUI
 
 struct TilePostView: View {
     @Environment(Palette.self) var palette: Palette
+    @Environment(\.parentFrameWidth) var parentFrameWidth: CGFloat
     
     let post: any Post1Providing
 
@@ -21,8 +22,11 @@ struct TilePostView: View {
     // width + minTitleHeight + communityHeight + 17
     @ScaledMetric(relativeTo: .footnote) var minTitleHeight: CGFloat = 36 // (2 * .footnote height), including built-in spacing
     @ScaledMetric(relativeTo: .caption) var communityHeight: CGFloat = 16 // .caption height, including built-in spacing
-    var width: CGFloat { (UIScreen.main.bounds.width - (AppConstants.standardSpacing * 3)) / 2 }
-    var contentHeight: CGFloat { width - 10 }
+    
+    let contentHeightModifier: CGFloat = 10
+    // width cannot go below contentHeightModifier so contentWidth is never negative
+    var width: CGFloat { max(contentHeightModifier, (parentFrameWidth - (AppConstants.standardSpacing * 3)) / 2) }
+    var contentHeight: CGFloat { width - contentHeightModifier }
     var frameHeight: CGFloat { width + minTitleHeight + communityHeight + 17 }
     // Padding math
     // Need to satisfy: padding + contentHeightModifier = 17

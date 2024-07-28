@@ -125,6 +125,7 @@ struct PersonView: View {
             .padding(.vertical, 2)
     }
     
+    // TODO: PersonContentGridView
     @ViewBuilder
     func personContent(person: any Person3Providing) -> some View {
         VStack(spacing: 0) {

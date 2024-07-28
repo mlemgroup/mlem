@@ -14,11 +14,14 @@ struct PersonContentGridView: View {
     @AppStorage("post.size") var postSize: PostSize = .large
     
     @State var columns: [GridItem] = [GridItem(.flexible())]
+    @State var frameWidth: CGFloat = .zero
     
     var feedLoader: PersonContentFeedLoader
     
     var body: some View {
         content
+            .widthReader(width: $frameWidth)
+            .environment(\.parentFrameWidth, frameWidth)
             .onChange(of: postSize, initial: true) { _, newValue in
                 if newValue.tiled {
                     // leading/trailing alignment makes them want to stick to each other, allowing the AppConstants.halfSpacing padding applied below
@@ -37,7 +40,7 @@ struct PersonContentGridView: View {
         LazyVGrid(columns: columns, spacing: postSize.tiled ? AppConstants.standardSpacing : 0) {
             ForEach(feedLoader.items, id: \.hashValue) { item in
                 VStack(spacing: 0) { // this improves performance O_o
-                    userContentItem(item)
+                    personContentItem(item)
                         .buttonStyle(EmptyButtonStyle())
                     if !postSize.tiled { Divider() }
                 }
@@ -55,8 +58,8 @@ struct PersonContentGridView: View {
     }
     
     @ViewBuilder
-    func userContentItem(_ userContent: PersonContent) -> some View {
-        switch userContent.wrappedValue {
+    func personContentItem(_ personContent: PersonContent) -> some View {
+        switch personContent.wrappedValue {
         case let .post(post):
             NavigationLink(value: NavigationPage.expandedPost(post)) {
                 FeedPostView(post: post)

@@ -18,11 +18,14 @@ struct PostGridView: View {
     @Environment(AppState.self) var appState
     
     @State var columns: [GridItem] = [GridItem(.flexible())]
+    @State var frameWidth: CGFloat = .zero
     
     let postFeedLoader: AggregatePostFeedLoader
     
     var body: some View {
         content
+            .widthReader(width: $frameWidth)
+            .environment(\.parentFrameWidth, frameWidth)
             .onChange(of: postSize, initial: true) { _, newValue in
                 if newValue.tiled {
                     // leading/trailing alignment makes them want to stick to each other, allowing the AppConstants.halfSpacing padding applied below

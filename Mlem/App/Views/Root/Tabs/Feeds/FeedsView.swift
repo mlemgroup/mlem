@@ -142,8 +142,10 @@ struct FeedsView: View {
                 showRefreshPopup = true
 
                 if appState.firstApi.willSendToken, let firstUser = appState.firstAccount as? UserAccount {
+                    feedOptions = FeedSelection.allCases
                     savedFeedLoader?.switchUser(api: appState.firstApi, userId: firstUser.id)
                 } else {
+                    feedOptions = FeedSelection.guestCases
                     savedFeedLoader = nil
                     // ensure we don't display saved feed with unathenticated user
                     if feedSelection == .saved {
@@ -169,8 +171,11 @@ struct FeedsView: View {
                     Task {
                         do {
                             showRefreshPopup = false
-                            try await postFeedLoader.refresh(clearBeforeRefresh: true)
-                            try await savedFeedLoader?.refresh(clearBeforeRefresh: true)
+                            if feedSelection == .saved {
+                                try await savedFeedLoader?.refresh(clearBeforeRefresh: true)
+                            } else {
+                                try await postFeedLoader.refresh(clearBeforeRefresh: true)
+                            }
                         } catch {
                             handleError(error)
                         }
