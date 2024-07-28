@@ -42,6 +42,20 @@ struct SettingsView: View {
                     ImagePipeline.shared.cache.removeAll()
                 }
             }
+            
+            Section {
+                Button("Search Communities") {
+                    navigation.openSheet(.communityPicker(callback: { print($0.name) }))
+                }
+                
+                Button("Search People") {
+                    navigation.openSheet(.personPicker(callback: { print($0.name) }))
+                }
+                
+                Button("Search Instances") {
+                    navigation.openSheet(.instancePicker(callback: { print($0.name) }))
+                }
+            }
         }
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)

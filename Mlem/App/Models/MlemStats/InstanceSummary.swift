@@ -15,4 +15,13 @@ struct InstanceSummary: Codable {
     let userCount: Int
     let avatar: URL?
     let version: SiteVersion
+    
+    var url: URL? { URL(string: "https://\(host)/") }
+    
+    var instanceStub: InstanceStub? {
+        if let url {
+            return .init(api: AppState.main.firstApi, actorId: url)
+        }
+        return nil
+    }
 }
