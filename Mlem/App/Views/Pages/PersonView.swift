@@ -18,6 +18,7 @@ struct PersonView: View {
     }
     
     @Environment(Palette.self) var palette
+    @Environment(NavigationLayer.self) var navigation
     
     @State var person: AnyPerson
     @State private var selectedTab: Tab = .overview
@@ -43,7 +44,7 @@ struct PersonView: View {
                             if person is any Person3Providing, proxy.isLoading {
                                 ProgressView()
                             } else {
-                                ToolbarEllipsisMenu {}
+                                ToolbarEllipsisMenu(person.menuActions(navigation: navigation))
                             }
                         }
                     }

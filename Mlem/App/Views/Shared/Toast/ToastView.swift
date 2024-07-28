@@ -64,7 +64,7 @@ struct ToastView: View {
                     ProgressView()
                         .tint(palette.secondary)
                         .padding(.leading)
-                    Text("Loading...")
+                    Text(title)
                         .padding(.horizontal, 30)
                 }
             case let .account(account):

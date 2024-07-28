@@ -27,7 +27,9 @@ class AccountsTracker {
     var guestAccounts: [GuestAccount] = .init()
     var defaultAccount: any Account { userAccounts.first ?? defaultGuestAccount }
     var defaultGuestAccount: GuestAccount {
-        guestAccounts.first ?? .getGuestAccount(url: URL(string: "https://lemmy.world")!)
+        // This will never fail because we're passing a literal URL that is known to always succeed
+        // swiftlint:disable:next force_try
+        try! (guestAccounts.first ?? .getGuestAccount(url: URL(string: "https://lemmy.world/")!))
     }
     
     private var cancellables = Set<AnyCancellable>()

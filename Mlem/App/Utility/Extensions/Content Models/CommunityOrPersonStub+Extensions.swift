@@ -9,8 +9,22 @@ import MlemMiddleware
 import UIKit
 
 extension CommunityOrPersonStub {
-    func copyFullNameWithPrefix() {
+    func copyFullNameWithPrefix(feedback: Set<FeedbackType> = [.toast]) {
+        if feedback.contains(.toast) {
+            ToastModel.main.add(.success("Copied"))
+        }
         UIPasteboard.general.string = fullNameWithPrefix
-        ToastModel.main.add(.success("Copied"))
+    }
+    
+    func copyNameAction(feedback: Set<FeedbackType> = [.toast]) -> BasicAction {
+        .init(
+            id: "copyName\(actorId)",
+            isOn: false,
+            label: "Copy Name",
+            color: .gray,
+            icon: Icons.copy,
+            swipeIcon2: Icons.copyFill,
+            callback: { self.copyFullNameWithPrefix(feedback: feedback) }
+        )
     }
 }

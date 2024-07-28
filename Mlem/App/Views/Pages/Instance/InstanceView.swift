@@ -70,6 +70,7 @@ struct InstanceView: View {
         .onPreferenceChange(IsAtTopPreferenceKey.self, perform: { value in
             isAtTop = value
         })
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     @ViewBuilder
@@ -105,14 +106,7 @@ struct InstanceView: View {
             }
         }
         .toolbar {
-            let session = appState.firstSession as? UserSession
-            let enabled = !(session?.ongoingInstanceBlockRequests.contains(instance.actorId) ?? true)
-            ToolbarEllipsisMenu(
-                instance.menuActions(
-                    externalBlockStatus: session?.blocks?.contains(instance) ?? false,
-                    externalBlockCallback: enabled ? { session?.toggleInstanceBlock(actorId: instance.actorId) } : nil
-                )
-            )
+            ToolbarEllipsisMenu(instance.menuActions(allowExternalBlocking: true))
         }
     }
 }
