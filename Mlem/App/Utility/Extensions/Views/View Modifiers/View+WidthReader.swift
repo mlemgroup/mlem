@@ -16,7 +16,7 @@ private struct WidthReader: ViewModifier {
             .background {
                 GeometryReader { geo in
                     Color.clear
-                        .onAppear {
+                        .onChange(of: geo.size.width, initial: true) {
                             width = geo.size.width
                         }
                 }
