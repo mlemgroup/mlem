@@ -23,11 +23,17 @@ struct FeedsView: View {
     @State var feedOptions: [FeedSelection] = FeedSelection.guestCases
     @State var feedSelection: FeedSelection {
         didSet {
-            // ignore saved because it uses a different loader
-            guard feedSelection != .saved else { return }
+            showRefreshPopup = false // changing feed selection refreshes the feed
             Task {
                 do {
-                    try await postFeedLoader.changeFeedType(to: feedSelection.associatedApiType)
+                    // clear whichever loader is now inactive and refresh/update active loader
+                    if feedSelection == .saved {
+                        await postFeedLoader.clear()
+                        try await savedFeedLoader?.refresh(clearBeforeRefresh: true)
+                    } else {
+                        savedFeedLoader?.clear()
+                        try await postFeedLoader.changeFeedType(to: feedSelection.associatedApiType)
+                    }
                 } catch {
                     handleError(error)
                 }
