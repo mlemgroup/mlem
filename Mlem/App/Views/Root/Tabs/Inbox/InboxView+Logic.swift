@@ -10,7 +10,7 @@ import Foundation
 extension InboxView {
     var taskId: Int {
         var hasher = Hasher()
-        hasher.combine(appState.firstApi.actorId)
+        hasher.combine(appState.firstApi)
         hasher.combine(showRead)
         return hasher.finalize()
     }

@@ -36,6 +36,8 @@ struct FeedsView: View {
         }
     }
 
+    @State var showRefreshPopup: Bool = false
+
     @State var scrollToTopTrigger: Bool = false
     
     enum FeedSelection: CaseIterable {
@@ -138,16 +140,10 @@ struct FeedsView: View {
             }
             .onChange(of: appState.firstApi, initial: false) {
                 postFeedLoader.api = appState.firstApi
-                
+                showRefreshPopup = true
+
                 if appState.firstApi.willSendToken, let firstUser = appState.firstAccount as? UserAccount {
-                    savedFeedLoader = .init(
-                        api: appState.firstApi,
-                        userId: firstUser.id,
-                        sortType: .new,
-                        savedOnly: true,
-                        smallAvatarSize: AppConstants.smallAvatarSize,
-                        largeAvatarSize: AppConstants.largeAvatarSize
-                    )
+                    savedFeedLoader?.switchUser(api: appState.firstApi, userId: firstUser.id)
                 } else {
                     savedFeedLoader = nil
                     // ensure we don't display saved feed with unathenticated user
@@ -158,6 +154,7 @@ struct FeedsView: View {
             }
             .refreshable {
                 do {
+                    showRefreshPopup = false
                     switch feedSelection {
                     case .all, .local, .subscribed:
                         try await postFeedLoader.refresh(clearBeforeRefresh: false)
@@ -166,6 +163,19 @@ struct FeedsView: View {
                     }
                 } catch {
                     handleError(error)
+                }
+            }
+            .overlay(alignment: .bottom) {
+                RefreshPopupView("Feed is outdated", isPresented: $showRefreshPopup) {
+                    Task {
+                        do {
+                            showRefreshPopup = false
+                            try await postFeedLoader.refresh(clearBeforeRefresh: true)
+                            try await savedFeedLoader?.refresh(clearBeforeRefresh: true)
+                        } catch {
+                            handleError(error)
+                        }
+                    }
                 }
             }
     }

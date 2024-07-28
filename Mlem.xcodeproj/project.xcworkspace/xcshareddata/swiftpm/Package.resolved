@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware.git",
       "state" : {
-        "branch" : "eric/composite-feed-loader",
-        "revision" : "6e9f9d5214cd8865181d10d8aa556b8eb6cf65ff"
+        "branch" : "eric/saved-feed-tweaks",
+        "revision" : "f801e7a4ce34c6ce8f022c955969c8a7e9265034"
       }
     },
     {
