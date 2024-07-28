@@ -109,13 +109,14 @@ struct AccountListView: View {
                 Button("Add Guest") {
                     navigation.openSheet(.instancePicker(callback: { instance in
                         if let url = URL(string: "https://\(instance.host)") {
-                            let guest = GuestAccount.getGuestAccount(url: url)
-                            if !guest.isSaved {
-                                AccountsTracker.main.addAccount(account: guest)
-                            }
-                            AppState.main.changeAccount(to: guest)
-                            if navigation.isInsideSheet {
-                                dismiss()
+                            if let guest = try? GuestAccount.getGuestAccount(url: url) {
+                                if !guest.isSaved {
+                                    AccountsTracker.main.addAccount(account: guest)
+                                }
+                                AppState.main.changeAccount(to: guest)
+                                if navigation.isInsideSheet {
+                                    dismiss()
+                                }
                             }
                         }
                     }))

@@ -25,8 +25,11 @@ extension Person1Providing {
     }
     
     @ActionBuilder
-    func menuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
-        openInstanceAction()
+    func menuActions(
+        feedback: Set<FeedbackType> = [.haptic, .toast],
+        navigation: NavigationLayer?
+    ) -> [any Action] {
+        openInstanceAction(navigation: navigation)
         copyNameAction()
         shareAction()
         if (AppState.main.firstSession as? UserSession)?.person?.person1 !== person1 {

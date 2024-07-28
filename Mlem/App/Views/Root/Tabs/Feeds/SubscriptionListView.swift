@@ -80,7 +80,7 @@ struct SubscriptionListView: View {
                                     buttonLabel(community, section: section)
                                 }
                             }
-                            .contextMenu(actions: community.menuActions(feedback: [.toast]))
+                            .contextMenu(actions: community.menuActions(feedback: [.toast], navigation: navigation))
                             .swipeActions(edge: .trailing) {
                                 Button("Unsubscribe", systemImage: "xmark") {
                                     community.toggleSubscribe(feedback: [.toast])

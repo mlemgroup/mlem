@@ -91,11 +91,14 @@ extension Community1Providing {
     // MARK: Action Collections
     
     @ActionBuilder
-    func menuActions(feedback: Set<FeedbackType> = [.haptic]) -> [any Action] {
+    func menuActions(
+        feedback: Set<FeedbackType> = [.haptic],
+        navigation: NavigationLayer?
+    ) -> [any Action] {
         newPostAction()
         subscribeAction(feedback: feedback)
         favoriteAction(feedback: feedback)
-        openInstanceAction()
+        openInstanceAction(navigation: navigation)
         copyNameAction()
         shareAction()
         blockAction()

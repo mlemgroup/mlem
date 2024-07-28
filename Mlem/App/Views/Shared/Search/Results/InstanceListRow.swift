@@ -12,6 +12,7 @@ struct InstanceListRow<Content2: View>: View {
     typealias Content = InstanceListRowBody<Content2>
     
     @Environment(Palette.self) var palette
+    @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     
     let instance: (any Instance)?
@@ -36,6 +37,10 @@ struct InstanceListRow<Content2: View>: View {
         self.content = .init(summary, content: content)
     }
     
+    private var instanceStub: (any InstanceStubProviding)? {
+        instance ?? summary?.instanceStub
+    }
+    
     var body: some View {
         HStack(spacing: 0) {
             content
@@ -46,9 +51,13 @@ struct InstanceListRow<Content2: View>: View {
         .padding(.trailing)
         .padding(.vertical, 6)
         .onTapGesture {
-            // TODO:
-            // navigation.push()
+            if let instanceStub {
+                navigation.push(.instance(instanceStub))
+            }
         }
         .background(palette.background)
+        .contextMenu(
+            actions: instanceStub?.menuActions(allowExternalBlocking: true) ?? []
+        )
     }
 }
