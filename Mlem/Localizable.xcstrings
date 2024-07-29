@@ -181,9 +181,6 @@
     "Email Verification" : {
 
     },
-    "Enter 2FA Code" : {
-
-    },
     "Enter your instance's domain name below." : {
 
     },
@@ -561,7 +558,7 @@
     "Thumbnail Location" : {
 
     },
-    "Tile Posts" : {
+    "Tiled" : {
 
     },
     "Trailing" : {
