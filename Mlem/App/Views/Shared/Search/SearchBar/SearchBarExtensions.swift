@@ -19,7 +19,7 @@ public extension View {
 
 public extension Binding {
     func removeDuplicates() -> Self where Value: Equatable {
-        return .init(
+        .init(
             get: { self.wrappedValue },
             set: { newValue in
                 let oldValue = self.wrappedValue

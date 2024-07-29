@@ -18,6 +18,7 @@ protocol PaletteProviding {
     var tertiaryBackground: Color { get }
     var groupedBackground: Color { get }
     var secondaryGroupedBackground: Color { get }
+    var tertiaryGroupedBackground: Color { get }
     var thumbnailBackground: Color { get }
     
     var positive: Color { get }
@@ -78,6 +79,7 @@ struct ColorPalette: PaletteProviding {
     var tertiaryBackground: Color
     var groupedBackground: Color
     var secondaryGroupedBackground: Color
+    var tertiaryGroupedBackground: Color
     var thumbnailBackground: Color
     
     var positive: Color
@@ -123,6 +125,7 @@ struct ColorPalette: PaletteProviding {
         tertiaryBackground: Color,
         groupedBackground: Color,
         secondaryGroupedBackground: Color,
+        tertiaryGroupedBackground: Color,
         thumbnailBackground: Color,
         positive: Color,
         negative: Color,
@@ -157,6 +160,7 @@ struct ColorPalette: PaletteProviding {
         self.tertiaryBackground = tertiaryBackground
         self.groupedBackground = groupedBackground
         self.secondaryGroupedBackground = secondaryGroupedBackground
+        self.tertiaryGroupedBackground = tertiaryGroupedBackground
         self.thumbnailBackground = thumbnailBackground
         self.positive = positive
         self.negative = negative
@@ -211,6 +215,7 @@ class Palette: PaletteProviding {
     var tertiaryBackground: Color { palette.tertiaryBackground }
     var groupedBackground: Color { palette.groupedBackground }
     var secondaryGroupedBackground: Color { palette.secondaryGroupedBackground }
+    var tertiaryGroupedBackground: Color { palette.tertiaryGroupedBackground }
     var thumbnailBackground: Color { palette.thumbnailBackground }
     
     var positive: Color { palette.positive }
