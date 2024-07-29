@@ -70,6 +70,7 @@ struct TilePostView: View {
             
             VStack(spacing: 7) {
                 titleSection
+                    .typesettingLanguage(.init(languageCode: .english))
                 
                 communityAndInfo
             }

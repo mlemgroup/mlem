@@ -46,6 +46,7 @@ struct TileCommentView: View {
     var content: some View {
         VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
             titleSection
+                .typesettingLanguage(.init(languageCode: .english))
                 .frame(height: titleHeight, alignment: .topLeading)
                 .padding(AppConstants.halfSpacing)
                 .background {
