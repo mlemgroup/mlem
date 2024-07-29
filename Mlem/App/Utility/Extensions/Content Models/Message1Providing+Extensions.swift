@@ -10,7 +10,7 @@ import MlemMiddleware
 extension Message1Providing {
     var self2: (any Message2Providing)? { self as? any Message2Providing }
     
-    var isOwnMessage: Bool { (AppState.main.firstAccount as? UserAccount)?.id == creatorId }
+    var isOwnMessage: Bool { creatorId == api.myPerson?.id }
     
     func swipeActions(behavior: SwipeBehavior) -> SwipeConfiguration {
         .init(
@@ -30,7 +30,9 @@ extension Message1Providing {
             markReadAction(feedback: feedback)
         }
         selectTextAction()
-        if !isOwnMessage {
+        if isOwnMessage {
+            deleteAction(feedback: feedback)
+        } else {
             blockCreatorAction(feedback: feedback)
         }
     }

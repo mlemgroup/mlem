@@ -206,6 +206,8 @@ enum Icons {
     static let attachment: String = "paperclip"
     static let edit: String = "pencil"
     static let delete: String = "trash"
+    static let deleteFill: String = "trash.fill"
+    static let undelete: String = "arrow.up.trash"
     static let copy: String = "doc.on.doc"
     static let copyFill: String = "doc.on.doc.fill"
     static let paste: String = "doc.on.clipboard"
