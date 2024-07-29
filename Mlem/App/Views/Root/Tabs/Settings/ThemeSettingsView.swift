@@ -15,7 +15,7 @@ struct ThemeSettingsView: View {
         Form {
             Picker("Theme", selection: $colorPalette) {
                 ForEach(PaletteOption.allCases, id: \.rawValue) { item in
-                    Text(item.rawValue)
+                    Text(item.label)
                         .tag(item)
                 }
             }

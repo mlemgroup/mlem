@@ -16,7 +16,7 @@ struct ShareAction: Action {
         self.url = url
     }
     
-    var label: String { "Share..." }
+    var label: String { String(localized: "Share...") }
     var isDestructive: Bool { false }
     var color: Color { .gray }
     var isOn: Bool { false }

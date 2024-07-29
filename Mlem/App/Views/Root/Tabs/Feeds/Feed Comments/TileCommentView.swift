@@ -104,7 +104,7 @@ struct TileCommentView: View {
         } label: {
             Group {
                 Text(Image(systemName: comment.votes_?.iconName ?? Icons.upvoteSquare)) +
-                    Text(" \(comment.votes_?.total.abbreviated ?? "0")")
+                    Text((comment.votes_?.total ?? 0).abbreviated)
             }
             .lineLimit(1)
             .font(.caption)
