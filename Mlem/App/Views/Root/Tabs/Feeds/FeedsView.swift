@@ -149,11 +149,26 @@ struct FeedsView: View {
 
                 if appState.firstApi.willSendToken, let firstUser = appState.firstAccount as? UserAccount {
                     feedOptions = FeedSelection.allCases
-                    savedFeedLoader?.switchUser(api: appState.firstApi, userId: firstUser.id)
+                    if let savedFeedLoader {
+                        savedFeedLoader.switchUser(api: appState.firstApi, userId: firstUser.id)
+                    } else {
+                        savedFeedLoader = .init(
+                            api: appState.firstApi,
+                            userId: firstUser.id,
+                            sortType: .new,
+                            savedOnly: true,
+                            smallAvatarSize: AppConstants.smallAvatarSize,
+                            largeAvatarSize: AppConstants.largeAvatarSize
+                        )
+                    }
                 } else {
                     feedOptions = FeedSelection.guestCases
                     savedFeedLoader = nil
-                    feedSelection = .all
+
+                    // ensure we only show non-authenticated feeds to non-authenticated users
+                    if !FeedSelection.guestCases.contains(feedSelection) {
+                        feedSelection = .all
+                    }
                 }
             }
             .refreshable {
