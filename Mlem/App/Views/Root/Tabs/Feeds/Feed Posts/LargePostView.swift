@@ -46,6 +46,7 @@ struct LargePostView: View {
             }
             
             post.taggedTitle(communityContext: communityContext)
+                .foregroundStyle((post.read_ ?? false) ? palette.secondary : palette.primary)
                 .font(.headline)
                 .imageScale(.small)
             
@@ -71,7 +72,7 @@ struct LargePostView: View {
     var postDetail: some View {
         switch post.type {
         case let .image(url):
-            TappableImageView(url: url)
+            LargeImageView(url: url, blurred: post.nsfw)
                 // Set maximum image height to 1.2 * width
                 .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
                 .frame(maxWidth: .infinity)
@@ -84,7 +85,7 @@ struct LargePostView: View {
         }
         if let content = post.content {
             if isExpanded {
-                Markdown(content, configuration: .default)
+                Markdown(content, configuration: post.nsfw ? .defaultBlurred : .default)
             } else {
                 // Cut down on compute time for very long text posts by only rendering the first 4 blocks
                 MarkdownText(Array([BlockNode](content).prefix(4)), configuration: .dimmed)

@@ -25,6 +25,7 @@ struct PersonView: View {
     }
     
     @Environment(Palette.self) var palette
+    @Environment(NavigationLayer.self) var navigation
     
     @State var person: AnyPerson
     @State private var selectedTab: Tab = .overview
@@ -50,7 +51,7 @@ struct PersonView: View {
                             if person is any Person3Providing, proxy.isLoading {
                                 ProgressView()
                             } else {
-                                ToolbarEllipsisMenu {}
+                                ToolbarEllipsisMenu(person.menuActions(navigation: navigation))
                             }
                         }
                     }
@@ -61,7 +62,7 @@ struct PersonView: View {
         } upgradeOperation: { model, api in
             try await model.upgrade(api: api) { entity in
                 if let entity = entity as? any Person1Providing {
-                    let response = try await entity.getPosts(page: 1, limit: 3)
+                    let response = try await entity.getContent(page: 1, limit: 3)
                     Task { @MainActor in
                         posts = response.posts
                     }

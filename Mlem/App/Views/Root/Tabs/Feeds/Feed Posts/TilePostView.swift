@@ -95,6 +95,8 @@ struct TilePostView: View {
     struct BaseImage: View {
         @Environment(Palette.self) var palette: Palette
         
+        @AppStorage("safety.blurNsfw") var blurNsfw = true
+        
         let post: any Post1Providing
         
         var dimension: CGFloat { UIScreen.main.bounds.width / 2 - (AppConstants.standardSpacing * 1.5) }
@@ -120,12 +122,14 @@ struct TilePostView: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: dimension, height: dimension)
                     .background(palette.secondaryBackground)
+                    .blur(radius: (post.nsfw && blurNsfw) ? 20 : 0, opaque: true)
                     .clipped()
             case let .link(url):
                 ImageView(url: url)
                     .aspectRatio(contentMode: .fill)
                     .frame(width: dimension, height: dimension)
                     .background(palette.secondaryBackground)
+                    .blur(radius: (post.nsfw && blurNsfw) ? 20 : 0, opaque: true)
                     .clipped()
             }
         }

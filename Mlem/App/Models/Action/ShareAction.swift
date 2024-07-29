@@ -5,7 +5,6 @@
 //  Created by Sjmarf on 31/03/2024.
 //
 
-import Dependencies
 import SwiftUI
 
 struct ShareAction: Action {
