@@ -222,6 +222,16 @@
         }
       }
     },
+    "Favorites" : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favourites"
+          }
+        }
+      }
+    },
     "Federates" : {
 
     },
@@ -389,6 +399,9 @@
     "Open URL from Clipboard" : {
 
     },
+    "Other" : {
+
+    },
     "Overview" : {
 
     },
@@ -414,6 +427,9 @@
 
     },
     "Private" : {
+
+    },
+    "Profile" : {
 
     },
     "Received %@" : {

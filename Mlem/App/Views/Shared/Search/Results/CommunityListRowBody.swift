@@ -103,7 +103,7 @@ struct CommunityListRowBody<Content: View>: View {
                     switch complication {
                     case .instance:
                         if let host = community.host {
-                            Text("@\(host)")
+                            Text(verbatim: "@\(host)")
                         }
                     case .subscriberCount:
                         if let subscriberCount = community.subscriberCount_ {

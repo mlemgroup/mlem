@@ -99,7 +99,7 @@ struct SubscriptionListView: View {
                 if sectionIndicesShown {
                     SectionIndexTitles(
                         proxy: proxy,
-                        sections: [.init(label: "Favorites", systemImage: "star.fill")]
+                        sections: [.init(label: String(localized: "Favorites"), systemImage: "star.fill")]
                             + "ABCDEFGHIJKLMNOPQRSTUVWYZ#".map { .init(label: String($0)) }
                     )
                 }
@@ -174,7 +174,7 @@ struct SubscriptionListView: View {
         case .alphabetical:
             savedInstanceLocation
         case .instance:
-            section.label == "Other" ? .trailing : .disabled
+            section.label == String(localized: "Other") ? .trailing : .disabled
         }
     }
 }
@@ -210,7 +210,7 @@ private extension SubscriptionList {
     func visibleSections(sort: SubscriptionListSort) -> [SubscriptionListSection] {
         var sections: [SubscriptionListSection] = .init()
         if !favorites.isEmpty {
-            sections.append(.init(label: "Favorites", systemImage: Icons.favoriteFill, communities: favorites))
+            sections.append(.init(label: String(localized: "Favorites"), systemImage: Icons.favoriteFill, communities: favorites))
         }
         switch sort {
         case .alphabetical:
@@ -219,7 +219,7 @@ private extension SubscriptionList {
             }
         case .instance:
             for section in instanceSections.sorted(by: { $0.key ?? "~" < $1.key ?? "~" }) {
-                sections.append(.init(label: section.key ?? "Other", communities: section.value))
+                sections.append(.init(label: section.key ?? String(localized: "Other"), communities: section.value))
             }
         }
         
