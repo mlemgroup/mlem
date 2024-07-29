@@ -55,8 +55,4 @@ enum AppConstants {
     static let fancyTabBarHeight: CGFloat = 48 // total height of the fancy tab bar
     static let editorOverscroll: CGFloat = 30
     static let expandedPostOverscroll: CGFloat = 80
-    
-    // MARK: - Other
-
-    static let pictureEmoji: [String] = ["🎆", "🎇", "🌠", "🌅", "🌆", "🌁", "🌃", "🌄", "🌉", "🌌", "🌇", "🖼️", "🎑", "🏞️", "🗾", "🏙️"]
 }
