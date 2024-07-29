@@ -10,11 +10,11 @@ import SwiftUI
 struct RefreshPopupView: View {
     @Environment(Palette.self) var palette
     
-    let title: String
+    let title: LocalizedStringResource
     @Binding var isPresented: Bool
     let callback: () -> Void
     
-    init(_ title: String, isPresented: Binding<Bool>, callback: @escaping () -> Void) {
+    init(_ title: LocalizedStringResource, isPresented: Binding<Bool>, callback: @escaping () -> Void) {
         self.title = title
         self._isPresented = isPresented
         self.callback = callback

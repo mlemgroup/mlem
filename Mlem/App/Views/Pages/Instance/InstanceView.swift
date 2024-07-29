@@ -13,12 +13,13 @@ struct InstanceView: View {
     enum Tab: String, CaseIterable, Identifiable {
         case about, administration, details, uptime, safety
         
-        var label: String {
+        var label: LocalizedStringResource {
             switch self {
-            case .safety:
-                "Trust & Safety"
-            default:
-                rawValue.capitalized
+            case .about: "About"
+            case .administration: "Administration"
+            case .details: "Details"
+            case .uptime: "Uptime"
+            case .safety: "Trust & Safety"
             }
         }
         

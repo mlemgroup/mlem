@@ -105,7 +105,7 @@ struct SettingsView: View {
                 .padding(.leading, -10)
                 Text("Accounts")
                 Spacer()
-                Text("\(accounts.count)")
+                Text(String(accounts.count))
                     .foregroundStyle(.secondary)
             }
         }

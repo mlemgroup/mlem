@@ -28,7 +28,7 @@ struct MultiplatformView<PhoneContent: View, PadContent: View>: View {
         } else if let pad {
             pad
         } else {
-            Text("MultiplatformView: Unsupported platform")
+            Text(verbatim: "MultiplatformView: Unsupported platform")
         }
     }
 }

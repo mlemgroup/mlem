@@ -60,6 +60,13 @@ enum PaletteOption: String, CaseIterable {
         case .monochrome: ColorPalette.monochrome
         }
     }
+    
+    var label: LocalizedStringResource {
+        switch self {
+        case .standard: "Standard"
+        case .monochrome: "Monochrome"
+        }
+    }
 }
 
 struct ColorPalette: PaletteProviding {

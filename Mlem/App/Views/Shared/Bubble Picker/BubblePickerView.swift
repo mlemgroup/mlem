@@ -28,7 +28,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
     
     let tabs: [Value]
     let dividers: Set<DividerPlacement>
-    let label: (Value) -> String
+    let label: (Value) -> LocalizedStringResource
     let value: (Value) -> Int?
     let spaceName: String = UUID().uuidString
     
@@ -36,7 +36,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
         _ tabs: [Value],
         selected: Binding<Value>,
         withDividers: Set<DividerPlacement> = .init(),
-        label: @escaping (Value) -> String,
+        label: @escaping (Value) -> LocalizedStringResource,
         value: @escaping (Value) -> Int? = { _ in nil }
     ) {
         let initialIndex = tabs.firstIndex(of: selected.wrappedValue)

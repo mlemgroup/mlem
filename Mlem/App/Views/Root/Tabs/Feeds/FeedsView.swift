@@ -217,7 +217,7 @@ struct FeedsView: View {
                 Menu {
                     ForEach(feedOptions, id: \.self) { feed in
                         Button(
-                            feed.description.label,
+                            String(localized: feed.description.label),
                             systemImage: feedSelection == feed ? feed.description.iconNameFill : feed.description.iconName
                         ) {
                             feedSelection = feed

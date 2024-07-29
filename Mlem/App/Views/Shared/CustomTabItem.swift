@@ -18,14 +18,14 @@ struct CustomTabItem: View {
     var onLongPress: (() -> Void)?
     
     init(
-        title: String,
+        title: LocalizedStringResource,
         image: String,
         selectedImage: String? = nil,
         badge: BadgeUpdater? = nil,
         onLongPress: (() -> Void)? = nil,
         @ViewBuilder content: () -> some View
     ) {
-        self.title = title
+        self.title = String(localized: title)
         self.image = image
         self.selectedImage = selectedImage ?? image
         self.onLongPress = onLongPress

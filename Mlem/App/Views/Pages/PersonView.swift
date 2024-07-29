@@ -14,7 +14,14 @@ struct PersonView: View {
         case overview, comments, posts, communities
 
         var id: Self { self }
-        var label: String { rawValue.capitalized }
+        var label: LocalizedStringResource {
+            switch self {
+            case .overview: "Overview"
+            case .comments: "Comments"
+            case .posts: "Posts"
+            case .communities: "Communities"
+            }
+        }
     }
     
     @Environment(Palette.self) var palette

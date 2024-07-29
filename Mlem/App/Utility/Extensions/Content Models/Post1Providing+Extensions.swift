@@ -22,7 +22,7 @@ extension Post1Providing {
             if feedback.contains(.toast) {
                 ToastModel.main.add(
                     .undoable(
-                        title: "Hidden",
+                        "Hidden",
                         systemImage: Icons.hideFill,
                         callback: {
                             self2.updateHidden(false)
@@ -135,7 +135,7 @@ extension Post1Providing {
             postTag(active: pinnedInstance, icon: Icons.pinFill, color: Palette.main.administration) +
             postTag(active: communityContext != nil && pinnedCommunity, icon: Icons.pinFill, color: Palette.main.moderation) +
             postTag(active: locked, icon: Icons.lockFill, color: Palette.main.lockAccent) +
-            Text("\(hasTags ? "  " : "")\(title)")
+            Text(verbatim: "\(hasTags ? "  " : "")\(title)")
     }
     
     var linkHost: String? {
