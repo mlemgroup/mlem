@@ -25,7 +25,7 @@ struct LargePostBodyView: View {
             
             switch post.type {
             case let .image(url):
-                TappableImageView(url: url)
+                LargeImageView(url: url, blurred: post.nsfw)
                     // Set maximum image height to 1.2 * width
                     .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
                     .frame(maxWidth: .infinity)
