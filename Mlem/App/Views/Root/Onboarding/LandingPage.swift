@@ -69,7 +69,7 @@ struct LandingPage: View {
     @ViewBuilder
     func credentialsPage() -> some View {
         VStack {
-            Text("Hello world")
+            // Text("Hello world")
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(uiColor: .systemGroupedBackground))

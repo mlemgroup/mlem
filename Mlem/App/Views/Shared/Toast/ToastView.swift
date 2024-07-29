@@ -220,7 +220,7 @@ extension ToastView {
         ToastView(.undoable(callback: {}))
         ToastView(
             .undoable(
-                title: "Unfavorited Community",
+                String("Unfavorited Community"),
                 systemImage: "star.slash.fill",
                 callback: {},
                 color: .blue

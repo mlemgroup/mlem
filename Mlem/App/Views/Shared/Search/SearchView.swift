@@ -13,10 +13,18 @@ struct SearchView: View {
         case home, recents, results
     }
     
-    enum Tab: String, CaseIterable, Identifiable {
+    enum Tab: CaseIterable, Identifiable {
         case communities, users, instances
         
-        var id: String { rawValue }
+        var id: Self { self }
+        
+        var label: LocalizedStringResource {
+            switch self {
+            case .communities: "Communities"
+            case .users: "Users"
+            case .instances: "Instances"
+            }
+        }
     }
     
     @Environment(Palette.self) var palette
@@ -110,7 +118,7 @@ struct SearchView: View {
             BubblePicker(
                 Tab.allCases, selected: $selectedTab,
                 withDividers: [.bottom],
-                label: { $0.rawValue.capitalized }
+                label: { $0.label }
             )
             .padding(.top, -8)
             LazyVStack(spacing: 0) {

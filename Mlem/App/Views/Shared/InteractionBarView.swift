@@ -102,7 +102,7 @@ struct InteractionBarView: View {
                 }
             }
         }
-        .accessibilityLabel(String(localized: action.label))
+        .accessibilityLabel(action.label)
         .accessibilityAction(.default) {
             (action as? BasicAction)?.callback?()
         }

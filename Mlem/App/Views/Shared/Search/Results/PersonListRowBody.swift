@@ -98,13 +98,13 @@ struct PersonListRowBody<Content: View>: View {
         HStack(spacing: 2) {
             ForEach(Array(complications.enumerated()), id: \.element) { index, complication in
                 if index != 0 {
-                    Text("∙")
+                    Text(verbatim: "∙")
                 }
                 Group {
                     switch complication {
                     case .instance:
                         if let host = person.host {
-                            Text("@\(host)")
+                            Text(verbatim: "@\(host)")
                         }
                     case .date:
                         Text(dateFormatter.string(from: person.created))

@@ -97,7 +97,7 @@ struct CommunityListRowBody<Content: View>: View {
         HStack(spacing: 2) {
             ForEach(Array(complications.enumerated()), id: \.element) { index, complication in
                 if index != 0 {
-                    Text("∙")
+                    Text(verbatim: "∙")
                 }
                 Group {
                     switch complication {

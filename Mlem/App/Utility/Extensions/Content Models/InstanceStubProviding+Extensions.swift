@@ -20,7 +20,7 @@ extension InstanceStubProviding {
         if !self.blocked, feedback.contains(.toast) {
             ToastModel.main.add(
                 .undoable(
-                    title: "Blocked",
+                    "Blocked",
                     systemImage: Icons.hideFill,
                     callback: {
                         self.updateBlocked(false)

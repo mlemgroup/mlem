@@ -20,7 +20,7 @@ extension Post1Providing {
             if feedback.contains(.toast) {
                 ToastModel.main.add(
                     .undoable(
-                        title: "Hidden",
+                        "Hidden",
                         systemImage: Icons.hideFill,
                         callback: {
                             self2.updateHidden(false)

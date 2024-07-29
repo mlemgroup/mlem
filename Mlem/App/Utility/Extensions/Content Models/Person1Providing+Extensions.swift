@@ -12,7 +12,7 @@ extension Person1Providing {
         if !blocked, feedback.contains(.toast) {
             ToastModel.main.add(
                 .undoable(
-                    title: "Blocked",
+                    "Blocked",
                     systemImage: Icons.blockFill,
                     callback: {
                         self.updateBlocked(false)

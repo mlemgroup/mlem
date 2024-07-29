@@ -47,7 +47,7 @@ struct NavigationLayerView: View {
             .padding(.bottom, 8)
         }
         .confirmationDialog(
-            confirmationDialoguePrompt,
+            layer.popup?.label ?? "",
             isPresented: Binding(
                 get: { layer.popup != nil },
                 set: {
@@ -82,11 +82,6 @@ struct NavigationLayerView: View {
         })
         .modifier(HandleLemmyLinksModifier())
         .environment(layer)
-    }
-    
-    var confirmationDialoguePrompt: String {
-        if let popup = layer.popup { String(localized: popup.label) }
-        return ""
     }
     
     @ViewBuilder
