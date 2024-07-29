@@ -118,6 +118,12 @@
     "Closed" : {
 
     },
+    "Comment was deleted" : {
+
+    },
+    "Comment was removed" : {
+
+    },
     "Comments" : {
 
     },
@@ -149,6 +155,12 @@
 
     },
     "Default Feed Type (Desktop)" : {
+
+    },
+    "Delete" : {
+
+    },
+    "Deleted" : {
 
     },
     "Details" : {
@@ -188,6 +200,9 @@
 
     },
     "Failed to connect to %@" : {
+
+    },
+    "Failed to delete post!" : {
 
     },
     "Fast" : {
@@ -327,6 +342,9 @@
     "Mentions" : {
 
     },
+    "Message was deleted" : {
+
+    },
     "Messages" : {
 
     },
@@ -448,6 +466,9 @@
 
     },
     "Requires Application" : {
+
+    },
+    "Restore" : {
 
     },
     "Right" : {
