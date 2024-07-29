@@ -19,13 +19,18 @@ class GuestAccount: Account {
     var avatar: URL?
     var lastUsed: Date?
     
-    fileprivate init(url: URL) {
+    fileprivate init(url: URL) throws {
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
+        // Adding a slash is important! The API returns instance actor IDs with a trailing slash.
+        components.path = "/"
+        guard let url = components.url else { throw DecodingError.cannotModifyPathComponents }
+                
         self.actorId = url
         self.api = .getApiClient(for: url, with: nil)
     }
     
-    static func getGuestAccount(url: URL) -> GuestAccount {
-        GuestAccountCache.main.getAccount(url: url)
+    static func getGuestAccount(url: URL) throws -> GuestAccount {
+        try GuestAccountCache.main.getAccount(url: url)
     }
     
     enum CodingKeys: String, CodingKey {
@@ -34,7 +39,7 @@ class GuestAccount: Account {
     }
     
     enum DecodingError: Error {
-        case cannotRemoveExtraneousPathComponents, noTokenInKeychain
+        case cannotModifyPathComponents, noTokenInKeychain
     }
     
     required init(from decoder: Decoder) throws {
@@ -46,6 +51,10 @@ class GuestAccount: Account {
         self.lastUsed = try values.decode(Date?.self, forKey: .lastUsed)
 
         let instanceLink = try values.decode(URL.self, forKey: .instanceLink)
+        var components = URLComponents(url: instanceLink, resolvingAgainstBaseURL: false)!
+        // Adding a slash is important! The API returns instance actor IDs with a trailing slash.
+        components.path = "/"
+        guard let instanceLink = components.url else { throw DecodingError.cannotModifyPathComponents }
         self.actorId = instanceLink
         
         self.api = ApiClient.getApiClient(for: instanceLink, with: nil)
@@ -104,11 +113,11 @@ extension GuestAccount: CacheIdentifiable {
 class GuestAccountCache: CoreCache<GuestAccount> {
     static let main: GuestAccountCache = .init()
     
-    func getAccount(url: URL) -> GuestAccount {
+    func getAccount(url: URL) throws -> GuestAccount {
         if let account = retrieveModel(cacheId: url.hashValue) {
             return account
         }
-        let account = GuestAccount(url: url)
+        let account = try GuestAccount(url: url)
         itemCache.put(account)
         return account
     }

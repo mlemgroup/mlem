@@ -21,6 +21,7 @@ extension ColorPalette {
         positive: .green,
         negative: .red,
         warning: .red,
+        caution: .orange,
         upvote: .blue,
         downvote: .red,
         save: .green,
@@ -34,7 +35,10 @@ extension ColorPalette {
         subscribedFeed: .red,
         inbox: .purple,
         accent: .blue,
-        secondaryAccent: .orange,
+        accent2: .orange,
+        accent3: .pink,
+        accent4: .blue,
+        accent5: .green,
         commentIndentColors: [Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple]
     )
 }

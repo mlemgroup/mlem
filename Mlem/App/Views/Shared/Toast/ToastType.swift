@@ -25,7 +25,7 @@ enum ToastType: Hashable {
         color: Color = Palette.main.accent
     )
     
-    case loading
+    case loading(_ title: String = "Loading...")
     
     case error(_ details: ErrorDetails)
     

@@ -22,6 +22,7 @@ extension ColorPalette {
         positive: .primary,
         negative: .primary,
         warning: .primary,
+        caution: .primary,
         upvote: .primary,
         downvote: .primary,
         save: .primary,
@@ -37,7 +38,6 @@ extension ColorPalette {
         savedFeed: Color(uiColor: .darkGray),
         inbox: Color(uiColor: .darkGray),
         accent: .primary,
-        secondaryAccent: .primary,
         commentIndentColors: [
             Color(uiColor: .systemGray),
             Color(uiColor: .systemGray2),
