@@ -78,7 +78,7 @@ struct LargePostView: View {
                 .frame(maxWidth: .infinity)
         case let .link(url):
             if let url {
-                mockWebsiteComplex(url: url)
+                WebsiteComplex(post: post)
             }
         default:
             EmptyView()
@@ -100,17 +100,5 @@ struct LargePostView: View {
             .scaledToFit()
             .frame(maxWidth: .infinity)
             .foregroundStyle(palette.secondary)
-    }
-    
-    func mockWebsiteComplex(url: URL) -> some View {
-        Text(url.host ?? "no host found")
-            .foregroundStyle(palette.secondary)
-            .padding(AppConstants.standardSpacing)
-            .frame(maxWidth: .infinity)
-            .overlay {
-                RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
-                    .stroke(lineWidth: 1)
-                    .foregroundStyle(palette.secondary)
-            }
     }
 }

@@ -80,6 +80,7 @@ struct ImageView: View {
             loading = .done
             aspectRatio = image.size
         } catch {
+            print(error)
             self.error = error
             loading = .failed
         }
