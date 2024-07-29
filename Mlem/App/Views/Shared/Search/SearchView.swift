@@ -137,9 +137,9 @@ struct SearchView: View {
             if !query.isEmpty {
                 try await Task.sleep(for: .seconds(0.2))
             }
-            setCommunities(.init())
-            setPeople(.init())
-            setInstances(.init())
+            await setCommunities(.init())
+            await setPeople(.init())
+            await setInstances(.init())
             switch selectedTab {
             case .communities:
                 try await setCommunities(appState.firstApi.searchCommunities(query: query, page: 1, limit: 20))
