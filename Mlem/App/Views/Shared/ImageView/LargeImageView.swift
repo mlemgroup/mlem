@@ -34,11 +34,11 @@ struct LargeImageView: View {
             .clipShape(.rect(cornerRadius: AppConstants.largeItemCornerRadius))
             .overlay {
                 if blurred {
-                    VStack(spacing: AppConstants.standardSpacing) {
+                    VStack(spacing: 8) {
                         Image(systemName: Icons.warning)
                             .font(.largeTitle)
                         Text("NSFW")
-                            .fontWeight(.semibold)
+                            .fontWeight(.black)
                     }
                     .foregroundStyle(.white)
                 } else if shouldBlur, blurNsfw {
