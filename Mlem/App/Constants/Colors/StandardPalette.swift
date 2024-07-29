@@ -17,6 +17,7 @@ extension ColorPalette {
         tertiaryBackground: Color(UIColor.tertiarySystemBackground),
         groupedBackground: Color(UIColor.systemGroupedBackground),
         secondaryGroupedBackground: Color(UIColor.secondarySystemGroupedBackground),
+        tertiaryGroupedBackground: Color(UIColor.tertiarySystemGroupedBackground),
         thumbnailBackground: Color(UIColor.systemGray4),
         positive: .green,
         negative: .red,
