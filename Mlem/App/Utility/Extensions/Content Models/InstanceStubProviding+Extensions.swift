@@ -8,9 +8,16 @@
 import Foundation
 import MlemMiddleware
 
-extension Instance1Providing {
+extension InstanceStubProviding {
+    private var self1: (any Instance1Providing)? { self as? any Instance1Providing }
+    
     func toggleBlocked(feedback: Set<FeedbackType> = []) {
-        if !blocked, feedback.contains(.toast) {
+        guard let self = self as? any Instance1Providing else {
+            assertionFailure("Don't call this on a stub")
+            return
+        }
+        
+        if !self.blocked, feedback.contains(.toast) {
             ToastModel.main.add(
                 .undoable(
                     title: "Blocked",
@@ -22,13 +29,14 @@ extension Instance1Providing {
                 )
             )
         }
-        toggleBlocked()
+        self.toggleBlocked()
     }
     
     func visit() {
-        let account = GuestAccount.getGuestAccount(url: actorId)
-        AppState.main.changeAccount(to: account)
-        AppState.main.contentViewTab = .feeds
+        if let account = try? GuestAccount.getGuestAccount(url: actorId) {
+            AppState.main.changeAccount(to: account)
+            AppState.main.contentViewTab = .feeds
+        }
     }
     
     var isVisiting: Bool {
@@ -38,8 +46,7 @@ extension Instance1Providing {
     @ActionBuilder
     func menuActions(
         feedback: Set<FeedbackType> = [.haptic, .toast],
-        externalBlockStatus: Bool = false,
-        externalBlockCallback: (() -> Void)? = nil
+        allowExternalBlocking: Bool = false
     ) -> [any Action] {
         ActionGroup {
             visitAction()
@@ -48,12 +55,11 @@ extension Instance1Providing {
             openInBrowserAction()
             shareAction()
         }
-        if !local || externalBlockCallback != nil {
+        if !local || (allowExternalBlocking && actorId != AppState.main.firstApi.actorId) {
             ActionGroup {
                 blockAction(
                     feedback: feedback,
-                    externalBlockStatus: externalBlockStatus,
-                    externalBlockCallback: externalBlockCallback
+                    allowExternalBlocking: allowExternalBlocking
                 )
             }
         }
@@ -61,7 +67,7 @@ extension Instance1Providing {
     
     func visitAction() -> BasicAction {
         .init(
-            id: "visit\(uid)",
+            id: "visit\(actorId)",
             isOn: false,
             label: "Visit",
             color: .gray,
@@ -72,7 +78,7 @@ extension Instance1Providing {
     
     func openInBrowserAction() -> BasicAction {
         .init(
-            id: "openInstanceUrl\(uid)",
+            id: "openInstanceUrl\(actorId)",
             isOn: false,
             label: "Open in Browser",
             color: .gray,
@@ -83,22 +89,35 @@ extension Instance1Providing {
         )
     }
     
+    /// If `allowExternalBlocking` is `true`, Instances created from guest ApiClients (and InstanceStubs)
+    /// will display and update the block status of the instance on the active UserSession. Otherwise, the block
+    /// action on those models will be disabled.
     func blockAction(
         feedback: Set<FeedbackType> = [],
         showConfirmation: Bool = true,
-        externalBlockStatus: Bool = false,
-        externalBlockCallback: (() -> Void)? = nil
+        allowExternalBlocking: Bool = false
     ) -> BasicAction {
-        let blocked = (api.token == nil ? externalBlockStatus : blocked)
+        let blocked: Bool
+        let callback: (() -> Void)?
+        if let self = self as? any Instance1Providing, api.token != nil {
+            blocked = self.blocked
+            callback = api.willSendToken ? { self.toggleBlocked(feedback: feedback) } : nil
+        } else if allowExternalBlocking, let session = (AppState.main.firstSession as? UserSession) {
+            blocked = session.blocks?.contains(self) ?? false
+            callback = { session.toggleInstanceBlock(actorId: actorId) }
+        } else {
+            blocked = false
+            callback = nil
+        }
         return .init(
-            id: "blockInstance\(uid)",
-            isOn: false,
+            id: "blockInstance\(actorId)",
+            isOn: blocked,
             label: blocked ? "Unblock" : "Block",
             color: Palette.main.negative,
             isDestructive: !blocked,
             confirmationPrompt: (!blocked && showConfirmation) ? "Really block this instance?" : nil,
             icon: blocked ? Icons.show : Icons.hide,
-            callback: api.willSendToken ? { self.toggleBlocked(feedback: feedback) } : externalBlockCallback
+            callback: callback
         )
     }
 }

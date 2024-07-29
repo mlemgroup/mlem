@@ -43,7 +43,7 @@ struct PostGridView: View {
     var content: some View {
         LazyVGrid(columns: columns, spacing: postSize.tiled ? AppConstants.standardSpacing : 0) {
             ForEach(postFeedLoader.items, id: \.hashValue) { post in
-                if !post.read || showRead, !post.creator.blocked, !post.community.blocked {
+                if !post.read || showRead, !post.creator.blocked, !post.community.blocked, !post.hidden {
                     VStack(spacing: 0) { // this improves performance O_o
                         NavigationLink(value: NavigationPage.expandedPost(post)) {
                             FeedPostView(post: post)
