@@ -153,10 +153,7 @@ struct FeedsView: View {
                 } else {
                     feedOptions = FeedSelection.guestCases
                     savedFeedLoader = nil
-                    // ensure we don't display saved feed with unathenticated user
-                    if feedSelection == .saved {
-                        feedSelection = .all
-                    }
+                    feedSelection = .all
                 }
             }
             .refreshable {

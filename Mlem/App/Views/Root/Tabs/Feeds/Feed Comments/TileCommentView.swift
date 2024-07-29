@@ -50,7 +50,7 @@ struct TileCommentView: View {
                 .padding(AppConstants.halfSpacing)
                 .background {
                     RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
-                        .fill(palette.secondaryBackground)
+                        .fill(palette.tertiaryGroupedBackground)
                 }
             
             MarkdownText(comment.content, configuration: .default)
