@@ -14,6 +14,7 @@ struct SettingsView: View {
     @Environment(NavigationLayer.self) var navigation
     
     @AppStorage("behavior.upvoteOnSave") var upvoteOnSave = false
+    @AppStorage("safety.blurNsfw") var blurNsfw = true
     
     var accounts: [UserAccount] { AccountsTracker.main.userAccounts }
     
@@ -34,6 +35,7 @@ struct SettingsView: View {
             }
             
             Section {
+                Toggle("Blur NSFW", isOn: $blurNsfw)
                 Toggle("Upvote On Save", isOn: $upvoteOnSave)
             }
             Section {
