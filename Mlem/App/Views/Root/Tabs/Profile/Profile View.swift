@@ -17,6 +17,8 @@ struct ProfileView: View {
     var body: some View {
         if let person = (appState.firstSession as? UserSession)?.person {
             PersonView(person: .init(person))
+        } else if let instance = appState.firstSession.instance {
+            InstanceView(instance: instance)
         }
     }
 }

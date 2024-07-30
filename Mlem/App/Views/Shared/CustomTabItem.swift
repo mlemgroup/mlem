@@ -7,25 +7,26 @@
 
 import SwiftUI
 
-struct CustomTabItem: View {
+struct CustomTabItem {
     var content: AnyView
     
     var title: String
-    var image: String
-    var selectedImage: String
-    var badge: BadgeUpdater?
+    var image: UIImage?
+    var selectedImage: UIImage?
+    var badge: String?
     
     var onLongPress: (() -> Void)?
     
+    @_disfavoredOverload // This ensures that the other initialiser takes priority
     init(
-        title: LocalizedStringResource,
-        image: String,
-        selectedImage: String? = nil,
-        badge: BadgeUpdater? = nil,
+        title: String,
+        image: UIImage?,
+        selectedImage: UIImage? = nil,
+        badge: String? = nil,
         onLongPress: (() -> Void)? = nil,
         @ViewBuilder content: () -> some View
     ) {
-        self.title = String(localized: title)
+        self.title = title
         self.image = image
         self.selectedImage = selectedImage ?? image
         self.onLongPress = onLongPress
@@ -33,13 +34,21 @@ struct CustomTabItem: View {
         self.content = AnyView(content())
     }
     
-    var body: some View { content }
-}
-
-// This is a janky workaround - if `badge` is simply included as a property in
-// `CustomTabItem`, the entire `ContentView` is reset when the badge changes.
-
-@Observable
-class BadgeUpdater {
-    var wrappedValue: String?
+    init(
+        title: LocalizedStringResource,
+        image: UIImage?,
+        selectedImage: UIImage? = nil,
+        badge: String? = nil,
+        onLongPress: (() -> Void)? = nil,
+        @ViewBuilder content: () -> some View
+    ) {
+        self.init(
+            title: String(localized: title),
+            image: image,
+            selectedImage: selectedImage,
+            badge: badge,
+            onLongPress: onLongPress,
+            content: content
+        )
+    }
 }

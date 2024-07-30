@@ -18,8 +18,8 @@ struct CustomTabView: UIViewControllerRepresentable {
     @Binding var selectedIndex: Int
     
     init(selectedIndex: Binding<Int>, tabs: [CustomTabItem], onSwipeUp: @escaping () -> Void) {
-        self.tabs = tabs
-        self.viewControllers = tabs.enumerated().map { CustomTabViewHostingController(rootView: $1, index: $0) }
+        self.tabs = tabs.map(\.model)
+        self.viewControllers = tabs.enumerated().map { CustomTabViewHostingController(item: $1, index: $0) }
         self.swipeGestureCallback = onSwipeUp
         self._selectedIndex = selectedIndex
     }
@@ -32,6 +32,7 @@ struct CustomTabView: UIViewControllerRepresentable {
             swipeGestureCallback: swipeGestureCallback
         )
         tabBarController.viewControllers = viewControllers
+        
         return tabBarController
     }
     
@@ -39,6 +40,33 @@ struct CustomTabView: UIViewControllerRepresentable {
         _ uiViewController: UITabBarController,
         context: UIViewControllerRepresentableContext<CustomTabView>
     ) {
+        if let controller = uiViewController as? CustomTabBarController {
+            for (tabData, (tabBarItem, view)) in zip(tabs, zip(controller.tabBar.items ?? [], controller.tabBar.subviews)) {
+                tabBarItem.title = tabData.title
+                
+                tabBarItem.badgeValue = tabData.badge
+                tabBarItem.image = tabData.image
+                tabBarItem.selectedImage = tabData.selectedImage
+//                if tabData.image?.isSymbolImage ?? true {
+//                    tabBarItem.image = tabData.image
+//                    tabBarItem.selectedImage = tabData.selectedImage
+                ////                    (subview as? UIImageView)?.image = .init()
+//                    print("ONE", view.subviews)
+//                } else {
+//                    tabBarItem.image = tabData.image
+//                    tabBarItem.selectedImage = nil
+//                    if let imgView = view.subviews.first(where: { $0 is UIImageView }) as? UIImageView {
+//                        imgView.frame = .init(x: 0, y: 0, width: 74, height: 48)
+//                        imgView.layer.masksToBounds = true
+//                        imgView.contentMode = .scaleAspectFill
+//                        imgView.clipsToBounds = true
+//                        imgView.layoutSubviews()
+//                    }
+//                }
+//                tabBarItem.selectedImage = tabData.selectedImage
+            }
+        }
+        
         withObservationTracking {
             _ = palette.accent
         } onChange: {
@@ -59,19 +87,19 @@ struct CustomTabView: UIViewControllerRepresentable {
             }
         }
                 
-        withObservationTracking {
-            for tab in tabs {
-                _ = tab.badge?.wrappedValue
-            }
-        } onChange: {
-            if let controller = uiViewController as? CustomTabBarController {
-                Task { @MainActor in
-                    for (badge, item) in zip(tabs.map(\.badge), controller.tabBar.items ?? []) {
-                        item.badgeValue = badge?.wrappedValue
-                    }
-                }
-            }
-        }
+//        withObservationTracking {
+//            for tab in tabs {
+//                _ = tab.badge?.wrappedValue
+//            }
+//        } onChange: {
+//            if let controller = uiViewController as? CustomTabBarController {
+//                Task { @MainActor in
+//                    for (badge, item) in zip(tabs.map(\.badge), controller.tabBar.items ?? []) {
+//                        item.badgeValue = badge?.wrappedValue
+//                    }
+//                }
+//            }
+//        }
     }
     
     func makeCoordinator() -> Coordinator {
