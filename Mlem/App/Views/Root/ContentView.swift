@@ -24,22 +24,12 @@ struct ContentView: View {
     var palette: Palette { .main }
     var tabReselectTracker: TabReselectTracker { .main }
     var navigationModel: NavigationModel { .main }
-    
-    let profileTabModel: CustomTabModel = .init(
-        title: AppState.main.firstAccount.nickname,
-        image: UIImage(systemName: Icons.user),
-        selectedImage: UIImage(systemName: Icons.userFill),
-        onLongPress: {
-            HapticManager.main.play(haptic: .rigidInfo, priority: .high)
-            NavigationModel.main.openSheet(.quickSwitcher)
-        }
-    )
-    
+
     @State var avatarImage: UIImage?
+    @State var selectedAvatarImage: UIImage?
   
     init() {
         HapticManager.main.preheat()
-        print("INIT")
     }
     
     var body: some View {
@@ -96,35 +86,44 @@ struct ContentView: View {
         }, set: {
             appState.contentViewTab = Tab.allCases[$0]
         }), tabs: [
-            CustomTabItem(model: .init(
+            CustomTabItem(
                 title: "Feeds",
                 image: UIImage(systemName: Icons.feeds),
                 selectedImage: UIImage(systemName: Icons.feedsFill)
-            )) {
+            ) {
                 NavigationSplitRootView(sidebar: .subscriptionList, root: .feeds)
             },
-            CustomTabItem(model: .init(
+            CustomTabItem(
                 title: "Inbox",
                 image: UIImage(systemName: Icons.inbox),
                 selectedImage: UIImage(systemName: Icons.inboxFill),
                 badge: (appState.firstSession as? UserSession)?.unreadCount?.badgeLabel
-            )) {
+            ) {
                 NavigationLayerView(layer: .init(root: .inbox, model: navigationModel), hasSheetModifiers: false)
             },
-            CustomTabItem(model: profileTabModel) {
-                NavigationLayerView(layer: .init(root: .profile, model: navigationModel), hasSheetModifiers: false)
-            },
-            CustomTabItem(model: .init(
+            CustomTabItem(
+                title: AppState.main.firstAccount.nickname,
+                image: avatarImage ?? UIImage(systemName: Icons.user),
+                selectedImage: selectedAvatarImage ?? UIImage(systemName: Icons.userFill),
+                onLongPress: {
+                    HapticManager.main.play(haptic: .rigidInfo, priority: .high)
+                    NavigationModel.main.openSheet(.quickSwitcher)
+                },
+                content: {
+                    NavigationLayerView(layer: .init(root: .profile, model: navigationModel), hasSheetModifiers: false)
+                }
+            ),
+            CustomTabItem(
                 title: "Search",
                 image: UIImage(systemName: Icons.search),
                 selectedImage: UIImage(systemName: Icons.searchActive)
-            )) {
+            ) {
                 NavigationLayerView(layer: .init(root: .search, model: navigationModel), hasSheetModifiers: false)
             },
-            CustomTabItem(model: .init(
+            CustomTabItem(
                 title: "Settings",
                 image: UIImage(systemName: Icons.settings)
-            )) {
+            ) {
                 NavigationLayerView(layer: .init(root: .settings(), model: navigationModel), hasSheetModifiers: false)
             }
         ], onSwipeUp: {
@@ -149,9 +148,18 @@ struct ContentView: View {
     func loadAvatar(url: URL) async {
         do {
             let imageTask = ImagePipeline.shared.imageTask(with: url.withIconSize(128))
-            profileTabModel.image = try await imageTask.image.circleMasked?
-                .imageWith(newSize: .init(width: 24, height: 24))
+            let avatarImage: UIImage? = try await imageTask.image
+                .imageWith(newSize: .init(width: 26, height: 26))
+                .circleMasked
                 .withRenderingMode(.alwaysOriginal)
+            let selectedAvatarImage: UIImage? = try await imageTask.image
+                .imageWith(newSize: .init(width: 26, height: 26))
+                .circleBorder(color: .init(palette.accent), width: 3.5)
+                .withRenderingMode(.alwaysOriginal)
+            Task { @MainActor in
+                self.avatarImage = avatarImage
+                self.selectedAvatarImage = selectedAvatarImage
+            }
         } catch {
             print(error)
         }

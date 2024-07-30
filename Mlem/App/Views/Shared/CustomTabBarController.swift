@@ -63,7 +63,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
             } else {
                 item = viewControllers[index] as? CustomTabViewHostingController
             }
-            item?.item.model.onLongPress?()
+            item?.item.onLongPress?()
             break
         }
     }
@@ -76,7 +76,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         TabReselectTracker.main.reset() // reset to prevent unconsumed actions from blocking the reselect flag
         if tabBarController.selectedViewController === viewController,
            let item = viewController as? CustomTabViewHostingController {
-            print("\(item.item.model.title) tab re-selected")
+            print("\(item.item.title) tab re-selected")
             TabReselectTracker.main.signal()
         }
         selectedIndexBinding = viewControllers?.firstIndex(of: viewController) ?? 0

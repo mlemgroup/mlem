@@ -13,6 +13,7 @@ class CustomTabViewHostingController: UIHostingController<AnyView> {
     
     init(item: CustomTabItem, index: Int) {
         self.item = item
+        print("INIT")
         super.init(rootView: item.content)
         
         self.tabBarItem = UITabBarItem(

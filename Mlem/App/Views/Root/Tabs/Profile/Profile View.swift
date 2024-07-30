@@ -15,10 +15,12 @@ struct ProfileView: View {
     @Environment(NavigationLayer.self) var navigation
     
     var body: some View {
-        if let person = (appState.firstSession as? UserSession)?.person {
-            PersonView(person: .init(person))
-        } else if let instance = appState.firstSession.instance {
-            InstanceView(instance: instance)
+        VStack {
+            if let person = (appState.firstSession as? UserSession)?.person {
+                PersonView(person: .init(person))
+            } else if let instance = appState.firstSession.instance {
+                InstanceView(instance: instance)
+            }
         }
     }
 }

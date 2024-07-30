@@ -204,8 +204,7 @@ struct FeedsView: View {
     
     @ViewBuilder
     var content: some View {
-        // FancyScrollView(scrollToTopTrigger: $scrollToTopTrigger) {
-        ScrollView {
+        FancyScrollView(scrollToTopTrigger: $scrollToTopTrigger) {
             Section {
                 if !postSize.tiled { Divider() }
                 
