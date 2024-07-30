@@ -14,6 +14,7 @@ extension Bundle {
               let iconFiles = primaryIcon["CFBundleIconFiles"] as? [String],
               let iconFileName = iconFiles.last
         else { return nil }
+        print(iconFiles)
         return iconFileName
     }
 }

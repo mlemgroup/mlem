@@ -16,7 +16,7 @@
       "location" : "https://github.com/kishikawakatsumi/KeychainAccess.git",
       "state" : {
         "branch" : "master",
-        "revision" : "ecb18d8ce4d88277cc4fb103973352d91e18c535"
+        "revision" : "e0c7eebc5a4465a3c4680764f26b7a61f567cdaf"
       }
     },
     {
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kean/Nuke",
       "state" : {
-        "revision" : "8e431251dea0081b6ab154dab61a6ec74e4b6577",
-        "version" : "12.6.0"
+        "revision" : "0ead44350d2737db384908569c012fe67c421e4d",
+        "version" : "12.8.0"
       }
     },
     {
@@ -87,8 +87,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/siteline/SwiftUI-Introspect",
       "state" : {
-        "revision" : "0cd2a5a5895306bc21d54a2254302d24a9a571e4",
-        "version" : "1.1.3"
+        "revision" : "807f73ce09a9b9723f12385e592b4e0aaebd3336",
+        "version" : "1.3.0"
       }
     },
     {
