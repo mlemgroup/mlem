@@ -15,9 +15,8 @@ struct SettingsView: View {
     
     @AppStorage("behavior.upvoteOnSave") var upvoteOnSave = false
     @AppStorage("safety.blurNsfw") var blurNsfw = true
+    @AppStorage("swipeActions.enabled") var swipeActionsEnabled = true
     
-    @AppStorage("test") var test: Bool = false
-
     var accounts: [UserAccount] { AccountsTracker.main.userAccounts }
     
     var body: some View {
@@ -39,6 +38,7 @@ struct SettingsView: View {
             Section {
                 Toggle("Blur NSFW", isOn: $blurNsfw)
                 Toggle("Upvote On Save", isOn: $upvoteOnSave)
+                Toggle("Swipe Actions", isOn: $swipeActionsEnabled)
             }
             Section {
                 Button("Clear Cache") {
@@ -48,7 +48,6 @@ struct SettingsView: View {
             }
             
             Section {
-                Toggle("Test", isOn: $test)
                 Button("Search Communities") {
                     navigation.openSheet(.communityPicker(callback: { print($0.name) }))
                 }
