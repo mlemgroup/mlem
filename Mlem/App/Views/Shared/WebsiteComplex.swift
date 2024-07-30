@@ -1,83 +1,106 @@
 //
-//  WebsiteComplex.swift
+//  WebsitePreviewView.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-07-29.
+//  Created by Eric Andrews on 2024-06-16.
 //
 
 import Foundation
 import MlemMiddleware
 import SwiftUI
 
-struct WebsiteComplex: View {
+struct WebsitePreviewView: View {
     @Environment(Palette.self) var palette
+    @Environment(\.openURL) private var openURL
     
     let post: any Post1Providing
-    
-    @ScaledMetric(relativeTo: .caption) var capsuleHeight: CGFloat = 16
+    var onTapActions: (() -> Void)?
     
     var faviconUrl: URL? {
         guard
-            let baseURL = post.linkUrl?.host,
-            let imageURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)")
+            let baseUrl = post.linkHost,
+            let imageUrl = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseUrl)")
         else {
             return nil
         }
         
-        return imageURL
+        return imageUrl
     }
     
+    var linkLabel: String { post.embed?.title ?? post.title }
+    var linkHost: String { post.linkHost ?? "unknown website" }
+    
     var body: some View {
-        VStack(spacing: 0) {
+        if let url = post.linkUrl {
+            content
+                .contextMenu {
+                    Button("Open", systemImage: Icons.browser) {
+                        openURL(url)
+                    }
+                    Button("Copy", systemImage: Icons.copy) {
+                        let pasteboard = UIPasteboard.general
+                        pasteboard.url = url
+                    }
+                    ShareLink(item: url)
+                } preview: { WebView(url: url) }
+        } else {
+            content
+        }
+    }
+    
+    var content: some View {
+        complex
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .clipShape(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius))
+            .overlay {
+                RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
+                    .stroke(palette.secondaryBackground, lineWidth: 1)
+            }
+            .contentShape(.contextMenuPreview, .rect(cornerRadius: AppConstants.largeItemCornerRadius))
+    }
+    
+    var complex: some View {
+        VStack(alignment: .leading, spacing: 0) {
             if let url = post.thumbnailUrl {
-                ImageView(url: url)
-                    .overlay {
-                        linkHost
-                            .font(.caption)
-                            .padding(2)
-                            .padding(.horizontal, 4)
+                ImageView(url: url, cornerRadius: 0)
+                    .overlay(alignment: .bottomLeading) {
+                        host
+                            .padding(AppConstants.halfSpacing)
+                            .padding(.trailing, 3)
                             .background {
                                 Capsule()
                                     .fill(.regularMaterial)
                                     .overlay(Capsule().fill(palette.background.opacity(0.25)))
                             }
-                            .padding(AppConstants.compactSpacing)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                            .padding(AppConstants.halfSpacing)
                     }
             } else {
-                PostLinkHostView(host: post.linkHost ?? "unknown host")
+                host
+                    .padding([.horizontal, .top], AppConstants.standardSpacing)
             }
             
-            Divider()
-            
-            Text(post.embed?.title ?? post.title)
+            Text(linkLabel)
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .padding(AppConstants.standardSpacing)
         }
-//        Text(post.linkHost ?? "no host found")
-//            .foregroundStyle(palette.secondary)
-//            .padding(AppConstants.standardSpacing)
-//            .frame(maxWidth: .infinity)
-//            .overlay {
-//                RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
-//                    .stroke(lineWidth: 1)
-//                    .foregroundStyle(palette.secondary)
-//            }
     }
     
-    @ViewBuilder
-    var linkHost: some View {
-        HStack(spacing: AppConstants.halfSpacing) {
-            Group {
-                if let faviconUrl {
-                    ImageView(url: faviconUrl)
-                } else {
-                    Image(systemName: Icons.websiteIcon)
-                }
+    var host: some View {
+        HStack(spacing: AppConstants.standardSpacing) {
+            if let faviconUrl {
+                ImageView(url: faviconUrl, showError: false)
+                    .frame(width: AppConstants.smallAvatarSize, height: AppConstants.smallAvatarSize)
+                    .background {
+                        Image(systemName: Icons.browser)
+                            .resizable()
+                            .foregroundStyle(.secondary)
+                    }
             }
-            .frame(width: capsuleHeight, height: capsuleHeight)
             
-            Text(post.linkHost ?? "unknown host")
-                .font(.caption)
+            Text(linkHost)
                 .foregroundStyle(palette.secondary)
         }
+        .font(.footnote)
     }
 }

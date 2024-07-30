@@ -76,10 +76,8 @@ struct LargePostView: View {
                 // Set maximum image height to 1.2 * width
                 .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
                 .frame(maxWidth: .infinity)
-        case let .link(url):
-            if let url {
-                WebsiteComplex(post: post)
-            }
+        case .link:
+            WebsitePreviewView(post: post)
         default:
             EmptyView()
         }

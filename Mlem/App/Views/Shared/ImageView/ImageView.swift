@@ -26,10 +26,19 @@ struct ImageView: View {
     
     let url: URL?
     let onLoadingStateChange: (_ newValue: LoadingState) -> Void
+    let showError: Bool
+    let cornerRadius: CGFloat
     
-    init(url: URL?, onLoadingStateChange: @escaping (_ newValue: LoadingState) -> Void = { _ in }) {
+    init(
+        url: URL?,
+        onLoadingStateChange: @escaping (_ newValue: LoadingState) -> Void = { _ in },
+        showError: Bool = true,
+        cornerRadius: CGFloat = AppConstants.largeItemCornerRadius
+    ) {
         self.url = url
         self.onLoadingStateChange = onLoadingStateChange
+        self.showError = showError
+        self.cornerRadius = cornerRadius
         if let image = ImagePipeline.shared.cache.cachedImage(for: .init(url: url))?.image {
             self._uiImage = .init(wrappedValue: image)
             self._aspectRatio = .init(wrappedValue: image.size)
@@ -46,20 +55,22 @@ struct ImageView: View {
             .resizable()
             .aspectRatio(aspectRatio, contentMode: .fit)
             .background {
-                palette.secondaryBackground
-                    .overlay {
-                        if error != nil {
-                            Image(systemName: Icons.missing)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(maxWidth: 50)
-                                .padding(4)
-                                .foregroundStyle(palette.tertiary)
+                if showError {
+                    palette.secondaryBackground
+                        .overlay {
+                            if error != nil {
+                                Image(systemName: Icons.missing)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(maxWidth: 50)
+                                    .padding(4)
+                                    .foregroundStyle(palette.tertiary)
+                            }
                         }
-                    }
+                }
             }
             .task(loadImage)
-            .clipShape(.rect(cornerRadius: AppConstants.largeItemCornerRadius))
+            .clipShape(.rect(cornerRadius: cornerRadius))
             .onAppear {
                 onLoadingStateChange(loading)
             }
