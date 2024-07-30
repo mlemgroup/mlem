@@ -34,10 +34,10 @@ struct CompactPostView: View {
                 HStack(spacing: 4) {
                     if communityContext != nil {
                         NavigationLink(value: NavigationPage.profile) {
-                            FullyQualifiedLabelView(entity: post.creator_, labelStyle: .small, showAvatar: false)
+                            FullyQualifiedLinkView(entity: post.creator_, labelStyle: .small, showAvatar: false)
                         }
                     } else {
-                        FullyQualifiedLabelView(entity: post.community_, labelStyle: .small, showAvatar: false)
+                        FullyQualifiedLinkView(entity: post.community_, labelStyle: .small, showAvatar: false)
                     }
                     Spacer()
                     

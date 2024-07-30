@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TappableImageView: View {
-    @Environment(NavigationLayer.self) var navigation
+    @Environment(NavigationLayer.self) private var navigation
     
     @State var loading: ImageView.LoadingState = .waiting
     let url: URL?

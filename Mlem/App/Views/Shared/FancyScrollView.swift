@@ -39,7 +39,8 @@ struct FancyScrollView<Content: View>: View {
                     GeometryReader { geo in
                         Color.clear.preference(
                             key: ScrollOffsetKey.self,
-                            value: geo.frame(in: .named("scrollView")).origin.y >= 0
+                            // This must be `Int` to account for floating point error
+                            value: Int(geo.frame(in: .named("scrollView")).origin.y) >= 0
                         )
                         .id(topId)
                     }

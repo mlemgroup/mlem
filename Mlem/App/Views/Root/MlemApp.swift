@@ -13,6 +13,7 @@ import SwiftUI
 struct MlemApp: App {
     init() {
         var imageConfig = ImagePipeline.Configuration.withDataCache(name: "main", sizeLimit: AppConstants.cacheSize)
+        imageConfig.dataCachePolicy = .storeOriginalData
         imageConfig.dataLoadingQueue = OperationQueue(maxConcurrentCount: 8)
         imageConfig.imageDecodingQueue = OperationQueue(maxConcurrentCount: 8) // Let's use those CORES
         imageConfig.imageDecompressingQueue = OperationQueue(maxConcurrentCount: 8)

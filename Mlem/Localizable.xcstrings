@@ -31,6 +31,16 @@
         }
       }
     },
+    "%@, %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, %2$lld"
+          }
+        }
+      }
+    },
     "1d" : {
 
     },
@@ -351,6 +361,9 @@
     "Moderated" : {
 
     },
+    "Moderation" : {
+
+    },
     "Monochrome" : {
 
     },
@@ -565,6 +578,9 @@
 
     },
     "Temporary" : {
+
+    },
+    "Test" : {
 
     },
     "Theme" : {

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct FeedHeaderView: View {
+struct FeedHeaderView<ImageContent: View>: View {
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
@@ -17,29 +17,47 @@ struct FeedHeaderView: View {
         case enabled(showBadge: Bool)
     }
     
-    let feedDescription: FeedDescription
-    let subtitle: LocalizedStringResource
+    // Using `Text` rather than `String` here to avoid having to make 4 initializers to handle
+    // all permutations of `String` and `LocalizedStringResource` for `title and `subtitle`.
+    let title: Text
+    let subtitle: Text
+    
+    let image: ImageContent
     let dropdownStyle: DropdownStyle
+    
+    init(
+        title: Text,
+        subtitle: Text,
+        dropdownStyle: DropdownStyle,
+        @ViewBuilder image: () -> ImageContent
+    ) {
+        self.title = title
+        self.subtitle = subtitle
+        self.dropdownStyle = dropdownStyle
+        self.image = image()
+    }
     
     init(
         feedDescription: FeedDescription,
         customSubtitle: LocalizedStringResource? = nil,
         dropdownStyle: DropdownStyle
-    ) {
-        self.feedDescription = feedDescription
-        self.subtitle = customSubtitle ?? feedDescription.subtitle
+    ) where ImageContent == FeedIconView {
+        self.title = Text(feedDescription.label)
+        self.subtitle = Text(customSubtitle ?? feedDescription.subtitle)
+        self.image = FeedIconView(feedDescription: feedDescription, size: 44)
         self.dropdownStyle = dropdownStyle
     }
     
     var body: some View {
         VStack(spacing: 0) {
             HStack(alignment: .center, spacing: AppConstants.standardSpacing) {
-                FeedIconView(feedDescription: feedDescription, size: 44)
+                image
+                    .frame(width: 44, height: 44)
                     .padding(.leading, AppConstants.standardSpacing)
                     
                 VStack(alignment: .leading, spacing: 0) {
                     HStack(spacing: AppConstants.halfSpacing) {
-                        Text(feedDescription.label)
+                        title
                             .lineLimit(1)
                             .minimumScaleFactor(0.01)
                             .fontWeight(.semibold)
@@ -58,7 +76,7 @@ struct FeedHeaderView: View {
                     }
                     .font(.title2)
                         
-                    Text(subtitle)
+                    subtitle
                         .font(.footnote)
                         .foregroundStyle(palette.secondary)
                 }

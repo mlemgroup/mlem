@@ -14,9 +14,9 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
     @Environment(Palette.self) var palette: Palette
     @Environment(AppState.self) var appState: AppState
     
-    let proxy: ContentLoaderProxy<Model>
+    @State var proxy: ContentLoaderProxy<Model>
     let resolveIfModelExternal: Bool
-    let content: Content
+    @ViewBuilder var content: (_ proxy: ContentLoaderProxy<Model>) -> Content
     var upgradeOperation: ((_ model: Model, _ api: ApiClient) async throws -> Void)?
     
     init(
@@ -25,14 +25,14 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
         @ViewBuilder content: @escaping (_ proxy: ContentLoaderProxy<Model>) -> Content,
         upgradeOperation: ((_ model: Model, _ api: ApiClient) async throws -> Void)? = nil
     ) {
-        self.proxy = .init(model: model)
+        self._proxy = .init(wrappedValue: ContentLoaderProxy(model: model))
         self.resolveIfModelExternal = resolveIfModelExternal
         self.upgradeOperation = upgradeOperation
-        self.content = content(proxy)
+        self.content = content
     }
     
     var body: some View {
-        content
+        content(proxy)
             .animation(.easeOut(duration: 0.2), value: proxy.model.wrappedValue is Model.MinimumRenderable)
             .task {
                 if resolveIfModelExternal || !proxy.model.isUpgraded, proxy.upgradeState == .idle {

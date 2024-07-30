@@ -30,6 +30,7 @@ struct ExpandedPostView: View {
                 VStack {
                     if showLoadingSymbol {
                         content(for: post)
+                            .externalApiWarning(entity: post, isLoading: proxy.isLoading)
                             .transition(.opacity)
                     } else {
                         // We *could* show the post here, but we'd need to scroll down as soon as the comments load.

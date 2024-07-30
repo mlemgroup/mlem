@@ -16,6 +16,8 @@ struct SettingsView: View {
     @AppStorage("behavior.upvoteOnSave") var upvoteOnSave = false
     @AppStorage("safety.blurNsfw") var blurNsfw = true
     
+    @AppStorage("test") var test: Bool = false
+
     var accounts: [UserAccount] { AccountsTracker.main.userAccounts }
     
     var body: some View {
@@ -46,6 +48,7 @@ struct SettingsView: View {
             }
             
             Section {
+                Toggle("Test", isOn: $test)
                 Button("Search Communities") {
                     navigation.openSheet(.communityPicker(callback: { print($0.name) }))
                 }
