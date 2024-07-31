@@ -37,6 +37,7 @@ struct ContentView: View {
             content
                 .task(id: appState.firstAccount.avatar) {
                     avatarImage = nil
+                    selectedAvatarImage = nil
                     if let url = appState.firstAccount.avatar {
                         await loadAvatar(url: url)
                     }
