@@ -785,7 +785,6 @@
 		CD4BAD382B4C6C1B00A1E726 /* Feeds */ = {
 			isa = PBXGroup;
 			children = (
-				CD9CFA352C2E587F00739BBC /* Feed Types */,
 				CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */,
 				031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */,
 				CD9CFA2D2C2E22E200739BBC /* Feed Header */,
@@ -1041,13 +1040,6 @@
 				CD9CFA292C2E1E8400739BBC /* FeedHeaderView.swift */,
 			);
 			path = "Feed Header";
-			sourceTree = "<group>";
-		};
-		CD9CFA352C2E587F00739BBC /* Feed Types */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Feed Types";
 			sourceTree = "<group>";
 		};
 		CDA1E81A2B8FC39A007953EF /* Onboarding */ = {

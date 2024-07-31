@@ -13,7 +13,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "dark2.png",
+      "filename" : "dark.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -25,6 +25,7 @@
           "value" : "tinted"
         }
       ],
+      "filename" : "tinted.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
