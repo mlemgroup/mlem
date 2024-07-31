@@ -119,21 +119,21 @@ struct ToastView: View {
             }
             .padding(.trailing, AppConstants.doubleSpacing)
         }
-        .frame(minWidth: 167)
+        .frame(minWidth: 157)
     }
     
     @ViewBuilder
     func accountView(_ account: any Account) -> some View {
         HStack(spacing: AppConstants.doubleSpacing) {
             AvatarView(account, showLoadingPlaceholder: false)
-                .frame(height: 27)
+                .frame(width: 27, height: 27)
                 .padding(.leading, 10)
             Text(account.nickname)
                 .lineLimit(1)
                 .frame(minWidth: 80)
                 .padding(.trailing, AppConstants.doubleSpacing)
         }
-        .frame(minWidth: 167)
+        .frame(minWidth: 157)
     }
     
     @ViewBuilder
@@ -203,7 +203,7 @@ struct ToastView: View {
             .foregroundStyle(ToastView.dimmedSymbols.contains(systemName) ? .secondary : .primary)
             .foregroundStyle(color)
             .frame(width: 27)
-            .padding([.leading], AppConstants.standardSpacing)
+            .padding(.leading, AppConstants.standardSpacing)
     }
 }
 

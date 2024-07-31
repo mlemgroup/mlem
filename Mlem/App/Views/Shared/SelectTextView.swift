@@ -45,5 +45,6 @@ struct SelectTextView: View {
         .padding(.top, 10)
         .presentationDetents([.medium])
         .presentationBackgroundInteraction(.enabled)
+        .presentationCornerRadius(20)
     }
 }
