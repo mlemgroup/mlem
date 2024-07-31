@@ -45,7 +45,7 @@ struct FullyQualifiedLabelView: View {
     @Environment(\.postContext) var postContext: (any Post1Providing)?
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
   
-    let entity: (any CommunityOrPersonStub & Profile2Providing)?
+    let entity: (any CommunityOrPersonStub & Profile1Providing)?
     let labelStyle: FullyQualifiedLabelStyle
     let showAvatar: Bool
     

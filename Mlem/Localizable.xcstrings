@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "@%@" : {
+
+    },
     "**%@** and **%@** chose to defederate from one another." : {
       "localizations" : {
         "en" : {
@@ -110,6 +113,9 @@
     "Blur NSFW" : {
 
     },
+    "Bold" : {
+
+    },
     "Bottom" : {
 
     },
@@ -126,6 +132,9 @@
 
     },
     "Closed" : {
+
+    },
+    "Code" : {
 
     },
     "Comment was deleted" : {
@@ -204,6 +213,9 @@
 
     },
     "Enter your instance's domain name below." : {
+
+    },
+    "Error: No active UserAccount" : {
 
     },
     "example.com" : {
@@ -292,6 +304,9 @@
     "Idle" : {
 
     },
+    "Image" : {
+
+    },
     "In Default Browser" : {
 
     },
@@ -308,6 +323,9 @@
 
     },
     "Instances" : {
+
+    },
+    "Italic" : {
 
     },
     "Just Now" : {
@@ -451,7 +469,13 @@
     "Profile" : {
 
     },
+    "Quote" : {
+
+    },
     "Received %@" : {
+
+    },
+    "Redo" : {
 
     },
     "Refresh" : {
@@ -508,6 +532,9 @@
     "Select Text" : {
 
     },
+    "Send" : {
+
+    },
     "Sent %@" : {
 
     },
@@ -559,7 +586,13 @@
     "Sort by: %@" : {
 
     },
+    "Spoiler" : {
+
+    },
     "Standard" : {
+
+    },
+    "Strikethrough" : {
 
     },
     "Subscribe" : {
@@ -568,8 +601,17 @@
     "Subscribed" : {
 
     },
+    "Subscript" : {
+
+    },
     "Subscription List" : {
 
+    },
+    "Superscript" : {
+
+    },
+    "Switch Account" : {
+      
     },
     "Swipe Actions" : {
 
@@ -614,6 +656,9 @@
 
     },
     "Unblocking..." : {
+
+    },
+    "Undo" : {
 
     },
     "Undo Downvote" : {
