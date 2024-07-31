@@ -83,7 +83,7 @@ struct WebsitePreviewView: View {
                     }
             }
             
-            Text(link.content.host() ?? "unknown website")
+            Text(link.host)
                 .foregroundStyle(palette.secondary)
         }
         .font(.footnote)
