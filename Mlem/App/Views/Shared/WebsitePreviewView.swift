@@ -13,39 +13,24 @@ struct WebsitePreviewView: View {
     @Environment(Palette.self) var palette
     @Environment(\.openURL) private var openURL
     
-    let post: any Post1Providing
+    let link: PostLink
     var onTapActions: (() -> Void)?
     
-    var faviconUrl: URL? {
-        guard
-            let baseUrl = post.linkHost,
-            let imageUrl = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseUrl)")
-        else {
-            return nil
-        }
-        
-        return imageUrl
-    }
-    
-    var linkLabel: String { post.embed?.title ?? post.title }
-    var linkHost: String { post.linkHost ?? "unknown website" }
-    
     var body: some View {
-        if let url = post.linkUrl {
-            content
-                .contextMenu {
-                    Button("Open", systemImage: Icons.browser) {
-                        openURL(url)
-                    }
-                    Button("Copy", systemImage: Icons.copy) {
-                        let pasteboard = UIPasteboard.general
-                        pasteboard.url = url
-                    }
-                    ShareLink(item: url)
-                } preview: { WebView(url: url) }
-        } else {
-            content
-        }
+        content
+            .onTapGesture {
+                openURL(link.content)
+            }
+            .contextMenu {
+                Button("Open", systemImage: Icons.browser) {
+                    openURL(link.content)
+                }
+                Button("Copy", systemImage: Icons.copy) {
+                    let pasteboard = UIPasteboard.general
+                    pasteboard.url = link.content
+                }
+                ShareLink(item: link.content)
+            } preview: { WebView(url: link.content) }
     }
     
     var content: some View {
@@ -61,10 +46,10 @@ struct WebsitePreviewView: View {
     
     var complex: some View {
         VStack(alignment: .leading, spacing: 0) {
-            if let url = post.thumbnailUrl {
-                ImageView(url: url, cornerRadius: 0)
+            if let thumbnailUrl = link.thumbnail {
+                ImageView(url: thumbnailUrl, cornerRadius: 0)
                     .overlay(alignment: .bottomLeading) {
-                        host
+                        linkHost
                             .padding(AppConstants.halfSpacing)
                             .padding(.trailing, 3)
                             .background {
@@ -75,20 +60,20 @@ struct WebsitePreviewView: View {
                             .padding(AppConstants.halfSpacing)
                     }
             } else {
-                host
+                linkHost
                     .padding([.horizontal, .top], AppConstants.standardSpacing)
             }
             
-            Text(linkLabel)
+            Text(link.label)
                 .font(.subheadline)
                 .fontWeight(.semibold)
                 .padding(AppConstants.standardSpacing)
         }
     }
     
-    var host: some View {
+    var linkHost: some View {
         HStack(spacing: AppConstants.standardSpacing) {
-            if let faviconUrl {
+            if let faviconUrl = link.favicon {
                 ImageView(url: faviconUrl, showError: false)
                     .frame(width: AppConstants.smallAvatarSize, height: AppConstants.smallAvatarSize)
                     .background {
@@ -98,7 +83,7 @@ struct WebsitePreviewView: View {
                     }
             }
             
-            Text(linkHost)
+            Text(link.content.host() ?? "unknown website")
                 .foregroundStyle(palette.secondary)
         }
         .font(.footnote)

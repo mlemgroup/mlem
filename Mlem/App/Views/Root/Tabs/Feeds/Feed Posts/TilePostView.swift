@@ -50,21 +50,6 @@ struct TilePostView: View {
     var content: some View {
         VStack(alignment: .leading, spacing: 0) {
             BaseImage(post: post, width: width, height: contentHeight)
-                .overlay {
-                    if let host = post.linkHost {
-                        PostLinkHostView(host: host)
-                            .font(.caption)
-                            .padding(2)
-                            .padding(.horizontal, 4)
-                            .background {
-                                Capsule()
-                                    .fill(.regularMaterial)
-                                    .overlay(Capsule().fill(palette.background.opacity(0.25)))
-                            }
-                            .padding(AppConstants.compactSpacing)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                    }
-                }
             
             Divider()
             
@@ -107,6 +92,7 @@ struct TilePostView: View {
     
     struct BaseImage: View {
         @Environment(Palette.self) var palette: Palette
+        @Environment(\.openURL) var openURL
         
         @AppStorage("safety.blurNsfw") var blurNsfw = true
         
@@ -132,19 +118,35 @@ struct TilePostView: View {
                     .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             case let .image(url):
-                TappableImageView(url: url)
+                ExpandableImageView(url: url)
                     .aspectRatio(contentMode: .fill)
                     .frame(width: width, height: height)
                     .background(palette.secondaryBackground)
                     .blur(radius: (post.nsfw && blurNsfw) ? 20 : 0, opaque: true)
                     .clipped()
-            case let .link(url):
-                ImageView(url: url)
+            case let .link(link):
+                ImageView(url: link.thumbnail)
                     .aspectRatio(contentMode: .fill)
                     .frame(width: width, height: height)
                     .background(palette.secondaryBackground)
                     .blur(radius: (post.nsfw && blurNsfw) ? 20 : 0, opaque: true)
                     .clipped()
+                    .overlay {
+                        PostLinkHostView(host: link.host)
+                            .font(.caption)
+                            .padding(2)
+                            .padding(.horizontal, 4)
+                            .background {
+                                Capsule()
+                                    .fill(.regularMaterial)
+                                    .overlay(Capsule().fill(palette.background.opacity(0.25)))
+                            }
+                            .padding(AppConstants.compactSpacing)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                    }
+                    .onTapGesture {
+                        openURL(link.content)
+                    }
             }
         }
     }

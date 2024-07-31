@@ -11,6 +11,7 @@ import SwiftUI
 
 struct ThumbnailImageView: View {
     @Environment(Palette.self) var palette
+    @Environment(\.openURL) var openURL
             
     let post: any Post1Providing
     var blurred: Bool = false
@@ -25,19 +26,22 @@ struct ThumbnailImageView: View {
     var body: some View {
         switch post.type {
         case let .image(url):
-            TappableImageView(url: url)
+            ExpandableImageView(url: url)
                 .aspectRatio(contentMode: .fill)
                 .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
                 .background(palette.secondaryBackground)
                 .blur(radius: blurred ? 10 : 0, opaque: true)
                 .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
-        case let .link(url):
-            ImageView(url: url)
+        case let .link(link):
+            ImageView(url: link.thumbnail)
                 .aspectRatio(contentMode: .fill)
                 .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
                 .background(palette.secondaryBackground)
                 .blur(radius: blurred ? 10 : 0, opaque: true)
                 .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
+                .onTapGesture {
+                    openURL(link.content)
+                }
         default:
             Image(systemName: post.placeholderImageName)
                 .font(.title)

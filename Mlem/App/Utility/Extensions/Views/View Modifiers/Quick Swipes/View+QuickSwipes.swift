@@ -45,6 +45,7 @@ struct QuickSwipeView: ViewModifier {
             .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
             // needs to be high priority or else dragging on links leads to navigating to the link at conclusion of drag
             .highPriorityGesture(
+                // .gesture(
                 DragGesture(
                     minimumDistance: config.behavior.minimumDrag, // min distance prevents conflict with scrolling drag gesture
                     coordinateSpace: .global

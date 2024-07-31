@@ -1,5 +1,5 @@
 //
-//  TappableImageView.swift
+//  ExpandableImageView.swift
 //  Mlem
 //
 //  Created by Sjmarf on 13/06/2024.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TappableImageView: View {
+struct ExpandableImageView: View {
     @Environment(NavigationLayer.self) var navigation
     
     @State var loading: ImageView.LoadingState = .waiting
