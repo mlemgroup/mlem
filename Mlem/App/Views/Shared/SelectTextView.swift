@@ -37,7 +37,7 @@ struct SelectTextView: View {
             }
             .padding(.horizontal, 10)
             TextEditor(text: .constant(text))
-                .introspect(.textEditor, on: .iOS(.v16, .v17)) { textEditor in
+                .introspect(.textEditor, on: .iOS(.v17, .v18)) { textEditor in
                     textEditor.isEditable = false
                     textEditor.textContainerInset = .init(top: 0, left: 10, bottom: 10, right: 10)
                 }
