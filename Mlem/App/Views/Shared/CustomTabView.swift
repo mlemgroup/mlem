@@ -42,7 +42,7 @@ struct CustomTabView: UIViewControllerRepresentable {
     ) {
         if let controller = uiViewController as? CustomTabBarController {
             DispatchQueue.main.async {
-                for (tabData, (tabBarItem, view)) in zip(tabs, zip(controller.tabBar.items ?? [], controller.tabBar.subviews)) {
+                for (tabData, tabBarItem) in zip(tabs, controller.tabBar.items ?? []) {
                     tabBarItem.title = tabData.title
                     
                     tabBarItem.badgeValue = tabData.badge
