@@ -20,7 +20,7 @@ struct PostGridView: View {
     @State var columns: [GridItem] = [GridItem(.flexible())]
     @State var frameWidth: CGFloat = .zero
     
-    let postFeedLoader: AggregatePostFeedLoader
+    let postFeedLoader: CorePostFeedLoader
     
     var body: some View {
         content

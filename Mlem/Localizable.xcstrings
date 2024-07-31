@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "@%@" : {
 
     },
@@ -610,10 +613,10 @@
     "Superscript" : {
 
     },
-    "Switch Account" : {
-      
-    },
     "Swipe Actions" : {
+
+    },
+    "Switch Account" : {
 
     },
     "Switch to this account and..." : {
@@ -623,9 +626,6 @@
 
     },
     "Temporary" : {
-
-    },
-    "Test" : {
 
     },
     "Theme" : {

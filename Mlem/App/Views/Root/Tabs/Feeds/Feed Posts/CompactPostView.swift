@@ -33,9 +33,7 @@ struct CompactPostView: View {
             VStack(alignment: .leading, spacing: AppConstants.compactSpacing) {
                 HStack(spacing: 4) {
                     if communityContext != nil {
-                        NavigationLink(value: NavigationPage.profile) {
-                            FullyQualifiedLinkView(entity: post.creator_, labelStyle: .small, showAvatar: false)
-                        }
+                        FullyQualifiedLinkView(entity: post.creator_, labelStyle: .small, showAvatar: false)
                     } else {
                         FullyQualifiedLinkView(entity: post.community_, labelStyle: .small, showAvatar: false)
                     }

@@ -14,6 +14,7 @@ struct LargePostView: View {
     @AppStorage("community.showAvatar") private var showCommunityAvatar: Bool = true
     
     @Environment(Palette.self) private var palette: Palette
+    @Environment(\.communityContext) private var communityContext
     
     let post: any Post1Providing
     var isExpanded: Bool = false
@@ -28,7 +29,11 @@ struct LargePostView: View {
     var content: some View {
         VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
             HStack {
-                FullyQualifiedLinkView(entity: post.community_, labelStyle: .medium, showAvatar: showCommunityAvatar)
+                if communityContext == nil {
+                    communityLink
+                } else {
+                    personLink
+                }
                 
                 Spacer()
                 
@@ -44,8 +49,8 @@ struct LargePostView: View {
             
             LargePostBodyView(post: post, isExpanded: isExpanded)
             
-            if showCreator || isExpanded {
-                FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showUserAvatar)
+            if showCreator || isExpanded, communityContext == nil {
+                personLink
             }
             
             InteractionBarView(
@@ -78,5 +83,15 @@ struct LargePostView: View {
                     .stroke(lineWidth: 1)
                     .foregroundStyle(palette.secondary)
             }
+    }
+    
+    @ViewBuilder
+    var personLink: some View {
+        FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showUserAvatar)
+    }
+    
+    @ViewBuilder
+    var communityLink: some View {
+        FullyQualifiedLinkView(entity: post.community_, labelStyle: .medium, showAvatar: showCommunityAvatar)
     }
 }

@@ -61,7 +61,7 @@ struct ExpandedPostView: View {
                     }
                 }
                 .toolbar {
-                    if proxy.isLoading || commentResolveLoading {
+                    if proxy.isLoading {
                         ProgressView()
                     } else {
                         ToolbarEllipsisMenu(post.menuActions())

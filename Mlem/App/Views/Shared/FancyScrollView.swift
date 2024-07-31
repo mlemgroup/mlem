@@ -8,15 +8,20 @@
 import SwiftUI
 
 struct IsAtTopPreferenceKey: PreferenceKey {
-    static var defaultValue: Bool = false
+    static var defaultValue: Bool = true
     static func reduce(value: inout Bool, nextValue: () -> Bool) {}
 }
 
 struct FancyScrollView<Content: View>: View {
     @Environment(\.dismiss) var dismiss
     
+    // Avoid using `@State` because we don't need to cause a view update
+    class Model {
+        var isAtTop: Bool = true
+    }
+    
     @ViewBuilder var content: () -> Content
-    @State var isAtTop: Bool = true
+    let model: Model = .init()
     @Binding var scrollToTopTrigger: Bool // TODO: investigate unifying this and isAtTop
     var reselectAction: (() -> Void)?
 
@@ -38,7 +43,7 @@ struct FancyScrollView<Content: View>: View {
                 VStack(spacing: 0) {
                     GeometryReader { geo in
                         Color.clear.preference(
-                            key: ScrollOffsetKey.self,
+                            key: IsAtTopPreferenceKey.self,
                             // This must be `Int` to account for floating point error
                             value: Int(geo.frame(in: .named("scrollView")).origin.y) >= 0
                         )
@@ -49,7 +54,7 @@ struct FancyScrollView<Content: View>: View {
                 }
             }
             .onReselectTab {
-                if isAtTop {
+                if model.isAtTop {
                     if let reselectAction {
                         reselectAction()
                     } else {
@@ -67,18 +72,11 @@ struct FancyScrollView<Content: View>: View {
                 }
             }
             .coordinateSpace(name: "scrollView")
-            .onPreferenceChange(ScrollOffsetKey.self) { offset in
-                if offset != isAtTop {
-                    isAtTop = offset
+            .onPreferenceChange(IsAtTopPreferenceKey.self) { offset in
+                if offset != model.isAtTop {
+                    model.isAtTop = offset
                 }
             }
         }
-        .preference(key: IsAtTopPreferenceKey.self, value: isAtTop)
     }
-}
-
-private struct ScrollOffsetKey: PreferenceKey {
-    typealias Value = Bool
-    static var defaultValue = true
-    static func reduce(value: inout Value, nextValue: () -> Value) {}
 }
