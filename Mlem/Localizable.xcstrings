@@ -1,0 +1,759 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "@%@" : {
+
+    },
+    "**%@** and **%@** chose to defederate from one another." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "**%1$@** and **%2$@** chose to defederate from one another."
+          }
+        }
+      }
+    },
+    "**%@** chose to defederate from your instance, **%@**." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "**%1$@** chose to defederate from your instance, **%2$@**."
+          }
+        }
+      }
+    },
+    "**%@** hasn't chosen to federate with your instance, **%@**." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "**%1$@** hasn't chosen to federate with your instance, **%2$@**."
+          }
+        }
+      }
+    },
+    "1d" : {
+
+    },
+    "1mo" : {
+
+    },
+    "1w" : {
+
+    },
+    "6mo" : {
+
+    },
+    "About" : {
+
+    },
+    "Account" : {
+
+    },
+    "Accounts" : {
+
+    },
+    "Active Users" : {
+
+    },
+    "Add Account" : {
+
+    },
+    "Add Guest" : {
+
+    },
+    "Administration" : {
+
+    },
+    "All" : {
+
+    },
+    "Applications Email Admins" : {
+
+    },
+    "Authenticating..." : {
+
+    },
+    "Authentication code is incorrect." : {
+
+    },
+    "Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser." : {
+
+    },
+    "Block" : {
+
+    },
+    "Block Community" : {
+
+    },
+    "Block User" : {
+
+    },
+    "Block..." : {
+
+    },
+    "Blocked" : {
+
+    },
+    "Blocking..." : {
+
+    },
+    "Blur NSFW" : {
+
+    },
+    "Bold" : {
+
+    },
+    "Bottom" : {
+
+    },
+    "Cancel" : {
+
+    },
+    "Captcha" : {
+
+    },
+    "Choose Account Type" : {
+
+    },
+    "Clear Cache" : {
+
+    },
+    "Closed" : {
+
+    },
+    "Code" : {
+
+    },
+    "Comment was deleted" : {
+
+    },
+    "Comment was removed" : {
+
+    },
+    "Comments" : {
+
+    },
+    "Communities" : {
+
+    },
+    "Community Creation" : {
+
+    },
+    "Compact" : {
+
+    },
+    "Connecting..." : {
+
+    },
+    "Copied" : {
+
+    },
+    "Copy" : {
+
+    },
+    "Copy All" : {
+
+    },
+    "Copy Name" : {
+
+    },
+    "Couldn't read URL" : {
+
+    },
+    "Default Feed Type (Desktop)" : {
+
+    },
+    "Delete" : {
+
+    },
+    "Deleted" : {
+
+    },
+    "Details" : {
+
+    },
+    "Diagnosing..." : {
+
+    },
+    "Disabled" : {
+
+    },
+    "Dismiss" : {
+
+    },
+    "Domain" : {
+
+    },
+    "Done" : {
+
+    },
+    "Downvote" : {
+
+    },
+    "Downvotes" : {
+
+    },
+    "Easy" : {
+
+    },
+    "Email Verification" : {
+
+    },
+    "Enter your instance's domain name below." : {
+
+    },
+    "Error: No active UserAccount" : {
+
+    },
+    "example.com" : {
+
+    },
+    "Failed to connect to %@" : {
+
+    },
+    "Failed to delete post!" : {
+
+    },
+    "Fast" : {
+
+    },
+    "Favorite" : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favourite"
+          }
+        }
+      }
+    },
+    "Favorited" : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favourited"
+          }
+        }
+      }
+    },
+    "Favorites" : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favourites"
+          }
+        }
+      }
+    },
+    "Federates" : {
+
+    },
+    "Federation Explanation" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lemmy instances talk to each other so that content can be shared across sites. This is called \"federation\". Instance administrators can choose which other instances they would like their instance to federate with. Some instances federate with all but a curated \"block-list\" of other instances; other instances might only federate with instances on an \"allow-list\"."
+          }
+        }
+      }
+    },
+    "Feed is outdated" : {
+
+    },
+    "Feeds" : {
+
+    },
+    "Grouped" : {
+
+    },
+    "Guest" : {
+
+    },
+    "Hard" : {
+
+    },
+    "Headline" : {
+
+    },
+    "Hidden" : {
+
+    },
+    "Hide" : {
+
+    },
+    "Hide Read" : {
+
+    },
+    "Idle" : {
+
+    },
+    "Image" : {
+
+    },
+    "In Default Browser" : {
+
+    },
+    "In-App" : {
+
+    },
+    "Inbox" : {
+
+    },
+    "Inbox is outdated" : {
+
+    },
+    "Instance" : {
+
+    },
+    "Instances" : {
+
+    },
+    "Italic" : {
+
+    },
+    "Just Now" : {
+
+    },
+    "Keep" : {
+
+    },
+    "Keep Place" : {
+
+    },
+    "Label Style" : {
+
+    },
+    "Large" : {
+
+    },
+    "Left" : {
+
+    },
+    "Links" : {
+
+    },
+    "Loading..." : {
+
+    },
+    "Local" : {
+
+    },
+    "Log In" : {
+
+    },
+    "Mark Read" : {
+
+    },
+    "Mark Unread" : {
+
+    },
+    "Medium" : {
+
+    },
+    "Mentions" : {
+
+    },
+    "Message was deleted" : {
+
+    },
+    "Messages" : {
+
+    },
+    "Moderated" : {
+
+    },
+    "Monochrome" : {
+
+    },
+    "More" : {
+
+    },
+    "More Info" : {
+
+    },
+    "More..." : {
+
+    },
+    "New Post" : {
+
+    },
+    "Next" : {
+
+    },
+    "No" : {
+
+    },
+    "None" : {
+
+    },
+    "Nothing to see here" : {
+
+    },
+    "Now" : {
+
+    },
+    "NSFW" : {
+
+    },
+    "NSFW Content" : {
+
+    },
+    "Open" : {
+
+    },
+    "Open Authenticator App..." : {
+
+    },
+    "Open External Links" : {
+
+    },
+    "Open in Browser" : {
+
+    },
+    "Open in Reader" : {
+
+    },
+    "Open URL from Clipboard" : {
+
+    },
+    "Other" : {
+
+    },
+    "Overview" : {
+
+    },
+    "Password" : {
+
+    },
+    "Post Size" : {
+
+    },
+    "Posts" : {
+
+    },
+    "Posts from %@ communities" : {
+
+    },
+    "Posts from all federated instances" : {
+
+    },
+    "Posts from communities you moderate" : {
+
+    },
+    "Posts from communities you subscribe to" : {
+
+    },
+    "Private" : {
+
+    },
+    "Profile" : {
+
+    },
+    "Quote" : {
+
+    },
+    "Received %@" : {
+
+    },
+    "Redo" : {
+
+    },
+    "Refresh" : {
+
+    },
+    "Registration" : {
+
+    },
+    "Reload" : {
+
+    },
+    "Reload on Switch" : {
+
+    },
+    "Replies" : {
+
+    },
+    "Replies, mentions and messages" : {
+
+    },
+    "Reply" : {
+
+    },
+    "Reports Email Admins" : {
+
+    },
+    "Requires Application" : {
+
+    },
+    "Restore" : {
+
+    },
+    "Right" : {
+
+    },
+    "Save" : {
+
+    },
+    "Saved" : {
+
+    },
+    "Search" : {
+
+    },
+    "Search Communities" : {
+
+    },
+    "Search Instances" : {
+
+    },
+    "Search People" : {
+
+    },
+    "Select Text" : {
+
+    },
+    "Send" : {
+
+    },
+    "Sent %@" : {
+
+    },
+    "Settings" : {
+
+    },
+    "Share..." : {
+
+    },
+    "Show" : {
+
+    },
+    "Show Community Avatar" : {
+
+    },
+    "Show Details" : {
+
+    },
+    "Show Mod Names in Modlog" : {
+
+    },
+    "Show Post Creator" : {
+
+    },
+    "Show Read" : {
+
+    },
+    "Show User Avatar" : {
+
+    },
+    "Sign In" : {
+
+    },
+    "Sign In to Lemmy" : {
+
+    },
+    "Slow" : {
+
+    },
+    "Slur Filter" : {
+
+    },
+    "Some" : {
+
+    },
+    "Sort" : {
+
+    },
+    "Sort by: %@" : {
+
+    },
+    "Spoiler" : {
+
+    },
+    "Standard" : {
+
+    },
+    "Strikethrough" : {
+
+    },
+    "Subscribe" : {
+
+    },
+    "Subscribed" : {
+
+    },
+    "Subscript" : {
+
+    },
+    "Subscription List" : {
+
+    },
+    "Superscript" : {
+
+    },
+    "Switch Account" : {
+      
+    },
+    "Swipe Actions" : {
+
+    },
+    "Switch to this account and..." : {
+
+    },
+    "Tap to show slur filter regex." : {
+
+    },
+    "Temporary" : {
+
+    },
+    "Theme" : {
+
+    },
+    "This content will be loaded from **%@** instead." : {
+
+    },
+    "This probably contains foul language." : {
+
+    },
+    "Thumbnail Location" : {
+
+    },
+    "Tiled" : {
+
+    },
+    "Trailing" : {
+
+    },
+    "Trust & Safety" : {
+
+    },
+    "Two-Factor Authentication" : {
+
+    },
+    "Unblock" : {
+
+    },
+    "Unblocking..." : {
+
+    },
+    "Undo" : {
+
+    },
+    "Undo Downvote" : {
+
+    },
+    "Undo Upvote" : {
+
+    },
+    "Unfavorite" : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unfavourite"
+          }
+        }
+      }
+    },
+    "Unfavorited" : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unfavourited"
+          }
+        }
+      }
+    },
+    "Unknown" : {
+
+    },
+    "Unsave" : {
+
+    },
+    "Unsubscribe" : {
+
+    },
+    "Unsubscribed" : {
+
+    },
+    "Uptime" : {
+
+    },
+    "Upvote" : {
+
+    },
+    "Upvote On Save" : {
+
+    },
+    "Username" : {
+
+    },
+    "Users" : {
+
+    },
+    "Viewing %@ as guest" : {
+
+    },
+    "Viewing page as guest" : {
+
+    },
+    "Visit" : {
+
+    },
+    "Welcome %@" : {
+      "comment" : "Example: \"Welcome John\""
+    },
+    "Welcome to %@" : {
+      "comment" : "Example: \"Welcome to lemmy.world\""
+    },
+    "What is Federation?" : {
+
+    },
+    "Yes" : {
+
+    },
+    "Yes (%@)" : {
+
+    },
+    "You don't have any accounts." : {
+
+    },
+    "Your instance and **%@** federate, but the content could not be loaded. It may not have federated yet, or your instance may have purged it." : {
+
+    },
+    "Your instance, **%@**, chose to defederate from **%@**." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your instance, **%1$@**, chose to defederate from **%2$@**."
+          }
+        }
+      }
+    },
+    "Your instance, **%@**, hasn't chosen to federate with **%@**." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Your instance, **%1$@**, hasn't chosen to federate with **%2$@**."
+          }
+        }
+      }
+    },
+    "Your saved posts and comments" : {
+
+    },
+    "Your session has expired. Enter your password to authenticate a new session." : {
+
+    }
+  },
+  "version" : "1.0"
+}

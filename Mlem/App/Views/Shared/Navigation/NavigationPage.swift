@@ -9,10 +9,6 @@ import MlemMiddleware
 import SwiftUI
 
 enum NavigationPage: Hashable {
-    static func == (lhs: NavigationPage, rhs: NavigationPage) -> Bool {
-        lhs.hashValue == rhs.hashValue
-    }
-    
     case settings(_ page: SettingsPage = .root)
     case login(_ page: LoginPage = .pickInstance)
     case feeds, profile, inbox, search
@@ -20,10 +16,15 @@ enum NavigationPage: Hashable {
     case expandedPost(_ post: AnyPost, commentId: Int? = nil)
     case community(_ community: AnyCommunity)
     case person(_ person: AnyPerson)
+    case instance(_ instance: InstanceHashWrapper)
     case externalApiInfo(api: ApiClient, actorId: URL)
     case imageViewer(_ url: URL)
+    case communityPicker(callback: HashWrapper<(Community2) -> Void>)
+    case personPicker(callback: HashWrapper<(Person2) -> Void>)
+    case instancePicker(callback: HashWrapper<(InstanceSummary) -> Void>)
     case selectText(_ string: String)
     case subscriptionList
+    case reply(_ context: ResponseContext)
     
     static func expandedPost(_ post: any PostStubProviding, commentId: Int? = nil) -> NavigationPage {
         expandedPost(.init(post), commentId: commentId)
@@ -36,10 +37,26 @@ enum NavigationPage: Hashable {
     static func community(_ community: any CommunityStubProviding) -> NavigationPage {
         Self.community(.init(community))
     }
+
+    static func instance(_ instance: any InstanceStubProviding) -> NavigationPage {
+        Self.instance(.init(wrappedValue: instance))
+    }
+    
+    static func communityPicker(callback: @escaping (Community2) -> Void) -> NavigationPage {
+        communityPicker(callback: .init(wrappedValue: callback))
+    }
+    
+    static func personPicker(callback: @escaping (Person2) -> Void) -> NavigationPage {
+        personPicker(callback: .init(wrappedValue: callback))
+    }
+    
+    static func instancePicker(callback: @escaping (InstanceSummary) -> Void) -> NavigationPage {
+        instancePicker(callback: .init(wrappedValue: callback))
+    }
 }
 
 extension NavigationPage {
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     @ViewBuilder func view() -> some View {
         switch self {
         case .subscriptionList:
@@ -59,7 +76,7 @@ extension NavigationPage {
         case .inbox:
             InboxView()
         case .search:
-            EmptyView()
+            SearchView()
         case let .externalApiInfo(api: api, actorId: actorId):
             ExternalApiInfoView(api: api, actorId: actorId)
         case let .imageViewer(url):
@@ -70,12 +87,47 @@ extension NavigationPage {
             ExpandedPostView(post: post, showCommentWithId: commentId)
         case let .person(person):
             PersonView(person: person)
+        case let .reply(context):
+            if let view = ResponseComposerView(context: context) {
+                view
+            } else {
+                Text("Error: No active UserAccount")
+            }
+        case let .communityPicker(callback: callback):
+            SearchSheetView { (community: Community2, dismiss: DismissAction) in
+                CommunityListRowBody(community)
+                    .onTapGesture {
+                        callback.wrappedValue(community)
+                        dismiss()
+                    }
+                    .padding(.vertical, 6)
+            }
+        case let .personPicker(callback: callback):
+            SearchSheetView { (person: Person2, dismiss: DismissAction) in
+                PersonListRowBody(person)
+                    .onTapGesture {
+                        callback.wrappedValue(person)
+                        dismiss()
+                    }
+                    .padding(.vertical, 6)
+            }
+        case let .instancePicker(callback: callback):
+            SearchSheetView { (instance: InstanceSummary, dismiss: DismissAction) in
+                InstanceListRowBody(instance)
+                    .onTapGesture {
+                        callback.wrappedValue(instance)
+                        dismiss()
+                    }
+                    .padding(.vertical, 6)
+            }
+        case let .instance(instance):
+            InstanceView(instance: instance.wrappedValue)
         }
     }
     
     var hasNavigationStack: Bool {
         switch self {
-        case .quickSwitcher, .externalApiInfo, .selectText:
+        case .quickSwitcher, .externalApiInfo, .selectText, .reply:
             false
         default:
             true
@@ -89,5 +141,31 @@ extension NavigationPage {
         default:
             true
         }
+    }
+}
+
+struct HashWrapper<Value>: Hashable, Identifiable {
+    let wrappedValue: Value
+    let id = UUID()
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: HashWrapper, rhs: HashWrapper) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
+struct InstanceHashWrapper: Hashable {
+    var wrappedValue: any InstanceStubProviding
+    let id = UUID()
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: InstanceHashWrapper, rhs: InstanceHashWrapper) -> Bool {
+        lhs.id == rhs.id
     }
 }

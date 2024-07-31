@@ -14,10 +14,18 @@ struct PersonView: View {
         case overview, comments, posts, communities
 
         var id: Self { self }
-        var label: String { rawValue.capitalized }
+        var label: LocalizedStringResource {
+            switch self {
+            case .overview: "Overview"
+            case .comments: "Comments"
+            case .posts: "Posts"
+            case .communities: "Communities"
+            }
+        }
     }
     
     @Environment(Palette.self) var palette
+    @Environment(NavigationLayer.self) var navigation
     
     @State var person: AnyPerson
     @State private var selectedTab: Tab = .overview
@@ -43,7 +51,7 @@ struct PersonView: View {
                             if person is any Person3Providing, proxy.isLoading {
                                 ProgressView()
                             } else {
-                                ToolbarEllipsisMenu {}
+                                ToolbarEllipsisMenu(person.menuActions(navigation: navigation))
                             }
                         }
                     }
@@ -54,7 +62,7 @@ struct PersonView: View {
         } upgradeOperation: { model, api in
             try await model.upgrade(api: api) { entity in
                 if let entity = entity as? any Person1Providing {
-                    let response = try await entity.getPosts(page: 1, limit: 3)
+                    let response = try await entity.getContent(page: 1, limit: 3)
                     Task { @MainActor in
                         posts = response.posts
                     }
@@ -125,6 +133,7 @@ struct PersonView: View {
             .padding(.vertical, 2)
     }
     
+    // TODO: PersonContentGridView
     @ViewBuilder
     func personContent(person: any Person3Providing) -> some View {
         VStack(spacing: 0) {

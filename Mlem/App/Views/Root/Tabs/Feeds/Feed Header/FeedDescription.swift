@@ -10,8 +10,8 @@ import MlemMiddleware
 import SwiftUI
 
 struct FeedDescription {
-    var label: String
-    var subtitle: String
+    var label: LocalizedStringResource
+    var subtitle: LocalizedStringResource
     var color: (Palette) -> Color? // makes color change when palette changes
     var iconName: String
     var iconNameFill: String

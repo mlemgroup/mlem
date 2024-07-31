@@ -18,6 +18,7 @@ protocol PaletteProviding {
     var tertiaryBackground: Color { get }
     var groupedBackground: Color { get }
     var secondaryGroupedBackground: Color { get }
+    var tertiaryGroupedBackground: Color { get }
     var thumbnailBackground: Color { get }
     
     var positive: Color { get }
@@ -43,8 +44,10 @@ protocol PaletteProviding {
     
     // accents
     var accent: Color { get }
-    var secondaryAccent: Color { get }
-    
+    var accent2: Color { get }
+    var accent3: Color { get }
+    var accent4: Color { get }
+    var accent5: Color { get }
     var commentIndentColors: [Color] { get }
 }
 
@@ -55,6 +58,13 @@ enum PaletteOption: String, CaseIterable {
         switch self {
         case .standard: ColorPalette.standard
         case .monochrome: ColorPalette.monochrome
+        }
+    }
+    
+    var label: LocalizedStringResource {
+        switch self {
+        case .standard: "Standard"
+        case .monochrome: "Monochrome"
         }
     }
 }
@@ -69,11 +79,13 @@ struct ColorPalette: PaletteProviding {
     var tertiaryBackground: Color
     var groupedBackground: Color
     var secondaryGroupedBackground: Color
+    var tertiaryGroupedBackground: Color
     var thumbnailBackground: Color
     
     var positive: Color
     var negative: Color
     var warning: Color
+    var caution: Color
     
     // interactions
     var upvote: Color
@@ -97,7 +109,10 @@ struct ColorPalette: PaletteProviding {
     
     // accents
     var accent: Color
-    var secondaryAccent: Color
+    var accent2: Color
+    var accent3: Color
+    var accent4: Color
+    var accent5: Color
     
     var commentIndentColors: [Color]
     
@@ -110,10 +125,12 @@ struct ColorPalette: PaletteProviding {
         tertiaryBackground: Color,
         groupedBackground: Color,
         secondaryGroupedBackground: Color,
+        tertiaryGroupedBackground: Color,
         thumbnailBackground: Color,
         positive: Color,
         negative: Color,
         warning: Color,
+        caution: Color,
         upvote: Color,
         downvote: Color,
         save: Color,
@@ -129,7 +146,10 @@ struct ColorPalette: PaletteProviding {
         savedFeed: Color? = nil,
         inbox: Color,
         accent: Color,
-        secondaryAccent: Color,
+        accent2: Color? = nil,
+        accent3: Color? = nil,
+        accent4: Color? = nil,
+        accent5: Color? = nil,
         commentIndentColors: [Color]
     ) {
         self.primary = primary
@@ -140,10 +160,12 @@ struct ColorPalette: PaletteProviding {
         self.tertiaryBackground = tertiaryBackground
         self.groupedBackground = groupedBackground
         self.secondaryGroupedBackground = secondaryGroupedBackground
+        self.tertiaryGroupedBackground = tertiaryGroupedBackground
         self.thumbnailBackground = thumbnailBackground
         self.positive = positive
         self.negative = negative
         self.warning = warning
+        self.caution = caution
         self.upvote = upvote
         self.downvote = downvote
         self.save = save
@@ -159,7 +181,10 @@ struct ColorPalette: PaletteProviding {
         self.savedFeed = savedFeed ?? save
         self.inbox = inbox
         self.accent = accent
-        self.secondaryAccent = secondaryAccent
+        self.accent2 = accent2 ?? accent
+        self.accent3 = accent3 ?? accent
+        self.accent4 = accent4 ?? accent
+        self.accent5 = accent5 ?? accent
         self.commentIndentColors = commentIndentColors
     }
 }
@@ -190,11 +215,13 @@ class Palette: PaletteProviding {
     var tertiaryBackground: Color { palette.tertiaryBackground }
     var groupedBackground: Color { palette.groupedBackground }
     var secondaryGroupedBackground: Color { palette.secondaryGroupedBackground }
+    var tertiaryGroupedBackground: Color { palette.tertiaryGroupedBackground }
     var thumbnailBackground: Color { palette.thumbnailBackground }
     
     var positive: Color { palette.positive }
     var negative: Color { palette.negative }
     var warning: Color { palette.warning }
+    var caution: Color { palette.caution }
     
     var upvote: Color { palette.upvote }
     var downvote: Color { palette.downvote }
@@ -214,7 +241,16 @@ class Palette: PaletteProviding {
     var inbox: Color { palette.inbox }
     
     var accent: Color { palette.accent }
-    var secondaryAccent: Color { palette.secondaryAccent }
+    var accent2: Color { palette.accent2 }
+    var accent3: Color { palette.accent3 }
+    var accent4: Color { palette.accent4 }
+    var accent5: Color { palette.accent5 }
     
     var commentIndentColors: [Color] { palette.commentIndentColors }
+    
+    var commentAccent: Color { palette.accent2 }
+    var postAccent: Color { palette.accent3 }
+    var userAccent: Color { palette.accent4 }
+    var communityAccent: Color { palette.accent5 }
+    var lockAccent: Color { palette.accent2 }
 }

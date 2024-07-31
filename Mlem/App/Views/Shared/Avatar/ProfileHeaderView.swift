@@ -14,20 +14,24 @@ struct ProfileHeaderView: View {
     
     var profilable: (any Profile1Providing)?
     var type: AvatarType
+    var blockedOverride: Bool?
     
-    init<T: Profile1Providing>(_ profilable: T?) {
+    init<T: Profile1Providing>(_ profilable: T?, blockedOverride: Bool? = nil) {
         self.profilable = profilable
         self.type = T.avatarType
+        self.blockedOverride = blockedOverride
     }
     
-    init(_ profilable: any Profile1Providing) {
+    init(_ profilable: any Profile1Providing, blockedOverride: Bool? = nil) {
         self.profilable = profilable
         self.type = Swift.type(of: profilable).avatarType
+        self.blockedOverride = blockedOverride
     }
     
-    init(_ profilable: (any Profile1Providing)?, type: AvatarType) {
+    init(_ profilable: (any Profile1Providing)?, type: AvatarType, blockedOverride: Bool? = nil) {
         self.profilable = profilable
         self.type = type
+        self.blockedOverride = blockedOverride
     }
     
     var body: some View {
@@ -37,11 +41,17 @@ struct ProfileHeaderView: View {
                 (profilable as? any CommunityOrPersonStub)?.copyFullNameWithPrefix()
             } label: {
                 VStack(spacing: AppConstants.halfSpacing) {
-                    Text(profilable?.displayName_ ?? profilable?.name ?? "")
-                        .font(.title)
-                        .fontWeight(.semibold)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.01)
+                    HStack {
+                        Text(profilable?.displayName_ ?? profilable?.name ?? "")
+                        if blockedOverride ?? profilable?.blocked ?? false {
+                            Image(systemName: Icons.hide)
+                                .foregroundStyle(palette.secondary)
+                        }
+                    }
+                    .font(.title)
+                    .fontWeight(.semibold)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.01)
                     Text(subtitle)
                         .font(.caption)
                         .foregroundStyle(palette.secondary)
@@ -53,6 +63,9 @@ struct ProfileHeaderView: View {
     }
     
     var subtitle: String {
-        (profilable as? any CommunityOrPersonStub)?.fullNameWithPrefix ?? profilable?.actorId.host() ?? ""
+        if let instance = profilable as? any Instance3Providing {
+            return "\(instance.host ?? "") • \(instance.version)"
+        }
+        return (profilable as? any CommunityOrPersonStub)?.fullNameWithPrefix ?? profilable?.host ?? ""
     }
 }

@@ -17,10 +17,12 @@ extension ColorPalette {
         tertiaryBackground: Color(UIColor.tertiarySystemBackground),
         groupedBackground: Color(UIColor.systemGroupedBackground),
         secondaryGroupedBackground: Color(UIColor.secondarySystemGroupedBackground),
+        tertiaryGroupedBackground: Color(UIColor.tertiarySystemGroupedBackground),
         thumbnailBackground: Color(UIColor.systemGray4),
         positive: .green,
         negative: .red,
         warning: .red,
+        caution: .orange,
         upvote: .blue,
         downvote: .red,
         save: .green,
@@ -34,7 +36,10 @@ extension ColorPalette {
         subscribedFeed: .red,
         inbox: .purple,
         accent: .blue,
-        secondaryAccent: .orange,
+        accent2: .orange,
+        accent3: .pink,
+        accent4: .blue,
+        accent5: .green,
         commentIndentColors: [Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple]
     )
 }

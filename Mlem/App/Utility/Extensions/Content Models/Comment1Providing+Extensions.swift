@@ -9,6 +9,8 @@ import Foundation
 import MlemMiddleware
 
 extension Comment1Providing {
+    var isOwnComment: Bool { creatorId == api.myPerson?.id }
+
     func swipeActions(behavior: SwipeBehavior) -> SwipeConfiguration {
         .init(
             behavior: behavior,
@@ -36,7 +38,12 @@ extension Comment1Providing {
             replyAction()
             selectTextAction()
             shareAction()
-            blockCreatorAction(feedback: feedback)
+            
+            if self.isOwnComment {
+                deleteAction(feedback: feedback)
+            } else {
+                blockCreatorAction(feedback: feedback)
+            }
         }
     }
     

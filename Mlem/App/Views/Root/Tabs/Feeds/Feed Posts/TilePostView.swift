@@ -13,31 +13,43 @@ import SwiftUI
 
 struct TilePostView: View {
     @Environment(Palette.self) var palette: Palette
+    @Environment(\.parentFrameWidth) var parentFrameWidth: CGFloat
     
     let post: any Post1Providing
 
+    // Note that these dimensions above sum to precisely the height of TileCommentView, though due to the grouping of title and community here, we get a bonus 10px for the content
+    // Total height in simplest form is:
+    // width + minTitleHeight + communityHeight + 17
     @ScaledMetric(relativeTo: .footnote) var minTitleHeight: CGFloat = 36 // (2 * .footnote height), including built-in spacing
-    var dimension: CGFloat { (UIScreen.main.bounds.width - (AppConstants.standardSpacing * 3)) / 2 }
-    var frameHeight: CGFloat {
-        dimension + // picture
-            minTitleHeight + // title section
-            (AppConstants.standardSpacing * 3) + // vertical spacing--not actually sure why it has to be 3 instead of 2, but it does
-            2 // spacing between title and community
-    }
+    @ScaledMetric(relativeTo: .caption) var communityHeight: CGFloat = 16 // .caption height, including built-in spacing
     
+    let contentHeightModifier: CGFloat = 10
+    // width cannot go below contentHeightModifier so contentWidth is never negative
+    var width: CGFloat { max(contentHeightModifier, (parentFrameWidth - (AppConstants.standardSpacing * 3)) / 2) }
+    var contentHeight: CGFloat { width - contentHeightModifier }
+    var frameHeight: CGFloat { width + minTitleHeight + communityHeight + 17 }
+    // Padding math
+    // Need to satisfy: padding + contentHeightModifier = 17
+    //
+    // Title : community spacing = 7
+    // Title + community external padding = (2 * AppConstants.standardSpacing) = 20
+    //
+    // Total padding = 27
+    // 27 + contentHeightModifier = 17
+    // contentHeightModifier = 10
+
     var body: some View {
         content
-            .frame(width: dimension, height: frameHeight)
+            .frame(width: width, height: frameHeight)
             .background(palette.secondaryGroupedBackground)
             .clipShape(.rect(cornerRadius: AppConstants.tilePostCornerRadius))
             .contentShape(.contextMenuPreview, .rect(cornerRadius: AppConstants.tilePostCornerRadius))
-            .shadow(color: palette.primary.opacity(0.1), radius: 3)
             .environment(\.postContext, post)
     }
     
     var content: some View {
         VStack(alignment: .leading, spacing: 0) {
-            BaseImage(post: post)
+            BaseImage(post: post, width: width, height: contentHeight)
                 .overlay {
                     if let host = post.linkHost {
                         PostLinkHostView(host: host)
@@ -56,25 +68,26 @@ struct TilePostView: View {
             
             Divider()
             
-            titleSection
-                .padding(AppConstants.standardSpacing)
+            VStack(spacing: 7) {
+                titleSection
+                    .typesettingLanguage(.init(languageCode: .english))
+                
+                communityAndInfo
+            }
+            .padding(AppConstants.standardSpacing)
         }
     }
     
     @ViewBuilder
     var titleSection: some View {
-        VStack(spacing: 4) {
-            Text(post.title)
-                .lineLimit(post.type.lineLimit)
-                .foregroundStyle(post.read_ ?? false ? .secondary : .primary)
-                .font(.footnote)
-                .fontWeight(.semibold)
-                .frame(maxWidth: .infinity, minHeight: minTitleHeight, alignment: .topLeading)
-            
-            communityAndInfo
-        }
+        Text(post.title)
+            .lineLimit(post.type.lineLimit)
+            .foregroundStyle(post.read_ ?? false ? palette.secondary : palette.primary)
+            .font(.footnote)
+            .fontWeight(.semibold)
+            .frame(maxWidth: .infinity, minHeight: minTitleHeight, alignment: .topLeading)
     }
-    
+
     var communityAndInfo: some View {
         HStack(spacing: 6) {
             if let communityName = post.community_?.name {
@@ -95,18 +108,21 @@ struct TilePostView: View {
     struct BaseImage: View {
         @Environment(Palette.self) var palette: Palette
         
+        @AppStorage("safety.blurNsfw") var blurNsfw = true
+        
         let post: any Post1Providing
         
-        var dimension: CGFloat { UIScreen.main.bounds.width / 2 - (AppConstants.standardSpacing * 1.5) }
+        let width: CGFloat
+        let height: CGFloat
         
         var body: some View {
             switch post.type {
             case let .text(text):
-                Markdown(text, configuration: .default)
+                MarkdownText(text, configuration: .default)
                     .font(.caption)
                     .foregroundStyle(palette.secondary)
                     .padding(AppConstants.standardSpacing)
-                    .frame(maxWidth: .infinity, maxHeight: dimension, alignment: .topLeading)
+                    .frame(maxWidth: .infinity, maxHeight: height, alignment: .topLeading)
                     .clipped()
             case .titleOnly:
                 Image(systemName: post.placeholderImageName)
@@ -118,20 +134,21 @@ struct TilePostView: View {
             case let .image(url):
                 TappableImageView(url: url)
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: dimension, height: dimension)
+                    .frame(width: width, height: height)
                     .background(palette.secondaryBackground)
+                    .blur(radius: (post.nsfw && blurNsfw) ? 20 : 0, opaque: true)
                     .clipped()
             case let .link(url):
                 ImageView(url: url)
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: dimension, height: dimension)
+                    .frame(width: width, height: height)
                     .background(palette.secondaryBackground)
+                    .blur(radius: (post.nsfw && blurNsfw) ? 20 : 0, opaque: true)
                     .clipped()
             }
         }
     }
     
-    // TODO: this should be fleshed out to use live values--requires some middleware work to make those conveniently available. This is just a quick-and-dirty way to mock up how it would look.
     var score: some View {
         Menu {
             ForEach(post.menuActions(), id: \.id) { action in
@@ -140,7 +157,7 @@ struct TilePostView: View {
         } label: {
             Group {
                 Text(Image(systemName: post.votes_?.iconName ?? Icons.upvoteSquare)) +
-                    Text(" \(post.votes_?.total.abbreviated ?? "0")")
+                    Text(verbatim: " \(post.votes_?.total.abbreviated ?? "0")")
             }
             .lineLimit(1)
             .font(.caption)

@@ -58,15 +58,21 @@ struct AccountListRow: View {
             }
         }
         .contextMenu {
-            Section("Switch to this account and...") {
-                Button("Reload", systemImage: Icons.accountSwitchReload) {
-                    changeAccount(keepPlace: false)
+            if (account as? GuestAccount)?.isSaved ?? true {
+                Section("Switch to this account and...") {
+                    Button("Reload", systemImage: Icons.accountSwitchReload) {
+                        changeAccount(keepPlace: false)
+                    }
+                    Button("Keep Place", systemImage: Icons.accountSwitchKeepPlace) {
+                        changeAccount(keepPlace: true)
+                    }
                 }
-                Button("Keep Place", systemImage: Icons.accountSwitchKeepPlace) {
-                    changeAccount(keepPlace: true)
+                .disabled(appState.firstSession.actorId == account.actorId)
+            } else {
+                Button("Keep", systemImage: Icons.pin) {
+                    AccountsTracker.main.addAccount(account: account)
                 }
             }
-            .disabled(appState.firstSession.actorId == account.actorId)
         }
         .confirmationDialog(signOutPrompt, isPresented: $showingSignOutConfirmation) {
             Button(signOutLabel, role: .destructive) {

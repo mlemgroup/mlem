@@ -30,6 +30,8 @@ class AppState {
         }
     }
     
+    var contentViewTab: ContentView.Tab = .feeds
+    
     /// ``ContentView`` watches this for changes. When it is toggled, the app is refreshed.
     var appRefreshToggle: Bool = true
     
@@ -39,11 +41,13 @@ class AppState {
     }
     
     /// If `keepPlace` is `nil`, use the value from `UserDefaults`.
-    func changeAccount(to account: any Account, keepPlace: Bool? = nil) {
+    func changeAccount(to account: any Account, keepPlace: Bool? = nil, showAvatarPopup: Bool = true) {
         @AppStorage("accounts.keepPlace") var keepPlaceSetting = false
         let keepPlace = keepPlace ?? keepPlaceSetting
         if keepPlace {
-            ToastModel.main.add(.account(account))
+            if showAvatarPopup {
+                ToastModel.main.add(.account(account))
+            }
             setAccount(to: account)
         } else {
             transition(account)

@@ -20,19 +20,6 @@ struct LoginInstancePickerView: View {
     @State private var scrollViewContentSize: CGSize = .zero
     @FocusState private var focused: Bool
     
-    // Temporary - before 2.0 release this should be a list of all major instances fetched dynamically.
-    // In 1.0 we kept a list of top instances for use in the search homepage - we can reuse that list here.
-    let suggestions: [String] = [
-        "lemmy.ml",
-        "sh.itjust.works",
-        "lemmy.world",
-        "literature.cafe",
-        "lemmy.ca",
-        "feddit.de",
-        "lemmy.zip",
-        "startrek.website"
-    ]
-    
     var body: some View {
         content
             .interactiveDismissDisabled(!domain.isEmpty)
@@ -51,7 +38,9 @@ struct LoginInstancePickerView: View {
     
     @ViewBuilder
     var content: some View {
-        let filteredSuggestions = suggestions.filter { $0.starts(with: domain) && $0 != domain }
+        let filteredSuggestions = MlemStats.main.instances?.lazy.map(\.host).filter {
+            $0.starts(with: domain) && $0 != domain
+        } ?? []
         let showSuggestions = !(filteredSuggestions.isEmpty || domain.isEmpty || !focused)
         VStack {
             Image(systemName: "globe")

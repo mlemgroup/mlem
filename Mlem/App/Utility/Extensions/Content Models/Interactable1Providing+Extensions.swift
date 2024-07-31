@@ -11,6 +11,14 @@ import SwiftUI
 extension Interactable1Providing {
     private var self2: (any Interactable2Providing)? { self as? any Interactable2Providing }
     private var inboxItem: (any InboxItemProviding)? { self as? any InboxItemProviding }
+    
+    func showReplySheet() {
+        if let self = self as? any Post2Providing {
+            NavigationModel.main.openSheet(.reply(.post(self)))
+        } else {
+            print("DEBUG showReplySheet: cannot open sheet!")
+        }
+    }
 
     func toggleUpvoted(feedback: Set<FeedbackType>) {
         if let self2 {
@@ -131,7 +139,7 @@ extension Interactable1Providing {
             menuIcon: Icons.reply,
             swipeIcon1: Icons.reply,
             swipeIcon2: Icons.replyFill,
-            callback: nil
+            callback: api.willSendToken ? showReplySheet : nil
         )
     }
     
@@ -143,7 +151,7 @@ extension Interactable1Providing {
             color: Palette.main.negative,
             isDestructive: true,
             confirmationPrompt: showConfirmation ? "Really block this user?" : nil,
-            icon: Icons.hide,
+            icon: Icons.block,
             callback: api.willSendToken ? { self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
         )
     }

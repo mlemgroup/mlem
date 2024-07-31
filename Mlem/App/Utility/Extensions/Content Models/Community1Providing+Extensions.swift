@@ -11,14 +11,19 @@ import MlemMiddleware
 extension Community1Providing {
     private var self2: (any Community2Providing)? { self as? any Community2Providing }
     
+    // MARK: Operations
+    
     func toggleSubscribe(feedback: Set<FeedbackType>) {
         if let self2 {
+            if feedback.contains(.haptic) {
+                HapticManager.main.play(haptic: .lightSuccess, priority: .low)
+            }
             if feedback.contains(.toast) {
                 let wasFavorited = self2.favorited
                 if self2.subscribed {
                     ToastModel.main.add(
                         .undoable(
-                            title: "Unsubscribed",
+                            "Unsubscribed",
                             systemImage: "person.slash.fill",
                             callback: {
                                 if wasFavorited {
@@ -40,11 +45,14 @@ extension Community1Providing {
     
     func toggleFavorite(feedback: Set<FeedbackType>) {
         if let self2 {
+            if feedback.contains(.haptic) {
+                HapticManager.main.play(haptic: .lightSuccess, priority: .low)
+            }
             if feedback.contains(.toast) {
                 if self2.favorited {
                     ToastModel.main.add(
                         .undoable(
-                            title: "Unfavorited",
+                            "Unfavorited",
                             systemImage: "star.slash.fill",
                             callback: {
                                 self2.updateFavorite(true)
@@ -54,7 +62,7 @@ extension Community1Providing {
                     )
                 } else {
                     ToastModel.main.add(
-                        .basic(title: "Favorited", systemImage: "star.fill", color: .blue)
+                        .basic("Favorited", systemImage: "star.fill", color: .blue)
                     )
                 }
             }
@@ -68,8 +76,8 @@ extension Community1Providing {
         if !blocked, feedback.contains(.toast) {
             ToastModel.main.add(
                 .undoable(
-                    title: "Blocked",
-                    systemImage: Icons.hideFill,
+                    "Blocked",
+                    systemImage: Icons.blockFill,
                     callback: {
                         self.updateBlocked(false)
                     },
@@ -80,12 +88,46 @@ extension Community1Providing {
         toggleBlocked()
     }
     
-    func menuActions(feedback: Set<FeedbackType> = [.haptic]) -> ActionGroup {
-        ActionGroup(
-            children: [
-                subscribeAction(feedback: feedback),
-                favoriteAction(feedback: feedback)
-            ]
+    // MARK: Action Collections
+    
+    @ActionBuilder
+    func menuActions(
+        feedback: Set<FeedbackType> = [.haptic],
+        navigation: NavigationLayer?
+    ) -> [any Action] {
+        newPostAction()
+        subscribeAction(feedback: feedback)
+        favoriteAction(feedback: feedback)
+        openInstanceAction(navigation: navigation)
+        copyNameAction()
+        shareAction()
+        blockAction()
+    }
+    
+    func swipeActions(behavior: SwipeBehavior) -> SwipeConfiguration {
+        .init(
+            behavior: behavior,
+            leadingActions: {},
+            trailingActions: {
+                if api.willSendToken {
+                    subscribeAction(feedback: [.haptic])
+                    favoriteAction(feedback: [.haptic])
+                }
+            }
+        )
+    }
+    
+    // MARK: Actions
+    
+    func newPostAction() -> BasicAction {
+        .init(
+            id: "newPost\(uid)",
+            isOn: false,
+            label: "New Post",
+            color: Palette.main.accent,
+            icon: Icons.send,
+            swipeIcon2: Icons.sendFill,
+            callback: nil // TODO:
         )
     }
     
@@ -95,7 +137,7 @@ extension Community1Providing {
             id: "subscribe\(actorId.absoluteString)",
             isOn: isOn,
             label: isOn ? "Unsubscribe" : "Subscribe",
-            color: isOn ? .green : .red,
+            color: isOn ? Palette.main.negative : Palette.main.positive,
             isDestructive: isOn,
             icon: isOn ? Icons.unsubscribe : Icons.subscribe,
             barIcon: Icons.subscribe,
@@ -111,13 +153,26 @@ extension Community1Providing {
             id: "favorite\(actorId.absoluteString)",
             isOn: isOn,
             label: isOn ? "Unfavorite" : "Favorite",
-            color: .blue,
+            color: Palette.main.favorite,
             icon: isOn ? Icons.unfavorite : Icons.favorite,
             barIcon: Icons.favorite,
             menuIcon: isOn ? Icons.favoriteFill : Icons.favorite,
             swipeIcon1: isOn ? Icons.unfavorite : Icons.favorite,
             swipeIcon2: isOn ? Icons.unfavoriteFill : Icons.favoriteFill,
             callback: api.willSendToken ? { self.self2?.toggleFavorite(feedback: feedback) } : nil
+        )
+    }
+    
+    func blockAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
+        .init(
+            id: "block\(uid)",
+            isOn: false,
+            label: blocked ? "Unblock" : "Block",
+            color: Palette.main.negative,
+            isDestructive: !blocked,
+            confirmationPrompt: (!blocked && showConfirmation) ? "Really block this community?" : nil,
+            icon: blocked ? Icons.show : Icons.hide,
+            callback: api.willSendToken ? { self.toggleBlocked(feedback: feedback) } : nil
         )
     }
 }

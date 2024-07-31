@@ -22,6 +22,7 @@ extension Reply1Providing {
             trailingActions: {
                 if api.willSendToken {
                     markReadAction(feedback: [.haptic])
+                    replyAction()
                 }
             }
         )

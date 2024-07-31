@@ -13,18 +13,27 @@ import SwiftUI
 struct FeedsView: View {
     @AppStorage("post.size") var postSize: PostSize = .large
     @AppStorage("feed.showRead") var showRead: Bool = true
-    @AppStorage("beta.tilePosts") var tilePosts: Bool = false
     
     @Environment(\.dismiss) var dismiss
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
     @State var postFeedLoader: AggregatePostFeedLoader
+    @State var savedFeedLoader: PersonContentFeedLoader?
+    @State var feedOptions: [FeedSelection] = FeedSelection.guestCases
     @State var feedSelection: FeedSelection {
         didSet {
+            showRefreshPopup = false // changing feed selection refreshes the feed
             Task {
                 do {
-                    try await postFeedLoader.changeFeedType(to: feedSelection.associatedApiType)
+                    // clear whichever loader is now inactive and refresh/update active loader
+                    if feedSelection == .saved {
+                        await postFeedLoader.clear()
+                        try await savedFeedLoader?.refresh(clearBeforeRefresh: true)
+                    } else {
+                        savedFeedLoader?.clear()
+                        try await postFeedLoader.changeFeedType(to: feedSelection.associatedApiType)
+                    }
                 } catch {
                     handleError(error)
                 }
@@ -37,14 +46,19 @@ struct FeedsView: View {
     @State var scrollToTopTrigger: Bool = false
     
     enum FeedSelection: CaseIterable {
-        case all, local, subscribed
-        // TODO: moderated, saved
+        case all, local, subscribed, saved
+        // TODO: moderated
+        
+        static var guestCases: [FeedSelection] {
+            [.all, .local]
+        }
         
         var description: FeedDescription {
             switch self {
             case .all: .all
             case .local: .local
             case .subscribed: .subscribed
+            case .saved: .saved
             }
         }
         
@@ -53,6 +67,7 @@ struct FeedsView: View {
             case .all: .all
             case .local: .local
             case .subscribed: .subscribed
+            case .saved: .all // dummy value
             }
         }
     }
@@ -80,11 +95,24 @@ struct FeedsView: View {
             api: AppState.main.firstApi,
             feedType: initialFeedSelection.associatedApiType
         ))
+        if let firstUser = AppState.main.firstAccount as? UserAccount {
+            _savedFeedLoader = .init(wrappedValue: .init(
+                api: AppState.main.firstApi,
+                userId: firstUser.id,
+                sortType: .new,
+                savedOnly: true,
+                smallAvatarSize: AppConstants.smallAvatarSize,
+                largeAvatarSize: AppConstants.largeAvatarSize
+            ))
+            _feedOptions = .init(wrappedValue: FeedSelection.allCases)
+        } else {
+            _feedOptions = .init(wrappedValue: FeedSelection.guestCases)
+        }
     }
     
     var body: some View {
         content
-            .background(tilePosts ? palette.groupedBackground : palette.background)
+            .background(postSize.tiled ? palette.groupedBackground : palette.background)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarEllipsisMenu {
@@ -100,6 +128,7 @@ struct FeedsView: View {
                 }
             }
             .loadFeed(postFeedLoader)
+            .loadFeed(savedFeedLoader)
             .onChange(of: showRead) {
                 scrollToTopTrigger.toggle()
                 Task {
@@ -117,11 +146,40 @@ struct FeedsView: View {
             .onChange(of: appState.firstApi, initial: false) {
                 postFeedLoader.api = appState.firstApi
                 showRefreshPopup = true
+
+                if appState.firstApi.willSendToken, let firstUser = appState.firstAccount as? UserAccount {
+                    feedOptions = FeedSelection.allCases
+                    if let savedFeedLoader {
+                        savedFeedLoader.switchUser(api: appState.firstApi, userId: firstUser.id)
+                    } else {
+                        savedFeedLoader = .init(
+                            api: appState.firstApi,
+                            userId: firstUser.id,
+                            sortType: .new,
+                            savedOnly: true,
+                            smallAvatarSize: AppConstants.smallAvatarSize,
+                            largeAvatarSize: AppConstants.largeAvatarSize
+                        )
+                    }
+                } else {
+                    feedOptions = FeedSelection.guestCases
+                    savedFeedLoader = nil
+
+                    // ensure we only show non-authenticated feeds to non-authenticated users
+                    if !FeedSelection.guestCases.contains(feedSelection) {
+                        feedSelection = .all
+                    }
+                }
             }
             .refreshable {
                 do {
                     showRefreshPopup = false
-                    try await postFeedLoader.refresh(clearBeforeRefresh: false)
+                    switch feedSelection {
+                    case .all, .local, .subscribed:
+                        try await postFeedLoader.refresh(clearBeforeRefresh: false)
+                    case .saved:
+                        try await savedFeedLoader?.refresh(clearBeforeRefresh: false)
+                    }
                 } catch {
                     handleError(error)
                 }
@@ -131,7 +189,11 @@ struct FeedsView: View {
                     Task {
                         do {
                             showRefreshPopup = false
-                            try await postFeedLoader.refresh(clearBeforeRefresh: true)
+                            if feedSelection == .saved {
+                                try await savedFeedLoader?.refresh(clearBeforeRefresh: true)
+                            } else {
+                                try await postFeedLoader.refresh(clearBeforeRefresh: true)
+                            }
                         } catch {
                             handleError(error)
                         }
@@ -144,13 +206,18 @@ struct FeedsView: View {
     var content: some View {
         FancyScrollView(scrollToTopTrigger: $scrollToTopTrigger) {
             Section {
-                if !tilePosts { Divider() }
-                PostGridView(postFeedLoader: postFeedLoader)
+                if !postSize.tiled { Divider() }
+                
+                if let savedFeedLoader, feedSelection == .saved {
+                    PersonContentGridView(feedLoader: savedFeedLoader)
+                } else {
+                    PostGridView(postFeedLoader: postFeedLoader)
+                }
             } header: {
                 Menu {
-                    ForEach(FeedSelection.allCases, id: \.self) { feed in
+                    ForEach(feedOptions, id: \.self) { feed in
                         Button(
-                            feed.description.label,
+                            String(localized: feed.description.label),
                             systemImage: feedSelection == feed ? feed.description.iconNameFill : feed.description.iconName
                         ) {
                             feedSelection = feed

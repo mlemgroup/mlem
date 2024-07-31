@@ -28,7 +28,7 @@ func handleError(
     // TODO: Modify MlemMiddleware to attach the ApiClient throwing the error to ApiClientError.invalidSession, so that we can access the relevant UserStub in a multi-account context
     case ApiClientError.invalidSession:
         showReauthSheet()
-    case ApiClientError.cancelled:
+    case ApiClientError.cancelled, is CancellationError:
         print("Cancellation error")
     default:
         if let errorDetails {

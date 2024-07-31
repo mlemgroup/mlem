@@ -11,8 +11,16 @@ import SwiftUI
 
 struct ThumbnailImageView: View {
     @Environment(Palette.self) var palette
-        
+            
     let post: any Post1Providing
+    var blurred: Bool = false
+    
+    init(post: any Post1Providing, blurred: Bool) {
+        @AppStorage("safety.blurNsfw") var shouldBlur = true
+
+        self.post = post
+        self.blurred = shouldBlur ? blurred : false
+    }
     
     var body: some View {
         switch post.type {
@@ -21,12 +29,14 @@ struct ThumbnailImageView: View {
                 .aspectRatio(contentMode: .fill)
                 .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
                 .background(palette.secondaryBackground)
+                .blur(radius: blurred ? 10 : 0, opaque: true)
                 .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
         case let .link(url):
             ImageView(url: url)
                 .aspectRatio(contentMode: .fill)
                 .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
                 .background(palette.secondaryBackground)
+                .blur(radius: blurred ? 10 : 0, opaque: true)
                 .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
         default:
             Image(systemName: post.placeholderImageName)

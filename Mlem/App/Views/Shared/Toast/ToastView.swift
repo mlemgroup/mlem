@@ -15,6 +15,9 @@ struct ToastView: View {
     @State private var isExpanded: Bool = false
     @State private var didUndo: Bool = false
     
+    // These symbols only have a single hierarchical layer, so we render it as `.secondary`
+    static let dimmedSymbols: Set<String> = [Icons.blockFill]
+    
     var body: some View {
         HStack {
             switch toast.type {
@@ -59,12 +62,12 @@ struct ToastView: View {
                 .buttonStyle(EmptyButtonStyle())
             case let .error(details):
                 errorView(details)
-            case .loading:
+            case let .loading(title):
                 HStack {
                     ProgressView()
                         .tint(palette.secondary)
                         .padding(.leading)
-                    Text("Loading...")
+                    Text(title)
                         .padding(.horizontal, 30)
                 }
             case let .account(account):
@@ -123,7 +126,7 @@ struct ToastView: View {
     func accountView(_ account: any Account) -> some View {
         HStack(spacing: AppConstants.doubleSpacing) {
             AvatarView(account, showLoadingPlaceholder: false)
-                .frame(height: 27)
+                .frame(width: 27, height: 27)
                 .padding(.leading, 10)
             Text(account.nickname)
                 .lineLimit(1)
@@ -196,8 +199,11 @@ struct ToastView: View {
             .aspectRatio(contentMode: .fit)
             .fontWeight(.semibold)
             .symbolRenderingMode(.hierarchical)
+            // Don't use palette here! - Sjmarf
+            .foregroundStyle(ToastView.dimmedSymbols.contains(systemName) ? .secondary : .primary)
             .foregroundStyle(color)
-            .padding([.vertical, .leading], AppConstants.standardSpacing)
+            .frame(width: 27)
+            .padding(.leading, AppConstants.standardSpacing)
     }
 }
 
@@ -214,7 +220,7 @@ extension ToastView {
         ToastView(.undoable(callback: {}))
         ToastView(
             .undoable(
-                title: "Unfavorited Community",
+                String("Unfavorited Community"),
                 systemImage: "star.slash.fill",
                 callback: {},
                 color: .blue

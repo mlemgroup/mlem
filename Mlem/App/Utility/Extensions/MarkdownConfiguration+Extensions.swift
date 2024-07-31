@@ -10,24 +10,33 @@ import Nuke
 import SwiftUI
 
 extension MarkdownConfiguration {
+    static let defaultBlurred: Self = .init(
+        inlineImageLoader: loadInlineImage,
+        imageBlockView: {
+            imageView($0, blurred: true)
+        },
+        primaryColor: Palette.main.primary,
+        secondaryColor: Palette.main.secondary
+    )
+    
     static let `default`: Self = .init(
         inlineImageLoader: loadInlineImage,
-        imageBlockView: imageView,
+        imageBlockView: { imageView($0, blurred: false) },
         primaryColor: Palette.main.primary,
         secondaryColor: Palette.main.secondary
     )
     
     static let dimmed: Self = .init(
         inlineImageLoader: loadInlineImage,
-        imageBlockView: imageView,
+        imageBlockView: { imageView($0, blurred: false) },
         primaryColor: Palette.main.secondary,
         secondaryColor: Palette.main.tertiary
     )
 }
 
-private func imageView(_ inlineImage: InlineImage) -> AnyView {
+private func imageView(_ inlineImage: InlineImage, blurred: Bool) -> AnyView {
     AnyView(
-        TappableImageView(url: inlineImage.url)
+        LargeImageView(url: inlineImage.url, blurred: blurred)
             .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
             .frame(maxWidth: .infinity)
     )

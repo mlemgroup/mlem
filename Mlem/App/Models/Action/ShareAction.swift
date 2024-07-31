@@ -5,7 +5,6 @@
 //  Created by Sjmarf on 31/03/2024.
 //
 
-import Dependencies
 import SwiftUI
 
 struct ShareAction: Action {
@@ -17,7 +16,7 @@ struct ShareAction: Action {
         self.url = url
     }
     
-    var label: String { "Share..." }
+    var label: String { String(localized: "Share...") }
     var isDestructive: Bool { false }
     var color: Color { .gray }
     var isOn: Bool { false }

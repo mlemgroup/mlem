@@ -10,12 +10,12 @@ import MlemMiddleware
 import SwiftUI
 
 private struct LoadFeed: ViewModifier {
-    let feedLoader: any FeedLoading
+    let feedLoader: (any FeedLoading)?
     
     func body(content: Content) -> some View {
         content
             .task {
-                if feedLoader.items.isEmpty, feedLoader.loadingState == .idle {
+                if let feedLoader, feedLoader.items.isEmpty, feedLoader.loadingState == .idle {
                     do {
                         try await feedLoader.loadMoreItems()
                     } catch {
@@ -28,7 +28,7 @@ private struct LoadFeed: ViewModifier {
 
 extension View {
     /// Convenience modifier. Attach to a view to load items from the given FeedLoading on appear if the given FeedLoading has no items
-    func loadFeed(_ feedLoader: any FeedLoading) -> some View {
+    func loadFeed(_ feedLoader: (any FeedLoading)?) -> some View {
         modifier(LoadFeed(feedLoader: feedLoader))
     }
 }

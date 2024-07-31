@@ -11,7 +11,6 @@ import SwiftUI
 // note: this is a very lazy categorization of "properties that affect posts"
 struct PostSettingsView: View {
     @AppStorage("post.size") var postSize: PostSize = .large
-    @AppStorage("beta.tilePosts") var tilePosts: Bool = false
     @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
     @AppStorage("post.showCreator") var showCreator: Bool = false
     @AppStorage("user.showAvatar") var showUserAvatar: Bool = true
@@ -21,17 +20,13 @@ struct PostSettingsView: View {
         Form {
             Picker("Post Size", selection: $postSize) {
                 ForEach(PostSize.allCases, id: \.rawValue) { item in
-                    Text(item.rawValue).tag(item)
+                    Text(item.label).tag(item)
                 }
-            }
-            
-            Toggle(isOn: $tilePosts) {
-                Text("Tile Posts")
             }
             
             Picker("Thumbnail Location", selection: $thumbnailLocation) {
                 ForEach(ThumbnailLocation.allCases, id: \.rawValue) { item in
-                    Text(item.rawValue).tag(item)
+                    Text(item.label).tag(item)
                 }
             }
             

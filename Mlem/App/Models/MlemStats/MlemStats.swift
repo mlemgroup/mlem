@@ -52,4 +52,14 @@ class MlemStats {
             throw error
         }
     }
+    
+    @MainActor
+    func searchInstances(query: String) async throws -> [InstanceSummary] {
+        try await MlemStats.main.loadInstances()
+        if query.isEmpty { return instances ?? [] }
+        return instances?.filter {
+            $0.host.localizedCaseInsensitiveContains(query)
+                || $0.name.localizedCaseInsensitiveContains(query)
+        } ?? []
+    }
 }

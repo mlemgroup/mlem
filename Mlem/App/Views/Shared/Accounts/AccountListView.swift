@@ -22,8 +22,6 @@ struct AccountListView: View {
     @State var isSwitching: Bool = false
     
     @State private var isShowingAddAccountDialogue: Bool = false
-    @State private var isShowingAddGuestAlert: Bool = false
-    @State private var newGuestDomain: String = ""
     
     struct AccountGroup {
         let header: String
@@ -73,23 +71,6 @@ struct AccountListView: View {
                 addAccountButton
             }
         }
-        .alert("Enter Domain Name", isPresented: $isShowingAddGuestAlert) {
-            TextField("lemmy.world", text: $newGuestDomain)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled()
-            Button("OK") {
-                if !newGuestDomain.isEmpty, let url = URL(string: "https://\(newGuestDomain)") {
-                    let guest = GuestAccount.getGuestAccount(url: url)
-                    if !guest.isSaved {
-                        AccountsTracker.main.addAccount(account: guest)
-                    }
-                    AppState.main.changeAccount(to: guest)
-                    if navigation.isInsideSheet {
-                        dismiss()
-                    }
-                }
-            }
-        }
     }
     
     @ViewBuilder
@@ -119,14 +100,25 @@ struct AccountListView: View {
             Button { isShowingAddAccountDialogue = true } label: {
                 Label("Add Account", systemImage: "plus")
             }
-            .accessibilityLabel("Add a new account.")
-            .confirmationDialog("", isPresented: $isShowingAddAccountDialogue) {
+            .confirmationDialog("Choose Account Type", isPresented: $isShowingAddAccountDialogue) {
                 Button("Log In") {
                     navigation.openSheet(.login())
                 }
                 // Button("Sign Up") { }
                 Button("Add Guest") {
-                    isShowingAddGuestAlert = true
+                    navigation.openSheet(.instancePicker(callback: { instance in
+                        if let url = URL(string: "https://\(instance.host)") {
+                            if let guest = try? GuestAccount.getGuestAccount(url: url) {
+                                if !guest.isSaved {
+                                    AccountsTracker.main.addAccount(account: guest)
+                                }
+                                AppState.main.changeAccount(to: guest)
+                                if navigation.isInsideSheet {
+                                    dismiss()
+                                }
+                            }
+                        }
+                    }))
                 }
             }
         }

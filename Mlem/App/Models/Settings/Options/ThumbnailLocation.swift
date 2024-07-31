@@ -9,4 +9,12 @@ import Foundation
 
 enum ThumbnailLocation: String, CaseIterable {
     case left, right, none
+    
+    var label: LocalizedStringResource {
+        switch self {
+        case .left: "Left"
+        case .right: "Right"
+        case .none: "None"
+        }
+    }
 }

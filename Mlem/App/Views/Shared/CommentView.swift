@@ -16,6 +16,9 @@ struct CommentView: View {
     
     let comment: any Comment1Providing
     var highlight: Bool = false
+    var inFeed: Bool = false // flag to suppress threading/collapsing behavior
+    
+    var depth: Int { inFeed ? 0 : comment.depth }
     
     var body: some View {
         let collapsed = (comment as? CommentWrapper)?.collapsed ?? false
@@ -35,7 +38,17 @@ struct CommentView: View {
                     }
                 }
                 if !collapsed {
-                    Markdown(comment.content, configuration: .default)
+                    if comment.deleted {
+                        Text("Comment was deleted")
+                            .italic()
+                            .foregroundStyle(palette.secondary)
+                    } else if comment.removed {
+                        Text("Comment was removed")
+                            .italic()
+                            .foregroundStyle(palette.secondary)
+                    } else {
+                        Markdown(comment.content, configuration: .default)
+                    }
                     InteractionBarView(
                         comment: comment,
                         configuration: .init(
@@ -53,13 +66,13 @@ struct CommentView: View {
             .background(highlight ? palette.accent.opacity(0.2) : .clear)
             .background(palette.background)
             .border(
-                width: comment.depth == 0 ? 0 : 2, edges: [.leading],
-                color: palette.commentIndentColors[comment.depth % palette.commentIndentColors.count]
+                width: depth == 0 ? 0 : 2, edges: [.leading],
+                color: palette.commentIndentColors[depth % palette.commentIndentColors.count]
             )
             .quickSwipes(comment.swipeActions(behavior: .standard))
             .contentShape(.rect)
             .onTapGesture {
-                if let comment = comment as? CommentWrapper {
+                if !inFeed, let comment = comment as? CommentWrapper {
                     withAnimation {
                         comment.collapsed.toggle()
                     }
@@ -68,6 +81,6 @@ struct CommentView: View {
             .contextMenu(actions: comment.menuActions())
             Divider()
         }
-        .padding(.leading, CGFloat(comment.depth) * indent)
+        .padding(.leading, CGFloat(depth) * indent)
     }
 }

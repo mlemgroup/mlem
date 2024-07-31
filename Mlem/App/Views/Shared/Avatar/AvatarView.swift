@@ -28,8 +28,13 @@ struct AvatarView: View {
         self.type = type
         self.showLoadingPlaceholder = showLoadingPlaceholder
     
-        self._uiImage = .init(wrappedValue: .init())
-        self._loading = .init(wrappedValue: url != nil)
+        if let image = ImagePipeline.shared.cache.cachedImage(for: .init(url: url))?.image {
+            self._uiImage = .init(wrappedValue: image)
+            self._loading = .init(wrappedValue: false)
+        } else {
+            self._uiImage = .init(wrappedValue: .init())
+            self._loading = .init(wrappedValue: url != nil)
+        }
     }
     
     var body: some View {
@@ -58,8 +63,7 @@ struct AvatarView: View {
     
     @Sendable
     func loadImage() async {
-        guard let url else { return }
-        
+        guard let url, loading else { return }
         do {
             let imageTask = ImagePipeline.shared.imageTask(with: url)
             uiImage = try await imageTask.image
