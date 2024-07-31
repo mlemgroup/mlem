@@ -50,4 +50,12 @@ extension UIImage {
             ovalPath.stroke()
         }
     }
+    
+    func resized(to newSize: CGSize) -> UIImage {
+        let image = UIGraphicsImageRenderer(size: newSize).image { _ in
+            draw(in: CGRect(origin: .zero, size: newSize))
+        }
+        
+        return image.withRenderingMode(renderingMode)
+    }
 }

@@ -150,11 +150,11 @@ struct ContentView: View {
         do {
             let imageTask = ImagePipeline.shared.imageTask(with: url.withIconSize(128))
             let avatarImage: UIImage? = try await imageTask.image
-                .imageWith(newSize: .init(width: 26, height: 26))
+                .resized(to: .init(width: 26, height: 26))
                 .circleMasked
                 .withRenderingMode(.alwaysOriginal)
             let selectedAvatarImage: UIImage? = try await imageTask.image
-                .imageWith(newSize: .init(width: 26, height: 26))
+                .resized(to: .init(width: 26, height: 26))
                 .circleBorder(color: .init(palette.accent), width: 3.5)
                 .withRenderingMode(.alwaysOriginal)
             Task { @MainActor in
@@ -164,15 +164,5 @@ struct ContentView: View {
         } catch {
             print(error)
         }
-    }
-}
-
-extension UIImage {
-    func imageWith(newSize: CGSize) -> UIImage {
-        let image = UIGraphicsImageRenderer(size: newSize).image { _ in
-            draw(in: CGRect(origin: .zero, size: newSize))
-        }
-        
-        return image.withRenderingMode(renderingMode)
     }
 }
