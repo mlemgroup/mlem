@@ -15,8 +15,9 @@ struct SettingsView: View {
     
     @AppStorage("behavior.upvoteOnSave") var upvoteOnSave = false
     @AppStorage("safety.blurNsfw") var blurNsfw = true
+    
     @AppStorage("swipeActions.enabled") var swipeActionsEnabled = true
-        
+    
     var accounts: [UserAccount] { AccountsTracker.main.userAccounts }
     
     var body: some View {

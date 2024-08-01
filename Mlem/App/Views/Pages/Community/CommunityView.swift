@@ -24,9 +24,7 @@ struct CommunityView: View {
             }
         }
     }
-    
-    @AppStorage("test") var test: Bool = false
-    
+        
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
