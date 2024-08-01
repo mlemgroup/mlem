@@ -27,12 +27,13 @@ struct CommunityView: View {
     
     @AppStorage("test") var test: Bool = false
     
+    @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     
     @State var community: AnyCommunity
     @State private var selectedTab: Tab = .posts
-    @State private var isAtTop: ScrollPosition = .init()
+    @State var showRefreshPopup: Bool = false
     @State var postFeedLoader: CommunityPostFeedLoader?
     
     init(community: AnyCommunity) {
@@ -43,6 +44,31 @@ struct CommunityView: View {
         ContentLoader(model: community) { proxy in
             if let community = proxy.entity, let postFeedLoader {
                 content(community: community, postFeedLoader: postFeedLoader)
+                    .refreshable {
+                        showRefreshPopup = false
+                        do {
+                            try await postFeedLoader.refresh(clearBeforeRefresh: false)
+                        } catch {
+                            handleError(error)
+                        }
+                    }
+                    .onChange(of: appState.firstApi, initial: false) {
+                        showRefreshPopup = true
+                    }
+                    .overlay(alignment: .bottom) {
+                        if selectedTab == .posts {
+                            RefreshPopupView("Feed is outdated", isPresented: $showRefreshPopup) {
+                                Task {
+                                    do {
+                                        showRefreshPopup = false
+                                        try await postFeedLoader.refresh(clearBeforeRefresh: true)
+                                    } catch {
+                                        handleError(error)
+                                    }
+                                }
+                            }
+                        }
+                    }
                     .externalApiWarning(entity: community, isLoading: proxy.isLoading)
                     .toolbar {
                         ToolbarItem(placement: .topBarTrailing) {
@@ -59,8 +85,12 @@ struct CommunityView: View {
             }
         } upgradeOperation: { model, api in
             try await model.upgrade(api: api, upgradeOperation: nil)
-            if let community = model.wrappedValue as? any Community, postFeedLoader == nil {
-                setupFeedLoader(community: community)
+            if let community = model.wrappedValue as? any Community {
+                if postFeedLoader == nil {
+                    setupFeedLoader(community: community)
+                } else if postFeedLoader?.community.api != community.api {
+                    postFeedLoader?.community = community
+                }
             }
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -87,7 +117,7 @@ struct CommunityView: View {
             VStack {
                 switch selectedTab {
                 case .posts:
-                    PostGridView(postFeedLoader: postFeedLoader)
+                    postsTab(community: community, postFeedLoader: postFeedLoader)
                 case .about:
                     aboutTab(community: community)
                 default:
@@ -99,6 +129,11 @@ struct CommunityView: View {
         .loadFeed(postFeedLoader)
     }
     
+    @ViewBuilder
+    func postsTab(community: any Community, postFeedLoader: CommunityPostFeedLoader) -> some View {
+        PostGridView(postFeedLoader: postFeedLoader)
+    }
+
     @ViewBuilder
     func aboutTab(community: any Community) -> some View {
         VStack(spacing: AppConstants.standardSpacing) {
@@ -137,9 +172,9 @@ struct CommunityView: View {
     }
     
     func tabs(community: any Community) -> [Tab] {
-        var output: [Tab] = [.posts, .about, .details]
+        var output: [Tab] = [.posts, .moderation, .details]
         if community.description != nil || community.banner != nil {
-            output.insert(.moderation, at: 2)
+            output.insert(.about, at: 1)
         }
         return output
     }
