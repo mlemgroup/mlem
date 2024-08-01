@@ -32,7 +32,7 @@ struct CommunityView: View {
     
     @State var community: AnyCommunity
     @State private var selectedTab: Tab = .posts
-    @State private var isAtTop: Bool = true
+    @State private var isAtTop: ScrollPosition = .init()
     @State var postFeedLoader: CommunityPostFeedLoader?
     
     init(community: AnyCommunity) {
@@ -56,7 +56,6 @@ struct CommunityView: View {
             } else {
                 ProgressView()
                     .tint(palette.secondary)
-                // .navigationTitle(community.wrappedValue.displayName_ ?? community.wrappedValue.name)
             }
         } upgradeOperation: { model, api in
             try await model.upgrade(api: api, upgradeOperation: nil)
@@ -64,10 +63,6 @@ struct CommunityView: View {
                 setupFeedLoader(community: community)
             }
         }
-        .onPreferenceChange(IsAtTopPreferenceKey.self, perform: { value in
-            isAtTop = value
-        })
-        .navigationTitle(isAtTop ? "" : (community.wrappedValue.displayName_ ?? community.wrappedValue.name))
         .navigationBarTitleDisplayMode(.inline)
     }
         
@@ -93,17 +88,15 @@ struct CommunityView: View {
                 switch selectedTab {
                 case .posts:
                     PostGridView(postFeedLoader: postFeedLoader)
-                        .loadFeed(postFeedLoader)
-                        .geometryGroup()
                 case .about:
                     aboutTab(community: community)
                 default:
                     EmptyView()
                 }
             }
-            .animation(.easeInOut(duration: 0.1), value: selectedTab)
             .environment(\.communityContext, community)
         }
+        .loadFeed(postFeedLoader)
     }
     
     @ViewBuilder
@@ -123,7 +116,9 @@ struct CommunityView: View {
     func subscribeButton(community: any Community) -> some View {
         let subscribed = community.subscribed_ ?? false
         Button {
-            community.toggleSubscribe(feedback: [.haptic])
+            if community.api.willSendToken {
+                community.toggleSubscribe(feedback: [.haptic])
+            }
         } label: {
             HStack {
                 Text((community.subscriberCount_ ?? 0).abbreviated)
