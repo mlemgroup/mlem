@@ -1,4 +1,5 @@
 {
+  "originHash" : "b159f0a20b9c47bf2fae7b8e8322b8f3fff96046592270bf1b94b96530aa91b0",
   "pins" : [
     {
       "identity" : "combine-schedulers",
@@ -25,6 +26,15 @@
       "state" : {
         "revision" : "bd3982bf5c5446455dce394e94ab89b5012901ab",
         "version" : "0.1.0"
+      }
+    },
+    {
+      "identity" : "mlemmiddleware",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mlemgroup/MlemMiddleware.git",
+      "state" : {
+        "branch" : "sjmarf/feed-loader-configuration",
+        "revision" : "631ea87771e8c80e92784258bfdc9e03d444d50d"
       }
     },
     {
@@ -91,5 +101,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
