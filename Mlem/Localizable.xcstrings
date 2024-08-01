@@ -1,12 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-
-    },
-    "@%@" : {
-
-    },
     "**%@** and **%@** chose to defederate from one another." : {
       "localizations" : {
         "en" : {
@@ -33,16 +27,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "**%1$@** hasn't chosen to federate with your instance, **%2$@**."
-          }
-        }
-      }
-    },
-    "%@, %lld" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@, %2$lld"
           }
         }
       }
