@@ -20,7 +20,7 @@ struct AccountListRowBody: View {
     
     var body: some View {
         HStack(alignment: .center, spacing: 10) {
-            AvatarView(account, showLoadingPlaceholder: false)
+            CircleCroppedImageView(account, showProgress: false)
                 .frame(height: 40)
                 .padding(.leading, -5)
             VStack(alignment: .leading) {

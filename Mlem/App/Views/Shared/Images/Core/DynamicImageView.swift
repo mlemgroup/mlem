@@ -1,5 +1,5 @@
 //
-//  ImageView.swift
+//  DynamicImageView.swift
 //  Mlem
 //
 //  Created by Sjmarf on 12/06/2024.
@@ -12,7 +12,7 @@ private extension UIImage {
     static let blank: UIImage = .init()
 }
 
-struct ImageView: View {
+struct DynamicImageView: View {
     @Environment(Palette.self) var palette: Palette
     
     enum LoadingState {

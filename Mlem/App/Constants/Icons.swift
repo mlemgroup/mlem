@@ -119,11 +119,12 @@ enum Icons {
     
     // entities/general Lemmy concepts
     static let federation: String = "point.3.filled.connected.trianglepath.dotted"
-    static let instance: String = "server.rack"
+    static let instance: String = "building.2.crop.circle"
+    static let instanceFill: String = "building.2.crop.circle.fill"
     static let user: String = "person.crop.circle"
     static let userFill: String = "person.crop.circle.fill"
-    static let community: String = "building.2.crop.circle"
-    static let communityFill: String = "building.2.crop.circle.fill"
+    static let community: String = "house.circle"
+    static let communityFill: String = "house.circle.fill"
     
     // tabs
     static let feeds: String = "scroll"

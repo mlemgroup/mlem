@@ -72,7 +72,7 @@ struct PersonView: View {
     func content(person: any Person) -> some View {
         FancyScrollView {
             VStack(spacing: AppConstants.standardSpacing) {
-                ProfileHeaderView(person, type: .person)
+                ProfileHeaderView(person, fallback: .person)
                     .padding(.horizontal, AppConstants.standardSpacing)
                 bio(person: person)
                 if let person = person as? any Person3Providing {

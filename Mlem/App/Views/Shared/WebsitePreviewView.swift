@@ -47,7 +47,7 @@ struct WebsitePreviewView: View {
     var complex: some View {
         VStack(alignment: .leading, spacing: 0) {
             if let thumbnailUrl = link.thumbnail {
-                ImageView(url: thumbnailUrl, cornerRadius: 0)
+                DynamicImageView(url: thumbnailUrl, cornerRadius: 0)
                     .overlay(alignment: .bottomLeading) {
                         linkHost
                             .padding(AppConstants.halfSpacing)
@@ -72,16 +72,9 @@ struct WebsitePreviewView: View {
     }
     
     var linkHost: some View {
-        HStack(spacing: AppConstants.standardSpacing) {
-            if let faviconUrl = link.favicon {
-                ImageView(url: faviconUrl, showError: false)
-                    .frame(width: AppConstants.smallAvatarSize, height: AppConstants.smallAvatarSize)
-                    .background {
-                        Image(systemName: Icons.browser)
-                            .resizable()
-                            .foregroundStyle(.secondary)
-                    }
-            }
+        HStack(spacing: AppConstants.halfSpacing) {
+            CircleCroppedImageView(url: link.favicon, fallback: .favicon)
+                .frame(width: AppConstants.smallAvatarSize, height: AppConstants.smallAvatarSize)
             
             Text(link.host)
                 .foregroundStyle(palette.secondary)

@@ -117,19 +117,19 @@ struct TilePostView: View {
                     .foregroundStyle(palette.secondary)
                     .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-            case let .image(url):
-                ExpandableImageView(url: url)
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: width, height: height)
-                    .background(palette.secondaryBackground)
-                    .blur(radius: (post.nsfw && blurNsfw) ? 20 : 0, opaque: true)
-                    .clipped()
+            case .image:
+                ThumbnailImageView(
+                    post: post,
+                    blurred: post.nsfw && blurNsfw,
+                    size: .tile
+                )
+                .aspectRatio(contentMode: .fill)
+                .frame(width: width, height: height)
+                .clipped()
             case let .link(link):
-                ImageView(url: link.thumbnail)
+                ThumbnailImageView(post: post, blurred: post.nsfw && blurNsfw, size: .tile)
                     .aspectRatio(contentMode: .fill)
                     .frame(width: width, height: height)
-                    .background(palette.secondaryBackground)
-                    .blur(radius: (post.nsfw && blurNsfw) ? 20 : 0, opaque: true)
                     .clipped()
                     .overlay {
                         PostLinkHostView(host: link.host)
@@ -143,9 +143,6 @@ struct TilePostView: View {
                             }
                             .padding(AppConstants.compactSpacing)
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                    }
-                    .onTapGesture {
-                        openURL(link.content)
                     }
             }
         }

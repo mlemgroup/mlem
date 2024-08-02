@@ -67,7 +67,7 @@ struct CommunityListRowBody<Content: View>: View {
                     .frame(width: 30, height: 30)
                     .padding(9)
             } else {
-                AvatarView(url: community.avatar?.withIconSize(128), type: .community)
+                CircleCroppedImageView(url: community.avatar?.withIconSize(128), fallback: .community)
                     .frame(height: 46)
             }
             

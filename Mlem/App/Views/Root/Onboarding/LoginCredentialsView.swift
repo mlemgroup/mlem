@@ -83,7 +83,7 @@ struct LoginCredentialsView: View {
     
     @ViewBuilder
     func instanceHeader(_ instance: any Instance) -> some View {
-        AvatarView(instance)
+        CircleCroppedImageView(instance)
             .frame(height: 50)
         Text(instance.displayName)
             .font(.title)
@@ -93,7 +93,7 @@ struct LoginCredentialsView: View {
     @ViewBuilder
     func reauthHeader(_ account: UserAccount) -> some View {
         VStack {
-            AvatarView(account)
+            CircleCroppedImageView(account)
                 .frame(height: 50)
             Text(account.fullName ?? "Sign In")
                 .font(.title)

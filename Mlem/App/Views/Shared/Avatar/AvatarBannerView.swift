@@ -11,26 +11,26 @@ import SwiftUI
 
 struct AvatarBannerView: View {
     var model: (any Profile1Providing)?
-    var type: AvatarType
+    var fallback: FixedImageView.Fallback
     var showEmptyBanner: Bool = false
     var showBanner: Bool = true
     var showAvatar: Bool = true
 
     init<T: Profile1Providing>(_ model: T?, showEmptyBanner: Bool = false) {
         self.model = model
-        self.type = T.avatarType
+        self.fallback = T.avatarFallback
         self.showEmptyBanner = showEmptyBanner
     }
     
     init(_ model: any Profile1Providing, showEmptyBanner: Bool = false) {
         self.model = model
-        self.type = Swift.type(of: model).avatarType
+        self.fallback = Swift.type(of: model).avatarFallback
         self.showEmptyBanner = showEmptyBanner
     }
     
-    init(_ model: (any Profile1Providing)?, type: AvatarType, showEmptyBanner: Bool = false) {
+    init(_ model: (any Profile1Providing)?, fallback: FixedImageView.Fallback, showEmptyBanner: Bool = false) {
         self.model = model
-        self.type = type
+        self.fallback = fallback
         self.showEmptyBanner = showEmptyBanner
     }
     
@@ -94,9 +94,8 @@ struct AvatarBannerView: View {
         }
     }
     
-    @ViewBuilder
     var avatarView: some View {
-        AvatarView(url: model?.avatar, type: type)
+        CircleCroppedImageView(url: model?.avatar, fallback: fallback)
             .frame(height: AvatarBannerView.avatarSize)
     }
 }

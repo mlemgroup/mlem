@@ -78,7 +78,7 @@ struct InstanceView: View {
         FancyScrollView {
             ProfileHeaderView(
                 instance,
-                type: .instance,
+                fallback: .instance,
                 blockedOverride: (appState.firstSession as? UserSession)?.blocks?.contains(instance)
             )
             .padding([.horizontal, .bottom], AppConstants.standardSpacing)

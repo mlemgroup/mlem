@@ -48,7 +48,7 @@ struct InstanceListRowBody<Content: View>: View {
 
     var body: some View {
         HStack(spacing: AppConstants.standardSpacing) {
-            AvatarView(url: avatar?.withIconSize(128), type: .instance)
+            CircleCroppedImageView(url: avatar?.withIconSize(128), fallback: .instance)
                 .frame(height: 46)
             
             VStack(alignment: .leading, spacing: 2) {

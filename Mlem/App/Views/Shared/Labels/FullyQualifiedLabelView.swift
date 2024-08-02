@@ -49,11 +49,25 @@ struct FullyQualifiedLabelView: View {
     let labelStyle: FullyQualifiedLabelStyle
     let showAvatar: Bool
     
+    var fallback: FixedImageView.Fallback {
+        if entity as? CommunityStubProviding != nil {
+            return .community
+        }
+        if entity as? PersonStubProviding != nil {
+            return .person
+        }
+        return .image
+    }
+    
     var body: some View {
         HStack {
             if showAvatar {
-                AvatarView(url: entity?.avatar?.withIconSize(labelStyle.avatarResolution), type: .person)
-                    .frame(width: labelStyle.avatarSize, height: labelStyle.avatarSize)
+                CircleCroppedImageView(
+                    url: entity?.avatar?.withIconSize(labelStyle.avatarResolution),
+                    fallback: fallback,
+                    showProgress: false
+                )
+                .frame(width: labelStyle.avatarSize, height: labelStyle.avatarSize)
             }
             
             FullyQualifiedNameView(name: entity?.name, instance: entity?.host, instanceLocation: labelStyle.instanceLocation)

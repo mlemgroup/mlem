@@ -10,11 +10,11 @@ import SwiftUI
 struct ExpandableImageView: View {
     @Environment(NavigationLayer.self) var navigation
     
-    @State var loading: ImageView.LoadingState = .waiting
+    @State var loading: DynamicImageView.LoadingState = .waiting
     let url: URL?
     
     var body: some View {
-        ImageView(url: url, onLoadingStateChange: { loading = $0 })
+        DynamicImageView(url: url, onLoadingStateChange: { loading = $0 })
             .onTapGesture {
                 if loading == .done, let url {
                     // Sheets don't cover the whole screen on iPad, so use a fullScreenCover instead
