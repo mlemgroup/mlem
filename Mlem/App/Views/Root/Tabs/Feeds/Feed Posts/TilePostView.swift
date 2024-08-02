@@ -118,8 +118,7 @@ struct TilePostView: View {
         var body: some View {
             switch post.type {
             case let .text(text):
-                MarkdownText(text, configuration: .default)
-                    .font(.caption)
+                MarkdownText(text, configuration: .caption)
                     .foregroundStyle(palette.secondary)
                     .padding(AppConstants.standardSpacing)
                     .frame(maxWidth: .infinity, maxHeight: height, alignment: .topLeading)

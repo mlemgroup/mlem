@@ -11,6 +11,7 @@ import SwiftUI
 
 extension MarkdownConfiguration {
     static let defaultBlurred: Self = .init(
+        allowInlineImages: false,
         inlineImageLoader: loadInlineImage,
         imageBlockView: {
             imageView($0, blurred: true)
@@ -20,6 +21,7 @@ extension MarkdownConfiguration {
     )
     
     static let `default`: Self = .init(
+        allowInlineImages: false,
         inlineImageLoader: loadInlineImage,
         imageBlockView: { imageView($0, blurred: false) },
         primaryColor: Palette.main.primary,
@@ -27,10 +29,20 @@ extension MarkdownConfiguration {
     )
     
     static let dimmed: Self = .init(
+        allowInlineImages: false,
         inlineImageLoader: loadInlineImage,
         imageBlockView: { imageView($0, blurred: false) },
         primaryColor: Palette.main.secondary,
         secondaryColor: Palette.main.tertiary
+    )
+    
+    static let caption: Self = .init(
+        allowInlineImages: false,
+        inlineImageLoader: loadInlineImage,
+        imageBlockView: { imageView($0, blurred: false) },
+        primaryColor: Palette.main.secondary,
+        secondaryColor: Palette.main.tertiary,
+        font: .caption1
     )
 }
 
