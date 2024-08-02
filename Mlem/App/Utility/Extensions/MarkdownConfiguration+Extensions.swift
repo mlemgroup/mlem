@@ -11,7 +11,6 @@ import SwiftUI
 
 extension MarkdownConfiguration {
     static let defaultBlurred: Self = .init(
-        allowInlineImages: false,
         inlineImageLoader: loadInlineImage,
         imageBlockView: {
             imageView($0, blurred: true)
@@ -21,7 +20,6 @@ extension MarkdownConfiguration {
     )
     
     static let `default`: Self = .init(
-        allowInlineImages: false,
         inlineImageLoader: loadInlineImage,
         imageBlockView: { imageView($0, blurred: false) },
         primaryColor: Palette.main.primary,
@@ -29,16 +27,14 @@ extension MarkdownConfiguration {
     )
     
     static let dimmed: Self = .init(
-        allowInlineImages: false,
-        inlineImageLoader: loadInlineImage,
+        inlineImageLoader: { _ in },
         imageBlockView: { imageView($0, blurred: false) },
         primaryColor: Palette.main.secondary,
         secondaryColor: Palette.main.tertiary
     )
     
     static let caption: Self = .init(
-        allowInlineImages: false,
-        inlineImageLoader: loadInlineImage,
+        inlineImageLoader: { _ in },
         imageBlockView: { imageView($0, blurred: false) },
         primaryColor: Palette.main.secondary,
         secondaryColor: Palette.main.tertiary,
@@ -55,6 +51,15 @@ private func imageView(_ inlineImage: InlineImage, blurred: Bool) -> AnyView {
 }
 
 private func loadInlineImage(inlineImage: InlineImage) async {
+    // Only custom emojis should be displayed inline. Custom emojis have tooltips.
+    // People are unlikely to use tooltips in any other circumstances, so images
+    // with tooltips are displayed inline. I haven't found a better way to test for
+    // a custom emoji.
+    if inlineImage.tooltip == nil {
+        inlineImage.renderFullWidth = true
+        return
+    }
+    
     guard inlineImage.image == nil else { return }
     let imageTask = ImagePipeline.shared.imageTask(with: inlineImage.url)
     guard let image: UIImage = try? await imageTask.image else { return }
