@@ -16,6 +16,7 @@ struct FixedImageView: View {
     
     @State private var uiImage: UIImage
     @State private var loading: ImageLoadingState
+    @State var contentSize: CGSize = .zero
     
     let url: URL?
     let fallback: Fallback
@@ -44,16 +45,29 @@ struct FixedImageView: View {
         self.url = url
         self.fallback = fallback
         self.showProgress = showProgress
-    
+        
         self._uiImage = .init(wrappedValue: .init())
         self._loading = .init(wrappedValue: url == nil ? .failed : .loading)
     }
     
     var body: some View {
-        content
-            .task(loadImage)
-            .aspectRatio(1, contentMode: .fit)
-            .preference(key: ImageLoadingPreferenceKey.self, value: loading)
+        GeometryReader { geo in
+            content
+                .task(loadImage)
+                .aspectRatio(1, contentMode: .fit)
+                .preference(key: ImageLoadingPreferenceKey.self, value: loading)
+                .onAppear {
+                    contentSize = geo.size
+                }
+        }
+        // this is a bit of a hack--the hit area of the image is defined by the image itself, so we have to override it and restrict
+        // hit testing to only the parent frame
+        .allowsHitTesting(false)
+        .overlay(alignment: .top) {
+            Rectangle()
+                .frame(width: contentSize.width, height: contentSize.height)
+                .opacity(0.00000000001)
+        }
     }
     
     @ViewBuilder

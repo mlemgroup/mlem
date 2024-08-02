@@ -123,12 +123,10 @@ struct TilePostView: View {
                     blurred: post.nsfw && blurNsfw,
                     size: .tile
                 )
-                .aspectRatio(contentMode: .fill)
                 .frame(width: width, height: height)
                 .clipped()
             case let .link(link):
                 ThumbnailImageView(post: post, blurred: post.nsfw && blurNsfw, size: .tile)
-                    .aspectRatio(contentMode: .fill)
                     .frame(width: width, height: height)
                     .clipped()
                     .overlay {
