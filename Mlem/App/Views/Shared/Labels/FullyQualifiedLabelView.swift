@@ -50,10 +50,10 @@ struct FullyQualifiedLabelView: View {
     let showAvatar: Bool
     
     var fallback: FixedImageView.Fallback {
-        if entity as? CommunityStubProviding != nil {
+        if entity is any CommunityStubProviding {
             return .community
         }
-        if entity as? PersonStubProviding != nil {
+        if entity is any PersonStubProviding {
             return .person
         }
         return .image

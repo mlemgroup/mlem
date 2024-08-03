@@ -92,7 +92,6 @@ struct TilePostView: View {
     
     struct BaseImage: View {
         @Environment(Palette.self) var palette: Palette
-        @Environment(\.openURL) var openURL
         
         @AppStorage("safety.blurNsfw") var blurNsfw = true
         

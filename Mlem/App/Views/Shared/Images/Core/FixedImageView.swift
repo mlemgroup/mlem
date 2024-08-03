@@ -50,8 +50,6 @@ struct FixedImageView: View {
     }
     
     var body: some View {
-        // images really want to disregard their frames for hit testing, so we put them into a non-interactable overlay and let
-        // the Color.fauxClear handle the actual hit testing
         Color.clear.contentShape(.rect)
             .overlay {
                 content

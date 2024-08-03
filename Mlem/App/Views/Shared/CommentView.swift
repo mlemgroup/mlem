@@ -39,7 +39,6 @@ struct CommentView: View {
                 }
                 if !collapsed {
                     Markdown(comment.content, configuration: .default)
-                        .font(.callout)
                     InteractionBarView(
                         comment: comment,
                         configuration: .init(
