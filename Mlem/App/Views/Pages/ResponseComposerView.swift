@@ -26,6 +26,7 @@ struct ResponseComposerView: View {
     let originalContext: ResponseContext
     @State var resolvedContext: ResponseContext
     @State var resolutionState: ResolutionState = .success
+    @State var sending: Bool = false
 
     @State var account: UserAccount
     @State var presentationSelection: PresentationDetent = .large
@@ -70,39 +71,21 @@ struct ResponseComposerView: View {
                             }
                         }
                         ToolbarItem(placement: .topBarTrailing) {
-                            Button("Send", systemImage: Icons.send) {}
-                                .disabled(resolutionState != .success)
-                        }
-                    }
-            }
-            .task(id: account) {
-                do {
-                    switch originalContext {
-                    case let .post(post):
-                        if post.api === account.api {
-                            resolvedContext = originalContext
-                        } else {
-                            Task { @MainActor in
-                                resolutionState = .resolving
-                            }
-                            let post = try await account.api.getPost(actorId: post.actorId)
-                            Task { @MainActor in
-                                resolutionState = .success
-                                resolvedContext = .post(post)
+                            if sending {
+                                ProgressView()
+                            } else {
+                                Button("Send", systemImage: Icons.send) {
+                                    sending = true
+                                    Task(priority: .userInitiated) {
+                                        await send()
+                                    }
+                                }
+                                .disabled(resolutionState != .success || text.isEmpty)
                             }
                         }
                     }
-                } catch ApiClientError.noEntityFound {
-                    print("No entity found!")
-                    Task { @MainActor in
-                        resolutionState = .notFound
-                    }
-                } catch {
-                    Task { @MainActor in
-                        resolutionState = .error(.init(error: error))
-                    }
-                }
             }
+            .task(id: account, resolveContext)
         }
         .onChange(of: presentationSelection) {
             if presentationSelection == .large {
@@ -114,7 +97,11 @@ struct ResponseComposerView: View {
     @ViewBuilder
     var content: some View {
         ScrollView {
-            VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: 0) {
+                if resolutionState == .notFound {
+                    resolutionWarning
+                        .padding([.horizontal, .bottom], 10)
+                }
                 MarkdownTextEditor(
                     text: $text,
                     prompt: "Start writing...",
@@ -137,8 +124,80 @@ struct ResponseComposerView: View {
                         .padding(.horizontal, AppConstants.standardSpacing)
                 }
             }
+            .animation(.easeOut(duration: 0.2), value: resolutionState == .notFound)
         }
         .scrollBounceBehavior(.basedOnSize)
+    }
+    
+    @ViewBuilder
+    var resolutionWarning: some View {
+        Text("Failed to resolve post. Try another account.")
+            .padding(.vertical, 3)
+            .frame(maxWidth: .infinity)
+            .background(.opacity(0.2), in: .capsule)
+            .foregroundStyle(palette.caution)
+    }
+    
+    @Sendable
+    func resolveContext() async {
+        do {
+            switch originalContext {
+            case let .post(post):
+                if post.api === account.api {
+                    resolutionState = .success
+                    resolvedContext = originalContext
+                } else {
+                    Task { @MainActor in
+                        resolutionState = .resolving
+                    }
+                    let post = try await account.api.getPost(actorId: post.actorId)
+                    Task { @MainActor in
+                        resolutionState = .success
+                        resolvedContext = .post(post)
+                    }
+                }
+            }
+        } catch ApiClientError.noEntityFound {
+            print("No entity found!")
+            Task { @MainActor in
+                resolutionState = .notFound
+            }
+        } catch {
+            Task { @MainActor in
+                resolutionState = .error(.init(error: error))
+            }
+        }
+    }
+    
+    func send() async {
+        do {
+            let parentPost: any PostStubProviding
+            // let result: Comment2
+            switch resolvedContext {
+            case let .post(post):
+                // result = try await post.reply(content: text)
+                parentPost = post
+            }
+            Task { @MainActor in
+                textView.resignFirstResponder()
+                textView.isEditable = false
+                HapticManager.main.play(haptic: .success, priority: .low)
+                switch navigation.bottomLayer.path.last {
+                case let .expandedPost(post, commentId: _):
+                    if post.wrappedValue.actorId != parentPost.actorId { fallthrough }
+                default:
+                    print("PUSH", navigation.bottomLayer.path)
+                    navigation.bottomLayer.push(.expandedPost(parentPost, commentId: nil))
+                }
+                dismiss()
+            }
+        } catch {
+            Task { @MainActor in
+                sending = false
+                textView.isEditable = true
+                handleError(error)
+            }
+        }
     }
 }
 
