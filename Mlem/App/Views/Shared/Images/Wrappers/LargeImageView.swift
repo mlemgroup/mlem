@@ -26,10 +26,10 @@ struct LargeImageView: View {
         self._blurred = .init(wrappedValue: shouldBlur ? blurred : false)
     }
     
-    @State private var loading: DynamicImageView.LoadingState = .waiting
+    @State private var loading: ImageLoadingState = .loading
 
     var body: some View {
-        DynamicImageView(url: url, onLoadingStateChange: { loading = $0 })
+        DynamicImageView(url: url)
             .blur(radius: blurred ? 50 : 0, opaque: true)
             .clipShape(.rect(cornerRadius: AppConstants.largeItemCornerRadius))
             .overlay {
@@ -68,5 +68,6 @@ struct LargeImageView: View {
                     }
                 }
             }
+            .onPreferenceChange(ImageLoadingPreferenceKey.self, perform: { loading = $0 })
     }
 }

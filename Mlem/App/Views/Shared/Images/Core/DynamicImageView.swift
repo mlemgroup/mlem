@@ -15,28 +15,21 @@ private extension UIImage {
 struct DynamicImageView: View {
     @Environment(Palette.self) var palette: Palette
     
-    enum LoadingState {
-        case waiting, loading, done, failed
-    }
-    
     @State var uiImage: UIImage?
-    @State var loading: LoadingState
+    @State var loading: ImageLoadingState
     @State var aspectRatio: CGSize
     @State var error: Error?
     
     let url: URL?
-    let onLoadingStateChange: (_ newValue: LoadingState) -> Void
     let showError: Bool
     let cornerRadius: CGFloat
     
     init(
         url: URL?,
-        onLoadingStateChange: @escaping (_ newValue: LoadingState) -> Void = { _ in },
         showError: Bool = true,
         cornerRadius: CGFloat = AppConstants.largeItemCornerRadius
     ) {
         self.url = url
-        self.onLoadingStateChange = onLoadingStateChange
         self.showError = showError
         self.cornerRadius = cornerRadius
         if let image = ImagePipeline.shared.cache.cachedImage(for: .init(url: url))?.image {
@@ -46,7 +39,7 @@ struct DynamicImageView: View {
         } else {
             self._uiImage = .init(wrappedValue: nil)
             self._aspectRatio = .init(wrappedValue: .init(width: 4, height: 3))
-            self._loading = .init(initialValue: url == nil ? .done : .waiting)
+            self._loading = .init(initialValue: url == nil ? .failed : .loading)
         }
     }
     
@@ -71,20 +64,14 @@ struct DynamicImageView: View {
             }
             .task(loadImage)
             .clipShape(.rect(cornerRadius: cornerRadius))
-            .onAppear {
-                onLoadingStateChange(loading)
-            }
-            .onChange(of: loading) {
-                onLoadingStateChange(loading)
-            }
+            .preference(key: ImageLoadingPreferenceKey.self, value: loading)
     }
     
     @Sendable
     @MainActor
     func loadImage() async {
-        guard let url, uiImage == nil, loading == .waiting else { return }
+        guard let url, uiImage == nil else { return }
         do {
-            loading = .loading
             let imageTask = ImagePipeline.shared.imageTask(with: url)
             let image = try await imageTask.image
             uiImage = image
