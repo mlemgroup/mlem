@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CollapsibleSection<Content: View>: View {
+    @Environment(Palette.self) var palette
+    
     var header: String?
     var footer: String?
 
@@ -62,7 +64,7 @@ struct CollapsibleSection<Content: View>: View {
                 }
             }
         }
-        .background(palette.groupedBackground))
+        .background(palette.secondaryGroupedBackground)
         .clipShape(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius))
         .fixedSize(horizontal: false, vertical: true)
         .padding(.horizontal, 16)
