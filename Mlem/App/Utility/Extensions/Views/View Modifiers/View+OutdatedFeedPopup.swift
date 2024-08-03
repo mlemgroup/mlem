@@ -25,13 +25,8 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
                     handleError(error)
                 }
             }
-            .onChange(of: feedLoader.items.first?.api) {
-                if feedLoader.items.first?.api === appState.firstApi {
-                    showRefreshPopup = false
-                }
-            }
-            .onChange(of: appState.firstApi, initial: false) {
-                showRefreshPopup = true
+            .onChange(of: feedLoader.items.first?.api !== appState.firstApi) { _, newValue in
+                showRefreshPopup = newValue
             }
             .overlay(alignment: .bottom) {
                 RefreshPopupView("Feed is outdated", isPresented: $showRefreshPopup) {
