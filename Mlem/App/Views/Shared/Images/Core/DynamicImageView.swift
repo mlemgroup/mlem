@@ -1,5 +1,5 @@
 //
-//  ImageView.swift
+//  DynamicImageView.swift
 //  Mlem
 //
 //  Created by Sjmarf on 12/06/2024.
@@ -12,24 +12,26 @@ private extension UIImage {
     static let blank: UIImage = .init()
 }
 
-struct ImageView: View {
+struct DynamicImageView: View {
     @Environment(Palette.self) var palette: Palette
     
-    enum LoadingState {
-        case waiting, loading, done, failed
-    }
-    
     @State var uiImage: UIImage?
-    @State var loading: LoadingState
+    @State var loading: ImageLoadingState
     @State var aspectRatio: CGSize
     @State var error: Error?
     
     let url: URL?
-    let onLoadingStateChange: (_ newValue: LoadingState) -> Void
+    let showError: Bool
+    let cornerRadius: CGFloat
     
-    init(url: URL?, onLoadingStateChange: @escaping (_ newValue: LoadingState) -> Void = { _ in }) {
+    init(
+        url: URL?,
+        showError: Bool = true,
+        cornerRadius: CGFloat = AppConstants.largeItemCornerRadius
+    ) {
         self.url = url
-        self.onLoadingStateChange = onLoadingStateChange
+        self.showError = showError
+        self.cornerRadius = cornerRadius
         if let image = ImagePipeline.shared.cache.cachedImage(for: .init(url: url))?.image {
             self._uiImage = .init(wrappedValue: image)
             self._aspectRatio = .init(wrappedValue: image.size)
@@ -37,7 +39,7 @@ struct ImageView: View {
         } else {
             self._uiImage = .init(wrappedValue: nil)
             self._aspectRatio = .init(wrappedValue: .init(width: 4, height: 3))
-            self._loading = .init(initialValue: url == nil ? .done : .waiting)
+            self._loading = .init(initialValue: url == nil ? .failed : .loading)
         }
     }
     
@@ -46,40 +48,37 @@ struct ImageView: View {
             .resizable()
             .aspectRatio(aspectRatio, contentMode: .fit)
             .background {
-                palette.secondaryBackground
-                    .overlay {
-                        if error != nil {
-                            Image(systemName: Icons.missing)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(maxWidth: 50)
-                                .padding(4)
-                                .foregroundStyle(palette.tertiary)
+                if showError {
+                    palette.secondaryBackground
+                        .overlay {
+                            if error != nil {
+                                Image(systemName: Icons.missing)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(maxWidth: 50)
+                                    .padding(4)
+                                    .foregroundStyle(palette.tertiary)
+                            }
                         }
-                    }
+                }
             }
             .task(loadImage)
-            .clipShape(.rect(cornerRadius: AppConstants.largeItemCornerRadius))
-            .onAppear {
-                onLoadingStateChange(loading)
-            }
-            .onChange(of: loading) {
-                onLoadingStateChange(loading)
-            }
+            .clipShape(.rect(cornerRadius: cornerRadius))
+            .preference(key: ImageLoadingPreferenceKey.self, value: loading)
     }
     
     @Sendable
     @MainActor
     func loadImage() async {
-        guard let url, uiImage == nil, loading == .waiting else { return }
+        guard let url, uiImage == nil else { return }
         do {
-            loading = .loading
             let imageTask = ImagePipeline.shared.imageTask(with: url)
             let image = try await imageTask.image
             uiImage = image
             loading = .done
             aspectRatio = image.size
         } catch {
+            print(error)
             self.error = error
             loading = .failed
         }

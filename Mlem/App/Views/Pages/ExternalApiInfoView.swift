@@ -117,13 +117,13 @@ struct ExternalApiInfoView: View {
             .padding(.horizontal)
             .overlay {
                 HStack {
-                    AvatarView(appState.firstSession.instance)
+                    CircleCroppedImageView(appState.firstSession.instance)
                     Image(systemName: Icons.failure)
                         .bold()
                         .foregroundStyle(.red)
                         .imageScale(.large)
                         .frame(maxWidth: .infinity)
-                    AvatarView(externalInstance)
+                    CircleCroppedImageView(externalInstance)
                 }
             }
     }
