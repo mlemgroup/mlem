@@ -23,6 +23,7 @@ struct CircleCroppedImageView: View {
     var body: some View {
         FixedImageView(url: url, fallback: fallback, showProgress: showProgress)
             .clipShape(Circle())
+            .geometryGroup()
     }
 }
 
