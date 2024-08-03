@@ -51,23 +51,27 @@ struct FixedImageView: View {
     }
     
     var body: some View {
-        GeometryReader { geo in
-            content
-                .task(loadImage)
-                .aspectRatio(1, contentMode: .fit)
-                .preference(key: ImageLoadingPreferenceKey.self, value: loading)
-                .onAppear {
-                    contentSize = geo.size
-                }
-        }
+        content
+            .task(loadImage)
+            .aspectRatio(1, contentMode: .fit)
+            .preference(key: ImageLoadingPreferenceKey.self, value: loading)
+//            .allowsHitTesting(false)
+//            .overlay {
+//                GeometryReader { geo in
+//                    HStack {}
+//                        .onChange(of: geo.size, initial: true) {
+//                            contentSize = geo.size
+//                        }
+//                }
+//            }
         // this is a bit of a hack--the hit area of the image is defined by the image itself, so we have to override it and restrict
         // hit testing to only the parent frame
-        .allowsHitTesting(false)
-        .overlay(alignment: .top) {
-            Rectangle()
-                .frame(width: contentSize.width, height: contentSize.height)
-                .opacity(0.00000000001)
-        }
+//            .allowsHitTesting(false)
+//            .overlay(alignment: .top) {
+//                Rectangle()
+//                    .frame(width: contentSize.width, height: contentSize.height)
+//                    .opacity(0.00000000001)
+//            }
     }
     
     @ViewBuilder
