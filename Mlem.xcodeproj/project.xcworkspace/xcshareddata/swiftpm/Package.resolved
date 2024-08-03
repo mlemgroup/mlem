@@ -1,4 +1,5 @@
 {
+  "originHash" : "b159f0a20b9c47bf2fae7b8e8322b8f3fff96046592270bf1b94b96530aa91b0",
   "pins" : [
     {
       "identity" : "combine-schedulers",
@@ -23,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/LemmyMarkdownUI",
       "state" : {
-        "revision" : "bd3982bf5c5446455dce394e94ab89b5012901ab",
-        "version" : "0.1.0"
+        "revision" : "d9ca5af18c5204e5a54ffe226bd6cb1191531127",
+        "version" : "0.3.0"
       }
     },
     {
@@ -100,5 +101,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
