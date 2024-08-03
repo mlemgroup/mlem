@@ -23,7 +23,6 @@ struct FeedsView: View {
     @State var feedOptions: [FeedSelection] = FeedSelection.guestCases
     @State var feedSelection: FeedSelection {
         didSet {
-            showRefreshPopup = false // changing feed selection refreshes the feed
             Task {
                 do {
                     // clear whichever loader is now inactive and refresh/update active loader
@@ -40,8 +39,6 @@ struct FeedsView: View {
             }
         }
     }
-
-    @State var showRefreshPopup: Bool = false
 
     @State var scrollToTopTrigger: Bool = false
     
@@ -145,7 +142,6 @@ struct FeedsView: View {
             }
             .onChange(of: appState.firstApi, initial: false) {
                 postFeedLoader.api = appState.firstApi
-                showRefreshPopup = true
 
                 if appState.firstApi.willSendToken, let firstUser = appState.firstAccount as? UserAccount {
                     feedOptions = FeedSelection.allCases
@@ -171,35 +167,12 @@ struct FeedsView: View {
                     }
                 }
             }
-            .refreshable {
-                do {
-                    showRefreshPopup = false
-                    switch feedSelection {
-                    case .all, .local, .subscribed:
-                        try await postFeedLoader.refresh(clearBeforeRefresh: false)
-                    case .saved:
-                        try await savedFeedLoader?.refresh(clearBeforeRefresh: false)
-                    }
-                } catch {
-                    handleError(error)
+            .outdatedFeedPopup(feedLoader: {
+                if feedSelection == .saved, let savedFeedLoader {
+                    return savedFeedLoader
                 }
-            }
-            .overlay(alignment: .bottom) {
-                RefreshPopupView("Feed is outdated", isPresented: $showRefreshPopup) {
-                    Task {
-                        do {
-                            showRefreshPopup = false
-                            if feedSelection == .saved {
-                                try await savedFeedLoader?.refresh(clearBeforeRefresh: true)
-                            } else {
-                                try await postFeedLoader.refresh(clearBeforeRefresh: true)
-                            }
-                        } catch {
-                            handleError(error)
-                        }
-                    }
-                }
-            }
+                return postFeedLoader
+            }())
     }
     
     @ViewBuilder

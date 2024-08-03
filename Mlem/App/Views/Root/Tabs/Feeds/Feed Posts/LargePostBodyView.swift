@@ -30,9 +30,7 @@ struct LargePostBodyView: View {
                     .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
                     .frame(maxWidth: .infinity)
             case let .link(url):
-                if let url {
-                    mockWebsiteComplex(url: url)
-                }
+                mockWebsiteComplex(url: url.content)
             default:
                 EmptyView()
             }

@@ -31,7 +31,6 @@ struct CommunityView: View {
     
     @State var community: AnyCommunity
     @State private var selectedTab: Tab = .posts
-    @State var showRefreshPopup: Bool = false
     @State var postFeedLoader: CommunityPostFeedLoader?
     
     init(community: AnyCommunity) {
@@ -42,31 +41,7 @@ struct CommunityView: View {
         ContentLoader(model: community) { proxy in
             if let community = proxy.entity, let postFeedLoader {
                 content(community: community, postFeedLoader: postFeedLoader)
-                    .refreshable {
-                        showRefreshPopup = false
-                        do {
-                            try await postFeedLoader.refresh(clearBeforeRefresh: false)
-                        } catch {
-                            handleError(error)
-                        }
-                    }
-                    .onChange(of: appState.firstApi, initial: false) {
-                        showRefreshPopup = true
-                    }
-                    .overlay(alignment: .bottom) {
-                        if selectedTab == .posts {
-                            RefreshPopupView("Feed is outdated", isPresented: $showRefreshPopup) {
-                                Task {
-                                    do {
-                                        showRefreshPopup = false
-                                        try await postFeedLoader.refresh(clearBeforeRefresh: true)
-                                    } catch {
-                                        handleError(error)
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    .outdatedFeedPopup(feedLoader: postFeedLoader)
                     .externalApiWarning(entity: community, isLoading: proxy.isLoading)
                     .toolbar {
                         ToolbarItem(placement: .topBarTrailing) {
