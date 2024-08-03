@@ -13,11 +13,23 @@ struct WebsitePreviewView: View {
     @Environment(Palette.self) var palette
     @Environment(\.openURL) private var openURL
     
+    @State var blurred: Bool
+    
     let link: PostLink
     var onTapActions: (() -> Void)?
+    let shouldBlur: Bool
+    
+    init(link: PostLink, nsfw: Bool, onTapActions: (() -> Void)? = nil) {
+        @AppStorage("safety.blurNsfw") var blurNsfw = true
+        self.link = link
+        self.onTapActions = onTapActions
+        self.shouldBlur = blurNsfw ? nsfw : false
+        self._blurred = .init(wrappedValue: blurNsfw ? nsfw : false)
+    }
     
     var body: some View {
         content
+            .contentShape(.rect)
             .onTapGesture {
                 openURL(link.content)
             }
@@ -48,6 +60,12 @@ struct WebsitePreviewView: View {
         VStack(alignment: .leading, spacing: 0) {
             if let thumbnailUrl = link.thumbnail {
                 DynamicImageView(url: thumbnailUrl, cornerRadius: 0)
+                    .blur(radius: blurred ? 50 : 0, opaque: true)
+                    .clipped()
+                    .overlay {
+                        NsfwOverlay(blurred: $blurred, shouldBlur: shouldBlur)
+                    }
+                    .animation(.easeOut(duration: 0.1), value: blurred)
                     .overlay(alignment: .bottomLeading) {
                         linkHost
                             .padding(AppConstants.halfSpacing)

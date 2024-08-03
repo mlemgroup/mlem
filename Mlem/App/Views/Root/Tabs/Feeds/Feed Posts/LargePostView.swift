@@ -72,12 +72,12 @@ struct LargePostView: View {
     var postDetail: some View {
         switch post.type {
         case let .image(url):
-            LargeImageView(url: url, blurred: post.nsfw)
+            LargeImageView(url: url, nsfw: post.nsfw)
                 // Set maximum image height to 1.2 * width
                 .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
                 .frame(maxWidth: .infinity)
         case let .link(link):
-            WebsitePreviewView(link: link)
+            WebsitePreviewView(link: link, nsfw: post.nsfw)
         default:
             EmptyView()
         }

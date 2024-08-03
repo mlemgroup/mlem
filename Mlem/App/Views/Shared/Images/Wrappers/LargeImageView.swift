@@ -16,14 +16,14 @@ struct LargeImageView: View {
     @AppStorage("safety.blurNsfw") var blurNsfw: Bool = true
 
     let url: URL?
-    var shouldBlur: Bool
+    let shouldBlur: Bool
     @State var blurred: Bool = false
     
-    init(url: URL?, blurred: Bool) {
-        @AppStorage("safety.blurNsfw") var shouldBlur = true
+    init(url: URL?, nsfw: Bool) {
+        @AppStorage("safety.blurNsfw") var blurNsfw = true
         self.url = url
-        self.shouldBlur = shouldBlur ? blurred : false
-        self._blurred = .init(wrappedValue: shouldBlur ? blurred : false)
+        self.shouldBlur = blurNsfw ? nsfw : false
+        self._blurred = .init(wrappedValue: blurNsfw ? nsfw : false)
     }
     
     @State private var loading: ImageLoadingState = .loading
@@ -33,27 +33,7 @@ struct LargeImageView: View {
             .blur(radius: blurred ? 50 : 0, opaque: true)
             .clipShape(.rect(cornerRadius: AppConstants.largeItemCornerRadius))
             .overlay {
-                if blurred {
-                    VStack(spacing: 8) {
-                        Image(systemName: Icons.warning)
-                            .font(.largeTitle)
-                        Text("NSFW")
-                            .fontWeight(.black)
-                    }
-                    .foregroundStyle(.white)
-                } else if shouldBlur, blurNsfw {
-                    Button {
-                        blurred = true
-                    } label: {
-                        Image(systemName: Icons.hide)
-                            .padding(.vertical, 4)
-                            .padding(.horizontal, 3)
-                            .background(.thinMaterial, in: .rect(cornerRadius: 4))
-                    }
-                    .buttonStyle(.plain)
-                    .padding(4)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                }
+                NsfwOverlay(blurred: $blurred, shouldBlur: shouldBlur)
             }
             .animation(.easeOut(duration: 0.1), value: blurred)
             .onTapGesture {
