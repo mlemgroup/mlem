@@ -48,11 +48,8 @@ struct WebsitePreviewView: View {
     var content: some View {
         complex
             .frame(maxWidth: .infinity, alignment: .leading)
+            .background(palette.secondaryBackground)
             .clipShape(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius))
-            .overlay {
-                RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
-                    .stroke(palette.tertiary, lineWidth: 1)
-            }
             .contentShape(.contextMenuPreview, .rect(cornerRadius: AppConstants.largeItemCornerRadius))
     }
     
