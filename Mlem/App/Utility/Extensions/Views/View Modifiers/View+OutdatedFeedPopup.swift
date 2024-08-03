@@ -25,8 +25,8 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
                     handleError(error)
                 }
             }
-            .onChange(of: feedLoader.items.first?.api) {
-                if feedLoader.items.first?.api === appState.firstApi {
+            .onChange(of: feedLoader.items.first?.api === appState.firstApi) { _, newValue in
+                if newValue {
                     showRefreshPopup = false
                 }
             }
