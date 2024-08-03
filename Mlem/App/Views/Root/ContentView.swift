@@ -149,14 +149,24 @@ struct ContentView: View {
     func loadAvatar(url: URL) async {
         do {
             let imageTask = ImagePipeline.shared.imageTask(with: url.withIconSize(128))
-            let avatarImage: UIImage? = try await imageTask.image
-                .resized(to: .init(width: 26, height: 26))
-                .circleMasked
-                .withRenderingMode(.alwaysOriginal)
-            let selectedAvatarImage: UIImage? = try await imageTask.image
-                .resized(to: .init(width: 26, height: 26))
-                .circleBorder(color: .init(palette.accent), width: 3.5)
-                .withRenderingMode(.alwaysOriginal)
+            var avatarImage: UIImage? = try await imageTask.image
+            
+            if let image = avatarImage {
+                avatarImage = image
+                    .resized(to: .init(width: image.size.width / image.size.height * 26, height: 26))
+                    .circleMasked
+                    .withRenderingMode(.alwaysOriginal)
+            }
+            
+            var selectedAvatarImage: UIImage? = try await imageTask.image
+            
+            if let image = avatarImage {
+                selectedAvatarImage = image
+                    .resized(to: .init(width: image.size.width / image.size.height * 26, height: 26))
+                    .circleBorder(color: .init(palette.accent), width: 3.5)
+                    .withRenderingMode(.alwaysOriginal)
+            }
+            
             Task { @MainActor in
                 self.avatarImage = avatarImage
                 self.selectedAvatarImage = selectedAvatarImage
