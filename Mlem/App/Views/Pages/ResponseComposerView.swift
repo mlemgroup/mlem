@@ -14,19 +14,27 @@ struct ResponseComposerView: View {
     @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
+    enum ResolutionState: Equatable {
+        case success, notFound, error(ErrorDetails), resolving
+    }
+    
     let textView: UITextView = .init()
     
     @State var text: String = ""
     @FocusState var focused: Bool
-    var context: ResponseContext
     
+    let originalContext: ResponseContext
+    @State var resolvedContext: ResponseContext
+    @State var resolutionState: ResolutionState = .success
+
     @State var account: UserAccount
     @State var presentationSelection: PresentationDetent = .large
     
     init?(
         context: ResponseContext
     ) {
-        self.context = context
+        self.originalContext = context
+        self.resolvedContext = context
         if let userAccount = (AppState.main.firstAccount as? UserAccount) {
             self._account = .init(wrappedValue: userAccount)
         } else {
@@ -63,8 +71,37 @@ struct ResponseComposerView: View {
                         }
                         ToolbarItem(placement: .topBarTrailing) {
                             Button("Send", systemImage: Icons.send) {}
+                                .disabled(resolutionState != .success)
                         }
                     }
+            }
+            .task(id: account) {
+                do {
+                    switch originalContext {
+                    case let .post(post):
+                        if post.api === account.api {
+                            resolvedContext = originalContext
+                        } else {
+                            Task { @MainActor in
+                                resolutionState = .resolving
+                            }
+                            let post = try await account.api.getPost(actorId: post.actorId)
+                            Task { @MainActor in
+                                resolutionState = .success
+                                resolvedContext = .post(post)
+                            }
+                        }
+                    }
+                } catch ApiClientError.noEntityFound {
+                    print("No entity found!")
+                    Task { @MainActor in
+                        resolutionState = .notFound
+                    }
+                } catch {
+                    Task { @MainActor in
+                        resolutionState = .error(.init(error: error))
+                    }
+                }
             }
         }
         .onChange(of: presentationSelection) {
@@ -94,7 +131,7 @@ struct ResponseComposerView: View {
                 )
                 Divider()
                     .padding(.vertical, AppConstants.standardSpacing)
-                switch context {
+                switch originalContext {
                 case let .post(post):
                     LargePostBodyView(post: post, isExpanded: true)
                         .padding(.horizontal, AppConstants.standardSpacing)
