@@ -45,8 +45,13 @@ struct FixedImageView: View {
         self.fallback = fallback
         self.showProgress = showProgress
     
-        self._uiImage = .init(wrappedValue: .init())
-        self._loading = .init(wrappedValue: url == nil ? .failed : .loading)
+        if let image = ImagePipeline.shared.cache.cachedImage(for: .init(url: url))?.image {
+            self._uiImage = .init(wrappedValue: image)
+            self._loading = .init(wrappedValue: .done)
+        } else {
+            self._uiImage = .init(wrappedValue: .init())
+            self._loading = .init(wrappedValue: url == nil ? .failed : .loading)
+        }
     }
     
     var body: some View {
