@@ -50,10 +50,16 @@ struct FixedImageView: View {
     }
     
     var body: some View {
-        content
-            .task(loadImage)
-            .aspectRatio(1, contentMode: .fit)
-            .preference(key: ImageLoadingPreferenceKey.self, value: loading)
+        // images really want to disregard their frames for hit testing, so we put them into a non-interactable overlay and let
+        // the Color.fauxClear handle the actual hit testing
+        Color.fauxClear
+            .overlay {
+                content
+                    .task(loadImage)
+                    .aspectRatio(1, contentMode: .fill)
+                    .preference(key: ImageLoadingPreferenceKey.self, value: loading)
+                    .allowsHitTesting(false)
+            }
     }
     
     @ViewBuilder
