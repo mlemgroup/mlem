@@ -2174,8 +2174,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				branch = "sjmarf/feed-loadable-requires-refresh-method";
-				kind = branch;
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.22.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
