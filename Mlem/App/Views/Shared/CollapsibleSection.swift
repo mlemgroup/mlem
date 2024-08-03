@@ -47,7 +47,7 @@ struct CollapsibleSection<Content: View>: View {
             }
             
             if !collapsed {
-                Color(uiColor: .systemGroupedBackground)
+                palette.groupedBackground
                     .frame(height: 1.5)
                 VStack {
                     content()
@@ -58,11 +58,11 @@ struct CollapsibleSection<Content: View>: View {
                         .textCase(.uppercase)
                         .font(.footnote)
                         .padding(.horizontal, 16)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(palette.secondary)
                 }
             }
         }
-        .background(Color(uiColor: .secondarySystemGroupedBackground))
+        .background(palette.groupedBackground))
         .clipShape(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius))
         .fixedSize(horizontal: false, vertical: true)
         .padding(.horizontal, 16)

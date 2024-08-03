@@ -1,5 +1,5 @@
 //
-//  Bundle+IconFileName.swift
+//  Bundle+Extensions.swift
 //  Mlem
 //
 //  Created by tht7 on 28/06/2023.
