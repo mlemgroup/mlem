@@ -68,7 +68,7 @@ struct CommunityListRowBody<Content: View>: View {
                     .padding(9)
             } else {
                 CircleCroppedImageView(url: community.avatar?.withIconSize(128), fallback: .community)
-                    .frame(height: 46)
+                    .frame(width: AppConstants.listRowAvatarSize, height: AppConstants.listRowAvatarSize)
             }
             
             VStack(alignment: .leading, spacing: 2) {

@@ -139,7 +139,7 @@ struct SubscriptionListView: View {
         switch instanceLocation(section: section) {
         case .trailing:
             CircleCroppedImageView(community)
-                .frame(height: 28)
+                .frame(width: 28, height: 28)
             (
                 Text(community.name)
                     + Text("@\(community.host ?? "unknown")")
@@ -149,7 +149,7 @@ struct SubscriptionListView: View {
             .lineLimit(1)
         case .bottom:
             CircleCroppedImageView(community)
-                .frame(height: 36)
+                .frame(width: 36, height: 36)
             VStack(alignment: .leading, spacing: 0) {
                 Text(community.name)
                     .lineLimit(1)
@@ -159,7 +159,7 @@ struct SubscriptionListView: View {
             }
         case .disabled:
             CircleCroppedImageView(community)
-                .frame(height: 28)
+                .frame(width: 28, height: 28)
             Text(community.name)
                 .lineLimit(1)
         }

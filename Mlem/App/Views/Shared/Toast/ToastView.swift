@@ -126,7 +126,7 @@ struct ToastView: View {
     func accountView(_ account: any Account) -> some View {
         HStack(spacing: AppConstants.doubleSpacing) {
             CircleCroppedImageView(account, showProgress: false)
-                .frame(height: 27)
+                .frame(width: 27, height: 27)
                 .padding(.leading, 10)
             Text(account.nickname)
                 .lineLimit(1)

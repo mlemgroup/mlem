@@ -68,7 +68,7 @@ struct SettingsView: View {
             let account = appState.firstSession
             HStack(spacing: 23) {
                 CircleCroppedImageView(account.account)
-                    .frame(width: 54)
+                    .frame(width: 54, height: 54)
                     .padding(.vertical, -6)
                     .padding(.leading, 3)
                 VStack(alignment: .leading, spacing: 3) {
