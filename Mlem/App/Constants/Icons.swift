@@ -117,6 +117,18 @@ enum Icons {
     static let instanceBannedFlair: String = "xmark.circle.fill"
     static let communityBannedFlair: String = "xmark.shield.fill"
     
+    // markdown
+    static let bold: String = "bold"
+    static let italic: String = "italic"
+    static let strikethrough: String = "strikethrough"
+    static let superscript: String = "textformat.superscript"
+    static let `subscript`: String = "textformat.subscript"
+    // Potentially "chevron.left.chevron.right" is better, it's iOS 18+ though
+    static let inlineCode: String = "chevron.left.forwardslash.chevron.right"
+    static let quote: String = "quote.opening"
+    static let uploadImage: String = "photo"
+    static let spoiler: String = "eye"
+    
     // entities/general Lemmy concepts
     static let federation: String = "point.3.filled.connected.trianglepath.dotted"
     static let instance: String = "building.2.crop.circle"
@@ -195,6 +207,8 @@ enum Icons {
     static let attachment: String = "paperclip"
     static let edit: String = "pencil"
     static let delete: String = "trash"
+    static let deleteFill: String = "trash.fill"
+    static let undelete: String = "arrow.up.trash"
     static let copy: String = "doc.on.doc"
     static let copyFill: String = "doc.on.doc.fill"
     static let paste: String = "doc.on.clipboard"

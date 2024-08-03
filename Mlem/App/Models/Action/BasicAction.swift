@@ -32,6 +32,39 @@ struct BasicAction: Action {
     init(
         id: String,
         isOn: Bool,
+        label: LocalizedStringResource,
+        color: Color,
+        isDestructive: Bool = false,
+        confirmationPrompt: String? = nil,
+        icon: String,
+        barIcon: String? = nil,
+        menuIcon: String? = nil,
+        swipeIcon1: String? = nil,
+        swipeIcon2: String? = nil,
+        enabled: Bool = true,
+        callback: (() -> Void)? = nil
+    ) {
+        self.init(
+            id: id,
+            isOn: isOn,
+            label: String(localized: label),
+            color: color,
+            isDestructive: isDestructive,
+            confirmationPrompt: confirmationPrompt,
+            icon: icon,
+            barIcon: barIcon,
+            menuIcon: menuIcon,
+            swipeIcon1: swipeIcon1,
+            swipeIcon2: swipeIcon2,
+            enabled: enabled,
+            callback: callback
+        )
+    }
+    
+    @_disfavoredOverload // This ensures that the other initialiser takes priority
+    init(
+        id: String,
+        isOn: Bool,
         label: String,
         color: Color,
         isDestructive: Bool = false,

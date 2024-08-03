@@ -12,6 +12,8 @@ struct QuickSwipeView: ViewModifier {
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     
+    @AppStorage("swipeActions.enabled") var swipeActionsEnabled = true
+    
     // state
     @GestureState var dragState: CGFloat = .zero
     @State var dragPosition: CGFloat = .zero
@@ -39,31 +41,34 @@ struct QuickSwipeView: ViewModifier {
     }
     
     func body(content: Content) -> some View {
-        content
-            .background(shadowBackground)
-            .geometryGroup()
-            .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
-            // needs to be high priority or else dragging on links leads to navigating to the link at conclusion of drag
-            .gesture(
-                DragGesture(
-                    minimumDistance: config.behavior.minimumDrag, // min distance prevents conflict with scrolling drag gesture
-                    coordinateSpace: .global
+        if swipeActionsEnabled {
+            content
+                .background(shadowBackground)
+                .geometryGroup()
+                .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
+                .gesture(
+                    DragGesture(
+                        minimumDistance: config.behavior.minimumDrag, // min distance prevents conflict with scrolling drag gesture
+                        coordinateSpace: .global
+                    )
+                    .updating($dragState) { value, state, _ in
+                        // this check adds a dead zone to the left side of the screen so it doesn't interfere with navigation
+                        if dragState == .zero && abs(value.translation.height) * 1.7 > abs(value.translation.width) {
+                            return
+                        }
+                        if dragState != .zero || value.location.x > 70 {
+                            state = value.translation.width
+                        }
+                    }
                 )
-                .updating($dragState) { value, state, _ in
-                    // this check adds a dead zone to the left side of the screen so it doesn't interfere with navigation
-                    if dragState == .zero && abs(value.translation.height) * 1.7 > abs(value.translation.width) {
-                        return
-                    }
-                    if dragState != .zero || value.location.x > 70 {
-                        state = value.translation.width
-                    }
-                }
-            )
-            .background(iconBackground)
-            .onChange(of: dragState, draggingUpdated)
-            // disables links from highlighting when tapped
-            .buttonStyle(EmptyButtonStyle())
-            .clipShape(RoundedRectangle(cornerRadius: config.behavior.cornerRadius))
+                .background(iconBackground)
+                .onChange(of: dragState, draggingUpdated)
+                // disables links from highlighting when tapped
+                .buttonStyle(EmptyButtonStyle())
+                .clipShape(RoundedRectangle(cornerRadius: config.behavior.cornerRadius))
+        } else {
+            content
+        }
     }
     
     var shadowBackground: some View {

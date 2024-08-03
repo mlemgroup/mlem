@@ -20,7 +20,7 @@ struct InstanceDetailsView: View {
             box {
                 HStack {
                     Label(instance.created.dateString, systemImage: Icons.cakeDay)
-                    Text("•")
+                    Text(verbatim: "•")
                     Label(instance.created.getRelativeTime(unitsStyle: .abbreviated), systemImage: Icons.time)
                 }
                 .foregroundStyle(palette.secondary)
@@ -30,7 +30,7 @@ struct InstanceDetailsView: View {
                 box {
                     Text("Users")
                         .foregroundStyle(palette.secondary)
-                    Text("\((instance.userCount_ ?? 0).abbreviated)")
+                    Text((instance.userCount_ ?? 0).abbreviated)
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundStyle(palette.userAccent)
@@ -39,7 +39,7 @@ struct InstanceDetailsView: View {
                 box {
                     Text("Communities")
                         .foregroundStyle(palette.secondary)
-                    Text("\((instance.communityCount_ ?? 0).abbreviated)")
+                    Text((instance.communityCount_ ?? 0).abbreviated)
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundStyle(palette.communityAccent)
@@ -51,7 +51,7 @@ struct InstanceDetailsView: View {
                 box {
                     Text("Posts")
                         .foregroundStyle(palette.secondary)
-                    Text("\((instance.postCount_ ?? 0).abbreviated)")
+                    Text((instance.postCount_ ?? 0).abbreviated)
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundStyle(palette.postAccent)
@@ -60,7 +60,7 @@ struct InstanceDetailsView: View {
                 box {
                     Text("Comments")
                         .foregroundStyle(palette.secondary)
-                    Text("\((instance.commentCount_ ?? 0).abbreviated)")
+                    Text((instance.commentCount_ ?? 0).abbreviated)
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundStyle(palette.commentAccent)
@@ -179,7 +179,7 @@ struct InstanceDetailsView: View {
                     settingRow(
                         "Default Feed Type (Desktop)",
                         systemImage: Icons.feeds,
-                        value: feedType.rawValue
+                        value: feedType.label
                     )
                 }
             }
@@ -213,7 +213,7 @@ struct InstanceDetailsView: View {
         .padding(.horizontal, 16)
     }
     
-    var captchaLabel: String {
+    var captchaLabel: LocalizedStringResource {
         if let diff = instance.captchaDifficulty_ {
             return "Yes (\(diff.rawValue.capitalized))"
         }
@@ -231,9 +231,9 @@ struct InstanceDetailsView: View {
     }
     
     @ViewBuilder func settingRow(
-        _ label: String,
+        _ label: LocalizedStringResource,
         systemImage: String,
-        value: String,
+        value: LocalizedStringResource,
         color: Color? = nil
     ) -> some View {
         HStack {
@@ -248,7 +248,7 @@ struct InstanceDetailsView: View {
         .padding(12)
     }
     
-    @ViewBuilder func settingRow(_ label: String, systemImage: String, value: Bool) -> some View {
+    @ViewBuilder func settingRow(_ label: LocalizedStringResource, systemImage: String, value: Bool) -> some View {
         HStack {
             Image(systemName: systemImage)
                 .foregroundStyle(palette.secondary)
@@ -262,7 +262,7 @@ struct InstanceDetailsView: View {
     }
     
     @ViewBuilder
-    func activeUserBox(_ label: String, value: Int) -> some View {
+    func activeUserBox(_ label: LocalizedStringResource, value: Int) -> some View {
         VStack {
             Text(value.abbreviated)
                 .font(.title3)
@@ -275,12 +275,11 @@ struct InstanceDetailsView: View {
 }
 
 private extension ApiRegistrationMode {
-    var label: String {
+    var label: LocalizedStringResource {
         switch self {
-        case .requireApplication:
-            return "Requires Application"
-        default:
-            return rawValue.capitalized
+        case .closed: "Closed"
+        case .requireApplication: "Requires Application"
+        case .open: "Open"
         }
     }
     

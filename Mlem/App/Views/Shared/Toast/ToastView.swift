@@ -119,7 +119,7 @@ struct ToastView: View {
             }
             .padding(.trailing, AppConstants.doubleSpacing)
         }
-        .frame(minWidth: 167)
+        .frame(minWidth: 157)
     }
     
     @ViewBuilder
@@ -133,7 +133,7 @@ struct ToastView: View {
                 .frame(minWidth: 80)
                 .padding(.trailing, AppConstants.doubleSpacing)
         }
-        .frame(minWidth: 167)
+        .frame(minWidth: 157)
     }
     
     @ViewBuilder
@@ -203,7 +203,7 @@ struct ToastView: View {
             .foregroundStyle(ToastView.dimmedSymbols.contains(systemName) ? .secondary : .primary)
             .foregroundStyle(color)
             .frame(width: 27)
-            .padding([.leading], AppConstants.standardSpacing)
+            .padding(.leading, AppConstants.standardSpacing)
     }
 }
 
@@ -220,7 +220,7 @@ extension ToastView {
         ToastView(.undoable(callback: {}))
         ToastView(
             .undoable(
-                title: "Unfavorited Community",
+                String("Unfavorited Community"),
                 systemImage: "star.slash.fill",
                 callback: {},
                 color: .blue

@@ -5,7 +5,6 @@
 //  Created by Eric Andrews on 2024-05-19.
 //
 
-import Foundation
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
@@ -15,7 +14,6 @@ struct LargePostView: View {
     @AppStorage("user.showAvatar") private var showUserAvatar: Bool = true
     @AppStorage("community.showAvatar") private var showCommunityAvatar: Bool = true
     
-    @Environment(\.communityContext) private var communityContext: (any Community1Providing)?
     @Environment(Palette.self) private var palette: Palette
     
     let post: any Post1Providing
@@ -45,12 +43,7 @@ struct LargePostView: View {
                 }
             }
             
-            post.taggedTitle(communityContext: communityContext)
-                .foregroundStyle((post.read_ ?? false) ? palette.secondary : palette.primary)
-                .font(.headline)
-                .imageScale(.small)
-            
-            postDetail
+            LargePostBodyView(post: post, isExpanded: isExpanded)
             
             if showCreator || isExpanded {
                 FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showUserAvatar)
@@ -67,7 +60,7 @@ struct LargePostView: View {
             .padding(.vertical, 2)
         }
     }
-    
+
     @ViewBuilder
     var postDetail: some View {
         switch post.type {

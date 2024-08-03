@@ -103,8 +103,7 @@ struct TilePostView: View {
         var body: some View {
             switch post.type {
             case let .text(text):
-                MarkdownText(text, configuration: .default)
-                    .font(.caption)
+                MarkdownText(text, configuration: .caption)
                     .foregroundStyle(palette.secondary)
                     .padding(AppConstants.standardSpacing)
                     .frame(maxWidth: .infinity, maxHeight: height, alignment: .topLeading)
@@ -154,7 +153,7 @@ struct TilePostView: View {
         } label: {
             Group {
                 Text(Image(systemName: post.votes_?.iconName ?? Icons.upvoteSquare)) +
-                    Text(" \(post.votes_?.total.abbreviated ?? "0")")
+                    Text(verbatim: " \(post.votes_?.total.abbreviated ?? "0")")
             }
             .lineLimit(1)
             .font(.caption)

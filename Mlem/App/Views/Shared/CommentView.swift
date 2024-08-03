@@ -38,7 +38,17 @@ struct CommentView: View {
                     }
                 }
                 if !collapsed {
-                    Markdown(comment.content, configuration: .default)
+                    if comment.deleted {
+                        Text("Comment was deleted")
+                            .italic()
+                            .foregroundStyle(palette.secondary)
+                    } else if comment.removed {
+                        Text("Comment was removed")
+                            .italic()
+                            .foregroundStyle(palette.secondary)
+                    } else {
+                        Markdown(comment.content, configuration: .default)
+                    }
                     InteractionBarView(
                         comment: comment,
                         configuration: .init(

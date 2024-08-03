@@ -78,8 +78,11 @@ struct ExternalApiInfoView: View {
                     .padding(.horizontal, AppConstants.standardSpacing)
                 
                 Text(
-                    // swiftlint:disable:next line_length
-                    "Lemmy instances talk to each other so that content can be shared across sites. This is called \"federation\". Instance administrators can choose which other instances they would like their instance to federate with. Some instances federate with all but a curated \"block-list\" of other instances; other instances might only federate with instances on an \"allow-list\"."
+                    String(
+                        localized: "Federation Explanation",
+                        // swiftlint:disable:next line_length
+                        defaultValue: "Lemmy instances talk to each other so that content can be shared across sites. This is called \"federation\". Instance administrators can choose which other instances they would like their instance to federate with. Some instances federate with all but a curated \"block-list\" of other instances; other instances might only federate with instances on an \"allow-list\"."
+                    )
                 )
                 .padding(.horizontal, AppConstants.standardSpacing)
             }

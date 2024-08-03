@@ -12,6 +12,8 @@ import SwiftUI
 extension Post1Providing {
     private var self2: (any Post2Providing)? { self as? any Post2Providing }
     
+    var isOwnPost: Bool { creatorId == api.myPerson?.id }
+
     func toggleHidden(feedback: Set<FeedbackType>) {
         if let self2 {
             if feedback.contains(.haptic) {
@@ -20,7 +22,7 @@ extension Post1Providing {
             if feedback.contains(.toast) {
                 ToastModel.main.add(
                     .undoable(
-                        title: "Hidden",
+                        "Hidden",
                         systemImage: Icons.hideFill,
                         callback: {
                             self2.updateHidden(false)
@@ -61,12 +63,18 @@ extension Post1Providing {
             replyAction()
             selectTextAction()
             shareAction()
+            
             // If no version has been fetched yet, assume they're on <0.19.4 for now.
             // Once 0.19.4 is widely adopted we could assume they're on >=0.19.4.
             if (api.fetchedVersion ?? .zero) >= .v19_4 {
                 hideAction(feedback: feedback)
             }
-            blockAction(feedback: feedback)
+
+            if self.isOwnPost {
+                deleteAction(feedback: feedback)
+            } else {
+                blockAction(feedback: feedback)
+            }
         }
     }
     
@@ -117,15 +125,17 @@ extension Post1Providing {
     
     func taggedTitle(communityContext: (any Community1Providing)?) -> Text {
         let hasTags: Bool = removed
+            || deleted
             || pinnedInstance
             || (communityContext != nil && pinnedCommunity)
             || locked
         
         return postTag(active: removed, icon: Icons.removeFill, color: Palette.main.negative) +
+            postTag(active: deleted, icon: Icons.delete, color: Palette.main.negative) +
             postTag(active: pinnedInstance, icon: Icons.pinFill, color: Palette.main.administration) +
             postTag(active: communityContext != nil && pinnedCommunity, icon: Icons.pinFill, color: Palette.main.moderation) +
             postTag(active: locked, icon: Icons.lockFill, color: Palette.main.lockAccent) +
-            Text("\(hasTags ? "  " : "")\(title)")
+            Text(verbatim: "\(hasTags ? "  " : "")\(title)")
     }
     
     /// Host if this is a link post, otherwise nil.

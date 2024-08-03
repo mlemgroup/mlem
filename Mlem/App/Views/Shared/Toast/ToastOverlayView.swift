@@ -89,7 +89,7 @@ struct ToastOverlayView: View {
         Button("Test Long") {
             ToastModel.main.add(
                 .basic(
-                    title: "Unfavorited Community",
+                    "Unfavorited Community",
                     systemImage: "star.slash.fill",
                     color: .blue,
                     duration: 5

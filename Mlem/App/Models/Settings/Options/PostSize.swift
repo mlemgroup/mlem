@@ -20,4 +20,13 @@ enum PostSize: String, CaseIterable {
         case .tile: .tile
         }
     }
+
+    var label: LocalizedStringResource {
+        switch self {
+        case .compact: "Compact"
+        case .headline: "Headline"
+        case .large: "Large"
+        case .tile: "Tiled"
+        }
+    }
 }
