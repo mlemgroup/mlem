@@ -2170,8 +2170,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				branch = "sjmarf/feed-loader-configuration";
-				kind = branch;
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.20.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
