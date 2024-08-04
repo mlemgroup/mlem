@@ -25,12 +25,12 @@ struct LargePostBodyView: View {
             
             switch post.type {
             case let .image(url):
-                LargeImageView(url: url, blurred: post.nsfw)
+                LargeImageView(url: url, nsfw: post.nsfw)
                     // Set maximum image height to 1.2 * width
                     .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
                     .frame(maxWidth: .infinity)
-            case let .link(url):
-                mockWebsiteComplex(url: url.content)
+            case let .link(link):
+                WebsitePreviewView(link: link, nsfw: post.nsfw)
             default:
                 EmptyView()
             }
@@ -44,25 +44,5 @@ struct LargePostBodyView: View {
                 }
             }
         }
-    }
-    
-    var mockImage: some View {
-        Image(systemName: "photo.artframe")
-            .resizable()
-            .scaledToFit()
-            .frame(maxWidth: .infinity)
-            .foregroundStyle(palette.secondary)
-    }
-    
-    func mockWebsiteComplex(url: URL) -> some View {
-        Text(url.host ?? "no host found")
-            .foregroundStyle(palette.secondary)
-            .padding(AppConstants.standardSpacing)
-            .frame(maxWidth: .infinity)
-            .overlay {
-                RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
-                    .stroke(lineWidth: 1)
-                    .foregroundStyle(palette.secondary)
-            }
     }
 }

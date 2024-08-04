@@ -71,8 +71,8 @@ struct SettingsView: View {
         NavigationLink(.settings(.account)) {
             let account = appState.firstSession
             HStack(spacing: 23) {
-                AvatarView(account.account)
-                    .frame(width: 54)
+                CircleCroppedImageView(account.account)
+                    .frame(width: 54, height: 54)
                     .padding(.vertical, -6)
                     .padding(.leading, 3)
                 VStack(alignment: .leading, spacing: 3) {
@@ -99,7 +99,7 @@ struct SettingsView: View {
             HStack(spacing: 10) {
                 AvatarStackView(
                     urls: accounts.prefix(4).map(\.avatar),
-                    type: .person,
+                    fallback: .person,
                     spacing: accounts.count <= 3 ? 18 : 14,
                     outlineWidth: 0.7,
                     showPlusIcon: accounts.count == 1

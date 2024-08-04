@@ -138,16 +138,12 @@ extension Post1Providing {
             Text(verbatim: "\(hasTags ? "  " : "")\(title)")
     }
     
+    /// Host if this is a link post, otherwise nil.
     var linkHost: String? {
-        guard case .link = type else {
-            return nil
+        if case let .link(link) = type {
+            return link.host
         }
-        
-        if var host = linkUrl?.host() {
-            host.trimPrefix("www.")
-            return host
-        }
-        return "website"
+        return nil
     }
     
     var placeholderImageName: String {
