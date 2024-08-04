@@ -5,8 +5,8 @@
 //  Created by David Bureš on 25.03.2022.
 //
 
-import Dependencies
 import MlemMiddleware
+import Nuke
 import SwiftUI
 
 struct ContentView: View {
@@ -18,16 +18,15 @@ struct ContentView: View {
     
     let cacheCleanTimer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
     let unreadCountTimer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
-
+    
     // globals
     var appState: AppState { .main }
-    
-    @State var palette: Palette = .main
-    @State var tabReselectTracker: TabReselectTracker = .main
-    
-    @State var badgeUpdater: BadgeUpdater = .init()
-    
+    var palette: Palette { .main }
+    var tabReselectTracker: TabReselectTracker { .main }
     var navigationModel: NavigationModel { .main }
+
+    @State var avatarImage: UIImage?
+    @State var selectedAvatarImage: UIImage?
   
     init() {
         HapticManager.main.preheat()
@@ -36,6 +35,13 @@ struct ContentView: View {
     var body: some View {
         if appState.appRefreshToggle {
             content
+                .task(id: appState.firstAccount.avatar) {
+                    avatarImage = nil
+                    selectedAvatarImage = nil
+                    if let url = appState.firstAccount.avatar {
+                        await loadAvatar(url: url)
+                    }
+                }
                 .onReceive(cacheCleanTimer) { _ in
                     appState.cleanCaches()
                 }
@@ -44,9 +50,6 @@ struct ContentView: View {
                     Task { @MainActor in
                         try await (appState.firstSession as? UserSession)?.unreadCount?.refresh()
                     }
-                }
-                .onChange(of: (appState.firstSession as? UserSession)?.unreadCount?.badgeLabel) { _, newValue in
-                    badgeUpdater.wrappedValue = newValue
                 }
                 .sheet(isPresented: Binding(
                     get: { !(navigationModel.layers.first?.isFullScreenCover ?? true) },
@@ -84,33 +87,44 @@ struct ContentView: View {
         }, set: {
             appState.contentViewTab = Tab.allCases[$0]
         }), tabs: [
-            CustomTabItem(title: "Feeds", image: Icons.feeds, selectedImage: Icons.feedsFill) {
+            CustomTabItem(
+                title: "Feeds",
+                image: UIImage(systemName: Icons.feeds),
+                selectedImage: UIImage(systemName: Icons.feedsFill)
+            ) {
                 NavigationSplitRootView(sidebar: .subscriptionList, root: .feeds)
             },
             CustomTabItem(
                 title: "Inbox",
-                image: Icons.inbox,
-                selectedImage: Icons.inboxFill,
-                badge: badgeUpdater
+                image: UIImage(systemName: Icons.inbox),
+                selectedImage: UIImage(systemName: Icons.inboxFill),
+                badge: (appState.firstSession as? UserSession)?.unreadCount?.badgeLabel
             ) {
                 NavigationLayerView(layer: .init(root: .inbox, model: navigationModel), hasSheetModifiers: false)
             },
             CustomTabItem(
-                title: "Profile",
-                image: Icons.user,
-                selectedImage: Icons.userFill,
+                title: AppState.main.firstAccount.nickname,
+                image: avatarImage ?? UIImage(systemName: Icons.user),
+                selectedImage: selectedAvatarImage ?? UIImage(systemName: Icons.userFill),
                 onLongPress: {
                     HapticManager.main.play(haptic: .rigidInfo, priority: .high)
-                    navigationModel.openSheet(.quickSwitcher)
+                    NavigationModel.main.openSheet(.quickSwitcher)
                 },
                 content: {
                     NavigationLayerView(layer: .init(root: .profile, model: navigationModel), hasSheetModifiers: false)
                 }
             ),
-            CustomTabItem(title: "Search", image: Icons.search, selectedImage: Icons.searchActive) {
+            CustomTabItem(
+                title: "Search",
+                image: UIImage(systemName: Icons.search),
+                selectedImage: UIImage(systemName: Icons.searchActive)
+            ) {
                 NavigationLayerView(layer: .init(root: .search, model: navigationModel), hasSheetModifiers: false)
             },
-            CustomTabItem(title: "Settings", image: Icons.settings) {
+            CustomTabItem(
+                title: "Settings",
+                image: UIImage(systemName: Icons.settings)
+            ) {
                 NavigationLayerView(layer: .init(root: .settings(), model: navigationModel), hasSheetModifiers: false)
             }
         ], onSwipeUp: {
@@ -129,6 +143,28 @@ struct ContentView: View {
                 shouldDisplayNewToasts: shouldDisplayToasts,
                 location: .top
             )
+        }
+    }
+    
+    func loadAvatar(url: URL) async {
+        do {
+            let imageTask = ImagePipeline.shared.imageTask(with: url.withIconSize(128))
+            let avatarImage = try await imageTask.image
+                .resized(to: .init(width: imageTask.image.size.width / imageTask.image.size.height * 26, height: 26))
+                .circleMasked
+                .withRenderingMode(.alwaysOriginal)
+            
+            let selectedAvatarImage = try await imageTask.image
+                .resized(to: .init(width: imageTask.image.size.width / imageTask.image.size.height * 26, height: 26))
+                .circleBorder(color: .init(palette.accent), width: 3.5)
+                .withRenderingMode(.alwaysOriginal)
+            
+            Task { @MainActor in
+                self.avatarImage = avatarImage
+                self.selectedAvatarImage = selectedAvatarImage
+            }
+        } catch {
+            print(error)
         }
     }
 }

@@ -63,11 +63,11 @@ class UserSession: Session {
     }
     
     func hash(into hasher: inout Hasher) {
-        hasher.combine(actorId)
+        hasher.combine(api)
     }
     
     static func == (lhs: UserSession, rhs: UserSession) -> Bool {
-        lhs.actorId == rhs.actorId
+        lhs.api == rhs.api
     }
 
     func toggleInstanceBlock(actorId: URL) {
