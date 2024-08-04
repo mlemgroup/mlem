@@ -8,14 +8,17 @@
 import Foundation
 import SwiftUI
 
-class CustomTabViewHostingController: UIHostingController<CustomTabItem> {
-    init(rootView: CustomTabItem, index: Int) {
-        super.init(rootView: rootView)
+class CustomTabViewHostingController: UIHostingController<AnyView> {
+    let item: CustomTabItem
+    
+    init(item: CustomTabItem, index: Int) {
+        self.item = item
+        super.init(rootView: item.content)
         
         self.tabBarItem = UITabBarItem(
-            title: rootView.title,
-            image: UIImage(systemName: rootView.image),
-            selectedImage: UIImage(systemName: rootView.selectedImage)
+            title: item.title,
+            image: nil,
+            selectedImage: nil
         )
     }
     

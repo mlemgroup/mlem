@@ -19,7 +19,7 @@ struct CustomTabView: UIViewControllerRepresentable {
     
     init(selectedIndex: Binding<Int>, tabs: [CustomTabItem], onSwipeUp: @escaping () -> Void) {
         self.tabs = tabs
-        self.viewControllers = tabs.enumerated().map { CustomTabViewHostingController(rootView: $1, index: $0) }
+        self.viewControllers = tabs.enumerated().map { CustomTabViewHostingController(item: $1, index: $0) }
         self.swipeGestureCallback = onSwipeUp
         self._selectedIndex = selectedIndex
     }
@@ -32,6 +32,7 @@ struct CustomTabView: UIViewControllerRepresentable {
             swipeGestureCallback: swipeGestureCallback
         )
         tabBarController.viewControllers = viewControllers
+        
         return tabBarController
     }
     
@@ -39,11 +40,23 @@ struct CustomTabView: UIViewControllerRepresentable {
         _ uiViewController: UITabBarController,
         context: UIViewControllerRepresentableContext<CustomTabView>
     ) {
+        if let controller = uiViewController as? CustomTabBarController {
+            Task.detached { @MainActor in
+                for (tabData, tabBarItem) in zip(tabs, controller.tabBar.items ?? []) {
+                    tabBarItem.title = tabData.title
+                    
+                    tabBarItem.badgeValue = tabData.badge
+                    tabBarItem.image = tabData.image
+                    tabBarItem.selectedImage = tabData.selectedImage
+                }
+            }
+        }
+        
         withObservationTracking {
             _ = palette.accent
         } onChange: {
             if let controller = uiViewController as? CustomTabBarController {
-                Task { @MainActor in
+                Task.detached { @MainActor in
                     controller.tabBar.tintColor = UIColor(palette.accent)
                 }
             }
@@ -53,22 +66,8 @@ struct CustomTabView: UIViewControllerRepresentable {
             _ = AppState.main.contentViewTab
         } onChange: {
             if let controller = uiViewController as? CustomTabBarController {
-                Task { @MainActor in
+                Task.detached { @MainActor in
                     controller.selectedIndex = selectedIndex
-                }
-            }
-        }
-                
-        withObservationTracking {
-            for tab in tabs {
-                _ = tab.badge?.wrappedValue
-            }
-        } onChange: {
-            if let controller = uiViewController as? CustomTabBarController {
-                Task { @MainActor in
-                    for (badge, item) in zip(tabs.map(\.badge), controller.tabBar.items ?? []) {
-                        item.badgeValue = badge?.wrappedValue
-                    }
                 }
             }
         }
