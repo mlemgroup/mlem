@@ -25,8 +25,10 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
                     handleError(error)
                 }
             }
-            .onChange(of: feedLoader.items.first?.api !== appState.firstApi) { _, newValue in
-                showRefreshPopup = newValue
+            .onChange(of: onChangeHash) {
+                if let newApi = feedLoader.items.first?.api {
+                    showRefreshPopup = newApi !== appState.firstApi
+                }
             }
             .overlay(alignment: .bottom) {
                 RefreshPopupView("Feed is outdated", isPresented: $showRefreshPopup) {
@@ -40,6 +42,13 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
                     }
                 }
             }
+    }
+    
+    var onChangeHash: Int {
+        var hasher = Hasher()
+        hasher.combine(appState.firstApi)
+        hasher.combine(feedLoader.items.first?.api)
+        return hasher.finalize()
     }
 }
 
