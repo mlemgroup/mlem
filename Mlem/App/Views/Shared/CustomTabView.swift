@@ -41,7 +41,7 @@ struct CustomTabView: UIViewControllerRepresentable {
         context: UIViewControllerRepresentableContext<CustomTabView>
     ) {
         if let controller = uiViewController as? CustomTabBarController {
-            DispatchQueue.main.async {
+            Task.detached { @MainActor in
                 for (tabData, tabBarItem) in zip(tabs, controller.tabBar.items ?? []) {
                     tabBarItem.title = tabData.title
                     
@@ -56,7 +56,7 @@ struct CustomTabView: UIViewControllerRepresentable {
             _ = palette.accent
         } onChange: {
             if let controller = uiViewController as? CustomTabBarController {
-                Task { @MainActor in
+                Task.detached { @MainActor in
                     controller.tabBar.tintColor = UIColor(palette.accent)
                 }
             }
@@ -66,7 +66,7 @@ struct CustomTabView: UIViewControllerRepresentable {
             _ = AppState.main.contentViewTab
         } onChange: {
             if let controller = uiViewController as? CustomTabBarController {
-                Task { @MainActor in
+                Task.detached { @MainActor in
                     controller.selectedIndex = selectedIndex
                 }
             }
