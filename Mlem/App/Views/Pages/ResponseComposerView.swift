@@ -24,6 +24,7 @@ struct ResponseComposerView: View {
     @FocusState var focused: Bool
     
     let originalContext: ResponseContext
+    let expandedPostTracker: ExpandedPostTracker?
     @State var resolvedContext: ResponseContext
     @State var resolutionState: ResolutionState = .success
     @State var sending: Bool = false
@@ -32,10 +33,12 @@ struct ResponseComposerView: View {
     @State var presentationSelection: PresentationDetent = .large
     
     init?(
-        context: ResponseContext
+        context: ResponseContext,
+        expandedPostTracker: ExpandedPostTracker? = nil
     ) {
         self.originalContext = context
         self.resolvedContext = context
+        self.expandedPostTracker = expandedPostTracker
         if let userAccount = (AppState.main.firstAccount as? UserAccount) {
             self._account = .init(wrappedValue: userAccount)
         } else {
@@ -171,24 +174,16 @@ struct ResponseComposerView: View {
     
     func send() async {
         do {
-            let parentPost: any PostStubProviding
-            // let result: Comment2
+            let result: Comment2
             switch resolvedContext {
             case let .post(post):
-                // result = try await post.reply(content: text)
-                parentPost = post
+                result = try await post.reply(content: text)
             }
             Task { @MainActor in
                 textView.resignFirstResponder()
                 textView.isEditable = false
                 HapticManager.main.play(haptic: .success, priority: .low)
-                switch navigation.bottomLayer.path.last {
-                case let .expandedPost(post, commentId: _):
-                    if post.wrappedValue.actorId != parentPost.actorId { fallthrough }
-                default:
-                    print("PUSH", navigation.bottomLayer.path)
-                    navigation.bottomLayer.push(.expandedPost(parentPost, commentId: nil))
-                }
+                expandedPostTracker?.insertCreatedComment(result)
                 dismiss()
             }
         } catch {

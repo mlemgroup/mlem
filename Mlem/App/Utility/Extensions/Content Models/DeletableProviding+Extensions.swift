@@ -43,7 +43,7 @@ extension DeletableProviding {
             isDestructive: !deleted,
             confirmationPrompt: deleted ? nil : "Really delete?",
             icon: deleted ? Icons.undelete : Icons.delete,
-            callback: api.willSendToken ? { self.toggleDeleted(feedback: feedback) } : nil
+            callback: api.isAuthenticatedAndActive ? { self.toggleDeleted(feedback: feedback) } : nil
         )
     }
 }

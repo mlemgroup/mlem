@@ -17,16 +17,14 @@ struct ExpandedPostView: View {
     let post: AnyPost
     @State var showCommentWithId: Int?
     
-    @State var comments: [CommentWrapper] = []
-    @State var commentsKeyedByActorId: [URL: CommentWrapper] = [:]
+    let tracker: ExpandedPostTracker = .init()
     
-    @State var loadingState: LoadingState = .idle
     @State var commentResolveLoading: Bool = false
     
     var body: some View {
         ContentLoader(model: post) { proxy in
             if let post = proxy.entity {
-                let showLoadingSymbol = showCommentWithId == nil || (self.post.isUpgraded && loadingState != .loading)
+                let showLoadingSymbol = showCommentWithId == nil || (self.post.isUpgraded && tracker.loadingState != .loading)
                 VStack {
                     if showLoadingSymbol {
                         content(for: post)
@@ -48,14 +46,13 @@ struct ExpandedPostView: View {
                 .animation(.default, value: showLoadingSymbol)
                 .task {
                     if post.api == appState.firstApi {
-                        await loadComments(post: post)
+                        await tracker.load(post: post)
                     }
                 }
                 .onChange(of: post.api) {
                     Task {
                         commentResolveLoading = true
-                        loadingState = .idle
-                        await loadComments(post: post)
+                        await tracker.mergeNewComments(fromPost: post)
                         commentResolveLoading = false
                     }
                 }
@@ -71,6 +68,7 @@ struct ExpandedPostView: View {
                     .tint(palette.secondary)
             }
         }
+        .environment(tracker)
     }
     
     @ViewBuilder
@@ -80,7 +78,7 @@ struct ExpandedPostView: View {
                 LazyVStack(alignment: .leading, spacing: 0) {
                     LargePostView(post: post, isExpanded: true)
                     Divider()
-                    ForEach(comments.tree()) { comment in
+                    ForEach(tracker.comments.tree()) { comment in
                         CommentView(comment: comment, highlight: showCommentWithId == comment.id)
                             .transition(.move(edge: .top).combined(with: .opacity))
                             .zIndex(1000 - Double(comment.depth))

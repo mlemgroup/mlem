@@ -24,7 +24,7 @@ enum NavigationPage: Hashable {
     case instancePicker(callback: HashWrapper<(InstanceSummary) -> Void>)
     case selectText(_ string: String)
     case subscriptionList
-    case reply(_ context: ResponseContext)
+    case reply(_ context: ResponseContext, expandedPostTracker: ExpandedPostTracker? = nil)
     
     static func expandedPost(_ post: any PostStubProviding, commentId: Int? = nil) -> NavigationPage {
         expandedPost(.init(post), commentId: commentId)
@@ -87,11 +87,11 @@ extension NavigationPage {
             ExpandedPostView(post: post, showCommentWithId: commentId)
         case let .person(person):
             PersonView(person: person)
-        case let .reply(context):
-            if let view = ResponseComposerView(context: context) {
+        case let .reply(context, expandedPostTracker):
+            if let view = ResponseComposerView(context: context, expandedPostTracker: expandedPostTracker) {
                 view
             } else {
-                Text("Error: No active UserAccount")
+                Text(verbatim: "Error: No active UserAccount")
             }
         case let .communityPicker(callback: callback):
             SearchSheetView { (community: Community2, dismiss: DismissAction) in

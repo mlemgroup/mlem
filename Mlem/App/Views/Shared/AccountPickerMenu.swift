@@ -28,8 +28,7 @@ struct AccountPickerMenu<Content: View>: View {
                         Label {
                             Text(account.name)
                         } icon: {
-                            // SimpleAvatarView(url: account.avatar, type: .person)
-                            CircleCroppedImageView(account)
+                            SimpleAvatarView(url: account.avatar, type: .person)
                         }
                         Text("@\(account.host ?? "unknown")")
                     }
