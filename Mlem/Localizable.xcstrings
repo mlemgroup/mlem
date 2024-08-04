@@ -456,9 +456,6 @@
     "Quote" : {
 
     },
-    "Quote" : {
-
-    },
     "Received %@" : {
 
     },
@@ -597,10 +594,10 @@
     "Superscript" : {
 
     },
-    "Switch Account" : {
-      
-    },
     "Swipe Actions" : {
+
+    },
+    "Switch Account" : {
 
     },
     "Switch to this account and..." : {
