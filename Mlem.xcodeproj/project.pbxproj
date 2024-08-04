@@ -50,6 +50,8 @@
 		033FCAE82C559712007B7CD1 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033FCAE72C559712007B7CD1 /* Bundle+Extensions.swift */; };
 		033FCAEC2C57DCCD007B7CD1 /* ApiListingType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033FCAEB2C57DCCD007B7CD1 /* ApiListingType+Extensions.swift */; };
 		033FCAEE2C57DD14007B7CD1 /* CaptchaDifficulty+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033FCAED2C57DD14007B7CD1 /* CaptchaDifficulty+Extensions.swift */; };
+		033FCAF42C59843E007B7CD1 /* CommunityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033FCAF32C59843E007B7CD1 /* CommunityView.swift */; };
+		033FCB3E2C5E7FA9007B7CD1 /* View+OutdatedFeedPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033FCB3D2C5E7FA9007B7CD1 /* View+OutdatedFeedPopup.swift */; };
 		033FCB272C5E3933007B7CD1 /* AlternateIconLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033FCB242C5E3933007B7CD1 /* AlternateIconLabel.swift */; };
 		033FCB282C5E3933007B7CD1 /* AlternateIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033FCB222C5E3933007B7CD1 /* AlternateIcon.swift */; };
 		033FCB292C5E3933007B7CD1 /* IconSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033FCB252C5E3933007B7CD1 /* IconSettingsView.swift */; };
@@ -322,6 +324,8 @@
 		033FCAE72C559712007B7CD1 /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		033FCAEB2C57DCCD007B7CD1 /* ApiListingType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiListingType+Extensions.swift"; sourceTree = "<group>"; };
 		033FCAED2C57DD14007B7CD1 /* CaptchaDifficulty+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CaptchaDifficulty+Extensions.swift"; sourceTree = "<group>"; };
+		033FCAF32C59843E007B7CD1 /* CommunityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityView.swift; sourceTree = "<group>"; };
+		033FCB3D2C5E7FA9007B7CD1 /* View+OutdatedFeedPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OutdatedFeedPopup.swift"; sourceTree = "<group>"; };
 		033FCB222C5E3933007B7CD1 /* AlternateIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternateIcon.swift; sourceTree = "<group>"; };
 		033FCB232C5E3933007B7CD1 /* AlternateIconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternateIconCell.swift; sourceTree = "<group>"; };
 		033FCB242C5E3933007B7CD1 /* AlternateIconLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternateIconLabel.swift; sourceTree = "<group>"; };
@@ -622,6 +626,22 @@
 			path = MlemStats;
 			sourceTree = "<group>";
 		};
+		033FCAF12C598406007B7CD1 /* Person */ = {
+			isa = PBXGroup;
+			children = (
+				0382A7EF2C09F0F800C79DDA /* PersonView.swift */,
+			);
+			path = Person;
+			sourceTree = "<group>";
+		};
+		033FCAF22C598435007B7CD1 /* Community */ = {
+			isa = PBXGroup;
+			children = (
+				033FCAF32C59843E007B7CD1 /* CommunityView.swift */,
+			);
+			path = Community;
+			sourceTree = "<group>";
+		};
 		033FCB262C5E3933007B7CD1 /* Icon */ = {
 			isa = PBXGroup;
 			children = (
@@ -731,7 +751,8 @@
 		0382A7EE2C09F0F800C79DDA /* Pages */ = {
 			isa = PBXGroup;
 			children = (
-				0382A7EF2C09F0F800C79DDA /* PersonView.swift */,
+				033FCAF22C598435007B7CD1 /* Community */,
+				033FCAF12C598406007B7CD1 /* Person */,
 				030BCB192C3EA5E20037680F /* Instance */,
 				0355F9452C150B2300605248 /* ExternalApiInfoView.swift */,
 				03AF91DC2C1B23E500E56644 /* ImageViewer.swift */,
@@ -1197,6 +1218,7 @@
 				CD3153062C38421B00BC5FBE /* View+LoadFeed.swift */,
 				03B72B662C2888EE0023A6C4 /* View+ContextMenu.swift */,
 				CD1D31822C56D742001B434B /* View+WidthReader.swift */,
+				033FCB3D2C5E7FA9007B7CD1 /* View+OutdatedFeedPopup.swift */,
 			);
 			path = "View Modifiers";
 			sourceTree = "<group>";
@@ -1572,6 +1594,7 @@
 				0389DDCF2C39CB0E0005B808 /* SearchView.swift in Sources */,
 				03FE14042BF93FDD00A8377F /* ErrorDetails.swift in Sources */,
 				0389DDD12C39E1030005B808 /* InstanceListRowBody.swift in Sources */,
+				033FCAF42C59843E007B7CD1 /* CommunityView.swift in Sources */,
 				CD13CC632C5D26C3001AF428 /* ImageLoadingPreferenceKey.swift in Sources */,
 				0382A7F22C0A758E00C79DDA /* ProfileDateView.swift in Sources */,
 				031E2D5B2BEFC9460003BC45 /* ThemeSettingsView.swift in Sources */,
@@ -1698,6 +1721,7 @@
 				CDE021AD2BFA43380052FD61 /* FeedPostView.swift in Sources */,
 				CD17B24B2C19109A001E174B /* SwipeConfiguration.swift in Sources */,
 				6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */,
+				033FCB3E2C5E7FA9007B7CD1 /* View+OutdatedFeedPopup.swift in Sources */,
 				03267D822BED489C009D6268 /* AvatarBannerView.swift in Sources */,
 				03500C2D2BF7FC2500CAA076 /* ToastView.swift in Sources */,
 				0316CD642C382A6A009EA8EA /* MessageView.swift in Sources */,
@@ -2220,8 +2244,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.21.0;
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.22.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

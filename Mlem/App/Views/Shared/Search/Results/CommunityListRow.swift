@@ -47,8 +47,7 @@ struct CommunityListRow<Content2: View>: View {
         .padding(.trailing)
         .padding(.vertical, 6)
         .onTapGesture {
-            // TODO:
-            // navigation.push()
+            navigation.push(.community(community))
         }
         .background(palette.background)
         .contextMenu(actions: community.menuActions(navigation: navigation))

@@ -69,8 +69,8 @@ extension NavigationPage {
             page.view()
         case .feeds:
             FeedsView()
-        case .community:
-            FeedsView()
+        case let .community(community):
+            CommunityView(community: community)
         case .profile:
             ProfileView()
         case .inbox:

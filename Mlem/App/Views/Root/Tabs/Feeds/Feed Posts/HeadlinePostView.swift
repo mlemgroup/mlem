@@ -30,7 +30,11 @@ struct HeadlinePostView: View {
     var content: some View {
         VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
             HStack {
-                FullyQualifiedLabelView(entity: post.community_, labelStyle: .medium, showAvatar: showCommunityAvatar)
+                if communityContext == nil {
+                    communityLink
+                } else {
+                    personLink
+                }
                 
                 Spacer()
                 
@@ -64,8 +68,8 @@ struct HeadlinePostView: View {
                 }
             }
             
-            if showCreator {
-                FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showUserAvatar)
+            if showCreator, communityContext == nil {
+                personLink
             }
             
             InteractionBarView(
@@ -78,5 +82,15 @@ struct HeadlinePostView: View {
             )
             .padding(.vertical, 2)
         }
+    }
+    
+    @ViewBuilder
+    var personLink: some View {
+        FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showUserAvatar)
+    }
+    
+    @ViewBuilder
+    var communityLink: some View {
+        FullyQualifiedLinkView(entity: post.community_, labelStyle: .medium, showAvatar: showCommunityAvatar)
     }
 }

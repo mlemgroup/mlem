@@ -31,7 +31,7 @@ struct AccountPickerMenu<Content: View>: View {
                             // SimpleAvatarView(url: account.avatar, type: .person)
                             CircleCroppedImageView(account)
                         }
-                        Text("@\(account.host ?? "unknown")")
+                        Text(verbatim: "@\(account.host ?? "unknown")")
                     }
                     .tag(account)
                 }
