@@ -32,6 +32,7 @@ struct SettingsView: View {
             
             Section {
                 NavigationLink("Theme", destination: .settings(.theme))
+                NavigationLink("App Icon", destination: .settings(.icon))
                 NavigationLink("Subscription List", destination: .settings(.subscriptionList))
                 NavigationLink("Posts", destination: .settings(.post))
             }

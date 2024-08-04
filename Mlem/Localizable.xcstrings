@@ -70,6 +70,9 @@
     "All" : {
 
     },
+    "App Icon" : {
+
+    },
     "Applications Email Admins" : {
 
     },
@@ -597,10 +600,10 @@
     "Superscript" : {
 
     },
-    "Switch Account" : {
-      
-    },
     "Swipe Actions" : {
+
+    },
+    "Switch Account" : {
 
     },
     "Switch to this account and..." : {
