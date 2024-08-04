@@ -8,8 +8,9 @@
 .AppleDouble
 .LSOverride
 
-# Icon must end with two \r
-Icon
+# https://stackoverflow.com/a/65429032/17629371
+Icon?
+![iI]con[_a-zA-Z0-9]
 
 
 # Thumbnails
