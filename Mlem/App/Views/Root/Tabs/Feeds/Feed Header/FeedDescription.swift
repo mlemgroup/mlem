@@ -30,9 +30,9 @@ struct FeedDescription {
         label: "Local",
         subtitle: "Posts from \(AppState.main.firstApi.host ?? "your instance's") communities",
         color: { $0.localFeed },
-        iconName: Icons.localFeed,
-        iconNameFill: Icons.localFeedFill,
-        iconScaleFactor: 0.6
+        iconName: Icons.instanceFeed,
+        iconNameFill: Icons.instanceFeedFill,
+        iconScaleFactor: 0.55
     )
     
     static var subscribed: FeedDescription = .init(

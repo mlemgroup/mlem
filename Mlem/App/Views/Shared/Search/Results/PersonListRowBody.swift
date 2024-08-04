@@ -64,8 +64,8 @@ struct PersonListRowBody<Content: View>: View {
                     .frame(width: 30, height: 30)
                     .padding(9)
             } else {
-                AvatarView(url: person.avatar?.withIconSize(128), type: .person)
-                    .frame(height: 46)
+                CircleCroppedImageView(url: person.avatar?.withIconSize(128), fallback: .person)
+                    .frame(width: AppConstants.listRowAvatarSize, height: AppConstants.listRowAvatarSize)
             }
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)

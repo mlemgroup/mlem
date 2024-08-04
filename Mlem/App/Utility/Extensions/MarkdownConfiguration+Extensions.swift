@@ -44,7 +44,7 @@ extension MarkdownConfiguration {
 
 private func imageView(_ inlineImage: InlineImage, blurred: Bool) -> AnyView {
     AnyView(
-        LargeImageView(url: inlineImage.url, blurred: blurred)
+        LargeImageView(url: inlineImage.url, nsfw: blurred)
             .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
             .frame(maxWidth: .infinity)
     )
