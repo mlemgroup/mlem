@@ -84,7 +84,6 @@ struct FeedHeaderView<ImageContent: View>: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.top, AppConstants.halfSpacing)
-            .padding(.bottom, AppConstants.standardSpacing)
         }
     }
 }

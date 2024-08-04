@@ -114,6 +114,7 @@ struct InboxView: View {
                     ),
                     dropdownStyle: .disabled
                 )
+                .padding(.bottom, AppConstants.standardSpacing)
                 GeometryReader { geo in
                     Color.red.preference(
                         key: ScrollOffsetKey.self,

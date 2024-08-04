@@ -29,6 +29,8 @@ struct CommunityView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     
+    @AppStorage("post.size") var postSize: PostSize = .large
+    
     @State var community: AnyCommunity
     @State private var selectedTab: Tab = .posts
     @State var postFeedLoader: CommunityPostFeedLoader?
@@ -77,14 +79,16 @@ struct CommunityView: View {
                     title: Text(community.displayName),
                     subtitle: Text(community.fullNameWithPrefix ?? ""),
                     dropdownStyle: .disabled,
-                    image: { AvatarView(community) }
+                    image: { CircleCroppedImageView(community) }
                 )
                 subscribeButton(community: community)
+                    .padding(.top, AppConstants.halfSpacing)
             }
+            .padding(.bottom, postSize.tiled ? 0 : AppConstants.standardSpacing)
             BubblePicker(
                 tabs(community: community),
                 selected: $selectedTab,
-                withDividers: [.top, .bottom],
+                withDividers: postSize.tiled ? [] : [.top, .bottom],
                 label: \.label
             )
             VStack {
@@ -99,6 +103,7 @@ struct CommunityView: View {
             }
             .environment(\.communityContext, community)
         }
+        .background(postSize.tiled ? palette.groupedBackground : palette.background)
         .loadFeed(postFeedLoader)
     }
     
@@ -111,7 +116,7 @@ struct CommunityView: View {
     func aboutTab(community: any Community) -> some View {
         VStack(spacing: AppConstants.standardSpacing) {
             if let banner = community.banner {
-                TappableImageView(url: banner)
+                LargeImageView(url: banner, nsfw: community.nsfw)
             }
             if let description = community.description {
                 Markdown(description, configuration: .default)

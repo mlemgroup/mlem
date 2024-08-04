@@ -198,6 +198,7 @@ struct FeedsView: View {
                     }
                 } label: {
                     FeedHeaderView(feedDescription: feedSelection.description, dropdownStyle: .enabled(showBadge: false))
+                        .padding(.bottom, AppConstants.standardSpacing)
                 }
                 .buttonStyle(.plain)
             } footer: {
