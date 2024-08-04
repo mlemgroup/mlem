@@ -50,21 +50,6 @@ struct TilePostView: View {
     var content: some View {
         VStack(alignment: .leading, spacing: 0) {
             BaseImage(post: post, width: width, height: contentHeight)
-                .overlay {
-                    if let host = post.linkHost {
-                        PostLinkHostView(host: host)
-                            .font(.caption)
-                            .padding(2)
-                            .padding(.horizontal, 4)
-                            .background {
-                                Capsule()
-                                    .fill(.regularMaterial)
-                                    .overlay(Capsule().fill(palette.background.opacity(0.25)))
-                            }
-                            .padding(AppConstants.compactSpacing)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                    }
-                }
             
             Divider()
             
@@ -118,8 +103,7 @@ struct TilePostView: View {
         var body: some View {
             switch post.type {
             case let .text(text):
-                MarkdownText(text, configuration: .default)
-                    .font(.caption)
+                MarkdownText(text, configuration: .caption)
                     .foregroundStyle(palette.secondary)
                     .padding(AppConstants.standardSpacing)
                     .frame(maxWidth: .infinity, maxHeight: height, alignment: .topLeading)
@@ -131,20 +115,32 @@ struct TilePostView: View {
                     .foregroundStyle(palette.secondary)
                     .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-            case let .image(url):
-                TappableImageView(url: url)
+            case .image:
+                ThumbnailImageView(
+                    post: post,
+                    blurred: post.nsfw && blurNsfw,
+                    size: .tile
+                )
+                .frame(width: width, height: height)
+                .clipped()
+            case let .link(link):
+                ThumbnailImageView(post: post, blurred: post.nsfw && blurNsfw, size: .tile)
                     .aspectRatio(contentMode: .fill)
                     .frame(width: width, height: height)
-                    .background(palette.secondaryBackground)
-                    .blur(radius: (post.nsfw && blurNsfw) ? 20 : 0, opaque: true)
                     .clipped()
-            case let .link(url):
-                ImageView(url: url.thumbnail)
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: width, height: height)
-                    .background(palette.secondaryBackground)
-                    .blur(radius: (post.nsfw && blurNsfw) ? 20 : 0, opaque: true)
-                    .clipped()
+                    .overlay {
+                        PostLinkHostView(host: link.host)
+                            .font(.caption)
+                            .padding(2)
+                            .padding(.horizontal, 4)
+                            .background {
+                                Capsule()
+                                    .fill(.regularMaterial)
+                                    .overlay(Capsule().fill(palette.background.opacity(0.25)))
+                            }
+                            .padding(AppConstants.compactSpacing)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                    }
             }
         }
     }

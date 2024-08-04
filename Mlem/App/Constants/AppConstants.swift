@@ -32,6 +32,7 @@ enum AppConstants {
     static let appIconSize: CGFloat = 60
     static let thumbnailSize: CGFloat = 60
     static let hugeAvatarSize: CGFloat = 120
+    static let listRowAvatarSize: CGFloat = 46
     static let largeAvatarSize: CGFloat = 32
     static let mediumAvatarSize: CGFloat = 22
     static let smallAvatarSize: CGFloat = 16

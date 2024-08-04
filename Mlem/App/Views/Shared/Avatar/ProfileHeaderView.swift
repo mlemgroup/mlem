@@ -13,30 +13,30 @@ struct ProfileHeaderView: View {
     @Environment(AppState.self) var appState
     
     var profilable: (any Profile1Providing)?
-    var type: AvatarType
+    var fallback: FixedImageView.Fallback
     var blockedOverride: Bool?
     
     init<T: Profile1Providing>(_ profilable: T?, blockedOverride: Bool? = nil) {
         self.profilable = profilable
-        self.type = T.avatarType
+        self.fallback = T.avatarFallback
         self.blockedOverride = blockedOverride
     }
     
     init(_ profilable: any Profile1Providing, blockedOverride: Bool? = nil) {
         self.profilable = profilable
-        self.type = Swift.type(of: profilable).avatarType
+        self.fallback = Swift.type(of: profilable).avatarFallback
         self.blockedOverride = blockedOverride
     }
     
-    init(_ profilable: (any Profile1Providing)?, type: AvatarType, blockedOverride: Bool? = nil) {
+    init(_ profilable: (any Profile1Providing)?, fallback: FixedImageView.Fallback, blockedOverride: Bool? = nil) {
         self.profilable = profilable
-        self.type = type
+        self.fallback = fallback
         self.blockedOverride = blockedOverride
     }
     
     var body: some View {
         VStack(spacing: AppConstants.standardSpacing) {
-            AvatarBannerView(profilable, type: type)
+            AvatarBannerView(profilable, fallback: fallback)
             Button {
                 (profilable as? any CommunityOrPersonStub)?.copyFullNameWithPrefix()
             } label: {

@@ -76,9 +76,9 @@ enum Icons {
     static let federatedFeed: String = "circle.hexagongrid"
     static let federatedFeedFill: String = "circle.hexagongrid.fill"
     static let federatedFeedCircle: String = "circle.hexagongrid.circle.fill"
-    static let localFeed: String = "house"
-    static let localFeedFill: String = "house.fill"
-    static let localFeedCircle: String = "house.circle.fill"
+    static let instanceFeed: String = "building.2"
+    static let instanceFeedFill: String = "building.2.fill"
+    static let instanceFeedCircle: String = "building.2.crop.circle"
     static let subscribedFeed: String = "newspaper"
     static let subscribedFeedFill: String = "newspaper.fill"
     static let subscribedFeedCircle: String = "newspaper.circle.fill"
@@ -131,11 +131,12 @@ enum Icons {
     
     // entities/general Lemmy concepts
     static let federation: String = "point.3.filled.connected.trianglepath.dotted"
-    static let instance: String = "server.rack"
+    static let instance: String = "building.2.crop.circle"
+    static let instanceFill: String = "building.2.crop.circle.fill"
     static let user: String = "person.crop.circle"
     static let userFill: String = "person.crop.circle.fill"
-    static let community: String = "building.2.crop.circle"
-    static let communityFill: String = "building.2.crop.circle.fill"
+    static let community: String = "house.circle"
+    static let communityFill: String = "house.circle.fill"
     
     // tabs
     static let feeds: String = "scroll"
