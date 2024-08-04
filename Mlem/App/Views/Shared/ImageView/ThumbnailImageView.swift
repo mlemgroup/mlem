@@ -32,7 +32,7 @@ struct ThumbnailImageView: View {
                 .blur(radius: blurred ? 10 : 0, opaque: true)
                 .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
         case let .link(url):
-            ImageView(url: url)
+            ImageView(url: url.thumbnail)
                 .aspectRatio(contentMode: .fill)
                 .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
                 .background(palette.secondaryBackground)

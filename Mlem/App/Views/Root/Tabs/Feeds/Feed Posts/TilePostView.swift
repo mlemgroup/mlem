@@ -139,7 +139,7 @@ struct TilePostView: View {
                     .blur(radius: (post.nsfw && blurNsfw) ? 20 : 0, opaque: true)
                     .clipped()
             case let .link(url):
-                ImageView(url: url)
+                ImageView(url: url.thumbnail)
                     .aspectRatio(contentMode: .fill)
                     .frame(width: width, height: height)
                     .background(palette.secondaryBackground)
