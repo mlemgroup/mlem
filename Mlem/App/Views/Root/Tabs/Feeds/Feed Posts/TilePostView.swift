@@ -99,7 +99,7 @@ struct TilePostView: View {
         } label: {
             Group {
                 postTag(active: post.saved_ ?? false, icon: Icons.saveFill, color: palette.save) + // saved status
-                    Text(post.saved_ ?? false ? " " : "") + // spacing after save
+                    Text(verbatim: post.saved_ ?? false ? " " : "") + // spacing after save
                     Text(Image(systemName: post.votes_?.iconName ?? Icons.upvoteSquare)) + // vote status
                     Text(verbatim: " \(post.votes_?.total.abbreviated ?? "0")")
             }
