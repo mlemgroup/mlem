@@ -49,6 +49,7 @@ struct ExpandedPostView: View {
                 .animation(.default, value: showLoadingSymbol)
                 .task {
                     if post.api == appState.firstApi {
+                        post.markRead()
                         await loadComments(post: post)
                     }
                 }

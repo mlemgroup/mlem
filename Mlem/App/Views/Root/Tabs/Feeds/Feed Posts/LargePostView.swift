@@ -65,38 +65,6 @@ struct LargePostView: View {
             .padding(.vertical, 2)
         }
     }
-
-    @ViewBuilder
-    var postDetail: some View {
-        switch post.type {
-        case let .image(url):
-            LargeImageView(url: url, nsfw: post.nsfw)
-                // Set maximum image height to 1.2 * width
-                .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
-                .frame(maxWidth: .infinity)
-        case let .link(link):
-            WebsitePreviewView(link: link, nsfw: post.nsfw)
-        default:
-            EmptyView()
-        }
-        if let content = post.content {
-            if isExpanded {
-                Markdown(content, configuration: post.nsfw ? .defaultBlurred : .default)
-            } else {
-                // Cut down on compute time for very long text posts by only rendering the first 4 blocks
-                MarkdownText(Array([BlockNode](content).prefix(4)), configuration: .dimmed)
-                    .lineLimit(post.linkUrl == nil ? 8 : 4)
-            }
-        }
-    }
-    
-    var mockImage: some View {
-        Image(systemName: "photo.artframe")
-            .resizable()
-            .scaledToFit()
-            .frame(maxWidth: .infinity)
-            .foregroundStyle(palette.secondary)
-    }
     
     @ViewBuilder
     var personLink: some View {

@@ -14,7 +14,7 @@ struct ThumbnailImageView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.openURL) var openURL
     
-    @State var loading: ImageLoadingState = .loading
+    @State var loading: ImageLoadingState?
     
     let post: any Post1Providing
     var blurred: Bool = false
@@ -49,7 +49,9 @@ struct ThumbnailImageView: View {
         case let .image(url):
             content
                 .onTapGesture {
-                    if loading == .done {
+                    if let loading, loading == .done {
+                        post.markRead()
+                        
                         // Sheets don't cover the whole screen on iPad, so use a fullScreenCover instead
                         if UIDevice.isPad {
                             navigation.showFullScreenCover(.imageViewer(url))
@@ -61,6 +63,7 @@ struct ThumbnailImageView: View {
         case let .link(link):
             content
                 .onTapGesture {
+                    post.markRead()
                     openURL(link.content)
                 }
         default:

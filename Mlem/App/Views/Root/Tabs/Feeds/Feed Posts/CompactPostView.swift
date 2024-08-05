@@ -54,6 +54,7 @@ struct CompactPostView: View {
   
                 post.taggedTitle(communityContext: communityContext)
                     .imageScale(.small)
+                    .foregroundStyle(post.read_ ?? false ? palette.secondary : palette.primary)
                     .font(.subheadline)
                 
                 if let host = post.linkHost {
