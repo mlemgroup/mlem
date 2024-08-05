@@ -24,6 +24,7 @@ struct QuickSwipeView: ViewModifier {
     
     let config: SwipeConfiguration
     
+    private let resetTime: CGFloat = 0.25
     private let iconWidth: CGFloat
     
     private var primaryLeadingAction: (any Action)? { config.leadingActions.first }
@@ -46,7 +47,7 @@ struct QuickSwipeView: ViewModifier {
                 .background(shadowBackground)
                 .geometryGroup()
                 .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
-                .gesture(
+                .simultaneousGesture(
                     DragGesture(
                         minimumDistance: config.behavior.minimumDrag, // min distance prevents conflict with scrolling drag gesture
                         coordinateSpace: .global
@@ -163,7 +164,9 @@ struct QuickSwipeView: ViewModifier {
         let action = swipeAction(at: finalDragPosition)
         
         if let action = action as? BasicAction {
-            action.callbackWithConfirmation(navigation: navigation)
+            DispatchQueue.main.asyncAfter(deadline: .now() + resetTime) {
+                action.callbackWithConfirmation(navigation: navigation)
+            }
         } else if let action = action as? ShareAction {
             navigation.shareUrl = action.url
         } else if let action = action as? ActionGroup {
@@ -172,7 +175,7 @@ struct QuickSwipeView: ViewModifier {
     }
     
     private func reset() {
-        withAnimation(.spring(response: 0.25)) {
+        withAnimation(.spring(response: resetTime)) {
             dragPosition = .zero
             prevDragPosition = .zero
             leadingSwipeSymbol = primaryLeadingAction?.swipeIcon1
