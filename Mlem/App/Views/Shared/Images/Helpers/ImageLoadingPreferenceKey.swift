@@ -9,8 +9,8 @@ import Foundation
 import SwiftUI
 
 struct ImageLoadingPreferenceKey: PreferenceKey {
-    typealias Value = ImageLoadingState
-    static var defaultValue: Value = .loading
+    typealias Value = ImageLoadingState?
+    static var defaultValue: Value = nil
 
     static func reduce(value _: inout Value, nextValue: () -> Value) {
         _ = nextValue()

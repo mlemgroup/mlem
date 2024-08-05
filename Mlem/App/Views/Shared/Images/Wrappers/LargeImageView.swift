@@ -26,7 +26,7 @@ struct LargeImageView: View {
         self._blurred = .init(wrappedValue: blurNsfw ? nsfw : false)
     }
     
-    @State private var loading: ImageLoadingState = .loading
+    @State private var loading: ImageLoadingState?
 
     var body: some View {
         DynamicImageView(url: url)
@@ -39,7 +39,7 @@ struct LargeImageView: View {
             .onTapGesture {
                 if blurred {
                     blurred = false
-                } else if loading == .done, let url {
+                } else if let loading, loading == .done, let url {
                     // Sheets don't cover the whole screen on iPad, so use a fullScreenCover instead
                     if UIDevice.isPad {
                         navigation.showFullScreenCover(.imageViewer(url))
