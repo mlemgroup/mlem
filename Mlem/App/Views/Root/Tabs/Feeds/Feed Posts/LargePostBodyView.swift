@@ -44,5 +44,6 @@ struct LargePostBodyView: View {
                 }
             }
         }
+        .environment(\.postContext, post)
     }
 }

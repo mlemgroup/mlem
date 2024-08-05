@@ -41,7 +41,8 @@ struct FullyQualifiedNameView: View {
     
     var body: some View {
         if let name, let instance {
-            nameText(name: name) + instanceText(instance: instance)
+            (nameText(name: name) + instanceText(instance: instance))
+                .lineLimit(instanceLocation == .trailing ? 1 : nil)
         } else {
             placeholder
         }
