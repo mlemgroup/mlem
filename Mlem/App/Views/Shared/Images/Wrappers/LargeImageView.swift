@@ -17,13 +17,16 @@ struct LargeImageView: View {
 
     let url: URL?
     let shouldBlur: Bool
+    var onTapActions: (() -> Void)?
     @State var blurred: Bool = false
     
-    init(url: URL?, nsfw: Bool) {
+    init(url: URL?, nsfw: Bool, onTapActions: (() -> Void)? = nil) {
         @AppStorage("safety.blurNsfw") var blurNsfw = true
+        let shouldBlur = blurNsfw ? nsfw : false
         self.url = url
-        self.shouldBlur = blurNsfw ? nsfw : false
-        self._blurred = .init(wrappedValue: blurNsfw ? nsfw : false)
+        self.onTapActions = onTapActions
+        self.shouldBlur = shouldBlur
+        self._blurred = .init(wrappedValue: shouldBlur)
     }
     
     @State private var loading: ImageLoadingState?
@@ -35,11 +38,18 @@ struct LargeImageView: View {
             .overlay {
                 NsfwOverlay(blurred: $blurred, shouldBlur: shouldBlur)
             }
+            .onChange(of: blurred, initial: false) {
+                // trigger tap actions when post unblurred
+                if !blurred, let onTapActions {
+                    onTapActions()
+                }
+            }
             .animation(.easeOut(duration: 0.1), value: blurred)
             .onTapGesture {
-                if blurred {
-                    blurred = false
-                } else if let loading, loading == .done, let url {
+                if let onTapActions {
+                    onTapActions()
+                }
+                if let loading, loading == .done, let url {
                     // Sheets don't cover the whole screen on iPad, so use a fullScreenCover instead
                     if UIDevice.isPad {
                         navigation.showFullScreenCover(.imageViewer(url))

@@ -50,6 +50,8 @@ struct ThumbnailImageView: View {
             content
                 .onTapGesture {
                     if let loading, loading == .done {
+                        post.markRead()
+                        
                         // Sheets don't cover the whole screen on iPad, so use a fullScreenCover instead
                         if UIDevice.isPad {
                             navigation.showFullScreenCover(.imageViewer(url))
@@ -61,6 +63,7 @@ struct ThumbnailImageView: View {
         case let .link(link):
             content
                 .onTapGesture {
+                    post.markRead()
                     openURL(link.content)
                 }
         default:

@@ -13,6 +13,7 @@ import SwiftUI
 
 struct TilePostView: View {
     @Environment(Palette.self) var palette: Palette
+    @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(\.parentFrameWidth) var parentFrameWidth: CGFloat
     
     let post: any Post1Providing
@@ -65,7 +66,7 @@ struct TilePostView: View {
     
     @ViewBuilder
     var titleSection: some View {
-        Text(post.title)
+        post.taggedTitle(communityContext: communityContext)
             .lineLimit(post.type.lineLimit)
             .foregroundStyle(post.read_ ?? false ? palette.secondary : palette.primary)
             .font(.footnote)
@@ -90,6 +91,28 @@ struct TilePostView: View {
         .frame(maxWidth: .infinity)
     }
     
+    var score: some View {
+        Menu {
+            ForEach(post.menuActions(), id: \.id) { action in
+                MenuButton(action: action)
+            }
+        } label: {
+            Group {
+                postTag(active: post.saved_ ?? false, icon: Icons.saveFill, color: palette.save) + // saved status
+                    Text(post.saved_ ?? false ? " " : "") + // spacing after save
+                    Text(Image(systemName: post.votes_?.iconName ?? Icons.upvoteSquare)) + // vote status
+                    Text(verbatim: " \(post.votes_?.total.abbreviated ?? "0")")
+            }
+            .lineLimit(1)
+            .font(.caption)
+            .foregroundStyle(post.votes_?.iconColor ?? palette.secondary)
+            .contentShape(.rect)
+        }
+        .onTapGesture {}
+    }
+    
+    // MARK: - BaseImage
+    
     struct BaseImage: View {
         @Environment(Palette.self) var palette: Palette
         
@@ -101,6 +124,21 @@ struct TilePostView: View {
         let height: CGFloat
         
         var body: some View {
+            content
+                .overlay {
+                    if post.nsfw {
+                        Image(Icons.nsfwTag)
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(palette.background, palette.warning)
+                            .imageScale(.small)
+                            .padding(AppConstants.halfSpacing)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                    }
+                }
+        }
+        
+        @ViewBuilder
+        var content: some View {
             switch post.type {
             case let .text(text):
                 MarkdownText(text, configuration: .caption)
@@ -128,38 +166,22 @@ struct TilePostView: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: width, height: height)
                     .clipped()
-                    .overlay {
-                        PostLinkHostView(host: link.host)
-                            .font(.caption)
-                            .padding(2)
-                            .padding(.horizontal, 4)
-                            .background {
-                                Capsule()
-                                    .fill(.regularMaterial)
-                                    .overlay(Capsule().fill(palette.background.opacity(0.25)))
-                            }
-                            .padding(AppConstants.compactSpacing)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                    }
+                    .overlay { linkHostOverlay(link) }
             }
         }
-    }
-    
-    var score: some View {
-        Menu {
-            ForEach(post.menuActions(), id: \.id) { action in
-                MenuButton(action: action)
-            }
-        } label: {
-            Group {
-                Text(Image(systemName: post.votes_?.iconName ?? Icons.upvoteSquare)) +
-                    Text(verbatim: " \(post.votes_?.total.abbreviated ?? "0")")
-            }
-            .lineLimit(1)
-            .font(.caption)
-            .foregroundStyle(post.votes_?.iconColor ?? palette.secondary)
-            .contentShape(.rect)
+        
+        func linkHostOverlay(_ link: PostLink) -> some View {
+            PostLinkHostView(host: link.host)
+                .font(.caption)
+                .padding(2)
+                .padding(.horizontal, 4)
+                .background {
+                    Capsule()
+                        .fill(.regularMaterial)
+                        .overlay(Capsule().fill(palette.background.opacity(0.25)))
+                }
+                .padding(AppConstants.compactSpacing)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
         }
-        .onTapGesture {}
     }
 }
