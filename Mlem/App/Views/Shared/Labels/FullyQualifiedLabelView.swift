@@ -76,6 +76,7 @@ struct FullyQualifiedLabelView: View {
                 }
             }
             .imageScale(.small)
+            .font(.footnote)
             
             FullyQualifiedNameView(name: entity?.name, instance: entity?.host, instanceLocation: labelStyle.instanceLocation)
         }

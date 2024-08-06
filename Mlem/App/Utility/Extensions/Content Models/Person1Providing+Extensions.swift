@@ -44,7 +44,7 @@ extension Person1Providing {
         if let community, community.moderators.contains(where: { $0.id == id }) {
             output.insert(.moderator)
         }
-        return [.cakeDay]
+        return output
     }
     
     func toggleBlocked(feedback: Set<FeedbackType> = []) {
