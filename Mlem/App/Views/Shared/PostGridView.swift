@@ -30,12 +30,19 @@ struct PostGridView: View {
                 if newValue.tiled {
                     // leading/trailing alignment makes them want to stick to each other, allowing the AppConstants.halfSpacing padding applied below
                     // to push them apart by a sum of AppConstants.standardSpacing
-                    columns = [
-                        GridItem(.flexible(), spacing: 0, alignment: .trailing),
-                        GridItem(.flexible(), spacing: 0, alignment: .leading)
-                    ]
+                    
+                    // Avoid causing unnecessary view update
+                    if columns.count == 1 {
+                        columns = [
+                            GridItem(.flexible(), spacing: 0, alignment: .trailing),
+                            GridItem(.flexible(), spacing: 0, alignment: .leading)
+                        ]
+                    }
                 } else {
-                    columns = [GridItem(.flexible())]
+                    // Avoid causing unnecessary view update
+                    if columns.count == 2 {
+                        columns = [GridItem(.flexible())]
+                    }
                 }
             }
     }
