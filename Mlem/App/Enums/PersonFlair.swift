@@ -15,6 +15,7 @@ enum PersonFlair: CaseIterable {
     case developer
     case bot
     case op
+    case cakeDay
     case bannedFromInstance
     case bannedFromCommunity
     
@@ -32,6 +33,8 @@ enum PersonFlair: CaseIterable {
             return Palette.main.negative
         case .developer:
             return Palette.main.accent6
+        case .cakeDay:
+            return Palette.main.accent3
         }
     }
     
@@ -51,6 +54,8 @@ enum PersonFlair: CaseIterable {
             return Icons.communityBannedFlair
         case .developer:
             return Icons.developerFlair
+        case .cakeDay:
+            return Icons.cakeDayFill
         }
     }
     
@@ -58,11 +63,12 @@ enum PersonFlair: CaseIterable {
         switch self {
         case .admin: "Administrator"
         case .bot: "Bot Account"
-        case .bannedFromInstance: "Banned"
+        case .bannedFromInstance: "Banned from Instance"
         case .bannedFromCommunity: "Banned from Community"
         case .moderator: "Moderator"
         case .developer: "Mlem Developer"
         case .op: "Original Poster"
+        case .cakeDay: "Cake Day"
         }
     }
 }

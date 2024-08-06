@@ -85,10 +85,10 @@
     "Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser." : {
 
     },
-    "Banned" : {
+    "Banned from Community" : {
 
     },
-    "Banned from Community" : {
+    "Banned from Instance" : {
 
     },
     "Block" : {
@@ -119,6 +119,9 @@
 
     },
     "Bottom" : {
+
+    },
+    "Cake Day" : {
 
     },
     "Cancel" : {

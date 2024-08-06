@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 02/07/2024.
 //
 
+import Foundation
 import MlemMiddleware
 
 extension Person1Providing {
@@ -24,6 +25,13 @@ extension Person1Providing {
             output.insert(.bannedFromInstance)
         }
         
+        let calendar = Calendar.current
+        let createdComponents = calendar.dateComponents([.month, .day], from: created)
+        let currentComponents = calendar.dateComponents([.month, .day], from: .now)
+        if createdComponents.month == currentComponents.month, createdComponents.day == currentComponents.day {
+            output.insert(.cakeDay)
+        }
+        
         if let interactable {
             assert(interactable.creator.id == id)
             output.formUnion(interactable.contextualFlairs())
@@ -36,7 +44,7 @@ extension Person1Providing {
         if let community, community.moderators.contains(where: { $0.id == id }) {
             output.insert(.moderator)
         }
-        return output
+        return [.cakeDay]
     }
     
     func toggleBlocked(feedback: Set<FeedbackType> = []) {

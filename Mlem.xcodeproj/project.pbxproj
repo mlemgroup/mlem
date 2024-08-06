@@ -136,7 +136,6 @@
 		03C93CF02BEFFB1A00327BFE /* LoginCredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C93CEF2BEFFB1A00327BFE /* LoginCredentialsView.swift */; };
 		03C93CF22BF0256700327BFE /* EnvironmentValue+IsRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C93CF12BF0256700327BFE /* EnvironmentValue+IsRootView.swift */; };
 		03CBD18D2C6120F600E870BC /* PersonFlair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CBD18C2C6120F600E870BC /* PersonFlair.swift */; };
-		03CBD18F2C61270100E870BC /* MlemMiddleware in Resources */ = {isa = PBXBuildFile; fileRef = 03CBD18E2C61270100E870BC /* MlemMiddleware */; };
 		03CBD1912C612CC300E870BC /* CommentContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CBD1902C612CC300E870BC /* CommentContext.swift */; };
 		03CBD1932C61369A00E870BC /* Interactable2Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CBD1922C61369A00E870BC /* Interactable2Providing+Extensions.swift */; };
 		03CCDAA02BF2795300C0C851 /* LoginPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CCDA9F2BF2795300C0C851 /* LoginPage.swift */; };
@@ -414,7 +413,6 @@
 		03C93CEF2BEFFB1A00327BFE /* LoginCredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCredentialsView.swift; sourceTree = "<group>"; };
 		03C93CF12BF0256700327BFE /* EnvironmentValue+IsRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValue+IsRootView.swift"; sourceTree = "<group>"; };
 		03CBD18C2C6120F600E870BC /* PersonFlair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonFlair.swift; sourceTree = "<group>"; };
-		03CBD18E2C61270100E870BC /* MlemMiddleware */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MlemMiddleware; path = ../../MlemMiddleware; sourceTree = "<group>"; };
 		03CBD1902C612CC300E870BC /* CommentContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentContext.swift; sourceTree = "<group>"; };
 		03CBD1922C61369A00E870BC /* Interactable2Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Interactable2Providing+Extensions.swift"; sourceTree = "<group>"; };
 		03CCDA9F2BF2795300C0C851 /* LoginPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPage.swift; sourceTree = "<group>"; };
@@ -863,7 +861,6 @@
 		6363D5C327EE196700E34822 /* Mlem */ = {
 			isa = PBXGroup;
 			children = (
-				03CBD18E2C61270100E870BC /* MlemMiddleware */,
 				CD4D583B2B867BB300B82964 /* App */,
 				6363D5C827EE196A00E34822 /* Assets.xcassets */,
 				030778EB2C52ED350018E61C /* Localizable.xcstrings */,
@@ -1537,7 +1534,6 @@
 				6363D5CC27EE196A00E34822 /* Preview Assets.xcassets in Resources */,
 				CDCA44A82C1766D500C092B3 /* Rigid Info.ahap in Resources */,
 				CDCA44A72C1766D500C092B3 /* Mushy Info.ahap in Resources */,
-				03CBD18F2C61270100E870BC /* MlemMiddleware in Resources */,
 				CDCA44AC2C1766D500C092B3 /* Success.ahap in Resources */,
 				50CC4A702A9BD2480074C845 /* instance_metadata.json in Resources */,
 				CDCA44AD2C1766D500C092B3 /* Violent Success.ahap in Resources */,
@@ -2260,8 +2256,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 0.22.0;
+				branch = "sjmarf/extraneous-view-update-fix";
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
