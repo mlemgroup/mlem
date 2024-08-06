@@ -40,14 +40,6 @@ struct AlternateIconLabel: View {
     }
     
     func getImage() -> Image {
-        guard let id = icon.id else {
-            return Bundle.main.iconFileName
-                .flatMap { UIImage(named: $0) }
-                .map {
-                    Image(uiImage: $0)
-                } ?? Image(systemName: Icons.noFile)
-        }
-        
-        return .init(uiImage: .init(named: id) ?? .init())
+        .init(uiImage: .init(named: icon.id ?? "AppIcon") ?? .init())
     }
 }
