@@ -70,7 +70,7 @@ struct FullyQualifiedLabelView: View {
                 .frame(width: labelStyle.avatarSize, height: labelStyle.avatarSize)
             }
             HStack(spacing: 2) {
-                ForEach(flairs(), id: \.self) { flair in
+                ForEach(flairs, id: \.self) { flair in
                     Image(systemName: flair.icon)
                         .foregroundStyle(flair.color)
                 }
@@ -83,7 +83,7 @@ struct FullyQualifiedLabelView: View {
         .accessibilityLabel(accessibilityLabel)
     }
     
-    func flairs() -> [PersonFlair] {
+    var flairs: [PersonFlair] {
         guard let person = entity as? any Person else { return [] }
         let flairs = person.flairs(
             interactableContext: (commentContext as? any Comment2Providing) ?? (postContext as? any Post2Providing),
@@ -94,7 +94,7 @@ struct FullyQualifiedLabelView: View {
     
     var accessibilityLabel: String {
         guard let entity, let fullName = entity.fullName else { return String(localized: "Loading...") }
-        let flairs = flairs()
+        let flairs = flairs
         if !flairs.isEmpty {
             return "\(fullName), " + flairs.map { String(localized: $0.label) }.joined(separator: ", ")
         } else {

@@ -10,8 +10,8 @@ import MlemMiddleware
 
 extension Person1Providing {
     func flairs(
-        interactableContext interactable: (any Interactable2Providing)?,
-        communityContext community: (any Community3Providing)?
+        interactableContext interactable: (any Interactable2Providing)? = nil,
+        communityContext community: (any Community3Providing)? = nil
     ) -> Set<PersonFlair> {
         var output: Set<PersonFlair> = []
         

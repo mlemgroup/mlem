@@ -68,8 +68,14 @@ struct PersonListRowBody<Content: View>: View {
                     .frame(width: AppConstants.listRowAvatarSize, height: AppConstants.listRowAvatarSize)
             }
             VStack(alignment: .leading, spacing: 4) {
-                Text(title)
-                    .lineLimit(1)
+                HStack {
+                    ForEach(flairs, id: \.self) { flair in
+                        Image(systemName: flair.icon)
+                            .foregroundStyle(flair.color)
+                    }
+                    Text(title)
+                        .lineLimit(1)
+                }
                 caption
                     .font(.footnote)
                     .foregroundStyle(.secondary)
@@ -131,5 +137,10 @@ struct PersonListRowBody<Content: View>: View {
             .imageScale(.small)
         }
         .foregroundStyle(palette.secondary)
+    }
+    
+    var flairs: [PersonFlair] {
+        let flairs = person.flairs()
+        return PersonFlair.allCases.filter { flairs.contains($0) }
     }
 }
