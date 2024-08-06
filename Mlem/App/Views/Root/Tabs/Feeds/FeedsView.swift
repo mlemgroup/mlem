@@ -14,7 +14,6 @@ struct FeedsView: View {
     @AppStorage("post.size") var postSize: PostSize = .large
     @AppStorage("feed.showRead") var showRead: Bool = true
     
-    @Environment(\.dismiss) var dismiss
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
