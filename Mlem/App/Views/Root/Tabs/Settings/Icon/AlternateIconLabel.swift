@@ -40,6 +40,12 @@ struct AlternateIconLabel: View {
     }
     
     func getImage() -> Image {
-        .init(uiImage: .init(named: icon.id ?? "AppIcon") ?? .init())
+        let iconId: String
+        if let id = icon.id {
+            iconId = "\(id).preview"
+        } else {
+            iconId = "logo"
+        }
+        return .init(uiImage: .init(named: iconId) ?? .init())
     }
 }
