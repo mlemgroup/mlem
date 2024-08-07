@@ -11,7 +11,7 @@ import SwiftUI
 
 struct PersonContentGridView: View {
     @Environment(AppState.self) var appState
-    @AppStorage("post.size") var postSize: PostSize = .large
+    @Config(\.postSize) var postSize
     
     @State var columns: [GridItem] = [GridItem(.flexible())]
     @State var frameWidth: CGFloat = .zero

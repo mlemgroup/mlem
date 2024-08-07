@@ -11,7 +11,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct FeedsView: View {
-    @AppStorage("post.size") var postSize: PostSize = .large
+    @Config(\.postSize) var postSize
     @AppStorage("feed.showRead") var showRead: Bool = true
     
     @Environment(\.dismiss) var dismiss

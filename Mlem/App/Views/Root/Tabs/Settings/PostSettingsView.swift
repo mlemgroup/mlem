@@ -10,7 +10,7 @@ import SwiftUI
 
 // note: this is a very lazy categorization of "properties that affect posts"
 struct PostSettingsView: View {
-    @AppStorage("post.size") var postSize: PostSize = .large
+    @Config(\.postSize) var postSize
     @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
     @AppStorage("post.showCreator") var showCreator: Bool = false
     @AppStorage("user.showAvatar") var showUserAvatar: Bool = true

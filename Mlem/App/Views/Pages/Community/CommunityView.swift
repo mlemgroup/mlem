@@ -29,7 +29,7 @@ struct CommunityView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     
-    @AppStorage("post.size") var postSize: PostSize = .large
+    @Config(\.postSize) var postSize
     
     @State var community: AnyCommunity
     @State private var selectedTab: Tab = .posts

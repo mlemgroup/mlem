@@ -12,7 +12,7 @@ import SwiftUI
 /// Renders the content of a given StandardPostFeedLoader. Responsible solely for post layout and triggering loading; scrolling, handling feed type
 /// changes, header, footer, rendering toolbar items, etc. should be handled by the parent view.
 struct PostGridView: View {
-    @AppStorage("post.size") var postSize: PostSize = .large
+    @Config(\.postSize) var postSize
     @AppStorage("feed.showRead") var showRead: Bool = true
     
     @Environment(AppState.self) var appState
