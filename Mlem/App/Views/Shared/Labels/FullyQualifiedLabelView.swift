@@ -69,15 +69,17 @@ struct FullyQualifiedLabelView: View {
                 )
                 .frame(width: labelStyle.avatarSize, height: labelStyle.avatarSize)
             }
-            HStack(spacing: 2) {
-                ForEach(flairs, id: \.self) { flair in
-                    Image(systemName: flair.icon)
-                        .foregroundStyle(flair.color)
+            let flairs = flairs
+            if !flairs.isEmpty {
+                HStack(spacing: 2) {
+                    ForEach(flairs, id: \.self) { flair in
+                        Image(systemName: flair.icon)
+                            .foregroundStyle(flair.color)
+                    }
                 }
+                .imageScale(.small)
+                .font(.footnote)
             }
-            .imageScale(.small)
-            .font(.footnote)
-            
             FullyQualifiedNameView(name: entity?.name, instance: entity?.host, instanceLocation: labelStyle.instanceLocation)
         }
         .accessibilityElement(children: .ignore)
@@ -98,8 +100,7 @@ struct FullyQualifiedLabelView: View {
         let flairs = flairs
         if !flairs.isEmpty {
             return "\(fullName), " + flairs.map { String(localized: $0.label) }.joined(separator: ", ")
-        } else {
-            return fullName
         }
+        return fullName
     }
 }
