@@ -28,9 +28,9 @@ struct FixedImageView: View {
         
         var icon: String {
             switch self {
-            case .person: Icons.userFill
-            case .community: Icons.communityFill
-            case .instance: Icons.instanceFill
+            case .person: Icons.personCircleFill
+            case .community: Icons.communityCircleFill
+            case .instance: Icons.instanceCircleFill
             case .favicon: Icons.browser
             case .image: Icons.missing
             }

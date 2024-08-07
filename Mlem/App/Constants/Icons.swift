@@ -131,12 +131,18 @@ enum Icons {
     
     // entities/general Lemmy concepts
     static let federation: String = "point.3.filled.connected.trianglepath.dotted"
-    static let instance: String = "building.2.crop.circle"
-    static let instanceFill: String = "building.2.crop.circle.fill"
-    static let user: String = "person.crop.circle"
-    static let userFill: String = "person.crop.circle.fill"
-    static let community: String = "house.circle"
-    static let communityFill: String = "house.circle.fill"
+    static let instance: String = "building.2"
+    static let instanceFill: String = "building.2.fill"
+    static let instanceCircle: String = "building.2.crop.circle"
+    static let instanceCircleFill: String = "building.2.crop.circle.fill"
+    static let person: String = "person"
+    static let personFill: String = "person.fill"
+    static let personCircle: String = "person.crop.circle"
+    static let personCircleFill: String = "person.crop.circle.fill"
+    static let community: String = "house"
+    static let communityFill: String = "house.fill"
+    static let communityCircle: String = "house.circle"
+    static let communityCircleFill: String = "house.circle.fill"
     
     // tabs
     static let feeds: String = "scroll"
@@ -176,8 +182,6 @@ enum Icons {
     static let favoriteFill: String = "star.fill"
     static let unfavorite: String = "star.slash"
     static let unfavoriteFill: String = "star.slash.fill"
-    static let person: String = "person"
-    static let personFill: String = "person.fill"
     static let close: String = "multiply"
     static let closeCircle: String = "xmark.circle"
     static let closeCircleFill: String = "xmark.circle.fill"
