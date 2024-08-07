@@ -91,6 +91,15 @@ class ExpandedPostTracker: Hashable {
             }
         }
     }
+
+    func resolveComments(post: any Post) {
+        Task {
+            commentResolveLoading = true
+            loadingState = .idle
+            await loadComments(post: post)
+            commentResolveLoading = false
+        }
+    }
     
     static func == (lhs: ExpandedPostTracker, rhs: ExpandedPostTracker) -> Bool {
         lhs === rhs

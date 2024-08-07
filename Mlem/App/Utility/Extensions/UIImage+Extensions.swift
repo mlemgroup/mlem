@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 15/07/2024.
 //
 
+import CoreGraphics
 import UIKit
 
 extension UIImage {
@@ -13,21 +14,48 @@ extension UIImage {
     var breadth: CGFloat { min(size.width, size.height) }
     var breadthSize: CGSize { .init(width: breadth, height: breadth) }
     var breadthRect: CGRect { .init(origin: .zero, size: breadthSize) }
-    var circleMasked: UIImage? {
-        guard let cgImage = cgImage?
-            .cropping(to: .init(
-                origin: .init(
-                    x: isLandscape ? ((size.width - size.height) / 2).rounded(.down) : 0,
-                    y: isPortrait ? ((size.height - size.width) / 2).rounded(.down) : 0
-                ),
-                size: breadthSize
-            )) else { return nil }
-        let format = imageRendererFormat
-        format.opaque = false
-        return UIGraphicsImageRenderer(size: breadthSize, format: format).image { _ in
-            UIBezierPath(ovalIn: breadthRect).addClip()
-            UIImage(cgImage: cgImage, scale: format.scale, orientation: imageOrientation)
-                .draw(in: .init(origin: .zero, size: breadthSize))
+    
+    var circleMasked: UIImage {
+        let diameter = min(size.width, size.height)
+        let isLandscape = size.width > size.height
+
+        let xOffset = isLandscape ? (size.width - diameter) / 2 : 0
+        let yOffset = isLandscape ? 0 : (size.height - diameter) / 2
+
+        let imageSize = CGSize(width: diameter, height: diameter)
+
+        return UIGraphicsImageRenderer(size: imageSize).image { _ in
+            let ovalPath = UIBezierPath(ovalIn: CGRect(origin: .zero, size: imageSize))
+            ovalPath.addClip()
+            draw(at: CGPoint(x: -xOffset, y: -yOffset))
         }
+    }
+    
+    func circleBorder(color: UIColor, width: CGFloat) -> UIImage {
+        let diameter = min(size.width, size.height)
+        let isLandscape = size.width > size.height
+
+        let xOffset = isLandscape ? (size.width - diameter) / 2 : 0
+        let yOffset = isLandscape ? 0 : (size.height - diameter) / 2
+
+        let imageSize = CGSize(width: diameter, height: diameter)
+
+        return UIGraphicsImageRenderer(size: imageSize).image { _ in
+            let ovalPath = UIBezierPath(ovalIn: CGRect(origin: .zero, size: imageSize))
+            ovalPath.addClip()
+            draw(at: CGPoint(x: -xOffset, y: -yOffset))
+           
+            color.setStroke()
+            ovalPath.lineWidth = width
+            ovalPath.stroke()
+        }
+    }
+    
+    func resized(to newSize: CGSize) -> UIImage {
+        let image = UIGraphicsImageRenderer(size: newSize).image { _ in
+            draw(in: CGRect(origin: .zero, size: newSize))
+        }
+        
+        return image.withRenderingMode(renderingMode)
     }
 }

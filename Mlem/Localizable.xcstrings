@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "@%@" : {
-
-    },
     "**%@** and **%@** chose to defederate from one another." : {
       "localizations" : {
         "en" : {
@@ -68,6 +65,9 @@
 
     },
     "All" : {
+
+    },
+    "App Icon" : {
 
     },
     "Applications Email Admins" : {
@@ -369,6 +369,9 @@
     "Moderated" : {
 
     },
+    "Moderation" : {
+
+    },
     "Monochrome" : {
 
     },
@@ -451,9 +454,6 @@
 
     },
     "Private" : {
-
-    },
-    "Profile" : {
 
     },
     "Quote" : {

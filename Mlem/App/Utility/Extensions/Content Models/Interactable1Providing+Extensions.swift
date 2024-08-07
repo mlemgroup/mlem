@@ -55,7 +55,7 @@ extension Interactable1Providing {
             print("DEBUG no self2 found in toggleSave!")
         }
     }
-        
+    
     // MARK: Counters
     
     var upvoteCounter: Counter {

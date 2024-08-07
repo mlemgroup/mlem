@@ -16,6 +16,7 @@ struct FixedImageView: View {
     
     @State private var uiImage: UIImage
     @State private var loading: ImageLoadingState
+    @State var loadingPref: ImageLoadingState? // tracked separately to allow correct propagation of inital value
     
     let url: URL?
     let fallback: Fallback
@@ -60,7 +61,8 @@ struct FixedImageView: View {
                 content
                     .task(loadImage)
                     .aspectRatio(1, contentMode: .fill)
-                    .preference(key: ImageLoadingPreferenceKey.self, value: loading)
+                    .onChange(of: loading, initial: true) { loadingPref = loading }
+                    .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
                     .allowsHitTesting(false)
             }
     }

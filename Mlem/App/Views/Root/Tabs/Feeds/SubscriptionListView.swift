@@ -38,33 +38,7 @@ struct SubscriptionListView: View {
             navigation.path.isEmpty
         }
     }
-    
-    var selection: Binding<NavigationPage?> {
-        .init(get: {
-            if UIDevice.isPad {
-                noDetail ? nil : navigation.root
-            } else {
-                navigation.path.first
-            }
-        }, set: { newValue in
-            Task { @MainActor in
-                if UIDevice.isPad {
-                    if let newValue {
-                        navigation.root = newValue
-                        noDetail = false
-                    } else {
-                        noDetail = true
-                    }
-                } else {
-                    navigation.popToRoot()
-                    if let newValue {
-                        navigation.push(newValue)
-                    }
-                }
-            }
-        })
-    }
-    
+
     @ViewBuilder
     var content: some View {
         let subscriptions = (appState.firstSession as? UserSession)?.subscriptions
@@ -72,6 +46,12 @@ struct SubscriptionListView: View {
         
         ScrollViewReader { proxy in
             List {
+                Section {
+                    NavigationLink(.feeds) {
+                        Text("Feeds")
+                    }
+                }
+                
                 ForEach(sections) { section in
                     Section(section.label) {
                         ForEach(section.communities) { (community: Community2) in

@@ -25,12 +25,16 @@ struct LargePostBodyView: View {
             
             switch post.type {
             case let .image(url):
-                LargeImageView(url: url, nsfw: post.nsfw)
-                    // Set maximum image height to 1.2 * width
-                    .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
-                    .frame(maxWidth: .infinity)
+                LargeImageView(url: url, nsfw: post.nsfw) {
+                    post.markRead()
+                }
+                // Set maximum image height to 1.2 * width
+                .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
+                .frame(maxWidth: .infinity)
             case let .link(link):
-                WebsitePreviewView(link: link, nsfw: post.nsfw)
+                WebsitePreviewView(link: link, nsfw: post.nsfw) {
+                    post.markRead()
+                }
             default:
                 EmptyView()
             }

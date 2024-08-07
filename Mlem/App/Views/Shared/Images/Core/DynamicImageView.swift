@@ -17,6 +17,7 @@ struct DynamicImageView: View {
     
     @State var uiImage: UIImage?
     @State var loading: ImageLoadingState
+    @State var loadingPref: ImageLoadingState?
     @State var aspectRatio: CGSize
     @State var error: Error?
     
@@ -64,7 +65,8 @@ struct DynamicImageView: View {
             }
             .task(loadImage)
             .clipShape(.rect(cornerRadius: cornerRadius))
-            .preference(key: ImageLoadingPreferenceKey.self, value: loading)
+            .onChange(of: loading, initial: true) { loadingPref = loading }
+            .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
     }
     
     @Sendable

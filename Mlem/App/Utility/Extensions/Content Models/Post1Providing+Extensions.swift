@@ -36,6 +36,10 @@ extension Post1Providing {
         }
     }
     
+    func markRead() {
+        self2?.updateRead(true)
+    }
+    
     func swipeActions(
         behavior: SwipeBehavior,
         expandedPostTracker: ExpandedPostTracker? = nil

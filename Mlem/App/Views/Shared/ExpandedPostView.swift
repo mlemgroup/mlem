@@ -28,6 +28,7 @@ struct ExpandedPostView: View {
                 VStack {
                     if showLoadingSymbol {
                         content(for: post)
+                            .externalApiWarning(entity: post, isLoading: proxy.isLoading)
                             .transition(.opacity)
                     } else {
                         // We *could* show the post here, but we'd need to scroll down as soon as the comments load.
@@ -46,18 +47,15 @@ struct ExpandedPostView: View {
                 .animation(.default, value: showLoadingSymbol)
                 .task {
                     if post.api == appState.firstApi {
+                        post.markRead()
                         await tracker.load(post: post)
                     }
                 }
                 .onChange(of: post.api) {
-                    Task {
-                        commentResolveLoading = true
-                        await tracker.mergeNewComments(fromPost: post)
-                        commentResolveLoading = false
-                    }
+                    tracker.resolveComments(post: post)
                 }
                 .toolbar {
-                    if proxy.isLoading || commentResolveLoading {
+                    if proxy.isLoading {
                         ProgressView()
                     } else {
                         ToolbarEllipsisMenu(post.menuActions())

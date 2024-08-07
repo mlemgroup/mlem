@@ -33,11 +33,9 @@ struct CompactPostView: View {
             VStack(alignment: .leading, spacing: AppConstants.compactSpacing) {
                 HStack(spacing: 4) {
                     if communityContext != nil {
-                        NavigationLink(value: NavigationPage.profile) {
-                            FullyQualifiedLabelView(entity: post.creator_, labelStyle: .small, showAvatar: false)
-                        }
+                        FullyQualifiedLinkView(entity: post.creator_, labelStyle: .small, showAvatar: false)
                     } else {
-                        FullyQualifiedLabelView(entity: post.community_, labelStyle: .small, showAvatar: false)
+                        FullyQualifiedLinkView(entity: post.community_, labelStyle: .small, showAvatar: false)
                     }
                     Spacer()
                     
@@ -56,6 +54,7 @@ struct CompactPostView: View {
   
                 post.taggedTitle(communityContext: communityContext)
                     .imageScale(.small)
+                    .foregroundStyle(post.read_ ?? false ? palette.secondary : palette.primary)
                     .font(.subheadline)
                 
                 if let host = post.linkHost {

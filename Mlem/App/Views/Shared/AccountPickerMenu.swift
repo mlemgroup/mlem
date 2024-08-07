@@ -30,7 +30,7 @@ struct AccountPickerMenu<Content: View>: View {
                         } icon: {
                             SimpleAvatarView(url: account.avatar, type: .person)
                         }
-                        Text("@\(account.host ?? "unknown")")
+                        Text(verbatim: "@\(account.host ?? "unknown")")
                     }
                     .tag(account)
                 }

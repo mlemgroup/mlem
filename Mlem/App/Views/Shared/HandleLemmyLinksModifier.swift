@@ -96,7 +96,7 @@ struct HandleLemmyLinksModifier: ViewModifier {
             navigation.push(.person(PersonStub(api: appState.firstApi, actorId: url)))
             return true
         case "c":
-            // TODO: community
+            navigation.push(.community(CommunityStub(api: appState.firstApi, actorId: url)))
             return true
         case "post":
             if components.count == 2 {
@@ -139,10 +139,10 @@ struct HandleLemmyLinksModifier: ViewModifier {
             ).resolve(actorId: url)
         }
 
-        if let output = output as? any Person {
-            navigation.push(.person(output))
+        if let person = output as? any Person {
+            navigation.push(.person(person))
         } else if let community = output as? any Community {
-            // TODO: Community
+            navigation.push(.community(community))
         } else {
             openRegularLink(url: url)
         }
