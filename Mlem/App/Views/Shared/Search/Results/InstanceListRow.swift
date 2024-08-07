@@ -56,8 +56,8 @@ struct InstanceListRow<Content2: View>: View {
             }
         }
         .background(palette.background)
-        .contextMenu(
-            actions: instanceStub?.menuActions(allowExternalBlocking: true) ?? []
-        )
+        .contextMenu {
+            instanceStub?.menuActions(allowExternalBlocking: true) ?? []
+        }
     }
 }
