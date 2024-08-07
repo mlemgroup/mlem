@@ -22,13 +22,13 @@ struct LargePostView: View {
     
     var body: some View {
         content
-            .padding(AppConstants.standardSpacing)
+            .padding(Constants.main.standardSpacing)
             .background(palette.background)
             .environment(\.postContext, post)
     }
     
     var content: some View {
-        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             HStack {
                 if communityContext == nil {
                     communityLink

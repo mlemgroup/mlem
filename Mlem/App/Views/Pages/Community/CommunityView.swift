@@ -29,7 +29,7 @@ struct CommunityView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     
-    @Config(\.postSize) var postSize
+    @Setting(\.postSize) var postSize
     
     @State var community: AnyCommunity
     @State private var selectedTab: Tab = .posts
@@ -84,7 +84,7 @@ struct CommunityView: View {
                 subscribeButton(community: community)
                     .padding(.top, AppConstants.halfSpacing)
             }
-            .padding(.bottom, postSize.tiled ? 0 : AppConstants.standardSpacing)
+            .padding(.bottom, postSize.tiled ? 0 : Constants.main.standardSpacing)
             BubblePicker(
                 tabs(community: community),
                 selected: $selectedTab,
@@ -114,7 +114,7 @@ struct CommunityView: View {
 
     @ViewBuilder
     func aboutTab(community: any Community) -> some View {
-        VStack(spacing: AppConstants.standardSpacing) {
+        VStack(spacing: Constants.main.standardSpacing) {
             if let banner = community.banner {
                 LargeImageView(url: banner, nsfw: community.nsfw)
             }
@@ -122,7 +122,7 @@ struct CommunityView: View {
                 Markdown(description, configuration: .default)
             }
         }
-        .padding(AppConstants.standardSpacing)
+        .padding(Constants.main.standardSpacing)
     }
     
     @ViewBuilder
@@ -145,7 +145,7 @@ struct CommunityView: View {
             .background(subscribed ? palette.accent : palette.secondary.opacity(0.2), in: .capsule)
             .foregroundStyle(subscribed ? palette.selectedInteractionBarItem : palette.secondary)
         }
-        .padding(.trailing, AppConstants.standardSpacing)
+        .padding(.trailing, Constants.main.standardSpacing)
         .padding(.bottom, AppConstants.halfSpacing)
     }
     

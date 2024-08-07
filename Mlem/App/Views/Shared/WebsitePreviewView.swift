@@ -79,13 +79,13 @@ struct WebsitePreviewView: View {
                     }
             } else {
                 linkHost
-                    .padding([.horizontal, .top], AppConstants.standardSpacing)
+                    .padding([.horizontal, .top], Constants.main.standardSpacing)
             }
             
             Text(link.label)
                 .font(.subheadline)
                 .fontWeight(.semibold)
-                .padding(AppConstants.standardSpacing)
+                .padding(Constants.main.standardSpacing)
         }
     }
     

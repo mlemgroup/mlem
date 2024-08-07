@@ -7,6 +7,7 @@
 
 import Foundation
 
+// Struct enumerating all platform-specific constants
 struct PlatformConstants {
     let standardSpacing: CGFloat
 }

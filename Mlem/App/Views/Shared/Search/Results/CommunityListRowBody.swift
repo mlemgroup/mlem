@@ -59,7 +59,7 @@ struct CommunityListRowBody<Content: View>: View {
     }
 
     var body: some View {
-        HStack(spacing: AppConstants.standardSpacing) {
+        HStack(spacing: Constants.main.standardSpacing) {
             if community.blocked, showBlockStatus {
                 Image(systemName: Icons.hide)
                     .resizable()

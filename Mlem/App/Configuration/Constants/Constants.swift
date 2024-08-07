@@ -1,5 +1,5 @@
 //
-//  CoreConstants.swift
+//  Constants.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-08-07.
@@ -7,25 +7,43 @@
 
 import Foundation
 import KeychainAccess
+import SwiftUI
 
-enum CoreConstants {
+class Constants {
+    private var platformConstants: PlatformConstants
+    
+    public static let main: Constants = .init()
+    
+    private init() {
+        if UIDevice.isPhone {
+            self.platformConstants = .phone
+        } else if UIDevice.isPad {
+            self.platformConstants = .pad
+        } else {
+            assertionFailure("Unrecognized UIDevice!")
+            self.platformConstants = .phone
+        }
+    }
+    
+    // MARK: - Common Constants
+    
     static let cacheSize = 500_000_000 // 500MB in bytes
     static let urlCache: URLCache = .init(memoryCapacity: cacheSize, diskCapacity: cacheSize)
     static let urlSession: URLSession = .init(configuration: .default)
 
-    // MARK: - Date parsing
+    // MARK: Date parsing
 
     static let dateComponentsFormatter: DateComponentsFormatter = .init()
 
-    // MARK: - Keychain
+    // MARK: Keychain
 
     static let keychain: Keychain = .init(service: "com.hanners.Mlem-keychain")
     
-    // MARK: - Text Fields
+    // MARK: Text Fields
 
     static let textFieldVariableLineLimit: ClosedRange<Int> = 1 ... 10
     
-    // MARK: - Sizes
+    // MARK: Sizes
 
     static let maxFeedPostHeight: CGFloat = 400
     static let maxFeedPostHeightExpanded: CGFloat = 3000
@@ -56,4 +74,8 @@ enum CoreConstants {
     static let fancyTabBarHeight: CGFloat = 48 // total height of the fancy tab bar
     static let editorOverscroll: CGFloat = 30
     static let expandedPostOverscroll: CGFloat = 80
+    
+    // MARK: - Platform Constants
+    
+    public var standardSpacing: CGFloat { platformConstants.standardSpacing }
 }

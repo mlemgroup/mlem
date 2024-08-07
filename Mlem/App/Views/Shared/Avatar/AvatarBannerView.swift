@@ -37,7 +37,7 @@ struct AvatarBannerView: View {
     static let bannerHeight: CGFloat = 170
     static let avatarOverdraw: CGFloat = 40
     static let avatarSize: CGFloat = 108
-    static let avatarPadding: CGFloat = AppConstants.standardSpacing
+    static let avatarPadding: CGFloat = Constants.main.standardSpacing
     
     var body: some View {
         Group {

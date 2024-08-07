@@ -56,7 +56,7 @@ struct PersonListRowBody<Content: View>: View {
     }
     
     var body: some View {
-        HStack(spacing: AppConstants.standardSpacing) {
+        HStack(spacing: Constants.main.standardSpacing) {
             if person.blocked, showBlockStatus {
                 Image(systemName: Icons.hide)
                     .resizable()

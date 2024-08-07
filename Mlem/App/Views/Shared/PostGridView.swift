@@ -12,7 +12,7 @@ import SwiftUI
 /// Renders the content of a given StandardPostFeedLoader. Responsible solely for post layout and triggering loading; scrolling, handling feed type
 /// changes, header, footer, rendering toolbar items, etc. should be handled by the parent view.
 struct PostGridView: View {
-    @Config(\.postSize) var postSize
+    @Setting(\.postSize) var postSize
     @AppStorage("feed.showRead") var showRead: Bool = true
     
     @Environment(AppState.self) var appState
@@ -29,7 +29,7 @@ struct PostGridView: View {
             .onChange(of: postSize, initial: true) { _, newValue in
                 if newValue.tiled {
                     // leading/trailing alignment makes them want to stick to each other, allowing the AppConstants.halfSpacing padding applied below
-                    // to push them apart by a sum of AppConstants.standardSpacing
+                    // to push them apart by a sum of Constants.main.standardSpacing
                     columns = [
                         GridItem(.flexible(), spacing: 0, alignment: .trailing),
                         GridItem(.flexible(), spacing: 0, alignment: .leading)
@@ -41,7 +41,7 @@ struct PostGridView: View {
     }
     
     var content: some View {
-        LazyVGrid(columns: columns, spacing: postSize.tiled ? AppConstants.standardSpacing : 0) {
+        LazyVGrid(columns: columns, spacing: postSize.tiled ? Constants.main.standardSpacing : 0) {
             ForEach(postFeedLoader.items, id: \.hashValue) { post in
                 if !post.read || showRead, !post.creator.blocked, !post.community.blocked, !post.hidden {
                     VStack(spacing: 0) { // this improves performance O_o

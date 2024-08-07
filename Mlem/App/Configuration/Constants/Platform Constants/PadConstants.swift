@@ -7,6 +7,7 @@
 
 import Foundation
 
+// iPad-specific constants
 extension PlatformConstants {
     static let pad: PlatformConstants = .init(
         standardSpacing: 50

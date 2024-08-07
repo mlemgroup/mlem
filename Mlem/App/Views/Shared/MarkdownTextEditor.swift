@@ -34,9 +34,9 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         textView.font = .preferredFont(forTextStyle: .body)
         textView.textContainerInset = .init(
             top: AppConstants.halfSpacing,
-            left: AppConstants.standardSpacing,
-            bottom: AppConstants.standardSpacing,
-            right: AppConstants.standardSpacing
+            left: Constants.main.standardSpacing,
+            bottom: Constants.main.standardSpacing,
+            right: Constants.main.standardSpacing
         )
         textView.delegate = context.coordinator
         textView.translatesAutoresizingMaskIntoConstraints = false

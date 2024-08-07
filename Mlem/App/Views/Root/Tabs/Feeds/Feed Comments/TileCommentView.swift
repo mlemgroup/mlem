@@ -21,14 +21,14 @@ struct TileCommentView: View {
     
     let contentHeightModifier: CGFloat = 33
     // width cannot go below contentHeightModifier so contentWidth is never negative
-    var width: CGFloat { max(contentHeightModifier, (parentFrameWidth - (AppConstants.standardSpacing * 3)) / 2) }
+    var width: CGFloat { max(contentHeightModifier, (parentFrameWidth - (Constants.main.standardSpacing * 3)) / 2) }
     var contentHeight: CGFloat { width - 33 }
     var frameHeight: CGFloat { width + titleHeight + communityHeight + 17 }
     // Padding math
     // Need to satisfy: padding + contentHeightModifier = 17
     //
-    // VStack spacing = (2 * AppConstants.standardSpacing) = 20
-    // External padding = (2 * AppConstants.standardSpacing) = 20
+    // VStack spacing = (2 * Constants.main.standardSpacing) = 20
+    // External padding = (2 * Constants.main.standardSpacing) = 20
     // Internal titleSection padding = (2 * AppConstants.halfSpacing) = 10
     //
     // Total padding = 50
@@ -44,7 +44,7 @@ struct TileCommentView: View {
     }
     
     var content: some View {
-        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             titleSection
                 .typesettingLanguage(.init(languageCode: .english))
                 .frame(height: titleHeight, alignment: .topLeading)
@@ -60,7 +60,7 @@ struct TileCommentView: View {
 
             communityAndInfo
         }
-        .padding(AppConstants.standardSpacing)
+        .padding(Constants.main.standardSpacing)
     }
     
     @ViewBuilder

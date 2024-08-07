@@ -22,13 +22,13 @@ struct HeadlinePostView: View {
     
     var body: some View {
         content
-            .padding(AppConstants.standardSpacing)
+            .padding(Constants.main.standardSpacing)
             .background(palette.background)
             .environment(\.postContext, post)
     }
     
     var content: some View {
-        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             HStack {
                 if communityContext == nil {
                     communityLink
@@ -46,7 +46,7 @@ struct HeadlinePostView: View {
                 EllipsisMenu(actions: post.menuActions(), size: 24)
             }
             
-            HStack(alignment: .top, spacing: AppConstants.standardSpacing) {
+            HStack(alignment: .top, spacing: Constants.main.standardSpacing) {
                 if thumbnailLocation == .left {
                     ThumbnailImageView(post: post, blurred: post.nsfw, size: .standard)
                 }

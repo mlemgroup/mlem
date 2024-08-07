@@ -11,7 +11,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct FeedsView: View {
-    @Config(\.postSize) var postSize
+    @Setting(\.postSize) var postSize
     @AppStorage("feed.showRead") var showRead: Bool = true
     
     @Environment(\.dismiss) var dismiss
@@ -198,7 +198,7 @@ struct FeedsView: View {
                     }
                 } label: {
                     FeedHeaderView(feedDescription: feedSelection.description, dropdownStyle: .enabled(showBadge: false))
-                        .padding(.bottom, AppConstants.standardSpacing)
+                        .padding(.bottom, Constants.main.standardSpacing)
                 }
                 .buttonStyle(.plain)
             } footer: {

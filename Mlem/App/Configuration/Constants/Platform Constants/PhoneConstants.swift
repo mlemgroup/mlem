@@ -7,6 +7,7 @@
 
 import Foundation
 
+// iPhone-specific constants
 extension PlatformConstants {
     static let phone: PlatformConstants = .init(
         standardSpacing: 10

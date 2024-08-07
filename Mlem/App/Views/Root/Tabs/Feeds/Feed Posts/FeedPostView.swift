@@ -11,7 +11,7 @@ import SwiftUI
 
 /// View for rendering posts in feed
 struct FeedPostView: View {
-    @Config(\.postSize) var postSize
+    @Setting(\.postSize) var postSize
     
     @Environment(Palette.self) var palette
     

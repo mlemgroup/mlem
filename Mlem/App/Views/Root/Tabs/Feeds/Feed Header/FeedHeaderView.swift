@@ -50,10 +50,10 @@ struct FeedHeaderView<ImageContent: View>: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            HStack(alignment: .center, spacing: AppConstants.standardSpacing) {
+            HStack(alignment: .center, spacing: Constants.main.standardSpacing) {
                 image
                     .frame(width: 44, height: 44)
-                    .padding(.leading, AppConstants.standardSpacing)
+                    .padding(.leading, Constants.main.standardSpacing)
                     
                 VStack(alignment: .leading, spacing: 0) {
                     HStack(spacing: AppConstants.halfSpacing) {

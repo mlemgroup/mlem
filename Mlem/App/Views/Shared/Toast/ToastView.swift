@@ -182,7 +182,7 @@ struct ToastView: View {
                         .buttonStyle(.borderedProminent)
                         .buttonBorderShape(.capsule)
                         .tint(Palette.main.negative)
-                        .padding(AppConstants.standardSpacing)
+                        .padding(Constants.main.standardSpacing)
                     }
                 }
                 .frame(maxHeight: .infinity, alignment: .leading)
@@ -203,7 +203,7 @@ struct ToastView: View {
             .foregroundStyle(ToastView.dimmedSymbols.contains(systemName) ? .secondary : .primary)
             .foregroundStyle(color)
             .frame(width: 27)
-            .padding(.leading, AppConstants.standardSpacing)
+            .padding(.leading, Constants.main.standardSpacing)
     }
 }
 

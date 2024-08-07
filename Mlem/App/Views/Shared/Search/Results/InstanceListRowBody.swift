@@ -47,7 +47,7 @@ struct InstanceListRowBody<Content: View>: View {
     }
 
     var body: some View {
-        HStack(spacing: AppConstants.standardSpacing) {
+        HStack(spacing: Constants.main.standardSpacing) {
             CircleCroppedImageView(url: avatar?.withIconSize(128), fallback: .instance)
                 .frame(width: AppConstants.listRowAvatarSize, height: AppConstants.listRowAvatarSize)
             

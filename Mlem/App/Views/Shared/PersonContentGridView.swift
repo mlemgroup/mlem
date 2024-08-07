@@ -11,7 +11,7 @@ import SwiftUI
 
 struct PersonContentGridView: View {
     @Environment(AppState.self) var appState
-    @Config(\.postSize) var postSize
+    @Setting(\.postSize) var postSize
     
     @State var columns: [GridItem] = [GridItem(.flexible())]
     @State var frameWidth: CGFloat = .zero
@@ -25,7 +25,7 @@ struct PersonContentGridView: View {
             .onChange(of: postSize, initial: true) { _, newValue in
                 if newValue.tiled {
                     // leading/trailing alignment makes them want to stick to each other, allowing the AppConstants.halfSpacing padding applied below
-                    // to push them apart by a sum of AppConstants.standardSpacing
+                    // to push them apart by a sum of Constants.main.standardSpacing
                     columns = [
                         GridItem(.flexible(), spacing: 0, alignment: .trailing),
                         GridItem(.flexible(), spacing: 0, alignment: .leading)
@@ -37,7 +37,7 @@ struct PersonContentGridView: View {
     }
     
     var content: some View {
-        LazyVGrid(columns: columns, spacing: postSize.tiled ? AppConstants.standardSpacing : 0) {
+        LazyVGrid(columns: columns, spacing: postSize.tiled ? Constants.main.standardSpacing : 0) {
             ForEach(feedLoader.items, id: \.hashValue) { item in
                 VStack(spacing: 0) { // this improves performance O_o
                     personContentItem(item)

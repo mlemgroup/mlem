@@ -118,7 +118,7 @@ struct ErrorView: View {
             }
             .buttonStyle(.plain)
         }
-        .padding(AppConstants.standardSpacing)
+        .padding(Constants.main.standardSpacing)
         .background(Color(.secondarySystemGroupedBackground))
         .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
     }

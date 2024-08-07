@@ -35,7 +35,7 @@ struct ProfileHeaderView: View {
     }
     
     var body: some View {
-        VStack(spacing: AppConstants.standardSpacing) {
+        VStack(spacing: Constants.main.standardSpacing) {
             AvatarBannerView(profilable, fallback: fallback)
             Button {
                 (profilable as? any CommunityOrPersonStub)?.copyFullNameWithPrefix()

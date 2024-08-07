@@ -78,9 +78,9 @@ struct PersonView: View {
     @ViewBuilder
     func content(person: any Person) -> some View {
         FancyScrollView {
-            VStack(spacing: AppConstants.standardSpacing) {
+            VStack(spacing: Constants.main.standardSpacing) {
                 ProfileHeaderView(person, fallback: .person)
-                    .padding(.horizontal, AppConstants.standardSpacing)
+                    .padding(.horizontal, Constants.main.standardSpacing)
                 bio(person: person)
                 if let person = person as? any Person3Providing {
                     VStack(spacing: 0) {
@@ -104,17 +104,17 @@ struct PersonView: View {
     func bio(person: any Person) -> some View {
         if let bio = person.description_ {
             Divider()
-            VStack(spacing: AppConstants.standardSpacing) {
+            VStack(spacing: Constants.main.standardSpacing) {
                 let blocks: [BlockNode] = .init(bio)
                 if blocks.isSimpleParagraphs, bio.count < 300 {
                     MarkdownText(blocks, configuration: .default)
                         .multilineTextAlignment(.center)
-                        .padding(.horizontal, AppConstants.standardSpacing)
+                        .padding(.horizontal, Constants.main.standardSpacing)
                     dateLabel(person: person)
                         .frame(maxWidth: .infinity, alignment: .center)
                 } else {
                     Markdown(blocks, configuration: .default)
-                        .padding(.horizontal, AppConstants.standardSpacing)
+                        .padding(.horizontal, Constants.main.standardSpacing)
                     dateLabel(person: person)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -129,7 +129,7 @@ struct PersonView: View {
     @ViewBuilder
     func dateLabel(person: any Person) -> some View {
         ProfileDateView(profilable: person)
-            .padding(.horizontal, AppConstants.standardSpacing)
+            .padding(.horizontal, Constants.main.standardSpacing)
             .padding(.vertical, 2)
     }
     

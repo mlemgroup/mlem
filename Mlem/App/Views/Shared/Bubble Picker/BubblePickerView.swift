@@ -69,7 +69,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                                     // This `if` statement prevents the size of the capsule animating from 0 to `width` when transitioning in
                                     if sizes[currentTabIndex].width != 0 {
                                         Capsule()
-                                            .offset(x: sizes[currentTabIndex].offset + AppConstants.standardSpacing)
+                                            .offset(x: sizes[currentTabIndex].offset + Constants.main.standardSpacing)
                                             .frame(width: max(sizes[currentTabIndex].width - AppConstants.doubleSpacing, 0), height: 30)
                                     } else {
                                         Color.clear
