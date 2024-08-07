@@ -330,6 +330,7 @@
 		033FCB232C5E3933007B7CD1 /* AlternateIconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternateIconCell.swift; sourceTree = "<group>"; };
 		033FCB242C5E3933007B7CD1 /* AlternateIconLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternateIconLabel.swift; sourceTree = "<group>"; };
 		033FCB252C5E3933007B7CD1 /* IconSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSettingsView.swift; sourceTree = "<group>"; };
+		033FCB3D2C5E7FA9007B7CD1 /* View+OutdatedFeedPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OutdatedFeedPopup.swift"; sourceTree = "<group>"; };
 		034B947E2C091EDD00039AF4 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		034B94802C09306D00039AF4 /* CommunityOrPersonStub+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunityOrPersonStub+Extensions.swift"; sourceTree = "<group>"; };
 		034B94822C09340A00039AF4 /* MarkdownConfiguration+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MarkdownConfiguration+Extensions.swift"; sourceTree = "<group>"; };
