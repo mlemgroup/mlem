@@ -37,7 +37,7 @@ struct ResponseComposerView: View {
         expandedPostTracker: ExpandedPostTracker? = nil
     ) {
         self.originalContext = context
-        self.resolvedContext = context
+        self._resolvedContext = .init(wrappedValue: context)
         self.expandedPostTracker = expandedPostTracker
         if let userAccount = (AppState.main.firstAccount as? UserAccount) {
             self._account = .init(wrappedValue: userAccount)
