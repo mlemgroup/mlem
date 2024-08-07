@@ -54,12 +54,7 @@ struct ExpandedPostView: View {
                     }
                 }
                 .onChange(of: post.api) {
-                    Task {
-                        commentResolveLoading = true
-                        loadingState = .idle
-                        await loadComments(post: post)
-                        commentResolveLoading = false
-                    }
+                    resolveComments(post: post)
                 }
                 .toolbar {
                     if proxy.isLoading {
