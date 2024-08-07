@@ -48,7 +48,7 @@ struct CompactPostView: View {
                     Image(systemName: Icons.moderation)
                         .imageScale(.small)
                     
-                    EllipsisMenu(actions: post.menuActions(), size: 18)
+                    EllipsisMenu(size: 18) { post.menuActions() }
                 }
                 .padding(.bottom, -2)
   

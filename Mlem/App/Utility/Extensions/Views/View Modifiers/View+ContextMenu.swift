@@ -8,22 +8,20 @@
 import SwiftUI
 
 // This setup avoids actually generating the array of actions until the context menu itself
-// is opened, as long as the actions are generated directly in the `.contextMenu` call like
-// `.contextMenu(actions: post.menuActions()). This is achieved using `@autoclosure`.
-// This can have performance benefits in certain situations.
+// is opened. This can have performance benefits in certain situations.
 
 extension View {
     @ViewBuilder
-    func contextMenu(actions: @autoclosure @escaping () -> [any Action]) -> some View {
+    func contextMenu(@ActionBuilder actions: @escaping () -> [any Action]) -> some View {
         contextMenu {
-            // Having a separate struct here is necessary - if `ForEach` is used directly here, `actions()` gets called early.
+            // Having a proper view here is necessary - if `ForEach` is used directly, `actions()` gets called early.
             MenuButtons(actions: actions)
         }
     }
 }
 
 struct MenuButtons: View {
-    let actions: () -> [any Action]
+    @ActionBuilder let actions: () -> [any Action]
 
     var body: some View {
         ForEach(actions(), id: \.id) { action in

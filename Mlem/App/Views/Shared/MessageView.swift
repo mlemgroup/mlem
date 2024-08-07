@@ -23,7 +23,7 @@ struct MessageView: View {
                 Image(systemName: message.isOwnMessage ? Icons.send : Icons.message)
                     .symbolVariant(message.read ? .none : .fill)
                     .foregroundStyle(palette.accent)
-                EllipsisMenu(actions: message.menuActions(), size: 24)
+                EllipsisMenu(size: 24) { message.menuActions() }
                     .frame(height: 10)
             }
             if message.deleted {
@@ -49,6 +49,6 @@ struct MessageView: View {
         .background(palette.background)
         .contentShape(.rect)
         .quickSwipes(message.swipeActions(behavior: .standard))
-        .contextMenu(actions: message.menuActions())
+        .contextMenu { message.menuActions() }
     }
 }

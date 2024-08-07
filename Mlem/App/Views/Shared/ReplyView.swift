@@ -23,7 +23,7 @@ struct ReplyView: View {
                 Image(systemName: reply.isMention ? Icons.mention : Icons.reply)
                     .symbolVariant(reply.read ? .none : .fill)
                     .foregroundStyle(palette.accent)
-                EllipsisMenu(actions: reply.menuActions(), size: 24)
+                EllipsisMenu(size: 24) { reply.menuActions() }
                     .frame(height: 10)
             }
           
@@ -47,6 +47,6 @@ struct ReplyView: View {
             navigation.push(.expandedPost(reply.post, commentId: reply.commentId))
         }
         .quickSwipes(reply.swipeActions(behavior: .standard))
-        .contextMenu(actions: reply.menuActions())
+        .contextMenu { reply.menuActions() }
     }
 }

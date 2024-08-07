@@ -23,7 +23,7 @@ struct SubscriptionListItemView: View {
         NavigationLink(.community(community)) {
             HStack(spacing: 15, content: label)
         }
-        .contextMenu(actions: community.menuActions(feedback: [.toast], navigation: navigation))
+        .contextMenu { community.menuActions(feedback: [.toast], navigation: navigation) }
         .swipeActions(edge: .trailing) {
             Button("Unsubscribe", systemImage: "xmark") {
                 community.toggleSubscribe(feedback: [.toast])

@@ -18,7 +18,8 @@ struct SubscriptionListView: View {
     @State var noDetail: Bool = false
     
     var body: some View {
-        MultiplatformView(phone: {
+        _ = print("SUBSCRIPTION LIST")
+        return MultiplatformView(phone: {
             content
                 .listStyle(.plain)
         }, pad: {

@@ -50,7 +50,7 @@ struct CommunityListRow<Content2: View>: View {
             navigation.push(.community(community))
         }
         .background(palette.background)
-        .contextMenu(actions: community.menuActions(navigation: navigation))
+        .contextMenu { community.menuActions(navigation: navigation) }
         .quickSwipes(community.swipeActions(behavior: .standard))
     }
 }
