@@ -12,7 +12,7 @@ import SwiftUI
 
 struct FeedsView: View {
     @Setting(\.postSize) var postSize
-    @AppStorage("feed.showRead") var showRead: Bool = true
+    @Setting(\.showReadInFeed) var showRead
     
     @Environment(\.dismiss) var dismiss
     @Environment(AppState.self) var appState
@@ -71,10 +71,10 @@ struct FeedsView: View {
     
     init() {
         // need to grab some stuff from app storage to initialize with
-        @AppStorage("behavior.internetSpeed") var internetSpeed: InternetSpeed = .fast
-        @AppStorage("behavior.upvoteOnSave") var upvoteOnSave = false
-        @AppStorage("feed.showRead") var showReadPosts = true
-        @AppStorage("post.defaultSort") var defaultSort: ApiSortType = .hot
+        @Setting(\.internetSpeed) var internetSpeed
+        @Setting(\.upvoteOnSave) var upvoteOnSave
+        @Setting(\.showReadInFeed) var showReadPosts
+        @Setting(\.defaultPostSort) var defaultSort
         
         @Dependency(\.persistenceRepository) var persistenceRepository
         
@@ -86,9 +86,9 @@ struct FeedsView: View {
             showReadPosts: showReadPosts,
             // Don't load from PersistenceRepository directly here, as we'll be reading from file every time the view is initialized, which can happen frequently
             filteredKeywords: [],
-            smallAvatarSize: AppConstants.smallAvatarSize,
-            largeAvatarSize: AppConstants.largeAvatarSize,
-            urlCache: AppConstants.urlCache,
+            smallAvatarSize: Constants.main.smallAvatarSize,
+            largeAvatarSize: Constants.main.largeAvatarSize,
+            urlCache: Constants.main.urlCache,
             api: AppState.main.firstApi,
             feedType: initialFeedSelection.associatedApiType
         ))
@@ -98,8 +98,8 @@ struct FeedsView: View {
                 userId: firstUser.id,
                 sortType: .new,
                 savedOnly: true,
-                smallAvatarSize: AppConstants.smallAvatarSize,
-                largeAvatarSize: AppConstants.largeAvatarSize
+                smallAvatarSize: Constants.main.smallAvatarSize,
+                largeAvatarSize: Constants.main.largeAvatarSize
             ))
             _feedOptions = .init(wrappedValue: FeedSelection.allCases)
         } else {
@@ -153,8 +153,8 @@ struct FeedsView: View {
                             userId: firstUser.id,
                             sortType: .new,
                             savedOnly: true,
-                            smallAvatarSize: AppConstants.smallAvatarSize,
-                            largeAvatarSize: AppConstants.largeAvatarSize
+                            smallAvatarSize: Constants.main.smallAvatarSize,
+                            largeAvatarSize: Constants.main.largeAvatarSize
                         )
                     }
                 } else {

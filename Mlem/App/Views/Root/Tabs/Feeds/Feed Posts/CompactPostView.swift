@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct CompactPostView: View {
-    @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
+    @Setting(\.thumbnailLocation) var thumbnailLocation
     
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(Palette.self) var palette: Palette
@@ -30,7 +30,7 @@ struct CompactPostView: View {
                 ThumbnailImageView(post: post, blurred: post.nsfw, size: .standard)
             }
             
-            VStack(alignment: .leading, spacing: AppConstants.compactSpacing) {
+            VStack(alignment: .leading, spacing: Constants.main.compactSpacing) {
                 HStack(spacing: 4) {
                     if communityContext != nil {
                         FullyQualifiedLinkView(entity: post.creator_, labelStyle: .small, showAvatar: false)

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MlemMiddleware
 import SwiftUI
 
 // This has to be ObservableObject because Observed currently does not allow @AppStorage properties without @ObservationIgnored
@@ -14,4 +15,37 @@ class Settings: ObservableObject {
     public static let main: Settings = .init()
     
     @AppStorage("post.size") var postSize: PostSize = .compact
+    @AppStorage("post.defaultSort") var defaultPostSort: ApiSortType = .hot
+    @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
+    @AppStorage("post.showCreator") var showPostCreator: Bool = false
+    
+    @AppStorage("quickSwipes.enabled") var quickSwipesEnabled: Bool = true
+    
+    @AppStorage("behavior.hapticLevel") var hapticLevel: HapticPriority = .low
+    @AppStorage("behavior.upvoteOnSave") var upvoteOnSave: Bool = false
+    @AppStorage("behavior.internetSpeed") var internetSpeed: InternetSpeed = .fast
+    
+    @AppStorage("accounts.keepPlace") var keepPlaceOnAccountSwitch: Bool = false
+    @AppStorage("accounts.sort") var accountSort: AccountSortMode = .name
+    @AppStorage("accounts.groupSort") var groupAccountSort: Bool = false
+    
+    @AppStorage("colorPalette") var colorPalette: PaletteOption = .standard
+    
+    @AppStorage("dev.developerMode") var developerMode: Bool = false
+    
+    @AppStorage("safety.blurNsfw") var blurNsfw: Bool = true
+    
+    @AppStorage("links.openInBrowser") var openLinksInBrowser = false
+    @AppStorage("links.readerMode") var openLinksInReaderMode = false
+    
+    @AppStorage("feed.showRead") var showReadInFeed: Bool = true
+    
+    @AppStorage("inbox.showRead") var showReadInInbox: Bool = true
+    
+    @AppStorage("subscriptions.instanceLocation") var subscriptionInstanceLocation: InstanceLocation = UIDevice.isPad ? .bottom : .trailing
+    @AppStorage("subscriptions.sort") var subscriptionSort: SubscriptionListSort = .alphabetical
+    
+    @AppStorage("person.showAvatar") var showPersonAvatar: Bool = true
+    
+    @AppStorage("community.showAvatar") var showCommunityAvatar: Bool = true
 }

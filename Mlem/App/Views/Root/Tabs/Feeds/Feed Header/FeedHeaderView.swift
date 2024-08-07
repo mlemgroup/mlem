@@ -56,7 +56,7 @@ struct FeedHeaderView<ImageContent: View>: View {
                     .padding(.leading, Constants.main.standardSpacing)
                     
                 VStack(alignment: .leading, spacing: 0) {
-                    HStack(spacing: AppConstants.halfSpacing) {
+                    HStack(spacing: Constants.main.halfSpacing) {
                         title
                             .lineLimit(1)
                             .minimumScaleFactor(0.01)
@@ -83,7 +83,7 @@ struct FeedHeaderView<ImageContent: View>: View {
                 .frame(height: 44)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .padding(.top, AppConstants.halfSpacing)
+            .padding(.top, Constants.main.halfSpacing)
         }
     }
 }

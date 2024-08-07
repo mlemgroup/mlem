@@ -119,7 +119,7 @@ struct PersonView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
-            .padding(.top, AppConstants.halfSpacing)
+            .padding(.top, Constants.main.halfSpacing)
         } else {
             dateLabel(person: person)
                 .frame(maxWidth: .infinity, alignment: .center)

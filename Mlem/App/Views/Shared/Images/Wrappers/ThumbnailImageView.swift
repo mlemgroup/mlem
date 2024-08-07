@@ -37,7 +37,7 @@ struct ThumbnailImageView: View {
         blurred: Bool,
         size: Size
     ) {
-        @AppStorage("safety.blurNsfw") var shouldBlur = true
+        @Setting(\.blurNsfw) var shouldBlur
         
         self.post = post
         self.blurred = shouldBlur ? blurred : false
@@ -83,18 +83,18 @@ struct ThumbnailImageView: View {
     var standardContent: some View {
         if let url {
             FixedImageView(url: url, fallback: .image, showProgress: true)
-                .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
+                .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
                 .blur(radius: blurred ? 10 : 0, opaque: true)
-                .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
+                .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
                 .onPreferenceChange(ImageLoadingPreferenceKey.self, perform: { loading = $0 })
         } else {
             Image(systemName: post.placeholderImageName)
                 .font(.title)
-                .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
+                .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
                 .foregroundStyle(palette.secondary)
                 .background(palette.thumbnailBackground)
-                .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
-                .overlay(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
+                .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
+                .overlay(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
                     .stroke(palette.secondaryBackground, lineWidth: 1))
         }
     }

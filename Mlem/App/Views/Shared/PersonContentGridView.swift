@@ -24,7 +24,7 @@ struct PersonContentGridView: View {
             .environment(\.parentFrameWidth, frameWidth)
             .onChange(of: postSize, initial: true) { _, newValue in
                 if newValue.tiled {
-                    // leading/trailing alignment makes them want to stick to each other, allowing the AppConstants.halfSpacing padding applied below
+                    // leading/trailing alignment makes them want to stick to each other, allowing the Constants.main.halfSpacing padding applied below
                     // to push them apart by a sum of Constants.main.standardSpacing
                     columns = [
                         GridItem(.flexible(), spacing: 0, alignment: .trailing),
@@ -44,7 +44,7 @@ struct PersonContentGridView: View {
                         .buttonStyle(EmptyButtonStyle())
                     if !postSize.tiled { Divider() }
                 }
-                .padding(.horizontal, postSize.tiled ? AppConstants.halfSpacing : 0)
+                .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 0)
                 .onAppear {
                     do {
                         try feedLoader.loadIfThreshold(item)

@@ -13,7 +13,7 @@ import SwiftUI
 
 struct LargeImageView: View {
     @Environment(NavigationLayer.self) private var navigation
-    @AppStorage("safety.blurNsfw") var blurNsfw: Bool = true
+    @Setting(\.blurNsfw) var blurNsfw
 
     let url: URL?
     let shouldBlur: Bool
@@ -21,7 +21,7 @@ struct LargeImageView: View {
     @State var blurred: Bool = false
     
     init(url: URL?, nsfw: Bool, onTapActions: (() -> Void)? = nil) {
-        @AppStorage("safety.blurNsfw") var blurNsfw = true
+        @Setting(\.blurNsfw) var blurNsfw
         let shouldBlur = blurNsfw ? nsfw : false
         self.url = url
         self.onTapActions = onTapActions
@@ -34,7 +34,7 @@ struct LargeImageView: View {
     var body: some View {
         DynamicImageView(url: url)
             .blur(radius: blurred ? 50 : 0, opaque: true)
-            .clipShape(.rect(cornerRadius: AppConstants.largeItemCornerRadius))
+            .clipShape(.rect(cornerRadius: Constants.main.mediumItemCornerRadius))
             .overlay {
                 NsfwOverlay(blurred: $blurred, shouldBlur: shouldBlur)
             }

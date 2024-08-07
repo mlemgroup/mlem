@@ -58,7 +58,7 @@ struct AvatarBannerView: View {
                             .frame(minWidth: 0, maxWidth: .infinity)
                             .frame(height: AvatarBannerView.bannerHeight)
                             .clipped()
-                            .clipShape(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius))
+                            .clipShape(RoundedRectangle(cornerRadius: Constants.main.mediumItemCornerRadius))
                             .mask {
                                 ZStack(alignment: .bottom) {
                                     Color.black

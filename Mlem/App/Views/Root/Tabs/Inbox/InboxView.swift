@@ -29,7 +29,7 @@ struct InboxView: View {
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
-    @AppStorage("inbox.showRead") var showRead: Bool = true
+    @Setting(\.showReadInInbox) var showRead
     
     @State var hasDoneInitialLoad: Bool = false
     @State var loadingState: LoadingState = .idle

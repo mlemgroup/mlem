@@ -27,7 +27,7 @@ struct ToolbarEllipsisMenu<Content: View>: View {
             content
         } label: {
             Label("More", systemImage: Icons.menuCircle)
-                .frame(height: AppConstants.barIconHitbox)
+                .frame(height: Constants.main.barIconHitbox)
                 .contentShape(Rectangle())
         }
     }

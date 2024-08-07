@@ -82,7 +82,7 @@ struct CommunityView: View {
                     image: { CircleCroppedImageView(community) }
                 )
                 subscribeButton(community: community)
-                    .padding(.top, AppConstants.halfSpacing)
+                    .padding(.top, Constants.main.halfSpacing)
             }
             .padding(.bottom, postSize.tiled ? 0 : Constants.main.standardSpacing)
             BubblePicker(
@@ -146,7 +146,7 @@ struct CommunityView: View {
             .foregroundStyle(subscribed ? palette.selectedInteractionBarItem : palette.secondary)
         }
         .padding(.trailing, Constants.main.standardSpacing)
-        .padding(.bottom, AppConstants.halfSpacing)
+        .padding(.bottom, Constants.main.halfSpacing)
     }
     
     func tabs(community: any Community) -> [Tab] {
@@ -158,19 +158,19 @@ struct CommunityView: View {
     }
     
     func setupFeedLoader(community: any Community) {
-        @AppStorage("behavior.internetSpeed") var internetSpeed: InternetSpeed = .fast
-        @AppStorage("behavior.upvoteOnSave") var upvoteOnSave = false
-        @AppStorage("feed.showRead") var showReadPosts = true
-        @AppStorage("post.defaultSort") var defaultSort: ApiSortType = .hot
+        @Setting(\.internetSpeed) var internetSpeed
+        @Setting(\.upvoteOnSave) var upvoteOnSave
+        @Setting(\.showReadInFeed) var showReadInFeed
+        @Setting(\.defaultPostSort) var defaultSort
         
         postFeedLoader = .init(
             pageSize: internetSpeed.pageSize,
             sortType: .new,
-            showReadPosts: showReadPosts,
+            showReadPosts: showReadInFeed,
             filteredKeywords: [],
-            smallAvatarSize: AppConstants.smallAvatarSize,
-            largeAvatarSize: AppConstants.largeAvatarSize,
-            urlCache: AppConstants.urlCache,
+            smallAvatarSize: Constants.main.smallAvatarSize,
+            largeAvatarSize: Constants.main.largeAvatarSize,
+            urlCache: Constants.main.urlCache,
             community: community
         )
     }

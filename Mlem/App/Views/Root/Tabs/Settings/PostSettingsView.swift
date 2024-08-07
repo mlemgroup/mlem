@@ -11,10 +11,10 @@ import SwiftUI
 // note: this is a very lazy categorization of "properties that affect posts"
 struct PostSettingsView: View {
     @Setting(\.postSize) var postSize
-    @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
-    @AppStorage("post.showCreator") var showCreator: Bool = false
-    @AppStorage("user.showAvatar") var showUserAvatar: Bool = true
-    @AppStorage("community.showAvatar") var showCommunityAvatar: Bool = true
+    @Setting(\.thumbnailLocation) var thumbnailLocation
+    @Setting(\.showPostCreator) var showCreator
+    @Setting(\.showPersonAvatar) var showPersonAvatar
+    @Setting(\.showCommunityAvatar) var showCommunityAvatar
     
     var body: some View {
         Form {
@@ -34,7 +34,7 @@ struct PostSettingsView: View {
                 Text("Show Post Creator")
             }
             
-            Toggle(isOn: $showUserAvatar) {
+            Toggle(isOn: $showPersonAvatar) {
                 Text("Show User Avatar")
             }
             

@@ -29,7 +29,7 @@ struct TileCommentView: View {
     //
     // VStack spacing = (2 * Constants.main.standardSpacing) = 20
     // External padding = (2 * Constants.main.standardSpacing) = 20
-    // Internal titleSection padding = (2 * AppConstants.halfSpacing) = 10
+    // Internal titleSection padding = (2 * Constants.main.halfSpacing) = 10
     //
     // Total padding = 50
     // 50 + contentHeightModifier = 17
@@ -39,8 +39,8 @@ struct TileCommentView: View {
         content
             .frame(width: width, height: frameHeight)
             .background(palette.secondaryGroupedBackground)
-            .clipShape(.rect(cornerRadius: AppConstants.tilePostCornerRadius))
-            .contentShape(.contextMenuPreview, .rect(cornerRadius: AppConstants.tilePostCornerRadius))
+            .clipShape(.rect(cornerRadius: Constants.main.largeItemCornerRadius))
+            .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.largeItemCornerRadius))
     }
     
     var content: some View {
@@ -48,9 +48,9 @@ struct TileCommentView: View {
             titleSection
                 .typesettingLanguage(.init(languageCode: .english))
                 .frame(height: titleHeight, alignment: .topLeading)
-                .padding(AppConstants.halfSpacing)
+                .padding(Constants.main.halfSpacing)
                 .background {
-                    RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
+                    RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
                         .fill(palette.tertiaryGroupedBackground)
                 }
             

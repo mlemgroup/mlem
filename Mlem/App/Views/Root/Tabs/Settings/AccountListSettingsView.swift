@@ -10,7 +10,7 @@ import SwiftUI
 
 struct AccountListSettingsView: View {
     @Environment(AppState.self) var appState
-    @AppStorage("accounts.keepPlace") var keepPlace: Bool = false
+    @Setting(\.keepPlaceOnAccountSwitch) var keepPlace
 
     var accounts: [UserAccount] { AccountsTracker.main.userAccounts }
     

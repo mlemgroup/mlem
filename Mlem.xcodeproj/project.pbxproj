@@ -165,7 +165,6 @@
 		6363D5C727EE196700E34822 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5C627EE196700E34822 /* ContentView.swift */; };
 		6363D5C927EE196A00E34822 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6363D5C827EE196A00E34822 /* Assets.xcassets */; };
 		6363D5CC27EE196A00E34822 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6363D5CB27EE196A00E34822 /* Preview Assets.xcassets */; };
-		63DF71F12A02999C002AC14E /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DF71F02A02999C002AC14E /* AppConstants.swift */; };
 		6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE1183B2A4A217400810C7E /* Profile View.swift */; };
 		AD1B0D372A5F7A260006F554 /* Licenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1B0D362A5F7A260006F554 /* Licenses.swift */; };
 		B104A6D82A59BF3C00B3E725 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = B104A6D72A59BF3C00B3E725 /* Nuke */; };
@@ -263,7 +262,6 @@
 		CDCA44B62C176C5000C092B3 /* View+EdgeBorders.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44B52C176C5000C092B3 /* View+EdgeBorders.swift */; };
 		CDE021AD2BFA43380052FD61 /* FeedPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE021AC2BFA43380052FD61 /* FeedPostView.swift */; };
 		CDE1F18F2C63D75A008AF042 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F18E2C63D75A008AF042 /* Settings.swift */; };
-		CDE1F1912C63DEF8008AF042 /* CoreConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F1902C63DEF8008AF042 /* CoreConstants.swift */; };
 		CDE1F1942C63DF44008AF042 /* PlatformConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F1932C63DF44008AF042 /* PlatformConstants.swift */; };
 		CDE1F1962C63DF89008AF042 /* PhoneConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F1952C63DF89008AF042 /* PhoneConstants.swift */; };
 		CDE1F1982C63DFC9008AF042 /* PadConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F1972C63DFC9008AF042 /* PadConstants.swift */; };
@@ -447,7 +445,6 @@
 		6363D5CB27EE196A00E34822 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		6363D5D627EE196A00E34822 /* MlemTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MlemTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6363D5E027EE196A00E34822 /* MlemUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MlemUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		63DF71F02A02999C002AC14E /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		6DE1183B2A4A217400810C7E /* Profile View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile View.swift"; sourceTree = "<group>"; };
 		AD1B0D362A5F7A260006F554 /* Licenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Licenses.swift; sourceTree = "<group>"; };
 		B104A6E12A5AFC9F00B3E725 /* Mlem.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mlem.entitlements; sourceTree = "<group>"; };
@@ -544,7 +541,6 @@
 		CDCA44B52C176C5000C092B3 /* View+EdgeBorders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+EdgeBorders.swift"; sourceTree = "<group>"; };
 		CDE021AC2BFA43380052FD61 /* FeedPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostView.swift; sourceTree = "<group>"; };
 		CDE1F18E2C63D75A008AF042 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
-		CDE1F1902C63DEF8008AF042 /* CoreConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreConstants.swift; sourceTree = "<group>"; };
 		CDE1F1932C63DF44008AF042 /* PlatformConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformConstants.swift; sourceTree = "<group>"; };
 		CDE1F1952C63DF89008AF042 /* PhoneConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneConstants.swift; sourceTree = "<group>"; };
 		CDE1F1972C63DFC9008AF042 /* PadConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PadConstants.swift; sourceTree = "<group>"; };
@@ -1009,7 +1005,6 @@
 			children = (
 				CDE1F18D2C63D646008AF042 /* Configuration */,
 				CD7882A02BFE4B30002E1A30 /* Environment Values */,
-				CD4D583D2B867DA900B82964 /* Constants */,
 				CD14461F2A5B328600610EF1 /* Data */,
 				CD4D58C62B86DCE500B82964 /* Enums */,
 				CD4D58C22B86DC5800B82964 /* Extensions */,
@@ -1034,14 +1029,6 @@
 				6363D5F427EE1BAE00E34822 /* Tabs */,
 			);
 			path = Root;
-			sourceTree = "<group>";
-		};
-		CD4D583D2B867DA900B82964 /* Constants */ = {
-			isa = PBXGroup;
-			children = (
-				63DF71F02A02999C002AC14E /* AppConstants.swift */,
-			);
-			path = Constants;
 			sourceTree = "<group>";
 		};
 		CD4D58672B86B38600B82964 /* Dependencies */ = {
@@ -1418,7 +1405,6 @@
 			children = (
 				CDE1F19F2C63E388008AF042 /* Platform Constants */,
 				CDE1F19D2C63E306008AF042 /* Constants.swift */,
-				CDE1F1902C63DEF8008AF042 /* CoreConstants.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -1663,7 +1649,6 @@
 				035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */,
 				CDB2EC7F2BFADACC00DBC0EF /* HeadlinePostView.swift in Sources */,
 				032C32162C36F65500595286 /* ReplyView.swift in Sources */,
-				CDE1F1912C63DEF8008AF042 /* CoreConstants.swift in Sources */,
 				03D3A1E32BB8A40A009DE55E /* EmptyButtonStyle.swift in Sources */,
 				CD1D31832C56D742001B434B /* View+WidthReader.swift in Sources */,
 				03AF91E12C1B25DE00E56644 /* UIDevice+Extensions.swift in Sources */,
@@ -1817,7 +1802,6 @@
 				03AFD0E12C3B30390054B8AD /* InstanceListRow.swift in Sources */,
 				CD0E06F72C0E739F00445849 /* PostType+Extensions.swift in Sources */,
 				033F84BD2C2ACC5F002E3EDF /* CommentInteraction.swift in Sources */,
-				63DF71F12A02999C002AC14E /* AppConstants.swift in Sources */,
 				03AF91E52C1C61FA00E56644 /* PostInteraction.swift in Sources */,
 				03D3A1D42BB88EF1009DE55E /* Action.swift in Sources */,
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,

@@ -92,7 +92,7 @@ struct ToastView: View {
         imageColor: Color,
         subtitleColor: Color = .secondary
     ) -> some View {
-        HStack(spacing: AppConstants.doubleSpacing) {
+        HStack(spacing: Constants.main.doubleSpacing) {
             if let systemImage {
                 image(systemImage, color: imageColor)
                     .contentTransition(.symbolEffect(.replace, options: .speed(4)))
@@ -117,21 +117,21 @@ struct ToastView: View {
                         .frame(minWidth: 80)
                 }
             }
-            .padding(.trailing, AppConstants.doubleSpacing)
+            .padding(.trailing, Constants.main.doubleSpacing)
         }
         .frame(minWidth: 157)
     }
     
     @ViewBuilder
     func accountView(_ account: any Account) -> some View {
-        HStack(spacing: AppConstants.doubleSpacing) {
+        HStack(spacing: Constants.main.doubleSpacing) {
             CircleCroppedImageView(account, showProgress: false)
                 .frame(width: 27, height: 27)
                 .padding(.leading, 10)
             Text(account.nickname)
                 .lineLimit(1)
                 .frame(minWidth: 80)
-                .padding(.trailing, AppConstants.doubleSpacing)
+                .padding(.trailing, Constants.main.doubleSpacing)
         }
         .frame(minWidth: 157)
     }

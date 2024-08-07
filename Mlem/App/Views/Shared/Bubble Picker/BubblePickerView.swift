@@ -70,7 +70,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                                     if sizes[currentTabIndex].width != 0 {
                                         Capsule()
                                             .offset(x: sizes[currentTabIndex].offset + Constants.main.standardSpacing)
-                                            .frame(width: max(sizes[currentTabIndex].width - AppConstants.doubleSpacing, 0), height: 30)
+                                            .frame(width: max(sizes[currentTabIndex].width - Constants.main.doubleSpacing, 0), height: 30)
                                     } else {
                                         Color.clear
                                     }
@@ -102,7 +102,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
         isSelected: Bool
     ) -> some View {
         // Use negative spacing as well as padding the HStack's children so that scrollTo leaves extra space around each tab
-        HStack(spacing: -AppConstants.doubleSpacing) {
+        HStack(spacing: -Constants.main.doubleSpacing) {
             ForEach(Array(zip(tabs.indices, tabs)), id: \.0) { index, tab in
                 if let scrollProxy {
                     ChildSizeReader(sizes: $sizes, index: index, spaceName: spaceName) {

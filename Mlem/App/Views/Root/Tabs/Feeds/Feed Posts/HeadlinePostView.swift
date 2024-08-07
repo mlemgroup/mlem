@@ -10,10 +10,10 @@ import MlemMiddleware
 import SwiftUI
 
 struct HeadlinePostView: View {
-    @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
-    @AppStorage("post.showCreator") var showCreator: Bool = false
-    @AppStorage("user.showAvatar") var showUserAvatar: Bool = true
-    @AppStorage("community.showAvatar") var showCommunityAvatar: Bool = true
+    @Setting(\.thumbnailLocation) var thumbnailLocation
+    @Setting(\.showPostCreator) var showCreator
+    @Setting(\.showPersonAvatar) var showPersonAvatar
+    @Setting(\.showCommunityAvatar) var showCommunityAvatar
     
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(Palette.self) var palette: Palette
@@ -51,7 +51,7 @@ struct HeadlinePostView: View {
                     ThumbnailImageView(post: post, blurred: post.nsfw, size: .standard)
                 }
   
-                VStack(alignment: .leading, spacing: AppConstants.halfSpacing) {
+                VStack(alignment: .leading, spacing: Constants.main.halfSpacing) {
                     post.taggedTitle(communityContext: communityContext)
                         .font(.headline)
                         .imageScale(.small)
@@ -86,7 +86,7 @@ struct HeadlinePostView: View {
     
     @ViewBuilder
     var personLink: some View {
-        FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showUserAvatar)
+        FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showPersonAvatar)
     }
     
     @ViewBuilder

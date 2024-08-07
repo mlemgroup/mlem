@@ -103,7 +103,7 @@ struct ExternalApiInfoView: View {
         .frame(maxWidth: .infinity)
         .background(
             palette.secondaryGroupedBackground,
-            in: .rect(cornerRadius: AppConstants.largeItemCornerRadius)
+            in: .rect(cornerRadius: Constants.main.mediumItemCornerRadius)
         )
     }
     

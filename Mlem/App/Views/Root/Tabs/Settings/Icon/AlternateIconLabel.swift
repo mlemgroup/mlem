@@ -16,18 +16,18 @@ struct AlternateIconLabel: View {
             getImage()
                 .resizable()
                 .scaledToFit()
-                .frame(width: AppConstants.appIconSize, height: AppConstants.appIconSize)
+                .frame(width: Constants.main.appIconSize, height: Constants.main.appIconSize)
                 .foregroundColor(Color.white)
-                .cornerRadius(AppConstants.appIconCornerRadius)
+                .cornerRadius(Constants.main.appIconCornerRadius)
                 .padding(3)
                 .shadow(radius: 2, x: 0, y: 2)
                 .overlay {
                     if selected {
                         ZStack {
-                            RoundedRectangle(cornerRadius: AppConstants.appIconCornerRadius)
+                            RoundedRectangle(cornerRadius: Constants.main.appIconCornerRadius)
                                 .stroke(Color(.secondarySystemBackground), lineWidth: 5)
                                 .padding(2)
-                            RoundedRectangle(cornerRadius: AppConstants.appIconCornerRadius + 2)
+                            RoundedRectangle(cornerRadius: Constants.main.appIconCornerRadius + 2)
                                 .stroke(.blue, lineWidth: 3)
                         }
                     }

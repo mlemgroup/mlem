@@ -40,7 +40,7 @@ struct ProfileHeaderView: View {
             Button {
                 (profilable as? any CommunityOrPersonStub)?.copyFullNameWithPrefix()
             } label: {
-                VStack(spacing: AppConstants.halfSpacing) {
+                VStack(spacing: Constants.main.halfSpacing) {
                     HStack {
                         Text(profilable?.displayName_ ?? profilable?.name ?? "")
                         if blockedOverride ?? profilable?.blocked ?? false {
