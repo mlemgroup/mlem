@@ -8,16 +8,14 @@
 import SwiftUI
 
 struct NavigationLayerView: View {
-    @State var layer: NavigationLayer
+    @Bindable var layer: NavigationLayer
     let hasSheetModifiers: Bool
     
     var body: some View {
-        Group {
+        _ = Self._printChanges()
+        return Group {
             if layer.hasNavigationStack {
-                NavigationStack(path: Binding(
-                    get: { layer.path },
-                    set: { layer.path = $0 }
-                )) {
+                NavigationStack(path: $layer.path) {
                     rootView()
                         .environment(\.isRootView, true)
                         .navigationDestination(for: NavigationPage.self) {
