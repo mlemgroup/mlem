@@ -31,6 +31,9 @@ struct WebsitePreviewView: View {
         content
             .contentShape(.rect)
             .onTapGesture {
+                if let onTapActions {
+                    onTapActions()
+                }
                 openURL(link.content)
             }
             .contextMenu {

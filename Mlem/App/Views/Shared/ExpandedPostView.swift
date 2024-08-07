@@ -49,16 +49,12 @@ struct ExpandedPostView: View {
                 .animation(.default, value: showLoadingSymbol)
                 .task {
                     if post.api == appState.firstApi {
+                        post.markRead()
                         await loadComments(post: post)
                     }
                 }
                 .onChange(of: post.api) {
-                    Task {
-                        commentResolveLoading = true
-                        loadingState = .idle
-                        await loadComments(post: post)
-                        commentResolveLoading = false
-                    }
+                    resolveComments(post: post)
                 }
                 .toolbar {
                     if proxy.isLoading {
