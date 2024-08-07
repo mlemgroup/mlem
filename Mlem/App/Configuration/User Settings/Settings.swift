@@ -3,7 +3,7 @@
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-08-07.
-//  Adapted from https://www.avanderlee.com/swift/appstorage-explained/
+//  Adapted from https://fatbobman.com/en/posts/appstorage/
 //
 
 import Foundation
