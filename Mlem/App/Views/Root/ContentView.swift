@@ -81,6 +81,7 @@ struct ContentView: View {
         navigationModel.layers.allSatisfy { !$0.canDisplayToasts }
     }
     
+    @ViewBuilder
     var content: some View {
         CustomTabView(selectedIndex: Binding(get: {
             Tab.allCases.firstIndex(of: appState.contentViewTab) ?? 0
