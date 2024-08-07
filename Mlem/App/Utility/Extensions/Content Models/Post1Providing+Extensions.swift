@@ -43,13 +43,13 @@ extension Post1Providing {
         .init(
             behavior: behavior,
             leadingActions: {
-                if api.isAuthenticatedAndActive {
+                if api.canInteract {
                     upvoteAction(feedback: [.haptic])
                     downvoteAction(feedback: [.haptic])
                 }
             },
             trailingActions: {
-                if api.isAuthenticatedAndActive {
+                if api.canInteract {
                     saveAction(feedback: [.haptic])
                     replyAction(expandedPostTracker: expandedPostTracker)
                 }
@@ -179,7 +179,7 @@ extension Post1Providing {
             label: hidden ? "Show" : "Hide",
             color: .gray,
             icon: hidden ? Icons.show : Icons.hide,
-            callback: api.isAuthenticatedAndActive ? { self.self2?.toggleHidden(feedback: feedback) } : nil
+            callback: api.canInteract ? { self.self2?.toggleHidden(feedback: feedback) } : nil
         )
     }
     
@@ -190,7 +190,7 @@ extension Post1Providing {
             color: Palette.main.negative,
             isDestructive: true,
             icon: Icons.block,
-            disabled: !api.isAuthenticatedAndActive,
+            disabled: !api.canInteract,
             displayMode: .popup
         ) {
             blockCreatorAction(feedback: feedback, showConfirmation: false)
@@ -207,7 +207,7 @@ extension Post1Providing {
             isDestructive: true,
             confirmationPrompt: showConfirmation ? "Really block this community?" : nil,
             icon: Icons.block,
-            callback: api.isAuthenticatedAndActive ? { self.self2?.community.toggleBlocked(feedback: feedback) } : nil
+            callback: api.canInteract ? { self.self2?.community.toggleBlocked(feedback: feedback) } : nil
         )
     }
 }

@@ -16,7 +16,7 @@ extension Message1Providing {
         .init(
             behavior: behavior,
             trailingActions: {
-                if api.isAuthenticatedAndActive, !isOwnMessage {
+                if api.canInteract, !isOwnMessage {
                     markReadAction(feedback: [.haptic])
                 }
             }
@@ -62,7 +62,7 @@ extension Message1Providing {
             isDestructive: true,
             confirmationPrompt: showConfirmation ? "Really block this user?" : nil,
             icon: Icons.block,
-            callback: api.isAuthenticatedAndActive ? { self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
+            callback: api.canInteract ? { self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
         )
     }
 }

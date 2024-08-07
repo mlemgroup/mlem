@@ -95,7 +95,7 @@ extension Interactable1Providing {
             menuIcon: isOn ? Icons.upvoteSquareFill : Icons.upvoteSquare,
             swipeIcon1: isOn ? Icons.resetVoteSquare : Icons.upvoteSquare,
             swipeIcon2: isOn ? Icons.resetVoteSquareFill : Icons.upvoteSquareFill,
-            callback: api.isAuthenticatedAndActive ? { self.self2?.toggleUpvoted(feedback: feedback) } : nil
+            callback: api.canInteract ? { self.self2?.toggleUpvoted(feedback: feedback) } : nil
         )
     }
     
@@ -110,7 +110,7 @@ extension Interactable1Providing {
             menuIcon: isOn ? Icons.downvoteSquareFill : Icons.downvoteSquare,
             swipeIcon1: isOn ? Icons.resetVoteSquare : Icons.downvoteSquare,
             swipeIcon2: isOn ? Icons.resetVoteSquareFill : Icons.downvoteSquareFill,
-            callback: api.isAuthenticatedAndActive ? { self.self2?.toggleDownvoted(feedback: feedback) } : nil
+            callback: api.canInteract ? { self.self2?.toggleDownvoted(feedback: feedback) } : nil
         )
     }
 
@@ -125,7 +125,7 @@ extension Interactable1Providing {
             menuIcon: isOn ? Icons.saveFill : Icons.save,
             swipeIcon1: isOn ? Icons.unsave : Icons.save,
             swipeIcon2: isOn ? Icons.unsaveFill : Icons.saveFill,
-            callback: api.isAuthenticatedAndActive ? { self.self2?.toggleSaved(feedback: feedback) } : nil
+            callback: api.canInteract ? { self.self2?.toggleSaved(feedback: feedback) } : nil
         )
     }
     
@@ -139,7 +139,7 @@ extension Interactable1Providing {
             menuIcon: Icons.reply,
             swipeIcon1: Icons.reply,
             swipeIcon2: Icons.replyFill,
-            callback: api.isAuthenticatedAndActive ? { self.showReplySheet(expandedPostTracker: expandedPostTracker) } : nil
+            callback: api.canInteract ? { self.showReplySheet(expandedPostTracker: expandedPostTracker) } : nil
         )
     }
     
@@ -152,7 +152,7 @@ extension Interactable1Providing {
             isDestructive: true,
             confirmationPrompt: showConfirmation ? "Really block this user?" : nil,
             icon: Icons.block,
-            callback: api.isAuthenticatedAndActive ? { self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
+            callback: api.canInteract ? { self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
         )
     }
     

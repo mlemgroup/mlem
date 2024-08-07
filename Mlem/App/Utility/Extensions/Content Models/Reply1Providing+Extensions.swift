@@ -14,13 +14,13 @@ extension Reply1Providing {
         .init(
             behavior: behavior,
             leadingActions: {
-                if api.isAuthenticatedAndActive {
+                if api.canInteract {
                     upvoteAction(feedback: [.haptic])
                     downvoteAction(feedback: [.haptic])
                 }
             },
             trailingActions: {
-                if api.isAuthenticatedAndActive {
+                if api.canInteract {
                     markReadAction(feedback: [.haptic])
                     replyAction()
                 }

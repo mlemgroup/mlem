@@ -101,7 +101,7 @@ extension InstanceStubProviding {
         let callback: (() -> Void)?
         if let self = self as? any Instance1Providing, api.token != nil {
             blocked = self.blocked
-            callback = api.isAuthenticatedAndActive ? { self.toggleBlocked(feedback: feedback) } : nil
+            callback = api.canInteract ? { self.toggleBlocked(feedback: feedback) } : nil
         } else if allowExternalBlocking, let session = (AppState.main.firstSession as? UserSession) {
             blocked = session.blocks?.contains(self) ?? false
             callback = { session.toggleInstanceBlock(actorId: actorId) }
