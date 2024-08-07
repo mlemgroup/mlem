@@ -9,6 +9,15 @@ import MlemMiddleware
 import SwiftUI
 
 extension ExpandedPostView {
+    func resolveComments(post: any Post) {
+        Task {
+            commentResolveLoading = true
+            loadingState = .idle
+            await loadComments(post: post)
+            commentResolveLoading = false
+        }
+    }
+    
     func loadComments(post: any Post) async {
         guard loadingState == .idle else { return }
         loadingState = .loading
