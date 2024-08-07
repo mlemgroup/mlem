@@ -33,11 +33,6 @@ class ExpandedPostTracker: Hashable {
         }
     }
     
-    func mergeNewComments(fromPost post: any Post) async {
-        loadingState = .idle
-        await load(post: post)
-    }
-    
     func insertCreatedComment(_ comment: Comment2, parent: Comment2? = nil) {
         let wrapper = CommentWrapper(comment)
         if let parent {
@@ -94,10 +89,8 @@ class ExpandedPostTracker: Hashable {
 
     func resolveComments(post: any Post) {
         Task {
-            commentResolveLoading = true
             loadingState = .idle
-            await loadComments(post: post)
-            commentResolveLoading = false
+            await load(post: post)
         }
     }
     

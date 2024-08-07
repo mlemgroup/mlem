@@ -19,8 +19,6 @@ struct ExpandedPostView: View {
     
     let tracker: ExpandedPostTracker = .init()
     
-    @State var commentResolveLoading: Bool = false
-    
     var body: some View {
         ContentLoader(model: post) { proxy in
             if let post = proxy.entity {
