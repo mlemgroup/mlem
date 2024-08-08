@@ -67,7 +67,7 @@ class UserAccount: Account, CommunityOrPersonStub {
         self.actorId = actorId
         
         // retrive token and initialize ApiClient
-        guard let token = AppConstants.keychain[getKeychainId(actorId: actorId)] ?? AppConstants.keychain[getKeychainId(id: id)] else {
+        guard let token = Constants.main.keychain[getKeychainId(actorId: actorId)] ?? Constants.main.keychain[getKeychainId(id: id)] else {
             throw DecodingError.noTokenInKeychain
         }
         self.api = ApiClient.getApiClient(for: instanceLink, with: token)
@@ -109,12 +109,12 @@ class UserAccount: Account, CommunityOrPersonStub {
     }
     
     func saveTokenToKeychain() {
-        AppConstants.keychain[getKeychainId(actorId: actorId)] = api.token
+        Constants.main.keychain[getKeychainId(actorId: actorId)] = api.token
     }
     
     func deleteTokenFromKeychain() {
-        try? AppConstants.keychain.remove(getKeychainId(actorId: actorId))
-        try? AppConstants.keychain.remove(getKeychainId(id: id))
+        try? Constants.main.keychain.remove(getKeychainId(actorId: actorId))
+        try? Constants.main.keychain.remove(getKeychainId(id: id))
     }
     
     var isActive: Bool { AppState.main.activeSessions.contains(where: { $0 === self }) }
@@ -134,7 +134,12 @@ class UserAccount: Account, CommunityOrPersonStub {
 }
 
 private func getKeychainId(actorId: URL) -> String {
-    "\(actorId.absoluteString)_accessToken"
+    // localhost sometimes has url "http://localhost:PORT" and sometimes "https://lemmy-alpha/beta/etc", so replace any of that with simple "localhost"
+    let keychainActorId = actorId.absoluteString.replacing(
+        /https?:\/\/(lemmy-(alpha|beta|gamma|delta|epsilon)|localhost:\d{4})/,
+        with: "localhost"
+    )
+    return "\(keychainActorId)_accessToken"
 }
 
 private func getKeychainId(id: Int) -> String {

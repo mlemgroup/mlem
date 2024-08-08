@@ -40,14 +40,14 @@ struct InteractionBarView: View {
     }
 
     var body: some View {
-        HStack(spacing: AppConstants.doubleSpacing) {
+        HStack(spacing: Constants.main.doubleSpacing) {
             ForEach(leading, id: \.viewId, content: widgetView)
             InfoStackView(readouts: readouts, showColor: false)
                 .frame(maxWidth: .infinity, alignment: infoStackAlignment)
-                .padding(.horizontal, -AppConstants.doubleSpacing)
+                .padding(.horizontal, -Constants.main.doubleSpacing)
             ForEach(trailing, id: \.viewId, content: widgetView)
         }
-        .frame(height: AppConstants.barIconSize)
+        .frame(height: Constants.main.barIconSize)
         .geometryGroup()
     }
     
@@ -128,10 +128,10 @@ struct InteractionBarView: View {
             .fontWeight(Self.unweightedSymbols.contains(action.barIcon) ? .regular : .medium)
             .symbolVariant(isOn ? .fill : .none)
             .scaledToFit()
-            .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)
-            .padding(AppConstants.barIconPadding)
+            .frame(width: Constants.main.barIconSize, height: Constants.main.barIconSize)
+            .padding(Constants.main.barIconPadding)
             .foregroundColor(isOn ? palette.selectedInteractionBarItem : palette.primary)
-            .background(isOn ? action.color : .clear, in: .rect(cornerRadius: AppConstants.tinyItemCornerRadius))
+            .background(isOn ? action.color : .clear, in: .rect(cornerRadius: Constants.main.barIconCornerRadius))
             .contentShape(Rectangle())
             .opacity(((action as? BasicAction)?.disabled ?? false) ? 0.5 : 1)
     }

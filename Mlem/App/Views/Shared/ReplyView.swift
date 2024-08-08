@@ -16,7 +16,7 @@ struct ReplyView: View {
     let reply: Reply2
     
     var body: some View {
-        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             HStack {
                 FullyQualifiedLinkView(entity: reply.creator_, labelStyle: .small, showAvatar: true)
                 Spacer()
@@ -39,7 +39,7 @@ struct ReplyView: View {
             .padding(.top, 2)
         }
         .padding(.vertical, 2)
-        .padding(AppConstants.standardSpacing)
+        .padding(Constants.main.standardSpacing)
         .clipped()
         .background(palette.background)
         .contentShape(.rect)

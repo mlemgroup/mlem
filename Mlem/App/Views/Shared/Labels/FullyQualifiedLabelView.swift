@@ -16,9 +16,9 @@ enum FullyQualifiedLabelStyle {
     
     var avatarSize: CGFloat {
         switch self {
-        case .small: AppConstants.smallAvatarSize
-        case .medium: AppConstants.mediumAvatarSize
-        case .large: AppConstants.largeAvatarSize
+        case .small: Constants.main.smallAvatarSize
+        case .medium: Constants.main.mediumAvatarSize
+        case .large: Constants.main.largeAvatarSize
         }
     }
     

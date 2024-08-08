@@ -14,7 +14,7 @@ struct ContentView: View {
         case feeds, inbox, profile, search, settings
     }
     
-    @AppStorage("colorPalette") var colorPalette: PaletteOption = .standard
+    @Setting(\.colorPalette) var colorPalette
     
     let cacheCleanTimer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
     let unreadCountTimer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()

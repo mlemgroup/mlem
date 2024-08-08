@@ -13,9 +13,8 @@ struct SubscriptionListView: View {
     @Environment(NavigationLayer.self) private var navigation
     @Environment(TabReselectTracker.self) var tabReselectTracker
     
-    @AppStorage("subscriptions.sort") private var sort: SubscriptionListSort = .alphabetical
-    @AppStorage("subscriptions.instanceLocation")
-    private var savedInstanceLocation: InstanceLocation = UIDevice.isPad ? .bottom : .trailing
+    @Setting(\.subscriptionSort) private var sort
+    @Setting(\.subscriptionInstanceLocation) private var savedInstanceLocation
     
     @State var noDetail: Bool = false
     
@@ -159,7 +158,7 @@ struct SubscriptionListView: View {
     }
 }
 
-private enum SubscriptionListSort: String, CaseIterable {
+enum SubscriptionListSort: String, CaseIterable {
     case alphabetical
     case instance
     

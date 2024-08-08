@@ -120,11 +120,11 @@ struct ResponseComposerView: View {
                     alignment: .topLeading
                 )
                 Divider()
-                    .padding(.vertical, AppConstants.standardSpacing)
+                    .padding(.vertical, Constants.main.standardSpacing)
                 switch originalContext {
                 case let .post(post):
                     LargePostBodyView(post: post, isExpanded: true)
-                        .padding(.horizontal, AppConstants.standardSpacing)
+                        .padding(.horizontal, Constants.main.standardSpacing)
                 }
             }
             .animation(.easeOut(duration: 0.2), value: resolutionState == .notFound)
