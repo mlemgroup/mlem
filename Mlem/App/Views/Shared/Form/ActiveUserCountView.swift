@@ -25,7 +25,7 @@ struct ActiveUserCountView: View {
                     section(.init(day: 1), value: activeUserCount.day)
                 }
             }
-            .padding(.vertical, AppConstants.standardSpacing)
+            .padding(.vertical, Constants.main.standardSpacing)
         }
     }
     

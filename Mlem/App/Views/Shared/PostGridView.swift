@@ -29,7 +29,7 @@ struct PostGridView: View {
             .onChange(of: postSize, initial: true) { _, newValue in
                 if newValue.tiled {
                     // leading/trailing alignment makes them want to stick to each other, allowing the Constants.main.halfSpacing padding applied below
-                    // to push them apart by a sum of AppConstants.standardSpacing
+                    // to push them apart by a sum of Constants.main.standardSpacing
                     
                     // Avoid causing unnecessary view update
                     if columns.count == 1 {

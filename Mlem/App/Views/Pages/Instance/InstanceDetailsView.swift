@@ -19,7 +19,7 @@ struct InstanceDetailsView: View {
         VStack(spacing: 16) {
             FormSection {
                 ProfileDateView(profilable: instance)
-                    .padding(.vertical, AppConstants.standardSpacing)
+                    .padding(.vertical, Constants.main.standardSpacing)
             }
             
             HStack(spacing: 16) {

@@ -17,11 +17,11 @@ struct CommunityDetailsView: View {
         VStack(spacing: 16) {
             FormSection {
                 ProfileDateView(profilable: community)
-                    .padding(.vertical, AppConstants.standardSpacing)
+                    .padding(.vertical, Constants.main.standardSpacing)
             }
             
             FormSection {
-                VStack(spacing: AppConstants.halfSpacing) {
+                VStack(spacing: Constants.main.halfSpacing) {
                     Text("Subscribers")
                         .foregroundStyle(palette.secondary)
                     Text(String(community.subscriberCount_ ?? 0))
@@ -37,7 +37,7 @@ struct CommunityDetailsView: View {
                 }
                 .monospacedDigit()
                 .animation(.default, value: community.subscriberCount_)
-                .padding(.vertical, AppConstants.standardSpacing)
+                .padding(.vertical, Constants.main.standardSpacing)
             }
             
             HStack(spacing: 16) {

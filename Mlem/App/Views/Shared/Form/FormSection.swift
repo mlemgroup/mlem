@@ -20,6 +20,6 @@ struct FormSection<Content: View>: View {
         content
             .frame(maxWidth: .infinity)
             .background(palette.secondaryGroupedBackground)
-            .cornerRadius(AppConstants.largeItemCornerRadius)
+            .cornerRadius(Constants.main.largeItemCornerRadius)
     }
 }

@@ -20,7 +20,7 @@ struct FormReadout: View {
     
     var body: some View {
         FormSection {
-            VStack(spacing: AppConstants.halfSpacing) {
+            VStack(spacing: Constants.main.halfSpacing) {
                 Text(label)
                     .foregroundStyle(palette.secondary)
                 Text(value.abbreviated)
@@ -28,7 +28,7 @@ struct FormReadout: View {
                     .fontWeight(.semibold)
                     .foregroundStyle(.tint)
             }
-            .padding(.vertical, AppConstants.standardSpacing)
+            .padding(.vertical, Constants.main.standardSpacing)
         }
     }
 }
