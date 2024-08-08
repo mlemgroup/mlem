@@ -10,7 +10,7 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-// This has to be ObservableObject because Observed currently does not allow @AppStorage properties without @ObservationIgnored
+// This has to be ObservableObject because @Observable currently does not allow @AppStorage properties without @ObservationIgnored
 class Settings: ObservableObject {
     public static let main: Settings = .init()
     
