@@ -11,7 +11,7 @@ import SwiftUI
 private struct OutdatedFeedPopupModifier: ViewModifier {
     @Environment(AppState.self) var appState
     
-    let feedLoader: any FeedLoading
+    let feedLoader: (any FeedLoading)?
     
     @State var showRefreshPopup: Bool = false
     
@@ -20,13 +20,13 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
             .refreshable {
                 do {
                     showRefreshPopup = false
-                    try await feedLoader.refresh(clearBeforeRefresh: false)
+                    try await feedLoader?.refresh(clearBeforeRefresh: false)
                 } catch {
                     handleError(error)
                 }
             }
             .onChange(of: onChangeHash) {
-                if let newApi = feedLoader.items.first?.api {
+                if let newApi = feedLoader?.items.first?.api {
                     showRefreshPopup = newApi !== appState.firstApi
                 }
             }
@@ -35,7 +35,7 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
                     Task {
                         do {
                             showRefreshPopup = false
-                            try await feedLoader.refresh(clearBeforeRefresh: true)
+                            try await feedLoader?.refresh(clearBeforeRefresh: true)
                         } catch {
                             handleError(error)
                         }
@@ -47,13 +47,13 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
     var onChangeHash: Int {
         var hasher = Hasher()
         hasher.combine(appState.firstApi)
-        hasher.combine(feedLoader.items.first?.api)
+        hasher.combine(feedLoader?.items.first?.api)
         return hasher.finalize()
     }
 }
 
 extension View {
-    func outdatedFeedPopup(feedLoader: any FeedLoading) -> some View {
+    func outdatedFeedPopup(feedLoader: (any FeedLoading)?) -> some View {
         modifier(OutdatedFeedPopupModifier(feedLoader: feedLoader))
     }
 }

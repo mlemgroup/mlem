@@ -41,9 +41,8 @@ struct CommunityView: View {
     
     var body: some View {
         ContentLoader(model: community) { proxy in
-            if let community = proxy.entity, let postFeedLoader {
-                content(community: community, postFeedLoader: postFeedLoader)
-                    .outdatedFeedPopup(feedLoader: postFeedLoader)
+            if let community = proxy.entity {
+                content(community: community)
                     .externalApiWarning(entity: community, isLoading: proxy.isLoading)
                     .toolbar {
                         ToolbarItem(placement: .topBarTrailing) {
@@ -72,7 +71,7 @@ struct CommunityView: View {
     }
         
     @ViewBuilder
-    func content(community: any Community, postFeedLoader: CommunityPostFeedLoader) -> some View {
+    func content(community: any Community) -> some View {
         FancyScrollView {
             HStack {
                 FeedHeaderView(
@@ -94,9 +93,11 @@ struct CommunityView: View {
             VStack {
                 switch selectedTab {
                 case .posts:
-                    postsTab(community: community, postFeedLoader: postFeedLoader)
+                    postsTab(community: community)
                 case .about:
                     aboutTab(community: community)
+                case .details:
+                    CommunityDetailsView(community: community)
                 default:
                     EmptyView()
                 }
@@ -105,11 +106,14 @@ struct CommunityView: View {
         }
         .background(postSize.tiled ? palette.groupedBackground : palette.background)
         .loadFeed(postFeedLoader)
+        .outdatedFeedPopup(feedLoader: postFeedLoader)
     }
     
     @ViewBuilder
-    func postsTab(community: any Community, postFeedLoader: CommunityPostFeedLoader) -> some View {
-        PostGridView(postFeedLoader: postFeedLoader)
+    func postsTab(community: any Community) -> some View {
+        if let postFeedLoader {
+            PostGridView(postFeedLoader: postFeedLoader)
+        }
     }
 
     @ViewBuilder

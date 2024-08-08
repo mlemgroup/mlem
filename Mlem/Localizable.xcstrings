@@ -31,16 +31,17 @@
         }
       }
     },
-    "1d" : {
-
+    "%lld on %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld on %2$@"
+          }
+        }
+      }
     },
-    "1mo" : {
-
-    },
-    "1w" : {
-
-    },
-    "6mo" : {
+    "%lld on your instance" : {
 
     },
     "About" : {
@@ -586,6 +587,9 @@
 
     },
     "Subscribed" : {
+
+    },
+    "Subscribers" : {
 
     },
     "Subscript" : {

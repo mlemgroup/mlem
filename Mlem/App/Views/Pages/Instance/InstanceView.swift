@@ -97,8 +97,6 @@ struct InstanceView: View {
                 }
             case .details:
                 InstanceDetailsView(instance: instance)
-                    .padding(.vertical, 16)
-                    .background(palette.groupedBackground)
                 if colorScheme == .light {
                     Divider()
                 }
