@@ -14,7 +14,6 @@ struct FeedsView: View {
     @Setting(\.postSize) var postSize
     @Setting(\.showReadInFeed) var showRead
     
-    @Environment(\.dismiss) var dismiss
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     

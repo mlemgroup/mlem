@@ -41,10 +41,10 @@ enum FullyQualifiedLabelStyle {
 
 /// View for rendering fully qualified labels (i.e., user or community names)
 struct FullyQualifiedLabelView: View {
-    // these aren't used now but they will be for flairs
     @Environment(\.postContext) var postContext: (any Post1Providing)?
+    @Environment(\.commentContext) var commentContext: (any Comment1Providing)?
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
-  
+
     let entity: (any CommunityOrPersonStub & Profile1Providing)?
     let labelStyle: FullyQualifiedLabelStyle
     let showAvatar: Bool
@@ -60,7 +60,7 @@ struct FullyQualifiedLabelView: View {
     }
     
     var body: some View {
-        HStack {
+        HStack(spacing: Constants.main.halfSpacing) {
             if showAvatar {
                 CircleCroppedImageView(
                     url: entity?.avatar?.withIconSize(labelStyle.avatarResolution),
@@ -69,22 +69,33 @@ struct FullyQualifiedLabelView: View {
                 )
                 .frame(width: labelStyle.avatarSize, height: labelStyle.avatarSize)
             }
-            
-            FullyQualifiedNameView(name: entity?.name, instance: entity?.host, instanceLocation: labelStyle.instanceLocation)
+            FullyQualifiedNameView(
+                name: entity?.name,
+                instance: entity?.host,
+                instanceLocation: labelStyle.instanceLocation,
+                prependedText: flairs.textView()
+            )
+            .imageScale(.small)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityLabel)
     }
     
-    // TODO: flairs, comment context
-    // the basic idea here is:
-    //
-    // if entity is PersonStubProviding:
-    //   ContentLoader { person.flairs(contexts) }
-    //
-    // to compute bannedFromCommunity:
-    //
-    // if commentContext, commentContext is Comment2Providing: commentContext.creatorBannedFromCommunity
-    // else if postContext, postContext is Post2Providing: postContext.creatorBannedFromCommunity
-    //
-    // since in a comment, both commentContext and postContext will be present--need to make sure above logic is implemented such that
-    // postContext is only checked if commentContext isn't present, regardless of commentContext upgrade level
+    var flairs: [PersonFlair] {
+        guard let person = entity as? any Person else { return [] }
+        let flairs = person.flairs(
+            interactableContext: (commentContext as? any Comment2Providing) ?? (postContext as? any Post2Providing),
+            communityContext: communityContext as? any Community3Providing
+        )
+        return PersonFlair.allCases.filter { flairs.contains($0) }
+    }
+    
+    var accessibilityLabel: String {
+        guard let entity, let fullName = entity.fullName else { return String(localized: "Loading...") }
+        let flairs = flairs
+        if !flairs.isEmpty {
+            return "\(fullName), " + flairs.map { String(localized: $0.label) }.joined(separator: ", ")
+        }
+        return fullName
+    }
 }

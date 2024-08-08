@@ -81,6 +81,7 @@ struct ContentView: View {
         navigationModel.layers.allSatisfy { !$0.canDisplayToasts }
     }
     
+    @ViewBuilder
     var content: some View {
         CustomTabView(selectedIndex: Binding(get: {
             Tab.allCases.firstIndex(of: appState.contentViewTab) ?? 0
@@ -104,8 +105,8 @@ struct ContentView: View {
             },
             CustomTabItem(
                 title: AppState.main.firstAccount.nickname,
-                image: avatarImage ?? UIImage(systemName: Icons.user),
-                selectedImage: selectedAvatarImage ?? UIImage(systemName: Icons.userFill),
+                image: avatarImage ?? UIImage(systemName: Icons.personCircle),
+                selectedImage: selectedAvatarImage ?? UIImage(systemName: Icons.personCircleFill),
                 onLongPress: {
                     HapticManager.main.play(haptic: .rigidInfo, priority: .high)
                     NavigationModel.main.openSheet(.quickSwitcher)

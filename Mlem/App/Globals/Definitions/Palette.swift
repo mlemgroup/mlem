@@ -113,7 +113,9 @@ struct ColorPalette: PaletteProviding {
     var accent3: Color
     var accent4: Color
     var accent5: Color
-    
+    var accent6: Color
+    var accent7: Color
+
     var commentIndentColors: [Color]
     
     init(
@@ -150,6 +152,8 @@ struct ColorPalette: PaletteProviding {
         accent3: Color? = nil,
         accent4: Color? = nil,
         accent5: Color? = nil,
+        accent6: Color? = nil,
+        accent7: Color? = nil,
         commentIndentColors: [Color]
     ) {
         self.primary = primary
@@ -185,6 +189,8 @@ struct ColorPalette: PaletteProviding {
         self.accent3 = accent3 ?? accent
         self.accent4 = accent4 ?? accent
         self.accent5 = accent5 ?? accent
+        self.accent6 = accent6 ?? accent
+        self.accent7 = accent7 ?? accent
         self.commentIndentColors = commentIndentColors
     }
 }
@@ -245,6 +251,8 @@ class Palette: PaletteProviding {
     var accent3: Color { palette.accent3 }
     var accent4: Color { palette.accent4 }
     var accent5: Color { palette.accent5 }
+    var accent6: Color { palette.accent6 }
+    var accent7: Color { palette.accent7 }
     
     var commentIndentColors: [Color] { palette.commentIndentColors }
     

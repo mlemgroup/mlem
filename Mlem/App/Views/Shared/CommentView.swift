@@ -82,5 +82,6 @@ struct CommentView: View {
             Divider()
         }
         .padding(.leading, CGFloat(depth) * indent)
+        .environment(\.commentContext, comment)
     }
 }

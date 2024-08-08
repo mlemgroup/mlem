@@ -29,7 +29,7 @@ struct SimpleAvatarView: View {
     }
 
     var defaultImage: UIImage {
-        .init(systemName: Icons.user)!
+        .init(systemName: Icons.personCircle)!
             .applyingSymbolConfiguration(.init(
                 font: .systemFont(ofSize: 17),
                 scale: .large

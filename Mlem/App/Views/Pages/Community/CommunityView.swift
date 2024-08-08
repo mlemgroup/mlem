@@ -135,7 +135,7 @@ struct CommunityView: View {
         } label: {
             HStack {
                 Text((community.subscriberCount_ ?? 0).abbreviated)
-                Image(systemName: subscribed ? Icons.successCircleFill : Icons.user)
+                Image(systemName: subscribed ? Icons.successCircleFill : Icons.personCircle)
                     .symbolRenderingMode(.hierarchical)
             }
             .fontWeight(.semibold)

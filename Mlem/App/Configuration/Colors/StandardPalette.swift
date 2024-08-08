@@ -40,6 +40,8 @@ extension ColorPalette {
         accent3: .pink,
         accent4: .blue,
         accent5: .green,
+        accent6: .purple,
+        accent7: .indigo,
         commentIndentColors: [Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple]
     )
 }

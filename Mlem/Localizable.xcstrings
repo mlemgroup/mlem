@@ -64,6 +64,9 @@
     "Administration" : {
 
     },
+    "Administrator" : {
+
+    },
     "All" : {
 
     },
@@ -80,6 +83,12 @@
 
     },
     "Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser." : {
+
+    },
+    "Banned from Community" : {
+
+    },
+    "Banned from Instance" : {
 
     },
     "Block" : {
@@ -106,7 +115,13 @@
     "Bold" : {
 
     },
+    "Bot Account" : {
+
+    },
     "Bottom" : {
+
+    },
+    "Cake Day" : {
 
     },
     "Cancel" : {
@@ -366,10 +381,16 @@
     "Messages" : {
 
     },
+    "Mlem Developer" : {
+
+    },
     "Moderated" : {
 
     },
     "Moderation" : {
+
+    },
+    "Moderator" : {
 
     },
     "Monochrome" : {
@@ -424,6 +445,9 @@
 
     },
     "Open URL from Clipboard" : {
+
+    },
+    "Original Poster" : {
 
     },
     "Other" : {
