@@ -11,7 +11,7 @@ import SwiftUI
 
 /// View for rendering posts in feed
 struct FeedPostView: View {
-    @AppStorage("post.size") var postSize: PostSize = .large
+    @Setting(\.postSize) var postSize
     
     @Environment(Palette.self) var palette
     
@@ -21,7 +21,7 @@ struct FeedPostView: View {
         content
             .contentShape(.interaction, .rect)
             .quickSwipes(post.swipeActions(behavior: postSize.swipeBehavior))
-            .contextMenu(actions: post.menuActions())
+            .contextMenu { post.menuActions() }
             .shadow(color: postSize.tiled ? palette.primary.opacity(0.1) : .clear, radius: 3) // after quickSwipes to prevent clipping
     }
     

@@ -7,23 +7,35 @@
 
 import SwiftUI
 
+struct DeferredContextMenu<Content: View>: View {
+    let content: () -> Content
+
+    init(@ViewBuilder content: @escaping () -> Content) {
+        self.content = content
+    }
+
+    var body: some View {
+        content()
+    }
+}
+
 struct NavigationLayerView: View {
-    @State var layer: NavigationLayer
+    @Bindable var layer: NavigationLayer
     let hasSheetModifiers: Bool
     
     var body: some View {
-        Group {
+        _ = Self._printChanges()
+        return Group {
             if layer.hasNavigationStack {
-                NavigationStack(path: Binding(
-                    get: { layer.path },
-                    set: { layer.path = $0 }
-                )) {
-                    rootView()
-                        .environment(\.isRootView, true)
-                        .navigationDestination(for: NavigationPage.self) {
-                            $0.view()
-                                .environment(\.isRootView, false)
-                        }
+                NavigationStack(path: $layer.path) {
+                    DeferredContextMenu {
+                        rootView()
+                            .environment(\.isRootView, true)
+                    }
+                    .navigationDestination(for: NavigationPage.self) {
+                        $0.view()
+                            .environment(\.isRootView, false)
+                    }
                 }
                
             } else {

@@ -12,9 +12,9 @@ extension Interactable1Providing {
     private var self2: (any Interactable2Providing)? { self as? any Interactable2Providing }
     private var inboxItem: (any InboxItemProviding)? { self as? any InboxItemProviding }
     
-    func showReplySheet() {
+    func showReplySheet(expandedPostTracker: ExpandedPostTracker? = nil) {
         if let self = self as? any Post2Providing {
-            NavigationModel.main.openSheet(.reply(.post(self)))
+            NavigationModel.main.openSheet(.reply(.post(self), expandedPostTracker: expandedPostTracker))
         } else {
             print("DEBUG showReplySheet: cannot open sheet!")
         }
@@ -95,7 +95,7 @@ extension Interactable1Providing {
             menuIcon: isOn ? Icons.upvoteSquareFill : Icons.upvoteSquare,
             swipeIcon1: isOn ? Icons.resetVoteSquare : Icons.upvoteSquare,
             swipeIcon2: isOn ? Icons.resetVoteSquareFill : Icons.upvoteSquareFill,
-            callback: api.willSendToken ? { self.self2?.toggleUpvoted(feedback: feedback) } : nil
+            callback: api.canInteract ? { self.self2?.toggleUpvoted(feedback: feedback) } : nil
         )
     }
     
@@ -110,7 +110,7 @@ extension Interactable1Providing {
             menuIcon: isOn ? Icons.downvoteSquareFill : Icons.downvoteSquare,
             swipeIcon1: isOn ? Icons.resetVoteSquare : Icons.downvoteSquare,
             swipeIcon2: isOn ? Icons.resetVoteSquareFill : Icons.downvoteSquareFill,
-            callback: api.willSendToken ? { self.self2?.toggleDownvoted(feedback: feedback) } : nil
+            callback: api.canInteract ? { self.self2?.toggleDownvoted(feedback: feedback) } : nil
         )
     }
 
@@ -125,11 +125,11 @@ extension Interactable1Providing {
             menuIcon: isOn ? Icons.saveFill : Icons.save,
             swipeIcon1: isOn ? Icons.unsave : Icons.save,
             swipeIcon2: isOn ? Icons.unsaveFill : Icons.saveFill,
-            callback: api.willSendToken ? { self.self2?.toggleSaved(feedback: feedback) } : nil
+            callback: api.canInteract ? { self.self2?.toggleSaved(feedback: feedback) } : nil
         )
     }
     
-    func replyAction() -> BasicAction {
+    func replyAction(expandedPostTracker: ExpandedPostTracker? = nil) -> BasicAction {
         .init(
             id: "reply\(uid)",
             isOn: false,
@@ -139,7 +139,7 @@ extension Interactable1Providing {
             menuIcon: Icons.reply,
             swipeIcon1: Icons.reply,
             swipeIcon2: Icons.replyFill,
-            callback: api.willSendToken ? showReplySheet : nil
+            callback: api.canInteract ? { self.showReplySheet(expandedPostTracker: expandedPostTracker) } : nil
         )
     }
     
@@ -152,7 +152,7 @@ extension Interactable1Providing {
             isDestructive: true,
             confirmationPrompt: showConfirmation ? "Really block this user?" : nil,
             icon: Icons.block,
-            callback: api.willSendToken ? { self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
+            callback: api.canInteract ? { self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
         )
     }
     

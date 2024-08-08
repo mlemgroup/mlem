@@ -7,12 +7,25 @@
 
 import SwiftUI
 
+// This setup avoids actually generating the array of actions until the context menu itself
+// is opened. This can have performance benefits in certain situations.
+
 extension View {
-    func contextMenu(actions: [any Action]) -> some View {
+    @ViewBuilder
+    func contextMenu(@ActionBuilder actions: @escaping () -> [any Action]) -> some View {
         contextMenu {
-            ForEach(actions, id: \.id) { action in
-                MenuButton(action: action)
-            }
+            // Having a proper view here is necessary - if `ForEach` is used directly, `actions()` gets called early.
+            MenuButtons(actions: actions)
+        }
+    }
+}
+
+struct MenuButtons: View {
+    @ActionBuilder let actions: () -> [any Action]
+
+    var body: some View {
+        ForEach(actions(), id: \.id) { action in
+            MenuButton(action: action)
         }
     }
 }

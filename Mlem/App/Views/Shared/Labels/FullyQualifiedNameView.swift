@@ -30,6 +30,7 @@ struct FullyQualifiedNameView: View {
     let name: String?
     let instance: String?
     let instanceLocation: InstanceLocation
+    var prependedText: Text = .init(verbatim: "")
     
     // scale placeholder capsule height and spacing according to font size
     @ScaledMetric(relativeTo: .footnote) var capsuleHeight: CGFloat = 13
@@ -41,7 +42,9 @@ struct FullyQualifiedNameView: View {
     
     var body: some View {
         if let name, let instance {
-            nameText(name: name) + instanceText(instance: instance)
+            (prependedText + nameText(name: name) + instanceText(instance: instance))
+                .lineLimit(instanceLocation == .trailing ? 1 : nil)
+                .font(.footnote)
         } else {
             placeholder
         }
@@ -50,7 +53,6 @@ struct FullyQualifiedNameView: View {
     func nameText(name: String) -> Text {
         Text(name)
             .bold()
-            .font(.footnote)
             .foregroundStyle(palette.secondary)
     }
     

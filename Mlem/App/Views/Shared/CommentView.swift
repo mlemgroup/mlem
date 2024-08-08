@@ -24,7 +24,7 @@ struct CommentView: View {
         let collapsed = (comment as? CommentWrapper)?.collapsed ?? false
         
         VStack(spacing: 0) {
-            VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 HStack {
                     FullyQualifiedLinkView(entity: comment.creator_, labelStyle: .small, showAvatar: true)
                     Spacer()
@@ -33,7 +33,7 @@ struct CommentView: View {
                             .frame(height: 10)
                             .imageScale(.small)
                     } else {
-                        EllipsisMenu(actions: comment.menuActions(), size: 24)
+                        EllipsisMenu(size: 24) { comment.menuActions() }
                             .frame(height: 10)
                     }
                 }
@@ -61,7 +61,7 @@ struct CommentView: View {
                 }
             }
             .padding(.vertical, 2)
-            .padding(AppConstants.standardSpacing)
+            .padding(Constants.main.standardSpacing)
             .clipped()
             .background(highlight ? palette.accent.opacity(0.2) : .clear)
             .background(palette.background)
@@ -78,9 +78,10 @@ struct CommentView: View {
                     }
                 }
             }
-            .contextMenu(actions: comment.menuActions())
+            .contextMenu { comment.menuActions() }
             Divider()
         }
         .padding(.leading, CGFloat(depth) * indent)
+        .environment(\.commentContext, comment)
     }
 }

@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct LinkSettingsView: View {
-    @AppStorage("links.openInBrowser") var openLinksInBrowser = false
-    @AppStorage("links.readerMode") var openLinksInReaderMode = false
+    @Setting(\.openLinksInBrowser) var openLinksInBrowser
+    @Setting(\.openLinksInReaderMode) var openLinksInReaderMode
     
     var body: some View {
         Form {

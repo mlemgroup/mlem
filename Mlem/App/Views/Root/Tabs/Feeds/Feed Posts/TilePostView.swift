@@ -26,14 +26,14 @@ struct TilePostView: View {
     
     let contentHeightModifier: CGFloat = 10
     // width cannot go below contentHeightModifier so contentWidth is never negative
-    var width: CGFloat { max(contentHeightModifier, (parentFrameWidth - (AppConstants.standardSpacing * 3)) / 2) }
+    var width: CGFloat { max(contentHeightModifier, (parentFrameWidth - (Constants.main.standardSpacing * 3)) / 2) }
     var contentHeight: CGFloat { width - contentHeightModifier }
     var frameHeight: CGFloat { width + minTitleHeight + communityHeight + 17 }
     // Padding math
     // Need to satisfy: padding + contentHeightModifier = 17
     //
     // Title : community spacing = 7
-    // Title + community external padding = (2 * AppConstants.standardSpacing) = 20
+    // Title + community external padding = (2 * Constants.main.standardSpacing) = 20
     //
     // Total padding = 27
     // 27 + contentHeightModifier = 17
@@ -43,8 +43,8 @@ struct TilePostView: View {
         content
             .frame(width: width, height: frameHeight)
             .background(palette.secondaryGroupedBackground)
-            .clipShape(.rect(cornerRadius: AppConstants.tilePostCornerRadius))
-            .contentShape(.contextMenuPreview, .rect(cornerRadius: AppConstants.tilePostCornerRadius))
+            .clipShape(.rect(cornerRadius: Constants.main.largeItemCornerRadius))
+            .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.largeItemCornerRadius))
             .environment(\.postContext, post)
     }
     
@@ -60,7 +60,7 @@ struct TilePostView: View {
                 
                 communityAndInfo
             }
-            .padding(AppConstants.standardSpacing)
+            .padding(Constants.main.standardSpacing)
         }
     }
     
@@ -116,7 +116,7 @@ struct TilePostView: View {
     struct BaseImage: View {
         @Environment(Palette.self) var palette: Palette
         
-        @AppStorage("safety.blurNsfw") var blurNsfw = true
+        @Setting(\.blurNsfw) var blurNsfw
         
         let post: any Post1Providing
         
@@ -131,7 +131,7 @@ struct TilePostView: View {
                             .symbolRenderingMode(.palette)
                             .foregroundStyle(palette.background, palette.warning)
                             .imageScale(.small)
-                            .padding(AppConstants.halfSpacing)
+                            .padding(Constants.main.halfSpacing)
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                     }
                 }
@@ -143,7 +143,7 @@ struct TilePostView: View {
             case let .text(text):
                 MarkdownText(text, configuration: .caption)
                     .foregroundStyle(palette.secondary)
-                    .padding(AppConstants.standardSpacing)
+                    .padding(Constants.main.standardSpacing)
                     .frame(maxWidth: .infinity, maxHeight: height, alignment: .topLeading)
                     .clipped()
             case .titleOnly:
@@ -151,7 +151,7 @@ struct TilePostView: View {
                     .resizable()
                     .scaledToFit()
                     .foregroundStyle(palette.secondary)
-                    .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
+                    .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             case .image:
                 ThumbnailImageView(
@@ -180,7 +180,7 @@ struct TilePostView: View {
                         .fill(.regularMaterial)
                         .overlay(Capsule().fill(palette.background.opacity(0.25)))
                 }
-                .padding(AppConstants.compactSpacing)
+                .padding(Constants.main.compactSpacing)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
         }
     }

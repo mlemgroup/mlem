@@ -109,7 +109,7 @@ extension Community1Providing {
             behavior: behavior,
             leadingActions: {},
             trailingActions: {
-                if api.willSendToken {
+                if api.canInteract {
                     subscribeAction(feedback: [.haptic])
                     favoriteAction(feedback: [.haptic])
                 }
@@ -143,7 +143,7 @@ extension Community1Providing {
             barIcon: Icons.subscribe,
             swipeIcon1: isOn ? Icons.unsubscribePerson : Icons.subscribePerson,
             swipeIcon2: isOn ? Icons.unsubscribePersonFill : Icons.subscribePersonFill,
-            callback: api.willSendToken ? { self.self2?.toggleSubscribe(feedback: feedback) } : nil
+            callback: api.canInteract ? { self.self2?.toggleSubscribe(feedback: feedback) } : nil
         )
     }
     
@@ -159,7 +159,7 @@ extension Community1Providing {
             menuIcon: isOn ? Icons.favoriteFill : Icons.favorite,
             swipeIcon1: isOn ? Icons.unfavorite : Icons.favorite,
             swipeIcon2: isOn ? Icons.unfavoriteFill : Icons.favoriteFill,
-            callback: api.willSendToken ? { self.self2?.toggleFavorite(feedback: feedback) } : nil
+            callback: api.canInteract ? { self.self2?.toggleFavorite(feedback: feedback) } : nil
         )
     }
     
@@ -172,7 +172,7 @@ extension Community1Providing {
             isDestructive: !blocked,
             confirmationPrompt: (!blocked && showConfirmation) ? "Really block this community?" : nil,
             icon: blocked ? Icons.show : Icons.hide,
-            callback: api.willSendToken ? { self.toggleBlocked(feedback: feedback) } : nil
+            callback: api.canInteract ? { self.toggleBlocked(feedback: feedback) } : nil
         )
     }
 }

@@ -27,8 +27,16 @@ struct TabReselectionConsumer: ViewModifier {
                     action()
                 }
             }
-            .onAppear { displayed = true }
-            .onDisappear { displayed = false }
+            .onAppear {
+                if !displayed {
+                    displayed = true
+                }
+            }
+            .onDisappear {
+                if displayed {
+                    displayed = false
+                }
+            }
     }
 }
 

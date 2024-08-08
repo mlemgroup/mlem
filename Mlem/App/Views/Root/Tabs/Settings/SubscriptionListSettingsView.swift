@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct SubscriptionListSettingsView: View {
-    @AppStorage("subscriptions.instanceLocation")
-    private var instanceLocation: InstanceLocation = UIDevice.isPad ? .bottom : .trailing
+    @Setting(\.subscriptionInstanceLocation) var instanceLocation
     
     var body: some View {
         Form {

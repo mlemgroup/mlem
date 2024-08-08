@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct FeedCommentView: View {
-    @AppStorage("post.size") var postSize: PostSize = .large
+    @Setting(\.postSize) var postSize
     @Environment(Palette.self) var palette
     
     let comment: Comment2
@@ -19,7 +19,7 @@ struct FeedCommentView: View {
         content
             .contentShape(.interaction, .rect)
             .quickSwipes(comment.swipeActions(behavior: postSize.swipeBehavior))
-            .contextMenu(actions: comment.menuActions())
+            .contextMenu { comment.menuActions() }
             .shadow(color: postSize.tiled ? palette.primary.opacity(0.1) : .clear, radius: 3) // after quickSwipes to prevent clipping
     }
     

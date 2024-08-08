@@ -65,7 +65,7 @@ struct CollapsibleSection<Content: View>: View {
             }
         }
         .background(palette.secondaryGroupedBackground)
-        .clipShape(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius))
+        .clipShape(RoundedRectangle(cornerRadius: Constants.main.mediumItemCornerRadius))
         .fixedSize(horizontal: false, vertical: true)
         .padding(.horizontal, 16)
     }

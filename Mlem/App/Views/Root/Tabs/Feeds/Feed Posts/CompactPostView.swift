@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct CompactPostView: View {
-    @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
+    @Setting(\.thumbnailLocation) var thumbnailLocation
     
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(Palette.self) var palette: Palette
@@ -19,18 +19,18 @@ struct CompactPostView: View {
     
     var body: some View {
         content
-            .padding(AppConstants.standardSpacing)
+            .padding(Constants.main.standardSpacing)
             .background(palette.background)
             .environment(\.postContext, post)
     }
     
     var content: some View {
-        HStack(alignment: .top, spacing: AppConstants.standardSpacing) {
+        HStack(alignment: .top, spacing: Constants.main.standardSpacing) {
             if thumbnailLocation == .left {
                 ThumbnailImageView(post: post, blurred: post.nsfw, size: .standard)
             }
             
-            VStack(alignment: .leading, spacing: AppConstants.compactSpacing) {
+            VStack(alignment: .leading, spacing: Constants.main.compactSpacing) {
                 HStack(spacing: 4) {
                     if communityContext != nil {
                         FullyQualifiedLinkView(entity: post.creator_, labelStyle: .small, showAvatar: false)
@@ -44,11 +44,8 @@ struct CompactPostView: View {
                             .foregroundStyle(palette.warning)
                             .imageScale(.small)
                     }
-                    
-                    Image(systemName: Icons.moderation)
-                        .imageScale(.small)
-                    
-                    EllipsisMenu(actions: post.menuActions(), size: 18)
+
+                    EllipsisMenu(size: 18) { post.menuActions() }
                 }
                 .padding(.bottom, -2)
   

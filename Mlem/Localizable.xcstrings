@@ -65,6 +65,9 @@
     "Administration" : {
 
     },
+    "Administrator" : {
+
+    },
     "All" : {
 
     },
@@ -81,6 +84,12 @@
 
     },
     "Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser." : {
+
+    },
+    "Banned from Community" : {
+
+    },
+    "Banned from Instance" : {
 
     },
     "Block" : {
@@ -107,7 +116,13 @@
     "Bold" : {
 
     },
+    "Bot Account" : {
+
+    },
     "Bottom" : {
+
+    },
+    "Cake Day" : {
 
     },
     "Cancel" : {
@@ -206,9 +221,6 @@
     "Enter your instance's domain name below." : {
 
     },
-    "Error: No active UserAccount" : {
-
-    },
     "example.com" : {
 
     },
@@ -216,6 +228,9 @@
 
     },
     "Failed to delete post!" : {
+
+    },
+    "Failed to resolve post. Try another account." : {
 
     },
     "Fast" : {
@@ -367,10 +382,16 @@
     "Messages" : {
 
     },
+    "Mlem Developer" : {
+
+    },
     "Moderated" : {
 
     },
     "Moderation" : {
+
+    },
+    "Moderator" : {
 
     },
     "Monochrome" : {
@@ -425,6 +446,9 @@
 
     },
     "Open URL from Clipboard" : {
+
+    },
+    "Original Poster" : {
 
     },
     "Other" : {

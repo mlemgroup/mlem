@@ -13,14 +13,13 @@ struct SubscriptionListView: View {
     @Environment(NavigationLayer.self) private var navigation
     @Environment(TabReselectTracker.self) var tabReselectTracker
     
-    @AppStorage("subscriptions.sort") private var sort: SubscriptionListSort = .alphabetical
-    @AppStorage("subscriptions.instanceLocation")
-    private var savedInstanceLocation: InstanceLocation = UIDevice.isPad ? .bottom : .trailing
+    @Setting(\.subscriptionSort) private var sort
     
     @State var noDetail: Bool = false
     
     var body: some View {
-        MultiplatformView(phone: {
+        _ = print("SUBSCRIPTION LIST")
+        return MultiplatformView(phone: {
             content
                 .listStyle(.plain)
         }, pad: {
@@ -53,25 +52,8 @@ struct SubscriptionListView: View {
                 }
                 
                 ForEach(sections) { section in
-                    Section(section.label) {
-                        ForEach(section.communities) { (community: Community2) in
-                            NavigationLink(.community(community)) {
-                                HStack(spacing: 15) {
-                                    buttonLabel(community, section: section)
-                                }
-                            }
-                            .contextMenu(actions: community.menuActions(feedback: [.toast], navigation: navigation))
-                            .swipeActions(edge: .trailing) {
-                                Button("Unsubscribe", systemImage: "xmark") {
-                                    community.toggleSubscribe(feedback: [.toast])
-                                }
-                                .labelStyle(.iconOnly)
-                                .tint(.red)
-                            }
-                            .padding(.trailing, sectionIndicesShown ? 5 : 0)
-                        }
-                    }
-                    .id(section.label)
+                    SubscriptionListSectionView(section: section, sectionIndicesShown: sectionIndicesShown)
+                        .id(section.label)
                 }
                 .scrollTargetLayout()
             }
@@ -111,55 +93,29 @@ struct SubscriptionListView: View {
         }
     }
     
-    @ViewBuilder
-    private func buttonLabel(
-        _ community: Community2,
-        section: SubscriptionListSection
-    ) -> some View {
-        switch instanceLocation(section: section) {
-        case .trailing:
-            CircleCroppedImageView(community)
-                .frame(width: 28, height: 28)
-            (
-                Text(community.name)
-                    + Text(verbatim: "@\(community.host ?? "unknown")")
-                    .foregroundStyle(.secondary)
-                    .font(.footnote)
-            )
-            .lineLimit(1)
-        case .bottom:
-            CircleCroppedImageView(community)
-                .frame(width: 36, height: 36)
-            VStack(alignment: .leading, spacing: 0) {
-                Text(community.name)
-                    .lineLimit(1)
-                Text(verbatim: "@\(community.host ?? "")")
-                    .foregroundStyle(.secondary)
-                    .font(.footnote)
-            }
-        case .disabled:
-            CircleCroppedImageView(community)
-                .frame(width: 28, height: 28)
-            Text(community.name)
-                .lineLimit(1)
-        }
-    }
-    
     var sectionIndicesShown: Bool {
         !UIDevice.isPad && sort == .alphabetical
     }
+}
+
+private struct SubscriptionListSectionView: View {
+    let section: SubscriptionListSection
+    let sectionIndicesShown: Bool
     
-    private func instanceLocation(section: SubscriptionListSection) -> InstanceLocation {
-        switch sort {
-        case .alphabetical:
-            savedInstanceLocation
-        case .instance:
-            section.label == String(localized: "Other") ? .trailing : .disabled
+    var body: some View {
+        Section(section.label) {
+            ForEach(section.communities) { (community: Community2) in
+                SubscriptionListItemView(
+                    community: community,
+                    section: section,
+                    sectionIndicesShown: sectionIndicesShown
+                )
+            }
         }
     }
 }
 
-private enum SubscriptionListSort: String, CaseIterable {
+enum SubscriptionListSort: String, CaseIterable {
     case alphabetical
     case instance
     

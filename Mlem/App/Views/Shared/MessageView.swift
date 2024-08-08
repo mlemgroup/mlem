@@ -16,14 +16,14 @@ struct MessageView: View {
     let message: any Message
     
     var body: some View {
-        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             HStack {
                 FullyQualifiedLinkView(entity: message.creator_, labelStyle: .small, showAvatar: true)
                 Spacer()
                 Image(systemName: message.isOwnMessage ? Icons.send : Icons.message)
                     .symbolVariant(message.read ? .none : .fill)
                     .foregroundStyle(palette.accent)
-                EllipsisMenu(actions: message.menuActions(), size: 24)
+                EllipsisMenu(size: 24) { message.menuActions() }
                     .frame(height: 10)
             }
             if message.deleted {
@@ -44,11 +44,11 @@ struct MessageView: View {
             .foregroundStyle(palette.secondary)
         }
         .padding(.vertical, 2)
-        .padding(AppConstants.standardSpacing)
+        .padding(Constants.main.standardSpacing)
         .clipped()
         .background(palette.background)
         .contentShape(.rect)
         .quickSwipes(message.swipeActions(behavior: .standard))
-        .contextMenu(actions: message.menuActions())
+        .contextMenu { message.menuActions() }
     }
 }
