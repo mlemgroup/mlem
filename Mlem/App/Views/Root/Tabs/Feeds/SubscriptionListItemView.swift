@@ -24,7 +24,7 @@ struct SubscriptionListItemView: View {
         }
         .contextMenu { community.menuActions(feedback: [.toast], navigation: navigation) }
         .swipeActions(edge: .trailing) {
-            Button("Unsubscribe", systemImage: "xmark") {
+            Button("Unsubscribe", systemImage: Icons.failure) {
                 community.toggleSubscribe(feedback: [.toast])
             }
             .labelStyle(.iconOnly)
