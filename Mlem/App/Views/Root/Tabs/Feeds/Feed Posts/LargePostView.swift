@@ -45,7 +45,7 @@ struct LargePostView: View {
                 }
                 
                 if !isExpanded {
-                    EllipsisMenu(actions: post.menuActions(expandedPostTracker: expandedPostTracker), size: 24)
+                    EllipsisMenu(size: 24) { post.menuActions(expandedPostTracker: expandedPostTracker) }
                 }
             }
             

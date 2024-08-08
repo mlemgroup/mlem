@@ -11,20 +11,24 @@ import SwiftUI
 struct EllipsisMenu: View {
     @Environment(Palette.self) private var palette: Palette
     
-    let actions: [any Action]
+    @ActionBuilder let actions: () -> [any Action]
     let size: CGFloat
+    
+    // See comments in `View+ContextMenu` for why `@autoclosure` is used here
+    init(size: CGFloat, @ActionBuilder actions: @escaping () -> [any Action]) {
+        self.actions = actions
+        self.size = size
+    }
     
     var body: some View {
         Menu {
-            ForEach(actions, id: \.id) { action in
-                MenuButton(action: action)
-            }
+            MenuButtons(actions: actions)
         } label: {
             Image(systemName: Icons.menu)
                 .frame(width: 24, height: size)
-                .foregroundColor(actions.isEmpty ? palette.secondary : palette.primary)
                 .contentShape(.rect)
         }
+        .buttonStyle(EmptyButtonStyle())
         .onTapGesture {} // prevent NavigationLink from disabling menu (thanks Swift)
     }
 }

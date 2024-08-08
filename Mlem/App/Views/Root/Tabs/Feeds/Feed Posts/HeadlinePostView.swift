@@ -43,7 +43,7 @@ struct HeadlinePostView: View {
                         .foregroundStyle(palette.warning)
                 }
                 
-                EllipsisMenu(actions: post.menuActions(), size: 24)
+                EllipsisMenu(size: 24) { post.menuActions() }
             }
             
             HStack(alignment: .top, spacing: Constants.main.standardSpacing) {

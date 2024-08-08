@@ -50,6 +50,6 @@ struct PersonListRow<Content2: View>: View {
             navigation.push(.person(person))
         }
         .background(palette.background)
-        .contextMenu(actions: person.menuActions(navigation: navigation))
+        .contextMenu { person.menuActions(navigation: navigation) }
     }
 }
