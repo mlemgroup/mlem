@@ -40,7 +40,7 @@ struct IconSettingsView: View {
                                     AlternateIconCell(
                                         icon: icon,
                                         setAppIcon: setAppIcon,
-                                        selected: UIApplication.shared.alternateIconName == icon.id
+                                        selected: currentIcon == icon.id
                                     )
                                 }
                             })
@@ -54,14 +54,6 @@ struct IconSettingsView: View {
         }
         .background(Color(uiColor: .systemGroupedBackground))
         .navigationTitle("App Icon")
-    }
-
-    static func getCurrentIcon() -> Image {
-        let icon = AlternateIcon(
-            id: UIApplication.shared.alternateIconName,
-            name: ""
-        )
-        return AlternateIconLabel(icon: icon, selected: true).getImage()
     }
 
     @MainActor

@@ -134,7 +134,12 @@ class UserAccount: Account, CommunityOrPersonStub {
 }
 
 private func getKeychainId(actorId: URL) -> String {
-    "\(actorId.absoluteString)_accessToken"
+    // localhost sometimes has url "http://localhost:PORT" and sometimes "https://lemmy-alpha/beta/etc", so replace any of that with simple "localhost"
+    let keychainActorId = actorId.absoluteString.replacing(
+        /https?:\/\/(lemmy-(alpha|beta|gamma|delta|epsilon)|localhost:\d{4})/,
+        with: "localhost"
+    )
+    return "\(keychainActorId)_accessToken"
 }
 
 private func getKeychainId(id: Int) -> String {
