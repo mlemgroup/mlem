@@ -60,7 +60,7 @@ struct FullyQualifiedLabelView: View {
     }
     
     var body: some View {
-        HStack(spacing: AppConstants.halfSpacing) {
+        HStack(spacing: Constants.main.halfSpacing) {
             if showAvatar {
                 CircleCroppedImageView(
                     url: entity?.avatar?.withIconSize(labelStyle.avatarResolution),
