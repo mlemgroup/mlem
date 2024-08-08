@@ -205,9 +205,6 @@
     "Enter your instance's domain name below." : {
 
     },
-    "Error: No active UserAccount" : {
-
-    },
     "example.com" : {
 
     },
@@ -215,6 +212,9 @@
 
     },
     "Failed to delete post!" : {
+
+    },
+    "Failed to resolve post. Try another account." : {
 
     },
     "Fast" : {

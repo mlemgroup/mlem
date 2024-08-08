@@ -76,7 +76,6 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
     }
  
     func updateUIView(_ textView: UITextView, context: Context) {
-        textView.text = text
         textView.sizeToFit()
     }
     

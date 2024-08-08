@@ -15,6 +15,7 @@ struct LargePostView: View {
     @Setting(\.showCommunityAvatar) private var showCommunityAvatar
     
     @Environment(Palette.self) private var palette: Palette
+    @Environment(ExpandedPostTracker.self) private var expandedPostTracker: ExpandedPostTracker?
     @Environment(\.communityContext) private var communityContext
     
     let post: any Post1Providing
@@ -44,7 +45,7 @@ struct LargePostView: View {
                 }
                 
                 if !isExpanded {
-                    EllipsisMenu(actions: post.menuActions(), size: 24)
+                    EllipsisMenu(actions: post.menuActions(expandedPostTracker: expandedPostTracker), size: 24)
                 }
             }
             
@@ -60,7 +61,8 @@ struct LargePostView: View {
                     leading: [.counter(.score)],
                     trailing: [.action(.save), .action(.reply)],
                     readouts: [.created, .score, .comment]
-                )
+                ),
+                expandedPostTracker: expandedPostTracker
             )
             .padding(.vertical, 2)
         }

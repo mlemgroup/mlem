@@ -40,31 +40,37 @@ extension Post1Providing {
         self2?.updateRead(true)
     }
     
-    func swipeActions(behavior: SwipeBehavior) -> SwipeConfiguration {
+    func swipeActions(
+        behavior: SwipeBehavior,
+        expandedPostTracker: ExpandedPostTracker? = nil
+    ) -> SwipeConfiguration {
         .init(
             behavior: behavior,
             leadingActions: {
-                if api.willSendToken {
+                if api.canInteract {
                     upvoteAction(feedback: [.haptic])
                     downvoteAction(feedback: [.haptic])
                 }
             },
             trailingActions: {
-                if api.willSendToken {
+                if api.canInteract {
                     saveAction(feedback: [.haptic])
-                    replyAction()
+                    replyAction(expandedPostTracker: expandedPostTracker)
                 }
             }
         )
     }
     
     @ActionBuilder
-    func menuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
+    func menuActions(
+        feedback: Set<FeedbackType> = [.haptic, .toast],
+        expandedPostTracker: ExpandedPostTracker? = nil
+    ) -> [any Action] {
         ActionGroup(displayMode: .compactSection) {
             upvoteAction(feedback: feedback)
             downvoteAction(feedback: feedback)
             saveAction(feedback: feedback)
-            replyAction()
+            replyAction(expandedPostTracker: expandedPostTracker)
             selectTextAction()
             shareAction()
             
@@ -82,7 +88,11 @@ extension Post1Providing {
         }
     }
     
-    func action(type: PostActionType, feedback: Set<FeedbackType> = []) -> any Action {
+    func action(
+        type: PostActionType,
+        feedback: Set<FeedbackType> = [],
+        expandedPostTracker: ExpandedPostTracker? = nil
+    ) -> any Action {
         switch type {
         case .upvote:
             upvoteAction(feedback: feedback)
@@ -91,7 +101,7 @@ extension Post1Providing {
         case .save:
             saveAction(feedback: feedback)
         case .reply:
-            replyAction()
+            replyAction(expandedPostTracker: expandedPostTracker)
         case .share:
             shareAction()
         case .selectText:
@@ -173,7 +183,7 @@ extension Post1Providing {
             label: hidden ? "Show" : "Hide",
             color: .gray,
             icon: hidden ? Icons.show : Icons.hide,
-            callback: api.willSendToken ? { self.self2?.toggleHidden(feedback: feedback) } : nil
+            callback: api.canInteract ? { self.self2?.toggleHidden(feedback: feedback) } : nil
         )
     }
     
@@ -184,7 +194,7 @@ extension Post1Providing {
             color: Palette.main.negative,
             isDestructive: true,
             icon: Icons.block,
-            disabled: !api.willSendToken,
+            disabled: !api.canInteract,
             displayMode: .popup
         ) {
             blockCreatorAction(feedback: feedback, showConfirmation: false)
@@ -201,7 +211,7 @@ extension Post1Providing {
             isDestructive: true,
             confirmationPrompt: showConfirmation ? "Really block this community?" : nil,
             icon: Icons.block,
-            callback: api.willSendToken ? { self.self2?.community.toggleBlocked(feedback: feedback) } : nil
+            callback: api.canInteract ? { self.self2?.community.toggleBlocked(feedback: feedback) } : nil
         )
     }
 }

@@ -96,7 +96,7 @@ class AccountsTracker {
             totpToken: totpToken
         )
         guard let token = response.jwt else {
-            throw ApiClientError.invalidSession
+            throw ApiClientError.unsuccessful
         }
         
         let authenticatedApiClient = ApiClient.getApiClient(for: unauthenticatedApi.baseUrl, with: token)
@@ -110,7 +110,7 @@ class AccountsTracker {
         } else {
             let response = try await authenticatedApiClient.getMyPerson()
             guard let person = response.person else {
-                throw ApiClientError.invalidSession
+                throw ApiClientError.unsuccessful
             }
             let account = UserAccount(person: person, instance: response.instance)
             addAccount(account: account)

@@ -15,13 +15,13 @@ extension Comment1Providing {
         .init(
             behavior: behavior,
             leadingActions: {
-                if api.willSendToken {
+                if api.canInteract {
                     upvoteAction(feedback: [.haptic])
                     downvoteAction(feedback: [.haptic])
                 }
             },
             trailingActions: {
-                if api.willSendToken {
+                if api.canInteract {
                     saveAction(feedback: [.haptic])
                     replyAction()
                 }

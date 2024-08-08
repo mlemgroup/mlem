@@ -46,7 +46,7 @@ extension Person1Providing {
             isDestructive: !blocked,
             confirmationPrompt: (!blocked && showConfirmation) ? "Really block this user?" : nil,
             icon: blocked ? Icons.show : Icons.hide,
-            callback: api.willSendToken ? { self.toggleBlocked(feedback: feedback) } : nil
+            callback: api.canInteract ? { self.toggleBlocked(feedback: feedback) } : nil
         )
     }
 }

@@ -143,7 +143,7 @@ struct FeedsView: View {
             .onChange(of: appState.firstApi, initial: false) {
                 postFeedLoader.api = appState.firstApi
 
-                if appState.firstApi.willSendToken, let firstUser = appState.firstAccount as? UserAccount {
+                if appState.firstApi.canInteract, let firstUser = appState.firstAccount as? UserAccount {
                     feedOptions = FeedSelection.allCases
                     if let savedFeedLoader {
                         savedFeedLoader.switchUser(api: appState.firstApi, userId: firstUser.id)
