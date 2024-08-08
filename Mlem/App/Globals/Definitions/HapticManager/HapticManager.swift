@@ -13,7 +13,7 @@ import SwiftUI
 class HapticManager {
     // MARK: Members and init
     
-    @AppStorage("hapticLevel") var hapticLevel: HapticPriority = .low
+    @Setting(\.hapticLevel) var hapticLevel
     
     // generators/engines
     let rigidImpactGenerator: UIImpactFeedbackGenerator = .init(style: .rigid)

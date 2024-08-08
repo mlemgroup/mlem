@@ -59,7 +59,7 @@ struct CommunityListRowBody<Content: View>: View {
     }
 
     var body: some View {
-        HStack(spacing: AppConstants.standardSpacing) {
+        HStack(spacing: Constants.main.standardSpacing) {
             if community.blocked, showBlockStatus {
                 Image(systemName: Icons.hide)
                     .resizable()
@@ -68,7 +68,7 @@ struct CommunityListRowBody<Content: View>: View {
                     .padding(9)
             } else {
                 CircleCroppedImageView(url: community.avatar?.withIconSize(128), fallback: .community)
-                    .frame(width: AppConstants.listRowAvatarSize, height: AppConstants.listRowAvatarSize)
+                    .frame(width: Constants.main.listRowAvatarSize, height: Constants.main.listRowAvatarSize)
             }
             
             VStack(alignment: .leading, spacing: 2) {

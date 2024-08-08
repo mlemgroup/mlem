@@ -12,7 +12,7 @@ import SwiftUI
 @main
 struct MlemApp: App {
     init() {
-        var imageConfig = ImagePipeline.Configuration.withDataCache(name: "main", sizeLimit: AppConstants.cacheSize)
+        var imageConfig = ImagePipeline.Configuration.withDataCache(name: "main", sizeLimit: Constants.main.cacheSize)
         imageConfig.dataLoadingQueue = OperationQueue(maxConcurrentCount: 8)
         imageConfig.imageDecodingQueue = OperationQueue(maxConcurrentCount: 8) // Let's use those CORES
         imageConfig.imageDecompressingQueue = OperationQueue(maxConcurrentCount: 8)
@@ -20,7 +20,7 @@ struct MlemApp: App {
         // TODO: rate limiting
         ImagePipeline.shared = ImagePipeline(configuration: imageConfig)
         
-        URLCache.shared = AppConstants.urlCache
+        URLCache.shared = Constants.main.urlCache
     }
     
     var body: some Scene {

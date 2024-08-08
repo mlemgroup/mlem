@@ -12,8 +12,8 @@ import SwiftUI
 /// Renders the content of a given StandardPostFeedLoader. Responsible solely for post layout and triggering loading; scrolling, handling feed type
 /// changes, header, footer, rendering toolbar items, etc. should be handled by the parent view.
 struct PostGridView: View {
-    @AppStorage("post.size") var postSize: PostSize = .large
-    @AppStorage("feed.showRead") var showRead: Bool = true
+    @Setting(\.postSize) var postSize
+    @Setting(\.showReadInFeed) var showRead
     
     @Environment(AppState.self) var appState
     
@@ -48,7 +48,7 @@ struct PostGridView: View {
     }
     
     var content: some View {
-        LazyVGrid(columns: columns, spacing: postSize.tiled ? AppConstants.standardSpacing : 0) {
+        LazyVGrid(columns: columns, spacing: postSize.tiled ? Constants.main.standardSpacing : 0) {
             ForEach(postFeedLoader.items, id: \.hashValue) { post in
                 if !post.read || showRead, !post.creator.blocked, !post.community.blocked, !post.hidden {
                     VStack(spacing: 0) { // this improves performance O_o
@@ -58,7 +58,7 @@ struct PostGridView: View {
                         .buttonStyle(EmptyButtonStyle())
                         if !postSize.tiled { Divider() }
                     }
-                    .padding(.horizontal, postSize.tiled ? AppConstants.halfSpacing : 0)
+                    .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 0)
                     .onAppear {
                         do {
                             try postFeedLoader.loadIfThreshold(post)

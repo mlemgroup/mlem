@@ -29,7 +29,7 @@ struct CommunityView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     
-    @AppStorage("post.size") var postSize: PostSize = .large
+    @Setting(\.postSize) var postSize
     
     @State var community: AnyCommunity
     @State private var selectedTab: Tab = .posts
@@ -82,9 +82,9 @@ struct CommunityView: View {
                     image: { CircleCroppedImageView(community) }
                 )
                 subscribeButton(community: community)
-                    .padding(.top, AppConstants.halfSpacing)
+                    .padding(.top, Constants.main.halfSpacing)
             }
-            .padding(.bottom, postSize.tiled ? 0 : AppConstants.standardSpacing)
+            .padding(.bottom, postSize.tiled ? 0 : Constants.main.standardSpacing)
             BubblePicker(
                 tabs(community: community),
                 selected: $selectedTab,
@@ -114,7 +114,7 @@ struct CommunityView: View {
 
     @ViewBuilder
     func aboutTab(community: any Community) -> some View {
-        VStack(spacing: AppConstants.standardSpacing) {
+        VStack(spacing: Constants.main.standardSpacing) {
             if let banner = community.banner {
                 LargeImageView(url: banner, nsfw: community.nsfw)
             }
@@ -122,7 +122,7 @@ struct CommunityView: View {
                 Markdown(description, configuration: .default)
             }
         }
-        .padding(AppConstants.standardSpacing)
+        .padding(Constants.main.standardSpacing)
     }
     
     @ViewBuilder
@@ -145,8 +145,8 @@ struct CommunityView: View {
             .background(subscribed ? palette.accent : palette.secondary.opacity(0.2), in: .capsule)
             .foregroundStyle(subscribed ? palette.selectedInteractionBarItem : palette.secondary)
         }
-        .padding(.trailing, AppConstants.standardSpacing)
-        .padding(.bottom, AppConstants.halfSpacing)
+        .padding(.trailing, Constants.main.standardSpacing)
+        .padding(.bottom, Constants.main.halfSpacing)
     }
     
     func tabs(community: any Community) -> [Tab] {
@@ -158,19 +158,19 @@ struct CommunityView: View {
     }
     
     func setupFeedLoader(community: any Community) {
-        @AppStorage("behavior.internetSpeed") var internetSpeed: InternetSpeed = .fast
-        @AppStorage("behavior.upvoteOnSave") var upvoteOnSave = false
-        @AppStorage("feed.showRead") var showReadPosts = true
-        @AppStorage("post.defaultSort") var defaultSort: ApiSortType = .hot
+        @Setting(\.internetSpeed) var internetSpeed
+        @Setting(\.upvoteOnSave) var upvoteOnSave
+        @Setting(\.showReadInFeed) var showReadInFeed
+        @Setting(\.defaultPostSort) var defaultSort
         
         postFeedLoader = .init(
             pageSize: internetSpeed.pageSize,
             sortType: .new,
-            showReadPosts: showReadPosts,
+            showReadPosts: showReadInFeed,
             filteredKeywords: [],
-            smallAvatarSize: AppConstants.smallAvatarSize,
-            largeAvatarSize: AppConstants.largeAvatarSize,
-            urlCache: AppConstants.urlCache,
+            smallAvatarSize: Constants.main.smallAvatarSize,
+            largeAvatarSize: Constants.main.largeAvatarSize,
+            urlCache: Constants.main.urlCache,
             community: community
         )
     }

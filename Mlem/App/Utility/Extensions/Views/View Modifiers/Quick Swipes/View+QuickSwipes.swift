@@ -12,7 +12,7 @@ struct QuickSwipeView: ViewModifier {
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     
-    @AppStorage("swipeActions.enabled") var swipeActionsEnabled = true
+    @Setting(\.quickSwipesEnabled) var quickSwipesEnabled
     
     // state
     @GestureState var dragState: CGFloat = .zero
@@ -41,7 +41,7 @@ struct QuickSwipeView: ViewModifier {
     }
     
     func body(content: Content) -> some View {
-        if swipeActionsEnabled {
+        if quickSwipesEnabled {
             content
                 .background(shadowBackground)
                 .geometryGroup()

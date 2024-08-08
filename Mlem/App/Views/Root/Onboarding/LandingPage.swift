@@ -116,7 +116,7 @@ struct LandingPage: View {
     // MARK: Save the account's credentials into the keychain
 
 //
-//            AppConstants.keychain["\(newAccount.id)_accessToken"] = response.jwt
+//            Constants.main.keychain["\(newAccount.id)_accessToken"] = response.jwt
 //            AccountsTracker.main.addAccount(account: newAccount)
 //
 //            appState.changeUser(to: newAccount)

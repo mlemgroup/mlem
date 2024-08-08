@@ -155,7 +155,7 @@ struct HandleLemmyLinksModifier: ViewModifier {
 }
 
 func openRegularLink(url: URL) {
-    @AppStorage("links.openInBrowser") var openLinksInBrowser = false
+    @Setting(\.openLinksInBrowser) var openLinksInBrowser
     
     if let scheme = url.scheme, scheme.hasPrefix("http"), !openLinksInBrowser {
         Task { @MainActor in
@@ -171,7 +171,7 @@ private extension SFSafariViewController.Configuration {
     /// The default settings used in this application
     static var `default`: Self {
         let configuration = Self()
-        @AppStorage("links.readerMode") var openLinksInReaderMode = false
+        @Setting(\.openLinksInReaderMode) var openLinksInReaderMode
         configuration.entersReaderIfAvailable = openLinksInReaderMode
         return configuration
     }

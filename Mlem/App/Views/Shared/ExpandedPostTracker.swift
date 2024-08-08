@@ -8,17 +8,16 @@
 import MlemMiddleware
 import SwiftUI
 
-extension ExpandedPostView {
-    func resolveComments(post: any Post) {
-        Task {
-            commentResolveLoading = true
-            loadingState = .idle
-            await loadComments(post: post)
-            commentResolveLoading = false
-        }
-    }
+@Observable
+class ExpandedPostTracker: Hashable {
+    private(set) var comments: [CommentWrapper] = []
+    private(set) var commentsKeyedByActorId: [URL: CommentWrapper] = [:]
     
-    func loadComments(post: any Post) async {
+    private(set) var loadingState: LoadingState = .idle
+    
+    private var appState: AppState { .main }
+    
+    func load(post: any Post) async {
         guard loadingState == .idle else { return }
         loadingState = .loading
         do {
@@ -34,7 +33,18 @@ extension ExpandedPostView {
         }
     }
     
-    func builtCommentTree(comments newComments: [Comment2]) {
+    func insertCreatedComment(_ comment: Comment2, parent: Comment2? = nil) {
+        let wrapper = CommentWrapper(comment)
+        if let parent {
+            assert(!comment.parentCommentIds.isEmpty)
+            commentsKeyedByActorId[parent.actorId]?.addChild(wrapper)
+        } else {
+            assert(comment.parentCommentIds.isEmpty)
+            comments.prepend(wrapper)
+        }
+    }
+    
+    private func builtCommentTree(comments newComments: [Comment2]) {
         var output: [CommentWrapper] = []
         var commentsKeyedById: [Int: CommentWrapper] = [:]
         var commentsKeyedByActorId: [URL: CommentWrapper] = [:]
@@ -53,7 +63,7 @@ extension ExpandedPostView {
         self.commentsKeyedByActorId = commentsKeyedByActorId
     }
     
-    func resolveCommentTree(comments newComments: [Comment2]) {
+    private func resolveCommentTree(comments newComments: [Comment2]) {
         var commentsKeyedById: [Int: CommentWrapper] = [:]
         
         for comment in newComments {
@@ -75,5 +85,20 @@ extension ExpandedPostView {
                 }
             }
         }
+    }
+
+    func resolveComments(post: any Post) {
+        Task {
+            loadingState = .idle
+            await load(post: post)
+        }
+    }
+    
+    static func == (lhs: ExpandedPostTracker, rhs: ExpandedPostTracker) -> Bool {
+        lhs === rhs
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self))
     }
 }

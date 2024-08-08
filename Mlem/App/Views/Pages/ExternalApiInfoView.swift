@@ -58,7 +58,7 @@ struct ExternalApiInfoView: View {
                         // swiftlint:disable:next line_length
                         "Your instance and **\(entityLocalApi.host ?? "")** federate, but the content could not be loaded. It may not have federated yet, or your instance may have purged it."
                     )
-                    .padding(.horizontal, AppConstants.standardSpacing)
+                    .padding(.horizontal, Constants.main.standardSpacing)
                 } else {
                     avatars
                         .padding(.horizontal, 16)
@@ -69,13 +69,13 @@ struct ExternalApiInfoView: View {
             }
             box(alignment: .leading) {
                 Text("This content will be loaded from **\(fallbackApi.host ?? "")** instead.")
-                    .padding(.horizontal, AppConstants.standardSpacing)
+                    .padding(.horizontal, Constants.main.standardSpacing)
             }
             box(alignment: .leading, spacing: 6) {
                 Text("What is Federation?")
                     .font(.title2)
                     .fontWeight(.bold)
-                    .padding(.horizontal, AppConstants.standardSpacing)
+                    .padding(.horizontal, Constants.main.standardSpacing)
                 
                 Text(
                     String(
@@ -84,7 +84,7 @@ struct ExternalApiInfoView: View {
                         defaultValue: "Lemmy instances talk to each other so that content can be shared across sites. This is called \"federation\". Instance administrators can choose which other instances they would like their instance to federate with. Some instances federate with all but a curated \"block-list\" of other instances; other instances might only federate with instances on an \"allow-list\"."
                     )
                 )
-                .padding(.horizontal, AppConstants.standardSpacing)
+                .padding(.horizontal, Constants.main.standardSpacing)
             }
         }
         .frame(maxWidth: .infinity)
@@ -103,7 +103,7 @@ struct ExternalApiInfoView: View {
         .frame(maxWidth: .infinity)
         .background(
             palette.secondaryGroupedBackground,
-            in: .rect(cornerRadius: AppConstants.largeItemCornerRadius)
+            in: .rect(cornerRadius: Constants.main.mediumItemCornerRadius)
         )
     }
     

@@ -56,7 +56,7 @@ struct PersonListRowBody<Content: View>: View {
     }
     
     var body: some View {
-        HStack(spacing: AppConstants.standardSpacing) {
+        HStack(spacing: Constants.main.standardSpacing) {
             if person.blocked, showBlockStatus {
                 Image(systemName: Icons.hide)
                     .resizable()
@@ -65,7 +65,7 @@ struct PersonListRowBody<Content: View>: View {
                     .padding(9)
             } else {
                 CircleCroppedImageView(url: person.avatar?.withIconSize(128), fallback: .person)
-                    .frame(width: AppConstants.listRowAvatarSize, height: AppConstants.listRowAvatarSize)
+                    .frame(width: Constants.main.listRowAvatarSize, height: Constants.main.listRowAvatarSize)
             }
             VStack(alignment: .leading, spacing: 4) {
                 (flairs.textView() + Text(title))

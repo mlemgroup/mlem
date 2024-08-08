@@ -37,7 +37,7 @@ struct AvatarBannerView: View {
     static let bannerHeight: CGFloat = 170
     static let avatarOverdraw: CGFloat = 40
     static let avatarSize: CGFloat = 108
-    static let avatarPadding: CGFloat = AppConstants.standardSpacing
+    static let avatarPadding: CGFloat = Constants.main.standardSpacing
     
     var body: some View {
         Group {
@@ -58,7 +58,7 @@ struct AvatarBannerView: View {
                             .frame(minWidth: 0, maxWidth: .infinity)
                             .frame(height: AvatarBannerView.bannerHeight)
                             .clipped()
-                            .clipShape(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius))
+                            .clipShape(RoundedRectangle(cornerRadius: Constants.main.mediumItemCornerRadius))
                             .mask {
                                 ZStack(alignment: .bottom) {
                                     Color.black
