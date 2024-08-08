@@ -68,15 +68,9 @@ struct PersonListRowBody<Content: View>: View {
                     .frame(width: AppConstants.listRowAvatarSize, height: AppConstants.listRowAvatarSize)
             }
             VStack(alignment: .leading, spacing: 4) {
-                HStack(spacing: AppConstants.halfSpacing) {
-                    ForEach(flairs, id: \.self) { flair in
-                        Image(systemName: flair.icon)
-                            .foregroundStyle(flair.color)
-                    }
-                    Text(title)
-                        .lineLimit(1)
-                }
-                .imageScale(.small)
+                (flairs.textView() + Text(title))
+                    .lineLimit(1)
+                    .imageScale(.small)
                 caption
                     .font(.footnote)
                     .foregroundStyle(.secondary)

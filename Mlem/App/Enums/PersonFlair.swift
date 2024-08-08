@@ -72,3 +72,18 @@ enum PersonFlair: CaseIterable {
         }
     }
 }
+
+extension [PersonFlair] {
+    func textView() -> Text {
+        var text = Text(verbatim: "")
+        if isEmpty { return text }
+        for flair in self {
+            // swiftlint:disable:next shorthand_operator
+            text = text + Text(Image(systemName: flair.icon))
+                .foregroundStyle(flair.color)
+        }
+        // swiftlint:disable:next shorthand_operator
+        text = text + Text(verbatim: " ")
+        return text
+    }
+}

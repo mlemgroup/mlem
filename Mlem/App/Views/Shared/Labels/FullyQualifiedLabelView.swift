@@ -69,18 +69,13 @@ struct FullyQualifiedLabelView: View {
                 )
                 .frame(width: labelStyle.avatarSize, height: labelStyle.avatarSize)
             }
-            let flairs = flairs
-            if !flairs.isEmpty {
-                HStack(spacing: 2) {
-                    ForEach(flairs, id: \.self) { flair in
-                        Image(systemName: flair.icon)
-                            .foregroundStyle(flair.color)
-                    }
-                }
-                .imageScale(.small)
-                .font(.footnote)
-            }
-            FullyQualifiedNameView(name: entity?.name, instance: entity?.host, instanceLocation: labelStyle.instanceLocation)
+            FullyQualifiedNameView(
+                name: entity?.name,
+                instance: entity?.host,
+                instanceLocation: labelStyle.instanceLocation,
+                prependedText: flairs.textView()
+            )
+            .imageScale(.small)
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)

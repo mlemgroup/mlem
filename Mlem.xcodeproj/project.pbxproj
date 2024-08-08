@@ -2256,8 +2256,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				branch = "sjmarf/extraneous-view-update-fix";
-				kind = branch;
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.23.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
