@@ -17,22 +17,22 @@ extension AvatarType: AssociatedIcon {
     var iconName: String {
         switch self {
         case .person:
-            return Icons.user
+            return Icons.personCircle
         case .community:
-            return Icons.community
+            return Icons.communityCircle
         case .instance:
-            return Icons.instance
+            return Icons.instanceCircle
         }
     }
     
     var iconNameFill: String {
         switch self {
         case .person:
-            return Icons.userFill
+            return Icons.personCircleFill
         case .community:
-            return Icons.communityFill
+            return Icons.communityCircleFill
         case .instance:
-            return Icons.instance
+            return Icons.instanceCircleFill
         }
     }
 }

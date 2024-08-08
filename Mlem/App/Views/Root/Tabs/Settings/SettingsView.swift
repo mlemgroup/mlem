@@ -13,10 +13,9 @@ struct SettingsView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     
-    @AppStorage("behavior.upvoteOnSave") var upvoteOnSave = false
-    @AppStorage("safety.blurNsfw") var blurNsfw = true
-    
-    @AppStorage("swipeActions.enabled") var swipeActionsEnabled = true
+    @Setting(\.upvoteOnSave) var upvoteOnSave
+    @Setting(\.blurNsfw) var blurNsfw
+    @Setting(\.quickSwipesEnabled) var swipeActionsEnabled
     
     var accounts: [UserAccount] { AccountsTracker.main.userAccounts }
     

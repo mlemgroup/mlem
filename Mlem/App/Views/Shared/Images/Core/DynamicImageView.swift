@@ -28,7 +28,7 @@ struct DynamicImageView: View {
     init(
         url: URL?,
         showError: Bool = true,
-        cornerRadius: CGFloat = AppConstants.largeItemCornerRadius
+        cornerRadius: CGFloat = Constants.main.mediumItemCornerRadius
     ) {
         self.url = url
         self.showError = showError

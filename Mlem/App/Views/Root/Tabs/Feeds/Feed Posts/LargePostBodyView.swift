@@ -17,7 +17,7 @@ struct LargePostBodyView: View {
     let isExpanded: Bool
     
     var body: some View {
-        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             post.taggedTitle(communityContext: communityContext)
                 .foregroundStyle((post.read_ ?? false) ? palette.secondary : palette.primary)
                 .font(.headline)
@@ -48,5 +48,6 @@ struct LargePostBodyView: View {
                 }
             }
         }
+        .environment(\.postContext, post)
     }
 }

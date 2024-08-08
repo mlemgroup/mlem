@@ -95,7 +95,7 @@ struct InstanceDetailsView: View {
             }
             .frame(maxWidth: .infinity)
             .background(palette.secondaryGroupedBackground)
-            .cornerRadius(AppConstants.largeItemCornerRadius)
+            .cornerRadius(Constants.main.mediumItemCornerRadius)
             
             VStack(alignment: .leading, spacing: 0) {
                 settingRow(
@@ -122,7 +122,7 @@ struct InstanceDetailsView: View {
             }
             .frame(maxWidth: .infinity)
             .background(palette.secondaryGroupedBackground)
-            .cornerRadius(AppConstants.largeItemCornerRadius)
+            .cornerRadius(Constants.main.mediumItemCornerRadius)
             
             VStack(alignment: .leading, spacing: 0) {
                 settingRow(
@@ -185,7 +185,7 @@ struct InstanceDetailsView: View {
             }
             .frame(maxWidth: .infinity)
             .background(Color(uiColor: .secondarySystemGroupedBackground))
-            .cornerRadius(AppConstants.largeItemCornerRadius)
+            .cornerRadius(Constants.main.mediumItemCornerRadius)
             
             VStack(alignment: .leading, spacing: 0) {
                 settingRow(
@@ -208,7 +208,7 @@ struct InstanceDetailsView: View {
             }
             .frame(maxWidth: .infinity)
             .background(palette.secondaryGroupedBackground)
-            .cornerRadius(AppConstants.largeItemCornerRadius)
+            .cornerRadius(Constants.main.mediumItemCornerRadius)
         }
         .padding(.horizontal, 16)
     }
@@ -227,7 +227,7 @@ struct InstanceDetailsView: View {
         .padding(.vertical, 10)
         .frame(maxWidth: .infinity)
         .background(palette.secondaryGroupedBackground)
-        .cornerRadius(AppConstants.largeItemCornerRadius)
+        .cornerRadius(Constants.main.mediumItemCornerRadius)
     }
     
     @ViewBuilder func settingRow(

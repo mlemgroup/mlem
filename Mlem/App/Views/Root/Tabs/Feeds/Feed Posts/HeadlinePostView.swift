@@ -10,10 +10,10 @@ import MlemMiddleware
 import SwiftUI
 
 struct HeadlinePostView: View {
-    @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
-    @AppStorage("post.showCreator") var showCreator: Bool = false
-    @AppStorage("user.showAvatar") var showUserAvatar: Bool = true
-    @AppStorage("community.showAvatar") var showCommunityAvatar: Bool = true
+    @Setting(\.thumbnailLocation) var thumbnailLocation
+    @Setting(\.showPostCreator) var showCreator
+    @Setting(\.showPersonAvatar) var showPersonAvatar
+    @Setting(\.showCommunityAvatar) var showCommunityAvatar
     
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(Palette.self) var palette: Palette
@@ -22,13 +22,13 @@ struct HeadlinePostView: View {
     
     var body: some View {
         content
-            .padding(AppConstants.standardSpacing)
+            .padding(Constants.main.standardSpacing)
             .background(palette.background)
             .environment(\.postContext, post)
     }
     
     var content: some View {
-        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             HStack {
                 if communityContext == nil {
                     communityLink
@@ -46,12 +46,12 @@ struct HeadlinePostView: View {
                 EllipsisMenu(size: 24) { post.menuActions() }
             }
             
-            HStack(alignment: .top, spacing: AppConstants.standardSpacing) {
+            HStack(alignment: .top, spacing: Constants.main.standardSpacing) {
                 if thumbnailLocation == .left {
                     ThumbnailImageView(post: post, blurred: post.nsfw, size: .standard)
                 }
   
-                VStack(alignment: .leading, spacing: AppConstants.halfSpacing) {
+                VStack(alignment: .leading, spacing: Constants.main.halfSpacing) {
                     post.taggedTitle(communityContext: communityContext)
                         .font(.headline)
                         .imageScale(.small)
@@ -86,7 +86,7 @@ struct HeadlinePostView: View {
     
     @ViewBuilder
     var personLink: some View {
-        FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showUserAvatar)
+        FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showPersonAvatar)
     }
     
     @ViewBuilder

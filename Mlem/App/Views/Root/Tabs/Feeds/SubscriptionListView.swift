@@ -13,7 +13,7 @@ struct SubscriptionListView: View {
     @Environment(NavigationLayer.self) private var navigation
     @Environment(TabReselectTracker.self) var tabReselectTracker
     
-    @AppStorage("subscriptions.sort") private var sort: SubscriptionListSort = .alphabetical
+    @Setting(\.subscriptionSort) private var sort
     
     @State var noDetail: Bool = false
     

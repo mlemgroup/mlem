@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct FeedCommentView: View {
-    @AppStorage("post.size") var postSize: PostSize = .large
+    @Setting(\.postSize) var postSize
     @Environment(Palette.self) var palette
     
     let comment: Comment2

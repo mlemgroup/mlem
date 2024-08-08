@@ -10,7 +10,7 @@ import Dependencies
 import Foundation
 
 extension PersistenceRepository: DependencyKey {
-    static let liveValue = PersistenceRepository(keychainAccess: { AppConstants.keychain[$0] })
+    static let liveValue = PersistenceRepository(keychainAccess: { Constants.main.keychain[$0] })
 }
 
 extension DependencyValues {

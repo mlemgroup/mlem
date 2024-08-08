@@ -12,6 +12,8 @@ extension ApiClient {
         if token == nil {
             return AppState.main.guestSession.api === self
         }
-        return !AppState.main.activeSessions.allSatisfy { $0.api !== self }
+        return AppState.main.activeSessions.contains(where: { $0.api === self })
     }
+    
+    var canInteract: Bool { isActive && token != nil }
 }
