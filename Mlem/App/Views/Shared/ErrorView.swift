@@ -12,7 +12,7 @@ import UniformTypeIdentifiers
 
 struct ErrorView: View {
     @Environment(Palette.self) var palette
-    @AppStorage("dev.developerMode") var developerMode: Bool = false
+    @Setting(\.developerMode) var developerMode
     
     @State var errorDetails: ErrorDetails
     
@@ -118,8 +118,8 @@ struct ErrorView: View {
             }
             .buttonStyle(.plain)
         }
-        .padding(AppConstants.standardSpacing)
+        .padding(Constants.main.standardSpacing)
         .background(Color(.secondarySystemGroupedBackground))
-        .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
+        .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
     }
 }

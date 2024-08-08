@@ -82,7 +82,7 @@ struct InstanceView: View {
                 fallback: .instance,
                 blockedOverride: (appState.firstSession as? UserSession)?.blocks?.contains(instance)
             )
-            .padding([.horizontal, .bottom], AppConstants.standardSpacing)
+            .padding([.horizontal, .bottom], Constants.main.standardSpacing)
             BubblePicker(
                 [.about, .details],
                 selected: $selectedTab,
@@ -92,7 +92,7 @@ struct InstanceView: View {
             case .about:
                 if let description = instance.description {
                     Markdown(description, configuration: .default)
-                        .padding(.horizontal, AppConstants.standardSpacing)
+                        .padding(.horizontal, Constants.main.standardSpacing)
                         .padding(.vertical, 16)
                 }
             case .details:

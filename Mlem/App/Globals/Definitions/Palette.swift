@@ -197,7 +197,7 @@ class Palette: PaletteProviding {
     static var main: Palette = .init()
     
     init() {
-        @AppStorage("colorPalette") var colorPalette: PaletteOption = .standard
+        @Setting(\.colorPalette) var colorPalette
         self.palette = colorPalette.palette
     }
     

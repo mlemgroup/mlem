@@ -13,7 +13,7 @@ struct ImageViewer: View {
     var body: some View {
         ZoomableContainer {
             DynamicImageView(url: url)
-                .padding(AppConstants.standardSpacing)
+                .padding(Constants.main.standardSpacing)
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {

@@ -10,9 +10,9 @@ import MlemMiddleware
 import SwiftUI
 
 struct LargePostView: View {
-    @AppStorage("post.showCreator") private var showCreator: Bool = false
-    @AppStorage("user.showAvatar") private var showUserAvatar: Bool = true
-    @AppStorage("community.showAvatar") private var showCommunityAvatar: Bool = true
+    @Setting(\.showPostCreator) private var showCreator
+    @Setting(\.showPersonAvatar) private var showPersonAvatar
+    @Setting(\.showCommunityAvatar) private var showCommunityAvatar
     
     @Environment(Palette.self) private var palette: Palette
     @Environment(\.communityContext) private var communityContext
@@ -22,13 +22,13 @@ struct LargePostView: View {
     
     var body: some View {
         content
-            .padding(AppConstants.standardSpacing)
+            .padding(Constants.main.standardSpacing)
             .background(palette.background)
             .environment(\.postContext, post)
     }
     
     var content: some View {
-        VStack(alignment: .leading, spacing: AppConstants.standardSpacing) {
+        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             HStack {
                 if communityContext == nil {
                     communityLink
@@ -68,7 +68,7 @@ struct LargePostView: View {
     
     @ViewBuilder
     var personLink: some View {
-        FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showUserAvatar)
+        FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showPersonAvatar)
     }
     
     @ViewBuilder

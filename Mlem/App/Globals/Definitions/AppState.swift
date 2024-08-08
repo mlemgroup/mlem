@@ -42,7 +42,7 @@ class AppState {
     
     /// If `keepPlace` is `nil`, use the value from `UserDefaults`.
     func changeAccount(to account: any Account, keepPlace: Bool? = nil, showAvatarPopup: Bool = true) {
-        @AppStorage("accounts.keepPlace") var keepPlaceSetting = false
+        @Setting(\.keepPlaceOnAccountSwitch) var keepPlaceSetting
         let keepPlace = keepPlace ?? keepPlaceSetting
         if keepPlace {
             if showAvatarPopup {

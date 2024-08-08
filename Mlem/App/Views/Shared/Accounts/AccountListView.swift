@@ -10,8 +10,8 @@ import SwiftUI
 
 /// This view is a component used as a child of ``QuickSwitcherView`` and ``AccountListSettingsView``.
 struct AccountListView: View {
-    @AppStorage("accountSort") var accountSort: AccountSortMode = .custom
-    @AppStorage("groupAccountSort") var groupAccountSort: Bool = false
+    @Setting(\.accountSort) var accountSort
+    @Setting(\.groupAccountSort) var groupAccountSort
     
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
