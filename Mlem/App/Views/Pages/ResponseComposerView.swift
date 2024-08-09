@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 14/07/2024.
 //
 
+import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
 
@@ -20,17 +21,18 @@ struct ResponseComposerView: View {
     
     let textView: UITextView = .init()
     
-    @State var text: String = ""
-    @FocusState var focused: Bool
-    
     let originalContext: ResponseContext
     let expandedPostTracker: ExpandedPostTracker?
+    
     @State var resolvedContext: ResponseContext
     @State var resolutionState: ResolutionState = .success
     @State var sending: Bool = false
 
+    @State var text: String = ""
     @State var account: UserAccount
     @State var presentationSelection: PresentationDetent = .large
+    
+    @FocusState var focused: Bool
     
     init?(
         context: ResponseContext,
@@ -121,11 +123,14 @@ struct ResponseComposerView: View {
                 )
                 Divider()
                     .padding(.vertical, Constants.main.standardSpacing)
-                switch originalContext {
-                case let .post(post):
-                    LargePostBodyView(post: post, isExpanded: true)
-                        .padding(.horizontal, Constants.main.standardSpacing)
-                }
+                Group {
+                    switch originalContext {
+                    case let .post(post):
+                        LargePostBodyView(post: post, isExpanded: true)
+                    case let .comment(comment):
+                        CommentBodyView(comment: comment)
+                    }
+                }.padding(.horizontal, Constants.main.standardSpacing)
             }
             .animation(.easeOut(duration: 0.2), value: resolutionState == .notFound)
         }
@@ -144,22 +149,29 @@ struct ResponseComposerView: View {
     @Sendable
     func resolveContext() async {
         do {
-            switch originalContext {
-            case let .post(post):
-                if post.api === account.api {
-                    resolutionState = .success
-                    resolvedContext = originalContext
-                } else {
-                    Task { @MainActor in
-                        resolutionState = .resolving
-                    }
+            if originalContext.api === account.api {
+                resolutionState = .success
+                resolvedContext = originalContext
+            } else {
+                Task { @MainActor in
+                    resolutionState = .resolving
+                }
+                switch originalContext {
+                case let .post(post):
                     let post = try await account.api.getPost(actorId: post.actorId)
                     Task { @MainActor in
                         resolutionState = .success
                         resolvedContext = .post(post)
                     }
+                case let .comment(comment):
+                    let comment = try await account.api.getComment(actorId: comment.actorId)
+                    Task { @MainActor in
+                        resolutionState = .success
+                        resolvedContext = .comment(comment)
+                    }
                 }
             }
+            
         } catch ApiClientError.noEntityFound {
             print("No entity found!")
             Task { @MainActor in
@@ -175,15 +187,21 @@ struct ResponseComposerView: View {
     func send() async {
         do {
             let result: Comment2
+            let parent: (any Comment2Providing)?
             switch resolvedContext {
             case let .post(post):
                 result = try await post.reply(content: text)
+                parent = nil
+            case let .comment(comment):
+                result = try await comment.reply(content: text)
+                parent = comment
             }
             Task { @MainActor in
                 textView.resignFirstResponder()
                 textView.isEditable = false
                 HapticManager.main.play(haptic: .success, priority: .low)
-                expandedPostTracker?.insertCreatedComment(result)
+                print("EXP", expandedPostTracker == nil)
+                expandedPostTracker?.insertCreatedComment(result, parent: parent)
                 dismiss()
             }
         } catch {
@@ -198,6 +216,7 @@ struct ResponseComposerView: View {
 
 enum ResponseContext: Hashable {
     case post(any Post2Providing)
+    case comment(any Comment2Providing)
     
     static func == (lhs: ResponseContext, rhs: ResponseContext) -> Bool {
         lhs.hashValue == rhs.hashValue
@@ -208,6 +227,18 @@ enum ResponseContext: Hashable {
         case let .post(post):
             hasher.combine("post")
             hasher.combine(post.hashValue)
+        case let .comment(comment):
+            hasher.combine("comment")
+            hasher.combine(comment.hashValue)
+        }
+    }
+    
+    var api: ApiClient {
+        switch self {
+        case let .post(post):
+            post.api
+        case let .comment(comment):
+            comment.api
         }
     }
 }
