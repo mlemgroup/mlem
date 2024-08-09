@@ -96,6 +96,13 @@ struct CommunityView: View {
                     postsTab(community: community)
                 case .about:
                     aboutTab(community: community)
+                case .moderation:
+                    if postSize == .tile {
+                        FormSection { moderationTab(community: community) }
+                            .padding(.horizontal, 16)
+                    } else {
+                        moderationTab(community: community)
+                    }
                 case .details:
                     CommunityDetailsView(community: community)
                 default:
@@ -127,6 +134,17 @@ struct CommunityView: View {
             }
         }
         .padding(Constants.main.standardSpacing)
+    }
+    
+    @ViewBuilder
+    func moderationTab(community: any Community) -> some View {
+        VStack(spacing: 0) {
+            ForEach(community.moderators_ ?? []) { person in
+                PersonListRow(person)
+                Divider()
+                    .padding(.leading, 71)
+            }
+        }
     }
     
     @ViewBuilder

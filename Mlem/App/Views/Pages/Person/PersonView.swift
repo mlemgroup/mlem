@@ -155,10 +155,26 @@ struct PersonView: View {
                     }
                 }
             )
-            // I was going to render this, but there's some weird view update issues going on with ContentLoader that we'll need to work out first...
-            ForEach(posts, id: \.id) { post in
-                FeedPostView(post: post)
+
+            switch selectedTab {
+            case .communities:
+                communitiesTab(person: person)
+            default:
+                ForEach(posts, id: \.id) { post in
+                    FeedPostView(post: post)
+                    Divider()
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func communitiesTab(person: any Person) -> some View {
+        VStack(spacing: 0) {
+            ForEach(person.moderatedCommunities_ ?? []) { community in
+                CommunityListRow(community)
                 Divider()
+                    .padding(.leading, 71)
             }
         }
     }

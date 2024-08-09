@@ -84,7 +84,7 @@ struct InstanceView: View {
             )
             .padding([.horizontal, .bottom], Constants.main.standardSpacing)
             BubblePicker(
-                [.about, .details],
+                [.about, .administration, .details],
                 selected: $selectedTab,
                 withDividers: [.top, .bottom], label: { $0.label }
             )
@@ -100,12 +100,25 @@ struct InstanceView: View {
                 if colorScheme == .light {
                     Divider()
                 }
+            case .administration:
+                administrationTab(instance: instance)
             default:
                 EmptyView()
             }
         }
         .toolbar {
             ToolbarEllipsisMenu(instance.menuActions(allowExternalBlocking: true))
+        }
+    }
+    
+    @ViewBuilder
+    func administrationTab(instance: any Instance) -> some View {
+        VStack(spacing: 0) {
+            ForEach(instance.administrators_ ?? []) { person in
+                PersonListRow(person)
+                Divider()
+                    .padding(.leading, 71)
+            }
         }
     }
 }

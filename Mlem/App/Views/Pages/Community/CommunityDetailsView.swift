@@ -24,19 +24,21 @@ struct CommunityDetailsView: View {
                 VStack(spacing: Constants.main.halfSpacing) {
                     Text("Subscribers")
                         .foregroundStyle(palette.secondary)
-                    Text(String(community.subscriberCount_ ?? 0))
+                    Text(community.subscriberCount_ ?? 0, format: .number)
                         .font(.title)
                         .fontWeight(.semibold)
                         .contentTransition(.numericText(value: Double(community.subscriberCount_ ?? 0)))
+                        .animation(.default, value: community.subscriberCount_)
                     
                     if let localSubscriberCount = community.localSubscriberCount_ {
                         Text(localSubscriberCountText)
                             .contentTransition(.numericText(value: Double(localSubscriberCount)))
+                            .animation(.default, value: localSubscriberCount)
                             .foregroundStyle(palette.secondary)
+                            .font(.footnote)
                     }
                 }
                 .monospacedDigit()
-                .animation(.default, value: community.subscriberCount_)
                 .padding(.vertical, Constants.main.standardSpacing)
             }
             
