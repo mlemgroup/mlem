@@ -11,7 +11,10 @@ import MlemMiddleware
 extension Comment1Providing {
     var isOwnComment: Bool { creatorId == api.myPerson?.id }
 
-    func swipeActions(behavior: SwipeBehavior) -> SwipeConfiguration {
+    func swipeActions(
+        behavior: SwipeBehavior,
+        expandedPostTracker: ExpandedPostTracker? = nil
+    ) -> SwipeConfiguration {
         .init(
             behavior: behavior,
             leadingActions: {
@@ -23,19 +26,22 @@ extension Comment1Providing {
             trailingActions: {
                 if api.canInteract {
                     saveAction(feedback: [.haptic])
-                    replyAction()
+                    replyAction(expandedPostTracker: expandedPostTracker)
                 }
             }
         )
     }
     
     @ActionBuilder
-    func menuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
+    func menuActions(
+        feedback: Set<FeedbackType> = [.haptic, .toast],
+        expandedPostTracker: ExpandedPostTracker? = nil
+    ) -> [any Action] {
         ActionGroup(displayMode: .compactSection) {
             upvoteAction(feedback: feedback)
             downvoteAction(feedback: feedback)
             saveAction(feedback: feedback)
-            replyAction()
+            replyAction(expandedPostTracker: expandedPostTracker)
             selectTextAction()
             shareAction()
             
@@ -47,7 +53,10 @@ extension Comment1Providing {
         }
     }
     
-    func action(type: CommentActionType) -> any Action {
+    func action(
+        type: CommentActionType,
+        expandedPostTracker: ExpandedPostTracker? = nil
+    ) -> any Action {
         switch type {
         case .upvote:
             upvoteAction(feedback: [.haptic])
@@ -56,7 +65,7 @@ extension Comment1Providing {
         case .save:
             saveAction(feedback: [.haptic])
         case .reply:
-            replyAction()
+            replyAction(expandedPostTracker: expandedPostTracker)
         case .share:
             shareAction()
         case .selectText:
