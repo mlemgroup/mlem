@@ -24,8 +24,7 @@ struct NavigationLayerView: View {
     let hasSheetModifiers: Bool
     
     var body: some View {
-        _ = Self._printChanges()
-        return Group {
+        Group {
             if layer.hasNavigationStack {
                 NavigationStack(path: $layer.path) {
                     DeferredContextMenu {

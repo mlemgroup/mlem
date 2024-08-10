@@ -28,12 +28,12 @@ struct CommunityDetailsView: View {
                         .font(.title)
                         .fontWeight(.semibold)
                         .contentTransition(.numericText(value: Double(community.subscriberCount_ ?? 0)))
-                        .animation(.default, value: community.subscriberCount_)
+                        .animation(.default, value: Double(community.subscriberCount_ ?? 0))
                     
                     if let localSubscriberCount = community.localSubscriberCount_ {
                         Text(localSubscriberCountText)
                             .contentTransition(.numericText(value: Double(localSubscriberCount)))
-                            .animation(.default, value: localSubscriberCount)
+                            .animation(.default, value: Double(localSubscriberCount))
                             .foregroundStyle(palette.secondary)
                             .font(.footnote)
                     }
@@ -56,7 +56,7 @@ struct CommunityDetailsView: View {
     
     var localSubscriberCountText: String {
         guard let count = community.localSubscriberCount_ else { return "" }
-        if let host = community.host {
+        if let host = community.api.host {
             return String(localized: "\(count) on \(host)")
         }
         return String(localized: "\(count) on your instance")
