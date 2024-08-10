@@ -47,6 +47,9 @@ struct CommunityView: View {
                     .externalApiWarning(entity: community, isLoading: proxy.isLoading)
                     .toolbar {
                         ToolbarItem(placement: .topBarTrailing) {
+                            FeedSortPicker(feedLoader: postFeedLoader)
+                        }
+                        ToolbarItem(placement: .topBarTrailing) {
                             if community is any Community3Providing, proxy.isLoading {
                                 ProgressView()
                             } else {
@@ -163,15 +166,20 @@ struct CommunityView: View {
         @Setting(\.showReadInFeed) var showReadInFeed
         @Setting(\.defaultPostSort) var defaultSort
         
-        postFeedLoader = .init(
-            pageSize: internetSpeed.pageSize,
-            sortType: .new,
-            showReadPosts: showReadInFeed,
-            filteredKeywords: [],
-            smallAvatarSize: Constants.main.smallAvatarSize,
-            largeAvatarSize: Constants.main.largeAvatarSize,
-            urlCache: Constants.main.urlCache,
-            community: community
-        )
+        Task { @MainActor in
+            let instanceVersion = try await appState.firstApi.version
+            let sort: ApiSortType = (instanceVersion >= defaultSort.minimumVersion) ? defaultSort : .hot
+            
+            postFeedLoader = .init(
+                pageSize: internetSpeed.pageSize,
+                sortType: sort,
+                showReadPosts: showReadInFeed,
+                filteredKeywords: [],
+                smallAvatarSize: Constants.main.smallAvatarSize,
+                largeAvatarSize: Constants.main.largeAvatarSize,
+                urlCache: Constants.main.urlCache,
+                community: community
+            )
+        }
     }
 }

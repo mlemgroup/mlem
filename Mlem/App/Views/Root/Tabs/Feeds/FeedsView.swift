@@ -17,7 +17,7 @@ struct FeedsView: View {
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
-    @State var postFeedLoader: AggregatePostFeedLoader
+    @State var postFeedLoader: AggregatePostFeedLoader?
     @State var savedFeedLoader: PersonContentFeedLoader?
     @State var feedOptions: [FeedSelection] = FeedSelection.guestCases
     @State var feedSelection: FeedSelection {
@@ -26,11 +26,11 @@ struct FeedsView: View {
                 do {
                     // clear whichever loader is now inactive and refresh/update active loader
                     if feedSelection == .saved {
-                        await postFeedLoader.clear()
+                        await postFeedLoader?.clear()
                         try await savedFeedLoader?.refresh(clearBeforeRefresh: true)
                     } else {
                         savedFeedLoader?.clear()
-                        try await postFeedLoader.changeFeedType(to: feedSelection.associatedApiType)
+                        try await postFeedLoader?.changeFeedType(to: feedSelection.associatedApiType)
                     }
                 } catch {
                     handleError(error)
@@ -79,18 +79,7 @@ struct FeedsView: View {
         
         let initialFeedSelection: FeedSelection = .subscribed
         _feedSelection = .init(initialValue: initialFeedSelection)
-        _postFeedLoader = .init(initialValue: .init(
-            pageSize: internetSpeed.pageSize,
-            sortType: .new,
-            showReadPosts: showReadPosts,
-            // Don't load from PersistenceRepository directly here, as we'll be reading from file every time the view is initialized, which can happen frequently
-            filteredKeywords: [],
-            smallAvatarSize: Constants.main.smallAvatarSize,
-            largeAvatarSize: Constants.main.largeAvatarSize,
-            urlCache: Constants.main.urlCache,
-            api: AppState.main.firstApi,
-            feedType: initialFeedSelection.associatedApiType
-        ))
+        
         if let firstUser = AppState.main.firstAccount as? UserAccount {
             _savedFeedLoader = .init(wrappedValue: .init(
                 api: AppState.main.firstApi,
@@ -111,6 +100,9 @@ struct FeedsView: View {
             .background(postSize.tiled ? palette.groupedBackground : palette.background)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                if let postFeedLoader, feedSelection != .saved {
+                    FeedSortPicker(feedLoader: postFeedLoader)
+                }
                 ToolbarEllipsisMenu {
                     MenuButton(action: BasicAction(
                         id: "read",
@@ -130,9 +122,9 @@ struct FeedsView: View {
                 Task {
                     do {
                         if showRead {
-                            try await postFeedLoader.removeFilter(.read)
+                            try await postFeedLoader?.removeFilter(.read)
                         } else {
-                            try await postFeedLoader.addFilter(.read)
+                            try await postFeedLoader?.addFilter(.read)
                         }
                     } catch {
                         handleError(error)
@@ -140,8 +132,8 @@ struct FeedsView: View {
                 }
             }
             .onChange(of: appState.firstApi, initial: false) {
-                postFeedLoader.api = appState.firstApi
-
+                postFeedLoader?.api = appState.firstApi
+                
                 if appState.firstApi.canInteract, let firstUser = appState.firstAccount as? UserAccount {
                     feedOptions = FeedSelection.allCases
                     if let savedFeedLoader {
@@ -166,6 +158,7 @@ struct FeedsView: View {
                     }
                 }
             }
+            .task(setupFeedLoader)
             .outdatedFeedPopup(feedLoader: {
                 if feedSelection == .saved, let savedFeedLoader {
                     return savedFeedLoader
@@ -182,7 +175,7 @@ struct FeedsView: View {
                 
                 if let savedFeedLoader, feedSelection == .saved {
                     PersonContentGridView(feedLoader: savedFeedLoader)
-                } else {
+                } else if let postFeedLoader {
                     PostGridView(postFeedLoader: postFeedLoader)
                 }
             } header: {
@@ -202,8 +195,8 @@ struct FeedsView: View {
                 .buttonStyle(.plain)
             } footer: {
                 Group {
-                    switch postFeedLoader.loadingState {
-                    case .loading:
+                    switch postFeedLoader?.loadingState {
+                    case .loading, nil:
                         Text("Loading...")
                     case .done:
                         Text("Done")
@@ -213,6 +206,36 @@ struct FeedsView: View {
                 }
                 .frame(maxWidth: .infinity)
             }
+        }
+    }
+    
+    @Sendable
+    @MainActor
+    func setupFeedLoader() async {
+        @Setting(\.internetSpeed) var internetSpeed
+        @Setting(\.upvoteOnSave) var upvoteOnSave
+        @Setting(\.showReadInFeed) var showReadPosts
+        @Setting(\.defaultPostSort) var defaultSort
+        
+        guard postFeedLoader == nil else { return }
+        
+        do {
+            let instanceVersion = try await appState.firstApi.version
+            let sort: ApiSortType = (instanceVersion >= defaultSort.minimumVersion) ? defaultSort : .hot
+            
+            postFeedLoader = .init(
+                pageSize: internetSpeed.pageSize,
+                sortType: sort,
+                showReadPosts: showReadPosts,
+                filteredKeywords: [],
+                smallAvatarSize: Constants.main.smallAvatarSize,
+                largeAvatarSize: Constants.main.largeAvatarSize,
+                urlCache: Constants.main.urlCache,
+                api: AppState.main.firstApi,
+                feedType: feedSelection.associatedApiType
+            )
+        } catch {
+            handleError(error)
         }
     }
 }

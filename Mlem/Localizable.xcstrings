@@ -40,7 +40,22 @@
     "1w" : {
 
     },
+    "3 Months" : {
+
+    },
+    "6 Hours" : {
+
+    },
+    "6 Months" : {
+
+    },
     "6mo" : {
+
+    },
+    "9 Months" : {
+
+    },
+    "12 Hours" : {
 
     },
     "About" : {
@@ -50,6 +65,9 @@
 
     },
     "Accounts" : {
+
+    },
+    "Active" : {
 
     },
     "Active Users" : {
@@ -68,6 +86,9 @@
 
     },
     "All" : {
+
+    },
+    "All Time" : {
 
     },
     "App Icon" : {
@@ -163,6 +184,9 @@
     "Connecting..." : {
 
     },
+    "Controversial" : {
+
+    },
     "Copied" : {
 
     },
@@ -176,6 +200,9 @@
 
     },
     "Couldn't read URL" : {
+
+    },
+    "Day" : {
 
     },
     "Default Feed Type (Desktop)" : {
@@ -306,6 +333,12 @@
     "Hide Read" : {
 
     },
+    "Hot" : {
+
+    },
+    "Hour" : {
+
+    },
     "Idle" : {
 
     },
@@ -396,6 +429,9 @@
     "Monochrome" : {
 
     },
+    "Month" : {
+
+    },
     "More" : {
 
     },
@@ -403,6 +439,15 @@
 
     },
     "More..." : {
+
+    },
+    "Most Comments" : {
+
+    },
+    "New" : {
+
+    },
+    "New Comments" : {
 
     },
     "New Post" : {
@@ -427,6 +472,9 @@
 
     },
     "NSFW Content" : {
+
+    },
+    "Old" : {
 
     },
     "Open" : {
@@ -526,6 +574,9 @@
 
     },
     "Saved" : {
+
+    },
+    "Scaled" : {
 
     },
     "Search" : {
@@ -651,6 +702,9 @@
     "Tiled" : {
 
     },
+    "Top..." : {
+
+    },
     "Trailing" : {
 
     },
@@ -731,6 +785,9 @@
     "Visit" : {
 
     },
+    "Week" : {
+
+    },
     "Welcome %@" : {
       "comment" : "Example: \"Welcome John\""
     },
@@ -738,6 +795,9 @@
       "comment" : "Example: \"Welcome to lemmy.world\""
     },
     "What is Federation?" : {
+
+    },
+    "Year" : {
 
     },
     "Yes" : {
