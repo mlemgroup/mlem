@@ -259,6 +259,9 @@
     "Failed to resolve post. Try another account." : {
 
     },
+    "Fallback" : {
+
+    },
     "Fast" : {
 
     },
@@ -648,6 +651,9 @@
     "Sort by: %@" : {
 
     },
+    "Sorting" : {
+
+    },
     "Spoiler" : {
 
     },
@@ -687,6 +693,16 @@
     "Temporary" : {
 
     },
+    "The \"%@\" sort mode is only available on instances running version %@ or later. On instances running earlier versions, the \"Fallback\" sort mode will be used instead." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The \"%1$@\" sort mode is only available on instances running version %2$@ or later. On instances running earlier versions, the \"Fallback\" sort mode will be used instead."
+          }
+        }
+      }
+    },
     "Theme" : {
 
     },
@@ -700,6 +716,9 @@
 
     },
     "Tiled" : {
+
+    },
+    "Top: %@" : {
 
     },
     "Top..." : {

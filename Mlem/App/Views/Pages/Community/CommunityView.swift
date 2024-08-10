@@ -162,17 +162,12 @@ struct CommunityView: View {
     
     func setupFeedLoader(community: any Community) {
         @Setting(\.internetSpeed) var internetSpeed
-        @Setting(\.upvoteOnSave) var upvoteOnSave
         @Setting(\.showReadInFeed) var showReadInFeed
-        @Setting(\.defaultPostSort) var defaultSort
         
         Task { @MainActor in
-            let instanceVersion = try await appState.firstApi.version
-            let sort: ApiSortType = (instanceVersion >= defaultSort.minimumVersion) ? defaultSort : .hot
-            
-            postFeedLoader = .init(
+            postFeedLoader = try await .init(
                 pageSize: internetSpeed.pageSize,
-                sortType: sort,
+                sortType: appState.initialFeedSortType,
                 showReadPosts: showReadInFeed,
                 filteredKeywords: [],
                 smallAvatarSize: Constants.main.smallAvatarSize,

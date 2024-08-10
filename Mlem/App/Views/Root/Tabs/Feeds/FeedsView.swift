@@ -22,6 +22,7 @@ struct FeedsView: View {
     @State var feedOptions: [FeedSelection] = FeedSelection.guestCases
     @State var feedSelection: FeedSelection {
         didSet {
+            guard oldValue != feedSelection else { return }
             Task {
                 do {
                     // clear whichever loader is now inactive and refresh/update active loader
@@ -153,8 +154,11 @@ struct FeedsView: View {
                     savedFeedLoader = nil
 
                     // ensure we only show non-authenticated feeds to non-authenticated users
-                    if !FeedSelection.guestCases.contains(feedSelection) {
-                        feedSelection = .all
+                    Task {
+                        if !FeedSelection.guestCases.contains(feedSelection) {
+                            postFeedLoader?.sortType = try await appState.initialFeedSortType
+                            feedSelection = .all
+                        }
                     }
                 }
             }
@@ -212,20 +216,15 @@ struct FeedsView: View {
     @Sendable
     @MainActor
     func setupFeedLoader() async {
-        @Setting(\.internetSpeed) var internetSpeed
-        @Setting(\.upvoteOnSave) var upvoteOnSave
-        @Setting(\.showReadInFeed) var showReadPosts
-        @Setting(\.defaultPostSort) var defaultSort
-        
         guard postFeedLoader == nil else { return }
         
+        @Setting(\.internetSpeed) var internetSpeed
+        @Setting(\.showReadInFeed) var showReadPosts
+        
         do {
-            let instanceVersion = try await appState.firstApi.version
-            let sort: ApiSortType = (instanceVersion >= defaultSort.minimumVersion) ? defaultSort : .hot
-            
-            postFeedLoader = .init(
+            postFeedLoader = try await .init(
                 pageSize: internetSpeed.pageSize,
-                sortType: sort,
+                sortType: appState.initialFeedSortType,
                 showReadPosts: showReadPosts,
                 filteredKeywords: [],
                 smallAvatarSize: Constants.main.smallAvatarSize,

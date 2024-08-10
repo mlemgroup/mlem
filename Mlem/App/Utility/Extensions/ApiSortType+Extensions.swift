@@ -66,6 +66,13 @@ extension ApiSortType {
         }
     }
     
+    var fullLabel: String {
+        if ApiSortType.topCases.contains(self) {
+            return String(localized: "Top: \(String(localized: label))")
+        }
+        return String(localized: label)
+    }
+    
     var systemImage: String {
         switch self {
         case .active: Icons.activeSort

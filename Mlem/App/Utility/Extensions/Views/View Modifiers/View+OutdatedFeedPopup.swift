@@ -21,14 +21,16 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
                 .refreshable {
                     do {
                         showRefreshPopup = false
-                        try await feedLoader.refresh(clearBeforeRefresh: false)
+                        try await refresh()
                     } catch {
                         handleError(error)
                     }
                 }
                 .onChange(of: onChangeHash) {
                     if let newApi = feedLoader.items.first?.api {
-                        showRefreshPopup = newApi !== appState.firstApi
+                        showRefreshPopup = newApi !== appState.firstApi && feedLoader.loadingState != .loading
+                    } else {
+                        showRefreshPopup = false
                     }
                 }
                 .overlay(alignment: .bottom) {
@@ -36,7 +38,7 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
                         Task {
                             do {
                                 showRefreshPopup = false
-                                try await feedLoader.refresh(clearBeforeRefresh: true)
+                                try await refresh()
                             } catch {
                                 handleError(error)
                             }
@@ -51,8 +53,19 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
     var onChangeHash: Int {
         var hasher = Hasher()
         hasher.combine(appState.firstApi)
+        hasher.combine(feedLoader?.loadingState)
         hasher.combine(feedLoader?.items.first?.api)
         return hasher.finalize()
+    }
+    
+    func refresh() async throws {
+        if let feedLoader = feedLoader as? CorePostFeedLoader {
+            if try await appState.firstApi.version < feedLoader.sortType.minimumVersion {
+                try await feedLoader.changeSortType(to: appState.initialFeedSortType, forceRefresh: true)
+                return
+            }
+        }
+        try await feedLoader?.refresh(clearBeforeRefresh: true)
     }
 }
 
