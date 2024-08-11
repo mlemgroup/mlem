@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 10/08/2024.
 //
 
-import Nuke
 import MlemMiddleware
+import Nuke
 
 extension PrefetchingConfiguration {
     static func forPostSize(_ postSize: PostSize) -> Self {
