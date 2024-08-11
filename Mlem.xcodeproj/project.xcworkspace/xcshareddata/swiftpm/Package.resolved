@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware.git",
       "state" : {
-        "revision" : "cf88f01ea74f7d8d70e4f8c5b2ddc1a7841a3422",
-        "version" : "0.23.0"
+        "branch" : "sjmarf/prefetching",
+        "revision" : "17565fb4bb9261adfe24adb572ec54ee12250a28"
       }
     },
     {

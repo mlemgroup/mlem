@@ -74,6 +74,7 @@ struct FeedsView: View {
         @Setting(\.upvoteOnSave) var upvoteOnSave
         @Setting(\.showReadInFeed) var showReadPosts
         @Setting(\.defaultPostSort) var defaultSort
+        @Setting(\.postSize) var postSize
         
         @Dependency(\.persistenceRepository) var persistenceRepository
         
@@ -85,8 +86,7 @@ struct FeedsView: View {
             showReadPosts: showReadPosts,
             // Don't load from PersistenceRepository directly here, as we'll be reading from file every time the view is initialized, which can happen frequently
             filteredKeywords: [],
-            smallAvatarSize: Constants.main.smallAvatarSize,
-            largeAvatarSize: Constants.main.largeAvatarSize,
+            prefetchingConfiguration: .forPostSize(postSize),
             urlCache: Constants.main.urlCache,
             api: AppState.main.firstApi,
             feedType: initialFeedSelection.associatedApiType
@@ -97,8 +97,7 @@ struct FeedsView: View {
                 userId: firstUser.id,
                 sortType: .new,
                 savedOnly: true,
-                smallAvatarSize: Constants.main.smallAvatarSize,
-                largeAvatarSize: Constants.main.largeAvatarSize
+                prefetchingConfiguration: .forPostSize(postSize)
             ))
             _feedOptions = .init(wrappedValue: FeedSelection.allCases)
         } else {
@@ -152,8 +151,7 @@ struct FeedsView: View {
                             userId: firstUser.id,
                             sortType: .new,
                             savedOnly: true,
-                            smallAvatarSize: Constants.main.smallAvatarSize,
-                            largeAvatarSize: Constants.main.largeAvatarSize
+                            prefetchingConfiguration: .forPostSize(postSize)
                         )
                     }
                 } else {

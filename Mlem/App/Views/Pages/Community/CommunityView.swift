@@ -168,8 +168,7 @@ struct CommunityView: View {
             sortType: .new,
             showReadPosts: showReadInFeed,
             filteredKeywords: [],
-            smallAvatarSize: Constants.main.smallAvatarSize,
-            largeAvatarSize: Constants.main.largeAvatarSize,
+            prefetchingConfiguration: .forPostSize(postSize),
             urlCache: Constants.main.urlCache,
             community: community
         )

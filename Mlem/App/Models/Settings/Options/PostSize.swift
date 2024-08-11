@@ -29,4 +29,24 @@ enum PostSize: String, CaseIterable {
         case .tile: "Tiled"
         }
     }
+    
+    var avatarSize: Int? {
+        switch self {
+        case .compact, .tile:
+            return nil
+        case .headline, .large:
+            return Int(Constants.main.largeAvatarSize * 2)
+        }
+    }
+    
+    var imageSize: Int? {
+        // TODO: Vary this by device? By `Settings.internetSpeed`?
+        switch self {
+        case .compact, .headline: 256
+        case .tile: 512
+        case .large: 1024
+        }
+    }
+    
+    static let allImageSizes: [Int] = Set(allCases.compactMap(\.imageSize)).sorted().reversed()
 }

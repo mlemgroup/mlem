@@ -82,7 +82,7 @@ struct ThumbnailImageView: View {
     @ViewBuilder
     var standardContent: some View {
         if let url {
-            FixedImageView(url: url, fallback: .image, showProgress: true)
+            FixedImageView(url: url.withIconSize(PostSize.compact.imageSize), fallback: .image, showProgress: true)
                 .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
                 .blur(radius: blurred ? 10 : 0, opaque: true)
                 .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
@@ -102,7 +102,7 @@ struct ThumbnailImageView: View {
     @ViewBuilder
     var tileContent: some View {
         if let url {
-            FixedImageView(url: url, fallback: .image, showProgress: true)
+            FixedImageView(url: url.withIconSize(PostSize.tile.imageSize), fallback: .image, showProgress: true)
                 .blur(radius: blurred ? 10 : 0, opaque: true)
                 .onPreferenceChange(ImageLoadingPreferenceKey.self, perform: { loading = $0 })
         } else {

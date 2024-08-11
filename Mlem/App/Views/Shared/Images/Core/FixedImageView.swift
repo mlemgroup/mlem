@@ -14,11 +14,9 @@ import SwiftUI
 struct FixedImageView: View {
     @Environment(Palette.self) var palette
     
-    @State private var uiImage: UIImage
-    @State private var loading: ImageLoadingState
     @State var loadingPref: ImageLoadingState? // tracked separately to allow correct propagation of inital value
     
-    let url: URL?
+    let loader: ImageLoader
     let fallback: Fallback
     let showProgress: Bool
     
@@ -42,26 +40,18 @@ struct FixedImageView: View {
         fallback: Fallback,
         showProgress: Bool
     ) {
-        self.url = url
         self.fallback = fallback
         self.showProgress = showProgress
-    
-        if let image = ImagePipeline.shared.cache.cachedImage(for: .init(url: url))?.image {
-            self._uiImage = .init(wrappedValue: image)
-            self._loading = .init(wrappedValue: .done)
-        } else {
-            self._uiImage = .init(wrappedValue: .init())
-            self._loading = .init(wrappedValue: url == nil ? .failed : .loading)
-        }
+        self.loader = .init(url: url)
     }
     
     var body: some View {
         Color.clear.contentShape(.rect)
             .overlay {
                 content
-                    .task(loadImage)
+                    .task(loader.load)
                     .aspectRatio(1, contentMode: .fill)
-                    .onChange(of: loading, initial: true) { loadingPref = loading }
+                    .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
                     .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
                     .allowsHitTesting(false)
             }
@@ -69,13 +59,13 @@ struct FixedImageView: View {
     
     @ViewBuilder
     var content: some View {
-        if loading == .failed || (loading == .loading && !showProgress) {
+        if loader.loading == .failed || (loader.loading == .loading && !showProgress) {
             fallbackImage
         } else {
-            if loading == .loading {
+            if loader.loading == .loading {
                 ProgressView().tint(.secondary)
             } else {
-                Image(uiImage: uiImage)
+                Image(uiImage: loader.uiImage ?? .blank)
                     .resizable()
                     .scaledToFill()
             }
@@ -99,20 +89,6 @@ struct FixedImageView: View {
                 .font(.title)
                 .foregroundStyle(palette.secondary)
                 .background(palette.thumbnailBackground)
-        }
-    }
-    
-    @Sendable
-    func loadImage() async {
-        guard let url else { return }
-        
-        do {
-            let imageTask = ImagePipeline.shared.imageTask(with: url)
-            uiImage = try await imageTask.image
-            loading = .done
-        } catch {
-            loading = .failed
-            print(error)
         }
     }
 }
