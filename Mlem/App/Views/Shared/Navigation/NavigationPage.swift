@@ -25,6 +25,7 @@ enum NavigationPage: Hashable {
     case selectText(_ string: String)
     case subscriptionList
     case reply(_ context: ResponseContext, expandedPostTracker: ExpandedPostTracker? = nil)
+    case report(_ context: ResponseContext)
     
     static func expandedPost(_ post: any PostStubProviding, commentId: Int? = nil) -> NavigationPage {
         expandedPost(.init(post), commentId: commentId)
@@ -83,6 +84,8 @@ extension NavigationPage {
             ImageViewer(url: url)
         case .quickSwitcher:
             QuickSwitcherView()
+        case let .report(context):
+            ReportComposerView()
         case let .expandedPost(post, commentId):
             ExpandedPostView(post: post, showCommentWithId: commentId)
         case let .person(person):

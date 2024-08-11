@@ -107,6 +107,7 @@
 		0389DDD52C39F1290005B808 /* CommunityListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDD42C39F1290005B808 /* CommunityListRow.swift */; };
 		0389DDDB2C3AB6340005B808 /* ActionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDDA2C3AB6340005B808 /* ActionBuilder.swift */; };
 		0397D4602C66113F002C6CDC /* CommentBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D45F2C66113F002C6CDC /* CommentBodyView.swift */; };
+		0397D47A2C693444002C6CDC /* ReportComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4792C693444002C6CDC /* ReportComposerView.swift */; };
 		039D75642C4EEE69004F24C2 /* DeletableProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039D75632C4EEE69004F24C2 /* DeletableProviding+Extensions.swift */; };
 		039D75672C4FC5A3004F24C2 /* LargeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039D75662C4FC5A3004F24C2 /* LargeImageView.swift */; };
 		039EFEC32BEEBEE0003AC372 /* LoginInstancePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */; };
@@ -391,6 +392,7 @@
 		0389DDD42C39F1290005B808 /* CommunityListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListRow.swift; sourceTree = "<group>"; };
 		0389DDDA2C3AB6340005B808 /* ActionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBuilder.swift; sourceTree = "<group>"; };
 		0397D45F2C66113F002C6CDC /* CommentBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentBodyView.swift; sourceTree = "<group>"; };
+		0397D4792C693444002C6CDC /* ReportComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportComposerView.swift; sourceTree = "<group>"; };
 		039D75632C4EEE69004F24C2 /* DeletableProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeletableProviding+Extensions.swift"; sourceTree = "<group>"; };
 		039D75662C4FC5A3004F24C2 /* LargeImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeImageView.swift; sourceTree = "<group>"; };
 		039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInstancePickerView.swift; sourceTree = "<group>"; };
@@ -777,6 +779,7 @@
 				0355F9452C150B2300605248 /* ExternalApiInfoView.swift */,
 				03AF91DC2C1B23E500E56644 /* ImageViewer.swift */,
 				03B431B12C44409D001A1EB5 /* ResponseComposerView.swift */,
+				0397D4792C693444002C6CDC /* ReportComposerView.swift */,
 			);
 			name = Pages;
 			path = Mlem/App/Views/Pages;
@@ -1637,6 +1640,7 @@
 				03531EEC2C2D81DC004A3464 /* LinkSettingsView.swift in Sources */,
 				033F84D92C2B61FB002E3EDF /* ToastType.swift in Sources */,
 				03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */,
+				0397D47A2C693444002C6CDC /* ReportComposerView.swift in Sources */,
 				032C32022C3438DB00595286 /* ShareAction.swift in Sources */,
 				030BCB1B2C3EA5FD0037680F /* InstanceDetailsView.swift in Sources */,
 				03134A582BEC1C46002662CC /* AccountListSettingsView.swift in Sources */,
