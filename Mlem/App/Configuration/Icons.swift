@@ -128,6 +128,7 @@ enum Icons {
     // Potentially "chevron.left.chevron.right" is better, it's iOS 18+ though
     static let inlineCode: String = "chevron.left.forwardslash.chevron.right"
     static let quote: String = "quote.opening"
+    static let heading: String = "textformat.size"
     static let uploadImage: String = "photo"
     static let spoiler: String = "eye"
     

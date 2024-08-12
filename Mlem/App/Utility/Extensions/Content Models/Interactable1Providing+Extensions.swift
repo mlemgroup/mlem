@@ -15,6 +15,8 @@ extension Interactable1Providing {
     func showReplySheet(expandedPostTracker: ExpandedPostTracker? = nil) {
         if let self = self as? any Post2Providing {
             NavigationModel.main.openSheet(.reply(.post(self), expandedPostTracker: expandedPostTracker))
+        } else if let self = self as? any Comment2Providing {
+            NavigationModel.main.openSheet(.reply(.comment(self), expandedPostTracker: expandedPostTracker))
         } else {
             print("DEBUG showReplySheet: cannot open sheet!")
         }

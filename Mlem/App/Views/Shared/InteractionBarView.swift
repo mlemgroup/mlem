@@ -27,9 +27,13 @@ struct InteractionBarView: View {
         self.readouts = configuration.readouts.map { post.readout(type: $0) }
     }
     
-    init(comment: any Comment1Providing, configuration: CommentBarConfiguration) {
-        self.leading = .init(comment: comment, items: configuration.leading)
-        self.trailing = .init(comment: comment, items: configuration.trailing)
+    init(
+        comment: any Comment1Providing,
+        configuration: CommentBarConfiguration,
+        expandedPostTracker: ExpandedPostTracker? = nil
+    ) {
+        self.leading = .init(comment: comment, items: configuration.leading, expandedPostTracker: expandedPostTracker)
+        self.trailing = .init(comment: comment, items: configuration.trailing, expandedPostTracker: expandedPostTracker)
         self.readouts = configuration.readouts.map { comment.readout(type: $0) }
     }
     
@@ -181,11 +185,15 @@ extension [EnrichedWidget] {
         }
     }
     
-    init(comment: any Comment1Providing, items: [CommentBarConfiguration.Item]) {
+    init(
+        comment: any Comment1Providing,
+        items: [CommentBarConfiguration.Item],
+        expandedPostTracker: ExpandedPostTracker?
+    ) {
         self = items.map { item in
             switch item {
             case let .action(action):
-                return .action(comment.action(type: action))
+                return .action(comment.action(type: action, expandedPostTracker: expandedPostTracker))
             case let .counter(counter):
                 return .counter(comment.counter(type: counter))
             }

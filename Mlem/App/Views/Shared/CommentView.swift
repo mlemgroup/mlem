@@ -11,6 +11,7 @@ import SwiftUI
 
 struct CommentView: View {
     @Environment(Palette.self) private var palette
+    @Environment(ExpandedPostTracker.self) private var expandedPostTracker: ExpandedPostTracker?
     
     private let indent: CGFloat = 10
     
@@ -33,29 +34,20 @@ struct CommentView: View {
                             .frame(height: 10)
                             .imageScale(.small)
                     } else {
-                        EllipsisMenu(size: 24) { comment.menuActions() }
+                        EllipsisMenu(size: 24) { comment.menuActions(expandedPostTracker: expandedPostTracker) }
                             .frame(height: 10)
                     }
                 }
                 if !collapsed {
-                    if comment.deleted {
-                        Text("Comment was deleted")
-                            .italic()
-                            .foregroundStyle(palette.secondary)
-                    } else if comment.removed {
-                        Text("Comment was removed")
-                            .italic()
-                            .foregroundStyle(palette.secondary)
-                    } else {
-                        Markdown(comment.content, configuration: .default)
-                    }
+                    CommentBodyView(comment: comment)
                     InteractionBarView(
                         comment: comment,
                         configuration: .init(
                             leading: [.counter(.score)],
                             trailing: [.action(.save), .action(.reply)],
                             readouts: [.created, .score, .comment]
-                        )
+                        ),
+                        expandedPostTracker: expandedPostTracker
                     )
                     .padding(.top, 2)
                 }
@@ -69,7 +61,7 @@ struct CommentView: View {
                 width: depth == 0 ? 0 : 2, edges: [.leading],
                 color: palette.commentIndentColors[depth % palette.commentIndentColors.count]
             )
-            .quickSwipes(comment.swipeActions(behavior: .standard))
+            .quickSwipes(comment.swipeActions(behavior: .standard, expandedPostTracker: expandedPostTracker))
             .contentShape(.rect)
             .onTapGesture {
                 if !inFeed, let comment = comment as? CommentWrapper {
@@ -78,7 +70,7 @@ struct CommentView: View {
                     }
                 }
             }
-            .contextMenu { comment.menuActions() }
+            .contextMenu { comment.menuActions(expandedPostTracker: expandedPostTracker) }
             Divider()
         }
         .padding(.leading, CGFloat(depth) * indent)
