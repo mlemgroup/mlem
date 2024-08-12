@@ -67,6 +67,8 @@ enum Icons {
     static let postSizeSetting: String = "rectangle.expand.vertical"
     static let compactPost: String = "rectangle.grid.1x2"
     static let compactPostFill: String = "rectangle.grid.1x2.fill"
+    static let tilePost: String = "square.grid.2x2"
+    static let tilePostFill: String = "square.grid.2x2.fill"
     static let headlinePost: String = "rectangle"
     static let headlinePostFill: String = "rectangle.fill"
     static let largePost: String = "text.below.photo"
