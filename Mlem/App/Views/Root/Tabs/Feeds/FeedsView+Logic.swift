@@ -8,7 +8,7 @@
 import Foundation
 
 extension FeedsView {
-    var actions: [any Action] {
+    var toolbarActions: [any Action] {
         var ret: [any Action] = .init()
         
         ret.append(BasicAction(

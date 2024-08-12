@@ -112,18 +112,9 @@ struct FeedsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarEllipsisMenu {
-                    ForEach(actions, id: \.id) { action in
+                    ForEach(toolbarActions, id: \.id) { action in
                         MenuButton(action: action)
                     }
-//                    MenuButton(action: BasicAction(
-//                        id: "read",
-//                        isOn: showRead,
-//                        label: showRead ? "Hide Read" : "Show Read",
-//                        color: palette.primary,
-//                        icon: Icons.read
-//                    ) {
-//                        showRead = !showRead
-//                    })
                 }
             }
             .loadFeed(postFeedLoader)
