@@ -8,7 +8,17 @@
 import SwiftUI
 
 struct MarkdownEditorToolbarView: View {
+    enum AvailableActions {
+        case all, inlineOnly
+    }
+    
+    let actions: AvailableActions
     let textView: UITextView
+    
+    init(showing actions: AvailableActions = .all, textView: UITextView) {
+        self.actions = actions
+        self.textView = textView
+    }
     
     var body: some View {
         ScrollView(.horizontal) {
@@ -42,20 +52,22 @@ struct MarkdownEditorToolbarView: View {
                 Button("Code", systemImage: Icons.inlineCode) {
                     textView.wrapSelectionWithDelimiters("`")
                 }
-                Divider()
-                Menu("Heading", systemImage: Icons.heading) {
-                    ForEach(1 ..< 7) { level in
-                        Button("Heading \(level)") {
-                            textView.toggleHeadingAtCursor(level: level)
+                if actions == .all {
+                    Divider()
+                    Menu("Heading", systemImage: Icons.heading) {
+                        ForEach(1 ..< 7) { level in
+                            Button("Heading \(level)") {
+                                textView.toggleHeadingAtCursor(level: level)
+                            }
                         }
                     }
-                }
-                Button("Quote", systemImage: Icons.quote) {
-                    textView.toggleQuoteAtCursor()
-                }
-                Button("Image", systemImage: Icons.uploadImage) {}
-                Button("Spoiler", systemImage: Icons.spoiler) {
-                    textView.wrapSelectionWithSpoiler()
+                    Button("Quote", systemImage: Icons.quote) {
+                        textView.toggleQuoteAtCursor()
+                    }
+                    Button("Image", systemImage: Icons.uploadImage) {}
+                    Button("Spoiler", systemImage: Icons.spoiler) {
+                        textView.wrapSelectionWithSpoiler()
+                    }
                 }
             }
             .imageScale(.large)

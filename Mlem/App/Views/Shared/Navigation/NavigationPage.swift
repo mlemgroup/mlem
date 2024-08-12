@@ -25,6 +25,7 @@ enum NavigationPage: Hashable {
     case selectText(_ string: String)
     case subscriptionList
     case reply(_ context: ResponseContext, expandedPostTracker: ExpandedPostTracker? = nil)
+    case createPost(community: AnyCommunity?)
     
     static func expandedPost(_ post: any PostStubProviding, commentId: Int? = nil) -> NavigationPage {
         expandedPost(.init(post), commentId: commentId)
@@ -52,6 +53,10 @@ enum NavigationPage: Hashable {
     
     static func instancePicker(callback: @escaping (InstanceSummary) -> Void) -> NavigationPage {
         instancePicker(callback: .init(wrappedValue: callback))
+    }
+    
+    static func createPost(community: any CommunityStubProviding) -> NavigationPage {
+        createPost(community: .init(community))
     }
 }
 
@@ -88,7 +93,13 @@ extension NavigationPage {
         case let .person(person):
             PersonView(person: person)
         case let .reply(context, expandedPostTracker):
-            if let view = ResponseComposerView(context: context, expandedPostTracker: expandedPostTracker) {
+            if let view = ReplyComposerView(context: context, expandedPostTracker: expandedPostTracker) {
+                view
+            } else {
+                Text(verbatim: "Error: No active UserAccount")
+            }
+        case let .createPost(community: community):
+            if let view = PostComposerView(community: community) {
                 view
             } else {
                 Text(verbatim: "Error: No active UserAccount")
@@ -127,7 +138,7 @@ extension NavigationPage {
     
     var hasNavigationStack: Bool {
         switch self {
-        case .quickSwitcher, .externalApiInfo, .selectText, .reply:
+        case .quickSwitcher, .externalApiInfo, .selectText, .reply, .createPost:
             false
         default:
             true

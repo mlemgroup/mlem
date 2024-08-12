@@ -55,6 +55,9 @@
     "Active Users" : {
 
     },
+    "Add" : {
+
+    },
     "Add Account" : {
 
     },
@@ -176,6 +179,9 @@
 
     },
     "Couldn't read URL" : {
+
+    },
+    "Crosspost" : {
 
     },
     "Default Feed Type (Desktop)" : {
@@ -357,6 +363,9 @@
     "Left" : {
 
     },
+    "Link" : {
+
+    },
     "Links" : {
 
     },
@@ -435,6 +444,9 @@
     "NSFW Content" : {
 
     },
+    "NSFW Tag" : {
+
+    },
     "Open" : {
 
     },
@@ -451,6 +463,9 @@
 
     },
     "Open URL from Clipboard" : {
+
+    },
+    "Optional Description" : {
 
     },
     "Original Poster" : {
@@ -609,6 +624,9 @@
     "Standard" : {
 
     },
+    "Start writing..." : {
+
+    },
     "Strikethrough" : {
 
     },
@@ -655,6 +673,9 @@
 
     },
     "Tiled" : {
+
+    },
+    "Title" : {
 
     },
     "Trailing" : {

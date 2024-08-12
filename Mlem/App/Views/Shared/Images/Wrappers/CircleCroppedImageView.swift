@@ -15,6 +15,7 @@ struct CircleCroppedImageView: View {
     let showProgress: Bool
     
     init(url: URL?, fallback: FixedImageView.Fallback, showProgress: Bool = true) {
+        print("INIT", url)
         self.url = url
         self.fallback = fallback
         self.showProgress = showProgress

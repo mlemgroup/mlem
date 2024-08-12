@@ -9,7 +9,7 @@ import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
 
-struct ResponseComposerView: View {
+struct ReplyComposerView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
@@ -28,9 +28,10 @@ struct ResponseComposerView: View {
     @State var resolutionState: ResolutionState = .success
     @State var sending: Bool = false
 
-    @State var text: String = ""
     @State var account: UserAccount
     @State var presentationSelection: PresentationDetent = .large
+    
+    @State var textIsEmpty: Bool = true
     
     @FocusState var focused: Bool
     
@@ -53,7 +54,7 @@ struct ResponseComposerView: View {
     }
 
     var body: some View {
-        CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: text.isEmpty) {
+        CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: textIsEmpty) {
             NavigationStack {
                 content
                     .navigationBarTitleDisplayMode(.inline)
@@ -87,12 +88,15 @@ struct ResponseComposerView: View {
                                         await send()
                                     }
                                 }
-                                .disabled(resolutionState != .success || text.isEmpty)
+                                .disabled(resolutionState != .success || textIsEmpty)
                             }
                         }
                     }
             }
             .task(id: account, resolveContext)
+        }
+        .onAppear {
+            textView.becomeFirstResponder()
         }
         .onChange(of: presentationSelection) {
             if presentationSelection == .large {
@@ -110,14 +114,18 @@ struct ResponseComposerView: View {
                         .padding([.horizontal, .bottom], 10)
                 }
                 MarkdownTextEditor(
-                    text: $text,
+                    onChange: {
+                        if $0.isEmpty != textIsEmpty {
+                            textIsEmpty = $0.isEmpty
+                        }
+                    },
                     prompt: "Start writing...",
-                    textView: textView
-                ) {
-                    MarkdownEditorToolbarView(textView: textView)
-                }
+                    textView: textView,
+                    content: {
+                        MarkdownEditorToolbarView(textView: textView)
+                    }
+                )
                 .frame(
-                    minWidth: 0,
                     maxWidth: .infinity,
                     minHeight: minTextEditorHeight,
                     maxHeight: .infinity,
@@ -192,10 +200,10 @@ struct ResponseComposerView: View {
             let parent: (any Comment2Providing)?
             switch resolvedContext {
             case let .post(post):
-                result = try await post.reply(content: text)
+                result = try await post.reply(content: textView.text)
                 parent = nil
             case let .comment(comment):
-                result = try await comment.reply(content: text)
+                result = try await comment.reply(content: textView.text)
                 parent = comment
             }
             Task { @MainActor in

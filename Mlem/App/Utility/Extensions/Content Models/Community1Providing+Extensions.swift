@@ -13,6 +13,10 @@ extension Community1Providing {
     
     // MARK: Operations
     
+    func showNewPostSheet() {
+        NavigationModel.main.openSheet(.createPost(community: self))
+    }
+    
     func toggleSubscribe(feedback: Set<FeedbackType>) {
         if let self2 {
             if feedback.contains(.haptic) {
@@ -127,7 +131,7 @@ extension Community1Providing {
             color: Palette.main.accent,
             icon: Icons.send,
             swipeIcon2: Icons.sendFill,
-            callback: nil // TODO:
+            callback: api.canInteract ? showNewPostSheet : nil
         )
     }
     
