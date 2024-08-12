@@ -83,6 +83,7 @@ extension Post1Providing {
             if self.isOwnPost {
                 deleteAction(feedback: feedback)
             } else {
+                reportAction()
                 blockAction(feedback: feedback)
             }
         }

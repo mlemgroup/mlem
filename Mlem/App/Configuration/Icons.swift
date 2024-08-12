@@ -42,7 +42,7 @@ enum Icons {
     // moderation
     static let moderation: String = "shield"
     static let moderationFill: String = "shield.fill"
-    static let moderationReport: String = "exclamationmark.shield"
+    static let moderationReport: String = "flag"
     
     // inbox
     static let mention: String = "quote.bubble"

@@ -40,6 +40,7 @@ extension Reply1Providing {
                 comment.selectTextAction()
                 comment.shareAction()
             }
+            reportAction()
             blockCreatorAction(feedback: feedback)
         }
     }

@@ -31,6 +31,9 @@
         }
       }
     },
+    "%@ rules:" : {
+
+    },
     "1d" : {
 
     },
@@ -44,6 +47,9 @@
 
     },
     "About" : {
+
+    },
+    "Abuse" : {
 
     },
     "Account" : {
@@ -489,6 +495,9 @@
     "Quote" : {
 
     },
+    "Reason (Optional)" : {
+
+    },
     "Received %@" : {
 
     },
@@ -514,6 +523,9 @@
 
     },
     "Reply" : {
+
+    },
+    "Report" : {
 
     },
     "Reports Email Admins" : {
@@ -603,6 +615,9 @@
     "Sort by: %@" : {
 
     },
+    "Spam" : {
+
+    },
     "Spoiler" : {
 
     },
@@ -658,6 +673,9 @@
 
     },
     "Trailing" : {
+
+    },
+    "Troll" : {
 
     },
     "Trust & Safety" : {

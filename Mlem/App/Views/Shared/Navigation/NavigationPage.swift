@@ -24,8 +24,8 @@ enum NavigationPage: Hashable {
     case instancePicker(callback: HashWrapper<(InstanceSummary) -> Void>)
     case selectText(_ string: String)
     case subscriptionList
-    case reply(_ context: ResponseContext, expandedPostTracker: ExpandedPostTracker? = nil)
-    case report(_ context: ResponseContext)
+    case reply(_ target: ResponseContext, expandedPostTracker: ExpandedPostTracker? = nil)
+    case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
     
     static func expandedPost(_ post: any PostStubProviding, commentId: Int? = nil) -> NavigationPage {
         expandedPost(.init(post), commentId: commentId)
@@ -53,6 +53,16 @@ enum NavigationPage: Hashable {
     
     static func instancePicker(callback: @escaping (InstanceSummary) -> Void) -> NavigationPage {
         instancePicker(callback: .init(wrappedValue: callback))
+    }
+    
+    static func report(_ interactable: any ReportableProviding, community: (any CommunityStubProviding)?) -> NavigationPage {
+        let anyCommunity: AnyCommunity?
+        if let community {
+            anyCommunity = .init(community)
+        } else {
+            anyCommunity = nil
+        }
+        return report(.init(wrappedValue: interactable), community: anyCommunity)
     }
 }
 
@@ -84,8 +94,8 @@ extension NavigationPage {
             ImageViewer(url: url)
         case .quickSwitcher:
             QuickSwitcherView()
-        case let .report(context):
-            ReportComposerView()
+        case let .report(target, community):
+            ReportComposerView(target: target.wrappedValue, community: community)
         case let .expandedPost(post, commentId):
             ExpandedPostView(post: post, showCommentWithId: commentId)
         case let .person(person):
@@ -130,7 +140,7 @@ extension NavigationPage {
     
     var hasNavigationStack: Bool {
         switch self {
-        case .quickSwitcher, .externalApiInfo, .selectText, .reply:
+        case .quickSwitcher, .report, .externalApiInfo, .selectText, .reply:
             false
         default:
             true
@@ -170,5 +180,17 @@ struct InstanceHashWrapper: Hashable {
     
     static func == (lhs: InstanceHashWrapper, rhs: InstanceHashWrapper) -> Bool {
         lhs.id == rhs.id
+    }
+}
+
+struct ReportableHashWrapper: Hashable {
+    var wrappedValue: any ReportableProviding
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(wrappedValue.hashValue)
+    }
+    
+    static func == (lhs: ReportableHashWrapper, rhs: ReportableHashWrapper) -> Bool {
+        lhs.hashValue == rhs.hashValue
     }
 }
