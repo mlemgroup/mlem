@@ -43,6 +43,13 @@ struct MarkdownEditorToolbarView: View {
                     textView.wrapSelectionWithDelimiters("`")
                 }
                 Divider()
+                Menu("Heading", systemImage: Icons.heading) {
+                    ForEach(1 ..< 7) { level in
+                        Button("Heading \(level)") {
+                            textView.toggleHeadingAtCursor(level: level)
+                        }
+                    }
+                }
                 Button("Quote", systemImage: Icons.quote) {
                     textView.toggleQuoteAtCursor()
                 }
