@@ -12,6 +12,7 @@ struct SubscriptionListView: View {
     @Environment(AppState.self) private var appState
     @Environment(NavigationLayer.self) private var navigation
     @Environment(TabReselectTracker.self) var tabReselectTracker
+    @Environment(Palette.self) var palette
     
     @Setting(\.subscriptionSort) private var sort
     
@@ -55,7 +56,11 @@ struct SubscriptionListView: View {
                 Section {
                     ForEach(feedOptions, id: \.hashValue) { feedOption in
                         NavigationLink(.feeds(feedOption)) {
-                            Text(feedOption.description.label)
+                            HStack(spacing: 15) {
+                                FeedIconView(feedDescription: feedOption.description, size: 28)
+                                
+                                Text(feedOption.description.label)
+                            }
                         }
                     }
                 }
