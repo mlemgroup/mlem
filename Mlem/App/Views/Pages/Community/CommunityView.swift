@@ -45,15 +45,6 @@ struct CommunityView: View {
                 content(community: community, postFeedLoader: postFeedLoader)
                     .outdatedFeedPopup(feedLoader: postFeedLoader)
                     .externalApiWarning(entity: community, isLoading: proxy.isLoading)
-                    .toolbar {
-                        ToolbarItem(placement: .topBarTrailing) {
-                            if community is any Community3Providing, proxy.isLoading {
-                                ProgressView()
-                            } else {
-                                ToolbarEllipsisMenu(community.menuActions(navigation: navigation))
-                            }
-                        }
-                    }
             } else {
                 ProgressView()
                     .tint(palette.secondary)
@@ -109,7 +100,7 @@ struct CommunityView: View {
     
     @ViewBuilder
     func postsTab(community: any Community, postFeedLoader: CommunityPostFeedLoader) -> some View {
-        PostGridView(postFeedLoader: postFeedLoader)
+        PostGridView(postFeedLoader: postFeedLoader, actions: community.menuActions(navigation: navigation))
     }
 
     @ViewBuilder

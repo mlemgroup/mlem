@@ -1,5 +1,5 @@
 //
-//  FeedsView+Logic.swift
+//  PostGridView+Logic.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-08-12.
@@ -7,8 +7,8 @@
 
 import Foundation
 
-extension FeedsView {
-    var toolbarActions: [any Action] {
+extension PostGridView {
+    var standardActions: [any Action] {
         var ret: [any Action] = .init()
         
         ret.append(BasicAction(

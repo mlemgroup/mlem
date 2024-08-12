@@ -9,27 +9,52 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-/// Renders the content of a given StandardPostFeedLoader. Responsible solely for post layout and triggering loading; scrolling, handling feed type
-/// changes, header, footer, rendering toolbar items, etc. should be handled by the parent view.
+/// Renders the content of a given StandardPostFeedLoader and adds a toolbar menu with the standard post feed controls and any additional actions
+/// passed in from the parent view.
+/// This view handles:
+/// - Post layout
+/// - Loading
+/// - Toolbar menu
+/// - Default toolbar menu actions (show/hide read, post size)
+/// Scrolling, handling feed type changes, header, footer, etc. should be handled by the parent view
 struct PostGridView: View {
     @Setting(\.postSize) var postSize
     @Setting(\.showReadInFeed) var showRead
     
     @Environment(AppState.self) var appState
+    @Environment(Palette.self) var palette
     
     @State var columns: [GridItem] = [GridItem(.flexible())]
     @State var frameWidth: CGFloat = .zero
     
     let postFeedLoader: CorePostFeedLoader
+    let actions: [any Action]?
+    
+    init(postFeedLoader: CorePostFeedLoader, actions: [any Action]? = nil) {
+        self.postFeedLoader = postFeedLoader
+        self.actions = actions
+    }
     
     var body: some View {
         content
             .widthReader(width: $frameWidth)
             .environment(\.parentFrameWidth, frameWidth)
+            .loadFeed(postFeedLoader)
+            .task(id: showRead) {
+                do {
+                    if showRead {
+                        try await postFeedLoader.removeFilter(.read)
+                    } else {
+                        try await postFeedLoader.addFilter(.read)
+                    }
+                } catch {
+                    handleError(error)
+                }
+            }
             .onChange(of: postSize, initial: true) { _, newValue in
                 if newValue.tiled {
                     // leading/trailing alignment makes them want to stick to each other, allowing the Constants.main.halfSpacing padding applied below
-                    // to push them apart by a sum of AppConstants.standardSpacing
+                    // to push them apart by a sum of Constants.main.standardSpacing
                     
                     // Avoid causing unnecessary view update
                     if columns.count == 1 {
@@ -38,10 +63,23 @@ struct PostGridView: View {
                             GridItem(.flexible(), spacing: 0, alignment: .leading)
                         ]
                     }
-                } else {
-                    // Avoid causing unnecessary view update
-                    if columns.count == 2 {
-                        columns = [GridItem(.flexible())]
+                } else if columns.count > 1 {
+                    // Only trigger if not already 1 column to avoid causing unnecessary view update
+                    columns = [GridItem(.flexible())]
+                }
+            }
+            .toolbar {
+                ToolbarEllipsisMenu {
+                    if let actions {
+                        ForEach(actions, id: \.id) { action in
+                            MenuButton(action: action)
+                        }
+                    }
+                    
+                    Divider()
+                    
+                    ForEach(standardActions, id: \.id) { action in
+                        MenuButton(action: action)
                     }
                 }
             }

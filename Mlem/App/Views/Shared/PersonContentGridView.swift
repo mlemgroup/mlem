@@ -30,7 +30,8 @@ struct PersonContentGridView: View {
                         GridItem(.flexible(), spacing: 0, alignment: .trailing),
                         GridItem(.flexible(), spacing: 0, alignment: .leading)
                     ]
-                } else {
+                } else if columns.count > 1 {
+                    // Only trigger if not already 1 column to avoid causing unnecessary view update
                     columns = [GridItem(.flexible())]
                 }
             }

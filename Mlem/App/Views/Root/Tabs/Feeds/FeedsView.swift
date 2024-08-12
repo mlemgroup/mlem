@@ -41,34 +41,7 @@ struct FeedsView: View {
 
     @State var scrollToTopTrigger: Bool = false
     
-    enum FeedSelection: CaseIterable {
-        case all, local, subscribed, saved
-        // TODO: moderated
-        
-        static var guestCases: [FeedSelection] {
-            [.all, .local]
-        }
-        
-        var description: FeedDescription {
-            switch self {
-            case .all: .all
-            case .local: .local
-            case .subscribed: .subscribed
-            case .saved: .saved
-            }
-        }
-        
-        var associatedApiType: ApiListingType {
-            switch self {
-            case .all: .all
-            case .local: .local
-            case .subscribed: .subscribed
-            case .saved: .all // dummy value
-            }
-        }
-    }
-    
-    init() {
+    init(feedSelection: FeedSelection = .subscribed) {
         // need to grab some stuff from app storage to initialize with
         @Setting(\.internetSpeed) var internetSpeed
         @Setting(\.upvoteOnSave) var upvoteOnSave
@@ -77,7 +50,7 @@ struct FeedsView: View {
         
         @Dependency(\.persistenceRepository) var persistenceRepository
         
-        let initialFeedSelection: FeedSelection = .subscribed
+        let initialFeedSelection: FeedSelection = feedSelection
         _feedSelection = .init(initialValue: initialFeedSelection)
         _postFeedLoader = .init(initialValue: .init(
             pageSize: internetSpeed.pageSize,
@@ -110,28 +83,9 @@ struct FeedsView: View {
         content
             .background(postSize.tiled ? palette.groupedBackground : palette.background)
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarEllipsisMenu {
-                    ForEach(toolbarActions, id: \.id) { action in
-                        MenuButton(action: action)
-                    }
-                }
-            }
-            .loadFeed(postFeedLoader)
             .loadFeed(savedFeedLoader)
             .onChange(of: showRead) {
                 scrollToTopTrigger.toggle()
-                Task {
-                    do {
-                        if showRead {
-                            try await postFeedLoader.removeFilter(.read)
-                        } else {
-                            try await postFeedLoader.addFilter(.read)
-                        }
-                    } catch {
-                        handleError(error)
-                    }
-                }
             }
             .onChange(of: appState.firstApi, initial: false) {
                 postFeedLoader.api = appState.firstApi

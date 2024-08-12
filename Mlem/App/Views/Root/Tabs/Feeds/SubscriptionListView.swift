@@ -16,6 +16,7 @@ struct SubscriptionListView: View {
     @Setting(\.subscriptionSort) private var sort
     
     @State var noDetail: Bool = false
+    @State var feedOptions: [FeedSelection] = FeedSelection.guestCases
     
     var body: some View {
         MultiplatformView(phone: {
@@ -27,6 +28,13 @@ struct SubscriptionListView: View {
         })
         .navigationTitle("Feeds")
         .navigationBarTitleDisplayMode(.inline)
+        .onChange(of: appState.firstApi, initial: true) {
+            if appState.firstApi.canInteract, appState.firstAccount is UserAccount {
+                feedOptions = FeedSelection.allCases
+            } else {
+                feedOptions = FeedSelection.guestCases
+            }
+        }
     }
     
     var detailDisplayed: Bool {
@@ -45,8 +53,10 @@ struct SubscriptionListView: View {
         ScrollViewReader { proxy in
             List {
                 Section {
-                    NavigationLink(.feeds) {
-                        Text("Feeds")
+                    ForEach(feedOptions, id: \.hashValue) { feedOption in
+                        NavigationLink(.feeds(feedOption)) {
+                            Text(feedOption.description.label)
+                        }
                     }
                 }
                 
