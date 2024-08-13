@@ -83,13 +83,13 @@ struct ToastOverlayView: View {
 
 #Preview {
     VStack {
-        Button("Test") {
+        Button(String("Test")) {
             ToastModel.main.add(.success())
         }
-        Button("Test Long") {
+        Button(String("Test Long")) {
             ToastModel.main.add(
                 .basic(
-                    "Unfavorited Community",
+                    String("Unfavorited Community"),
                     systemImage: "star.slash.fill",
                     color: .blue,
                     duration: 5

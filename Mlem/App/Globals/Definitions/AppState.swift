@@ -111,5 +111,14 @@ class AppState {
         }
     }
     
+    var initialFeedSortType: ApiSortType {
+        get async throws {
+            let defaultSort = Settings.main.defaultPostSort
+            let instanceVersion = try await firstApi.version
+            if instanceVersion >= defaultSort.minimumVersion { return defaultSort }
+            return Settings.main.fallbackPostSort
+        }
+    }
+    
     static var main: AppState = .init()
 }
