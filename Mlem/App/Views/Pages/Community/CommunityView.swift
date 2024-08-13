@@ -106,7 +106,7 @@ struct CommunityView: View {
     
     @ViewBuilder
     func postsTab(community: any Community, postFeedLoader: CommunityPostFeedLoader) -> some View {
-        PostGridView(postFeedLoader: postFeedLoader) // , actions: community.menuActions(navigation: navigation))
+        PostGridView(postFeedLoader: postFeedLoader)
     }
 
     @ViewBuilder

@@ -101,7 +101,7 @@ struct PostGridView: View {
     
     @ViewBuilder
     var standardMenu: some View {
-        Button("\(showRead ? "Hide" : "Show") read", systemImage: Icons.read) {
+        Button("\(showRead ? "Hide" : "Show") Read", systemImage: Icons.read) {
             showRead = !showRead
         }
         

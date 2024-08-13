@@ -77,7 +77,7 @@ struct FeedsView: View {
                 smallAvatarSize: Constants.main.smallAvatarSize,
                 largeAvatarSize: Constants.main.largeAvatarSize
             ))
-        } else {}
+        }
     }
     
     var body: some View {
