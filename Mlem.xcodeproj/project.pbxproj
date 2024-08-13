@@ -178,6 +178,7 @@
 		B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */ = {isa = PBXBuildFile; productRef = B104A6DD2A59BF3C00B3E725 /* NukeVideo */; };
 		B157E0C42A507B8000B02C8B /* FlowRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157E0C32A507B8000B02C8B /* FlowRoot.swift */; };
 		B1B78D642A51D53900F72485 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B78D632A51D53900F72485 /* AppDelegate.swift */; };
+		CD0507732C6AA0C8008B1505 /* FeedSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0507722C6AA0C8008B1505 /* FeedSelection.swift */; };
 		CD0E06F72C0E739F00445849 /* PostType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0E06F62C0E739F00445849 /* PostType+Extensions.swift */; };
 		CD13CC572C582DD8001AF428 /* DynamicImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD13CC562C582DD8001AF428 /* DynamicImageView.swift */; };
 		CD13CC592C583C7A001AF428 /* WebsitePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD13CC582C583C7A001AF428 /* WebsitePreviewView.swift */; };
@@ -460,6 +461,7 @@
 		B104A6E12A5AFC9F00B3E725 /* Mlem.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mlem.entitlements; sourceTree = "<group>"; };
 		B157E0C32A507B8000B02C8B /* FlowRoot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowRoot.swift; sourceTree = "<group>"; };
 		B1B78D632A51D53900F72485 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CD0507722C6AA0C8008B1505 /* FeedSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSelection.swift; sourceTree = "<group>"; };
 		CD0E06F62C0E739F00445849 /* PostType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostType+Extensions.swift"; sourceTree = "<group>"; };
 		CD0E07002C12707700445849 /* ToolbarEllipsisMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarEllipsisMenu.swift; sourceTree = "<group>"; };
 		CD13CC562C582DD8001AF428 /* DynamicImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicImageView.swift; sourceTree = "<group>"; };
@@ -1008,6 +1010,7 @@
 				CD9CFA2D2C2E22E200739BBC /* Feed Header */,
 				CDE021AB2BFA43220052FD61 /* Feed Posts */,
 				033F84AC2C298466002E3EDF /* SectionIndexTitles.swift */,
+				CD0507722C6AA0C8008B1505 /* FeedSelection.swift */,
 			);
 			path = Feeds;
 			sourceTree = "<group>";
@@ -1063,9 +1066,13 @@
 		CD4D58A82B86BE4C00B82964 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				03B431C32C45BA45001A1EB5 /* AccountPickerMenu.swift */,
 				03FE14052BF9445F00A8377F /* CloseButtonView.swift */,
+				033FCAE52C5596F5007B7CD1 /* CollapsibleSection.swift */,
+				03B431C52C45C09F001A1EB5 /* CollapsibleSheetView.swift */,
+				0397D45F2C66113F002C6CDC /* CommentBodyView.swift */,
+				033F84BA2C2ACB96002E3EDF /* CommentView.swift */,
 				CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */,
-				030030A02C416B0B009A65FF /* RefreshPopupView.swift */,
 				030FF67E2BC8544600F6BFAC /* CustomTabBarController.swift */,
 				030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */,
 				030FF67A2BC8521600F6BFAC /* CustomTabView.swift */,
@@ -1073,44 +1080,40 @@
 				CD7882AA2C013005002E1A30 /* EllipsisMenu.swift */,
 				03D3A1E22BB8A40A009DE55E /* EmptyButtonStyle.swift */,
 				03FE14072BF94FFB00A8377F /* ErrorView.swift */,
-				CD4ED84D2BF113C800EFA0A2 /* ExpandedPostView.swift */,
 				0300309C2C4163C9009A65FF /* ExpandedPostTracker.swift */,
+				CD4ED84D2BF113C800EFA0A2 /* ExpandedPostView.swift */,
 				034B948D2C0937BA00039AF4 /* FancyScrollView.swift */,
-				033F84BA2C2ACB96002E3EDF /* CommentView.swift */,
-				0397D45F2C66113F002C6CDC /* CommentBodyView.swift */,
-				03B431C12C45BA00001A1EB5 /* MarkdownEditorToolbarView.swift */,
-				03B431C52C45C09F001A1EB5 /* CollapsibleSheetView.swift */,
-				032C32152C36F65500595286 /* ReplyView.swift */,
-				039D75652C4FC56A004F24C2 /* Images */,
 				033F84CB2C2B1E46002E3EDF /* HandleLemmyLinksModifier.swift */,
 				0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */,
 				03AF91E22C1C616F00E56644 /* InteractionBarView.swift */,
 				0355F9482C16406E00605248 /* Line.swift */,
-				03B431C32C45BA45001A1EB5 /* AccountPickerMenu.swift */,
+				03B431C12C45BA00001A1EB5 /* MarkdownEditorToolbarView.swift */,
 				034B94842C09348400039AF4 /* MarkdownImageView.swift */,
+				03B431B32C4481C3001A1EB5 /* MarkdownTextEditor.swift */,
 				03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */,
 				0316CD632C382A6A009EA8EA /* MessageView.swift */,
 				CD77437E2C1BA5CE0085BB43 /* MultiplatformView.swift */,
+				CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */,
 				CD9CFA362C306DAB00739BBC /* PostGridView.swift */,
-				03531EEF2C2DA291004A3464 /* Search */,
 				0382A7F12C0A758E00C79DDA /* ProfileDateView.swift */,
-				03B431B32C4481C3001A1EB5 /* MarkdownTextEditor.swift */,
+				030030A02C416B0B009A65FF /* RefreshPopupView.swift */,
+				032C32152C36F65500595286 /* ReplyView.swift */,
 				032C32092C34495D00595286 /* SelectTextView.swift */,
 				03E614DA2C0B596900F692A4 /* ToolbarEllipsisMenu.swift */,
-				033FCAE52C5596F5007B7CD1 /* CollapsibleSection.swift */,
-				CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */,
+				CD0E07002C12707700445849 /* ToolbarEllipsisMenu.swift */,
+				CD13CC582C583C7A001AF428 /* WebsitePreviewView.swift */,
+				CD13CC5A2C588B34001AF428 /* WebView.swift */,
 				03AF91DE2C1B243D00E56644 /* ZoomableContainer.swift */,
 				CD4D58AB2B86BE6100B82964 /* Accounts */,
 				03267D802BED4714009D6268 /* Avatar */,
 				CD869FCA2C15F8A100FC8B5B /* Bubble Picker */,
+				039D75652C4FC56A004F24C2 /* Images */,
 				CDB2EC842BFADD5E00DBC0EF /* Labels */,
 				03D2A6402C011F3E00ED4FF2 /* ListRow */,
 				035BE0852BDD8D9100F77D73 /* Navigation */,
 				0382A7EE2C09F0F800C79DDA /* Pages */,
+				03531EEF2C2DA291004A3464 /* Search */,
 				03500C252BF694A800CAA076 /* Toast */,
-				CD0E07002C12707700445849 /* ToolbarEllipsisMenu.swift */,
-				CD13CC582C583C7A001AF428 /* WebsitePreviewView.swift */,
-				CD13CC5A2C588B34001AF428 /* WebView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1765,6 +1768,7 @@
 				0324FA7B2C1F2CD200F6247D /* InfoStackView.swift in Sources */,
 				CD7DB9762C4D6C0A00DCC542 /* FeedCommentView.swift in Sources */,
 				03D3A1EF2BB9CA1D009DE55E /* MenuButton.swift in Sources */,
+				CD0507732C6AA0C8008B1505 /* FeedSelection.swift in Sources */,
 				031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */,
 				030FF67B2BC8521600F6BFAC /* CustomTabView.swift in Sources */,
 				03531EF52C2DA610004A3464 /* NavigationSearchType.swift in Sources */,
