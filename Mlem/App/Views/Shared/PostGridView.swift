@@ -9,12 +9,11 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-/// Renders the content of a given StandardPostFeedLoader and adds a toolbar menu with the standard post feed controls and any additional actions
-/// passed in from the parent view.
+/// Renders the content of a given StandardPostFeedLoader and adds a toolbar menu with the standard post feed controls. Additional toolbar actions
+/// should be handled by using ToolbarItemGroup(placement: .secondaryAction) on the parent view.
 /// This view handles:
 /// - Post layout
 /// - Loading
-/// - Toolbar menu
 /// - Default toolbar menu actions (show/hide read, post size)
 /// Scrolling, handling feed type changes, header, footer, etc. should be handled by the parent view
 struct PostGridView: View {
