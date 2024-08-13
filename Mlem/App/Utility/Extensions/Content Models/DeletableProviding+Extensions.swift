@@ -12,7 +12,7 @@ extension DeletableProviding {
         if feedback.contains(.toast), !deleted {
             let task = toggleDeleted()
             Task {
-                let result = try await task.result.get()
+                let result = await task.result.get()
                 switch result {
                 case .succeeded:
                     ToastModel.main.add(

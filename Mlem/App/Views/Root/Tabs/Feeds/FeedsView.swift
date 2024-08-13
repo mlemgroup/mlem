@@ -175,8 +175,7 @@ struct FeedsView: View {
                 sortType: appState.initialFeedSortType,
                 showReadPosts: showReadPosts,
                 filteredKeywords: [],
-                smallAvatarSize: Constants.main.smallAvatarSize,
-                largeAvatarSize: Constants.main.largeAvatarSize,
+                prefetchingConfiguration: .forPostSize(postSize),
                 urlCache: Constants.main.urlCache,
                 api: AppState.main.firstApi,
                 feedType: feedSelection.associatedApiType

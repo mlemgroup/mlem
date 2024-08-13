@@ -52,7 +52,7 @@ class ImageLoader {
         do {
             let imageTask = ImagePipeline.shared.imageTask(with: url)
             imageTask.priority = .veryHigh
-            var image = try await imageTask.image
+            let image = try await imageTask.image
             uiImage = resizeImage(image: image, maxSize: maxSize)
             loading = .done
         } catch {
