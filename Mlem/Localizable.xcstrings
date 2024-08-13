@@ -31,6 +31,9 @@
         }
       }
     },
+    "%@ Read" : {
+
+    },
     "1d" : {
 
     },
@@ -40,7 +43,22 @@
     "1w" : {
 
     },
+    "3 Months" : {
+
+    },
+    "6 Hours" : {
+
+    },
+    "6 Months" : {
+
+    },
     "6mo" : {
+
+    },
+    "9 Months" : {
+
+    },
+    "12 Hours" : {
 
     },
     "About" : {
@@ -50,6 +68,9 @@
 
     },
     "Accounts" : {
+
+    },
+    "Active" : {
 
     },
     "Active Users" : {
@@ -68,6 +89,9 @@
 
     },
     "All" : {
+
+    },
+    "All Time" : {
 
     },
     "App Icon" : {
@@ -163,6 +187,9 @@
     "Connecting..." : {
 
     },
+    "Controversial" : {
+
+    },
     "Copied" : {
 
     },
@@ -176,6 +203,9 @@
 
     },
     "Couldn't read URL" : {
+
+    },
+    "Day" : {
 
     },
     "Default Feed Type (Desktop)" : {
@@ -230,6 +260,9 @@
 
     },
     "Failed to resolve post. Try another account." : {
+
+    },
+    "Fallback" : {
 
     },
     "Fast" : {
@@ -310,6 +343,12 @@
 
     },
     "Hide Read" : {
+
+    },
+    "Hot" : {
+
+    },
+    "Hour" : {
 
     },
     "Idle" : {
@@ -402,6 +441,9 @@
     "Monochrome" : {
 
     },
+    "Month" : {
+
+    },
     "More" : {
 
     },
@@ -409,6 +451,15 @@
 
     },
     "More..." : {
+
+    },
+    "Most Comments" : {
+
+    },
+    "New" : {
+
+    },
+    "New Comments" : {
 
     },
     "New Post" : {
@@ -433,6 +484,9 @@
 
     },
     "NSFW Content" : {
+
+    },
+    "Old" : {
 
     },
     "Open" : {
@@ -534,6 +588,9 @@
     "Saved" : {
 
     },
+    "Scaled" : {
+
+    },
     "Search" : {
 
     },
@@ -576,9 +633,6 @@
     "Show Post Creator" : {
 
     },
-    "Show Read" : {
-
-    },
     "Show User Avatar" : {
 
     },
@@ -601,6 +655,9 @@
 
     },
     "Sort by: %@" : {
+
+    },
+    "Sorting" : {
 
     },
     "Spoiler" : {
@@ -642,6 +699,16 @@
     "Temporary" : {
 
     },
+    "The \"%@\" sort mode is only available on instances running version %@ or later. On instances running earlier versions, the \"Fallback\" sort mode will be used instead." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The \"%1$@\" sort mode is only available on instances running version %2$@ or later. On instances running earlier versions, the \"Fallback\" sort mode will be used instead."
+          }
+        }
+      }
+    },
     "Theme" : {
 
     },
@@ -655,6 +722,12 @@
 
     },
     "Tiled" : {
+
+    },
+    "Top: %@" : {
+
+    },
+    "Top..." : {
 
     },
     "Trailing" : {
@@ -737,6 +810,9 @@
     "Visit" : {
 
     },
+    "Week" : {
+
+    },
     "Welcome %@" : {
       "comment" : "Example: \"Welcome John\""
     },
@@ -744,6 +820,9 @@
       "comment" : "Example: \"Welcome to lemmy.world\""
     },
     "What is Federation?" : {
+
+    },
+    "Year" : {
 
     },
     "Yes" : {

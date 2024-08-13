@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum SettingsPage: Hashable {
-    case root, accounts, account, theme, post, links, subscriptionList, icon
+    case root, accounts, account, theme, post, links, subscriptionList, icon, sorting
     
     @ViewBuilder
     func view() -> some View {
@@ -27,6 +27,8 @@ enum SettingsPage: Hashable {
             PostSettingsView()
         case .links:
             LinkSettingsView()
+        case .sorting:
+            SortingSettingsView()
         case .subscriptionList:
             SubscriptionListSettingsView()
         }

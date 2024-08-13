@@ -45,15 +45,6 @@ struct CommunityView: View {
                 content(community: community, postFeedLoader: postFeedLoader)
                     .outdatedFeedPopup(feedLoader: postFeedLoader)
                     .externalApiWarning(entity: community, isLoading: proxy.isLoading)
-                    .toolbar {
-                        ToolbarItem(placement: .topBarTrailing) {
-                            if community is any Community3Providing, proxy.isLoading {
-                                ProgressView()
-                            } else {
-                                ToolbarEllipsisMenu(community.menuActions(navigation: navigation))
-                            }
-                        }
-                    }
             } else {
                 ProgressView()
                     .tint(palette.secondary)
@@ -104,12 +95,21 @@ struct CommunityView: View {
             .environment(\.communityContext, community)
         }
         .background(postSize.tiled ? palette.groupedBackground : palette.background)
-        .loadFeed(postFeedLoader)
+        .toolbar {
+            ToolbarItemGroup(placement: .secondaryAction) {
+                MenuButtons { community.menuActions(navigation: navigation) }
+            }
+        }
     }
     
     @ViewBuilder
     func postsTab(community: any Community, postFeedLoader: CommunityPostFeedLoader) -> some View {
         PostGridView(postFeedLoader: postFeedLoader)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    FeedSortPicker(feedLoader: postFeedLoader)
+                }
+            }
     }
 
     @ViewBuilder
@@ -159,18 +159,18 @@ struct CommunityView: View {
     
     func setupFeedLoader(community: any Community) {
         @Setting(\.internetSpeed) var internetSpeed
-        @Setting(\.upvoteOnSave) var upvoteOnSave
         @Setting(\.showReadInFeed) var showReadInFeed
-        @Setting(\.defaultPostSort) var defaultSort
         
-        postFeedLoader = .init(
-            pageSize: internetSpeed.pageSize,
-            sortType: .new,
-            showReadPosts: showReadInFeed,
-            filteredKeywords: [],
-            prefetchingConfiguration: .forPostSize(postSize),
-            urlCache: Constants.main.urlCache,
-            community: community
-        )
+        Task { @MainActor in
+            postFeedLoader = try await .init(
+                pageSize: internetSpeed.pageSize,
+                sortType: appState.initialFeedSortType,
+                showReadPosts: showReadInFeed,
+                filteredKeywords: [],
+                prefetchingConfiguration: .forPostSize(postSize),
+                urlCache: Constants.main.urlCache,
+                community: community
+            )
+        }
     }
 }

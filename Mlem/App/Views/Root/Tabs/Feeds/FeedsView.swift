@@ -17,20 +17,21 @@ struct FeedsView: View {
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
-    @State var postFeedLoader: AggregatePostFeedLoader
+    @State var postFeedLoader: AggregatePostFeedLoader?
     @State var savedFeedLoader: PersonContentFeedLoader?
-    @State var feedOptions: [FeedSelection] = FeedSelection.guestCases
+    
     @State var feedSelection: FeedSelection {
         didSet {
+            guard oldValue != feedSelection else { return }
             Task {
                 do {
                     // clear whichever loader is now inactive and refresh/update active loader
                     if feedSelection == .saved {
-                        await postFeedLoader.clear()
+                        await postFeedLoader?.clear()
                         try await savedFeedLoader?.refresh(clearBeforeRefresh: true)
                     } else {
                         savedFeedLoader?.clear()
-                        try await postFeedLoader.changeFeedType(to: feedSelection.associatedApiType)
+                        try await postFeedLoader?.changeFeedType(to: feedSelection.associatedApiType)
                     }
                 } catch {
                     handleError(error)
@@ -41,34 +42,11 @@ struct FeedsView: View {
 
     @State var scrollToTopTrigger: Bool = false
     
-    enum FeedSelection: CaseIterable {
-        case all, local, subscribed, saved
-        // TODO: moderated
-        
-        static var guestCases: [FeedSelection] {
-            [.all, .local]
-        }
-        
-        var description: FeedDescription {
-            switch self {
-            case .all: .all
-            case .local: .local
-            case .subscribed: .subscribed
-            case .saved: .saved
-            }
-        }
-        
-        var associatedApiType: ApiListingType {
-            switch self {
-            case .all: .all
-            case .local: .local
-            case .subscribed: .subscribed
-            case .saved: .all // dummy value
-            }
-        }
+    var feedOptions: [FeedSelection] {
+        appState.firstAccount is UserAccount ? FeedSelection.allCases : FeedSelection.guestCases
     }
     
-    init() {
+    init(feedSelection: FeedSelection = .subscribed) {
         // need to grab some stuff from app storage to initialize with
         @Setting(\.internetSpeed) var internetSpeed
         @Setting(\.upvoteOnSave) var upvoteOnSave
@@ -78,19 +56,9 @@ struct FeedsView: View {
         
         @Dependency(\.persistenceRepository) var persistenceRepository
         
-        let initialFeedSelection: FeedSelection = .subscribed
+        let initialFeedSelection: FeedSelection = feedSelection
         _feedSelection = .init(initialValue: initialFeedSelection)
-        _postFeedLoader = .init(initialValue: .init(
-            pageSize: internetSpeed.pageSize,
-            sortType: .new,
-            showReadPosts: showReadPosts,
-            // Don't load from PersistenceRepository directly here, as we'll be reading from file every time the view is initialized, which can happen frequently
-            filteredKeywords: [],
-            prefetchingConfiguration: .forPostSize(postSize),
-            urlCache: Constants.main.urlCache,
-            api: AppState.main.firstApi,
-            feedType: initialFeedSelection.associatedApiType
-        ))
+        
         if let firstUser = AppState.main.firstAccount as? UserAccount {
             _savedFeedLoader = .init(wrappedValue: .init(
                 api: AppState.main.firstApi,
@@ -99,9 +67,6 @@ struct FeedsView: View {
                 savedOnly: true,
                 prefetchingConfiguration: .forPostSize(postSize)
             ))
-            _feedOptions = .init(wrappedValue: FeedSelection.allCases)
-        } else {
-            _feedOptions = .init(wrappedValue: FeedSelection.guestCases)
         }
     }
     
@@ -109,40 +74,19 @@ struct FeedsView: View {
         content
             .background(postSize.tiled ? palette.groupedBackground : palette.background)
             .navigationBarTitleDisplayMode(.inline)
+            .loadFeed(savedFeedLoader)
             .toolbar {
-                ToolbarEllipsisMenu {
-                    MenuButton(action: BasicAction(
-                        id: "read",
-                        isOn: showRead,
-                        label: showRead ? "Hide Read" : "Show Read",
-                        color: palette.primary,
-                        icon: Icons.read
-                    ) {
-                        showRead = !showRead
-                    })
+                if let postFeedLoader, feedSelection != .saved {
+                    FeedSortPicker(feedLoader: postFeedLoader)
                 }
             }
-            .loadFeed(postFeedLoader)
-            .loadFeed(savedFeedLoader)
             .onChange(of: showRead) {
                 scrollToTopTrigger.toggle()
-                Task {
-                    do {
-                        if showRead {
-                            try await postFeedLoader.removeFilter(.read)
-                        } else {
-                            try await postFeedLoader.addFilter(.read)
-                        }
-                    } catch {
-                        handleError(error)
-                    }
-                }
             }
             .onChange(of: appState.firstApi, initial: false) {
-                postFeedLoader.api = appState.firstApi
-
+                postFeedLoader?.api = appState.firstApi
+                
                 if appState.firstApi.canInteract, let firstUser = appState.firstAccount as? UserAccount {
-                    feedOptions = FeedSelection.allCases
                     if let savedFeedLoader {
                         savedFeedLoader.switchUser(api: appState.firstApi, userId: firstUser.id)
                     } else {
@@ -155,15 +99,18 @@ struct FeedsView: View {
                         )
                     }
                 } else {
-                    feedOptions = FeedSelection.guestCases
                     savedFeedLoader = nil
 
                     // ensure we only show non-authenticated feeds to non-authenticated users
-                    if !FeedSelection.guestCases.contains(feedSelection) {
-                        feedSelection = .all
+                    Task {
+                        if !FeedSelection.guestCases.contains(feedSelection) {
+                            postFeedLoader?.sortType = try await appState.initialFeedSortType
+                            feedSelection = .all
+                        }
                     }
                 }
             }
+            .task(setupFeedLoader)
             .outdatedFeedPopup(feedLoader: {
                 if feedSelection == .saved, let savedFeedLoader {
                     return savedFeedLoader
@@ -180,7 +127,7 @@ struct FeedsView: View {
                 
                 if let savedFeedLoader, feedSelection == .saved {
                     PersonContentGridView(feedLoader: savedFeedLoader)
-                } else {
+                } else if let postFeedLoader {
                     PostGridView(postFeedLoader: postFeedLoader)
                 }
             } header: {
@@ -200,8 +147,8 @@ struct FeedsView: View {
                 .buttonStyle(.plain)
             } footer: {
                 Group {
-                    switch postFeedLoader.loadingState {
-                    case .loading:
+                    switch postFeedLoader?.loadingState {
+                    case .loading, nil:
                         Text("Loading...")
                     case .done:
                         Text("Done")
@@ -211,6 +158,31 @@ struct FeedsView: View {
                 }
                 .frame(maxWidth: .infinity)
             }
+        }
+    }
+    
+    @Sendable
+    @MainActor
+    func setupFeedLoader() async {
+        guard postFeedLoader == nil else { return }
+        
+        @Setting(\.internetSpeed) var internetSpeed
+        @Setting(\.showReadInFeed) var showReadPosts
+        
+        do {
+            postFeedLoader = try await .init(
+                pageSize: internetSpeed.pageSize,
+                sortType: appState.initialFeedSortType,
+                showReadPosts: showReadPosts,
+                filteredKeywords: [],
+                smallAvatarSize: Constants.main.smallAvatarSize,
+                largeAvatarSize: Constants.main.largeAvatarSize,
+                urlCache: Constants.main.urlCache,
+                api: AppState.main.firstApi,
+                feedType: feedSelection.associatedApiType
+            )
+        } catch {
+            handleError(error)
         }
     }
 }

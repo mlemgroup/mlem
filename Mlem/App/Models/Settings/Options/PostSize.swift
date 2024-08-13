@@ -47,4 +47,13 @@ enum PostSize: String, CaseIterable {
         case .large: nil
         }
     }
+    
+    func icon(filled: Bool) -> String {
+        switch self {
+        case .compact: filled ? Icons.compactPostFill : Icons.compactPost
+        case .tile: filled ? Icons.tilePostFill : Icons.tilePost
+        case .headline: filled ? Icons.headlinePostFill : Icons.headlinePost
+        case .large: filled ? Icons.largePostFill : Icons.largePost
+        }
+    }
 }
