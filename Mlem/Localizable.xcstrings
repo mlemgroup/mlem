@@ -31,6 +31,9 @@
         }
       }
     },
+    "%@ Read" : {
+
+    },
     "%lld on %@" : {
       "localizations" : {
         "en" : {
@@ -41,19 +44,7 @@
         }
       }
     },
-    "%@ Replyead" : {
-
-    },
-    "1d" : {
-
-    },
     "%lld on your instance" : {
-
-    },
-    "1mo" : {
-
-    },
-    "1w" : {
 
     },
     "3 Months" : {
@@ -63,9 +54,6 @@
 
     },
     "6 Months" : {
-
-    },
-    "6mo" : {
 
     },
     "9 Months" : {

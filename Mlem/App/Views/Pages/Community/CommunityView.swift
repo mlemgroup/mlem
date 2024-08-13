@@ -84,7 +84,9 @@ struct CommunityView: View {
             VStack {
                 switch selectedTab {
                 case .posts:
-                    postsTab(community: community)
+                    if let postFeedLoader {
+                        postsTab(community: community, postFeedLoader: postFeedLoader)
+                    }
                 case .about:
                     aboutTab(community: community)
                 case .moderation:
