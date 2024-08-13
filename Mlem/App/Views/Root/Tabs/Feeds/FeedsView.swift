@@ -19,7 +19,7 @@ struct FeedsView: View {
     
     @State var postFeedLoader: AggregatePostFeedLoader
     @State var savedFeedLoader: PersonContentFeedLoader?
-    @State var feedOptions: [FeedSelection] = FeedSelection.guestCases
+    
     @State var feedSelection: FeedSelection {
         didSet {
             Task {
@@ -40,6 +40,10 @@ struct FeedsView: View {
     }
 
     @State var scrollToTopTrigger: Bool = false
+    
+    var feedOptions: [FeedSelection] {
+        appState.firstAccount is UserAccount ? FeedSelection.allCases : FeedSelection.guestCases
+    }
     
     init(feedSelection: FeedSelection = .subscribed) {
         // need to grab some stuff from app storage to initialize with
@@ -73,10 +77,7 @@ struct FeedsView: View {
                 smallAvatarSize: Constants.main.smallAvatarSize,
                 largeAvatarSize: Constants.main.largeAvatarSize
             ))
-            _feedOptions = .init(wrappedValue: FeedSelection.allCases)
-        } else {
-            _feedOptions = .init(wrappedValue: FeedSelection.guestCases)
-        }
+        } else {}
     }
     
     var body: some View {
@@ -91,7 +92,6 @@ struct FeedsView: View {
                 postFeedLoader.api = appState.firstApi
 
                 if appState.firstApi.canInteract, let firstUser = appState.firstAccount as? UserAccount {
-                    feedOptions = FeedSelection.allCases
                     if let savedFeedLoader {
                         savedFeedLoader.switchUser(api: appState.firstApi, userId: firstUser.id)
                     } else {
@@ -105,7 +105,6 @@ struct FeedsView: View {
                         )
                     }
                 } else {
-                    feedOptions = FeedSelection.guestCases
                     savedFeedLoader = nil
 
                     // ensure we only show non-authenticated feeds to non-authenticated users

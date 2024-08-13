@@ -17,7 +17,10 @@ struct SubscriptionListView: View {
     @Setting(\.subscriptionSort) private var sort
     
     @State var noDetail: Bool = false
-    @State var feedOptions: [FeedSelection] = FeedSelection.guestCases
+    
+    var feedOptions: [FeedSelection] {
+        appState.firstAccount is UserAccount ? FeedSelection.allCases : FeedSelection.guestCases
+    }
     
     var body: some View {
         MultiplatformView(phone: {
@@ -29,13 +32,6 @@ struct SubscriptionListView: View {
         })
         .navigationTitle("Feeds")
         .navigationBarTitleDisplayMode(.inline)
-        .onChange(of: appState.firstApi, initial: true) {
-            if appState.firstAccount is UserAccount {
-                feedOptions = FeedSelection.allCases
-            } else {
-                feedOptions = FeedSelection.guestCases
-            }
-        }
     }
     
     var detailDisplayed: Bool {
