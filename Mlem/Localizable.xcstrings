@@ -41,6 +41,12 @@
         }
       }
     },
+    "%@ read" : {
+
+    },
+    "1d" : {
+
+    },
     "%lld on your instance" : {
 
     },
@@ -490,6 +496,9 @@
     "Quote" : {
 
     },
+    "Really super long text" : {
+
+    },
     "Received %@" : {
 
     },
@@ -646,6 +655,12 @@
     "Temporary" : {
 
     },
+    "Test" : {
+
+    },
+    "Test Long" : {
+
+    },
     "Theme" : {
 
     },
@@ -704,6 +719,9 @@
           }
         }
       }
+    },
+    "Unfavorited Community" : {
+
     },
     "Unknown" : {
 

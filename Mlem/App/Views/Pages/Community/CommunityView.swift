@@ -44,15 +44,6 @@ struct CommunityView: View {
             if let community = proxy.entity {
                 content(community: community)
                     .externalApiWarning(entity: community, isLoading: proxy.isLoading)
-                    .toolbar {
-                        ToolbarItem(placement: .topBarTrailing) {
-                            if community is any Community3Providing, proxy.isLoading {
-                                ProgressView()
-                            } else {
-                                ToolbarEllipsisMenu(community.menuActions(navigation: navigation))
-                            }
-                        }
-                    }
             } else {
                 ProgressView()
                     .tint(palette.secondary)
@@ -114,6 +105,11 @@ struct CommunityView: View {
         .background(postSize.tiled ? palette.groupedBackground : palette.background)
         .loadFeed(postFeedLoader)
         .outdatedFeedPopup(feedLoader: postFeedLoader)
+        .toolbar {
+            ToolbarItemGroup(placement: .secondaryAction) {
+                MenuButtons { community.menuActions(navigation: navigation) }
+            }
+        }
     }
     
     @ViewBuilder

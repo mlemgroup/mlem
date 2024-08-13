@@ -19,7 +19,7 @@ struct FeedsView: View {
     
     @State var postFeedLoader: AggregatePostFeedLoader
     @State var savedFeedLoader: PersonContentFeedLoader?
-    @State var feedOptions: [FeedSelection] = FeedSelection.guestCases
+    
     @State var feedSelection: FeedSelection {
         didSet {
             Task {
@@ -41,34 +41,11 @@ struct FeedsView: View {
 
     @State var scrollToTopTrigger: Bool = false
     
-    enum FeedSelection: CaseIterable {
-        case all, local, subscribed, saved
-        // TODO: moderated
-        
-        static var guestCases: [FeedSelection] {
-            [.all, .local]
-        }
-        
-        var description: FeedDescription {
-            switch self {
-            case .all: .all
-            case .local: .local
-            case .subscribed: .subscribed
-            case .saved: .saved
-            }
-        }
-        
-        var associatedApiType: ApiListingType {
-            switch self {
-            case .all: .all
-            case .local: .local
-            case .subscribed: .subscribed
-            case .saved: .all // dummy value
-            }
-        }
+    var feedOptions: [FeedSelection] {
+        appState.firstAccount is UserAccount ? FeedSelection.allCases : FeedSelection.guestCases
     }
     
-    init() {
+    init(feedSelection: FeedSelection = .subscribed) {
         // need to grab some stuff from app storage to initialize with
         @Setting(\.internetSpeed) var internetSpeed
         @Setting(\.upvoteOnSave) var upvoteOnSave
@@ -77,7 +54,7 @@ struct FeedsView: View {
         
         @Dependency(\.persistenceRepository) var persistenceRepository
         
-        let initialFeedSelection: FeedSelection = .subscribed
+        let initialFeedSelection: FeedSelection = feedSelection
         _feedSelection = .init(initialValue: initialFeedSelection)
         _postFeedLoader = .init(initialValue: .init(
             pageSize: internetSpeed.pageSize,
@@ -100,9 +77,6 @@ struct FeedsView: View {
                 smallAvatarSize: Constants.main.smallAvatarSize,
                 largeAvatarSize: Constants.main.largeAvatarSize
             ))
-            _feedOptions = .init(wrappedValue: FeedSelection.allCases)
-        } else {
-            _feedOptions = .init(wrappedValue: FeedSelection.guestCases)
         }
     }
     
@@ -110,40 +84,14 @@ struct FeedsView: View {
         content
             .background(postSize.tiled ? palette.groupedBackground : palette.background)
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarEllipsisMenu {
-                    MenuButton(action: BasicAction(
-                        id: "read",
-                        isOn: showRead,
-                        label: showRead ? "Hide Read" : "Show Read",
-                        color: palette.primary,
-                        icon: Icons.read
-                    ) {
-                        showRead = !showRead
-                    })
-                }
-            }
-            .loadFeed(postFeedLoader)
             .loadFeed(savedFeedLoader)
             .onChange(of: showRead) {
                 scrollToTopTrigger.toggle()
-                Task {
-                    do {
-                        if showRead {
-                            try await postFeedLoader.removeFilter(.read)
-                        } else {
-                            try await postFeedLoader.addFilter(.read)
-                        }
-                    } catch {
-                        handleError(error)
-                    }
-                }
             }
             .onChange(of: appState.firstApi, initial: false) {
                 postFeedLoader.api = appState.firstApi
 
                 if appState.firstApi.canInteract, let firstUser = appState.firstAccount as? UserAccount {
-                    feedOptions = FeedSelection.allCases
                     if let savedFeedLoader {
                         savedFeedLoader.switchUser(api: appState.firstApi, userId: firstUser.id)
                     } else {
@@ -157,7 +105,6 @@ struct FeedsView: View {
                         )
                     }
                 } else {
-                    feedOptions = FeedSelection.guestCases
                     savedFeedLoader = nil
 
                     // ensure we only show non-authenticated feeds to non-authenticated users

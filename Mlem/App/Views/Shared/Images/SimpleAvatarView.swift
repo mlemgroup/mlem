@@ -56,7 +56,7 @@ struct SimpleAvatarView: View {
             let imageTask = ImagePipeline.shared.imageTask(with: url)
 
             let image = try await imageTask.image
-            uiImage = image.circleMasked ?? image
+            uiImage = image.circleMasked
             loading = false
         } catch {
             print(error)
