@@ -227,7 +227,7 @@ extension ToastView {
             )
         )
         ToastView(.error(.init()))
-        ToastView(.success("Really super long text"))
+        ToastView(.success(String("Really super long text")))
     }
     .environment(Palette.main)
     .background {

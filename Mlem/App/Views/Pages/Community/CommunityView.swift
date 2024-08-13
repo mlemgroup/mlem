@@ -109,13 +109,6 @@ struct CommunityView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     FeedSortPicker(feedLoader: postFeedLoader)
                 }
-                ToolbarItem(placement: .topBarTrailing) {
-                    if community is any Community3Providing, proxy.isLoading {
-                        ProgressView()
-                    } else {
-                        ToolbarEllipsisMenu(community.menuActions(navigation: navigation))
-                    }
-                }
             }
     }
 

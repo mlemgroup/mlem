@@ -31,7 +31,7 @@
         }
       }
     },
-    "%@ read" : {
+    "%@ Read" : {
 
     },
     "1d" : {
@@ -543,9 +543,6 @@
     "Quote" : {
 
     },
-    "Really super long text" : {
-
-    },
     "Received %@" : {
 
     },
@@ -636,9 +633,6 @@
     "Show Post Creator" : {
 
     },
-    "Show Read" : {
-
-    },
     "Show User Avatar" : {
 
     },
@@ -715,12 +709,6 @@
         }
       }
     },
-    "Test" : {
-
-    },
-    "Test Long" : {
-
-    },
     "Theme" : {
 
     },
@@ -785,9 +773,6 @@
           }
         }
       }
-    },
-    "Unfavorited Community" : {
-
     },
     "Unknown" : {
 

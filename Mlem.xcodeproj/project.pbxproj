@@ -106,10 +106,10 @@
 		0389DDD32C39E4D40005B808 /* PasteLinkButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDD22C39E4D40005B808 /* PasteLinkButtonView.swift */; };
 		0389DDD52C39F1290005B808 /* CommunityListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDD42C39F1290005B808 /* CommunityListRow.swift */; };
 		0389DDDB2C3AB6340005B808 /* ActionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDDA2C3AB6340005B808 /* ActionBuilder.swift */; };
+		0397D4602C66113F002C6CDC /* CommentBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D45F2C66113F002C6CDC /* CommentBodyView.swift */; };
 		0397D4622C676B46002C6CDC /* ApiSortType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4612C676B46002C6CDC /* ApiSortType+Extensions.swift */; };
 		0397D4642C676CA8002C6CDC /* FeedSortPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4632C676CA8002C6CDC /* FeedSortPicker.swift */; };
 		0397D46C2C67E583002C6CDC /* SortingSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D46B2C67E583002C6CDC /* SortingSettingsView.swift */; };
-		0397D4602C66113F002C6CDC /* CommentBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D45F2C66113F002C6CDC /* CommentBodyView.swift */; };
 		039D75642C4EEE69004F24C2 /* DeletableProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039D75632C4EEE69004F24C2 /* DeletableProviding+Extensions.swift */; };
 		039D75672C4FC5A3004F24C2 /* LargeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039D75662C4FC5A3004F24C2 /* LargeImageView.swift */; };
 		039EFEC32BEEBEE0003AC372 /* LoginInstancePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */; };
@@ -394,10 +394,10 @@
 		0389DDD22C39E4D40005B808 /* PasteLinkButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteLinkButtonView.swift; sourceTree = "<group>"; };
 		0389DDD42C39F1290005B808 /* CommunityListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListRow.swift; sourceTree = "<group>"; };
 		0389DDDA2C3AB6340005B808 /* ActionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBuilder.swift; sourceTree = "<group>"; };
+		0397D45F2C66113F002C6CDC /* CommentBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentBodyView.swift; sourceTree = "<group>"; };
 		0397D4612C676B46002C6CDC /* ApiSortType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiSortType+Extensions.swift"; sourceTree = "<group>"; };
 		0397D4632C676CA8002C6CDC /* FeedSortPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSortPicker.swift; sourceTree = "<group>"; };
 		0397D46B2C67E583002C6CDC /* SortingSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingSettingsView.swift; sourceTree = "<group>"; };
-		0397D45F2C66113F002C6CDC /* CommentBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentBodyView.swift; sourceTree = "<group>"; };
 		039D75632C4EEE69004F24C2 /* DeletableProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeletableProviding+Extensions.swift"; sourceTree = "<group>"; };
 		039D75662C4FC5A3004F24C2 /* LargeImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeImageView.swift; sourceTree = "<group>"; };
 		039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInstancePickerView.swift; sourceTree = "<group>"; };
@@ -2324,8 +2324,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				branch = "sjmarf/community-subscription";
-				kind = branch;
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.24.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
