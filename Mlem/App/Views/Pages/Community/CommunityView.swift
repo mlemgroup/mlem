@@ -97,9 +97,7 @@ struct CommunityView: View {
         .background(postSize.tiled ? palette.groupedBackground : palette.background)
         .toolbar {
             ToolbarItemGroup(placement: .secondaryAction) {
-                ForEach(community.menuActions(navigation: navigation), id: \.id) { action in
-                    MenuButton(action: action)
-                }
+                MenuButtons { community.menuActions(navigation: navigation) }
             }
         }
     }
