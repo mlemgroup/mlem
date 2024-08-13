@@ -30,7 +30,7 @@ struct SubscriptionListView: View {
         .navigationTitle("Feeds")
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: appState.firstApi, initial: true) {
-            if appState.firstApi.canInteract, appState.firstAccount is UserAccount {
+            if appState.firstAccount is UserAccount {
                 feedOptions = FeedSelection.allCases
             } else {
                 feedOptions = FeedSelection.guestCases
