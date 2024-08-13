@@ -12,10 +12,15 @@ struct SubscriptionListView: View {
     @Environment(AppState.self) private var appState
     @Environment(NavigationLayer.self) private var navigation
     @Environment(TabReselectTracker.self) var tabReselectTracker
+    @Environment(Palette.self) var palette
     
     @Setting(\.subscriptionSort) private var sort
     
     @State var noDetail: Bool = false
+    
+    var feedOptions: [FeedSelection] {
+        appState.firstAccount is UserAccount ? FeedSelection.allCases : FeedSelection.guestCases
+    }
     
     var body: some View {
         MultiplatformView(phone: {
@@ -45,8 +50,14 @@ struct SubscriptionListView: View {
         ScrollViewReader { proxy in
             List {
                 Section {
-                    NavigationLink(.feeds) {
-                        Text("Feeds")
+                    ForEach(feedOptions, id: \.hashValue) { feedOption in
+                        NavigationLink(.feeds(feedOption)) {
+                            HStack(spacing: 15) {
+                                FeedIconView(feedDescription: feedOption.description, size: 28)
+                                
+                                Text(feedOption.description.label)
+                            }
+                        }
                     }
                 }
                 

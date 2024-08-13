@@ -11,7 +11,8 @@ import SwiftUI
 enum NavigationPage: Hashable {
     case settings(_ page: SettingsPage = .root)
     case login(_ page: LoginPage = .pickInstance)
-    case feeds, profile, inbox, search
+    case feeds(_ selection: FeedSelection = .all)
+    case profile, inbox, search
     case quickSwitcher
     case expandedPost(_ post: AnyPost, commentId: Int? = nil)
     case community(_ community: AnyCommunity)
@@ -67,8 +68,8 @@ extension NavigationPage {
             page.view()
         case let .login(page):
             page.view()
-        case .feeds:
-            FeedsView()
+        case let .feeds(feedSelection):
+            FeedsView(feedSelection: feedSelection)
         case let .community(community):
             CommunityView(community: community)
         case .profile:

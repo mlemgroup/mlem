@@ -31,6 +31,9 @@
         }
       }
     },
+    "%@ read" : {
+
+    },
     "1d" : {
 
     },
@@ -540,6 +543,9 @@
     "Quote" : {
 
     },
+    "Really super long text" : {
+
+    },
     "Received %@" : {
 
     },
@@ -709,6 +715,12 @@
         }
       }
     },
+    "Test" : {
+
+    },
+    "Test Long" : {
+
+    },
     "Theme" : {
 
     },
@@ -773,6 +785,9 @@
           }
         }
       }
+    },
+    "Unfavorited Community" : {
+
     },
     "Unknown" : {
 

@@ -95,7 +95,7 @@ struct ContentView: View {
                 image: UIImage(systemName: Icons.feeds),
                 selectedImage: UIImage(systemName: Icons.feedsFill)
             ) {
-                NavigationSplitRootView(sidebar: .subscriptionList, root: .feeds)
+                NavigationSplitRootView(sidebar: .subscriptionList, root: .feeds(appState.firstApi.willSendToken ? .subscribed : .all))
             },
             CustomTabItem(
                 title: "Inbox",
