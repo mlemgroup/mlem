@@ -82,6 +82,8 @@ struct ContentView: View {
     }
     
     @ViewBuilder
+    // I got another one of those "Calling into SwiftUI on non-main thread" errors... hopefully this fixes it? Hard to reproduce
+    @MainActor
     var content: some View {
         CustomTabView(selectedIndex: Binding(get: {
             Tab.allCases.firstIndex(of: appState.contentViewTab) ?? 0

@@ -105,6 +105,11 @@ struct CommunityView: View {
     @ViewBuilder
     func postsTab(community: any Community, postFeedLoader: CommunityPostFeedLoader) -> some View {
         PostGridView(postFeedLoader: postFeedLoader)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    FeedSortPicker(feedLoader: postFeedLoader)
+                }
+            }
     }
 
     @ViewBuilder
@@ -154,19 +159,19 @@ struct CommunityView: View {
     
     func setupFeedLoader(community: any Community) {
         @Setting(\.internetSpeed) var internetSpeed
-        @Setting(\.upvoteOnSave) var upvoteOnSave
         @Setting(\.showReadInFeed) var showReadInFeed
-        @Setting(\.defaultPostSort) var defaultSort
         
-        postFeedLoader = .init(
-            pageSize: internetSpeed.pageSize,
-            sortType: .new,
-            showReadPosts: showReadInFeed,
-            filteredKeywords: [],
-            smallAvatarSize: Constants.main.smallAvatarSize,
-            largeAvatarSize: Constants.main.largeAvatarSize,
-            urlCache: Constants.main.urlCache,
-            community: community
-        )
+        Task { @MainActor in
+            postFeedLoader = try await .init(
+                pageSize: internetSpeed.pageSize,
+                sortType: appState.initialFeedSortType,
+                showReadPosts: showReadInFeed,
+                filteredKeywords: [],
+                smallAvatarSize: Constants.main.smallAvatarSize,
+                largeAvatarSize: Constants.main.largeAvatarSize,
+                urlCache: Constants.main.urlCache,
+                community: community
+            )
+        }
     }
 }
