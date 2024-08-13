@@ -37,12 +37,13 @@ struct FixedImageView: View {
     
     init(
         url: URL?,
+        maxSize: CGFloat? = nil,
         fallback: Fallback,
         showProgress: Bool
     ) {
         self.fallback = fallback
         self.showProgress = showProgress
-        self.loader = .init(url: url)
+        self.loader = .init(url: url, maxSize: maxSize)
     }
     
     var body: some View {

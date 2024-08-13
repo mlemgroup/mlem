@@ -39,14 +39,12 @@ enum PostSize: String, CaseIterable {
         }
     }
     
-    var imageSize: Int? {
-        // TODO: Vary this by device? By `Settings.internetSpeed`?
+    var imageSize: CGFloat? {
+        // TODO: Vary this by device?
         switch self {
-        case .compact, .headline: 256
+        case .compact, .headline: 128
         case .tile: 512
-        case .large: 1024
+        case .large: nil
         }
     }
-    
-    static let allImageSizes: [Int] = Set(allCases.compactMap(\.imageSize)).sorted().reversed()
 }

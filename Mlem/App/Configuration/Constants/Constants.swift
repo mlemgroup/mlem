@@ -37,6 +37,8 @@ class Constants {
     let urlCache: URLCache = .init(memoryCapacity: 500_000_000, diskCapacity: 500_000_000)
     /// URLSession to use for image caching
     let urlSession: URLSession = .init(configuration: .default)
+    /// Images are fetched at this resolution when displayed in the feed, and the maximum resolution is only fetched when the image viewer is opened
+    let feedImageResolution: Int = 1024
     
     // MARK: Keychain
 

@@ -15,26 +15,29 @@ class ImageLoader {
     private(set) var uiImage: UIImage?
     private(set) var loading: ImageLoadingState
     private(set) var error: Error?
+    private(set) var maxSize: CGFloat?
     
-    init(url: URL?) {
+    init(url: URL?, maxSize: CGFloat? = nil) {
         self.url = url
+        self.maxSize = maxSize
         
         if let url {
             if let image = ImagePipeline.shared.cache.cachedImage(for: .init(url: url))?.image {
-                self.uiImage = image
+                self.uiImage = resizeImage(image: image, maxSize: maxSize)
                 self.loading = .done
                 return
             }
-            
-            let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-            let urlSize = Int(components?.queryItems?.first(where: { $0.name == "thumbnail" })?.value ?? "")
                         
-            for size in PostSize.allImageSizes where size < urlSize ?? .max {
-                if let image = ImagePipeline.shared.cache.cachedImage(for: .init(url: url.withIconSize(size)))?.image {
-                    self.uiImage = image
-                    self.loading = [image.size.width, image.size.height].contains(CGFloat(size)) ? .loading : .done
-                    return
+            if let image = ImagePipeline.shared.cache.cachedImage(
+                for: .init(url: url.withIconSize(Constants.main.feedImageResolution))
+            )?.image {
+                self.uiImage = image
+                if [image.size.width, image.size.height].contains(CGFloat(Constants.main.feedImageResolution)) {
+                    self.loading = .loading
+                } else {
+                    self.loading = .done
                 }
+                return
             }
         }
 
@@ -47,16 +50,27 @@ class ImageLoader {
     func load() async {
         guard let url, loading == .loading else { return }
         do {
-            print("START")
             let imageTask = ImagePipeline.shared.imageTask(with: url)
             imageTask.priority = .veryHigh
-            let image = try await imageTask.image
-            uiImage = image
+            var image = try await imageTask.image
+            uiImage = resizeImage(image: image, maxSize: maxSize)
             loading = .done
-            print("DONE")
         } catch {
             self.error = error
             loading = .failed
         }
     }
+}
+
+private func resizeImage(image: UIImage, maxSize: CGFloat?) -> UIImage {
+    if let maxSize, image.size.width > maxSize || image.size.height > maxSize {
+        let size: CGSize
+        if image.size.width > image.size.height {
+            size = CGSize(width: maxSize, height: image.size.height * (maxSize / image.size.width))
+        } else {
+            size = CGSize(width: image.size.width * (maxSize / image.size.height), height: maxSize)
+        }
+        return image.resized(to: size)
+    }
+    return image
 }

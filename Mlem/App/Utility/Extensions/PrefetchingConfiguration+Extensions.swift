@@ -10,15 +10,9 @@ import Nuke
 
 extension PrefetchingConfiguration {
     static func forPostSize(_ postSize: PostSize) -> Self {
-        let imageSize: ImageResolution
-        if let size = postSize.imageSize {
-            imageSize = .limited(size)
-        } else {
-            imageSize = .unlimited
-        }
-        return .init(
+        .init(
             prefetcher: .init(pipeline: .shared, destination: .memoryCache, maxConcurrentRequestCount: 40),
-            imageSize: imageSize,
+            imageSize: .limited(Constants.main.feedImageResolution),
             avatarSize: postSize.avatarSize
         )
     }

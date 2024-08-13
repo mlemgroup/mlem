@@ -82,11 +82,16 @@ struct ThumbnailImageView: View {
     @ViewBuilder
     var standardContent: some View {
         if let url {
-            FixedImageView(url: url.withIconSize(PostSize.compact.imageSize), fallback: .image, showProgress: true)
-                .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
-                .blur(radius: blurred ? 10 : 0, opaque: true)
-                .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
-                .onPreferenceChange(ImageLoadingPreferenceKey.self, perform: { loading = $0 })
+            FixedImageView(
+                url: url.withIconSize(Constants.main.feedImageResolution),
+                maxSize: PostSize.compact.imageSize,
+                fallback: .image,
+                showProgress: true
+            )
+            .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
+            .blur(radius: blurred ? 10 : 0, opaque: true)
+            .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
+            .onPreferenceChange(ImageLoadingPreferenceKey.self, perform: { loading = $0 })
         } else {
             Image(systemName: post.placeholderImageName)
                 .font(.title)
@@ -102,9 +107,14 @@ struct ThumbnailImageView: View {
     @ViewBuilder
     var tileContent: some View {
         if let url {
-            FixedImageView(url: url.withIconSize(PostSize.tile.imageSize), fallback: .image, showProgress: true)
-                .blur(radius: blurred ? 10 : 0, opaque: true)
-                .onPreferenceChange(ImageLoadingPreferenceKey.self, perform: { loading = $0 })
+            FixedImageView(
+                url: url.withIconSize(Constants.main.feedImageResolution),
+                maxSize: PostSize.tile.imageSize,
+                fallback: .image,
+                showProgress: true
+            )
+            .blur(radius: blurred ? 10 : 0, opaque: true)
+            .onPreferenceChange(ImageLoadingPreferenceKey.self, perform: { loading = $0 })
         } else {
             Image(systemName: post.placeholderImageName)
                 .resizable()

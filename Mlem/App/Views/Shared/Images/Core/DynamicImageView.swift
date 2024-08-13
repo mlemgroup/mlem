@@ -24,12 +24,13 @@ struct DynamicImageView: View {
     
     init(
         url: URL?,
+        maxSize: CGFloat? = nil,
         showError: Bool = true,
         cornerRadius: CGFloat = Constants.main.mediumItemCornerRadius
     ) {
         self.showError = showError
         self.cornerRadius = cornerRadius
-        self._loader = .init(wrappedValue: .init(url: url))
+        self._loader = .init(wrappedValue: .init(url: url, maxSize: maxSize))
     }
     
     var body: some View {
