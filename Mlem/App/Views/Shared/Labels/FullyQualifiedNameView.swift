@@ -24,7 +24,7 @@ enum InstanceLocation: String, CaseIterable {
 }
 
 struct FullyQualifiedNameView: View {
-    @Environment(Palette.self) var palette
+    @Environment(Palette.self) private var palette
     
     // parameters
     let name: String?

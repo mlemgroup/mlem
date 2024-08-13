@@ -16,7 +16,7 @@ struct PostComposerView: View {
     @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
-    @State var community: AnyCommunity?
+    @State var community: (any CommunityStubProviding)?
     
     let titleTextView: UITextView
     let contentTextView: UITextView
@@ -29,7 +29,7 @@ struct PostComposerView: View {
     @State var account: UserAccount
     
     init?(community: AnyCommunity?) {
-        self._community = .init(wrappedValue: community)
+        self._community = .init(wrappedValue: community?.wrappedValue)
         self.titleTextView = .init()
         self.contentTextView = .init()
         titleTextView.tag = 0
@@ -87,12 +87,16 @@ struct PostComposerView: View {
     
     var canDismiss: Bool { titleIsEmpty && contentIsEmpty }
     
+    var canSubmit: Bool { !titleIsEmpty && !contentIsEmpty && community != nil }
+    
     @ViewBuilder
     var contentView: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 targetInfo
                     .padding(.bottom, 10)
+                Divider()
+                    .padding(.bottom, 6)
                 MarkdownTextEditor(
                     onChange: {
                         // Avoid unnecessary view update
@@ -140,40 +144,66 @@ struct PostComposerView: View {
     
     @ViewBuilder
     var targetInfo: some View {
-        HStack {
-            if let community = community?.wrappedValue as? any Community {
-                Button {
-                    navigation.openSheet(.communityPicker(callback: { self.community = .init($0) }))
-                } label: {
-                    Group {
-                        // Hide community instance if the line is too long.
-                        ViewThatFits {
-                            FullyQualifiedLabelView(
-                                entity: community,
-                                labelStyle: .small,
-                                showInstance: true
-                            )
-                            FullyQualifiedLabelView(
-                                entity: community,
-                                labelStyle: .small,
-                                showInstance: false
-                            )
-                        }
+        Grid(
+            alignment: .center,
+            horizontalSpacing: 8,
+            verticalSpacing: 8
+        ) {
+            GridRow {
+                Image(systemName: Icons.communityFill)
+                    .foregroundStyle(palette.secondary)
+                    .fontWeight(.semibold)
+                communityPicker
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            if AccountsTracker.main.userAccounts.count > 1 {
+                GridRow {
+                    Image(systemName: Icons.personFill)
+                        .foregroundStyle(palette.secondary)
+                        .fontWeight(.semibold)
+                    AccountPickerMenu(account: $account) {
+                        FullyQualifiedLabelView(
+                            entity: account,
+                            labelStyle: .small
+                        )
+                        .padding(.init(top: 2, leading: 4, bottom: 2, trailing: 8))
+                        .background(palette.secondaryBackground, in: .capsule)
                     }
-                    .padding(.init(top: 2, leading: 4, bottom: 2, trailing: 8))
-                    .background(palette.secondaryBackground, in: .capsule)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
-            AccountPickerMenu(account: $account) {
+        }
+        .font(.footnote)
+        .padding(.leading, 15)
+    }
+    
+    @ViewBuilder
+    var communityPicker: some View {
+        Button {
+            navigation.openSheet(.communityPicker(callback: { community = .init($0) }))
+        } label: {
+            if let community = community as? any Community {
                 FullyQualifiedLabelView(
-                    entity: account,
+                    entity: community,
                     labelStyle: .small
                 )
                 .padding(.init(top: 2, leading: 4, bottom: 2, trailing: 8))
                 .background(palette.secondaryBackground, in: .capsule)
+            } else if let community {
+                FullyQualifiedNameView(name: community.name, instance: community.host, instanceLocation: .trailing)
+                    .task {
+                        do {
+                            self.community = try await community.upgrade()
+                        } catch {
+                            handleError(error)
+                        }
+                    }
+            } else {
+                Text("Choose a community...")
+                    .padding(.vertical, 2)
+                    .padding(.horizontal, 8)
+                    .background(palette.secondaryBackground, in: .capsule)
             }
         }
-        .font(.caption)
-        .padding(.horizontal, 10)
     }
 }
