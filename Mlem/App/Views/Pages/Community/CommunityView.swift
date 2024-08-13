@@ -95,12 +95,18 @@ struct CommunityView: View {
             .environment(\.communityContext, community)
         }
         .background(postSize.tiled ? palette.groupedBackground : palette.background)
-        .loadFeed(postFeedLoader)
+        .toolbar {
+            ToolbarItemGroup(placement: .secondaryAction) {
+                ForEach(community.menuActions(navigation: navigation), id: \.id) { action in
+                    MenuButton(action: action)
+                }
+            }
+        }
     }
     
     @ViewBuilder
     func postsTab(community: any Community, postFeedLoader: CommunityPostFeedLoader) -> some View {
-        PostGridView(postFeedLoader: postFeedLoader, actions: community.menuActions(navigation: navigation))
+        PostGridView(postFeedLoader: postFeedLoader) // , actions: community.menuActions(navigation: navigation))
     }
 
     @ViewBuilder

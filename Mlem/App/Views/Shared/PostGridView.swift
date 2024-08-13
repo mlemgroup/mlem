@@ -28,11 +28,9 @@ struct PostGridView: View {
     @State var frameWidth: CGFloat = .zero
     
     let postFeedLoader: CorePostFeedLoader
-    let actions: [any Action]?
     
     init(postFeedLoader: CorePostFeedLoader, actions: [any Action]? = nil) {
         self.postFeedLoader = postFeedLoader
-        self.actions = actions
     }
     
     var body: some View {
@@ -69,17 +67,9 @@ struct PostGridView: View {
                 }
             }
             .toolbar {
-                ToolbarEllipsisMenu {
-                    if let actions {
-                        ForEach(actions, id: \.id) { action in
-                            MenuButton(action: action)
-                        }
-                    }
-                    
-                    Divider()
-                    
-                    ForEach(standardActions, id: \.id) { action in
-                        MenuButton(action: action)
+                ToolbarItemGroup(placement: .secondaryAction) {
+                    Section {
+                        standardMenu
                     }
                 }
             }
@@ -107,6 +97,23 @@ struct PostGridView: View {
                     }
                 }
             }
+        }
+    }
+    
+    @ViewBuilder
+    var standardMenu: some View {
+        Button("\(showRead ? "Hide" : "Show") read", systemImage: Icons.read) {
+            showRead = !showRead
+        }
+        
+        Menu {
+            Picker("Post Size", selection: $postSize) {
+                ForEach(PostSize.allCases, id: \.self) { item in
+                    Label(item.label.key, systemImage: item.icon(filled: postSize == item))
+                }
+            }
+        } label: {
+            Label("Post Size", systemImage: Icons.postSizeSetting)
         }
     }
 }
