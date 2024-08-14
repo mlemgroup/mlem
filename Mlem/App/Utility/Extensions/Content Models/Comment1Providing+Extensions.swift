@@ -48,6 +48,7 @@ extension Comment1Providing {
             if self.isOwnComment {
                 deleteAction(feedback: feedback)
             } else {
+                reportAction()
                 blockCreatorAction(feedback: feedback)
             }
         }
