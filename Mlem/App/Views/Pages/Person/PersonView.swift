@@ -36,9 +36,7 @@ struct PersonView: View {
     
     var body: some View {
         content
-            .onPreferenceChange(IsAtTopPreferenceKey.self, perform: { value in
-                isAtTop = value
-            })
+            .isAtTopSubscriber(isAtTop: $isAtTop)
     }
     
     var content: some View {

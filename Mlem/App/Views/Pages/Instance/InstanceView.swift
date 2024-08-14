@@ -68,9 +68,7 @@ struct InstanceView: View {
                 handleError(error)
             }
         }
-        .onPreferenceChange(IsAtTopPreferenceKey.self, perform: { value in
-            isAtTop = value
-        })
+        .isAtTopSubscriber(isAtTop: $isAtTop)
         .navigationBarTitleDisplayMode(.inline)
     }
     
