@@ -13,6 +13,7 @@ struct PersonListRowBody<Content: View>: View {
     enum Readout { case postsAndComments }
     
     @Environment(Palette.self) var palette
+    @Environment(\.communityContext) var communityContext
     
     let person: any Person
     var showBlockStatus: Bool = true
@@ -85,7 +86,7 @@ struct PersonListRowBody<Content: View>: View {
             }
         }
         .padding(.horizontal)
-        .contentShape(Rectangle())
+        .contentShape(.rect)
     }
     
     var dateFormatter: DateFormatter {
@@ -135,7 +136,7 @@ struct PersonListRowBody<Content: View>: View {
     }
     
     var flairs: [PersonFlair] {
-        let flairs = person.flairs()
+        let flairs = person.flairs(communityContext: communityContext as? any Community3Providing)
         return PersonFlair.allCases.filter { flairs.contains($0) }
     }
 }

@@ -37,13 +37,17 @@
     "%@ Read" : {
 
     },
-    "1d" : {
-
+    "%lld on %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld on %2$@"
+          }
+        }
+      }
     },
-    "1mo" : {
-
-    },
-    "1w" : {
+    "%lld on your instance" : {
 
     },
     "3 Months" : {
@@ -53,9 +57,6 @@
 
     },
     "6 Months" : {
-
-    },
-    "6mo" : {
 
     },
     "9 Months" : {
@@ -688,6 +689,9 @@
 
     },
     "Subscribed" : {
+
+    },
+    "Subscribers" : {
 
     },
     "Subscript" : {

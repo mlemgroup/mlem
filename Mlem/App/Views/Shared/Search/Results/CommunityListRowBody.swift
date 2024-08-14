@@ -89,7 +89,7 @@ struct CommunityListRowBody<Content: View>: View {
             }
         }
         .padding(.horizontal)
-        .contentShape(Rectangle())
+        .contentShape(.rect)
     }
     
     @ViewBuilder
