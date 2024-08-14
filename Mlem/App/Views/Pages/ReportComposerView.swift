@@ -136,7 +136,7 @@ struct ReportComposerView: View {
     func send() async {
         do {
             try await target.report(reason: reason)
-            HapticManager.main.play(haptic: .success, priority: .low)
+            await HapticManager.main.play(haptic: .success, priority: .low)
             dismiss()
         } catch {
             handleError(error)
