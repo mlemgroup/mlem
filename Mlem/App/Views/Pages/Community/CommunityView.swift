@@ -41,9 +41,8 @@ struct CommunityView: View {
     
     var body: some View {
         ContentLoader(model: community) { proxy in
-            if let community = proxy.entity, let postFeedLoader {
-                content(community: community, postFeedLoader: postFeedLoader)
-                    .outdatedFeedPopup(feedLoader: postFeedLoader)
+            if let community = proxy.entity {
+                content(community: community)
                     .externalApiWarning(entity: community, isLoading: proxy.isLoading)
             } else {
                 ProgressView()
@@ -63,7 +62,7 @@ struct CommunityView: View {
     }
         
     @ViewBuilder
-    func content(community: any Community, postFeedLoader: CommunityPostFeedLoader) -> some View {
+    func content(community: any Community) -> some View {
         FancyScrollView {
             HStack {
                 FeedHeaderView(
@@ -85,9 +84,20 @@ struct CommunityView: View {
             VStack {
                 switch selectedTab {
                 case .posts:
-                    postsTab(community: community, postFeedLoader: postFeedLoader)
+                    if let postFeedLoader {
+                        postsTab(community: community, postFeedLoader: postFeedLoader)
+                    }
                 case .about:
                     aboutTab(community: community)
+                case .moderation:
+                    if postSize == .tile {
+                        FormSection { moderationTab(community: community) }
+                            .padding(.horizontal, 16)
+                    } else {
+                        moderationTab(community: community)
+                    }
+                case .details:
+                    CommunityDetailsView(community: community)
                 default:
                     EmptyView()
                 }
@@ -95,6 +105,8 @@ struct CommunityView: View {
             .environment(\.communityContext, community)
         }
         .background(postSize.tiled ? palette.groupedBackground : palette.background)
+        .loadFeed(postFeedLoader)
+        .outdatedFeedPopup(feedLoader: postFeedLoader)
         .toolbar {
             ToolbarItemGroup(placement: .secondaryAction) {
                 MenuButtons { community.menuActions(navigation: navigation) }
@@ -123,6 +135,17 @@ struct CommunityView: View {
             }
         }
         .padding(Constants.main.standardSpacing)
+    }
+    
+    @ViewBuilder
+    func moderationTab(community: any Community) -> some View {
+        VStack(spacing: 0) {
+            ForEach(community.moderators_ ?? []) { person in
+                PersonListRow(person)
+                Divider()
+                    .padding(.leading, 71)
+            }
+        }
     }
     
     @ViewBuilder

@@ -63,6 +63,6 @@ struct InstanceListRowBody<Content: View>: View {
             content()
         }
         .padding(.horizontal)
-        .contentShape(Rectangle())
+        .contentShape(.rect)
     }
 }

@@ -14,11 +14,9 @@ struct ProfileDateView: View {
     var profilable: any Profile2Providing
     
     var body: some View {
-        HStack {
-            Label(format(profilable.created), systemImage: Icons.cakeDay)
-        }
-        .foregroundStyle(palette.secondary)
-        .font(.footnote)
+        Label(format(profilable.created), systemImage: Icons.cakeDay)
+            .foregroundStyle(palette.secondary)
+            .font(.footnote)
     }
     
     func format(_ date: Date) -> String {
