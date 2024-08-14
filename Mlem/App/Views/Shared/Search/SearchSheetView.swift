@@ -18,6 +18,8 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
     }
     
     @ViewBuilder let content: ([Item], DismissAction) -> Content
+    /// If `nil`, the active ApiClient will be used.
+    let api: ApiClient?
     let closeButtonLabel: CloseButtonLabel
     
     @State var query: String = ""
@@ -27,9 +29,11 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
     @State var focused: Bool = true
     
     init(
+        api: ApiClient? = nil,
         closeButtonLabel: CloseButtonLabel = .cancel,
         @ViewBuilder content: @escaping ([Item], DismissAction) -> Content
     ) {
+        self.api = api
         self.content = content
         self.closeButtonLabel = closeButtonLabel
     }
@@ -78,9 +82,11 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
 
 extension SearchSheetView {
     init<Content2: View>(
+        api: ApiClient? = nil,
         closeButtonLabel: CloseButtonLabel = .cancel,
         @ViewBuilder content: @escaping (Item, DismissAction) -> Content2
     ) where Content == SearchResultsView<Item, Content2> {
+        self.api = api
         self.closeButtonLabel = closeButtonLabel
         self.content = { (results: [Item], dismiss: DismissAction) in
             SearchResultsView(results: results) { item in

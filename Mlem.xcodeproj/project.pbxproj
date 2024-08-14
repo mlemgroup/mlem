@@ -107,10 +107,11 @@
 		0389DDD52C39F1290005B808 /* CommunityListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDD42C39F1290005B808 /* CommunityListRow.swift */; };
 		0389DDDB2C3AB6340005B808 /* ActionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDDA2C3AB6340005B808 /* ActionBuilder.swift */; };
 		0397D4602C66113F002C6CDC /* CommentBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D45F2C66113F002C6CDC /* CommentBodyView.swift */; };
-		0397D48A2C6A97B5002C6CDC /* PostComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4892C6A97B5002C6CDC /* PostComposerView.swift */; };
 		0397D4622C676B46002C6CDC /* ApiSortType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4612C676B46002C6CDC /* ApiSortType+Extensions.swift */; };
 		0397D4642C676CA8002C6CDC /* FeedSortPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4632C676CA8002C6CDC /* FeedSortPicker.swift */; };
 		0397D46C2C67E583002C6CDC /* SortingSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D46B2C67E583002C6CDC /* SortingSettingsView.swift */; };
+		0397D4912C6CE871002C6CDC /* PostComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D48F2C6CE871002C6CDC /* PostComposerView.swift */; };
+		0397D4932C6CE87E002C6CDC /* PostComposerTargetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4922C6CE87E002C6CDC /* PostComposerTargetView.swift */; };
 		039D75642C4EEE69004F24C2 /* DeletableProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039D75632C4EEE69004F24C2 /* DeletableProviding+Extensions.swift */; };
 		039D75672C4FC5A3004F24C2 /* LargeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039D75662C4FC5A3004F24C2 /* LargeImageView.swift */; };
 		039EFEC32BEEBEE0003AC372 /* LoginInstancePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */; };
@@ -396,10 +397,11 @@
 		0389DDD42C39F1290005B808 /* CommunityListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListRow.swift; sourceTree = "<group>"; };
 		0389DDDA2C3AB6340005B808 /* ActionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBuilder.swift; sourceTree = "<group>"; };
 		0397D45F2C66113F002C6CDC /* CommentBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentBodyView.swift; sourceTree = "<group>"; };
-		0397D4892C6A97B5002C6CDC /* PostComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComposerView.swift; sourceTree = "<group>"; };
 		0397D4612C676B46002C6CDC /* ApiSortType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiSortType+Extensions.swift"; sourceTree = "<group>"; };
 		0397D4632C676CA8002C6CDC /* FeedSortPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSortPicker.swift; sourceTree = "<group>"; };
 		0397D46B2C67E583002C6CDC /* SortingSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingSettingsView.swift; sourceTree = "<group>"; };
+		0397D48F2C6CE871002C6CDC /* PostComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComposerView.swift; sourceTree = "<group>"; };
+		0397D4922C6CE87E002C6CDC /* PostComposerTargetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComposerTargetView.swift; sourceTree = "<group>"; };
 		039D75632C4EEE69004F24C2 /* DeletableProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeletableProviding+Extensions.swift"; sourceTree = "<group>"; };
 		039D75662C4FC5A3004F24C2 /* LargeImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeImageView.swift; sourceTree = "<group>"; };
 		039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInstancePickerView.swift; sourceTree = "<group>"; };
@@ -789,11 +791,20 @@
 				0355F9452C150B2300605248 /* ExternalApiInfoView.swift */,
 				03AF91DC2C1B23E500E56644 /* ImageViewer.swift */,
 				03B431B12C44409D001A1EB5 /* ReplyComposerView.swift */,
-				0397D4892C6A97B5002C6CDC /* PostComposerView.swift */,
+				0397D4902C6CE871002C6CDC /* PostComposer */,
 			);
 			name = Pages;
 			path = Mlem/App/Views/Pages;
 			sourceTree = SOURCE_ROOT;
+		};
+		0397D4902C6CE871002C6CDC /* PostComposer */ = {
+			isa = PBXGroup;
+			children = (
+				0397D48F2C6CE871002C6CDC /* PostComposerView.swift */,
+				0397D4922C6CE87E002C6CDC /* PostComposerTargetView.swift */,
+			);
+			path = PostComposer;
+			sourceTree = "<group>";
 		};
 		039D75652C4FC56A004F24C2 /* Images */ = {
 			isa = PBXGroup;
@@ -1722,6 +1733,7 @@
 				CDE1F19C2C63E2EB008AF042 /* SettingPropertyWrapper.swift in Sources */,
 				038096612C10AAD8003ED1D8 /* TransitionView.swift in Sources */,
 				0382A7F42C0A76A900C79DDA /* Date+Extensions.swift in Sources */,
+				0397D4912C6CE871002C6CDC /* PostComposerView.swift in Sources */,
 				03D2A63B2C010B7500ED4FF2 /* GuestAccount.swift in Sources */,
 				CDE1F1962C63DF89008AF042 /* PhoneConstants.swift in Sources */,
 				CD4ED84A2BF1113800EFA0A2 /* View+TabReselectConsumer.swift in Sources */,
@@ -1787,6 +1799,7 @@
 				03531EF52C2DA610004A3464 /* NavigationSearchType.swift in Sources */,
 				CD8DCAF92C5E92E8003E4DD7 /* Profile1Providing+Extensions.swift in Sources */,
 				CDB2EC8A2BFAEFDF00DBC0EF /* ThumbnailImageView.swift in Sources */,
+				0397D4932C6CE87E002C6CDC /* PostComposerTargetView.swift in Sources */,
 				CD7882A52BFE94D2002E1A30 /* CommunityContext.swift in Sources */,
 				0369B3562BFA6824001EFEDF /* InboxView.swift in Sources */,
 				CD4D59162B87B38C00B82964 /* UIApplication+Extensions.swift in Sources */,
@@ -1869,7 +1882,6 @@
 				CDBFCB6C2C054AA7008CD468 /* TilePostView.swift in Sources */,
 				0380965F2C10AA80003ED1D8 /* AppState+Transition.swift in Sources */,
 				CD4D58932B86BA5C00B82964 /* StandardPalette.swift in Sources */,
-				0397D48A2C6A97B5002C6CDC /* PostComposerView.swift in Sources */,
 				CDE1F1942C63DF44008AF042 /* PlatformConstants.swift in Sources */,
 				CDCA44952C17658000C092B3 /* View+QuickSwipes.swift in Sources */,
 				0397D4602C66113F002C6CDC /* CommentBodyView.swift in Sources */,

@@ -16,8 +16,6 @@ struct PostComposerView: View {
     @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
-    @State var community: (any CommunityStubProviding)?
-    
     let titleTextView: UITextView
     let contentTextView: UITextView
     
@@ -26,16 +24,15 @@ struct PostComposerView: View {
     @State var contentIsEmpty: Bool = true
     @State var lastFocusedField: Field = .title
     
-    @State var account: UserAccount
+    @State var target: PostComposerTarget
     
     init?(community: AnyCommunity?) {
-        self._community = .init(wrappedValue: community?.wrappedValue)
         self.titleTextView = .init()
         self.contentTextView = .init()
         titleTextView.tag = 0
         contentTextView.tag = 1
-        if let userAccount = (AppState.main.firstAccount as? UserAccount) {
-            self._account = .init(wrappedValue: userAccount)
+        if let account = (AppState.main.firstAccount as? UserAccount) {
+            self._target = .init(wrappedValue: .init(community: community?.wrappedValue, account: account))
         } else {
             return nil
         }
@@ -46,22 +43,7 @@ struct PostComposerView: View {
             NavigationStack {
                 contentView
                     .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .topBarLeading) {
-                            Button("Cancel") {
-                                dismiss()
-                            }
-                        }
-                        ToolbarItemGroup(placement: .topBarTrailing) {
-                            Menu("Add", systemImage: "plus") {
-                                Button("Link", systemImage: Icons.websiteAddress) {}
-                                Button("Image", systemImage: Icons.uploadImage) {}
-                                Button("NSFW Tag", systemImage: "tag") {}
-                                Button("Crosspost", systemImage: "shuffle") {}
-                            }
-                            Button("Send", systemImage: Icons.send) {}
-                        }
-                    }
+                    .toolbar { toolbar }
             }
             .onAppear {
                 titleTextView.becomeFirstResponder()
@@ -87,13 +69,13 @@ struct PostComposerView: View {
     
     var canDismiss: Bool { titleIsEmpty && contentIsEmpty }
     
-    var canSubmit: Bool { !titleIsEmpty && !contentIsEmpty && community != nil }
+    var canSubmit: Bool { !titleIsEmpty && !contentIsEmpty && target.community != nil }
     
     @ViewBuilder
     var contentView: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                targetInfo
+                PostComposerTargetView(target: target)
                     .padding(.bottom, 10)
                 Divider()
                     .padding(.bottom, 6)
@@ -142,68 +124,21 @@ struct PostComposerView: View {
         }
     }
     
-    @ViewBuilder
-    var targetInfo: some View {
-        Grid(
-            alignment: .center,
-            horizontalSpacing: 8,
-            verticalSpacing: 8
-        ) {
-            GridRow {
-                Image(systemName: Icons.communityFill)
-                    .foregroundStyle(palette.secondary)
-                    .fontWeight(.semibold)
-                communityPicker
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            if AccountsTracker.main.userAccounts.count > 1 {
-                GridRow {
-                    Image(systemName: Icons.personFill)
-                        .foregroundStyle(palette.secondary)
-                        .fontWeight(.semibold)
-                    AccountPickerMenu(account: $account) {
-                        FullyQualifiedLabelView(
-                            entity: account,
-                            labelStyle: .small
-                        )
-                        .padding(.init(top: 2, leading: 4, bottom: 2, trailing: 8))
-                        .background(palette.secondaryBackground, in: .capsule)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
+    @ToolbarContentBuilder
+    var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            Button("Cancel") {
+                dismiss()
             }
         }
-        .font(.footnote)
-        .padding(.leading, 15)
-    }
-    
-    @ViewBuilder
-    var communityPicker: some View {
-        Button {
-            navigation.openSheet(.communityPicker(callback: { community = .init($0) }))
-        } label: {
-            if let community = community as? any Community {
-                FullyQualifiedLabelView(
-                    entity: community,
-                    labelStyle: .small
-                )
-                .padding(.init(top: 2, leading: 4, bottom: 2, trailing: 8))
-                .background(palette.secondaryBackground, in: .capsule)
-            } else if let community {
-                FullyQualifiedNameView(name: community.name, instance: community.host, instanceLocation: .trailing)
-                    .task {
-                        do {
-                            self.community = try await community.upgrade()
-                        } catch {
-                            handleError(error)
-                        }
-                    }
-            } else {
-                Text("Choose a community...")
-                    .padding(.vertical, 2)
-                    .padding(.horizontal, 8)
-                    .background(palette.secondaryBackground, in: .capsule)
+        ToolbarItemGroup(placement: .topBarTrailing) {
+            Menu("Add", systemImage: "plus") {
+                Button("Link", systemImage: Icons.websiteAddress) {}
+                Button("Image", systemImage: Icons.uploadImage) {}
+                Button("NSFW Tag", systemImage: "tag") {}
+                Button("Crosspost", systemImage: "shuffle") {}
             }
+            Button("Send", systemImage: Icons.send) {}
         }
     }
 }

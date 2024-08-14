@@ -157,6 +157,9 @@
     "Captcha" : {
 
     },
+    "Choose a community..." : {
+
+    },
     "Choose Account Type" : {
 
     },
@@ -206,6 +209,9 @@
 
     },
     "Couldn't read URL" : {
+
+    },
+    "Create Post" : {
 
     },
     "Crosspost" : {

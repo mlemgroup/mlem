@@ -50,6 +50,10 @@ struct SettingsView: View {
             }
             
             Section {
+                Button("Create Post") {
+                    navigation.openSheet(.createPost(community: nil))
+                }
+                
                 Button("Search Communities") {
                     navigation.openSheet(.communityPicker(callback: { print($0.name) }))
                 }
