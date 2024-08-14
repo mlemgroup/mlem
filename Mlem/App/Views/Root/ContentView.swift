@@ -82,6 +82,8 @@ struct ContentView: View {
     }
     
     @ViewBuilder
+    // I got another one of those "Calling into SwiftUI on non-main thread" errors... hopefully this fixes it? Hard to reproduce
+    @MainActor
     var content: some View {
         CustomTabView(selectedIndex: Binding(get: {
             Tab.allCases.firstIndex(of: appState.contentViewTab) ?? 0
@@ -93,7 +95,7 @@ struct ContentView: View {
                 image: UIImage(systemName: Icons.feeds),
                 selectedImage: UIImage(systemName: Icons.feedsFill)
             ) {
-                NavigationSplitRootView(sidebar: .subscriptionList, root: .feeds)
+                NavigationSplitRootView(sidebar: .subscriptionList, root: .feeds(appState.firstApi.willSendToken ? .subscribed : .all))
             },
             CustomTabItem(
                 title: "Inbox",

@@ -16,6 +16,7 @@ class Settings: ObservableObject {
     
     @AppStorage("post.size") var postSize: PostSize = .compact
     @AppStorage("post.defaultSort") var defaultPostSort: ApiSortType = .hot
+    @AppStorage("post.fallbackSort") var fallbackPostSort: ApiSortType = .hot
     @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
     @AppStorage("post.showCreator") var showPostCreator: Bool = false
     
