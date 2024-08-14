@@ -13,13 +13,17 @@ extension Interactable1Providing {
     private var inboxItem: (any InboxItemProviding)? { self as? any InboxItemProviding }
     
     func showReplySheet(expandedPostTracker: ExpandedPostTracker? = nil) {
-        if let self = self as? any Post2Providing {
-            NavigationModel.main.openSheet(.reply(.post(self), expandedPostTracker: expandedPostTracker))
-        } else if let self = self as? any Comment2Providing {
-            NavigationModel.main.openSheet(.reply(.comment(self), expandedPostTracker: expandedPostTracker))
+        if let responseContext {
+            NavigationModel.main.openSheet(.reply(responseContext, expandedPostTracker: expandedPostTracker))
         } else {
             print("DEBUG showReplySheet: cannot open sheet!")
         }
+    }
+    
+    private var responseContext: ResponseContext? {
+        if let self = self as? any Post2Providing { return .post(self) }
+        if let self = self as? any Comment2Providing { return .comment(self) }
+        return nil
     }
 
     func toggleUpvoted(feedback: Set<FeedbackType>) {
@@ -138,8 +142,6 @@ extension Interactable1Providing {
             label: "Reply",
             color: Palette.main.accent,
             icon: Icons.reply,
-            menuIcon: Icons.reply,
-            swipeIcon1: Icons.reply,
             swipeIcon2: Icons.replyFill,
             callback: api.canInteract ? { self.showReplySheet(expandedPostTracker: expandedPostTracker) } : nil
         )

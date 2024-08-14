@@ -111,10 +111,13 @@
 		0389DDD52C39F1290005B808 /* CommunityListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDD42C39F1290005B808 /* CommunityListRow.swift */; };
 		0389DDDB2C3AB6340005B808 /* ActionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0389DDDA2C3AB6340005B808 /* ActionBuilder.swift */; };
 		0397D4602C66113F002C6CDC /* CommentBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D45F2C66113F002C6CDC /* CommentBodyView.swift */; };
-		0397D48C2C6BE9A2002C6CDC /* CollapsibleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D48B2C6BE9A2002C6CDC /* CollapsibleSection.swift */; };
 		0397D4622C676B46002C6CDC /* ApiSortType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4612C676B46002C6CDC /* ApiSortType+Extensions.swift */; };
 		0397D4642C676CA8002C6CDC /* FeedSortPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4632C676CA8002C6CDC /* FeedSortPicker.swift */; };
 		0397D46C2C67E583002C6CDC /* SortingSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D46B2C67E583002C6CDC /* SortingSettingsView.swift */; };
+		0397D47A2C693444002C6CDC /* ReportComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4792C693444002C6CDC /* ReportComposerView.swift */; };
+		0397D4802C693A88002C6CDC /* [BlockNode]+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D47F2C693A88002C6CDC /* [BlockNode]+Extensions.swift */; };
+		0397D4862C6A24D2002C6CDC /* ReportableProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4852C6A24D2002C6CDC /* ReportableProviding+Extensions.swift */; };
+		0397D48C2C6BE9A2002C6CDC /* CollapsibleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D48B2C6BE9A2002C6CDC /* CollapsibleSection.swift */; };
 		039D75642C4EEE69004F24C2 /* DeletableProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039D75632C4EEE69004F24C2 /* DeletableProviding+Extensions.swift */; };
 		039D75672C4FC5A3004F24C2 /* LargeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039D75662C4FC5A3004F24C2 /* LargeImageView.swift */; };
 		039EFEC32BEEBEE0003AC372 /* LoginInstancePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */; };
@@ -405,10 +408,13 @@
 		0389DDD42C39F1290005B808 /* CommunityListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListRow.swift; sourceTree = "<group>"; };
 		0389DDDA2C3AB6340005B808 /* ActionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBuilder.swift; sourceTree = "<group>"; };
 		0397D45F2C66113F002C6CDC /* CommentBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentBodyView.swift; sourceTree = "<group>"; };
-		0397D48B2C6BE9A2002C6CDC /* CollapsibleSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleSection.swift; sourceTree = "<group>"; };
 		0397D4612C676B46002C6CDC /* ApiSortType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiSortType+Extensions.swift"; sourceTree = "<group>"; };
 		0397D4632C676CA8002C6CDC /* FeedSortPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSortPicker.swift; sourceTree = "<group>"; };
 		0397D46B2C67E583002C6CDC /* SortingSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingSettingsView.swift; sourceTree = "<group>"; };
+		0397D4792C693444002C6CDC /* ReportComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportComposerView.swift; sourceTree = "<group>"; };
+		0397D47F2C693A88002C6CDC /* [BlockNode]+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "[BlockNode]+Extensions.swift"; sourceTree = "<group>"; };
+		0397D4852C6A24D2002C6CDC /* ReportableProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReportableProviding+Extensions.swift"; sourceTree = "<group>"; };
+		0397D48B2C6BE9A2002C6CDC /* CollapsibleSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleSection.swift; sourceTree = "<group>"; };
 		039D75632C4EEE69004F24C2 /* DeletableProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeletableProviding+Extensions.swift"; sourceTree = "<group>"; };
 		039D75662C4FC5A3004F24C2 /* LargeImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeImageView.swift; sourceTree = "<group>"; };
 		039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInstancePickerView.swift; sourceTree = "<group>"; };
@@ -811,6 +817,7 @@
 				0355F9452C150B2300605248 /* ExternalApiInfoView.swift */,
 				03AF91DC2C1B23E500E56644 /* ImageViewer.swift */,
 				03B431B12C44409D001A1EB5 /* ResponseComposerView.swift */,
+				0397D4792C693444002C6CDC /* ReportComposerView.swift */,
 			);
 			name = Pages;
 			path = Mlem/App/Views/Pages;
@@ -1176,6 +1183,7 @@
 				CD4D59172B87B3B000B82964 /* UIViewController+Extensions.swift */,
 				03B431B52C454D49001A1EB5 /* UIImage+Extensions.swift */,
 				CD0E06F62C0E739F00445849 /* PostType+Extensions.swift */,
+				0397D47F2C693A88002C6CDC /* [BlockNode]+Extensions.swift */,
 				0397D4612C676B46002C6CDC /* ApiSortType+Extensions.swift */,
 				033FCAEB2C57DCCD007B7CD1 /* ApiListingType+Extensions.swift */,
 				033FCAED2C57DD14007B7CD1 /* CaptchaDifficulty+Extensions.swift */,
@@ -1334,6 +1342,7 @@
 				0389DDC42C38917A0005B808 /* InboxItemProviding+Extensions.swift */,
 				03AFD0E42C3C14D50054B8AD /* InstanceStubProviding+Extensions.swift */,
 				CDC199E92BE449790077B4F1 /* Interactable1Providing+Extensions.swift */,
+				0397D4852C6A24D2002C6CDC /* ReportableProviding+Extensions.swift */,
 				03CBD1922C61369A00E870BC /* Interactable2Providing+Extensions.swift */,
 				0389DDC22C38907C0005B808 /* Message1Providing+Extensions.swift */,
 				032C320B2C3482CA00595286 /* Person1Providing+Extensions.swift */,
@@ -1675,6 +1684,7 @@
 				03531EEC2C2D81DC004A3464 /* LinkSettingsView.swift in Sources */,
 				033F84D92C2B61FB002E3EDF /* ToastType.swift in Sources */,
 				03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */,
+				0397D47A2C693444002C6CDC /* ReportComposerView.swift in Sources */,
 				032C32022C3438DB00595286 /* ShareAction.swift in Sources */,
 				030BCB1B2C3EA5FD0037680F /* InstanceDetailsView.swift in Sources */,
 				03134A582BEC1C46002662CC /* AccountListSettingsView.swift in Sources */,
@@ -1748,6 +1758,7 @@
 				0382A7F42C0A76A900C79DDA /* Date+Extensions.swift in Sources */,
 				03D2A63B2C010B7500ED4FF2 /* GuestAccount.swift in Sources */,
 				CDE1F1962C63DF89008AF042 /* PhoneConstants.swift in Sources */,
+				0397D4862C6A24D2002C6CDC /* ReportableProviding+Extensions.swift in Sources */,
 				CD4ED84A2BF1113800EFA0A2 /* View+TabReselectConsumer.swift in Sources */,
 				0355F9492C16406E00605248 /* Line.swift in Sources */,
 				CD4D58A52B86BD1B00B82964 /* PersistenceRepository.swift in Sources */,
@@ -1834,6 +1845,7 @@
 				0316CD642C382A6A009EA8EA /* MessageView.swift in Sources */,
 				CDF9EF332AB2845C003F885B /* Icons.swift in Sources */,
 				03AF91E32C1C616F00E56644 /* InteractionBarView.swift in Sources */,
+				0397D4802C693A88002C6CDC /* [BlockNode]+Extensions.swift in Sources */,
 				03B431B22C44409D001A1EB5 /* ResponseComposerView.swift in Sources */,
 				CD4D58DA2B86E11D00B82964 /* Mockable.swift in Sources */,
 				034B94892C09360A00039AF4 /* Int+Extensions.swift in Sources */,
@@ -2301,7 +2313,7 @@
 			repositoryURL = "https://github.com/mlemgroup/LemmyMarkdownUI";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.4.2;
+				minimumVersion = 0.4.3;
 			};
 		};
 		0392826E2BC84E480097F91A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {

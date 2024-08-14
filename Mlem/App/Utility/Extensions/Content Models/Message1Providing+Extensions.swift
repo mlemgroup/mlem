@@ -33,6 +33,7 @@ extension Message1Providing {
         if isOwnMessage {
             deleteAction(feedback: feedback)
         } else {
+            reportAction()
             blockCreatorAction(feedback: feedback)
         }
     }
