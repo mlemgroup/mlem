@@ -20,7 +20,7 @@ extension ReportableProviding {
             color: Palette.main.negative,
             isDestructive: true,
             icon: Icons.moderationReport,
-            callback: true ? { self.showReportSheet(communityContext: communityContext) } : nil
+            callback: api.canInteract ? { self.showReportSheet(communityContext: communityContext) } : nil
         )
     }
 }
