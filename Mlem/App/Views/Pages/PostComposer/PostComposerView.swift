@@ -24,7 +24,7 @@ struct PostComposerView: View {
     @State var contentIsEmpty: Bool = true
     @State var lastFocusedField: Field = .title
     
-    @State var target: PostComposerTarget
+    @State var targets: [PostComposerTarget]
     
     init?(community: AnyCommunity?) {
         self.titleTextView = .init()
@@ -32,7 +32,7 @@ struct PostComposerView: View {
         titleTextView.tag = 0
         contentTextView.tag = 1
         if let account = (AppState.main.firstAccount as? UserAccount) {
-            self._target = .init(wrappedValue: .init(community: community?.wrappedValue, account: account))
+            self._targets = .init(wrappedValue: [.init(community: community?.wrappedValue, account: account)])
         } else {
             return nil
         }
@@ -69,16 +69,21 @@ struct PostComposerView: View {
     
     var canDismiss: Bool { titleIsEmpty && contentIsEmpty }
     
-    var canSubmit: Bool { !titleIsEmpty && !contentIsEmpty && target.community != nil }
+    var canSubmit: Bool {
+        !titleIsEmpty && !contentIsEmpty && targets.allSatisfy { $0.community != nil }
+    }
     
     @ViewBuilder
     var contentView: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                PostComposerTargetView(target: target)
-                    .padding(.bottom, 10)
-                Divider()
-                    .padding(.bottom, 6)
+                VStack(spacing: Constants.main.standardSpacing) {
+                    ForEach(targets, id: \.id) { target in
+                        PostComposerTargetView(target: target)
+                        Divider()
+                    }
+                }
+                .padding(.bottom, 6)
                 MarkdownTextEditor(
                     onChange: {
                         // Avoid unnecessary view update
@@ -133,10 +138,14 @@ struct PostComposerView: View {
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu("Add", systemImage: "plus") {
-                Button("Link", systemImage: Icons.websiteAddress) {}
-                Button("Image", systemImage: Icons.uploadImage) {}
+                Button("Link", systemImage: Icons.websiteAddress) {}.disabled(true)
+                Button("Image", systemImage: Icons.uploadImage) {}.disabled(true)
                 Button("NSFW Tag", systemImage: "tag") {}
-                Button("Crosspost", systemImage: "shuffle") {}
+                Button("Crosspost", systemImage: "shuffle") {
+                    if let account = targets.last?.account {
+                        targets.append(.init(account: account))
+                    }
+                }
             }
             Button("Send", systemImage: Icons.send) {}
         }

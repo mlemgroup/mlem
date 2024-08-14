@@ -107,9 +107,10 @@ struct PostComposerTargetView: View {
 }
 
 @Observable
-class PostComposerTarget {
+class PostComposerTarget: Identifiable {
     var community: (any CommunityStubProviding)?
     var account: UserAccount
+    let id = UUID()
     
     init(community: (any CommunityStubProviding)? = nil, account: UserAccount) {
         self.community = community
