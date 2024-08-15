@@ -16,7 +16,7 @@ struct FixedImageView: View {
     
     @State var loadingPref: ImageLoadingState? // tracked separately to allow correct propagation of inital value
     
-    let loader: ImageLoader
+    @State var loader: ImageLoader
     let fallback: Fallback
     let showProgress: Bool
     
@@ -43,11 +43,12 @@ struct FixedImageView: View {
     ) {
         self.fallback = fallback
         self.showProgress = showProgress
-        self.loader = .init(url: url, maxSize: maxSize)
+        self._loader = .init(wrappedValue: .init(url: url, maxSize: maxSize))
     }
     
     var body: some View {
-        Color.clear.contentShape(.rect)
+        Color.clear
+            .contentShape(.rect)
             .overlay {
                 content
                     .task(loader.load)
