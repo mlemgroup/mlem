@@ -14,12 +14,15 @@ private struct LoadFeed: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .task(id: feedLoader == nil) {
+            // .task(id: feedLoader == nil) {
+            .onChange(of: feedLoader == nil, initial: true) {
                 if let feedLoader, feedLoader.items.isEmpty, feedLoader.loadingState == .idle {
-                    do {
-                        try await feedLoader.loadMoreItems()
-                    } catch {
-                        handleError(error)
+                    Task {
+                        do {
+                            try await feedLoader.loadMoreItems()
+                        } catch {
+                            handleError(error)
+                        }
                     }
                 }
             }

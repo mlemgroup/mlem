@@ -1,5 +1,5 @@
 {
-  "originHash" : "b159f0a20b9c47bf2fae7b8e8322b8f3fff96046592270bf1b94b96530aa91b0",
+  "originHash" : "cab47f84e646c26a412384958d131a9144ddedff59859d5bf37ea2861029d9d4",
   "pins" : [
     {
       "identity" : "combine-schedulers",
@@ -26,15 +26,6 @@
       "state" : {
         "revision" : "4e311f0784ea12bf269ef88221d6c636e066a1f5",
         "version" : "0.4.3"
-      }
-    },
-    {
-      "identity" : "mlemmiddleware",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mlemgroup/MlemMiddleware.git",
-      "state" : {
-        "revision" : "96f0686c11918a1433c29f893659f36e9f9b1398",
-        "version" : "0.24.0"
       }
     },
     {

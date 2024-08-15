@@ -21,7 +21,7 @@ struct FancyScrollView<Content: View>: View {
     }
     
     @ViewBuilder var content: () -> Content
-    let model: Model = .init()
+    var model: Model = .init()
     @Binding var scrollToTopTrigger: Bool // TODO: investigate unifying this and isAtTop
     var reselectAction: (() -> Void)?
 
@@ -54,6 +54,7 @@ struct FancyScrollView<Content: View>: View {
                 }
             }
             .onReselectTab {
+                print("At top: \(model.isAtTop)")
                 if model.isAtTop {
                     if let reselectAction {
                         reselectAction()
