@@ -110,7 +110,7 @@ struct InteractionBarView: View {
                 }
             }
         }
-        .accessibilityLabel(action.label)
+        .accessibilityLabel(action.appearance.label)
         .accessibilityAction(.default) {
             (action as? BasicAction)?.callback?()
         }
@@ -126,16 +126,16 @@ struct InteractionBarView: View {
     
     @ViewBuilder
     private func actionLabelView(_ action: any Action) -> some View {
-        let isOn = ((action as? BasicAction)?.disabled ?? false) ? false : action.isOn
-        Image(systemName: action.barIcon)
+        let isOn = ((action as? BasicAction)?.disabled ?? false) ? false : action.appearance.isOn
+        Image(systemName: action.appearance.barIcon)
             .resizable()
-            .fontWeight(Self.unweightedSymbols.contains(action.barIcon) ? .regular : .medium)
+            .fontWeight(Self.unweightedSymbols.contains(action.appearance.barIcon) ? .regular : .medium)
             .symbolVariant(isOn ? .fill : .none)
             .scaledToFit()
             .frame(width: Constants.main.barIconSize, height: Constants.main.barIconSize)
             .padding(Constants.main.barIconPadding)
             .foregroundColor(isOn ? palette.selectedInteractionBarItem : palette.primary)
-            .background(isOn ? action.color : .clear, in: .rect(cornerRadius: Constants.main.barIconCornerRadius))
+            .background(isOn ? action.appearance.color : .clear, in: .rect(cornerRadius: Constants.main.barIconCornerRadius))
             .contentShape(Rectangle())
             .opacity(((action as? BasicAction)?.disabled ?? false) ? 0.5 : 1)
     }
@@ -151,7 +151,7 @@ private enum EnrichedWidget {
         case let .action(action):
             hasher.combine(1)
             hasher.combine(action.id)
-            hasher.combine(action.isOn)
+            hasher.combine(action.appearance.isOn)
             hasher.combine((action as? BasicAction)?.disabled)
         case let .counter(counter):
             // If `counter.value` is included in this, the fancy `.numericText()` transition

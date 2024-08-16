@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "**%@** and **%@** chose to defederate from one another." : {
       "localizations" : {
         "en" : {
@@ -31,10 +34,10 @@
         }
       }
     },
-    "%@ rules:" : {
+    "%@ Read" : {
 
     },
-    "%@ Read" : {
+    "%@ rules:" : {
 
     },
     "%lld on %@" : {
@@ -189,6 +192,9 @@
 
     },
     "Compact" : {
+
+    },
+    "Confirm" : {
 
     },
     "Connecting..." : {
@@ -670,10 +676,10 @@
     "Sort by: %@" : {
 
     },
-    "Spam" : {
+    "Sorting" : {
 
     },
-    "Sorting" : {
+    "Spam" : {
 
     },
     "Spoiler" : {

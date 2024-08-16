@@ -55,7 +55,7 @@ extension Comment1Providing {
     }
     
     func action(
-        type: CommentActionType,
+        type: CommentBarConfiguration.ActionType,
         expandedPostTracker: ExpandedPostTracker? = nil
     ) -> any Action {
         switch type {
@@ -74,7 +74,7 @@ extension Comment1Providing {
         }
     }
     
-    func counter(type: CommentCounterType) -> Counter {
+    func counter(type: CommentBarConfiguration.CounterType) -> Counter {
         switch type {
         case .score:
             scoreCounter
@@ -85,7 +85,7 @@ extension Comment1Providing {
         }
     }
     
-    func readout(type: CommentReadoutType) -> Readout {
+    func readout(type: CommentBarConfiguration.ReadoutType) -> Readout {
         switch type {
         case .created:
             createdReadout

@@ -79,12 +79,7 @@ extension Person1Providing {
     func blockAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
         .init(
             id: "block\(uid)",
-            isOn: false,
-            label: blocked ? "Unblock" : "Block",
-            color: Palette.main.negative,
-            isDestructive: !blocked,
-            confirmationPrompt: (!blocked && showConfirmation) ? "Really block this user?" : nil,
-            icon: blocked ? Icons.show : Icons.hide,
+            appearance: .block(isOn: blocked),
             callback: api.canInteract ? { self.toggleBlocked(feedback: feedback) } : nil
         )
     }

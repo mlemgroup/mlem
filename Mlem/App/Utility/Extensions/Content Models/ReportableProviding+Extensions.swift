@@ -15,11 +15,13 @@ extension ReportableProviding {
     func reportAction(communityContext: (any CommunityStubProviding)? = nil) -> BasicAction {
         .init(
             id: "report\(uid)",
-            isOn: false,
-            label: "Report",
-            color: Palette.main.negative,
-            isDestructive: true,
-            icon: Icons.moderationReport,
+            appearance: .init(
+                label: "Report",
+                isOn: false,
+                isDestructive: true,
+                color: Palette.main.negative,
+                icon: Icons.moderationReport
+            ),
             callback: api.canInteract ? { self.showReportSheet(communityContext: communityContext) } : nil
         )
     }

@@ -90,7 +90,7 @@ extension Post1Providing {
     }
     
     func action(
-        type: PostActionType,
+        type: PostBarConfiguration.ActionType,
         feedback: Set<FeedbackType> = [],
         expandedPostTracker: ExpandedPostTracker? = nil
     ) -> any Action {
@@ -112,7 +112,7 @@ extension Post1Providing {
         }
     }
     
-    func counter(type: PostCounterType) -> Counter {
+    func counter(type: PostBarConfiguration.CounterType) -> Counter {
         switch type {
         case .score:
             scoreCounter
@@ -123,7 +123,7 @@ extension Post1Providing {
         }
     }
     
-    func readout(type: PostReadoutType) -> Readout {
+    func readout(type: PostBarConfiguration.ReadoutType) -> Readout {
         switch type {
         case .created:
             createdReadout
@@ -180,21 +180,19 @@ extension Post1Providing {
         let hidden = hidden_ ?? false
         return .init(
             id: "hide\(uid)",
-            isOn: hidden,
-            label: hidden ? "Show" : "Hide",
-            color: .gray,
-            icon: hidden ? Icons.show : Icons.hide,
+            appearance: .hide(isOn: hidden),
             callback: api.canInteract ? { self.self2?.toggleHidden(feedback: feedback) } : nil
         )
     }
     
     func blockAction(feedback: Set<FeedbackType>) -> ActionGroup {
         .init(
-            label: "Block...",
-            prompt: "Block User or Community?",
-            color: Palette.main.negative,
-            isDestructive: true,
-            icon: Icons.block,
+            appearance: .init(
+                label: "Block...",
+                isDestructive: true,
+                color: Palette.main.negative,
+                icon: Icons.block
+            ),
             disabled: !api.canInteract,
             displayMode: .popup
         ) {
@@ -206,12 +204,14 @@ extension Post1Providing {
     func blockCommunityAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
         .init(
             id: "blockCommunity\(actorId.absoluteString)",
-            isOn: false,
-            label: "Block Community",
-            color: Palette.main.negative,
-            isDestructive: true,
+            appearance: .init(
+                label: "Block Community",
+                isOn: false,
+                isDestructive: true,
+                color: Palette.main.negative,
+                icon: Icons.block
+            ),
             confirmationPrompt: showConfirmation ? "Really block this community?" : nil,
-            icon: Icons.block,
             callback: api.canInteract ? { self.self2?.community.toggleBlocked(feedback: feedback) } : nil
         )
     }

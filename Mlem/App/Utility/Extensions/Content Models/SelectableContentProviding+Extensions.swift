@@ -15,11 +15,12 @@ extension SelectableContentProviding {
     func selectTextAction() -> BasicAction {
         .init(
             id: "selectText\(actorId.absoluteString)",
-            isOn: false,
-            label: "Select Text",
-            color: Palette.main.accent,
-            icon: Icons.select,
-            menuIcon: Icons.select,
+            appearance: .init(
+                label: "Select Text",
+                isOn: false,
+                color: Palette.main.accent,
+                icon: Icons.select
+            ),
             callback: selectableContent == nil ? nil : showTextSelectionSheet
         )
     }
