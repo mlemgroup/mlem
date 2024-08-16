@@ -79,4 +79,21 @@ extension ActionAppearance {
             icon: isOn ? Icons.show : Icons.hide
         )
     }
+    
+    static func selectText() -> Self {
+        .init(
+            label: "Select Text",
+            isOn: false,
+            color: Palette.main.accent,
+            icon: Icons.select
+        )
+    }
+    
+    static func share() -> Self {
+        .init(
+            label: "Share...",
+            color: .gray,
+            icon: Icons.share
+        )
+    }
 }

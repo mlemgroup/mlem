@@ -8,7 +8,7 @@
 import Foundation
 
 struct PostBarConfiguration: InteractionBarConfiguration {
-    enum ActionType {
+    enum ActionType: ActionTypeProviding {
         case upvote
         case downvote
         case save
@@ -16,6 +16,18 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         case share
         case selectText
         case hide
+        
+        var appearance: ActionAppearance {
+            switch self {
+            case .upvote: .upvote(isOn: false)
+            case .downvote: .downvote(isOn: false)
+            case .save: .save(isOn: false)
+            case .reply: .reply()
+            case .share: .share()
+            case .selectText: .selectText()
+            case .hide: .hide(isOn: false)
+            }
+        }
     }
     
     enum CounterType {

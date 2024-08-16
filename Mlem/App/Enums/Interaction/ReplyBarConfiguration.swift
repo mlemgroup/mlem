@@ -7,11 +7,19 @@
 
 import Foundation
 
-struct InboxBarConfiguration: InteractionBarConfiguration {
-    enum ActionType {
+struct ReplyBarConfiguration: InteractionBarConfiguration {
+    enum ActionType: ActionTypeProviding {
         case upvote
         case downvote
         case save
+        
+        var appearance: ActionAppearance {
+            switch self {
+            case .upvote: .upvote(isOn: false)
+            case .downvote: .downvote(isOn: false)
+            case .save: .save(isOn: false)
+            }
+        }
     }
     
     enum CounterType {

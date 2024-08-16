@@ -37,7 +37,7 @@ struct InteractionBarView: View {
         self.readouts = configuration.readouts.map { comment.readout(type: $0) }
     }
     
-    init(reply: any Reply1Providing, configuration: InboxBarConfiguration) {
+    init(reply: any Reply1Providing, configuration: ReplyBarConfiguration) {
         self.leading = .init(reply: reply, items: configuration.leading)
         self.trailing = .init(reply: reply, items: configuration.trailing)
         self.readouts = configuration.readouts.map { reply.readout(type: $0) }
@@ -200,7 +200,7 @@ extension [EnrichedWidget] {
         }
     }
     
-    init(reply: any Reply1Providing, items: [InboxBarConfiguration.Item]) {
+    init(reply: any Reply1Providing, items: [ReplyBarConfiguration.Item]) {
         self = items.map { item in
             switch item {
             case let .action(action):

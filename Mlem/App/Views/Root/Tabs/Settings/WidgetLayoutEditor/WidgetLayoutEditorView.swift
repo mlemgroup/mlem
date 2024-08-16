@@ -16,6 +16,8 @@ struct WidgetLayoutEditorView<Configuration: InteractionBarConfiguration>: View 
     }
     
     var body: some View {
-        Text("")
+        ScrollView {}
+            .navigationBarTitleDisplayMode(.inline)
+            .background(Palette.main.groupedBackground)
     }
 }

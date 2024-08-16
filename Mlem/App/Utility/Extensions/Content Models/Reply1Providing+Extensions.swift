@@ -45,7 +45,7 @@ extension Reply1Providing {
         }
     }
 
-    func action(type: InboxBarConfiguration.ActionType) -> any Action {
+    func action(type: ReplyBarConfiguration.ActionType) -> any Action {
         switch type {
         case .upvote:
             upvoteAction(feedback: [.haptic])
@@ -56,7 +56,7 @@ extension Reply1Providing {
         }
     }
     
-    func counter(type: InboxBarConfiguration.CounterType) -> Counter {
+    func counter(type: ReplyBarConfiguration.CounterType) -> Counter {
         switch type {
         case .score:
             scoreCounter
@@ -67,7 +67,7 @@ extension Reply1Providing {
         }
     }
     
-    func readout(type: InboxBarConfiguration.ReadoutType) -> Readout {
+    func readout(type: ReplyBarConfiguration.ReadoutType) -> Readout {
         switch type {
         case .created:
             createdReadout

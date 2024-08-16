@@ -8,7 +8,7 @@
 import Foundation
 
 protocol InteractionBarConfiguration {
-    associatedtype ActionType
+    associatedtype ActionType: ActionTypeProviding
     associatedtype CounterType
     associatedtype ReadoutType
     
@@ -24,4 +24,8 @@ protocol InteractionBarConfiguration {
 enum InteractionConfigurationItem<ActionType, CounterType> {
     case action(ActionType)
     case counter(CounterType)
+}
+
+protocol ActionTypeProviding {
+    var appearance: ActionAppearance { get }
 }

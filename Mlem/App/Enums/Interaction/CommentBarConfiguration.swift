@@ -8,13 +8,24 @@
 import Foundation
 
 struct CommentBarConfiguration: InteractionBarConfiguration {
-    enum ActionType {
+    enum ActionType: ActionTypeProviding {
         case upvote
         case downvote
         case save
         case reply
         case share
         case selectText
+        
+        var appearance: ActionAppearance {
+            switch self {
+            case .upvote: .upvote(isOn: false)
+            case .downvote: .downvote(isOn: false)
+            case .save: .save(isOn: false)
+            case .reply: .reply()
+            case .share: .share()
+            case .selectText: .selectText()
+            }
+        }
     }
     
     enum CounterType {

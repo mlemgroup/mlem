@@ -16,10 +16,5 @@ struct ShareAction: Action {
         self.url = url
     }
     
-    var appearance: ActionAppearance { .init(
-        label: "Share...",
-        color: .gray,
-        icon: Icons.share
-    )
-    }
+    var appearance: ActionAppearance { .share() }
 }
