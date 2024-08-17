@@ -8,51 +8,40 @@
 import Nuke
 import SwiftUI
 
-private extension UIImage {
+extension UIImage {
     static let blank: UIImage = .init()
 }
 
 struct DynamicImageView: View {
     @Environment(Palette.self) var palette: Palette
     
-    @State var uiImage: UIImage?
-    @State var loading: ImageLoadingState
-    @State var loadingPref: ImageLoadingState?
-    @State var aspectRatio: CGSize
-    @State var error: Error?
+    @State var loader: ImageLoader
     
-    let url: URL?
+    @State var loadingPref: ImageLoadingState?
+    
     let showError: Bool
     let cornerRadius: CGFloat
     
     init(
         url: URL?,
+        maxSize: CGFloat? = nil,
         showError: Bool = true,
         cornerRadius: CGFloat = Constants.main.mediumItemCornerRadius
     ) {
-        self.url = url
         self.showError = showError
         self.cornerRadius = cornerRadius
-        if let image = ImagePipeline.shared.cache.cachedImage(for: .init(url: url))?.image {
-            self._uiImage = .init(wrappedValue: image)
-            self._aspectRatio = .init(wrappedValue: image.size)
-            self._loading = .init(initialValue: .done)
-        } else {
-            self._uiImage = .init(wrappedValue: nil)
-            self._aspectRatio = .init(wrappedValue: .init(width: 4, height: 3))
-            self._loading = .init(initialValue: url == nil ? .failed : .loading)
-        }
+        self._loader = .init(wrappedValue: .init(url: url, maxSize: maxSize))
     }
     
     var body: some View {
-        Image(uiImage: uiImage ?? .blank)
+        Image(uiImage: loader.uiImage ?? .blank)
             .resizable()
-            .aspectRatio(aspectRatio, contentMode: .fit)
+            .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
             .background {
                 if showError {
                     palette.secondaryBackground
                         .overlay {
-                            if error != nil {
+                            if loader.error != nil {
                                 Image(systemName: Icons.missing)
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
@@ -63,26 +52,9 @@ struct DynamicImageView: View {
                         }
                 }
             }
-            .task(loadImage)
             .clipShape(.rect(cornerRadius: cornerRadius))
-            .onChange(of: loading, initial: true) { loadingPref = loading }
+            .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
             .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
-    }
-    
-    @Sendable
-    @MainActor
-    func loadImage() async {
-        guard let url, uiImage == nil else { return }
-        do {
-            let imageTask = ImagePipeline.shared.imageTask(with: url)
-            let image = try await imageTask.image
-            uiImage = image
-            loading = .done
-            aspectRatio = image.size
-        } catch {
-            print(error)
-            self.error = error
-            loading = .failed
-        }
+            .task(loader.load)
     }
 }
