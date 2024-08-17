@@ -40,6 +40,7 @@ struct FeedsView: View {
         }
     }
 
+    @State var isAtTop: Bool = true
     @State var scrollToTopTrigger: Bool = false
     
     var feedOptions: [FeedSelection] {
@@ -76,10 +77,20 @@ struct FeedsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .loadFeed(savedFeedLoader)
             .toolbar {
+                if !isAtTop {
+                    ToolbarTitleMenu {
+                        feedSelectionMenu(scroll: true)
+                    }
+                }
+            }
+            .toolbar {
+                // SwiftUI complains if both this and the menu are in the same toolbar
                 if let postFeedLoader, feedSelection != .saved {
                     FeedSortPicker(feedLoader: postFeedLoader)
                 }
             }
+            .navigationTitle(isAtTop ? "" : String(localized: feedSelection.description.label))
+            .isAtTopSubscriber(isAtTop: $isAtTop)
             .onChange(of: showRead) {
                 scrollToTopTrigger.toggle()
             }
@@ -132,14 +143,7 @@ struct FeedsView: View {
                 }
             } header: {
                 Menu {
-                    ForEach(feedOptions, id: \.self) { feed in
-                        Button(
-                            String(localized: feed.description.label),
-                            systemImage: feedSelection == feed ? feed.description.iconNameFill : feed.description.iconName
-                        ) {
-                            feedSelection = feed
-                        }
-                    }
+                    feedSelectionMenu(scroll: false)
                 } label: {
                     FeedHeaderView(feedDescription: feedSelection.description, dropdownStyle: .enabled(showBadge: false))
                         .padding(.bottom, Constants.main.standardSpacing)
@@ -157,6 +161,26 @@ struct FeedsView: View {
                     }
                 }
                 .frame(maxWidth: .infinity)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func feedSelectionMenu(scroll: Bool) -> some View {
+        ForEach(feedOptions, id: \.self) { feed in
+            Button(
+                String(localized: feed.description.label),
+                systemImage: feedSelection == feed ? feed.description.iconNameFill : feed.description.iconName
+            ) {
+                if scroll {
+                    scrollToTopTrigger.toggle()
+                    // delay feed switch to allow scroll to complete
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        feedSelection = feed
+                    }
+                } else {
+                    feedSelection = feed
+                }
             }
         }
     }

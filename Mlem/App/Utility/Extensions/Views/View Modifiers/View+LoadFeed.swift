@@ -16,7 +16,7 @@ private struct LoadFeed: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .task {
+            .task(id: feedLoader == nil) {
                 if let feedLoader, feedLoader.items.isEmpty, feedLoader.loadingState == .idle {
                     do {
                         try await feedLoader.loadMoreItems()
