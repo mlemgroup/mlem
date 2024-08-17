@@ -89,6 +89,7 @@ struct FixedImageView: View {
         case .image:
             Image(systemName: fallback.icon)
                 .font(.title)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .foregroundStyle(palette.secondary)
                 .background(palette.thumbnailBackground)
         }
