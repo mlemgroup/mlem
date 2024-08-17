@@ -15,15 +15,11 @@ struct IsAtTopPreferenceKey: PreferenceKey {
 struct FancyScrollView<Content: View>: View {
     @Environment(\.dismiss) var dismiss
     
-    // Avoid using `@State` because we don't need to cause a view update
-    class Model {
-        var isAtTop: Bool = true
-    }
-    
     @ViewBuilder var content: () -> Content
-    let model: Model = .init()
     @Binding var scrollToTopTrigger: Bool // TODO: investigate unifying this and isAtTop
     var reselectAction: (() -> Void)?
+    
+    @State var isAtTop: Bool = true
 
     private let topId: String = "scrollToTop"
     
@@ -54,7 +50,7 @@ struct FancyScrollView<Content: View>: View {
                 }
             }
             .onReselectTab {
-                if model.isAtTop {
+                if isAtTop {
                     if let reselectAction {
                         reselectAction()
                     } else {
@@ -73,8 +69,8 @@ struct FancyScrollView<Content: View>: View {
             }
             .coordinateSpace(name: "scrollView")
             .onPreferenceChange(IsAtTopPreferenceKey.self) { offset in
-                if offset != model.isAtTop {
-                    model.isAtTop = offset
+                if offset != isAtTop {
+                    isAtTop = offset
                 }
             }
         }
