@@ -59,7 +59,7 @@ struct WebsitePreviewView: View {
     var complex: some View {
         VStack(alignment: .leading, spacing: 0) {
             if let thumbnailUrl = link.thumbnail {
-                DynamicImageView(url: thumbnailUrl, cornerRadius: 0)
+                DynamicImageView(url: thumbnailUrl.withIconSize(Constants.main.feedImageResolution), cornerRadius: 0)
                     .blur(radius: blurred ? 50 : 0, opaque: true)
                     .clipped()
                     .overlay {

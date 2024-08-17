@@ -25,7 +25,7 @@ struct LargePostBodyView: View {
             
             switch post.type {
             case let .image(url):
-                LargeImageView(url: url, nsfw: post.nsfw) {
+                LargeImageView(url: url.withIconSize(Constants.main.feedImageResolution), nsfw: post.nsfw) {
                     post.markRead()
                 }
                 // Set maximum image height to 1.2 * width
