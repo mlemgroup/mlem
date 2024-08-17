@@ -118,7 +118,7 @@
 		0397D4802C693A88002C6CDC /* [BlockNode]+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D47F2C693A88002C6CDC /* [BlockNode]+Extensions.swift */; };
 		0397D4862C6A24D2002C6CDC /* ReportableProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4852C6A24D2002C6CDC /* ReportableProviding+Extensions.swift */; };
 		0397D48C2C6BE9A2002C6CDC /* CollapsibleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D48B2C6BE9A2002C6CDC /* CollapsibleSection.swift */; };
-		0397D49A2C6EA6EE002C6CDC /* WidgetLayoutEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4992C6EA6EE002C6CDC /* WidgetLayoutEditorView.swift */; };
+		0397D49A2C6EA6EE002C6CDC /* InteractionBarEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4992C6EA6EE002C6CDC /* InteractionBarEditorView.swift */; };
 		0397D49C2C6EA73C002C6CDC /* InteractionBarConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D49B2C6EA73C002C6CDC /* InteractionBarConfiguration.swift */; };
 		0397D4A22C6EB035002C6CDC /* ActionAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4A12C6EB035002C6CDC /* ActionAppearance.swift */; };
 		0397D4A42C6FBC04002C6CDC /* ActionAppearance+StaticValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4A32C6FBC04002C6CDC /* ActionAppearance+StaticValues.swift */; };
@@ -173,6 +173,9 @@
 		03E614E42C0BCC7B00F692A4 /* Post1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E614E32C0BCC7B00F692A4 /* Post1Providing+Extensions.swift */; };
 		03E614E52C0BCCAA00F692A4 /* PostSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7A2BFADA8B00DBC0EF /* PostSize.swift */; };
 		03E614E72C0BCDC200F692A4 /* FullyQualifiedLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E614E62C0BCDC200F692A4 /* FullyQualifiedLinkView.swift */; };
+		03FA318C2C6FECAE00D47FA3 /* Flow in Frameworks */ = {isa = PBXBuildFile; productRef = 03FA318B2C6FECAE00D47FA3 /* Flow */; };
+		03FA318F2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA318E2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift */; };
+		03FA31912C6FFB9700D47FA3 /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA31902C6FFB9700D47FA3 /* CGPoint+Extensions.swift */; };
 		03FE14042BF93FDD00A8377F /* ErrorDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FE14032BF93FDD00A8377F /* ErrorDetails.swift */; };
 		03FE14062BF9445F00A8377F /* CloseButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FE14052BF9445F00A8377F /* CloseButtonView.swift */; };
 		03FE14082BF94FFB00A8377F /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FE14072BF94FFB00A8377F /* ErrorView.swift */; };
@@ -419,7 +422,7 @@
 		0397D47F2C693A88002C6CDC /* [BlockNode]+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "[BlockNode]+Extensions.swift"; sourceTree = "<group>"; };
 		0397D4852C6A24D2002C6CDC /* ReportableProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReportableProviding+Extensions.swift"; sourceTree = "<group>"; };
 		0397D48B2C6BE9A2002C6CDC /* CollapsibleSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleSection.swift; sourceTree = "<group>"; };
-		0397D4992C6EA6EE002C6CDC /* WidgetLayoutEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetLayoutEditorView.swift; sourceTree = "<group>"; };
+		0397D4992C6EA6EE002C6CDC /* InteractionBarEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarEditorView.swift; sourceTree = "<group>"; };
 		0397D49B2C6EA73C002C6CDC /* InteractionBarConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarConfiguration.swift; sourceTree = "<group>"; };
 		0397D4A12C6EB035002C6CDC /* ActionAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionAppearance.swift; sourceTree = "<group>"; };
 		0397D4A32C6FBC04002C6CDC /* ActionAppearance+StaticValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ActionAppearance+StaticValues.swift"; sourceTree = "<group>"; };
@@ -473,6 +476,8 @@
 		03E614DA2C0B596900F692A4 /* ToolbarEllipsisMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarEllipsisMenu.swift; sourceTree = "<group>"; };
 		03E614E32C0BCC7B00F692A4 /* Post1Providing+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Post1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		03E614E62C0BCDC200F692A4 /* FullyQualifiedLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullyQualifiedLinkView.swift; sourceTree = "<group>"; };
+		03FA318E2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarActionLabelView.swift; sourceTree = "<group>"; };
+		03FA31902C6FFB9700D47FA3 /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
 		03FE14032BF93FDD00A8377F /* ErrorDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDetails.swift; sourceTree = "<group>"; };
 		03FE14052BF9445F00A8377F /* CloseButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButtonView.swift; sourceTree = "<group>"; };
 		03FE14072BF94FFB00A8377F /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
@@ -599,6 +604,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				03500C2E2BF8C2A700CAA076 /* MlemMiddleware in Frameworks */,
+				03FA318C2C6FECAE00D47FA3 /* Flow in Frameworks */,
 				030FF6792BC84F7E00F6BFAC /* SwiftUIIntrospect in Frameworks */,
 				B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */,
 				037386472BDAFE81007492B5 /* LemmyMarkdownUI in Frameworks */,
@@ -651,7 +657,7 @@
 		03134A492BEACF46002662CC /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				0397D4982C6EA68A002C6CDC /* WidgetLayoutEditor */,
+				0397D4982C6EA68A002C6CDC /* InteractionBarEditor */,
 				031E2D5C2BEFCC630003BC45 /* SettingsView.swift */,
 				0397D46B2C67E583002C6CDC /* SortingSettingsView.swift */,
 				03267D832BED49CE009D6268 /* AccountSettingsView.swift */,
@@ -832,12 +838,12 @@
 			path = Mlem/App/Views/Pages;
 			sourceTree = SOURCE_ROOT;
 		};
-		0397D4982C6EA68A002C6CDC /* WidgetLayoutEditor */ = {
+		0397D4982C6EA68A002C6CDC /* InteractionBarEditor */ = {
 			isa = PBXGroup;
 			children = (
-				0397D4992C6EA6EE002C6CDC /* WidgetLayoutEditorView.swift */,
+				0397D4992C6EA6EE002C6CDC /* InteractionBarEditorView.swift */,
 			);
-			path = WidgetLayoutEditor;
+			path = InteractionBarEditor;
 			sourceTree = "<group>";
 		};
 		039D75652C4FC56A004F24C2 /* Images */ = {
@@ -896,6 +902,15 @@
 				03D3A1E42BB8B7A3009DE55E /* ActionType.swift */,
 			);
 			path = Action;
+			sourceTree = "<group>";
+		};
+		03FA318D2C6FEF0E00D47FA3 /* InteractionBar */ = {
+			isa = PBXGroup;
+			children = (
+				03AF91E22C1C616F00E56644 /* InteractionBarView.swift */,
+				03FA318E2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift */,
+			);
+			path = InteractionBar;
 			sourceTree = "<group>";
 		};
 		6318EDC427EE4E0500BFCAE8 /* Models */ = {
@@ -1143,7 +1158,7 @@
 				034B948D2C0937BA00039AF4 /* FancyScrollView.swift */,
 				033F84CB2C2B1E46002E3EDF /* HandleLemmyLinksModifier.swift */,
 				0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */,
-				03AF91E22C1C616F00E56644 /* InteractionBarView.swift */,
+				03FA318D2C6FEF0E00D47FA3 /* InteractionBar */,
 				0355F9482C16406E00605248 /* Line.swift */,
 				03B431C12C45BA00001A1EB5 /* MarkdownEditorToolbarView.swift */,
 				034B94842C09348400039AF4 /* MarkdownImageView.swift */,
@@ -1193,6 +1208,7 @@
 				03134A4E2BEAD23A002662CC /* Views */,
 				CDA8A0052BE43B350022F7ED /* Content Models */,
 				CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */,
+				03FA31902C6FFB9700D47FA3 /* CGPoint+Extensions.swift */,
 				03B431BF2C45ABFB001A1EB5 /* UITextView+Extensions.swift */,
 				03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */,
 				0389DDC82C39658E0005B808 /* Binding+Extensions.swift */,
@@ -1540,6 +1556,7 @@
 				030FF6782BC84F7E00F6BFAC /* SwiftUIIntrospect */,
 				037386462BDAFE81007492B5 /* LemmyMarkdownUI */,
 				CD59DE2B2BE467E600445EED /* MlemMiddleware */,
+				03FA318B2C6FECAE00D47FA3 /* Flow */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -1624,6 +1641,7 @@
 				0392826E2BC84E480097F91A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				037386452BDAFE81007492B5 /* XCRemoteSwiftPackageReference "LemmyMarkdownUI" */,
 				CD7882A32BFE5EB5002E1A30 /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
+				03FA318A2C6FEC5400D47FA3 /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -1784,6 +1802,7 @@
 				CD4D58A52B86BD1B00B82964 /* PersistenceRepository.swift in Sources */,
 				033F84AD2C298466002E3EDF /* SectionIndexTitles.swift in Sources */,
 				CDCA44B62C176C5000C092B3 /* View+EdgeBorders.swift in Sources */,
+				03FA318F2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift in Sources */,
 				CDE1F1982C63DFC9008AF042 /* PadConstants.swift in Sources */,
 				CD9CFA2C2C2E1EF300739BBC /* FeedIconView.swift in Sources */,
 				CD1446252A5B357900610EF1 /* Document.swift in Sources */,
@@ -1903,6 +1922,7 @@
 				03AF91E52C1C61FA00E56644 /* PostBarConfiguration.swift in Sources */,
 				03D3A1D42BB88EF1009DE55E /* Action.swift in Sources */,
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
+				03FA31912C6FFB9700D47FA3 /* CGPoint+Extensions.swift in Sources */,
 				CD0F280A2C6CEFBE00C1F65B /* View+IsAtTopSubscriber.swift in Sources */,
 				035BE0892BDD901B00F77D73 /* NavigationPage.swift in Sources */,
 				035BE08F2BDE911900F77D73 /* NavigationLayer.swift in Sources */,
@@ -1913,7 +1933,7 @@
 				0369B3532BFA514B001EFEDF /* ToastLocation.swift in Sources */,
 				CD1D31812C56D603001B434B /* ParentFrameWidth.swift in Sources */,
 				03049A202C650A8100FF6889 /* FormReadout.swift in Sources */,
-				0397D49A2C6EA6EE002C6CDC /* WidgetLayoutEditorView.swift in Sources */,
+				0397D49A2C6EA6EE002C6CDC /* InteractionBarEditorView.swift in Sources */,
 				0300309D2C4163C9009A65FF /* ExpandedPostTracker.swift in Sources */,
 				032C321A2C36F75800595286 /* Reply1Providing+Extensions.swift in Sources */,
 				03FE14082BF94FFB00A8377F /* ErrorView.swift in Sources */,
@@ -2348,6 +2368,14 @@
 				minimumVersion = 1.1.3;
 			};
 		};
+		03FA318A2C6FEC5400D47FA3 /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tevelee/SwiftUI-Flow";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.0;
+			};
+		};
 		50C99B542A61D792005D57DD /* XCRemoteSwiftPackageReference "swift-dependencies" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-dependencies";
@@ -2408,6 +2436,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 037386452BDAFE81007492B5 /* XCRemoteSwiftPackageReference "LemmyMarkdownUI" */;
 			productName = LemmyMarkdownUI;
+		};
+		03FA318B2C6FECAE00D47FA3 /* Flow */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 03FA318A2C6FEC5400D47FA3 /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */;
+			productName = Flow;
 		};
 		50C99B552A61D792005D57DD /* Dependencies */ = {
 			isa = XCSwiftPackageProductDependency;

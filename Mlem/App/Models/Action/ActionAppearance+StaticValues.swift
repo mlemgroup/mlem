@@ -35,6 +35,7 @@ extension ActionAppearance {
     static func save(isOn: Bool) -> Self {
         .init(
             label: isOn ? "Unsave" : "Save",
+            isOn: isOn,
             color: Palette.main.save,
             icon: isOn ? Icons.saveFill : Icons.save,
             swipeIcon1: isOn ? Icons.unsave : Icons.save,
@@ -67,7 +68,7 @@ extension ActionAppearance {
             isOn: isOn,
             isDestructive: !isOn,
             color: Palette.main.negative,
-            icon: isOn ? Icons.show : Icons.hide
+            icon: isOn ? Icons.unblock : Icons.block
         )
     }
     

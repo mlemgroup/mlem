@@ -15,8 +15,6 @@ struct InteractionBarView: View {
     private let trailing: [EnrichedWidget]
     private let readouts: [Readout]
     
-    static let unweightedSymbols: Set<String> = [Icons.upvote, Icons.downvote]
-    
     init(
         post: any Post1Providing,
         configuration: PostBarConfiguration,
@@ -98,7 +96,7 @@ struct InteractionBarView: View {
         Group {
             if let action = action as? ShareAction {
                 ShareLink(item: action.url) {
-                    actionLabelView(action)
+                    InteractionBarActionLabelView(action.appearance)
                 }
             } else {
                 Button {
@@ -106,7 +104,8 @@ struct InteractionBarView: View {
                         action.callback?()
                     }
                 } label: {
-                    actionLabelView(action)
+                    InteractionBarActionLabelView(action.appearance)
+                        .opacity(((action as? BasicAction)?.disabled ?? false) ? 0.5 : 1)
                 }
             }
         }
@@ -122,11 +121,6 @@ struct InteractionBarView: View {
                 return false
             }
         }())
-    }
-    
-    @ViewBuilder
-    private func actionLabelView(_ action: any Action) -> some View {
-        let isOn = ((action as? BasicAction)?.disabled ?? false) ? false : action.appearance.isOn
     }
 }
 

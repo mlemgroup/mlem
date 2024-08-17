@@ -9,8 +9,8 @@ import Foundation
 
 protocol InteractionBarConfiguration {
     associatedtype ActionType: ActionTypeProviding
-    associatedtype CounterType
-    associatedtype ReadoutType
+    associatedtype CounterType: Hashable
+    associatedtype ReadoutType: CaseIterable, Hashable
     
     typealias Item = InteractionConfigurationItem<ActionType, CounterType>
     
@@ -21,11 +21,11 @@ protocol InteractionBarConfiguration {
     static var `default`: Self { get }
 }
 
-enum InteractionConfigurationItem<ActionType, CounterType> {
+enum InteractionConfigurationItem<ActionType: Hashable, CounterType: Hashable>: Hashable {
     case action(ActionType)
     case counter(CounterType)
 }
 
-protocol ActionTypeProviding {
+protocol ActionTypeProviding: CaseIterable, Hashable {
     var appearance: ActionAppearance { get }
 }

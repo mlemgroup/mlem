@@ -9,8 +9,10 @@ import SwiftUI
 
 enum SettingsPage: Hashable {
     case root, accounts, account, theme, post, links, subscriptionList, icon, sorting
+    case postInteractionBar, commentInteractionBar, replyInteractionBar
     
     @ViewBuilder
+    // swiftlint:disable:next cyclomatic_complexity
     func view() -> some View {
         switch self {
         case .root:
@@ -31,6 +33,12 @@ enum SettingsPage: Hashable {
             SortingSettingsView()
         case .subscriptionList:
             SubscriptionListSettingsView()
+        case .postInteractionBar:
+            InteractionBarEditorView(configuration: PostBarConfiguration.default)
+        case .commentInteractionBar:
+            InteractionBarEditorView(configuration: CommentBarConfiguration.default)
+        case .replyInteractionBar:
+            InteractionBarEditorView(configuration: ReplyBarConfiguration.default)
         }
     }
 }
