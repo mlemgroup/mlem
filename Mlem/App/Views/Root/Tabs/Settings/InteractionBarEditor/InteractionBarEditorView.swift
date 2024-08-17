@@ -16,6 +16,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     @State var dragLocation: CGPoint = .zero
     @State var dragTranslation: CGSize = .zero
     @State var hoveredDropIndex: Int?
+    @State var hoveredDropIndexDistance: CGFloat = .infinity
     
     init(configuration: Configuration) {
         // Where `nil` represents the info stack
@@ -25,49 +26,18 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     var body: some View {
         ScrollView {
             VStack {
-                HStack(spacing: 5) {
-                    dropLocation(index: 0)
-                    ForEach(Array(items.enumerated()), id: \.element) { index, item in
-                        Group {
-                            switch item {
-                            case let .action(action):
-                                actionView(action)
-                            default:
-                                RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
-                                    .fill(palette.secondaryGroupedBackground)
-                                    .frame(height: Constants.main.barIconSize + 24)
-                                    .frame(maxWidth: .infinity)
-                            }
-                        }
-                        .offset(pickedUpIndex == index ? dragTranslation : .zero)
-                        .background(
-                            pickedUpIndex == index && dragTranslation != .zero ? palette.accent.opacity(0.2) : Color.clear,
-                            in: .rect(cornerRadius: Constants.main.smallItemCornerRadius)
-                        )
-                        .zIndex(pickedUpIndex == index ? 1 : 0)
-                        .gesture(
-                            DragGesture(minimumDistance: 0, coordinateSpace: .named("editor"))
-                                .onChanged { gesture in
-                                    pickedUpIndex = index
-                                    dragLocation = gesture.location
-                                    dragTranslation = gesture.translation
-                                }
-                                .onEnded { _ in
-                                    withAnimation {
-                                        pickedUpIndex = nil
-                                        dragTranslation = .zero
-                                        hoveredDropIndex = nil
-                                    }
-                                }
-                        )
-                        dropLocation(index: index + 1)
-                    }
-                }
-                .zIndex(1)
+                activeBar()
+                    .zIndex(1)
                 Divider()
                 HFlow(justification: .none) {
+                    ForEach(Array(Configuration.CounterType.allCases.enumerated()), id: \.offset) { _, counter in
+                        cell { InteractionBarCounterLabelView(counter.appearance) }
+                    }
                     ForEach(Array(Configuration.ActionType.allCases.enumerated()), id: \.offset) { _, action in
-                        actionView(action)
+                        cell {
+                            InteractionBarActionLabelView(action.appearance)
+                                .frame(width: Constants.main.barIconSize)
+                        }
                     }
                 }
                 .frame(maxWidth: .infinity)
@@ -83,11 +53,45 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     }
     
     @ViewBuilder
-    func actionView(_ actionType: Configuration.ActionType) -> some View {
-        InteractionBarActionLabelView(actionType.appearance)
-            .frame(width: Constants.main.barIconSize, height: Constants.main.barIconSize)
-            .padding(12)
-            .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.smallItemCornerRadius))
+    func activeBar() -> some View {
+        HStack(spacing: 5) {
+            dropLocation(index: 0)
+            ForEach(Array(items.enumerated()), id: \.element) { index, item in
+                cell {
+                    switch item {
+                    case let .action(action):
+                        InteractionBarActionLabelView(action.appearance)
+                            .frame(width: Constants.main.barIconSize)
+                    case let .counter(counter):
+                        InteractionBarCounterLabelView(counter.appearance)
+                    default:
+                        Spacer()
+                    }
+                }
+                .offset(pickedUpIndex == index ? dragTranslation : .zero)
+                .background(
+                    RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
+                        .fill(pickedUpIndex == index && dragTranslation != .zero ? palette.accent.opacity(0.2) : Color.clear)
+                        .transaction { $0.animation = nil }
+                )
+                .zIndex(pickedUpIndex == index ? 1 : 0)
+                .gesture(
+                    DragGesture(minimumDistance: 0, coordinateSpace: .named("editor"))
+                        .onChanged { gesture in
+                            pickedUpIndex = index
+                            dragLocation = gesture.location
+                            dragTranslation = gesture.translation
+                        }
+                        .onEnded { _ in
+                            withAnimation(.easeOut(duration: 0.1)) {
+                                completeDrag()
+                                dragTranslation = .zero
+                            }
+                        }
+                )
+                dropLocation(index: index + 1)
+            }
+        }
     }
     
     @ViewBuilder
@@ -102,15 +106,38 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                 .frame(height: Constants.main.barIconSize + 24)
                 .contentShape(.rect)
                 .onChange(of: dragLocation) {
-                    if isHovered, hoveredDropIndex == nil {
-                        hoveredDropIndex = index
-                    } else if !isHovered, hoveredDropIndex == index {
-                        hoveredDropIndex = nil
+                    if pickedUpIndex != nil {
+                        if isHovered, hoveredDropIndex == nil {
+                            hoveredDropIndex = index
+                            HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+                        } else if !isHovered, hoveredDropIndex == index {
+                            hoveredDropIndex = nil
+                        }
                     }
                 }
         }
         .frame(width: 2)
         .frame(height: Constants.main.barIconSize + 24)
+        .transaction { $0.animation = nil }
+    }
+    
+    @ViewBuilder
+    func cell(@ViewBuilder _ view: () -> some View) -> some View {
+        view()
+            .frame(height: Constants.main.barIconSize)
+            .padding(12)
+            .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.smallItemCornerRadius))
+    }
+    
+    func completeDrag() {
+        defer {
+            self.pickedUpIndex = nil
+            self.hoveredDropIndex = nil
+        }
+        guard let pickedUpIndex, let hoveredDropIndex else { return }
+        let item = items.remove(at: pickedUpIndex)
+        let newIndex = hoveredDropIndex > pickedUpIndex ? hoveredDropIndex - 1 : hoveredDropIndex
+        items.insert(item, at: newIndex)
     }
 }
 

@@ -30,10 +30,18 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         }
     }
     
-    enum CounterType {
+    enum CounterType: CounterTypeProviding {
         case score
         case upvote
         case downvote
+        
+        var appearance: CounterAppearance {
+            switch self {
+            case .score: .init(value: 7, leading: .upvote(isOn: false), trailing: .downvote(isOn: false))
+            case .upvote: .init(value: 9, leading: .upvote(isOn: false), trailing: nil)
+            case .downvote: .init(value: 2, leading: .upvote(isOn: false), trailing: nil)
+            }
+        }
     }
     
     enum ReadoutType: CaseIterable {

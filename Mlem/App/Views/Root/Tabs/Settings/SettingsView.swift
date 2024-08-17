@@ -28,7 +28,12 @@ struct SettingsView: View {
             Section {
                 NavigationLink("Links", destination: .settings(.links))
                 NavigationLink("Sorting", destination: .settings(.sorting))
-                NavigationLink("Interaction Bar", destination: .settings(.postInteractionBar))
+            }
+            
+            Section {
+                NavigationLink("Post", destination: .settings(.postInteractionBar))
+                NavigationLink("Comment", destination: .settings(.commentInteractionBar))
+                NavigationLink("Reply", destination: .settings(.replyInteractionBar))
             }
             
             Section {
