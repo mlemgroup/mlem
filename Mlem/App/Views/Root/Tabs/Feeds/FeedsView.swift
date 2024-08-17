@@ -50,7 +50,6 @@ struct FeedsView: View {
     init(feedSelection: FeedSelection = .subscribed) {
         // need to grab some stuff from app storage to initialize with
         @Setting(\.internetSpeed) var internetSpeed
-        @Setting(\.upvoteOnSave) var upvoteOnSave
         @Setting(\.showReadInFeed) var showReadPosts
         @Setting(\.defaultPostSort) var defaultSort
         

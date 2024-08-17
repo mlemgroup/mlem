@@ -51,11 +51,18 @@ extension Interactable1Providing {
     }
     
     func toggleSaved(feedback: Set<FeedbackType>) {
+        @Setting(\.upvoteOnSave) var upvoteOnSave
+        
         if let self2 {
             if feedback.contains(.haptic) {
                 HapticManager.main.play(haptic: .success, priority: .low)
             }
             self2.toggleSaved()
+            
+            if upvoteOnSave, self2.votes.myVote != .upvote {
+                self2.updateVote(.upvote)
+            }
+            
             inboxItem?.updateRead(true)
         } else {
             print("DEBUG no self2 found in toggleSave!")

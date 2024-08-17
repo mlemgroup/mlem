@@ -15,11 +15,11 @@ struct IsAtTopPreferenceKey: PreferenceKey {
 struct FancyScrollView<Content: View>: View {
     @Environment(\.dismiss) var dismiss
     
-    @State var isAtTop: Bool = true
-    
     @ViewBuilder var content: () -> Content
     @Binding var scrollToTopTrigger: Bool // TODO: investigate unifying this and isAtTop
     var reselectAction: (() -> Void)?
+    
+    @State var isAtTop: Bool = true
 
     private let topId: String = "scrollToTop"
     
