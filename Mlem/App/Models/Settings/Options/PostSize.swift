@@ -30,6 +30,24 @@ enum PostSize: String, CaseIterable {
         }
     }
     
+    var avatarSize: Int? {
+        switch self {
+        case .compact, .tile:
+            return nil
+        case .headline, .large:
+            return Int(Constants.main.largeAvatarSize * 2)
+        }
+    }
+    
+    var imageSize: CGFloat? {
+        // TODO: Vary this by device?
+        switch self {
+        case .compact, .headline: 128
+        case .tile: 512
+        case .large: nil
+        }
+    }
+    
     func icon(filled: Bool) -> String {
         switch self {
         case .compact: filled ? Icons.compactPostFill : Icons.compactPost

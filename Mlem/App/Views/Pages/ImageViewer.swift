@@ -10,6 +10,12 @@ import SwiftUI
 struct ImageViewer: View {
     let url: URL
     
+    init(url: URL) {
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
+        components.query = nil
+        self.url = components.url!
+    }
+    
     var body: some View {
         ZoomableContainer {
             DynamicImageView(url: url)

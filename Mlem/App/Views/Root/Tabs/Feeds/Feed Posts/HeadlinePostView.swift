@@ -53,6 +53,7 @@ struct HeadlinePostView: View {
   
                 VStack(alignment: .leading, spacing: Constants.main.halfSpacing) {
                     post.taggedTitle(communityContext: communityContext)
+                        .foregroundStyle((post.read_ ?? false) ? palette.secondary : palette.primary)
                         .font(.headline)
                         .imageScale(.small)
                     

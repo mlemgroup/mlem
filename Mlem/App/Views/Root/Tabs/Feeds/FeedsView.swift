@@ -53,6 +53,7 @@ struct FeedsView: View {
         @Setting(\.upvoteOnSave) var upvoteOnSave
         @Setting(\.showReadInFeed) var showReadPosts
         @Setting(\.defaultPostSort) var defaultSort
+        @Setting(\.postSize) var postSize
         
         @Dependency(\.persistenceRepository) var persistenceRepository
         
@@ -65,8 +66,7 @@ struct FeedsView: View {
                 userId: firstUser.id,
                 sortType: .new,
                 savedOnly: true,
-                smallAvatarSize: Constants.main.smallAvatarSize,
-                largeAvatarSize: Constants.main.largeAvatarSize
+                prefetchingConfiguration: .forPostSize(postSize)
             ))
         }
     }
@@ -106,8 +106,7 @@ struct FeedsView: View {
                             userId: firstUser.id,
                             sortType: .new,
                             savedOnly: true,
-                            smallAvatarSize: Constants.main.smallAvatarSize,
-                            largeAvatarSize: Constants.main.largeAvatarSize
+                            prefetchingConfiguration: .forPostSize(postSize)
                         )
                     }
                 } else {
@@ -200,8 +199,7 @@ struct FeedsView: View {
                 sortType: appState.initialFeedSortType,
                 showReadPosts: showReadPosts,
                 filteredKeywords: [],
-                smallAvatarSize: Constants.main.smallAvatarSize,
-                largeAvatarSize: Constants.main.largeAvatarSize,
+                prefetchingConfiguration: .forPostSize(postSize),
                 urlCache: Constants.main.urlCache,
                 api: AppState.main.firstApi,
                 feedType: feedSelection.associatedApiType

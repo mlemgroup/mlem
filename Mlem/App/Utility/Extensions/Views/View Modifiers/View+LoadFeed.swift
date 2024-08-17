@@ -10,6 +10,8 @@ import MlemMiddleware
 import SwiftUI
 
 private struct LoadFeed: ViewModifier {
+    @Setting(\.postSize) var postSize
+    
     let feedLoader: (any FeedLoading)?
     
     func body(content: Content) -> some View {
@@ -22,6 +24,9 @@ private struct LoadFeed: ViewModifier {
                         handleError(error)
                     }
                 }
+            }
+            .onChange(of: postSize) {
+                (feedLoader as? CorePostFeedLoader)?.setPrefetchingConfiguration(.forPostSize(postSize))
             }
     }
 }
