@@ -89,7 +89,7 @@ struct ThumbnailImageView: View {
                 showProgress: true
             )
             .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
-            .blur(radius: blurred ? 10 : 0, opaque: true)
+            .blur(radius: blurred && (loading == .done) ? 10 : 0, opaque: true)
             .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
             .onPreferenceChange(ImageLoadingPreferenceKey.self, perform: { loading = $0 })
         } else {
