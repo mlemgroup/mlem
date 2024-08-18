@@ -8,6 +8,51 @@
 import SwiftUI
 
 extension InteractionBarEditorView {
+    var items: [Configuration.Item?] {
+        get { configuration.leading + [nil] + configuration.trailing }
+        nonmutating set {
+            guard let infoStackIndex = newValue.firstIndex(of: nil) else {
+                assertionFailure()
+                return
+            }
+            configuration = .init(
+                leading: newValue[..<infoStackIndex].compactMap { $0 },
+                trailing: newValue[infoStackIndex...].compactMap { $0 },
+                readouts: configuration.readouts
+            )
+        }
+    }
+    
+    func barItemDragGesture(index: Int) -> some Gesture {
+        DragGesture(minimumDistance: 0, coordinateSpace: .named("editor"))
+            .onChanged { gesture in
+                barPickedUpIndex = index
+                dragLocation = gesture.location
+                dragTranslation = gesture.translation
+            }
+            .onEnded { _ in
+                withAnimation(.easeOut(duration: 0.1)) {
+                    completeDrag()
+                    dragTranslation = .zero
+                }
+            }
+    }
+    
+    func trayItemDragGesture(item: Configuration.Item) -> some Gesture {
+        DragGesture(minimumDistance: 0, coordinateSpace: .named("editor"))
+            .onChanged { gesture in
+                trayPickedUpItem = item
+                dragLocation = gesture.location
+                dragTranslation = gesture.translation
+            }
+            .onEnded { _ in
+                withAnimation(.easeOut(duration: 0.1)) {
+                    completeDrag()
+                    dragTranslation = .zero
+                }
+            }
+    }
+    
     func completeDrag() {
         defer {
             self.barPickedUpIndex = nil
@@ -19,9 +64,11 @@ extension InteractionBarEditorView {
         if let barPickedUpIndex {
             switch hoveredDropLocation {
             case let .bar(index: dropIndex):
-                let item = items.remove(at: barPickedUpIndex)
+                var newItems = items
+                let item = newItems.remove(at: barPickedUpIndex)
                 let newIndex = dropIndex > barPickedUpIndex ? dropIndex - 1 : dropIndex
-                items.insert(item, at: newIndex)
+                newItems.insert(item, at: newIndex)
+                items = newItems
             case .tray:
                 if items[barPickedUpIndex] != nil {
                     items.remove(at: barPickedUpIndex)

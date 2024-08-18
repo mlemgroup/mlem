@@ -30,8 +30,8 @@ private enum Path {
     static var favoriteCommunities = root.appendingPathComponent("Favorite Communities", conformingTo: .json)
     static var recentSearches = root.appendingPathComponent("Recent Searches", conformingTo: .json)
     static var easterFlags = root.appendingPathComponent("Easter eggs flags", conformingTo: .json)
-    static var layoutWidgets = root.appendingPathComponent("Layout Widgets", conformingTo: .json)
     static var instanceMetadata = root.appendingPathComponent("Instance Metadata", conformingTo: .json)
+    static var layoutWidgets = root.appendingPathComponent("Layout Widgets", conformingTo: .json)
 }
 
 private enum DiskAccess {
@@ -125,13 +125,14 @@ class PersistenceRepository {
         Path.filteredKeywords
     }
     
-//    func loadLayoutWidgets() -> LayoutWidgetGroups {
-//        load(LayoutWidgetGroups.self, from: Path.layoutWidgets) ?? .init()
-//    }
-//
-//    func saveLayoutWidgets(_ value: LayoutWidgetGroups) async throws {
-//        try await save(value, to: Path.layoutWidgets)
-//    }
+    func loadInteractionBarConfigurations() -> InteractionBarConfigurations {
+        load(InteractionBarConfigurations.self, from: Path.layoutWidgets) ?? .default
+    }
+    
+    func saveInteractionBarConfigurations(_ value: InteractionBarConfigurations) async throws {
+        try await save(value, to: Path.layoutWidgets)
+    }
+
 //
 //    func loadInstanceMetadata() -> TimestampedValue<[InstanceMetadata]> {
 //        let localFile = load(TimestampedValue<[InstanceMetadata]>.self, from: Path.instanceMetadata)

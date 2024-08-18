@@ -42,11 +42,7 @@ struct CommentView: View {
                     CommentBodyView(comment: comment)
                     InteractionBarView(
                         comment: comment,
-                        configuration: .init(
-                            leading: [.counter(.score)],
-                            trailing: [.action(.save), .action(.reply)],
-                            readouts: [.created, .score, .comment]
-                        ),
+                        configuration: Settings.main.commentInteractionBar,
                         expandedPostTracker: expandedPostTracker
                     )
                     .padding(.top, 2)

@@ -34,11 +34,11 @@ enum SettingsPage: Hashable {
         case .subscriptionList:
             SubscriptionListSettingsView()
         case .postInteractionBar:
-            InteractionBarEditorView(configuration: PostBarConfiguration.default)
+            InteractionBarEditorView(setting: \.postInteractionBar)
         case .commentInteractionBar:
-            InteractionBarEditorView(configuration: CommentBarConfiguration.default)
+            InteractionBarEditorView(setting: \.commentInteractionBar)
         case .replyInteractionBar:
-            InteractionBarEditorView(configuration: ReplyBarConfiguration.default)
+            InteractionBarEditorView(setting: \.replyInteractionBar)
         }
     }
 }

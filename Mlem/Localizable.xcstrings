@@ -110,6 +110,9 @@
     "Applications Email Admins" : {
 
     },
+    "Apply to all Interaction Bars" : {
+
+    },
     "Authenticating..." : {
 
     },
@@ -565,6 +568,9 @@
     "Quote" : {
 
     },
+    "Really apply configuration to all?" : {
+
+    },
     "Reason (Optional)" : {
 
     },
@@ -602,6 +608,9 @@
 
     },
     "Requires Application" : {
+
+    },
+    "Reset" : {
 
     },
     "Restore" : {
@@ -725,6 +734,9 @@
 
     },
     "Switch to this account and..." : {
+
+    },
+    "Tap and hold items to add, remove or rearrange them." : {
 
     },
     "Tap to show slur filter regex." : {

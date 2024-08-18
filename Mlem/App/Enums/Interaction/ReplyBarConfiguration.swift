@@ -8,7 +8,7 @@
 import Foundation
 
 struct ReplyBarConfiguration: InteractionBarConfiguration {
-    enum ActionType: ActionTypeProviding {
+    enum ActionType: String, ActionTypeProviding {
         case upvote
         case downvote
         case save
@@ -22,7 +22,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
         }
     }
     
-    enum CounterType: CounterTypeProviding {
+    enum CounterType: String, CounterTypeProviding {
         case score
         case upvote
         case downvote
@@ -36,7 +36,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
         }
     }
     
-    enum ReadoutType: CaseIterable {
+    enum ReadoutType: String, ReadoutTypeProviding {
         case created
         case score
         case upvote

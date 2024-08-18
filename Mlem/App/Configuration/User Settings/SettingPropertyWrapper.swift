@@ -11,7 +11,7 @@ import SwiftUI
 
 @propertyWrapper
 struct Setting<T>: DynamicProperty {
-    @ObservedObject private var defaults: Settings
+    private var defaults: Settings
     private let keyPath: ReferenceWritableKeyPath<Settings, T>
     public init(_ keyPath: ReferenceWritableKeyPath<Settings, T>, defaults: Settings = .main) {
         self.keyPath = keyPath

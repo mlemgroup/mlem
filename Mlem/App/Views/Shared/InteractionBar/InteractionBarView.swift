@@ -46,7 +46,7 @@ struct InteractionBarView: View {
             ForEach(leading, id: \.viewId, content: widgetView)
             InfoStackView(readouts: readouts, showColor: false)
                 .frame(maxWidth: .infinity, alignment: infoStackAlignment)
-                .padding(.horizontal, -Constants.main.doubleSpacing)
+                .padding(infoStackPaddingEdges, -Constants.main.doubleSpacing)
             ForEach(trailing, id: \.viewId, content: widgetView)
         }
         .frame(height: Constants.main.barIconSize)
@@ -55,12 +55,17 @@ struct InteractionBarView: View {
     
     var infoStackAlignment: Alignment {
         switch (leading.isEmpty, trailing.isEmpty) {
-        case (true, false):
-            .leading
-        case (false, true):
-            .trailing
-        default:
-            .center
+        case (true, false): .leading
+        case (false, true): .trailing
+        default: .center
+        }
+    }
+    
+    var infoStackPaddingEdges: Edge.Set {
+        switch (leading.isEmpty, trailing.isEmpty) {
+        case (true, false): .trailing
+        case (false, true): .leading
+        default: .horizontal
         }
     }
     

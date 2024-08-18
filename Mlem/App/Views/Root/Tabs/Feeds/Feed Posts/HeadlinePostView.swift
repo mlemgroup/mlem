@@ -75,11 +75,7 @@ struct HeadlinePostView: View {
             
             InteractionBarView(
                 post: post,
-                configuration: .init(
-                    leading: [.counter(.score)],
-                    trailing: [.action(.save), .action(.reply)],
-                    readouts: [.created, .score, .comment]
-                )
+                configuration: Settings.main.postInteractionBar
             )
             .padding(.vertical, 2)
         }

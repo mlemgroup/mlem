@@ -15,35 +15,77 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         case bar(index: Int), tray
     }
     
-    @State var items: [Configuration.Item?]
+    @State var configuration: Configuration {
+        didSet { onSet(configuration) }
+    }
+    
     @State var barPickedUpIndex: Int?
     @State var trayPickedUpItem: Configuration.Item?
     @State var dragLocation: CGPoint = .zero
     @State var dragTranslation: CGSize = .zero
     @State var hoveredDropLocation: DropLocation?
     @State var hoveredDropIndexDistance: CGFloat = .infinity
+    @State var showingApplyToAllConfirmation: Bool = false
     
-    init(configuration: Configuration) {
+    let onSet: (Configuration) -> Void
+    
+    init(configuration: Configuration, onSet: @escaping (Configuration) -> Void) {
         // Where `nil` represents the info stack
-        self._items = .init(initialValue: configuration.leading + [nil] + configuration.trailing)
+        self.configuration = configuration
+        self.onSet = onSet
+    }
+    
+    init(setting: WritableKeyPath<Settings, Configuration>) {
+        self.init(configuration: Settings.main[keyPath: setting]) {
+            var main = Settings.main
+            main[keyPath: setting] = $0
+        }
     }
     
     var body: some View {
-        ScrollView {
-            VStack {
-                activeBar
-                    .zIndex(barPickedUpIndex == nil ? 0 : 1)
-                Divider()
-                tray
-                    .frame(maxWidth: .infinity)
-                    .zIndex(trayPickedUpItem == nil ? 0 : 1)
+        VStack {
+            activeBar
+                .zIndex(barPickedUpIndex == nil ? 0 : 1)
+            Divider()
+            Text("Tap and hold items to add, remove or rearrange them.")
+                .font(.callout)
+                .multilineTextAlignment(.center)
+                .foregroundStyle(.secondary)
+                .padding()
+            Divider()
+            HFlow {
+                ForEach(Array(Configuration.Item.allCases.enumerated()), id: \.offset) { trayItem($1) }
             }
             .frame(maxWidth: .infinity)
-            .padding(Constants.main.standardSpacing)
+            .zIndex(trayPickedUpItem == nil ? 0 : 1)
+            Spacer()
+            HStack {
+                Button("Apply to all Interaction Bars") { showingApplyToAllConfirmation = true }
+                    .confirmationDialog(
+                        "Really apply configuration to all?",
+                        isPresented: $showingApplyToAllConfirmation,
+                        titleVisibility: .visible
+                    ) {
+                        Button("Yes") {
+                            Settings.main.interactionBarConfigurations = .init(
+                                post: configuration.convert(),
+                                comment: configuration.convert(),
+                                reply: configuration.convert()
+                            )
+                        }
+                    }
+                Spacer()
+                Button("Reset") { configuration = .default }
+                    .buttonStyle(.plain)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.horizontal)
         }
+        .frame(maxWidth: .infinity)
+        .padding(Constants.main.standardSpacing)
         .navigationTitle("Interaction Bar")
         .navigationBarTitleDisplayMode(.inline)
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(palette.groupedBackground)
         .coordinateSpace(.named("editor"))
     }
@@ -61,33 +103,8 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                             .transaction { $0.animation = nil }
                     )
                     .zIndex(barPickedUpIndex == index ? 1 : 0)
-                    .gesture(
-                        DragGesture(minimumDistance: 0, coordinateSpace: .named("editor"))
-                            .onChanged { gesture in
-                                barPickedUpIndex = index
-                                dragLocation = gesture.location
-                                dragTranslation = gesture.translation
-                            }
-                            .onEnded { _ in
-                                withAnimation(.easeOut(duration: 0.1)) {
-                                    completeDrag()
-                                    dragTranslation = .zero
-                                }
-                            }
-                    )
+                    .gesture(barItemDragGesture(index: index))
                 dropLocation(index: index + 1)
-            }
-        }
-    }
-
-    @ViewBuilder
-    var tray: some View {
-        HFlow(justification: .none) {
-            ForEach(Array(Configuration.CounterType.allCases.enumerated()), id: \.offset) { _, counter in
-                trayItem(.counter(counter))
-            }
-            ForEach(Array(Configuration.ActionType.allCases.enumerated()), id: \.offset) { _, action in
-                trayItem(.action(action))
             }
         }
     }
@@ -104,17 +121,22 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                     let frame = geometry.frame(in: .named("editor"))
                     if let barPickedUpIndex, barPickedUpIndex == index || barPickedUpIndex == index - 1 { return }
                     
-                    if let barPickedUpIndex, items[barPickedUpIndex] != nil, dragLocation.y > frame.maxY + 20 {
-                        if hoveredDropLocation != .tray {
-                            hoveredDropLocation = .tray
-                            HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+                    if dragLocation.y > frame.maxY + 60 {
+                        if let barPickedUpIndex, items[barPickedUpIndex] != nil {
+                            if hoveredDropLocation != .tray {
+                                hoveredDropLocation = .tray
+                                HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+                            }
+                            return
+                        } else {
+                            hoveredDropLocation = nil
+                            return
                         }
-                        return
                     }
                     if hoveredDropLocation == .tray { hoveredDropLocation = nil }
 
                     if barPickedUpIndex != nil || trayPickedUpItem != nil {
-                        if abs(frame.minX - dragLocation.x) < 50 {
+                        if abs(frame.minX - dragLocation.x) < Constants.main.barIconSize + 12 + 5 {
                             if hoveredDropLocation == nil {
                                 hoveredDropLocation = .bar(index: index)
                                 HapticManager.main.play(haptic: .gentleInfo, priority: .low)
@@ -142,20 +164,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                 RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
                     .strokeBorder(trayItemOutlineColor(item), lineWidth: 2)
             }
-            .gesture(
-                DragGesture(minimumDistance: 0, coordinateSpace: .named("editor"))
-                    .onChanged { gesture in
-                        trayPickedUpItem = item
-                        dragLocation = gesture.location
-                        dragTranslation = gesture.translation
-                    }
-                    .onEnded { _ in
-                        withAnimation(.easeOut(duration: 0.1)) {
-                            completeDrag()
-                            dragTranslation = .zero
-                        }
-                    }
-            )
+            .gesture(trayItemDragGesture(item: item))
             .zIndex(trayPickedUpItem == item ? 1 : 0)
     }
     
@@ -184,7 +193,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
 
 #Preview {
     NavigationStack {
-        InteractionBarEditorView(configuration: PostBarConfiguration.default)
+        InteractionBarEditorView(configuration: PostBarConfiguration.default, onSet: { _ in })
     }
     .environment(Palette.main)
 }
