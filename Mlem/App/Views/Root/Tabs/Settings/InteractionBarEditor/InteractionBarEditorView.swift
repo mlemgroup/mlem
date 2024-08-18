@@ -29,8 +29,9 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     
     let onSet: (Configuration) -> Void
     
+    let dropIndicatorWidth: CGFloat = 2
+    
     init(configuration: Configuration, onSet: @escaping (Configuration) -> Void) {
-        // Where `nil` represents the info stack
         self.configuration = configuration
         self.onSet = onSet
     }
@@ -47,39 +48,15 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             activeBar
                 .zIndex(barPickedUpIndex == nil ? 0 : 1)
             Divider()
-            Text("Tap and hold items to add, remove or rearrange them.")
-                .font(.callout)
-                .multilineTextAlignment(.center)
-                .foregroundStyle(.secondary)
-                .padding()
+            infoText
             Divider()
-            HFlow {
+            HFlow(spacing: Constants.main.standardSpacing) {
                 ForEach(Array(Configuration.Item.allCases.enumerated()), id: \.offset) { trayItem($1) }
             }
             .frame(maxWidth: .infinity)
             .zIndex(trayPickedUpItem == nil ? 0 : 1)
             Spacer()
-            HStack {
-                Button("Apply to all Interaction Bars") { showingApplyToAllConfirmation = true }
-                    .confirmationDialog(
-                        "Really apply configuration to all?",
-                        isPresented: $showingApplyToAllConfirmation,
-                        titleVisibility: .visible
-                    ) {
-                        Button("Yes") {
-                            Settings.main.interactionBarConfigurations = .init(
-                                post: configuration.convert(),
-                                comment: configuration.convert(),
-                                reply: configuration.convert()
-                            )
-                        }
-                    }
-                Spacer()
-                Button("Reset") { configuration = .default }
-                    .buttonStyle(.plain)
-                    .foregroundStyle(.secondary)
-            }
-            .padding(.horizontal)
+            bottomBarActions
         }
         .frame(maxWidth: .infinity)
         .padding(Constants.main.standardSpacing)
@@ -92,8 +69,8 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     
     @ViewBuilder
     var activeBar: some View {
-        HStack(spacing: 5) {
-            dropLocation(index: 0)
+        HStack(spacing: (Constants.main.standardSpacing - dropIndicatorWidth) / 2) {
+            dropIndicator(index: 0)
             ForEach(Array(items.enumerated()), id: \.element) { index, item in
                 cell { itemLabel(item) }
                     .offset(barPickedUpIndex == index ? dragTranslation : .zero)
@@ -104,17 +81,54 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                     )
                     .zIndex(barPickedUpIndex == index ? 1 : 0)
                     .gesture(barItemDragGesture(index: index))
-                dropLocation(index: index + 1)
+                dropIndicator(index: index + 1)
             }
         }
     }
     
     @ViewBuilder
-    func dropLocation(index: Int) -> some View {
+    var infoText: some View {
+        Text(
+            allowNewItemInsertion ? "Tap and hold items to add, remove or rearrange them." : "Too many items!"
+        )
+        .lineLimit(2, reservesSpace: true)
+        .font(.callout)
+        .multilineTextAlignment(.center)
+        .foregroundStyle(allowNewItemInsertion ? palette.secondary : palette.negative)
+        .padding()
+    }
+    
+    @ViewBuilder
+    var bottomBarActions: some View {
+        HStack {
+            Button("Apply to All Interaction Bars") { showingApplyToAllConfirmation = true }
+                .confirmationDialog(
+                    "Really apply configuration to all?",
+                    isPresented: $showingApplyToAllConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    Button("Yes") {
+                        Settings.main.interactionBarConfigurations = .init(
+                            post: configuration.convert(),
+                            comment: configuration.convert(),
+                            reply: configuration.convert()
+                        )
+                    }
+                }
+            Spacer()
+            Button("Reset") { configuration = .default }
+                .buttonStyle(.plain)
+                .foregroundStyle(.secondary)
+        }
+        .padding(.horizontal)
+    }
+    
+    @ViewBuilder
+    func dropIndicator(index: Int) -> some View {
         GeometryReader { geometry in
             Capsule()
                 .fill(hoveredDropLocation == .bar(index: index) ? palette.accent : .clear)
-                .frame(width: 2)
+                .frame(width: dropIndicatorWidth)
                 .frame(height: Constants.main.barIconSize + 24)
                 .contentShape(.rect)
                 .onChange(of: dragLocation) {
@@ -134,9 +148,11 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                         }
                     }
                     if hoveredDropLocation == .tray { hoveredDropLocation = nil }
+                    
+                    guard allowNewItemInsertion else { return }
 
                     if barPickedUpIndex != nil || trayPickedUpItem != nil {
-                        if abs(frame.minX - dragLocation.x) < Constants.main.barIconSize + 12 + 5 {
+                        if abs(frame.minX - dragLocation.x) < Constants.main.barIconSize + 12 + 4 {
                             if hoveredDropLocation == nil {
                                 hoveredDropLocation = .bar(index: index)
                                 HapticManager.main.play(haptic: .gentleInfo, priority: .low)
@@ -149,7 +165,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                     }
                 }
         }
-        .frame(width: 2)
+        .frame(width: dropIndicatorWidth)
         .frame(height: Constants.main.barIconSize + 24)
         .transaction { $0.animation = nil }
     }

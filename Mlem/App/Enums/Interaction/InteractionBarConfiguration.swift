@@ -59,6 +59,16 @@ enum InteractionConfigurationItem<ActionType: ActionTypeProviding, CounterType: 
             }
         }
     }
+    
+    // This is used to determine when an interaction bar configuration is considered "full"
+    var score: Int {
+        switch self {
+        case let .action(action):
+            1
+        case let .counter(counter):
+            counter.appearance.leading == nil || counter.appearance.trailing == nil ? 2 : 3
+        }
+    }
 }
 
 protocol ActionTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {

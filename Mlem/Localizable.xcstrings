@@ -110,7 +110,7 @@
     "Applications Email Admins" : {
 
     },
-    "Apply to all Interaction Bars" : {
+    "Apply to All Interaction Bars" : {
 
     },
     "Authenticating..." : {
@@ -768,6 +768,9 @@
 
     },
     "Tiled" : {
+
+    },
+    "Too many items!" : {
 
     },
     "Top: %@" : {

@@ -8,6 +8,7 @@
 import SwiftUI
 
 extension InteractionBarEditorView {
+    // Where `nil` represents the info stack
     var items: [Configuration.Item?] {
         get { configuration.leading + [nil] + configuration.trailing }
         nonmutating set {
@@ -21,6 +22,19 @@ extension InteractionBarEditorView {
                 readouts: configuration.readouts
             )
         }
+    }
+    
+    var allowNewItemInsertion: Bool {
+        if let trayPickedUpItem {
+            if itemsTotalScore + trayPickedUpItem.score > 6 {
+                return false
+            }
+        }
+        return true
+    }
+    
+    var itemsTotalScore: Int {
+        items.reduce(0) { $0 + ($1?.score ?? 0) }
     }
     
     func barItemDragGesture(index: Int) -> some Gesture {
