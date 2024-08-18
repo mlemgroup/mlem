@@ -11,6 +11,7 @@
 		030030A12C416B0B009A65FF /* RefreshPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030030A02C416B0B009A65FF /* RefreshPopupView.swift */; };
 		03036C742C71408700C6DA1D /* CounterAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03036C732C71408700C6DA1D /* CounterAppearance.swift */; };
 		03036C762C71427B00C6DA1D /* InteractionBarCounterLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03036C752C71427B00C6DA1D /* InteractionBarCounterLabelView.swift */; };
+		03036C832C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03036C822C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift */; };
 		03049A1A2C6502F300FF6889 /* FormSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03049A192C6502F300FF6889 /* FormSection.swift */; };
 		03049A1C2C65039400FF6889 /* ActiveUserCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03049A1B2C65039400FF6889 /* ActiveUserCountView.swift */; };
 		03049A1E2C6508F400FF6889 /* ApiRegistrationMode+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03049A1D2C6508F400FF6889 /* ApiRegistrationMode+Extensions.swift */; };
@@ -179,7 +180,6 @@
 		03E614E72C0BCDC200F692A4 /* FullyQualifiedLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E614E62C0BCDC200F692A4 /* FullyQualifiedLinkView.swift */; };
 		03FA318C2C6FECAE00D47FA3 /* Flow in Frameworks */ = {isa = PBXBuildFile; productRef = 03FA318B2C6FECAE00D47FA3 /* Flow */; };
 		03FA318F2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA318E2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift */; };
-		03FA31912C6FFB9700D47FA3 /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA31902C6FFB9700D47FA3 /* CGPoint+Extensions.swift */; };
 		03FE14042BF93FDD00A8377F /* ErrorDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FE14032BF93FDD00A8377F /* ErrorDetails.swift */; };
 		03FE14062BF9445F00A8377F /* CloseButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FE14052BF9445F00A8377F /* CloseButtonView.swift */; };
 		03FE14082BF94FFB00A8377F /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FE14072BF94FFB00A8377F /* ErrorView.swift */; };
@@ -321,6 +321,7 @@
 		030030A02C416B0B009A65FF /* RefreshPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshPopupView.swift; sourceTree = "<group>"; };
 		03036C732C71408700C6DA1D /* CounterAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterAppearance.swift; sourceTree = "<group>"; };
 		03036C752C71427B00C6DA1D /* InteractionBarCounterLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarCounterLabelView.swift; sourceTree = "<group>"; };
+		03036C822C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InteractionBarEditorView+Logic.swift"; sourceTree = "<group>"; };
 		03049A192C6502F300FF6889 /* FormSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSection.swift; sourceTree = "<group>"; };
 		03049A1B2C65039400FF6889 /* ActiveUserCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveUserCountView.swift; sourceTree = "<group>"; };
 		03049A1D2C6508F400FF6889 /* ApiRegistrationMode+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiRegistrationMode+Extensions.swift"; sourceTree = "<group>"; };
@@ -485,7 +486,6 @@
 		03E614E32C0BCC7B00F692A4 /* Post1Providing+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Post1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		03E614E62C0BCDC200F692A4 /* FullyQualifiedLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullyQualifiedLinkView.swift; sourceTree = "<group>"; };
 		03FA318E2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarActionLabelView.swift; sourceTree = "<group>"; };
-		03FA31902C6FFB9700D47FA3 /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
 		03FE14032BF93FDD00A8377F /* ErrorDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDetails.swift; sourceTree = "<group>"; };
 		03FE14052BF9445F00A8377F /* CloseButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButtonView.swift; sourceTree = "<group>"; };
 		03FE14072BF94FFB00A8377F /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
@@ -850,6 +850,7 @@
 			isa = PBXGroup;
 			children = (
 				0397D4992C6EA6EE002C6CDC /* InteractionBarEditorView.swift */,
+				03036C822C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift */,
 			);
 			path = InteractionBarEditor;
 			sourceTree = "<group>";
@@ -1219,7 +1220,6 @@
 				03134A4E2BEAD23A002662CC /* Views */,
 				CDA8A0052BE43B350022F7ED /* Content Models */,
 				CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */,
-				03FA31902C6FFB9700D47FA3 /* CGPoint+Extensions.swift */,
 				03B431BF2C45ABFB001A1EB5 /* UITextView+Extensions.swift */,
 				03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */,
 				0389DDC82C39658E0005B808 /* Binding+Extensions.swift */,
@@ -1892,6 +1892,7 @@
 				03049A1E2C6508F400FF6889 /* ApiRegistrationMode+Extensions.swift in Sources */,
 				CDE021AD2BFA43380052FD61 /* FeedPostView.swift in Sources */,
 				CD17B24B2C19109A001E174B /* SwipeConfiguration.swift in Sources */,
+				03036C832C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift in Sources */,
 				6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */,
 				03CBD18D2C6120F600E870BC /* PersonFlair.swift in Sources */,
 				033FCB3E2C5E7FA9007B7CD1 /* View+OutdatedFeedPopup.swift in Sources */,
@@ -1937,7 +1938,6 @@
 				03AF91E52C1C61FA00E56644 /* PostBarConfiguration.swift in Sources */,
 				03D3A1D42BB88EF1009DE55E /* Action.swift in Sources */,
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
-				03FA31912C6FFB9700D47FA3 /* CGPoint+Extensions.swift in Sources */,
 				CD0F280A2C6CEFBE00C1F65B /* View+IsAtTopSubscriber.swift in Sources */,
 				035BE0892BDD901B00F77D73 /* NavigationPage.swift in Sources */,
 				035BE08F2BDE911900F77D73 /* NavigationLayer.swift in Sources */,

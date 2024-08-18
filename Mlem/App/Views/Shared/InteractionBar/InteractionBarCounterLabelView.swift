@@ -15,7 +15,7 @@ struct InteractionBarCounterLabelView: View {
     }
     
     var body: some View {
-        HStack {
+        HStack(spacing: 8) {
             if let leading = appearance.leading {
                 InteractionBarActionLabelView(leading)
             }
@@ -25,5 +25,12 @@ struct InteractionBarCounterLabelView: View {
                 InteractionBarActionLabelView(trailing)
             }
         }
+        .padding(paddingEdges, 6)
+    }
+    
+    var paddingEdges: Edge.Set {
+        if appearance.trailing == nil { return .trailing }
+        if appearance.leading == nil { return .leading }
+        return []
     }
 }
