@@ -46,7 +46,7 @@ struct QuickSwipeView: ViewModifier {
                 .background(shadowBackground)
                 .geometryGroup()
                 .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
-                .gesture(
+                .highPriorityGesture(
                     DragGesture(
                         minimumDistance: config.behavior.minimumDrag, // min distance prevents conflict with scrolling drag gesture
                         coordinateSpace: .global
