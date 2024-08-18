@@ -9,6 +9,10 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
+enum PersonContentType {
+    case all, posts, comments
+}
+
 struct PersonContentGridView: View {
     @Environment(AppState.self) var appState
     @Setting(\.postSize) var postSize
@@ -16,8 +20,17 @@ struct PersonContentGridView: View {
     @State var columns: [GridItem] = [GridItem(.flexible())]
     @State var frameWidth: CGFloat = .zero
     
-    // TODO: NOW binding to track whether posts or comments are displayed
     var feedLoader: PersonContentFeedLoader
+    @Binding var contentType: PersonContentType
+    
+    // TODO: NOW better posts/comments
+    var items: [PersonContent] {
+        switch contentType {
+        case .all: feedLoader.items
+        case .posts: feedLoader.posts.map { .init(wrappedValue: .post($0)) }
+        case .comments: feedLoader.comments.map { .init(wrappedValue: .comment($0)) }
+        }
+    }
     
     var body: some View {
         content
@@ -41,7 +54,7 @@ struct PersonContentGridView: View {
     
     var content: some View {
         LazyVGrid(columns: columns, spacing: postSize.tiled ? Constants.main.standardSpacing : 0) {
-            ForEach(feedLoader.items, id: \.hashValue) { item in
+            ForEach(items, id: \.hashValue) { item in
                 VStack(spacing: 0) { // this improves performance O_o
                     personContentItem(item)
                         .buttonStyle(EmptyButtonStyle())

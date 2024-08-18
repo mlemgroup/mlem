@@ -31,6 +31,7 @@ struct PersonView: View {
     
     @State var person: AnyPerson
     @State private var selectedTab: Tab = .overview
+    @State private var selectedContentType: PersonContentType = .all
     @State private var isAtTop: Bool = true
     @State var feedLoader: PersonContentFeedLoader?
     
@@ -51,6 +52,14 @@ struct PersonView: View {
     var body: some View {
         content
             .isAtTopSubscriber(isAtTop: $isAtTop)
+            .onChange(of: selectedTab) {
+                print(selectedTab)
+                switch selectedTab {
+                case .comments: selectedContentType = .comments
+                case .posts: selectedContentType = .posts
+                default: selectedContentType = .all
+                }
+            }
     }
     
     var content: some View {
@@ -182,7 +191,7 @@ struct PersonView: View {
             default:
                 // TODO: NOW switch which content is displayed according to selectedTab
                 if let feedLoader {
-                    PersonContentGridView(feedLoader: feedLoader)
+                    PersonContentGridView(feedLoader: feedLoader, contentType: $selectedContentType)
                 } else {
                     ProgressView()
                 }

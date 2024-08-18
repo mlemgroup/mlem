@@ -136,7 +136,7 @@ struct FeedsView: View {
                 if !postSize.tiled { Divider() }
                 
                 if let savedFeedLoader, feedSelection == .saved {
-                    PersonContentGridView(feedLoader: savedFeedLoader)
+                    PersonContentGridView(feedLoader: savedFeedLoader, contentType: .constant(.all))
                 } else if let postFeedLoader {
                     PostGridView(postFeedLoader: postFeedLoader)
                 }
