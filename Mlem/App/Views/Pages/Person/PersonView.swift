@@ -24,15 +24,29 @@ struct PersonView: View {
         }
     }
     
+    @Setting(\.postSize) var postSize
+    
     @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     
     @State var person: AnyPerson
     @State private var selectedTab: Tab = .overview
     @State private var isAtTop: Bool = true
+    @State var feedLoader: PersonContentFeedLoader?
     
-    // This will a post tracker in future - this is just a proof-of-concept for post loading
-    @State var posts: [Post2] = []
+    init(person: AnyPerson) {
+        self._person = .init(wrappedValue: person)
+        
+        if let person1 = person.wrappedValue as? any Person1Providing {
+            self._feedLoader = .init(wrappedValue: .init(
+                api: AppState.main.firstApi,
+                userId: person1.id,
+                sortType: .new,
+                savedOnly: false,
+                prefetchingConfiguration: .forPostSize(postSize)
+            ))
+        }
+    }
     
     var body: some View {
         content
@@ -61,9 +75,17 @@ struct PersonView: View {
             try await model.upgrade(api: api) { entity in
                 if let entity = entity as? any Person1Providing {
                     let response = try await entity.getContent(page: 1, limit: 3)
-                    Task { @MainActor in
-                        posts = response.posts
+                    
+                    if feedLoader == nil {
+                        feedLoader = .init(
+                            api: AppState.main.firstApi,
+                            userId: response.person.id,
+                            sortType: .new,
+                            savedOnly: false,
+                            prefetchingConfiguration: .forPostSize(postSize)
+                        )
                     }
+                    
                     return response.person
                 }
                 return try await entity.upgrade()
@@ -158,9 +180,11 @@ struct PersonView: View {
             case .communities:
                 communitiesTab(person: person)
             default:
-                ForEach(posts, id: \.id) { post in
-                    FeedPostView(post: post)
-                    Divider()
+                // TODO: NOW switch which content is displayed according to selectedTab
+                if let feedLoader {
+                    PersonContentGridView(feedLoader: feedLoader)
+                } else {
+                    ProgressView()
                 }
             }
         }

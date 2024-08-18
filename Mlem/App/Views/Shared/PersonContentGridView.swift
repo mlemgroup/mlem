@@ -16,6 +16,7 @@ struct PersonContentGridView: View {
     @State var columns: [GridItem] = [GridItem(.flexible())]
     @State var frameWidth: CGFloat = .zero
     
+    // TODO: NOW binding to track whether posts or comments are displayed
     var feedLoader: PersonContentFeedLoader
     
     var body: some View {
@@ -49,6 +50,7 @@ struct PersonContentGridView: View {
                 .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 0)
                 .onAppear {
                     do {
+                        // TODO: NOW depending on whether only posts/comments displayed, load with asChild = true
                         try feedLoader.loadIfThreshold(item)
                     } catch {
                         // TODO: is postFeedLoader.loadIfThreshold throws 400, this line is not executed
