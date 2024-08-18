@@ -25,7 +25,7 @@ extension Interactable1Providing {
         if let self = self as? any Comment2Providing { return .comment(self) }
         return nil
     }
-
+    
     func toggleUpvoted(feedback: Set<FeedbackType>) {
         if let self2 {
             if feedback.contains(.haptic) {
@@ -55,7 +55,12 @@ extension Interactable1Providing {
             if feedback.contains(.haptic) {
                 HapticManager.main.play(haptic: .success, priority: .low)
             }
-            self2.toggleSaved()
+            @Setting(\.upvoteOnSave) var upvoteOnSave
+            if upvoteOnSave, !self2.saved {
+                self2.updateVote(.upvote)
+            }
+            
+            self2.toggleSaved()     
             inboxItem?.updateRead(true)
         } else {
             print("DEBUG no self2 found in toggleSave!")
@@ -105,7 +110,7 @@ extension Interactable1Providing {
             callback: api.canInteract ? { self.self2?.toggleDownvoted(feedback: feedback) } : nil
         )
     }
-
+    
     func saveAction(feedback: Set<FeedbackType> = []) -> BasicAction {
         .init(
             id: "save\(uid)",
