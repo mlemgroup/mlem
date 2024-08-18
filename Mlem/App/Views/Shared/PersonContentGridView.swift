@@ -20,6 +20,7 @@ struct PersonContentGridView: View {
     
     var body: some View {
         content
+            .loadFeed(feedLoader)
             .widthReader(width: $frameWidth)
             .environment(\.parentFrameWidth, frameWidth)
             .onChange(of: postSize, initial: true) { _, newValue in

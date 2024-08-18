@@ -74,7 +74,7 @@ struct FeedsView: View {
         content
             .background(postSize.tiled ? palette.groupedBackground : palette.background)
             .navigationBarTitleDisplayMode(.inline)
-            .loadFeed(savedFeedLoader)
+            // .loadFeed(savedFeedLoader)
             .toolbar {
                 if !isAtTop {
                     ToolbarTitleMenu {
