@@ -48,6 +48,16 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         case upvote
         case downvote
         case comment
+        
+        var appearance: MockReadoutAppearance {
+            switch self {
+            case .created: .init(icon: Icons.time, label: "18h")
+            case .score: .init(icon: Icons.votes, label: "7")
+            case .upvote: .init(icon: Icons.upvoteSquare, label: "9")
+            case .downvote: .init(icon: Icons.downvoteSquare, label: "2")
+            case .comment: .init(icon: Icons.replies, label: "1")
+            }
+        }
     }
 
     let leading: [Item]

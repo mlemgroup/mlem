@@ -63,8 +63,7 @@ enum InteractionConfigurationItem<ActionType: ActionTypeProviding, CounterType: 
     // This is used to determine when an interaction bar configuration is considered "full"
     var score: Int {
         switch self {
-        case let .action(action):
-            1
+        case .action: 1
         case let .counter(counter):
             counter.appearance.leading == nil || counter.appearance.trailing == nil ? 2 : 3
         }
@@ -79,7 +78,9 @@ protocol CounterTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable
     var appearance: CounterAppearance { get }
 }
 
-protocol ReadoutTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {}
+protocol ReadoutTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
+    var appearance: MockReadoutAppearance { get }
+}
 
 struct InteractionBarConfigurations: Codable {
     var post: PostBarConfiguration
@@ -89,4 +90,9 @@ struct InteractionBarConfigurations: Codable {
     static var `default`: Self {
         .init(post: .default, comment: .default, reply: .default)
     }
+}
+
+struct MockReadoutAppearance {
+    let icon: String
+    let label: String
 }

@@ -26,6 +26,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     @State var hoveredDropLocation: DropLocation?
     @State var hoveredDropIndexDistance: CGFloat = .infinity
     @State var showingApplyToAllConfirmation: Bool = false
+    @State var infoStackFrame: CGRect?
     
     let onSet: (Configuration) -> Void
     
@@ -47,6 +48,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         VStack {
             activeBar
                 .zIndex(barPickedUpIndex == nil ? 0 : 1)
+            polygon()
             Divider()
             infoText
             Divider()
@@ -194,7 +196,12 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             InteractionBarCounterLabelView(counter.appearance)
                 .fixedSize()
         default:
-            Spacer()
+            GeometryReader { geometry in
+                Spacer()
+                    .onChange(of: geometry.frame(in: .named("editor")), initial: true) { _, newValue in
+                        infoStackFrame = newValue
+                    }
+            }
         }
     }
     
@@ -204,6 +211,19 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             .frame(height: Constants.main.barIconSize)
             .padding(12)
             .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.smallItemCornerRadius))
+    }
+    
+    @ViewBuilder
+    func polygon() -> some View {
+        if let infoStackFrame {
+            Path { path in
+                path.move(to: CGPoint(x: infoStackFrame.minX, y: 0))
+                path.addLine(to: CGPoint(x: infoStackFrame.maxX, y: 0))
+                path.addLine(to: CGPoint(x: infoStackFrame.minX, y: 30))
+                path.addLine(to: CGPoint(x: infoStackFrame.maxX, y: 30))
+            }
+            .fill(.blue)
+        }
     }
 }
 
