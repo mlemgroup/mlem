@@ -90,7 +90,7 @@ struct TileCommentView: View {
             
             Spacer()
             
-            score
+            TileScoreView(saved: comment.saved, votes: comment.votes)
         }
         .frame(maxWidth: .infinity)
     }

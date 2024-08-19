@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -244,6 +244,7 @@
 		CD7882A92BFFDFC7002E1A30 /* PostTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882A82BFFDFC7002E1A30 /* PostTag.swift */; };
 		CD7882AB2C013005002E1A30 /* EllipsisMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882AA2C013005002E1A30 /* EllipsisMenu.swift */; };
 		CD79281F2C73B52A00FA712D /* EndOfFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD79281E2C73B52A00FA712D /* EndOfFeedView.swift */; };
+		CD7928232C73CBA400FA712D /* TileScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7928222C73CBA400FA712D /* TileScoreView.swift */; };
 		CD7DB9712C49C17200DCC542 /* PersonContentGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */; };
 		CD7DB9732C4AEDDE00DCC542 /* TileCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */; };
 		CD7DB9762C4D6C0A00DCC542 /* FeedCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9752C4D6C0A00DCC542 /* FeedCommentView.swift */; };
@@ -542,6 +543,7 @@
 		CD7882A82BFFDFC7002E1A30 /* PostTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTag.swift; sourceTree = "<group>"; };
 		CD7882AA2C013005002E1A30 /* EllipsisMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EllipsisMenu.swift; sourceTree = "<group>"; };
 		CD79281E2C73B52A00FA712D /* EndOfFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndOfFeedView.swift; sourceTree = "<group>"; };
+		CD7928222C73CBA400FA712D /* TileScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileScoreView.swift; sourceTree = "<group>"; };
 		CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonContentGridView.swift; sourceTree = "<group>"; };
 		CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileCommentView.swift; sourceTree = "<group>"; };
 		CD7DB9752C4D6C0A00DCC542 /* FeedCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCommentView.swift; sourceTree = "<group>"; };
@@ -1049,6 +1051,7 @@
 		CD4BAD382B4C6C1B00A1E726 /* Feeds */ = {
 			isa = PBXGroup;
 			children = (
+				CD7928212C73CB9B00FA712D /* Components */,
 				CD7DB9742C4D6BEF00DCC542 /* Feed Comments */,
 				CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */,
 				031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */,
@@ -1300,6 +1303,14 @@
 				CD1D31802C56D603001B434B /* ParentFrameWidth.swift */,
 			);
 			path = "Environment Values";
+			sourceTree = "<group>";
+		};
+		CD7928212C73CB9B00FA712D /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				CD7928222C73CBA400FA712D /* TileScoreView.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		CD7DB9742C4D6BEF00DCC542 /* Feed Comments */ = {
@@ -1612,7 +1623,7 @@
 				CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */,
 				0392826E2BC84E480097F91A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				037386452BDAFE81007492B5 /* XCRemoteSwiftPackageReference "LemmyMarkdownUI" */,
-				CD79281D2C72B2CC00FA712D /* XCLocalSwiftPackageReference "../MlemMiddleware" */,
+				CD7928242C73CF5100FA712D /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -1727,6 +1738,7 @@
 				032C32162C36F65500595286 /* ReplyView.swift in Sources */,
 				03D3A1E32BB8A40A009DE55E /* EmptyButtonStyle.swift in Sources */,
 				CD1D31832C56D742001B434B /* View+WidthReader.swift in Sources */,
+				CD7928232C73CBA400FA712D /* TileScoreView.swift in Sources */,
 				03AF91E12C1B25DE00E56644 /* UIDevice+Extensions.swift in Sources */,
 				0389DDC52C38917A0005B808 /* InboxItemProviding+Extensions.swift in Sources */,
 				CD13CC5B2C588B34001AF428 /* WebView.swift in Sources */,
@@ -2319,13 +2331,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		CD79281D2C72B2CC00FA712D /* XCLocalSwiftPackageReference "../MlemMiddleware" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../MlemMiddleware;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
 		037386452BDAFE81007492B5 /* XCRemoteSwiftPackageReference "LemmyMarkdownUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -2381,6 +2386,14 @@
 			requirement = {
 				kind = upToNextMinorVersion;
 				minimumVersion = 0.3.0;
+			};
+		};
+		CD7928242C73CF5100FA712D /* XCRemoteSwiftPackageReference "MlemMiddleware" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
+			requirement = {
+				branch = "eric/person-content";
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
