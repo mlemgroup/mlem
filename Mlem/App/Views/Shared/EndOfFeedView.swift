@@ -11,7 +11,7 @@ import SwiftUI
 
 struct EndOfFeedViewContent {
     let icon: String
-    let message: String
+    let message: LocalizedStringResource
 }
 
 enum EndOfFeedViewType {

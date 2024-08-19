@@ -355,6 +355,9 @@
     "Hour" : {
 
     },
+    "I think I've found the bottom!" : {
+
+    },
     "Image" : {
 
     },
@@ -374,6 +377,9 @@
 
     },
     "Instances" : {
+
+    },
+    "It's turtles all the way down" : {
 
     },
     "Italic" : {
@@ -713,6 +719,9 @@
 
     },
     "Temporary" : {
+
+    },
+    "That's all, folks!" : {
 
     },
     "The \"%@\" sort mode is only available on instances running version %@ or later. On instances running earlier versions, the \"Fallback\" sort mode will be used instead." : {

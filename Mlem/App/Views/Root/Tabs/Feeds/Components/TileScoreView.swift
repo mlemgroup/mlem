@@ -28,3 +28,10 @@ struct TileScoreView: View {
         .contentShape(.rect)
     }
 }
+
+extension TileScoreView {
+    init(_ interactable: any Interactable2Providing) {
+        self.saved = interactable.saved
+        self.votes = interactable.votes
+    }
+}

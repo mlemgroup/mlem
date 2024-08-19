@@ -130,6 +130,7 @@ struct PersonView: View {
             }
             .animation(.easeOut(duration: 0.2), value: person is any Person3Providing)
         }
+        .outdatedFeedPopup(feedLoader: feedLoader)
         .background(postSize.tiled ? palette.groupedBackground : palette.background)
     }
     

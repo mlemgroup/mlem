@@ -86,8 +86,7 @@ struct PersonContentGridView: View {
                     .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 0)
                     .onAppear {
                         do {
-                            // TODO: NOW depending on whether only posts/comments displayed, load with asChild = true
-                            try feedLoader.loadIfThreshold(item)
+                            try feedLoader.loadIfThreshold(item, asChild: contentType != .all)
                         } catch {
                             // TODO: is postFeedLoader.loadIfThreshold throws 400, this line is not executed
                             handleError(error)
