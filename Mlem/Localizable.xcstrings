@@ -251,9 +251,6 @@
     "Domain" : {
 
     },
-    "Done" : {
-
-    },
     "Downvote" : {
 
     },
@@ -370,7 +367,7 @@
     "Hour" : {
 
     },
-    "Idle" : {
+    "I think I've found the bottom!" : {
 
     },
     "Image" : {
@@ -397,6 +394,9 @@
     "Interaction Bar" : {
 
     },
+    "It's turtles all the way down" : {
+
+    },
     "Italic" : {
 
     },
@@ -419,6 +419,9 @@
 
     },
     "Links" : {
+
+    },
+    "loading" : {
 
     },
     "Loading..." : {
@@ -743,6 +746,9 @@
 
     },
     "Temporary" : {
+
+    },
+    "That's all, folks!" : {
 
     },
     "The \"%@\" sort mode is only available on instances running version %@ or later. On instances running earlier versions, the \"Fallback\" sort mode will be used instead." : {

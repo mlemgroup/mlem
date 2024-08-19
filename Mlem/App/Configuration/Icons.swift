@@ -196,6 +196,7 @@ enum Icons {
     // end of feed
     static let endOfFeedHobbit: String = "figure.climbing"
     static let endOfFeedCartoon: String = "figure.wave"
+    static let endOfFeedTurtle: String = "tortoise"
     
     // common operations
     static let share: String = "square.and.arrow.up"

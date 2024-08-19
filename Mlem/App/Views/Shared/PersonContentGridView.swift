@@ -9,6 +9,10 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
+enum PersonContentType {
+    case all, posts, comments
+}
+
 struct PersonContentGridView: View {
     @Environment(AppState.self) var appState
     @Setting(\.postSize) var postSize
@@ -17,9 +21,27 @@ struct PersonContentGridView: View {
     @State var frameWidth: CGFloat = .zero
     
     var feedLoader: PersonContentFeedLoader
+    @Binding var contentType: PersonContentType
+    
+    var items: [PersonContent] {
+        switch contentType {
+        case .all: feedLoader.items
+        case .posts: feedLoader.posts
+        case .comments: feedLoader.comments
+        }
+    }
+    
+    var loadingState: LoadingState {
+        switch contentType {
+        case .all: feedLoader.loadingState
+        case .posts: feedLoader.postLoadingState
+        case .comments: feedLoader.commentLoadingState
+        }
+    }
     
     var body: some View {
         content
+            .loadFeed(feedLoader)
             .widthReader(width: $frameWidth)
             .environment(\.parentFrameWidth, frameWidth)
             .onChange(of: postSize, initial: true) { _, newValue in
@@ -35,26 +57,45 @@ struct PersonContentGridView: View {
                     columns = [GridItem(.flexible())]
                 }
             }
-    }
-    
-    var content: some View {
-        LazyVGrid(columns: columns, spacing: postSize.tiled ? Constants.main.standardSpacing : 0) {
-            ForEach(feedLoader.items, id: \.hashValue) { item in
-                VStack(spacing: 0) { // this improves performance O_o
-                    personContentItem(item)
-                        .buttonStyle(EmptyButtonStyle())
-                    if !postSize.tiled { Divider() }
-                }
-                .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 0)
-                .onAppear {
-                    do {
-                        try feedLoader.loadIfThreshold(item)
-                    } catch {
-                        // TODO: is postFeedLoader.loadIfThreshold throws 400, this line is not executed
-                        handleError(error)
+            .toolbar {
+                ToolbarItemGroup(placement: .secondaryAction) {
+                    Section {
+                        Menu {
+                            Picker("Post Size", selection: $postSize) {
+                                ForEach(PostSize.allCases, id: \.self) { item in
+                                    Label(item.label.key, systemImage: item.icon(filled: postSize == item))
+                                }
+                            }
+                        } label: {
+                            Label("Post Size", systemImage: Icons.postSizeSetting)
+                        }
                     }
                 }
             }
+    }
+    
+    var content: some View {
+        VStack(spacing: 0) {
+            LazyVGrid(columns: columns, spacing: postSize.tiled ? Constants.main.standardSpacing : 0) {
+                ForEach(items, id: \.hashValue) { item in
+                    VStack(spacing: 0) { // this improves performance O_o
+                        personContentItem(item)
+                            .buttonStyle(EmptyButtonStyle())
+                        if !postSize.tiled { Divider() }
+                    }
+                    .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 0)
+                    .onAppear {
+                        do {
+                            try feedLoader.loadIfThreshold(item, asChild: contentType != .all)
+                        } catch {
+                            // TODO: is postFeedLoader.loadIfThreshold throws 400, this line is not executed
+                            handleError(error)
+                        }
+                    }
+                }
+            }
+            
+            EndOfFeedView(loadingState: loadingState, viewType: .hobbit)
         }
     }
     

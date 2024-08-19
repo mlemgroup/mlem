@@ -56,11 +56,11 @@ extension Interactable1Providing {
                 HapticManager.main.play(haptic: .success, priority: .low)
             }
             @Setting(\.upvoteOnSave) var upvoteOnSave
-            if upvoteOnSave, !self2.saved {
+            if upvoteOnSave, !self2.saved, self2.votes.myVote != .upvote {
                 self2.updateVote(.upvote)
             }
             
-            self2.toggleSaved()     
+            self2.toggleSaved()
             inboxItem?.updateRead(true)
         } else {
             print("DEBUG no self2 found in toggleSave!")
