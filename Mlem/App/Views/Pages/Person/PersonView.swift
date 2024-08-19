@@ -12,7 +12,7 @@ import SwiftUI
 struct PersonView: View {
     enum Tab: String, CaseIterable, Identifiable {
         case overview, comments, posts, communities
-
+        
         var id: Self { self }
         var label: LocalizedStringResource {
             switch self {
@@ -68,11 +68,13 @@ struct PersonView: View {
                 content(person: person)
                     .externalApiWarning(entity: person, isLoading: proxy.isLoading)
                     .toolbar {
-                        ToolbarItem(placement: .topBarTrailing) {
-                            if person is any Person3Providing, proxy.isLoading {
-                                ProgressView()
-                            } else {
-                                ToolbarEllipsisMenu(person.menuActions(navigation: navigation))
+                        ToolbarItemGroup(placement: .secondaryAction) {
+                            Section {
+                                if person is any Person3Providing, proxy.isLoading {
+                                    ProgressView()
+                                } else {
+                                    MenuButtons { person.menuActions(navigation: navigation) }
+                                }
                             }
                         }
                     }
@@ -110,7 +112,9 @@ struct PersonView: View {
             VStack(spacing: Constants.main.standardSpacing) {
                 ProfileHeaderView(person, fallback: .person)
                     .padding(.horizontal, Constants.main.standardSpacing)
+                
                 bio(person: person)
+                
                 if let person = person as? any Person3Providing {
                     VStack(spacing: 0) {
                         personContent(person: person)
@@ -127,6 +131,7 @@ struct PersonView: View {
             }
             .animation(.easeOut(duration: 0.2), value: person is any Person3Providing)
         }
+        .background(postSize.tiled ? palette.groupedBackground : palette.background)
     }
     
     @ViewBuilder
@@ -162,14 +167,29 @@ struct PersonView: View {
             .padding(.vertical, 2)
     }
     
-    // TODO: PersonContentGridView
     @ViewBuilder
     func personContent(person: any Person3Providing) -> some View {
-        VStack(spacing: 0) {
+        Section {
+            switch selectedTab {
+            case .communities:
+                if postSize == .tile {
+                    FormSection { communitiesTab(person: person) }
+                        .padding(.horizontal, 16)
+                } else {
+                    communitiesTab(person: person)
+                }
+            default:
+                if let feedLoader {
+                    PersonContentGridView(feedLoader: feedLoader, contentType: $selectedContentType)
+                } else {
+                    ProgressView()
+                }
+            }
+        } header: {
             BubblePicker(
                 tabs(person: person),
                 selected: $selectedTab,
-                withDividers: [.top, .bottom],
+                withDividers: postSize.tiled ? [] : [.top, .bottom],
                 label: \.label,
                 value: { tab in
                     switch tab {
@@ -184,18 +204,6 @@ struct PersonView: View {
                     }
                 }
             )
-
-            switch selectedTab {
-            case .communities:
-                communitiesTab(person: person)
-            default:
-                // TODO: NOW switch which content is displayed according to selectedTab
-                if let feedLoader {
-                    PersonContentGridView(feedLoader: feedLoader, contentType: $selectedContentType)
-                } else {
-                    ProgressView()
-                }
-            }
         }
     }
     

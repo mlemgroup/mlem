@@ -31,10 +31,10 @@
         }
       }
     },
-    "%@ rules:" : {
+    "%@ Read" : {
 
     },
-    "%@ Read" : {
+    "%@ rules:" : {
 
     },
     "%lld on %@" : {
@@ -239,7 +239,7 @@
     "Domain" : {
 
     },
-    "Done" : {
+    "done" : {
 
     },
     "Downvote" : {
@@ -358,7 +358,7 @@
     "Hour" : {
 
     },
-    "Idle" : {
+    "idle" : {
 
     },
     "Image" : {
@@ -404,6 +404,9 @@
 
     },
     "Links" : {
+
+    },
+    "loading" : {
 
     },
     "Loading..." : {
@@ -670,10 +673,10 @@
     "Sort by: %@" : {
 
     },
-    "Spam" : {
+    "Sorting" : {
 
     },
-    "Sorting" : {
+    "Spam" : {
 
     },
     "Spoiler" : {

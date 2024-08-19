@@ -74,7 +74,6 @@ struct FeedsView: View {
         content
             .background(postSize.tiled ? palette.groupedBackground : palette.background)
             .navigationBarTitleDisplayMode(.inline)
-            // .loadFeed(savedFeedLoader)
             .toolbar {
                 if !isAtTop {
                     ToolbarTitleMenu {
@@ -148,18 +147,6 @@ struct FeedsView: View {
                         .padding(.bottom, Constants.main.standardSpacing)
                 }
                 .buttonStyle(.plain)
-            } footer: {
-                Group {
-                    switch postFeedLoader?.loadingState {
-                    case .loading, nil:
-                        Text("Loading...")
-                    case .done:
-                        Text("Done")
-                    case .idle:
-                        Text("Idle")
-                    }
-                }
-                .frame(maxWidth: .infinity)
             }
         }
     }

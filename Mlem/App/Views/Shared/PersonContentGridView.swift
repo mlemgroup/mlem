@@ -23,12 +23,19 @@ struct PersonContentGridView: View {
     var feedLoader: PersonContentFeedLoader
     @Binding var contentType: PersonContentType
     
-    // TODO: NOW better posts/comments
     var items: [PersonContent] {
         switch contentType {
         case .all: feedLoader.items
-        case .posts: feedLoader.posts.map { .init(wrappedValue: .post($0)) }
-        case .comments: feedLoader.comments.map { .init(wrappedValue: .comment($0)) }
+        case .posts: feedLoader.posts
+        case .comments: feedLoader.comments
+        }
+    }
+    
+    var loadingState: LoadingState {
+        switch contentType {
+        case .all: feedLoader.loadingState
+        case .posts: feedLoader.postLoadingState
+        case .comments: feedLoader.commentLoadingState
         }
     }
     
@@ -50,27 +57,46 @@ struct PersonContentGridView: View {
                     columns = [GridItem(.flexible())]
                 }
             }
-    }
-    
-    var content: some View {
-        LazyVGrid(columns: columns, spacing: postSize.tiled ? Constants.main.standardSpacing : 0) {
-            ForEach(items, id: \.hashValue) { item in
-                VStack(spacing: 0) { // this improves performance O_o
-                    personContentItem(item)
-                        .buttonStyle(EmptyButtonStyle())
-                    if !postSize.tiled { Divider() }
-                }
-                .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 0)
-                .onAppear {
-                    do {
-                        // TODO: NOW depending on whether only posts/comments displayed, load with asChild = true
-                        try feedLoader.loadIfThreshold(item)
-                    } catch {
-                        // TODO: is postFeedLoader.loadIfThreshold throws 400, this line is not executed
-                        handleError(error)
+            .toolbar {
+                ToolbarItemGroup(placement: .secondaryAction) {
+                    Section {
+                        Menu {
+                            Picker("Post Size", selection: $postSize) {
+                                ForEach(PostSize.allCases, id: \.self) { item in
+                                    Label(item.label.key, systemImage: item.icon(filled: postSize == item))
+                                }
+                            }
+                        } label: {
+                            Label("Post Size", systemImage: Icons.postSizeSetting)
+                        }
                     }
                 }
             }
+    }
+    
+    var content: some View {
+        VStack(spacing: 0) {
+            LazyVGrid(columns: columns, spacing: postSize.tiled ? Constants.main.standardSpacing : 0) {
+                ForEach(items, id: \.hashValue) { item in
+                    VStack(spacing: 0) { // this improves performance O_o
+                        personContentItem(item)
+                            .buttonStyle(EmptyButtonStyle())
+                        if !postSize.tiled { Divider() }
+                    }
+                    .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 0)
+                    .onAppear {
+                        do {
+                            // TODO: NOW depending on whether only posts/comments displayed, load with asChild = true
+                            try feedLoader.loadIfThreshold(item)
+                        } catch {
+                            // TODO: is postFeedLoader.loadIfThreshold throws 400, this line is not executed
+                            handleError(error)
+                        }
+                    }
+                }
+            }
+            
+            EndOfFeedView(loadingState: loadingState, viewType: .hobbit)
         }
     }
     

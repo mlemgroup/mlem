@@ -75,26 +75,37 @@ struct PostGridView: View {
     }
     
     var content: some View {
-        LazyVGrid(columns: columns, spacing: postSize.tiled ? Constants.main.standardSpacing : 0) {
-            ForEach(postFeedLoader.items, id: \.hashValue) { post in
-                if !post.creator.blocked, !post.community.blocked, !post.hidden {
-                    VStack(spacing: 0) { // this improves performance O_o
-                        NavigationLink(value: NavigationPage.expandedPost(post)) {
-                            FeedPostView(post: post)
+        VStack(spacing: 0) {
+            LazyVGrid(columns: columns, spacing: postSize.tiled ? Constants.main.standardSpacing : 0) {
+                ForEach(postFeedLoader.items, id: \.hashValue) { post in
+                    if !post.creator.blocked, !post.community.blocked, !post.hidden {
+                        VStack(spacing: 0) { // this improves performance O_o
+                            NavigationLink(value: NavigationPage.expandedPost(post)) {
+                                FeedPostView(post: post)
+                            }
+                            .buttonStyle(EmptyButtonStyle())
+                            if !postSize.tiled { Divider() }
                         }
-                        .buttonStyle(EmptyButtonStyle())
-                        if !postSize.tiled { Divider() }
-                    }
-                    .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 0)
-                    .onAppear {
-                        do {
-                            try postFeedLoader.loadIfThreshold(post)
-                        } catch {
-                            // TODO: if postFeedLoader.loadIfThreshold throws 400, this line is not executed
-                            handleError(error)
+                        .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 0)
+                        .onAppear {
+                            do {
+                                try postFeedLoader.loadIfThreshold(post)
+                            } catch {
+                                // TODO: if postFeedLoader.loadIfThreshold throws 400, this line is not executed
+                                handleError(error)
+                            }
                         }
                     }
                 }
+            }
+        
+            switch postFeedLoader.loadingState {
+            case .idle:
+                Text("idle")
+            case .loading:
+                Text("loading")
+            case .done:
+                Text("done")
             }
         }
     }
