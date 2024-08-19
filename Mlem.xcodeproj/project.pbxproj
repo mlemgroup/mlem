@@ -245,6 +245,7 @@
 		CD7882AB2C013005002E1A30 /* EllipsisMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882AA2C013005002E1A30 /* EllipsisMenu.swift */; };
 		CD79281F2C73B52A00FA712D /* EndOfFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD79281E2C73B52A00FA712D /* EndOfFeedView.swift */; };
 		CD7928232C73CBA400FA712D /* TileScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7928222C73CBA400FA712D /* TileScoreView.swift */; };
+		CD7928262C73E73400FA712D /* PersonView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7928252C73E73400FA712D /* PersonView+Logic.swift */; };
 		CD7DB9712C49C17200DCC542 /* PersonContentGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */; };
 		CD7DB9732C4AEDDE00DCC542 /* TileCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */; };
 		CD7DB9762C4D6C0A00DCC542 /* FeedCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9752C4D6C0A00DCC542 /* FeedCommentView.swift */; };
@@ -544,6 +545,7 @@
 		CD7882AA2C013005002E1A30 /* EllipsisMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EllipsisMenu.swift; sourceTree = "<group>"; };
 		CD79281E2C73B52A00FA712D /* EndOfFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndOfFeedView.swift; sourceTree = "<group>"; };
 		CD7928222C73CBA400FA712D /* TileScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileScoreView.swift; sourceTree = "<group>"; };
+		CD7928252C73E73400FA712D /* PersonView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonView+Logic.swift"; sourceTree = "<group>"; };
 		CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonContentGridView.swift; sourceTree = "<group>"; };
 		CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileCommentView.swift; sourceTree = "<group>"; };
 		CD7DB9752C4D6C0A00DCC542 /* FeedCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCommentView.swift; sourceTree = "<group>"; };
@@ -696,6 +698,7 @@
 			isa = PBXGroup;
 			children = (
 				0382A7EF2C09F0F800C79DDA /* PersonView.swift */,
+				CD7928252C73E73400FA712D /* PersonView+Logic.swift */,
 			);
 			path = Person;
 			sourceTree = "<group>";
@@ -1721,6 +1724,7 @@
 				03FE14042BF93FDD00A8377F /* ErrorDetails.swift in Sources */,
 				0389DDD12C39E1030005B808 /* InstanceListRowBody.swift in Sources */,
 				033FCAF42C59843E007B7CD1 /* CommunityView.swift in Sources */,
+				CD7928262C73E73400FA712D /* PersonView+Logic.swift in Sources */,
 				CD13CC632C5D26C3001AF428 /* ImageLoadingPreferenceKey.swift in Sources */,
 				0382A7F22C0A758E00C79DDA /* ProfileDateView.swift in Sources */,
 				031E2D5B2BEFC9460003BC45 /* ThemeSettingsView.swift in Sources */,

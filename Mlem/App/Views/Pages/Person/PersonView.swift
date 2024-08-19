@@ -46,6 +46,8 @@ struct PersonView: View {
                 savedOnly: false,
                 prefetchingConfiguration: .forPostSize(postSize)
             ))
+            
+            preheatFeedLoader()
         }
     }
     
@@ -94,6 +96,8 @@ struct PersonView: View {
                             savedOnly: false,
                             prefetchingConfiguration: .forPostSize(postSize)
                         )
+                        
+                        preheatFeedLoader()
                     }
                     
                     return response.person
