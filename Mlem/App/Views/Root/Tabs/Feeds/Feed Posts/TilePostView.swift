@@ -97,16 +97,7 @@ struct TilePostView: View {
                 MenuButton(action: action)
             }
         } label: {
-            Group {
-                postTag(active: post.saved_ ?? false, icon: Icons.saveFill, color: palette.save) + // saved status
-                    Text(verbatim: post.saved_ ?? false ? " " : "") + // spacing after save
-                    Text(Image(systemName: post.votes_?.iconName ?? Icons.upvoteSquare)) + // vote status
-                    Text(verbatim: " \(post.votes_?.total.abbreviated ?? "0")")
-            }
-            .lineLimit(1)
-            .font(.caption)
-            .foregroundStyle(post.votes_?.iconColor ?? palette.secondary)
-            .contentShape(.rect)
+            TileScoreView(saved: post.saved_ ?? false, votes: post.votes_ ?? .init(upvotes: 0, downvotes: 0, myVote: .none))
         }
         .onTapGesture {}
     }

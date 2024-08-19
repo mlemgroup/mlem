@@ -101,14 +101,7 @@ struct TileCommentView: View {
                 MenuButton(action: action)
             }
         } label: {
-            Group {
-                Text(Image(systemName: comment.votes_?.iconName ?? Icons.upvoteSquare)) +
-                    Text((comment.votes_?.total ?? 0).abbreviated)
-            }
-            .lineLimit(1)
-            .font(.caption)
-            .foregroundStyle(comment.votes_?.iconColor ?? palette.secondary)
-            .contentShape(.rect)
+            TileScoreView(comment)
         }
         .onTapGesture {}
     }
