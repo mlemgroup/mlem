@@ -225,7 +225,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                         Text(readout.appearance.label)
                     }
                     .font(.footnote)
-                    .foregroundStyle(isActive ? palette.primary : palette.accent)
+                    .foregroundStyle(isActive ? palette.selectedInteractionBarItem : palette.accent)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
                     .background(
