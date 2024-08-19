@@ -27,6 +27,7 @@ enum NavigationPage: Hashable {
     case subscriptionList
     case reply(_ target: ResponseContext, expandedPostTracker: ExpandedPostTracker? = nil)
     case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
+    case deleteAccount(_ account: UserAccount)
     
     static func expandedPost(_ post: any PostStubProviding, commentId: Int? = nil) -> NavigationPage {
         expandedPost(.init(post), commentId: commentId)
@@ -136,6 +137,8 @@ extension NavigationPage {
             }
         case let .instance(instance):
             InstanceView(instance: instance.wrappedValue)
+        case let .deleteAccount(account):
+            DeleteAccountView(account: account)
         }
     }
     

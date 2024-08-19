@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "**%@** and **%@** chose to defederate from one another." : {
       "localizations" : {
         "en" : {
@@ -221,6 +224,12 @@
     "Delete" : {
 
     },
+    "Delete Account" : {
+
+    },
+    "Delete posts and comments" : {
+
+    },
     "Deleted" : {
 
     },
@@ -409,6 +418,9 @@
     "loading" : {
 
     },
+    "Loading instance details" : {
+
+    },
     "Loading..." : {
 
     },
@@ -529,6 +541,9 @@
     "Password" : {
 
     },
+    "Permanently delete %@" : {
+
+    },
     "Post Size" : {
 
     },
@@ -551,6 +566,9 @@
 
     },
     "Quote" : {
+
+    },
+    "Really delete %@?" : {
 
     },
     "Reason (Optional)" : {
@@ -747,6 +765,9 @@
 
     },
     "Tiled" : {
+
+    },
+    "To confirm, please enter your password:" : {
 
     },
     "Top: %@" : {
