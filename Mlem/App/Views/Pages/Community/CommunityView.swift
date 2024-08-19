@@ -181,10 +181,10 @@ struct CommunityView: View {
     }
     
     func setupFeedLoader(community: any Community) {
-        @Setting(\.internetSpeed) var internetSpeed
-        @Setting(\.showReadInFeed) var showReadInFeed
-        
         Task { @MainActor in
+            @Setting(\.internetSpeed) var internetSpeed
+            @Setting(\.showReadInFeed) var showReadInFeed
+            
             postFeedLoader = try await .init(
                 pageSize: internetSpeed.pageSize,
                 sortType: appState.initialFeedSortType,

@@ -11,11 +11,11 @@ import SwiftUI
 
 @propertyWrapper
 struct Setting<T>: DynamicProperty {
-    private var defaults: Settings
+    @StateObject private var defaults: Settings
     private let keyPath: ReferenceWritableKeyPath<Settings, T>
     public init(_ keyPath: ReferenceWritableKeyPath<Settings, T>, defaults: Settings = .main) {
         self.keyPath = keyPath
-        self.defaults = defaults
+        self._defaults = .init(wrappedValue: defaults)
     }
 
     public var wrappedValue: T {

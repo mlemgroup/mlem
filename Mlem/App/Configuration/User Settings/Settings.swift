@@ -10,8 +10,12 @@ import Dependencies
 import MlemMiddleware
 import SwiftUI
 
+// Yeah, this is a bit tricky... `ObservableObject` is required for certain updates to work,
+// but it isn't designed for use as a global singleton like this, and doesn't properly
+// supply updates for non-`AppStorage` properties. `@Observable` handles stored properties,
+// correctly but not the `@AppStorage` ones. Using both works o_o
 @Observable
-class Settings {
+class Settings: ObservableObject {
     @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
     
     public static let main: Settings = .init()
