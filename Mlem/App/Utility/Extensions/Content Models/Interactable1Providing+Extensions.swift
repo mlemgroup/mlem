@@ -93,6 +93,14 @@ extension Interactable1Providing {
         )
     }
     
+    func replyCounter(expandedPostTracker: ExpandedPostTracker? = nil) -> Counter {
+        .init(
+            value: self2?.commentCount,
+            leadingAction: replyAction(expandedPostTracker: expandedPostTracker),
+            trailingAction: nil
+        )
+    }
+    
     // MARK: Actions
     
     func upvoteAction(feedback: Set<FeedbackType> = []) -> BasicAction {

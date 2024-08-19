@@ -97,4 +97,25 @@ extension ActionAppearance {
             icon: Icons.share
         )
     }
+    
+    static func report() -> Self {
+        .init(
+            label: "Report",
+            isOn: false,
+            isDestructive: true,
+            color: Palette.main.negative,
+            icon: Icons.moderationReport
+        )
+    }
+    
+    static func markRead(isOn: Bool) -> Self {
+        .init(
+            label: isOn ? "Mark Unread" : "Mark Read",
+            isOn: isOn,
+            color: Palette.main.read,
+            icon: isOn ? Icons.markUnread : Icons.markRead,
+            swipeIcon1: isOn ? Icons.markRead : Icons.markUnread,
+            swipeIcon2: isOn ? Icons.markUnreadFill : Icons.markReadFill
+        )
+    }
 }

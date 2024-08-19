@@ -18,20 +18,42 @@ struct InteractionBarView: View {
     init(
         post: any Post1Providing,
         configuration: PostBarConfiguration,
-        expandedPostTracker: ExpandedPostTracker? = nil
+        expandedPostTracker: ExpandedPostTracker? = nil,
+        communityContext: (any CommunityStubProviding)? = nil
     ) {
-        self.leading = .init(post: post, items: configuration.leading, expandedPostTracker: expandedPostTracker)
-        self.trailing = .init(post: post, items: configuration.trailing, expandedPostTracker: expandedPostTracker)
+        self.leading = .init(
+            post: post,
+            items: configuration.leading,
+            expandedPostTracker: expandedPostTracker,
+            communityContext: communityContext
+        )
+        self.trailing = .init(
+            post: post,
+            items: configuration.trailing,
+            expandedPostTracker: expandedPostTracker,
+            communityContext: communityContext
+        )
         self.readouts = configuration.readouts.map { post.readout(type: $0) }
     }
     
     init(
         comment: any Comment1Providing,
         configuration: CommentBarConfiguration,
-        expandedPostTracker: ExpandedPostTracker? = nil
+        expandedPostTracker: ExpandedPostTracker? = nil,
+        communityContext: (any CommunityStubProviding)? = nil
     ) {
-        self.leading = .init(comment: comment, items: configuration.leading, expandedPostTracker: expandedPostTracker)
-        self.trailing = .init(comment: comment, items: configuration.trailing, expandedPostTracker: expandedPostTracker)
+        self.leading = .init(
+            comment: comment,
+            items: configuration.leading,
+            expandedPostTracker: expandedPostTracker,
+            communityContext: communityContext
+        )
+        self.trailing = .init(
+            comment: comment,
+            items: configuration.trailing,
+            expandedPostTracker: expandedPostTracker,
+            communityContext: communityContext
+        )
         self.readouts = configuration.readouts.map { comment.readout(type: $0) }
     }
     
@@ -104,13 +126,23 @@ struct InteractionBarView: View {
                     InteractionBarActionLabelView(action.appearance)
                 }
             } else {
-                Button {
-                    if let action = action as? BasicAction {
-                        action.callback?()
+                if let action = action as? ActionGroup {
+                    Menu {
+                        ForEach(action.children, id: \.id) { child in
+                            MenuButton(action: child)
+                        }
+                    } label: {
+                        InteractionBarActionLabelView(action.appearance)
+                            .opacity(action.disabled ? 0.5 : 1)
                     }
-                } label: {
-                    InteractionBarActionLabelView(action.appearance)
-                        .opacity(((action as? BasicAction)?.disabled ?? false) ? 0.5 : 1)
+                    .onTapGesture {}
+                } else if let action = action as? BasicAction {
+                    Button {
+                        action.callback?()
+                    } label: {
+                        InteractionBarActionLabelView(action.appearance)
+                            .opacity(action.disabled ? 0.5 : 1)
+                    }
                 }
             }
         }
@@ -161,14 +193,26 @@ extension [EnrichedWidget] {
     init(
         post: any Post1Providing,
         items: [PostBarConfiguration.Item],
-        expandedPostTracker: ExpandedPostTracker?
+        expandedPostTracker: ExpandedPostTracker?,
+        communityContext: (any CommunityStubProviding)?
     ) {
         self = items.map { item in
             switch item {
             case let .action(action):
-                return .action(post.action(type: action, feedback: [.haptic], expandedPostTracker: expandedPostTracker))
+                return .action(
+                    post.action(
+                        type: action,
+                        expandedPostTracker: expandedPostTracker,
+                        communityContext: communityContext
+                    )
+                )
             case let .counter(counter):
-                return .counter(post.counter(type: counter))
+                return .counter(
+                    post.counter(
+                        type: counter,
+                        expandedPostTracker: expandedPostTracker
+                    )
+                )
             }
         }
     }
@@ -176,19 +220,34 @@ extension [EnrichedWidget] {
     init(
         comment: any Comment1Providing,
         items: [CommentBarConfiguration.Item],
-        expandedPostTracker: ExpandedPostTracker?
+        expandedPostTracker: ExpandedPostTracker?,
+        communityContext: (any CommunityStubProviding)?
     ) {
         self = items.map { item in
             switch item {
             case let .action(action):
-                return .action(comment.action(type: action, expandedPostTracker: expandedPostTracker))
+                return .action(
+                    comment.action(
+                        type: action,
+                        expandedPostTracker: expandedPostTracker,
+                        communityContext: communityContext
+                    )
+                )
             case let .counter(counter):
-                return .counter(comment.counter(type: counter))
+                return .counter(
+                    comment.counter(
+                        type: counter,
+                        expandedPostTracker: expandedPostTracker
+                    )
+                )
             }
         }
     }
     
-    init(reply: any Reply1Providing, items: [ReplyBarConfiguration.Item]) {
+    init(
+        reply: any Reply1Providing,
+        items: [ReplyBarConfiguration.Item]
+    ) {
         self = items.map { item in
             switch item {
             case let .action(action):

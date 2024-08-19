@@ -20,15 +20,19 @@ extension Post1Providing {
                 HapticManager.main.play(haptic: .lightSuccess, priority: .low)
             }
             if feedback.contains(.toast) {
-                ToastModel.main.add(
-                    .undoable(
-                        "Hidden",
-                        systemImage: Icons.hideFill,
-                        callback: {
-                            self2.updateHidden(false)
-                        }
+                if self2.hidden {
+                    ToastModel.main.add(.success("Shown"))
+                } else {
+                    ToastModel.main.add(
+                        .undoable(
+                            "Hidden",
+                            systemImage: Icons.hideFill,
+                            callback: {
+                                self2.updateHidden(false)
+                            }
+                        )
                     )
-                )
+                }
             }
             self2.toggleHidden()
         } else {
@@ -91,50 +95,42 @@ extension Post1Providing {
     
     func action(
         type: PostBarConfiguration.ActionType,
-        feedback: Set<FeedbackType> = [],
-        expandedPostTracker: ExpandedPostTracker? = nil
+        feedback: Set<FeedbackType> = [.haptic, .toast],
+        expandedPostTracker: ExpandedPostTracker? = nil,
+        communityContext: (any CommunityStubProviding)? = nil
     ) -> any Action {
         switch type {
-        case .upvote:
-            upvoteAction(feedback: feedback)
-        case .downvote:
-            downvoteAction(feedback: feedback)
-        case .save:
-            saveAction(feedback: feedback)
-        case .reply:
-            replyAction(expandedPostTracker: expandedPostTracker)
-        case .share:
-            shareAction()
-        case .selectText:
-            selectTextAction()
-        case .hide:
-            hideAction(feedback: feedback)
+        case .upvote: upvoteAction(feedback: feedback)
+        case .downvote: downvoteAction(feedback: feedback)
+        case .save: saveAction(feedback: feedback)
+        case .reply: replyAction(expandedPostTracker: expandedPostTracker)
+        case .share: shareAction()
+        case .selectText: selectTextAction()
+        case .hide: hideAction(feedback: feedback)
+        case .block: blockAction(feedback: feedback)
+        case .report: reportAction(communityContext: communityContext)
         }
     }
     
-    func counter(type: PostBarConfiguration.CounterType) -> Counter {
+    func counter(
+        type: PostBarConfiguration.CounterType,
+        expandedPostTracker: ExpandedPostTracker? = nil
+    ) -> Counter {
         switch type {
-        case .score:
-            scoreCounter
-        case .upvote:
-            upvoteCounter
-        case .downvote:
-            downvoteCounter
+        case .score: scoreCounter
+        case .upvote: upvoteCounter
+        case .downvote: downvoteCounter
+        case .reply: replyCounter(expandedPostTracker: expandedPostTracker)
         }
     }
     
     func readout(type: PostBarConfiguration.ReadoutType) -> Readout {
         switch type {
-        case .created:
-            createdReadout
-        case .score:
-            scoreReadout
-        case .upvote:
-            upvoteReadout
-        case .downvote:
-            downvoteReadout
-        case .comment:
-            commentReadout
+        case .created: createdReadout
+        case .score: scoreReadout
+        case .upvote: upvoteReadout
+        case .downvote: downvoteReadout
+        case .comment: commentReadout
         }
     }
     
@@ -193,6 +189,7 @@ extension Post1Providing {
                 color: Palette.main.negative,
                 icon: Icons.block
             ),
+            prompt: "Block community or user?",
             disabled: !api.canInteract,
             displayMode: .popup
         ) {

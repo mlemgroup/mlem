@@ -14,9 +14,9 @@ protocol InteractionBarConfiguration: Codable {
     
     typealias Item = InteractionConfigurationItem<ActionType, CounterType>
     
-    var leading: [Item] { get }
-    var trailing: [Item] { get }
-    var readouts: [ReadoutType] { get }
+    var leading: [Item] { get set }
+    var trailing: [Item] { get set }
+    var readouts: [ReadoutType] { get set }
     
     static var `default`: Self { get }
     

@@ -58,7 +58,8 @@ struct LargePostView: View {
             InteractionBarView(
                 post: post,
                 configuration: Settings.main.postInteractionBar,
-                expandedPostTracker: expandedPostTracker
+                expandedPostTracker: expandedPostTracker,
+                communityContext: communityContext
             )
             .padding(.vertical, 2)
         }

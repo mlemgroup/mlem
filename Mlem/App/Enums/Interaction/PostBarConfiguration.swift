@@ -16,6 +16,8 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         case share
         case selectText
         case hide
+        case block
+        case report
         
         var appearance: ActionAppearance {
             switch self {
@@ -26,6 +28,8 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             case .share: .share()
             case .selectText: .selectText()
             case .hide: .hide(isOn: false)
+            case .block: .block(isOn: false)
+            case .report: .report()
             }
         }
     }
@@ -34,12 +38,14 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         case score
         case upvote
         case downvote
+        case reply
         
         var appearance: CounterAppearance {
             switch self {
             case .score: .init(value: 7, leading: .upvote(isOn: false), trailing: .downvote(isOn: false))
             case .upvote: .init(value: 9, leading: .upvote(isOn: false), trailing: nil)
             case .downvote: .init(value: 2, leading: .upvote(isOn: false), trailing: nil)
+            case .reply: .init(value: 1, leading: .reply(), trailing: nil)
             }
         }
     }
@@ -62,9 +68,9 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         }
     }
 
-    let leading: [Item]
-    let trailing: [Item]
-    let readouts: [ReadoutType]
+    var leading: [Item]
+    var trailing: [Item]
+    var readouts: [ReadoutType]
     
     static var `default`: Self {
         .init(

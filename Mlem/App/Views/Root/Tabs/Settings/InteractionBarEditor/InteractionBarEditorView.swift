@@ -26,7 +26,6 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     @State var hoveredDropLocation: DropLocation?
     @State var hoveredDropIndexDistance: CGFloat = .infinity
     @State var showingApplyToAllConfirmation: Bool = false
-    @State var infoStackFrame: CGRect?
     
     let onSet: (Configuration) -> Void
     
@@ -48,7 +47,6 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         VStack {
             activeBar
                 .zIndex(barPickedUpIndex == nil ? 0 : 1)
-            polygon()
             Divider()
             infoText
             Divider()
@@ -57,6 +55,8 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             }
             .frame(maxWidth: .infinity)
             .zIndex(trayPickedUpItem == nil ? 0 : 1)
+            Spacer()
+            readoutsSection
             Spacer()
             bottomBarActions
         }
@@ -187,6 +187,59 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
     }
     
     @ViewBuilder
+    var readoutsSection: some View {
+        VStack {
+            Text("Readouts:")
+                .font(.callout)
+                .foregroundStyle(palette.secondary)
+            trayInfoItems
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: Constants.main.largeItemCornerRadius)
+                .strokeBorder(palette.accent.opacity(0.5), lineWidth: 2)
+        )
+    }
+    
+    @ViewBuilder
+    var trayInfoItems: some View {
+        HFlow(spacing: Constants.main.standardSpacing) {
+            ForEach(Array(Configuration.ReadoutType.allCases.enumerated()), id: \.offset) { _, readout in
+                let isActive = configuration.readouts.contains(readout)
+                Button {
+                    if isActive {
+                        if let index = configuration.readouts.firstIndex(of: readout) {
+                            configuration.readouts.remove(at: index)
+                        }
+                    } else {
+                        // Insert and sort the new `ReadoutType`. In future these could be re-arrangable too
+                        // but I need to think about how the UI would work
+                        configuration.readouts = Configuration.ReadoutType.allCases.filter {
+                            configuration.readouts.contains($0) || $0 == readout
+                        }
+                    }
+                    HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+                } label: {
+                    HStack(spacing: 2) {
+                        Image(systemName: readout.appearance.icon)
+                        Text(readout.appearance.label)
+                    }
+                    .font(.footnote)
+                    .foregroundStyle(isActive ? palette.primary : palette.accent)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(
+                        isActive ? palette.accent : palette.accent.opacity(0.2),
+                        in: .rect(cornerRadius: Constants.main.smallItemCornerRadius)
+                    )
+                    .transaction { $0.animation = nil }
+                }
+                .buttonStyle(.plain)
+            }
+        }
+    }
+    
+    @ViewBuilder
     func itemLabel(_ item: Configuration.Item?) -> some View {
         switch item {
         case let .action(action):
@@ -196,12 +249,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             InteractionBarCounterLabelView(counter.appearance)
                 .fixedSize()
         default:
-            GeometryReader { geometry in
-                Spacer()
-                    .onChange(of: geometry.frame(in: .named("editor")), initial: true) { _, newValue in
-                        infoStackFrame = newValue
-                    }
-            }
+            Spacer()
         }
     }
     
@@ -211,19 +259,6 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             .frame(height: Constants.main.barIconSize)
             .padding(12)
             .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.smallItemCornerRadius))
-    }
-    
-    @ViewBuilder
-    func polygon() -> some View {
-        if let infoStackFrame {
-            Path { path in
-                path.move(to: CGPoint(x: infoStackFrame.minX, y: 0))
-                path.addLine(to: CGPoint(x: infoStackFrame.maxX, y: 0))
-                path.addLine(to: CGPoint(x: infoStackFrame.minX, y: 30))
-                path.addLine(to: CGPoint(x: infoStackFrame.maxX, y: 30))
-            }
-            .fill(.blue)
-        }
     }
 }
 

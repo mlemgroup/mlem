@@ -15,6 +15,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         case reply
         case share
         case selectText
+        case report
         
         var appearance: ActionAppearance {
             switch self {
@@ -24,6 +25,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
             case .reply: .reply()
             case .share: .share()
             case .selectText: .selectText()
+            case .report: .report()
             }
         }
     }
@@ -32,12 +34,14 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         case score
         case upvote
         case downvote
+        case reply
         
         var appearance: CounterAppearance {
             switch self {
             case .score: .init(value: 7, leading: .upvote(isOn: false), trailing: .downvote(isOn: false))
             case .upvote: .init(value: 9, leading: .upvote(isOn: false), trailing: nil)
             case .downvote: .init(value: 2, leading: .upvote(isOn: false), trailing: nil)
+            case .reply: .init(value: 1, leading: .reply(), trailing: nil)
             }
         }
     }
@@ -60,9 +64,9 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         }
     }
 
-    let leading: [Item]
-    let trailing: [Item]
-    let readouts: [ReadoutType]
+    var leading: [Item]
+    var trailing: [Item]
+    var readouts: [ReadoutType]
     
     static var `default`: Self {
         .init(

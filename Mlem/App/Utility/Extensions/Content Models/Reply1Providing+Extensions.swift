@@ -47,38 +47,31 @@ extension Reply1Providing {
 
     func action(type: ReplyBarConfiguration.ActionType) -> any Action {
         switch type {
-        case .upvote:
-            upvoteAction(feedback: [.haptic])
-        case .downvote:
-            downvoteAction(feedback: [.haptic])
-        case .save:
-            saveAction(feedback: [.haptic])
+        case .upvote: upvoteAction(feedback: [.haptic])
+        case .downvote: downvoteAction(feedback: [.haptic])
+        case .save: saveAction(feedback: [.haptic])
+        case .reply: replyAction()
+        case .markRead: markReadAction(feedback: [.haptic])
+        case .report: reportAction()
         }
     }
     
     func counter(type: ReplyBarConfiguration.CounterType) -> Counter {
         switch type {
-        case .score:
-            scoreCounter
-        case .upvote:
-            upvoteCounter
-        case .downvote:
-            downvoteCounter
+        case .score: scoreCounter
+        case .upvote: upvoteCounter
+        case .downvote: downvoteCounter
+        case .reply: replyCounter()
         }
     }
     
     func readout(type: ReplyBarConfiguration.ReadoutType) -> Readout {
         switch type {
-        case .created:
-            createdReadout
-        case .score:
-            scoreReadout
-        case .upvote:
-            upvoteReadout
-        case .downvote:
-            downvoteReadout
-        case .comment:
-            commentReadout
+        case .created: createdReadout
+        case .score: scoreReadout
+        case .upvote: upvoteReadout
+        case .downvote: downvoteReadout
+        case .comment: commentReadout
         }
     }
 }
