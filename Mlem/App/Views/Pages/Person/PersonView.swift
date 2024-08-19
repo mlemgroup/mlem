@@ -53,7 +53,6 @@ struct PersonView: View {
         content
             .isAtTopSubscriber(isAtTop: $isAtTop)
             .onChange(of: selectedTab) {
-                print(selectedTab)
                 switch selectedTab {
                 case .comments: selectedContentType = .comments
                 case .posts: selectedContentType = .posts

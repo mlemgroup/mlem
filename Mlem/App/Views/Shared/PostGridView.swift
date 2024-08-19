@@ -99,14 +99,7 @@ struct PostGridView: View {
                 }
             }
         
-            switch postFeedLoader.loadingState {
-            case .idle:
-                Text("idle")
-            case .loading:
-                Text("loading")
-            case .done:
-                Text("done")
-            }
+            EndOfFeedView(loadingState: postFeedLoader.loadingState, viewType: .hobbit)
         }
     }
     
