@@ -80,6 +80,7 @@ extension Post1Providing {
             
             // If no version has been fetched yet, assume they're on <0.19.4 for now.
             // Once 0.19.4 is widely adopted we could assume they're on >=0.19.4.
+            // See also the identical check within `hideAction` itself.
             if (api.fetchedVersion ?? .zero) >= .v19_4 {
                 hideAction(feedback: feedback)
             }
@@ -174,10 +175,11 @@ extension Post1Providing {
     
     func hideAction(feedback: Set<FeedbackType>) -> BasicAction {
         let hidden = hidden_ ?? false
+        let available = (api.fetchedVersion ?? .zero) >= .v19_4 && api.canInteract
         return .init(
             id: "hide\(uid)",
             appearance: .hide(isOn: hidden),
-            callback: api.canInteract ? { self.self2?.toggleHidden(feedback: feedback) } : nil
+            callback: available ? { self.self2?.toggleHidden(feedback: feedback) } : nil
         )
     }
     
