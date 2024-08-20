@@ -35,7 +35,7 @@ struct DeleteAccountView: View {
     }
     
     var content: some View {
-        VStack(alignment: .center, spacing: 20) {
+        VStack(alignment: .center, spacing: Constants.main.doubleSpacing) {
             Text("Really delete \(account.name)?")
                 .font(.title)
                 .fontWeight(.bold)
@@ -53,7 +53,7 @@ struct DeleteAccountView: View {
             }
         }
         .multilineTextAlignment(.center)
-        .padding(Constants.main.standardSpacing)
+        .padding(Constants.main.doubleSpacing)
     }
     
     @ViewBuilder
@@ -91,7 +91,7 @@ struct DeleteAccountView: View {
                 .textContentType(.password)
                 .submitLabel(.go)
                 .onSubmit {
-                    deleteAccount(canDeleteContent: canDeleteContent)
+                    deleteAccount()
                 }
             
             if canDeleteContent {
@@ -99,43 +99,27 @@ struct DeleteAccountView: View {
                     Text("Delete posts and comments")
                 }
             }
+            
+            Button("Permanently delete \(account.name)") {
+                deleteAccount()
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.red)
         }
         .padding(.horizontal, 30)
     }
     
-    func deleteAccount(canDeleteContent: Bool) {
+    func deleteAccount() {
         Task {
             do {
                 try await account.api.deleteAccount(password: password, deleteContent: deleteContent)
+                Task { @MainActor in
+                    AccountsTracker.main.removeAccount(account: account)
+                    dismiss()
+                }
             } catch {
                 handleError(error)
             }
         }
-//        Task {
-//            do {
-//                if canDeleteContent {
-//                    try await apiClient.deleteUser(user: account, password: password, deleteContent: deleteContent)
-//                } else {
-//                    try await apiClient.legacyDeleteUser(user: account, password: password)
-//                }
-//                accountsTracker.removeAccount(account: account)
-//                if account == appState.currentActiveAccount {
-//                    // if we just deleted the current account we (currently!) have a decision to make
-//                    if let first = accountsTracker.savedAccounts.first {
-//                        // if we have another account to go to do that...
-//                        // TODO: once onboarding is updated to support showing a users
-//                        // current accounts we can scrap this and always go to onboarding
-//                        // which leaves the decision of which account to re-enter as in the
-//                        // users hands as opposed to us picking one at random with `.first`.
-//                        setFlow(.account(first))
-//                    } else {
-//                        // no accounts, so go to onboarding
-//                        setFlow(.onboarding)
-//                    }
-//                }
-//            } catch {
-//                errorHandler.handle(.init(underlyingError: error))
-//            }
-//        }
     }
 }
