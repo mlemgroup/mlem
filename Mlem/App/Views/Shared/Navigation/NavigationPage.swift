@@ -25,7 +25,8 @@ enum NavigationPage: Hashable {
     case instancePicker(callback: HashWrapper<(InstanceSummary) -> Void>)
     case selectText(_ string: String)
     case subscriptionList
-    case reply(_ target: ResponseContext, expandedPostTracker: ExpandedPostTracker? = nil)
+    case createComment(_ context: CommentEditorView.Context, expandedPostTracker: ExpandedPostTracker? = nil)
+    case editComment(_ comment: Comment2, context: CommentEditorView.Context?)
     case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
     
     static func expandedPost(_ post: any PostStubProviding, commentId: Int? = nil) -> NavigationPage {
@@ -101,8 +102,14 @@ extension NavigationPage {
             ExpandedPostView(post: post, showCommentWithId: commentId)
         case let .person(person):
             PersonView(person: person)
-        case let .reply(context, expandedPostTracker):
-            if let view = ResponseComposerView(context: context, expandedPostTracker: expandedPostTracker) {
+        case let .createComment(context, expandedPostTracker):
+            if let view = CommentEditorView(context: context, expandedPostTracker: expandedPostTracker) {
+                view
+            } else {
+                Text(verbatim: "Error: No active UserAccount")
+            }
+        case let .editComment(comment, context: context):
+            if let view = CommentEditorView(commentToEdit: comment, context: context) {
                 view
             } else {
                 Text(verbatim: "Error: No active UserAccount")
@@ -141,7 +148,7 @@ extension NavigationPage {
     
     var hasNavigationStack: Bool {
         switch self {
-        case .quickSwitcher, .report, .externalApiInfo, .selectText, .reply:
+        case .quickSwitcher, .report, .externalApiInfo, .selectText, .createComment, .editComment:
             false
         default:
             true
