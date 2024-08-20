@@ -38,7 +38,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
             switch self {
             case .score: .init(value: 7, leading: .upvote(isOn: false), trailing: .downvote(isOn: false))
             case .upvote: .init(value: 9, leading: .upvote(isOn: false), trailing: nil)
-            case .downvote: .init(value: 2, leading: .upvote(isOn: false), trailing: nil)
+            case .downvote: .init(value: 2, leading: .downvote(isOn: false), trailing: nil)
             case .reply: .init(value: 1, leading: .reply(), trailing: nil)
             }
         }
