@@ -105,7 +105,6 @@ struct CommunityView: View {
             .environment(\.communityContext, community)
         }
         .background(postSize.tiled ? palette.groupedBackground : palette.background)
-        .loadFeed(postFeedLoader)
         .outdatedFeedPopup(feedLoader: postFeedLoader)
         .toolbar {
             ToolbarItemGroup(placement: .secondaryAction) {

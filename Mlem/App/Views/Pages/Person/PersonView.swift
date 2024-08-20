@@ -12,7 +12,7 @@ import SwiftUI
 struct PersonView: View {
     enum Tab: String, CaseIterable, Identifiable {
         case overview, comments, posts, communities
-
+        
         var id: Self { self }
         var label: LocalizedStringResource {
             switch self {
@@ -24,19 +24,43 @@ struct PersonView: View {
         }
     }
     
+    @Setting(\.postSize) var postSize
+    
     @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     
     @State var person: AnyPerson
     @State private var selectedTab: Tab = .overview
+    @State private var selectedContentType: PersonContentType = .all
     @State private var isAtTop: Bool = true
+    @State var feedLoader: PersonContentFeedLoader?
     
-    // This will a post tracker in future - this is just a proof-of-concept for post loading
-    @State var posts: [Post2] = []
+    init(person: AnyPerson) {
+        self._person = .init(wrappedValue: person)
+        
+        if let person1 = person.wrappedValue as? any Person1Providing {
+            self._feedLoader = .init(wrappedValue: .init(
+                api: AppState.main.firstApi,
+                userId: person1.id,
+                sortType: .new,
+                savedOnly: false,
+                prefetchingConfiguration: .forPostSize(postSize)
+            ))
+            
+            preheatFeedLoader()
+        }
+    }
     
     var body: some View {
         content
             .isAtTopSubscriber(isAtTop: $isAtTop)
+            .onChange(of: selectedTab) {
+                switch selectedTab {
+                case .comments: selectedContentType = .comments
+                case .posts: selectedContentType = .posts
+                default: selectedContentType = .all
+                }
+            }
     }
     
     var content: some View {
@@ -45,11 +69,13 @@ struct PersonView: View {
                 content(person: person)
                     .externalApiWarning(entity: person, isLoading: proxy.isLoading)
                     .toolbar {
-                        ToolbarItem(placement: .topBarTrailing) {
-                            if person is any Person3Providing, proxy.isLoading {
-                                ProgressView()
-                            } else {
-                                ToolbarEllipsisMenu(person.menuActions(navigation: navigation))
+                        ToolbarItemGroup(placement: .secondaryAction) {
+                            Section {
+                                if person is any Person3Providing, proxy.isLoading {
+                                    ProgressView()
+                                } else {
+                                    MenuButtons { person.menuActions(navigation: navigation) }
+                                }
                             }
                         }
                     }
@@ -61,9 +87,19 @@ struct PersonView: View {
             try await model.upgrade(api: api) { entity in
                 if let entity = entity as? any Person1Providing {
                     let response = try await entity.getContent(page: 1, limit: 3)
-                    Task { @MainActor in
-                        posts = response.posts
+                    
+                    if feedLoader == nil {
+                        feedLoader = .init(
+                            api: AppState.main.firstApi,
+                            userId: response.person.id,
+                            sortType: .new,
+                            savedOnly: false,
+                            prefetchingConfiguration: .forPostSize(postSize)
+                        )
+                        
+                        preheatFeedLoader()
                     }
+                    
                     return response.person
                 }
                 return try await entity.upgrade()
@@ -79,7 +115,9 @@ struct PersonView: View {
             VStack(spacing: Constants.main.standardSpacing) {
                 ProfileHeaderView(person, fallback: .person)
                     .padding(.horizontal, Constants.main.standardSpacing)
+                
                 bio(person: person)
+                
                 if let person = person as? any Person3Providing {
                     VStack(spacing: 0) {
                         personContent(person: person)
@@ -96,6 +134,8 @@ struct PersonView: View {
             }
             .animation(.easeOut(duration: 0.2), value: person is any Person3Providing)
         }
+        .outdatedFeedPopup(feedLoader: feedLoader)
+        .background(postSize.tiled ? palette.groupedBackground : palette.background)
     }
     
     @ViewBuilder
@@ -131,14 +171,29 @@ struct PersonView: View {
             .padding(.vertical, 2)
     }
     
-    // TODO: PersonContentGridView
     @ViewBuilder
     func personContent(person: any Person3Providing) -> some View {
-        VStack(spacing: 0) {
+        Section {
+            switch selectedTab {
+            case .communities:
+                if postSize == .tile {
+                    FormSection { communitiesTab(person: person) }
+                        .padding(.horizontal, 16)
+                } else {
+                    communitiesTab(person: person)
+                }
+            default:
+                if let feedLoader {
+                    PersonContentGridView(feedLoader: feedLoader, contentType: $selectedContentType)
+                } else {
+                    ProgressView()
+                }
+            }
+        } header: {
             BubblePicker(
                 tabs(person: person),
                 selected: $selectedTab,
-                withDividers: [.top, .bottom],
+                withDividers: postSize.tiled ? [] : [.top, .bottom],
                 label: \.label,
                 value: { tab in
                     switch tab {
@@ -153,16 +208,6 @@ struct PersonView: View {
                     }
                 }
             )
-
-            switch selectedTab {
-            case .communities:
-                communitiesTab(person: person)
-            default:
-                ForEach(posts, id: \.id) { post in
-                    FeedPostView(post: post)
-                    Divider()
-                }
-            }
         }
     }
     

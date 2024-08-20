@@ -245,6 +245,9 @@
 		CD7882A72BFFD1A3002E1A30 /* ThumbnailLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882A62BFFD1A3002E1A30 /* ThumbnailLocation.swift */; };
 		CD7882A92BFFDFC7002E1A30 /* PostTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882A82BFFDFC7002E1A30 /* PostTag.swift */; };
 		CD7882AB2C013005002E1A30 /* EllipsisMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7882AA2C013005002E1A30 /* EllipsisMenu.swift */; };
+		CD79281F2C73B52A00FA712D /* EndOfFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD79281E2C73B52A00FA712D /* EndOfFeedView.swift */; };
+		CD7928232C73CBA400FA712D /* TileScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7928222C73CBA400FA712D /* TileScoreView.swift */; };
+		CD7928262C73E73400FA712D /* PersonView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7928252C73E73400FA712D /* PersonView+Logic.swift */; };
 		CD7DB9712C49C17200DCC542 /* PersonContentGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */; };
 		CD7DB9732C4AEDDE00DCC542 /* TileCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */; };
 		CD7DB9762C4D6C0A00DCC542 /* FeedCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9752C4D6C0A00DCC542 /* FeedCommentView.swift */; };
@@ -544,6 +547,9 @@
 		CD7882A62BFFD1A3002E1A30 /* ThumbnailLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailLocation.swift; sourceTree = "<group>"; };
 		CD7882A82BFFDFC7002E1A30 /* PostTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTag.swift; sourceTree = "<group>"; };
 		CD7882AA2C013005002E1A30 /* EllipsisMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EllipsisMenu.swift; sourceTree = "<group>"; };
+		CD79281E2C73B52A00FA712D /* EndOfFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndOfFeedView.swift; sourceTree = "<group>"; };
+		CD7928222C73CBA400FA712D /* TileScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileScoreView.swift; sourceTree = "<group>"; };
+		CD7928252C73E73400FA712D /* PersonView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonView+Logic.swift"; sourceTree = "<group>"; };
 		CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonContentGridView.swift; sourceTree = "<group>"; };
 		CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileCommentView.swift; sourceTree = "<group>"; };
 		CD7DB9752C4D6C0A00DCC542 /* FeedCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCommentView.swift; sourceTree = "<group>"; };
@@ -696,6 +702,7 @@
 			isa = PBXGroup;
 			children = (
 				0382A7EF2C09F0F800C79DDA /* PersonView.swift */,
+				CD7928252C73E73400FA712D /* PersonView+Logic.swift */,
 			);
 			path = Person;
 			sourceTree = "<group>";
@@ -1061,6 +1068,7 @@
 		CD4BAD382B4C6C1B00A1E726 /* Feeds */ = {
 			isa = PBXGroup;
 			children = (
+				CD7928212C73CB9B00FA712D /* Components */,
 				CD7DB9742C4D6BEF00DCC542 /* Feed Comments */,
 				CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */,
 				031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */,
@@ -1136,6 +1144,7 @@
 				030FF6802BC859FD00F6BFAC /* CustomTabViewHostingController.swift */,
 				CD7882AA2C013005002E1A30 /* EllipsisMenu.swift */,
 				03D3A1E22BB8A40A009DE55E /* EmptyButtonStyle.swift */,
+				CD79281E2C73B52A00FA712D /* EndOfFeedView.swift */,
 				03FE14072BF94FFB00A8377F /* ErrorView.swift */,
 				0300309C2C4163C9009A65FF /* ExpandedPostTracker.swift */,
 				CD4ED84D2BF113C800EFA0A2 /* ExpandedPostView.swift */,
@@ -1150,14 +1159,13 @@
 				03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */,
 				0316CD632C382A6A009EA8EA /* MessageView.swift */,
 				CD77437E2C1BA5CE0085BB43 /* MultiplatformView.swift */,
+				CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */,
 				CD9CFA362C306DAB00739BBC /* PostGridView.swift */,
 				0382A7F12C0A758E00C79DDA /* ProfileDateView.swift */,
 				030030A02C416B0B009A65FF /* RefreshPopupView.swift */,
 				032C32152C36F65500595286 /* ReplyView.swift */,
 				032C32092C34495D00595286 /* SelectTextView.swift */,
 				03E614DA2C0B596900F692A4 /* ToolbarEllipsisMenu.swift */,
-				03049A182C6502DB00FF6889 /* Form */,
-				CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */,
 				CD0E07002C12707700445849 /* ToolbarEllipsisMenu.swift */,
 				CD13CC582C583C7A001AF428 /* WebsitePreviewView.swift */,
 				CD13CC5A2C588B34001AF428 /* WebView.swift */,
@@ -1165,6 +1173,7 @@
 				CD4D58AB2B86BE6100B82964 /* Accounts */,
 				03267D802BED4714009D6268 /* Avatar */,
 				CD869FCA2C15F8A100FC8B5B /* Bubble Picker */,
+				03049A182C6502DB00FF6889 /* Form */,
 				039D75652C4FC56A004F24C2 /* Images */,
 				CDB2EC842BFADD5E00DBC0EF /* Labels */,
 				03D2A6402C011F3E00ED4FF2 /* ListRow */,
@@ -1311,6 +1320,14 @@
 				CD1D31802C56D603001B434B /* ParentFrameWidth.swift */,
 			);
 			path = "Environment Values";
+			sourceTree = "<group>";
+		};
+		CD7928212C73CB9B00FA712D /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				CD7928222C73CBA400FA712D /* TileScoreView.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		CD7DB9742C4D6BEF00DCC542 /* Feed Comments */ = {
@@ -1623,7 +1640,7 @@
 				CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */,
 				0392826E2BC84E480097F91A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				037386452BDAFE81007492B5 /* XCRemoteSwiftPackageReference "LemmyMarkdownUI" */,
-				CD7882A32BFE5EB5002E1A30 /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
+				CD7928242C73CF5100FA712D /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -1721,6 +1738,7 @@
 				03FE14042BF93FDD00A8377F /* ErrorDetails.swift in Sources */,
 				0389DDD12C39E1030005B808 /* InstanceListRowBody.swift in Sources */,
 				033FCAF42C59843E007B7CD1 /* CommunityView.swift in Sources */,
+				CD7928262C73E73400FA712D /* PersonView+Logic.swift in Sources */,
 				CD13CC632C5D26C3001AF428 /* ImageLoadingPreferenceKey.swift in Sources */,
 				0382A7F22C0A758E00C79DDA /* ProfileDateView.swift in Sources */,
 				031E2D5B2BEFC9460003BC45 /* ThemeSettingsView.swift in Sources */,
@@ -1738,6 +1756,7 @@
 				032C32162C36F65500595286 /* ReplyView.swift in Sources */,
 				03D3A1E32BB8A40A009DE55E /* EmptyButtonStyle.swift in Sources */,
 				CD1D31832C56D742001B434B /* View+WidthReader.swift in Sources */,
+				CD7928232C73CBA400FA712D /* TileScoreView.swift in Sources */,
 				03AF91E12C1B25DE00E56644 /* UIDevice+Extensions.swift in Sources */,
 				0389DDC52C38917A0005B808 /* InboxItemProviding+Extensions.swift in Sources */,
 				CD13CC5B2C588B34001AF428 /* WebView.swift in Sources */,
@@ -1774,6 +1793,7 @@
 				03FE140C2BF953B000A8377F /* HandleError.swift in Sources */,
 				03B431C62C45C09F001A1EB5 /* CollapsibleSheetView.swift in Sources */,
 				CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */,
+				CD79281F2C73B52A00FA712D /* EndOfFeedView.swift in Sources */,
 				CDE1F19C2C63E2EB008AF042 /* SettingPropertyWrapper.swift in Sources */,
 				038096612C10AAD8003ED1D8 /* TransitionView.swift in Sources */,
 				0382A7F42C0A76A900C79DDA /* Date+Extensions.swift in Sources */,
@@ -2388,12 +2408,12 @@
 				minimumVersion = 0.3.0;
 			};
 		};
-		CD7882A32BFE5EB5002E1A30 /* XCRemoteSwiftPackageReference "MlemMiddleware" */ = {
+		CD7928242C73CF5100FA712D /* XCRemoteSwiftPackageReference "MlemMiddleware" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.25.0;
+				minimumVersion = 0.27.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

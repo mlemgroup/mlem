@@ -50,7 +50,6 @@ struct FeedsView: View {
     init(feedSelection: FeedSelection = .subscribed) {
         // need to grab some stuff from app storage to initialize with
         @Setting(\.internetSpeed) var internetSpeed
-        @Setting(\.upvoteOnSave) var upvoteOnSave
         @Setting(\.showReadInFeed) var showReadPosts
         @Setting(\.defaultPostSort) var defaultSort
         @Setting(\.postSize) var postSize
@@ -75,7 +74,6 @@ struct FeedsView: View {
         content
             .background(postSize.tiled ? palette.groupedBackground : palette.background)
             .navigationBarTitleDisplayMode(.inline)
-            .loadFeed(savedFeedLoader)
             .toolbar {
                 if !isAtTop {
                     ToolbarTitleMenu {
@@ -99,7 +97,9 @@ struct FeedsView: View {
                 
                 if appState.firstApi.canInteract, let firstUser = appState.firstAccount as? UserAccount {
                     if let savedFeedLoader {
-                        savedFeedLoader.switchUser(api: appState.firstApi, userId: firstUser.id)
+                        Task {
+                            await savedFeedLoader.switchUser(api: appState.firstApi, userId: firstUser.id)
+                        }
                     } else {
                         savedFeedLoader = .init(
                             api: appState.firstApi,
@@ -137,7 +137,7 @@ struct FeedsView: View {
                 if !postSize.tiled { Divider() }
                 
                 if let savedFeedLoader, feedSelection == .saved {
-                    PersonContentGridView(feedLoader: savedFeedLoader)
+                    PersonContentGridView(feedLoader: savedFeedLoader, contentType: .constant(.all))
                 } else if let postFeedLoader {
                     PostGridView(postFeedLoader: postFeedLoader)
                 }
@@ -149,18 +149,6 @@ struct FeedsView: View {
                         .padding(.bottom, Constants.main.standardSpacing)
                 }
                 .buttonStyle(.plain)
-            } footer: {
-                Group {
-                    switch postFeedLoader?.loadingState {
-                    case .loading, nil:
-                        Text("Loading...")
-                    case .done:
-                        Text("Done")
-                    case .idle:
-                        Text("Idle")
-                    }
-                }
-                .frame(maxWidth: .infinity)
             }
         }
     }

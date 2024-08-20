@@ -22,6 +22,22 @@ struct CommentView: View {
     var depth: Int { inFeed ? 0 : comment.depth }
     
     var body: some View {
+        if inFeed {
+            content
+        } else {
+            content
+                .onTapGesture {
+                    if let comment = comment as? CommentWrapper {
+                        withAnimation {
+                            comment.collapsed.toggle()
+                        }
+                    }
+                }
+        }
+    }
+    
+    @ViewBuilder
+    var content: some View {
         let collapsed = (comment as? CommentWrapper)?.collapsed ?? false
         
         VStack(spacing: 0) {
@@ -63,13 +79,6 @@ struct CommentView: View {
             )
             .quickSwipes(comment.swipeActions(behavior: .standard, expandedPostTracker: expandedPostTracker))
             .contentShape(.rect)
-            .onTapGesture {
-                if !inFeed, let comment = comment as? CommentWrapper {
-                    withAnimation {
-                        comment.collapsed.toggle()
-                    }
-                }
-            }
             .contextMenu { comment.menuActions(expandedPostTracker: expandedPostTracker) }
             Divider()
         }
