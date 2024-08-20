@@ -14,6 +14,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
         case save
         case reply
         case markRead
+        case selectText
         case report
         
         var appearance: ActionAppearance {
@@ -22,8 +23,9 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
             case .downvote: .downvote(isOn: false)
             case .save: .save(isOn: false)
             case .reply: .reply()
-            case .report: .report()
             case .markRead: .markRead(isOn: false)
+            case .selectText: .selectText()
+            case .report: .report()
             }
         }
     }

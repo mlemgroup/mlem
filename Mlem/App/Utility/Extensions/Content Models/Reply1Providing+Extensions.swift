@@ -53,6 +53,7 @@ extension Reply1Providing {
         case .reply: replyAction()
         case .markRead: markReadAction(feedback: [.haptic])
         case .report: reportAction()
+        case .selectText: selectTextAction()
         }
     }
     
@@ -73,5 +74,21 @@ extension Reply1Providing {
         case .downvote: downvoteReadout
         case .comment: commentReadout
         }
+    }
+    
+    // MARK: Actions
+    
+    func selectTextAction() -> BasicAction {
+        let callback: (() -> Void)?
+        if let comment = comment_ {
+            callback = comment.showTextSelectionSheet
+        } else {
+            callback = nil
+        }
+        return .init(
+            id: "selectText\(id)",
+            appearance: .selectText(),
+            callback: callback
+        )
     }
 }
