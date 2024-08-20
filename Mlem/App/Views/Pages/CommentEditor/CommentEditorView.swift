@@ -1,5 +1,5 @@
 //
-//  ReplyView.swift
+//  CommentEditorView.swift
 //  Mlem
 //
 //  Created by Sjmarf on 14/07/2024.
@@ -9,7 +9,11 @@ import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
 
+<<<<<<<< HEAD:Mlem/App/Views/Pages/ReplyComposerView.swift
 struct ReplyComposerView: View {
+========
+struct CommentEditorView: View {
+>>>>>>>> sjmarf/edit:Mlem/App/Views/Pages/CommentEditor/CommentEditorView.swift
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
@@ -20,14 +24,19 @@ struct ReplyComposerView: View {
     }
     
     let textView: UITextView = .init()
-    
-    let originalContext: ResponseContext
+
     let expandedPostTracker: ExpandedPostTracker?
     
-    @State var resolvedContext: ResponseContext
+    @State var commentToEdit: Comment2?
+    @State var originalContext: Context?
+    @State var resolvedContext: Context?
     @State var resolutionState: ResolutionState = .success
     @State var sending: Bool = false
 
+<<<<<<<< HEAD:Mlem/App/Views/Pages/ReplyComposerView.swift
+========
+    @State var text: String
+>>>>>>>> sjmarf/edit:Mlem/App/Views/Pages/CommentEditor/CommentEditorView.swift
     @State var account: UserAccount
     @State var presentationSelection: PresentationDetent = .large
     
@@ -36,9 +45,11 @@ struct ReplyComposerView: View {
     @FocusState var focused: Bool
     
     init?(
-        context: ResponseContext,
+        commentToEdit: Comment2? = nil,
+        context: Context? = nil,
         expandedPostTracker: ExpandedPostTracker? = nil
     ) {
+        self.commentToEdit = commentToEdit
         self.originalContext = context
         self._resolvedContext = .init(wrappedValue: context)
         self.expandedPostTracker = expandedPostTracker
@@ -47,6 +58,8 @@ struct ReplyComposerView: View {
         } else {
             return nil
         }
+        self._text = .init(wrappedValue: commentToEdit?.content ?? "")
+        textView.text = text
     }
         
     var minTextEditorHeight: CGFloat {
@@ -65,7 +78,7 @@ struct ReplyComposerView: View {
                             }
                         }
                         ToolbarItem(placement: .principal) {
-                            if AccountsTracker.main.userAccounts.count > 1 {
+                            if AccountsTracker.main.userAccounts.count > 1, commentToEdit == nil {
                                 AccountPickerMenu(account: $account) {
                                     HStack(spacing: 3) {
                                         FullyQualifiedLabelView(entity: account, labelStyle: .medium, showAvatar: false)
@@ -139,6 +152,9 @@ struct ReplyComposerView: View {
                         LargePostBodyView(post: post, isExpanded: true)
                     case let .comment(comment):
                         CommentBodyView(comment: comment)
+                    case nil:
+                        ProgressView()
+                            .task(inferContextFromCommentToEdit)
                     }
                 }.padding(.horizontal, Constants.main.standardSpacing)
             }
@@ -155,6 +171,7 @@ struct ReplyComposerView: View {
             .background(.opacity(0.2), in: .capsule)
             .foregroundStyle(palette.caution)
     }
+<<<<<<<< HEAD:Mlem/App/Views/Pages/ReplyComposerView.swift
     
     @Sendable
     func resolveContext() async {
@@ -251,4 +268,6 @@ enum ResponseContext: Hashable {
             comment.api
         }
     }
+========
+>>>>>>>> sjmarf/edit:Mlem/App/Views/Pages/CommentEditor/CommentEditorView.swift
 }
