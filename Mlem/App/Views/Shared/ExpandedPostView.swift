@@ -17,7 +17,7 @@ struct ExpandedPostView: View {
     let post: AnyPost
     @State var showCommentWithId: Int?
     
-    @State var sort: ApiCommentSortType = .top
+    @State var sort: ApiCommentSortType = Settings.main.commentSort
     
     let tracker: ExpandedPostTracker = .init()
     
