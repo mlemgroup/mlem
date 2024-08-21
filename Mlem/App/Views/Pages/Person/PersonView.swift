@@ -39,7 +39,7 @@ struct PersonView: View {
     init(person: AnyPerson) {
         self._person = .init(wrappedValue: person)
         
-        if let person1 = person.wrappedValue as? any Person1Providing {
+        if let person1 = person.wrappedValue as? any Person1Providing, person1.api === AppState.main.firstApi {
             self._feedLoader = .init(wrappedValue: .init(
                 api: AppState.main.firstApi,
                 userId: person1.id,
@@ -138,7 +138,7 @@ struct PersonView: View {
             }
             .animation(.easeOut(duration: 0.2), value: person is any Person3Providing)
         }
-        .outdatedFeedPopup(feedLoader: feedLoader)
+        .outdatedFeedPopup(feedLoader: feedLoader, showPopup: selectedTab != .communities)
         .background(postSize.tiled ? palette.groupedBackground : palette.background)
     }
     
