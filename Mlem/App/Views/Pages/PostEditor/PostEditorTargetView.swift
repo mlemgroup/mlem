@@ -8,16 +8,11 @@
 import MlemMiddleware
 import SwiftUI
 
-struct PostComposerTargetView: View {
-    enum ResolutionState: Equatable {
-        case success, notFound, error(ErrorDetails), resolving
-    }
-    
+struct PostEditorTargetView: View {
     @Environment(NavigationLayer.self) private var navigation
     @Environment(Palette.self) private var palette
     
-    @Bindable var target: PostComposerTarget
-    @State var resolutionState: ResolutionState = .success
+    @Bindable var target: PostEditorTarget
     
     var body: some View {
         Grid(
@@ -37,16 +32,9 @@ struct PostComposerTargetView: View {
                     Image(systemName: Icons.personFill)
                         .foregroundStyle(palette.secondary)
                         .fontWeight(.semibold)
-                    AccountPickerMenu(account: $target.account) {
-                        FullyQualifiedLabelView(
-                            entity: target.account,
-                            labelStyle: .small
-                        )
-                        .padding(.init(top: 2, leading: 4, bottom: 2, trailing: 8))
-                        .background(palette.secondaryBackground, in: .capsule)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .task(id: target.account, resolveCommunity)
+                    accountPicker
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .task(id: target.account, resolveCommunity)
                 }
             }
         }
@@ -87,30 +75,60 @@ struct PostComposerTargetView: View {
         }
     }
     
+    @ViewBuilder
+    var accountPicker: some View {
+        HStack {
+            AccountPickerMenu(account: $target.account) {
+                FullyQualifiedLabelView(
+                    entity: target.account,
+                    labelStyle: .small
+                )
+                .padding(.init(top: 2, leading: 4, bottom: 2, trailing: 8))
+                .background(palette.secondaryBackground, in: .capsule)
+            }
+            switch target.resolutionState {
+            case .notFound, .error:
+                Image(systemName: Icons.warningFill)
+                    .imageScale(.large)
+                    .symbolRenderingMode(.hierarchical)
+                    .foregroundStyle(palette.caution)
+                    .fontWeight(.semibold)
+            default:
+                EmptyView()
+            }
+        }
+    }
+    
     @Sendable
     @MainActor
     func resolveCommunity() async {
         guard target.community?.api !== target.account.api else { return }
         guard let community = target.community else { return }
         
-        resolutionState = .resolving
+        target.resolutionState = .resolving
         do {
             let newCommunity: Community2 = try await target.account.api.getCommunity(actorId: community.actorId)
             target.community = newCommunity
-            resolutionState = .success
+            target.resolutionState = .success
         } catch ApiClientError.noEntityFound {
-            resolutionState = .notFound
+            target.resolutionState = .notFound
         } catch {
-            resolutionState = .error(.init(error: error))
+            target.resolutionState = .error(.init(error: error))
         }
     }
 }
 
 @Observable
-class PostComposerTarget: Identifiable {
+class PostEditorTarget: Identifiable {
+    enum ResolutionState: Equatable {
+        case success, notFound, error(ErrorDetails), resolving
+    }
+    
     var community: (any CommunityStubProviding)?
     var account: UserAccount
     let id = UUID()
+    
+    var resolutionState: ResolutionState = .success
     
     init(community: (any CommunityStubProviding)? = nil, account: UserAccount) {
         self.community = community

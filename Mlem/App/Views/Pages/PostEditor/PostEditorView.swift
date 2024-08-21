@@ -8,7 +8,7 @@
 import MlemMiddleware
 import SwiftUI
 
-struct PostComposerView: View {
+struct PostEditorView: View {
     enum Field { case title, content }
     
     @Environment(AppState.self) var appState
@@ -23,8 +23,9 @@ struct PostComposerView: View {
     @State var titleIsEmpty: Bool = true
     @State var contentIsEmpty: Bool = true
     @State var lastFocusedField: Field = .title
+    @State var hasNsfwTag: Bool = false
     
-    @State var targets: [PostComposerTarget]
+    @State var targets: [PostEditorTarget]
     
     init?(community: AnyCommunity?) {
         self.titleTextView = .init()
@@ -63,27 +64,12 @@ struct PostComposerView: View {
         }
     }
     
-    var minTextEditorHeight: CGFloat {
-        UIFont.preferredFont(forTextStyle: .title2).lineHeight * 4 + 15
-    }
-    
-    var canDismiss: Bool { titleIsEmpty && contentIsEmpty }
-    
-    var canSubmit: Bool {
-        !titleIsEmpty && !contentIsEmpty && targets.allSatisfy { $0.community != nil }
-    }
-    
     @ViewBuilder
     var contentView: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                VStack(spacing: Constants.main.standardSpacing) {
-                    ForEach(targets, id: \.id) { target in
-                        PostComposerTargetView(target: target)
-                        Divider()
-                    }
-                }
-                .padding(.bottom, 6)
+                targetSelectionView
+                    .padding(.bottom, 6)
                 MarkdownTextEditor(
                     onChange: {
                         // Avoid unnecessary view update
@@ -104,8 +90,12 @@ struct PostComposerView: View {
                     maxHeight: .infinity,
                     alignment: .topLeading
                 )
-                Divider()
-                    .padding(.bottom, 4)
+                if hasNsfwTag {
+                    nsfwTagView
+                        .padding(.leading, 15)
+                } else {
+                    Divider()
+                }
                 MarkdownTextEditor(
                     onChange: {
                         // Avoid unnecessary view update
@@ -125,7 +115,51 @@ struct PostComposerView: View {
                     maxHeight: .infinity,
                     alignment: .topLeading
                 )
+                .padding(.top, 4)
             }
+        }
+    }
+    
+    @ViewBuilder
+    var targetSelectionView: some View {
+        VStack(spacing: Constants.main.standardSpacing) {
+            ForEach(targets, id: \.id) { target in
+                HStack {
+                    PostEditorTargetView(target: target)
+                    Spacer()
+                    if targets.count > 1 {
+                        Button("Remove", systemImage: Icons.closeCircleFill) {
+                            if let index = targets.firstIndex(where: { $0.id == target.id }) {
+                                targets.remove(at: index)
+                            }
+                        }
+                        .symbolRenderingMode(.hierarchical)
+                        .imageScale(.large)
+                        .labelStyle(.iconOnly)
+                        .padding(.trailing)
+                    }
+                }
+                Divider()
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var nsfwTagView: some View {
+        Button {
+            hasNsfwTag = false
+        } label: {
+            HStack {
+                Text("NSFW")
+                    .font(.footnote)
+                    .fontWeight(.black)
+                Image(systemName: Icons.close)
+                    .foregroundStyle(.opacity(0.8))
+            }
+            .foregroundStyle(.white)
+            .padding(.vertical, 2)
+            .padding(.horizontal, 8)
+            .background(palette.warning, in: .capsule)
         }
     }
     
@@ -140,7 +174,7 @@ struct PostComposerView: View {
             Menu("Add", systemImage: "plus") {
                 Button("Link", systemImage: Icons.websiteAddress) {}.disabled(true)
                 Button("Image", systemImage: Icons.uploadImage) {}.disabled(true)
-                Button("NSFW Tag", systemImage: "tag") {}
+                Toggle("NSFW Tag", systemImage: "tag", isOn: $hasNsfwTag)
                 Button("Crosspost", systemImage: "shuffle") {
                     if let account = targets.last?.account {
                         targets.append(.init(account: account))
@@ -148,6 +182,7 @@ struct PostComposerView: View {
                 }
             }
             Button("Send", systemImage: Icons.send) {}
+                .disabled(!canSubmit)
         }
     }
 }

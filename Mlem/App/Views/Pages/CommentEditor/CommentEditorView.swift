@@ -9,11 +9,7 @@ import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
 
-<<<<<<<< HEAD:Mlem/App/Views/Pages/ReplyComposerView.swift
-struct ReplyComposerView: View {
-========
 struct CommentEditorView: View {
->>>>>>>> sjmarf/edit:Mlem/App/Views/Pages/CommentEditor/CommentEditorView.swift
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
@@ -33,10 +29,6 @@ struct CommentEditorView: View {
     @State var resolutionState: ResolutionState = .success
     @State var sending: Bool = false
 
-<<<<<<<< HEAD:Mlem/App/Views/Pages/ReplyComposerView.swift
-========
-    @State var text: String
->>>>>>>> sjmarf/edit:Mlem/App/Views/Pages/CommentEditor/CommentEditorView.swift
     @State var account: UserAccount
     @State var presentationSelection: PresentationDetent = .large
     
@@ -58,8 +50,7 @@ struct CommentEditorView: View {
         } else {
             return nil
         }
-        self._text = .init(wrappedValue: commentToEdit?.content ?? "")
-        textView.text = text
+        textView.text = commentToEdit?.content ?? ""
     }
         
     var minTextEditorHeight: CGFloat {
@@ -171,103 +162,4 @@ struct CommentEditorView: View {
             .background(.opacity(0.2), in: .capsule)
             .foregroundStyle(palette.caution)
     }
-<<<<<<<< HEAD:Mlem/App/Views/Pages/ReplyComposerView.swift
-    
-    @Sendable
-    func resolveContext() async {
-        do {
-            if originalContext.api === account.api {
-                resolutionState = .success
-                resolvedContext = originalContext
-            } else {
-                Task { @MainActor in
-                    resolutionState = .resolving
-                }
-                switch originalContext {
-                case let .post(post):
-                    let post = try await account.api.getPost(actorId: post.actorId)
-                    Task { @MainActor in
-                        resolutionState = .success
-                        resolvedContext = .post(post)
-                    }
-                case let .comment(comment):
-                    let comment = try await account.api.getComment(actorId: comment.actorId)
-                    Task { @MainActor in
-                        resolutionState = .success
-                        resolvedContext = .comment(comment)
-                    }
-                }
-            }
-            
-        } catch ApiClientError.noEntityFound {
-            print("No entity found!")
-            Task { @MainActor in
-                resolutionState = .notFound
-            }
-        } catch {
-            Task { @MainActor in
-                resolutionState = .error(.init(error: error))
-            }
-        }
-    }
-    
-    func send() async {
-        do {
-            let result: Comment2
-            let parent: (any Comment2Providing)?
-            switch resolvedContext {
-            case let .post(post):
-                result = try await post.reply(content: textView.text)
-                parent = nil
-            case let .comment(comment):
-                result = try await comment.reply(content: textView.text)
-                parent = comment
-            }
-            Task { @MainActor in
-                textView.resignFirstResponder()
-                textView.isEditable = false
-                HapticManager.main.play(haptic: .success, priority: .low)
-                print("EXP", expandedPostTracker == nil)
-                expandedPostTracker?.insertCreatedComment(result, parent: parent)
-                dismiss()
-            }
-        } catch {
-            Task { @MainActor in
-                sending = false
-                textView.isEditable = true
-                handleError(error)
-            }
-        }
-    }
-}
-
-enum ResponseContext: Hashable {
-    case post(any Post2Providing)
-    case comment(any Comment2Providing)
-    
-    static func == (lhs: ResponseContext, rhs: ResponseContext) -> Bool {
-        lhs.hashValue == rhs.hashValue
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        switch self {
-        case let .post(post):
-            hasher.combine("post")
-            hasher.combine(post.hashValue)
-        case let .comment(comment):
-            hasher.combine("comment")
-            hasher.combine(comment.hashValue)
-        }
-    }
-    
-    var api: ApiClient {
-        switch self {
-        case let .post(post):
-            post.api
-        case let .comment(comment):
-            comment.api
-        }
-    }
-========
->>>>>>>> sjmarf/edit:Mlem/App/Views/Pages/CommentEditor/CommentEditorView.swift
 }
