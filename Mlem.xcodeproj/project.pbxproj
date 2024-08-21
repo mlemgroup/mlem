@@ -28,6 +28,7 @@
 		03134A522BEAD69F002662CC /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A512BEAD69F002662CC /* SettingsPage.swift */; };
 		03134A582BEC1C46002662CC /* AccountListSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A572BEC1C46002662CC /* AccountListSettingsView.swift */; };
 		03134A5A2BEC2253002662CC /* AvatarStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A592BEC2253002662CC /* AvatarStackView.swift */; };
+		0315B1CA2C767847006D4F82 /* InteractionBarTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315B1C92C767847006D4F82 /* InteractionBarTracker.swift */; };
 		0316CD642C382A6A009EA8EA /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0316CD632C382A6A009EA8EA /* MessageView.swift */; };
 		031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */; };
 		031E2D5B2BEFC9460003BC45 /* ThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */; };
@@ -340,6 +341,7 @@
 		03134A512BEAD69F002662CC /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
 		03134A572BEC1C46002662CC /* AccountListSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListSettingsView.swift; sourceTree = "<group>"; };
 		03134A592BEC2253002662CC /* AvatarStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarStackView.swift; sourceTree = "<group>"; };
+		0315B1C92C767847006D4F82 /* InteractionBarTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarTracker.swift; sourceTree = "<group>"; };
 		0316CD632C382A6A009EA8EA /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListView.swift; sourceTree = "<group>"; };
 		031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
@@ -1523,6 +1525,7 @@
 			children = (
 				CDE1F18E2C63D75A008AF042 /* Settings.swift */,
 				CDE1F19B2C63E2EB008AF042 /* SettingPropertyWrapper.swift */,
+				0315B1C92C767847006D4F82 /* InteractionBarTracker.swift */,
 			);
 			path = "User Settings";
 			sourceTree = "<group>";
@@ -1761,6 +1764,7 @@
 				03B72B672C2888EE0023A6C4 /* View+ContextMenu.swift in Sources */,
 				CDB2EC7D2BFADAB300DBC0EF /* CompactPostView.swift in Sources */,
 				03AFD0DF2C3B2E000054B8AD /* PersonListRow.swift in Sources */,
+				0315B1CA2C767847006D4F82 /* InteractionBarTracker.swift in Sources */,
 				03DAEA772C64074E0064DE64 /* SubscriptionListItemView.swift in Sources */,
 				0324FA772C1F0AE100F6247D /* Readout.swift in Sources */,
 				0389DDCF2C39CB0E0005B808 /* SearchView.swift in Sources */,
