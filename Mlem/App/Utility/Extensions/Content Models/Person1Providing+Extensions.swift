@@ -33,7 +33,7 @@ extension Person1Providing {
         }
         
         if let interactable {
-            assert(interactable.creator.id == id)
+            assert(interactable.creator.actorId == actorId)
             output.formUnion(interactable.contextualFlairs())
         } else {
             if api.myInstance?.administrators.contains(where: { $0.id == id }) ?? false {

@@ -26,6 +26,7 @@ struct PersonView: View {
     
     @Setting(\.postSize) var postSize
     
+    @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     
@@ -96,8 +97,11 @@ struct PersonView: View {
                             savedOnly: false,
                             prefetchingConfiguration: .forPostSize(postSize)
                         )
-                        
                         preheatFeedLoader()
+                    } else if feedLoader?.api !== entity.api {
+                        Task {
+                            await feedLoader?.switchUser(api: entity.api, userId: entity.id)
+                        }
                     }
                     
                     return response.person
