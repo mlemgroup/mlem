@@ -138,13 +138,13 @@ struct CommentEditorView: View {
                         CommentBodyView(comment: comment)
                     case nil:
                         ProgressView()
-                            .task(inferContextFromCommentToEdit)
                     }
                 }.padding(.horizontal, Constants.main.standardSpacing)
             }
             .animation(.easeOut(duration: 0.2), value: resolutionState == .notFound)
         }
         .scrollBounceBehavior(.basedOnSize)
+        .task(inferContextFromCommentToEdit)
     }
     
     @ViewBuilder

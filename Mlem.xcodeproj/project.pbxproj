@@ -2412,7 +2412,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				branch = sjmarf/edit;
+				branch = "sjmarf/mark-reply-read-on-comment-creation";
 				kind = branch;
 			};
 		};

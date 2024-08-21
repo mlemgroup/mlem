@@ -12,8 +12,8 @@ extension Comment1Providing {
     var isOwnComment: Bool { creatorId == api.myPerson?.id }
     
     func showEditSheet() {
-        if let self = self as? Comment2 {
-            NavigationModel.main.openSheet(.editComment(self, context: nil))
+        if let self = self as? any Comment2Providing {
+            NavigationModel.main.openSheet(.editComment(self.comment2, context: nil))
         }
     }
 

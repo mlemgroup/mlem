@@ -50,9 +50,10 @@ extension CommentEditorView {
     
     @Sendable
     func inferContextFromCommentToEdit() async {
+        guard originalContext == nil else { return }
         do {
             if let commentToEdit {
-                if let parent = try await commentToEdit.getParent() {
+                if let parent = try await commentToEdit.getParent(cachedValueAcceptable: true) {
                     originalContext = .comment(parent)
                 } else {
                     originalContext = .post(commentToEdit.post)
