@@ -80,6 +80,8 @@ protocol CounterTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable
 
 protocol ReadoutTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
     var appearance: MockReadoutAppearance { get }
+    
+    func compatibleWith(otherReadouts: Set<Self>) -> Bool
 }
 
 struct InteractionBarConfigurations: Codable {

@@ -59,7 +59,7 @@ struct CommentView: View {
                     CommentBodyView(comment: comment)
                     InteractionBarView(
                         comment: comment,
-                        configuration: Settings.main.commentInteractionBar,
+                        configuration: InteractionBarTracker.main.commentInteractionBar,
                         expandedPostTracker: expandedPostTracker,
                         communityContext: communityContext
                     )

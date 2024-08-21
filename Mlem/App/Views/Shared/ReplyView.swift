@@ -30,7 +30,7 @@ struct ReplyView: View {
             Markdown(reply.comment.content, configuration: .default)
             InteractionBarView(
                 reply: reply,
-                configuration: Settings.main.replyInteractionBar
+                configuration: InteractionBarTracker.main.replyInteractionBar
             )
             .padding(.top, 2)
         }

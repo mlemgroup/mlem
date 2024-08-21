@@ -62,6 +62,14 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
             case .comment: .init(icon: Icons.replies, label: "1")
             }
         }
+        
+        func compatibleWith(otherReadouts: Set<Self>) -> Bool {
+            switch self {
+            case .score: otherReadouts.isDisjoint(with: [.upvote, .downvote])
+            case .upvote, .downvote: !otherReadouts.contains(.score)
+            default: true
+            }
+        }
     }
 
     var leading: [Item]

@@ -10,98 +10,44 @@ import Dependencies
 import MlemMiddleware
 import SwiftUI
 
-// Yeah, this is a bit tricky... `ObservableObject` is required for certain updates to work,
-// but it isn't designed for use as a global singleton like this, and doesn't properly
-// supply updates for non-`AppStorage` properties. `@Observable` handles stored properties,
-// correctly but not the `@AppStorage` ones. Using both works o_o
-@Observable
 class Settings: ObservableObject {
-    @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
-    
     public static let main: Settings = .init()
+
+    @AppStorage("post.size") var postSize: PostSize = .compact
+    @AppStorage("post.defaultSort") var defaultPostSort: ApiSortType = .hot
+    @AppStorage("post.fallbackSort") var fallbackPostSort: ApiSortType = .hot
+    @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
+    @AppStorage("post.showCreator") var showPostCreator: Bool = false
     
-    @ObservationIgnored @AppStorage("post.size")
-    var postSize: PostSize = .compact
-    @ObservationIgnored @AppStorage("post.defaultSort")
-    var defaultPostSort: ApiSortType = .hot
-    @ObservationIgnored @AppStorage("post.fallbackSort")
-    var fallbackPostSort: ApiSortType = .hot
-    @ObservationIgnored @AppStorage("post.thumbnailLocation")
-    var thumbnailLocation: ThumbnailLocation = .left
-    @ObservationIgnored @AppStorage("post.showCreator")
-    var showPostCreator: Bool = false
+    @AppStorage("quickSwipes.enabled") var quickSwipesEnabled: Bool = true
     
-    @ObservationIgnored @AppStorage("quickSwipes.enabled")
-    var quickSwipesEnabled: Bool = true
+    @AppStorage("behavior.hapticLevel") var hapticLevel: HapticPriority = .low
+    @AppStorage("behavior.upvoteOnSave") var upvoteOnSave: Bool = false
+    @AppStorage("behavior.internetSpeed") var internetSpeed: InternetSpeed = .fast
     
-    @ObservationIgnored @AppStorage("behavior.hapticLevel")
-    var hapticLevel: HapticPriority = .low
-    @ObservationIgnored @AppStorage("behavior.upvoteOnSave")
-    var upvoteOnSave: Bool = false
-    @ObservationIgnored @AppStorage("behavior.internetSpeed")
-    var internetSpeed: InternetSpeed = .fast
+    @AppStorage("accounts.keepPlace") var keepPlaceOnAccountSwitch: Bool = false
+    @AppStorage("accounts.sort") var accountSort: AccountSortMode = .name
+    @AppStorage("accounts.groupSort") var groupAccountSort: Bool = false
     
-    @ObservationIgnored @AppStorage("accounts.keepPlace")
-    var keepPlaceOnAccountSwitch: Bool = false
-    @ObservationIgnored @AppStorage("accounts.sort")
-    var accountSort: AccountSortMode = .name
-    @ObservationIgnored @AppStorage("accounts.groupSort")
-    var groupAccountSort: Bool = false
+    @AppStorage("colorPalette") var colorPalette: PaletteOption = .standard
     
-    @ObservationIgnored @AppStorage("colorPalette")
-    var colorPalette: PaletteOption = .standard
+    @AppStorage("dev.developerMode") var developerMode: Bool = false
     
-    @ObservationIgnored @AppStorage("dev.developerMode")
-    var developerMode: Bool = false
+    @AppStorage("safety.blurNsfw") var blurNsfw: Bool = true
     
-    @ObservationIgnored @AppStorage("safety.blurNsfw")
-    var blurNsfw: Bool = true
+    @AppStorage("links.openInBrowser") var openLinksInBrowser = false
+    @AppStorage("links.readerMode") var openLinksInReaderMode = false
     
-    @ObservationIgnored @AppStorage("links.openInBrowser")
-    var openLinksInBrowser = false
-    @ObservationIgnored @AppStorage("links.readerMode")
-    var openLinksInReaderMode = false
+    @AppStorage("feed.showRead") var showReadInFeed: Bool = true
     
-    @ObservationIgnored @AppStorage("feed.showRead")
-    var showReadInFeed: Bool = true
+    @AppStorage("inbox.showRead") var showReadInInbox: Bool = true
     
-    @ObservationIgnored @AppStorage("inbox.showRead")
-    var showReadInInbox: Bool = true
+    @AppStorage("subscriptions.instanceLocation") var subscriptionInstanceLocation: InstanceLocation = UIDevice.isPad ? .bottom : .trailing
     
-    @ObservationIgnored @AppStorage("subscriptions.instanceLocation")
-    var subscriptionInstanceLocation: InstanceLocation = UIDevice.isPad ? .bottom : .trailing
+    @AppStorage("subscriptions.sort") var subscriptionSort: SubscriptionListSort = .alphabetical
     
-    @ObservationIgnored @AppStorage("subscriptions.sort")
-    var subscriptionSort: SubscriptionListSort = .alphabetical
+    @AppStorage("person.showAvatar") var showPersonAvatar: Bool = true
     
-    @ObservationIgnored @AppStorage("person.showAvatar")
-    var showPersonAvatar: Bool = true
-    
-    @ObservationIgnored @AppStorage("community.showAvatar")
-    var showCommunityAvatar: Bool = true
-    
-    var postInteractionBar: PostBarConfiguration {
-        get { interactionBarConfigurations.post }
-        set { interactionBarConfigurations.post = newValue }
-    }
-    
-    var commentInteractionBar: CommentBarConfiguration {
-        get { interactionBarConfigurations.comment }
-        set { interactionBarConfigurations.comment = newValue }
-    }
-    
-    var replyInteractionBar: ReplyBarConfiguration {
-        get { interactionBarConfigurations.reply }
-        set { interactionBarConfigurations.reply = newValue }
-    }
-    
-    var interactionBarConfigurations: InteractionBarConfigurations {
-        didSet { Task.detached {
-            try await self.persistenceRepository.saveInteractionBarConfigurations(self.interactionBarConfigurations)
-        } }
-    }
-    
-    init() {
-        self.interactionBarConfigurations = PersistenceRepository.liveValue.loadInteractionBarConfigurations()
-    }
+    @AppStorage("community.showAvatar") var showCommunityAvatar: Bool = true
 }
+  

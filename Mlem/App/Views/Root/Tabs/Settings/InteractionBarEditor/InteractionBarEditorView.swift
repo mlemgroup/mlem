@@ -36,9 +36,9 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         self.onSet = onSet
     }
     
-    init(setting: WritableKeyPath<Settings, Configuration>) {
-        self.init(configuration: Settings.main[keyPath: setting]) {
-            var main = Settings.main
+    init(setting: WritableKeyPath<InteractionBarTracker, Configuration>) {
+        self.init(configuration: InteractionBarTracker.main[keyPath: setting]) {
+            var main = InteractionBarTracker.main
             main[keyPath: setting] = $0
         }
     }
@@ -110,7 +110,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                     titleVisibility: .visible
                 ) {
                     Button("Yes") {
-                        Settings.main.interactionBarConfigurations = .init(
+                        InteractionBarTracker.main.interactionBarConfigurations = .init(
                             post: configuration.convert(),
                             comment: configuration.convert(),
                             reply: configuration.convert()
@@ -206,6 +206,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         HFlow(spacing: Constants.main.standardSpacing) {
             ForEach(Array(Configuration.ReadoutType.allCases.enumerated()), id: \.offset) { _, readout in
                 let isActive = configuration.readouts.contains(readout)
+                let disabled = !readout.compatibleWith(otherReadouts: Set(configuration.readouts))
                 Button {
                     if isActive {
                         if let index = configuration.readouts.firstIndex(of: readout) {
@@ -220,21 +221,23 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                     }
                     HapticManager.main.play(haptic: .gentleInfo, priority: .low)
                 } label: {
+                    let color = disabled ? palette.primary : palette.accent
                     HStack(spacing: 2) {
                         Image(systemName: readout.appearance.icon)
                         Text(readout.appearance.label)
                     }
                     .font(.footnote)
-                    .foregroundStyle(isActive ? palette.selectedInteractionBarItem : palette.accent)
+                    .foregroundStyle(isActive ? palette.selectedInteractionBarItem : color)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
                     .background(
-                        isActive ? palette.accent : palette.accent.opacity(0.2),
+                        isActive ? color : color.opacity(0.2),
                         in: .rect(cornerRadius: Constants.main.smallItemCornerRadius)
                     )
                     .transaction { $0.animation = nil }
                 }
                 .buttonStyle(.plain)
+                .disabled(disabled)
             }
         }
     }

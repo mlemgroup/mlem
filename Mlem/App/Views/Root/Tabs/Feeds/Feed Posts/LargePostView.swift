@@ -57,7 +57,7 @@ struct LargePostView: View {
             
             InteractionBarView(
                 post: post,
-                configuration: Settings.main.postInteractionBar,
+                configuration: InteractionBarTracker.main.postInteractionBar,
                 expandedPostTracker: expandedPostTracker,
                 communityContext: communityContext
             )
