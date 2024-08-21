@@ -17,6 +17,8 @@ struct ExpandedPostView: View {
     let post: AnyPost
     @State var showCommentWithId: Int?
     
+    @State var sort: ApiCommentSortType = .top
+    
     let tracker: ExpandedPostTracker = .init()
     
     var body: some View {
@@ -43,16 +45,18 @@ struct ExpandedPostView: View {
                     }
                 }
                 .animation(.default, value: showLoadingSymbol)
-                .task {
+                .task(id: sort) {
                     if post.api == appState.firstApi {
                         post.markRead()
-                        await tracker.load(post: post)
+                        tracker.clear()
+                        await tracker.load(post: post, sort: sort)
                     }
                 }
                 .onChange(of: post.api) {
-                    tracker.resolveComments(post: post)
+                    tracker.resolveComments(post: post, sort: sort)
                 }
                 .toolbar {
+                    sortPicker
                     if proxy.isLoading {
                         ProgressView()
                     } else {
@@ -91,6 +95,17 @@ struct ExpandedPostView: View {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         self.showCommentWithId = nil
                     }
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var sortPicker: some View {
+        Picker("Sort", selection: $sort) {
+            ForEach(ApiCommentSortType.allCases, id: \.self) { item in
+                if (post.wrappedValue.api.fetchedVersion ?? .infinity) >= item.minimumVersion {
+                    Label(String(localized: item.label), systemImage: item.systemImage)
                 }
             }
         }
