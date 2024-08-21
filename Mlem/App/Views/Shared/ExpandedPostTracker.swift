@@ -15,9 +15,17 @@ class ExpandedPostTracker: Hashable {
     
     private(set) var loadingState: LoadingState = .idle
     
+    var post: any Post
+    
+    var sort: ApiCommentSortType = Settings.main.commentSort
+    
+    init(post: any Post) {
+        self.post = post
+    }
+    
     private var appState: AppState { .main }
     
-    func load(post: any Post, sort: ApiCommentSortType) async {
+    func load() async {
         guard loadingState == .idle else { return }
         loadingState = .loading
         do {
@@ -96,10 +104,10 @@ class ExpandedPostTracker: Hashable {
         }
     }
 
-    func resolveComments(post: any Post, sort: ApiCommentSortType) {
+    func resolveComments() {
         Task {
             loadingState = .idle
-            await load(post: post, sort: sort)
+            await load()
         }
     }
     
