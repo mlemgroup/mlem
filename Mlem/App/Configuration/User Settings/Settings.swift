@@ -6,14 +6,13 @@
 //  Adapted from https://fatbobman.com/en/posts/appstorage/
 //
 
-import Foundation
+import Dependencies
 import MlemMiddleware
 import SwiftUI
 
-// This has to be ObservableObject because @Observable currently does not allow @AppStorage properties without @ObservationIgnored
 class Settings: ObservableObject {
     public static let main: Settings = .init()
-    
+
     @AppStorage("post.size") var postSize: PostSize = .compact
     @AppStorage("post.defaultSort") var defaultPostSort: ApiSortType = .hot
     @AppStorage("post.fallbackSort") var fallbackPostSort: ApiSortType = .hot
@@ -44,6 +43,7 @@ class Settings: ObservableObject {
     @AppStorage("inbox.showRead") var showReadInInbox: Bool = true
     
     @AppStorage("subscriptions.instanceLocation") var subscriptionInstanceLocation: InstanceLocation = UIDevice.isPad ? .bottom : .trailing
+    
     @AppStorage("subscriptions.sort") var subscriptionSort: SubscriptionListSort = .alphabetical
     
     @AppStorage("person.showAvatar") var showPersonAvatar: Bool = true

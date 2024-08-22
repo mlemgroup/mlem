@@ -45,40 +45,50 @@ extension Reply1Providing {
         }
     }
 
-    func action(type: InboxActionType) -> any Action {
+    func action(type: ReplyBarConfiguration.ActionType) -> any Action {
         switch type {
-        case .upvote:
-            upvoteAction(feedback: [.haptic])
-        case .downvote:
-            downvoteAction(feedback: [.haptic])
-        case .save:
-            saveAction(feedback: [.haptic])
+        case .upvote: upvoteAction(feedback: [.haptic])
+        case .downvote: downvoteAction(feedback: [.haptic])
+        case .save: saveAction(feedback: [.haptic])
+        case .reply: replyAction()
+        case .markRead: markReadAction(feedback: [.haptic])
+        case .report: reportAction()
+        case .selectText: selectTextAction()
         }
     }
     
-    func counter(type: InboxCounterType) -> Counter {
+    func counter(type: ReplyBarConfiguration.CounterType) -> Counter {
         switch type {
-        case .score:
-            scoreCounter
-        case .upvote:
-            upvoteCounter
-        case .downvote:
-            downvoteCounter
+        case .score: scoreCounter
+        case .upvote: upvoteCounter
+        case .downvote: downvoteCounter
+        case .reply: replyCounter()
         }
     }
     
-    func readout(type: InboxReadoutType) -> Readout {
+    func readout(type: ReplyBarConfiguration.ReadoutType) -> Readout {
         switch type {
-        case .created:
-            createdReadout
-        case .score:
-            scoreReadout
-        case .upvote:
-            upvoteReadout
-        case .downvote:
-            downvoteReadout
-        case .comment:
-            commentReadout
+        case .created: createdReadout
+        case .score: scoreReadout
+        case .upvote: upvoteReadout
+        case .downvote: downvoteReadout
+        case .comment: commentReadout
         }
+    }
+    
+    // MARK: Actions
+    
+    func selectTextAction() -> BasicAction {
+        let callback: (() -> Void)?
+        if let comment = comment_ {
+            callback = comment.showTextSelectionSheet
+        } else {
+            callback = nil
+        }
+        return .init(
+            id: "selectText\(id)",
+            appearance: .selectText(),
+            callback: callback
+        )
     }
 }

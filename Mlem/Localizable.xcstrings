@@ -110,6 +110,9 @@
     "Applications Email Admins" : {
 
     },
+    "Apply to All Interaction Bars" : {
+
+    },
     "Authenticating..." : {
 
     },
@@ -176,6 +179,9 @@
     "Code" : {
 
     },
+    "Comment" : {
+
+    },
     "Comment was deleted" : {
 
     },
@@ -192,6 +198,9 @@
 
     },
     "Compact" : {
+
+    },
+    "Confirm" : {
 
     },
     "Connecting..." : {
@@ -255,6 +264,9 @@
 
     },
     "Easy" : {
+
+    },
+    "Edit" : {
 
     },
     "Email Verification" : {
@@ -386,6 +398,9 @@
 
     },
     "Instances" : {
+
+    },
+    "Interaction Bar" : {
 
     },
     "It's turtles all the way down" : {
@@ -544,6 +559,9 @@
     "Permanently delete %@" : {
 
     },
+    "Post" : {
+
+    },
     "Post Size" : {
 
     },
@@ -569,6 +587,12 @@
 
     },
     "Really delete %@?" : {
+
+    },
+    "Readouts:" : {
+
+    },
+    "Really apply configuration to all?" : {
 
     },
     "Reason (Optional)" : {
@@ -608,6 +632,9 @@
 
     },
     "Requires Application" : {
+
+    },
+    "Reset" : {
 
     },
     "Restore" : {
@@ -668,6 +695,9 @@
 
     },
     "Show User Avatar" : {
+
+    },
+    "Shown" : {
 
     },
     "Sign In" : {
@@ -733,6 +763,9 @@
     "Switch to this account and..." : {
 
     },
+    "Tap and hold items to add, remove or rearrange them." : {
+
+    },
     "Tap to show slur filter regex." : {
 
     },
@@ -768,6 +801,9 @@
 
     },
     "To confirm, please enter your password:" : {
+
+    },
+    "Too many items!" : {
 
     },
     "Top" : {

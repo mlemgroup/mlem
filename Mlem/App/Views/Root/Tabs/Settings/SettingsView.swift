@@ -31,6 +31,12 @@ struct SettingsView: View {
             }
             
             Section {
+                NavigationLink("Post", destination: .settings(.postInteractionBar))
+                NavigationLink("Comment", destination: .settings(.commentInteractionBar))
+                NavigationLink("Reply", destination: .settings(.replyInteractionBar))
+            }
+            
+            Section {
                 NavigationLink("Theme", destination: .settings(.theme))
                 NavigationLink("App Icon", destination: .settings(.icon))
                 NavigationLink("Subscription List", destination: .settings(.subscriptionList))

@@ -47,7 +47,7 @@ class ExpandedPostTracker: Hashable {
         loadingState = .idle
     }
     
-    func insertCreatedComment(_ comment: Comment2, parent: (any Comment2Providing)? = nil) {
+    func insertCreatedComment(_ comment: Comment2, parent: (any Comment1Providing)? = nil) {
         if let actorId = parent?.actorId {
             print(commentsKeyedByActorId.keys.contains(actorId))
         }

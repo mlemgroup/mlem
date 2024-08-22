@@ -1,5 +1,5 @@
 //
-//  ReplyView.swift
+//  CommentEditorView.swift
 //  Mlem
 //
 //  Created by Sjmarf on 14/07/2024.
@@ -9,7 +9,7 @@ import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
 
-struct ResponseComposerView: View {
+struct CommentEditorView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
@@ -20,24 +20,27 @@ struct ResponseComposerView: View {
     }
     
     let textView: UITextView = .init()
-    
-    let originalContext: ResponseContext
+
     let expandedPostTracker: ExpandedPostTracker?
     
-    @State var resolvedContext: ResponseContext
+    @State var commentToEdit: Comment2?
+    @State var originalContext: Context?
+    @State var resolvedContext: Context?
     @State var resolutionState: ResolutionState = .success
     @State var sending: Bool = false
 
-    @State var text: String = ""
+    @State var text: String
     @State var account: UserAccount
     @State var presentationSelection: PresentationDetent = .large
     
     @FocusState var focused: Bool
     
     init?(
-        context: ResponseContext,
+        commentToEdit: Comment2? = nil,
+        context: Context? = nil,
         expandedPostTracker: ExpandedPostTracker? = nil
     ) {
+        self.commentToEdit = commentToEdit
         self.originalContext = context
         self._resolvedContext = .init(wrappedValue: context)
         self.expandedPostTracker = expandedPostTracker
@@ -46,6 +49,8 @@ struct ResponseComposerView: View {
         } else {
             return nil
         }
+        self._text = .init(wrappedValue: commentToEdit?.content ?? "")
+        textView.text = text
     }
         
     var minTextEditorHeight: CGFloat {
@@ -64,7 +69,7 @@ struct ResponseComposerView: View {
                             }
                         }
                         ToolbarItem(placement: .principal) {
-                            if AccountsTracker.main.userAccounts.count > 1 {
+                            if AccountsTracker.main.userAccounts.count > 1, commentToEdit == nil {
                                 AccountPickerMenu(account: $account) {
                                     HStack(spacing: 3) {
                                         FullyQualifiedLabelView(entity: account, labelStyle: .medium, showAvatar: false)
@@ -131,12 +136,15 @@ struct ResponseComposerView: View {
                         LargePostBodyView(post: post, isExpanded: true)
                     case let .comment(comment):
                         CommentBodyView(comment: comment)
+                    case nil:
+                        ProgressView()
                     }
                 }.padding(.horizontal, Constants.main.standardSpacing)
             }
             .animation(.easeOut(duration: 0.2), value: resolutionState == .notFound)
         }
         .scrollBounceBehavior(.basedOnSize)
+        .task(inferContextFromCommentToEdit)
     }
     
     @ViewBuilder
@@ -146,101 +154,5 @@ struct ResponseComposerView: View {
             .frame(maxWidth: .infinity)
             .background(.opacity(0.2), in: .capsule)
             .foregroundStyle(palette.caution)
-    }
-    
-    @Sendable
-    func resolveContext() async {
-        do {
-            if originalContext.api === account.api {
-                resolutionState = .success
-                resolvedContext = originalContext
-            } else {
-                Task { @MainActor in
-                    resolutionState = .resolving
-                }
-                switch originalContext {
-                case let .post(post):
-                    let post = try await account.api.getPost(actorId: post.actorId)
-                    Task { @MainActor in
-                        resolutionState = .success
-                        resolvedContext = .post(post)
-                    }
-                case let .comment(comment):
-                    let comment = try await account.api.getComment(actorId: comment.actorId)
-                    Task { @MainActor in
-                        resolutionState = .success
-                        resolvedContext = .comment(comment)
-                    }
-                }
-            }
-            
-        } catch ApiClientError.noEntityFound {
-            print("No entity found!")
-            Task { @MainActor in
-                resolutionState = .notFound
-            }
-        } catch {
-            Task { @MainActor in
-                resolutionState = .error(.init(error: error))
-            }
-        }
-    }
-    
-    func send() async {
-        do {
-            let result: Comment2
-            let parent: (any Comment2Providing)?
-            switch resolvedContext {
-            case let .post(post):
-                result = try await post.reply(content: text)
-                parent = nil
-            case let .comment(comment):
-                result = try await comment.reply(content: text)
-                parent = comment
-            }
-            Task { @MainActor in
-                textView.resignFirstResponder()
-                textView.isEditable = false
-                HapticManager.main.play(haptic: .success, priority: .low)
-                print("EXP", expandedPostTracker == nil)
-                expandedPostTracker?.insertCreatedComment(result, parent: parent)
-                dismiss()
-            }
-        } catch {
-            Task { @MainActor in
-                sending = false
-                textView.isEditable = true
-                handleError(error)
-            }
-        }
-    }
-}
-
-enum ResponseContext: Hashable {
-    case post(any Post2Providing)
-    case comment(any Comment2Providing)
-    
-    static func == (lhs: ResponseContext, rhs: ResponseContext) -> Bool {
-        lhs.hashValue == rhs.hashValue
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        switch self {
-        case let .post(post):
-            hasher.combine("post")
-            hasher.combine(post.hashValue)
-        case let .comment(comment):
-            hasher.combine("comment")
-            hasher.combine(comment.hashValue)
-        }
-    }
-    
-    var api: ApiClient {
-        switch self {
-        case let .post(post):
-            post.api
-        case let .comment(comment):
-            comment.api
-        }
     }
 }
