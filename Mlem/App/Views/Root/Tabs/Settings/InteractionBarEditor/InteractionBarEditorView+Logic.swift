@@ -98,7 +98,7 @@ extension InteractionBarEditorView {
     }
     
     func trayItemOutlineColor(_ item: Configuration.Item) -> Color {
-        if let barPickedUpIndex, items[barPickedUpIndex] == item, hoveredDropLocation == .tray {
+        if let barPickedUpIndex, hoveredDropLocation == .tray, barPickedUpIndex < items.count, items[barPickedUpIndex] == item {
             return palette.accent
         }
         return palette.secondaryGroupedBackground

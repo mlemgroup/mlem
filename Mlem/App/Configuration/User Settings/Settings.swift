@@ -50,4 +50,3 @@ class Settings: ObservableObject {
     
     @AppStorage("community.showAvatar") var showCommunityAvatar: Bool = true
 }
-  
