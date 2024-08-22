@@ -189,7 +189,7 @@ struct ResponseComposerView: View {
     func send() async {
         do {
             let result: Comment2
-            let parent: (any Comment2Providing)?
+            let parent: (any Comment1Providing)?
             switch resolvedContext {
             case let .post(post):
                 result = try await post.reply(content: text)
@@ -217,8 +217,8 @@ struct ResponseComposerView: View {
 }
 
 enum ResponseContext: Hashable {
-    case post(any Post2Providing)
-    case comment(any Comment2Providing)
+    case post(any Post1Providing)
+    case comment(any Comment1Providing)
     
     static func == (lhs: ResponseContext, rhs: ResponseContext) -> Bool {
         lhs.hashValue == rhs.hashValue
