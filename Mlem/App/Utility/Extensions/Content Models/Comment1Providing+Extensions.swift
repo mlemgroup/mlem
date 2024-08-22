@@ -104,10 +104,7 @@ extension Comment1Providing {
     func editAction(feedback: Set<FeedbackType>) -> BasicAction {
         .init(
             id: "edit\(uid)",
-            isOn: false,
-            label: "Edit",
-            color: Palette.main.accent,
-            icon: Icons.edit,
+            appearance: .init(label: "Edit", color: Palette.main.accent, icon: Icons.edit),
             callback: api.canInteract ? { self.showEditSheet() } : nil
         )
     }
