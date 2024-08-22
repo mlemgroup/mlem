@@ -43,7 +43,6 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         textView.setContentHuggingPriority(.defaultLow, for: .horizontal)
         textView.becomeFirstResponder()
         textView.text = text
-        textView.sizeToFit()
         
         let contentController = UIHostingController(rootView: content)
         let contentView = contentController.view!
@@ -71,7 +70,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         textView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 
         textView.isScrollEnabled = false
-        
+        textView.sizeToFit()
         return textView
     }
  

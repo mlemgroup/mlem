@@ -13,4 +13,12 @@ struct Counter: Identifiable {
     
     let leadingAction: (any Action)?
     let trailingAction: (any Action)?
+    
+    var appearance: CounterAppearance {
+        .init(
+            value: value,
+            leading: leadingAction?.appearance,
+            trailing: trailingAction?.appearance
+        )
+    }
 }

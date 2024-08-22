@@ -30,11 +30,7 @@ struct ReplyView: View {
             Markdown(reply.comment.content, configuration: .default)
             InteractionBarView(
                 reply: reply,
-                configuration: .init(
-                    leading: [.counter(.score)],
-                    trailing: [.action(.save)],
-                    readouts: [.created, .score, .comment]
-                )
+                configuration: InteractionBarTracker.main.replyInteractionBar
             )
             .padding(.top, 2)
         }

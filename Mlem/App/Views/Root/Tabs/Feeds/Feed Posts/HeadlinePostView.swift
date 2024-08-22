@@ -17,6 +17,7 @@ struct HeadlinePostView: View {
     @Setting(\.blurNsfw) var blurNsfw
     
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
+    @Environment(ExpandedPostTracker.self) private var expandedPostTracker: ExpandedPostTracker?
     @Environment(Palette.self) var palette: Palette
     
     let post: any Post1Providing
@@ -78,11 +79,9 @@ struct HeadlinePostView: View {
             
             InteractionBarView(
                 post: post,
-                configuration: .init(
-                    leading: [.counter(.score)],
-                    trailing: [.action(.save), .action(.reply)],
-                    readouts: [.created, .score, .comment]
-                )
+                configuration: InteractionBarTracker.main.postInteractionBar,
+                expandedPostTracker: expandedPostTracker,
+                communityContext: communityContext
             )
             .padding(.vertical, 2)
         }

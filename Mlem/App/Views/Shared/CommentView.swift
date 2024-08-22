@@ -12,6 +12,7 @@ import SwiftUI
 struct CommentView: View {
     @Environment(Palette.self) private var palette
     @Environment(ExpandedPostTracker.self) private var expandedPostTracker: ExpandedPostTracker?
+    @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     
     private let indent: CGFloat = 10
     
@@ -58,12 +59,9 @@ struct CommentView: View {
                     CommentBodyView(comment: comment)
                     InteractionBarView(
                         comment: comment,
-                        configuration: .init(
-                            leading: [.counter(.score)],
-                            trailing: [.action(.save), .action(.reply)],
-                            readouts: [.created, .score, .comment]
-                        ),
-                        expandedPostTracker: expandedPostTracker
+                        configuration: InteractionBarTracker.main.commentInteractionBar,
+                        expandedPostTracker: expandedPostTracker,
+                        communityContext: communityContext
                     )
                     .padding(.top, 2)
                 }
