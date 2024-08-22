@@ -10,6 +10,8 @@ import MlemMiddleware
 import SwiftUI
 
 struct LargePostBodyView: View {
+    @Setting(\.blurNsfw) var blurNsfw
+    
     @Environment(Palette.self) var palette
     @Environment(\.communityContext) private var communityContext: (any Community1Providing)?
     
@@ -25,7 +27,10 @@ struct LargePostBodyView: View {
             
             switch post.type {
             case let .image(url):
-                LargeImageView(url: url.withIconSize(Constants.main.feedImageResolution), nsfw: post.nsfw) {
+                LargeImageView(
+                    url: url.withIconSize(Constants.main.feedImageResolution),
+                    shouldBlur: blurNsfw && !(communityContext?.nsfw ?? false) && post.nsfw
+                ) {
                     post.markRead()
                 }
                 // Set maximum image height to 1.2 * width

@@ -30,13 +30,17 @@ struct CommunityView: View {
     @Environment(Palette.self) var palette
     
     @Setting(\.postSize) var postSize
+    @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
     
     @State var community: AnyCommunity
     @State private var selectedTab: Tab = .posts
     @State var postFeedLoader: CommunityPostFeedLoader?
+    @State var warningPresented: Bool
     
     init(community: AnyCommunity) {
+        @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
         self.community = community
+        self._warningPresented = .init(wrappedValue: showNsfwCommunityWarning && (community.wrappedValue.nsfw_ ?? false))
     }
     
     var body: some View {
@@ -62,6 +66,7 @@ struct CommunityView: View {
     }
         
     @ViewBuilder
+    // swiftlint:disable:next function_body_length
     func content(community: any Community) -> some View {
         FancyScrollView {
             HStack {
@@ -111,6 +116,9 @@ struct CommunityView: View {
                 MenuButtons { community.menuActions(navigation: navigation) }
             }
         }
+        .fullScreenCover(isPresented: $warningPresented, content: {
+            nsfwWarningOverlay
+        })
     }
     
     @ViewBuilder
@@ -127,7 +135,7 @@ struct CommunityView: View {
     func aboutTab(community: any Community) -> some View {
         VStack(spacing: Constants.main.standardSpacing) {
             if let banner = community.banner {
-                LargeImageView(url: banner, nsfw: community.nsfw)
+                LargeImageView(url: banner, shouldBlur: false)
             }
             if let description = community.description {
                 Markdown(description, configuration: .default)
@@ -177,6 +185,15 @@ struct CommunityView: View {
             output.insert(.about, at: 1)
         }
         return output
+    }
+    
+    @ViewBuilder
+    var nsfwWarningOverlay: some View {
+        Text("NSFW!")
+        
+        Button("done") {
+            warningPresented = false
+        }
     }
     
     func setupFeedLoader(community: any Community) {

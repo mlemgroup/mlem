@@ -20,9 +20,7 @@ struct LargeImageView: View {
     var onTapActions: (() -> Void)?
     @State var blurred: Bool = false
     
-    init(url: URL?, nsfw: Bool, onTapActions: (() -> Void)? = nil) {
-        @Setting(\.blurNsfw) var blurNsfw
-        let shouldBlur = blurNsfw ? nsfw : false
+    init(url: URL?, shouldBlur: Bool, onTapActions: (() -> Void)? = nil) {
         self.url = url
         self.onTapActions = onTapActions
         self.shouldBlur = shouldBlur

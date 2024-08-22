@@ -9,6 +9,8 @@ import MlemMiddleware
 import SwiftUI
 
 struct InstanceListRowBody<Content: View>: View {
+    @Setting(\.blurNsfw) var blurNsfw
+    
     @Environment(Palette.self) var palette
     
     let instance: (any Instance)?

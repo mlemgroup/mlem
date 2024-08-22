@@ -17,7 +17,7 @@ struct ThumbnailImageView: View {
     @State var loading: ImageLoadingState?
     
     let post: any Post1Providing
-    var blurred: Bool = false
+    var shouldBlur: Bool = false
     let size: Size
     
     enum Size {
@@ -34,13 +34,11 @@ struct ThumbnailImageView: View {
     
     init(
         post: any Post1Providing,
-        blurred: Bool,
+        shouldBlur: Bool,
         size: Size
     ) {
-        @Setting(\.blurNsfw) var shouldBlur
-        
         self.post = post
-        self.blurred = shouldBlur ? blurred : false
+        self.shouldBlur = shouldBlur
         self.size = size
     }
     
@@ -89,7 +87,7 @@ struct ThumbnailImageView: View {
                 showProgress: true
             )
             .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
-            .dynamicBlur(blurred: blurred && loading == .done)
+            .dynamicBlur(blurred: shouldBlur && loading == .done)
             .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
             .onPreferenceChange(ImageLoadingPreferenceKey.self, perform: { loading = $0 })
         } else {
@@ -113,7 +111,7 @@ struct ThumbnailImageView: View {
                 fallback: .image,
                 showProgress: true
             )
-            .dynamicBlur(blurred: blurred)
+            .dynamicBlur(blurred: shouldBlur)
             .onPreferenceChange(ImageLoadingPreferenceKey.self, perform: { loading = $0 })
         } else {
             Image(systemName: post.placeholderImageName)

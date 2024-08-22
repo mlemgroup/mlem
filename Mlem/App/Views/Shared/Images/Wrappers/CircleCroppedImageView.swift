@@ -13,15 +13,17 @@ struct CircleCroppedImageView: View {
     let url: URL?
     let fallback: FixedImageView.Fallback
     let showProgress: Bool
+    let blurred: Bool
     
-    init(url: URL?, fallback: FixedImageView.Fallback, showProgress: Bool = true) {
+    init(url: URL?, fallback: FixedImageView.Fallback, showProgress: Bool = true, blurred: Bool = false) {
         self.url = url
         self.fallback = fallback
         self.showProgress = showProgress
+        self.blurred = blurred
     }
     
     var body: some View {
-        FixedImageView(url: url, fallback: fallback, showProgress: showProgress)
+        FixedImageView(url: url, fallback: fallback, showProgress: showProgress, blurred: blurred)
             .clipShape(Circle())
             .geometryGroup()
     }

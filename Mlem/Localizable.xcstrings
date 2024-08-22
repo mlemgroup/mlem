@@ -239,6 +239,9 @@
     "Domain" : {
 
     },
+    "done" : {
+
+    },
     "Downvote" : {
 
     },
@@ -494,6 +497,9 @@
 
     },
     "NSFW Content" : {
+
+    },
+    "NSFW!" : {
 
     },
     "Old" : {

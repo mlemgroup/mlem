@@ -11,11 +11,14 @@ import SwiftUI
 
 struct CompactPostView: View {
     @Setting(\.thumbnailLocation) var thumbnailLocation
+    @Setting(\.blurNsfw) var blurNsfw
     
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(Palette.self) var palette: Palette
     
     let post: any Post1Providing
+    
+    var shouldBlur: Bool { blurNsfw && post.nsfw && !(communityContext?.nsfw ?? false) }
     
     var body: some View {
         content
@@ -27,7 +30,7 @@ struct CompactPostView: View {
     var content: some View {
         HStack(alignment: .top, spacing: Constants.main.standardSpacing) {
             if thumbnailLocation == .left {
-                ThumbnailImageView(post: post, blurred: post.nsfw, size: .standard)
+                ThumbnailImageView(post: post, shouldBlur: shouldBlur, size: .standard)
             }
             
             VStack(alignment: .leading, spacing: Constants.main.compactSpacing) {
@@ -64,7 +67,7 @@ struct CompactPostView: View {
             .frame(maxWidth: .infinity)
             
             if thumbnailLocation == .right {
-                ThumbnailImageView(post: post, blurred: post.nsfw, size: .standard)
+                ThumbnailImageView(post: post, shouldBlur: shouldBlur, size: .standard)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
