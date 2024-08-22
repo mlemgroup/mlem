@@ -28,6 +28,7 @@ enum NavigationPage: Hashable {
     case createComment(_ context: CommentEditorView.Context, expandedPostTracker: ExpandedPostTracker? = nil)
     case editComment(_ comment: Comment2, context: CommentEditorView.Context?)
     case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
+    case deleteAccount(_ account: UserAccount)
     
     static func expandedPost(_ post: any PostStubProviding, commentActorId: URL? = nil) -> NavigationPage {
         expandedPost(.init(post), commentActorId: commentActorId)
@@ -143,6 +144,8 @@ extension NavigationPage {
             }
         case let .instance(instance):
             InstanceView(instance: instance.wrappedValue)
+        case let .deleteAccount(account):
+            DeleteAccountView(account: account)
         }
     }
     

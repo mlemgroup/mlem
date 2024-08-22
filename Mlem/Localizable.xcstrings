@@ -233,6 +233,12 @@
     "Delete" : {
 
     },
+    "Delete Account" : {
+
+    },
+    "Delete posts and comments" : {
+
+    },
     "Deleted" : {
 
     },
@@ -427,6 +433,9 @@
     "loading" : {
 
     },
+    "Loading instance details" : {
+
+    },
     "Loading..." : {
 
     },
@@ -547,6 +556,9 @@
     "Password" : {
 
     },
+    "Permanently delete %@" : {
+
+    },
     "Post" : {
 
     },
@@ -572,6 +584,9 @@
 
     },
     "Quote" : {
+
+    },
+    "Really delete %@?" : {
 
     },
     "Readouts:" : {
@@ -783,6 +798,9 @@
 
     },
     "Tiled" : {
+
+    },
+    "To confirm, please enter your password:" : {
 
     },
     "Too many items!" : {

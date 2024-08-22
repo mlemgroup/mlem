@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AccountSettingsView: View {
     @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
     
     var body: some View {
         Form {
@@ -23,6 +24,14 @@ struct AccountSettingsView: View {
                 .listRowBackground(Color(.systemGroupedBackground))
                 .padding(.vertical, -12)
                 .padding(.horizontal, -16)
+            }
+            
+            if let account = appState.firstAccount as? UserAccount {
+                Section {
+                    Button("Delete Account", role: .destructive) {
+                        navigation.openSheet(.deleteAccount(account))
+                    }
+                }
             }
         }
         .navigationTitle(Text("Account"))
