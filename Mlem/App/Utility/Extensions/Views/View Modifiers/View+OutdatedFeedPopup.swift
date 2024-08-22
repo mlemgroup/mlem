@@ -13,6 +13,13 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
     
     let feedLoader: (any FeedLoading)?
     
+    let canShowPopup: Bool
+    
+    init(feedLoader: (any FeedLoading)?, showPopup canShowPopup: Bool) {
+        self.feedLoader = feedLoader
+        self.canShowPopup = canShowPopup
+    }
+    
     @State var showRefreshPopup: Bool = false
     
     func body(content: Content) -> some View {
@@ -34,13 +41,15 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
                     }
                 }
                 .overlay(alignment: .bottom) {
-                    RefreshPopupView("Feed is outdated", isPresented: $showRefreshPopup) {
-                        Task {
-                            do {
-                                showRefreshPopup = false
-                                try await refresh()
-                            } catch {
-                                handleError(error)
+                    if canShowPopup {
+                        RefreshPopupView("Feed is outdated", isPresented: $showRefreshPopup) {
+                            Task {
+                                do {
+                                    showRefreshPopup = false
+                                    try await refresh()
+                                } catch {
+                                    handleError(error)
+                                }
                             }
                         }
                     }
@@ -70,7 +79,7 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
 }
 
 extension View {
-    func outdatedFeedPopup(feedLoader: (any FeedLoading)?) -> some View {
-        modifier(OutdatedFeedPopupModifier(feedLoader: feedLoader))
+    func outdatedFeedPopup(feedLoader: (any FeedLoading)?, showPopup: Bool = true) -> some View {
+        modifier(OutdatedFeedPopupModifier(feedLoader: feedLoader, showPopup: showPopup))
     }
 }
