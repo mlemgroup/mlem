@@ -17,6 +17,7 @@ struct LargePostBodyView: View {
     
     let post: any Post1Providing
     let isExpanded: Bool
+    let shouldBlur: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
@@ -29,7 +30,7 @@ struct LargePostBodyView: View {
             case let .image(url):
                 LargeImageView(
                     url: url.withIconSize(Constants.main.feedImageResolution),
-                    shouldBlur: blurNsfw && !(communityContext?.nsfw ?? false) && post.nsfw
+                    shouldBlur: shouldBlur
                 ) {
                     post.markRead()
                 }
