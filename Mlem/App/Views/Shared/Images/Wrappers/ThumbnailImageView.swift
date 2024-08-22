@@ -89,7 +89,7 @@ struct ThumbnailImageView: View {
                 showProgress: true
             )
             .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
-            .blur(radius: blurred && (loading == .done) ? 10 : 0, opaque: true)
+            .dynamicBlur(blurred: blurred && loading == .done)
             .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
             .onPreferenceChange(ImageLoadingPreferenceKey.self, perform: { loading = $0 })
         } else {
@@ -113,7 +113,7 @@ struct ThumbnailImageView: View {
                 fallback: .image,
                 showProgress: true
             )
-            .blur(radius: blurred ? 10 : 0, opaque: true)
+            .dynamicBlur(blurred: blurred)
             .onPreferenceChange(ImageLoadingPreferenceKey.self, perform: { loading = $0 })
         } else {
             Image(systemName: post.placeholderImageName)

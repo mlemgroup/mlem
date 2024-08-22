@@ -60,7 +60,7 @@ struct WebsitePreviewView: View {
         VStack(alignment: .leading, spacing: 0) {
             if let thumbnailUrl = link.thumbnail {
                 DynamicImageView(url: thumbnailUrl.withIconSize(Constants.main.feedImageResolution), cornerRadius: 0)
-                    .blur(radius: blurred ? 50 : 0, opaque: true)
+                    .dynamicBlur(blurred: blurred)
                     .clipped()
                     .overlay {
                         NsfwOverlay(blurred: $blurred, shouldBlur: shouldBlur)
