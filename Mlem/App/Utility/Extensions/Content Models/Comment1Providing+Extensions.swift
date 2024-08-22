@@ -10,6 +10,12 @@ import MlemMiddleware
 
 extension Comment1Providing {
     var isOwnComment: Bool { creatorId == api.myPerson?.id }
+    
+    func showEditSheet() {
+        if let self = self as? any Comment2Providing {
+            NavigationModel.main.openSheet(.editComment(self.comment2, context: nil))
+        }
+    }
 
     func swipeActions(
         behavior: SwipeBehavior,
@@ -46,6 +52,7 @@ extension Comment1Providing {
             shareAction()
             
             if self.isOwnComment {
+                editAction(feedback: feedback)
                 deleteAction(feedback: feedback)
             } else {
                 reportAction()
@@ -90,5 +97,15 @@ extension Comment1Providing {
         case .downvote: downvoteReadout
         case .comment: commentReadout
         }
+    }
+    
+    // MARK: Actions
+    
+    func editAction(feedback: Set<FeedbackType>) -> BasicAction {
+        .init(
+            id: "edit\(uid)",
+            appearance: .init(label: "Edit", color: Palette.main.accent, icon: Icons.edit),
+            callback: api.canInteract ? { self.showEditSheet() } : nil
+        )
     }
 }

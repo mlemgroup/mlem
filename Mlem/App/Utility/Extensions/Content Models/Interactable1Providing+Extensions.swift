@@ -14,13 +14,13 @@ extension Interactable1Providing {
     
     func showReplySheet(expandedPostTracker: ExpandedPostTracker? = nil) {
         if let responseContext {
-            NavigationModel.main.openSheet(.reply(responseContext, expandedPostTracker: expandedPostTracker))
+            NavigationModel.main.openSheet(.createComment(responseContext, expandedPostTracker: expandedPostTracker))
         } else {
             print("DEBUG showReplySheet: cannot open sheet!")
         }
     }
     
-    private var responseContext: ResponseContext? {
+    private var responseContext: CommentEditorView.Context? {
         if let self = self as? any Post2Providing { return .post(self) }
         if let self = self as? any Comment2Providing { return .comment(self) }
         if let self = self as? any Reply2Providing { return .comment(self.comment) }
