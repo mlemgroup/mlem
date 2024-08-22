@@ -68,10 +68,12 @@ extension InstanceStubProviding {
     func visitAction() -> BasicAction {
         .init(
             id: "visit\(actorId)",
-            isOn: false,
-            label: "Visit",
-            color: .gray,
-            icon: "arrow.right",
+            appearance: .init(
+                label: "Visit",
+                isOn: false,
+                color: .gray,
+                icon: "arrow.right"
+            ),
             callback: isVisiting ? nil : visit
         )
     }
@@ -79,10 +81,12 @@ extension InstanceStubProviding {
     func openInBrowserAction() -> BasicAction {
         .init(
             id: "openInstanceUrl\(actorId)",
-            isOn: false,
-            label: "Open in Browser",
-            color: .gray,
-            icon: Icons.browser,
+            appearance: .init(
+                label: "Open in Browser",
+                isOn: false,
+                color: .gray,
+                icon: Icons.browser
+            ),
             callback: {
                 openRegularLink(url: self.actorId)
             }
@@ -111,12 +115,8 @@ extension InstanceStubProviding {
         }
         return .init(
             id: "blockInstance\(actorId)",
-            isOn: blocked,
-            label: blocked ? "Unblock" : "Block",
-            color: Palette.main.negative,
-            isDestructive: !blocked,
+            appearance: .block(isOn: blocked),
             confirmationPrompt: (!blocked && showConfirmation) ? "Really block this instance?" : nil,
-            icon: blocked ? Icons.show : Icons.hide,
             callback: callback
         )
     }

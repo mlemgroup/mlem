@@ -105,7 +105,7 @@ struct CommunityView: View {
             .environment(\.communityContext, community)
         }
         .background(postSize.tiled ? palette.groupedBackground : palette.background)
-        .outdatedFeedPopup(feedLoader: postFeedLoader)
+        .outdatedFeedPopup(feedLoader: postFeedLoader, showPopup: selectedTab == .posts)
         .toolbar {
             ToolbarItemGroup(placement: .secondaryAction) {
                 MenuButtons { community.menuActions(navigation: navigation) }
@@ -180,10 +180,10 @@ struct CommunityView: View {
     }
     
     func setupFeedLoader(community: any Community) {
-        @Setting(\.internetSpeed) var internetSpeed
-        @Setting(\.showReadInFeed) var showReadInFeed
-        
         Task { @MainActor in
+            @Setting(\.internetSpeed) var internetSpeed
+            @Setting(\.showReadInFeed) var showReadInFeed
+            
             postFeedLoader = try await .init(
                 pageSize: internetSpeed.pageSize,
                 sortType: appState.initialFeedSortType,

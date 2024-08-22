@@ -12,14 +12,12 @@ struct CustomTabView: UIViewControllerRepresentable {
     @Environment(Palette.self) var palette
     
     let tabs: [CustomTabItem]
-    var viewControllers: [CustomTabViewHostingController]
     let swipeGestureCallback: () -> Void
     
     @Binding var selectedIndex: Int
     
     init(selectedIndex: Binding<Int>, tabs: [CustomTabItem], onSwipeUp: @escaping () -> Void) {
         self.tabs = tabs
-        self.viewControllers = tabs.enumerated().map { CustomTabViewHostingController(item: $1, index: $0) }
         self.swipeGestureCallback = onSwipeUp
         self._selectedIndex = selectedIndex
     }
@@ -31,8 +29,7 @@ struct CustomTabView: UIViewControllerRepresentable {
             selectedIndex: $selectedIndex,
             swipeGestureCallback: swipeGestureCallback
         )
-        tabBarController.viewControllers = viewControllers
-        
+        tabBarController.viewControllers = tabs.enumerated().map { CustomTabViewHostingController(item: $1, index: $0) }
         return tabBarController
     }
     

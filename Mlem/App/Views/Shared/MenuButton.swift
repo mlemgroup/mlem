@@ -19,9 +19,9 @@ struct MenuButton: View {
     var body: some View {
         if let action = action as? BasicAction {
             Button(
-                action.label,
-                systemImage: action.menuIcon,
-                role: action.isDestructive ? .destructive : nil,
+                action.appearance.label,
+                systemImage: action.appearance.menuIcon,
+                role: action.appearance.isDestructive ? .destructive : nil,
                 action: { action.callbackWithConfirmation(navigation: navigation) }
             )
             .disabled(action.disabled)
@@ -42,13 +42,13 @@ struct MenuButton: View {
                 Menu {
                     iterateActions(actions: action.children)
                 } label: {
-                    Label(action.label, systemImage: action.menuIcon)
+                    Label(action.appearance.label, systemImage: action.appearance.menuIcon)
                 }
             case .popup:
                 Button(
-                    action.label,
-                    systemImage: action.menuIcon,
-                    role: action.isDestructive ? .destructive : nil,
+                    action.appearance.label,
+                    systemImage: action.appearance.menuIcon,
+                    role: action.appearance.isDestructive ? .destructive : nil,
                     action: {
                         navigation.showPopup(action)
                     }

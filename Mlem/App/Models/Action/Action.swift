@@ -9,15 +9,5 @@ import SwiftUI
 
 protocol Action: Identifiable {
     var id: String { get }
-    
-    var isOn: Bool { get }
-    
-    var label: String { get }
-    var isDestructive: Bool { get }
-    var color: Color { get }
-    
-    var barIcon: String { get }
-    var menuIcon: String { get }
-    var swipeIcon1: String { get }
-    var swipeIcon2: String { get }
+    var appearance: ActionAppearance { get }
 }

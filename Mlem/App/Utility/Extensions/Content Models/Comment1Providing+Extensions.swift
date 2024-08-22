@@ -55,48 +55,40 @@ extension Comment1Providing {
     }
     
     func action(
-        type: CommentActionType,
-        expandedPostTracker: ExpandedPostTracker? = nil
+        type: CommentBarConfiguration.ActionType,
+        expandedPostTracker: ExpandedPostTracker? = nil,
+        communityContext: (any CommunityStubProviding)? = nil
     ) -> any Action {
         switch type {
-        case .upvote:
-            upvoteAction(feedback: [.haptic])
-        case .downvote:
-            downvoteAction(feedback: [.haptic])
-        case .save:
-            saveAction(feedback: [.haptic])
-        case .reply:
-            replyAction(expandedPostTracker: expandedPostTracker)
-        case .share:
-            shareAction()
-        case .selectText:
-            selectTextAction()
+        case .upvote: upvoteAction(feedback: [.haptic])
+        case .downvote: downvoteAction(feedback: [.haptic])
+        case .save: saveAction(feedback: [.haptic])
+        case .reply: replyAction(expandedPostTracker: expandedPostTracker)
+        case .share: shareAction()
+        case .selectText: selectTextAction()
+        case .report: reportAction(communityContext: communityContext)
         }
     }
     
-    func counter(type: CommentCounterType) -> Counter {
+    func counter(
+        type: CommentBarConfiguration.CounterType,
+        expandedPostTracker: ExpandedPostTracker? = nil
+    ) -> Counter {
         switch type {
-        case .score:
-            scoreCounter
-        case .upvote:
-            upvoteCounter
-        case .downvote:
-            downvoteCounter
+        case .score: scoreCounter
+        case .upvote: upvoteCounter
+        case .downvote: downvoteCounter
+        case .reply: replyCounter(expandedPostTracker: expandedPostTracker)
         }
     }
     
-    func readout(type: CommentReadoutType) -> Readout {
+    func readout(type: CommentBarConfiguration.ReadoutType) -> Readout {
         switch type {
-        case .created:
-            createdReadout
-        case .score:
-            scoreReadout
-        case .upvote:
-            upvoteReadout
-        case .downvote:
-            downvoteReadout
-        case .comment:
-            commentReadout
+        case .created: createdReadout
+        case .score: scoreReadout
+        case .upvote: upvoteReadout
+        case .downvote: downvoteReadout
+        case .comment: commentReadout
         }
     }
 }

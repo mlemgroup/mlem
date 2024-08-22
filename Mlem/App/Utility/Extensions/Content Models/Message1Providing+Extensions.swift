@@ -43,13 +43,7 @@ extension Message1Providing {
     func replyAction() -> BasicAction {
         .init(
             id: "reply\(uid)",
-            isOn: false,
-            label: "Reply",
-            color: Palette.main.accent,
-            icon: Icons.reply,
-            menuIcon: Icons.reply,
-            swipeIcon1: Icons.reply,
-            swipeIcon2: Icons.replyFill,
+            appearance: .reply(),
             callback: nil
         )
     }
@@ -57,12 +51,7 @@ extension Message1Providing {
     func blockCreatorAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
         .init(
             id: "blockCreator\(uid)",
-            isOn: false,
-            label: "Block User",
-            color: Palette.main.negative,
-            isDestructive: true,
-            confirmationPrompt: showConfirmation ? "Really block this user?" : nil,
-            icon: Icons.block,
+            appearance: .blockCreator(),
             callback: api.canInteract ? { self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
         )
     }

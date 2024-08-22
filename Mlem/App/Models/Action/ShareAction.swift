@@ -16,12 +16,5 @@ struct ShareAction: Action {
         self.url = url
     }
     
-    var label: String { String(localized: "Share...") }
-    var isDestructive: Bool { false }
-    var color: Color { .gray }
-    var isOn: Bool { false }
-    var barIcon: String { Icons.share }
-    var menuIcon: String { Icons.share }
-    var swipeIcon1: String { Icons.share }
-    var swipeIcon2: String { Icons.share }
+    var appearance: ActionAppearance { .share() }
 }
