@@ -15,14 +15,14 @@ struct ExpandedPostView: View {
     @Environment(\.dismiss) var dismiss
     
     let post: AnyPost
-    @State var showCommentWithId: Int?
+    @State var showCommentWithActorId: URL?
     
     let tracker: ExpandedPostTracker = .init()
     
     var body: some View {
         ContentLoader(model: post) { proxy in
             if let post = proxy.entity {
-                let showLoadingSymbol = showCommentWithId == nil || (self.post.isUpgraded && tracker.loadingState != .loading)
+                let showLoadingSymbol = showCommentWithActorId == nil || (self.post.isUpgraded && tracker.loadingState != .loading)
                 VStack {
                     if showLoadingSymbol {
                         content(for: post)
@@ -74,22 +74,22 @@ struct ExpandedPostView: View {
                 LazyVStack(alignment: .leading, spacing: 0) {
                     LargePostView(post: post, isExpanded: true)
                     Divider()
-                    ForEach(tracker.comments.tree()) { comment in
-                        CommentView(comment: comment, highlight: showCommentWithId == comment.id)
+                    ForEach(tracker.comments.tree(), id: \.actorId) { comment in
+                        CommentView(comment: comment, highlight: showCommentWithActorId == comment.actorId)
                             .transition(.move(edge: .top).combined(with: .opacity))
                             .zIndex(1000 - Double(comment.depth))
                     }
                 }
-                .animation(.easeInOut(duration: 0.4), value: showCommentWithId)
+                .animation(.easeInOut(duration: 0.4), value: showCommentWithActorId)
             }
             .onAppear {
-                if let showCommentWithId {
+                if let showCommentWithActorId {
                     // The scroll destination isn't always accurate. Possibly due to the post image changing
                     // size on load? Using `anchor: .top` would be better here, but `anchor: .center` makes
                     // the inaccuracy less noticeable. See also the comment further up the file.
-                    proxy.scrollTo(showCommentWithId, anchor: .center)
+                    proxy.scrollTo(showCommentWithActorId, anchor: .center)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        self.showCommentWithId = nil
+                        self.showCommentWithActorId = nil
                     }
                 }
             }
