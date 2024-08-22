@@ -49,4 +49,6 @@ class Settings: ObservableObject {
     @AppStorage("person.showAvatar") var showPersonAvatar: Bool = true
     
     @AppStorage("community.showAvatar") var showCommunityAvatar: Bool = true
+    
+    @AppStorage("comment.sort") var commentSort: ApiCommentSortType = .top
 }

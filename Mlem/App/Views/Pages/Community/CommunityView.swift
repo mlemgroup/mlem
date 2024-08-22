@@ -105,7 +105,7 @@ struct CommunityView: View {
             .environment(\.communityContext, community)
         }
         .background(postSize.tiled ? palette.groupedBackground : palette.background)
-        .outdatedFeedPopup(feedLoader: postFeedLoader)
+        .outdatedFeedPopup(feedLoader: postFeedLoader, showPopup: selectedTab == .posts)
         .toolbar {
             ToolbarItemGroup(placement: .secondaryAction) {
                 MenuButtons { community.menuActions(navigation: navigation) }
