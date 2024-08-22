@@ -28,6 +28,7 @@ struct CommunityView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
+    @Environment(\.dismiss) var dismiss
     
     @Setting(\.postSize) var postSize
     @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
@@ -116,9 +117,10 @@ struct CommunityView: View {
                 MenuButtons { community.menuActions(navigation: navigation) }
             }
         }
-        .fullScreenCover(isPresented: $warningPresented, content: {
+        .fullScreenCover(isPresented: $warningPresented) {
             nsfwWarningOverlay
-        })
+                .presentationBackground(.ultraThinMaterial)
+        }
     }
     
     @ViewBuilder
@@ -189,11 +191,45 @@ struct CommunityView: View {
     
     @ViewBuilder
     var nsfwWarningOverlay: some View {
-        Text("NSFW!")
-        
-        Button("done") {
-            warningPresented = false
+        VStack(spacing: Constants.main.doubleSpacing) {
+            WarningView(
+                iconName: Icons.warning,
+                text: "This community likely contains graphic or explicit content.",
+                inList: false
+            )
+            
+            Group {
+                HStack(spacing: Constants.main.doubleSpacing) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("Go back").frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+                    
+                    Button {
+                        warningPresented = false
+                    } label: {
+                        Text("Continue").frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+                
+                Toggle(isOn: Binding(
+                    get: { !showNsfwCommunityWarning },
+                    set: { showNsfwCommunityWarning = !$0 }
+                ), label: {
+                    Text("Don't show this again")
+                })
+            }
+            .padding(.horizontal, 30)
         }
+        .padding(Constants.main.doubleSpacing)
+        .background {
+            RoundedRectangle(cornerRadius: Constants.main.largeItemCornerRadius)
+                .fill(palette.background.opacity(0.8))
+        }
+        .padding(Constants.main.doubleSpacing)
     }
     
     func setupFeedLoader(community: any Community) {

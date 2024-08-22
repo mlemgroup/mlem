@@ -13,8 +13,10 @@ struct SettingsView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     
-    @Setting(\.upvoteOnSave) var upvoteOnSave
     @Setting(\.blurNsfw) var blurNsfw
+    @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
+    
+    @Setting(\.upvoteOnSave) var upvoteOnSave
     @Setting(\.quickSwipesEnabled) var swipeActionsEnabled
     
     var accounts: [UserAccount] { AccountsTracker.main.userAccounts }
@@ -45,6 +47,12 @@ struct SettingsView: View {
             
             Section {
                 Toggle("Blur NSFW", isOn: $blurNsfw)
+                Toggle("Warn when opening NSFW community", isOn: $showNsfwCommunityWarning)
+            } header: {
+                Text("Safety")
+            }
+            
+            Section {
                 Toggle("Upvote On Save", isOn: $upvoteOnSave)
                 Toggle("Swipe Actions", isOn: $swipeActionsEnabled)
             }

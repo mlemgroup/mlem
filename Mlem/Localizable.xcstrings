@@ -206,6 +206,9 @@
     "Connecting..." : {
 
     },
+    "Continue" : {
+
+    },
     "Controversial" : {
 
     },
@@ -257,7 +260,7 @@
     "Domain" : {
 
     },
-    "done" : {
+    "Don't show this again" : {
 
     },
     "Downvote" : {
@@ -344,6 +347,9 @@
 
     },
     "Feeds" : {
+
+    },
+    "Go back" : {
 
     },
     "Grouped" : {
@@ -526,9 +532,6 @@
     "NSFW Content" : {
 
     },
-    "NSFW!" : {
-
-    },
     "Old" : {
 
     },
@@ -592,13 +595,13 @@
     "Quote" : {
 
     },
-    "Really delete %@?" : {
-
-    },
     "Readouts:" : {
 
     },
     "Really apply configuration to all?" : {
+
+    },
+    "Really delete %@?" : {
 
     },
     "Reason (Optional)" : {
@@ -647,6 +650,9 @@
 
     },
     "Right" : {
+
+    },
+    "Safety" : {
 
     },
     "Save" : {
@@ -902,6 +908,9 @@
 
     },
     "Visit" : {
+
+    },
+    "Warn when opening NSFW community" : {
 
     },
     "Week" : {
