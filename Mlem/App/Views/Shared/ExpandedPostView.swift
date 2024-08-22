@@ -15,17 +15,17 @@ struct ExpandedPostView: View {
     @Environment(\.dismiss) var dismiss
     
     let post: AnyPost
-    @State var showCommentWithId: Int?
+    @State var showCommentWithActorId: URL?
     
-    let tracker: ExpandedPostTracker = .init()
+    @State var tracker: ExpandedPostTracker?
     
     var body: some View {
         ContentLoader(model: post) { proxy in
-            if let post = proxy.entity {
-                let showLoadingSymbol = showCommentWithId == nil || (self.post.isUpgraded && tracker.loadingState != .loading)
+            if let post = proxy.entity, let tracker {
+                let showLoadingSymbol = showCommentWithActorId == nil || (self.post.isUpgraded && tracker.loadingState != .loading)
                 VStack {
                     if showLoadingSymbol {
-                        content(for: post)
+                        content(for: post, tracker: tracker)
                             .externalApiWarning(entity: post, isLoading: proxy.isLoading)
                             .transition(.opacity)
                     } else {
@@ -44,15 +44,16 @@ struct ExpandedPostView: View {
                 }
                 .animation(.default, value: showLoadingSymbol)
                 .task {
-                    if post.api == appState.firstApi {
+                    if post.api == appState.firstApi, tracker.loadingState == .idle {
                         post.markRead()
-                        await tracker.load(post: post)
+                        await tracker.load()
                     }
                 }
                 .onChange(of: post.api) {
-                    tracker.resolveComments(post: post)
+                    tracker.resolveComments()
                 }
                 .toolbar {
+                    sortPicker(tracker: tracker)
                     if proxy.isLoading {
                         ProgressView()
                     } else {
@@ -63,34 +64,57 @@ struct ExpandedPostView: View {
                 ProgressView()
                     .tint(palette.secondary)
             }
+        } upgradeOperation: { model, api in
+            try await model.upgrade(api: api, upgradeOperation: nil)
+            if tracker == nil, let post = model.wrappedValue as? any Post {
+                tracker = .init(post: post)
+            }
         }
         .environment(tracker)
     }
     
     @ViewBuilder
-    func content(for post: any Post1Providing) -> some View {
+    func content(for post: any Post1Providing, tracker: ExpandedPostTracker) -> some View {
         ScrollViewReader { proxy in
             FancyScrollView {
                 LazyVStack(alignment: .leading, spacing: 0) {
                     LargePostView(post: post, isExpanded: true)
                     Divider()
-                    ForEach(tracker.comments.tree()) { comment in
-                        CommentView(comment: comment, highlight: showCommentWithId == comment.id)
+                    ForEach(tracker.comments.tree(), id: \.actorId) { comment in
+                        CommentView(comment: comment, highlight: showCommentWithActorId == comment.actorId)
                             .transition(.move(edge: .top).combined(with: .opacity))
                             .zIndex(1000 - Double(comment.depth))
                     }
                 }
-                .animation(.easeInOut(duration: 0.4), value: showCommentWithId)
+                .animation(.easeInOut(duration: 0.4), value: showCommentWithActorId)
             }
             .onAppear {
-                if let showCommentWithId {
+                if let showCommentWithActorId {
                     // The scroll destination isn't always accurate. Possibly due to the post image changing
                     // size on load? Using `anchor: .top` would be better here, but `anchor: .center` makes
                     // the inaccuracy less noticeable. See also the comment further up the file.
-                    proxy.scrollTo(showCommentWithId, anchor: .center)
+                    proxy.scrollTo(showCommentWithActorId, anchor: .center)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        self.showCommentWithId = nil
+                        self.showCommentWithActorId = nil
                     }
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func sortPicker(tracker: ExpandedPostTracker) -> some View {
+        Picker(
+            "Sort",
+            selection: Binding(get: { tracker.sort }, set: {
+                tracker.sort = $0
+                tracker.clear()
+                Task { await tracker.load() }
+            })
+        ) {
+            ForEach(ApiCommentSortType.allCases, id: \.self) { item in
+                if (post.wrappedValue.api.fetchedVersion ?? .infinity) >= item.minimumVersion {
+                    Label(String(localized: item.label), systemImage: item.systemImage)
                 }
             }
         }
