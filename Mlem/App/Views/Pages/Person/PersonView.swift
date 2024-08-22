@@ -98,9 +98,9 @@ struct PersonView: View {
                             prefetchingConfiguration: .forPostSize(postSize)
                         )
                         preheatFeedLoader()
-                    } else if feedLoader?.api !== entity.api {
+                    } else if let feedLoader, feedLoader.api !== entity.api {
                         Task {
-                            await feedLoader?.switchUser(api: entity.api, userId: entity.id)
+                            await feedLoader.switchUser(api: entity.api, userId: entity.id)
                         }
                     }
                     
