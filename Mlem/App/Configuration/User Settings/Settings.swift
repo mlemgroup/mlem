@@ -33,7 +33,7 @@ class Settings: ObservableObject {
     
     @AppStorage("dev.developerMode") var developerMode: Bool = false
     
-    @AppStorage("safety.blurNsfw") var blurNsfw: Bool = true
+    @AppStorage("safety.blurNsfw") var blurNsfw: NsfwBlurBehavior = .always
     @AppStorage("safety.showNsfwCommunityWarning") var showNsfwCommunityWarning: Bool = true
     
     @AppStorage("links.openInBrowser") var openLinksInBrowser = false

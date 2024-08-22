@@ -69,8 +69,12 @@ struct CommunityListRowBody<Content: View>: View {
                     .frame(width: 30, height: 30)
                     .padding(9)
             } else {
-                CircleCroppedImageView(url: community.avatar?.withIconSize(128), fallback: .community, blurred: community.nsfw && blurNsfw)
-                    .frame(width: Constants.main.listRowAvatarSize, height: Constants.main.listRowAvatarSize)
+                CircleCroppedImageView(
+                    url: community.avatar?.withIconSize(128),
+                    fallback: .community,
+                    blurred: community.nsfw && (blurNsfw != .never)
+                )
+                .frame(width: Constants.main.listRowAvatarSize, height: Constants.main.listRowAvatarSize)
             }
             
             VStack(alignment: .leading, spacing: 2) {

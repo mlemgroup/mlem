@@ -22,7 +22,13 @@ struct LargePostView: View {
     let post: any Post1Providing
     var isExpanded: Bool = false
     
-    var shouldBlur: Bool { blurNsfw && !(communityContext?.nsfw ?? false) && post.nsfw }
+    var shouldBlur: Bool {
+        switch blurNsfw {
+        case .always: post.nsfw
+        case .outsideCommunity: post.nsfw && !(communityContext?.nsfw ?? false)
+        case .never: false
+        }
+    }
     
     var body: some View {
         content

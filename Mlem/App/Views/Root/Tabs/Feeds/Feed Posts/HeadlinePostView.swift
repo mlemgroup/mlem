@@ -22,7 +22,13 @@ struct HeadlinePostView: View {
     
     let post: any Post1Providing
     
-    var blurred: Bool { blurNsfw && post.nsfw && !(communityContext?.nsfw ?? false) }
+    var blurred: Bool {
+        switch blurNsfw {
+        case .always: post.nsfw
+        case .outsideCommunity: post.nsfw && !(communityContext?.nsfw ?? false)
+        case .never: false
+        }
+    }
     
     var body: some View {
         content

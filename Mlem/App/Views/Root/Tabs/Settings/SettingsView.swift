@@ -46,7 +46,13 @@ struct SettingsView: View {
             }
             
             Section {
-                Toggle("Blur NSFW", isOn: $blurNsfw)
+                Picker(selection: $blurNsfw) {
+                    ForEach(NsfwBlurBehavior.allCases, id: \.self) { behavior in
+                        Text(behavior.label)
+                    }
+                } label: {
+                    Text("Blur NSFW")
+                }
                 Toggle("Warn when opening NSFW community", isOn: $showNsfwCommunityWarning)
             } header: {
                 Text("Safety")
