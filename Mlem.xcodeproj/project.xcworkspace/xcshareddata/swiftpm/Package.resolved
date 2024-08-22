@@ -1,5 +1,5 @@
 {
-  "originHash" : "18b5cdcaef65aa56b4c5617a43c0d1b9c5d0fbc0918698fe7c77b1a26fec0857",
+  "originHash" : "b159f0a20b9c47bf2fae7b8e8322b8f3fff96046592270bf1b94b96530aa91b0",
   "pins" : [
     {
       "identity" : "combine-schedulers",
@@ -26,6 +26,15 @@
       "state" : {
         "revision" : "4e311f0784ea12bf269ef88221d6c636e066a1f5",
         "version" : "0.4.3"
+      }
+    },
+    {
+      "identity" : "mlemmiddleware",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mlemgroup/MlemMiddleware.git",
+      "state" : {
+        "branch" : "eric/account-deletion",
+        "revision" : "419377d04e43a781cc124f56ed641f7d1d57d873"
       }
     },
     {
