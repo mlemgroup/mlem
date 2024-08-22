@@ -58,7 +58,7 @@ struct NavigationLayerView: View {
             .padding(.bottom, 8)
         }
         .confirmationDialog(
-            layer.popup?.label ?? "",
+            layer.popup?.appearance.label ?? "",
             isPresented: Binding(
                 get: { layer.popup != nil },
                 set: {

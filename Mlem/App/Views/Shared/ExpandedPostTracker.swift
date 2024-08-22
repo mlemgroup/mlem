@@ -15,13 +15,21 @@ class ExpandedPostTracker: Hashable {
     
     private(set) var loadingState: LoadingState = .idle
     
+    var post: any Post
+    
+    var sort: ApiCommentSortType = Settings.main.commentSort
+    
+    init(post: any Post) {
+        self.post = post
+    }
+    
     private var appState: AppState { .main }
     
-    func load(post: any Post) async {
+    func load() async {
         guard loadingState == .idle else { return }
         loadingState = .loading
         do {
-            let newComments = try await post.getComments(sort: .top, page: 1, maxDepth: 8, limit: 50)
+            let newComments = try await post.getComments(sort: sort, page: 1, maxDepth: 8, limit: 50)
             if let first = comments.first, first.api != appState.firstApi {
                 resolveCommentTree(comments: newComments)
             } else {
@@ -31,6 +39,12 @@ class ExpandedPostTracker: Hashable {
         } catch {
             handleError(error)
         }
+    }
+    
+    func clear() {
+        comments.removeAll()
+        commentsKeyedByActorId.removeAll()
+        loadingState = .idle
     }
     
     func insertCreatedComment(_ comment: Comment2, parent: (any Comment1Providing)? = nil) {
@@ -90,10 +104,10 @@ class ExpandedPostTracker: Hashable {
         }
     }
 
-    func resolveComments(post: any Post) {
+    func resolveComments() {
         Task {
             loadingState = .idle
-            await load(post: post)
+            await load()
         }
     }
     

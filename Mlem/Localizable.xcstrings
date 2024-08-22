@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "**%@** and **%@** chose to defederate from one another." : {
       "localizations" : {
         "en" : {
@@ -107,6 +110,9 @@
     "Applications Email Admins" : {
 
     },
+    "Apply to All Interaction Bars" : {
+
+    },
     "Authenticating..." : {
 
     },
@@ -173,6 +179,9 @@
     "Code" : {
 
     },
+    "Comment" : {
+
+    },
     "Comment was deleted" : {
 
     },
@@ -189,6 +198,9 @@
 
     },
     "Compact" : {
+
+    },
+    "Confirm" : {
 
     },
     "Connecting..." : {
@@ -382,6 +394,9 @@
     "Instances" : {
 
     },
+    "Interaction Bar" : {
+
+    },
     "It's turtles all the way down" : {
 
     },
@@ -532,6 +547,9 @@
     "Password" : {
 
     },
+    "Post" : {
+
+    },
     "Post Size" : {
 
     },
@@ -554,6 +572,12 @@
 
     },
     "Quote" : {
+
+    },
+    "Readouts:" : {
+
+    },
+    "Really apply configuration to all?" : {
 
     },
     "Reason (Optional)" : {
@@ -593,6 +617,9 @@
 
     },
     "Requires Application" : {
+
+    },
+    "Reset" : {
 
     },
     "Restore" : {
@@ -653,6 +680,9 @@
 
     },
     "Show User Avatar" : {
+
+    },
+    "Shown" : {
 
     },
     "Sign In" : {
@@ -718,6 +748,9 @@
     "Switch to this account and..." : {
 
     },
+    "Tap and hold items to add, remove or rearrange them." : {
+
+    },
     "Tap to show slur filter regex." : {
 
     },
@@ -750,6 +783,12 @@
 
     },
     "Tiled" : {
+
+    },
+    "Too many items!" : {
+
+    },
+    "Top" : {
 
     },
     "Top: %@" : {

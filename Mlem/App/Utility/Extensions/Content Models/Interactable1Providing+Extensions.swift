@@ -23,6 +23,7 @@ extension Interactable1Providing {
     private var responseContext: CommentEditorView.Context? {
         if let self = self as? any Post2Providing { return .post(self) }
         if let self = self as? any Comment2Providing { return .comment(self) }
+        if let self = self as? any Reply2Providing { return .comment(self.comment) }
         return nil
     }
     
@@ -93,49 +94,36 @@ extension Interactable1Providing {
         )
     }
     
+    func replyCounter(expandedPostTracker: ExpandedPostTracker? = nil) -> Counter {
+        .init(
+            value: self2?.commentCount,
+            leadingAction: replyAction(expandedPostTracker: expandedPostTracker),
+            trailingAction: nil
+        )
+    }
+    
     // MARK: Actions
     
     func upvoteAction(feedback: Set<FeedbackType> = []) -> BasicAction {
-        let isOn: Bool = (self2?.votes.myVote ?? .none == .upvote)
-        return .init(
+        .init(
             id: "upvote\(uid)",
-            isOn: isOn,
-            label: isOn ? "Undo Upvote" : "Upvote",
-            color: Palette.main.upvote,
-            icon: Icons.upvote,
-            menuIcon: isOn ? Icons.upvoteSquareFill : Icons.upvoteSquare,
-            swipeIcon1: isOn ? Icons.resetVoteSquare : Icons.upvoteSquare,
-            swipeIcon2: isOn ? Icons.resetVoteSquareFill : Icons.upvoteSquareFill,
+            appearance: .upvote(isOn: self2?.votes.myVote ?? .none == .upvote),
             callback: api.canInteract ? { self.self2?.toggleUpvoted(feedback: feedback) } : nil
         )
     }
     
     func downvoteAction(feedback: Set<FeedbackType> = []) -> BasicAction {
-        let isOn: Bool = (self2?.votes.myVote ?? .none == .downvote)
-        return .init(
+        .init(
             id: "downvote\(uid)",
-            isOn: isOn,
-            label: isOn ? "Undo Downvote" : "Downvote",
-            color: Palette.main.downvote,
-            icon: Icons.downvote,
-            menuIcon: isOn ? Icons.downvoteSquareFill : Icons.downvoteSquare,
-            swipeIcon1: isOn ? Icons.resetVoteSquare : Icons.downvoteSquare,
-            swipeIcon2: isOn ? Icons.resetVoteSquareFill : Icons.downvoteSquareFill,
+            appearance: .downvote(isOn: self2?.votes.myVote ?? .none == .downvote),
             callback: api.canInteract ? { self.self2?.toggleDownvoted(feedback: feedback) } : nil
         )
     }
     
     func saveAction(feedback: Set<FeedbackType> = []) -> BasicAction {
-        let isOn: Bool = self2?.saved ?? false
-        return .init(
+        .init(
             id: "save\(uid)",
-            isOn: isOn,
-            label: isOn ? "Unsave" : "Save",
-            color: Palette.main.save,
-            icon: isOn ? Icons.saveFill : Icons.save,
-            menuIcon: isOn ? Icons.saveFill : Icons.save,
-            swipeIcon1: isOn ? Icons.unsave : Icons.save,
-            swipeIcon2: isOn ? Icons.unsaveFill : Icons.saveFill,
+            appearance: .save(isOn: self2?.saved ?? false),
             callback: api.canInteract ? { self.self2?.toggleSaved(feedback: feedback) } : nil
         )
     }
@@ -143,11 +131,7 @@ extension Interactable1Providing {
     func replyAction(expandedPostTracker: ExpandedPostTracker? = nil) -> BasicAction {
         .init(
             id: "reply\(uid)",
-            isOn: false,
-            label: "Reply",
-            color: Palette.main.accent,
-            icon: Icons.reply,
-            swipeIcon2: Icons.replyFill,
+            appearance: .reply(),
             callback: api.canInteract ? { self.showReplySheet(expandedPostTracker: expandedPostTracker) } : nil
         )
     }
@@ -155,12 +139,8 @@ extension Interactable1Providing {
     func blockCreatorAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
         .init(
             id: "blockCreator\(uid)",
-            isOn: false,
-            label: "Block User",
-            color: Palette.main.negative,
-            isDestructive: true,
+            appearance: .blockCreator(),
             confirmationPrompt: showConfirmation ? "Really block this user?" : nil,
-            icon: Icons.block,
             callback: api.canInteract ? { self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
         )
     }

@@ -22,15 +22,15 @@ class UserSession: Session {
     private(set) var unreadCount: UnreadCount?
     /// This **only** includes requests made by calling `toggleInstanceBlock` on this `UserSession`.
     private(set) var ongoingInstanceBlockRequests: Set<URL> = []
-    
-    // TODO: Store this in a file; make sure to translate 1.0 favorites to 2.0 favorites
-    private var favorites: Set<Int> = []
 
     init(account: UserAccount) {
         self.account = account
         self.subscriptions = api.setupSubscriptionList(
-            getFavorites: { self.favorites },
-            setFavorites: { self.favorites = $0 }
+            getFavorites: { account.favorites },
+            setFavorites: {
+                account.favorites = $0
+                AccountsTracker.main.saveAccounts(ofType: .user)
+            }
         )
         
         Task {

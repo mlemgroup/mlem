@@ -22,6 +22,7 @@ class UserAccount: Account, CommunityOrPersonStub {
     var cachedSiteVersion: SiteVersion?
     var avatar: URL?
     var lastUsed: Date?
+    var favorites: Set<Int>
     
     init(person: Person4, instance: Instance3) {
         self.api = person.api
@@ -32,11 +33,12 @@ class UserAccount: Account, CommunityOrPersonStub {
         self.cachedSiteVersion = instance.version
         self.avatar = person.avatar
         self.lastUsed = .now
+        self.favorites = []
     }
     
     enum CodingKeys: String, CodingKey {
         // These key names don't match the identifiers of their corresponding properties - this is because these key names must match the property names used in SavedAccount pre-1.3 in order to maintain compatibility
-        case id, username, storedNickname, instanceLink, siteVersion, avatarUrl, lastUsed
+        case id, username, storedNickname, instanceLink, siteVersion, avatarUrl, lastUsed, favorites
     }
     
     enum DecodingError: Error {
@@ -53,6 +55,7 @@ class UserAccount: Account, CommunityOrPersonStub {
         self.cachedSiteVersion = try values.decode(SiteVersion?.self, forKey: .siteVersion)
         self.avatar = try values.decode(URL?.self, forKey: .avatarUrl)
         self.lastUsed = try values.decode(Date?.self, forKey: .lastUsed)
+        self.favorites = try values.decodeIfPresent(Set<Int>.self, forKey: .favorites) ?? []
 
         // parse instance link
         let instanceLink = try values.decode(URL.self, forKey: .instanceLink)
@@ -83,6 +86,7 @@ class UserAccount: Account, CommunityOrPersonStub {
         try container.encode(avatar, forKey: .avatarUrl)
         try container.encode(lastUsed, forKey: .lastUsed)
         try container.encode(api.baseUrl, forKey: .instanceLink)
+        try container.encode(favorites, forKey: .favorites)
     }
     
     var keychainId: String {

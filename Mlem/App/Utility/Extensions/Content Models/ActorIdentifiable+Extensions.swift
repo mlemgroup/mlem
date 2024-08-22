@@ -22,10 +22,7 @@ extension ActorIdentifiable {
         }
         return .init(
             id: "instance\(actorId)",
-            isOn: false,
-            label: host ?? String(localized: "Instance"),
-            color: .gray,
-            icon: Icons.instance,
+            appearance: .init(label: host ?? String(localized: "Instance"), color: .gray, icon: Icons.instance),
             callback: callback
         )
     }
