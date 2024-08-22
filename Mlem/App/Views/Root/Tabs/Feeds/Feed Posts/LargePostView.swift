@@ -22,7 +22,7 @@ struct LargePostView: View {
     let post: any Post1Providing
     var isExpanded: Bool = false
     
-    var shouldBlur: Bool { blurNsfw && !(communityContext?.nsfw ?? false) && post.nsfw }
+    var sho uldBlur: Bool { blurNsfw && !(communityContext?.nsfw ?? false) && post.nsfw }
     
     var body: some View {
         content
@@ -70,11 +70,11 @@ struct LargePostView: View {
     
     @ViewBuilder
     var personLink: some View {
-        FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showPersonAvatar, shouldBlur: shouldBlur)
+        FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showPersonAvatar, blurred: shouldBlur)
     }
     
     @ViewBuilder
     var communityLink: some View {
-        FullyQualifiedLinkView(entity: post.community_, labelStyle: .medium, showAvatar: showCommunityAvatar, shouldBlur: shouldBlur)
+        FullyQualifiedLinkView(entity: post.community_, labelStyle: .medium, showAvatar: showCommunityAvatar, blurred: shouldBlur)
     }
 }

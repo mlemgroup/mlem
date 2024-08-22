@@ -10,8 +10,6 @@ import MlemMiddleware
 import SwiftUI
 
 struct LargePostBodyView: View {
-    @Setting(\.blurNsfw) var blurNsfw
-    
     @Environment(Palette.self) var palette
     @Environment(\.communityContext) private var communityContext: (any Community1Providing)?
     
@@ -38,7 +36,7 @@ struct LargePostBodyView: View {
                 .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
                 .frame(maxWidth: .infinity)
             case let .link(link):
-                WebsitePreviewView(link: link, nsfw: post.nsfw) {
+                WebsitePreviewView(link: link, shouldBlur: shouldBlur) {
                     post.markRead()
                 }
             default:

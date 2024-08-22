@@ -19,12 +19,11 @@ struct WebsitePreviewView: View {
     var onTapActions: (() -> Void)?
     let shouldBlur: Bool
     
-    init(link: PostLink, nsfw: Bool, onTapActions: (() -> Void)? = nil) {
-        @Setting(\.blurNsfw) var blurNsfw
+    init(link: PostLink, shouldBlur: Bool, onTapActions: (() -> Void)? = nil) {
         self.link = link
         self.onTapActions = onTapActions
-        self.shouldBlur = blurNsfw ? nsfw : false
-        self._blurred = .init(wrappedValue: blurNsfw ? nsfw : false)
+        self.shouldBlur = shouldBlur
+        self._blurred = .init(wrappedValue: shouldBlur)
     }
     
     var body: some View {

@@ -72,7 +72,7 @@ struct CommentEditorView: View {
                             if AccountsTracker.main.userAccounts.count > 1, commentToEdit == nil {
                                 AccountPickerMenu(account: $account) {
                                     HStack(spacing: 3) {
-                                        FullyQualifiedLabelView(entity: account, labelStyle: .medium, showAvatar: false, shouldBlur: false)
+                                        FullyQualifiedLabelView(entity: account, labelStyle: .medium, showAvatar: false, blurred: false)
                                         Image(systemName: "chevron.down.circle.fill")
                                             .symbolRenderingMode(.hierarchical)
                                             .tint(palette.secondary)

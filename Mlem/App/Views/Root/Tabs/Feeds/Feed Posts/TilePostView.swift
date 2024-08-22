@@ -115,7 +115,7 @@ struct TilePostView: View {
         let width: CGFloat
         let height: CGFloat
         
-        var shouldBlur: Bool { blurNsfw && post.nsfw && !(communityContext?.nsfw ?? false) }
+        var blurred: Bool { blurNsfw && post.nsfw && !(communityContext?.nsfw ?? false) }
         
         var body: some View {
             content
@@ -150,13 +150,13 @@ struct TilePostView: View {
             case .image:
                 ThumbnailImageView(
                     post: post,
-                    shouldBlur: shouldBlur,
+                    blurred: blurred,
                     size: .tile
                 )
                 .frame(width: width, height: height)
                 .clipped()
             case let .link(link):
-                ThumbnailImageView(post: post, shouldBlur: shouldBlur, size: .tile)
+                ThumbnailImageView(post: post, blurred: blurred, size: .tile)
                     .aspectRatio(contentMode: .fill)
                     .frame(width: width, height: height)
                     .clipped()

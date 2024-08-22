@@ -22,7 +22,7 @@ struct HeadlinePostView: View {
     
     let post: any Post1Providing
     
-    var shouldBlur: Bool { blurNsfw && post.nsfw && !(communityContext?.nsfw ?? false) }
+    var blurred: Bool { blurNsfw && post.nsfw && !(communityContext?.nsfw ?? false) }
     
     var body: some View {
         content
@@ -52,7 +52,7 @@ struct HeadlinePostView: View {
             
             HStack(alignment: .top, spacing: Constants.main.standardSpacing) {
                 if thumbnailLocation == .left {
-                    ThumbnailImageView(post: post, shouldBlur: shouldBlur, size: .standard)
+                    ThumbnailImageView(post: post, blurred: blurred, size: .standard)
                 }
   
                 VStack(alignment: .leading, spacing: Constants.main.halfSpacing) {
@@ -69,7 +69,7 @@ struct HeadlinePostView: View {
                 
                 if thumbnailLocation == .right {
                     Spacer()
-                    ThumbnailImageView(post: post, shouldBlur: shouldBlur, size: .standard)
+                    ThumbnailImageView(post: post, blurred: blurred, size: .standard)
                 }
             }
             
