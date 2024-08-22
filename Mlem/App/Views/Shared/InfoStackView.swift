@@ -39,7 +39,7 @@ struct InfoStackView: View {
 }
 
 extension InfoStackView {
-    init(post: any Post1Providing, readouts: [PostReadoutType], showColor: Bool) {
+    init(post: any Post1Providing, readouts: [PostBarConfiguration.ReadoutType], showColor: Bool) {
         self.readouts = readouts.map { post.readout(type: $0) }
         self.showColor = showColor
     }

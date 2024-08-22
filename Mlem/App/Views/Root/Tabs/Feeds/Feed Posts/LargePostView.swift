@@ -57,12 +57,9 @@ struct LargePostView: View {
             
             InteractionBarView(
                 post: post,
-                configuration: .init(
-                    leading: [.counter(.score)],
-                    trailing: [.action(.save), .action(.reply)],
-                    readouts: [.created, .score, .comment]
-                ),
-                expandedPostTracker: expandedPostTracker
+                configuration: InteractionBarTracker.main.postInteractionBar,
+                expandedPostTracker: expandedPostTracker,
+                communityContext: communityContext
             )
             .padding(.vertical, 2)
         }
