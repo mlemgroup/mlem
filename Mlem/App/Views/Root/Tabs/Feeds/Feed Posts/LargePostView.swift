@@ -13,6 +13,7 @@ struct LargePostView: View {
     @Setting(\.showPostCreator) private var showCreator
     @Setting(\.showPersonAvatar) private var showPersonAvatar
     @Setting(\.showCommunityAvatar) private var showCommunityAvatar
+    @Setting(\.blurNsfw) var blurNsfw
     
     @Environment(Palette.self) private var palette: Palette
     @Environment(ExpandedPostTracker.self) private var expandedPostTracker: ExpandedPostTracker?
@@ -20,6 +21,14 @@ struct LargePostView: View {
     
     let post: any Post1Providing
     var isExpanded: Bool = false
+    
+    var shouldBlur: Bool {
+        switch blurNsfw {
+        case .always: post.nsfw
+        case .outsideCommunity: post.nsfw && !(communityContext?.nsfw ?? false)
+        case .never: false
+        }
+    }
     
     var body: some View {
         content
@@ -49,7 +58,7 @@ struct LargePostView: View {
                 }
             }
             
-            LargePostBodyView(post: post, isExpanded: isExpanded)
+            LargePostBodyView(post: post, isExpanded: isExpanded, shouldBlur: shouldBlur)
             
             if showCreator || isExpanded, communityContext == nil {
                 personLink
@@ -67,11 +76,11 @@ struct LargePostView: View {
     
     @ViewBuilder
     var personLink: some View {
-        FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showPersonAvatar)
+        FullyQualifiedLinkView(entity: post.creator_, labelStyle: .medium, showAvatar: showPersonAvatar, blurred: shouldBlur)
     }
     
     @ViewBuilder
     var communityLink: some View {
-        FullyQualifiedLinkView(entity: post.community_, labelStyle: .medium, showAvatar: showCommunityAvatar)
+        FullyQualifiedLinkView(entity: post.community_, labelStyle: .medium, showAvatar: showCommunityAvatar, blurred: shouldBlur)
     }
 }

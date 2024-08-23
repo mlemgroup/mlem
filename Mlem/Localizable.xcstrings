@@ -104,6 +104,9 @@
     "All Time" : {
 
     },
+    "Always" : {
+
+    },
     "App Icon" : {
 
     },
@@ -206,6 +209,9 @@
     "Connecting..." : {
 
     },
+    "Continue" : {
+
+    },
     "Controversial" : {
 
     },
@@ -255,6 +261,9 @@
 
     },
     "Domain" : {
+
+    },
+    "Don't show this again" : {
 
     },
     "Downvote" : {
@@ -341,6 +350,9 @@
 
     },
     "Feeds" : {
+
+    },
+    "Go back" : {
 
     },
     "Grouped" : {
@@ -493,6 +505,9 @@
     "Most Comments" : {
 
     },
+    "Never" : {
+
+    },
     "New" : {
 
     },
@@ -550,6 +565,9 @@
     "Other" : {
 
     },
+    "Outside NSFW Communities" : {
+
+    },
     "Overview" : {
 
     },
@@ -586,13 +604,13 @@
     "Quote" : {
 
     },
-    "Really delete %@?" : {
-
-    },
     "Readouts:" : {
 
     },
     "Really apply configuration to all?" : {
+
+    },
+    "Really delete %@?" : {
 
     },
     "Reason (Optional)" : {
@@ -641,6 +659,9 @@
 
     },
     "Right" : {
+
+    },
+    "Safety" : {
 
     },
     "Save" : {
@@ -896,6 +917,9 @@
 
     },
     "Visit" : {
+
+    },
+    "Warn when opening NSFW community" : {
 
     },
     "Week" : {

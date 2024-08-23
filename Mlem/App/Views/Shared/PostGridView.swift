@@ -23,11 +23,13 @@ struct PostGridView: View {
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
+    @Environment(\.communityContext) var communityContext
+    
     @State var columns: [GridItem] = [GridItem(.flexible())]
     @State var frameWidth: CGFloat = .zero
     
     let postFeedLoader: CorePostFeedLoader
-    
+
     init(postFeedLoader: CorePostFeedLoader, actions: [any Action]? = nil) {
         self.postFeedLoader = postFeedLoader
     }
@@ -80,7 +82,7 @@ struct PostGridView: View {
                 ForEach(postFeedLoader.items, id: \.hashValue) { post in
                     if !post.creator.blocked, !post.community.blocked, !post.hidden {
                         VStack(spacing: 0) { // this improves performance O_o
-                            NavigationLink(value: NavigationPage.expandedPost(post)) {
+                            NavigationLink(value: NavigationPage.expandedPost(post, communityContext: communityContext)) {
                                 FeedPostView(post: post)
                             }
                             .buttonStyle(EmptyButtonStyle())

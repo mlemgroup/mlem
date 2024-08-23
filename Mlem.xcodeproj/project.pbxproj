@@ -271,6 +271,7 @@
 		CD9CFA302C2E22F600739BBC /* FeedDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9CFA2F2C2E22F600739BBC /* FeedDescription.swift */; };
 		CD9CFA372C306DAB00739BBC /* PostGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9CFA362C306DAB00739BBC /* PostGridView.swift */; };
 		CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8202B8FC411007953EF /* LandingPage.swift */; };
+		CDA683F82C77E577000C4486 /* NsfwBlurBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA683F72C77E577000C4486 /* NsfwBlurBehavior.swift */; };
 		CDB2EC7D2BFADAB300DBC0EF /* CompactPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7C2BFADAB300DBC0EF /* CompactPostView.swift */; };
 		CDB2EC7F2BFADACC00DBC0EF /* HeadlinePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7E2BFADACC00DBC0EF /* HeadlinePostView.swift */; };
 		CDB2EC812BFADADF00DBC0EF /* LargePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC802BFADADF00DBC0EF /* LargePostView.swift */; };
@@ -306,6 +307,7 @@
 		CDE1F19C2C63E2EB008AF042 /* SettingPropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F19B2C63E2EB008AF042 /* SettingPropertyWrapper.swift */; };
 		CDE1F19E2C63E306008AF042 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F19D2C63E306008AF042 /* Constants.swift */; };
 		CDF9EF332AB2845C003F885B /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF9EF322AB2845C003F885B /* Icons.swift */; };
+		CDFB8C692C7796020070845F /* View+DynamicBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFB8C682C7796020070845F /* View+DynamicBlur.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -586,6 +588,7 @@
 		CD9CFA2F2C2E22F600739BBC /* FeedDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDescription.swift; sourceTree = "<group>"; };
 		CD9CFA362C306DAB00739BBC /* PostGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGridView.swift; sourceTree = "<group>"; };
 		CDA1E8202B8FC411007953EF /* LandingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPage.swift; sourceTree = "<group>"; };
+		CDA683F72C77E577000C4486 /* NsfwBlurBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NsfwBlurBehavior.swift; sourceTree = "<group>"; };
 		CDB2EC7A2BFADA8B00DBC0EF /* PostSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSize.swift; sourceTree = "<group>"; };
 		CDB2EC7C2BFADAB300DBC0EF /* CompactPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactPostView.swift; sourceTree = "<group>"; };
 		CDB2EC7E2BFADACC00DBC0EF /* HeadlinePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadlinePostView.swift; sourceTree = "<group>"; };
@@ -622,6 +625,7 @@
 		CDE1F19B2C63E2EB008AF042 /* SettingPropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingPropertyWrapper.swift; sourceTree = "<group>"; };
 		CDE1F19D2C63E306008AF042 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CDF9EF322AB2845C003F885B /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
+		CDFB8C682C7796020070845F /* View+DynamicBlur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+DynamicBlur.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1283,6 +1287,7 @@
 				CD4D58C72B86DCED00B82964 /* AvatarType.swift */,
 				03CBD18C2C6120F600E870BC /* PersonFlair.swift */,
 				03AF91E62C1C65AE00E56644 /* Interaction */,
+				CDA683F72C77E577000C4486 /* NsfwBlurBehavior.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -1360,6 +1365,7 @@
 				CD1D31822C56D742001B434B /* View+WidthReader.swift */,
 				033FCB3D2C5E7FA9007B7CD1 /* View+OutdatedFeedPopup.swift */,
 				CD0F28092C6CEFBE00C1F65B /* View+IsAtTopSubscriber.swift */,
+				CDFB8C682C7796020070845F /* View+DynamicBlur.swift */,
 			);
 			path = "View Modifiers";
 			sourceTree = "<group>";
@@ -1778,6 +1784,7 @@
 				033F84D92C2B61FB002E3EDF /* ToastType.swift in Sources */,
 				03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */,
 				0397D47A2C693444002C6CDC /* ReportComposerView.swift in Sources */,
+				CDA683F82C77E577000C4486 /* NsfwBlurBehavior.swift in Sources */,
 				032C32022C3438DB00595286 /* ShareAction.swift in Sources */,
 				030BCB1B2C3EA5FD0037680F /* InstanceDetailsView.swift in Sources */,
 				03134A582BEC1C46002662CC /* AccountListSettingsView.swift in Sources */,
@@ -1966,6 +1973,7 @@
 				036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */,
 				03134A502BEAD245002662CC /* NavigationLink+NavigationPage.swift in Sources */,
 				03B431BC2C455838001A1EB5 /* LargePostBodyView.swift in Sources */,
+				CDFB8C692C7796020070845F /* View+DynamicBlur.swift in Sources */,
 				CDC199EA2BE449790077B4F1 /* Interactable1Providing+Extensions.swift in Sources */,
 				03500C2B2BF7F1B100CAA076 /* ToastOverlayView.swift in Sources */,
 				032C32042C3439C600595286 /* ActorIdentifiable+Extensions.swift in Sources */,

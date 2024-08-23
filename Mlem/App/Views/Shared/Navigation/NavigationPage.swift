@@ -14,7 +14,7 @@ enum NavigationPage: Hashable {
     case feeds(_ selection: FeedSelection = .all)
     case profile, inbox, search
     case quickSwitcher
-    case expandedPost(_ post: AnyPost, commentActorId: URL? = nil)
+    case expandedPost(_ post: AnyPost, commentActorId: URL? = nil, communityContext: HashWrapper<any Community1Providing>? = nil)
     case community(_ community: AnyCommunity)
     case person(_ person: AnyPerson)
     case instance(_ instance: InstanceHashWrapper)
@@ -32,6 +32,14 @@ enum NavigationPage: Hashable {
     
     static func expandedPost(_ post: any PostStubProviding, commentActorId: URL? = nil) -> NavigationPage {
         expandedPost(.init(post), commentActorId: commentActorId)
+    }
+    
+    static func expandedPost(_ post: any PostStubProviding, communityContext: (any Community1Providing)?) -> NavigationPage {
+        if let communityContext {
+            expandedPost(.init(post), communityContext: .init(wrappedValue: communityContext))
+        } else {
+            expandedPost(.init(post))
+        }
     }
     
     static func person(_ person: any PersonStubProviding) -> NavigationPage {
@@ -99,8 +107,9 @@ extension NavigationPage {
             QuickSwitcherView()
         case let .report(target, community):
             ReportComposerView(target: target.wrappedValue, community: community)
-        case let .expandedPost(post, commentActorId):
+        case let .expandedPost(post, commentActorId, communityContext):
             ExpandedPostView(post: post, showCommentWithActorId: commentActorId)
+                .environment(\.communityContext, communityContext?.wrappedValue)
         case let .person(person):
             PersonView(person: person)
         case let .createComment(context, expandedPostTracker):
