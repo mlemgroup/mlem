@@ -296,6 +296,9 @@
     "Failed to resolve post. Try another account." : {
 
     },
+    "Failed to Save Image. You may need to allow Mlem to access your Photo Library in System Settings." : {
+
+    },
     "Fallback" : {
 
     },
@@ -392,6 +395,9 @@
 
     },
     "Image" : {
+
+    },
+    "Image Saved" : {
 
     },
     "In Default Browser" : {
@@ -577,6 +583,9 @@
     "Permanently delete %@" : {
 
     },
+    "photo" : {
+
+    },
     "Post" : {
 
     },
@@ -665,6 +674,9 @@
 
     },
     "Save" : {
+
+    },
+    "Save Image" : {
 
     },
     "Saved" : {

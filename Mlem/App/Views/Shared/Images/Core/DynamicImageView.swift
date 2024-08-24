@@ -56,5 +56,32 @@ struct DynamicImageView: View {
             .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
             .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
             .task(loader.load)
+            .contextMenu {
+                if let uiImage = loader.uiImage {
+                    Button {
+                        Task {
+                            await saveImage()
+                        }
+                    } label: {
+                        Label(String(localized: "Save Image"), systemImage: Icons.import)
+                    }
+                    
+                    ShareLink(item: Image(uiImage: uiImage), preview: .init("photo", image: Image(uiImage: uiImage)))
+                }
+            }
+    }
+    
+    func saveImage() async {
+        do {
+            let (data, _) = try await ImagePipeline.shared.data(for: .init(url: loader.url))
+            let imageSaver = ImageSaver()
+            try await imageSaver.writeToPhotoAlbum(imageData: data)
+            ToastModel.main.add(.success("Image Saved"))
+        } catch {
+            ToastModel.main.add(.failure(
+                "Failed to Save Image. You may need to allow Mlem to access your Photo Library in System Settings."
+            ))
+            print(String(describing: error))
+        }
     }
 }
