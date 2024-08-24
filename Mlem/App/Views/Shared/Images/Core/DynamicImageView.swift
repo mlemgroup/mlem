@@ -58,10 +58,10 @@ struct DynamicImageView: View {
             .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
             .task(loader.load)
             .contextMenu {
-                if let uiImage = loader.uiImage {
+                if let uiImage = loader.uiImage, let url = fullSizeUrl() {
                     Button {
                         Task {
-                            await saveImage()
+                            await saveImage(url: url)
                         }
                     } label: {
                         Label(String(localized: "Save Image"), systemImage: Icons.import)
@@ -69,23 +69,21 @@ struct DynamicImageView: View {
                     
                     ShareLink(item: Image(uiImage: uiImage), preview: .init("photo", image: Image(uiImage: uiImage)))
                     
-                    if let url = loader.url {
-                        Button {
-                            Task {
-                                await showQuickLook(url: url)
-                            }
-                        } label: {
-                            Label(String(localized: "Quick Look"), systemImage: Icons.imageDetails)
+                    Button {
+                        Task {
+                            await showQuickLook(url: url)
                         }
+                    } label: {
+                        Label(String(localized: "Quick Look"), systemImage: Icons.imageDetails)
                     }
                 }
             }
             .quickLookPreview($quickLookUrl)
     }
     
-    func saveImage() async {
+    func saveImage(url: URL) async {
         do {
-            let (data, _) = try await ImagePipeline.shared.data(for: .init(url: loader.url))
+            let (data, _) = try await ImagePipeline.shared.data(for: .init(url: url))
             let imageSaver = ImageSaver()
             try await imageSaver.writeToPhotoAlbum(imageData: data)
             ToastModel.main.add(.success("Image Saved"))
@@ -110,5 +108,14 @@ struct DynamicImageView: View {
         } catch {
             handleError(error)
         }
+    }
+    
+    func fullSizeUrl() -> URL? {
+        if let url = loader.url,
+           var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
+            components.query = nil
+            return components.url
+        }
+        return nil
     }
 }
