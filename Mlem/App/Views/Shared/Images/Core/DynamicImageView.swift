@@ -6,6 +6,7 @@
 //
 
 import Nuke
+import QuickLook
 import SwiftUI
 
 extension UIImage {
@@ -14,10 +15,11 @@ extension UIImage {
 
 struct DynamicImageView: View {
     @Environment(Palette.self) var palette: Palette
+    @Environment(NavigationLayer.self) private var navigation
     
     @State var loader: ImageLoader
-    
     @State var loadingPref: ImageLoadingState?
+    @State var quickLookUrl: URL?
     
     let showError: Bool
     let cornerRadius: CGFloat
@@ -67,8 +69,19 @@ struct DynamicImageView: View {
                     }
                     
                     ShareLink(item: Image(uiImage: uiImage), preview: .init("photo", image: Image(uiImage: uiImage)))
+                    
+                    if let url = loader.url {
+                        Button {
+                            Task {
+                                await showQuickLook(url: url)
+                            }
+                        } label: {
+                            Label(String(localized: "Quick Look"), systemImage: Icons.imageDetails)
+                        }
+                    }
                 }
             }
+            .quickLookPreview($quickLookUrl)
     }
     
     func saveImage() async {
@@ -81,7 +94,22 @@ struct DynamicImageView: View {
             ToastModel.main.add(.failure(
                 "Failed to Save Image. You may need to allow Mlem to access your Photo Library in System Settings."
             ))
-            print(String(describing: error))
+            handleError(error)
+        }
+    }
+    
+    func showQuickLook(url: URL) async {
+        do {
+            let (data, _) = try await ImagePipeline.shared.data(for: .init(url: url))
+            let fileType = url.pathExtension
+            let quicklook = FileManager.default.temporaryDirectory.appending(path: "quicklook.\(fileType)")
+            if FileManager.default.fileExists(atPath: quicklook.absoluteString) {
+                try FileManager.default.removeItem(at: quicklook)
+            }
+            try data.write(to: quicklook)
+            quickLookUrl = quicklook
+        } catch {
+            handleError(error)
         }
     }
 }
