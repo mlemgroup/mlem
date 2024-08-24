@@ -15,7 +15,6 @@ extension UIImage {
 
 struct DynamicImageView: View {
     @Environment(Palette.self) var palette: Palette
-    @Environment(NavigationLayer.self) private var navigation
     
     @State var loader: ImageLoader
     @State var loadingPref: ImageLoadingState?

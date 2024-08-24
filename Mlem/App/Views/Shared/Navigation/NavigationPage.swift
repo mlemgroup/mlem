@@ -20,7 +20,6 @@ enum NavigationPage: Hashable {
     case instance(_ instance: InstanceHashWrapper)
     case externalApiInfo(api: ApiClient, actorId: URL)
     case imageViewer(_ url: URL)
-    case quickLook(_ url: URL)
     case communityPicker(callback: HashWrapper<(Community2) -> Void>)
     case personPicker(callback: HashWrapper<(Person2) -> Void>)
     case instancePicker(callback: HashWrapper<(InstanceSummary) -> Void>)
@@ -104,8 +103,6 @@ extension NavigationPage {
             ExternalApiInfoView(api: api, actorId: actorId)
         case let .imageViewer(url):
             ImageViewer(url: url)
-        case let .quickLook(url):
-            QuickLookView(urls: [url])
         case .quickSwitcher:
             QuickSwitcherView()
         case let .report(target, community):
