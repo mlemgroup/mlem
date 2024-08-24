@@ -45,8 +45,8 @@ class ImageLoader {
         self.loading = url == nil ? .failed : .loading
     }
     
-    @Sendable
-    @MainActor
+    // @Sendable
+    // @MainActor
     func load() async {
         guard let url, loading == .loading else { return }
         do {

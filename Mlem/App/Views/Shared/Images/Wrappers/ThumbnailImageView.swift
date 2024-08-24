@@ -54,6 +54,7 @@ struct ThumbnailImageView: View {
                         if UIDevice.isPad {
                             navigation.showFullScreenCover(.imageViewer(url))
                         } else {
+                            print("DEBUGT tapped \(NSDate().timeIntervalSince1970)")
                             navigation.openSheet(.imageViewer(url))
                         }
                     }

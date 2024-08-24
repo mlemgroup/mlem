@@ -17,14 +17,18 @@ struct ImageViewer: View {
     }
     
     var body: some View {
-        ZoomableContainer {
-            DynamicImageView(url: url)
-                .padding(Constants.main.standardSpacing)
-        }
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                CloseButtonView()
+        Text("HI")
+//        ZoomableContainer {
+//            DynamicImageView(url: url)
+//                .padding(Constants.main.standardSpacing)
+//        }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    CloseButtonView()
+                }
             }
-        }
+            .onAppear {
+                print("DEBUGT opened \(NSDate().timeIntervalSince1970)\n")
+            }
     }
 }

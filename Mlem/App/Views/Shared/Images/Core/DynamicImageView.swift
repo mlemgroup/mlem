@@ -16,6 +16,7 @@ struct DynamicImageView: View {
     @Environment(Palette.self) var palette: Palette
     
     @State var loader: ImageLoader
+    @State var image: UIImage = .blank
     
     @State var loadingPref: ImageLoadingState?
     
@@ -34,7 +35,7 @@ struct DynamicImageView: View {
     }
     
     var body: some View {
-        Image(uiImage: loader.uiImage ?? .blank)
+        Image(uiImage: image)
             .resizable()
             .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
             .background {
@@ -55,6 +56,11 @@ struct DynamicImageView: View {
             .clipShape(.rect(cornerRadius: cornerRadius))
             .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
             .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
-            .task(loader.load)
+//            .onAppear {
+//                Task {
+//                    await loader.load()
+//                }
+//            }
+        // .task(loader.load)
     }
 }
