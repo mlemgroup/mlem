@@ -21,15 +21,13 @@ extension ExpandedPostView {
     }
     
     func scrollToNextComment() {
-        if let topVisibleItem {
-            if topVisibleItem == post.wrappedValue.actorId {
-                if let first = tracker?.comments.first {
-                    jumpButtonTarget = first.actorId
-                }
+        if let topVisibleItem, let tracker {
+            if topVisibleItem == post.wrappedValue.actorId, let first = tracker.comments.first {
+                jumpButtonTarget = first.actorId
                 return
             }
-            if let comment = tracker?.commentsKeyedByActorId[topVisibleItem] {
-                if let tracker, let topLevelIndex = tracker.comments.firstIndex(of: comment.topParent) {
+            if let comment = tracker.commentsKeyedByActorId[topVisibleItem] {
+                if let topLevelIndex = tracker.comments.firstIndex(of: comment.topParent) {
                     guard topLevelIndex + 1 < tracker.comments.count else { return }
                     jumpButtonTarget = tracker.comments[topLevelIndex + 1].actorId
                 }
@@ -40,16 +38,13 @@ extension ExpandedPostView {
     func scrollToPreviousComment() {
         if let topVisibleItem, topVisibleItem != post.wrappedValue.actorId {
             if let comment = tracker?.commentsKeyedByActorId[topVisibleItem], let tracker {
-                if let topLevelIndex = tracker.comments.firstIndex(of: comment.topParent) {
+                if var topLevelIndex = tracker.comments.firstIndex(of: comment.topParent) {
                     if topLevelIndex < 0 || comment == tracker.comments.first {
                         jumpButtonTarget = post.wrappedValue.actorId
-                        return
+                    } else {
+                        if comment.parent == nil { topLevelIndex -= 1 }
+                        jumpButtonTarget = tracker.comments[topLevelIndex].actorId
                     }
-                    if comment.parent == nil {
-                        jumpButtonTarget = tracker.comments[topLevelIndex - 1].actorId
-                        return
-                    }
-                    jumpButtonTarget = tracker.comments[topLevelIndex].actorId
                 } else {
                     assertionFailure()
                 }
