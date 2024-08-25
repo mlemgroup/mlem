@@ -12,11 +12,16 @@ extension NavigationLink where Destination == Never {
         self.init(value: value, label: label)
     }
     
-    init(_ titleKey: LocalizedStringKey, destination: NavigationPage) where Label == Text {
+    init(_ titleKey: LocalizedStringResource, destination: NavigationPage) where Label == Text {
         self.init(value: destination) { Text(titleKey) }
     }
     
-    init(_ titleKey: LocalizedStringKey, systemImage: String, destination: NavigationPage) where Label == SwiftUI.Label<Text, Image> {
-        self.init(value: destination) { Label(titleKey, systemImage: systemImage) }
+    @_disfavoredOverload
+    init(_ title: String, destination: NavigationPage) where Label == Text {
+        self.init(value: destination) { Text(title) }
+    }
+    
+    init(_ titleKey: LocalizedStringResource, systemImage: String, destination: NavigationPage) where Label == SwiftUI.Label<Text, Image> {
+        self.init(value: destination) { Label(String(localized: titleKey), systemImage: systemImage) }
     }
 }

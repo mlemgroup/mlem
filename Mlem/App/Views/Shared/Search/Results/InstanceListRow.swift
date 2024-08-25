@@ -42,22 +42,17 @@ struct InstanceListRow<Content2: View>: View {
     }
     
     var body: some View {
-        HStack(spacing: 0) {
-            content
-            Image(systemName: Icons.forward)
-                .imageScale(.small)
-                .foregroundStyle(palette.tertiary)
-        }
-        .padding(.trailing)
-        .padding(.vertical, 6)
-        .onTapGesture {
-            if let instanceStub {
-                navigation.push(.instance(instanceStub))
+        FormChevron { content }
+            .padding(.trailing)
+            .padding(.vertical, 6)
+            .onTapGesture {
+                if let instanceStub {
+                    navigation.push(.instance(instanceStub))
+                }
             }
-        }
-        .background(palette.background)
-        .contextMenu {
-            instanceStub?.menuActions(allowExternalBlocking: true) ?? []
-        }
+            .background(palette.background)
+            .contextMenu {
+                instanceStub?.menuActions(allowExternalBlocking: true) ?? []
+            }
     }
 }

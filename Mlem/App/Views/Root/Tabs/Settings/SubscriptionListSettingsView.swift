@@ -18,5 +18,6 @@ struct SubscriptionListSettingsView: View {
                 }
             }
         }
+        .navigationTitle("Subscription List")
     }
 }
