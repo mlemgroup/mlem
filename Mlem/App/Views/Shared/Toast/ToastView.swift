@@ -74,7 +74,7 @@ struct ToastView: View {
                 accountView(account)
             }
         }
-        // .frame(height: isExpanded ? nil : 47)
+        .multilineTextAlignment(.center)
         .frame(maxHeight: isExpanded ? 230 : nil)
         .background((colorScheme == .dark ? Palette.main.secondaryBackground : Palette.main.background).opacity(0.5))
         .background(.regularMaterial)
@@ -120,6 +120,7 @@ struct ToastView: View {
             .padding(systemImage == nil ? .horizontal : .trailing, Constants.main.doubleSpacing)
         }
         .frame(minWidth: 157)
+        .padding(systemImage == nil ? .vertical : [], Constants.main.standardSpacing)
     }
     
     @ViewBuilder
@@ -185,7 +186,7 @@ struct ToastView: View {
                         .padding(Constants.main.standardSpacing)
                     }
                 }
-                .frame(maxHeight: .infinity, alignment: .leading)
+                .frame(maxHeight: isExpanded ? .infinity : 0, alignment: .leading)
                 .background(isExpanded ? Palette.main.negative.opacity(0.15) : .clear)
             }
         }

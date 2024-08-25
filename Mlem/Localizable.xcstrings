@@ -334,7 +334,7 @@
     "Failed to resolve post. Try another account." : {
 
     },
-    "Failed to Save Image. You may need to allow Mlem to access your Photo Library in System Settings." : {
+    "Failed to Save Image" : {
 
     },
     "Fallback" : {
@@ -1045,6 +1045,9 @@
 
     },
     "You don't have any accounts." : {
+
+    },
+    "You may need to allow Mlem to access your Photo Library in System Settings." : {
 
     },
     "Your instance and **%@** federate, but the content could not be loaded. It may not have federated yet, or your instance may have purged it." : {

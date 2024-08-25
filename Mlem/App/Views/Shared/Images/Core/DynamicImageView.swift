@@ -95,10 +95,12 @@ struct DynamicImageView: View {
             try await imageSaver.writeToPhotoAlbum(imageData: data)
             ToastModel.main.add(.success("Image Saved"))
         } catch {
-            ToastModel.main.add(.failure(
-                "Failed to Save Image. You may need to allow Mlem to access your Photo Library in System Settings."
+            ToastModel.main.add(.basic(
+                "Failed to Save Image",
+                subtitle: "You may need to allow Mlem to access your Photo Library in System Settings.",
+                color: palette.negative,
+                duration: 5
             ))
-            handleError(error)
         }
     }
   
