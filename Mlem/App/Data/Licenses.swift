@@ -7,7 +7,7 @@
 
 import Foundation
 
-// swiftlint:disable file_length
+// swiftlint:disable file_length line_length
 extension Document {
     static let allLicenses: [Document] = [
         .cmarkLicense,
@@ -575,4 +575,4 @@ extension Document {
     )
 }
 
-// swiftlint:enable file_length
+// swiftlint:enable file_length line_length
