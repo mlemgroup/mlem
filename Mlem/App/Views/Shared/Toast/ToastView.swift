@@ -74,7 +74,7 @@ struct ToastView: View {
                 accountView(account)
             }
         }
-        .frame(height: isExpanded ? nil : 47)
+        // .frame(height: isExpanded ? nil : 47)
         .frame(maxHeight: isExpanded ? 230 : nil)
         .background((colorScheme == .dark ? Palette.main.secondaryBackground : Palette.main.background).opacity(0.5))
         .background(.regularMaterial)
@@ -127,7 +127,7 @@ struct ToastView: View {
         HStack(spacing: Constants.main.doubleSpacing) {
             CircleCroppedImageView(account, showProgress: false)
                 .frame(width: 27, height: 27)
-                .padding(.leading, 10)
+                .padding([.vertical, .leading], Constants.main.standardSpacing)
             Text(account.nickname)
                 .lineLimit(1)
                 .frame(minWidth: 80)
@@ -163,7 +163,7 @@ struct ToastView: View {
                     }
                 }
                 .contentShape(.rect)
-                .frame(height: 47)
+                // .frame(height: 47)
                 VStack(alignment: .leading, spacing: 0) {
                     if isExpanded {
                         ScrollView {
@@ -203,7 +203,7 @@ struct ToastView: View {
             .foregroundStyle(ToastView.dimmedSymbols.contains(systemName) ? .secondary : .primary)
             .foregroundStyle(color)
             .frame(width: 27)
-            .padding(.leading, Constants.main.standardSpacing)
+            .padding([.vertical, .leading], Constants.main.standardSpacing)
     }
 }
 
