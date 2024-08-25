@@ -14,7 +14,8 @@ extension UIImage {
 }
 
 struct DynamicImageView: View {
-    @Environment(Palette.self) var palette: Palette
+    @Environment(Palette.self) var palette
+    @Environment(NavigationLayer.self) var navigation
     
     @State var loader: ImageLoader
     @State var loadingPref: ImageLoadingState?
@@ -58,7 +59,7 @@ struct DynamicImageView: View {
             .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
             .task(loader.load)
             .contextMenu {
-                if let uiImage = loader.uiImage, let url = fullSizeUrl() {
+                if let url = fullSizeUrl() {
                     Button {
                         Task {
                             await saveImage(url: url)
@@ -67,7 +68,15 @@ struct DynamicImageView: View {
                         Label(String(localized: "Save Image"), systemImage: Icons.import)
                     }
                     
-                    ShareLink(item: Image(uiImage: uiImage), preview: .init("photo", image: Image(uiImage: uiImage)))
+                    // ShareLink(item: Image(uiImage: uiImage), preview: .init("photo", image: Image(uiImage: uiImage)))
+                    
+                    Button {
+                        Task {
+                            await shareImage(url: url)
+                        }
+                    } label: {
+                        Label(String(localized: "Share Image"), systemImage: Icons.share)
+                    }
                     
                     Button {
                         Task {
@@ -94,19 +103,16 @@ struct DynamicImageView: View {
             handleError(error)
         }
     }
+  
+    func shareImage(url: URL) async {
+        if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "image") {
+            navigation.shareUrl = fileUrl
+        }
+    }
     
     func showQuickLook(url: URL) async {
-        do {
-            let (data, _) = try await ImagePipeline.shared.data(for: .init(url: url))
-            let fileType = url.pathExtension
-            let quicklook = FileManager.default.temporaryDirectory.appending(path: "quicklook.\(fileType)")
-            if FileManager.default.fileExists(atPath: quicklook.absoluteString) {
-                try FileManager.default.removeItem(at: quicklook)
-            }
-            try data.write(to: quicklook)
-            quickLookUrl = quicklook
-        } catch {
-            handleError(error)
+        if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "quicklook") {
+            quickLookUrl = fileUrl
         }
     }
     
