@@ -164,7 +164,6 @@ struct ToastView: View {
                     }
                 }
                 .contentShape(.rect)
-                // .frame(height: 47)
                 VStack(alignment: .leading, spacing: 0) {
                     if isExpanded {
                         ScrollView {
