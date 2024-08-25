@@ -36,12 +36,8 @@ extension ColorPalette {
         subscribedFeed: .red,
         inbox: .purple,
         accent: .blue,
-        accent2: .orange,
-        accent3: .pink,
-        accent4: .blue,
-        accent5: .green,
-        accent6: .purple,
-        accent7: .indigo,
-        commentIndentColors: [Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple]
+        neutralAccent: .gray,
+        colorfulAccents: [.orange, .pink, .blue, .green, .purple, .indigo, .mint],
+        commentIndentColors: [.red, .orange, .yellow, .green, .blue, .purple]
     )
 }

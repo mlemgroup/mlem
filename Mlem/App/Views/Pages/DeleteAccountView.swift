@@ -84,7 +84,7 @@ struct DeleteAccountView: View {
         Text("To confirm, please enter your password:")
         
         Group {
-            SecureField("", text: $password)
+            SecureField(String(""), text: $password)
                 .padding(4)
                 .background(palette.secondaryBackground)
                 .cornerRadius(Constants.main.smallItemCornerRadius)
@@ -93,6 +93,7 @@ struct DeleteAccountView: View {
                 .onSubmit {
                     deleteAccount()
                 }
+                .labelsHidden()
             
             if canDeleteContent {
                 Toggle(isOn: $deleteContent) {

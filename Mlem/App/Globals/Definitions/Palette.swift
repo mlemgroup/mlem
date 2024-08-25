@@ -44,10 +44,8 @@ protocol PaletteProviding {
     
     // accents
     var accent: Color { get }
-    var accent2: Color { get }
-    var accent3: Color { get }
-    var accent4: Color { get }
-    var accent5: Color { get }
+    var neutralAccent: Color { get }
+    var colorfulAccents: [Color] { get }
     var commentIndentColors: [Color] { get }
 }
 
@@ -63,10 +61,19 @@ enum PaletteOption: String, CaseIterable {
     
     var label: LocalizedStringResource {
         switch self {
-        case .standard: "Standard"
+        case .standard: "Default"
         case .monochrome: "Monochrome"
         }
     }
+    
+    var labelColor1: Color {
+        switch self {
+        case .standard: .blue
+        case .monochrome: .primary
+        }
+    }
+    
+    var labelColor2: Color { Color(UIColor.systemBackground) }
 }
 
 struct ColorPalette: PaletteProviding {
@@ -109,12 +116,8 @@ struct ColorPalette: PaletteProviding {
     
     // accents
     var accent: Color
-    var accent2: Color
-    var accent3: Color
-    var accent4: Color
-    var accent5: Color
-    var accent6: Color
-    var accent7: Color
+    var neutralAccent: Color
+    var colorfulAccents: [Color]
 
     var commentIndentColors: [Color]
     
@@ -148,12 +151,8 @@ struct ColorPalette: PaletteProviding {
         savedFeed: Color? = nil,
         inbox: Color,
         accent: Color,
-        accent2: Color? = nil,
-        accent3: Color? = nil,
-        accent4: Color? = nil,
-        accent5: Color? = nil,
-        accent6: Color? = nil,
-        accent7: Color? = nil,
+        neutralAccent: Color,
+        colorfulAccents: [Color],
         commentIndentColors: [Color]
     ) {
         self.primary = primary
@@ -185,12 +184,8 @@ struct ColorPalette: PaletteProviding {
         self.savedFeed = savedFeed ?? save
         self.inbox = inbox
         self.accent = accent
-        self.accent2 = accent2 ?? accent
-        self.accent3 = accent3 ?? accent
-        self.accent4 = accent4 ?? accent
-        self.accent5 = accent5 ?? accent
-        self.accent6 = accent6 ?? accent
-        self.accent7 = accent7 ?? accent
+        self.neutralAccent = neutralAccent
+        self.colorfulAccents = colorfulAccents.isEmpty ? [accent] : colorfulAccents
         self.commentIndentColors = commentIndentColors
     }
 }
@@ -247,18 +242,18 @@ class Palette: PaletteProviding {
     var inbox: Color { palette.inbox }
     
     var accent: Color { palette.accent }
-    var accent2: Color { palette.accent2 }
-    var accent3: Color { palette.accent3 }
-    var accent4: Color { palette.accent4 }
-    var accent5: Color { palette.accent5 }
-    var accent6: Color { palette.accent6 }
-    var accent7: Color { palette.accent7 }
+    var neutralAccent: Color { palette.neutralAccent }
+    var colorfulAccents: [Color] { palette.colorfulAccents }
     
     var commentIndentColors: [Color] { palette.commentIndentColors }
     
-    var commentAccent: Color { palette.accent2 }
-    var postAccent: Color { palette.accent3 }
-    var userAccent: Color { palette.accent4 }
-    var communityAccent: Color { palette.accent5 }
-    var lockAccent: Color { palette.accent2 }
+    func colorfulAccent(_ index: Int) -> Color {
+        palette.colorfulAccents[index % palette.colorfulAccents.count]
+    }
+    
+    var commentAccent: Color { colorfulAccent(0) }
+    var postAccent: Color { colorfulAccent(1) }
+    var userAccent: Color { colorfulAccent(2) }
+    var communityAccent: Color { colorfulAccent(3) }
+    var lockAccent: Color { colorfulAccent(4) }
 }

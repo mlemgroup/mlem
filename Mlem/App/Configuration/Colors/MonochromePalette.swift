@@ -39,6 +39,8 @@ extension ColorPalette {
         savedFeed: Color(uiColor: .darkGray),
         inbox: Color(uiColor: .darkGray),
         accent: .primary,
+        neutralAccent: .gray,
+        colorfulAccents: [.gray],
         commentIndentColors: [
             Color(uiColor: .systemGray),
             Color(uiColor: .systemGray2),
