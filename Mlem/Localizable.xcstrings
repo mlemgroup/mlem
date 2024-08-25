@@ -444,10 +444,10 @@
     "Image" : {
 
     },
-    "Images are cached on your device for fast reuse. The maximum cache size is around %@." : {
+    "Image Saved" : {
 
     },
-    "Image Saved" : {
+    "Images are cached on your device for fast reuse. The maximum cache size is around %@." : {
 
     },
     "In Default Browser" : {
@@ -660,13 +660,10 @@
     "Permanently delete %@" : {
 
     },
-    "Pink" : {
-
-    },
     "photo" : {
 
     },
-    "Post" : {
+    "Pink" : {
 
     },
     "Post Size" : {
