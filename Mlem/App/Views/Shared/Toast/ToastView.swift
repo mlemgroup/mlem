@@ -117,7 +117,7 @@ struct ToastView: View {
                         .frame(minWidth: 80)
                 }
             }
-            .padding(.trailing, Constants.main.doubleSpacing)
+            .padding(systemImage == nil ? .horizontal : .trailing, Constants.main.doubleSpacing)
         }
         .frame(minWidth: 157)
     }
