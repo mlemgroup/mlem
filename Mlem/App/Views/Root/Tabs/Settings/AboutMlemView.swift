@@ -14,7 +14,7 @@ struct AboutMlemView: View {
         Form {
             Section {
                 appHeaderView
-                    .listRowBackground(Color(.systemGroupedBackground))
+                    .listRowBackground(palette.groupedBackground)
             }
             Section {
                 Link(destination: URL(string: "https://mlem.group")!) {
