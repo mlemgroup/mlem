@@ -35,6 +35,9 @@ class CommentWrapper: Identifiable, Comment2Providing {
     }
     
     var api: ApiClient { comment2.api }
+    
+    /// Returns the top-level parent
+    var topParent: CommentWrapper { parent?.topParent ?? self }
 }
 
 extension [CommentWrapper] {

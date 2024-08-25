@@ -134,6 +134,10 @@
 		039D75642C4EEE69004F24C2 /* DeletableProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039D75632C4EEE69004F24C2 /* DeletableProviding+Extensions.swift */; };
 		039D75672C4FC5A3004F24C2 /* LargeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039D75662C4FC5A3004F24C2 /* LargeImageView.swift */; };
 		039EFEC32BEEBEE0003AC372 /* LoginInstancePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */; };
+		039F58812C7A7E5900C61658 /* JumpButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039F58802C7A7E5900C61658 /* JumpButtonView.swift */; };
+		039F58822C7A7EF300C61658 /* ToolbarEllipsisMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0E07002C12707700445849 /* ToolbarEllipsisMenu.swift */; };
+		039F58842C7A7F2C00C61658 /* CommentJumpButtonLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039F58832C7A7F2C00C61658 /* CommentJumpButtonLocation.swift */; };
+		039F58862C7A810100C61658 /* ExpandedPostView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039F58852C7A810100C61658 /* ExpandedPostView+Logic.swift */; };
 		03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */; };
 		03A82FA32C0D1F2400D01A5C /* View+ExternalApiWarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A82FA22C0D1F2400D01A5C /* View+ExternalApiWarning.swift */; };
 		03AF91DD2C1B23E500E56644 /* ImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AF91DC2C1B23E500E56644 /* ImageViewer.swift */; };
@@ -178,7 +182,6 @@
 		03D3A1F12BB9D48E009DE55E /* BasicAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1F02BB9D48E009DE55E /* BasicAction.swift */; };
 		03D3A1F32BB9D49B009DE55E /* ActionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1F22BB9D49B009DE55E /* ActionGroup.swift */; };
 		03DAEA772C64074E0064DE64 /* SubscriptionListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DAEA762C64074E0064DE64 /* SubscriptionListItemView.swift */; };
-		03E614DB2C0B596900F692A4 /* ToolbarEllipsisMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E614DA2C0B596900F692A4 /* ToolbarEllipsisMenu.swift */; };
 		03E614E42C0BCC7B00F692A4 /* Post1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E614E32C0BCC7B00F692A4 /* Post1Providing+Extensions.swift */; };
 		03E614E52C0BCCAA00F692A4 /* PostSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7A2BFADA8B00DBC0EF /* PostSize.swift */; };
 		03E614E72C0BCDC200F692A4 /* FullyQualifiedLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E614E62C0BCDC200F692A4 /* FullyQualifiedLinkView.swift */; };
@@ -455,6 +458,9 @@
 		039D75632C4EEE69004F24C2 /* DeletableProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeletableProviding+Extensions.swift"; sourceTree = "<group>"; };
 		039D75662C4FC5A3004F24C2 /* LargeImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeImageView.swift; sourceTree = "<group>"; };
 		039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInstancePickerView.swift; sourceTree = "<group>"; };
+		039F58802C7A7E5900C61658 /* JumpButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpButtonView.swift; sourceTree = "<group>"; };
+		039F58832C7A7F2C00C61658 /* CommentJumpButtonLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentJumpButtonLocation.swift; sourceTree = "<group>"; };
+		039F58852C7A810100C61658 /* ExpandedPostView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExpandedPostView+Logic.swift"; sourceTree = "<group>"; };
 		03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiClient+Extensions.swift"; sourceTree = "<group>"; };
 		03A82FA22C0D1F2400D01A5C /* View+ExternalApiWarning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ExternalApiWarning.swift"; sourceTree = "<group>"; };
 		03AF91DC2C1B23E500E56644 /* ImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewer.swift; sourceTree = "<group>"; };
@@ -499,7 +505,6 @@
 		03D3A1F02BB9D48E009DE55E /* BasicAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAction.swift; sourceTree = "<group>"; };
 		03D3A1F22BB9D49B009DE55E /* ActionGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionGroup.swift; sourceTree = "<group>"; };
 		03DAEA762C64074E0064DE64 /* SubscriptionListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListItemView.swift; sourceTree = "<group>"; };
-		03E614DA2C0B596900F692A4 /* ToolbarEllipsisMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarEllipsisMenu.swift; sourceTree = "<group>"; };
 		03E614E32C0BCC7B00F692A4 /* Post1Providing+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Post1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		03E614E62C0BCDC200F692A4 /* FullyQualifiedLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullyQualifiedLinkView.swift; sourceTree = "<group>"; };
 		03FA318E2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarActionLabelView.swift; sourceTree = "<group>"; };
@@ -1207,6 +1212,7 @@
 				03FE14072BF94FFB00A8377F /* ErrorView.swift */,
 				0300309C2C4163C9009A65FF /* ExpandedPostTracker.swift */,
 				CD4ED84D2BF113C800EFA0A2 /* ExpandedPostView.swift */,
+				039F58852C7A810100C61658 /* ExpandedPostView+Logic.swift */,
 				034B948D2C0937BA00039AF4 /* FancyScrollView.swift */,
 				033F84CB2C2B1E46002E3EDF /* HandleLemmyLinksModifier.swift */,
 				0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */,
@@ -1224,8 +1230,8 @@
 				030030A02C416B0B009A65FF /* RefreshPopupView.swift */,
 				032C32152C36F65500595286 /* ReplyView.swift */,
 				032C32092C34495D00595286 /* SelectTextView.swift */,
-				03E614DA2C0B596900F692A4 /* ToolbarEllipsisMenu.swift */,
 				CD0E07002C12707700445849 /* ToolbarEllipsisMenu.swift */,
+				039F58802C7A7E5900C61658 /* JumpButtonView.swift */,
 				CD13CC582C583C7A001AF428 /* WebsitePreviewView.swift */,
 				CD13CC5A2C588B34001AF428 /* WebView.swift */,
 				03AF91DE2C1B243D00E56644 /* ZoomableContainer.swift */,
@@ -1292,6 +1298,7 @@
 				03CBD18C2C6120F600E870BC /* PersonFlair.swift */,
 				03AF91E62C1C65AE00E56644 /* Interaction */,
 				CDA683F72C77E577000C4486 /* NsfwBlurBehavior.swift */,
+				039F58832C7A7F2C00C61658 /* CommentJumpButtonLocation.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -1786,6 +1793,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				039F58822C7A7EF300C61658 /* ToolbarEllipsisMenu.swift in Sources */,
 				03531EEC2C2D81DC004A3464 /* LinkSettingsView.swift in Sources */,
 				033F84D92C2B61FB002E3EDF /* ToastType.swift in Sources */,
 				03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */,
@@ -1876,6 +1884,7 @@
 				CD4ED84A2BF1113800EFA0A2 /* View+TabReselectConsumer.swift in Sources */,
 				0355F9492C16406E00605248 /* Line.swift in Sources */,
 				CD4D58A52B86BD1B00B82964 /* PersistenceRepository.swift in Sources */,
+				039F58842C7A7F2C00C61658 /* CommentJumpButtonLocation.swift in Sources */,
 				033F84AD2C298466002E3EDF /* SectionIndexTitles.swift in Sources */,
 				CDCA44B62C176C5000C092B3 /* View+EdgeBorders.swift in Sources */,
 				03FA318F2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift in Sources */,
@@ -1891,6 +1900,7 @@
 				0389DDC32C38907C0005B808 /* Message1Providing+Extensions.swift in Sources */,
 				03B431B42C4481C3001A1EB5 /* MarkdownTextEditor.swift in Sources */,
 				03B431C42C45BA45001A1EB5 /* AccountPickerMenu.swift in Sources */,
+				039F58812C7A7E5900C61658 /* JumpButtonView.swift in Sources */,
 				03AF91DF2C1B243D00E56644 /* ZoomableContainer.swift in Sources */,
 				033F84C82C2B193D002E3EDF /* MlemStats.swift in Sources */,
 				CD7DB9732C4AEDDE00DCC542 /* TileCommentView.swift in Sources */,
@@ -1937,6 +1947,7 @@
 				CD7DB9762C4D6C0A00DCC542 /* FeedCommentView.swift in Sources */,
 				03D3A1EF2BB9CA1D009DE55E /* MenuButton.swift in Sources */,
 				CD0507732C6AA0C8008B1505 /* FeedSelection.swift in Sources */,
+				039F58862C7A810100C61658 /* ExpandedPostView+Logic.swift in Sources */,
 				031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */,
 				030FF67B2BC8521600F6BFAC /* CustomTabView.swift in Sources */,
 				03531EF52C2DA610004A3464 /* NavigationSearchType.swift in Sources */,
@@ -2046,7 +2057,6 @@
 				CDD99C3E2C73F4380010367F /* WarningView.swift in Sources */,
 				030FF6812BC859FD00F6BFAC /* CustomTabViewHostingController.swift in Sources */,
 				035EDF012C2ECFE000F51144 /* Searchable.swift in Sources */,
-				03E614DB2C0B596900F692A4 /* ToolbarEllipsisMenu.swift in Sources */,
 				CD7743892C20EDEE0085BB43 /* VotesModel+Extensions.swift in Sources */,
 				CD4D58AD2B86BE7100B82964 /* QuickSwitcherView.swift in Sources */,
 				0397D4642C676CA8002C6CDC /* FeedSortPicker.swift in Sources */,

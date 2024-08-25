@@ -10,12 +10,27 @@ import MlemMiddleware
 import SwiftUI
 
 struct ExpandedPostView: View {
+    struct AnchorsKey: PreferenceKey {
+        // swiftlint:disable:next nesting
+        typealias Value = [URL?: Anchor<CGPoint>]
+
+        static var defaultValue: Value { [:] }
+
+        static func reduce(value: inout Value, nextValue: () -> Value) {
+            value.merge(nextValue()) { $1 }
+        }
+    }
+    
     @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
     @Environment(\.dismiss) var dismiss
     
+    @Setting(\.jumpButton) var jumpButton
+    
     let post: AnyPost
     @State var showCommentWithActorId: URL?
+    @State var jumpButtonTarget: URL?
+    @State var topVisibleItem: URL?
     
     @State var tracker: ExpandedPostTracker?
     
@@ -73,30 +88,62 @@ struct ExpandedPostView: View {
         .environment(tracker)
     }
     
-    @ViewBuilder
-    func content(for post: any Post1Providing, tracker: ExpandedPostTracker) -> some View {
-        ScrollViewReader { proxy in
-            FancyScrollView {
-                LazyVStack(alignment: .leading, spacing: 0) {
-                    LargePostView(post: post, isExpanded: true)
-                    Divider()
-                    ForEach(tracker.comments.tree(), id: \.actorId) { comment in
-                        CommentView(comment: comment, highlight: showCommentWithActorId == comment.actorId)
-                            .transition(.move(edge: .top).combined(with: .opacity))
-                            .zIndex(1000 - Double(comment.depth))
+    // swiftlint:disable:next function_body_length
+    @ViewBuilder func content(for post: any Post1Providing, tracker: ExpandedPostTracker) -> some View {
+        GeometryReader { geo in
+            ScrollViewReader { proxy in
+                FancyScrollView {
+                    LazyVStack(alignment: .leading, spacing: 0) {
+                        LargePostView(post: post, isExpanded: true)
+                            .id(post.actorId)
+                            .anchorPreference(
+                                key: AnchorsKey.self,
+                                value: .center
+                            ) { [post.actorId: $0] }
+                        Divider()
+                        ForEach(tracker.comments.tree(), id: \.actorId) { comment in
+                            CommentView(comment: comment, highlight: showCommentWithActorId == comment.actorId)
+                                .transition(.move(edge: .top).combined(with: .opacity))
+                                .zIndex(1000 - Double(comment.depth))
+                                .anchorPreference(
+                                    key: AnchorsKey.self,
+                                    value: .center
+                                ) { [comment.actorId: $0] }
+                        }
+                    }
+                    .animation(.easeInOut(duration: 0.4), value: showCommentWithActorId)
+                }
+                .onAppear {
+                    if let showCommentWithActorId {
+                        // The scroll destination isn't always accurate. Possibly due to the post image changing
+                        // size on load? Using `anchor: .top` would be better here, but `anchor: .center` makes
+                        // the inaccuracy less noticeable. See also the comment further up the file.
+                        proxy.scrollTo(showCommentWithActorId, anchor: .center)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            self.showCommentWithActorId = nil
+                        }
                     }
                 }
-                .animation(.easeInOut(duration: 0.4), value: showCommentWithActorId)
-            }
-            .onAppear {
-                if let showCommentWithActorId {
-                    // The scroll destination isn't always accurate. Possibly due to the post image changing
-                    // size on load? Using `anchor: .top` would be better here, but `anchor: .center` makes
-                    // the inaccuracy less noticeable. See also the comment further up the file.
-                    proxy.scrollTo(showCommentWithActorId, anchor: .center)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        self.showCommentWithActorId = nil
+                .onChange(of: jumpButtonTarget) {
+                    if let jumpButtonTarget {
+                        withAnimation {
+                            proxy.scrollTo(jumpButtonTarget, anchor: .top)
+                        }
+                        self.jumpButtonTarget = nil
                     }
+                }
+                .overlay {
+                    if jumpButton != .none, tracker.comments.count > 1 {
+                        JumpButtonView(onShortPress: scrollToNextComment, onLongPress: scrollToPreviousComment)
+                            .frame(
+                                maxWidth: .infinity,
+                                maxHeight: .infinity,
+                                alignment: jumpButton.alignment
+                            )
+                    }
+                }
+                .onPreferenceChange(AnchorsKey.self) { anchors in
+                    topVisibleItem = topCommentRow(of: anchors, in: geo)
                 }
             }
         }

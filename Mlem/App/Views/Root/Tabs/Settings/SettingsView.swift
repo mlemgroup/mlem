@@ -19,6 +19,8 @@ struct SettingsView: View {
     @Setting(\.upvoteOnSave) var upvoteOnSave
     @Setting(\.quickSwipesEnabled) var swipeActionsEnabled
     
+    @Setting(\.jumpButton) var jumpButton
+    
     var accounts: [UserAccount] { AccountsTracker.main.userAccounts }
     
     var body: some View {
@@ -61,6 +63,11 @@ struct SettingsView: View {
             Section {
                 Toggle("Upvote On Save", isOn: $upvoteOnSave)
                 Toggle("Swipe Actions", isOn: $swipeActionsEnabled)
+                Picker("Jump Button", selection: $jumpButton) {
+                    ForEach(CommentJumpButtonLocation.allCases, id: \.self) { item in
+                        Text(item.label)
+                    }
+                }
             }
             Section {
                 Button("Clear Cache") {

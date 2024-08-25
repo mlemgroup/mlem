@@ -170,6 +170,16 @@
     "Captcha" : {
 
     },
+    "Center" : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Centre"
+          }
+        }
+      }
+    },
     "Choose Account Type" : {
 
     },
@@ -425,6 +435,9 @@
 
     },
     "Italic" : {
+
+    },
+    "Jump Button" : {
 
     },
     "Just Now" : {
