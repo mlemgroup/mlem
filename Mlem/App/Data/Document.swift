@@ -8,6 +8,7 @@
 import Foundation
 
 struct Document: Identifiable, Hashable {
+    let title: String
     let body: String
     var id: Int {
         var hasher = Hasher()

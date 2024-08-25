@@ -25,7 +25,7 @@ struct MlemApp: App {
     
     var body: some Scene {
         WindowGroup {
-            FlowRoot()
+            ContentView()
         }
     }
 }
