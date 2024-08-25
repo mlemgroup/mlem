@@ -8,17 +8,28 @@
 import SwiftUI
 
 struct ThemeSettingsView: View {
-    @Setting(\.colorPalette) var colorPalette
     @Environment(Palette.self) var palette
+    
+    @Setting(\.interfaceStyle) var interfaceStyle
+    @Setting(\.colorPalette) var colorPalette
     
     var body: some View {
         Form {
+            Picker("Style", selection: $interfaceStyle) {
+                Text("System").tag(UIUserInterfaceStyle.unspecified)
+                Text("Light").tag(UIUserInterfaceStyle.light)
+                Text("Dark").tag(UIUserInterfaceStyle.dark)
+            }
+            .labelsHidden()
+            .pickerStyle(.inline)
+            
             Picker("Theme", selection: $colorPalette) {
                 ForEach(PaletteOption.allCases, id: \.rawValue) { item in
-                    Text(item.label)
+                    ThemeLabel(palette: item)
                         .tag(item)
                 }
             }
+            .labelsHidden()
             .pickerStyle(.inline)
         }
         .onChange(of: colorPalette) {

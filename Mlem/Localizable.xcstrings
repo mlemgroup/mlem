@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-
-    },
     "**%@** and **%@** chose to defederate from one another." : {
       "localizations" : {
         "en" : {
@@ -71,6 +68,9 @@
     "About" : {
 
     },
+    "About Mlem" : {
+
+    },
     "Abuse" : {
 
     },
@@ -96,6 +96,12 @@
 
     },
     "Administrator" : {
+
+    },
+    "Advanced" : {
+
+    },
+    "Alien" : {
 
     },
     "All" : {
@@ -161,6 +167,9 @@
     "Bottom" : {
 
     },
+    "Cache" : {
+
+    },
     "Cake Day" : {
 
     },
@@ -190,9 +199,6 @@
 
     },
     "Code" : {
-
-    },
-    "Comment" : {
 
     },
     "Comment was deleted" : {
@@ -240,7 +246,23 @@
     "Couldn't read URL" : {
 
     },
+    "Customize Interaction Bar" : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise Interaction Bar"
+          }
+        }
+      }
+    },
+    "Dark" : {
+
+    },
     "Day" : {
+
+    },
+    "Default" : {
 
     },
     "Default Feed Type (Desktop)" : {
@@ -265,6 +287,9 @@
 
     },
     "Disabled" : {
+
+    },
+    "Disk Usage" : {
 
     },
     "Dismiss" : {
@@ -292,6 +317,9 @@
 
     },
     "Enter your instance's domain name below." : {
+
+    },
+    "EULA" : {
 
     },
     "example.com" : {
@@ -365,7 +393,16 @@
     "Feeds" : {
 
     },
+    "General" : {
+
+    },
+    "GitHub Repository" : {
+
+    },
     "Go back" : {
+
+    },
+    "Green" : {
 
     },
     "Grouped" : {
@@ -408,6 +445,9 @@
 
     },
     "Image Saved" : {
+
+    },
+    "Images are cached on your device for fast reuse. The maximum cache size is around %@." : {
 
     },
     "In Default Browser" : {
@@ -458,6 +498,18 @@
     "Left" : {
 
     },
+    "Lemmy" : {
+
+    },
+    "Lemmy Community" : {
+
+    },
+    "Licenses" : {
+
+    },
+    "Light" : {
+
+    },
     "Links" : {
 
     },
@@ -482,6 +534,9 @@
     "Mark Unread" : {
 
     },
+    "Matrix Room" : {
+
+    },
     "Medium" : {
 
     },
@@ -492,6 +547,9 @@
 
     },
     "Messages" : {
+
+    },
+    "Mlem %@" : {
 
     },
     "Mlem Developer" : {
@@ -557,6 +615,9 @@
     "NSFW Content" : {
 
     },
+    "Ocean" : {
+
+    },
     "Old" : {
 
     },
@@ -576,6 +637,9 @@
 
     },
     "Open URL from Clipboard" : {
+
+    },
+    "Orange" : {
 
     },
     "Original Poster" : {
@@ -599,7 +663,7 @@
     "photo" : {
 
     },
-    "Post" : {
+    "Pink" : {
 
     },
     "Post Size" : {
@@ -618,6 +682,12 @@
 
     },
     "Posts from communities you subscribe to" : {
+
+    },
+    "Pride" : {
+
+    },
+    "Privacy Policy" : {
 
     },
     "Private" : {
@@ -704,15 +774,6 @@
     "Search" : {
 
     },
-    "Search Communities" : {
-
-    },
-    "Search Instances" : {
-
-    },
-    "Search People" : {
-
-    },
     "Select Text" : {
 
     },
@@ -743,7 +804,7 @@
     "Show Mod Names in Modlog" : {
 
     },
-    "Show Post Creator" : {
+    "Show Post Creator in Feed" : {
 
     },
     "Show User Avatar" : {
@@ -756,6 +817,9 @@
 
     },
     "Sign In to Lemmy" : {
+
+    },
+    "Silver" : {
 
     },
     "Slow" : {
@@ -782,10 +846,10 @@
     "Spoiler" : {
 
     },
-    "Standard" : {
+    "Strikethrough" : {
 
     },
-    "Strikethrough" : {
+    "Style" : {
 
     },
     "Subscribe" : {
@@ -813,6 +877,9 @@
 
     },
     "Switch to this account and..." : {
+
+    },
+    "System" : {
 
     },
     "Tap and hold items to add, remove or rearrange them." : {
@@ -932,7 +999,7 @@
     "Upvote" : {
 
     },
-    "Upvote On Save" : {
+    "Upvote on Save" : {
 
     },
     "Username" : {
@@ -950,7 +1017,10 @@
     "Visit" : {
 
     },
-    "Warn when opening NSFW community" : {
+    "Warn When Opening NSFW Community" : {
+
+    },
+    "Website" : {
 
     },
     "Week" : {

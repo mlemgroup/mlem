@@ -29,7 +29,8 @@ class Settings: ObservableObject {
     @AppStorage("accounts.sort") var accountSort: AccountSortMode = .name
     @AppStorage("accounts.groupSort") var groupAccountSort: Bool = false
     
-    @AppStorage("colorPalette") var colorPalette: PaletteOption = .standard
+    @AppStorage("appearance.interfaceStyle") var interfaceStyle: UIUserInterfaceStyle = .unspecified
+    @AppStorage("appearance.palette") var colorPalette: PaletteOption = .standard
     
     @AppStorage("dev.developerMode") var developerMode: Bool = false
     

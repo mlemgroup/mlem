@@ -5,11 +5,18 @@
 //  Created by Sjmarf on 07/05/2024.
 //
 
+import LemmyMarkdownUI
 import SwiftUI
 
 enum SettingsPage: Hashable {
-    case root, accounts, account, theme, post, links, subscriptionList, icon, sorting
+    case root
+    case accounts, account
+    case general, links, sorting
+    case theme, icon
+    case post, comment, inbox, subscriptionList
+    case about, advanced
     case postInteractionBar, commentInteractionBar, replyInteractionBar
+    case licences, document(Document)
     
     @ViewBuilder
     // swiftlint:disable:next cyclomatic_complexity
@@ -21,12 +28,22 @@ enum SettingsPage: Hashable {
             AccountSettingsView()
         case .accounts:
             AccountListSettingsView()
+        case .general:
+            GeneralSettingsView()
+        case .advanced:
+            AdvancedSettingsView()
+        case .about:
+            AboutMlemView()
         case .theme:
             ThemeSettingsView()
         case .icon:
             IconSettingsView()
         case .post:
             PostSettingsView()
+        case .comment:
+            CommentSettingsView()
+        case .inbox:
+            InboxSettingsView()
         case .links:
             LinkSettingsView()
         case .sorting:
@@ -39,6 +56,25 @@ enum SettingsPage: Hashable {
             InteractionBarEditorView(setting: \.commentInteractionBar)
         case .replyInteractionBar:
             InteractionBarEditorView(setting: \.replyInteractionBar)
+        case let .document(doc):
+            SimpleMarkdownPage(doc: doc)
+        case .licences:
+            Form {
+                ForEach(Document.allLicenses) { doc in
+                    NavigationLink(doc.title, destination: .settings(.document(doc)))
+                }
+            }
+        }
+    }
+}
+
+private struct SimpleMarkdownPage: View {
+    let doc: Document
+    
+    var body: some View {
+        ScrollView {
+            Markdown(doc.body, configuration: .default)
+                .padding(Constants.main.standardSpacing)
         }
     }
 }

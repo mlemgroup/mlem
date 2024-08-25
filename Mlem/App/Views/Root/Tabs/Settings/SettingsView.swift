@@ -6,21 +6,17 @@
 //
 
 import MlemMiddleware
-import Nuke
 import SwiftUI
 
 struct SettingsView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
+    @Environment(Palette.self) var palette
     
-    @Setting(\.blurNsfw) var blurNsfw
-    @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
+    @Setting(\.colorPalette) var colorPalette
     
-    @Setting(\.upvoteOnSave) var upvoteOnSave
-    @Setting(\.quickSwipesEnabled) var swipeActionsEnabled
-    
-    @Setting(\.jumpButton) var jumpButton
-    
+    @State var currentIcon: String? = UIApplication.shared.alternateIconName
+
     var accounts: [UserAccount] { AccountsTracker.main.userAccounts }
     
     var body: some View {
@@ -30,70 +26,46 @@ struct SettingsView: View {
                 accountListLink
             }
             Section {
-                NavigationLink("Links", destination: .settings(.links))
-                NavigationLink("Sorting", destination: .settings(.sorting))
+                NavigationLink("General", systemImage: "gear", destination: .settings(.general))
+                    .tint(palette.neutralAccent)
+                NavigationLink("Links", systemImage: Icons.websiteAddress, destination: .settings(.links))
+                    .tint(palette.colorfulAccent(6))
+                NavigationLink("Sorting", systemImage: "arrow.up.and.down.text.horizontal", destination: .settings(.sorting))
+                    .tint(palette.colorfulAccent(5))
             }
             
             Section {
-                NavigationLink("Post", destination: .settings(.postInteractionBar))
-                NavigationLink("Comment", destination: .settings(.commentInteractionBar))
-                NavigationLink("Reply", destination: .settings(.replyInteractionBar))
+                appIconSettingsLink
+                NavigationLink(.settings(.theme)) {
+                    ThemeLabel(title: "Theme", palette: colorPalette)
+                }
+                .labelStyle(.automatic)
             }
             
             Section {
-                NavigationLink("Theme", destination: .settings(.theme))
-                NavigationLink("App Icon", destination: .settings(.icon))
-                NavigationLink("Subscription List", destination: .settings(.subscriptionList))
-                NavigationLink("Posts", destination: .settings(.post))
+                NavigationLink("Posts", systemImage: "doc.plaintext.fill", destination: .settings(.post))
+                    .tint(palette.postAccent)
+                NavigationLink("Comments", systemImage: "bubble.fill", destination: .settings(.comment))
+                    .tint(palette.commentAccent)
+                NavigationLink("Inbox", systemImage: "envelope.fill", destination: .settings(.inbox))
+                    .tint(palette.colorfulAccent(4))
+                NavigationLink("Subscription List", systemImage: "list.bullet", destination: .settings(.subscriptionList))
+                    .tint(palette.communityAccent)
             }
             
             Section {
-                Picker(selection: $blurNsfw) {
-                    ForEach(NsfwBlurBehavior.allCases, id: \.self) { behavior in
-                        Text(behavior.label)
-                    }
-                } label: {
-                    Text("Blur NSFW")
-                }
-                Toggle("Warn when opening NSFW community", isOn: $showNsfwCommunityWarning)
-            } header: {
-                Text("Safety")
-            }
-            
-            Section {
-                Toggle("Upvote On Save", isOn: $upvoteOnSave)
-                Toggle("Swipe Actions", isOn: $swipeActionsEnabled)
-                Picker("Jump Button", selection: $jumpButton) {
-                    ForEach(CommentJumpButtonLocation.allCases, id: \.self) { item in
-                        Text(item.label)
-                    }
-                }
-            }
-            Section {
-                Button("Clear Cache") {
-                    URLCache.shared.removeAllCachedResponses()
-                    ImagePipeline.shared.cache.removeAll()
-                }
-            }
-            
-            Section {
-                Button("Search Communities") {
-                    navigation.openSheet(.communityPicker(callback: { print($0.name) }))
-                }
-                
-                Button("Search People") {
-                    navigation.openSheet(.personPicker(callback: { print($0.name) }))
-                }
-                
-                Button("Search Instances") {
-                    navigation.openSheet(.instancePicker(callback: { print($0.name) }))
-                }
+                NavigationLink("About Mlem", systemImage: "info.circle.fill", destination: .settings(.about))
+                    .tint(palette.colorfulAccent(2))
+                NavigationLink("Advanced", systemImage: "gearshape.2.fill", destination: .settings(.advanced))
+                    .tint(palette.neutralAccent)
             }
         }
+        .labelStyle(.squircle)
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
     }
     
+    @ViewBuilder
     var accountSettingsLink: some View {
         NavigationLink(.settings(.account)) {
             let account = appState.firstSession
@@ -114,6 +86,25 @@ struct SettingsView: View {
         }
     }
     
+    @ViewBuilder
+    var appIconSettingsLink: some View {
+        NavigationLink(.settings(.icon)) {
+            Label {
+                Text("App Icon")
+            } icon: {
+                let icon = AlternateIcon(id: currentIcon, name: String(""))
+                AlternateIconLabel(icon: icon, selected: true).getImage()
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: Constants.main.settingsIconSize, height: Constants.main.settingsIconSize)
+                    .cornerRadius(Constants.main.smallItemCornerRadius)
+            }
+        }
+        .onChange(of: UIApplication.shared.alternateIconName) {
+            currentIcon = UIApplication.shared.alternateIconName
+        }
+    }
+    
     var accountSettingsLinkSubtitle: String {
         if let host = appState.firstSession.account.host {
             return "@\(host)"
@@ -121,6 +112,7 @@ struct SettingsView: View {
         return ""
     }
     
+    @ViewBuilder
     var accountListLink: some View {
         NavigationLink(.settings(.accounts)) {
             HStack(spacing: 10) {
