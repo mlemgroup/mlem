@@ -334,6 +334,9 @@
     "Failed to resolve post. Try another account." : {
 
     },
+    "Failed to Save Image. You may need to allow Mlem to access your Photo Library in System Settings." : {
+
+    },
     "Fallback" : {
 
     },
@@ -442,6 +445,9 @@
 
     },
     "Images are cached on your device for fast reuse. The maximum cache size is around %@." : {
+
+    },
+    "Image Saved" : {
 
     },
     "In Default Browser" : {
@@ -657,6 +663,12 @@
     "Pink" : {
 
     },
+    "photo" : {
+
+    },
+    "Post" : {
+
+    },
     "Post Size" : {
 
     },
@@ -682,6 +694,9 @@
 
     },
     "Private" : {
+
+    },
+    "Quick Look" : {
 
     },
     "Quote" : {
@@ -750,6 +765,9 @@
     "Save" : {
 
     },
+    "Save Image" : {
+
+    },
     "Saved" : {
 
     },
@@ -769,6 +787,9 @@
 
     },
     "Settings" : {
+
+    },
+    "Share Image" : {
 
     },
     "Share..." : {

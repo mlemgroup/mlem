@@ -6,6 +6,7 @@
 //
 
 import Nuke
+import QuickLook
 import SwiftUI
 
 extension UIImage {
@@ -13,11 +14,12 @@ extension UIImage {
 }
 
 struct DynamicImageView: View {
-    @Environment(Palette.self) var palette: Palette
+    @Environment(Palette.self) var palette
+    @Environment(NavigationLayer.self) var navigation
     
     @State var loader: ImageLoader
-    
     @State var loadingPref: ImageLoadingState?
+    @State var quickLookUrl: URL?
     
     let showError: Bool
     let cornerRadius: CGFloat
@@ -56,5 +58,68 @@ struct DynamicImageView: View {
             .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
             .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
             .task(loader.load)
+            .contextMenu {
+                if let url = fullSizeUrl() {
+                    Button {
+                        Task {
+                            await saveImage(url: url)
+                        }
+                    } label: {
+                        Label(String(localized: "Save Image"), systemImage: Icons.import)
+                    }
+                    
+                    Button {
+                        Task {
+                            await shareImage(url: url)
+                        }
+                    } label: {
+                        Label(String(localized: "Share Image"), systemImage: Icons.share)
+                    }
+                    
+                    Button {
+                        Task {
+                            await showQuickLook(url: url)
+                        }
+                    } label: {
+                        Label(String(localized: "Quick Look"), systemImage: Icons.imageDetails)
+                    }
+                }
+            }
+            .quickLookPreview($quickLookUrl)
+    }
+    
+    func saveImage(url: URL) async {
+        do {
+            let (data, _) = try await ImagePipeline.shared.data(for: .init(url: url))
+            let imageSaver = ImageSaver()
+            try await imageSaver.writeToPhotoAlbum(imageData: data)
+            ToastModel.main.add(.success("Image Saved"))
+        } catch {
+            ToastModel.main.add(.failure(
+                "Failed to Save Image. You may need to allow Mlem to access your Photo Library in System Settings."
+            ))
+            handleError(error)
+        }
+    }
+  
+    func shareImage(url: URL) async {
+        if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "image") {
+            navigation.shareUrl = fileUrl
+        }
+    }
+    
+    func showQuickLook(url: URL) async {
+        if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "quicklook") {
+            quickLookUrl = fileUrl
+        }
+    }
+    
+    func fullSizeUrl() -> URL? {
+        if let url = loader.url,
+           var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
+            components.query = nil
+            return components.url
+        }
+        return nil
     }
 }
