@@ -68,8 +68,6 @@ struct DynamicImageView: View {
                         Label(String(localized: "Save Image"), systemImage: Icons.import)
                     }
                     
-                    // ShareLink(item: Image(uiImage: uiImage), preview: .init("photo", image: Image(uiImage: uiImage)))
-                    
                     Button {
                         Task {
                             await shareImage(url: url)
