@@ -70,7 +70,7 @@ struct AboutMlemView: View {
                 .clipShape(.circle)
             
             Text("Mlem \(versionString)")
-                .foregroundStyle(.secondary)
+                .foregroundStyle(palette.secondary)
         }
         .frame(maxWidth: .infinity)
     }
