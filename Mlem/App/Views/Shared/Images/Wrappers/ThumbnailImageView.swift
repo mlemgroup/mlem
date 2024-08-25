@@ -59,8 +59,8 @@ struct ThumbnailImageView: View {
                         }
                     }
                 }
-                .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.smallItemCornerRadius))
                 .contentShape(.rect)
+                .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.smallItemCornerRadius))
                 .contextMenu {
                     if let url = fullSizeUrl(url: url) {
                         Button("Save Image", systemImage: Icons.import) {
