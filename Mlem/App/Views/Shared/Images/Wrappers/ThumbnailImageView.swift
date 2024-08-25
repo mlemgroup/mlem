@@ -15,6 +15,7 @@ struct ThumbnailImageView: View {
     @Environment(\.openURL) var openURL
     
     @State var loading: ImageLoadingState?
+    @State var quickLookUrl: URL?
     
     let post: any Post1Providing
     var blurred: Bool = false
@@ -58,6 +59,34 @@ struct ThumbnailImageView: View {
                         }
                     }
                 }
+                .contextMenu {
+                    if let url = fullSizeUrl(url: url) {
+                        Button {
+                            Task {
+                                await saveImage(url: url)
+                            }
+                        } label: {
+                            Label(String(localized: "Save Image"), systemImage: Icons.import)
+                        }
+                        
+                        Button {
+                            Task {
+                                await shareImage(url: url)
+                            }
+                        } label: {
+                            Label(String(localized: "Share Image"), systemImage: Icons.share)
+                        }
+                        
+                        Button {
+                            Task {
+                                await showQuickLook(url: url)
+                            }
+                        } label: {
+                            Label(String(localized: "Quick Look"), systemImage: Icons.imageDetails)
+                        }
+                    }
+                }
+                .quickLookPreview($quickLookUrl)
         case let .link(link):
             content
                 .onTapGesture {
@@ -120,6 +149,18 @@ struct ThumbnailImageView: View {
                 .frame(maxWidth: 50)
                 .padding(4)
                 .foregroundStyle(palette.tertiary)
+        }
+    }
+    
+    func shareImage(url: URL) async {
+        if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "image") {
+            navigation.shareUrl = fileUrl
+        }
+    }
+    
+    func showQuickLook(url: URL) async {
+        if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "quicklook") {
+            quickLookUrl = fileUrl
         }
     }
 }

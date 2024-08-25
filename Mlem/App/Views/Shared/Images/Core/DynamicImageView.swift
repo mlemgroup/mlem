@@ -23,43 +23,25 @@ struct DynamicImageView: View {
     
     let showError: Bool
     let cornerRadius: CGFloat
+    let actionsEnabled: Bool
     
     init(
         url: URL?,
         maxSize: CGFloat? = nil,
         showError: Bool = true,
-        cornerRadius: CGFloat = Constants.main.mediumItemCornerRadius
+        cornerRadius: CGFloat = Constants.main.mediumItemCornerRadius,
+        actionsEnabled: Bool = true
     ) {
         self.showError = showError
         self.cornerRadius = cornerRadius
+        self.actionsEnabled = actionsEnabled
         self._loader = .init(wrappedValue: .init(url: url, maxSize: maxSize))
     }
     
     var body: some View {
-        Image(uiImage: loader.uiImage ?? .blank)
-            .resizable()
-            .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
-            .background {
-                if showError {
-                    palette.secondaryBackground
-                        .overlay {
-                            if loader.error != nil {
-                                Image(systemName: Icons.missing)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(maxWidth: 50)
-                                    .padding(4)
-                                    .foregroundStyle(palette.tertiary)
-                            }
-                        }
-                }
-            }
-            .clipShape(.rect(cornerRadius: cornerRadius))
-            .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
-            .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
-            .task(loader.load)
-            .contextMenu {
-                if let url = fullSizeUrl() {
+        if actionsEnabled, let url = fullSizeUrl(url: loader.url) {
+            content
+                .contextMenu {
                     Button {
                         Task {
                             await saveImage(url: url)
@@ -84,22 +66,35 @@ struct DynamicImageView: View {
                         Label(String(localized: "Quick Look"), systemImage: Icons.imageDetails)
                     }
                 }
-            }
-            .quickLookPreview($quickLookUrl)
+                .quickLookPreview($quickLookUrl)
+        } else {
+            content
+        }
     }
     
-    func saveImage(url: URL) async {
-        do {
-            let (data, _) = try await ImagePipeline.shared.data(for: .init(url: url))
-            let imageSaver = ImageSaver()
-            try await imageSaver.writeToPhotoAlbum(imageData: data)
-            ToastModel.main.add(.success("Image Saved"))
-        } catch {
-            ToastModel.main.add(.failure(
-                "Failed to Save Image. You may need to allow Mlem to access your Photo Library in System Settings."
-            ))
-            handleError(error)
-        }
+    var content: some View {
+        Image(uiImage: loader.uiImage ?? .blank)
+            .resizable()
+            .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
+            .background {
+                if showError {
+                    palette.secondaryBackground
+                        .overlay {
+                            if loader.error != nil {
+                                Image(systemName: Icons.missing)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(maxWidth: 50)
+                                    .padding(4)
+                                    .foregroundStyle(palette.tertiary)
+                            }
+                        }
+                }
+            }
+            .clipShape(.rect(cornerRadius: cornerRadius))
+            .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
+            .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
+            .task(loader.load)
     }
   
     func shareImage(url: URL) async {
@@ -112,14 +107,5 @@ struct DynamicImageView: View {
         if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "quicklook") {
             quickLookUrl = fileUrl
         }
-    }
-    
-    func fullSizeUrl() -> URL? {
-        if let url = loader.url,
-           var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
-            components.query = nil
-            return components.url
-        }
-        return nil
     }
 }
