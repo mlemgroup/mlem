@@ -64,9 +64,6 @@ struct ExpandedPostView: View {
                         await tracker.load()
                     }
                 }
-                .onChange(of: post.api) {
-                    tracker.resolveComments()
-                }
                 .toolbar {
                     sortPicker(tracker: tracker)
                     if proxy.isLoading {
@@ -81,8 +78,14 @@ struct ExpandedPostView: View {
             }
         } upgradeOperation: { model, api in
             try await model.upgrade(api: api, upgradeOperation: nil)
-            if tracker == nil, let post = model.wrappedValue as? any Post {
-                tracker = .init(post: post)
+            if let post = model.wrappedValue as? any Post {
+                if let tracker {
+                    tracker.post = post
+                    tracker.loadingState = .idle
+                    await tracker.load()
+                } else {
+                    tracker = .init(post: post)
+                }
             }
         }
         .environment(tracker)
