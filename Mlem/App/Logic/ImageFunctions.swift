@@ -16,10 +16,12 @@ func saveImage(url: URL) async {
         try await imageSaver.writeToPhotoAlbum(imageData: data)
         ToastModel.main.add(.success("Image Saved"))
     } catch {
-        ToastModel.main.add(.failure(
-            "Failed to Save Image. You may need to allow Mlem to access your Photo Library in System Settings."
+        ToastModel.main.add(.basic(
+            "Failed to Save Image",
+            subtitle: "You may need to allow Mlem to access your Photo Library in System Settings.",
+            color: Palette.main.negative,
+            duration: 5
         ))
-        handleError(error)
     }
 }
 

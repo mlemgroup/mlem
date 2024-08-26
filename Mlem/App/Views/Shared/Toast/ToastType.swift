@@ -20,16 +20,22 @@ enum ToastType: Hashable {
     
     static func basic(
         _ title: LocalizedStringResource,
-        subtitle: String? = nil,
+        subtitle: LocalizedStringResource? = nil,
         systemImage: String? = nil,
-        color: Color,
+        color: Color? = nil,
         duration: Double = 1.5
     ) -> ToastType {
-        .basic(
+        let subtitleString: String?
+        if let subtitle {
+            subtitleString = String(localized: subtitle)
+        } else {
+            subtitleString = nil
+        }
+        return .basic(
             title: String(localized: title),
-            subtitle: subtitle,
+            subtitle: subtitleString,
             systemImage: systemImage,
-            color: color,
+            color: color ?? Palette.main.accent,
             duration: duration
         )
     }
@@ -39,14 +45,14 @@ enum ToastType: Hashable {
         _ title: String,
         subtitle: String? = nil,
         systemImage: String? = nil,
-        color: Color,
+        color: Color? = nil,
         duration: Double = 1.5
     ) -> ToastType {
         .basic(
             title: title,
             subtitle: subtitle,
             systemImage: systemImage,
-            color: color,
+            color: color ?? Palette.main.accent,
             duration: duration
         )
     }
