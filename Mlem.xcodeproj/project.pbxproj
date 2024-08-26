@@ -2546,8 +2546,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				branch = "eric/git-submodule-update";
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.31.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
