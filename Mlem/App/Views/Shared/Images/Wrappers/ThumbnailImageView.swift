@@ -15,6 +15,7 @@ struct ThumbnailImageView: View {
     @Environment(\.openURL) var openURL
     
     @State var loading: ImageLoadingState?
+    @State var quickLookUrl: URL?
     
     let post: any Post1Providing
     var blurred: Bool = false
@@ -58,6 +59,20 @@ struct ThumbnailImageView: View {
                         }
                     }
                 }
+                .contextMenu {
+                    if let url = fullSizeUrl(url: url) {
+                        Button("Save Image", systemImage: Icons.import) {
+                            Task { await saveImage(url: url) }
+                        }
+                        Button("Share Image", systemImage: Icons.share) {
+                            Task { await shareImage(url: url) }
+                        }
+                        Button("Quick Look", systemImage: Icons.imageDetails) {
+                            Task { await showQuickLook(url: url) }
+                        }
+                    }
+                }
+                .quickLookPreview($quickLookUrl)
         case let .link(link):
             content
                 .onTapGesture {
@@ -120,6 +135,18 @@ struct ThumbnailImageView: View {
                 .frame(maxWidth: 50)
                 .padding(4)
                 .foregroundStyle(palette.tertiary)
+        }
+    }
+    
+    func shareImage(url: URL) async {
+        if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "image") {
+            navigation.shareUrl = fileUrl
+        }
+    }
+    
+    func showQuickLook(url: URL) async {
+        if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "quicklook") {
+            quickLookUrl = fileUrl
         }
     }
 }
