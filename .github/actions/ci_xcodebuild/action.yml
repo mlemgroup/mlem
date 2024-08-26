@@ -22,7 +22,7 @@ runs:
       xcodebuild -showsdks
 
   - name: "Xcode Build"
-    uses: sersoft-gmbh/xcodebuild-action@v2
+    uses: sersoft-gmbh/xcodebuild-action@v3
     with:
       project: Mlem.xcodeproj
       scheme: Mlem
