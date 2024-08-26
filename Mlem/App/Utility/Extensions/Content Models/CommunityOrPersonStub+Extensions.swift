@@ -19,11 +19,12 @@ extension CommunityOrPersonStub {
     func copyNameAction(feedback: Set<FeedbackType> = [.toast]) -> BasicAction {
         .init(
             id: "copyName\(actorId)",
-            isOn: false,
-            label: "Copy Name",
-            color: .gray,
-            icon: Icons.copy,
-            swipeIcon2: Icons.copyFill,
+            appearance: .init(
+                label: "Copy Name",
+                color: .gray,
+                icon: Icons.copy,
+                swipeIcon2: Icons.copyFill
+            ),
             callback: { self.copyFullNameWithPrefix(feedback: feedback) }
         )
     }

@@ -37,7 +37,7 @@ struct InteractionBarView: View {
         self.readouts = configuration.readouts.map { comment.readout(type: $0) }
     }
     
-    init(reply: any Reply1Providing, configuration: InboxBarConfiguration) {
+    init(reply: any Reply1Providing, configuration: ReplyBarConfiguration) {
         self.leading = .init(reply: reply, items: configuration.leading)
         self.trailing = .init(reply: reply, items: configuration.trailing)
         self.readouts = configuration.readouts.map { reply.readout(type: $0) }
@@ -110,7 +110,7 @@ struct InteractionBarView: View {
                 }
             }
         }
-        .accessibilityLabel(action.label)
+        .accessibilityLabel(action.appearance.label)
         .accessibilityAction(.default) {
             (action as? BasicAction)?.callback?()
         }
@@ -126,18 +126,7 @@ struct InteractionBarView: View {
     
     @ViewBuilder
     private func actionLabelView(_ action: any Action) -> some View {
-        let isOn = ((action as? BasicAction)?.disabled ?? false) ? false : action.isOn
-        Image(systemName: action.barIcon)
-            .resizable()
-            .fontWeight(Self.unweightedSymbols.contains(action.barIcon) ? .regular : .medium)
-            .symbolVariant(isOn ? .fill : .none)
-            .scaledToFit()
-            .frame(width: Constants.main.barIconSize, height: Constants.main.barIconSize)
-            .padding(Constants.main.barIconPadding)
-            .foregroundColor(isOn ? palette.selectedInteractionBarItem : palette.primary)
-            .background(isOn ? action.color : .clear, in: .rect(cornerRadius: Constants.main.barIconCornerRadius))
-            .contentShape(Rectangle())
-            .opacity(((action as? BasicAction)?.disabled ?? false) ? 0.5 : 1)
+        let isOn = ((action as? BasicAction)?.disabled ?? false) ? false : action.appearance.isOn
     }
 }
 
@@ -151,7 +140,7 @@ private enum EnrichedWidget {
         case let .action(action):
             hasher.combine(1)
             hasher.combine(action.id)
-            hasher.combine(action.isOn)
+            hasher.combine(action.appearance.isOn)
             hasher.combine((action as? BasicAction)?.disabled)
         case let .counter(counter):
             // If `counter.value` is included in this, the fancy `.numericText()` transition
@@ -200,7 +189,7 @@ extension [EnrichedWidget] {
         }
     }
     
-    init(reply: any Reply1Providing, items: [InboxBarConfiguration.Item]) {
+    init(reply: any Reply1Providing, items: [ReplyBarConfiguration.Item]) {
         self = items.map { item in
             switch item {
             case let .action(action):

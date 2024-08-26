@@ -51,6 +51,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.setContentHuggingPriority(.defaultLow, for: .horizontal)
         textView.sizeToFit()
+        textView.becomeFirstResponder()
         
         let contentController = UIHostingController(rootView: content)
         let contentView = contentController.view!

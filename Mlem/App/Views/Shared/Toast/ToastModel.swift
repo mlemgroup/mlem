@@ -29,7 +29,9 @@ class ToastModel {
         ) {
             toasts.remove(at: index)
         }
-        toasts.append(newToast)
+        Task { @MainActor in
+            toasts.append(newToast)
+        }
         return newToast.id
     }
     

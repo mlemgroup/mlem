@@ -26,6 +26,7 @@ struct PersonView: View {
     
     @Setting(\.postSize) var postSize
     
+    @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     
@@ -40,7 +41,7 @@ struct PersonView: View {
         self._person = .init(wrappedValue: person)
         self.isProfileTab = isProfileTab
         
-        if let person1 = person.wrappedValue as? any Person1Providing {
+        if let person1 = person.wrappedValue as? any Person1Providing, person1.api === AppState.main.firstApi {
             self._feedLoader = .init(wrappedValue: .init(
                 api: AppState.main.firstApi,
                 userId: person1.id,
@@ -98,8 +99,11 @@ struct PersonView: View {
                             savedOnly: false,
                             prefetchingConfiguration: .forPostSize(postSize)
                         )
-                        
                         preheatFeedLoader()
+                    } else if let feedLoader, feedLoader.api !== entity.api {
+                        Task {
+                            await feedLoader.switchUser(api: entity.api, userId: entity.id)
+                        }
                     }
                     
                     return response.person
@@ -136,7 +140,7 @@ struct PersonView: View {
             }
             .animation(.easeOut(duration: 0.2), value: person is any Person3Providing)
         }
-        .outdatedFeedPopup(feedLoader: feedLoader)
+        .outdatedFeedPopup(feedLoader: feedLoader, showPopup: selectedTab != .communities)
         .background(postSize.tiled ? palette.groupedBackground : palette.background)
     }
     

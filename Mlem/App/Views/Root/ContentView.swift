@@ -14,6 +14,7 @@ struct ContentView: View {
         case feeds, inbox, profile, search, settings
     }
     
+    @Setting(\.interfaceStyle) var interfaceStyle
     @Setting(\.colorPalette) var colorPalette
     
     let cacheCleanTimer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
@@ -74,16 +75,15 @@ struct ContentView: View {
                         handleError(error)
                     }
                 }
+                .onChange(of: interfaceStyle, initial: true) {
+                    let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+                    windowScene?.windows.first?.overrideUserInterfaceStyle = interfaceStyle
+                }
+                .environment(AppState.main)
         }
-    }
-
-    var shouldDisplayToasts: Bool {
-        navigationModel.layers.allSatisfy { !$0.canDisplayToasts }
     }
     
     @ViewBuilder
-    // I got another one of those "Calling into SwiftUI on non-main thread" errors... hopefully this fixes it? Hard to reproduce
-    @MainActor
     var content: some View {
         CustomTabView(selectedIndex: Binding(get: {
             Tab.allCases.firstIndex(of: appState.contentViewTab) ?? 0
@@ -146,28 +146,6 @@ struct ContentView: View {
                 shouldDisplayNewToasts: shouldDisplayToasts,
                 location: .top
             )
-        }
-    }
-    
-    func loadAvatar(url: URL) async {
-        do {
-            let imageTask = ImagePipeline.shared.imageTask(with: url.withIconSize(128))
-            let avatarImage = try await imageTask.image
-                .resized(to: .init(width: imageTask.image.size.width / imageTask.image.size.height * 26, height: 26))
-                .circleMasked
-                .withRenderingMode(.alwaysOriginal)
-            
-            let selectedAvatarImage = try await imageTask.image
-                .resized(to: .init(width: imageTask.image.size.width / imageTask.image.size.height * 26, height: 26))
-                .circleBorder(color: .init(palette.accent), width: 3.5)
-                .withRenderingMode(.alwaysOriginal)
-            
-            Task { @MainActor in
-                self.avatarImage = avatarImage
-                self.selectedAvatarImage = selectedAvatarImage
-            }
-        } catch {
-            print(error)
         }
     }
 }

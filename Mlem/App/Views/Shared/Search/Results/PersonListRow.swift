@@ -38,18 +38,13 @@ struct PersonListRow<Content2: View>: View {
     }
     
     var body: some View {
-        HStack(spacing: 0) {
-            content
-            Image(systemName: Icons.forward)
-                .imageScale(.small)
-                .foregroundStyle(palette.tertiary)
-        }
-        .padding(.trailing)
-        .padding(.vertical, 6)
-        .onTapGesture {
-            navigation.push(.person(person))
-        }
-        .background(palette.background)
-        .contextMenu { person.menuActions(navigation: navigation) }
+        FormChevron { content }
+            .padding(.trailing)
+            .padding(.vertical, 6)
+            .onTapGesture {
+                navigation.push(.person(person))
+            }
+            .background(palette.background)
+            .contextMenu { person.menuActions(navigation: navigation) }
     }
 }

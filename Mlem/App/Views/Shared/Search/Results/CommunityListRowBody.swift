@@ -11,6 +11,8 @@ import SwiftUI
 struct CommunityListRowBody<Content: View>: View {
     enum Complication { case instance, subscriberCount }
     enum Readout { case subscribers }
+
+    @Setting(\.blurNsfw) var blurNsfw
     
     @Environment(Palette.self) var palette
     
@@ -67,8 +69,12 @@ struct CommunityListRowBody<Content: View>: View {
                     .frame(width: 30, height: 30)
                     .padding(9)
             } else {
-                CircleCroppedImageView(url: community.avatar?.withIconSize(128), fallback: .community)
-                    .frame(width: Constants.main.listRowAvatarSize, height: Constants.main.listRowAvatarSize)
+                CircleCroppedImageView(
+                    url: community.avatar?.withIconSize(128),
+                    fallback: .community,
+                    blurred: community.nsfw && (blurNsfw != .never)
+                )
+                .frame(width: Constants.main.listRowAvatarSize, height: Constants.main.listRowAvatarSize)
             }
             
             VStack(alignment: .leading, spacing: 2) {

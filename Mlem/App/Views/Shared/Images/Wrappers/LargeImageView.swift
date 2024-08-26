@@ -20,9 +20,7 @@ struct LargeImageView: View {
     var onTapActions: (() -> Void)?
     @State var blurred: Bool = false
     
-    init(url: URL?, nsfw: Bool, onTapActions: (() -> Void)? = nil) {
-        @Setting(\.blurNsfw) var blurNsfw
-        let shouldBlur = blurNsfw ? nsfw : false
+    init(url: URL?, shouldBlur: Bool, onTapActions: (() -> Void)? = nil) {
         self.url = url
         self.onTapActions = onTapActions
         self.shouldBlur = shouldBlur
@@ -33,7 +31,7 @@ struct LargeImageView: View {
 
     var body: some View {
         DynamicImageView(url: url)
-            .blur(radius: blurred ? 50 : 0, opaque: true)
+            .dynamicBlur(blurred: blurred)
             .clipShape(.rect(cornerRadius: Constants.main.mediumItemCornerRadius))
             .overlay {
                 NsfwOverlay(blurred: $blurred, shouldBlur: shouldBlur)

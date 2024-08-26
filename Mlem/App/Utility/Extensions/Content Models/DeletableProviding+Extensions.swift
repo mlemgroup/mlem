@@ -38,12 +38,14 @@ extension DeletableProviding {
     func deleteAction(feedback: Set<FeedbackType>) -> BasicAction {
         .init(
             id: "delete\(uid)",
-            isOn: deleted,
-            label: deleted ? "Restore" : "Delete",
-            color: deleted ? Palette.main.positive : Palette.main.negative,
-            isDestructive: !deleted,
+            appearance: .init(
+                label: deleted ? "Restore" : "Delete",
+                isOn: deleted,
+                isDestructive: !deleted,
+                color: deleted ? Palette.main.positive : Palette.main.negative,
+                icon: deleted ? Icons.undelete : Icons.delete
+            ),
             confirmationPrompt: deleted ? nil : "Really delete?",
-            icon: deleted ? Icons.undelete : Icons.delete,
             callback: api.canInteract ? { self.toggleDeleted(feedback: feedback) } : nil
         )
     }

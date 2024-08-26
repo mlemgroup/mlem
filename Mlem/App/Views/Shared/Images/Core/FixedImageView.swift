@@ -19,6 +19,7 @@ struct FixedImageView: View {
     @State var loader: ImageLoader
     let fallback: Fallback
     let showProgress: Bool
+    let blurred: Bool
     
     /// Enumeration of placeholder images to use if image loading fails
     enum Fallback {
@@ -39,11 +40,13 @@ struct FixedImageView: View {
         url: URL?,
         maxSize: CGFloat? = nil,
         fallback: Fallback,
-        showProgress: Bool
+        showProgress: Bool,
+        blurred: Bool = false
     ) {
         self.fallback = fallback
         self.showProgress = showProgress
         self._loader = .init(wrappedValue: .init(url: url, maxSize: maxSize))
+        self.blurred = blurred
     }
     
     var body: some View {
@@ -70,6 +73,7 @@ struct FixedImageView: View {
                 Image(uiImage: loader.uiImage ?? .blank)
                     .resizable()
                     .scaledToFill()
+                    .dynamicBlur(blurred: blurred)
             }
         }
     }

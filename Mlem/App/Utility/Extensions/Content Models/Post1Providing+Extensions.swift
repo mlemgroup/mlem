@@ -20,15 +20,19 @@ extension Post1Providing {
                 HapticManager.main.play(haptic: .lightSuccess, priority: .low)
             }
             if feedback.contains(.toast) {
-                ToastModel.main.add(
-                    .undoable(
-                        "Hidden",
-                        systemImage: Icons.hideFill,
-                        callback: {
-                            self2.updateHidden(false)
-                        }
+                if self2.hidden {
+                    ToastModel.main.add(.success("Shown"))
+                } else {
+                    ToastModel.main.add(
+                        .undoable(
+                            "Hidden",
+                            systemImage: Icons.hideFill,
+                            callback: {
+                                self2.updateHidden(false)
+                            }
+                        )
                     )
-                )
+                }
             }
             self2.toggleHidden()
         } else {
@@ -76,6 +80,7 @@ extension Post1Providing {
             
             // If no version has been fetched yet, assume they're on <0.19.4 for now.
             // Once 0.19.4 is widely adopted we could assume they're on >=0.19.4.
+            // See also the identical check within `hideAction` itself.
             if (api.fetchedVersion ?? .zero) >= .v19_4 {
                 hideAction(feedback: feedback)
             }
@@ -90,51 +95,43 @@ extension Post1Providing {
     }
     
     func action(
-        type: PostActionType,
-        feedback: Set<FeedbackType> = [],
-        expandedPostTracker: ExpandedPostTracker? = nil
+        type: PostBarConfiguration.ActionType,
+        feedback: Set<FeedbackType> = [.haptic, .toast],
+        expandedPostTracker: ExpandedPostTracker? = nil,
+        communityContext: (any CommunityStubProviding)? = nil
     ) -> any Action {
         switch type {
-        case .upvote:
-            upvoteAction(feedback: feedback)
-        case .downvote:
-            downvoteAction(feedback: feedback)
-        case .save:
-            saveAction(feedback: feedback)
-        case .reply:
-            replyAction(expandedPostTracker: expandedPostTracker)
-        case .share:
-            shareAction()
-        case .selectText:
-            selectTextAction()
-        case .hide:
-            hideAction(feedback: feedback)
+        case .upvote: upvoteAction(feedback: feedback)
+        case .downvote: downvoteAction(feedback: feedback)
+        case .save: saveAction(feedback: feedback)
+        case .reply: replyAction(expandedPostTracker: expandedPostTracker)
+        case .share: shareAction()
+        case .selectText: selectTextAction()
+        case .hide: hideAction(feedback: feedback)
+        case .block: blockAction(feedback: feedback)
+        case .report: reportAction(communityContext: communityContext)
         }
     }
     
-    func counter(type: PostCounterType) -> Counter {
+    func counter(
+        type: PostBarConfiguration.CounterType,
+        expandedPostTracker: ExpandedPostTracker? = nil
+    ) -> Counter {
         switch type {
-        case .score:
-            scoreCounter
-        case .upvote:
-            upvoteCounter
-        case .downvote:
-            downvoteCounter
+        case .score: scoreCounter
+        case .upvote: upvoteCounter
+        case .downvote: downvoteCounter
+        case .reply: replyCounter(expandedPostTracker: expandedPostTracker)
         }
     }
     
-    func readout(type: PostReadoutType) -> Readout {
+    func readout(type: PostBarConfiguration.ReadoutType) -> Readout {
         switch type {
-        case .created:
-            createdReadout
-        case .score:
-            scoreReadout
-        case .upvote:
-            upvoteReadout
-        case .downvote:
-            downvoteReadout
-        case .comment:
-            commentReadout
+        case .created: createdReadout
+        case .score: scoreReadout
+        case .upvote: upvoteReadout
+        case .downvote: downvoteReadout
+        case .comment: commentReadout
         }
     }
     
@@ -178,23 +175,23 @@ extension Post1Providing {
     
     func hideAction(feedback: Set<FeedbackType>) -> BasicAction {
         let hidden = hidden_ ?? false
+        let available = (api.fetchedVersion ?? .zero) >= .v19_4 && api.canInteract
         return .init(
             id: "hide\(uid)",
-            isOn: hidden,
-            label: hidden ? "Show" : "Hide",
-            color: .gray,
-            icon: hidden ? Icons.show : Icons.hide,
-            callback: api.canInteract ? { self.self2?.toggleHidden(feedback: feedback) } : nil
+            appearance: .hide(isOn: hidden),
+            callback: available ? { self.self2?.toggleHidden(feedback: feedback) } : nil
         )
     }
     
     func blockAction(feedback: Set<FeedbackType>) -> ActionGroup {
         .init(
-            label: "Block...",
-            prompt: "Block User or Community?",
-            color: Palette.main.negative,
-            isDestructive: true,
-            icon: Icons.block,
+            appearance: .init(
+                label: "Block...",
+                isDestructive: true,
+                color: Palette.main.negative,
+                icon: Icons.block
+            ),
+            prompt: "Block community or user?",
             disabled: !api.canInteract,
             displayMode: .popup
         ) {
@@ -206,12 +203,14 @@ extension Post1Providing {
     func blockCommunityAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
         .init(
             id: "blockCommunity\(actorId.absoluteString)",
-            isOn: false,
-            label: "Block Community",
-            color: Palette.main.negative,
-            isDestructive: true,
+            appearance: .init(
+                label: "Block Community",
+                isOn: false,
+                isDestructive: true,
+                color: Palette.main.negative,
+                icon: Icons.block
+            ),
             confirmationPrompt: showConfirmation ? "Really block this community?" : nil,
-            icon: Icons.block,
             callback: api.canInteract ? { self.self2?.community.toggleBlocked(feedback: feedback) } : nil
         )
     }

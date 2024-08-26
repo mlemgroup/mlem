@@ -26,15 +26,15 @@ enum PersonFlair: CaseIterable {
         case .moderator:
             return Palette.main.moderation
         case .op:
-            return Palette.main.accent2
+            return Palette.main.colorfulAccent(0)
         case .bot:
-            return Palette.main.accent7
+            return Palette.main.colorfulAccent(5)
         case .bannedFromInstance, .bannedFromCommunity:
             return Palette.main.negative
         case .developer:
-            return Palette.main.accent6
+            return Palette.main.colorfulAccent(4)
         case .cakeDay:
-            return Palette.main.accent3
+            return Palette.main.colorfulAccent(1)
         }
     }
     

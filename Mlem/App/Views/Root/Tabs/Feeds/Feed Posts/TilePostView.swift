@@ -106,6 +106,7 @@ struct TilePostView: View {
     
     struct BaseImage: View {
         @Environment(Palette.self) var palette: Palette
+        @Environment(\.communityContext) var communityContext
         
         @Setting(\.blurNsfw) var blurNsfw
         
@@ -113,6 +114,14 @@ struct TilePostView: View {
         
         let width: CGFloat
         let height: CGFloat
+        
+        var blurred: Bool {
+            switch blurNsfw {
+            case .always: post.nsfw
+            case .outsideCommunity: post.nsfw && !(communityContext?.nsfw ?? false)
+            case .never: false
+            }
+        }
         
         var body: some View {
             content
@@ -147,13 +156,13 @@ struct TilePostView: View {
             case .image:
                 ThumbnailImageView(
                     post: post,
-                    blurred: post.nsfw && blurNsfw,
+                    blurred: blurred,
                     size: .tile
                 )
                 .frame(width: width, height: height)
                 .clipped()
             case let .link(link):
-                ThumbnailImageView(post: post, blurred: post.nsfw && blurNsfw, size: .tile)
+                ThumbnailImageView(post: post, blurred: blurred, size: .tile)
                     .aspectRatio(contentMode: .fill)
                     .frame(width: width, height: height)
                     .clipped()

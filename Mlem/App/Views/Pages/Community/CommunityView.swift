@@ -28,15 +28,20 @@ struct CommunityView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
+    @Environment(\.dismiss) var dismiss
     
     @Setting(\.postSize) var postSize
+    @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
     
     @State var community: AnyCommunity
     @State private var selectedTab: Tab = .posts
     @State var postFeedLoader: CommunityPostFeedLoader?
+    @State var warningPresented: Bool
     
     init(community: AnyCommunity) {
+        @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
         self.community = community
+        self._warningPresented = .init(wrappedValue: showNsfwCommunityWarning && (community.wrappedValue.nsfw_ ?? false))
     }
     
     var body: some View {
@@ -62,6 +67,7 @@ struct CommunityView: View {
     }
         
     @ViewBuilder
+    // swiftlint:disable:next function_body_length
     func content(community: any Community) -> some View {
         FancyScrollView {
             HStack {
@@ -105,11 +111,15 @@ struct CommunityView: View {
             .environment(\.communityContext, community)
         }
         .background(postSize.tiled ? palette.groupedBackground : palette.background)
-        .outdatedFeedPopup(feedLoader: postFeedLoader)
+        .outdatedFeedPopup(feedLoader: postFeedLoader, showPopup: selectedTab == .posts)
         .toolbar {
             ToolbarItemGroup(placement: .secondaryAction) {
                 MenuButtons { community.menuActions(navigation: navigation) }
             }
+        }
+        .fullScreenCover(isPresented: $warningPresented) {
+            nsfwWarningOverlay
+                .presentationBackground(.ultraThinMaterial)
         }
     }
     
@@ -127,7 +137,7 @@ struct CommunityView: View {
     func aboutTab(community: any Community) -> some View {
         VStack(spacing: Constants.main.standardSpacing) {
             if let banner = community.banner {
-                LargeImageView(url: banner, nsfw: community.nsfw)
+                LargeImageView(url: banner, shouldBlur: false)
             }
             if let description = community.description {
                 Markdown(description, configuration: .default)
@@ -179,11 +189,54 @@ struct CommunityView: View {
         return output
     }
     
+    @ViewBuilder
+    var nsfwWarningOverlay: some View {
+        VStack(spacing: Constants.main.doubleSpacing) {
+            WarningView(
+                iconName: Icons.warning,
+                text: "This community likely contains graphic or explicit content.",
+                inList: false
+            )
+            
+            Group {
+                HStack(spacing: Constants.main.doubleSpacing) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("Go back").frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+                    
+                    Button {
+                        warningPresented = false
+                    } label: {
+                        Text("Continue").frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+                
+                Toggle(isOn: Binding(
+                    get: { !showNsfwCommunityWarning },
+                    set: { showNsfwCommunityWarning = !$0 }
+                ), label: {
+                    Text("Don't show this again")
+                })
+            }
+            .padding(.horizontal, 30)
+        }
+        .padding(Constants.main.doubleSpacing)
+        .background {
+            RoundedRectangle(cornerRadius: Constants.main.largeItemCornerRadius)
+                .fill(palette.background.opacity(0.8))
+        }
+        .padding(Constants.main.doubleSpacing)
+    }
+    
     func setupFeedLoader(community: any Community) {
-        @Setting(\.internetSpeed) var internetSpeed
-        @Setting(\.showReadInFeed) var showReadInFeed
-        
         Task { @MainActor in
+            @Setting(\.internetSpeed) var internetSpeed
+            @Setting(\.showReadInFeed) var showReadInFeed
+            
             postFeedLoader = try await .init(
                 pageSize: internetSpeed.pageSize,
                 sortType: appState.initialFeedSortType,

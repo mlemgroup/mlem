@@ -68,6 +68,9 @@
     "About" : {
 
     },
+    "About Mlem" : {
+
+    },
     "Abuse" : {
 
     },
@@ -98,16 +101,28 @@
     "Administrator" : {
 
     },
+    "Advanced" : {
+
+    },
+    "Alien" : {
+
+    },
     "All" : {
 
     },
     "All Time" : {
 
     },
+    "Always" : {
+
+    },
     "App Icon" : {
 
     },
     "Applications Email Admins" : {
+
+    },
+    "Apply to All Interaction Bars" : {
 
     },
     "Authenticating..." : {
@@ -155,6 +170,9 @@
     "Bottom" : {
 
     },
+    "Cache" : {
+
+    },
     "Cake Day" : {
 
     },
@@ -166,6 +184,16 @@
     },
     "Choose a community..." : {
 
+    },
+    "Center" : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Centre"
+          }
+        }
+      }
     },
     "Choose Account Type" : {
 
@@ -197,7 +225,13 @@
     "Compact" : {
 
     },
+    "Confirm" : {
+
+    },
     "Connecting..." : {
+
+    },
+    "Continue" : {
 
     },
     "Controversial" : {
@@ -224,13 +258,35 @@
     "Crosspost" : {
 
     },
+    "Customize Interaction Bar" : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise Interaction Bar"
+          }
+        }
+      }
+    },
+    "Dark" : {
+
+    },
     "Day" : {
+
+    },
+    "Default" : {
 
     },
     "Default Feed Type (Desktop)" : {
 
     },
     "Delete" : {
+
+    },
+    "Delete Account" : {
+
+    },
+    "Delete posts and comments" : {
 
     },
     "Deleted" : {
@@ -245,10 +301,16 @@
     "Disabled" : {
 
     },
+    "Disk Usage" : {
+
+    },
     "Dismiss" : {
 
     },
     "Domain" : {
+
+    },
+    "Don't show this again" : {
 
     },
     "Downvote" : {
@@ -269,6 +331,9 @@
     "Enter your instance's domain name below." : {
 
     },
+    "EULA" : {
+
+    },
     "example.com" : {
 
     },
@@ -279,6 +344,9 @@
 
     },
     "Failed to resolve post. Try another account." : {
+
+    },
+    "Failed to Save Image. You may need to allow Mlem to access your Photo Library in System Settings." : {
 
     },
     "Fallback" : {
@@ -337,6 +405,18 @@
     "Feeds" : {
 
     },
+    "General" : {
+
+    },
+    "GitHub Repository" : {
+
+    },
+    "Go back" : {
+
+    },
+    "Green" : {
+
+    },
     "Grouped" : {
 
     },
@@ -376,6 +456,12 @@
     "Image" : {
 
     },
+    "Image Saved" : {
+
+    },
+    "Images are cached on your device for fast reuse. The maximum cache size is around %@." : {
+
+    },
     "In Default Browser" : {
 
     },
@@ -394,10 +480,16 @@
     "Instances" : {
 
     },
+    "Interaction Bar" : {
+
+    },
     "It's turtles all the way down" : {
 
     },
     "Italic" : {
+
+    },
+    "Jump Button" : {
 
     },
     "Just Now" : {
@@ -421,10 +513,25 @@
     "Link" : {
 
     },
+    "Lemmy" : {
+
+    },
+    "Lemmy Community" : {
+
+    },
+    "Licenses" : {
+
+    },
+    "Light" : {
+
+    },
     "Links" : {
 
     },
     "loading" : {
+
+    },
+    "Loading instance details" : {
 
     },
     "Loading..." : {
@@ -442,6 +549,9 @@
     "Mark Unread" : {
 
     },
+    "Matrix Room" : {
+
+    },
     "Medium" : {
 
     },
@@ -452,6 +562,9 @@
 
     },
     "Messages" : {
+
+    },
+    "Mlem %@" : {
 
     },
     "Mlem Developer" : {
@@ -482,6 +595,9 @@
 
     },
     "Most Comments" : {
+
+    },
+    "Never" : {
 
     },
     "New" : {
@@ -517,6 +633,9 @@
     "NSFW Tag" : {
 
     },
+    "Ocean" : {
+
+    },
     "Old" : {
 
     },
@@ -541,16 +660,31 @@
     "Optional Description" : {
 
     },
+    "Orange" : {
+
+    },
     "Original Poster" : {
 
     },
     "Other" : {
 
     },
+    "Outside NSFW Communities" : {
+
+    },
     "Overview" : {
 
     },
     "Password" : {
+
+    },
+    "Permanently delete %@" : {
+
+    },
+    "photo" : {
+
+    },
+    "Pink" : {
 
     },
     "Post Size" : {
@@ -571,10 +705,28 @@
     "Posts from communities you subscribe to" : {
 
     },
+    "Pride" : {
+
+    },
+    "Privacy Policy" : {
+
+    },
     "Private" : {
 
     },
+    "Quick Look" : {
+
+    },
     "Quote" : {
+
+    },
+    "Readouts:" : {
+
+    },
+    "Really apply configuration to all?" : {
+
+    },
+    "Really delete %@?" : {
 
     },
     "Reason (Optional)" : {
@@ -619,13 +771,22 @@
     "Requires Application" : {
 
     },
+    "Reset" : {
+
+    },
     "Restore" : {
 
     },
     "Right" : {
 
     },
+    "Safety" : {
+
+    },
     "Save" : {
+
+    },
+    "Save Image" : {
 
     },
     "Saved" : {
@@ -635,15 +796,6 @@
 
     },
     "Search" : {
-
-    },
-    "Search Communities" : {
-
-    },
-    "Search Instances" : {
-
-    },
-    "Search People" : {
 
     },
     "Select Text" : {
@@ -656,6 +808,9 @@
 
     },
     "Settings" : {
+
+    },
+    "Share Image" : {
 
     },
     "Share..." : {
@@ -673,16 +828,22 @@
     "Show Mod Names in Modlog" : {
 
     },
-    "Show Post Creator" : {
+    "Show Post Creator in Feed" : {
 
     },
     "Show User Avatar" : {
+
+    },
+    "Shown" : {
 
     },
     "Sign In" : {
 
     },
     "Sign In to Lemmy" : {
+
+    },
+    "Silver" : {
 
     },
     "Slow" : {
@@ -709,13 +870,16 @@
     "Spoiler" : {
 
     },
-    "Standard" : {
+    "Strikethrough" : {
 
     },
     "Start writing..." : {
 
     },
     "Strikethrough" : {
+
+    },
+    "Style" : {
 
     },
     "Subscribe" : {
@@ -743,6 +907,12 @@
 
     },
     "Switch to this account and..." : {
+
+    },
+    "System" : {
+
+    },
+    "Tap and hold items to add, remove or rearrange them." : {
 
     },
     "Tap to show slur filter regex." : {
@@ -780,6 +950,15 @@
 
     },
     "Title" : {
+
+    },
+    "To confirm, please enter your password:" : {
+
+    },
+    "Too many items!" : {
+
+    },
+    "Top" : {
 
     },
     "Top: %@" : {
@@ -853,7 +1032,7 @@
     "Upvote" : {
 
     },
-    "Upvote On Save" : {
+    "Upvote on Save" : {
 
     },
     "Username" : {
@@ -869,6 +1048,12 @@
 
     },
     "Visit" : {
+
+    },
+    "Warn When Opening NSFW Community" : {
+
+    },
+    "Website" : {
 
     },
     "Week" : {

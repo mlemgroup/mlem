@@ -14,6 +14,19 @@ struct FullyQualifiedLinkView: View {
     let entity: (any CommunityOrPersonStub & Profile2Providing)?
     let labelStyle: FullyQualifiedLabelStyle
     let showAvatar: Bool
+    let blurred: Bool
+    
+    init(
+        entity: (any CommunityOrPersonStub & Profile2Providing)?,
+        labelStyle: FullyQualifiedLabelStyle,
+        showAvatar: Bool,
+        blurred: Bool = false
+    ) {
+        self.entity = entity
+        self.labelStyle = labelStyle
+        self.showAvatar = showAvatar
+        self.blurred = blurred
+    }
     
     var body: some View {
         Button {
@@ -23,7 +36,7 @@ struct FullyQualifiedLinkView: View {
                 navigation.push(.community(community))
             }
         } label: {
-            FullyQualifiedLabelView(entity: entity, labelStyle: labelStyle, showAvatar: showAvatar)
+            FullyQualifiedLabelView(entity: entity, labelStyle: labelStyle, showAvatar: showAvatar, blurred: blurred)
         }
         .buttonStyle(.plain)
     }

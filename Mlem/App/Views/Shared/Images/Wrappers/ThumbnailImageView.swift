@@ -15,6 +15,7 @@ struct ThumbnailImageView: View {
     @Environment(\.openURL) var openURL
     
     @State var loading: ImageLoadingState?
+    @State var quickLookUrl: URL?
     
     let post: any Post1Providing
     var blurred: Bool = false
@@ -37,10 +38,8 @@ struct ThumbnailImageView: View {
         blurred: Bool,
         size: Size
     ) {
-        @Setting(\.blurNsfw) var shouldBlur
-        
         self.post = post
-        self.blurred = shouldBlur ? blurred : false
+        self.blurred = blurred
         self.size = size
     }
     
@@ -60,6 +59,20 @@ struct ThumbnailImageView: View {
                         }
                     }
                 }
+                .contextMenu {
+                    if let url = fullSizeUrl(url: url) {
+                        Button("Save Image", systemImage: Icons.import) {
+                            Task { await saveImage(url: url) }
+                        }
+                        Button("Share Image", systemImage: Icons.share) {
+                            Task { await shareImage(url: url) }
+                        }
+                        Button("Quick Look", systemImage: Icons.imageDetails) {
+                            Task { await showQuickLook(url: url) }
+                        }
+                    }
+                }
+                .quickLookPreview($quickLookUrl)
         case let .link(link):
             content
                 .onTapGesture {
@@ -89,7 +102,7 @@ struct ThumbnailImageView: View {
                 showProgress: true
             )
             .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
-            .blur(radius: blurred && (loading == .done) ? 10 : 0, opaque: true)
+            .dynamicBlur(blurred: blurred && loading == .done)
             .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
             .onPreferenceChange(ImageLoadingPreferenceKey.self, perform: { loading = $0 })
         } else {
@@ -113,7 +126,7 @@ struct ThumbnailImageView: View {
                 fallback: .image,
                 showProgress: true
             )
-            .blur(radius: blurred ? 10 : 0, opaque: true)
+            .dynamicBlur(blurred: blurred)
             .onPreferenceChange(ImageLoadingPreferenceKey.self, perform: { loading = $0 })
         } else {
             Image(systemName: post.placeholderImageName)
@@ -122,6 +135,18 @@ struct ThumbnailImageView: View {
                 .frame(maxWidth: 50)
                 .padding(4)
                 .foregroundStyle(palette.tertiary)
+        }
+    }
+    
+    func shareImage(url: URL) async {
+        if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "image") {
+            navigation.shareUrl = fileUrl
+        }
+    }
+    
+    func showQuickLook(url: URL) async {
+        if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "quicklook") {
+            quickLookUrl = fileUrl
         }
     }
 }

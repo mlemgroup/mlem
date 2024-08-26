@@ -14,11 +14,21 @@ struct HeadlinePostView: View {
     @Setting(\.showPostCreator) var showCreator
     @Setting(\.showPersonAvatar) var showPersonAvatar
     @Setting(\.showCommunityAvatar) var showCommunityAvatar
+    @Setting(\.blurNsfw) var blurNsfw
     
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
+    @Environment(ExpandedPostTracker.self) private var expandedPostTracker: ExpandedPostTracker?
     @Environment(Palette.self) var palette: Palette
     
     let post: any Post1Providing
+    
+    var blurred: Bool {
+        switch blurNsfw {
+        case .always: post.nsfw
+        case .outsideCommunity: post.nsfw && !(communityContext?.nsfw ?? false)
+        case .never: false
+        }
+    }
     
     var body: some View {
         content
@@ -48,7 +58,7 @@ struct HeadlinePostView: View {
             
             HStack(alignment: .top, spacing: Constants.main.standardSpacing) {
                 if thumbnailLocation == .left {
-                    ThumbnailImageView(post: post, blurred: post.nsfw, size: .standard)
+                    ThumbnailImageView(post: post, blurred: blurred, size: .standard)
                 }
   
                 VStack(alignment: .leading, spacing: Constants.main.halfSpacing) {
@@ -65,7 +75,7 @@ struct HeadlinePostView: View {
                 
                 if thumbnailLocation == .right {
                     Spacer()
-                    ThumbnailImageView(post: post, blurred: post.nsfw, size: .standard)
+                    ThumbnailImageView(post: post, blurred: blurred, size: .standard)
                 }
             }
             
@@ -75,11 +85,9 @@ struct HeadlinePostView: View {
             
             InteractionBarView(
                 post: post,
-                configuration: .init(
-                    leading: [.counter(.score)],
-                    trailing: [.action(.save), .action(.reply)],
-                    readouts: [.created, .score, .comment]
-                )
+                configuration: InteractionBarTracker.main.postInteractionBar,
+                expandedPostTracker: expandedPostTracker,
+                communityContext: communityContext
             )
             .padding(.vertical, 2)
         }

@@ -6,6 +6,7 @@
 //
 
 import Nuke
+import QuickLook
 import SwiftUI
 
 extension UIImage {
@@ -13,27 +14,65 @@ extension UIImage {
 }
 
 struct DynamicImageView: View {
-    @Environment(Palette.self) var palette: Palette
+    @Environment(Palette.self) var palette
+    @Environment(NavigationLayer.self) var navigation
     
     @State var loader: ImageLoader
-    
     @State var loadingPref: ImageLoadingState?
+    @State var quickLookUrl: URL?
     
     let showError: Bool
     let cornerRadius: CGFloat
+    let actionsEnabled: Bool
     
     init(
         url: URL?,
         maxSize: CGFloat? = nil,
         showError: Bool = true,
-        cornerRadius: CGFloat = Constants.main.mediumItemCornerRadius
+        cornerRadius: CGFloat = Constants.main.mediumItemCornerRadius,
+        actionsEnabled: Bool = true
     ) {
         self.showError = showError
         self.cornerRadius = cornerRadius
+        self.actionsEnabled = actionsEnabled
         self._loader = .init(wrappedValue: .init(url: url, maxSize: maxSize))
     }
     
     var body: some View {
+        if actionsEnabled, let url = fullSizeUrl(url: loader.url) {
+            content
+                .contextMenu {
+                    Button {
+                        Task {
+                            await saveImage(url: url)
+                        }
+                    } label: {
+                        Label(String(localized: "Save Image"), systemImage: Icons.import)
+                    }
+                    
+                    Button {
+                        Task {
+                            await shareImage(url: url)
+                        }
+                    } label: {
+                        Label(String(localized: "Share Image"), systemImage: Icons.share)
+                    }
+                    
+                    Button {
+                        Task {
+                            await showQuickLook(url: url)
+                        }
+                    } label: {
+                        Label(String(localized: "Quick Look"), systemImage: Icons.imageDetails)
+                    }
+                }
+                .quickLookPreview($quickLookUrl)
+        } else {
+            content
+        }
+    }
+    
+    var content: some View {
         Image(uiImage: loader.uiImage ?? .blank)
             .resizable()
             .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
@@ -56,5 +95,17 @@ struct DynamicImageView: View {
             .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
             .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
             .task(loader.load)
+    }
+  
+    func shareImage(url: URL) async {
+        if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "image") {
+            navigation.shareUrl = fileUrl
+        }
+    }
+    
+    func showQuickLook(url: URL) async {
+        if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "quicklook") {
+            quickLookUrl = fileUrl
+        }
     }
 }

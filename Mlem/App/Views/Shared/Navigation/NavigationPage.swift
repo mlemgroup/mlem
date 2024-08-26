@@ -14,7 +14,7 @@ enum NavigationPage: Hashable {
     case feeds(_ selection: FeedSelection = .all)
     case profile, inbox, search
     case quickSwitcher
-    case expandedPost(_ post: AnyPost, commentId: Int? = nil)
+    case expandedPost(_ post: AnyPost, commentActorId: URL? = nil, communityContext: HashWrapper<any Community1Providing>? = nil)
     case community(_ community: AnyCommunity)
     case person(_ person: AnyPerson)
     case instance(_ instance: InstanceHashWrapper)
@@ -29,9 +29,18 @@ enum NavigationPage: Hashable {
     case editComment(_ comment: Comment2, context: CommentEditorView.Context?)
     case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
     case createPost(community: AnyCommunity?)
+    case deleteAccount(_ account: UserAccount)
     
-    static func expandedPost(_ post: any PostStubProviding, commentId: Int? = nil) -> NavigationPage {
-        expandedPost(.init(post), commentId: commentId)
+    static func expandedPost(_ post: any PostStubProviding, commentActorId: URL? = nil) -> NavigationPage {
+        expandedPost(.init(post), commentActorId: commentActorId)
+    }
+    
+    static func expandedPost(_ post: any PostStubProviding, communityContext: (any Community1Providing)?) -> NavigationPage {
+        if let communityContext {
+            expandedPost(.init(post), communityContext: .init(wrappedValue: communityContext))
+        } else {
+            expandedPost(.init(post))
+        }
     }
     
     static func person(_ person: any PersonStubProviding) -> NavigationPage {
@@ -103,12 +112,19 @@ extension NavigationPage {
             QuickSwitcherView()
         case let .report(target, community):
             ReportComposerView(target: target.wrappedValue, community: community)
-        case let .expandedPost(post, commentId):
-            ExpandedPostView(post: post, showCommentWithId: commentId)
+        case let .expandedPost(post, commentActorId, communityContext):
+            ExpandedPostView(post: post, showCommentWithActorId: commentActorId)
+                .environment(\.communityContext, communityContext?.wrappedValue)
         case let .person(person):
             PersonView(person: person)
         case let .createComment(context, expandedPostTracker):
             if let view = CommentEditorView(context: context, expandedPostTracker: expandedPostTracker) {
+                view
+            } else {
+                Text(verbatim: "Error: No active UserAccount")
+            }
+        case let .editComment(comment, context: context):
+            if let view = CommentEditorView(commentToEdit: comment, context: context) {
                 view
             } else {
                 Text(verbatim: "Error: No active UserAccount")
@@ -154,6 +170,8 @@ extension NavigationPage {
             }
         case let .instance(instance):
             InstanceView(instance: instance.wrappedValue)
+        case let .deleteAccount(account):
+            DeleteAccountView(account: account)
         }
     }
     

@@ -13,7 +13,7 @@ extension MarkdownConfiguration {
     static let defaultBlurred: Self = .init(
         inlineImageLoader: loadInlineImage,
         imageBlockView: {
-            imageView($0, blurred: true)
+            imageView($0, shouldBlur: true)
         },
         primaryColor: Palette.main.primary,
         secondaryColor: Palette.main.secondary
@@ -21,30 +21,30 @@ extension MarkdownConfiguration {
     
     static let `default`: Self = .init(
         inlineImageLoader: loadInlineImage,
-        imageBlockView: { imageView($0, blurred: false) },
+        imageBlockView: { imageView($0, shouldBlur: false) },
         primaryColor: Palette.main.primary,
         secondaryColor: Palette.main.secondary
     )
     
     static let dimmed: Self = .init(
         inlineImageLoader: { _ in },
-        imageBlockView: { imageView($0, blurred: false) },
+        imageBlockView: { imageView($0, shouldBlur: false) },
         primaryColor: Palette.main.secondary,
         secondaryColor: Palette.main.tertiary
     )
     
     static let caption: Self = .init(
         inlineImageLoader: { _ in },
-        imageBlockView: { imageView($0, blurred: false) },
+        imageBlockView: { imageView($0, shouldBlur: false) },
         primaryColor: Palette.main.secondary,
         secondaryColor: Palette.main.tertiary,
         font: .caption1
     )
 }
 
-private func imageView(_ inlineImage: InlineImage, blurred: Bool) -> AnyView {
+private func imageView(_ inlineImage: InlineImage, shouldBlur: Bool) -> AnyView {
     AnyView(
-        LargeImageView(url: inlineImage.url, nsfw: blurred)
+        LargeImageView(url: inlineImage.url, shouldBlur: shouldBlur)
             .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
             .frame(maxWidth: .infinity)
     )

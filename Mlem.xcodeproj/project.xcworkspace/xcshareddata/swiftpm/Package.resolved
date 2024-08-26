@@ -1,5 +1,5 @@
 {
-  "originHash" : "b159f0a20b9c47bf2fae7b8e8322b8f3fff96046592270bf1b94b96530aa91b0",
+  "originHash" : "693546cfc633cb179f53728b918542e0d98a3518ffce28aa97b5c239441ee75a",
   "pins" : [
     {
       "identity" : "combine-schedulers",
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware.git",
       "state" : {
-        "branch" : "sjmarf/edit",
-        "revision" : "d8d49890ffa8adb7057576a6257b3268aa29f488"
+        "revision" : "27b15ec2e044ab7037bfe782c8fa2be4b0fad7e7",
+        "version" : "0.30.0"
       }
     },
     {
@@ -80,6 +80,15 @@
       "state" : {
         "revision" : "16fd42ae04c6e7f74a6a86395d04722c641cccee",
         "version" : "0.6.0"
+      }
+    },
+    {
+      "identity" : "swiftui-flow",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tevelee/SwiftUI-Flow",
+      "state" : {
+        "revision" : "b528bd06ae70fbd2936d9561a456fb6ea65bc7ff",
+        "version" : "2.5.0"
       }
     },
     {

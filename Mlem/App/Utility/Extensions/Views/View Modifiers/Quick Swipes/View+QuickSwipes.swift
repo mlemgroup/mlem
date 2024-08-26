@@ -36,8 +36,8 @@ struct QuickSwipeView: ViewModifier {
         // both the width of the icon's frame and its padding. the actual icon size is done using fonts.
         self.iconWidth = config.behavior.primaryThreshold / 3
         
-        _leadingSwipeSymbol = State(initialValue: primaryLeadingAction?.swipeIcon1)
-        _trailingSwipeSymbol = State(initialValue: primaryTrailingAction?.swipeIcon1)
+        _leadingSwipeSymbol = State(initialValue: primaryLeadingAction?.appearance.swipeIcon1)
+        _trailingSwipeSymbol = State(initialValue: primaryTrailingAction?.appearance.swipeIcon1)
     }
     
     func body(content: Content) -> some View {
@@ -128,19 +128,19 @@ struct QuickSwipeView: ViewModifier {
             switch edgeForActions {
             case .leading:
                 if actionIndex == nil {
-                    leadingSwipeSymbol = primaryLeadingAction?.swipeIcon1
-                    dragBackground = primaryLeadingAction?.color.opacity(dragPosition / threshold)
+                    leadingSwipeSymbol = primaryLeadingAction?.appearance.swipeIcon1
+                    dragBackground = primaryLeadingAction?.appearance.color.opacity(dragPosition / threshold)
                 } else {
-                    leadingSwipeSymbol = action?.swipeIcon2
-                    dragBackground = action?.color.opacity(dragPosition / threshold)
+                    leadingSwipeSymbol = action?.appearance.swipeIcon2
+                    dragBackground = action?.appearance.color.opacity(dragPosition / threshold)
                 }
             case .trailing:
                 if actionIndex == nil {
-                    trailingSwipeSymbol = primaryTrailingAction?.swipeIcon1
-                    dragBackground = primaryTrailingAction?.color.opacity(dragPosition / threshold)
+                    trailingSwipeSymbol = primaryTrailingAction?.appearance.swipeIcon1
+                    dragBackground = primaryTrailingAction?.appearance.color.opacity(dragPosition / threshold)
                 } else {
-                    trailingSwipeSymbol = action?.swipeIcon2
-                    dragBackground = action?.color.opacity(dragPosition / threshold)
+                    trailingSwipeSymbol = action?.appearance.swipeIcon2
+                    dragBackground = action?.appearance.color.opacity(dragPosition / threshold)
                 }
             }
             
@@ -175,8 +175,8 @@ struct QuickSwipeView: ViewModifier {
         withAnimation(.spring(response: 0.25)) {
             dragPosition = .zero
             prevDragPosition = .zero
-            leadingSwipeSymbol = primaryLeadingAction?.swipeIcon1
-            trailingSwipeSymbol = primaryTrailingAction?.swipeIcon1
+            leadingSwipeSymbol = primaryLeadingAction?.appearance.swipeIcon1
+            trailingSwipeSymbol = primaryTrailingAction?.appearance.swipeIcon1
             dragBackground = palette.background
         }
     }
