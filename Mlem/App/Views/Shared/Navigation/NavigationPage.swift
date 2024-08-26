@@ -129,12 +129,6 @@ extension NavigationPage {
             } else {
                 Text(verbatim: "Error: No active UserAccount")
             }
-        case let .editComment(comment, context: context):
-            if let view = CommentEditorView(commentToEdit: comment, context: context) {
-                view
-            } else {
-                Text(verbatim: "Error: No active UserAccount")
-            }
         case let .createPost(community: community):
             if let view = PostEditorView(community: community) {
                 view

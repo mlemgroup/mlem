@@ -53,8 +53,10 @@ struct PostEditorTargetView: View {
             if let community = target.community as? any Community {
                 FullyQualifiedLabelView(
                     entity: community,
-                    labelStyle: .small
+                    labelStyle: .small,
+                    blurred: false
                 )
+                .id(community.hashValue)
                 .padding(.init(top: 2, leading: 4, bottom: 2, trailing: 8))
                 .background(palette.secondaryBackground, in: .capsule)
             } else if let community = target.community {
@@ -81,8 +83,10 @@ struct PostEditorTargetView: View {
             AccountPickerMenu(account: $target.account) {
                 FullyQualifiedLabelView(
                     entity: target.account,
-                    labelStyle: .small
+                    labelStyle: .small,
+                    blurred: false
                 )
+                .id(target.account.hashValue)
                 .padding(.init(top: 2, leading: 4, bottom: 2, trailing: 8))
                 .background(palette.secondaryBackground, in: .capsule)
             }

@@ -182,9 +182,6 @@
     "Captcha" : {
 
     },
-    "Choose a community..." : {
-
-    },
     "Center" : {
       "localizations" : {
         "en-GB" : {
@@ -194,6 +191,9 @@
           }
         }
       }
+    },
+    "Choose a community..." : {
+
     },
     "Choose Account Type" : {
 
@@ -250,9 +250,6 @@
 
     },
     "Couldn't read URL" : {
-
-    },
-    "Create Post" : {
 
     },
     "Crosspost" : {
@@ -510,9 +507,6 @@
     "Left" : {
 
     },
-    "Link" : {
-
-    },
     "Lemmy" : {
 
     },
@@ -523,6 +517,9 @@
 
     },
     "Light" : {
+
+    },
+    "Link" : {
 
     },
     "Links" : {
@@ -868,9 +865,6 @@
 
     },
     "Spoiler" : {
-
-    },
-    "Strikethrough" : {
 
     },
     "Start writing..." : {

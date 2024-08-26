@@ -193,6 +193,10 @@ struct PersonView: View {
                     if isProfileTab, selectedTab == .overview || selectedTab == .posts {
                         newPostButton
                             .padding(postSize.tiled ? [.horizontal, .bottom] : [.horizontal, .top], Constants.main.standardSpacing)
+                        if !postSize.tiled {
+                            Divider()
+                                .padding(.top, Constants.main.standardSpacing)
+                        }
                     }
                     PersonContentGridView(feedLoader: feedLoader, contentType: $selectedContentType)
                 } else {
