@@ -13,7 +13,7 @@ class ExpandedPostTracker: Hashable {
     private(set) var comments: [CommentWrapper] = []
     private(set) var commentsKeyedByActorId: [URL: CommentWrapper] = [:]
     
-    private(set) var loadingState: LoadingState = .idle
+    var loadingState: LoadingState = .idle
     
     var post: any Post
     
@@ -30,7 +30,7 @@ class ExpandedPostTracker: Hashable {
         loadingState = .loading
         do {
             let newComments = try await post.getComments(sort: sort, page: 1, maxDepth: 8, limit: 50)
-            if let first = comments.first, first.api != appState.firstApi {
+            if let first = comments.first, first.api != post.api {
                 resolveCommentTree(comments: newComments)
             } else {
                 builtCommentTree(comments: newComments)
@@ -101,13 +101,6 @@ class ExpandedPostTracker: Hashable {
                     comments.append(wrapper)
                 }
             }
-        }
-    }
-
-    func resolveComments() {
-        Task {
-            loadingState = .idle
-            await load()
         }
     }
     
