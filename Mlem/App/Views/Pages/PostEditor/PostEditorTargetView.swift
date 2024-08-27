@@ -15,31 +15,46 @@ struct PostEditorTargetView: View {
     @Bindable var target: PostEditorTarget
     
     var body: some View {
-        Grid(
-            alignment: .center,
-            horizontalSpacing: 8,
-            verticalSpacing: 8
-        ) {
-            GridRow {
-                Image(systemName: Icons.communityFill)
-                    .foregroundStyle(palette.secondary)
-                    .fontWeight(.semibold)
-                communityPicker
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            if AccountsTracker.main.userAccounts.count > 1 {
+        HStack {
+            Grid(
+                alignment: .center,
+                horizontalSpacing: 8,
+                verticalSpacing: 8
+            ) {
                 GridRow {
-                    Image(systemName: Icons.personFill)
+                    Image(systemName: Icons.communityFill)
                         .foregroundStyle(palette.secondary)
                         .fontWeight(.semibold)
-                    accountPicker
+                    communityPicker
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .task(id: target.account, resolveCommunity)
+                }
+                if AccountsTracker.main.userAccounts.count > 1 {
+                    GridRow {
+                        Image(systemName: Icons.personFill)
+                            .foregroundStyle(palette.secondary)
+                            .fontWeight(.semibold)
+                        accountPicker
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .task(id: target.account, resolveCommunity)
+                    }
                 }
             }
+            .font(.footnote)
+            Spacer()
+            switch target.sendState {
+            case .unsent:
+                EmptyView()
+            case .sent:
+                Image(systemName: Icons.successCircleFill)
+                    .symbolRenderingMode(.hierarchical)
+                    .foregroundStyle(palette.positive)
+            case .failed:
+                Image(systemName: Icons.errorCircleFill)
+                    .symbolRenderingMode(.hierarchical)
+                    .foregroundStyle(palette.negative)
+            }
         }
-        .font(.footnote)
-        .padding(.leading, 15)
+        .padding(.horizontal, 15)
     }
     
     @ViewBuilder
@@ -128,11 +143,16 @@ class PostEditorTarget: Identifiable {
         case success, notFound, error(ErrorDetails), resolving
     }
     
+    enum SendState: Equatable {
+        case unsent, sent, failed
+    }
+    
     var community: (any CommunityStubProviding)?
     var account: UserAccount
     let id = UUID()
     
     var resolutionState: ResolutionState = .success
+    var sendState: SendState = .unsent
     
     init(community: (any CommunityStubProviding)? = nil, account: UserAccount) {
         self.community = community

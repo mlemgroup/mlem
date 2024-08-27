@@ -16,27 +16,28 @@ struct PostEditorView: View {
     @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
-    let titleTextView: UITextView
-    let contentTextView: UITextView
+    @State var titleTextView: UITextView
+    @State var contentTextView: UITextView
     
     @State var presentationSelection: PresentationDetent = .large
     @State var titleIsEmpty: Bool = true
     @State var contentIsEmpty: Bool = true
     @State var lastFocusedField: Field = .title
     @State var hasNsfwTag: Bool = false
+    @State var sending: Bool = false
     
     @State var targets: [PostEditorTarget]
     
     init?(community: AnyCommunity?) {
-        self.titleTextView = .init()
-        self.contentTextView = .init()
-        titleTextView.tag = 0
-        contentTextView.tag = 1
         if let account = (AppState.main.firstAccount as? UserAccount) {
             self._targets = .init(wrappedValue: [.init(community: community?.wrappedValue, account: account)])
         } else {
             return nil
         }
+        self.titleTextView = .init()
+        self.contentTextView = .init()
+        titleTextView.tag = 0
+        contentTextView.tag = 1
     }
     
     var body: some View {
@@ -60,6 +61,17 @@ struct PostEditorView: View {
                 }
             } else {
                 lastFocusedField = contentTextView.isFirstResponder ? .content : .title
+            }
+        }
+        .onChange(of: sending) {
+            if sending {
+                titleTextView.resignFirstResponder()
+                titleTextView.isEditable = false
+                contentTextView.resignFirstResponder()
+                contentTextView.isEditable = false
+            } else {
+                titleTextView.isEditable = true
+                contentTextView.isEditable = true
             }
         }
     }
@@ -124,9 +136,9 @@ struct PostEditorView: View {
     var targetSelectionView: some View {
         VStack(spacing: Constants.main.standardSpacing) {
             ForEach(targets, id: \.id) { target in
-                HStack {
+                HStack(spacing: 0) {
                     PostEditorTargetView(target: target)
-                    Spacer()
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     if targets.count > 1 {
                         Button("Remove", systemImage: Icons.closeCircleFill) {
                             if let index = targets.firstIndex(where: { $0.id == target.id }) {
@@ -141,6 +153,18 @@ struct PostEditorView: View {
                 }
                 Divider()
             }
+            let showWarning = !targets.allSatisfy { $0.sendState != .failed }
+            Group {
+                if showWarning {
+                    Text("One of more of your posts failed to send.")
+                        .multilineTextAlignment(.center)
+                        .padding(.vertical, 3)
+                        .frame(maxWidth: .infinity)
+                        .background(.opacity(0.2), in: .capsule)
+                        .foregroundStyle(palette.negative)
+                        .padding(.horizontal)
+                }
+            }.animation(.easeOut(duration: 0.2), value: showWarning)
         }
     }
     
@@ -181,8 +205,15 @@ struct PostEditorView: View {
                     }
                 }
             }
-            Button("Send", systemImage: Icons.send) {}
+            if sending {
+                ProgressView()
+            } else {
+                Button("Send", systemImage: Icons.send) {
+                    sending = true
+                    Task { await send() }
+                }
                 .disabled(!canSubmit)
+            }
         }
     }
 }
