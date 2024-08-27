@@ -39,7 +39,6 @@ extension PostEditorView {
                                 nsfw: hasNsfwTag
                             )
                         } catch {
-                            print(target)
                             print(error)
                             post = nil
                         }
