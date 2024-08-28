@@ -14,6 +14,8 @@ struct ContentView: View {
         case feeds, inbox, profile, search, settings
     }
     
+    @Environment(\.scenePhase) var scenePhase
+    
     @Setting(\.interfaceStyle) var interfaceStyle
     @Setting(\.colorPalette) var colorPalette
     
@@ -78,6 +80,17 @@ struct ContentView: View {
                 .onChange(of: interfaceStyle, initial: true) {
                     let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
                     windowScene?.windows.first?.overrideUserInterfaceStyle = interfaceStyle
+                }
+                .onChange(of: scenePhase, initial: false) {
+                    if AppState.main.firstAccount is UserAccount, scenePhase != .active {
+                        Task {
+                            do {
+                                try await AppState.main.firstApi.flushPostReadQueue()
+                            } catch {
+                                handleError(error)
+                            }
+                        }
+                    }
                 }
                 .environment(AppState.main)
         }
