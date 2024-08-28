@@ -61,8 +61,14 @@ struct FeedsView: View {
         if let feedSelection {
             initialFeedSelection = feedSelection
         } else {
-            initialFeedSelection = AppState.main.firstAccount is UserAccount ? defaultFeed : .local
+            initialFeedSelection = defaultFeed
         }
+        
+        // fallback to local if using guest account and selection requires authenticated account
+        if !(AppState.main.firstAccount is UserAccount), !FeedSelection.guestCases.contains(initialFeedSelection) {
+            initialFeedSelection = .local
+        }
+        
         _feedSelection = .init(initialValue: initialFeedSelection)
         
         if let firstUser = AppState.main.firstAccount as? UserAccount {
