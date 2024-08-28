@@ -14,6 +14,7 @@ struct GeneralSettingsView: View {
     @Setting(\.upvoteOnSave) var upvoteOnSave
     @Setting(\.quickSwipesEnabled) var swipeActionsEnabled
     @Setting(\.jumpButton) var jumpButton
+    @Setting(\.defaultFeed) var defaultFeed
     
     var body: some View {
         Form {
@@ -31,6 +32,11 @@ struct GeneralSettingsView: View {
             }
             
             Section {
+                Picker("Default Feed", selection: $defaultFeed) {
+                    ForEach(FeedSelection.allCases, id: \.self) { item in
+                        Text(item.rawValue.capitalized)
+                    }
+                }
                 Toggle("Upvote on Save", isOn: $upvoteOnSave)
                 Toggle("Swipe Actions", isOn: $swipeActionsEnabled)
                 Picker("Jump Button", selection: $jumpButton) {
@@ -38,6 +44,8 @@ struct GeneralSettingsView: View {
                         Text(item.label)
                     }
                 }
+            } header: {
+                Text("Behavior")
             }
         }
         .navigationTitle("General")

@@ -53,11 +53,11 @@ struct FeedsView: View {
         @Setting(\.showReadInFeed) var showReadPosts
         @Setting(\.defaultPostSort) var defaultSort
         @Setting(\.postSize) var postSize
+        @Setting(\.defaultFeed) var defaultFeed
         
         @Dependency(\.persistenceRepository) var persistenceRepository
         
-        let initialFeedSelection: FeedSelection = feedSelection
-        _feedSelection = .init(initialValue: initialFeedSelection)
+        _feedSelection = .init(initialValue: AppState.main.firstAccount is UserAccount ? defaultFeed : .local)
         
         if let firstUser = AppState.main.firstAccount as? UserAccount {
             _savedFeedLoader = .init(wrappedValue: .init(
