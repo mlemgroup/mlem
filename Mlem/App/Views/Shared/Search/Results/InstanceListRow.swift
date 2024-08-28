@@ -21,20 +21,22 @@ struct InstanceListRow<Content2: View>: View {
 
     init(
         _ instance: any Instance,
-        @ViewBuilder content: @escaping () -> Content2 = { EmptyView() }
+        @ViewBuilder content: @escaping () -> Content2 = { EmptyView() },
+        readout: Content.Readout? = nil
     ) {
         self.instance = instance
         self.summary = nil
-        self.content = .init(instance, content: content)
+        self.content = .init(instance, content: content, readout: readout)
     }
     
     init(
         _ summary: InstanceSummary,
-        @ViewBuilder content: @escaping () -> Content2 = { EmptyView() }
+        @ViewBuilder content: @escaping () -> Content2 = { EmptyView() },
+        readout: Content.Readout? = nil
     ) where Content2 == EmptyView {
         self.summary = summary
         self.instance = nil
-        self.content = .init(summary, content: content)
+        self.content = .init(summary, content: content, readout: readout)
     }
     
     private var instanceStub: (any InstanceStubProviding)? {
