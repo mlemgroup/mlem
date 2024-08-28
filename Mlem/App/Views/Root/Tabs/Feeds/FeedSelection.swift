@@ -33,4 +33,8 @@ enum FeedSelection: String, CaseIterable {
         case .saved: .all // dummy value
         }
     }
+    
+    var localized: LocalizedStringResource {
+        .init(stringLiteral: rawValue)
+    }
 }
