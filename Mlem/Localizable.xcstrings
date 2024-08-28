@@ -137,6 +137,9 @@
     "Banned from Instance" : {
 
     },
+    "Behavior" : {
+
+    },
     "Block" : {
 
     },
@@ -263,6 +266,9 @@
 
     },
     "Default" : {
+
+    },
+    "Default Feed" : {
 
     },
     "Default Feed Type (Desktop)" : {

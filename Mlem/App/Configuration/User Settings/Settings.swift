@@ -42,6 +42,7 @@ class Settings: ObservableObject {
     
     @AppStorage("feed.markReadOnScroll") var markReadOnScroll: Bool = false
     @AppStorage("feed.showRead") var showReadInFeed: Bool = true
+    @AppStorage("feed.default") var defaultFeed: FeedSelection = .subscribed
     
     @AppStorage("inbox.showRead") var showReadInInbox: Bool = true
     
