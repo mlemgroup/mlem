@@ -47,7 +47,7 @@ struct FeedsView: View {
         appState.firstAccount is UserAccount ? FeedSelection.allCases : FeedSelection.guestCases
     }
     
-    init(feedSelection: FeedSelection = .subscribed) {
+    init(feedSelection: FeedSelection? = nil) {
         // need to grab some stuff from app storage to initialize with
         @Setting(\.internetSpeed) var internetSpeed
         @Setting(\.showReadInFeed) var showReadPosts
@@ -57,7 +57,13 @@ struct FeedsView: View {
         
         @Dependency(\.persistenceRepository) var persistenceRepository
         
-        _feedSelection = .init(initialValue: AppState.main.firstAccount is UserAccount ? defaultFeed : .local)
+        var initialFeedSelection: FeedSelection
+        if let feedSelection {
+            initialFeedSelection = feedSelection
+        } else {
+            initialFeedSelection = AppState.main.firstAccount is UserAccount ? defaultFeed : .local
+        }
+        _feedSelection = .init(initialValue: initialFeedSelection)
         
         if let firstUser = AppState.main.firstAccount as? UserAccount {
             _savedFeedLoader = .init(wrappedValue: .init(
