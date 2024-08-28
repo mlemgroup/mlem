@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -1750,7 +1750,7 @@
 				0392826E2BC84E480097F91A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				037386452BDAFE81007492B5 /* XCRemoteSwiftPackageReference "LemmyMarkdownUI" */,
 				03FA318A2C6FEC5400D47FA3 /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */,
-				CD1B2E222C7F851A0075C7EA /* XCLocalSwiftPackageReference "../MlemMiddleware" */,
+				CD1B2E232C7FBBB70075C7EA /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -2489,13 +2489,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		CD1B2E222C7F851A0075C7EA /* XCLocalSwiftPackageReference "../MlemMiddleware" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../MlemMiddleware;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
 		037386452BDAFE81007492B5 /* XCRemoteSwiftPackageReference "LemmyMarkdownUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -2543,6 +2536,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 12.1.2;
+			};
+		};
+		CD1B2E232C7FBBB70075C7EA /* XCRemoteSwiftPackageReference "MlemMiddleware" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
+			requirement = {
+				branch = "eric/mark-read-on-scroll";
+				kind = branch;
 			};
 		};
 		CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */ = {
