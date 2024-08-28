@@ -14,6 +14,7 @@ struct GeneralSettingsView: View {
     @Setting(\.upvoteOnSave) var upvoteOnSave
     @Setting(\.quickSwipesEnabled) var swipeActionsEnabled
     @Setting(\.jumpButton) var jumpButton
+    @Setting(\.markReadOnScroll) var markReadOnScroll
     
     var body: some View {
         Form {
@@ -31,6 +32,7 @@ struct GeneralSettingsView: View {
             }
             
             Section {
+                Toggle("Mark Read on Scroll", isOn: $markReadOnScroll)
                 Toggle("Upvote on Save", isOn: $upvoteOnSave)
                 Toggle("Swipe Actions", isOn: $swipeActionsEnabled)
                 Picker("Jump Button", selection: $jumpButton) {

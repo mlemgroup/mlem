@@ -56,4 +56,12 @@ enum PostSize: String, CaseIterable {
         case .large: filled ? Icons.largePostFill : Icons.largePost
         }
     }
+    
+    var markReadOffset: Int {
+        switch self {
+        case .compact, .tile: 4
+        case .headline: 2
+        case .large: 1
+        }
+    }
 }
