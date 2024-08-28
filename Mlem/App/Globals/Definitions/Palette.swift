@@ -255,5 +255,5 @@ class Palette: PaletteProviding {
     var postAccent: Color { colorfulAccent(1) }
     var userAccent: Color { colorfulAccent(2) }
     var communityAccent: Color { colorfulAccent(3) }
-    var lockAccent: Color { colorfulAccent(4) }
+    var lockAccent: Color { colorfulAccent(0) }
 }

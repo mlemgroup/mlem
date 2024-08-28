@@ -161,6 +161,9 @@ class PersistenceRepository {
             }
             
             return try JSONDecoder().decode(T.self, from: data)
+        } catch let error as NSError where error.domain == NSCocoaErrorDomain && error.code == 260 {
+            // Don't show error toast if file not found
+            return nil
         } catch {
             handleError(error)
             return nil

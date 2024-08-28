@@ -8,7 +8,7 @@
 import Foundation
 import MlemMiddleware
 
-enum FeedSelection: CaseIterable {
+enum FeedSelection: String, CaseIterable {
     case all, local, subscribed, saved
     // TODO: moderated
     

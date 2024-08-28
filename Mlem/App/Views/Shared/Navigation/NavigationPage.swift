@@ -11,7 +11,7 @@ import SwiftUI
 enum NavigationPage: Hashable {
     case settings(_ page: SettingsPage = .root)
     case login(_ page: LoginPage = .pickInstance)
-    case feeds(_ selection: FeedSelection = .all)
+    case feeds(_ selection: FeedSelection? = nil)
     case profile, inbox, search
     case quickSwitcher
     case expandedPost(_ post: AnyPost, commentActorId: URL? = nil, communityContext: HashWrapper<any Community1Providing>? = nil)
