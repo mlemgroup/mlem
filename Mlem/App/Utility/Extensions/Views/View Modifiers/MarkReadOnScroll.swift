@@ -37,7 +37,9 @@ private struct MarkReadOnScroll: ViewModifier {
 }
 
 extension View {
-    /// Blurs an image relative to its size
+    /// Handles mark read on scroll behavior:
+    /// - On appear, stages previous posts to be marked read
+    /// - On disappear, if this post is staged, marks it as read
     func markReadOnScroll(index: Int, post: any Post2Providing, postFeedLoader: CorePostFeedLoader) -> some View {
         modifier(MarkReadOnScroll(index: index, post: post, postFeedLoader: postFeedLoader))
     }
