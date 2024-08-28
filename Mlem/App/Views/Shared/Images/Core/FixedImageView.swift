@@ -45,7 +45,7 @@ struct FixedImageView: View {
     ) {
         self.fallback = fallback
         self.showProgress = showProgress
-        self._loader = .init(wrappedValue: .init(url: url, maxSize: maxSize))
+        self._loader = .init(wrappedValue: .init(url: url))
         self.blurred = blurred
     }
     
@@ -71,8 +71,8 @@ struct FixedImageView: View {
                 ProgressView().tint(.secondary)
             } else {
                 Image(uiImage: loader.uiImage ?? .blank)
-                    .resizable()
-                    .scaledToFill()
+                    // .resizable()
+                    // .scaledToFill()
                     .dynamicBlur(blurred: blurred)
             }
         }
