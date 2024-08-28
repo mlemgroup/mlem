@@ -34,7 +34,7 @@ struct GeneralSettingsView: View {
             Section {
                 Picker("Default Feed", selection: $defaultFeed) {
                     ForEach(FeedSelection.allCases, id: \.self) { item in
-                        Text(String(localized: item.localized).capitalized)
+                        Text(item.rawValue.capitalized)
                     }
                 }
                 Toggle("Upvote on Save", isOn: $upvoteOnSave)
