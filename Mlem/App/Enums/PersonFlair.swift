@@ -35,9 +35,13 @@ enum PersonFlair: Hashable {
     }
     
     var text: String {
-        switch self {
-        case let .new(days): "\(days.description)d"
-        default: ""
+    switch self {
+        case let .new(days):
+            let formatter = DateComponentsFormatter()
+            formatter.unitsStyle = .abbreviated
+            return formatter.string(from: .init(day: days)) ?? ""
+        default:
+            return ""
         }
     }
     
