@@ -10,6 +10,8 @@ import SwiftUI
 
 struct PostEditorView: View {
     enum Field { case title, content }
+    enum LinkState: Hashable { case none, waiting, value(URL) }
+    enum ImageState: Hashable { case none, waiting, value(ImageUpload1) }
     
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
@@ -24,6 +26,8 @@ struct PostEditorView: View {
     @State var contentIsEmpty: Bool = true
     @State var lastFocusedField: Field = .title
     @State var hasNsfwTag: Bool = false
+    @State var link: LinkState = .none
+    @State var image: ImageState = .none
     @State var sending: Bool = false
     
     @State var targets: [PostEditorTarget]
@@ -102,10 +106,24 @@ struct PostEditorView: View {
                     maxHeight: .infinity,
                     alignment: .topLeading
                 )
-                if hasNsfwTag {
-                    nsfwTagView
-                        .padding(.leading, 15)
-                } else {
+                VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+                    if hasNsfwTag {
+                        nsfwTagView
+                            .padding(.leading, 15)
+                            .transition(attachmentTransition)
+                    }
+                    if link != .none {
+                        linkView
+                            .padding(.horizontal, 12)
+                            .transition(attachmentTransition)
+                    }
+                    if image != .none {
+                        imageView
+                            .padding(.horizontal, 12)
+                            .transition(attachmentTransition)
+                    }
+                }
+                if !(hasNsfwTag || link != .none || image != .none) {
                     Divider()
                 }
                 MarkdownTextEditor(
@@ -129,6 +147,7 @@ struct PostEditorView: View {
                 )
                 .padding(.top, 4)
             }
+            .animation(.snappy(duration: 0.2, extraBounce: 0.1), value: animationHashValue)
         }
     }
     
@@ -177,6 +196,7 @@ struct PostEditorView: View {
                 Text("NSFW")
                     .font(.footnote)
                     .fontWeight(.black)
+                    .foregroundStyle(palette.selectedInteractionBarItem)
                 Image(systemName: Icons.close)
                     .foregroundStyle(.opacity(0.8))
             }
@@ -196,8 +216,17 @@ struct PostEditorView: View {
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu("Add", systemImage: "plus") {
-                Button("Link", systemImage: Icons.websiteAddress) {}.disabled(true)
-                Button("Image", systemImage: Icons.uploadImage) {}.disabled(true)
+                Toggle(
+                    "Link",
+                    systemImage: Icons.websiteAddress,
+                    isOn: .init(get: { link != .none }, set: { link = $0 ? .waiting : .none })
+                ).disabled(image != .none)
+                Toggle(
+                    "Image",
+                    systemImage: Icons.uploadImage,
+                    isOn: .init(get: { image != .none }, set: { image = $0 ? .waiting : .none })
+                )
+                .disabled(link != .none)
                 Toggle("NSFW Tag", systemImage: "tag", isOn: $hasNsfwTag)
                 Button("Crosspost", systemImage: "shuffle") {
                     if let account = targets.last?.account {
