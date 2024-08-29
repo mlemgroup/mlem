@@ -9,7 +9,6 @@ import MlemMiddleware
 import SwiftUI
 
 enum PersonFlair: Hashable {
-    // The order in which these cases are defined is the order in which they will appear
     case admin
     case moderator
     case developer
@@ -20,6 +19,7 @@ enum PersonFlair: Hashable {
     case bannedFromCommunity
     case new(Int)
     
+    // this defines the order in which flairs appear
     var sortVal: Int {
         switch self {
         case .admin: 0
