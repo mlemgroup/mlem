@@ -55,7 +55,7 @@ struct FullyQualifiedLabelView: View {
         if entity is any CommunityStubProviding {
             return .community
         }
-        if entity is any PersonStubProviding {
+        if entity is any PersonStubProviding || entity is UserAccount {
             return .person
         }
         return .image
