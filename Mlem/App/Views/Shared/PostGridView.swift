@@ -27,6 +27,7 @@ struct PostGridView: View {
     
     @State var columns: [GridItem] = [GridItem(.flexible())]
     @State var frameWidth: CGFloat = .zero
+    @State var bottomAppearedPostIndex: Int = -1
     
     let postFeedLoader: CorePostFeedLoader
 
@@ -88,7 +89,11 @@ struct PostGridView: View {
                             .buttonStyle(EmptyButtonStyle())
                             if !postSize.tiled { Divider() }
                         }
-                        .markReadOnScroll(index: index, post: post, postFeedLoader: postFeedLoader)
+                        .markReadOnScroll(
+                            index: index,
+                            post: post,
+                            postFeedLoader: postFeedLoader, bottomAppearedItemIndex: $bottomAppearedPostIndex
+                        )
                         .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 0)
                         .onAppear {
                             do {
