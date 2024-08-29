@@ -286,6 +286,7 @@
 		CD9CFA372C306DAB00739BBC /* PostGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9CFA362C306DAB00739BBC /* PostGridView.swift */; };
 		CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1E8202B8FC411007953EF /* LandingPage.swift */; };
 		CDA683F82C77E577000C4486 /* NsfwBlurBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA683F72C77E577000C4486 /* NsfwBlurBehavior.swift */; };
+		CDAA02DB2C810DB200D75633 /* Calendar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAA02DA2C810DB200D75633 /* Calendar+Extensions.swift */; };
 		CDB2EC7D2BFADAB300DBC0EF /* CompactPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7C2BFADAB300DBC0EF /* CompactPostView.swift */; };
 		CDB2EC7F2BFADACC00DBC0EF /* HeadlinePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7E2BFADACC00DBC0EF /* HeadlinePostView.swift */; };
 		CDB2EC812BFADADF00DBC0EF /* LargePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC802BFADADF00DBC0EF /* LargePostView.swift */; };
@@ -616,6 +617,7 @@
 		CD9CFA362C306DAB00739BBC /* PostGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGridView.swift; sourceTree = "<group>"; };
 		CDA1E8202B8FC411007953EF /* LandingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPage.swift; sourceTree = "<group>"; };
 		CDA683F72C77E577000C4486 /* NsfwBlurBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NsfwBlurBehavior.swift; sourceTree = "<group>"; };
+		CDAA02DA2C810DB200D75633 /* Calendar+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extensions.swift"; sourceTree = "<group>"; };
 		CDB2EC7A2BFADA8B00DBC0EF /* PostSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSize.swift; sourceTree = "<group>"; };
 		CDB2EC7C2BFADAB300DBC0EF /* CompactPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactPostView.swift; sourceTree = "<group>"; };
 		CDB2EC7E2BFADACC00DBC0EF /* HeadlinePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadlinePostView.swift; sourceTree = "<group>"; };
@@ -1320,6 +1322,7 @@
 				CD869FCF2C15F92E00FC8B5B /* Int+Extensions.swift */,
 				034B94822C09340A00039AF4 /* MarkdownConfiguration+Extensions.swift */,
 				CDCA44B32C176A4700C092B3 /* Array+Extensions.swift */,
+				CDAA02DA2C810DB200D75633 /* Calendar+Extensions.swift */,
 			);
 			name = Extensions;
 			path = Utility/Extensions;
@@ -1984,6 +1987,7 @@
 				CD4ED8472BF110FA00EFA0A2 /* TabReselectTracker.swift in Sources */,
 				033FCAEE2C57DD14007B7CD1 /* CaptchaDifficulty+Extensions.swift in Sources */,
 				035BE0912BDEA01E00F77D73 /* NavigationPage+View.swift in Sources */,
+				CDAA02DB2C810DB200D75633 /* Calendar+Extensions.swift in Sources */,
 				CD4D59142B87B36B00B82964 /* InternetConnectionManager.swift in Sources */,
 				0324FA7B2C1F2CD200F6247D /* InfoStackView.swift in Sources */,
 				CD7DB9762C4D6C0A00DCC542 /* FeedCommentView.swift in Sources */,
