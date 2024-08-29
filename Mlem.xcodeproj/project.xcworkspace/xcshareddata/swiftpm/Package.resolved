@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware.git",
       "state" : {
-        "revision" : "9d5ca39ee4ec93c5c8604a4724ef89bbdf9ecd30",
-        "version" : "0.30.1"
+        "revision" : "b66639cf2f2436129db3fc6a9a121189e2c5a94e",
+        "version" : "0.32.0"
       }
     },
     {

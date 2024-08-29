@@ -110,7 +110,11 @@ class HapticManager {
                     handleEngineFailure(with: file)
                 }
             } else {
-                print("\(haptic.rawValue) not played (no engine)")
+                if priority > hapticLevel {
+                    print("\(haptic.rawValue) not played (priority \(priority.intValue) > \(hapticLevel.intValue))")
+                } else {
+                    print("\(haptic.rawValue) not played (no engine)")
+                }
             }
         }
     }

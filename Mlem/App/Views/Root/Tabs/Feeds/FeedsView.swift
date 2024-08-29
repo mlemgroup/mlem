@@ -47,16 +47,28 @@ struct FeedsView: View {
         appState.firstAccount is UserAccount ? FeedSelection.allCases : FeedSelection.guestCases
     }
     
-    init(feedSelection: FeedSelection = .subscribed) {
+    init(feedSelection: FeedSelection? = nil) {
         // need to grab some stuff from app storage to initialize with
         @Setting(\.internetSpeed) var internetSpeed
         @Setting(\.showReadInFeed) var showReadPosts
         @Setting(\.defaultPostSort) var defaultSort
         @Setting(\.postSize) var postSize
+        @Setting(\.defaultFeed) var defaultFeed
         
         @Dependency(\.persistenceRepository) var persistenceRepository
         
-        let initialFeedSelection: FeedSelection = feedSelection
+        var initialFeedSelection: FeedSelection
+        if let feedSelection {
+            initialFeedSelection = feedSelection
+        } else {
+            initialFeedSelection = defaultFeed
+        }
+        
+        // fallback to local if using guest account and selection requires authenticated account
+        if !(AppState.main.firstAccount is UserAccount), !FeedSelection.guestCases.contains(initialFeedSelection) {
+            initialFeedSelection = .local
+        }
+        
         _feedSelection = .init(initialValue: initialFeedSelection)
         
         if let firstUser = AppState.main.firstAccount as? UserAccount {

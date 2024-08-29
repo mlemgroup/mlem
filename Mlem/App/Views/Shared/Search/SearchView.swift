@@ -133,7 +133,7 @@ struct SearchView: View {
                     }
                 case .instances:
                     SearchResultsView(results: instances) { instance in
-                        InstanceListRow(instance)
+                        InstanceListRow(instance, readout: .users)
                     }
                 }
             }
