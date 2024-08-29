@@ -40,6 +40,7 @@ class Settings: ObservableObject {
     @AppStorage("links.openInBrowser") var openLinksInBrowser = false
     @AppStorage("links.readerMode") var openLinksInReaderMode = false
     
+    @AppStorage("feed.markReadOnScroll") var markReadOnScroll: Bool = false
     @AppStorage("feed.showRead") var showReadInFeed: Bool = true
     @AppStorage("feed.default") var defaultFeed: FeedSelection = .subscribed
     

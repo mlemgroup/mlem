@@ -14,6 +14,7 @@ struct GeneralSettingsView: View {
     @Setting(\.upvoteOnSave) var upvoteOnSave
     @Setting(\.quickSwipesEnabled) var swipeActionsEnabled
     @Setting(\.jumpButton) var jumpButton
+    @Setting(\.markReadOnScroll) var markReadOnScroll
     @Setting(\.defaultFeed) var defaultFeed
     
     var body: some View {
@@ -37,6 +38,7 @@ struct GeneralSettingsView: View {
                         Text(item.rawValue.capitalized)
                     }
                 }
+                Toggle("Mark Read on Scroll", isOn: $markReadOnScroll)
                 Toggle("Upvote on Save", isOn: $upvoteOnSave)
                 Toggle("Swipe Actions", isOn: $swipeActionsEnabled)
                 Picker("Jump Button", selection: $jumpButton) {

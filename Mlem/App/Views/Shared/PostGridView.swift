@@ -27,6 +27,7 @@ struct PostGridView: View {
     
     @State var columns: [GridItem] = [GridItem(.flexible())]
     @State var frameWidth: CGFloat = .zero
+    @State var bottomAppearedPostIndex: Int = -1
     
     let postFeedLoader: CorePostFeedLoader
 
@@ -79,7 +80,7 @@ struct PostGridView: View {
     var content: some View {
         VStack(spacing: 0) {
             LazyVGrid(columns: columns, spacing: postSize.tiled ? Constants.main.standardSpacing : 0) {
-                ForEach(postFeedLoader.items, id: \.hashValue) { post in
+                ForEach(Array(postFeedLoader.items.enumerated()), id: \.element.hashValue) { index, post in
                     if !post.creator.blocked, !post.community.blocked, !post.hidden {
                         VStack(spacing: 0) { // this improves performance O_o
                             NavigationLink(value: NavigationPage.expandedPost(post, communityContext: communityContext)) {
@@ -88,6 +89,11 @@ struct PostGridView: View {
                             .buttonStyle(EmptyButtonStyle())
                             if !postSize.tiled { Divider() }
                         }
+                        .markReadOnScroll(
+                            index: index,
+                            post: post,
+                            postFeedLoader: postFeedLoader, bottomAppearedItemIndex: $bottomAppearedPostIndex
+                        )
                         .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 0)
                         .onAppear {
                             do {
