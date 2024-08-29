@@ -12,6 +12,8 @@ import SwiftUI
 
 @Observable
 class AppState {
+    @ObservationIgnored @Namespace var namespace
+
     private(set) var guestSession: GuestSession! {
         didSet {
             if oldValue != guestSession {

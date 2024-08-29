@@ -103,6 +103,7 @@ struct ExpandedPostView: View {
                                 key: AnchorsKey.self,
                                 value: .center
                             ) { [post.actorId: $0] }
+                            .padding(10)
                         Divider()
                         ForEach(tracker.comments.tree(), id: \.actorId) { comment in
                             CommentView(comment: comment, highlight: showCommentWithActorId == comment.actorId)
@@ -113,6 +114,9 @@ struct ExpandedPostView: View {
                                     value: .center
                                 ) { [comment.actorId: $0] }
                         }
+                        Color.clear
+                            .frame(height: 500)
+                            .contentShape(.rect)
                     }
                     .animation(.easeInOut(duration: 0.4), value: showCommentWithActorId)
                 }

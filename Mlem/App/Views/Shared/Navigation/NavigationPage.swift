@@ -14,7 +14,12 @@ enum NavigationPage: Hashable {
     case feeds(_ selection: FeedSelection? = nil)
     case profile, inbox, search
     case quickSwitcher
-    case expandedPost(_ post: AnyPost, commentActorId: URL? = nil, communityContext: HashWrapper<any Community1Providing>? = nil)
+    case expandedPost(
+        _ post: AnyPost,
+        commentActorId: URL? = nil,
+        communityContext: HashWrapper<any Community1Providing>? = nil,
+        namespace: Namespace.ID? = nil
+    )
     case community(_ community: AnyCommunity)
     case person(_ person: AnyPerson)
     case instance(_ instance: InstanceHashWrapper)
@@ -34,11 +39,15 @@ enum NavigationPage: Hashable {
         expandedPost(.init(post), commentActorId: commentActorId)
     }
     
-    static func expandedPost(_ post: any PostStubProviding, communityContext: (any Community1Providing)?) -> NavigationPage {
+    static func expandedPost(
+        _ post: any PostStubProviding,
+        communityContext: (any Community1Providing)?,
+        namespace: Namespace.ID? = nil
+    ) -> NavigationPage {
         if let communityContext {
-            expandedPost(.init(post), communityContext: .init(wrappedValue: communityContext))
+            expandedPost(.init(post), communityContext: .init(wrappedValue: communityContext), namespace: namespace)
         } else {
-            expandedPost(.init(post))
+            expandedPost(.init(post), namespace: namespace)
         }
     }
     
@@ -107,9 +116,10 @@ extension NavigationPage {
             QuickSwitcherView()
         case let .report(target, community):
             ReportComposerView(target: target.wrappedValue, community: community)
-        case let .expandedPost(post, commentActorId, communityContext):
+        case let .expandedPost(post, commentActorId, communityContext, namespace):
             ExpandedPostView(post: post, showCommentWithActorId: commentActorId)
                 .environment(\.communityContext, communityContext?.wrappedValue)
+                .navigationTransition_(sourceID: "post\(post.wrappedValue.actorId)", in: namespace)
         case let .person(person):
             PersonView(person: person)
         case let .createComment(context, expandedPostTracker):

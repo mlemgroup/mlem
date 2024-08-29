@@ -84,8 +84,8 @@ struct FeedsView: View {
     
     var body: some View {
         content
-            .background(postSize.tiled ? palette.groupedBackground : palette.background)
-            .navigationBarTitleDisplayMode(.inline)
+            .background(postSize == .large ? palette.groupedBackground : palette.background)
+            .scrollContentBackground(.hidden)
             .toolbar {
                 if !isAtTop {
                     ToolbarTitleMenu {

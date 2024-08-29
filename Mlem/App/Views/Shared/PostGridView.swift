@@ -28,6 +28,8 @@ struct PostGridView: View {
     @State var columns: [GridItem] = [GridItem(.flexible())]
     @State var frameWidth: CGFloat = .zero
     
+    @Namespace var navigationNamespace
+    
     let postFeedLoader: CorePostFeedLoader
 
     init(postFeedLoader: CorePostFeedLoader, actions: [any Action]? = nil) {
@@ -82,11 +84,20 @@ struct PostGridView: View {
                 ForEach(postFeedLoader.items, id: \.hashValue) { post in
                     if !post.creator.blocked, !post.community.blocked, !post.hidden {
                         VStack(spacing: 0) { // this improves performance O_o
-                            NavigationLink(value: NavigationPage.expandedPost(post, communityContext: communityContext)) {
+                            NavigationLink(
+                                value: NavigationPage.expandedPost(
+                                    post,
+                                    communityContext: communityContext,
+                                    namespace: navigationNamespace
+                                )
+                            ) {
                                 FeedPostView(post: post)
+                                    .matchedTransitionSource_(id: "post\(post.actorId)", in: navigationNamespace)
+                                    .padding(.vertical, 5)
+                                    .padding(.horizontal, 10)
                             }
                             .buttonStyle(EmptyButtonStyle())
-                            if !postSize.tiled { Divider() }
+                            // if !postSize.tiled { Divider() }
                         }
                         .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 0)
                         .onAppear {
