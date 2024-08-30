@@ -87,7 +87,7 @@ struct PostGridView: View {
                                 FeedPostView(post: post)
                             }
                             .buttonStyle(EmptyButtonStyle())
-                            if !postSize.tiled { Divider() }
+                            if !postSize.tiled { PaletteDivider() }
                         }
                         .markReadOnScroll(
                             index: index,

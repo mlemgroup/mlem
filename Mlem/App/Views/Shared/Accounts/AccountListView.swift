@@ -47,19 +47,21 @@ struct AccountListView: View {
                     Text("You don't have any accounts.")
                         .foregroundStyle(.secondary)
                 } else {
-                    Section(header: topHeader()) {
+                    PaletteSection {
                         ForEach(accounts, id: \.actorId) { account in
                             AccountListRow(account: account, isSwitching: $isSwitching)
                         }
                         .onMove(perform: shouldAllowReordering ? reorderAccount : nil)
+                    } header: {
+                        topHeader()
                     }
                 }
                 if let account = (appState.firstSession as? GuestSession)?.account, !account.isSaved {
-                    Section {
+                    PaletteSection {
                         AccountListRow(account: account, isSwitching: $isSwitching)
                     }
                 }
-                Section {
+                PaletteSection {
                     ForEach(accountsTracker.guestAccounts, id: \.actorId) { account in
                         AccountListRow(
                             account: account,
@@ -76,7 +78,7 @@ struct AccountListView: View {
     @ViewBuilder
     var groupedUserAccountList: some View {
         ForEach(Array(accountGroups.enumerated()), id: \.offset) { offset, group in
-            Section {
+            PaletteSection {
                 ForEach(group.accounts, id: \.actorId) { account in
                     AccountListRow(
                         account: account,
@@ -96,7 +98,7 @@ struct AccountListView: View {
     
     @ViewBuilder
     var addAccountButton: some View {
-        Section {
+        PaletteSection {
             Button { isShowingAddAccountDialogue = true } label: {
                 Label("Add Account", systemImage: "plus")
             }
@@ -151,7 +153,7 @@ struct AccountListView: View {
                 }
             }
             if accountsTracker.userAccounts.count > 3 {
-                Divider()
+                PaletteDivider()
                 Toggle(isOn: $groupAccountSort) {
                     Label("Grouped", systemImage: "square.stack.3d.up.fill")
                 }

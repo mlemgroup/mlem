@@ -26,7 +26,7 @@ struct SearchResultsView<Item: Searchable, Content: View>: View {
     var body: some View {
         ForEach(results) { item in
             content(item)
-            Divider()
+            PaletteDivider()
                 .padding(.leading, dividerPadding)
         }
     }

@@ -128,7 +128,7 @@ struct CommentEditorView: View {
                     maxHeight: .infinity,
                     alignment: .topLeading
                 )
-                Divider()
+                PaletteDivider()
                     .padding(.vertical, Constants.main.standardSpacing)
                 Group {
                     switch originalContext {

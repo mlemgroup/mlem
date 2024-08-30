@@ -61,6 +61,7 @@ struct InboxView: View {
     
     var body: some View {
         content
+            .background(palette.background)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbar }
             .onChange(of: taskId) {
@@ -127,8 +128,8 @@ struct InboxView: View {
                         headerPinned = value
                     }
                 })
-                Divider()
-                Section {
+                PaletteDivider()
+                PaletteSection {
                     if loadingState == .loading, replies.isEmpty, mentions.isEmpty {
                         ProgressView()
                             .controlSize(.large)
@@ -148,7 +149,7 @@ struct InboxView: View {
                                     if let message = item as? Message2, !message.creator.blocked {
                                         MessageView(message: message)
                                     }
-                                    Divider()
+                                    PaletteDivider()
                                 }
                             }
                         }

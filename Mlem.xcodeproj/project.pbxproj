@@ -289,6 +289,8 @@
 		CDAA02DB2C810DB200D75633 /* Calendar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAA02DA2C810DB200D75633 /* Calendar+Extensions.swift */; };
 		CDAA02DD2C81792500D75633 /* SolarizedPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAA02DC2C81792500D75633 /* SolarizedPalette.swift */; };
 		CDAA02E12C817AAB00D75633 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAA02E02C817AAB00D75633 /* Color+Extensions.swift */; };
+		CDAA02E32C821C9100D75633 /* PaletteDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAA02E22C821C9100D75633 /* PaletteDivider.swift */; };
+		CDAA02E62C8223A800D75633 /* PaletteSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAA02E52C8223A800D75633 /* PaletteSection.swift */; };
 		CDB2EC7D2BFADAB300DBC0EF /* CompactPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7C2BFADAB300DBC0EF /* CompactPostView.swift */; };
 		CDB2EC7F2BFADACC00DBC0EF /* HeadlinePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7E2BFADACC00DBC0EF /* HeadlinePostView.swift */; };
 		CDB2EC812BFADADF00DBC0EF /* LargePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC802BFADADF00DBC0EF /* LargePostView.swift */; };
@@ -622,6 +624,8 @@
 		CDAA02DA2C810DB200D75633 /* Calendar+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extensions.swift"; sourceTree = "<group>"; };
 		CDAA02DC2C81792500D75633 /* SolarizedPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarizedPalette.swift; sourceTree = "<group>"; };
 		CDAA02E02C817AAB00D75633 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
+		CDAA02E22C821C9100D75633 /* PaletteDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteDivider.swift; sourceTree = "<group>"; };
+		CDAA02E52C8223A800D75633 /* PaletteSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteSection.swift; sourceTree = "<group>"; };
 		CDB2EC7A2BFADA8B00DBC0EF /* PostSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSize.swift; sourceTree = "<group>"; };
 		CDB2EC7C2BFADAB300DBC0EF /* CompactPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactPostView.swift; sourceTree = "<group>"; };
 		CDB2EC7E2BFADACC00DBC0EF /* HeadlinePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadlinePostView.swift; sourceTree = "<group>"; };
@@ -1236,7 +1240,11 @@
 		CD4D58A82B86BE4C00B82964 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				CDAA02E42C82236200D75633 /* Palette Components */,
 				03B431C32C45BA45001A1EB5 /* AccountPickerMenu.swift */,
+				CD4D58AB2B86BE6100B82964 /* Accounts */,
+				03267D802BED4714009D6268 /* Avatar */,
+				CD869FCA2C15F8A100FC8B5B /* Bubble Picker */,
 				03FE14052BF9445F00A8377F /* CloseButtonView.swift */,
 				03B431C52C45C09F001A1EB5 /* CollapsibleSheetView.swift */,
 				0397D45F2C66113F002C6CDC /* CommentBodyView.swift */,
@@ -1254,39 +1262,36 @@
 				CD4ED84D2BF113C800EFA0A2 /* ExpandedPostView.swift */,
 				039F58852C7A810100C61658 /* ExpandedPostView+Logic.swift */,
 				034B948D2C0937BA00039AF4 /* FancyScrollView.swift */,
+				03049A182C6502DB00FF6889 /* Form */,
 				033F84CB2C2B1E46002E3EDF /* HandleLemmyLinksModifier.swift */,
+				039D75652C4FC56A004F24C2 /* Images */,
 				0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */,
 				03FA318D2C6FEF0E00D47FA3 /* InteractionBar */,
+				039F58802C7A7E5900C61658 /* JumpButtonView.swift */,
+				CDB2EC842BFADD5E00DBC0EF /* Labels */,
 				0355F9482C16406E00605248 /* Line.swift */,
+				03D2A6402C011F3E00ED4FF2 /* ListRow */,
 				03B431C12C45BA00001A1EB5 /* MarkdownEditorToolbarView.swift */,
 				034B94842C09348400039AF4 /* MarkdownImageView.swift */,
 				03B431B32C4481C3001A1EB5 /* MarkdownTextEditor.swift */,
 				03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */,
 				0316CD632C382A6A009EA8EA /* MessageView.swift */,
 				CD77437E2C1BA5CE0085BB43 /* MultiplatformView.swift */,
+				035BE0852BDD8D9100F77D73 /* Navigation */,
+				0382A7EE2C09F0F800C79DDA /* Pages */,
 				CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */,
 				CD9CFA362C306DAB00739BBC /* PostGridView.swift */,
 				0382A7F12C0A758E00C79DDA /* ProfileDateView.swift */,
 				030030A02C416B0B009A65FF /* RefreshPopupView.swift */,
 				032C32152C36F65500595286 /* ReplyView.swift */,
+				03531EEF2C2DA291004A3464 /* Search */,
 				032C32092C34495D00595286 /* SelectTextView.swift */,
+				03500C252BF694A800CAA076 /* Toast */,
 				CD0E07002C12707700445849 /* ToolbarEllipsisMenu.swift */,
-				039F58802C7A7E5900C61658 /* JumpButtonView.swift */,
+				CDD99C3D2C73F4380010367F /* WarningView.swift */,
 				CD13CC582C583C7A001AF428 /* WebsitePreviewView.swift */,
 				CD13CC5A2C588B34001AF428 /* WebView.swift */,
 				03AF91DE2C1B243D00E56644 /* ZoomableContainer.swift */,
-				CD4D58AB2B86BE6100B82964 /* Accounts */,
-				03267D802BED4714009D6268 /* Avatar */,
-				CD869FCA2C15F8A100FC8B5B /* Bubble Picker */,
-				03049A182C6502DB00FF6889 /* Form */,
-				039D75652C4FC56A004F24C2 /* Images */,
-				CDB2EC842BFADD5E00DBC0EF /* Labels */,
-				03D2A6402C011F3E00ED4FF2 /* ListRow */,
-				035BE0852BDD8D9100F77D73 /* Navigation */,
-				0382A7EE2C09F0F800C79DDA /* Pages */,
-				03531EEF2C2DA291004A3464 /* Search */,
-				03500C252BF694A800CAA076 /* Toast */,
-				CDD99C3D2C73F4380010367F /* WarningView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1509,6 +1514,15 @@
 				CD8DCAF82C5E92E8003E4DD7 /* Profile1Providing+Extensions.swift */,
 			);
 			path = "Content Models";
+			sourceTree = "<group>";
+		};
+		CDAA02E42C82236200D75633 /* Palette Components */ = {
+			isa = PBXGroup;
+			children = (
+				CDAA02E22C821C9100D75633 /* PaletteDivider.swift */,
+				CDAA02E52C8223A800D75633 /* PaletteSection.swift */,
+			);
+			path = "Palette Components";
 			sourceTree = "<group>";
 		};
 		CDB2EC842BFADD5E00DBC0EF /* Labels */ = {
@@ -2037,6 +2051,7 @@
 				CD7882A22BFE4B47002E1A30 /* PostContext.swift in Sources */,
 				CDA1E8212B8FC411007953EF /* LandingPage.swift in Sources */,
 				0315B1C82C7635D4006D4F82 /* ApiCommentSortType+Extensions.swift in Sources */,
+				CDAA02E62C8223A800D75633 /* PaletteSection.swift in Sources */,
 				CDB2EC882BFAE14800DBC0EF /* FullyQualifiedNameView.swift in Sources */,
 				03500C272BF69D1D00CAA076 /* ToastModel.swift in Sources */,
 				033F84BF2C2ACC9F002E3EDF /* Comment1Providing+Extensions.swift in Sources */,
@@ -2085,6 +2100,7 @@
 				03FE14082BF94FFB00A8377F /* ErrorView.swift in Sources */,
 				03036C762C71427B00C6DA1D /* InteractionBarCounterLabelView.swift in Sources */,
 				030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */,
+				CDAA02E32C821C9100D75633 /* PaletteDivider.swift in Sources */,
 				CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */,
 				CDCA44972C17666C00C092B3 /* HapticManager.swift in Sources */,
 				033FCAEC2C57DCCD007B7CD1 /* ApiListingType+Extensions.swift in Sources */,

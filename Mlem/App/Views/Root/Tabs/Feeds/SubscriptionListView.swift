@@ -49,7 +49,7 @@ struct SubscriptionListView: View {
         
         ScrollViewReader { proxy in
             List {
-                Section {
+                PaletteSection {
                     ForEach(feedOptions, id: \.hashValue) { feedOption in
                         NavigationLink(.feeds(feedOption)) {
                             HStack(spacing: 15) {
@@ -116,7 +116,7 @@ private struct SubscriptionListSectionView: View {
     let sectionIndicesShown: Bool
     
     var body: some View {
-        Section(section.label) {
+        PaletteSection(section.label) {
             ForEach(section.communities) { (community: Community2) in
                 SubscriptionListItemView(
                     community: community,

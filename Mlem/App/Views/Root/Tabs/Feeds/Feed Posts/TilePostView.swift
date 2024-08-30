@@ -52,7 +52,7 @@ struct TilePostView: View {
         VStack(alignment: .leading, spacing: 0) {
             BaseImage(post: post, width: width, height: contentHeight)
             
-            Divider()
+            PaletteDivider()
             
             VStack(spacing: 7) {
                 titleSection

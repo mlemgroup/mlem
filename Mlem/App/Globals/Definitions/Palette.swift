@@ -67,16 +67,6 @@ enum PaletteOption: String, CaseIterable {
         case .solarized: "Solarized"
         }
     }
-    
-    var labelColor1: Color {
-        switch self {
-        case .standard: .blue
-        case .monochrome: .primary
-        case .solarized: .orange
-        }
-    }
-    
-    var labelColor2: Color { Color(UIColor.systemBackground) }
 }
 
 struct ColorPalette: PaletteProviding {

@@ -49,7 +49,7 @@ struct InstanceDetailsView: View {
                         systemImage: Icons.private,
                         value: instance.isPrivate_ ?? false
                     )
-                    Divider()
+                    PaletteDivider()
                     settingRow(
                         "Federates",
                         systemImage: Icons.federation,
@@ -67,13 +67,13 @@ struct InstanceDetailsView: View {
                         color: instance.registrationMode_?.color ?? palette.negative
                     )
                     if instance.registrationMode_ != .closed {
-                        Divider()
+                        PaletteDivider()
                         settingRow(
                             "Email Verification",
                             systemImage: Icons.email,
                             value: instance.emailVerificationRequired_ ?? false
                         )
-                        Divider()
+                        PaletteDivider()
                         settingRow(
                             "Captcha",
                             systemImage: Icons.photo,
@@ -91,26 +91,26 @@ struct InstanceDetailsView: View {
                         systemImage: Icons.blurNsfw,
                         value: instance.nsfwContentEnabled_ ?? false
                     )
-                    Divider()
+                    PaletteDivider()
                     settingRow(
                         "Downvotes",
                         systemImage: Icons.downvote,
                         value: instance.downvotesEnabled_ ?? false
                     )
-                    Divider()
+                    PaletteDivider()
                     settingRow(
                         "Community Creation",
                         systemImage: "house",
                         value: !(instance.communityCreationRestrictedToAdmins_ ?? false)
                     )
-                    Divider()
+                    PaletteDivider()
                     settingRow(
                         "Slur Filter",
                         systemImage: Icons.filterFill,
                         value: instance.slurFilterRegex_ != nil
                     )
                     if let regex = instance.slurFilterRegex_ {
-                        Divider()
+                        PaletteDivider()
                         VStack(alignment: .leading, spacing: 2) {
                             if showingSlurRegex {
                                 Text(regex)
@@ -136,7 +136,7 @@ struct InstanceDetailsView: View {
                         }
                     }
                     if let feedType = instance.defaultFeed_ {
-                        Divider()
+                        PaletteDivider()
                         settingRow(
                             "Default Feed Type (Desktop)",
                             systemImage: Icons.feeds,
@@ -153,13 +153,13 @@ struct InstanceDetailsView: View {
                         systemImage: Icons.moderation,
                         value: !(instance.hideModlogNames_ ?? true)
                     )
-                    Divider()
+                    PaletteDivider()
                     settingRow(
                         "Applications Email Admins",
                         systemImage: Icons.person,
                         value: instance.emailApplicationsToAdmins_ ?? false
                     )
-                    Divider()
+                    PaletteDivider()
                     settingRow(
                         "Reports Email Admins",
                         systemImage: Icons.moderationReport,

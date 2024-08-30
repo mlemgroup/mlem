@@ -55,7 +55,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
     var body: some View {
         VStack(spacing: 0) {
             if dividers.contains(.top) {
-                Divider()
+                PaletteDivider()
             }
             
             ScrollViewReader { scrollProxy in
@@ -89,7 +89,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
             }
             
             if dividers.contains(.bottom) {
-                Divider()
+                PaletteDivider()
             }
         }
     }

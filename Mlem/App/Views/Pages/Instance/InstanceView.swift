@@ -96,7 +96,7 @@ struct InstanceView: View {
             case .details:
                 InstanceDetailsView(instance: instance)
                 if colorScheme == .light {
-                    Divider()
+                    PaletteDivider()
                 }
             case .administration:
                 administrationTab(instance: instance)
@@ -114,7 +114,7 @@ struct InstanceView: View {
         VStack(spacing: 0) {
             ForEach(instance.administrators_ ?? []) { person in
                 PersonListRow(person)
-                Divider()
+                PaletteDivider()
                     .padding(.leading, 71)
             }
         }

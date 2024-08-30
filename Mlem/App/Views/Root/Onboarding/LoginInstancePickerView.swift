@@ -79,7 +79,7 @@ struct LoginInstancePickerView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
                         ForEach(suggestions, id: \.self) { text in
-                            Divider()
+                            PaletteDivider()
                             Button {
                                 domain = text
                                 focused = false

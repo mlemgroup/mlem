@@ -151,7 +151,7 @@ struct CommunityView: View {
         VStack(spacing: 0) {
             ForEach(community.moderators_ ?? []) { person in
                 PersonListRow(person)
-                Divider()
+                PaletteDivider()
                     .padding(.leading, 71)
             }
         }

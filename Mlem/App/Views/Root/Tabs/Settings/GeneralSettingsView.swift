@@ -20,7 +20,7 @@ struct GeneralSettingsView: View {
     
     var body: some View {
         Form {
-            Section {
+            PaletteSection {
                 Picker(selection: $blurNsfw) {
                     ForEach(NsfwBlurBehavior.allCases, id: \.self) { behavior in
                         Text(behavior.label)
@@ -33,7 +33,7 @@ struct GeneralSettingsView: View {
                 Text("Safety")
             }
             
-            Section {
+            PaletteSection {
                 Picker("Default Feed", selection: $defaultFeed) {
                     ForEach(FeedSelection.allCases, id: \.self) { item in
                         Text(item.rawValue.capitalized)

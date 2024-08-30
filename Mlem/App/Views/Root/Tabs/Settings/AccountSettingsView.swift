@@ -13,7 +13,7 @@ struct AccountSettingsView: View {
     
     var body: some View {
         Form {
-            Section {
+            PaletteSection {
                 Group {
                     if let userAccount = appState.firstSession as? UserSession {
                         ProfileHeaderView(userAccount.person)
@@ -27,7 +27,7 @@ struct AccountSettingsView: View {
             }
             
             if let account = appState.firstAccount as? UserAccount {
-                Section {
+                PaletteSection {
                     Button("Delete Account", role: .destructive) {
                         navigation.openSheet(.deleteAccount(account))
                     }

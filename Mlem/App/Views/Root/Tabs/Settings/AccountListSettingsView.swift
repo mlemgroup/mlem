@@ -18,7 +18,7 @@ struct AccountListSettingsView: View {
         Form {
             headerView
             AccountListView()
-            Section {
+            PaletteSection {
                 Toggle("Reload on Switch", isOn: $keepPlace.invert())
             }
         }
@@ -26,7 +26,7 @@ struct AccountListSettingsView: View {
     
     @ViewBuilder
     var headerView: some View {
-        Section {
+        PaletteSection {
             VStack(alignment: .center) {
                 Group {
                     if accounts.count >= 2 {

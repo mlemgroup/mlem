@@ -10,7 +10,7 @@ import SwiftUI
 struct CommentSettingsView: View {
     var body: some View {
         Form {
-            Section {
+            PaletteSection {
                 NavigationLink(
                     "Customize Interaction Bar",
                     systemImage: "square.and.line.vertical.and.square.fill",
