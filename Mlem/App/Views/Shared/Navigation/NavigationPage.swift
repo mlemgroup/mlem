@@ -20,14 +20,15 @@ enum NavigationPage: Hashable {
     case instance(_ instance: InstanceHashWrapper)
     case externalApiInfo(api: ApiClient, actorId: URL)
     case imageViewer(_ url: URL)
-    case communityPicker(callback: HashWrapper<(Community2) -> Void>)
-    case personPicker(callback: HashWrapper<(Person2) -> Void>)
+    case communityPicker(api: ApiClient?, callback: HashWrapper<(Community2) -> Void>)
+    case personPicker(api: ApiClient?, callback: HashWrapper<(Person2) -> Void>)
     case instancePicker(callback: HashWrapper<(InstanceSummary) -> Void>)
     case selectText(_ string: String)
     case subscriptionList
     case createComment(_ context: CommentEditorView.Context, expandedPostTracker: ExpandedPostTracker? = nil)
     case editComment(_ comment: Comment2, context: CommentEditorView.Context?)
     case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
+    case createPost(community: AnyCommunity?)
     case deleteAccount(_ account: UserAccount)
     
     static func expandedPost(_ post: any PostStubProviding, commentActorId: URL? = nil) -> NavigationPage {
@@ -54,18 +55,22 @@ enum NavigationPage: Hashable {
         Self.instance(.init(wrappedValue: instance))
     }
     
-    static func communityPicker(callback: @escaping (Community2) -> Void) -> NavigationPage {
-        communityPicker(callback: .init(wrappedValue: callback))
+    static func communityPicker(api: ApiClient? = nil, callback: @escaping (Community2) -> Void) -> NavigationPage {
+        communityPicker(api: api, callback: .init(wrappedValue: callback))
     }
     
-    static func personPicker(callback: @escaping (Person2) -> Void) -> NavigationPage {
-        personPicker(callback: .init(wrappedValue: callback))
+    static func personPicker(api: ApiClient? = nil, callback: @escaping (Person2) -> Void) -> NavigationPage {
+        personPicker(api: api, callback: .init(wrappedValue: callback))
     }
     
     static func instancePicker(callback: @escaping (InstanceSummary) -> Void) -> NavigationPage {
         instancePicker(callback: .init(wrappedValue: callback))
     }
     
+    static func createPost(community: any CommunityStubProviding) -> NavigationPage {
+        createPost(community: .init(community))
+    }
+
     static func report(_ interactable: any ReportableProviding, community: (any CommunityStubProviding)?) -> NavigationPage {
         let anyCommunity: AnyCommunity?
         if let community {
@@ -124,8 +129,14 @@ extension NavigationPage {
             } else {
                 Text(verbatim: "Error: No active UserAccount")
             }
-        case let .communityPicker(callback: callback):
-            SearchSheetView { (community: Community2, dismiss: DismissAction) in
+        case let .createPost(community: community):
+            if let view = PostEditorView(community: community) {
+                view
+            } else {
+                Text(verbatim: "Error: No active UserAccount")
+            }
+        case let .communityPicker(api: api, callback: callback):
+            SearchSheetView(api: api) { (community: Community2, dismiss: DismissAction) in
                 CommunityListRowBody(community)
                     .onTapGesture {
                         callback.wrappedValue(community)
@@ -133,8 +144,8 @@ extension NavigationPage {
                     }
                     .padding(.vertical, 6)
             }
-        case let .personPicker(callback: callback):
-            SearchSheetView { (person: Person2, dismiss: DismissAction) in
+        case let .personPicker(api: api, callback: callback):
+            SearchSheetView(api: api) { (person: Person2, dismiss: DismissAction) in
                 PersonListRowBody(person)
                     .onTapGesture {
                         callback.wrappedValue(person)
@@ -160,7 +171,7 @@ extension NavigationPage {
     
     var hasNavigationStack: Bool {
         switch self {
-        case .quickSwitcher, .report, .externalApiInfo, .selectText, .createComment, .editComment:
+        case .quickSwitcher, .report, .externalApiInfo, .selectText, .createComment, .editComment, .createPost:
             false
         default:
             true

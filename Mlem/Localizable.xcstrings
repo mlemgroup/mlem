@@ -86,6 +86,9 @@
     "Active Users" : {
 
     },
+    "Add" : {
+
+    },
     "Add Account" : {
 
     },
@@ -192,6 +195,9 @@
         }
       }
     },
+    "Choose a community..." : {
+
+    },
     "Choose Account Type" : {
 
     },
@@ -247,6 +253,9 @@
 
     },
     "Couldn't read URL" : {
+
+    },
+    "Crosspost" : {
 
     },
     "Customize Interaction Bar" : {
@@ -519,6 +528,9 @@
     "Light" : {
 
     },
+    "Link" : {
+
+    },
     "Links" : {
 
     },
@@ -627,10 +639,16 @@
     "NSFW Content" : {
 
     },
+    "NSFW Tag" : {
+
+    },
     "Ocean" : {
 
     },
     "Old" : {
+
+    },
+    "One of more of your posts failed to send." : {
 
     },
     "Open" : {
@@ -649,6 +667,9 @@
 
     },
     "Open URL from Clipboard" : {
+
+    },
+    "Optional Description" : {
 
     },
     "Orange" : {
@@ -736,6 +757,9 @@
 
     },
     "Reload on Switch" : {
+
+    },
+    "Remove" : {
 
     },
     "Replies" : {
@@ -855,6 +879,9 @@
     "Spoiler" : {
 
     },
+    "Start writing..." : {
+
+    },
     "Strikethrough" : {
 
     },
@@ -926,6 +953,9 @@
 
     },
     "Tiled" : {
+
+    },
+    "Title" : {
 
     },
     "To confirm, please enter your password:" : {

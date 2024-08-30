@@ -5,7 +5,7 @@
 //  Created by Eric Andrews on 2024-08-19.
 //
 
-import Foundation
+import MlemMiddleware
 
 extension PersonView {
     func preheatFeedLoader() {
@@ -20,5 +20,13 @@ extension PersonView {
                 handleError(error)
             }
         }
+    }
+    
+    func tabs(person: any Person3Providing) -> [Tab] {
+        var output: [Tab] = [.overview, .posts, .comments]
+        if !person.moderatedCommunities.isEmpty {
+            output.append(.communities)
+        }
+        return output
     }
 }
