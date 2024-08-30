@@ -230,7 +230,11 @@ struct PostEditorView: View {
                 Toggle("NSFW Tag", systemImage: "tag", isOn: $hasNsfwTag)
                 Button("Crosspost", systemImage: "shuffle") {
                     if let account = targets.last?.account {
-                        targets.append(.init(account: account))
+                        let newTarget: PostEditorTarget = .init(account: account)
+                        targets.append(newTarget)
+                        navigation.openSheet(.communityPicker(api: account.api, callback: { community in
+                            newTarget.community = community
+                        }))
                     }
                 }
             }

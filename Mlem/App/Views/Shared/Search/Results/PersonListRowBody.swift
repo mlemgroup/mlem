@@ -136,7 +136,6 @@ struct PersonListRowBody<Content: View>: View {
     }
     
     var flairs: [PersonFlair] {
-        let flairs = person.flairs(communityContext: communityContext as? any Community3Providing)
-        return PersonFlair.allCases.filter { flairs.contains($0) }
+        person.flairs(communityContext: communityContext as? any Community3Providing)
     }
 }

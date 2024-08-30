@@ -55,7 +55,7 @@ struct FullyQualifiedLabelView: View {
         if entity is any CommunityStubProviding {
             return .community
         }
-        if entity is any PersonStubProviding {
+        if entity is any PersonStubProviding || entity is UserAccount {
             return .person
         }
         return .image
@@ -86,11 +86,10 @@ struct FullyQualifiedLabelView: View {
     
     var flairs: [PersonFlair] {
         guard let person = entity as? any Person else { return [] }
-        let flairs = person.flairs(
+        return person.flairs(
             interactableContext: (commentContext as? any Comment2Providing) ?? (postContext as? any Post2Providing),
             communityContext: communityContext as? any Community3Providing
         )
-        return PersonFlair.allCases.filter { flairs.contains($0) }
     }
     
     var accessibilityLabel: String {

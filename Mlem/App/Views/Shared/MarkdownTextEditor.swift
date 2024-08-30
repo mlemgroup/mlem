@@ -94,7 +94,8 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
                 height: CGFloat.greatestFiniteMagnitude
             )
         )
-        
+        textView.sizeToFit()
+
         // `textView.contentSize` varies slightly on one line depending on which characters are typed.
         // To avoid this we get the line height from the font and round `contentSize` to the nearest line.
 
