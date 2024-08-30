@@ -14,7 +14,7 @@ struct SortingSettingsView: View {
     @Setting(\.commentSort) var commentSort
     
     var body: some View {
-        Form {
+        PaletteForm {
             PaletteSection {
                 HStack {
                     Text("Posts")

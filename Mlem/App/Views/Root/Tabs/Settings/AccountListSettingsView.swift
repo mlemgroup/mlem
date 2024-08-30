@@ -15,7 +15,7 @@ struct AccountListSettingsView: View {
     var accounts: [UserAccount] { AccountsTracker.main.userAccounts }
     
     var body: some View {
-        Form {
+        PaletteForm {
             headerView
             AccountListView()
             PaletteSection {

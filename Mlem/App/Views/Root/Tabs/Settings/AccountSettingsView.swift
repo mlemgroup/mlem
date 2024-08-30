@@ -12,7 +12,7 @@ struct AccountSettingsView: View {
     @Environment(NavigationLayer.self) var navigation
     
     var body: some View {
-        Form {
+        PaletteForm {
             PaletteSection {
                 Group {
                     if let userAccount = appState.firstSession as? UserSession {

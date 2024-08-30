@@ -12,7 +12,7 @@ struct AdvancedSettingsView: View {
     @Environment(Palette.self) var palette
 
     var body: some View {
-        Form {
+        PaletteForm {
             PaletteSection {
                 HStack {
                     Text("Cache")

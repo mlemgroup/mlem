@@ -58,7 +58,6 @@ struct SubscriptionListView: View {
                                 Text(feedOption.description.label)
                             }
                         }
-                        .listRowBackground(palette.background)
                     }
                 }
                 

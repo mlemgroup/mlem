@@ -19,7 +19,7 @@ struct GeneralSettingsView: View {
     @Setting(\.hapticLevel) var hapticLevel
     
     var body: some View {
-        Form {
+        PaletteForm {
             PaletteSection {
                 Picker(selection: $blurNsfw) {
                     ForEach(NsfwBlurBehavior.allCases, id: \.self) { behavior in

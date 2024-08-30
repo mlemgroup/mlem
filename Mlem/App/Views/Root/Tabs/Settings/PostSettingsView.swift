@@ -17,7 +17,7 @@ struct PostSettingsView: View {
     @Setting(\.showCommunityAvatar) var showCommunityAvatar
     
     var body: some View {
-        Form {
+        PaletteForm {
             PaletteSection {
                 Picker("Post Size", selection: $postSize) {
                     ForEach(PostSize.allCases, id: \.rawValue) { item in

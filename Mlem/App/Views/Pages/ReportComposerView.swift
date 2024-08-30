@@ -36,7 +36,7 @@ struct ReportComposerView: View {
     var body: some View {
         CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: reason.isEmpty) {
             NavigationStack {
-                Form {
+                PaletteForm {
                     TextField("Reason (Optional)", text: $reason, axis: .vertical)
                         .focused($reasonFocused)
                     suggestions

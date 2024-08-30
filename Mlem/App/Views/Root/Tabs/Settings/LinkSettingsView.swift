@@ -12,7 +12,7 @@ struct LinkSettingsView: View {
     @Setting(\.openLinksInReaderMode) var openLinksInReaderMode
     
     var body: some View {
-        Form {
+        PaletteForm {
             PaletteSection("Open External Links") {
                 Picker("Open External Links", selection: $openLinksInBrowser) {
                     Text("In-App").tag(false)

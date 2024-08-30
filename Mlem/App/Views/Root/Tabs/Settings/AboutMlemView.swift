@@ -11,7 +11,7 @@ struct AboutMlemView: View {
     @Environment(Palette.self) var palette
     
     var body: some View {
-        Form {
+        PaletteForm {
             PaletteSection {
                 appHeaderView
                     .listRowBackground(palette.groupedBackground)

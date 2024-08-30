@@ -11,7 +11,7 @@ struct SubscriptionListSettingsView: View {
     @Setting(\.subscriptionInstanceLocation) var instanceLocation
     
     var body: some View {
-        Form {
+        PaletteForm {
             Picker("Label Style", selection: $instanceLocation) {
                 ForEach(InstanceLocation.allCases, id: \.self) { item in
                     Text(item.label)

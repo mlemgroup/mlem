@@ -9,7 +9,7 @@ import SwiftUI
 
 struct InboxSettingsView: View {
     var body: some View {
-        Form {
+        PaletteForm {
             PaletteSection {
                 NavigationLink(
                     "Customize Interaction Bar",

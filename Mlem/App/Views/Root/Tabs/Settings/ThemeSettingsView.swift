@@ -14,7 +14,7 @@ struct ThemeSettingsView: View {
     @Setting(\.colorPalette) var colorPalette
     
     var body: some View {
-        Form {
+        PaletteForm {
             Picker("Style", selection: $interfaceStyle) {
                 Text("System").tag(UIUserInterfaceStyle.unspecified)
                 Text("Light").tag(UIUserInterfaceStyle.light)

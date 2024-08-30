@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CommentSettingsView: View {
     var body: some View {
-        Form {
+        PaletteForm {
             PaletteSection {
                 NavigationLink(
                     "Customize Interaction Bar",
