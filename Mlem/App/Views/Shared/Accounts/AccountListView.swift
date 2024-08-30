@@ -15,6 +15,7 @@ struct AccountListView: View {
     
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
+    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
     var accountsTracker: AccountsTracker { .main }
@@ -39,39 +40,37 @@ struct AccountListView: View {
     }
     
     var body: some View {
-        Group {
-            if !isSwitching {
-                if accountsTracker.userAccounts.count > 3, groupAccountSort {
-                    groupedUserAccountList
-                } else if accounts.isEmpty {
-                    Text("You don't have any accounts.")
-                        .foregroundStyle(.secondary)
-                } else {
-                    Section {
-                        ForEach(accounts, id: \.actorId) { account in
-                            AccountListRow(account: account, isSwitching: $isSwitching)
-                        }
-                        .onMove(perform: shouldAllowReordering ? reorderAccount : nil)
-                    } header: {
-                        topHeader()
-                    }
-                }
-                if let account = (appState.firstSession as? GuestSession)?.account, !account.isSaved {
-                    Section {
+        if !isSwitching {
+            if accountsTracker.userAccounts.count > 3, groupAccountSort {
+                groupedUserAccountList
+            } else if accounts.isEmpty {
+                Text("You don't have any accounts.")
+                    .foregroundStyle(palette.secondary)
+            } else {
+                Section {
+                    ForEach(accounts, id: \.actorId) { account in
                         AccountListRow(account: account, isSwitching: $isSwitching)
                     }
+                    .onMove(perform: shouldAllowReordering ? reorderAccount : nil)
+                } header: {
+                    topHeader()
                 }
-                Section {
-                    ForEach(accountsTracker.guestAccounts, id: \.actorId) { account in
-                        AccountListRow(
-                            account: account,
-                            complications: .withTime,
-                            isSwitching: $isSwitching
-                        )
-                    }
-                }
-                addAccountButton
             }
+            if let account = (appState.firstSession as? GuestSession)?.account, !account.isSaved {
+                Section {
+                    AccountListRow(account: account, isSwitching: $isSwitching)
+                }
+            }
+            Section {
+                ForEach(accountsTracker.guestAccounts, id: \.actorId) { account in
+                    AccountListRow(
+                        account: account,
+                        complications: .withTime,
+                        isSwitching: $isSwitching
+                    )
+                }
+            }
+            addAccountButton
         }
     }
     
@@ -168,7 +167,7 @@ struct AccountListView: View {
                     .imageScale(.small)
             }
             .fontWeight(.semibold)
-            .foregroundStyle(.blue)
+            .foregroundStyle(palette.accent)
         }
         .textCase(nil)
     }

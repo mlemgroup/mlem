@@ -10,10 +10,11 @@ import SwiftUI
 
 struct QuickSwitcherView: View {
     @Environment(\.scenePhase) var scenePhase
+    @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     
     var body: some View {
-        List {
+        PaletteForm {
             AccountListView(isQuickSwitcher: true)
         }
         .onChange(of: scenePhase) {

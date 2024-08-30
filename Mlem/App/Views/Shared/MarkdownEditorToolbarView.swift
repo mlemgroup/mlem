@@ -22,7 +22,7 @@ struct MarkdownEditorToolbarView: View {
                     Button("Redo", systemImage: "arrow.uturn.forward") {
                         textView.undoManager?.redo()
                     }
-                    PaletteDivider()
+                    Divider().overlay(Palette.main.neutralAccent)
                 }
                 Button("Bold", systemImage: Icons.bold) {
                     textView.wrapSelectionWithDelimiters("**")
@@ -42,7 +42,7 @@ struct MarkdownEditorToolbarView: View {
                 Button("Code", systemImage: Icons.inlineCode) {
                     textView.wrapSelectionWithDelimiters("`")
                 }
-                PaletteDivider()
+                Divider().overlay(Palette.main.neutralAccent)
                 Menu("Heading", systemImage: Icons.heading) {
                     ForEach(1 ..< 7) { level in
                         Button("Heading \(level)") {
