@@ -118,6 +118,7 @@ enum Icons {
     static let opFlair: String = "person.fill"
     static let instanceBannedFlair: String = "xmark.circle.fill"
     static let communityBannedFlair: String = "xmark.shield.fill"
+    static let newAccountFlair: String = "leaf.fill"
     
     // markdown
     static let bold: String = "bold"
