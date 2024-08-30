@@ -19,7 +19,7 @@ struct CommentEditorView: View {
         case success, notFound, error(ErrorDetails), resolving
     }
     
-    let textView: UITextView = .init()
+    let textView: UITextView //  = .init()
 
     let expandedPostTracker: ExpandedPostTracker?
     
@@ -50,7 +50,10 @@ struct CommentEditorView: View {
             return nil
         }
         self._text = .init(wrappedValue: commentToEdit?.content ?? "")
+        
+        self.textView = .init()
         textView.text = text
+        textView.backgroundColor = UIColor(Palette.main.background)
     }
         
     var minTextEditorHeight: CGFloat {
@@ -96,6 +99,7 @@ struct CommentEditorView: View {
                             }
                         }
                     }
+                    .background(palette.background)
             }
             .task(id: account, resolveContext)
         }
