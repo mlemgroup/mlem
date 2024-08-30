@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+/// Identical to Form, but respects Palette
 struct PaletteForm<Content: View>: View {
     @Environment(Palette.self) var palette
     
@@ -16,7 +17,8 @@ struct PaletteForm<Content: View>: View {
     var body: some View {
         Form {
             content()
-                .listRowBackground(palette.background)
+                .foregroundStyle(palette.primary)
+                .listRowBackground(palette.secondaryGroupedBackground)
         }
         .scrollContentBackground(.hidden)
         .background(palette.groupedBackground)

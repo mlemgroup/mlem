@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ImageViewer: View {
+    @Environment(Palette.self) var palette
+    
     let url: URL
     
     init(url: URL) {
@@ -26,5 +28,6 @@ struct ImageViewer: View {
                 CloseButtonView()
             }
         }
+        .background(palette.background)
     }
 }

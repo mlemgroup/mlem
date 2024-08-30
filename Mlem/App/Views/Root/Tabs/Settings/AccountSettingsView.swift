@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct AccountSettingsView: View {
+    @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     
     var body: some View {
         PaletteForm {
-            PaletteSection {
+            Section {
                 Group {
                     if let userAccount = appState.firstSession as? UserSession {
                         ProfileHeaderView(userAccount.person)
@@ -21,13 +22,13 @@ struct AccountSettingsView: View {
                         ProfileHeaderView(appState.firstSession.instance)
                     }
                 }
-                .listRowBackground(Color(.systemGroupedBackground))
+                .listRowBackground(palette.groupedBackground)
                 .padding(.vertical, -12)
                 .padding(.horizontal, -16)
             }
             
             if let account = appState.firstAccount as? UserAccount {
-                PaletteSection {
+                Section {
                     Button("Delete Account", role: .destructive) {
                         navigation.openSheet(.deleteAccount(account))
                     }

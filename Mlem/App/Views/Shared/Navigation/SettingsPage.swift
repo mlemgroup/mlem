@@ -69,6 +69,8 @@ enum SettingsPage: Hashable {
 }
 
 private struct SimpleMarkdownPage: View {
+    @Environment(Palette.self) var palette
+    
     let doc: Document
     
     var body: some View {
@@ -76,5 +78,6 @@ private struct SimpleMarkdownPage: View {
             Markdown(doc.body, configuration: .default)
                 .padding(Constants.main.standardSpacing)
         }
+        .background(palette.background)
     }
 }

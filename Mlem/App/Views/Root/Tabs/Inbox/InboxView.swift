@@ -129,7 +129,7 @@ struct InboxView: View {
                     }
                 })
                 PaletteDivider()
-                PaletteSection {
+                Section {
                     if loadingState == .loading, replies.isEmpty, mentions.isEmpty {
                         ProgressView()
                             .controlSize(.large)

@@ -47,7 +47,7 @@ struct AccountListView: View {
                     Text("You don't have any accounts.")
                         .foregroundStyle(.secondary)
                 } else {
-                    PaletteSection {
+                    Section {
                         ForEach(accounts, id: \.actorId) { account in
                             AccountListRow(account: account, isSwitching: $isSwitching)
                         }
@@ -57,11 +57,11 @@ struct AccountListView: View {
                     }
                 }
                 if let account = (appState.firstSession as? GuestSession)?.account, !account.isSaved {
-                    PaletteSection {
+                    Section {
                         AccountListRow(account: account, isSwitching: $isSwitching)
                     }
                 }
-                PaletteSection {
+                Section {
                     ForEach(accountsTracker.guestAccounts, id: \.actorId) { account in
                         AccountListRow(
                             account: account,
@@ -78,7 +78,7 @@ struct AccountListView: View {
     @ViewBuilder
     var groupedUserAccountList: some View {
         ForEach(Array(accountGroups.enumerated()), id: \.offset) { offset, group in
-            PaletteSection {
+            Section {
                 ForEach(group.accounts, id: \.actorId) { account in
                     AccountListRow(
                         account: account,
@@ -98,7 +98,7 @@ struct AccountListView: View {
     
     @ViewBuilder
     var addAccountButton: some View {
-        PaletteSection {
+        Section {
             Button { isShowingAddAccountDialogue = true } label: {
                 Label("Add Account", systemImage: "plus")
             }
