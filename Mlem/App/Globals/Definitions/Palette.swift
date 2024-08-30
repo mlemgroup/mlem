@@ -50,12 +50,13 @@ protocol PaletteProviding {
 }
 
 enum PaletteOption: String, CaseIterable {
-    case standard, monochrome
+    case standard, monochrome, solarized
     
     var palette: ColorPalette {
         switch self {
         case .standard: ColorPalette.standard
         case .monochrome: ColorPalette.monochrome
+        case .solarized: ColorPalette.solarized
         }
     }
     
@@ -63,6 +64,7 @@ enum PaletteOption: String, CaseIterable {
         switch self {
         case .standard: "Default"
         case .monochrome: "Monochrome"
+        case .solarized: "Solarized"
         }
     }
     
@@ -70,6 +72,7 @@ enum PaletteOption: String, CaseIterable {
         switch self {
         case .standard: .blue
         case .monochrome: .primary
+        case .solarized: .orange
         }
     }
     

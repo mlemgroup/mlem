@@ -58,12 +58,14 @@ struct SubscriptionListView: View {
                                 Text(feedOption.description.label)
                             }
                         }
+                        .listRowBackground(palette.background)
                     }
                 }
                 
                 ForEach(sections) { section in
                     SubscriptionListSectionView(section: section, sectionIndicesShown: sectionIndicesShown)
                         .id(section.label)
+                        .listRowBackground(palette.background)
                 }
                 .scrollTargetLayout()
             }
@@ -100,6 +102,7 @@ struct SubscriptionListView: View {
                     handleError(error)
                 }
             }
+            .background(palette.background)
         }
     }
     
