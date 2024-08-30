@@ -67,16 +67,16 @@ extension CommentEditorView {
     func send() async {
         do {
             if let commentToEdit {
-                try await commentToEdit.edit(content: text, languageId: commentToEdit.languageId)
+                try await commentToEdit.edit(content: textView.text, languageId: commentToEdit.languageId)
             } else if let resolvedContext {
                 let result: Comment2
                 let parent: (any Comment1Providing)?
                 switch resolvedContext {
                 case let .post(post):
-                    result = try await post.reply(content: text)
+                    result = try await post.reply(content: textView.text)
                     parent = nil
                 case let .comment(comment):
-                    result = try await comment.reply(content: text)
+                    result = try await comment.reply(content: textView.text)
                     parent = comment
                 }
                 expandedPostTracker?.insertCreatedComment(result, parent: parent)

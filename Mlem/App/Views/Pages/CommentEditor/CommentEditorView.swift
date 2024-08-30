@@ -19,7 +19,7 @@ struct CommentEditorView: View {
         case success, notFound, error(ErrorDetails), resolving
     }
     
-    let textView: UITextView //  = .init()
+    let textView: UITextView = .init()
 
     let expandedPostTracker: ExpandedPostTracker?
     
@@ -29,9 +29,10 @@ struct CommentEditorView: View {
     @State var resolutionState: ResolutionState = .success
     @State var sending: Bool = false
 
-    @State var text: String
     @State var account: UserAccount
     @State var presentationSelection: PresentationDetent = .large
+    
+    @State var textIsEmpty: Bool = true
     
     @FocusState var focused: Bool
     
@@ -49,10 +50,8 @@ struct CommentEditorView: View {
         } else {
             return nil
         }
-        self._text = .init(wrappedValue: commentToEdit?.content ?? "")
         
-        self.textView = .init()
-        textView.text = text
+        textView.text = commentToEdit?.content ?? ""
         textView.backgroundColor = UIColor(Palette.main.background)
     }
         
@@ -61,7 +60,7 @@ struct CommentEditorView: View {
     }
 
     var body: some View {
-        CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: text.isEmpty) {
+        CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: textIsEmpty) {
             NavigationStack {
                 content
                     .navigationBarTitleDisplayMode(.inline)
@@ -95,13 +94,16 @@ struct CommentEditorView: View {
                                         await send()
                                     }
                                 }
-                                .disabled(resolutionState != .success || text.isEmpty)
+                                .disabled(resolutionState != .success || textIsEmpty)
                             }
                         }
                     }
                     .background(palette.background)
             }
             .task(id: account, resolveContext)
+        }
+        .onAppear {
+            textView.becomeFirstResponder()
         }
         .onChange(of: presentationSelection) {
             if presentationSelection == .large {
@@ -119,14 +121,18 @@ struct CommentEditorView: View {
                         .padding([.horizontal, .bottom], 10)
                 }
                 MarkdownTextEditor(
-                    text: $text,
+                    onChange: {
+                        if $0.isEmpty != textIsEmpty {
+                            textIsEmpty = $0.isEmpty
+                        }
+                    },
                     prompt: "Start writing...",
-                    textView: textView
-                ) {
-                    MarkdownEditorToolbarView(textView: textView)
-                }
+                    textView: textView,
+                    content: {
+                        MarkdownEditorToolbarView(textView: textView)
+                    }
+                )
                 .frame(
-                    minWidth: 0,
                     maxWidth: .infinity,
                     minHeight: minTextEditorHeight,
                     maxHeight: .infinity,

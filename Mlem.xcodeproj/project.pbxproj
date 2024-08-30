@@ -30,6 +30,7 @@
 		03134A5A2BEC2253002662CC /* AvatarStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03134A592BEC2253002662CC /* AvatarStackView.swift */; };
 		0315B1BE2C74C3D6006D4F82 /* CommentEditorView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315B1BD2C74C3D6006D4F82 /* CommentEditorView+Logic.swift */; };
 		0315B1C12C74C71A006D4F82 /* CommentEditorView+Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315B1C02C74C71A006D4F82 /* CommentEditorView+Context.swift */; };
+		0315B1C62C754802006D4F82 /* PostEditorView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315B1C52C754802006D4F82 /* PostEditorView+Logic.swift */; };
 		0315B1C82C7635D4006D4F82 /* ApiCommentSortType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315B1C72C7635D4006D4F82 /* ApiCommentSortType+Extensions.swift */; };
 		0315B1CA2C767847006D4F82 /* InteractionBarTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315B1C92C767847006D4F82 /* InteractionBarTracker.swift */; };
 		0316CD642C382A6A009EA8EA /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0316CD632C382A6A009EA8EA /* MessageView.swift */; };
@@ -127,6 +128,8 @@
 		0397D4802C693A88002C6CDC /* [BlockNode]+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D47F2C693A88002C6CDC /* [BlockNode]+Extensions.swift */; };
 		0397D4862C6A24D2002C6CDC /* ReportableProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4852C6A24D2002C6CDC /* ReportableProviding+Extensions.swift */; };
 		0397D48C2C6BE9A2002C6CDC /* CollapsibleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D48B2C6BE9A2002C6CDC /* CollapsibleSection.swift */; };
+		0397D4912C6CE871002C6CDC /* PostEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D48F2C6CE871002C6CDC /* PostEditorView.swift */; };
+		0397D4932C6CE87E002C6CDC /* PostEditorTargetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4922C6CE87E002C6CDC /* PostEditorTargetView.swift */; };
 		0397D49A2C6EA6EE002C6CDC /* InteractionBarEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4992C6EA6EE002C6CDC /* InteractionBarEditorView.swift */; };
 		0397D49C2C6EA73C002C6CDC /* InteractionBarConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D49B2C6EA73C002C6CDC /* InteractionBarConfiguration.swift */; };
 		0397D4A22C6EB035002C6CDC /* ActionAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4A12C6EB035002C6CDC /* ActionAppearance.swift */; };
@@ -369,6 +372,7 @@
 		03134A592BEC2253002662CC /* AvatarStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarStackView.swift; sourceTree = "<group>"; };
 		0315B1BD2C74C3D6006D4F82 /* CommentEditorView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentEditorView+Logic.swift"; sourceTree = "<group>"; };
 		0315B1C02C74C71A006D4F82 /* CommentEditorView+Context.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentEditorView+Context.swift"; sourceTree = "<group>"; };
+		0315B1C52C754802006D4F82 /* PostEditorView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditorView+Logic.swift"; sourceTree = "<group>"; };
 		0315B1C72C7635D4006D4F82 /* ApiCommentSortType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiCommentSortType+Extensions.swift"; sourceTree = "<group>"; };
 		0315B1C92C767847006D4F82 /* InteractionBarTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarTracker.swift; sourceTree = "<group>"; };
 		0316CD632C382A6A009EA8EA /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
@@ -465,6 +469,8 @@
 		0397D47F2C693A88002C6CDC /* [BlockNode]+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "[BlockNode]+Extensions.swift"; sourceTree = "<group>"; };
 		0397D4852C6A24D2002C6CDC /* ReportableProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReportableProviding+Extensions.swift"; sourceTree = "<group>"; };
 		0397D48B2C6BE9A2002C6CDC /* CollapsibleSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleSection.swift; sourceTree = "<group>"; };
+		0397D48F2C6CE871002C6CDC /* PostEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditorView.swift; sourceTree = "<group>"; };
+		0397D4922C6CE87E002C6CDC /* PostEditorTargetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditorTargetView.swift; sourceTree = "<group>"; };
 		0397D4992C6EA6EE002C6CDC /* InteractionBarEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarEditorView.swift; sourceTree = "<group>"; };
 		0397D49B2C6EA73C002C6CDC /* InteractionBarConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarConfiguration.swift; sourceTree = "<group>"; };
 		0397D4A12C6EB035002C6CDC /* ActionAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionAppearance.swift; sourceTree = "<group>"; };
@@ -917,12 +923,23 @@
 				0355F9452C150B2300605248 /* ExternalApiInfoView.swift */,
 				03AF91DC2C1B23E500E56644 /* ImageViewer.swift */,
 				0315B1BC2C74C3CD006D4F82 /* CommentEditor */,
+				0397D4902C6CE871002C6CDC /* PostEditor */,
 				0397D4792C693444002C6CDC /* ReportComposerView.swift */,
 				CDD99C3B2C73F3FF0010367F /* DeleteAccountView.swift */,
 			);
 			name = Pages;
 			path = Mlem/App/Views/Pages;
 			sourceTree = SOURCE_ROOT;
+		};
+		0397D4902C6CE871002C6CDC /* PostEditor */ = {
+			isa = PBXGroup;
+			children = (
+				0397D48F2C6CE871002C6CDC /* PostEditorView.swift */,
+				0315B1C52C754802006D4F82 /* PostEditorView+Logic.swift */,
+				0397D4922C6CE87E002C6CDC /* PostEditorTargetView.swift */,
+			);
+			path = PostEditor;
+			sourceTree = "<group>";
 		};
 		0397D4982C6EA68A002C6CDC /* InteractionBarEditor */ = {
 			isa = PBXGroup;
@@ -1943,6 +1960,7 @@
 				CDE1F19C2C63E2EB008AF042 /* SettingPropertyWrapper.swift in Sources */,
 				038096612C10AAD8003ED1D8 /* TransitionView.swift in Sources */,
 				0382A7F42C0A76A900C79DDA /* Date+Extensions.swift in Sources */,
+				0397D4912C6CE871002C6CDC /* PostEditorView.swift in Sources */,
 				03D2A63B2C010B7500ED4FF2 /* GuestAccount.swift in Sources */,
 				CDE1F1962C63DF89008AF042 /* PhoneConstants.swift in Sources */,
 				0397D4862C6A24D2002C6CDC /* ReportableProviding+Extensions.swift in Sources */,
@@ -2021,6 +2039,7 @@
 				03531EF52C2DA610004A3464 /* NavigationSearchType.swift in Sources */,
 				CD8DCAF92C5E92E8003E4DD7 /* Profile1Providing+Extensions.swift in Sources */,
 				CDB2EC8A2BFAEFDF00DBC0EF /* ThumbnailImageView.swift in Sources */,
+				0397D4932C6CE87E002C6CDC /* PostEditorTargetView.swift in Sources */,
 				CD7882A52BFE94D2002E1A30 /* CommunityContext.swift in Sources */,
 				0369B3562BFA6824001EFEDF /* InboxView.swift in Sources */,
 				CD4D59162B87B38C00B82964 /* UIApplication+Extensions.swift in Sources */,
@@ -2044,6 +2063,7 @@
 				0316CD642C382A6A009EA8EA /* MessageView.swift in Sources */,
 				CDF9EF332AB2845C003F885B /* Icons.swift in Sources */,
 				03AF91E32C1C616F00E56644 /* InteractionBarView.swift in Sources */,
+				03B431B22C44409D001A1EB5 /* CommentEditorView.swift in Sources */,
 				0397D4802C693A88002C6CDC /* [BlockNode]+Extensions.swift in Sources */,
 				03B431B22C44409D001A1EB5 /* CommentEditorView.swift in Sources */,
 				CD4D58DA2B86E11D00B82964 /* Mockable.swift in Sources */,
@@ -2116,6 +2136,7 @@
 				0382A7F02C09F0F800C79DDA /* PersonView.swift in Sources */,
 				CDBFCB6C2C054AA7008CD468 /* TilePostView.swift in Sources */,
 				0380965F2C10AA80003ED1D8 /* AppState+Transition.swift in Sources */,
+				0315B1C62C754802006D4F82 /* PostEditorView+Logic.swift in Sources */,
 				CD4D58932B86BA5C00B82964 /* StandardPalette.swift in Sources */,
 				CDE1F1942C63DF44008AF042 /* PlatformConstants.swift in Sources */,
 				CDCA44952C17658000C092B3 /* View+QuickSwipes.swift in Sources */,

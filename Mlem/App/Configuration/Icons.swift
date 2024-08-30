@@ -168,6 +168,7 @@ enum Icons {
     static let present: String = "circle.fill" // that's present as in "here," not as in "gift"
     static let absent: String = "circle"
     static let warning: String = "exclamationmark.triangle"
+    static let warningFill: String = "exclamationmark.triangle.fill"
     static let hide: String = "eye.slash"
     static let hideFill: String = "eye.slash.fill"
     static let block: String = "hand.raised"

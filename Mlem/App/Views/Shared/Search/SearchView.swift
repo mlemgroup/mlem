@@ -146,6 +146,7 @@ struct SearchView: View {
             if !query.isEmpty {
                 try await Task.sleep(for: .seconds(0.2))
             }
+            // TODO: Xcode 16 refactor this
             await setCommunities(.init())
             await setPeople(.init())
             await setInstances(.init())

@@ -47,14 +47,15 @@ struct FullyQualifiedLabelView: View {
 
     let entity: (any CommunityOrPersonStub & Profile1Providing)?
     let labelStyle: FullyQualifiedLabelStyle
-    let showAvatar: Bool
+    var showAvatar: Bool = true
+    var showInstance: Bool = true
     let blurred: Bool
     
     var fallback: FixedImageView.Fallback {
         if entity is any CommunityStubProviding {
             return .community
         }
-        if entity is any PersonStubProviding {
+        if entity is any PersonStubProviding || entity is UserAccount {
             return .person
         }
         return .image
@@ -74,7 +75,7 @@ struct FullyQualifiedLabelView: View {
             FullyQualifiedNameView(
                 name: entity?.name,
                 instance: entity?.host,
-                instanceLocation: labelStyle.instanceLocation,
+                instanceLocation: showInstance ? labelStyle.instanceLocation : .disabled,
                 prependedText: flairs.textView()
             )
             .imageScale(.small)
