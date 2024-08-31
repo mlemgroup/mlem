@@ -15,6 +15,7 @@ struct Divider: View {
     
     var body: some View {
         SwiftUI.Divider()
-            .overlay(palette.tertiary)
+            .hidden()
+            .overlay(palette.neutralAccent.opacity(0.4))
     }
 }
