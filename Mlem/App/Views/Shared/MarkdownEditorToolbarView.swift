@@ -72,7 +72,7 @@ struct MarkdownEditorToolbarView: View {
             }
             .imageScale(.large)
             .buttonStyle(.plain)
-            .foregroundStyle(Palette.main.secondary)
+            .foregroundStyle(.secondary)
             .labelStyle(.iconOnly)
             .padding(.horizontal)
             .padding(.bottom, 2)
@@ -80,6 +80,5 @@ struct MarkdownEditorToolbarView: View {
         .scrollIndicators(.hidden)
         .frame(maxWidth: .infinity)
         .frame(height: 32)
-        .background(Palette.main.secondaryBackground)
     }
 }
