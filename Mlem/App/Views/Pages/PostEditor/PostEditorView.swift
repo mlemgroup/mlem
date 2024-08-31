@@ -37,7 +37,9 @@ struct PostEditorView: View {
         self.titleTextView = .init()
         self.contentTextView = .init()
         titleTextView.tag = 0
+        titleTextView.backgroundColor = UIColor(Palette.main.background)
         contentTextView.tag = 1
+        contentTextView.backgroundColor = UIColor(Palette.main.background)
     }
     
     var body: some View {
@@ -46,6 +48,7 @@ struct PostEditorView: View {
                 contentView
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar { toolbar }
+                    .background(palette.background)
             }
             .onAppear {
                 titleTextView.becomeFirstResponder()
