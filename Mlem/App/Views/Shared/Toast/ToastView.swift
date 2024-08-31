@@ -170,6 +170,7 @@ struct ToastView: View {
                             Text(details.errorText)
                                 .foregroundStyle(.red)
                                 .padding(8)
+                                .multilineTextAlignment(.leading)
                         }
                         .frame(maxWidth: .infinity)
                         

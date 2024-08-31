@@ -60,7 +60,7 @@ extension PostEditorView {
         case let .value(url):
             url.absoluteString
         default:
-            .init(localized: "Link")
+            .init(localized: "Add a Link...")
         }
     }
 }

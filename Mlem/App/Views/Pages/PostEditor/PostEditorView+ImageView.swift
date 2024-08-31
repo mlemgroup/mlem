@@ -5,11 +5,44 @@
 //  Created by Sjmarf on 29/08/2024.
 //
 
+import PhotosUI
 import SwiftUI
 
 extension PostEditorView {
     @ViewBuilder
     var imageView: some View {
+        switch image {
+        case let .value(imageUpload):
+            DynamicImageView(url: imageUpload.url)
+                .overlay(alignment: .topTrailing) {
+                    Button("Remove", systemImage: Icons.closeCircleFill) {
+                        if case let .value(imageUpload) = self.image {
+                            Task {
+                                do {
+                                    try await imageUpload.delete()
+                                } catch {
+                                    handleError(error)
+                                }
+                            }
+                        }
+                       
+                        self.image = .none
+                    }
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(.secondary, .thinMaterial)
+                    .font(.title)
+                    .labelStyle(.iconOnly)
+                    .padding()
+                }
+                .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
+                .frame(maxWidth: .infinity)
+        default:
+            imageWaitingView
+        }
+    }
+    
+    @ViewBuilder
+    private var imageWaitingView: some View {
         VStack {
             HStack {
                 Text("Upload an image...")
@@ -29,7 +62,9 @@ extension PostEditorView {
             }
             .foregroundStyle(palette.accent)
             HVStack {
-                Button("Photos", systemImage: "photo.on.rectangle.angled") {}
+                Button("Photos", systemImage: "photo.on.rectangle.angled") {
+                    showingPhotosPicker = true
+                }
                 Button("Files", systemImage: "folder") {}
                 Button("Paste", systemImage: Icons.paste) {}
             }
@@ -38,6 +73,23 @@ extension PostEditorView {
         .frame(maxWidth: .infinity)
         .padding(8)
         .background(palette.accent.opacity(0.2), in: .rect(cornerRadius: 16))
+    }
+    
+    func uploadPhoto(_ photo: PhotosPickerItem) async {
+        do {
+            guard let data = try await photo.loadTransferable(type: Data.self) else {
+                print("Failed")
+                return
+            }
+            guard let api = targets.first?.account.api else {
+                print("No api")
+                return
+            }
+            image = try await .value(api.uploadImage(data))
+            print("Success")
+        } catch {
+            handleError(error)
+        }
     }
 }
 

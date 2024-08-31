@@ -6,6 +6,7 @@
 //
 
 import MlemMiddleware
+import PhotosUI
 import SwiftUI
 
 struct PostEditorView: View {
@@ -29,6 +30,9 @@ struct PostEditorView: View {
     @State var link: LinkState = .none
     @State var image: ImageState = .none
     @State var sending: Bool = false
+    
+    @State var showingPhotosPicker: Bool = false
+    @State var showingFilesPicker: Bool = false
     
     @State var targets: [PostEditorTarget]
     
@@ -78,6 +82,18 @@ struct PostEditorView: View {
                 contentTextView.isEditable = true
             }
         }
+        .photosPicker(
+            isPresented: $showingPhotosPicker,
+            selection: .init(
+                get: { nil },
+                set: { photo in
+                    if let photo {
+                        Task { await uploadPhoto(photo) }
+                    }
+                }
+            ),
+            matching: .images
+        )
     }
     
     @ViewBuilder
@@ -146,6 +162,7 @@ struct PostEditorView: View {
                     alignment: .topLeading
                 )
                 .padding(.top, 4)
+                .background(palette.background)
             }
             .animation(.snappy(duration: 0.2, extraBounce: 0.1), value: animationHashValue)
         }
