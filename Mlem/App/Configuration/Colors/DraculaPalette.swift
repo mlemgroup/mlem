@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 // source: https://draculatheme.com/contribute#color-palette
+private let _darkBackground: Color = .init(red: 0.07843137255, green: 0.07450980392, blue: 0.1215686275)
 private let _background: Color = .init(red: 0.1568627450980392, green: 0.16470588235294117, blue: 0.21176470588235294)
 private let _secondaryBackground: Color = .init(red: 0.26666666666666666, green: 0.2784313725490196, blue: 0.35294117647058826)
 private let _primary: Color = .init(red: 0.9725490196078431, green: 0.9725490196078431, blue: 0.9490196078431372)
@@ -26,11 +27,11 @@ extension ColorPalette {
         supportedModes: .dark,
         primary: _primary,
         secondary: _secondary,
-        tertiary: _secondary, // TODO:
+        tertiary: _secondary,
         background: _background,
         secondaryBackground: _secondaryBackground,
         tertiaryBackground: _secondaryBackground,
-        groupedBackground: _secondaryBackground,
+        groupedBackground: _darkBackground,
         secondaryGroupedBackground: _background,
         tertiaryGroupedBackground: _secondaryBackground,
         thumbnailBackground: _secondaryBackground,
