@@ -20,12 +20,12 @@ struct SettingsView: View {
     var accounts: [UserAccount] { AccountsTracker.main.userAccounts }
     
     var body: some View {
-        PaletteForm {
-            Section {
+        Form {
+            PaletteSection {
                 accountSettingsLink
                 accountListLink
             }
-            Section {
+            PaletteSection {
                 NavigationLink("General", systemImage: "gear", destination: .settings(.general))
                     .tint(palette.neutralAccent)
                 NavigationLink("Links", systemImage: Icons.websiteAddress, destination: .settings(.links))
@@ -34,7 +34,7 @@ struct SettingsView: View {
                     .tint(palette.colorfulAccent(5))
             }
             
-            Section {
+            PaletteSection {
                 appIconSettingsLink
                 NavigationLink(.settings(.theme)) {
                     ThemeLabel(title: "Theme", palette: colorPalette)
@@ -42,7 +42,7 @@ struct SettingsView: View {
                 .labelStyle(.automatic)
             }
             
-            Section {
+            PaletteSection {
                 NavigationLink("Posts", systemImage: "doc.plaintext.fill", destination: .settings(.post))
                     .tint(palette.postAccent)
                 NavigationLink("Comments", systemImage: "bubble.fill", destination: .settings(.comment))
@@ -53,7 +53,7 @@ struct SettingsView: View {
                     .tint(palette.communityAccent)
             }
             
-            Section {
+            PaletteSection {
                 NavigationLink("About Mlem", systemImage: "info.circle.fill", destination: .settings(.about))
                     .tint(palette.colorfulAccent(2))
                 NavigationLink("Advanced", systemImage: "gearshape.2.fill", destination: .settings(.advanced))

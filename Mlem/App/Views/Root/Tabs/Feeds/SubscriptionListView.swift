@@ -49,7 +49,7 @@ struct SubscriptionListView: View {
         
         ScrollViewReader { proxy in
             List {
-                Section {
+                PaletteSection {
                     ForEach(feedOptions, id: \.hashValue) { feedOption in
                         NavigationLink(.feeds(feedOption)) {
                             HStack(spacing: 15) {

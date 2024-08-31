@@ -59,7 +59,7 @@ enum SettingsPage: Hashable {
         case let .document(doc):
             SimpleMarkdownPage(doc: doc)
         case .licences:
-            PaletteForm {
+            Form {
                 ForEach(Document.allLicenses) { doc in
                     NavigationLink(doc.title, destination: .settings(.document(doc)))
                 }

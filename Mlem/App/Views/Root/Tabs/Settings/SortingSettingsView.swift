@@ -14,8 +14,8 @@ struct SortingSettingsView: View {
     @Setting(\.commentSort) var commentSort
     
     var body: some View {
-        PaletteForm {
-            Section {
+        Form {
+            PaletteSection {
                 HStack {
                     Text("Posts")
                     Spacer()
@@ -39,7 +39,7 @@ struct SortingSettingsView: View {
                 }
             }
             
-            Section {
+            PaletteSection {
                 HStack {
                     Text("Comments")
                     Spacer()

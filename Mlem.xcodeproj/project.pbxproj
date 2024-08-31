@@ -299,6 +299,7 @@
 		CDB2EC862BFADD7C00DBC0EF /* FullyQualifiedLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC852BFADD7C00DBC0EF /* FullyQualifiedLabelView.swift */; };
 		CDB2EC882BFAE14800DBC0EF /* FullyQualifiedNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC872BFAE14800DBC0EF /* FullyQualifiedNameView.swift */; };
 		CDB2EC8A2BFAEFDF00DBC0EF /* ThumbnailImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC892BFAEFDF00DBC0EF /* ThumbnailImageView.swift */; };
+		CDB41E8A2C83C24400BD2DE9 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB41E892C83C24400BD2DE9 /* Section.swift */; };
 		CDBFCB652C03920C008CD468 /* PostLinkHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB642C03920C008CD468 /* PostLinkHostView.swift */; };
 		CDBFCB6A2C04EFFE008CD468 /* PostSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */; };
 		CDBFCB6C2C054AA7008CD468 /* TilePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB6B2C054AA7008CD468 /* TilePostView.swift */; };
@@ -318,7 +319,7 @@
 		CDCA44B22C17675600C092B3 /* Haptic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44B12C17675600C092B3 /* Haptic.swift */; };
 		CDCA44B42C176A4700C092B3 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44B32C176A4700C092B3 /* Array+Extensions.swift */; };
 		CDCA44B62C176C5000C092B3 /* View+EdgeBorders.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44B52C176C5000C092B3 /* View+EdgeBorders.swift */; };
-		CDD8B94C2C8234BC00510EBB /* PaletteForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD8B94B2C8234BC00510EBB /* PaletteForm.swift */; };
+		CDD8B94C2C8234BC00510EBB /* Form.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD8B94B2C8234BC00510EBB /* Form.swift */; };
 		CDD99C3C2C73F3FF0010367F /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD99C3B2C73F3FF0010367F /* DeleteAccountView.swift */; };
 		CDD99C3E2C73F4380010367F /* WarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD99C3D2C73F4380010367F /* WarningView.swift */; };
 		CDE021AD2BFA43380052FD61 /* FeedPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE021AC2BFA43380052FD61 /* FeedPostView.swift */; };
@@ -638,6 +639,7 @@
 		CDB2EC852BFADD7C00DBC0EF /* FullyQualifiedLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullyQualifiedLabelView.swift; sourceTree = "<group>"; };
 		CDB2EC872BFAE14800DBC0EF /* FullyQualifiedNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullyQualifiedNameView.swift; sourceTree = "<group>"; };
 		CDB2EC892BFAEFDF00DBC0EF /* ThumbnailImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailImageView.swift; sourceTree = "<group>"; };
+		CDB41E892C83C24400BD2DE9 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		CDBFCB642C03920C008CD468 /* PostLinkHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLinkHostView.swift; sourceTree = "<group>"; };
 		CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSettingsView.swift; sourceTree = "<group>"; };
 		CDBFCB6B2C054AA7008CD468 /* TilePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TilePostView.swift; sourceTree = "<group>"; };
@@ -657,7 +659,7 @@
 		CDCA44B12C17675600C092B3 /* Haptic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptic.swift; sourceTree = "<group>"; };
 		CDCA44B32C176A4700C092B3 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		CDCA44B52C176C5000C092B3 /* View+EdgeBorders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+EdgeBorders.swift"; sourceTree = "<group>"; };
-		CDD8B94B2C8234BC00510EBB /* PaletteForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteForm.swift; sourceTree = "<group>"; };
+		CDD8B94B2C8234BC00510EBB /* Form.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Form.swift; sourceTree = "<group>"; };
 		CDD99C3B2C73F3FF0010367F /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		CDD99C3D2C73F4380010367F /* WarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningView.swift; sourceTree = "<group>"; };
 		CDE021AC2BFA43380052FD61 /* FeedPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostView.swift; sourceTree = "<group>"; };
@@ -1537,7 +1539,8 @@
 			isa = PBXGroup;
 			children = (
 				CDAA02E22C821C9100D75633 /* Divider.swift */,
-				CDD8B94B2C8234BC00510EBB /* PaletteForm.swift */,
+				CDD8B94B2C8234BC00510EBB /* Form.swift */,
+				CDB41E892C83C24400BD2DE9 /* Section.swift */,
 			);
 			path = "Palette Components";
 			sourceTree = "<group>";
@@ -1945,7 +1948,7 @@
 				03134A522BEAD69F002662CC /* SettingsPage.swift in Sources */,
 				03049A1C2C65039400FF6889 /* ActiveUserCountView.swift in Sources */,
 				0389DDDB2C3AB6340005B808 /* ActionBuilder.swift in Sources */,
-				CDD8B94C2C8234BC00510EBB /* PaletteForm.swift in Sources */,
+				CDD8B94C2C8234BC00510EBB /* Form.swift in Sources */,
 				03CCDAA02BF2795300C0C851 /* LoginPage.swift in Sources */,
 				032C32082C34469900595286 /* SelectableContentProviding+Extensions.swift in Sources */,
 				037658DF2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift in Sources */,
@@ -2043,6 +2046,7 @@
 				CD7882A52BFE94D2002E1A30 /* CommunityContext.swift in Sources */,
 				0369B3562BFA6824001EFEDF /* InboxView.swift in Sources */,
 				CD4D59162B87B38C00B82964 /* UIApplication+Extensions.swift in Sources */,
+				CDB41E8A2C83C24400BD2DE9 /* Section.swift in Sources */,
 				CDCA44B22C17675600C092B3 /* Haptic.swift in Sources */,
 				035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */,
 				033F84BB2C2ACB96002E3EDF /* CommentView.swift in Sources */,

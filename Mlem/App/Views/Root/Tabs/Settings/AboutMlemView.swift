@@ -11,12 +11,12 @@ struct AboutMlemView: View {
     @Environment(Palette.self) var palette
     
     var body: some View {
-        PaletteForm {
-            Section {
+        Form {
+            PaletteSection {
                 appHeaderView
                     .listRowBackground(palette.groupedBackground)
             }
-            Section {
+            PaletteSection {
                 Link(destination: URL(string: "https://mlem.group")!) {
                     FormChevron { Label("Website", systemImage: Icons.websiteIcon) }
                 }
@@ -34,7 +34,7 @@ struct AboutMlemView: View {
                 }
                 .tint(palette.primary)
             }
-            Section {
+            PaletteSection {
                 NavigationLink("Privacy Policy", systemImage: "hand.raised.fill", destination: .settings(.document(.privacyPolicy)))
                     .tint(palette.colorfulAccent(2))
                 NavigationLink("EULA", systemImage: "doc.plaintext.fill", destination: .settings(.document(.eula)))

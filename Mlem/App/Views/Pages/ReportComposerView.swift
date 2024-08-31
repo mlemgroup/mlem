@@ -36,7 +36,7 @@ struct ReportComposerView: View {
     var body: some View {
         CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: reason.isEmpty) {
             NavigationStack {
-                PaletteForm {
+                Form {
                     TextField("Reason (Optional)", text: $reason, axis: .vertical)
                         .focused($reasonFocused)
                     suggestions
@@ -68,7 +68,7 @@ struct ReportComposerView: View {
     
     @ViewBuilder
     var suggestions: some View {
-        Section {
+        PaletteSection {
             HStack(spacing: 12) {
                 ForEach([
                     LocalizedStringResource("Spam"),
@@ -97,7 +97,7 @@ struct ReportComposerView: View {
     func ruleList(_ profilable: any Profile2Providing) -> some View {
         let rules = [BlockNode](profilable.description ?? "").rules()
         if rules.count >= 1 {
-            Section {
+            PaletteSection {
                 ForEach(Array(rules.enumerated()), id: \.offset) { index, blocks in
                     HStack(spacing: 12) {
                         Image(systemName: "\(index + 1).circle.fill")

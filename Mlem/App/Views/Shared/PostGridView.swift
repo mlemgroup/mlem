@@ -70,7 +70,7 @@ struct PostGridView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .secondaryAction) {
-                    Section {
+                    SwiftUI.Section {
                         standardMenu
                     }
                 }

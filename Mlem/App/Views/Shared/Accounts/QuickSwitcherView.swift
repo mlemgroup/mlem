@@ -14,7 +14,7 @@ struct QuickSwitcherView: View {
     @Environment(NavigationLayer.self) var navigation
     
     var body: some View {
-        PaletteForm {
+        Form {
             AccountListView(isQuickSwitcher: true)
         }
         .onChange(of: scenePhase) {

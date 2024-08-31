@@ -12,8 +12,8 @@ struct AdvancedSettingsView: View {
     @Environment(Palette.self) var palette
 
     var body: some View {
-        PaletteForm {
-            Section {
+        Form {
+            PaletteSection {
                 HStack {
                     Text("Cache")
                     Spacer()

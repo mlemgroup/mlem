@@ -19,8 +19,8 @@ struct GeneralSettingsView: View {
     @Setting(\.hapticLevel) var hapticLevel
     
     var body: some View {
-        PaletteForm {
-            Section {
+        Form {
+            PaletteSection {
                 Picker(selection: $blurNsfw) {
                     ForEach(NsfwBlurBehavior.allCases, id: \.self) { behavior in
                         Text(behavior.label)
@@ -33,7 +33,7 @@ struct GeneralSettingsView: View {
                 Text("Safety")
             }
             
-            Section {
+            PaletteSection {
                 Picker("Default Feed", selection: $defaultFeed) {
                     ForEach(FeedSelection.allCases, id: \.self) { item in
                         Text(item.rawValue.capitalized)

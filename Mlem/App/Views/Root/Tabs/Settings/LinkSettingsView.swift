@@ -12,7 +12,7 @@ struct LinkSettingsView: View {
     @Setting(\.openLinksInReaderMode) var openLinksInReaderMode
     
     var body: some View {
-        PaletteForm {
+        Form {
             Section("Open External Links") {
                 Picker("Open External Links", selection: $openLinksInBrowser) {
                     Text("In-App").tag(false)
@@ -22,7 +22,7 @@ struct LinkSettingsView: View {
                 .labelsHidden()
             }
             
-            Section {
+            PaletteSection {
                 Toggle("Open in Reader", isOn: $openLinksInReaderMode)
                     .disabled(openLinksInBrowser)
             } footer: {

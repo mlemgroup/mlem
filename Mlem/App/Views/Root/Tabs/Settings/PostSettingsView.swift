@@ -17,22 +17,22 @@ struct PostSettingsView: View {
     @Setting(\.showCommunityAvatar) var showCommunityAvatar
     
     var body: some View {
-        PaletteForm {
-            Section {
+        Form {
+            PaletteSection {
                 Picker("Post Size", selection: $postSize) {
                     ForEach(PostSize.allCases, id: \.rawValue) { item in
                         Text(item.label).tag(item)
                     }
                 }
             }
-            Section {
+            PaletteSection {
                 NavigationLink(
                     "Customize Interaction Bar",
                     systemImage: "square.and.line.vertical.and.square.fill",
                     destination: .settings(.postInteractionBar)
                 )
             }
-            Section {
+            PaletteSection {
                 Picker("Thumbnail Location", selection: $thumbnailLocation) {
                     ForEach(ThumbnailLocation.allCases, id: \.rawValue) { item in
                         Text(item.label).tag(item)
