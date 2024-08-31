@@ -128,7 +128,7 @@ struct InboxView: View {
                         headerPinned = value
                     }
                 })
-                PaletteDivider()
+                Divider()
                 Section {
                     if loadingState == .loading, replies.isEmpty, mentions.isEmpty {
                         ProgressView()
@@ -149,7 +149,7 @@ struct InboxView: View {
                                     if let message = item as? Message2, !message.creator.blocked {
                                         MessageView(message: message)
                                     }
-                                    PaletteDivider()
+                                    Divider()
                                 }
                             }
                         }

@@ -292,7 +292,7 @@
 		CDAA02DB2C810DB200D75633 /* Calendar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAA02DA2C810DB200D75633 /* Calendar+Extensions.swift */; };
 		CDAA02DD2C81792500D75633 /* SolarizedPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAA02DC2C81792500D75633 /* SolarizedPalette.swift */; };
 		CDAA02E12C817AAB00D75633 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAA02E02C817AAB00D75633 /* Color+Extensions.swift */; };
-		CDAA02E32C821C9100D75633 /* PaletteDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAA02E22C821C9100D75633 /* PaletteDivider.swift */; };
+		CDAA02E32C821C9100D75633 /* Divider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAA02E22C821C9100D75633 /* Divider.swift */; };
 		CDB2EC7D2BFADAB300DBC0EF /* CompactPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7C2BFADAB300DBC0EF /* CompactPostView.swift */; };
 		CDB2EC7F2BFADACC00DBC0EF /* HeadlinePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7E2BFADACC00DBC0EF /* HeadlinePostView.swift */; };
 		CDB2EC812BFADADF00DBC0EF /* LargePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC802BFADADF00DBC0EF /* LargePostView.swift */; };
@@ -630,7 +630,7 @@
 		CDAA02DA2C810DB200D75633 /* Calendar+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extensions.swift"; sourceTree = "<group>"; };
 		CDAA02DC2C81792500D75633 /* SolarizedPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarizedPalette.swift; sourceTree = "<group>"; };
 		CDAA02E02C817AAB00D75633 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
-		CDAA02E22C821C9100D75633 /* PaletteDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteDivider.swift; sourceTree = "<group>"; };
+		CDAA02E22C821C9100D75633 /* Divider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Divider.swift; sourceTree = "<group>"; };
 		CDB2EC7A2BFADA8B00DBC0EF /* PostSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSize.swift; sourceTree = "<group>"; };
 		CDB2EC7C2BFADAB300DBC0EF /* CompactPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactPostView.swift; sourceTree = "<group>"; };
 		CDB2EC7E2BFADACC00DBC0EF /* HeadlinePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadlinePostView.swift; sourceTree = "<group>"; };
@@ -1536,7 +1536,7 @@
 		CDAA02E42C82236200D75633 /* Palette Components */ = {
 			isa = PBXGroup;
 			children = (
-				CDAA02E22C821C9100D75633 /* PaletteDivider.swift */,
+				CDAA02E22C821C9100D75633 /* Divider.swift */,
 				CDD8B94B2C8234BC00510EBB /* PaletteForm.swift */,
 			);
 			path = "Palette Components";
@@ -2120,7 +2120,7 @@
 				03FE14082BF94FFB00A8377F /* ErrorView.swift in Sources */,
 				03036C762C71427B00C6DA1D /* InteractionBarCounterLabelView.swift in Sources */,
 				030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */,
-				CDAA02E32C821C9100D75633 /* PaletteDivider.swift in Sources */,
+				CDAA02E32C821C9100D75633 /* Divider.swift in Sources */,
 				CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */,
 				CDCA44972C17666C00C092B3 /* HapticManager.swift in Sources */,
 				033FCAEC2C57DCCD007B7CD1 /* ApiListingType+Extensions.swift in Sources */,

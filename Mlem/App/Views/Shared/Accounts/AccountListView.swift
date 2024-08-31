@@ -152,7 +152,7 @@ struct AccountListView: View {
                 }
             }
             if accountsTracker.userAccounts.count > 3 {
-                PaletteDivider()
+                Divider()
                 Toggle(isOn: $groupAccountSort) {
                     Label("Grouped", systemImage: "square.stack.3d.up.fill")
                 }

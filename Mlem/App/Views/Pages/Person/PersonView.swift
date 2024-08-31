@@ -131,7 +131,7 @@ struct PersonView: View {
                     .transition(.opacity)
                 } else {
                     VStack(spacing: 0) {
-                        PaletteDivider()
+                        Divider()
                         ProgressView()
                             .padding(.top)
                     }
@@ -147,7 +147,7 @@ struct PersonView: View {
     @ViewBuilder
     func bio(person: any Person) -> some View {
         if let bio = person.description_ {
-            PaletteDivider()
+            Divider()
             VStack(spacing: Constants.main.standardSpacing) {
                 let blocks: [BlockNode] = .init(bio)
                 if blocks.isSimpleParagraphs, bio.count < 300 {
@@ -230,7 +230,7 @@ struct PersonView: View {
         VStack(spacing: 0) {
             ForEach(person.moderatedCommunities_ ?? []) { community in
                 CommunityListRow(community)
-                PaletteDivider()
+                Divider()
                     .padding(.leading, 71)
             }
         }

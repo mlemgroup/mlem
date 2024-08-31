@@ -32,7 +32,7 @@ struct MarkdownEditorToolbarView: View {
                     Button("Redo", systemImage: "arrow.uturn.forward") {
                         textView.undoManager?.redo()
                     }
-                    Divider().overlay(Palette.main.neutralAccent)
+                    SwiftUI.Divider().overlay(Palette.main.neutralAccent)
                 }
                 Button("Bold", systemImage: Icons.bold) {
                     textView.wrapSelectionWithDelimiters("**")
@@ -53,7 +53,7 @@ struct MarkdownEditorToolbarView: View {
                     textView.wrapSelectionWithDelimiters("`")
                 }
                 if actions == .all {
-                    Divider().overlay(Palette.main.neutralAccent)
+                    SwiftUI.Divider().overlay(Palette.main.neutralAccent)
                     Menu("Heading", systemImage: Icons.heading) {
                         ForEach(1 ..< 7) { level in
                             Button("Heading \(level)") {

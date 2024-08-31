@@ -104,7 +104,7 @@ struct ExpandedPostView: View {
                                 key: AnchorsKey.self,
                                 value: .center
                             ) { [post.actorId: $0] }
-                        PaletteDivider()
+                        Divider()
                         ForEach(tracker.comments.tree(), id: \.actorId) { comment in
                             CommentView(comment: comment, highlight: showCommentWithActorId == comment.actorId)
                                 .transition(.move(edge: .top).combined(with: .opacity))

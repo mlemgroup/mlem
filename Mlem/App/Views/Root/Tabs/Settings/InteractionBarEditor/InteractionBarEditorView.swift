@@ -47,9 +47,9 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         VStack {
             activeBar
                 .zIndex(barPickedUpIndex == nil ? 0 : 1)
-            PaletteDivider()
+            Divider()
             infoText
-            PaletteDivider()
+            Divider()
             HFlow(spacing: Constants.main.standardSpacing) {
                 ForEach(Array(Configuration.Item.allCases.enumerated()), id: \.offset) { trayItem($1) }
             }

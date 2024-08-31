@@ -81,7 +81,7 @@ struct PersonContentGridView: View {
                     VStack(spacing: 0) { // this improves performance O_o
                         personContentItem(item)
                             .buttonStyle(EmptyButtonStyle())
-                        if !postSize.tiled { PaletteDivider() }
+                        if !postSize.tiled { Divider() }
                     }
                     .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 0)
                     .onAppear {

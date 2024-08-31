@@ -121,7 +121,7 @@ struct LoginCredentialsView: View {
                         .onSubmit { focused = .password }
                         .padding(.trailing)
                 }
-                PaletteDivider()
+                Divider()
             }
             GridRow {
                 Text("Password")

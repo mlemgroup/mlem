@@ -107,7 +107,7 @@ struct ErrorView: View {
         VStack {
             Text(errorText)
                 .foregroundStyle(.red)
-            PaletteDivider()
+            Divider()
             Button {
                 UIPasteboard.general.setValue(
                     errorText,

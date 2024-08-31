@@ -78,7 +78,7 @@ struct CommentView: View {
             .quickSwipes(comment.swipeActions(behavior: .standard, expandedPostTracker: expandedPostTracker))
             .contentShape(.rect)
             .contextMenu { comment.menuActions(expandedPostTracker: expandedPostTracker) }
-            PaletteDivider()
+            Divider()
         }
         .padding(.leading, CGFloat(depth) * indent)
         .environment(\.commentContext, comment)

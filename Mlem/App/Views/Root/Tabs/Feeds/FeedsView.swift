@@ -146,7 +146,7 @@ struct FeedsView: View {
     var content: some View {
         FancyScrollView(scrollToTopTrigger: $scrollToTopTrigger) {
             Section {
-                if !postSize.tiled { PaletteDivider() }
+                if !postSize.tiled { Divider() }
                 
                 if let savedFeedLoader, feedSelection == .saved {
                     PersonContentGridView(feedLoader: savedFeedLoader, contentType: .constant(.all))
