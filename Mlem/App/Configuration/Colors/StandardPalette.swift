@@ -1,5 +1,5 @@
 //
-//  DefaultColors.swift
+//  StandardPalette.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-05-06.
@@ -9,6 +9,7 @@ import SwiftUI
 
 extension ColorPalette {
     static let standard: ColorPalette = .init(
+        supportedModes: .unspecified,
         primary: .primary,
         secondary: .secondary,
         tertiary: Color(UIColor.tertiaryLabel),

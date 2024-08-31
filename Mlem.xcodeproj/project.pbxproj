@@ -262,6 +262,8 @@
 		CD4D59162B87B38C00B82964 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */; };
 		CD4D59182B87B3B000B82964 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59172B87B3B000B82964 /* UIViewController+Extensions.swift */; };
 		CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591F2B87B63300B82964 /* SettingsOptions.swift */; };
+		CD4E386B2C836837009B24F2 /* DraculaPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4E386A2C836837009B24F2 /* DraculaPalette.swift */; };
+		CD4E386D2C836F8C009B24F2 /* UIUserInterfaceStyle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4E386C2C836F8C009B24F2 /* UIUserInterfaceStyle+Extensions.swift */; };
 		CD4ED8472BF110FA00EFA0A2 /* TabReselectTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED8462BF110FA00EFA0A2 /* TabReselectTracker.swift */; };
 		CD4ED84A2BF1113800EFA0A2 /* View+TabReselectConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */; };
 		CD4ED84E2BF113C800EFA0A2 /* ExpandedPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED84D2BF113C800EFA0A2 /* ExpandedPostView.swift */; };
@@ -600,6 +602,8 @@
 		CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		CD4D59172B87B3B000B82964 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		CD4D591F2B87B63300B82964 /* SettingsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOptions.swift; sourceTree = "<group>"; };
+		CD4E386A2C836837009B24F2 /* DraculaPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraculaPalette.swift; sourceTree = "<group>"; };
+		CD4E386C2C836F8C009B24F2 /* UIUserInterfaceStyle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUserInterfaceStyle+Extensions.swift"; sourceTree = "<group>"; };
 		CD4ED8462BF110FA00EFA0A2 /* TabReselectTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabReselectTracker.swift; sourceTree = "<group>"; };
 		CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+TabReselectConsumer.swift"; sourceTree = "<group>"; };
 		CD4ED84D2BF113C800EFA0A2 /* ExpandedPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedPostView.swift; sourceTree = "<group>"; };
@@ -1188,6 +1192,7 @@
 				CD4D58922B86BA5C00B82964 /* StandardPalette.swift */,
 				CD317D4E2BE983ED008F63E2 /* MonochromePalette.swift */,
 				CDAA02DC2C81792500D75633 /* SolarizedPalette.swift */,
+				CD4E386A2C836837009B24F2 /* DraculaPalette.swift */,
 			);
 			path = Colors;
 			sourceTree = "<group>";
@@ -1353,6 +1358,7 @@
 				CDA8A0052BE43B350022F7ED /* Content Models */,
 				03134A4E2BEAD23A002662CC /* Views */,
 				CDAA02E02C817AAB00D75633 /* Color+Extensions.swift */,
+				CD4E386C2C836F8C009B24F2 /* UIUserInterfaceStyle+Extensions.swift */,
 			);
 			name = Extensions;
 			path = Utility/Extensions;
@@ -1968,6 +1974,7 @@
 				CDE1F1962C63DF89008AF042 /* PhoneConstants.swift in Sources */,
 				0397D4862C6A24D2002C6CDC /* ReportableProviding+Extensions.swift in Sources */,
 				CD4ED84A2BF1113800EFA0A2 /* View+TabReselectConsumer.swift in Sources */,
+				CD4E386D2C836F8C009B24F2 /* UIUserInterfaceStyle+Extensions.swift in Sources */,
 				0355F9492C16406E00605248 /* Line.swift in Sources */,
 				CD4D58A52B86BD1B00B82964 /* PersistenceRepository.swift in Sources */,
 				039F58842C7A7F2C00C61658 /* CommentJumpButtonLocation.swift in Sources */,
@@ -2008,6 +2015,7 @@
 				CD3153072C38421B00BC5FBE /* View+LoadFeed.swift in Sources */,
 				CD317D4C2BE97FED008F63E2 /* Palette.swift in Sources */,
 				039F588F2C7B599800C61658 /* ThemeLabel.swift in Sources */,
+				CD4E386B2C836837009B24F2 /* DraculaPalette.swift in Sources */,
 				CD9857A42C5E7F9D0084C71F /* NsfwOverlayView.swift in Sources */,
 				03FE14062BF9445F00A8377F /* CloseButtonView.swift in Sources */,
 				03D2A6422C011F4A00ED4FF2 /* AccountListRowBody.swift in Sources */,

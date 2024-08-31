@@ -29,6 +29,7 @@ private let green: Color = .init(red: 0.5215686274509804, green: 0.6, blue: 0.0)
 
 extension ColorPalette {
     static let solarized: ColorPalette = .init(
+        supportedModes: .unspecified,
         primary: .init(light: base00, dark: base0),
         secondary: .init(light: base0, dark: base01),
         tertiary: .init(light: base1, dark: base01),
