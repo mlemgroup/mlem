@@ -22,7 +22,7 @@ struct LinkSettingsView: View {
                 .labelsHidden()
             }
             
-            PaletteSection {
+            Section {
                 Toggle("Open in Reader", isOn: $openLinksInReaderMode)
                     .disabled(openLinksInBrowser)
             } footer: {

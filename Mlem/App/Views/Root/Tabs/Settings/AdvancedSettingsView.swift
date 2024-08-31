@@ -13,7 +13,7 @@ struct AdvancedSettingsView: View {
 
     var body: some View {
         Form {
-            PaletteSection {
+            Section {
                 HStack {
                     Text("Cache")
                     Spacer()

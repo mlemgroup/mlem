@@ -1,5 +1,5 @@
 //
-//  PaletteSection.swift
+//  Section.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-08-30.
@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct PaletteSection<Parent: View, Content: View, Footer: View>: View {
+struct Section<Parent: View, Content: View, Footer: View>: View {
     @Environment(Palette.self) var palette
 
     @ViewBuilder let header: () -> Parent
@@ -36,7 +36,7 @@ struct PaletteSection<Parent: View, Content: View, Footer: View>: View {
     }
 
     var body: some View {
-        Section {
+        SwiftUI.Section {
             content()
         } header: {
             header().foregroundStyle(palette.secondary)

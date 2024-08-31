@@ -145,7 +145,7 @@ struct FeedsView: View {
     @ViewBuilder
     var content: some View {
         FancyScrollView(scrollToTopTrigger: $scrollToTopTrigger) {
-            PaletteSection {
+            Section {
                 if !postSize.tiled { Divider() }
                 
                 if let savedFeedLoader, feedSelection == .saved {

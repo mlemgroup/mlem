@@ -18,21 +18,21 @@ struct PostSettingsView: View {
     
     var body: some View {
         Form {
-            PaletteSection {
+            Section {
                 Picker("Post Size", selection: $postSize) {
                     ForEach(PostSize.allCases, id: \.rawValue) { item in
                         Text(item.label).tag(item)
                     }
                 }
             }
-            PaletteSection {
+            Section {
                 NavigationLink(
                     "Customize Interaction Bar",
                     systemImage: "square.and.line.vertical.and.square.fill",
                     destination: .settings(.postInteractionBar)
                 )
             }
-            PaletteSection {
+            Section {
                 Picker("Thumbnail Location", selection: $thumbnailLocation) {
                     ForEach(ThumbnailLocation.allCases, id: \.rawValue) { item in
                         Text(item.label).tag(item)

@@ -15,7 +15,7 @@ struct SortingSettingsView: View {
     
     var body: some View {
         Form {
-            PaletteSection {
+            Section {
                 HStack {
                     Text("Posts")
                     Spacer()
@@ -39,7 +39,7 @@ struct SortingSettingsView: View {
                 }
             }
             
-            PaletteSection {
+            Section {
                 HStack {
                     Text("Comments")
                     Spacer()
