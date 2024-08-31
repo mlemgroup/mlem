@@ -39,11 +39,7 @@ extension PostEditorView {
                 }
             }
             Button("Remove", systemImage: Icons.closeCircleFill) {
-                if link == .waiting {
-                    link = .none
-                } else {
-                    link = .waiting
-                }
+                link = .none
             }
             .font(.title2)
             .labelStyle(.iconOnly)

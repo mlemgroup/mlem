@@ -31,8 +31,7 @@ struct PostEditorView: View {
     @State var image: ImageState = .none
     @State var sending: Bool = false
     
-    @State var showingPhotosPicker: Bool = false
-    @State var showingFilesPicker: Bool = false
+    @State var imageUploadPresentationState: ImageUploadPresentationState?
     
     @State var targets: [PostEditorTarget]
     
@@ -82,18 +81,12 @@ struct PostEditorView: View {
                 contentTextView.isEditable = true
             }
         }
-        .photosPicker(
-            isPresented: $showingPhotosPicker,
-            selection: .init(
-                get: { nil },
-                set: { photo in
-                    if let photo {
-                        Task { await uploadPhoto(photo) }
-                    }
-                }
-            ),
-            matching: .images
-        )
+        .imageUploadSheets(
+            api: targets.first?.account.api ?? appState.firstApi,
+            presentationState: $imageUploadPresentationState
+        ) { imageUpload in
+            image = .value(imageUpload)
+        }
     }
     
     @ViewBuilder

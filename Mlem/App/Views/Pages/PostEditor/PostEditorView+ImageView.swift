@@ -13,7 +13,7 @@ extension PostEditorView {
     var imageView: some View {
         switch image {
         case let .value(imageUpload):
-            DynamicImageView(url: imageUpload.url)
+            DynamicImageView(url: imageUpload.url, actionsEnabled: false)
                 .overlay(alignment: .topTrailing) {
                     Button("Remove", systemImage: Icons.closeCircleFill) {
                         if case let .value(imageUpload) = self.image {
@@ -63,9 +63,11 @@ extension PostEditorView {
             .foregroundStyle(palette.accent)
             HVStack {
                 Button("Photos", systemImage: "photo.on.rectangle.angled") {
-                    showingPhotosPicker = true
+                    imageUploadPresentationState = .photos
                 }
-                Button("Files", systemImage: "folder") {}
+                Button("Files", systemImage: "folder") {
+                    imageUploadPresentationState = .files
+                }
                 Button("Paste", systemImage: Icons.paste) {}
             }
             .buttonStyle(ImageSourceButtonStyle())
@@ -73,23 +75,6 @@ extension PostEditorView {
         .frame(maxWidth: .infinity)
         .padding(8)
         .background(palette.accent.opacity(0.2), in: .rect(cornerRadius: 16))
-    }
-    
-    func uploadPhoto(_ photo: PhotosPickerItem) async {
-        do {
-            guard let data = try await photo.loadTransferable(type: Data.self) else {
-                print("Failed")
-                return
-            }
-            guard let api = targets.first?.account.api else {
-                print("No api")
-                return
-            }
-            image = try await .value(api.uploadImage(data))
-            print("Success")
-        } catch {
-            handleError(error)
-        }
     }
 }
 

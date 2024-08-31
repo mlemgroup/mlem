@@ -200,6 +200,7 @@
 		03E614E72C0BCDC200F692A4 /* FullyQualifiedLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E614E62C0BCDC200F692A4 /* FullyQualifiedLinkView.swift */; };
 		03ECD7192C81195000D48BF6 /* PostEditorView+LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECD7182C81195000D48BF6 /* PostEditorView+LinkView.swift */; };
 		03ECD71B2C811D6700D48BF6 /* PostEditorView+ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECD71A2C811D6700D48BF6 /* PostEditorView+ImageView.swift */; };
+		03ECD71D2C83BEC800D48BF6 /* View+ImageUploadSheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECD71C2C83BEC800D48BF6 /* View+ImageUploadSheets.swift */; };
 		03FA318C2C6FECAE00D47FA3 /* Flow in Frameworks */ = {isa = PBXBuildFile; productRef = 03FA318B2C6FECAE00D47FA3 /* Flow */; };
 		03FA318F2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA318E2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift */; };
 		03FE14042BF93FDD00A8377F /* ErrorDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FE14032BF93FDD00A8377F /* ErrorDetails.swift */; };
@@ -538,6 +539,7 @@
 		03ECD7172C810DC600D48BF6 /* MlemMiddleware */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MlemMiddleware; path = ../MlemMiddleware; sourceTree = "<group>"; };
 		03ECD7182C81195000D48BF6 /* PostEditorView+LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditorView+LinkView.swift"; sourceTree = "<group>"; };
 		03ECD71A2C811D6700D48BF6 /* PostEditorView+ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditorView+ImageView.swift"; sourceTree = "<group>"; };
+		03ECD71C2C83BEC800D48BF6 /* View+ImageUploadSheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ImageUploadSheets.swift"; sourceTree = "<group>"; };
 		03FA318E2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarActionLabelView.swift; sourceTree = "<group>"; };
 		03FE14032BF93FDD00A8377F /* ErrorDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDetails.swift; sourceTree = "<group>"; };
 		03FE14052BF9445F00A8377F /* CloseButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButtonView.swift; sourceTree = "<group>"; };
@@ -1435,6 +1437,7 @@
 				CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */,
 				CDCA44B52C176C5000C092B3 /* View+EdgeBorders.swift */,
 				03A82FA22C0D1F2400D01A5C /* View+ExternalApiWarning.swift */,
+				03ECD71C2C83BEC800D48BF6 /* View+ImageUploadSheets.swift */,
 				CD3153062C38421B00BC5FBE /* View+LoadFeed.swift */,
 				03B72B662C2888EE0023A6C4 /* View+ContextMenu.swift */,
 				CD1D31822C56D742001B434B /* View+WidthReader.swift */,
@@ -2119,6 +2122,7 @@
 				032C320C2C3482CA00595286 /* Person1Providing+Extensions.swift in Sources */,
 				030FF67F2BC8544700F6BFAC /* CustomTabBarController.swift in Sources */,
 				CD4D58F82B87B0D100B82964 /* InternetSpeed.swift in Sources */,
+				03ECD71D2C83BEC800D48BF6 /* View+ImageUploadSheets.swift in Sources */,
 				0382A7F02C09F0F800C79DDA /* PersonView.swift in Sources */,
 				CDBFCB6C2C054AA7008CD468 /* TilePostView.swift in Sources */,
 				0380965F2C10AA80003ED1D8 /* AppState+Transition.swift in Sources */,
