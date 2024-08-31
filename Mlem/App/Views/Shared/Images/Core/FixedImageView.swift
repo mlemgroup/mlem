@@ -54,7 +54,9 @@ struct FixedImageView: View {
             .contentShape(.rect)
             .overlay {
                 content
-                    .task(loader.load)
+                    .onAppear {
+                        Task { loader.load }
+                    }
                     .aspectRatio(1, contentMode: .fill)
                     .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
                     .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)

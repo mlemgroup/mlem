@@ -80,7 +80,9 @@ struct DynamicImageView: View {
             .clipShape(.rect(cornerRadius: cornerRadius))
             .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
             .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
-            .task(loader.load)
+            .onAppear {
+                Task { loader.load }
+            }
     }
   
     func shareImage(url: URL) async {
