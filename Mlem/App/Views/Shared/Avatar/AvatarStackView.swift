@@ -9,8 +9,9 @@ import SwiftUI
 
 struct AvatarStackView: View {
     let urls: [URL?]
-    let fallback: PreprocessedFixedImageView.Fallback
+    let fallback: FixedImageView.Fallback
     
+    let height: CGFloat
     let spacing: CGFloat
     let outlineWidth: CGFloat
     
@@ -57,7 +58,7 @@ struct AvatarStackView: View {
     func avatarView(url: URL?) -> some View {
         CircleCroppedImageView(
             url: url,
-            size: 64, // TODO: this could be nicer
+            size: height,
             fallback: fallback
         )
         .aspectRatio(contentMode: .fill)
@@ -68,6 +69,7 @@ struct AvatarStackView: View {
     AvatarStackView(
         urls: .init(repeating: nil, count: 3),
         fallback: .person,
+        height: 64,
         spacing: 48,
         outlineWidth: 1
     )

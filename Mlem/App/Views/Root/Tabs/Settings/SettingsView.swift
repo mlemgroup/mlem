@@ -119,6 +119,7 @@ struct SettingsView: View {
                 AvatarStackView(
                     urls: accounts.prefix(4).map(\.avatar),
                     fallback: .person,
+                    height: 28,
                     spacing: accounts.count <= 3 ? 18 : 14,
                     outlineWidth: 0.7,
                     showPlusIcon: accounts.count == 1

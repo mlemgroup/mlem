@@ -11,7 +11,7 @@ import SwiftUI
 
 struct AvatarBannerView: View {
     var model: (any Profile1Providing)?
-    var fallback: PreprocessedFixedImageView.Fallback
+    var fallback: FixedImageView.Fallback
     var showEmptyBanner: Bool = false
     var showBanner: Bool = true
     var showAvatar: Bool = true
@@ -28,7 +28,7 @@ struct AvatarBannerView: View {
         self.showEmptyBanner = showEmptyBanner
     }
     
-    init(_ model: (any Profile1Providing)?, fallback: PreprocessedFixedImageView.Fallback, showEmptyBanner: Bool = false) {
+    init(_ model: (any Profile1Providing)?, fallback: FixedImageView.Fallback, showEmptyBanner: Bool = false) {
         self.model = model
         self.fallback = fallback
         self.showEmptyBanner = showEmptyBanner

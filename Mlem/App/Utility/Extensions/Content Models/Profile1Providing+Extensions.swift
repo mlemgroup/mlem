@@ -8,7 +8,7 @@
 import MlemMiddleware
 
 extension Profile1Providing {
-    static var avatarFallback: PreprocessedFixedImageView.Fallback {
+    static var avatarFallback: FixedImageView.Fallback {
         if self is any Community.Type {
             return .community
         } else if self is any Instance.Type {

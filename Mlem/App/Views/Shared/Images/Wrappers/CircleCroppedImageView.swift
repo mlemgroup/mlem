@@ -9,17 +9,18 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
+/// Convenience struct to automatically circle-crop an image. Also applies the given `size` parameter as a frame to the view.
 struct CircleCroppedImageView: View {
     let url: URL?
     let size: CGFloat // only need one CGFloat because always 1:1 aspect ratio
-    let fallback: PreprocessedFixedImageView.Fallback
+    let fallback: FixedImageView.Fallback
     let showProgress: Bool
     let blurred: Bool
     
     init(
         url: URL?,
         size: CGFloat,
-        fallback: PreprocessedFixedImageView.Fallback,
+        fallback: FixedImageView.Fallback,
         showProgress: Bool = true,
         blurred: Bool = false
     ) {
@@ -31,7 +32,7 @@ struct CircleCroppedImageView: View {
     }
     
     var body: some View {
-        PreprocessedFixedImageView(
+        FixedImageView(
             url: url,
             size: .init(width: size, height: size),
             fallback: fallback,
@@ -40,6 +41,7 @@ struct CircleCroppedImageView: View {
         )
         .clipShape(Circle())
         .geometryGroup()
+        .frame(width: size, height: size)
     }
 }
 

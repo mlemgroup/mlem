@@ -51,7 +51,7 @@ struct FullyQualifiedLabelView: View {
     var showInstance: Bool = true
     let blurred: Bool
     
-    var fallback: PreprocessedFixedImageView.Fallback {
+    var fallback: FixedImageView.Fallback {
         if entity is any CommunityStubProviding {
             return .community
         }

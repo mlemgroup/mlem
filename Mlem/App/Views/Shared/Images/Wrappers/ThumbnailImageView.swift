@@ -98,7 +98,7 @@ struct ThumbnailImageView: View {
     @ViewBuilder
     var standardContent: some View {
         if let url {
-            PreprocessedFixedImageView(
+            FixedImageView(
                 url: url.withIconSize(Constants.main.feedImageResolution),
                 size: frame,
                 fallback: .image,
@@ -123,7 +123,7 @@ struct ThumbnailImageView: View {
     @ViewBuilder
     var tileContent: some View {
         if let url {
-            PreprocessedFixedImageView(
+            FixedImageView(
                 url: url.withIconSize(Constants.main.feedImageResolution),
                 size: frame,
                 fallback: .image,

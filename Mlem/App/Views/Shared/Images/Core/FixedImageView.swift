@@ -10,8 +10,8 @@ import MlemMiddleware
 import Nuke
 import SwiftUI
 
-/// Image view that always has a 1:1 aspect ratio. Inherits sizing from parent frame.
-struct PreprocessedFixedImageView: View {
+/// Image view that always has a fixed size. The image will be scaled to the given size, but resized to fill its parent frame.
+struct FixedImageView: View {
     @Environment(Palette.self) var palette
     
     @State var loadingPref: ImageLoadingState? // tracked separately to allow correct propagation of inital value
