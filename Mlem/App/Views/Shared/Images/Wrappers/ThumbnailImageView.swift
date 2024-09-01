@@ -100,7 +100,6 @@ struct ThumbnailImageView: View {
         if let url {
             PreprocessedFixedImageView(
                 url: url.withIconSize(Constants.main.feedImageResolution),
-                // size: CGSize(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize),
                 size: frame,
                 fallback: .image,
                 showProgress: true
