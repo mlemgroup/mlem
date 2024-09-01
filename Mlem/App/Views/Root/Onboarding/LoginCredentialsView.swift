@@ -13,6 +13,7 @@ struct LoginCredentialsView: View {
     @Environment(\.isRootView) var isRootView
     @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
+    @Environment(Palette.self) var palette
     
     let instance: (any Instance)?
     let account: UserAccount?
@@ -43,7 +44,7 @@ struct LoginCredentialsView: View {
     var body: some View {
         content
             .frame(maxWidth: .infinity)
-            .background(Color(uiColor: .systemGroupedBackground).ignoresSafeArea())
+            .background(palette.groupedBackground.ignoresSafeArea())
             .interactiveDismissDisabled((!username.isEmpty && showUsernameField) || !password.isEmpty)
             .toolbar {
                 if navigation.isInsideSheet, isRootView {
@@ -135,7 +136,7 @@ struct LoginCredentialsView: View {
         .autocorrectionDisabled()
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color(uiColor: .secondarySystemGroupedBackground))
+                .fill(palette.secondaryGroupedBackground)
         )
         .onAppear { focused = showUsernameField ? .username : .password }
         .onChange(of: username) { failureReason = nil }
