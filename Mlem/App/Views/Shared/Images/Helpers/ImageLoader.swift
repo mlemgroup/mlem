@@ -24,6 +24,7 @@ class ImageLoader {
         if let url {
             if let image = ImagePipeline.shared.cache.cachedImage(for: .init(url: url))?.image {
                 self.uiImage = resizeImage(image: image, maxSize: maxSize)
+                print("DEBUG found image in cache")
                 self.loading = .done
                 return
             }
@@ -33,8 +34,10 @@ class ImageLoader {
             )?.image {
                 self.uiImage = image
                 if [image.size.width, image.size.height].contains(CGFloat(Constants.main.feedImageResolution)) {
+                    print("DEBUG still loading...?")
                     self.loading = .loading
                 } else {
+                    print("DEBUG found ")
                     self.loading = .done
                 }
                 return
@@ -45,18 +48,21 @@ class ImageLoader {
         self.loading = url == nil ? .failed : .loading
     }
     
-    @Sendable
     @MainActor
     func load() async {
         guard let url, loading == .loading else { return }
         do {
+            // print("DEBUG \(url.description)")
             let imageTask = ImagePipeline.shared.imageTask(with: url)
             imageTask.priority = .veryHigh
             let image = try await imageTask.image
             uiImage = resizeImage(image: image, maxSize: maxSize)
+            print("DEBUG finished resizing")
             loading = .done
         } catch {
             self.error = error
+            print("DEBUG loading failed")
+            print(error)
             loading = .failed
         }
     }

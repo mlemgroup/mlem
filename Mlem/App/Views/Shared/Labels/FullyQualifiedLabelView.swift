@@ -51,7 +51,7 @@ struct FullyQualifiedLabelView: View {
     var showInstance: Bool = true
     let blurred: Bool
     
-    var fallback: FixedImageView.Fallback {
+    var fallback: PreprocessedFixedImageView.Fallback {
         if entity is any CommunityStubProviding {
             return .community
         }
@@ -66,11 +66,11 @@ struct FullyQualifiedLabelView: View {
             if showAvatar {
                 CircleCroppedImageView(
                     url: entity?.avatar?.withIconSize(labelStyle.avatarResolution),
+                    size: labelStyle.avatarSize,
                     fallback: fallback,
                     showProgress: false,
                     blurred: blurred
                 )
-                .frame(width: labelStyle.avatarSize, height: labelStyle.avatarSize)
             }
             FullyQualifiedNameView(
                 name: entity?.name,

@@ -75,7 +75,7 @@ struct CommunityView: View {
                     title: Text(community.displayName),
                     subtitle: Text(community.fullNameWithPrefix ?? ""),
                     dropdownStyle: .disabled,
-                    image: { CircleCroppedImageView(community) }
+                    image: { CircleCroppedImageView(community, size: 44) } // TODO: more elegant size
                 )
                 subscribeButton(community: community)
                     .padding(.top, Constants.main.halfSpacing)

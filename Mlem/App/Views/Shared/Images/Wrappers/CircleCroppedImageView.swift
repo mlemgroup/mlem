@@ -11,21 +11,35 @@ import SwiftUI
 
 struct CircleCroppedImageView: View {
     let url: URL?
-    let fallback: FixedImageView.Fallback
+    let size: CGFloat // only need one CGFloat because always 1:1 aspect ratio
+    let fallback: PreprocessedFixedImageView.Fallback
     let showProgress: Bool
     let blurred: Bool
     
-    init(url: URL?, fallback: FixedImageView.Fallback, showProgress: Bool = true, blurred: Bool = false) {
+    init(
+        url: URL?,
+        size: CGFloat,
+        fallback: PreprocessedFixedImageView.Fallback,
+        showProgress: Bool = true,
+        blurred: Bool = false
+    ) {
         self.url = url
+        self.size = size
         self.fallback = fallback
         self.showProgress = showProgress
         self.blurred = blurred
     }
     
     var body: some View {
-        FixedImageView(url: url, fallback: fallback, showProgress: showProgress, blurred: blurred)
-            .clipShape(Circle())
-            .geometryGroup()
+        PreprocessedFixedImageView(
+            url: url,
+            size: .init(width: size, height: size),
+            fallback: fallback,
+            showProgress: showProgress,
+            blurred: blurred
+        )
+        .clipShape(Circle())
+        .geometryGroup()
     }
 }
 
@@ -33,20 +47,24 @@ struct CircleCroppedImageView: View {
 extension CircleCroppedImageView {
     init<T: Profile1Providing>(
         _ model: T?,
+        size: CGFloat,
         showProgress: Bool = true
     ) {
         self.init(
             url: model?.avatar,
+            size: size,
             fallback: T.avatarFallback
         )
     }
 
     init(
         _ model: any Profile1Providing,
+        size: CGFloat,
         showProgress: Bool = true
     ) {
         self.init(
             url: model.avatar,
+            size: size,
             fallback: Swift.type(of: model).avatarFallback
         )
     }
