@@ -47,44 +47,47 @@ struct ThumbnailImageView: View {
     }
     
     var body: some View {
-        switch post.type {
-        case let .image(url):
-            content
-                .onTapGesture {
-                    if let loading, loading == .done {
+        Group {
+            switch post.type {
+            case let .image(url):
+                content
+                    .onTapGesture {
+                        if let loading, loading == .done {
+                            post.markRead()
+                            
+                            // Sheets don't cover the whole screen on iPad, so use a fullScreenCover instead
+                            if UIDevice.isPad {
+                                navigation.showFullScreenCover(.imageViewer(url))
+                            } else {
+                                navigation.openSheet(.imageViewer(url))
+                            }
+                        }
+                    }
+                    .contextMenu {
+                        if let url = fullSizeUrl(url: url) {
+                            Button("Save Image", systemImage: Icons.import) {
+                                Task { await saveImage(url: url) }
+                            }
+                            Button("Share Image", systemImage: Icons.share) {
+                                Task { await shareImage(url: url) }
+                            }
+                            Button("Quick Look", systemImage: Icons.imageDetails) {
+                                Task { await showQuickLook(url: url) }
+                            }
+                        }
+                    }
+                    .quickLookPreview($quickLookUrl)
+            case let .link(link):
+                content
+                    .onTapGesture {
                         post.markRead()
-                        
-                        // Sheets don't cover the whole screen on iPad, so use a fullScreenCover instead
-                        if UIDevice.isPad {
-                            navigation.showFullScreenCover(.imageViewer(url))
-                        } else {
-                            navigation.openSheet(.imageViewer(url))
-                        }
+                        openURL(link.content)
                     }
-                }
-                .contextMenu {
-                    if let url = fullSizeUrl(url: url) {
-                        Button("Save Image", systemImage: Icons.import) {
-                            Task { await saveImage(url: url) }
-                        }
-                        Button("Share Image", systemImage: Icons.share) {
-                            Task { await shareImage(url: url) }
-                        }
-                        Button("Quick Look", systemImage: Icons.imageDetails) {
-                            Task { await showQuickLook(url: url) }
-                        }
-                    }
-                }
-                .quickLookPreview($quickLookUrl)
-        case let .link(link):
-            content
-                .onTapGesture {
-                    post.markRead()
-                    openURL(link.content)
-                }
-        default:
-            content
+            default:
+                content
+            }
         }
+        .frame(width: frame.width, height: frame.width)
     }
     
     @ViewBuilder
@@ -104,14 +107,13 @@ struct ThumbnailImageView: View {
                 fallback: .image,
                 showProgress: true
             )
-            .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
             .dynamicBlur(blurred: blurred && loading == .done)
             .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
             .onPreferenceChange(ImageLoadingPreferenceKey.self, perform: { loading = $0 })
         } else {
             Image(systemName: post.placeholderImageName)
                 .font(.title)
-                .frame(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
+                .frame(width: frame.width, height: frame.width)
                 .foregroundStyle(palette.secondary)
                 .background(palette.thumbnailBackground)
                 .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))

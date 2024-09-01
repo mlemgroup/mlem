@@ -160,7 +160,6 @@ struct TilePostView: View {
                     size: .tile,
                     frame: .init(width: width, height: height)
                 )
-                .frame(width: width, height: height)
                 .clipped()
             case let .link(link):
                 ThumbnailImageView(
@@ -170,7 +169,6 @@ struct TilePostView: View {
                     frame: .init(width: width, height: height)
                 )
                 .aspectRatio(contentMode: .fill)
-                .frame(width: width, height: height)
                 .clipped()
                 .overlay { linkHostOverlay(link) }
             }
