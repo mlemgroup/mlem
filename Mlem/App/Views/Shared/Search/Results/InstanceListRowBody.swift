@@ -62,7 +62,6 @@ struct InstanceListRowBody<Content: View>: View {
                 size: Constants.main.listRowAvatarSize,
                 fallback: .instance
             )
-            .frame(width: Constants.main.listRowAvatarSize, height: Constants.main.listRowAvatarSize)
             
             VStack(alignment: .leading, spacing: 2) {
                 Text(host)

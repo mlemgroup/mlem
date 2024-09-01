@@ -70,7 +70,6 @@ struct PersonListRowBody<Content: View>: View {
                     size: Constants.main.listRowAvatarSize,
                     fallback: .person
                 )
-                .frame(width: Constants.main.listRowAvatarSize, height: Constants.main.listRowAvatarSize)
             }
             VStack(alignment: .leading, spacing: 4) {
                 (flairs.textView() + Text(title))
