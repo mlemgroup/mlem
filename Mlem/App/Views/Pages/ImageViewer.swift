@@ -19,7 +19,6 @@ struct ImageViewer: View {
         }
         
         self.url = components.url!
-        print(self.url)
     }
     
     var body: some View {
