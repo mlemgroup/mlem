@@ -61,6 +61,7 @@ struct InboxView: View {
     
     var body: some View {
         content
+            .background(palette.background)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbar }
             .onChange(of: taskId) {

@@ -111,6 +111,7 @@ struct InteractionBarView: View {
                 .monospacedDigit()
                 .contentTransition(.numericText(value: Double(counter.value ?? 0)))
                 .animation(.default, value: counter.value)
+                .foregroundStyle(palette.primary)
                 
             if let trailingAction = counter.trailingAction {
                 actionView(trailingAction)

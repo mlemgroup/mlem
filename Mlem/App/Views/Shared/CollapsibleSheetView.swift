@@ -48,5 +48,6 @@ struct CollapsibleSheetView<Content: View>: View {
             .presentationCornerRadius(presentationSelection == .large ? nil : 16)
             .presentationBackgroundInteraction(.enabled)
             .presentationDragIndicator(.hidden)
+            .background(palette.background)
     }
 }

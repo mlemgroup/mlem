@@ -59,7 +59,7 @@ struct PersonContentGridView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .secondaryAction) {
-                    Section {
+                    SwiftUI.Section {
                         Menu {
                             Picker("Post Size", selection: $postSize) {
                                 ForEach(PostSize.allCases, id: \.self) { item in

@@ -88,6 +88,7 @@ struct ExpandedPostView: View {
                 }
             }
         }
+        .background(palette.background)
         .environment(tracker)
     }
     

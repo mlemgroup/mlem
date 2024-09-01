@@ -85,6 +85,7 @@ struct WebsitePreviewView: View {
                 .font(.subheadline)
                 .fontWeight(.semibold)
                 .padding(Constants.main.standardSpacing)
+                .foregroundStyle(palette.primary)
         }
     }
     

@@ -42,7 +42,7 @@ struct ThemeLabel: View {
 
 extension ThemeLabel {
     init(title: LocalizedStringResource? = nil, palette: PaletteOption) {
-        self.init(title: title ?? palette.label, color1: palette.labelColor1, color2: palette.labelColor2)
+        self.init(title: title ?? palette.label, color1: palette.palette.accent, color2: palette.palette.background)
     }
 }
 

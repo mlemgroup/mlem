@@ -73,7 +73,7 @@ struct PersonView: View {
                     .externalApiWarning(entity: person, isLoading: proxy.isLoading)
                     .toolbar {
                         ToolbarItemGroup(placement: .secondaryAction) {
-                            Section {
+                            SwiftUI.Section {
                                 if person is any Person3Providing, proxy.isLoading {
                                     ProgressView()
                                 } else {
