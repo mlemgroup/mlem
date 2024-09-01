@@ -225,7 +225,6 @@
 		CD13CC572C582DD8001AF428 /* DynamicImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD13CC562C582DD8001AF428 /* DynamicImageView.swift */; };
 		CD13CC592C583C7A001AF428 /* WebsitePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD13CC582C583C7A001AF428 /* WebsitePreviewView.swift */; };
 		CD13CC5B2C588B34001AF428 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD13CC5A2C588B34001AF428 /* WebView.swift */; };
-		CD13CC5F2C5B2761001AF428 /* FixedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD13CC5E2C5B2761001AF428 /* FixedImageView.swift */; };
 		CD13CC612C5D262E001AF428 /* ImageLoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD13CC602C5D262E001AF428 /* ImageLoadingState.swift */; };
 		CD13CC632C5D26C3001AF428 /* ImageLoadingPreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD13CC622C5D26C3001AF428 /* ImageLoadingPreferenceKey.swift */; };
 		CD13CC652C5D2B9D001AF428 /* CircleCroppedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD13CC642C5D2B9D001AF428 /* CircleCroppedImageView.swift */; };
@@ -568,7 +567,6 @@
 		CD13CC562C582DD8001AF428 /* DynamicImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicImageView.swift; sourceTree = "<group>"; };
 		CD13CC582C583C7A001AF428 /* WebsitePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsitePreviewView.swift; sourceTree = "<group>"; };
 		CD13CC5A2C588B34001AF428 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
-		CD13CC5E2C5B2761001AF428 /* FixedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixedImageView.swift; sourceTree = "<group>"; };
 		CD13CC602C5D262E001AF428 /* ImageLoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoadingState.swift; sourceTree = "<group>"; };
 		CD13CC622C5D26C3001AF428 /* ImageLoadingPreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoadingPreferenceKey.swift; sourceTree = "<group>"; };
 		CD13CC642C5D2B9D001AF428 /* CircleCroppedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleCroppedImageView.swift; sourceTree = "<group>"; };
@@ -1155,7 +1153,6 @@
 		CD13CC672C5D3CBE001AF428 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				CD13CC5E2C5B2761001AF428 /* FixedImageView.swift */,
 				CD13CC562C582DD8001AF428 /* DynamicImageView.swift */,
 				CDB41E8D2C84CFA200BD2DE9 /* PreprocessedFixedImageView.swift */,
 			);
@@ -1933,7 +1930,6 @@
 				03AF91E12C1B25DE00E56644 /* UIDevice+Extensions.swift in Sources */,
 				0389DDC52C38917A0005B808 /* InboxItemProviding+Extensions.swift in Sources */,
 				CD13CC5B2C588B34001AF428 /* WebView.swift in Sources */,
-				CD13CC5F2C5B2761001AF428 /* FixedImageView.swift in Sources */,
 				CDB41E8C2C84CED500BD2DE9 /* FixedImageLoader.swift in Sources */,
 				039EFEC32BEEBEE0003AC372 /* LoginInstancePickerView.swift in Sources */,
 				03531EF12C2DA298004A3464 /* SearchResultsView.swift in Sources */,
