@@ -157,16 +157,22 @@ struct TilePostView: View {
                 ThumbnailImageView(
                     post: post,
                     blurred: blurred,
-                    size: .tile
+                    size: .tile,
+                    frame: .init(width: width, height: height)
                 )
                 .frame(width: width, height: height)
                 .clipped()
             case let .link(link):
-                ThumbnailImageView(post: post, blurred: blurred, size: .tile)
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: width, height: height)
-                    .clipped()
-                    .overlay { linkHostOverlay(link) }
+                ThumbnailImageView(
+                    post: post,
+                    blurred: blurred,
+                    size: .tile,
+                    frame: .init(width: width, height: height)
+                )
+                .aspectRatio(contentMode: .fill)
+                .frame(width: width, height: height)
+                .clipped()
+                .overlay { linkHostOverlay(link) }
             }
         }
         

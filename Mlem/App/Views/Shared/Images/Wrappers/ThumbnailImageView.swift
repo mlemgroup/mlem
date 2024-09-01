@@ -20,6 +20,7 @@ struct ThumbnailImageView: View {
     let post: any Post1Providing
     var blurred: Bool = false
     let size: Size
+    let frame: CGSize
     
     enum Size {
         case standard, tile
@@ -36,11 +37,13 @@ struct ThumbnailImageView: View {
     init(
         post: any Post1Providing,
         blurred: Bool,
-        size: Size
+        size: Size,
+        frame: CGSize
     ) {
         self.post = post
         self.blurred = blurred
         self.size = size
+        self.frame = frame
     }
     
     var body: some View {
@@ -95,9 +98,10 @@ struct ThumbnailImageView: View {
     @ViewBuilder
     var standardContent: some View {
         if let url {
-            FixedImageView(
+            PreprocessedFixedImageView(
                 url: url.withIconSize(Constants.main.feedImageResolution),
-                maxSize: PostSize.compact.imageSize,
+                // size: CGSize(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize),
+                size: frame,
                 fallback: .image,
                 showProgress: true
             )
@@ -120,9 +124,9 @@ struct ThumbnailImageView: View {
     @ViewBuilder
     var tileContent: some View {
         if let url {
-            FixedImageView(
+            PreprocessedFixedImageView(
                 url: url.withIconSize(Constants.main.feedImageResolution),
-                maxSize: PostSize.tile.imageSize,
+                size: frame,
                 fallback: .image,
                 showProgress: true
             )
