@@ -71,6 +71,7 @@ struct FullyQualifiedLabelView: View {
                     showProgress: false,
                     blurred: blurred
                 )
+                .frame(width: labelStyle.avatarSize, height: labelStyle.avatarSize)
             }
             FullyQualifiedNameView(
                 name: entity?.name,
