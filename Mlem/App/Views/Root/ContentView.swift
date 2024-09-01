@@ -81,6 +81,11 @@ struct ContentView: View {
                     let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
                     windowScene?.windows.first?.overrideUserInterfaceStyle = interfaceStyle
                 }
+                .onChange(of: palette.supportedModes, initial: true) {
+                    let newStyle: UIUserInterfaceStyle = palette.supportedModes != .unspecified ? palette.supportedModes : interfaceStyle
+                    let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+                    windowScene?.windows.first?.overrideUserInterfaceStyle = newStyle
+                }
                 .onChange(of: scenePhase, initial: false) {
                     if AppState.main.firstAccount is UserAccount, scenePhase != .active {
                         Task {

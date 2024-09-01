@@ -10,6 +10,7 @@ import SwiftUI
 
 extension ColorPalette {
     static let monochrome: ColorPalette = .init(
+        supportedModes: .unspecified,
         primary: .primary,
         secondary: .secondary,
         tertiary: Color(uiColor: .tertiaryLabel),
