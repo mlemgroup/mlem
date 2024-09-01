@@ -123,7 +123,7 @@ struct ExternalApiInfoView: View {
                         .foregroundStyle(.red)
                         .imageScale(.large)
                         .frame(maxWidth: .infinity)
-                    CircleCroppedImageView(externalInstance)
+                    CircleCroppedImageView(externalInstance, size: 48)
                 }
             }
     }

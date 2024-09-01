@@ -70,7 +70,7 @@ struct SettingsView: View {
         NavigationLink(.settings(.account)) {
             let account = appState.firstSession
             HStack(spacing: 23) {
-                CircleCroppedImageView(account.account)
+                CircleCroppedImageView(account.account, size: 54)
                     .frame(width: 54, height: 54)
                     .padding(.vertical, -6)
                     .padding(.leading, 3)

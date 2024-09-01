@@ -65,8 +65,12 @@ struct PersonListRowBody<Content: View>: View {
                     .frame(width: 30, height: 30)
                     .padding(9)
             } else {
-                CircleCroppedImageView(url: person.avatar?.withIconSize(128), fallback: .person)
-                    .frame(width: Constants.main.listRowAvatarSize, height: Constants.main.listRowAvatarSize)
+                CircleCroppedImageView(
+                    url: person.avatar?.withIconSize(128),
+                    size: Constants.main.listRowAvatarSize,
+                    fallback: .person
+                )
+                .frame(width: Constants.main.listRowAvatarSize, height: Constants.main.listRowAvatarSize)
             }
             VStack(alignment: .leading, spacing: 4) {
                 (flairs.textView() + Text(title))

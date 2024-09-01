@@ -57,7 +57,7 @@ struct AvatarStackView: View {
     func avatarView(url: URL?) -> some View {
         CircleCroppedImageView(
             url: url,
-            size: .init(width: 64, height: 64), // TODO: this could be nicer
+            size: 64, // TODO: this could be nicer
             fallback: fallback
         )
         .aspectRatio(contentMode: .fill)

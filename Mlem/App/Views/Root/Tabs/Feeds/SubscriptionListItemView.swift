@@ -37,7 +37,7 @@ struct SubscriptionListItemView: View {
     private func label() -> some View {
         switch instanceLocation(section: section) {
         case .trailing:
-            CircleCroppedImageView(community)
+            CircleCroppedImageView(community, size: 28)
                 .frame(width: 28, height: 28)
             (
                 Text(community.name)
@@ -47,7 +47,7 @@ struct SubscriptionListItemView: View {
             )
             .lineLimit(1)
         case .bottom:
-            CircleCroppedImageView(community)
+            CircleCroppedImageView(community, size: 36)
                 .frame(width: 36, height: 36)
             VStack(alignment: .leading, spacing: 0) {
                 Text(community.name)
@@ -57,7 +57,7 @@ struct SubscriptionListItemView: View {
                     .font(.footnote)
             }
         case .disabled:
-            CircleCroppedImageView(community)
+            CircleCroppedImageView(community, size: 28)
                 .frame(width: 28, height: 28)
             Text(community.name)
                 .lineLimit(1)

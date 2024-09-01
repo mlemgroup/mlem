@@ -123,7 +123,7 @@ struct ReportComposerView: View {
                 }
             } header: {
                 HStack {
-                    CircleCroppedImageView(profilable)
+                    CircleCroppedImageView(profilable, size: 22)
                         .frame(width: 22, height: 22)
                     Text("\(profilable.name) rules:")
                         .foregroundStyle(palette.secondary)

@@ -97,7 +97,7 @@ struct AvatarBannerView: View {
     var avatarView: some View {
         CircleCroppedImageView(
             url: model?.avatar,
-            size: .init(width: AvatarBannerView.avatarSize, height: AvatarBannerView.avatarSize),
+            size: AvatarBannerView.avatarSize,
             fallback: fallback
         )
     }
