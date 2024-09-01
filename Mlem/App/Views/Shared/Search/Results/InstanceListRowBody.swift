@@ -59,7 +59,7 @@ struct InstanceListRowBody<Content: View>: View {
         HStack(spacing: Constants.main.standardSpacing) {
             CircleCroppedImageView(
                 url: avatar?.withIconSize(128),
-                size: Constants.main.listRowAvatarSize,
+                frame: Constants.main.listRowAvatarSize,
                 fallback: .instance
             )
             

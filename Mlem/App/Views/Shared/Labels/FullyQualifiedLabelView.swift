@@ -66,7 +66,7 @@ struct FullyQualifiedLabelView: View {
             if showAvatar {
                 CircleCroppedImageView(
                     url: entity?.avatar?.withIconSize(labelStyle.avatarResolution),
-                    size: labelStyle.avatarSize,
+                    frame: labelStyle.avatarSize,
                     fallback: fallback,
                     showProgress: false,
                     blurred: blurred

@@ -67,7 +67,7 @@ struct PersonListRowBody<Content: View>: View {
             } else {
                 CircleCroppedImageView(
                     url: person.avatar?.withIconSize(128),
-                    size: Constants.main.listRowAvatarSize,
+                    frame: Constants.main.listRowAvatarSize,
                     fallback: .person
                 )
             }

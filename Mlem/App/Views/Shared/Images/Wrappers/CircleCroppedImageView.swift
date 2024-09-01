@@ -9,23 +9,23 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-/// Convenience struct to automatically circle-crop an image. Also applies the given `size` parameter as a frame to the view.
+/// Convenience struct to automatically circle-crop an image. Also applies the given `frame` parameter as a frame to the view.
 struct CircleCroppedImageView: View {
     let url: URL?
-    let size: CGFloat // only need one CGFloat because always 1:1 aspect ratio
+    let frame: CGFloat // only need one CGFloat because always 1:1 aspect ratio
     let fallback: FixedImageView.Fallback
     let showProgress: Bool
     let blurred: Bool
     
     init(
         url: URL?,
-        size: CGFloat,
+        frame: CGFloat,
         fallback: FixedImageView.Fallback,
         showProgress: Bool = true,
         blurred: Bool = false
     ) {
         self.url = url
-        self.size = size
+        self.frame = frame
         self.fallback = fallback
         self.showProgress = showProgress
         self.blurred = blurred
@@ -34,14 +34,14 @@ struct CircleCroppedImageView: View {
     var body: some View {
         FixedImageView(
             url: url,
-            size: .init(width: size, height: size),
+            size: .init(width: frame, height: frame),
             fallback: fallback,
             showProgress: showProgress,
             blurred: blurred
         )
         .clipShape(Circle())
         .geometryGroup()
-        .frame(width: size, height: size)
+        .frame(width: frame, height: frame)
     }
 }
 
@@ -49,24 +49,24 @@ struct CircleCroppedImageView: View {
 extension CircleCroppedImageView {
     init<T: Profile1Providing>(
         _ model: T?,
-        size: CGFloat,
+        frame: CGFloat,
         showProgress: Bool = true
     ) {
         self.init(
             url: model?.avatar,
-            size: size,
+            frame: frame,
             fallback: T.avatarFallback
         )
     }
 
     init(
         _ model: any Profile1Providing,
-        size: CGFloat,
+        frame: CGFloat,
         showProgress: Bool = true
     ) {
         self.init(
             url: model.avatar,
-            size: size,
+            frame: frame,
             fallback: Swift.type(of: model).avatarFallback
         )
     }

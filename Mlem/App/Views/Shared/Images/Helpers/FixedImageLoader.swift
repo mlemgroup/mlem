@@ -26,7 +26,6 @@ class FixedImageLoader {
                 url: url,
                 processors: [.resize(size: size, crop: true)]
             ))?.image {
-                print("DEBUG found cached image")
                 self.uiImage = image
                 self.loading = .done
                 return
@@ -37,12 +36,10 @@ class FixedImageLoader {
         self.loading = url == nil ? .failed : .loading
     }
     
-    @Sendable
     @MainActor
     func load() async {
         guard let url, loading == .loading else { return }
         do {
-            print("DEBUG fetching image (size: \(size))")
             let imageTask = ImagePipeline.shared.imageTask(with: .init(
                 url: url,
                 processors: [.resize(size: size, contentMode: .aspectFit)]
