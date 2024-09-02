@@ -13,10 +13,28 @@ extension PostEditorView {
         UIFont.preferredFont(forTextStyle: .title2).lineHeight * 4 + 15
     }
     
-    var canDismiss: Bool { titleIsEmpty && contentIsEmpty && targets.count == 1 }
+    var attachmentTransition: AnyTransition {
+        .asymmetric(insertion: .scale.combined(with: .opacity), removal: .opacity)
+    }
+    
+    var canDismiss: Bool {
+        titleIsEmpty
+            && contentIsEmpty
+            && targets.count == 1
+            && link == .none
+            && imageManager == nil
+    }
     
     var canSubmit: Bool {
-        !titleIsEmpty && targets.allSatisfy { $0.community != nil && $0.resolutionState == .success }
+        !titleIsEmpty
+            && targets.allSatisfy { $0.community != nil && $0.resolutionState == .success }
+            && link != .waiting
+            && (imageManager?.state.isDone ?? true)
+    }
+    
+    // ApiClient for uploading images etc
+    var primaryApi: ApiClient {
+        targets.first?.account.api ?? appState.firstApi
     }
     
     @MainActor
@@ -36,6 +54,7 @@ extension PostEditorView {
                                 communityId: community.id,
                                 title: titleTextView.text,
                                 content: contentTextView.text,
+                                linkUrl: imageManager?.image?.url ?? link.url,
                                 nsfw: hasNsfwTag
                             )
                         } catch {
@@ -67,5 +86,13 @@ extension PostEditorView {
         } else {
             sending = false
         }
+    }
+    
+    var animationHashValue: Int {
+        var hasher = Hasher()
+        hasher.combine(link)
+        hasher.combine(imageManager)
+        hasher.combine(hasNsfwTag)
+        return hasher.finalize()
     }
 }

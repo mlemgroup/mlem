@@ -89,6 +89,9 @@
     "Add" : {
 
     },
+    "Add a Link..." : {
+
+    },
     "Add Account" : {
 
     },
@@ -408,6 +411,9 @@
     "Feeds" : {
 
     },
+    "Files" : {
+
+    },
     "General" : {
 
     },
@@ -687,7 +693,13 @@
     "Password" : {
 
     },
+    "Paste" : {
+
+    },
     "Permanently delete %@" : {
+
+    },
+    "Photos" : {
 
     },
     "Pink" : {
@@ -1037,6 +1049,12 @@
 
     },
     "Unsubscribed" : {
+
+    },
+    "Upload an image..." : {
+
+    },
+    "Uploading..." : {
 
     },
     "Uptime" : {

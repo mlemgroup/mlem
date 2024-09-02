@@ -6,10 +6,21 @@
 //
 
 import MlemMiddleware
+import PhotosUI
 import SwiftUI
 
 struct PostEditorView: View {
     enum Field { case title, content }
+    enum LinkState: Hashable {
+        case none, waiting, value(URL)
+        
+        var url: URL? {
+            switch self {
+            case let .value(url): url
+            default: nil
+            }
+        }
+    }
     
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
@@ -24,7 +35,11 @@ struct PostEditorView: View {
     @State var contentIsEmpty: Bool = true
     @State var lastFocusedField: Field = .title
     @State var hasNsfwTag: Bool = false
+    @State var link: LinkState = .none
+    @State var imageManager: ImageUploadManager?
     @State var sending: Bool = false
+    
+    @State var imageUploadPresentationState: ImageUploadPresentationState?
     
     @State var targets: [PostEditorTarget]
     
@@ -77,6 +92,11 @@ struct PostEditorView: View {
                 contentTextView.isEditable = true
             }
         }
+        .imageUploadSheets(
+            imageManager: imageManager,
+            api: primaryApi,
+            presentationState: $imageUploadPresentationState
+        )
     }
     
     @ViewBuilder
@@ -105,10 +125,24 @@ struct PostEditorView: View {
                     maxHeight: .infinity,
                     alignment: .topLeading
                 )
-                if hasNsfwTag {
-                    nsfwTagView
-                        .padding(.leading, 15)
-                } else {
+                VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+                    if hasNsfwTag {
+                        nsfwTagView
+                            .padding(.leading, 15)
+                            .transition(attachmentTransition)
+                    }
+                    if link != .none {
+                        linkView
+                            .padding(.horizontal, 12)
+                            .transition(attachmentTransition)
+                    }
+                    if let imageManager {
+                        imageView(imageManager: imageManager)
+                            .padding(.horizontal, 12)
+                            .transition(attachmentTransition)
+                    }
+                }
+                if !(hasNsfwTag || link != .none || imageManager != nil) {
                     Divider()
                 }
                 MarkdownTextEditor(
@@ -131,7 +165,9 @@ struct PostEditorView: View {
                     alignment: .topLeading
                 )
                 .padding(.top, 4)
+                .background(palette.background)
             }
+            .animation(.snappy(duration: 0.2, extraBounce: 0.1), value: animationHashValue)
         }
     }
     
@@ -180,6 +216,7 @@ struct PostEditorView: View {
                 Text("NSFW")
                     .font(.footnote)
                     .fontWeight(.black)
+                    .foregroundStyle(palette.selectedInteractionBarItem)
                 Image(systemName: Icons.close)
                     .foregroundStyle(.opacity(0.8))
             }
@@ -187,40 +224,6 @@ struct PostEditorView: View {
             .padding(.vertical, 2)
             .padding(.horizontal, 8)
             .background(palette.warning, in: .capsule)
-        }
-    }
-    
-    @ToolbarContentBuilder
-    var toolbar: some ToolbarContent {
-        ToolbarItem(placement: .topBarLeading) {
-            Button("Cancel") {
-                dismiss()
-            }
-        }
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            Menu("Add", systemImage: "plus") {
-                Button("Link", systemImage: Icons.websiteAddress) {}.disabled(true)
-                Button("Image", systemImage: Icons.uploadImage) {}.disabled(true)
-                Toggle("NSFW Tag", systemImage: "tag", isOn: $hasNsfwTag)
-                Button("Crosspost", systemImage: "shuffle") {
-                    if let account = targets.last?.account {
-                        let newTarget: PostEditorTarget = .init(account: account)
-                        targets.append(newTarget)
-                        navigation.openSheet(.communityPicker(api: account.api, callback: { community in
-                            newTarget.community = community
-                        }))
-                    }
-                }
-            }
-            if sending {
-                ProgressView()
-            } else {
-                Button("Send", systemImage: Icons.send) {
-                    sending = true
-                    Task { await send() }
-                }
-                .disabled(!canSubmit)
-            }
         }
     }
 }
