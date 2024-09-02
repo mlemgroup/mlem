@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware.git",
       "state" : {
-        "revision" : "b66639cf2f2436129db3fc6a9a121189e2c5a94e",
-        "version" : "0.32.0"
+        "revision" : "a15f10c7adc57e5116b0f64763eb0511cf438ce5",
+        "version" : "0.33.0"
       }
     },
     {
@@ -98,6 +98,15 @@
       "state" : {
         "revision" : "807f73ce09a9b9723f12385e592b4e0aaebd3336",
         "version" : "1.3.0"
+      }
+    },
+    {
+      "identity" : "swiftyjson",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SwiftyJSON/SwiftyJSON.git",
+      "state" : {
+        "revision" : "2b6054efa051565954e1d2b9da831680026cd768",
+        "version" : "4.3.0"
       }
     },
     {

@@ -22,7 +22,7 @@ private struct MarkReadOnScroll: ViewModifier {
         content
             .task {
                 do {
-                    if markReadOnScroll, try await post.api.batchMarkReadEnabled {
+                    if markReadOnScroll, try await post.api.supports(.batchMarkRead) {
                         bottomAppearedItemIndex = max(index, bottomAppearedItemIndex)
                     }
                 } catch {
