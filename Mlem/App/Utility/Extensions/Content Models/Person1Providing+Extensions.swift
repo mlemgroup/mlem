@@ -25,8 +25,9 @@ extension Person1Providing {
             output.insert(.bannedFromInstance)
         }
         
-        if let age = Calendar.current.daysSince(created), age <= 30 {
-            output.insert(.new(age))
+        let intervalSinceCreation = Date.now.timeIntervalSince(created)
+        if intervalSinceCreation < 30 * 24 * 60 * 60 {
+            output.insert(.new(intervalSinceCreation))
         }
         
         let calendar = Calendar.current
