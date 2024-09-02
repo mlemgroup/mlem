@@ -34,11 +34,17 @@ extension PostEditorView {
                 .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
                 .frame(maxWidth: .infinity)
         case let .uploading(progress: progress):
-            ProgressView(value: progress)
-                .progressViewStyle(.linear)
-                .frame(maxWidth: .infinity)
-                .padding(8)
-                .background(palette.accent.opacity(0.2), in: .rect(cornerRadius: 16))
+            VStack {
+                Text("Uploading...")
+                    .foregroundStyle(palette.accent)
+                ProgressView(value: progress)
+                    .progressViewStyle(.linear)
+                    .frame(maxWidth: .infinity)
+                    .padding([.bottom, .horizontal], 4)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(8)
+            .background(palette.accent.opacity(0.2), in: .rect(cornerRadius: 16))
         default:
             imageWaitingView
         }

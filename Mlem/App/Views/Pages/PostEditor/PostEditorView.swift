@@ -11,7 +11,16 @@ import SwiftUI
 
 struct PostEditorView: View {
     enum Field { case title, content }
-    enum LinkState: Hashable { case none, waiting, value(URL) }
+    enum LinkState: Hashable {
+        case none, waiting, value(URL)
+        
+        var url: URL? {
+            switch self {
+            case let .value(url): url
+            default: nil
+            }
+        }
+    }
     
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation

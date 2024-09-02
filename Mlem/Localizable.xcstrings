@@ -534,9 +534,6 @@
     "Link" : {
 
     },
-    "Link" : {
-
-    },
     "Links" : {
 
     },
@@ -1055,6 +1052,9 @@
 
     },
     "Upload an image..." : {
+
+    },
+    "Uploading..." : {
 
     },
     "Uptime" : {
