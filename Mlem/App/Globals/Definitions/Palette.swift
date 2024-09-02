@@ -9,6 +9,9 @@ import Foundation
 import SwiftUI
 
 protocol PaletteProviding {
+    // meta
+    var supportedModes: UIUserInterfaceStyle { get }
+    
     // basics
     var primary: Color { get }
     var secondary: Color { get }
@@ -50,12 +53,14 @@ protocol PaletteProviding {
 }
 
 enum PaletteOption: String, CaseIterable {
-    case standard, monochrome
+    case standard, monochrome, solarized, dracula
     
     var palette: ColorPalette {
         switch self {
         case .standard: ColorPalette.standard
         case .monochrome: ColorPalette.monochrome
+        case .solarized: ColorPalette.solarized
+        case .dracula: ColorPalette.dracula
         }
     }
     
@@ -63,20 +68,16 @@ enum PaletteOption: String, CaseIterable {
         switch self {
         case .standard: "Default"
         case .monochrome: "Monochrome"
+        case .solarized: "Solarized"
+        case .dracula: "Dracula"
         }
     }
-    
-    var labelColor1: Color {
-        switch self {
-        case .standard: .blue
-        case .monochrome: .primary
-        }
-    }
-    
-    var labelColor2: Color { Color(UIColor.systemBackground) }
 }
 
 struct ColorPalette: PaletteProviding {
+    // meta
+    var supportedModes: UIUserInterfaceStyle
+    
     // basics
     var primary: Color
     var secondary: Color
@@ -122,6 +123,7 @@ struct ColorPalette: PaletteProviding {
     var commentIndentColors: [Color]
     
     init(
+        supportedModes: UIUserInterfaceStyle,
         primary: Color,
         secondary: Color,
         tertiary: Color,
@@ -155,6 +157,7 @@ struct ColorPalette: PaletteProviding {
         colorfulAccents: [Color],
         commentIndentColors: [Color]
     ) {
+        self.supportedModes = supportedModes
         self.primary = primary
         self.secondary = secondary
         self.tertiary = tertiary
@@ -208,6 +211,8 @@ class Palette: PaletteProviding {
     }
     
     // ColorProviding conformance
+    var supportedModes: UIUserInterfaceStyle { palette.supportedModes }
+    
     var primary: Color { palette.primary }
     var secondary: Color { palette.secondary }
     var tertiary: Color { palette.tertiary }

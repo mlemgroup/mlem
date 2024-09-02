@@ -70,6 +70,7 @@ struct InstanceView: View {
         }
         .isAtTopSubscriber(isAtTop: $isAtTop)
         .navigationBarTitleDisplayMode(.inline)
+        .background(palette.background)
     }
     
     @ViewBuilder

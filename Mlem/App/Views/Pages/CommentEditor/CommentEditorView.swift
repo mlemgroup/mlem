@@ -50,7 +50,9 @@ struct CommentEditorView: View {
         } else {
             return nil
         }
+        
         textView.text = commentToEdit?.content ?? ""
+        textView.backgroundColor = UIColor(Palette.main.background)
     }
         
     var minTextEditorHeight: CGFloat {
@@ -96,6 +98,7 @@ struct CommentEditorView: View {
                             }
                         }
                     }
+                    .background(palette.background)
             }
             .task(id: account, resolveContext)
         }

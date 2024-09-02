@@ -59,7 +59,7 @@ struct AccountListRow: View {
         }
         .contextMenu {
             if (account as? GuestAccount)?.isSaved ?? true {
-                Section("Switch to this account and...") {
+                SwiftUI.Section("Switch to this account and...") {
                     Button("Reload", systemImage: Icons.accountSwitchReload) {
                         changeAccount(keepPlace: false)
                     }

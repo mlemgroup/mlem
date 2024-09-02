@@ -47,6 +47,7 @@ struct SearchView: View {
     
     var body: some View {
         content
+            .background(palette.background)
             .navigationTitle("Search")
             .navigationBarTitleDisplayMode(.large)
             .navigationSearchBar {

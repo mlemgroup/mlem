@@ -60,13 +60,16 @@ struct SubscriptionListView: View {
                         }
                     }
                 }
+                .listRowBackground(palette.background)
                 
                 ForEach(sections) { section in
                     SubscriptionListSectionView(section: section, sectionIndicesShown: sectionIndicesShown)
                         .id(section.label)
+                        .listRowBackground(palette.background)
                 }
                 .scrollTargetLayout()
             }
+            .foregroundStyle(palette.primary)
             .overlay(alignment: .trailing) {
                 if sectionIndicesShown {
                     SectionIndexTitles(
@@ -100,6 +103,7 @@ struct SubscriptionListView: View {
                     handleError(error)
                 }
             }
+            .background(palette.background)
         }
     }
     

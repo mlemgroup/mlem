@@ -271,9 +271,6 @@
         }
       }
     },
-    "Dark" : {
-
-    },
     "Day" : {
 
     },
@@ -323,6 +320,9 @@
 
     },
     "Downvotes" : {
+
+    },
+    "Dracula" : {
 
     },
     "Easy" : {
@@ -531,7 +531,7 @@
     "Licenses" : {
 
     },
-    "Light" : {
+    "Link" : {
 
     },
     "Link" : {
@@ -873,6 +873,9 @@
     "Slur Filter" : {
 
     },
+    "Solarized" : {
+
+    },
     "Some" : {
 
     },
@@ -927,9 +930,6 @@
     "Switch to this account and..." : {
 
     },
-    "System" : {
-
-    },
     "Tap and hold items to add, remove or rearrange them." : {
 
     },
@@ -948,6 +948,16 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "The \"%1$@\" sort mode is only available on instances running version %2$@ or later. On instances running earlier versions, the \"Fallback\" sort mode will be used instead."
+          }
+        }
+      }
+    },
+    "The %@ theme only supports %@ mode." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The %1$@ theme only supports %2$@ mode."
           }
         }
       }
