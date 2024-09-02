@@ -77,7 +77,6 @@
 		03500C272BF69D1D00CAA076 /* ToastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C262BF69D1D00CAA076 /* ToastModel.swift */; };
 		03500C2B2BF7F1B100CAA076 /* ToastOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C2A2BF7F1B100CAA076 /* ToastOverlayView.swift */; };
 		03500C2D2BF7FC2500CAA076 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C2C2BF7FC2500CAA076 /* ToastView.swift */; };
-		03500C2E2BF8C2A700CAA076 /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CD59DE2B2BE467E600445EED /* MlemMiddleware */; };
 		03531EEC2C2D81DC004A3464 /* LinkSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03531EEB2C2D81DC004A3464 /* LinkSettingsView.swift */; };
 		03531EEE2C2D9298004A3464 /* SearchSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03531EED2C2D9298004A3464 /* SearchSheetView.swift */; };
 		03531EF12C2DA298004A3464 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03531EF02C2DA298004A3464 /* SearchResultsView.swift */; };
@@ -546,7 +545,6 @@
 		03DAEA762C64074E0064DE64 /* SubscriptionListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListItemView.swift; sourceTree = "<group>"; };
 		03E614E32C0BCC7B00F692A4 /* Post1Providing+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Post1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		03E614E62C0BCDC200F692A4 /* FullyQualifiedLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullyQualifiedLinkView.swift; sourceTree = "<group>"; };
-		03ECD7172C810DC600D48BF6 /* MlemMiddleware */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MlemMiddleware; path = ../MlemMiddleware; sourceTree = "<group>"; };
 		03ECD7182C81195000D48BF6 /* PostEditorView+LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditorView+LinkView.swift"; sourceTree = "<group>"; };
 		03ECD71A2C811D6700D48BF6 /* PostEditorView+ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditorView+ImageView.swift"; sourceTree = "<group>"; };
 		03ECD71C2C83BEC800D48BF6 /* View+ImageUploadSheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ImageUploadSheets.swift"; sourceTree = "<group>"; };
@@ -695,7 +693,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03500C2E2BF8C2A700CAA076 /* MlemMiddleware in Frameworks */,
 				03FA318C2C6FECAE00D47FA3 /* Flow in Frameworks */,
 				030FF6792BC84F7E00F6BFAC /* SwiftUIIntrospect in Frameworks */,
 				B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */,
@@ -1069,7 +1066,6 @@
 		6363D5B827EE196700E34822 = {
 			isa = PBXGroup;
 			children = (
-				03ECD7172C810DC600D48BF6 /* MlemMiddleware */,
 				6363D5C327EE196700E34822 /* Mlem */,
 				6363D5D927EE196A00E34822 /* MlemTests */,
 				6363D5E327EE196A00E34822 /* MlemUITests */,
@@ -1733,7 +1729,6 @@
 				CD4368C02AE23FD400BD8BD1 /* Semaphore */,
 				030FF6782BC84F7E00F6BFAC /* SwiftUIIntrospect */,
 				037386462BDAFE81007492B5 /* LemmyMarkdownUI */,
-				CD59DE2B2BE467E600445EED /* MlemMiddleware */,
 				03FA318B2C6FECAE00D47FA3 /* Flow */,
 			);
 			productName = Mlem;
@@ -2637,8 +2632,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.33.0;
+				branch = "sjmarf/image-uploading";
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -2693,10 +2688,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */;
 			productName = Semaphore;
-		};
-		CD59DE2B2BE467E600445EED /* MlemMiddleware */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = MlemMiddleware;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
