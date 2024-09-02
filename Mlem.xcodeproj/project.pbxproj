@@ -201,6 +201,8 @@
 		03ECD7192C81195000D48BF6 /* PostEditorView+LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECD7182C81195000D48BF6 /* PostEditorView+LinkView.swift */; };
 		03ECD71B2C811D6700D48BF6 /* PostEditorView+ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECD71A2C811D6700D48BF6 /* PostEditorView+ImageView.swift */; };
 		03ECD71D2C83BEC800D48BF6 /* View+ImageUploadSheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECD71C2C83BEC800D48BF6 /* View+ImageUploadSheets.swift */; };
+		03ECD71F2C864DB700D48BF6 /* ImageUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECD71E2C864DB700D48BF6 /* ImageUploadManager.swift */; };
+		03ECD7212C8654BA00D48BF6 /* PostEditorView+Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECD7202C8654BA00D48BF6 /* PostEditorView+Toolbar.swift */; };
 		03FA318C2C6FECAE00D47FA3 /* Flow in Frameworks */ = {isa = PBXBuildFile; productRef = 03FA318B2C6FECAE00D47FA3 /* Flow */; };
 		03FA318F2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA318E2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift */; };
 		03FE14042BF93FDD00A8377F /* ErrorDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FE14032BF93FDD00A8377F /* ErrorDetails.swift */; };
@@ -548,6 +550,8 @@
 		03ECD7182C81195000D48BF6 /* PostEditorView+LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditorView+LinkView.swift"; sourceTree = "<group>"; };
 		03ECD71A2C811D6700D48BF6 /* PostEditorView+ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditorView+ImageView.swift"; sourceTree = "<group>"; };
 		03ECD71C2C83BEC800D48BF6 /* View+ImageUploadSheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ImageUploadSheets.swift"; sourceTree = "<group>"; };
+		03ECD71E2C864DB700D48BF6 /* ImageUploadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploadManager.swift; sourceTree = "<group>"; };
+		03ECD7202C8654BA00D48BF6 /* PostEditorView+Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditorView+Toolbar.swift"; sourceTree = "<group>"; };
 		03FA318E2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarActionLabelView.swift; sourceTree = "<group>"; };
 		03FE14032BF93FDD00A8377F /* ErrorDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDetails.swift; sourceTree = "<group>"; };
 		03FE14052BF9445F00A8377F /* CloseButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButtonView.swift; sourceTree = "<group>"; };
@@ -950,6 +954,7 @@
 			isa = PBXGroup;
 			children = (
 				0397D48F2C6CE871002C6CDC /* PostEditorView.swift */,
+				03ECD7202C8654BA00D48BF6 /* PostEditorView+Toolbar.swift */,
 				0315B1C52C754802006D4F82 /* PostEditorView+Logic.swift */,
 				03ECD7182C81195000D48BF6 /* PostEditorView+LinkView.swift */,
 				03ECD71A2C811D6700D48BF6 /* PostEditorView+ImageView.swift */,
@@ -1056,6 +1061,7 @@
 				033F84C62C2B192F002E3EDF /* MlemStats */,
 				033F84B02C29907F002E3EDF /* FeedbackType.swift */,
 				033F84C02C2AD072002E3EDF /* CommentWrapper.swift */,
+				03ECD71E2C864DB700D48BF6 /* ImageUploadManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1977,7 +1983,9 @@
 				03B431B62C454D49001A1EB5 /* UIImage+Extensions.swift in Sources */,
 				CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */,
 				03AFD0E32C3C0C540054B8AD /* InstanceView.swift in Sources */,
+				03ECD7212C8654BA00D48BF6 /* PostEditorView+Toolbar.swift in Sources */,
 				03FE140C2BF953B000A8377F /* HandleError.swift in Sources */,
+				03ECD71F2C864DB700D48BF6 /* ImageUploadManager.swift in Sources */,
 				03B431C62C45C09F001A1EB5 /* CollapsibleSheetView.swift in Sources */,
 				CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */,
 				CD79281F2C73B52A00FA712D /* EndOfFeedView.swift in Sources */,

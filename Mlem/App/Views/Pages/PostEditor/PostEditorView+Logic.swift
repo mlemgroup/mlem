@@ -22,14 +22,19 @@ extension PostEditorView {
             && contentIsEmpty
             && targets.count == 1
             && link == .none
-            && image == .none
+            && imageManager == nil
     }
     
     var canSubmit: Bool {
         !titleIsEmpty
             && targets.allSatisfy { $0.community != nil && $0.resolutionState == .success }
             && link != .waiting
-            && image != .waiting
+            && (imageManager?.progress ?? 1) != 1
+    }
+    
+    // ApiClient for uploading images etc
+    var primaryApi: ApiClient {
+        targets.first?.account.api ?? appState.firstApi
     }
     
     @MainActor
@@ -85,7 +90,7 @@ extension PostEditorView {
     var animationHashValue: Int {
         var hasher = Hasher()
         hasher.combine(link)
-        hasher.combine(image)
+        hasher.combine(imageManager)
         hasher.combine(hasNsfwTag)
         return hasher.finalize()
     }

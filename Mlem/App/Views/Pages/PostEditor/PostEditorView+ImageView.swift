@@ -10,23 +10,20 @@ import SwiftUI
 
 extension PostEditorView {
     @ViewBuilder
-    var imageView: some View {
-        switch image {
-        case let .value(imageUpload):
-            DynamicImageView(url: imageUpload.url, actionsEnabled: false)
+    func imageView(imageManager: ImageUploadManager) -> some View {
+        switch imageManager.state {
+        case let .done(image):
+            DynamicImageView(url: image.url, actionsEnabled: false)
                 .overlay(alignment: .topTrailing) {
                     Button("Remove", systemImage: Icons.closeCircleFill) {
-                        if case let .value(imageUpload) = self.image {
-                            Task {
-                                do {
-                                    try await imageUpload.delete()
-                                } catch {
-                                    handleError(error)
-                                }
+                        Task {
+                            do {
+                                try await image.delete()
+                            } catch {
+                                handleError(error)
                             }
                         }
-                       
-                        self.image = .none
+                        self.imageManager = nil
                     }
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(.secondary, .thinMaterial)
@@ -36,6 +33,12 @@ extension PostEditorView {
                 }
                 .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
                 .frame(maxWidth: .infinity)
+        case let .uploading(progress: progress):
+            ProgressView(value: progress)
+                .progressViewStyle(.linear)
+                .frame(maxWidth: .infinity)
+                .padding(8)
+                .background(palette.accent.opacity(0.2), in: .rect(cornerRadius: 16))
         default:
             imageWaitingView
         }
@@ -50,7 +53,7 @@ extension PostEditorView {
                     .padding(.leading, 4)
                 Spacer()
                 Button("Remove", systemImage: Icons.closeCircleFill) {
-                    image = .none
+                    imageManager = nil
                 }
                 .font(.title2)
                 .labelStyle(.iconOnly)
@@ -68,7 +71,15 @@ extension PostEditorView {
                 Button("Files", systemImage: "folder") {
                     imageUploadPresentationState = .files
                 }
-                Button("Paste", systemImage: Icons.paste) {}
+                Button("Paste", systemImage: Icons.paste) {
+                    Task {
+                        do {
+                            try await imageManager?.pasteFromClipboard(api: primaryApi)
+                        } catch {
+                            handleError(error)
+                        }
+                    }
+                }
             }
             .buttonStyle(ImageSourceButtonStyle())
         }

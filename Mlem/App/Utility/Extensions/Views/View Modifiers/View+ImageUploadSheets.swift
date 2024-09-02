@@ -14,8 +14,8 @@ enum ImageUploadPresentationState {
 }
 
 private struct ImageUploadSheetsModifier: ViewModifier {
+    let imageManager: ImageUploadManager?
     let api: ApiClient
-    let callback: (ImageUpload1) -> Void
     @Binding var presentationState: ImageUploadPresentationState?
     
     @State private var photoSelection: PhotosPickerItem?
@@ -39,7 +39,7 @@ private struct ImageUploadSheetsModifier: ViewModifier {
                 onCompletion: { result in
                     Task {
                         do {
-                            try await callback(api.uploadImage(localUrl: result.get()))
+                            try await imageManager?.uploadFile(localUrl: result.get(), api: api)
                         } catch {
                             handleError(error)
                         }
@@ -50,7 +50,7 @@ private struct ImageUploadSheetsModifier: ViewModifier {
                 if let photoSelection {
                     Task {
                         do {
-                            try await callback(api.uploadImage(photoSelection))
+                            try await imageManager?.uploadPhoto(photoSelection, api: api)
                             self.photoSelection = nil
                         } catch {
                             handleError(error)
@@ -63,14 +63,14 @@ private struct ImageUploadSheetsModifier: ViewModifier {
 
 extension View {
     func imageUploadSheets(
+        imageManager: ImageUploadManager?,
         api: ApiClient,
-        presentationState: Binding<ImageUploadPresentationState?>,
-        callback: @escaping (ImageUpload1) -> Void
+        presentationState: Binding<ImageUploadPresentationState?>
     ) -> some View {
         modifier(
             ImageUploadSheetsModifier(
+                imageManager: imageManager,
                 api: api,
-                callback: callback,
                 presentationState: presentationState
             )
         )

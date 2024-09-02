@@ -12,7 +12,6 @@ import SwiftUI
 struct PostEditorView: View {
     enum Field { case title, content }
     enum LinkState: Hashable { case none, waiting, value(URL) }
-    enum ImageState: Hashable { case none, waiting, value(ImageUpload1) }
     
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
@@ -28,7 +27,7 @@ struct PostEditorView: View {
     @State var lastFocusedField: Field = .title
     @State var hasNsfwTag: Bool = false
     @State var link: LinkState = .none
-    @State var image: ImageState = .none
+    @State var imageManager: ImageUploadManager?
     @State var sending: Bool = false
     
     @State var imageUploadPresentationState: ImageUploadPresentationState?
@@ -85,11 +84,10 @@ struct PostEditorView: View {
             }
         }
         .imageUploadSheets(
-            api: targets.first?.account.api ?? appState.firstApi,
+            imageManager: imageManager,
+            api: primaryApi,
             presentationState: $imageUploadPresentationState
-        ) { imageUpload in
-            image = .value(imageUpload)
-        }
+        )
     }
     
     @ViewBuilder
@@ -129,13 +127,13 @@ struct PostEditorView: View {
                             .padding(.horizontal, 12)
                             .transition(attachmentTransition)
                     }
-                    if image != .none {
-                        imageView
+                    if let imageManager {
+                        imageView(imageManager: imageManager)
                             .padding(.horizontal, 12)
                             .transition(attachmentTransition)
                     }
                 }
-                if !(hasNsfwTag || link != .none || image != .none) {
+                if !(hasNsfwTag || link != .none || imageManager != nil) {
                     Divider()
                 }
                 MarkdownTextEditor(
@@ -217,49 +215,6 @@ struct PostEditorView: View {
             .padding(.vertical, 2)
             .padding(.horizontal, 8)
             .background(palette.warning, in: .capsule)
-        }
-    }
-    
-    @ToolbarContentBuilder
-    var toolbar: some ToolbarContent {
-        ToolbarItem(placement: .topBarLeading) {
-            Button("Cancel") {
-                dismiss()
-            }
-        }
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            Menu("Add", systemImage: "plus") {
-                Toggle(
-                    "Link",
-                    systemImage: Icons.websiteAddress,
-                    isOn: .init(get: { link != .none }, set: { link = $0 ? .waiting : .none })
-                ).disabled(image != .none)
-                Toggle(
-                    "Image",
-                    systemImage: Icons.uploadImage,
-                    isOn: .init(get: { image != .none }, set: { image = $0 ? .waiting : .none })
-                )
-                .disabled(link != .none)
-                Toggle("NSFW Tag", systemImage: "tag", isOn: $hasNsfwTag)
-                Button("Crosspost", systemImage: "shuffle") {
-                    if let account = targets.last?.account {
-                        let newTarget: PostEditorTarget = .init(account: account)
-                        targets.append(newTarget)
-                        navigation.openSheet(.communityPicker(api: account.api, callback: { community in
-                            newTarget.community = community
-                        }))
-                    }
-                }
-            }
-            if sending {
-                ProgressView()
-            } else {
-                Button("Send", systemImage: Icons.send) {
-                    sending = true
-                    Task { await send() }
-                }
-                .disabled(!canSubmit)
-            }
         }
     }
 }
