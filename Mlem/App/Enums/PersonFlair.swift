@@ -17,7 +17,7 @@ enum PersonFlair: Hashable {
     case cakeDay
     case bannedFromInstance
     case bannedFromCommunity
-    case new(Int)
+    case new(TimeInterval)
     
     // this defines the order in which flairs appear
     var sortVal: Int {
@@ -35,11 +35,13 @@ enum PersonFlair: Hashable {
     }
     
     var text: String {
-    switch self {
-        case let .new(days):
+        switch self {
+        case let .new(interval):
             let formatter = DateComponentsFormatter()
             formatter.unitsStyle = .abbreviated
-            return formatter.string(from: .init(day: days)) ?? ""
+            formatter.allowedUnits = [.second, .minute, .hour, .day]
+            formatter.maximumUnitCount = 1
+            return formatter.string(from: interval) ?? ""
         default:
             return ""
         }
