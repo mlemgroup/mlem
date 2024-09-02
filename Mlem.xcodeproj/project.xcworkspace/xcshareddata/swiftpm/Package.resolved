@@ -1,5 +1,5 @@
 {
-  "originHash" : "c718bdfcf89247b5016e6639e53c2ada4864f1d728f4747707eaeb285146870c",
+  "originHash" : "693546cfc633cb179f53728b918542e0d98a3518ffce28aa97b5c239441ee75a",
   "pins" : [
     {
       "identity" : "combine-schedulers",
@@ -34,7 +34,7 @@
       "location" : "https://github.com/mlemgroup/MlemMiddleware.git",
       "state" : {
         "branch" : "eric/beehaw-compatibility",
-        "revision" : "7ba32996c8b31d42c6a67d47612d339e04dcd79e"
+        "revision" : "55ede35833ba763ac45666aacf12bbef702b8304"
       }
     },
     {
