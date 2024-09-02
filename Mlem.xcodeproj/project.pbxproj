@@ -1799,7 +1799,7 @@
 				0392826E2BC84E480097F91A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				037386452BDAFE81007492B5 /* XCRemoteSwiftPackageReference "LemmyMarkdownUI" */,
 				03FA318A2C6FEC5400D47FA3 /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */,
-				CD1B2E232C7FBBB70075C7EA /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
+				CD9243272C861F040046EBB6 /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -2599,20 +2599,20 @@
 				minimumVersion = 12.1.2;
 			};
 		};
-		CD1B2E232C7FBBB70075C7EA /* XCRemoteSwiftPackageReference "MlemMiddleware" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.32.0;
-			};
-		};
 		CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/groue/Semaphore";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.0.8;
+			};
+		};
+		CD9243272C861F040046EBB6 /* XCRemoteSwiftPackageReference "MlemMiddleware" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
+			requirement = {
+				branch = "eric/beehaw-compatibility";
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
