@@ -57,7 +57,7 @@ struct LargePostView: View {
                     EllipsisMenu(size: 24) { post.menuActions(expandedPostTracker: expandedPostTracker) }
                 }
             }
-            
+        
             LargePostBodyView(post: post, isExpanded: isExpanded, shouldBlur: shouldBlur)
             
             if showCreator || isExpanded, communityContext == nil {
