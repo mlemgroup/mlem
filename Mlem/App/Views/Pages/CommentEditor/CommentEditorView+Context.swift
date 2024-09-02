@@ -27,6 +27,13 @@ extension CommentEditorView {
             }
         }
         
+        var item: any Interactable1Providing & SelectableContentProviding {
+            switch self {
+            case let .post(post): post
+            case let .comment(comment): comment
+            }
+        }
+        
         var api: ApiClient {
             switch self {
             case let .post(post):
