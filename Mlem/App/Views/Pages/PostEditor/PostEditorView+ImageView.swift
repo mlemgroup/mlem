@@ -87,6 +87,8 @@ extension PostEditorView {
                     }
                 }
             }
+            .font(.subheadline)
+            .fontWeight(.semibold)
             .buttonStyle(ImageSourceButtonStyle())
         }
         .frame(maxWidth: .infinity)
