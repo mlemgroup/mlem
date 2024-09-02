@@ -32,6 +32,7 @@ extension PostEditorView {
                     }
                 } label: {
                     Label("Paste", systemImage: Icons.paste)
+                        .fontWeight(.semibold)
                         .foregroundStyle(palette.selectedInteractionBarItem)
                         .padding(.vertical, 6)
                         .padding(.horizontal, 12)
