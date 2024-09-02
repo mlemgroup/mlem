@@ -45,7 +45,6 @@ class ImageLoader {
         self.loading = url == nil ? .failed : .loading
     }
     
-    @Sendable
     @MainActor
     func load() async {
         guard let url, loading == .loading else { return }
@@ -57,6 +56,7 @@ class ImageLoader {
             loading = .done
         } catch {
             self.error = error
+            print(error)
             loading = .failed
         }
     }

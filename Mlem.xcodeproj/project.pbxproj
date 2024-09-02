@@ -225,7 +225,6 @@
 		CD13CC572C582DD8001AF428 /* DynamicImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD13CC562C582DD8001AF428 /* DynamicImageView.swift */; };
 		CD13CC592C583C7A001AF428 /* WebsitePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD13CC582C583C7A001AF428 /* WebsitePreviewView.swift */; };
 		CD13CC5B2C588B34001AF428 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD13CC5A2C588B34001AF428 /* WebView.swift */; };
-		CD13CC5F2C5B2761001AF428 /* FixedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD13CC5E2C5B2761001AF428 /* FixedImageView.swift */; };
 		CD13CC612C5D262E001AF428 /* ImageLoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD13CC602C5D262E001AF428 /* ImageLoadingState.swift */; };
 		CD13CC632C5D26C3001AF428 /* ImageLoadingPreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD13CC622C5D26C3001AF428 /* ImageLoadingPreferenceKey.swift */; };
 		CD13CC652C5D2B9D001AF428 /* CircleCroppedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD13CC642C5D2B9D001AF428 /* CircleCroppedImageView.swift */; };
@@ -302,6 +301,8 @@
 		CDB2EC882BFAE14800DBC0EF /* FullyQualifiedNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC872BFAE14800DBC0EF /* FullyQualifiedNameView.swift */; };
 		CDB2EC8A2BFAEFDF00DBC0EF /* ThumbnailImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC892BFAEFDF00DBC0EF /* ThumbnailImageView.swift */; };
 		CDB41E8A2C83C24400BD2DE9 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB41E892C83C24400BD2DE9 /* Section.swift */; };
+		CDB41E8C2C84CED500BD2DE9 /* FixedImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB41E8B2C84CED500BD2DE9 /* FixedImageLoader.swift */; };
+		CDB41E8E2C84CFA200BD2DE9 /* FixedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB41E8D2C84CFA200BD2DE9 /* FixedImageView.swift */; };
 		CDBFCB652C03920C008CD468 /* PostLinkHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB642C03920C008CD468 /* PostLinkHostView.swift */; };
 		CDBFCB6A2C04EFFE008CD468 /* PostSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */; };
 		CDBFCB6C2C054AA7008CD468 /* TilePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB6B2C054AA7008CD468 /* TilePostView.swift */; };
@@ -566,7 +567,6 @@
 		CD13CC562C582DD8001AF428 /* DynamicImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicImageView.swift; sourceTree = "<group>"; };
 		CD13CC582C583C7A001AF428 /* WebsitePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsitePreviewView.swift; sourceTree = "<group>"; };
 		CD13CC5A2C588B34001AF428 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
-		CD13CC5E2C5B2761001AF428 /* FixedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixedImageView.swift; sourceTree = "<group>"; };
 		CD13CC602C5D262E001AF428 /* ImageLoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoadingState.swift; sourceTree = "<group>"; };
 		CD13CC622C5D26C3001AF428 /* ImageLoadingPreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoadingPreferenceKey.swift; sourceTree = "<group>"; };
 		CD13CC642C5D2B9D001AF428 /* CircleCroppedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleCroppedImageView.swift; sourceTree = "<group>"; };
@@ -644,6 +644,8 @@
 		CDB2EC872BFAE14800DBC0EF /* FullyQualifiedNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullyQualifiedNameView.swift; sourceTree = "<group>"; };
 		CDB2EC892BFAEFDF00DBC0EF /* ThumbnailImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailImageView.swift; sourceTree = "<group>"; };
 		CDB41E892C83C24400BD2DE9 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
+		CDB41E8B2C84CED500BD2DE9 /* FixedImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixedImageLoader.swift; sourceTree = "<group>"; };
+		CDB41E8D2C84CFA200BD2DE9 /* FixedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixedImageView.swift; sourceTree = "<group>"; };
 		CDBFCB642C03920C008CD468 /* PostLinkHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLinkHostView.swift; sourceTree = "<group>"; };
 		CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSettingsView.swift; sourceTree = "<group>"; };
 		CDBFCB6B2C054AA7008CD468 /* TilePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TilePostView.swift; sourceTree = "<group>"; };
@@ -1143,6 +1145,7 @@
 				CD13CC622C5D26C3001AF428 /* ImageLoadingPreferenceKey.swift */,
 				CD9857A32C5E7F9D0084C71F /* NsfwOverlayView.swift */,
 				0397D4732C680FFC002C6CDC /* ImageLoader.swift */,
+				CDB41E8B2C84CED500BD2DE9 /* FixedImageLoader.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1150,8 +1153,8 @@
 		CD13CC672C5D3CBE001AF428 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				CD13CC5E2C5B2761001AF428 /* FixedImageView.swift */,
 				CD13CC562C582DD8001AF428 /* DynamicImageView.swift */,
+				CDB41E8D2C84CFA200BD2DE9 /* FixedImageView.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -1927,11 +1930,12 @@
 				03AF91E12C1B25DE00E56644 /* UIDevice+Extensions.swift in Sources */,
 				0389DDC52C38917A0005B808 /* InboxItemProviding+Extensions.swift in Sources */,
 				CD13CC5B2C588B34001AF428 /* WebView.swift in Sources */,
-				CD13CC5F2C5B2761001AF428 /* FixedImageView.swift in Sources */,
+				CDB41E8C2C84CED500BD2DE9 /* FixedImageLoader.swift in Sources */,
 				039EFEC32BEEBEE0003AC372 /* LoginInstancePickerView.swift in Sources */,
 				03531EF12C2DA298004A3464 /* SearchResultsView.swift in Sources */,
 				034B94852C09348400039AF4 /* MarkdownImageView.swift in Sources */,
 				CD9CFA2A2C2E1E8400739BBC /* FeedHeaderView.swift in Sources */,
+				CDB41E8E2C84CFA200BD2DE9 /* FixedImageView.swift in Sources */,
 				03C93CF22BF0256700327BFE /* EnvironmentValue+IsRootView.swift in Sources */,
 				033F84C12C2AD072002E3EDF /* CommentWrapper.swift in Sources */,
 				034B94832C09340A00039AF4 /* MarkdownConfiguration+Extensions.swift in Sources */,

@@ -34,6 +34,7 @@ struct AccountListSettingsView: View {
                         AvatarStackView(
                             urls: accounts.map(\.avatar),
                             fallback: .person,
+                            height: 64,
                             spacing: 42,
                             outlineWidth: 1
                         )
