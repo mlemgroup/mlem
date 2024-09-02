@@ -13,6 +13,7 @@ struct LoginCredentialsView: View {
     @Environment(\.isRootView) var isRootView
     @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
+    @Environment(Palette.self) var palette
     
     let instance: (any Instance)?
     let account: UserAccount?
@@ -43,7 +44,7 @@ struct LoginCredentialsView: View {
     var body: some View {
         content
             .frame(maxWidth: .infinity)
-            .background(Color(uiColor: .systemGroupedBackground).ignoresSafeArea())
+            .background(palette.groupedBackground.ignoresSafeArea())
             .interactiveDismissDisabled((!username.isEmpty && showUsernameField) || !password.isEmpty)
             .toolbar {
                 if navigation.isInsideSheet, isRootView {
@@ -83,8 +84,7 @@ struct LoginCredentialsView: View {
     
     @ViewBuilder
     func instanceHeader(_ instance: any Instance) -> some View {
-        CircleCroppedImageView(instance)
-            .frame(width: 50, height: 50)
+        CircleCroppedImageView(instance, frame: 50)
         Text(instance.displayName)
             .font(.title)
             .bold()
@@ -93,8 +93,7 @@ struct LoginCredentialsView: View {
     @ViewBuilder
     func reauthHeader(_ account: UserAccount) -> some View {
         VStack {
-            CircleCroppedImageView(account)
-                .frame(width: 50, height: 50)
+            CircleCroppedImageView(account, frame: 50)
             Text(account.fullName ?? "Sign In")
                 .font(.title)
                 .bold()
@@ -137,7 +136,7 @@ struct LoginCredentialsView: View {
         .autocorrectionDisabled()
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color(uiColor: .secondarySystemGroupedBackground))
+                .fill(palette.secondaryGroupedBackground)
         )
         .onAppear { focused = showUsernameField ? .username : .password }
         .onChange(of: username) { failureReason = nil }

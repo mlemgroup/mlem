@@ -11,6 +11,7 @@ import SwiftUI
 
 struct SearchSheetView<Item: Searchable, Content: View>: View {
     @Environment(AppState.self) var appState
+    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
     enum CloseButtonLabel: String {
@@ -44,6 +45,7 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
                 content(results, dismiss)
             }
         }
+        .background(palette.background)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {

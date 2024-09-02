@@ -1,8 +1,8 @@
 //
-//  FixedImageView.swift
+//  PreprocessedFixedImageView.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-07-31.
+//  Created by Eric Andrews on 2024-09-01.
 //
 
 import Foundation
@@ -10,13 +10,13 @@ import MlemMiddleware
 import Nuke
 import SwiftUI
 
-/// Image view that always has a 1:1 aspect ratio. Inherits sizing from parent frame.
+/// Image view that always has a fixed size. The image will be scaled to the given size, but resized to fill its parent frame.
 struct FixedImageView: View {
     @Environment(Palette.self) var palette
     
     @State var loadingPref: ImageLoadingState? // tracked separately to allow correct propagation of inital value
     
-    @State var loader: ImageLoader
+    @State var loader: FixedImageLoader
     let fallback: Fallback
     let showProgress: Bool
     let blurred: Bool
@@ -38,14 +38,14 @@ struct FixedImageView: View {
     
     init(
         url: URL?,
-        maxSize: CGFloat? = nil,
+        size: CGSize,
         fallback: Fallback,
         showProgress: Bool,
         blurred: Bool = false
     ) {
         self.fallback = fallback
         self.showProgress = showProgress
-        self._loader = .init(wrappedValue: .init(url: url, maxSize: maxSize))
+        self._loader = .init(wrappedValue: .init(url: url, size: size))
         self.blurred = blurred
     }
     
@@ -54,7 +54,11 @@ struct FixedImageView: View {
             .contentShape(.rect)
             .overlay {
                 content
-                    .task(loader.load)
+                    .onAppear {
+                        Task {
+                            await loader.load()
+                        }
+                    }
                     .aspectRatio(1, contentMode: .fill)
                     .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
                     .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)

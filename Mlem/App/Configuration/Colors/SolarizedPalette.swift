@@ -39,7 +39,7 @@ extension ColorPalette {
         groupedBackground: .init(light: base2, dark: base02),
         secondaryGroupedBackground: .init(light: base3, dark: base03),
         tertiaryGroupedBackground: .init(light: base2, dark: base02),
-        thumbnailBackground: base0,
+        thumbnailBackground: .init(light: base2, dark: base02),
         positive: cyan,
         negative: red,
         warning: red,

@@ -36,7 +36,12 @@ struct CompactPostView: View {
     var content: some View {
         HStack(alignment: .top, spacing: Constants.main.standardSpacing) {
             if thumbnailLocation == .left {
-                ThumbnailImageView(post: post, blurred: blurred, size: .standard)
+                ThumbnailImageView(
+                    post: post,
+                    blurred: blurred,
+                    size: .standard,
+                    frame: .init(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
+                )
             }
             
             VStack(alignment: .leading, spacing: Constants.main.compactSpacing) {
@@ -73,7 +78,12 @@ struct CompactPostView: View {
             .frame(maxWidth: .infinity)
             
             if thumbnailLocation == .right {
-                ThumbnailImageView(post: post, blurred: blurred, size: .standard)
+                ThumbnailImageView(
+                    post: post,
+                    blurred: blurred,
+                    size: .standard,
+                    frame: .init(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
+                )
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

@@ -91,8 +91,7 @@ struct WebsitePreviewView: View {
     
     var linkHost: some View {
         HStack(spacing: Constants.main.halfSpacing) {
-            CircleCroppedImageView(url: link.favicon, fallback: .favicon)
-                .frame(width: Constants.main.smallAvatarSize, height: Constants.main.smallAvatarSize)
+            CircleCroppedImageView(url: link.favicon, frame: Constants.main.smallAvatarSize, fallback: .favicon)
             
             Text(link.host)
                 .foregroundStyle(palette.secondary)
