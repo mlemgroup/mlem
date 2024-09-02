@@ -58,7 +58,12 @@ struct HeadlinePostView: View {
             
             HStack(alignment: .top, spacing: Constants.main.standardSpacing) {
                 if thumbnailLocation == .left {
-                    ThumbnailImageView(post: post, blurred: blurred, size: .standard)
+                    ThumbnailImageView(
+                        post: post,
+                        blurred: blurred,
+                        size: .standard,
+                        frame: .init(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
+                    )
                 }
   
                 VStack(alignment: .leading, spacing: Constants.main.halfSpacing) {
@@ -75,7 +80,12 @@ struct HeadlinePostView: View {
                 
                 if thumbnailLocation == .right {
                     Spacer()
-                    ThumbnailImageView(post: post, blurred: blurred, size: .standard)
+                    ThumbnailImageView(
+                        post: post,
+                        blurred: blurred,
+                        size: .standard,
+                        frame: .init(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
+                    )
                 }
             }
             

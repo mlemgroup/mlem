@@ -66,11 +66,11 @@ struct FullyQualifiedLabelView: View {
             if showAvatar {
                 CircleCroppedImageView(
                     url: entity?.avatar?.withIconSize(labelStyle.avatarResolution),
+                    frame: labelStyle.avatarSize,
                     fallback: fallback,
                     showProgress: false,
                     blurred: blurred
                 )
-                .frame(width: labelStyle.avatarSize, height: labelStyle.avatarSize)
             }
             FullyQualifiedNameView(
                 name: entity?.name,
