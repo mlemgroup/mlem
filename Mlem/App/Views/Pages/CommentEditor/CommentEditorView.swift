@@ -15,6 +15,9 @@ struct CommentEditorView: View {
     @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
+    @Setting(\.showPersonAvatar) private var showPersonAvatar
+    @Setting(\.showCommunityAvatar) private var showCommunityAvatar
+    
     enum ResolutionState: Equatable {
         case success, notFound, error(ErrorDetails), resolving
     }
@@ -140,21 +143,62 @@ struct CommentEditorView: View {
                 )
                 Divider()
                     .padding(.vertical, Constants.main.standardSpacing)
-                Group {
-                    switch originalContext {
-                    case let .post(post):
-                        LargePostBodyView(post: post, isExpanded: true, shouldBlur: false)
-                    case let .comment(comment):
-                        CommentBodyView(comment: comment)
-                    case nil:
-                        ProgressView()
-                    }
-                }.padding(.horizontal, Constants.main.standardSpacing)
+                contextView
+                    .padding(.horizontal, Constants.main.standardSpacing)
             }
             .animation(.easeOut(duration: 0.2), value: resolutionState == .notFound)
+            .padding(.bottom, Constants.main.standardSpacing)
         }
         .scrollBounceBehavior(.basedOnSize)
         .task(inferContextFromCommentToEdit)
+    }
+    
+    @ViewBuilder
+    var contextView: some View {
+        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+            switch originalContext {
+            case let .post(post):
+                HStack {
+                    FullyQualifiedLinkView(
+                        entity: post.community_,
+                        labelStyle: .medium,
+                        showAvatar: showPersonAvatar,
+                        blurred: post.nsfw
+                    )
+                    Spacer()
+                    selectTextButton
+                }
+                LargePostBodyView(post: post, isExpanded: true, shouldBlur: false)
+                FullyQualifiedLinkView(
+                    entity: post.creator_,
+                    labelStyle: .medium,
+                    showAvatar: showPersonAvatar,
+                    blurred: post.nsfw
+                )
+            case let .comment(comment):
+                HStack {
+                    FullyQualifiedLinkView(
+                        entity: comment.creator_,
+                        labelStyle: .medium,
+                        showAvatar: showPersonAvatar,
+                        blurred: false
+                    )
+                    Spacer()
+                    selectTextButton
+                }
+                CommentBodyView(comment: comment)
+            case nil:
+                ProgressView()
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var selectTextButton: some View {
+        Button("Select Text", systemImage: Icons.select) {
+            originalContext?.item.showTextSelectionSheet()
+        }
+        .labelStyle(.iconOnly)
     }
     
     @ViewBuilder
