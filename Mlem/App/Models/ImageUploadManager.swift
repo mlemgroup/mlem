@@ -13,6 +13,13 @@ import SwiftUI
 class ImageUploadManager: Hashable {
     enum UploadState: Hashable {
         case idle, uploading(progress: Double), done(ImageUpload1)
+        
+        var isDone: Bool {
+            switch self {
+            case .done: true
+            default: false
+            }
+        }
     }
     
     var state: UploadState = .idle

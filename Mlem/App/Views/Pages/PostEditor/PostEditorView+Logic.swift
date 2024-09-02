@@ -29,7 +29,7 @@ extension PostEditorView {
         !titleIsEmpty
             && targets.allSatisfy { $0.community != nil && $0.resolutionState == .success }
             && link != .waiting
-            && (imageManager?.progress ?? 1) == 1
+            && (imageManager?.state.isDone ?? true)
     }
     
     // ApiClient for uploading images etc
