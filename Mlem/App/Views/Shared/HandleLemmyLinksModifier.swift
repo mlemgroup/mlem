@@ -100,7 +100,7 @@ struct HandleLemmyLinksModifier: ViewModifier {
             return true
         case "post":
             if components.count == 2 {
-                navigation.push(.expandedPost(PostStub(api: appState.firstApi, actorId: url)))
+                navigation.push(.post(PostStub(api: appState.firstApi, actorId: url)))
                 return true
             } else if components.count == 3 {
                 // TODO: comment in format `lemmy.world/post/21312/34534`

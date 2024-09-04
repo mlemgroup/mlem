@@ -83,7 +83,7 @@ struct PostGridView: View {
                 ForEach(Array(postFeedLoader.items.enumerated()), id: \.element.hashValue) { index, post in
                     if !post.creator.blocked, !post.community.blocked, !post.hidden {
                         VStack(spacing: 0) { // this improves performance O_o
-                            NavigationLink(value: NavigationPage.expandedPost(post, communityContext: communityContext)) {
+                            NavigationLink(.post(post, communityContext: communityContext)) {
                                 FeedPostView(post: post)
                             }
                             .buttonStyle(EmptyButtonStyle())
