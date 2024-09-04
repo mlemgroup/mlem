@@ -19,11 +19,6 @@ enum NavigationPage: Hashable {
         highlightedComment: HashWrapper<any CommentStubProviding>? = nil,
         communityContext: HashWrapper<any Community1Providing>? = nil
     )
-    case comment(
-        _ comment: AnyComment,
-        highlightedCommentActorId: URL? = nil,
-        communityContext: HashWrapper<any Community1Providing>? = nil
-    )
     case community(_ community: AnyCommunity)
     case person(_ person: AnyPerson)
     case instance(_ instance: InstanceHashWrapper)
@@ -40,15 +35,11 @@ enum NavigationPage: Hashable {
     case createPost(community: AnyCommunity?)
     case deleteAccount(_ account: UserAccount)
     
-    static func comment(_ comment: any CommentStubProviding, highlightedCommentActorId: URL? = nil) -> NavigationPage {
-        Self.comment(.init(comment), highlightedCommentActorId: highlightedCommentActorId)
-    }
-    
     static func post(_ post: any PostStubProviding, highlightedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
         if let highlightedComment {
-            Self.post(.init(post), highlightedComment: .init(wrappedValue: highlightedComment))
+            return Self.post(.init(post), highlightedComment: .init(wrappedValue: highlightedComment))
         } else {
-            Self.post(.init(post))
+            return Self.post(.init(post))
         }
     }
     
@@ -131,9 +122,6 @@ extension NavigationPage {
             ReportComposerView(target: target.wrappedValue, community: community)
         case let .post(post, highlightedComment, communityContext):
             ExpandedPostView(post: post, highlightedComment: highlightedComment?.wrappedValue)
-                .environment(\.communityContext, communityContext?.wrappedValue)
-        case let .comment(comment, highlightedCommentActorId, communityContext):
-            ExpandedCommentView(comment: comment, showCommentWithActorId: highlightedCommentActorId)
                 .environment(\.communityContext, communityContext?.wrappedValue)
         case let .person(person):
             PersonView(person: person)

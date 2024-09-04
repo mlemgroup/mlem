@@ -7,7 +7,16 @@
 
 import SwiftUI
 
-extension CommentTreeView {
+extension ExpandedPostView {
+    func load(tracker: CommentTreeTracker) async {
+        print("load", highlightedComment)
+        if let highlightedComment {
+            await tracker.load(ensuringPresenceOf: highlightedComment)
+        } else {
+            await tracker.load()
+        }
+    }
+    
     func topCommentRow(of anchors: AnchorsKey.Value, in proxy: GeometryProxy) -> URL? {
         var yBest = CGFloat.infinity
         var ret: URL?
@@ -21,6 +30,8 @@ extension CommentTreeView {
     }
     
     func scrollToNextComment() {
+        guard let tracker else { return }
+        let post = post.wrappedValue
         if let topVisibleItem {
             if topVisibleItem == post.actorId, let first = tracker.comments.first {
                 jumpButtonTarget = first.actorId
@@ -36,6 +47,8 @@ extension CommentTreeView {
     }
     
     func scrollToPreviousComment() {
+        guard let tracker else { return }
+        let post = post.wrappedValue
         if let topVisibleItem, topVisibleItem != post.actorId {
             if let comment = tracker.commentsKeyedByActorId[topVisibleItem] {
                 if var topLevelIndex = tracker.comments.firstIndex(of: comment.topParent) {
