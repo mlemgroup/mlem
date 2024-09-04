@@ -9,7 +9,6 @@ import SwiftUI
 
 extension ExpandedPostView {
     func load(tracker: CommentTreeTracker) async {
-        print("load", highlightedComment)
         if let highlightedComment {
             await tracker.load(ensuringPresenceOf: highlightedComment)
         } else {

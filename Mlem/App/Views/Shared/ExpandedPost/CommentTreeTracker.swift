@@ -72,7 +72,6 @@ class CommentTreeTracker: Hashable {
                 }
                 let idsToSearch = comment.parentCommentIds + [comment.id]
                 if let parentId = idsToSearch.first(where: { id in !newComments.contains(where: { $0.id == id }) }) {
-                    print(idsToSearch, parentId)
                     let extraComments = try await api.getComments(
                         parentId: parentId,
                         sort: sort,
