@@ -70,10 +70,15 @@ class CommentTreeTracker: Hashable {
                     print("CommentTreeTracker: Resolving comment...")
                     comment = try await api.getComment(actorId: ensuredComment.actorId)
                 }
+                // Find the first parent of the ensured comment that isn't in `newComments`.
+                // This will be the starting point for the second page of comments to load.
                 let idsToSearch = comment.parentCommentIds + [comment.id]
-                if let parentId = idsToSearch.first(where: { id in !newComments.contains(where: { $0.id == id }) }) {
+                let firstAbsentParentId = idsToSearch.first(
+                    where: { id in !newComments.contains(where: { $0.id == id }) }
+                )
+                if let firstAbsentParentId {
                     let extraComments = try await api.getComments(
-                        parentId: parentId,
+                        parentId: firstAbsentParentId,
                         sort: sort,
                         page: 1,
                         maxDepth: 8,

@@ -2,12 +2,17 @@
 //  ExpandedPostView+Logic.swift
 //  Mlem
 //
-//  Created by Sam Marfleet on 24/08/2024.
+//  Created by Sjmarf on 24/08/2024.
 //
 
+import MlemMiddleware
 import SwiftUI
 
 extension ExpandedPostView {
+    var showLoadingSymbol: Bool {
+        !(highlightedComment == nil || (post.wrappedValue is any Post2Providing && scrolledToHighlightedComment))
+    }
+    
     func load(tracker: CommentTreeTracker) async {
         if let highlightedComment {
             await tracker.load(ensuringPresenceOf: highlightedComment)

@@ -44,7 +44,7 @@ struct ExpandedPostView: View {
         ContentLoader(model: post) { proxy in
             // Using a `ZStack` here rather than `if`/`else` because there needs to
             // be a delay between the `content()` appearing and calling `scrollTo`
-            ZStack {
+            VStack {
                 if let post = proxy.entity, let tracker {
                     content(post: post, tracker: tracker, isLoading: proxy.isLoading)
                         .externalApiWarning(entity: post, isLoading: proxy.isLoading)
@@ -55,10 +55,9 @@ struct ExpandedPostView: View {
                             }
                         }
                 }
-                let showLoadingSymbol = !(
-                    highlightedComment == nil
-                        || (post.wrappedValue is any Post2Providing && scrolledToHighlightedComment)
-                )
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .overlay {
                 VStack {
                     if showLoadingSymbol {
                         ZStack {
@@ -93,6 +92,7 @@ struct ExpandedPostView: View {
             ScrollViewReader { proxy in
                 FancyScrollView {
                     LazyVStack(alignment: .leading, spacing: 0) {
+//                        Markdown(.init(repeating: "A", count: 10000), configuration: .default)
                         LargePostView(post: post, isExpanded: true)
                             .id(post.actorId)
                             .transition(.opacity)
