@@ -61,15 +61,17 @@ struct CommentView: View {
                         )
                         .layoutPriority(1)
                     }
-                    if collapsed {
-                        Image(systemName: Icons.expandComment)
-                            .frame(height: 10)
-                            .imageScale(.small)
-                    } else {
-                        EllipsisMenu(size: 24) { comment.menuActions(expandedPostTracker: expandedPostTracker) }
-                            .frame(height: 10)
-                            .padding(.leading, 15)
+                    Group {
+                        if collapsed {
+                            Image(systemName: Icons.expandComment)
+                                .frame(height: 10)
+                                .imageScale(.small)
+                        } else {
+                            EllipsisMenu(size: 24) { comment.menuActions(expandedPostTracker: expandedPostTracker) }
+                                .frame(height: 10)
+                        }
                     }
+                    .padding(.leading, Constants.main.standardSpacing)
                 }
                 if !collapsed {
                     CommentBodyView(comment: comment)
