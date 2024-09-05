@@ -92,7 +92,6 @@ struct ExpandedPostView: View {
             ScrollViewReader { proxy in
                 FancyScrollView {
                     LazyVStack(alignment: .leading, spacing: 0) {
-//                        Markdown(.init(repeating: "A", count: 10000), configuration: .default)
                         LargePostView(post: post, isExpanded: true)
                             .id(post.actorId)
                             .transition(.opacity)
