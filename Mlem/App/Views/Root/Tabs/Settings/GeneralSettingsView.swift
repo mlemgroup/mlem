@@ -5,9 +5,12 @@
 //  Created by Sjmarf on 25/08/2024.
 //
 
+import Dependencies
 import SwiftUI
 
 struct GeneralSettingsView: View {
+    @Dependency(\.persistenceRepository) var persistenceRepository
+    
     @Setting(\.blurNsfw) var blurNsfw
     @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
     
@@ -54,6 +57,24 @@ struct GeneralSettingsView: View {
                 }
             } header: {
                 Text("Behavior")
+            }
+            
+            Section {
+                Button("Save Settings") {
+                    Task {
+                        do {
+                            try await persistenceRepository.saveSettings()
+                            ToastModel.main.add(.success("Saved Settings"))
+                        } catch {
+                            handleError(error)
+                        }
+                    }
+                }
+                
+                Button("Restore Settings") {
+                    Settings.main.reinit(from: persistenceRepository.loadSettings())
+                    ToastModel.main.add(.success("Restored Settings"))
+                }
             }
         }
         .navigationTitle("General")

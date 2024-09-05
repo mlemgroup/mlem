@@ -32,6 +32,7 @@ private enum Path {
     static var easterFlags = root.appendingPathComponent("Easter eggs flags", conformingTo: .json)
     static var instanceMetadata = root.appendingPathComponent("Instance Metadata", conformingTo: .json)
     static var layoutWidgets = root.appendingPathComponent("Layout Widgets", conformingTo: .json)
+    static var settings = root.appendingPathComponent("Settings", conformingTo: .json)
 }
 
 private enum DiskAccess {
@@ -131,6 +132,14 @@ class PersistenceRepository {
     
     func saveInteractionBarConfigurations(_ value: InteractionBarConfigurations) async throws {
         try await save(value, to: Path.layoutWidgets)
+    }
+    
+    func saveSettings() async throws {
+        try await save(Settings.main, to: Path.settings)
+    }
+    
+    func loadSettings() -> Settings {
+        load(Settings.self, from: Path.settings) ?? .init()
     }
 
 //

@@ -795,6 +795,12 @@
     "Restore" : {
 
     },
+    "Restore Settings" : {
+
+    },
+    "Restored Settings" : {
+
+    },
     "Right" : {
 
     },
@@ -807,7 +813,13 @@
     "Save Image" : {
 
     },
+    "Save Settings" : {
+
+    },
     "Saved" : {
+
+    },
+    "Saved Settings" : {
 
     },
     "Scaled" : {

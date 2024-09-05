@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum InternetSpeed: String, SettingsOptions {
+enum InternetSpeed: String, Codable {
     case slow, fast
     
     var label: LocalizedStringResource {

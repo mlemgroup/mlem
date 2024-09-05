@@ -9,9 +9,13 @@
 import Dependencies
 import MlemMiddleware
 import SwiftUI
+import SwiftyJSON
 
-class Settings: ObservableObject {
+class Settings: ObservableObject, Codable {
     public static let main: Settings = .init()
+    
+    /// Default initializer. Will take current AppStorage values.
+    init() {}
 
     @AppStorage("post.size") var postSize: PostSize = .compact
     @AppStorage("post.defaultSort") var defaultPostSort: ApiSortType = .hot
@@ -56,4 +60,34 @@ class Settings: ObservableObject {
     
     @AppStorage("comment.jumpButton") var jumpButton: CommentJumpButtonLocation = .bottomTrailing
     @AppStorage("comment.sort") var commentSort: ApiCommentSortType = .top
+    
+    // MARK: - Codable Conformance
+    
+    enum CodingKeys: String, CodingKey {
+        case postSize, defaultFeed
+    }
+
+    required init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.postSize = try values.decode(PostSize.self, forKey: .postSize)
+        self.defaultFeed = try values.decode(FeedSelection.self, forKey: .defaultFeed)
+    }
+    
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(postSize, forKey: .postSize)
+        try container.encode(defaultFeed, forKey: .defaultFeed)
+    }
+    
+    /// Re-initializes all values from the given Settings object. This ensures that AppStorage values get updated canonically.
+    func reinit(from settings: Settings) {
+        // withAnimation prevents "flickering" behavior when loading. I don't know why it flickers or why animation prevents it.
+        // - Eric 2024.09.05
+        withAnimation {
+            postSize = settings.postSize
+            defaultFeed = settings.defaultFeed
+        }
+    }
 }
