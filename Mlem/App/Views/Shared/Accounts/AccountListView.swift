@@ -105,7 +105,11 @@ struct AccountListView: View {
                 Button("Log In") {
                     navigation.openSheet(.login())
                 }
-                // Button("Sign Up") { }
+                Button("Sign Up") {
+                    navigation.openSheet(.instancePicker(callback: { _, navigation in
+                        navigation.push(.signUp)
+                    }))
+                }
                 Button("Add Guest") {
                     navigation.openSheet(.instancePicker(callback: { instance in
                         if let url = URL(string: "https://\(instance.host)") {

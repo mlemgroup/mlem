@@ -37,6 +37,7 @@
 		031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */; };
 		031E2D5B2BEFC9460003BC45 /* ThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */; };
 		031E2D5D2BEFCC630003BC45 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D5C2BEFCC630003BC45 /* SettingsView.swift */; };
+		0320B64F2C8A638A00D38548 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B64E2C8A638A00D38548 /* SignUpView.swift */; };
 		0324FA772C1F0AE100F6247D /* Readout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324FA762C1F0AE100F6247D /* Readout.swift */; };
 		0324FA7B2C1F2CD200F6247D /* InfoStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */; };
 		03267D822BED489C009D6268 /* AvatarBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D812BED489C009D6268 /* AvatarBannerView.swift */; };
@@ -388,6 +389,7 @@
 		031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListView.swift; sourceTree = "<group>"; };
 		031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
 		031E2D5C2BEFCC630003BC45 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		0320B64E2C8A638A00D38548 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		0324FA762C1F0AE100F6247D /* Readout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Readout.swift; sourceTree = "<group>"; };
 		0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoStackView.swift; sourceTree = "<group>"; };
 		03267D812BED489C009D6268 /* AvatarBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarBannerView.swift; sourceTree = "<group>"; };
@@ -873,8 +875,8 @@
 				035BE08A2BDD903100F77D73 /* NavigationModel.swift */,
 				035BE08E2BDE911900F77D73 /* NavigationLayer.swift */,
 				035BE0882BDD901B00F77D73 /* NavigationPage.swift */,
-				03531EF42C2DA610004A3464 /* NavigationSearchType.swift */,
 				035BE0902BDEA01E00F77D73 /* NavigationPage+View.swift */,
+				03531EF42C2DA610004A3464 /* NavigationSearchType.swift */,
 				03134A512BEAD69F002662CC /* SettingsPage.swift */,
 				03CCDA9F2BF2795300C0C851 /* LoginPage.swift */,
 			);
@@ -1529,6 +1531,7 @@
 				039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */,
 				03C93CEF2BEFFB1A00327BFE /* LoginCredentialsView.swift */,
 				03CCDAA32BF2852E00C0C851 /* LoginTotpView.swift */,
+				0320B64E2C8A638A00D38548 /* SignUpView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -2086,6 +2089,7 @@
 				CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */,
 				03049A1E2C6508F400FF6889 /* ApiRegistrationMode+Extensions.swift in Sources */,
 				CDE021AD2BFA43380052FD61 /* FeedPostView.swift in Sources */,
+				0320B64F2C8A638A00D38548 /* SignUpView.swift in Sources */,
 				03ECD7192C81195000D48BF6 /* PostEditorView+LinkView.swift in Sources */,
 				CD17B24B2C19109A001E174B /* SwipeConfiguration.swift in Sources */,
 				03036C832C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift in Sources */,

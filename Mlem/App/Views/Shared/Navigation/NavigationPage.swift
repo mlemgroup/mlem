@@ -11,6 +11,7 @@ import SwiftUI
 enum NavigationPage: Hashable {
     case settings(_ page: SettingsPage = .root)
     case login(_ page: LoginPage = .pickInstance)
+    case signUp
     case feeds(_ selection: FeedSelection? = nil)
     case profile, inbox, search
     case quickSwitcher
@@ -20,9 +21,9 @@ enum NavigationPage: Hashable {
     case instance(_ instance: InstanceHashWrapper)
     case externalApiInfo(api: ApiClient, actorId: URL)
     case imageViewer(_ url: URL)
-    case communityPicker(api: ApiClient?, callback: HashWrapper<(Community2) -> Void>)
-    case personPicker(api: ApiClient?, callback: HashWrapper<(Person2) -> Void>)
-    case instancePicker(callback: HashWrapper<(InstanceSummary) -> Void>)
+    case communityPicker(api: ApiClient?, callback: HashWrapper<(Community2, NavigationLayer) -> Void>)
+    case personPicker(api: ApiClient?, callback: HashWrapper<(Person2, NavigationLayer) -> Void>)
+    case instancePicker(callback: HashWrapper<(InstanceSummary, NavigationLayer) -> Void>)
     case selectText(_ string: String)
     case subscriptionList
     case createComment(_ context: CommentEditorView.Context, expandedPostTracker: ExpandedPostTracker? = nil)
@@ -55,16 +56,53 @@ enum NavigationPage: Hashable {
         Self.instance(.init(wrappedValue: instance))
     }
     
-    static func communityPicker(api: ApiClient? = nil, callback: @escaping (Community2) -> Void) -> NavigationPage {
+    static func communityPicker(
+        api: ApiClient? = nil,
+        callback: @escaping (Community2, NavigationLayer) -> Void
+    ) -> NavigationPage {
         communityPicker(api: api, callback: .init(wrappedValue: callback))
     }
     
-    static func personPicker(api: ApiClient? = nil, callback: @escaping (Person2) -> Void) -> NavigationPage {
+    static func personPicker(
+        api: ApiClient? = nil,
+        callback: @escaping (Person2, NavigationLayer) -> Void
+    ) -> NavigationPage {
         personPicker(api: api, callback: .init(wrappedValue: callback))
     }
     
-    static func instancePicker(callback: @escaping (InstanceSummary) -> Void) -> NavigationPage {
+    static func instancePicker(
+        callback: @escaping (InstanceSummary, NavigationLayer) -> Void
+    ) -> NavigationPage {
         instancePicker(callback: .init(wrappedValue: callback))
+    }
+    
+    static func communityPicker(
+        api: ApiClient? = nil,
+        callback: @escaping (Community2) -> Void
+    ) -> NavigationPage {
+        communityPicker(api: api, callback: .init(wrappedValue: { value, navigation in
+            callback(value)
+            navigation.dismissSheet()
+        }))
+    }
+    
+    static func personPicker(
+        api: ApiClient? = nil,
+        callback: @escaping (Person2) -> Void
+    ) -> NavigationPage {
+        personPicker(api: api, callback: .init(wrappedValue: { value, navigation in
+            callback(value)
+            navigation.dismissSheet()
+        }))
+    }
+    
+    static func instancePicker(
+        callback: @escaping (InstanceSummary) -> Void
+    ) -> NavigationPage {
+        instancePicker(callback: .init(wrappedValue: { value, navigation in
+            callback(value)
+            navigation.dismissSheet()
+        }))
     }
     
     static func createPost(community: any CommunityStubProviding) -> NavigationPage {
@@ -79,94 +117,6 @@ enum NavigationPage: Hashable {
             anyCommunity = nil
         }
         return report(.init(wrappedValue: interactable), community: anyCommunity)
-    }
-}
-
-extension NavigationPage {
-    // swiftlint:disable:next cyclomatic_complexity function_body_length
-    @ViewBuilder func view() -> some View {
-        switch self {
-        case .subscriptionList:
-            SubscriptionListView()
-        case let .selectText(string):
-            SelectTextView(text: string)
-        case let .settings(page):
-            page.view()
-        case let .login(page):
-            page.view()
-        case let .feeds(feedSelection):
-            FeedsView(feedSelection: feedSelection)
-        case let .community(community):
-            CommunityView(community: community)
-        case .profile:
-            ProfileView()
-        case .inbox:
-            InboxView()
-        case .search:
-            SearchView()
-        case let .externalApiInfo(api: api, actorId: actorId):
-            ExternalApiInfoView(api: api, actorId: actorId)
-        case let .imageViewer(url):
-            ImageViewer(url: url)
-        case .quickSwitcher:
-            QuickSwitcherView()
-        case let .report(target, community):
-            ReportComposerView(target: target.wrappedValue, community: community)
-        case let .expandedPost(post, commentActorId, communityContext):
-            ExpandedPostView(post: post, showCommentWithActorId: commentActorId)
-                .environment(\.communityContext, communityContext?.wrappedValue)
-        case let .person(person):
-            PersonView(person: person)
-        case let .createComment(context, expandedPostTracker):
-            if let view = CommentEditorView(context: context, expandedPostTracker: expandedPostTracker) {
-                view
-            } else {
-                Text(verbatim: "Error: No active UserAccount")
-            }
-        case let .editComment(comment, context: context):
-            if let view = CommentEditorView(commentToEdit: comment, context: context) {
-                view
-            } else {
-                Text(verbatim: "Error: No active UserAccount")
-            }
-        case let .createPost(community: community):
-            if let view = PostEditorView(community: community) {
-                view
-            } else {
-                Text(verbatim: "Error: No active UserAccount")
-            }
-        case let .communityPicker(api: api, callback: callback):
-            SearchSheetView(api: api) { (community: Community2, dismiss: DismissAction) in
-                CommunityListRowBody(community)
-                    .onTapGesture {
-                        callback.wrappedValue(community)
-                        dismiss()
-                    }
-                    .padding(.vertical, 6)
-            }
-        case let .personPicker(api: api, callback: callback):
-            SearchSheetView(api: api) { (person: Person2, dismiss: DismissAction) in
-                PersonListRowBody(person)
-                    .onTapGesture {
-                        callback.wrappedValue(person)
-                        dismiss()
-                    }
-                    .padding(.vertical, 6)
-            }
-        case let .instancePicker(callback: callback):
-            SearchSheetView { (instance: InstanceSummary, dismiss: DismissAction) in
-                InstanceListRowBody(instance)
-                    .onTapGesture {
-                        callback.wrappedValue(instance)
-                        dismiss()
-                    }
-                    .padding(.vertical, 6)
-            }
-        case let .instance(instance):
-            InstanceView(instance: instance.wrappedValue)
-        case let .deleteAccount(account):
-            DeleteAccountView(account: account)
-        }
     }
     
     var hasNavigationStack: Bool {

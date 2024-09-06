@@ -204,6 +204,9 @@
     "Choose Account Type" : {
 
     },
+    "Choose wisely - you **cannot** change this later." : {
+
+    },
     "Clear Cache" : {
 
     },
@@ -232,6 +235,9 @@
 
     },
     "Confirm" : {
+
+    },
+    "Confirm Password" : {
 
     },
     "Connecting..." : {
@@ -329,6 +335,9 @@
 
     },
     "Edit" : {
+
+    },
+    "Email" : {
 
     },
     "Email Verification" : {
@@ -499,6 +508,12 @@
 
     },
     "Italic" : {
+
+    },
+    "JohnDoe" : {
+
+    },
+    "johndoe@example.com" : {
 
     },
     "Jump Button" : {
@@ -846,6 +861,9 @@
     "Show Mod Names in Modlog" : {
 
     },
+    "Show NSFW Content" : {
+
+    },
     "Show Post Creator in Feed" : {
 
     },
@@ -859,6 +877,9 @@
 
     },
     "Sign In to Lemmy" : {
+
+    },
+    "Sign Up" : {
 
     },
     "Silver" : {
@@ -978,6 +999,9 @@
 
     },
     "To confirm, please enter your password:" : {
+
+    },
+    "To join this instance, you need to create an application and wait to be accepted." : {
 
     },
     "Too many items!" : {
@@ -1112,6 +1136,9 @@
 
     },
     "You may need to allow Mlem to access your Photo Library in System Settings." : {
+
+    },
+    "Your Answer..." : {
 
     },
     "Your instance and **%@** federate, but the content could not be loaded. It may not have federated yet, or your instance may have purged it." : {
