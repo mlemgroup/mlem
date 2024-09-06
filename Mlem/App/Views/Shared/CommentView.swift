@@ -49,8 +49,7 @@ struct CommentView: View {
                     FullyQualifiedLinkView(
                         entity: comment.creator_,
                         labelStyle: .small,
-                        showAvatar: true,
-                        showInstance: !compactComments
+                        showAvatar: true
                     )
                     Spacer()
                     if compactComments {
