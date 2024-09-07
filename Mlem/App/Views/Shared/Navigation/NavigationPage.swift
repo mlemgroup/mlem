@@ -10,8 +10,8 @@ import SwiftUI
 
 enum NavigationPage: Hashable {
     case settings(_ page: SettingsPage = .root)
-    case login(_ page: LoginPage = .pickInstance)
-    case signUp
+    case logIn(_ page: LoginPage = .pickInstance)
+    case signUp(_ instance: HashWrapper<any InstanceStubProviding>)
     case feeds(_ selection: FeedSelection? = nil)
     case profile, inbox, search
     case quickSwitcher
@@ -54,6 +54,19 @@ enum NavigationPage: Hashable {
 
     static func instance(_ instance: any InstanceStubProviding) -> NavigationPage {
         Self.instance(.init(wrappedValue: instance))
+    }
+    
+    static func instance(hostOf entity: any ActorIdentifiable) -> NavigationPage {
+        var instance: any InstanceStubProviding = InstanceStub(
+            api: AppState.main.firstApi, actorId: entity.actorId.removingPathComponents()
+        )
+        if let entity = entity as? any Person3Providing {
+            print("INS", entity.instance)
+            instance = entity.instance ?? instance
+        } else if let entity = entity as? any Community3Providing {
+            instance = entity.instance ?? instance
+        }
+        return Self.instance(.init(wrappedValue: instance))
     }
     
     static func communityPicker(
@@ -117,6 +130,10 @@ enum NavigationPage: Hashable {
             anyCommunity = nil
         }
         return report(.init(wrappedValue: interactable), community: anyCommunity)
+    }
+    
+    static func signUp(_ instance: any InstanceStubProviding) -> NavigationPage {
+        signUp(.init(wrappedValue: instance))
     }
     
     var hasNavigationStack: Bool {

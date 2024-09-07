@@ -171,7 +171,7 @@ struct LoginInstancePickerView: View {
                 do {
                     let instance = try await apiClient.getMyInstance()
                     Task { @MainActor in
-                        navigation.push(.login(.instance(instance)))
+                        navigation.push(.logIn(.instance(instance)))
                     }
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         connecting = false

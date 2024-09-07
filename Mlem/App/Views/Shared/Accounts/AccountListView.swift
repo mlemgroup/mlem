@@ -103,11 +103,13 @@ struct AccountListView: View {
             }
             .confirmationDialog("Choose Account Type", isPresented: $isShowingAddAccountDialogue) {
                 Button("Log In") {
-                    navigation.openSheet(.login())
+                    navigation.openSheet(.logIn())
                 }
                 Button("Sign Up") {
-                    navigation.openSheet(.instancePicker(callback: { _, navigation in
-                        navigation.push(.signUp)
+                    navigation.openSheet(.instancePicker(callback: { instance, navigation in
+                        if let stub = instance.instanceStub {
+                            navigation.push(.signUp(stub))
+                        }
                     }))
                 }
                 Button("Add Guest") {

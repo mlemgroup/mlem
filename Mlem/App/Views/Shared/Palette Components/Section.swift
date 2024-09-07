@@ -47,12 +47,10 @@ struct Section<Parent: View, Content: View, Footer: View>: View {
     }
 
     var body: some View {
-        SwiftUI.Section {
-            content()
-        } header: {
-            header().foregroundStyle(palette.secondary)
-        } footer: {
-            footer().foregroundStyle(palette.secondary)
-        }
+        SwiftUI.Section(
+            content: content,
+            header: { header().foregroundStyle(palette.secondary) },
+            footer: { footer().foregroundStyle(palette.secondary) }
+        )
     }
 }

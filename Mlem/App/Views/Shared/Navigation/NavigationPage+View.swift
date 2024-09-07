@@ -18,10 +18,10 @@ extension NavigationPage {
             SelectTextView(text: string)
         case let .settings(page):
             page.view()
-        case let .login(page):
+        case let .logIn(page):
             page.view()
-        case .signUp:
-            SignUpView()
+        case let .signUp(instance):
+            SignUpView(instance: instance.wrappedValue)
         case let .feeds(feedSelection):
             FeedsView(feedSelection: feedSelection)
         case let .community(community):

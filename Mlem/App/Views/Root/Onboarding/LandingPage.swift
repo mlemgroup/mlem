@@ -98,7 +98,7 @@ struct LandingPage: View {
 //
 //            let unauthenticatedApiClient = try ApiClient.getApiClient(for: instanceUrl, with: nil)
 //
-//            let response = try await unauthenticatedApiClient.login(
+//            let response = try await unauthenticatedApiClient.logIn(
 //                username: username,
 //                password: password,
 //                totpToken: nil // twoFactorCode.isEmpty ? nil : twoFactorCode
