@@ -65,6 +65,7 @@ extension CommentEditorView {
     }
     
     func send() async {
+        uploadHistory.deleteWhereNotPresent(in: textView.text)
         do {
             if let commentToEdit {
                 try await commentToEdit.edit(content: textView.text, languageId: commentToEdit.languageId)
@@ -81,6 +82,7 @@ extension CommentEditorView {
                 }
                 expandedPostTracker?.insertCreatedComment(result, parent: parent)
             } else {
+                // This should never happen
                 return
             }
             Task { @MainActor in
@@ -96,6 +98,5 @@ extension CommentEditorView {
                 handleError(error)
             }
         }
-        uploadHistory.deleteWhereNotPresent(in: textView.text)
     }
 }

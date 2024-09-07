@@ -37,6 +37,7 @@ struct PostEditorView: View {
     @State var hasNsfwTag: Bool = false
     @State var link: LinkState = .none
     @State var imageManager: ImageUploadManager?
+    @State var uploadHistory: ImageUploadHistoryManager = .init()
     @State var sending: Bool = false
         
     @State var targets: [PostEditorTarget]
@@ -91,13 +92,16 @@ struct PostEditorView: View {
             }
         }
         .onDisappear {
-            Task {
-                print("Deleting image...")
-                do {
-                    try await imageManager?.image?.delete()
-                } catch {
-                    handleError(error)
+            if !navigation.isAlive, !sending {
+                Task {
+                    print("Deleting image...")
+                    do {
+                        try await imageManager?.image?.delete()
+                    } catch {
+                        handleError(error)
+                    }
                 }
+                uploadHistory.deleteAll()
             }
         }
     }
@@ -164,6 +168,7 @@ struct PostEditorView: View {
                     content: {
                         MarkdownEditorToolbarView(
                             textView: contentTextView,
+                            uploadHistory: uploadHistory,
                             imageUploadApi: primaryApi
                         )
                     }
