@@ -255,6 +255,9 @@
     "Copy Name" : {
 
     },
+    "Could not find settings" : {
+
+    },
     "Couldn't read URL" : {
 
     },
@@ -341,6 +344,9 @@
 
     },
     "example.com" : {
+
+    },
+    "Export Settings" : {
 
     },
     "Failed to connect to %@" : {
@@ -474,6 +480,15 @@
     "Images are cached on your device for fast reuse. The maximum cache size is around %@." : {
 
     },
+    "Import Settings" : {
+
+    },
+    "Import/Export Settings" : {
+
+    },
+    "Imported Settings" : {
+
+    },
     "In Default Browser" : {
 
     },
@@ -571,6 +586,12 @@
 
     },
     "Messages" : {
+
+    },
+    "Migrate Settings" : {
+
+    },
+    "Migrate V1 Settings" : {
 
     },
     "Mlem %@" : {
@@ -792,6 +813,9 @@
     "Reset" : {
 
     },
+    "Reset Settings State" : {
+
+    },
     "Restore" : {
 
     },
@@ -814,6 +838,9 @@
 
     },
     "Save Settings" : {
+
+    },
+    "Save V1 Settings" : {
 
     },
     "Saved" : {
@@ -1120,7 +1147,13 @@
     "Yes (%@)" : {
 
     },
+    "You can also do this later in Settings." : {
+
+    },
     "You don't have any accounts." : {
+
+    },
+    "You have settings saved from an older version of Mlem. Would you like to import them?" : {
 
     },
     "You may need to allow Mlem to access your Photo Library in System Settings." : {

@@ -19,6 +19,8 @@ struct Form<Content: View>: View {
             content()
                 .foregroundStyle(palette.primary)
                 .listRowBackground(palette.secondaryGroupedBackground)
+                .tint(palette.accent)
+                .buttonStyle(PaletteButton())
         }
         .scrollContentBackground(.hidden)
         .background(palette.groupedBackground)

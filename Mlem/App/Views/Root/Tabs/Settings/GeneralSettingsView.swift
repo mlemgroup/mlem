@@ -21,6 +21,8 @@ struct GeneralSettingsView: View {
     @Setting(\.defaultFeed) var defaultFeed
     @Setting(\.hapticLevel) var hapticLevel
     
+    @Environment(NavigationLayer.self) var navigation
+    
     var body: some View {
         Form {
             Section {
@@ -59,23 +61,7 @@ struct GeneralSettingsView: View {
                 Text("Behavior")
             }
             
-            Section {
-                Button("Save Settings") {
-                    Task {
-                        do {
-                            try await persistenceRepository.saveSettings()
-                            ToastModel.main.add(.success("Saved Settings"))
-                        } catch {
-                            handleError(error)
-                        }
-                    }
-                }
-                
-                Button("Restore Settings") {
-                    Settings.main.reinit(from: persistenceRepository.loadSettings())
-                    ToastModel.main.add(.success("Restored Settings"))
-                }
-            }
+            NavigationLink("Import/Export Settings", destination: .settings(.importExportSettings))
         }
         .navigationTitle("General")
     }
