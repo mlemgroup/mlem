@@ -98,8 +98,7 @@ struct NavigationLayerView: View {
     @ViewBuilder
     private func rootView() -> some View {
         if hasSheetModifiers {
-            layer.root
-                .viewWithModifiers(layer: layer)
+            layer.root.view().navigationSheetModifiers(for: layer)
         } else {
             layer.root.view()
         }

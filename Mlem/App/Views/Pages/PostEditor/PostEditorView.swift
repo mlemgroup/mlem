@@ -38,9 +38,7 @@ struct PostEditorView: View {
     @State var link: LinkState = .none
     @State var imageManager: ImageUploadManager?
     @State var sending: Bool = false
-    
-    @State var imageUploadPresentationState: ImageUploadPresentationState?
-    
+        
     @State var targets: [PostEditorTarget]
     
     init?(community: AnyCommunity?) {
@@ -92,11 +90,16 @@ struct PostEditorView: View {
                 contentTextView.isEditable = true
             }
         }
-        .imageUploadSheets(
-            imageManager: imageManager,
-            api: primaryApi,
-            presentationState: $imageUploadPresentationState
-        )
+        .onDisappear {
+            Task {
+                print("Deleting image...")
+                do {
+                    try await imageManager?.image?.delete()
+                } catch {
+                    handleError(error)
+                }
+            }
+        }
     }
     
     @ViewBuilder
@@ -116,7 +119,11 @@ struct PostEditorView: View {
                     textView: titleTextView,
                     font: .preferredFont(forTextStyle: .title2),
                     content: {
-                        MarkdownEditorToolbarView(showing: .inlineOnly, textView: titleTextView)
+                        MarkdownEditorToolbarView(
+                            showing: .inlineOnly,
+                            textView: titleTextView,
+                            imageUploadApi: nil
+                        )
                     }
                 )
                 .frame(
@@ -155,7 +162,10 @@ struct PostEditorView: View {
                     prompt: "Optional Description",
                     textView: contentTextView,
                     content: {
-                        MarkdownEditorToolbarView(textView: contentTextView)
+                        MarkdownEditorToolbarView(
+                            textView: contentTextView,
+                            imageUploadApi: primaryApi
+                        )
                     }
                 )
                 .frame(

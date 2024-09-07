@@ -37,6 +37,8 @@ struct CommentEditorView: View {
     
     @State var textIsEmpty: Bool = true
     
+    @State var uploadHistory: ImageUploadHistoryManager = .init()
+    
     @FocusState var focused: Bool
     
     init?(
@@ -108,6 +110,14 @@ struct CommentEditorView: View {
         .onAppear {
             textView.becomeFirstResponder()
         }
+        .onDisappear {
+            // If we didn't have the `isAlive` check here, the images would
+            // get deleted when you click on a link in the reply context
+            if !navigation.isAlive, !sending, !uploadHistory.uploads.isEmpty {
+                print("Deleting uploaded images...")
+                uploadHistory.deleteAll()
+            }
+        }
         .onChange(of: presentationSelection) {
             if presentationSelection == .large {
                 textView.becomeFirstResponder()
@@ -132,7 +142,11 @@ struct CommentEditorView: View {
                     prompt: "Start writing...",
                     textView: textView,
                     content: {
-                        MarkdownEditorToolbarView(textView: textView)
+                        MarkdownEditorToolbarView(
+                            textView: textView,
+                            uploadHistory: uploadHistory,
+                            imageUploadApi: account.api
+                        )
                     }
                 )
                 .frame(

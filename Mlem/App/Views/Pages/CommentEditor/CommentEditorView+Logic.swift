@@ -96,5 +96,6 @@ extension CommentEditorView {
                 handleError(error)
             }
         }
+        uploadHistory.deleteWhereNotPresent(in: textView.text)
     }
 }

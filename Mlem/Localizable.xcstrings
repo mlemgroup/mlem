@@ -204,6 +204,9 @@
     "Choose Account Type" : {
 
     },
+    "Choose File" : {
+
+    },
     "Clear Cache" : {
 
     },
@@ -697,6 +700,9 @@
 
     },
     "Permanently delete %@" : {
+
+    },
+    "Photo Library" : {
 
     },
     "Photos" : {

@@ -54,18 +54,7 @@ struct ContentView: View {
                         try await (appState.firstSession as? UserSession)?.unreadCount?.refresh()
                     }
                 }
-                .sheet(isPresented: Binding(
-                    get: { !(navigationModel.layers.first?.isFullScreenCover ?? true) },
-                    set: { if !$0 { navigationModel.layers.removeAll() } }
-                )) {
-                    NavigationLayerView(layer: navigationModel.layers[0], hasSheetModifiers: true)
-                }
-                .fullScreenCover(isPresented: Binding(
-                    get: { navigationModel.layers.first?.isFullScreenCover ?? false },
-                    set: { if !$0 { navigationModel.layers.removeAll() } }
-                )) {
-                    NavigationLayerView(layer: navigationModel.layers[0], hasSheetModifiers: true)
-                }
+                .navigationSheetModifiers(nextLayer: navigationModel.layers.first, model: navigationModel)
                 .tint(palette.accent)
                 .environment(palette)
                 .environment(tabReselectTracker)

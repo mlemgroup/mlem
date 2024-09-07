@@ -22,7 +22,7 @@ class ImageUploadManager: Hashable {
         }
     }
     
-    var state: UploadState = .idle
+    private(set) var state: UploadState = .idle
     
     init() {}
     
@@ -91,6 +91,10 @@ class ImageUploadManager: Hashable {
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(state)
+    }
+    
+    func clear() {
+        state = .idle
     }
     
     static func == (lhs: ImageUploadManager, rhs: ImageUploadManager) -> Bool {

@@ -11,7 +11,7 @@ extension AppState {
     func transition(_ account: any Account) {
         Task { @MainActor in
             // Close all sheets
-            NavigationModel.main.layers = []
+            NavigationModel.main.clear()
             
             let transition = TransitionView(account: account)
             guard let transitionView = UIHostingController(rootView: transition).view,

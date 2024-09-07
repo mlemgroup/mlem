@@ -53,7 +53,10 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         textView.sizeToFit()
         textView.becomeFirstResponder()
         
-        let contentController = UIHostingController(rootView: content)
+        let contentController = UIHostingController(
+            // If we don't explicitly set the environment here the toolbar can't access it
+            rootView: content.environment(context.environment[NavigationLayer.self])
+        )
         let contentView = contentController.view!
         
         let inputView = UIInputView(frame: CGRect(x: 0, y: 0, width: 0, height: 36), inputViewStyle: .keyboard)
