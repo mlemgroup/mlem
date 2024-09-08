@@ -59,6 +59,7 @@ class Settings: ObservableObject {
     
     @AppStorage("community.showAvatar") var showCommunityAvatar: Bool = true
     
+    @AppStorage("comment.compact") var compactComments: Bool = false
     @AppStorage("comment.jumpButton") var jumpButton: CommentJumpButtonLocation = .bottomTrailing
     @AppStorage("comment.sort") var commentSort: ApiCommentSortType = .top
     
