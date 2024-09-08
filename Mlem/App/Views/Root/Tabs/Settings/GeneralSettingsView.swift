@@ -9,8 +9,6 @@ import Dependencies
 import SwiftUI
 
 struct GeneralSettingsView: View {
-    @Dependency(\.persistenceRepository) var persistenceRepository
-    
     @Setting(\.blurNsfw) var blurNsfw
     @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
     
@@ -20,8 +18,6 @@ struct GeneralSettingsView: View {
     @Setting(\.markReadOnScroll) var markReadOnScroll
     @Setting(\.defaultFeed) var defaultFeed
     @Setting(\.hapticLevel) var hapticLevel
-    
-    @Environment(NavigationLayer.self) var navigation
     
     var body: some View {
         Form {
