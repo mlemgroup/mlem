@@ -19,7 +19,7 @@ extension Comment1Providing {
 
     func swipeActions(
         behavior: SwipeBehavior,
-        expandedPostTracker: ExpandedPostTracker? = nil
+        commentTreeTracker: CommentTreeTracker? = nil
     ) -> SwipeConfiguration {
         .init(
             behavior: behavior,
@@ -32,7 +32,7 @@ extension Comment1Providing {
             trailingActions: {
                 if api.canInteract {
                     saveAction(feedback: [.haptic])
-                    replyAction(expandedPostTracker: expandedPostTracker)
+                    replyAction(commentTreeTracker: commentTreeTracker)
                 }
             }
         )
@@ -41,13 +41,13 @@ extension Comment1Providing {
     @ActionBuilder
     func menuActions(
         feedback: Set<FeedbackType> = [.haptic, .toast],
-        expandedPostTracker: ExpandedPostTracker? = nil
+        commentTreeTracker: CommentTreeTracker? = nil
     ) -> [any Action] {
         ActionGroup(displayMode: .compactSection) {
             upvoteAction(feedback: feedback)
             downvoteAction(feedback: feedback)
             saveAction(feedback: feedback)
-            replyAction(expandedPostTracker: expandedPostTracker)
+            replyAction(commentTreeTracker: commentTreeTracker)
             selectTextAction()
             shareAction()
             
@@ -63,14 +63,14 @@ extension Comment1Providing {
     
     func action(
         type: CommentBarConfiguration.ActionType,
-        expandedPostTracker: ExpandedPostTracker? = nil,
+        commentTreeTracker: CommentTreeTracker? = nil,
         communityContext: (any CommunityStubProviding)? = nil
     ) -> any Action {
         switch type {
         case .upvote: upvoteAction(feedback: [.haptic])
         case .downvote: downvoteAction(feedback: [.haptic])
         case .save: saveAction(feedback: [.haptic])
-        case .reply: replyAction(expandedPostTracker: expandedPostTracker)
+        case .reply: replyAction(commentTreeTracker: commentTreeTracker)
         case .share: shareAction()
         case .selectText: selectTextAction()
         case .report: reportAction(communityContext: communityContext)
@@ -79,13 +79,13 @@ extension Comment1Providing {
     
     func counter(
         type: CommentBarConfiguration.CounterType,
-        expandedPostTracker: ExpandedPostTracker? = nil
+        commentTreeTracker: CommentTreeTracker? = nil
     ) -> Counter {
         switch type {
         case .score: scoreCounter
         case .upvote: upvoteCounter
         case .downvote: downvoteCounter
-        case .reply: replyCounter(expandedPostTracker: expandedPostTracker)
+        case .reply: replyCounter(commentTreeTracker: commentTreeTracker)
         }
     }
     

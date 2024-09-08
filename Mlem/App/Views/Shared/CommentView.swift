@@ -11,7 +11,7 @@ import SwiftUI
 
 struct CommentView: View {
     @Environment(Palette.self) private var palette
-    @Environment(ExpandedPostTracker.self) private var expandedPostTracker: ExpandedPostTracker?
+    @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     
     @Setting(\.compactComments) var compactComments
@@ -21,8 +21,9 @@ struct CommentView: View {
     let comment: any Comment1Providing
     var highlight: Bool = false
     var inFeed: Bool = false // flag to suppress threading/collapsing behavior
+    var depthOffset: Int = 0
     
-    var depth: Int { inFeed ? 0 : comment.depth }
+    var depth: Int { inFeed ? 0 : comment.depth - depthOffset }
     
     var body: some View {
         if inFeed {
@@ -66,7 +67,7 @@ struct CommentView: View {
                                 .frame(height: 10)
                                 .imageScale(.small)
                         } else {
-                            EllipsisMenu(size: 24) { comment.menuActions(expandedPostTracker: expandedPostTracker) }
+                            EllipsisMenu(size: 24) { comment.menuActions(commentTreeTracker: commentTreeTracker) }
                                 .frame(height: 10)
                         }
                     }
@@ -78,7 +79,7 @@ struct CommentView: View {
                         InteractionBarView(
                             comment: comment,
                             configuration: InteractionBarTracker.main.commentInteractionBar,
-                            expandedPostTracker: expandedPostTracker,
+                            commentTreeTracker: commentTreeTracker,
                             communityContext: communityContext
                         )
                         .padding(.top, 2)
@@ -94,9 +95,9 @@ struct CommentView: View {
                 width: depth == 0 ? 0 : 2, edges: [.leading],
                 color: palette.commentIndentColors[depth % palette.commentIndentColors.count]
             )
-            .quickSwipes(comment.swipeActions(behavior: .standard, expandedPostTracker: expandedPostTracker))
+            .quickSwipes(comment.swipeActions(behavior: .standard, commentTreeTracker: commentTreeTracker))
             .contentShape(.rect)
-            .contextMenu { comment.menuActions(expandedPostTracker: expandedPostTracker) }
+            .contextMenu { comment.menuActions(commentTreeTracker: commentTreeTracker) }
             Divider()
         }
         .padding(.leading, CGFloat(depth) * indent)
