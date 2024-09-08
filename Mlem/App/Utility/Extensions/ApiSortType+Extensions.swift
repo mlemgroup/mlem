@@ -34,6 +34,8 @@ extension ApiSortType {
         .topAll
     ]
     
+    static let communityAndPersonSearchCases: [Self] = [.controversial, .new, .old] + topCases
+    
     var minimumVersion: SiteVersion {
         switch self {
         case .controversial, .scaled: .v19_0

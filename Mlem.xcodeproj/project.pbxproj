@@ -37,6 +37,8 @@
 		031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */; };
 		031E2D5B2BEFC9460003BC45 /* ThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */; };
 		031E2D5D2BEFCC630003BC45 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D5C2BEFCC630003BC45 /* SettingsView.swift */; };
+		0320B65F2C8DFA7900D38548 /* SearchView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B65E2C8DFA7900D38548 /* SearchView+Logic.swift */; };
+		0320B6612C8DFCF100D38548 /* SearchView+FiltersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B6602C8DFCF100D38548 /* SearchView+FiltersView.swift */; };
 		0324FA772C1F0AE100F6247D /* Readout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324FA762C1F0AE100F6247D /* Readout.swift */; };
 		0324FA7B2C1F2CD200F6247D /* InfoStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */; };
 		03267D822BED489C009D6268 /* AvatarBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D812BED489C009D6268 /* AvatarBannerView.swift */; };
@@ -388,6 +390,9 @@
 		031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListView.swift; sourceTree = "<group>"; };
 		031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
 		031E2D5C2BEFCC630003BC45 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		0320B65D2C8DC1A700D38548 /* MlemMiddleware */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MlemMiddleware; path = ../MlemMiddleware; sourceTree = "<group>"; };
+		0320B65E2C8DFA7900D38548 /* SearchView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+Logic.swift"; sourceTree = "<group>"; };
+		0320B6602C8DFCF100D38548 /* SearchView+FiltersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+FiltersView.swift"; sourceTree = "<group>"; };
 		0324FA762C1F0AE100F6247D /* Readout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Readout.swift; sourceTree = "<group>"; };
 		0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoStackView.swift; sourceTree = "<group>"; };
 		03267D812BED489C009D6268 /* AvatarBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarBannerView.swift; sourceTree = "<group>"; };
@@ -856,6 +861,8 @@
 				035EDEF72C2DF93C00F51144 /* Results */,
 				035EDEEB2C2DE93E00F51144 /* SearchBar */,
 				0389DDCE2C39CB0E0005B808 /* SearchView.swift */,
+				0320B6602C8DFCF100D38548 /* SearchView+FiltersView.swift */,
+				0320B65E2C8DFA7900D38548 /* SearchView+Logic.swift */,
 				0389DDD22C39E4D40005B808 /* PasteLinkButtonView.swift */,
 				03531EED2C2D9298004A3464 /* SearchSheetView.swift */,
 				03531EF02C2DA298004A3464 /* SearchResultsView.swift */,
@@ -1068,6 +1075,7 @@
 		6363D5B827EE196700E34822 = {
 			isa = PBXGroup;
 			children = (
+				0320B65D2C8DC1A700D38548 /* MlemMiddleware */,
 				6363D5C327EE196700E34822 /* Mlem */,
 				6363D5D927EE196A00E34822 /* MlemTests */,
 				6363D5E327EE196A00E34822 /* MlemUITests */,
@@ -2085,6 +2093,7 @@
 				0389DDD52C39F1290005B808 /* CommunityListRow.swift in Sources */,
 				CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */,
 				03049A1E2C6508F400FF6889 /* ApiRegistrationMode+Extensions.swift in Sources */,
+				0320B65F2C8DFA7900D38548 /* SearchView+Logic.swift in Sources */,
 				CDE021AD2BFA43380052FD61 /* FeedPostView.swift in Sources */,
 				03ECD7192C81195000D48BF6 /* PostEditorView+LinkView.swift in Sources */,
 				CD17B24B2C19109A001E174B /* SwipeConfiguration.swift in Sources */,
@@ -2101,6 +2110,7 @@
 				03B431B22C44409D001A1EB5 /* CommentEditorView.swift in Sources */,
 				0397D4802C693A88002C6CDC /* [BlockNode]+Extensions.swift in Sources */,
 				03B431B22C44409D001A1EB5 /* CommentEditorView.swift in Sources */,
+				0320B6612C8DFCF100D38548 /* SearchView+FiltersView.swift in Sources */,
 				CD4D58DA2B86E11D00B82964 /* Mockable.swift in Sources */,
 				034B94892C09360A00039AF4 /* Int+Extensions.swift in Sources */,
 				039D75642C4EEE69004F24C2 /* DeletableProviding+Extensions.swift in Sources */,

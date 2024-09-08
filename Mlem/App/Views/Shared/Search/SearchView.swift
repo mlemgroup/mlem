@@ -34,15 +34,16 @@ struct SearchView: View {
     @State var isSearching: Bool = false
     @State var query: String = ""
     @State var hasAppeared: Bool = false
-    
-    // Everything is treated as `home` right now, this `page` logic will be used later
     @State var page: Page = .home
+    
+    @State var filtersActive: Bool = false
+    @Bindable var communityFilters: CommunityFilters = .init(sort: .topAll)
 
     @State var selectedTab: Tab = .communities
     @State var resultsScrollToTopTrigger: Bool = false
     
-    @State var communities: [Community2] = []
-    @State var people: [Person2] = []
+    @State var communityLoader: CommunityFeedLoader = .init(api: AppState.main.firstApi)
+    @State var personLoader: PersonFeedLoader = .init(api: AppState.main.firstApi)
     @State var instances: [InstanceSummary] = []
     
     var body: some View {
@@ -53,14 +54,7 @@ struct SearchView: View {
             .navigationSearchBar {
                 SearchBar("Communities, Users & Instances", text: $query, isEditing: $isSearching)
                     .showsCancelButton(page != .home)
-                    .onCancel {
-                        page = .home
-                        if !query.isEmpty {
-                            query = ""
-                            Task { await refresh() }
-                        }
-                        resultsScrollToTopTrigger.toggle()
-                    }
+                    .onCancel(perform: returnToHome)
                     .focused($searchBarFocused)
             }
             .navigationSearchBarHiddenWhenScrolling(false)
@@ -82,33 +76,23 @@ struct SearchView: View {
             .task(id: query, priority: .userInitiated) { @MainActor in
                 guard !hasAppeared || searchBarFocused else { return }
                 hasAppeared = true
-                await refresh()
+                await refresh(clearBeforeRefresh: false)
             }
             .onChange(of: appState.firstApi.actorId) {
                 Task {
-                    await refresh()
+                    communityLoader.api = appState.firstApi
+                    personLoader.api = appState.firstApi
+                    await refresh(clearBeforeRefresh: false)
                 }
             }
             .onChange(of: selectedTab) {
                 Task {
-                    do {
-                        switch selectedTab {
-                        case .communities:
-                            if communities.isEmpty {
-                                try await setCommunities(appState.firstApi.searchCommunities(query: query, page: 1, limit: 20))
-                            }
-                        case .users:
-                            if people.isEmpty {
-                                try await setPeople(appState.firstApi.searchPeople(query: query, page: 1, limit: 20))
-                            }
-                        case .instances:
-                            if instances.isEmpty {
-                                try await setInstances(MlemStats.main.searchInstances(query: query))
-                            }
-                        }
-                    } catch {
-                        handleError(error)
-                    }
+                    await refresh(clearBeforeRefresh: false, onlyRefreshIfEmpty: true)
+                }
+            }
+            .onChange(of: filterRefreshHashValue) {
+                Task {
+                    await refresh(clearBeforeRefresh: true)
                 }
             }
     }
@@ -116,65 +100,80 @@ struct SearchView: View {
     @ViewBuilder
     var content: some View {
         FancyScrollView(scrollToTopTrigger: $resultsScrollToTopTrigger) { searchBarFocused = true } content: {
-            BubblePicker(
-                Tab.allCases, selected: $selectedTab,
-                withDividers: [.bottom],
-                label: { $0.label }
-            )
+            VStack(alignment: .leading, spacing: 0) {
+                tabView
+                Divider()
+                if filtersActive, page != .home {
+                    filtersView
+                    Divider()
+                }
+            }
             .padding(.top, -8)
             LazyVStack(spacing: 0) {
                 switch selectedTab {
                 case .communities:
-                    SearchResultsView(results: communities) { community in
+                    SearchResultsView(results: communityLoader.items) { community in
                         CommunityListRow(community, readout: .subscribers)
+                            .onAppear {
+                                do {
+                                    try communityLoader.loadIfThreshold(community)
+                                } catch {
+                                    handleError(error)
+                                }
+                            }
                     }
+                    EndOfFeedView(loadingState: communityLoader.loadingState, viewType: .hobbit)
                 case .users:
-                    SearchResultsView(results: people) { person in
+                    SearchResultsView(results: personLoader.items) { person in
                         PersonListRow(person, complications: [.instance, .date], readout: .postsAndComments)
+                            .onAppear {
+                                do {
+                                    try personLoader.loadIfThreshold(person)
+                                } catch {
+                                    handleError(error)
+                                }
+                            }
                     }
+                    EndOfFeedView(loadingState: personLoader.loadingState, viewType: .hobbit)
                 case .instances:
                     SearchResultsView(results: instances) { instance in
                         InstanceListRow(instance, readout: .users)
                     }
+                    EndOfFeedView(loadingState: .done, viewType: .hobbit)
                 }
             }
         }
+        .animation(.easeOut(duration: 0.1), value: filtersActive)
     }
     
-    func refresh() async {
-        do {
-            if !query.isEmpty {
-                try await Task.sleep(for: .seconds(0.2))
+    @ViewBuilder
+    var tabView: some View {
+        HStack {
+            BubblePicker(
+                Tab.allCases, selected: $selectedTab,
+                label: { $0.label }
+            )
+            .overlay(alignment: .trailing) {
+                LinearGradient(
+                    colors: [Color.clear, palette.background],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+                .frame(width: 10)
             }
-            // TODO: Xcode 16 refactor this
-            await setCommunities(.init())
-            await setPeople(.init())
-            await setInstances(.init())
-            switch selectedTab {
-            case .communities:
-                try await setCommunities(appState.firstApi.searchCommunities(query: query, page: 1, limit: 20))
-            case .users:
-                try await setPeople(appState.firstApi.searchPeople(query: query, page: 1, limit: 20))
-            case .instances:
-                try await setInstances(MlemStats.main.searchInstances(query: query))
+            if page != .home {
+                Button {
+                    HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+                    filtersActive.toggle()
+                } label: {
+                    Label("Filters", systemImage: filtersActive ? Icons.filterFill : Icons.filter)
+                        .transaction { $0.animation = nil }
+                }
+                .labelStyle(.iconOnly)
+                .padding(.trailing)
+                .imageScale(.large)
             }
-        } catch {
-            handleError(error)
         }
-    }
-    
-    @MainActor
-    func setCommunities(_ newValue: [Community2]) {
-        communities = newValue
-    }
-    
-    @MainActor
-    func setPeople(_ newValue: [Person2]) {
-        people = newValue
-    }
-    
-    @MainActor
-    func setInstances(_ newValue: [InstanceSummary]) {
-        instances = newValue
+        .animation(.easeOut(duration: 0.1), value: page)
     }
 }

@@ -10,17 +10,17 @@ import SwiftUI
 
 struct FeedSortPicker: View {
     enum Filter {
-        case all, alwaysAvailable, availableOnInstance
+        case alwaysAvailable, availableOnInstance, communityAndPersonSearchable
     }
     
     @Environment(AppState.self) var appState
     
-    let filter: Filter
+    let filters: Set<Filter>
     @Binding var sort: ApiSortType
     
-    init(sort: Binding<ApiSortType>, showing filter: Filter = .all) {
+    init(sort: Binding<ApiSortType>, filters: Set<Filter> = []) {
         self._sort = sort
-        self.filter = filter
+        self.filters = filters
     }
     
     init(feedLoader: CorePostFeedLoader) {
@@ -32,7 +32,7 @@ struct FeedSortPicker: View {
                     handleError(error)
                 }
             }
-        }), showing: .availableOnInstance)
+        }), filters: [.availableOnInstance])
     }
     
     var body: some View {
@@ -45,17 +45,20 @@ struct FeedSortPicker: View {
                 .pickerStyle(.menu)
             }
         }
-        .disabled(filter == .availableOnInstance && appState.firstApi.fetchedVersion == nil)
+        .disabled(filters.contains(.availableOnInstance) && appState.firstApi.fetchedVersion == nil)
     }
     
     @ViewBuilder
     func itemLabels(_ collection: [ApiSortType]) -> some View {
-        ForEach(collection.filter {
-            switch filter {
-            case .all: true
-            case .alwaysAvailable: $0.minimumVersion == .zero
-            case .availableOnInstance:
-                (appState.firstApi.fetchedVersion ?? .infinity) >= $0.minimumVersion
+        ForEach(collection.filter { sortType in
+            filters.allSatisfy { filter in
+                switch filter {
+                case .alwaysAvailable: sortType.minimumVersion == .zero
+                case .availableOnInstance:
+                    (appState.firstApi.fetchedVersion ?? .infinity) >= sortType.minimumVersion
+                case .communityAndPersonSearchable:
+                    ApiSortType.communityAndPersonSearchCases.contains(sortType)
+                }
             }
         }, id: \.self) { item in
             Label(String(localized: item.label), systemImage: item.systemImage)
