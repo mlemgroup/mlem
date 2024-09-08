@@ -84,37 +84,38 @@ class Settings: ObservableObject {
         }
     }
     
-    /// Re-initializes all values from the given Settings object. This ensures that AppStorage values get updated canonically.
+    /// Re-initializes all values from the given CodableSettings object. Any null keys in CodableSettings will be ignored.
     @MainActor
     func reinit(from settings: CodableSettings) {
-        postSize = settings.postSize
-        defaultPostSort = settings.defaultPostSort
-        fallbackPostSort = settings.fallbackPostSort
-        thumbnailLocation = settings.thumbnailLocation
-        showPostCreator = settings.showPostCreator
-        quickSwipesEnabled = settings.quickSwipesEnabled
-        hapticLevel = settings.hapticLevel
-        upvoteOnSave = settings.upvoteOnSave
-        internetSpeed = settings.internetSpeed
-        keepPlaceOnAccountSwitch = settings.keepPlaceOnAccountSwitch
-        accountSort = settings.accountSort
-        groupAccountSort = settings.groupAccountSort
-        interfaceStyle = settings.interfaceStyle
-        colorPalette = settings.colorPalette
-        developerMode = settings.developerMode
-        blurNsfw = settings.blurNsfw
-        showNsfwCommunityWarning = settings.showNsfwCommunityWarning
-        openLinksInBrowser = settings.openLinksInBrowser
-        openLinksInReaderMode = settings.openLinksInReaderMode
-        markReadOnScroll = settings.markReadOnScroll
-        showReadInFeed = settings.showReadInFeed
-        defaultFeed = settings.defaultFeed
-        showReadInInbox = settings.showReadInInbox
-        subscriptionInstanceLocation = settings.subscriptionInstanceLocation
-        subscriptionSort = settings.subscriptionSort
-        showPersonAvatar = settings.showPersonAvatar
-        showCommunityAvatar = settings.showCommunityAvatar
-        jumpButton = settings.jumpButton
-        commentSort = settings.commentSort
+        postSize = settings.postSize ?? postSize
+        defaultPostSort = settings.defaultPostSort ?? defaultPostSort
+        fallbackPostSort = settings.fallbackPostSort ?? fallbackPostSort
+        thumbnailLocation = settings.thumbnailLocation ?? thumbnailLocation
+        showPostCreator = settings.showPostCreator ?? showPostCreator
+        quickSwipesEnabled = settings.quickSwipesEnabled ?? quickSwipesEnabled
+        hapticLevel = settings.hapticLevel ?? hapticLevel
+        upvoteOnSave = settings.upvoteOnSave ?? upvoteOnSave
+        internetSpeed = settings.internetSpeed ?? internetSpeed
+        keepPlaceOnAccountSwitch = settings.keepPlaceOnAccountSwitch ?? keepPlaceOnAccountSwitch
+        accountSort = settings.accountSort ?? accountSort
+        groupAccountSort = settings.groupAccountSort ?? groupAccountSort
+        interfaceStyle = settings.interfaceStyle ?? interfaceStyle
+        colorPalette = settings.colorPalette ?? colorPalette
+        developerMode = settings.developerMode ?? developerMode
+        blurNsfw = settings.blurNsfw ?? blurNsfw
+        showNsfwCommunityWarning = settings.showNsfwCommunityWarning ?? showNsfwCommunityWarning
+        openLinksInBrowser = settings.openLinksInBrowser ?? openLinksInBrowser
+        openLinksInReaderMode = settings.openLinksInReaderMode ?? openLinksInReaderMode
+        markReadOnScroll = settings.markReadOnScroll ?? markReadOnScroll
+        showReadInFeed = settings.showReadInFeed ?? showReadInFeed
+        defaultFeed = settings.defaultFeed ?? defaultFeed
+        showReadInInbox = settings.showReadInInbox ?? showReadInInbox
+        subscriptionInstanceLocation = settings.subscriptionInstanceLocation ?? subscriptionInstanceLocation
+        subscriptionSort = settings.subscriptionSort ?? subscriptionSort
+        showPersonAvatar = settings.showPersonAvatar ?? showPersonAvatar
+        showCommunityAvatar = settings.showCommunityAvatar ?? showCommunityAvatar
+        compactComments = settings.compactComments ?? compactComments
+        jumpButton = settings.jumpButton ?? jumpButton
+        commentSort = settings.commentSort ?? commentSort
     }
 }
