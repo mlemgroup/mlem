@@ -46,17 +46,6 @@ struct ImportExportSettingsPage: View {
     
     var content: some View {
         Form {
-            if v1SettingsExist {
-                Section("Settings Migration") {
-                    Button("Migrate V1 Settings") {
-                        Task { @MainActor in
-                            Settings.main.restore(from: .v_1)
-                            v1SettingsExist = false
-                        }
-                    }
-                }
-            }
-            
             Section {
                 Button("Save Settings") {
                     Task {
@@ -98,7 +87,7 @@ struct ImportExportSettingsPage: View {
             }
             
             #if DEBUG
-                // clears system settings and
+                // clears saved system settings and resets the firstAppearance flag
                 Button("Reset Settings State") {
                     do {
                         try persistenceRepository.deleteAllSystemSettings()
