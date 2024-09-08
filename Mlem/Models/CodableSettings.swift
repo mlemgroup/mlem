@@ -6,14 +6,13 @@
 //
 
 import Foundation
-import MlemMiddleware
 import UIKit
 
 struct CodableSettings: Codable {
     var postSize: PostSize
     var defaultPostSort: PostSortType
     var fallbackPostSort: PostSortType
-    var thumbnailLocation: String
+    var thumbnailLocation: String
     var showPostCreator: Bool
     
     var quickSwipesEnabled: Bool
@@ -60,15 +59,15 @@ struct CodableSettings: Codable {
         @AppStorage("fallbackDefaultPostSorting") var fallbackPostSort: PostSortType = .hot
         self.fallbackPostSort = settings.fallbackPostSort
         
-        @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = true
-        @AppStorage("thumbnailsOnRight") var thumbnailsOnRight: Bool = false
+        @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails = true
+        @AppStorage("thumbnailsOnRight") var thumbnailsOnRight = false
         if shouldShowPostThumbnails {
             self.thumbnailLocation = thumbnailsOnRight ? "right" : "left"
         } else {
             self.thumbnailLocation = "none"
         }
         
-        @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
+        @AppStorage("shouldShowPostCreator") var shouldShowPostCreator = true
         self.showPostCreator = shouldShowPostCreator
         
         self.quickSwipesEnabled = true
@@ -87,7 +86,7 @@ struct CodableSettings: Codable {
         @AppStorage("accountSort") var accountSort: AccountSortMode = .custom
         self.accountSort = accountSort
         
-        @AppStorage("groupAccountSort") var groupAccountSort: Bool = false
+        @AppStorage("groupAccountSort") var groupAccountSort = false
         self.groupAccountSort = groupAccountSort
         
         @AppStorage("lightOrDarkMode") var interfaceStyle: UIUserInterfaceStyle = .unspecified
@@ -96,7 +95,7 @@ struct CodableSettings: Codable {
         @AppStorage("developerMode") var developerMode = false
         self.developerMode = developerMode
         
-        @AppStorage("shouldBlurNsfw") var blurNsfw: Bool = true
+        @AppStorage("shouldBlurNsfw") var blurNsfw = true
         self.blurNsfw = blurNsfw ? "always" : "never"
         
         @AppStorage("openLinksInBrowser") var openLinksInBrowser = false
@@ -105,28 +104,28 @@ struct CodableSettings: Codable {
         @AppStorage("openLinksInReaderMode") var openLinksInReaderMode = false
         self.openLinksInReaderMode = openLinksInReaderMode
         
-        @AppStorage("markReadOnScroll") var markReadOnScroll: Bool = false
+        @AppStorage("markReadOnScroll") var markReadOnScroll = false
         self.markReadOnScroll = markReadOnScroll
         
-        @AppStorage("showReadPosts") var showReadInFeed: Bool = true
+        @AppStorage("showReadPosts") var showReadInFeed = true
         self.showReadInFeed = showReadInFeed
         
         @AppStorage("defaultFeed") var defaultFeed: DefaultFeedType = .subscribed
         self.defaultFeed = defaultFeed.rawValue // identical cases
         
-        @AppStorage("shouldFilterRead") var shouldFilterRead: Bool = false
+        @AppStorage("shouldFilterRead") var shouldFilterRead = false
         self.showReadInInbox = !shouldFilterRead
         
-        @AppStorage("shouldShowUserAvatars") var showPersonAvatar: Bool = true
+        @AppStorage("shouldShowUserAvatars") var showPersonAvatar = true
         self.showPersonAvatar = showPersonAvatar
         
-        @AppStorage("shouldShowCommunityIcons") var showCommunityAvatar: Bool = true
+        @AppStorage("shouldShowCommunityIcons") var showCommunityAvatar = true
         self.showCommunityAvatar = showCommunityAvatar
         
-        @AppStorage("compactComments") var compactComments: Bool = false
+        @AppStorage("compactComments") var compactComments = false
         self.compactComments = settings.compactComments
         
-        @AppStorage("showCommentJumpButton") var showCommentJumpButton: Bool = true
+        @AppStorage("showCommentJumpButton") var showCommentJumpButton = true
         @AppStorage("commentJumpButtonSide") var commentJumpButtonSide: JumpButtonLocation = .bottomTrailing
         if showCommentJumpButton {
             self.jumpButton = commentJumpButtonSide.rawValue
