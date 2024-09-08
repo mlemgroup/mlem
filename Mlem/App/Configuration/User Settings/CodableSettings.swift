@@ -9,7 +9,7 @@ import Foundation
 import MlemMiddleware
 import UIKit
 
-/// Mirror of Settings but without any AppStorage complexity and fully optionalized. This is not pretty but prevents
+/// Mirror of Settings but without any AppStorage complexity and fully optionalized.
 struct CodableSettings: Codable {
     var postSize: PostSize
     var defaultPostSort: ApiSortType
