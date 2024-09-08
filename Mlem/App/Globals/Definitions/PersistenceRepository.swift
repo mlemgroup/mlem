@@ -156,13 +156,13 @@ class PersistenceRepository {
     }
     
     /// Saves the given user settings
-    func saveUserSettings(_ settings: Settings, name: String) async throws {
+    func saveUserSettings(_ settings: CodableSettings, name: String) async throws {
         try await save(settings, to: Path.userSettings.appendingPathComponent(name, conformingTo: .json))
     }
     
     /// Loads given user settings, if present
-    func loadUserSettings(name: String) -> Settings? {
-        load(Settings.self, from: Path.userSettings.appendingPathComponent(name, conformingTo: .json))
+    func loadUserSettings(name: String) -> CodableSettings? {
+        load(CodableSettings.self, from: Path.userSettings.appendingPathComponent(name, conformingTo: .json))
     }
     
     /// Returns true if the given system settings exist, false otherwise
@@ -173,13 +173,13 @@ class PersistenceRepository {
     }
     
     /// Saves the given system settings
-    func saveSystemSettings(_ settings: Settings, setting: SystemSetting) async throws {
+    func saveSystemSettings(_ settings: CodableSettings, setting: SystemSetting) async throws {
         try await save(settings, to: Path.systemSettings.appendingPathComponent(setting.path, conformingTo: .json))
     }
     
     /// Loads given system settings, if present
-    func loadSystemSettings(_ setting: SystemSetting) -> Settings? {
-        load(Settings.self, from: Path.systemSettings.appendingPathComponent(setting.path, conformingTo: .json))
+    func loadSystemSettings(_ setting: SystemSetting) -> CodableSettings? {
+        load(CodableSettings.self, from: Path.systemSettings.appendingPathComponent(setting.path, conformingTo: .json))
     }
     
     // DEV ONLY

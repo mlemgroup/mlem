@@ -35,7 +35,6 @@ struct ContentView: View {
 
     @State var avatarImage: UIImage?
     @State var selectedAvatarImage: UIImage?
-    @State var migratingSettings: Bool = false
   
     init() {
         HapticManager.main.preheat()
@@ -83,16 +82,10 @@ struct ContentView: View {
                         handleError(error)
                     }
                 }
-                .fullScreenCover(isPresented: $migratingSettings) {
-                    settingsMigrationView
-                        .presentationBackground(.thinMaterial)
-                }
                 .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        if firstAppearance, persistenceRepository.systemSettingsExists(.v_1) {
-                            // firstAppearance = false
-                            migratingSettings = true
-                        }
+                    if firstAppearance, persistenceRepository.systemSettingsExists(.v_1) {
+                        firstAppearance = false
+                        Settings.main.restore(from: .v_1)
                     }
                 }
                 .onChange(of: interfaceStyle, initial: true) {
@@ -188,43 +181,5 @@ struct ContentView: View {
                 location: .top
             )
         }
-    }
-    
-    @ViewBuilder
-    var settingsMigrationView: some View {
-        Group {
-            VStack(spacing: Constants.main.standardSpacing) {
-                Text("Migrate Settings")
-                    .fontWeight(.bold)
-                    .font(.title)
-                
-                Text("You have settings saved from an older version of Mlem. Would you like to import them?")
-                
-                Text("You can also do this later in Settings.")
-                
-                HStack {
-                    Button {
-                        migratingSettings = false
-                    } label: {
-                        Text("No").frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.bordered)
-                    
-                    Button {
-                        Settings.main.restore(from: .v_1)
-                    } label: {
-                        Text("Yes").frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.borderedProminent)
-                }
-            }
-            .multilineTextAlignment(.center)
-        }
-        .padding(Constants.main.doubleSpacing)
-        .background {
-            RoundedRectangle(cornerRadius: Constants.main.largeItemCornerRadius)
-                .fill(palette.background.opacity(0.8))
-        }
-        .padding(Constants.main.doubleSpacing)
     }
 }

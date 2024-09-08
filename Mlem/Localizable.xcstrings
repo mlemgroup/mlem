@@ -588,9 +588,6 @@
     "Messages" : {
 
     },
-    "Migrate Settings" : {
-
-    },
     "Migrate V1 Settings" : {
 
     },
@@ -1147,13 +1144,7 @@
     "Yes (%@)" : {
 
     },
-    "You can also do this later in Settings." : {
-
-    },
     "You don't have any accounts." : {
-
-    },
-    "You have settings saved from an older version of Mlem. Would you like to import them?" : {
 
     },
     "You may need to allow Mlem to access your Photo Library in System Settings." : {

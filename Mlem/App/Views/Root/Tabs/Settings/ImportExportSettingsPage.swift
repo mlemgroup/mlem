@@ -35,7 +35,7 @@ struct ImportExportSettingsPage: View {
             ) { result in
                 do {
                     let fileData = try Data(contentsOf: result.get(), options: .mappedIfSafe)
-                    let importedSettings = try JSONDecoder().decode(Settings.self, from: fileData)
+                    let importedSettings = try JSONDecoder().decode(CodableSettings.self, from: fileData)
                     Settings.main.reinit(from: importedSettings)
                     ToastModel.main.add(.success("Imported Settings"))
                 } catch {
@@ -85,7 +85,7 @@ struct ImportExportSettingsPage: View {
             Section {
                 Button("Export Settings") {
                     Task {
-                        let data = try JSONEncoder().encode(Settings.main)
+                        let data = try JSONEncoder().encode(Settings.main.codable)
                         let fileUrl = FileManager.default.temporaryDirectory.appending(path: "settings.json")
                         try data.write(to: fileUrl, options: .atomic)
                         navigation.shareUrl = fileUrl
