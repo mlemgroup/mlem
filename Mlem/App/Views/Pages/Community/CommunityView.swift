@@ -38,6 +38,8 @@ struct CommunityView: View {
     @State var postFeedLoader: CommunityPostFeedLoader?
     @State var warningPresented: Bool
     
+    @State var isAtTop: Bool = true
+    
     init(community: AnyCommunity) {
         @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
         self.community = community
@@ -112,6 +114,8 @@ struct CommunityView: View {
         }
         .background(postSize.tiled ? palette.groupedBackground : palette.background)
         .outdatedFeedPopup(feedLoader: postFeedLoader, showPopup: selectedTab == .posts)
+        .navigationTitle(isAtTop ? "" : community.name)
+        .isAtTopSubscriber(isAtTop: $isAtTop)
         .toolbar {
             ToolbarItemGroup(placement: .secondaryAction) {
                 MenuButtons { community.menuActions(navigation: navigation) }
