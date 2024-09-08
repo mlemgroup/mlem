@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 import UIKit
 
 struct CodableSettings: Codable {
@@ -49,15 +50,16 @@ struct CodableSettings: Codable {
     // identical cases minus controversial, should not cause forward compatibility deserialization issues
     var commentSort: CommentSortType
     
+    // swiftlint:disable:next function_body_length
     init() {
         @AppStorage("postSize") var postSize: PostSize = .large
         self.postSize = postSize
         
-        @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
-        self.defaultPostSort = settings.defaultPostSort
+        @AppStorage("defaultPostSorting") var defaultPostSort: PostSortType = .hot
+        self.defaultPostSort = defaultPostSort
         
         @AppStorage("fallbackDefaultPostSorting") var fallbackPostSort: PostSortType = .hot
-        self.fallbackPostSort = settings.fallbackPostSort
+        self.fallbackPostSort = fallbackPostSort
         
         @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails = true
         @AppStorage("thumbnailsOnRight") var thumbnailsOnRight = false
@@ -73,7 +75,7 @@ struct CodableSettings: Codable {
         self.quickSwipesEnabled = true
         
         @AppStorage("hapticLevel") var hapticLevel: HapticPriority = .low
-        self.hapticLevel = settings.hapticLevel
+        self.hapticLevel = hapticLevel
         
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
         self.upvoteOnSave = upvoteOnSave
@@ -123,7 +125,7 @@ struct CodableSettings: Codable {
         self.showCommunityAvatar = showCommunityAvatar
         
         @AppStorage("compactComments") var compactComments = false
-        self.compactComments = settings.compactComments
+        self.compactComments = compactComments
         
         @AppStorage("showCommentJumpButton") var showCommentJumpButton = true
         @AppStorage("commentJumpButtonSide") var commentJumpButtonSide: JumpButtonLocation = .bottomTrailing

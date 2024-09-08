@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum InternetSpeed: String, SettingsOptions {
+enum InternetSpeed: String, SettingsOptions, Codable {
     case debug, slow, fast
     
     var label: String { rawValue.capitalized }
