@@ -14,6 +14,8 @@ struct CommentView: View {
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     
+    @Setting(\.compactComments) var compactComments
+    
     private let indent: CGFloat = 10
     
     let comment: any Comment1Providing
@@ -44,27 +46,44 @@ struct CommentView: View {
         
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-                HStack {
-                    FullyQualifiedLinkView(entity: comment.creator_, labelStyle: .small, showAvatar: true)
+                HStack(spacing: 0) {
+                    FullyQualifiedLinkView(
+                        entity: comment.creator_,
+                        labelStyle: .small,
+                        showAvatar: true
+                    )
                     Spacer()
-                    if collapsed {
-                        Image(systemName: Icons.expandComment)
-                            .frame(height: 10)
-                            .imageScale(.small)
-                    } else {
-                        EllipsisMenu(size: 24) { comment.menuActions(commentTreeTracker: commentTreeTracker) }
-                            .frame(height: 10)
+                    if compactComments {
+                        InfoStackView(
+                            comment: comment,
+                            readouts: InteractionBarTracker.main.commentInteractionBar.readouts,
+                            showColor: true
+                        )
+                        .layoutPriority(1)
                     }
+                    Group {
+                        if collapsed {
+                            Image(systemName: Icons.expandComment)
+                                .frame(height: 10)
+                                .imageScale(.small)
+                        } else {
+                            EllipsisMenu(size: 24) { comment.menuActions(commentTreeTracker: commentTreeTracker) }
+                                .frame(height: 10)
+                        }
+                    }
+                    .padding(.leading, Constants.main.standardSpacing)
                 }
                 if !collapsed {
                     CommentBodyView(comment: comment)
-                    InteractionBarView(
-                        comment: comment,
-                        configuration: InteractionBarTracker.main.commentInteractionBar,
-                        commentTreeTracker: commentTreeTracker,
-                        communityContext: communityContext
-                    )
-                    .padding(.top, 2)
+                    if !compactComments {
+                        InteractionBarView(
+                            comment: comment,
+                            configuration: InteractionBarTracker.main.commentInteractionBar,
+                            commentTreeTracker: commentTreeTracker,
+                            communityContext: communityContext
+                        )
+                        .padding(.top, 2)
+                    }
                 }
             }
             .padding(.vertical, 2)

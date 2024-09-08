@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct CommentSettingsView: View {
+    @Setting(\.compactComments) var compactComments
+    
     var body: some View {
         Form {
+            Section {
+                Toggle("Compact Comments", isOn: $compactComments)
+            }
             Section {
                 NavigationLink(
                     "Customize Interaction Bar",

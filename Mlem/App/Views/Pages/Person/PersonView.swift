@@ -246,12 +246,16 @@ struct PersonView: View {
                 .foregroundStyle(palette.accent)
                 .padding(.vertical, 10)
                 .frame(maxWidth: .infinity)
-                .background(
-                    palette.accent.opacity(0.2),
-                    in: .rect(
-                        cornerRadius: postSize.tiled ? Constants.main.largeItemCornerRadius : Constants.main.mediumItemCornerRadius
-                    )
-                )
+                .background {
+                    Group {
+                        if postSize.tiled {
+                            Capsule()
+                        } else {
+                            RoundedRectangle(cornerRadius: Constants.main.mediumItemCornerRadius)
+                        }
+                    }
+                    .foregroundStyle(palette.accent.opacity(0.2))
+                }
         }
     }
 }
