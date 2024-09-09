@@ -12,9 +12,9 @@ extension Interactable1Providing {
     private var self2: (any Interactable2Providing)? { self as? any Interactable2Providing }
     private var inboxItem: (any InboxItemProviding)? { self as? any InboxItemProviding }
     
-    func showReplySheet(expandedPostTracker: ExpandedPostTracker? = nil) {
+    func showReplySheet(commentTreeTracker: CommentTreeTracker? = nil) {
         if let responseContext {
-            NavigationModel.main.openSheet(.createComment(responseContext, expandedPostTracker: expandedPostTracker))
+            NavigationModel.main.openSheet(.createComment(responseContext, commentTreeTracker: commentTreeTracker))
         } else {
             print("DEBUG showReplySheet: cannot open sheet!")
         }
@@ -94,10 +94,10 @@ extension Interactable1Providing {
         )
     }
     
-    func replyCounter(expandedPostTracker: ExpandedPostTracker? = nil) -> Counter {
+    func replyCounter(commentTreeTracker: CommentTreeTracker? = nil) -> Counter {
         .init(
             value: self2?.commentCount,
-            leadingAction: replyAction(expandedPostTracker: expandedPostTracker),
+            leadingAction: replyAction(commentTreeTracker: commentTreeTracker),
             trailingAction: nil
         )
     }
@@ -128,11 +128,11 @@ extension Interactable1Providing {
         )
     }
     
-    func replyAction(expandedPostTracker: ExpandedPostTracker? = nil) -> BasicAction {
+    func replyAction(commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction {
         .init(
             id: "reply\(uid)",
             appearance: .reply(),
-            callback: api.canInteract ? { self.showReplySheet(expandedPostTracker: expandedPostTracker) } : nil
+            callback: api.canInteract ? { self.showReplySheet(commentTreeTracker: commentTreeTracker) } : nil
         )
     }
     

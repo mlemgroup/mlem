@@ -24,7 +24,7 @@ struct CommentEditorView: View {
     
     let textView: UITextView = .init()
 
-    let expandedPostTracker: ExpandedPostTracker?
+    let commentTreeTracker: CommentTreeTracker?
     
     @State var commentToEdit: Comment2?
     @State var originalContext: Context?
@@ -42,12 +42,12 @@ struct CommentEditorView: View {
     init?(
         commentToEdit: Comment2? = nil,
         context: Context? = nil,
-        expandedPostTracker: ExpandedPostTracker? = nil
+        commentTreeTracker: CommentTreeTracker? = nil
     ) {
         self.commentToEdit = commentToEdit
         self.originalContext = context
         self._resolvedContext = .init(wrappedValue: context)
-        self.expandedPostTracker = expandedPostTracker
+        self.commentTreeTracker = commentTreeTracker
         if let userAccount = (AppState.main.firstAccount as? UserAccount) {
             self._account = .init(wrappedValue: userAccount)
         } else {
