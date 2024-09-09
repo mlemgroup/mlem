@@ -30,6 +30,7 @@ private enum Path {
     static var easterFlags = root.appendingPathComponent("Easter eggs flags", conformingTo: .json)
     static var layoutWidgets = root.appendingPathComponent("Layout Widgets", conformingTo: .json)
     static var instanceMetadata = root.appendingPathComponent("Instance Metadata", conformingTo: .json)
+    static var systemSettings = root.appendingPathComponent("System Settings", conformingTo: .directory)
 }
 
 private enum DiskAccess {
@@ -148,6 +149,12 @@ class PersistenceRepository {
     func saveInstanceMetadata(_ value: [InstanceMetadata]) async throws {
         let timestamped = TimestampedValue(value: value, timestamp: date.now, lifespan: .days(1))
         try await save(timestamped, to: Path.instanceMetadata)
+    }
+    
+    /// Saves the current system settings
+    func saveSystemSettings() async throws {
+        let settings: CodableSettings = .init()
+        try await save(settings, to: Path.systemSettings.appendingPathComponent("v1", conformingTo: .json))
     }
     
     // MARK: Private methods
