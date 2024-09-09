@@ -87,36 +87,35 @@ class Settings: ObservableObject {
     /// Re-initializes all values from the given CodableSettings object.
     @MainActor
     func reinit(from settings: CodableSettings) {
-        postSize = settings.postSize
-        defaultPostSort = settings.defaultPostSort
-        fallbackPostSort = settings.fallbackPostSort
-        thumbnailLocation = settings.thumbnailLocation
-        showPostCreator = settings.showPostCreator
-        quickSwipesEnabled = settings.quickSwipesEnabled
-        hapticLevel = settings.hapticLevel
-        upvoteOnSave = settings.upvoteOnSave
-        internetSpeed = settings.internetSpeed
-        keepPlaceOnAccountSwitch = settings.keepPlaceOnAccountSwitch
-        accountSort = settings.accountSort
-        groupAccountSort = settings.groupAccountSort
-        interfaceStyle = settings.interfaceStyle
-        colorPalette = settings.colorPalette
-        developerMode = settings.developerMode
-        blurNsfw = settings.blurNsfw
-        showNsfwCommunityWarning = settings.showNsfwCommunityWarning
-        openLinksInBrowser = settings.openLinksInBrowser
-        openLinksInReaderMode = settings.openLinksInReaderMode
-        markReadOnScroll = settings.markReadOnScroll
-        showReadInFeed = settings.showReadInFeed
-        defaultFeed = settings.defaultFeed
-        showReadInInbox = settings.showReadInInbox
-        subscriptionInstanceLocation = settings.subscriptionInstanceLocation
-        subscriptionSort = settings.subscriptionSort
-        showPersonAvatar = settings.showPersonAvatar
-        showCommunityAvatar = settings.showCommunityAvatar
-        compactComments = settings.compactComments
-        compactComments = false
-        jumpButton = settings.jumpButton
-        commentSort = settings.commentSort
+        postSize = settings.post_size
+        defaultPostSort = settings.post_defaultSort
+        fallbackPostSort = settings.post_fallbackSort
+        thumbnailLocation = settings.post_thumbnailLocation
+        showPostCreator = settings.post_showCreator
+        quickSwipesEnabled = settings.behavior_enableQuickSwipes
+        hapticLevel = settings.behavior_hapticLevel
+        upvoteOnSave = settings.behavior_upvoteOnSave
+        internetSpeed = settings.behavior_internetSpeed
+        keepPlaceOnAccountSwitch = settings.accounts_keepPlace
+        accountSort = settings.accounts_sort
+        groupAccountSort = settings.accounts_grouped
+        interfaceStyle = settings.appearance_interfaceStyle
+        colorPalette = settings.appearance_palette
+        developerMode = settings.dev_developerMode
+        blurNsfw = settings.safety_blurNsfw
+        showNsfwCommunityWarning = settings.safety_enableNsfwCommunityWarning
+        openLinksInBrowser = settings.links_openInBrowser
+        openLinksInReaderMode = settings.links_readerMode
+        markReadOnScroll = settings.feed_markReadOnScroll
+        showReadInFeed = settings.feed_showRead
+        defaultFeed = settings.feed_default
+        showReadInInbox = settings.inbox_showRead
+        subscriptionInstanceLocation = settings.subscriptions_instanceLocation
+        subscriptionSort = settings.subscriptions_sort
+        showPersonAvatar = settings.person_showAvatar
+        showCommunityAvatar = settings.community_showAvatar
+        compactComments = settings.comment_compact
+        jumpButton = settings.comment_jumpButton
+        commentSort = settings.comment_defaultSort
     }
 }
