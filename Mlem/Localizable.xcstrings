@@ -116,7 +116,13 @@
     "All Time" : {
 
     },
+    "Alphabetical" : {
+
+    },
     "Always" : {
+
+    },
+    "Any" : {
 
     },
     "App Icon" : {
@@ -202,6 +208,9 @@
 
     },
     "Choose Account Type" : {
+
+    },
+    "Choose..." : {
 
     },
     "Clear Cache" : {
@@ -492,6 +501,9 @@
     "Instance" : {
 
     },
+    "Instance: %@" : {
+
+    },
     "Instances" : {
 
     },
@@ -687,6 +699,12 @@
     "Other" : {
 
     },
+    "Other (%@)" : {
+
+    },
+    "Other..." : {
+
+    },
     "Outside NSFW Communities" : {
 
     },
@@ -816,6 +834,9 @@
     "Scaled" : {
 
     },
+    "Score" : {
+
+    },
     "Search" : {
 
     },
@@ -916,6 +937,9 @@
 
     },
     "Subscription List" : {
+
+    },
+    "Subscription statuses can't be displayed when using these filters." : {
 
     },
     "Superscript" : {
@@ -1073,6 +1097,9 @@
 
     },
     "Users" : {
+
+    },
+    "Version" : {
 
     },
     "Viewing %@ as guest" : {

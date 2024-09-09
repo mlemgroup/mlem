@@ -37,7 +37,9 @@ struct SearchView: View {
     @State var page: Page = .home
     
     @State var filtersActive: Bool = false
-    @Bindable var communityFilters: CommunityFilters = .init(sort: .topAll)
+    @State var communityFilters: CommunityFilters = .init()
+    @State var personFilters: PersonFilters = .init()
+    @State var instanceFilters: InstanceFilters = .init()
 
     @State var selectedTab: Tab = .communities
     @State var resultsScrollToTopTrigger: Bool = false
@@ -92,7 +94,7 @@ struct SearchView: View {
             }
             .onChange(of: filterRefreshHashValue) {
                 Task {
-                    await refresh(clearBeforeRefresh: true)
+                    await refresh(clearBeforeRefresh: false)
                 }
             }
     }

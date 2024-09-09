@@ -54,12 +54,26 @@ class MlemStats {
     }
     
     @MainActor
-    func searchInstances(query: String) async throws -> [InstanceSummary] {
+    func searchInstances(query: String, sort: InstanceSort = .score) async throws -> [InstanceSummary] {
         try await MlemStats.main.loadInstances()
-        if query.isEmpty { return instances ?? [] }
-        return instances?.filter {
-            $0.host.localizedCaseInsensitiveContains(query)
-                || $0.name.localizedCaseInsensitiveContains(query)
-        } ?? []
+        let instances: [InstanceSummary]
+        if query.isEmpty {
+            instances = self.instances ?? []
+        } else {
+            instances = self.instances?.filter {
+                $0.host.localizedCaseInsensitiveContains(query)
+                    || $0.name.localizedCaseInsensitiveContains(query)
+            } ?? []
+        }
+        switch sort {
+        case .score:
+            return instances
+        case .users:
+            return instances.sorted { $0.userCount > $1.userCount }
+        case .alphabetical:
+            return instances.sorted { $0.host < $1.host }
+        case .version:
+            return instances.sorted { $0.version > $1.version }
+        }
     }
 }

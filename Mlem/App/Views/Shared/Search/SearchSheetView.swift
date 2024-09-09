@@ -83,16 +83,34 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
 }
 
 extension SearchSheetView {
-    init<Content2: View>(
+    init<RowContent: View>(
         api: ApiClient? = nil,
         closeButtonLabel: CloseButtonLabel = .cancel,
-        @ViewBuilder content: @escaping (Item, DismissAction) -> Content2
-    ) where Content == SearchResultsView<Item, Content2> {
+        @ViewBuilder content: @escaping (Item, DismissAction) -> RowContent
+    ) where Content == SearchResultsView<Item, RowContent> {
         self.api = api ?? AppState.main.firstApi
         self.closeButtonLabel = closeButtonLabel
         self.content = { (results: [Item], dismiss: DismissAction) in
             SearchResultsView(results: results) { item in
                 content(item, dismiss)
+            }
+        }
+    }
+    
+    init<RowContent: View, HeaderContent: View>(
+        api: ApiClient? = nil,
+        closeButtonLabel: CloseButtonLabel = .cancel,
+        @ViewBuilder content: @escaping (Item, DismissAction) -> RowContent,
+        @ViewBuilder header: @escaping () -> HeaderContent
+    ) where Content == VStack<TupleView<(HeaderContent, SearchResultsView<Item, RowContent>)>> {
+        self.api = api ?? AppState.main.firstApi
+        self.closeButtonLabel = closeButtonLabel
+        self.content = { (results: [Item], dismiss: DismissAction) in
+            VStack(alignment: .leading, spacing: 0) {
+                header()
+                SearchResultsView(results: results) { item in
+                    content(item, dismiss)
+                }
             }
         }
     }

@@ -39,6 +39,7 @@
 		031E2D5D2BEFCC630003BC45 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D5C2BEFCC630003BC45 /* SettingsView.swift */; };
 		0320B65F2C8DFA7900D38548 /* SearchView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B65E2C8DFA7900D38548 /* SearchView+Logic.swift */; };
 		0320B6612C8DFCF100D38548 /* SearchView+FiltersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B6602C8DFCF100D38548 /* SearchView+FiltersView.swift */; };
+		0320B6632C8F8D5A00D38548 /* InstanceSort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B6622C8F8D5A00D38548 /* InstanceSort.swift */; };
 		0324FA772C1F0AE100F6247D /* Readout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324FA762C1F0AE100F6247D /* Readout.swift */; };
 		0324FA7B2C1F2CD200F6247D /* InfoStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */; };
 		03267D822BED489C009D6268 /* AvatarBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D812BED489C009D6268 /* AvatarBannerView.swift */; };
@@ -390,9 +391,9 @@
 		031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListView.swift; sourceTree = "<group>"; };
 		031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
 		031E2D5C2BEFCC630003BC45 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		0320B65D2C8DC1A700D38548 /* MlemMiddleware */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MlemMiddleware; path = ../MlemMiddleware; sourceTree = "<group>"; };
 		0320B65E2C8DFA7900D38548 /* SearchView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+Logic.swift"; sourceTree = "<group>"; };
 		0320B6602C8DFCF100D38548 /* SearchView+FiltersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+FiltersView.swift"; sourceTree = "<group>"; };
+		0320B6622C8F8D5A00D38548 /* InstanceSort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceSort.swift; sourceTree = "<group>"; };
 		0324FA762C1F0AE100F6247D /* Readout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Readout.swift; sourceTree = "<group>"; };
 		0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoStackView.swift; sourceTree = "<group>"; };
 		03267D812BED489C009D6268 /* AvatarBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarBannerView.swift; sourceTree = "<group>"; };
@@ -1075,7 +1076,6 @@
 		6363D5B827EE196700E34822 = {
 			isa = PBXGroup;
 			children = (
-				0320B65D2C8DC1A700D38548 /* MlemMiddleware */,
 				6363D5C327EE196700E34822 /* Mlem */,
 				6363D5D927EE196A00E34822 /* MlemTests */,
 				6363D5E327EE196A00E34822 /* MlemUITests */,
@@ -1397,6 +1397,7 @@
 				03AF91E62C1C65AE00E56644 /* Interaction */,
 				CDA683F72C77E577000C4486 /* NsfwBlurBehavior.swift */,
 				039F58832C7A7F2C00C61658 /* CommentJumpButtonLocation.swift */,
+				0320B6622C8F8D5A00D38548 /* InstanceSort.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -1998,6 +1999,7 @@
 				CDE1F19C2C63E2EB008AF042 /* SettingPropertyWrapper.swift in Sources */,
 				038096612C10AAD8003ED1D8 /* TransitionView.swift in Sources */,
 				0382A7F42C0A76A900C79DDA /* Date+Extensions.swift in Sources */,
+				0320B6632C8F8D5A00D38548 /* InstanceSort.swift in Sources */,
 				0397D4912C6CE871002C6CDC /* PostEditorView.swift in Sources */,
 				03D2A63B2C010B7500ED4FF2 /* GuestAccount.swift in Sources */,
 				CDE1F1962C63DF89008AF042 /* PhoneConstants.swift in Sources */,
@@ -2645,8 +2647,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 0.34.0;
+				branch = "sjmarf/search-trackers";
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

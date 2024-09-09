@@ -34,7 +34,8 @@ extension ApiSortType {
         .topAll
     ]
     
-    static let communityAndPersonSearchCases: [Self] = [.controversial, .new, .old] + topCases
+    static let communitySearchCases: [Self] = [.controversial, .new, .old] + topCases
+    static let personSearchCases: [Self] = [.new, .old, .topAll]
     
     var minimumVersion: SiteVersion {
         switch self {
@@ -68,9 +69,9 @@ extension ApiSortType {
         }
     }
     
-    var fullLabel: String {
+    func fullLabel(shortTopMode: Bool = false) -> String {
         if ApiSortType.topCases.contains(self) {
-            return String(localized: "Top: \(String(localized: label))")
+            return shortTopMode ? String(localized: "Top") : String(localized: "Top: \(String(localized: label))")
         }
         return String(localized: label)
     }

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct FeedSortPicker: View {
     enum Filter {
-        case alwaysAvailable, availableOnInstance, communityAndPersonSearchable
+        case alwaysAvailable, availableOnInstance, communitySearchable, personSearchable
     }
     
     @Environment(AppState.self) var appState
@@ -36,13 +36,19 @@ struct FeedSortPicker: View {
     }
     
     var body: some View {
-        Menu(sort.fullLabel, systemImage: sort.systemImage) {
+        let topModes = filterSortModes(ApiSortType.topCases)
+        Menu(sort.fullLabel(shortTopMode: topModes.count == 1), systemImage: sort.systemImage) {
             Picker("Sort", selection: $sort) {
-                itemLabels(ApiSortType.nonTopCases)
-                Picker("Top...", systemImage: Icons.topSort, selection: $sort) {
-                    itemLabels(ApiSortType.topCases)
+                itemLabels(filterSortModes(ApiSortType.nonTopCases))
+                if topModes.count == 1, let first = topModes.first {
+                    Label("Top", systemImage: Icons.topSort)
+                        .tag(first)
+                } else {
+                    Picker("Top...", systemImage: Icons.topSort, selection: $sort) {
+                        itemLabels(topModes)
+                    }
+                    .pickerStyle(.menu)
                 }
-                .pickerStyle(.menu)
             }
         }
         .disabled(filters.contains(.availableOnInstance) && appState.firstApi.fetchedVersion == nil)
@@ -50,18 +56,24 @@ struct FeedSortPicker: View {
     
     @ViewBuilder
     func itemLabels(_ collection: [ApiSortType]) -> some View {
-        ForEach(collection.filter { sortType in
+        ForEach(collection, id: \.self) { item in
+            Label(String(localized: item.label), systemImage: item.systemImage)
+        }
+    }
+    
+    private func filterSortModes(_ collection: any Collection<ApiSortType>) -> [ApiSortType] {
+        collection.filter { sortType in
             filters.allSatisfy { filter in
                 switch filter {
                 case .alwaysAvailable: sortType.minimumVersion == .zero
                 case .availableOnInstance:
                     (appState.firstApi.fetchedVersion ?? .infinity) >= sortType.minimumVersion
-                case .communityAndPersonSearchable:
-                    ApiSortType.communityAndPersonSearchCases.contains(sortType)
+                case .communitySearchable:
+                    ApiSortType.communitySearchCases.contains(sortType)
+                case .personSearchable:
+                    ApiSortType.personSearchCases.contains(sortType)
                 }
             }
-        }, id: \.self) { item in
-            Label(String(localized: item.label), systemImage: item.systemImage)
         }
     }
 }

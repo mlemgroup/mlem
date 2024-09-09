@@ -22,7 +22,7 @@ enum NavigationPage: Hashable {
     case imageViewer(_ url: URL)
     case communityPicker(api: ApiClient?, callback: HashWrapper<(Community2) -> Void>)
     case personPicker(api: ApiClient?, callback: HashWrapper<(Person2) -> Void>)
-    case instancePicker(callback: HashWrapper<(InstanceSummary) -> Void>)
+    case instancePicker(callback: HashWrapper<(InstanceSummary) -> Void>, minimumVersion: SiteVersion? = nil)
     case selectText(_ string: String)
     case subscriptionList
     case createComment(_ context: CommentEditorView.Context, expandedPostTracker: ExpandedPostTracker? = nil)
@@ -63,8 +63,12 @@ enum NavigationPage: Hashable {
         personPicker(api: api, callback: .init(wrappedValue: callback))
     }
     
-    static func instancePicker(callback: @escaping (InstanceSummary) -> Void) -> NavigationPage {
-        instancePicker(callback: .init(wrappedValue: callback))
+    static func instancePicker(
+        callback: @escaping (InstanceSummary) -> Void,
+        minimumVersion: SiteVersion? = nil
+    ) -> NavigationPage {
+        assert((minimumVersion ?? .infinity) > Constants.main.minimumLemmyVersion)
+        return instancePicker(callback: .init(wrappedValue: callback), minimumVersion: minimumVersion)
     }
     
     static func createPost(community: any CommunityStubProviding) -> NavigationPage {
@@ -137,30 +141,46 @@ extension NavigationPage {
             }
         case let .communityPicker(api: api, callback: callback):
             SearchSheetView(api: api) { (community: Community2, dismiss: DismissAction) in
-                CommunityListRowBody(community)
-                    .onTapGesture {
-                        callback.wrappedValue(community)
-                        dismiss()
-                    }
-                    .padding(.vertical, 6)
+                Button {
+                    callback.wrappedValue(community)
+                    dismiss()
+                } label: {
+                    CommunityListRowBody(community)
+                        .tint(Palette.main.primary)
+                }
+                .padding(.vertical, 6)
             }
         case let .personPicker(api: api, callback: callback):
             SearchSheetView(api: api) { (person: Person2, dismiss: DismissAction) in
-                PersonListRowBody(person)
-                    .onTapGesture {
-                        callback.wrappedValue(person)
-                        dismiss()
-                    }
-                    .padding(.vertical, 6)
+                Button {
+                    callback.wrappedValue(person)
+                    dismiss()
+                } label: {
+                    PersonListRowBody(person)
+                        .tint(Palette.main.primary)
+                }
+                .padding(.vertical, 6)
             }
-        case let .instancePicker(callback: callback):
+        case let .instancePicker(callback: callback, minimumVersion: minimumVersion):
             SearchSheetView { (instance: InstanceSummary, dismiss: DismissAction) in
-                InstanceListRowBody(instance)
-                    .onTapGesture {
-                        callback.wrappedValue(instance)
-                        dismiss()
-                    }
-                    .padding(.vertical, 6)
+                Button {
+                    callback.wrappedValue(instance)
+                    dismiss()
+                } label: {
+                    InstanceListRowBody(instance)
+                        .tint(Palette.main.primary)
+                }
+                .padding(.vertical, 6)
+                .disabled(instance.version < (minimumVersion ?? .zero))
+            } header: {
+                if let minimumVersion {
+                    Text("This feature is only supported for instances running version \(minimumVersion) or later.")
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(Palette.main.caution.opacity(0.2), in: .rect(cornerRadius: 10))
+                        .foregroundStyle(Palette.main.caution)
+                        .padding([.horizontal, .bottom])
+                }
             }
         case let .instance(instance):
             InstanceView(instance: instance.wrappedValue)
