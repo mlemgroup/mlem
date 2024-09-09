@@ -27,8 +27,22 @@ struct GeneralSettingsView: View {
 
     @State var showErrorAlert: Bool = false
     @State var alertMessage: String = ""
+    
+    @State var exportData: String?
+    
     var body: some View {
         List {
+            if let data = exportData {
+                ShareLink(item: data)
+            }
+            Button("Print Settings") {
+                do {
+                    try exportData = String(decoding: JSONEncoder().encode(CodableSettings()), as: UTF8.self)
+                } catch {
+                    print(error)
+                }
+            }
+            
             Section {
                 SelectableSettingsItem(
                     settingIconSystemName: Icons.haptics,
