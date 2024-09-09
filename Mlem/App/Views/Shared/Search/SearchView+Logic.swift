@@ -66,7 +66,7 @@ extension SearchView {
     }
     
     private func getRefreshApi(for filter: InstanceFilter) -> ApiClient {
-        if filtersActive {
+        if !filtersActive {
             appState.firstApi
         } else {
             switch filter {
