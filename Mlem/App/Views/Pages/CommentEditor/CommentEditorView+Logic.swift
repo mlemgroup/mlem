@@ -80,7 +80,7 @@ extension CommentEditorView {
                     result = try await comment.reply(content: textView.text)
                     parent = comment
                 }
-                expandedPostTracker?.insertCreatedComment(result, parent: parent)
+                commentTreeTracker?.insertCreatedComment(result, parent: parent)
             } else {
                 // This should never happen
                 return
