@@ -118,7 +118,7 @@ struct CodableSettings: Codable {
         self.comment_compact = compactComments
         
         @AppStorage("defaultCommentSorting") var commentSort: CommentSortType = .top
-        self.comment_defaultSort = commentSort.rawValue
+        self.comment_defaultSort = commentSort.rawValue.capitalized // capitalized
         
         @AppStorage("tapCommentToCollapse") var tapCommentToCollapse = true
         self.comment_gestures_tapToCollapse = tapCommentToCollapse

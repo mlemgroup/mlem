@@ -30,6 +30,16 @@ struct GeneralSettingsView: View {
     var body: some View {
         List {
             Section {
+                #if DEBUG
+                    Button("Print Settings") {
+                        do {
+                            try print(String(decoding: JSONEncoder().encode(CodableSettings()), as: UTF8.self))
+                        } catch {
+                            print(error)
+                        }
+                    }
+                #endif
+                
                 SelectableSettingsItem(
                     settingIconSystemName: Icons.haptics,
                     settingName: "Haptic Level",
