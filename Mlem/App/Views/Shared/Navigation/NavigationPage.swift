@@ -15,7 +15,11 @@ enum NavigationPage: Hashable {
     case feeds(_ selection: FeedSelection? = nil)
     case profile, inbox, search
     case quickSwitcher
-    case expandedPost(_ post: AnyPost, commentActorId: URL? = nil, communityContext: HashWrapper<any Community1Providing>? = nil)
+    case post(
+        _ post: AnyPost,
+        highlightedComment: HashWrapper<any CommentStubProviding>? = nil,
+        communityContext: HashWrapper<any Community1Providing>? = nil
+    )
     case community(_ community: AnyCommunity)
     case person(_ person: AnyPerson)
     case instance(_ instance: InstanceHashWrapper)
@@ -26,21 +30,25 @@ enum NavigationPage: Hashable {
     case instancePicker(callback: HashWrapper<(InstanceSummary, NavigationLayer) -> Void>)
     case selectText(_ string: String)
     case subscriptionList
-    case createComment(_ context: CommentEditorView.Context, expandedPostTracker: ExpandedPostTracker? = nil)
+    case createComment(_ context: CommentEditorView.Context, commentTreeTracker: CommentTreeTracker? = nil)
     case editComment(_ comment: Comment2, context: CommentEditorView.Context?)
     case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
     case createPost(community: AnyCommunity?)
     case deleteAccount(_ account: UserAccount)
     
-    static func expandedPost(_ post: any PostStubProviding, commentActorId: URL? = nil) -> NavigationPage {
-        expandedPost(.init(post), commentActorId: commentActorId)
+    static func post(_ post: any PostStubProviding, highlightedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
+        if let highlightedComment {
+            return Self.post(.init(post), highlightedComment: .init(wrappedValue: highlightedComment))
+        } else {
+            return Self.post(.init(post))
+        }
     }
     
-    static func expandedPost(_ post: any PostStubProviding, communityContext: (any Community1Providing)?) -> NavigationPage {
+    static func post(_ post: any PostStubProviding, communityContext: (any Community1Providing)?) -> NavigationPage {
         if let communityContext {
-            expandedPost(.init(post), communityContext: .init(wrappedValue: communityContext))
+            Self.post(.init(post), communityContext: .init(wrappedValue: communityContext))
         } else {
-            expandedPost(.init(post))
+            Self.post(.init(post))
         }
     }
     
@@ -190,4 +198,8 @@ struct ReportableHashWrapper: Hashable {
     static func == (lhs: ReportableHashWrapper, rhs: ReportableHashWrapper) -> Bool {
         lhs.hashValue == rhs.hashValue
     }
+}
+
+extension NavigationPage {
+    enum Test {}
 }

@@ -14,10 +14,7 @@ struct ImageViewer: View {
     
     init(url: URL) {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
-        components.queryItems = components.queryItems?.filter { item in
-            !(item.value?.starts(with: "thumbnail") ?? false)
-        }
-        
+        components.queryItems = components.queryItems?.filter { $0.name != "thumbnail" }
         self.url = components.url!
     }
     
