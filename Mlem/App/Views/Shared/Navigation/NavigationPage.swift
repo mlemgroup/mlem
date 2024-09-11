@@ -61,7 +61,6 @@ enum NavigationPage: Hashable {
             api: AppState.main.firstApi, actorId: entity.actorId.removingPathComponents()
         )
         if let entity = entity as? any Person3Providing {
-            print("INS", entity.instance)
             instance = entity.instance ?? instance
         } else if let entity = entity as? any Community3Providing {
             instance = entity.instance ?? instance
