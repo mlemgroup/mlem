@@ -5,7 +5,95 @@
 //  Created by Sjmarf on 28/04/2024.
 //
 
+import MlemMiddleware
 import SwiftUI
+
+extension NavigationPage {
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
+    @ViewBuilder func view() -> some View {
+        switch self {
+        case .subscriptionList:
+            SubscriptionListView()
+        case let .selectText(string):
+            SelectTextView(text: string)
+        case let .settings(page):
+            page.view()
+        case let .logIn(page):
+            page.view()
+        case let .signUp(instance):
+            SignUpView(instance: instance.wrappedValue)
+        case let .feeds(feedSelection):
+            FeedsView(feedSelection: feedSelection)
+        case let .community(community):
+            CommunityView(community: community)
+        case .profile:
+            ProfileView()
+        case .inbox:
+            InboxView()
+        case .search:
+            SearchView()
+        case let .externalApiInfo(api: api, actorId: actorId):
+            ExternalApiInfoView(api: api, actorId: actorId)
+        case let .imageViewer(url):
+            ImageViewer(url: url)
+        case .quickSwitcher:
+            QuickSwitcherView()
+        case let .report(target, community):
+            ReportComposerView(target: target.wrappedValue, community: community)
+        case let .post(post, highlightedComment, communityContext):
+            ExpandedPostView(post: post, highlightedComment: highlightedComment?.wrappedValue)
+                .environment(\.communityContext, communityContext?.wrappedValue)
+        case let .person(person):
+            PersonView(person: person)
+        case let .createComment(context, commentTreeTracker):
+            if let view = CommentEditorView(context: context, commentTreeTracker: commentTreeTracker) {
+                view
+            } else {
+                Text(verbatim: "Error: No active UserAccount")
+            }
+        case let .editComment(comment, context: context):
+            if let view = CommentEditorView(commentToEdit: comment, context: context) {
+                view
+            } else {
+                Text(verbatim: "Error: No active UserAccount")
+            }
+        case let .createPost(community: community):
+            if let view = PostEditorView(community: community) {
+                view
+            } else {
+                Text(verbatim: "Error: No active UserAccount")
+            }
+        case let .communityPicker(api: api, callback: callback):
+            SearchSheetView(api: api) { (community: Community2, navigation: NavigationLayer) in
+                CommunityListRowBody(community)
+                    .onTapGesture {
+                        callback.wrappedValue(community, navigation)
+                    }
+                    .padding(.vertical, 6)
+            }
+        case let .personPicker(api: api, callback: callback):
+            SearchSheetView(api: api) { (person: Person2, navigation: NavigationLayer) in
+                PersonListRowBody(person)
+                    .onTapGesture {
+                        callback.wrappedValue(person, navigation)
+                    }
+                    .padding(.vertical, 6)
+            }
+        case let .instancePicker(callback: callback):
+            SearchSheetView { (instance: InstanceSummary, navigation: NavigationLayer) in
+                InstanceListRowBody(instance)
+                    .onTapGesture {
+                        callback.wrappedValue(instance, navigation)
+                    }
+                    .padding(.vertical, 6)
+            }
+        case let .instance(instance):
+            InstanceView(instance: instance.wrappedValue)
+        case let .deleteAccount(account):
+            DeleteAccountView(account: account)
+        }
+    }
+}
 
 extension NavigationPage {
     @ViewBuilder

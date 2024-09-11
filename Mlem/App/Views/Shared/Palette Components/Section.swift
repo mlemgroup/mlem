@@ -26,9 +26,20 @@ struct Section<Parent: View, Content: View, Footer: View>: View {
     }
 
     init(
+        _ header: LocalizedStringResource,
+        @ViewBuilder content: @escaping () -> Content,
+        @ViewBuilder footer: @escaping () -> Footer = { EmptyView() }
+    ) where Parent == Text {
+        self.header = { Text(header) }
+        self.content = content
+        self.footer = footer
+    }
+    
+    @_disfavoredOverload
+    init(
         _ header: String,
-        content: @escaping () -> Content,
-        footer: @escaping () -> Footer = { EmptyView() }
+        @ViewBuilder content: @escaping () -> Content,
+        @ViewBuilder footer: @escaping () -> Footer = { EmptyView() }
     ) where Parent == Text {
         self.header = { Text(header) }
         self.content = content
@@ -36,12 +47,10 @@ struct Section<Parent: View, Content: View, Footer: View>: View {
     }
 
     var body: some View {
-        SwiftUI.Section {
-            content()
-        } header: {
-            header().foregroundStyle(palette.secondary)
-        } footer: {
-            footer().foregroundStyle(palette.secondary)
-        }
+        SwiftUI.Section(
+            content: content,
+            header: { header().foregroundStyle(palette.secondary) },
+            footer: { footer().foregroundStyle(palette.secondary) }
+        )
     }
 }
