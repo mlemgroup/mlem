@@ -11,7 +11,7 @@ import SwiftUI
 extension SignUpView {
     var canSubmit: Bool {
         guard let instance = instance as? any Instance2Providing else { return false }
-        return (!instance.captchaEnabled || !captchaAnswer.isEmpty)
+        return !(instance.captchaEnabled && captchaAnswer.isEmpty)
             && usernameValidity == .valid
             && (instance.applicationQuestion == nil || !applicationQuestionResponse.isEmpty)
             && (captcha == nil || !captchaAnswer.isEmpty)
