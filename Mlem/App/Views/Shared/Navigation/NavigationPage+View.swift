@@ -40,13 +40,13 @@ extension NavigationPage {
             QuickSwitcherView()
         case let .report(target, community):
             ReportComposerView(target: target.wrappedValue, community: community)
-        case let .expandedPost(post, commentActorId, communityContext):
-            ExpandedPostView(post: post, showCommentWithActorId: commentActorId)
+        case let .post(post, highlightedComment, communityContext):
+            ExpandedPostView(post: post, highlightedComment: highlightedComment?.wrappedValue)
                 .environment(\.communityContext, communityContext?.wrappedValue)
         case let .person(person):
             PersonView(person: person)
-        case let .createComment(context, expandedPostTracker):
-            if let view = CommentEditorView(context: context, expandedPostTracker: expandedPostTracker) {
+        case let .createComment(context, commentTreeTracker):
+            if let view = CommentEditorView(context: context, commentTreeTracker: commentTreeTracker) {
                 view
             } else {
                 Text(verbatim: "Error: No active UserAccount")

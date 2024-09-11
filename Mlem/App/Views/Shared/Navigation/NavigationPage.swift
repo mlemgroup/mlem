@@ -199,7 +199,3 @@ struct ReportableHashWrapper: Hashable {
         lhs.hashValue == rhs.hashValue
     }
 }
-
-extension NavigationPage {
-    enum Test {}
-}
