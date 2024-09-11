@@ -16,9 +16,7 @@ struct CodableSettings: Codable {
     var accounts_defaultId: Int?
     var accounts_grouped: Bool
     var accounts_sort: String
-    // var accounts_keepPlace: Bool
     var appearance_interfaceStyle: UIUserInterfaceStyle
-    // var appearance_palette
     var appearance_showSettingsIcons: Bool
     var behavior_biometricUnlock: Bool
     var behavior_confirmImageUploads: Bool
@@ -68,7 +66,6 @@ struct CodableSettings: Codable {
     var tab_profile_showAvatar: Bool
     var tab_showNames: Bool
     var person_showAvatar: Bool
-    // var person_showInstance: Bool
     
     // swiftlint:disable:next function_body_length
     init() {
