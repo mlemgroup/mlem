@@ -108,7 +108,7 @@ struct LoginTotpView: View {
         authenticating = true
         Task {
             do {
-                let user = try await AccountsTracker.main.login(
+                let user = try await AccountsTracker.main.logIn(
                     client: client,
                     username: username,
                     password: password,

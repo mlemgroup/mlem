@@ -119,7 +119,13 @@
     "Always" : {
 
     },
+    "Answer..." : {
+
+    },
     "App Icon" : {
+
+    },
+    "Application Submitted!" : {
 
     },
     "Applications Email Admins" : {
@@ -207,7 +213,13 @@
     "Choose File" : {
 
     },
+    "Choose wisely - you cannot change this later." : {
+
+    },
     "Clear Cache" : {
+
+    },
+    "Click on the link in the email to continue." : {
 
     },
     "Closed" : {
@@ -238,6 +250,9 @@
 
     },
     "Confirm" : {
+
+    },
+    "Confirm Password" : {
 
     },
     "Connecting..." : {
@@ -322,6 +337,9 @@
     "Don't show this again" : {
 
     },
+    "Done" : {
+
+    },
     "Downvote" : {
 
     },
@@ -335,6 +353,9 @@
 
     },
     "Edit" : {
+
+    },
+    "Email" : {
 
     },
     "Email Verification" : {
@@ -507,6 +528,12 @@
     "Italic" : {
 
     },
+    "john_doe" : {
+
+    },
+    "johndoe@example.com" : {
+
+    },
     "Jump Button" : {
 
     },
@@ -657,6 +684,9 @@
     "Old" : {
 
     },
+    "Once approved, you'll be able to log in to your account from the Settings tab." : {
+
+    },
     "One of more of your posts failed to send." : {
 
     },
@@ -697,6 +727,12 @@
 
     },
     "Password" : {
+
+    },
+    "Password must be %lld characters or more." : {
+
+    },
+    "Passwords don't match." : {
 
     },
     "Paste" : {
@@ -769,6 +805,9 @@
 
     },
     "Registration" : {
+
+    },
+    "Registrations are closed on this instance." : {
 
     },
     "Reload" : {
@@ -855,6 +894,9 @@
     "Show Mod Names in Modlog" : {
 
     },
+    "Show NSFW Content" : {
+
+    },
     "Show Post Creator in Feed" : {
 
     },
@@ -868,6 +910,9 @@
 
     },
     "Sign In to Lemmy" : {
+
+    },
+    "Sign Up" : {
 
     },
     "Silver" : {
@@ -907,6 +952,12 @@
 
     },
     "Style" : {
+
+    },
+    "Submit Application" : {
+
+    },
+    "Submitting..." : {
 
     },
     "Subscribe" : {
@@ -974,7 +1025,13 @@
     "This content will be loaded from **%@** instead." : {
 
     },
+    "This field is optional." : {
+
+    },
     "This probably contains foul language." : {
+
+    },
+    "This username is taken." : {
 
     },
     "Thumbnail Location" : {
@@ -987,6 +1044,9 @@
 
     },
     "To confirm, please enter your password:" : {
+
+    },
+    "To join this instance, you need to create an application and wait to be accepted." : {
 
     },
     "Too many items!" : {
@@ -1008,6 +1068,9 @@
 
     },
     "Trust & Safety" : {
+
+    },
+    "Try a different Captcha..." : {
 
     },
     "Two-Factor Authentication" : {
@@ -1078,6 +1141,12 @@
     "Username" : {
 
     },
+    "Username can only contain lowercase letters, numbers and underscores." : {
+
+    },
+    "Username must be 3 or more characters." : {
+
+    },
     "Users" : {
 
     },
@@ -1091,6 +1160,9 @@
 
     },
     "Warn When Opening NSFW Community" : {
+
+    },
+    "We sent an email to %@ to verify your email address and activate your account." : {
 
     },
     "Website" : {
@@ -1117,10 +1189,19 @@
     "Yes (%@)" : {
 
     },
+    "You are required to provide an email on this instance." : {
+
+    },
     "You don't have any accounts." : {
 
     },
     "You may need to allow Mlem to access your Photo Library in System Settings." : {
+
+    },
+    "You'll receive an email once your application has been approved. Once approved, you can log in to your account from the Settings tab." : {
+
+    },
+    "Your Answer..." : {
 
     },
     "Your instance and **%@** federate, but the content could not be loaded. It may not have federated yet, or your instance may have purged it." : {

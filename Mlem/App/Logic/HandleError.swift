@@ -43,7 +43,7 @@ private func showReauthSheet() {
     if let user = AppState.main.firstSession.account as? UserAccount {
         for layer in NavigationModel.main.layers {
             switch layer.path.first {
-            case let .login(page):
+            case let .logIn(page):
                 switch page {
                 case .reauth:
                     return
@@ -54,6 +54,6 @@ private func showReauthSheet() {
                 break
             }
         }
-        NavigationModel.main.openSheet(.login(.reauth(user)))
+        NavigationModel.main.openSheet(.logIn(.reauth(user)))
     }
 }

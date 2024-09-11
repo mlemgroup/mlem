@@ -138,7 +138,10 @@ class UserAccount: Account, CommunityOrPersonStub {
 }
 
 private func getKeychainId(actorId: URL) -> String {
-    // localhost sometimes has url "http://localhost:PORT" and sometimes "https://lemmy-alpha/beta/etc", so replace any of that with simple "localhost"
+    // localhost sometimes has url "http://localhost:PORT" and sometimes "https://lemmy-alpha/beta/etc" [1], so replace any of that with simple "localhost"
+    //
+    // [1](https://join-lemmy.org/docs/contributors/02-local-development.html#tests)
+
     let keychainActorId = actorId.absoluteString.replacing(
         /https?:\/\/(lemmy-(alpha|beta|gamma|delta|epsilon)|localhost:\d{4})/,
         with: "localhost"

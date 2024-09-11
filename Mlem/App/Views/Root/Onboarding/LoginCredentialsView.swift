@@ -15,8 +15,10 @@ struct LoginCredentialsView: View {
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
-    let instance: (any Instance)?
+    @State var instance: (any InstanceStubProviding)?
     let account: UserAccount?
+    
+    @State var upgradeState: LoadingState = .idle
     
     @State var username: String
     @State var password: String = ""
@@ -29,7 +31,7 @@ struct LoginCredentialsView: View {
     
     var showUsernameField: Bool { account == nil }
     
-    init(instance: any Instance) {
+    init(instance: any InstanceStubProviding) {
         self.instance = instance
         self.account = nil
         self._username = .init(wrappedValue: "")
@@ -54,6 +56,19 @@ struct LoginCredentialsView: View {
                         }
                         .disabled(authenticating)
                     }
+                }
+            }
+            .task {
+                guard upgradeState == .idle else { return }
+                upgradeState = .loading
+                do {
+                    if let instance, !(instance is any Instance3Providing) {
+                        self.instance = try await instance.upgradeLocal()
+                    }
+                    upgradeState = .done
+                } catch {
+                    upgradeState = .idle
+                    handleError(error)
                 }
             }
     }
@@ -83,9 +98,10 @@ struct LoginCredentialsView: View {
     }
     
     @ViewBuilder
-    func instanceHeader(_ instance: any Instance) -> some View {
-        CircleCroppedImageView(instance, frame: 50)
-        Text(instance.displayName)
+    func instanceHeader(_ instance: any InstanceStubProviding) -> some View {
+        CircleCroppedImageView(url: instance.avatar_, frame: 50, fallback: .instance)
+            .id(instance.avatar_)
+        Text(instance.displayName_ ?? instance.host ?? "Log In")
             .font(.title)
             .bold()
     }
@@ -158,11 +174,11 @@ struct LoginCredentialsView: View {
     
     func attemptToLogin() {
         guard !username.isEmpty, !password.isEmpty else { return }
-        if let client = instance?.guestApi ?? account?.api.loggedOut() {
+        if let client = (instance as? any Instance)?.guestApi ?? account?.api.loggedOut() {
             authenticating = true
             Task {
                 do {
-                    let user = try await AccountsTracker.main.login(client: client, username: username, password: password)
+                    let user = try await AccountsTracker.main.logIn(client: client, username: username, password: password)
                     appState.changeAccount(to: user)
                     if navigation.isTopSheet {
                         navigation.dismissSheet()
@@ -170,7 +186,7 @@ struct LoginCredentialsView: View {
                 } catch {
                     switch error {
                     case let ApiClientError.response(response, _) where response.error == "missing_totp_token":
-                        navigation.push(.login(.totp(client: client, username: username, password: password)))
+                        navigation.push(.logIn(.totp(client: client, username: username, password: password)))
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             authenticating = false
                         }

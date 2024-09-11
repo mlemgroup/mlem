@@ -15,8 +15,8 @@ extension ActorIdentifiable {
     
     func openInstanceAction(navigation: NavigationLayer?) -> BasicAction {
         let callback: (() -> Void)?
-        if let navigation, let host, let url = URL(string: "https://\(host)/") {
-            callback = { navigation.push(.instance(InstanceStub(api: AppState.main.firstApi, actorId: url))) }
+        if let navigation {
+            callback = { navigation.push(.instance(hostOf: self)) }
         } else {
             callback = nil
         }
