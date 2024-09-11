@@ -54,13 +54,16 @@ struct SubscriptionListView: View {
                         NavigationLink(.feeds(feedOption)) {
                             HStack(spacing: 15) {
                                 FeedIconView(feedDescription: feedOption.description, size: 28)
-                                
                                 Text(feedOption.description.label)
                             }
                         }
                     }
                 }
                 .listRowBackground(palette.background)
+                
+                if AccountsTracker.main.isEmpty {
+                    logInPromptSection
+                }
                 
                 ForEach(sections) { section in
                     SubscriptionListSectionView(section: section, sectionIndicesShown: sectionIndicesShown)
@@ -107,8 +110,36 @@ struct SubscriptionListView: View {
         }
     }
     
+    @ViewBuilder
+    var logInPromptSection: some View {
+        Section {
+            VStack {
+                Text("Your subscriptions live here.")
+                    .font(.headline)
+                Text("Sign Up or Log In to view your subscriptions.")
+                HStack {
+                    Button {} label: {
+                        Text("Sign Up")
+                            .frame(maxWidth: 500)
+                    }
+                    Button {} label: {
+                        Text("Log In")
+                            .frame(maxWidth: 500)
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+                .foregroundStyle(palette.selectedInteractionBarItem)
+            }
+            .padding(10)
+            .background(palette.accent.opacity(0.2), in: .rect(cornerRadius: 16))
+        }
+        .foregroundStyle(palette.accent)
+        .multilineTextAlignment(.center)
+        .listRowSeparator(.hidden)
+    }
+    
     var sectionIndicesShown: Bool {
-        !UIDevice.isPad && sort == .alphabetical
+        !UIDevice.isPad && sort == .alphabetical && (appState.firstApi.subscriptions?.communities.count ?? 0) > 15
     }
 }
 

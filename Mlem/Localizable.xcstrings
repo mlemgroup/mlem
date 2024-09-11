@@ -909,6 +909,9 @@
     "Sign Up" : {
 
     },
+    "Sign Up or Log In to view your subscriptions." : {
+
+    },
     "Silver" : {
 
     },
@@ -1225,6 +1228,9 @@
 
     },
     "Your session has expired. Enter your password to authenticate a new session." : {
+
+    },
+    "Your subscriptions live here." : {
 
     }
   },

@@ -39,6 +39,10 @@ class AccountsTracker {
         self.guestAccounts = persistenceRepository.loadGuestAccounts()
     }
     
+    var isEmpty: Bool {
+        userAccounts.isEmpty && guestAccounts.isEmpty
+    }
+    
     func addAccount(account: any Account) {
         if let account = account as? UserAccount {
             guard !userAccounts.contains(where: { $0 === account }) else {
