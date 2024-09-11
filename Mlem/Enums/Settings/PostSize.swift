@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum PostSize: String, Codable {
+enum PostSize: String {
     case compact, headline, large
 }
 
