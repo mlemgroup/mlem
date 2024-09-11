@@ -2659,8 +2659,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				branch = "sjmarf/sign-in";
-				kind = branch;
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.36.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
