@@ -91,7 +91,7 @@ enum NavigationPage: Hashable {
     }
     
     static func instancePicker(
-        callback: @escaping (InstanceSummary, NavigationLayer) -> Void
+        callback: @escaping (InstanceSummary, NavigationLayer) -> Void,
         minimumVersion: SiteVersion? = nil
     ) -> NavigationPage {
         assert((minimumVersion ?? .infinity) > Constants.main.minimumLemmyVersion)
@@ -119,9 +119,11 @@ enum NavigationPage: Hashable {
     }
     
     static func instancePicker(
-        callback: @escaping (InstanceSummary) -> Void
+        callback: @escaping (InstanceSummary) -> Void,
+        minimumVersion: SiteVersion? = nil
     ) -> NavigationPage {
-        instancePicker(callback: .init(wrappedValue: { value, navigation in
+        assert((minimumVersion ?? .infinity) > Constants.main.minimumLemmyVersion)
+        return instancePicker(callback: .init(wrappedValue: { value, navigation in
             callback(value)
             navigation.dismissSheet()
         }))

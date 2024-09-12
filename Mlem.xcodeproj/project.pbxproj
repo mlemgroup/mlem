@@ -37,12 +37,14 @@
 		031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */; };
 		031E2D5B2BEFC9460003BC45 /* ThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */; };
 		031E2D5D2BEFCC630003BC45 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D5C2BEFCC630003BC45 /* SettingsView.swift */; };
-		0320B6612C8DFCF100D38548 /* SearchView+FiltersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B6602C8DFCF100D38548 /* SearchView+FiltersView.swift */; };
-		0320B6632C8F8D5A00D38548 /* InstanceSort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B6622C8F8D5A00D38548 /* InstanceSort.swift */; };
 		0320B64F2C8A638A00D38548 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B64E2C8A638A00D38548 /* SignUpView.swift */; };
 		0320B6542C8B65EB00D38548 /* Captcha+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B6532C8B65EB00D38548 /* Captcha+Extensions.swift */; };
 		0320B6582C8BB3C400D38548 /* SignUpView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B6572C8BB3C400D38548 /* SignUpView+Views.swift */; };
 		0320B65A2C8CBB0D00D38548 /* SignUpView+EmailConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B6592C8CBB0D00D38548 /* SignUpView+EmailConfirmationView.swift */; };
+		0320B6612C8DFCF100D38548 /* SearchView+FiltersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B6602C8DFCF100D38548 /* SearchView+FiltersView.swift */; };
+		0320B6632C8F8D5A00D38548 /* InstanceSort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B6622C8F8D5A00D38548 /* InstanceSort.swift */; };
+		0320B6672C93504600D38548 /* SignUpView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B6662C93504600D38548 /* SignUpView+Logic.swift */; };
+		0320B6692C93506300D38548 /* SearchView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B6682C93506300D38548 /* SearchView+Logic.swift */; };
 		0324FA772C1F0AE100F6247D /* Readout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324FA762C1F0AE100F6247D /* Readout.swift */; };
 		0324FA7B2C1F2CD200F6247D /* InfoStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */; };
 		03267D822BED489C009D6268 /* AvatarBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D812BED489C009D6268 /* AvatarBannerView.swift */; };
@@ -393,12 +395,14 @@
 		031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListView.swift; sourceTree = "<group>"; };
 		031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
 		031E2D5C2BEFCC630003BC45 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		0320B6602C8DFCF100D38548 /* SearchView+FiltersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+FiltersView.swift"; sourceTree = "<group>"; };
-		0320B6622C8F8D5A00D38548 /* InstanceSort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceSort.swift; sourceTree = "<group>"; };
 		0320B64E2C8A638A00D38548 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		0320B6532C8B65EB00D38548 /* Captcha+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Captcha+Extensions.swift"; sourceTree = "<group>"; };
 		0320B6572C8BB3C400D38548 /* SignUpView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SignUpView+Views.swift"; sourceTree = "<group>"; };
 		0320B6592C8CBB0D00D38548 /* SignUpView+EmailConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SignUpView+EmailConfirmationView.swift"; sourceTree = "<group>"; };
+		0320B6602C8DFCF100D38548 /* SearchView+FiltersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+FiltersView.swift"; sourceTree = "<group>"; };
+		0320B6622C8F8D5A00D38548 /* InstanceSort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceSort.swift; sourceTree = "<group>"; };
+		0320B6662C93504600D38548 /* SignUpView+Logic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SignUpView+Logic.swift"; sourceTree = "<group>"; };
+		0320B6682C93506300D38548 /* SearchView+Logic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SearchView+Logic.swift"; sourceTree = "<group>"; };
 		0324FA762C1F0AE100F6247D /* Readout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Readout.swift; sourceTree = "<group>"; };
 		0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoStackView.swift; sourceTree = "<group>"; };
 		03267D812BED489C009D6268 /* AvatarBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarBannerView.swift; sourceTree = "<group>"; };
@@ -867,7 +871,7 @@
 				035EDEEB2C2DE93E00F51144 /* SearchBar */,
 				0389DDCE2C39CB0E0005B808 /* SearchView.swift */,
 				0320B6602C8DFCF100D38548 /* SearchView+FiltersView.swift */,
-				0320B65E2C8DFA7900D38548 /* SearchView+Logic.swift */,
+				0320B6682C93506300D38548 /* SearchView+Logic.swift */,
 				0389DDD22C39E4D40005B808 /* PasteLinkButtonView.swift */,
 				03531EED2C2D9298004A3464 /* SearchSheetView.swift */,
 				03531EF02C2DA298004A3464 /* SearchResultsView.swift */,
@@ -1551,8 +1555,8 @@
 				03CCDAA32BF2852E00C0C851 /* LoginTotpView.swift */,
 				0320B64E2C8A638A00D38548 /* SignUpView.swift */,
 				0320B6572C8BB3C400D38548 /* SignUpView+Views.swift */,
+				0320B6662C93504600D38548 /* SignUpView+Logic.swift */,
 				0320B6592C8CBB0D00D38548 /* SignUpView+EmailConfirmationView.swift */,
-				0320B6552C8B6D7300D38548 /* SignUpView+Logic.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -1987,6 +1991,7 @@
 				CD869FCE2C15F90C00FC8B5B /* ChildSizeReader.swift in Sources */,
 				035EDEF12C2DE94B00F51144 /* DefaultTextInputType.swift in Sources */,
 				039F588C2C7B574E00C61658 /* AdvancedSettingsView.swift in Sources */,
+				0320B6672C93504600D38548 /* SignUpView+Logic.swift in Sources */,
 				039F58882C7B531800C61658 /* SquircleLabelStyle.swift in Sources */,
 				035EDEF22C2DE94B00F51144 /* _assignIfNotEqual.swift in Sources */,
 				035EDEF32C2DE94B00F51144 /* SearchBar.swift in Sources */,
@@ -2111,7 +2116,6 @@
 				0389DDD52C39F1290005B808 /* CommunityListRow.swift in Sources */,
 				CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */,
 				03049A1E2C6508F400FF6889 /* ApiRegistrationMode+Extensions.swift in Sources */,
-				0320B65F2C8DFA7900D38548 /* SearchView+Logic.swift in Sources */,
 				CDE021AD2BFA43380052FD61 /* FeedPostView.swift in Sources */,
 				0320B64F2C8A638A00D38548 /* SignUpView.swift in Sources */,
 				03ECD7192C81195000D48BF6 /* PostEditorView+LinkView.swift in Sources */,
@@ -2121,7 +2125,6 @@
 				6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */,
 				03CBD18D2C6120F600E870BC /* PersonFlair.swift in Sources */,
 				033FCB3E2C5E7FA9007B7CD1 /* View+OutdatedFeedPopup.swift in Sources */,
-				0320B6562C8B6D7300D38548 /* SignUpView+Logic.swift in Sources */,
 				CD10FA772C7A8622008985AD /* ImageSaver.swift in Sources */,
 				03267D822BED489C009D6268 /* AvatarBannerView.swift in Sources */,
 				03500C2D2BF7FC2500CAA076 /* ToastView.swift in Sources */,
@@ -2151,6 +2154,7 @@
 				CD4D59182B87B3B000B82964 /* UIViewController+Extensions.swift in Sources */,
 				CD13CC572C582DD8001AF428 /* DynamicImageView.swift in Sources */,
 				034B94812C09306D00039AF4 /* CommunityOrPersonStub+Extensions.swift in Sources */,
+				0320B6692C93506300D38548 /* SearchView+Logic.swift in Sources */,
 				039F58932C7B616600C61658 /* CommentSettingsView.swift in Sources */,
 				03D3A1E52BB8B7A3009DE55E /* ActionType.swift in Sources */,
 				0320B6542C8B65EB00D38548 /* Captcha+Extensions.swift in Sources */,
@@ -2667,8 +2671,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				branch = "sjmarf/search-trackers";
-				kind = branch;
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.37.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

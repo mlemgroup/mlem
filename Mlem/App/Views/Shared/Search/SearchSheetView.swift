@@ -103,12 +103,12 @@ extension SearchSheetView {
     init<RowContent: View, HeaderContent: View>(
         api: ApiClient? = nil,
         closeButtonLabel: CloseButtonLabel = .cancel,
-        @ViewBuilder content: @escaping (Item, DismissAction) -> RowContent,
+        @ViewBuilder content: @escaping (Item, NavigationLayer) -> RowContent,
         @ViewBuilder header: @escaping () -> HeaderContent
     ) where Content == VStack<TupleView<(HeaderContent, SearchResultsView<Item, RowContent>)>> {
         self.api = api ?? AppState.main.firstApi
         self.closeButtonLabel = closeButtonLabel
-        self.content = { (results: [Item], dismiss: DismissAction) in
+        self.content = { (results: [Item], dismiss: NavigationLayer) in
             VStack(alignment: .leading, spacing: 0) {
                 header()
                 SearchResultsView(results: results) { item in
