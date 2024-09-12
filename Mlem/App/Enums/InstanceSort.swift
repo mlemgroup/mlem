@@ -23,10 +23,10 @@ enum InstanceSort: CaseIterable {
     
     var systemImage: String {
         switch self {
-        case .alphabetical: "textformat"
-        case .score: "star"
-        case .users: "person.2"
-        case .version: "server.rack"
+        case .alphabetical: Icons.alphabeticalSort
+        case .score: Icons.scoreSort
+        case .users: Icons.usersSort
+        case .version: Icons.versionSort
         }
     }
 }

@@ -90,10 +90,10 @@ extension SearchView {
         }
         
         var body: some View {
-            Menu("Instance: \(filter.label)", systemImage: Icons.instance) {
+            Menu(filter.label, systemImage: Icons.instance) {
                 Toggle(
-                    "Any",
-                    systemImage: "point.3.filled.connected.trianglepath.dotted",
+                    "Any Instance",
+                    systemImage: Icons.federation,
                     isOn: .init(get: { filter == .any }, set: { _ in filter = .any })
                 )
                 if allowActiveAccountLocalInstanceSearch {
@@ -158,7 +158,7 @@ extension SearchView {
         func makeBody(configuration: Configuration) -> some View {
             HStack(spacing: 4) {
                 configuration.label
-                Image(systemName: "chevron.down.circle.fill")
+                Image(systemName: Icons.dropDownCircleFill)
                     .symbolRenderingMode(.hierarchical)
                     .padding([.vertical, .trailing], 8)
             }
@@ -178,7 +178,7 @@ extension SearchView {
         
         var label: String {
             switch self {
-            case .any: .init(localized: "Any")
+            case .any: .init(localized: "Any Instance")
             case .local: AppState.main.firstApi.host ?? .init(localized: "Local")
             case let .other(instance): instance.host
             }
