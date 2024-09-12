@@ -33,7 +33,7 @@ struct GeneralSettingsView: View {
                 #if DEBUG
                     Button("Print Settings") {
                         do {
-                            try print(String(decoding: JSONEncoder().encode(CodableSettings()), as: UTF8.self))
+                            try print(String(data: JSONEncoder().encode(CodableSettings()), encoding: .utf8))
                         } catch {
                             print(error)
                         }

@@ -11,9 +11,9 @@ extension String {
     func withEscapedCharacters() -> String? {
         do {
             let jsonRepresentation = try JSONEncoder().encode(self)
-            let ret = String(decoding: jsonRepresentation, as: UTF8.self)
+            let ret = String(data: jsonRepresentation, encoding: .utf8)
             // slightly awkward but preserves contract
-            if !ret.isEmpty { return ret }
+            if let ret, !ret.isEmpty { return ret }
             return nil
         } catch {
             return nil
