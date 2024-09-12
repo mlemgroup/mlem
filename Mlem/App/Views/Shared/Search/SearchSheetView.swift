@@ -11,14 +11,14 @@ import SwiftUI
 
 struct SearchSheetView<Item: Searchable, Content: View>: View {
     @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
-    @Environment(\.dismiss) var dismiss
     
     enum CloseButtonLabel: String {
         case cancel, done
     }
     
-    @ViewBuilder let content: ([Item], DismissAction) -> Content
+    @ViewBuilder let content: ([Item], NavigationLayer) -> Content
     let api: ApiClient
     let closeButtonLabel: CloseButtonLabel
     
@@ -32,7 +32,7 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
     init(
         api: ApiClient? = nil,
         closeButtonLabel: CloseButtonLabel = .cancel,
-        @ViewBuilder content: @escaping ([Item], DismissAction) -> Content
+        @ViewBuilder content: @escaping ([Item], NavigationLayer) -> Content
     ) {
         self.api = api ?? AppState.main.firstApi
         self.content = content
@@ -42,7 +42,7 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                content(results, dismiss)
+                content(results, navigation)
             }
         }
         .background(palette.background)
@@ -57,7 +57,7 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button(closeButtonLabel.rawValue.capitalized) {
-                    dismiss()
+                    navigation.dismissSheet()
                 }
             }
         }
@@ -79,6 +79,9 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
                 handleError(error)
             }
         }
+        .onAppear {
+            focused = true
+        }
     }
 }
 
@@ -86,13 +89,13 @@ extension SearchSheetView {
     init<RowContent: View>(
         api: ApiClient? = nil,
         closeButtonLabel: CloseButtonLabel = .cancel,
-        @ViewBuilder content: @escaping (Item, DismissAction) -> RowContent
+        @ViewBuilder content: @escaping (Item, NavigationLayer) -> RowContent
     ) where Content == SearchResultsView<Item, RowContent> {
         self.api = api ?? AppState.main.firstApi
         self.closeButtonLabel = closeButtonLabel
-        self.content = { (results: [Item], dismiss: DismissAction) in
+        self.content = { (results: [Item], navigation: NavigationLayer) in
             SearchResultsView(results: results) { item in
-                content(item, dismiss)
+                content(item, navigation)
             }
         }
     }
