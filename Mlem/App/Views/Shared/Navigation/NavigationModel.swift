@@ -31,6 +31,10 @@ class NavigationModel {
     }
     
     func closeSheets(aboveIndex index: Int) {
+        guard layers.count - index >= 0 else {
+            print("Cannot remove above \(index), only \(layers.count) layers")
+            return
+        }
         layers.removeLast(layers.count - index)
     }
     
