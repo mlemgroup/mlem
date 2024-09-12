@@ -42,8 +42,7 @@ extension APIClientError: CustomStringConvertible {
         case .invalidSession:
             return "Invalid session"
         case let .decoding(data, error):
-            let string = String(decoding: data, as: UTF8.self)
-            guard !string.isEmpty else {
+            guard let string = String(data: data, encoding: .utf8), !string.isEmpty else {
                 return localizedDescription
             }
             
@@ -172,7 +171,7 @@ class APIClient {
             urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
         
-        if definition as? any APIGetRequest != nil {
+        if definition is any APIGetRequest {
             urlRequest.httpMethod = "GET"
         } else if let postDefinition = definition as? any APIPostRequest {
             urlRequest.httpMethod = "POST"
@@ -180,7 +179,7 @@ class APIClient {
         } else if let putDefinition = definition as? any APIPutRequest {
             urlRequest.httpMethod = "PUT"
             urlRequest.httpBody = try createBodyData(for: putDefinition)
-        } else if let deleteDefinition = definition as? any APIDeleteRequest {
+        } else if definition is any APIDeleteRequest {
             urlRequest.httpMethod = "DELETE"
         }
 

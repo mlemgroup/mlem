@@ -17,6 +17,7 @@ struct ContentView: View {
     @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.accountsTracker) var accountsTracker
     @Dependency(\.markReadBatcher) var markReadBatcher
+    @Dependency(\.persistenceRepository) var persistenceRepository
     
     @Environment(\.setAppFlow) private var setFlow
     
@@ -207,6 +208,15 @@ struct ContentView: View {
         .environmentObject(modToolTracker)
         .onChange(of: scenePhase) { phase in
             if phase != .active {
+                // cache v1 settings
+                Task {
+                    do {
+                        try await persistenceRepository.saveSystemSettings()
+                    } catch {
+                        assertionFailure(error.localizedDescription.debugDescription)
+                    }
+                }
+                
                 // prevents the app from reopening with the switcher enabled.
                 isPresentingAccountSwitcher = false
                 

@@ -649,6 +649,7 @@
 		CDD0EFA22B7D9E5800CA3504 /* UserListRowBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EFA12B7D9E5800CA3504 /* UserListRowBody.swift */; };
 		CDD0EFA52B7E8B3200CA3504 /* ModeratorListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EFA42B7E8B3200CA3504 /* ModeratorListView.swift */; };
 		CDD0EFAD2B7EA73000CA3504 /* BanFromCommunity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0EFAC2B7EA73000CA3504 /* BanFromCommunity.swift */; };
+		CDD4A0A42C8E2BA50001AD1A /* CodableSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A0A32C8E2BA50001AD1A /* CodableSettings.swift */; };
 		CDD55D1D2B23BA41002020C7 /* EasyTapLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD55D1C2B23BA41002020C7 /* EasyTapLinkView.swift */; };
 		CDD55D222B2674BD002020C7 /* String+ParseLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD55D212B2674BD002020C7 /* String+ParseLinks.swift */; };
 		CDDB08782A5DF1330075BFEE /* CommentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDB08772A5DF1330075BFEE /* CommentSettingsView.swift */; };
@@ -1377,6 +1378,7 @@
 		CDD0EFA12B7D9E5800CA3504 /* UserListRowBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListRowBody.swift; sourceTree = "<group>"; };
 		CDD0EFA42B7E8B3200CA3504 /* ModeratorListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeratorListView.swift; sourceTree = "<group>"; };
 		CDD0EFAC2B7EA73000CA3504 /* BanFromCommunity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BanFromCommunity.swift; sourceTree = "<group>"; };
+		CDD4A0A32C8E2BA50001AD1A /* CodableSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableSettings.swift; sourceTree = "<group>"; };
 		CDD55D1C2B23BA41002020C7 /* EasyTapLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyTapLinkView.swift; sourceTree = "<group>"; };
 		CDD55D212B2674BD002020C7 /* String+ParseLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ParseLinks.swift"; sourceTree = "<group>"; };
 		CDDB08772A5DF1330075BFEE /* CommentSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentSettingsView.swift; sourceTree = "<group>"; };
@@ -2020,6 +2022,7 @@
 				CDCBD7232A8D62FF00387A2C /* InstanceMetadata.swift */,
 				50CC4A732A9CB10B0074C845 /* TimestampedValue.swift */,
 				E409E16D2AFEFB8C0026FDC2 /* ImageDetailSheetState.swift */,
+				CDD4A0A32C8E2BA50001AD1A /* CodableSettings.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3792,6 +3795,7 @@
 				CDDCF6472A663849003DA3AC /* EnvironmentValues+TabSelectionHashValue.swift in Sources */,
 				63D24EDE2A169F2A005CCA81 /* Markdown View.swift in Sources */,
 				03C942962B648252002068A4 /* BanPerson.swift in Sources */,
+				CDD4A0A42C8E2BA50001AD1A /* CodableSettings.swift in Sources */,
 				E453A1D02A81C2140004BB8A /* QuickLookPreviewController.swift in Sources */,
 				B104A6E02A59C19400B3E725 /* OperationQueue+ConvenienceInit.swift in Sources */,
 				CD26981B2B9E17F70002B459 /* APIModAdd.swift in Sources */,
@@ -4614,7 +4618,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.4;
+				MARKETING_VERSION = 1.3.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -4657,7 +4661,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.4;
+				MARKETING_VERSION = 1.3.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
