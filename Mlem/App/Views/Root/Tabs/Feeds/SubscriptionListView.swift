@@ -63,6 +63,7 @@ struct SubscriptionListView: View {
                 
                 if AccountsTracker.main.isEmpty {
                     logInPromptSection
+                        .padding(.top, Constants.main.halfSpacing)
                 }
                 
                 ForEach(sections) { section in
