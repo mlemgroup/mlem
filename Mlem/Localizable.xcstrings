@@ -122,10 +122,10 @@
     "Always" : {
 
     },
-    "Any Instance" : {
+    "Answer..." : {
 
     },
-    "Answer..." : {
+    "Any Instance" : {
 
     },
     "App Icon" : {
@@ -219,10 +219,10 @@
     "Choose File" : {
 
     },
-    "Choose..." : {
+    "Choose wisely - you cannot change this later." : {
 
     },
-    "Choose wisely - you cannot change this later." : {
+    "Choose..." : {
 
     },
     "Clear Cache" : {
@@ -946,7 +946,14 @@
 
     },
     "Solarized" : {
-
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solarised"
+          }
+        }
+      }
     },
     "Some" : {
 
