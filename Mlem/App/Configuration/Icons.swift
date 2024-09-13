@@ -194,6 +194,7 @@ enum Icons {
     static let cakeDayFill: String = "birthday.cake.fill"
     static let undoCircleFill: String = "arrow.uturn.backward.circle.fill"
     static let errorCircleFill: String = "exclamationmark.circle.fill"
+    static let proxy: String = "firewall"
     
     // end of feed
     static let endOfFeedHobbit: String = "figure.climbing"

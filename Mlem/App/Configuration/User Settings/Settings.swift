@@ -37,6 +37,8 @@ class Settings: ObservableObject {
     @AppStorage("safety.blurNsfw") var blurNsfw: NsfwBlurBehavior = .always
     @AppStorage("safety.showNsfwCommunityWarning") var showNsfwCommunityWarning: Bool = true
     
+    @AppStorage("privacy.autoBypassImageProxy") var autoBypassImageProxy: Bool = false
+    
     @AppStorage("links.openInBrowser") var openLinksInBrowser = false
     @AppStorage("links.readerMode") var openLinksInReaderMode = false
     

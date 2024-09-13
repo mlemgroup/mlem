@@ -1,5 +1,5 @@
 //
-//  PreprocessedFixedImageView.swift
+//  FixedImageView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-09-01.
@@ -68,7 +68,7 @@ struct FixedImageView: View {
     
     @ViewBuilder
     var content: some View {
-        if loader.loading == .failed || (loader.loading == .loading && !showProgress) {
+        if loader.loading == .failed || loader.loading == .proxyFailed || (loader.loading == .loading && !showProgress) {
             fallbackImage
         } else {
             if loader.loading == .loading {
@@ -95,7 +95,8 @@ struct FixedImageView: View {
             Image(systemName: fallback.icon)
                 .foregroundStyle(palette.secondary)
         case .image:
-            Image(systemName: fallback.icon)
+            let icon: String = loader.loading == .failed ? fallback.icon : Icons.proxy
+            Image(systemName: icon)
                 .font(.title)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .foregroundStyle(palette.secondary)

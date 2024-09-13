@@ -140,6 +140,12 @@
     "Authentication code is incorrect." : {
 
     },
+    "Auto-Bypass Image Proxy" : {
+
+    },
+    "Auto-Bypass On Failure" : {
+
+    },
     "Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser." : {
 
     },
@@ -180,6 +186,9 @@
 
     },
     "Bottom" : {
+
+    },
+    "Bypass Image Proxy" : {
 
     },
     "Cache" : {
@@ -567,6 +576,9 @@
     "Links" : {
 
     },
+    "Load directly from %@" : {
+
+    },
     "Loading instance details" : {
 
     },
@@ -607,6 +619,9 @@
 
     },
     "Mlem Developer" : {
+
+    },
+    "Mlem will always try to load from the proxy first." : {
 
     },
     "Moderated" : {
@@ -765,10 +780,16 @@
     "Pride" : {
 
     },
+    "Privacy" : {
+
+    },
     "Privacy Policy" : {
 
     },
     "Private" : {
+
+    },
+    "Proxy Failure" : {
 
     },
     "Quick Look" : {
@@ -922,6 +943,9 @@
 
     },
     "Some" : {
+
+    },
+    "Some instances proxy images to protect your privacy. In certain cases, this causes image loading to fail. You can bypass the image proxy and load directly, but this will expose your IP address to the image host." : {
 
     },
     "Sort" : {

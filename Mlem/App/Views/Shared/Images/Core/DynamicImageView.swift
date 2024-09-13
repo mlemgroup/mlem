@@ -17,6 +17,8 @@ struct DynamicImageView: View {
     @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     
+    @AppStorage("status.bypassImageProxyShown") var bypassImageProxyShown: Bool = false
+    
     @State var loader: ImageLoader
     @State var loadingPref: ImageLoadingState?
     @State var quickLookUrl: URL?
@@ -24,16 +26,6 @@ struct DynamicImageView: View {
     let showError: Bool
     let cornerRadius: CGFloat
     let actionsEnabled: Bool
-    
-    var proxyBypass: URL? {
-        if let url = loader.url,
-           let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-           let base = components.queryItems?.first { $0.name == "url" }?.value {
-            print("proxied! base: \(base)")
-            return URL(string: base)
-        }
-        return nil
-    }
     
     init(
         url: URL?,
@@ -72,37 +64,9 @@ struct DynamicImageView: View {
         Image(uiImage: loader.uiImage ?? .blank)
             .resizable()
             .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
-            .background {
-                if showError {
-                    palette.secondaryBackground
-                        .overlay {
-                            if loader.error != nil {
-                                if let proxyBypass {
-                                    Image(systemName: "firewall")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(maxWidth: 50)
-                                        .padding(4)
-                                        .foregroundStyle(palette.tertiary)
-                                } else {
-                                    Image(systemName: Icons.missing)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(maxWidth: 50)
-                                        .padding(4)
-                                        .foregroundStyle(palette.tertiary)
-                                }
-                            }
-                        }
-                }
-            }
-            .onTapGesture {
-                if loader.error != nil, let proxyBypass {
-                    print("DEBUG tapped")
-                    Task {
-                        print("DEBUG calling reload with \(proxyBypass.absoluteString)")
-                        await loader.reload(with: proxyBypass)
-                    }
+            .overlay {
+                if showError, loader.error != nil {
+                    errorOverlay
                 }
             }
             .clipShape(.rect(cornerRadius: cornerRadius))
@@ -114,7 +78,54 @@ struct DynamicImageView: View {
                 }
             }
     }
-  
+    
+    @ViewBuilder
+    var errorOverlay: some View {
+        palette.secondaryBackground.overlay {
+            if let loaderError = loader.error {
+                switch loaderError {
+                case let .proxyFailure(proxyBypass):
+                    VStack(spacing: Constants.main.standardSpacing) {
+                        Image(systemName: "firewall")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: 50)
+                            .padding(4)
+                        
+                        Text("Proxy Failure")
+                            .fontWeight(.semibold)
+                        
+                        Button("Load directly from \(proxyBypass.host() ?? "unknown host")") {
+                            if !bypassImageProxyShown {
+                                bypassImageProxyShown = true
+                                navigation.openSheet(.bypassImageProxyWarning {
+                                    Task {
+                                        await loader.bypassProxy()
+                                    }
+                                })
+                            } else {
+                                Task {
+                                    await loader.bypassProxy()
+                                }
+                            }
+                        }
+                        .foregroundStyle(palette.accent)
+                        .buttonStyle(.bordered)
+                        .padding(.horizontal, Constants.main.standardSpacing)
+                    }
+                    .foregroundStyle(palette.tertiary)
+                case .error:
+                    Image(systemName: Icons.missing)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: 50)
+                        .padding(4)
+                        .foregroundStyle(palette.tertiary)
+                }
+            }
+        }
+    }
+    
     func shareImage(url: URL) async {
         if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "image") {
             navigation.shareUrl = fileUrl
