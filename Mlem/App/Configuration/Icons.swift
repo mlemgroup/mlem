@@ -110,6 +110,10 @@ enum Icons {
     static let topSortFill: String = "trophy.fill"
     static let timeSort: String = "calendar.day.timeline.leading"
     static let timeSortFill: String = "calendar.day.timeline.leading"
+    static let alphabeticalSort: String = "textformat"
+    static let scoreSort: String = "star"
+    static let usersSort: String = "person.2"
+    static let versionSort: String = "server.rack"
     
     // user flairs
     static let developerFlair: String = "hammer.fill"
@@ -268,7 +272,8 @@ enum Icons {
     static let jumpButtonCircle: String = "chevron.down.circle"
     static let browser: String = "safari"
     static let emptySquare: String = "square"
-    static let dropdown: String = "chevron.down"
+    static let dropDown: String = "chevron.down"
+    static let dropDownCircleFill: String = "chevron.down.circle.fill"
     static let noFile: String = "questionmark.folder"
     static let forward: String = "chevron.right"
     static let imageDetails: String = "doc.badge.ellipsis"

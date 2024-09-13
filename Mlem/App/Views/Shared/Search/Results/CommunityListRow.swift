@@ -38,14 +38,16 @@ struct CommunityListRow<Content2: View>: View {
     }
     
     var body: some View {
-        FormChevron { content }
-            .padding(.trailing)
-            .padding(.vertical, 6)
-            .onTapGesture {
-                navigation.push(.community(community))
-            }
-            .background(palette.background)
-            .contextMenu { community.menuActions(navigation: navigation) }
-            .quickSwipes(community.swipeActions(behavior: .standard))
+        Button {
+            navigation.push(.community(community))
+        } label: {
+            FormChevron { content }
+                .padding(.trailing)
+        }
+        .buttonStyle(EmptyButtonStyle())
+        .padding(.vertical, 6)
+        .background(palette.background)
+        .contextMenu { community.menuActions(navigation: navigation) }
+        .quickSwipes(community.swipeActions(behavior: .standard))
     }
 }
