@@ -17,7 +17,7 @@ struct DynamicImageView: View {
     @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     
-    @AppStorage("status.bypassImageProxyShown") var bypassImageProxyShown: Bool = false
+    @Setting(\.bypassImageProxyShown) var bypassImageProxyShown
     
     @State var loader: ImageLoader
     @State var loadingPref: ImageLoadingState?
@@ -86,7 +86,7 @@ struct DynamicImageView: View {
                 switch loaderError {
                 case let .proxyFailure(proxyBypass):
                     VStack(spacing: Constants.main.standardSpacing) {
-                        Image(systemName: "firewall")
+                        Image(systemName: Icons.proxy)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(maxWidth: 50)
