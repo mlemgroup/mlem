@@ -11,7 +11,7 @@ import SwiftUI
 
 @Observable
 class ImageLoader {
-    let url: URL?
+    var url: URL?
     private(set) var uiImage: UIImage?
     private(set) var loading: ImageLoadingState
     private(set) var error: Error?
@@ -49,6 +49,7 @@ class ImageLoader {
     func load() async {
         guard let url, loading == .loading else { return }
         do {
+            print("DEBUG loading \(url.absoluteString)")
             let imageTask = ImagePipeline.shared.imageTask(with: url)
             imageTask.priority = .veryHigh
             let image = try await imageTask.image
@@ -59,6 +60,16 @@ class ImageLoader {
             print(error)
             loading = .failed
         }
+    }
+    
+    @MainActor
+    func reload(with url: URL) async {
+        print("DEBUG reloading with \(url.absoluteString)")
+        error = nil
+        uiImage = nil
+        loading = .loading
+        self.url = url
+        await load()
     }
 }
 

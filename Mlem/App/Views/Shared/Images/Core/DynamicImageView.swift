@@ -25,6 +25,16 @@ struct DynamicImageView: View {
     let cornerRadius: CGFloat
     let actionsEnabled: Bool
     
+    var proxyBypass: URL? {
+        if let url = loader.url,
+           let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+           let base = components.queryItems?.first { $0.name == "url" }?.value {
+            print("proxied! base: \(base)")
+            return URL(string: base)
+        }
+        return nil
+    }
+    
     init(
         url: URL?,
         maxSize: CGFloat? = nil,
@@ -67,14 +77,32 @@ struct DynamicImageView: View {
                     palette.secondaryBackground
                         .overlay {
                             if loader.error != nil {
-                                Image(systemName: Icons.missing)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(maxWidth: 50)
-                                    .padding(4)
-                                    .foregroundStyle(palette.tertiary)
+                                if let proxyBypass {
+                                    Image(systemName: "firewall")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(maxWidth: 50)
+                                        .padding(4)
+                                        .foregroundStyle(palette.tertiary)
+                                } else {
+                                    Image(systemName: Icons.missing)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(maxWidth: 50)
+                                        .padding(4)
+                                        .foregroundStyle(palette.tertiary)
+                                }
                             }
                         }
+                }
+            }
+            .onTapGesture {
+                if loader.error != nil, let proxyBypass {
+                    print("DEBUG tapped")
+                    Task {
+                        print("DEBUG calling reload with \(proxyBypass.absoluteString)")
+                        await loader.reload(with: proxyBypass)
+                    }
                 }
             }
             .clipShape(.rect(cornerRadius: cornerRadius))
