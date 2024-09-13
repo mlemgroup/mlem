@@ -27,7 +27,7 @@ enum NavigationPage: Hashable {
     case imageViewer(_ url: URL)
     case communityPicker(api: ApiClient?, callback: HashWrapper<(Community2, NavigationLayer) -> Void>)
     case personPicker(api: ApiClient?, callback: HashWrapper<(Person2, NavigationLayer) -> Void>)
-    case instancePicker(callback: HashWrapper<(InstanceSummary, NavigationLayer) -> Void>)
+    case instancePicker(callback: HashWrapper<(InstanceSummary, NavigationLayer) -> Void>, minimumVersion: SiteVersion? = nil)
     case selectText(_ string: String)
     case subscriptionList
     case createComment(_ context: CommentEditorView.Context, commentTreeTracker: CommentTreeTracker? = nil)
@@ -91,9 +91,11 @@ enum NavigationPage: Hashable {
     }
     
     static func instancePicker(
-        callback: @escaping (InstanceSummary, NavigationLayer) -> Void
+        callback: @escaping (InstanceSummary, NavigationLayer) -> Void,
+        minimumVersion: SiteVersion? = nil
     ) -> NavigationPage {
-        instancePicker(callback: .init(wrappedValue: callback))
+        assert((minimumVersion ?? .infinity) > Constants.main.minimumLemmyVersion)
+        return instancePicker(callback: .init(wrappedValue: callback), minimumVersion: minimumVersion)
     }
     
     static func communityPicker(
@@ -117,9 +119,11 @@ enum NavigationPage: Hashable {
     }
     
     static func instancePicker(
-        callback: @escaping (InstanceSummary) -> Void
+        callback: @escaping (InstanceSummary) -> Void,
+        minimumVersion: SiteVersion? = nil
     ) -> NavigationPage {
-        instancePicker(callback: .init(wrappedValue: { value, navigation in
+        assert((minimumVersion ?? .infinity) > Constants.main.minimumLemmyVersion)
+        return instancePicker(callback: .init(wrappedValue: { value, navigation in
             callback(value)
             navigation.dismissSheet()
         }))

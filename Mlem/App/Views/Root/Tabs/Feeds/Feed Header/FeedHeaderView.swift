@@ -64,7 +64,7 @@ struct FeedHeaderView<ImageContent: View>: View {
                             .foregroundStyle(palette.primary)
                         
                         if case let .enabled(showBadge) = dropdownStyle {
-                            Image(systemName: Icons.dropdown)
+                            Image(systemName: Icons.dropDown)
                                 .foregroundStyle(palette.secondary)
                                 .overlay(alignment: .topTrailing) {
                                     if showBadge {

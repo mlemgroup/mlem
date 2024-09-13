@@ -116,7 +116,13 @@
     "All Time" : {
 
     },
+    "Alphabetical" : {
+
+    },
     "Always" : {
+
+    },
+    "Any Instance" : {
 
     },
     "Answer..." : {
@@ -211,6 +217,9 @@
 
     },
     "Choose File" : {
+
+    },
+    "Choose..." : {
 
     },
     "Choose wisely - you cannot change this later." : {
@@ -439,6 +448,9 @@
 
     },
     "Files" : {
+
+    },
+    "Filters" : {
 
     },
     "General" : {
@@ -720,6 +732,12 @@
     "Other" : {
 
     },
+    "Other (%@)" : {
+
+    },
+    "Other..." : {
+
+    },
     "Outside NSFW Communities" : {
 
     },
@@ -861,6 +879,9 @@
     "Scaled" : {
 
     },
+    "Score" : {
+
+    },
     "Search" : {
 
     },
@@ -973,6 +994,9 @@
 
     },
     "Subscription List" : {
+
+    },
+    "Subscription statuses can't be displayed when using these filters." : {
 
     },
     "Superscript" : {
@@ -1148,6 +1172,9 @@
 
     },
     "Users" : {
+
+    },
+    "Version" : {
 
     },
     "Viewing %@ as guest" : {
