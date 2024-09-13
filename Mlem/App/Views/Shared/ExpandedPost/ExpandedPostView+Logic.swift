@@ -2,12 +2,25 @@
 //  ExpandedPostView+Logic.swift
 //  Mlem
 //
-//  Created by Sam Marfleet on 24/08/2024.
+//  Created by Sjmarf on 24/08/2024.
 //
 
+import MlemMiddleware
 import SwiftUI
 
 extension ExpandedPostView {
+    var showLoadingSymbol: Bool {
+        !(highlightedComment == nil || (post.wrappedValue is any Post2Providing && scrolledToHighlightedComment))
+    }
+    
+    func load(tracker: CommentTreeTracker) async {
+        if let highlightedComment {
+            await tracker.load(ensuringPresenceOf: highlightedComment)
+        } else {
+            await tracker.load()
+        }
+    }
+    
     func topCommentRow(of anchors: AnchorsKey.Value, in proxy: GeometryProxy) -> URL? {
         var yBest = CGFloat.infinity
         var ret: URL?
@@ -21,8 +34,10 @@ extension ExpandedPostView {
     }
     
     func scrollToNextComment() {
-        if let topVisibleItem, let tracker {
-            if topVisibleItem == post.wrappedValue.actorId, let first = tracker.comments.first {
+        guard let tracker else { return }
+        let post = post.wrappedValue
+        if let topVisibleItem {
+            if topVisibleItem == post.actorId, let first = tracker.comments.first {
                 jumpButtonTarget = first.actorId
                 return
             }
@@ -36,11 +51,13 @@ extension ExpandedPostView {
     }
     
     func scrollToPreviousComment() {
-        if let topVisibleItem, topVisibleItem != post.wrappedValue.actorId {
-            if let comment = tracker?.commentsKeyedByActorId[topVisibleItem], let tracker {
+        guard let tracker else { return }
+        let post = post.wrappedValue
+        if let topVisibleItem, topVisibleItem != post.actorId {
+            if let comment = tracker.commentsKeyedByActorId[topVisibleItem] {
                 if var topLevelIndex = tracker.comments.firstIndex(of: comment.topParent) {
                     if topLevelIndex < 0 || comment == tracker.comments.first {
-                        jumpButtonTarget = post.wrappedValue.actorId
+                        jumpButtonTarget = post.actorId
                     } else {
                         if comment.parent == nil { topLevelIndex -= 1 }
                         jumpButtonTarget = tracker.comments[topLevelIndex].actorId

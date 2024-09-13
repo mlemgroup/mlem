@@ -24,7 +24,7 @@ struct CommentEditorView: View {
     
     let textView: UITextView = .init()
 
-    let expandedPostTracker: ExpandedPostTracker?
+    let commentTreeTracker: CommentTreeTracker?
     
     @State var commentToEdit: Comment2?
     @State var originalContext: Context?
@@ -42,12 +42,12 @@ struct CommentEditorView: View {
     init?(
         commentToEdit: Comment2? = nil,
         context: Context? = nil,
-        expandedPostTracker: ExpandedPostTracker? = nil
+        commentTreeTracker: CommentTreeTracker? = nil
     ) {
         self.commentToEdit = commentToEdit
         self.originalContext = context
         self._resolvedContext = .init(wrappedValue: context)
-        self.expandedPostTracker = expandedPostTracker
+        self.commentTreeTracker = commentTreeTracker
         if let userAccount = (AppState.main.firstAccount as? UserAccount) {
             self._account = .init(wrappedValue: userAccount)
         } else {
@@ -78,7 +78,7 @@ struct CommentEditorView: View {
                                 AccountPickerMenu(account: $account) {
                                     HStack(spacing: 3) {
                                         FullyQualifiedLabelView(entity: account, labelStyle: .medium, showAvatar: false, blurred: false)
-                                        Image(systemName: "chevron.down.circle.fill")
+                                        Image(systemName: Icons.dropDownCircleFill)
                                             .symbolRenderingMode(.hierarchical)
                                             .tint(palette.secondary)
                                             .imageScale(.small)

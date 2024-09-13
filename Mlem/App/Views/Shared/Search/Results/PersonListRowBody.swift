@@ -89,7 +89,9 @@ struct PersonListRowBody<Content: View>: View {
             }
         }
         .padding(.horizontal)
+        .padding(.vertical, -5)
         .contentShape(.rect)
+        .padding(.vertical, 5)
     }
     
     var dateFormatter: DateFormatter {

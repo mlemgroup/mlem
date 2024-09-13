@@ -9,7 +9,7 @@ import Foundation
 import MlemMiddleware
 
 // The specification defined in https://github.com/mlemgroup/mlem-stats
-struct InstanceSummary: Codable {
+struct InstanceSummary: Codable, Hashable {
     let name: String
     let host: String
     let userCount: Int

@@ -40,7 +40,7 @@ struct ReplyView: View {
         .background(palette.background)
         .contentShape(.rect)
         .onTapGesture {
-            navigation.push(.expandedPost(reply.post, commentActorId: reply.comment.actorId))
+            navigation.push(.post(reply.post, highlightedComment: reply.comment))
         }
         .quickSwipes(reply.swipeActions(behavior: .standard))
         .contextMenu { reply.menuActions() }

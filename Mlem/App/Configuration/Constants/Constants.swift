@@ -7,6 +7,7 @@
 
 import Foundation
 import KeychainAccess
+import MlemMiddleware
 import SwiftUI
 
 class Constants {
@@ -28,6 +29,10 @@ class Constants {
     // MARK: - Common Constants
     
     // These constants are used across all platforms, and generally configure backend behavior
+    
+    // MARK: Versioning
+    
+    let minimumLemmyVersion: SiteVersion = .v18_0
     
     // MARK: Image Caching
     
