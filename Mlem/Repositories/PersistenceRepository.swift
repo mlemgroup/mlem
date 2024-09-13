@@ -65,6 +65,12 @@ class PersistenceRepository {
         self.read = read
         self.write = write
         self.bundle = bundle
+        
+        do {
+            try FileManager.default.createDirectory(at: Path.systemSettings, withIntermediateDirectories: true)
+        } catch {
+            fatalError("Could not create settings directories")
+        }
     }
     
     // MARK: - Public methods
