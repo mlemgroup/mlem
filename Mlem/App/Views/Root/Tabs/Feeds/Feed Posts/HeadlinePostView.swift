@@ -17,7 +17,7 @@ struct HeadlinePostView: View {
     @Setting(\.blurNsfw) var blurNsfw
     
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
-    @Environment(ExpandedPostTracker.self) private var expandedPostTracker: ExpandedPostTracker?
+    @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(Palette.self) var palette: Palette
     
     let post: any Post1Providing
@@ -58,7 +58,12 @@ struct HeadlinePostView: View {
             
             HStack(alignment: .top, spacing: Constants.main.standardSpacing) {
                 if thumbnailLocation == .left {
-                    ThumbnailImageView(post: post, blurred: blurred, size: .standard)
+                    ThumbnailImageView(
+                        post: post,
+                        blurred: blurred,
+                        size: .standard,
+                        frame: .init(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
+                    )
                 }
   
                 VStack(alignment: .leading, spacing: Constants.main.halfSpacing) {
@@ -75,7 +80,12 @@ struct HeadlinePostView: View {
                 
                 if thumbnailLocation == .right {
                     Spacer()
-                    ThumbnailImageView(post: post, blurred: blurred, size: .standard)
+                    ThumbnailImageView(
+                        post: post,
+                        blurred: blurred,
+                        size: .standard,
+                        frame: .init(width: Constants.main.thumbnailSize, height: Constants.main.thumbnailSize)
+                    )
                 }
             }
             
@@ -86,7 +96,7 @@ struct HeadlinePostView: View {
             InteractionBarView(
                 post: post,
                 configuration: InteractionBarTracker.main.postInteractionBar,
-                expandedPostTracker: expandedPostTracker,
+                commentTreeTracker: commentTreeTracker,
                 communityContext: communityContext
             )
             .padding(.vertical, 2)

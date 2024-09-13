@@ -126,8 +126,7 @@ struct ToastView: View {
     @ViewBuilder
     func accountView(_ account: any Account) -> some View {
         HStack(spacing: Constants.main.doubleSpacing) {
-            CircleCroppedImageView(account, showProgress: false)
-                .frame(width: 27, height: 27)
+            CircleCroppedImageView(account, frame: 27, showProgress: false)
                 .padding([.vertical, .leading], Constants.main.standardSpacing)
             Text(account.nickname)
                 .lineLimit(1)
@@ -170,6 +169,7 @@ struct ToastView: View {
                             Text(details.errorText)
                                 .foregroundStyle(.red)
                                 .padding(8)
+                                .multilineTextAlignment(.leading)
                         }
                         .frame(maxWidth: .infinity)
                         

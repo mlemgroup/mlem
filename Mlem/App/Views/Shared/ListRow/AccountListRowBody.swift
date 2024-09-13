@@ -10,6 +10,7 @@ import SwiftUI
 
 struct AccountListRowBody: View {
     @Environment(AppState.self) private var appState
+    @Environment(Palette.self) var palette
     
     enum Complication: CaseIterable {
         case instance, lastUsed, isActive
@@ -20,8 +21,7 @@ struct AccountListRowBody: View {
     
     var body: some View {
         HStack(alignment: .center, spacing: 10) {
-            CircleCroppedImageView(account, showProgress: false)
-                .frame(width: 40, height: 40)
+            CircleCroppedImageView(account, frame: 40, showProgress: false)
                 .padding(.leading, -5)
             VStack(alignment: .leading) {
                 Text(account.nickname)
@@ -35,7 +35,7 @@ struct AccountListRowBody: View {
             Spacer()
             if complications.contains(.isActive), appState.firstSession.actorId == account.actorId {
                 Image(systemName: Icons.present)
-                    .foregroundStyle(.green)
+                    .foregroundStyle(palette.positive)
                     .font(.system(size: 10.0))
             }
         }

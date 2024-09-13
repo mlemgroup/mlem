@@ -42,28 +42,14 @@ struct DynamicImageView: View {
         if actionsEnabled, let url = fullSizeUrl(url: loader.url) {
             content
                 .contextMenu {
-                    Button {
-                        Task {
-                            await saveImage(url: url)
-                        }
-                    } label: {
-                        Label(String(localized: "Save Image"), systemImage: Icons.import)
+                    Button("Save Image", systemImage: Icons.import) {
+                        Task { await saveImage(url: url) }
                     }
-                    
-                    Button {
-                        Task {
-                            await shareImage(url: url)
-                        }
-                    } label: {
-                        Label(String(localized: "Share Image"), systemImage: Icons.share)
+                    Button("Share Image", systemImage: Icons.share) {
+                        Task { await shareImage(url: url) }
                     }
-                    
-                    Button {
-                        Task {
-                            await showQuickLook(url: url)
-                        }
-                    } label: {
-                        Label(String(localized: "Quick Look"), systemImage: Icons.imageDetails)
+                    Button("Quick Look", systemImage: Icons.imageDetails) {
+                        Task { await showQuickLook(url: url) }
                     }
                 }
                 .quickLookPreview($quickLookUrl)
@@ -94,7 +80,11 @@ struct DynamicImageView: View {
             .clipShape(.rect(cornerRadius: cornerRadius))
             .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
             .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
-            .task(loader.load)
+            .onAppear {
+                Task {
+                    await loader.load()
+                }
+            }
     }
   
     func shareImage(url: URL) async {

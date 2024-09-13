@@ -46,6 +46,17 @@ class AppState {
     func changeAccount(to account: any Account, keepPlace: Bool? = nil, showAvatarPopup: Bool = true) {
         @Setting(\.keepPlaceOnAccountSwitch) var keepPlaceSetting
         let keepPlace = keepPlace ?? keepPlaceSetting
+        
+        if firstAccount is UserAccount {
+            Task {
+                do {
+                    try await firstAccount.api.flushPostReadQueue()
+                } catch {
+                    handleError(error)
+                }
+            }
+        }
+        
         if keepPlace {
             if showAvatarPopup {
                 ToastModel.main.add(.account(account))

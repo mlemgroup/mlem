@@ -47,14 +47,15 @@ struct FullyQualifiedLabelView: View {
 
     let entity: (any CommunityOrPersonStub & Profile1Providing)?
     let labelStyle: FullyQualifiedLabelStyle
-    let showAvatar: Bool
+    var showAvatar: Bool = true
+    var showInstance: Bool = true
     let blurred: Bool
     
     var fallback: FixedImageView.Fallback {
         if entity is any CommunityStubProviding {
             return .community
         }
-        if entity is any PersonStubProviding {
+        if entity is any PersonStubProviding || entity is UserAccount {
             return .person
         }
         return .image
@@ -65,16 +66,16 @@ struct FullyQualifiedLabelView: View {
             if showAvatar {
                 CircleCroppedImageView(
                     url: entity?.avatar?.withIconSize(labelStyle.avatarResolution),
+                    frame: labelStyle.avatarSize,
                     fallback: fallback,
                     showProgress: false,
                     blurred: blurred
                 )
-                .frame(width: labelStyle.avatarSize, height: labelStyle.avatarSize)
             }
             FullyQualifiedNameView(
                 name: entity?.name,
                 instance: entity?.host,
-                instanceLocation: labelStyle.instanceLocation,
+                instanceLocation: showInstance ? labelStyle.instanceLocation : .disabled,
                 prependedText: flairs.textView()
             )
             .imageScale(.small)
@@ -85,11 +86,10 @@ struct FullyQualifiedLabelView: View {
     
     var flairs: [PersonFlair] {
         guard let person = entity as? any Person else { return [] }
-        let flairs = person.flairs(
+        return person.flairs(
             interactableContext: (commentContext as? any Comment2Providing) ?? (postContext as? any Post2Providing),
             communityContext: communityContext as? any Community3Providing
         )
-        return PersonFlair.allCases.filter { flairs.contains($0) }
     }
     
     var accessibilityLabel: String {

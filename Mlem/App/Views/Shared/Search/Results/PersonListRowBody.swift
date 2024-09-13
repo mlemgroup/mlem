@@ -65,8 +65,11 @@ struct PersonListRowBody<Content: View>: View {
                     .frame(width: 30, height: 30)
                     .padding(9)
             } else {
-                CircleCroppedImageView(url: person.avatar?.withIconSize(128), fallback: .person)
-                    .frame(width: Constants.main.listRowAvatarSize, height: Constants.main.listRowAvatarSize)
+                CircleCroppedImageView(
+                    url: person.avatar?.withIconSize(128),
+                    frame: Constants.main.listRowAvatarSize,
+                    fallback: .person
+                )
             }
             VStack(alignment: .leading, spacing: 4) {
                 (flairs.textView() + Text(title))
@@ -86,7 +89,9 @@ struct PersonListRowBody<Content: View>: View {
             }
         }
         .padding(.horizontal)
+        .padding(.vertical, -5)
         .contentShape(.rect)
+        .padding(.vertical, 5)
     }
     
     var dateFormatter: DateFormatter {
@@ -136,7 +141,6 @@ struct PersonListRowBody<Content: View>: View {
     }
     
     var flairs: [PersonFlair] {
-        let flairs = person.flairs(communityContext: communityContext as? any Community3Providing)
-        return PersonFlair.allCases.filter { flairs.contains($0) }
+        person.flairs(communityContext: communityContext as? any Community3Providing)
     }
 }

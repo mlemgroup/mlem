@@ -18,19 +18,19 @@ struct InteractionBarView: View {
     init(
         post: any Post1Providing,
         configuration: PostBarConfiguration,
-        expandedPostTracker: ExpandedPostTracker? = nil,
+        commentTreeTracker: CommentTreeTracker? = nil,
         communityContext: (any CommunityStubProviding)? = nil
     ) {
         self.leading = .init(
             post: post,
             items: configuration.leading,
-            expandedPostTracker: expandedPostTracker,
+            commentTreeTracker: commentTreeTracker,
             communityContext: communityContext
         )
         self.trailing = .init(
             post: post,
             items: configuration.trailing,
-            expandedPostTracker: expandedPostTracker,
+            commentTreeTracker: commentTreeTracker,
             communityContext: communityContext
         )
         self.readouts = configuration.readouts.map { post.readout(type: $0) }
@@ -39,19 +39,19 @@ struct InteractionBarView: View {
     init(
         comment: any Comment1Providing,
         configuration: CommentBarConfiguration,
-        expandedPostTracker: ExpandedPostTracker? = nil,
+        commentTreeTracker: CommentTreeTracker? = nil,
         communityContext: (any CommunityStubProviding)? = nil
     ) {
         self.leading = .init(
             comment: comment,
             items: configuration.leading,
-            expandedPostTracker: expandedPostTracker,
+            commentTreeTracker: commentTreeTracker,
             communityContext: communityContext
         )
         self.trailing = .init(
             comment: comment,
             items: configuration.trailing,
-            expandedPostTracker: expandedPostTracker,
+            commentTreeTracker: commentTreeTracker,
             communityContext: communityContext
         )
         self.readouts = configuration.readouts.map { comment.readout(type: $0) }
@@ -111,6 +111,7 @@ struct InteractionBarView: View {
                 .monospacedDigit()
                 .contentTransition(.numericText(value: Double(counter.value ?? 0)))
                 .animation(.default, value: counter.value)
+                .foregroundStyle(palette.primary)
                 
             if let trailingAction = counter.trailingAction {
                 actionView(trailingAction)
@@ -193,7 +194,7 @@ extension [EnrichedWidget] {
     init(
         post: any Post1Providing,
         items: [PostBarConfiguration.Item],
-        expandedPostTracker: ExpandedPostTracker?,
+        commentTreeTracker: CommentTreeTracker?,
         communityContext: (any CommunityStubProviding)?
     ) {
         self = items.map { item in
@@ -202,7 +203,7 @@ extension [EnrichedWidget] {
                 return .action(
                     post.action(
                         type: action,
-                        expandedPostTracker: expandedPostTracker,
+                        commentTreeTracker: commentTreeTracker,
                         communityContext: communityContext
                     )
                 )
@@ -210,7 +211,7 @@ extension [EnrichedWidget] {
                 return .counter(
                     post.counter(
                         type: counter,
-                        expandedPostTracker: expandedPostTracker
+                        commentTreeTracker: commentTreeTracker
                     )
                 )
             }
@@ -220,7 +221,7 @@ extension [EnrichedWidget] {
     init(
         comment: any Comment1Providing,
         items: [CommentBarConfiguration.Item],
-        expandedPostTracker: ExpandedPostTracker?,
+        commentTreeTracker: CommentTreeTracker?,
         communityContext: (any CommunityStubProviding)?
     ) {
         self = items.map { item in
@@ -229,7 +230,7 @@ extension [EnrichedWidget] {
                 return .action(
                     comment.action(
                         type: action,
-                        expandedPostTracker: expandedPostTracker,
+                        commentTreeTracker: commentTreeTracker,
                         communityContext: communityContext
                     )
                 )
@@ -237,7 +238,7 @@ extension [EnrichedWidget] {
                 return .counter(
                     comment.counter(
                         type: counter,
-                        expandedPostTracker: expandedPostTracker
+                        commentTreeTracker: commentTreeTracker
                     )
                 )
             }

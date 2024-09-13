@@ -40,6 +40,7 @@ class Settings: ObservableObject {
     @AppStorage("links.openInBrowser") var openLinksInBrowser = false
     @AppStorage("links.readerMode") var openLinksInReaderMode = false
     
+    @AppStorage("feed.markReadOnScroll") var markReadOnScroll: Bool = false
     @AppStorage("feed.showRead") var showReadInFeed: Bool = true
     @AppStorage("feed.default") var defaultFeed: FeedSelection = .subscribed
     
@@ -53,6 +54,7 @@ class Settings: ObservableObject {
     
     @AppStorage("community.showAvatar") var showCommunityAvatar: Bool = true
     
+    @AppStorage("comment.compact") var compactComments: Bool = false
     @AppStorage("comment.jumpButton") var jumpButton: CommentJumpButtonLocation = .bottomTrailing
     @AppStorage("comment.sort") var commentSort: ApiCommentSortType = .top
 }

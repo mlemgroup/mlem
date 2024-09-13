@@ -2,10 +2,9 @@
 //  ExpandedPostView.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2024-05-12.
+//  Created by Sjmarf on 03/09/2024.
 //
 
-import Foundation
 import MlemMiddleware
 import SwiftUI
 
@@ -20,7 +19,7 @@ struct ExpandedPostView: View {
             value.merge(nextValue()) { $1 }
         }
     }
-    
+
     @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
     @Environment(\.dismiss) var dismiss
@@ -28,77 +27,75 @@ struct ExpandedPostView: View {
     @Setting(\.jumpButton) var jumpButton
     
     let post: AnyPost
-    @State var showCommentWithActorId: URL?
+    @State var tracker: CommentTreeTracker?
+    @State var highlightedComment: (any CommentStubProviding)?
+    @State var scrolledToHighlightedComment: Bool
+    
     @State var jumpButtonTarget: URL?
     @State var topVisibleItem: URL?
     
-    @State var tracker: ExpandedPostTracker?
+    init(post: AnyPost, highlightedComment: (any CommentStubProviding)?) {
+        self.post = post
+        self._highlightedComment = .init(wrappedValue: highlightedComment)
+        self._scrolledToHighlightedComment = .init(wrappedValue: highlightedComment == nil)
+    }
     
     var body: some View {
         ContentLoader(model: post) { proxy in
-            if let post = proxy.entity, let tracker {
-                let showLoadingSymbol = showCommentWithActorId == nil || (self.post.isUpgraded && tracker.loadingState != .loading)
+            // Using a `ZStack` here rather than `if`/`else` because there needs to
+            // be a delay between the `content()` appearing and calling `scrollTo`
+            VStack {
+                if let post = proxy.entity, let tracker {
+                    content(post: post, tracker: tracker, isLoading: proxy.isLoading)
+                        .externalApiWarning(entity: post, isLoading: proxy.isLoading)
+                        .task {
+                            if post.api == appState.firstApi, tracker.loadingState == .idle {
+                                post.markRead()
+                                await load(tracker: tracker)
+                            }
+                        }
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .overlay {
                 VStack {
                     if showLoadingSymbol {
-                        content(for: post, tracker: tracker)
-                            .externalApiWarning(entity: post, isLoading: proxy.isLoading)
-                            .transition(.opacity)
-                    } else {
-                        // We *could* show the post here, but we'd need to scroll down as soon as the comments load.
-                        // So, show a ProgressView instead (cleaner UX).
-                        ProgressView()
-                            .tint(.secondary)
-                            .transition(.opacity)
-                        // TODO: prefetch post image in an `.onChange` here?
-                        // This could alleviate the `scrollTo` inaccuracy mentioned further down,
-                        // As the post won't change size if the image is able to load in time.
-                        // Theoretically we'd also need to do this with comment images, but
-                        // unfortunately we don't have time for that because the comments should be
-                        // shown as soon as they load.
+                        ZStack {
+                            palette.background
+                                .ignoresSafeArea()
+                            ProgressView()
+                                .tint(.secondary)
+                        }
+                        .transition(.opacity)
                     }
                 }
-                .animation(.default, value: showLoadingSymbol)
-                .task {
-                    if post.api == appState.firstApi, tracker.loadingState == .idle {
-                        post.markRead()
-                        await tracker.load()
-                    }
-                }
-                .toolbar {
-                    sortPicker(tracker: tracker)
-                    if proxy.isLoading {
-                        ProgressView()
-                    } else {
-                        ToolbarEllipsisMenu(post.menuActions())
-                    }
-                }
-            } else {
-                ProgressView()
-                    .tint(palette.secondary)
+                .animation(.easeOut(duration: 0.1), value: showLoadingSymbol)
             }
         } upgradeOperation: { model, api in
             try await model.upgrade(api: api, upgradeOperation: nil)
             if let post = model.wrappedValue as? any Post {
                 if let tracker {
-                    tracker.post = post
+                    tracker.root = .post(post)
                     tracker.loadingState = .idle
-                    await tracker.load()
+                    await load(tracker: tracker)
                 } else {
-                    tracker = .init(post: post)
+                    tracker = .init(root: .post(post))
                 }
             }
         }
-        .environment(tracker)
+        .background(palette.background)
     }
     
     // swiftlint:disable:next function_body_length
-    @ViewBuilder func content(for post: any Post1Providing, tracker: ExpandedPostTracker) -> some View {
+    @ViewBuilder func content(post: any Post, tracker: CommentTreeTracker, isLoading: Bool) -> some View {
         GeometryReader { geo in
             ScrollViewReader { proxy in
                 FancyScrollView {
                     LazyVStack(alignment: .leading, spacing: 0) {
                         LargePostView(post: post, isExpanded: true)
                             .id(post.actorId)
+                            .transition(.opacity)
+                            .animation(.easeOut(duration: 0.1), value: post is any Post2Providing)
                             .anchorPreference(
                                 key: AnchorsKey.self,
                                 value: .center
@@ -106,28 +103,33 @@ struct ExpandedPostView: View {
                             .padding(10)
                         Divider()
                         ForEach(tracker.comments.tree(), id: \.actorId) { comment in
-                            CommentView(comment: comment, highlight: showCommentWithActorId == comment.actorId)
-                                .transition(.move(edge: .top).combined(with: .opacity))
-                                .zIndex(1000 - Double(comment.depth))
-                                .anchorPreference(
-                                    key: AnchorsKey.self,
-                                    value: .center
-                                ) { [comment.actorId: $0] }
+                            CommentView(
+                                comment: comment,
+                                highlight: highlightedComment?.actorId == comment.actorId,
+                                depthOffset: 0
+                            )
+                            .transition(.move(edge: .top).combined(with: .opacity))
+                            .zIndex(1000 - Double(comment.depth))
+                            .anchorPreference(
+                                key: AnchorsKey.self,
+                                value: .center
+                            ) { [comment.actorId: $0] }
                         }
                         Color.clear
                             .frame(height: 500)
                             .contentShape(.rect)
                     }
-                    .animation(.easeInOut(duration: 0.4), value: showCommentWithActorId)
+                    .animation(.easeInOut(duration: 0.4), value: highlightedComment?.actorId)
                 }
-                .onAppear {
-                    if let showCommentWithActorId {
-                        // The scroll destination isn't always accurate. Possibly due to the post image changing
-                        // size on load? Using `anchor: .top` would be better here, but `anchor: .center` makes
-                        // the inaccuracy less noticeable. See also the comment further up the file.
-                        proxy.scrollTo(showCommentWithActorId, anchor: .center)
+                .onChange(of: tracker.loadingState, initial: true) {
+                    if tracker.loadingState == .done, let highlightedComment {
+                        // Without a slight delay here, `scrollTo` can sometimes fail. I'm not sure why this is.
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            proxy.scrollTo(highlightedComment.actorId, anchor: .center)
+                            scrolledToHighlightedComment = true
+                        }
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            self.showCommentWithActorId = nil
+                            self.highlightedComment = nil
                         }
                     }
                 }
@@ -154,10 +156,19 @@ struct ExpandedPostView: View {
                 }
             }
         }
+        .toolbar {
+            sortPicker(tracker: tracker)
+            if isLoading {
+                ProgressView()
+            } else {
+                ToolbarEllipsisMenu(post.menuActions())
+            }
+        }
+        .environment(tracker)
     }
     
     @ViewBuilder
-    func sortPicker(tracker: ExpandedPostTracker) -> some View {
+    func sortPicker(tracker: CommentTreeTracker) -> some View {
         Picker(
             "Sort",
             selection: Binding(get: { tracker.sort }, set: {

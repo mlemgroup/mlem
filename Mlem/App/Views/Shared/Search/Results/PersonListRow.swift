@@ -38,13 +38,15 @@ struct PersonListRow<Content2: View>: View {
     }
     
     var body: some View {
-        FormChevron { content }
-            .padding(.trailing)
-            .padding(.vertical, 6)
-            .onTapGesture {
-                navigation.push(.person(person))
-            }
-            .background(palette.background)
-            .contextMenu { person.menuActions(navigation: navigation) }
+        Button {
+            navigation.push(.person(person))
+        } label: {
+            FormChevron { content }
+                .padding(.trailing)
+        }
+        .buttonStyle(EmptyButtonStyle())
+        .padding(.vertical, 6)
+        .background(palette.background)
+        .contextMenu { person.menuActions(navigation: navigation) }
     }
 }

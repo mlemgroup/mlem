@@ -5,7 +5,10 @@
 //  Created by Sjmarf on 02/06/2024.
 //
 
+import Foundation
 import MlemMiddleware
+import PhotosUI
+import SwiftUI
 
 extension ApiClient {
     var isActive: Bool {

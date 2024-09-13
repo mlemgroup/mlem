@@ -30,7 +30,7 @@ struct MenuButton: View {
         } else if let action = action as? ActionGroup {
             switch action.displayMode {
             case .section:
-                Section {
+                SwiftUI.Section {
                     iterateActions(actions: action.children)
                 }
             case .compactSection:

@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct ImageViewer: View {
+    @Environment(Palette.self) var palette
+    
     let url: URL
     
     init(url: URL) {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
-        components.query = nil
+        components.queryItems = components.queryItems?.filter { $0.name != "thumbnail" }
         self.url = components.url!
     }
     
@@ -26,5 +28,6 @@ struct ImageViewer: View {
                 CloseButtonView()
             }
         }
+        .background(palette.background)
     }
 }

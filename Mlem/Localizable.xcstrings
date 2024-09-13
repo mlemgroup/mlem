@@ -86,6 +86,12 @@
     "Active Users" : {
 
     },
+    "Add" : {
+
+    },
+    "Add a Link..." : {
+
+    },
     "Add Account" : {
 
     },
@@ -110,10 +116,22 @@
     "All Time" : {
 
     },
+    "Alphabetical" : {
+
+    },
     "Always" : {
 
     },
+    "Any Instance" : {
+
+    },
+    "Answer..." : {
+
+    },
     "App Icon" : {
+
+    },
+    "Application Submitted!" : {
 
     },
     "Applications Email Admins" : {
@@ -192,10 +210,22 @@
         }
       }
     },
+    "Choose a community..." : {
+
+    },
     "Choose Account Type" : {
 
     },
+    "Choose..." : {
+
+    },
+    "Choose wisely - you cannot change this later." : {
+
+    },
     "Clear Cache" : {
+
+    },
+    "Click on the link in the email to continue." : {
 
     },
     "Closed" : {
@@ -222,7 +252,13 @@
     "Compact" : {
 
     },
+    "Compact Comments" : {
+
+    },
     "Confirm" : {
+
+    },
+    "Confirm Password" : {
 
     },
     "Connecting..." : {
@@ -249,6 +285,9 @@
     "Couldn't read URL" : {
 
     },
+    "Crosspost" : {
+
+    },
     "Customize Interaction Bar" : {
       "localizations" : {
         "en-GB" : {
@@ -258,9 +297,6 @@
           }
         }
       }
-    },
-    "Dark" : {
-
     },
     "Day" : {
 
@@ -307,16 +343,25 @@
     "Don't show this again" : {
 
     },
+    "Done" : {
+
+    },
     "Downvote" : {
 
     },
     "Downvotes" : {
 
     },
+    "Dracula" : {
+
+    },
     "Easy" : {
 
     },
     "Edit" : {
+
+    },
+    "Email" : {
 
     },
     "Email Verification" : {
@@ -399,6 +444,12 @@
     "Feeds" : {
 
     },
+    "Files" : {
+
+    },
+    "Filters" : {
+
+    },
     "General" : {
 
     },
@@ -415,6 +466,9 @@
 
     },
     "Guest" : {
+
+    },
+    "Haptic Level" : {
 
     },
     "Hard" : {
@@ -483,6 +537,12 @@
     "Italic" : {
 
     },
+    "john_doe" : {
+
+    },
+    "johndoe@example.com" : {
+
+    },
     "Jump Button" : {
 
     },
@@ -513,7 +573,7 @@
     "Licenses" : {
 
     },
-    "Light" : {
+    "Link" : {
 
     },
     "Links" : {
@@ -532,6 +592,9 @@
 
     },
     "Mark Read" : {
+
+    },
+    "Mark Read on Scroll" : {
 
     },
     "Mark Unread" : {
@@ -591,6 +654,9 @@
     "New" : {
 
     },
+    "New Account" : {
+
+    },
     "New Comments" : {
 
     },
@@ -618,10 +684,19 @@
     "NSFW Content" : {
 
     },
+    "NSFW Tag" : {
+
+    },
     "Ocean" : {
 
     },
     "Old" : {
+
+    },
+    "Once approved, you'll be able to log in to your account from the Settings tab." : {
+
+    },
+    "One of more of your posts failed to send." : {
 
     },
     "Open" : {
@@ -642,6 +717,9 @@
     "Open URL from Clipboard" : {
 
     },
+    "Optional Description" : {
+
+    },
     "Orange" : {
 
     },
@@ -649,6 +727,12 @@
 
     },
     "Other" : {
+
+    },
+    "Other (%@)" : {
+
+    },
+    "Other..." : {
 
     },
     "Outside NSFW Communities" : {
@@ -660,7 +744,19 @@
     "Password" : {
 
     },
+    "Password must be %lld characters or more." : {
+
+    },
+    "Passwords don't match." : {
+
+    },
+    "Paste" : {
+
+    },
     "Permanently delete %@" : {
+
+    },
+    "Photos" : {
 
     },
     "Pink" : {
@@ -723,10 +819,16 @@
     "Registration" : {
 
     },
+    "Registrations are closed on this instance." : {
+
+    },
     "Reload" : {
 
     },
     "Reload on Switch" : {
+
+    },
+    "Remove" : {
 
     },
     "Replies" : {
@@ -771,6 +873,9 @@
     "Scaled" : {
 
     },
+    "Score" : {
+
+    },
     "Search" : {
 
     },
@@ -804,6 +909,9 @@
     "Show Mod Names in Modlog" : {
 
     },
+    "Show NSFW Content" : {
+
+    },
     "Show Post Creator in Feed" : {
 
     },
@@ -819,6 +927,9 @@
     "Sign In to Lemmy" : {
 
     },
+    "Sign Up" : {
+
+    },
     "Silver" : {
 
     },
@@ -826,6 +937,9 @@
 
     },
     "Slur Filter" : {
+
+    },
+    "Solarized" : {
 
     },
     "Some" : {
@@ -846,10 +960,19 @@
     "Spoiler" : {
 
     },
+    "Start writing..." : {
+
+    },
     "Strikethrough" : {
 
     },
     "Style" : {
+
+    },
+    "Submit Application" : {
+
+    },
+    "Submitting..." : {
 
     },
     "Subscribe" : {
@@ -867,6 +990,9 @@
     "Subscription List" : {
 
     },
+    "Subscription statuses can't be displayed when using these filters." : {
+
+    },
     "Superscript" : {
 
     },
@@ -877,9 +1003,6 @@
 
     },
     "Switch to this account and..." : {
-
-    },
-    "System" : {
 
     },
     "Tap and hold items to add, remove or rearrange them." : {
@@ -904,13 +1027,29 @@
         }
       }
     },
+    "The %@ theme only supports %@ mode." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The %1$@ theme only supports %2$@ mode."
+          }
+        }
+      }
+    },
     "Theme" : {
 
     },
     "This content will be loaded from **%@** instead." : {
 
     },
+    "This field is optional." : {
+
+    },
     "This probably contains foul language." : {
+
+    },
+    "This username is taken." : {
 
     },
     "Thumbnail Location" : {
@@ -919,7 +1058,13 @@
     "Tiled" : {
 
     },
+    "Title" : {
+
+    },
     "To confirm, please enter your password:" : {
+
+    },
+    "To join this instance, you need to create an application and wait to be accepted." : {
 
     },
     "Too many items!" : {
@@ -941,6 +1086,9 @@
 
     },
     "Trust & Safety" : {
+
+    },
+    "Try a different Captcha..." : {
 
     },
     "Two-Factor Authentication" : {
@@ -993,6 +1141,12 @@
     "Unsubscribed" : {
 
     },
+    "Upload an image..." : {
+
+    },
+    "Uploading..." : {
+
+    },
     "Uptime" : {
 
     },
@@ -1005,7 +1159,16 @@
     "Username" : {
 
     },
+    "Username can only contain lowercase letters, numbers and underscores." : {
+
+    },
+    "Username must be 3 or more characters." : {
+
+    },
     "Users" : {
+
+    },
+    "Version" : {
 
     },
     "Viewing %@ as guest" : {
@@ -1018,6 +1181,9 @@
 
     },
     "Warn When Opening NSFW Community" : {
+
+    },
+    "We sent an email to %@ to verify your email address and activate your account." : {
 
     },
     "Website" : {
@@ -1044,10 +1210,19 @@
     "Yes (%@)" : {
 
     },
+    "You are required to provide an email on this instance." : {
+
+    },
     "You don't have any accounts." : {
 
     },
     "You may need to allow Mlem to access your Photo Library in System Settings." : {
+
+    },
+    "You'll receive an email once your application has been approved. Once approved, you can log in to your account from the Settings tab." : {
+
+    },
+    "Your Answer..." : {
 
     },
     "Your instance and **%@** federate, but the content could not be loaded. It may not have federated yet, or your instance may have purged it." : {

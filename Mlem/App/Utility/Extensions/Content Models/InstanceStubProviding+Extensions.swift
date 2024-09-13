@@ -39,6 +39,14 @@ extension InstanceStubProviding {
         }
     }
     
+    func openLoginSheet() {
+        NavigationModel.main.openSheet(.logIn(.instance(self)))
+    }
+    
+    func openSignUpSheet() {
+        NavigationModel.main.openSheet(.signUp(self))
+    }
+    
     var isVisiting: Bool {
         AppState.main.firstApi.host == host && AppState.main.firstApi.token == nil
     }
@@ -50,6 +58,8 @@ extension InstanceStubProviding {
     ) -> [any Action] {
         ActionGroup {
             visitAction()
+            logInAction()
+            signUpAction()
         }
         ActionGroup {
             openInBrowserAction()
@@ -70,11 +80,34 @@ extension InstanceStubProviding {
             id: "visit\(actorId)",
             appearance: .init(
                 label: "Visit",
-                isOn: false,
                 color: .gray,
                 icon: "arrow.right"
             ),
             callback: isVisiting ? nil : visit
+        )
+    }
+    
+    func logInAction() -> BasicAction {
+        .init(
+            id: "logIn\(actorId)",
+            appearance: .init(
+                label: "Log In",
+                color: .gray,
+                icon: Icons.logIn
+            ),
+            callback: openLoginSheet
+        )
+    }
+    
+    func signUpAction() -> BasicAction {
+        .init(
+            id: "signup\(actorId)",
+            appearance: .init(
+                label: "Sign Up",
+                color: .gray,
+                icon: Icons.signUp
+            ),
+            callback: openSignUpSheet
         )
     }
     

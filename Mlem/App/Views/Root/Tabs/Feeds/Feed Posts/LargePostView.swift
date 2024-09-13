@@ -16,7 +16,7 @@ struct LargePostView: View {
     @Setting(\.blurNsfw) var blurNsfw
     
     @Environment(Palette.self) private var palette: Palette
-    @Environment(ExpandedPostTracker.self) private var expandedPostTracker: ExpandedPostTracker?
+    @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(\.communityContext) private var communityContext
     
     let post: any Post1Providing
@@ -55,7 +55,7 @@ struct LargePostView: View {
                 }
                 
                 if !isExpanded {
-                    EllipsisMenu(size: 24) { post.menuActions(expandedPostTracker: expandedPostTracker) }
+                    EllipsisMenu(size: 24) { post.menuActions(commentTreeTracker: commentTreeTracker) }
                 }
             }
             .padding(.horizontal, 10)
@@ -76,7 +76,7 @@ struct LargePostView: View {
             InteractionBarView(
                 post: post,
                 configuration: InteractionBarTracker.main.postInteractionBar,
-                expandedPostTracker: expandedPostTracker,
+                commentTreeTracker: commentTreeTracker,
                 communityContext: communityContext
             )
             .padding(.horizontal, 12)

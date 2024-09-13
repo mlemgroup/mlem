@@ -46,7 +46,7 @@ extension Post1Providing {
     
     func swipeActions(
         behavior: SwipeBehavior,
-        expandedPostTracker: ExpandedPostTracker? = nil
+        commentTreeTracker: CommentTreeTracker? = nil
     ) -> SwipeConfiguration {
         .init(
             behavior: behavior,
@@ -59,7 +59,7 @@ extension Post1Providing {
             trailingActions: {
                 if api.canInteract {
                     saveAction(feedback: [.haptic])
-                    replyAction(expandedPostTracker: expandedPostTracker)
+                    replyAction(commentTreeTracker: commentTreeTracker)
                 }
             }
         )
@@ -68,13 +68,13 @@ extension Post1Providing {
     @ActionBuilder
     func menuActions(
         feedback: Set<FeedbackType> = [.haptic, .toast],
-        expandedPostTracker: ExpandedPostTracker? = nil
+        commentTreeTracker: CommentTreeTracker? = nil
     ) -> [any Action] {
         ActionGroup(displayMode: .compactSection) {
             upvoteAction(feedback: feedback)
             downvoteAction(feedback: feedback)
             saveAction(feedback: feedback)
-            replyAction(expandedPostTracker: expandedPostTracker)
+            replyAction(commentTreeTracker: commentTreeTracker)
             selectTextAction()
             shareAction()
             
@@ -97,14 +97,14 @@ extension Post1Providing {
     func action(
         type: PostBarConfiguration.ActionType,
         feedback: Set<FeedbackType> = [.haptic, .toast],
-        expandedPostTracker: ExpandedPostTracker? = nil,
+        commentTreeTracker: CommentTreeTracker? = nil,
         communityContext: (any CommunityStubProviding)? = nil
     ) -> any Action {
         switch type {
         case .upvote: upvoteAction(feedback: feedback)
         case .downvote: downvoteAction(feedback: feedback)
         case .save: saveAction(feedback: feedback)
-        case .reply: replyAction(expandedPostTracker: expandedPostTracker)
+        case .reply: replyAction(commentTreeTracker: commentTreeTracker)
         case .share: shareAction()
         case .selectText: selectTextAction()
         case .hide: hideAction(feedback: feedback)
@@ -115,13 +115,13 @@ extension Post1Providing {
     
     func counter(
         type: PostBarConfiguration.CounterType,
-        expandedPostTracker: ExpandedPostTracker? = nil
+        commentTreeTracker: CommentTreeTracker? = nil
     ) -> Counter {
         switch type {
         case .score: scoreCounter
         case .upvote: upvoteCounter
         case .downvote: downvoteCounter
-        case .reply: replyCounter(expandedPostTracker: expandedPostTracker)
+        case .reply: replyCounter(commentTreeTracker: commentTreeTracker)
         }
     }
     

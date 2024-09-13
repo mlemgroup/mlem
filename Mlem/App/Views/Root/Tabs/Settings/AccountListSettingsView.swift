@@ -10,6 +10,7 @@ import SwiftUI
 
 struct AccountListSettingsView: View {
     @Environment(AppState.self) var appState
+    @Environment(Palette.self) var palette
     @Setting(\.keepPlaceOnAccountSwitch) var keepPlace
 
     var accounts: [UserAccount] { AccountsTracker.main.userAccounts }
@@ -33,6 +34,7 @@ struct AccountListSettingsView: View {
                         AvatarStackView(
                             urls: accounts.map(\.avatar),
                             fallback: .person,
+                            height: 64,
                             spacing: 42,
                             outlineWidth: 1
                         )
@@ -52,7 +54,7 @@ struct AccountListSettingsView: View {
                     .fontWeight(.bold)
             }
             .frame(maxWidth: .infinity)
-            .listRowBackground(Color(.systemGroupedBackground))
+            .listRowBackground(palette.groupedBackground)
         }
     }
 }

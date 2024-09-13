@@ -30,6 +30,7 @@ struct CustomTabView: UIViewControllerRepresentable {
             swipeGestureCallback: swipeGestureCallback
         )
         tabBarController.viewControllers = tabs.enumerated().map { CustomTabViewHostingController(item: $1, index: $0) }
+        
         return tabBarController
     }
     
@@ -45,6 +46,7 @@ struct CustomTabView: UIViewControllerRepresentable {
                     tabBarItem.badgeValue = tabData.badge
                     tabBarItem.image = tabData.image
                     tabBarItem.selectedImage = tabData.selectedImage
+                    tabBarItem.badgeColor = UIColor(palette.warning)
                 }
             }
         }

@@ -10,44 +10,45 @@ import SwiftUI
 
 enum NavigationPage: Hashable {
     case settings(_ page: SettingsPage = .root)
-    case login(_ page: LoginPage = .pickInstance)
+    case logIn(_ page: LoginPage = .pickInstance)
+    case signUp(_ instance: HashWrapper<any InstanceStubProviding>)
     case feeds(_ selection: FeedSelection? = nil)
     case profile, inbox, search
     case quickSwitcher
-    case expandedPost(
+    case post(
         _ post: AnyPost,
-        commentActorId: URL? = nil,
-        communityContext: HashWrapper<any Community1Providing>? = nil,
-        namespace: Namespace.ID? = nil
+        highlightedComment: HashWrapper<any CommentStubProviding>? = nil,
+        communityContext: HashWrapper<any Community1Providing>? = nil
     )
     case community(_ community: AnyCommunity)
     case person(_ person: AnyPerson)
     case instance(_ instance: InstanceHashWrapper)
     case externalApiInfo(api: ApiClient, actorId: URL)
     case imageViewer(_ url: URL)
-    case communityPicker(callback: HashWrapper<(Community2) -> Void>)
-    case personPicker(callback: HashWrapper<(Person2) -> Void>)
-    case instancePicker(callback: HashWrapper<(InstanceSummary) -> Void>)
+    case communityPicker(api: ApiClient?, callback: HashWrapper<(Community2, NavigationLayer) -> Void>)
+    case personPicker(api: ApiClient?, callback: HashWrapper<(Person2, NavigationLayer) -> Void>)
+    case instancePicker(callback: HashWrapper<(InstanceSummary, NavigationLayer) -> Void>, minimumVersion: SiteVersion? = nil)
     case selectText(_ string: String)
     case subscriptionList
-    case createComment(_ context: CommentEditorView.Context, expandedPostTracker: ExpandedPostTracker? = nil)
+    case createComment(_ context: CommentEditorView.Context, commentTreeTracker: CommentTreeTracker? = nil)
     case editComment(_ comment: Comment2, context: CommentEditorView.Context?)
     case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
+    case createPost(community: AnyCommunity?)
     case deleteAccount(_ account: UserAccount)
     
-    static func expandedPost(_ post: any PostStubProviding, commentActorId: URL? = nil) -> NavigationPage {
-        expandedPost(.init(post), commentActorId: commentActorId)
+    static func post(_ post: any PostStubProviding, highlightedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
+        if let highlightedComment {
+            return Self.post(.init(post), highlightedComment: .init(wrappedValue: highlightedComment))
+        } else {
+            return Self.post(.init(post))
+        }
     }
     
-    static func expandedPost(
-        _ post: any PostStubProviding,
-        communityContext: (any Community1Providing)?,
-        namespace: Namespace.ID? = nil
-    ) -> NavigationPage {
+    static func post(_ post: any PostStubProviding, communityContext: (any Community1Providing)?) -> NavigationPage {
         if let communityContext {
-            expandedPost(.init(post), communityContext: .init(wrappedValue: communityContext), namespace: namespace)
+            Self.post(.init(post), communityContext: .init(wrappedValue: communityContext))
         } else {
-            expandedPost(.init(post), namespace: namespace)
+            Self.post(.init(post))
         }
     }
     
@@ -63,18 +64,75 @@ enum NavigationPage: Hashable {
         Self.instance(.init(wrappedValue: instance))
     }
     
-    static func communityPicker(callback: @escaping (Community2) -> Void) -> NavigationPage {
-        communityPicker(callback: .init(wrappedValue: callback))
+    static func instance(hostOf entity: any ActorIdentifiable) -> NavigationPage {
+        var instance: any InstanceStubProviding = InstanceStub(
+            api: AppState.main.firstApi, actorId: entity.actorId.removingPathComponents()
+        )
+        if let entity = entity as? any Person3Providing {
+            instance = entity.instance ?? instance
+        } else if let entity = entity as? any Community3Providing {
+            instance = entity.instance ?? instance
+        }
+        return Self.instance(.init(wrappedValue: instance))
     }
     
-    static func personPicker(callback: @escaping (Person2) -> Void) -> NavigationPage {
-        personPicker(callback: .init(wrappedValue: callback))
+    static func communityPicker(
+        api: ApiClient? = nil,
+        callback: @escaping (Community2, NavigationLayer) -> Void
+    ) -> NavigationPage {
+        communityPicker(api: api, callback: .init(wrappedValue: callback))
     }
     
-    static func instancePicker(callback: @escaping (InstanceSummary) -> Void) -> NavigationPage {
-        instancePicker(callback: .init(wrappedValue: callback))
+    static func personPicker(
+        api: ApiClient? = nil,
+        callback: @escaping (Person2, NavigationLayer) -> Void
+    ) -> NavigationPage {
+        personPicker(api: api, callback: .init(wrappedValue: callback))
     }
     
+    static func instancePicker(
+        callback: @escaping (InstanceSummary, NavigationLayer) -> Void,
+        minimumVersion: SiteVersion? = nil
+    ) -> NavigationPage {
+        assert((minimumVersion ?? .infinity) > Constants.main.minimumLemmyVersion)
+        return instancePicker(callback: .init(wrappedValue: callback), minimumVersion: minimumVersion)
+    }
+    
+    static func communityPicker(
+        api: ApiClient? = nil,
+        callback: @escaping (Community2) -> Void
+    ) -> NavigationPage {
+        communityPicker(api: api, callback: .init(wrappedValue: { value, navigation in
+            callback(value)
+            navigation.dismissSheet()
+        }))
+    }
+    
+    static func personPicker(
+        api: ApiClient? = nil,
+        callback: @escaping (Person2) -> Void
+    ) -> NavigationPage {
+        personPicker(api: api, callback: .init(wrappedValue: { value, navigation in
+            callback(value)
+            navigation.dismissSheet()
+        }))
+    }
+    
+    static func instancePicker(
+        callback: @escaping (InstanceSummary) -> Void,
+        minimumVersion: SiteVersion? = nil
+    ) -> NavigationPage {
+        assert((minimumVersion ?? .infinity) > Constants.main.minimumLemmyVersion)
+        return instancePicker(callback: .init(wrappedValue: { value, navigation in
+            callback(value)
+            navigation.dismissSheet()
+        }))
+    }
+    
+    static func createPost(community: any CommunityStubProviding) -> NavigationPage {
+        createPost(community: .init(community))
+    }
+
     static func report(_ interactable: any ReportableProviding, community: (any CommunityStubProviding)?) -> NavigationPage {
         let anyCommunity: AnyCommunity?
         if let community {
@@ -84,93 +142,14 @@ enum NavigationPage: Hashable {
         }
         return report(.init(wrappedValue: interactable), community: anyCommunity)
     }
-}
-
-extension NavigationPage {
-    // swiftlint:disable:next cyclomatic_complexity function_body_length
-    @ViewBuilder func view() -> some View {
-        switch self {
-        case .subscriptionList:
-            SubscriptionListView()
-        case let .selectText(string):
-            SelectTextView(text: string)
-        case let .settings(page):
-            page.view()
-        case let .login(page):
-            page.view()
-        case let .feeds(feedSelection):
-            FeedsView(feedSelection: feedSelection)
-        case let .community(community):
-            CommunityView(community: community)
-        case .profile:
-            ProfileView()
-        case .inbox:
-            InboxView()
-        case .search:
-            SearchView()
-        case let .externalApiInfo(api: api, actorId: actorId):
-            ExternalApiInfoView(api: api, actorId: actorId)
-        case let .imageViewer(url):
-            ImageViewer(url: url)
-        case .quickSwitcher:
-            QuickSwitcherView()
-        case let .report(target, community):
-            ReportComposerView(target: target.wrappedValue, community: community)
-        case let .expandedPost(post, commentActorId, communityContext, namespace):
-            ExpandedPostView(post: post, showCommentWithActorId: commentActorId)
-                .environment(\.communityContext, communityContext?.wrappedValue)
-                .navigationTransition_(sourceID: "post\(post.wrappedValue.actorId)", in: namespace)
-        case let .person(person):
-            PersonView(person: person)
-        case let .createComment(context, expandedPostTracker):
-            if let view = CommentEditorView(context: context, expandedPostTracker: expandedPostTracker) {
-                view
-            } else {
-                Text(verbatim: "Error: No active UserAccount")
-            }
-        case let .editComment(comment, context: context):
-            if let view = CommentEditorView(commentToEdit: comment, context: context) {
-                view
-            } else {
-                Text(verbatim: "Error: No active UserAccount")
-            }
-        case let .communityPicker(callback: callback):
-            SearchSheetView { (community: Community2, dismiss: DismissAction) in
-                CommunityListRowBody(community)
-                    .onTapGesture {
-                        callback.wrappedValue(community)
-                        dismiss()
-                    }
-                    .padding(.vertical, 6)
-            }
-        case let .personPicker(callback: callback):
-            SearchSheetView { (person: Person2, dismiss: DismissAction) in
-                PersonListRowBody(person)
-                    .onTapGesture {
-                        callback.wrappedValue(person)
-                        dismiss()
-                    }
-                    .padding(.vertical, 6)
-            }
-        case let .instancePicker(callback: callback):
-            SearchSheetView { (instance: InstanceSummary, dismiss: DismissAction) in
-                InstanceListRowBody(instance)
-                    .onTapGesture {
-                        callback.wrappedValue(instance)
-                        dismiss()
-                    }
-                    .padding(.vertical, 6)
-            }
-        case let .instance(instance):
-            InstanceView(instance: instance.wrappedValue)
-        case let .deleteAccount(account):
-            DeleteAccountView(account: account)
-        }
+    
+    static func signUp(_ instance: any InstanceStubProviding) -> NavigationPage {
+        signUp(.init(wrappedValue: instance))
     }
     
     var hasNavigationStack: Bool {
         switch self {
-        case .quickSwitcher, .report, .externalApiInfo, .selectText, .createComment, .editComment:
+        case .quickSwitcher, .report, .externalApiInfo, .selectText, .createComment, .editComment, .createPost:
             false
         default:
             true

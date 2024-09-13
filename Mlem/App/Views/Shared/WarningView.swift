@@ -48,7 +48,7 @@ struct WarningView: View {
     var backgroundRect: some View {
         RoundedRectangle(cornerRadius: 10)
             .stroke(palette.warning, lineWidth: 3)
-            .background(Color.red.opacity(0.1))
+            .background(palette.warning.opacity(0.1))
             .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }

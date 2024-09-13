@@ -12,6 +12,7 @@ struct LoginInstancePickerView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.isRootView) var isRootView
     @Environment(NavigationLayer.self) var navigation
+    @Environment(Palette.self) var palette
     
     @State var domain: String = ""
     
@@ -23,7 +24,7 @@ struct LoginInstancePickerView: View {
     var body: some View {
         content
             .interactiveDismissDisabled(!domain.isEmpty)
-            .background(Color(uiColor: .systemGroupedBackground).ignoresSafeArea())
+            .background(palette.groupedBackground.ignoresSafeArea())
             .toolbar {
                 if navigation.isInsideSheet, isRootView {
                     ToolbarItem(placement: .topBarLeading) {
@@ -47,12 +48,12 @@ struct LoginInstancePickerView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 50)
-                .foregroundStyle(.blue)
+                .foregroundStyle(palette.accent)
             Text("Sign In to Lemmy")
                 .font(.title)
                 .bold()
             Text("Enter your instance's domain name below.")
-                .foregroundStyle(.secondary)
+                .foregroundStyle(palette.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 5)
             instanceSuggestionsBox(suggestions: filteredSuggestions)
@@ -63,7 +64,7 @@ struct LoginInstancePickerView: View {
             }
             if invalidInstance {
                 Text("Failed to connect to \(domain)")
-                    .foregroundStyle(.red)
+                    .foregroundStyle(palette.negative)
                     .multilineTextAlignment(.center)
             }
             Spacer()
@@ -102,7 +103,7 @@ struct LoginInstancePickerView: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .background(Color(uiColor: .secondarySystemGroupedBackground))
+        .background(palette.secondaryGroupedBackground)
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
     
@@ -170,7 +171,7 @@ struct LoginInstancePickerView: View {
                 do {
                     let instance = try await apiClient.getMyInstance()
                     Task { @MainActor in
-                        navigation.push(.login(.instance(instance)))
+                        navigation.push(.logIn(.instance(instance)))
                     }
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         connecting = false

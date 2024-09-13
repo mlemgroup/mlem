@@ -11,13 +11,15 @@ import SwiftUI
 
 struct SearchSheetView<Item: Searchable, Content: View>: View {
     @Environment(AppState.self) var appState
-    @Environment(\.dismiss) var dismiss
+    @Environment(NavigationLayer.self) var navigation
+    @Environment(Palette.self) var palette
     
     enum CloseButtonLabel: String {
         case cancel, done
     }
     
-    @ViewBuilder let content: ([Item], DismissAction) -> Content
+    @ViewBuilder let content: ([Item], NavigationLayer) -> Content
+    let api: ApiClient
     let closeButtonLabel: CloseButtonLabel
     
     @State var query: String = ""
@@ -26,10 +28,13 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
     @State var editing: Bool = true
     @State var focused: Bool = true
     
+    /// If `api` is `nil`, the active ApiClient will be used.
     init(
+        api: ApiClient? = nil,
         closeButtonLabel: CloseButtonLabel = .cancel,
-        @ViewBuilder content: @escaping ([Item], DismissAction) -> Content
+        @ViewBuilder content: @escaping ([Item], NavigationLayer) -> Content
     ) {
+        self.api = api ?? AppState.main.firstApi
         self.content = content
         self.closeButtonLabel = closeButtonLabel
     }
@@ -37,9 +42,10 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                content(results, dismiss)
+                content(results, navigation)
             }
         }
+        .background(palette.background)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -51,7 +57,7 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button(closeButtonLabel.rawValue.capitalized) {
-                    dismiss()
+                    navigation.dismissSheet()
                 }
             }
         }
@@ -61,7 +67,7 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
                     try await Task.sleep(for: .seconds(0.2))
                 }
                 let response = try await Item.search(
-                    api: appState.firstApi,
+                    api: api,
                     query: query,
                     page: 1,
                     limit: 20
@@ -73,18 +79,41 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
                 handleError(error)
             }
         }
+        .onAppear {
+            focused = true
+        }
     }
 }
 
 extension SearchSheetView {
-    init<Content2: View>(
+    init<RowContent: View>(
+        api: ApiClient? = nil,
         closeButtonLabel: CloseButtonLabel = .cancel,
-        @ViewBuilder content: @escaping (Item, DismissAction) -> Content2
-    ) where Content == SearchResultsView<Item, Content2> {
+        @ViewBuilder content: @escaping (Item, NavigationLayer) -> RowContent
+    ) where Content == SearchResultsView<Item, RowContent> {
+        self.api = api ?? AppState.main.firstApi
         self.closeButtonLabel = closeButtonLabel
-        self.content = { (results: [Item], dismiss: DismissAction) in
+        self.content = { (results: [Item], navigation: NavigationLayer) in
             SearchResultsView(results: results) { item in
-                content(item, dismiss)
+                content(item, navigation)
+            }
+        }
+    }
+    
+    init<RowContent: View, HeaderContent: View>(
+        api: ApiClient? = nil,
+        closeButtonLabel: CloseButtonLabel = .cancel,
+        @ViewBuilder content: @escaping (Item, NavigationLayer) -> RowContent,
+        @ViewBuilder header: @escaping () -> HeaderContent
+    ) where Content == VStack<TupleView<(HeaderContent, SearchResultsView<Item, RowContent>)>> {
+        self.api = api ?? AppState.main.firstApi
+        self.closeButtonLabel = closeButtonLabel
+        self.content = { (results: [Item], dismiss: NavigationLayer) in
+            VStack(alignment: .leading, spacing: 0) {
+                header()
+                SearchResultsView(results: results) { item in
+                    content(item, dismiss)
+                }
             }
         }
     }

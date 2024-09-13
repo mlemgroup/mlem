@@ -59,7 +59,7 @@ struct PersonContentGridView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .secondaryAction) {
-                    Section {
+                    SwiftUI.Section {
                         Menu {
                             Picker("Post Size", selection: $postSize) {
                                 ForEach(PostSize.allCases, id: \.self) { item in
@@ -103,11 +103,11 @@ struct PersonContentGridView: View {
     func personContentItem(_ personContent: PersonContent) -> some View {
         switch personContent.wrappedValue {
         case let .post(post):
-            NavigationLink(value: NavigationPage.expandedPost(post)) {
+            NavigationLink(.post(post)) {
                 FeedPostView(post: post)
             }
         case let .comment(comment):
-            NavigationLink(value: NavigationPage.expandedPost(comment.post, commentActorId: comment.actorId)) {
+            NavigationLink(.post(comment.post, highlightedComment: comment)) {
                 FeedCommentView(comment: comment)
             }
         }

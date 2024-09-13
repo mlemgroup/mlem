@@ -13,15 +13,31 @@ struct ThemeSettingsView: View {
     @Setting(\.interfaceStyle) var interfaceStyle
     @Setting(\.colorPalette) var colorPalette
     
+    // convenience
+    var supportedModes: UIUserInterfaceStyle { colorPalette.palette.supportedModes }
+    
     var body: some View {
         Form {
-            Picker("Style", selection: $interfaceStyle) {
-                Text("System").tag(UIUserInterfaceStyle.unspecified)
-                Text("Light").tag(UIUserInterfaceStyle.light)
-                Text("Dark").tag(UIUserInterfaceStyle.dark)
+            Section {
+                // When a single-mode theme is selected, the picker will _display_ that mode as selected but not actually change the settings value
+                // so that it reverts the the actual settings value when a multi-mode theme is selected
+                Picker("Style", selection: supportedModes == .unspecified ? $interfaceStyle : .constant(supportedModes)) {
+                    ForEach(UIUserInterfaceStyle.optionCases, id: \.self) { style in
+                        Text(style.label)
+                            .foregroundStyle(
+                                supportedModes == .unspecified || supportedModes == style
+                                    ? palette.primary
+                                    : palette.secondary
+                            )
+                    }
+                }
+                .labelsHidden()
+                .pickerStyle(.inline)
+            } footer: {
+                if supportedModes != .unspecified {
+                    Text("The \(colorPalette.label) theme only supports \(supportedModes.label.lowercased()) mode.")
+                }
             }
-            .labelsHidden()
-            .pickerStyle(.inline)
             
             Picker("Theme", selection: $colorPalette) {
                 ForEach(PaletteOption.allCases, id: \.rawValue) { item in
@@ -33,7 +49,9 @@ struct ThemeSettingsView: View {
             .pickerStyle(.inline)
         }
         .onChange(of: colorPalette) {
-            palette.changePalette(to: colorPalette)
+            withAnimation {
+                palette.changePalette(to: colorPalette)
+            }
         }
     }
 }

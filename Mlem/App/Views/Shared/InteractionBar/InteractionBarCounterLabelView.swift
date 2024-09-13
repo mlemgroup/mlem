@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct InteractionBarCounterLabelView: View {
+    @Environment(Palette.self) var palette
+    
     let appearance: CounterAppearance
     
     init(_ appearance: CounterAppearance) {
@@ -21,6 +23,7 @@ struct InteractionBarCounterLabelView: View {
             }
             Text(appearance.value?.description ?? "")
                 .monospacedDigit()
+                .foregroundStyle(palette.primary)
             if let trailing = appearance.trailing {
                 InteractionBarActionLabelView(trailing)
             }

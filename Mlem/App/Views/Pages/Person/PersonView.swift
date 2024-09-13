@@ -35,9 +35,11 @@ struct PersonView: View {
     @State private var selectedContentType: PersonContentType = .all
     @State private var isAtTop: Bool = true
     @State var feedLoader: PersonContentFeedLoader?
+    let isProfileTab: Bool
     
-    init(person: AnyPerson) {
+    init(person: AnyPerson, isProfileTab: Bool = false) {
         self._person = .init(wrappedValue: person)
+        self.isProfileTab = isProfileTab
         
         if let person1 = person.wrappedValue as? any Person1Providing, person1.api === AppState.main.firstApi {
             self._feedLoader = .init(wrappedValue: .init(
@@ -71,7 +73,7 @@ struct PersonView: View {
                     .externalApiWarning(entity: person, isLoading: proxy.isLoading)
                     .toolbar {
                         ToolbarItemGroup(placement: .secondaryAction) {
-                            Section {
+                            SwiftUI.Section {
                                 if person is any Person3Providing, proxy.isLoading {
                                     ProgressView()
                                 } else {
@@ -188,6 +190,14 @@ struct PersonView: View {
                 }
             default:
                 if let feedLoader {
+                    if isProfileTab, selectedTab == .overview || selectedTab == .posts {
+                        newPostButton
+                            .padding(postSize.tiled ? [.horizontal, .bottom] : [.horizontal, .top], Constants.main.standardSpacing)
+                        if !postSize.tiled {
+                            Divider()
+                                .padding(.top, Constants.main.standardSpacing)
+                        }
+                    }
                     PersonContentGridView(feedLoader: feedLoader, contentType: $selectedContentType)
                 } else {
                     ProgressView()
@@ -226,11 +236,26 @@ struct PersonView: View {
         }
     }
     
-    func tabs(person: any Person3Providing) -> [Tab] {
-        var output: [Tab] = [.overview, .posts, .comments]
-        if !person.moderatedCommunities.isEmpty {
-            output.append(.communities)
+    @ViewBuilder
+    var newPostButton: some View {
+        Button {
+            navigation.openSheet(.createPost(community: nil))
+        } label: {
+            Label("New Post", systemImage: "plus")
+                .fontWeight(.semibold)
+                .foregroundStyle(palette.accent)
+                .padding(.vertical, 10)
+                .frame(maxWidth: .infinity)
+                .background {
+                    Group {
+                        if postSize.tiled {
+                            Capsule()
+                        } else {
+                            RoundedRectangle(cornerRadius: Constants.main.mediumItemCornerRadius)
+                        }
+                    }
+                    .foregroundStyle(palette.accent.opacity(0.2))
+                }
         }
-        return output
     }
 }

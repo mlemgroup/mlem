@@ -15,13 +15,16 @@ struct CommentEditorView: View {
     @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
+    @Setting(\.showPersonAvatar) private var showPersonAvatar
+    @Setting(\.showCommunityAvatar) private var showCommunityAvatar
+    
     enum ResolutionState: Equatable {
         case success, notFound, error(ErrorDetails), resolving
     }
     
     let textView: UITextView = .init()
 
-    let expandedPostTracker: ExpandedPostTracker?
+    let commentTreeTracker: CommentTreeTracker?
     
     @State var commentToEdit: Comment2?
     @State var originalContext: Context?
@@ -29,28 +32,30 @@ struct CommentEditorView: View {
     @State var resolutionState: ResolutionState = .success
     @State var sending: Bool = false
 
-    @State var text: String
     @State var account: UserAccount
     @State var presentationSelection: PresentationDetent = .large
+    
+    @State var textIsEmpty: Bool = true
     
     @FocusState var focused: Bool
     
     init?(
         commentToEdit: Comment2? = nil,
         context: Context? = nil,
-        expandedPostTracker: ExpandedPostTracker? = nil
+        commentTreeTracker: CommentTreeTracker? = nil
     ) {
         self.commentToEdit = commentToEdit
         self.originalContext = context
         self._resolvedContext = .init(wrappedValue: context)
-        self.expandedPostTracker = expandedPostTracker
+        self.commentTreeTracker = commentTreeTracker
         if let userAccount = (AppState.main.firstAccount as? UserAccount) {
             self._account = .init(wrappedValue: userAccount)
         } else {
             return nil
         }
-        self._text = .init(wrappedValue: commentToEdit?.content ?? "")
-        textView.text = text
+        
+        textView.text = commentToEdit?.content ?? ""
+        textView.backgroundColor = UIColor(Palette.main.background)
     }
         
     var minTextEditorHeight: CGFloat {
@@ -58,7 +63,7 @@ struct CommentEditorView: View {
     }
 
     var body: some View {
-        CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: text.isEmpty) {
+        CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: textIsEmpty) {
             NavigationStack {
                 content
                     .navigationBarTitleDisplayMode(.inline)
@@ -73,7 +78,7 @@ struct CommentEditorView: View {
                                 AccountPickerMenu(account: $account) {
                                     HStack(spacing: 3) {
                                         FullyQualifiedLabelView(entity: account, labelStyle: .medium, showAvatar: false, blurred: false)
-                                        Image(systemName: "chevron.down.circle.fill")
+                                        Image(systemName: Icons.dropDownCircleFill)
                                             .symbolRenderingMode(.hierarchical)
                                             .tint(palette.secondary)
                                             .imageScale(.small)
@@ -92,12 +97,16 @@ struct CommentEditorView: View {
                                         await send()
                                     }
                                 }
-                                .disabled(resolutionState != .success || text.isEmpty)
+                                .disabled(resolutionState != .success || textIsEmpty)
                             }
                         }
                     }
+                    .background(palette.background)
             }
             .task(id: account, resolveContext)
+        }
+        .onAppear {
+            textView.becomeFirstResponder()
         }
         .onChange(of: presentationSelection) {
             if presentationSelection == .large {
@@ -115,14 +124,18 @@ struct CommentEditorView: View {
                         .padding([.horizontal, .bottom], 10)
                 }
                 MarkdownTextEditor(
-                    text: $text,
+                    onChange: {
+                        if $0.isEmpty != textIsEmpty {
+                            textIsEmpty = $0.isEmpty
+                        }
+                    },
                     prompt: "Start writing...",
-                    textView: textView
-                ) {
-                    MarkdownEditorToolbarView(textView: textView)
-                }
+                    textView: textView,
+                    content: {
+                        MarkdownEditorToolbarView(textView: textView)
+                    }
+                )
                 .frame(
-                    minWidth: 0,
                     maxWidth: .infinity,
                     minHeight: minTextEditorHeight,
                     maxHeight: .infinity,
@@ -130,21 +143,62 @@ struct CommentEditorView: View {
                 )
                 Divider()
                     .padding(.vertical, Constants.main.standardSpacing)
-                Group {
-                    switch originalContext {
-                    case let .post(post):
-                        LargePostBodyView(post: post, isExpanded: true, shouldBlur: false)
-                    case let .comment(comment):
-                        CommentBodyView(comment: comment)
-                    case nil:
-                        ProgressView()
-                    }
-                }.padding(.horizontal, Constants.main.standardSpacing)
+                contextView
+                    .padding(.horizontal, Constants.main.standardSpacing)
             }
             .animation(.easeOut(duration: 0.2), value: resolutionState == .notFound)
+            .padding(.bottom, Constants.main.standardSpacing)
         }
         .scrollBounceBehavior(.basedOnSize)
         .task(inferContextFromCommentToEdit)
+    }
+    
+    @ViewBuilder
+    var contextView: some View {
+        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+            switch originalContext {
+            case let .post(post):
+                HStack {
+                    FullyQualifiedLinkView(
+                        entity: post.community_,
+                        labelStyle: .medium,
+                        showAvatar: showPersonAvatar,
+                        blurred: post.nsfw
+                    )
+                    Spacer()
+                    selectTextButton
+                }
+                LargePostBodyView(post: post, isExpanded: true, shouldBlur: false)
+                FullyQualifiedLinkView(
+                    entity: post.creator_,
+                    labelStyle: .medium,
+                    showAvatar: showPersonAvatar,
+                    blurred: post.nsfw
+                )
+            case let .comment(comment):
+                HStack {
+                    FullyQualifiedLinkView(
+                        entity: comment.creator_,
+                        labelStyle: .medium,
+                        showAvatar: showPersonAvatar,
+                        blurred: false
+                    )
+                    Spacer()
+                    selectTextButton
+                }
+                CommentBodyView(comment: comment)
+            case nil:
+                ProgressView()
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var selectTextButton: some View {
+        Button("Select Text", systemImage: Icons.select) {
+            originalContext?.item.showTextSelectionSheet()
+        }
+        .labelStyle(.iconOnly)
     }
     
     @ViewBuilder

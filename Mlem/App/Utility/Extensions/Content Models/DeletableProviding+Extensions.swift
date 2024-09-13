@@ -12,6 +12,7 @@ extension DeletableProviding {
         if feedback.contains(.toast), !deleted {
             let task = toggleDeleted()
             Task {
+                // TODO: Xcode 16 remove "try"
                 let result = try await task.result.get()
                 switch result {
                 case .succeeded:

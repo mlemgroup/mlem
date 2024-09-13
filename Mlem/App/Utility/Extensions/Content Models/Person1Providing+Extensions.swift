@@ -12,7 +12,7 @@ extension Person1Providing {
     func flairs(
         interactableContext interactable: (any Interactable2Providing)? = nil,
         communityContext community: (any Community3Providing)? = nil
-    ) -> Set<PersonFlair> {
+    ) -> [PersonFlair] {
         var output: Set<PersonFlair> = []
         
         if isMlemDeveloper {
@@ -23,6 +23,11 @@ extension Person1Providing {
         }
         if instanceBan != .notBanned {
             output.insert(.bannedFromInstance)
+        }
+        
+        let intervalSinceCreation = Date.now.timeIntervalSince(created)
+        if intervalSinceCreation < 30 * 24 * 60 * 60 {
+            output.insert(.new(intervalSinceCreation))
         }
         
         let calendar = Calendar.current
@@ -44,7 +49,8 @@ extension Person1Providing {
         if let community, community.moderators.contains(where: { $0.id == id }) {
             output.insert(.moderator)
         }
-        return output
+        
+        return output.sorted { $0.sortVal < $1.sortVal }
     }
     
     func toggleBlocked(feedback: Set<FeedbackType> = []) {
