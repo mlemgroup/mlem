@@ -26,8 +26,8 @@ struct ImportExportSettingsPage: View {
     var body: some View {
         content
             .onAppear {
-                v1SettingsExist = persistenceRepository.systemSettingsExists(.v_1)
-                v2SettingsExist = persistenceRepository.systemSettingsExists(.v_2)
+                v1SettingsExist = persistenceRepository.systemSettingsExists(.v1)
+                v2SettingsExist = persistenceRepository.systemSettingsExists(.v2)
             }
             .fileImporter(
                 isPresented: $importingSettingsFile,
@@ -49,8 +49,8 @@ struct ImportExportSettingsPage: View {
             Section {
                 Button("Save Settings") {
                     Task {
-                        await Settings.main.save(to: .v_2)
-                        v2SettingsExist = persistenceRepository.systemSettingsExists(.v_2)
+                        await Settings.main.save(to: .v2)
+                        v2SettingsExist = persistenceRepository.systemSettingsExists(.v2)
                     }
                 }
                 
@@ -58,14 +58,14 @@ struct ImportExportSettingsPage: View {
                 #if DEBUG
                     Button("Save V1 Settings") {
                         Task {
-                            await Settings.main.save(to: .v_1)
+                            await Settings.main.save(to: .v1)
                         }
                     }
                 #endif
                 
                 Button("Restore Settings") {
                     Task { @MainActor in
-                        Settings.main.restore(from: .v_2)
+                        Settings.main.restore(from: .v2)
                     }
                 }
                 .disabled(!v2SettingsExist)
@@ -92,8 +92,8 @@ struct ImportExportSettingsPage: View {
                     do {
                         try persistenceRepository.deleteAllSystemSettings()
                         firstAppearance = true
-                        v1SettingsExist = persistenceRepository.systemSettingsExists(.v_1)
-                        v2SettingsExist = persistenceRepository.systemSettingsExists(.v_2)
+                        v1SettingsExist = persistenceRepository.systemSettingsExists(.v1)
+                        v2SettingsExist = persistenceRepository.systemSettingsExists(.v2)
                     } catch {
                         handleError(error)
                     }

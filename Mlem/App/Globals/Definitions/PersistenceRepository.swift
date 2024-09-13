@@ -51,12 +51,13 @@ private enum DiskAccess {
 
 // Enumeration of system-managed settings
 enum SystemSetting {
-    case v_1, v_2
+    // swiftlint:disable:next identifier_name
+    case v1, v2
     
     var path: String {
         switch self {
-        case .v_1: "v1"
-        case .v_2: "v2"
+        case .v1: "v1"
+        case .v2: "v2"
         }
     }
 }

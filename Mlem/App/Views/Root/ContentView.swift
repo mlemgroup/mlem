@@ -83,9 +83,9 @@ struct ContentView: View {
                     }
                 }
                 .onAppear {
-                    if firstAppearance, persistenceRepository.systemSettingsExists(.v_1) {
+                    if firstAppearance, persistenceRepository.systemSettingsExists(.v1) {
                         firstAppearance = false
-                        Settings.main.restore(from: .v_1)
+                        Settings.main.restore(from: .v1)
                     }
                 }
                 .onChange(of: interfaceStyle, initial: true) {
