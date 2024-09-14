@@ -32,7 +32,7 @@ struct BypassProxyWarningSheet: View {
                 callback()
                 dismiss()
             } label: {
-                Text("Bypass Image Proxy")
+                Text("Load This Image Directly")
                     .padding(.vertical, Constants.main.halfSpacing)
                     .frame(maxWidth: .infinity)
             }
@@ -44,7 +44,7 @@ struct BypassProxyWarningSheet: View {
                     callback()
                     dismiss()
                 } label: {
-                    Text("Auto-Bypass On Failure")
+                    Text("Always Allow Direct Loading")
                         .padding(.vertical, Constants.main.halfSpacing)
                         .frame(maxWidth: .infinity)
                 }
