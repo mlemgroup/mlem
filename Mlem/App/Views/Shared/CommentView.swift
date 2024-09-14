@@ -40,6 +40,8 @@ struct CommentView: View {
         }
     }
     
+    var threadingColor: Color { palette.commentIndentColors[depth % palette.commentIndentColors.count] }
+    
     @ViewBuilder
     var content: some View {
         let collapsed = (comment as? CommentWrapper)?.collapsed ?? false
@@ -91,24 +93,40 @@ struct CommentView: View {
             .padding(Constants.main.standardSpacing)
             .clipped()
             .background(highlight ? palette.accent.opacity(0.2) : .clear)
-//            .background(palette.background)
-            .padding(.top, 10)
-            .cornerRadius(10)
-            // .background(palette.commentIndentColors[depth % palette.commentIndentColors.count].opacity(0.2))
+            .border(
+                width: depth == 0 ? 0 : 2, edges: [.leading],
+                color: threadingColor
+            )
             .background {
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(palette.commentIndentColors[depth % palette.commentIndentColors.count].opacity(0.2))
-//                    .inset(by: 2)
-//                    .stroke(palette.commentIndentColors[depth % palette.commentIndentColors.count], lineWidth: 2)
+                UnevenRoundedRectangle(
+                    topLeadingRadius: 0,
+                    bottomLeadingRadius: 0,
+                    bottomTrailingRadius: 10,
+                    topTrailingRadius: 0
+                )
+                .fill(palette.accent)
+                .shadow(radius: 5)
             }
+            // .zIndex(Double(-depth))
+            .clipShape(
+                .rect(
+                    topLeadingRadius: 0,
+                    bottomLeadingRadius: 0,
+                    bottomTrailingRadius: 10,
+                    topTrailingRadius: 0
+                )
+            )
+//            .shadow(radius: 5)
+//            .cornerRadius(10)
+//            .background {
+//                RoundedRectangle(cornerRadius: 10)
+//                    .fill(palette.commentIndentColors[depth % palette.commentIndentColors.count].opacity(0.2))
+//            }
             .quickSwipes(comment.swipeActions(behavior: .standard, commentTreeTracker: commentTreeTracker))
             .contentShape(.rect)
             .contextMenu { comment.menuActions(commentTreeTracker: commentTreeTracker) }
-            .padding(.top, -10)
-            // Divider()
         }
         .padding(.trailing, CGFloat(depth) * indent)
         .environment(\.commentContext, comment)
-        .padding(.horizontal, 10)
     }
 }

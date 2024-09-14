@@ -118,6 +118,7 @@ struct ExpandedPostView: View {
                     .padding(.top, 10)
                     .animation(.easeInOut(duration: 0.4), value: highlightedComment?.actorId)
                 }
+                .background(palette.secondaryBackground)
                 .onChange(of: tracker.loadingState, initial: true) {
                     if tracker.loadingState == .done, let highlightedComment {
                         // Without a slight delay here, `scrollTo` can sometimes fail. I'm not sure why this is.
