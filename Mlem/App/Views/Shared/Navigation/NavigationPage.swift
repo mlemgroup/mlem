@@ -18,7 +18,8 @@ enum NavigationPage: Hashable {
     case post(
         _ post: AnyPost,
         highlightedComment: HashWrapper<any CommentStubProviding>? = nil,
-        communityContext: HashWrapper<any Community1Providing>? = nil
+        communityContext: HashWrapper<any Community1Providing>? = nil,
+        navigationNamespace: Namespace.ID? = nil
     )
     case community(_ community: AnyCommunity)
     case person(_ person: AnyPerson)
@@ -44,11 +45,15 @@ enum NavigationPage: Hashable {
         }
     }
     
-    static func post(_ post: any PostStubProviding, communityContext: (any Community1Providing)?) -> NavigationPage {
+    static func post(
+        _ post: any PostStubProviding,
+        communityContext: (any Community1Providing)?,
+        navigationNamespace: Namespace.ID? = nil
+    ) -> NavigationPage {
         if let communityContext {
-            Self.post(.init(post), communityContext: .init(wrappedValue: communityContext))
+            Self.post(.init(post), communityContext: .init(wrappedValue: communityContext), navigationNamespace: navigationNamespace)
         } else {
-            Self.post(.init(post))
+            Self.post(.init(post), navigationNamespace: navigationNamespace)
         }
     }
     

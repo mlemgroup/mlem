@@ -85,7 +85,7 @@ struct PostGridView: View {
                 ForEach(Array(postFeedLoader.items.enumerated()), id: \.element.hashValue) { index, post in
                     if !post.creator.blocked, !post.community.blocked, !post.hidden {
                         VStack(spacing: 0) { // this improves performance O_o
-                            NavigationLink(.post(post, communityContext: communityContext)) {
+                            NavigationLink(.post(post, communityContext: communityContext, navigationNamespace: navigationNamespace)) {
                                 FeedPostView(post: post)
                                     .matchedTransitionSource_(id: "post\(post.actorId)", in: navigationNamespace)
                                     .padding(.vertical, 5)
