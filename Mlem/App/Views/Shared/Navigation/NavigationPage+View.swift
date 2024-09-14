@@ -65,27 +65,43 @@ extension NavigationPage {
             }
         case let .communityPicker(api: api, callback: callback):
             SearchSheetView(api: api) { (community: Community2, navigation: NavigationLayer) in
-                CommunityListRowBody(community)
-                    .onTapGesture {
-                        callback.wrappedValue(community, navigation)
-                    }
-                    .padding(.vertical, 6)
+                Button {
+                    callback.wrappedValue(community, navigation)
+                } label: {
+                    CommunityListRowBody(community)
+                        .tint(Palette.main.primary)
+                }
+                .padding(.vertical, 6)
             }
         case let .personPicker(api: api, callback: callback):
             SearchSheetView(api: api) { (person: Person2, navigation: NavigationLayer) in
-                PersonListRowBody(person)
-                    .onTapGesture {
-                        callback.wrappedValue(person, navigation)
-                    }
-                    .padding(.vertical, 6)
+                Button {
+                    callback.wrappedValue(person, navigation)
+                } label: {
+                    PersonListRowBody(person)
+                        .tint(Palette.main.primary)
+                }
+                .padding(.vertical, 6)
             }
-        case let .instancePicker(callback: callback):
+        case let .instancePicker(callback: callback, minimumVersion: minimumVersion):
             SearchSheetView { (instance: InstanceSummary, navigation: NavigationLayer) in
-                InstanceListRowBody(instance)
-                    .onTapGesture {
-                        callback.wrappedValue(instance, navigation)
-                    }
-                    .padding(.vertical, 6)
+                Button {
+                    callback.wrappedValue(instance, navigation)
+                } label: {
+                    InstanceListRowBody(instance)
+                        .tint(Palette.main.primary)
+                }
+                .padding(.vertical, 6)
+                .disabled(instance.version < (minimumVersion ?? .zero))
+            } header: {
+                if let minimumVersion {
+                    Text("This feature is only supported for instances running version \(minimumVersion) or later.")
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(Palette.main.caution.opacity(0.2), in: .rect(cornerRadius: 10))
+                        .foregroundStyle(Palette.main.caution)
+                        .padding([.horizontal, .bottom])
+                }
             }
         case let .instance(instance):
             InstanceView(instance: instance.wrappedValue)
@@ -94,40 +110,5 @@ extension NavigationPage {
         case let .bypassImageProxy(callback):
             BypassProxyWarningSheet(callback: callback.wrappedValue)
         }
-    }
-}
-
-extension NavigationPage {
-    @ViewBuilder
-    func viewWithModifiers(layer: NavigationLayer) -> some View {
-        view()
-            .sheet(isPresented: Binding(
-                get: { (layer.model?.layers.count ?? 0) > (layer.index + 1)
-                    && !(layer.model?.layers[layer.index + 1].isFullScreenCover ?? true)
-                },
-                set: { newValue in
-                    if !newValue, let model = layer.model {
-                        model.layers.removeLast(max(0, model.layers.count - layer.index - 1))
-                    }
-                }
-            )) {
-                if let model = layer.model {
-                    NavigationLayerView(layer: model.layers[layer.index + 1], hasSheetModifiers: true)
-                }
-            }
-            .fullScreenCover(isPresented: Binding(
-                get: { (layer.model?.layers.count ?? 0) > (layer.index + 1)
-                    && (layer.model?.layers[layer.index + 1].isFullScreenCover ?? false)
-                },
-                set: { newValue in
-                    if !newValue, let model = layer.model {
-                        model.layers.removeLast(max(0, model.layers.count - layer.index - 1))
-                    }
-                }
-            )) {
-                if let model = layer.model {
-                    NavigationLayerView(layer: model.layers[layer.index + 1], hasSheetModifiers: true)
-                }
-            }
     }
 }

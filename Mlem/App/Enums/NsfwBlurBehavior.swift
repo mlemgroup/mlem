@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum NsfwBlurBehavior: String, CaseIterable {
+enum NsfwBlurBehavior: String, CaseIterable, Codable {
     case always, outsideCommunity, never
     
     var label: LocalizedStringResource {

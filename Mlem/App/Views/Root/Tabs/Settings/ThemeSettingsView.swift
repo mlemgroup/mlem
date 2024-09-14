@@ -48,10 +48,5 @@ struct ThemeSettingsView: View {
             .labelsHidden()
             .pickerStyle(.inline)
         }
-        .onChange(of: colorPalette) {
-            withAnimation {
-                palette.changePalette(to: colorPalette)
-            }
-        }
     }
 }

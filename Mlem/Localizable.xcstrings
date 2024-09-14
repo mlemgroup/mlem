@@ -116,10 +116,19 @@
     "All Time" : {
 
     },
+    "Alphabetical" : {
+
+    },
     "Always" : {
 
     },
+    "Always Allow Direct Loading" : {
+
+    },
     "Answer..." : {
+
+    },
+    "Any Instance" : {
 
     },
     "App Icon" : {
@@ -141,9 +150,6 @@
 
     },
     "Auto-Bypass Image Proxy" : {
-
-    },
-    "Auto-Bypass On Failure" : {
 
     },
     "Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser." : {
@@ -188,9 +194,6 @@
     "Bottom" : {
 
     },
-    "Bypass Image Proxy" : {
-
-    },
     "Cache" : {
 
     },
@@ -219,7 +222,13 @@
     "Choose Account Type" : {
 
     },
+    "Choose File" : {
+
+    },
     "Choose wisely - you cannot change this later." : {
+
+    },
+    "Choose..." : {
 
     },
     "Clear Cache" : {
@@ -282,6 +291,9 @@
     "Copy Name" : {
 
     },
+    "Could not find settings" : {
+
+    },
     "Couldn't read URL" : {
 
     },
@@ -299,6 +311,9 @@
       }
     },
     "Day" : {
+
+    },
+    "Debug" : {
 
     },
     "Default" : {
@@ -376,6 +391,9 @@
     "example.com" : {
 
     },
+    "Export Settings" : {
+
+    },
     "Failed to connect to %@" : {
 
     },
@@ -447,6 +465,9 @@
     "Files" : {
 
     },
+    "Filters" : {
+
+    },
     "General" : {
 
     },
@@ -505,6 +526,15 @@
 
     },
     "Images are cached on your device for fast reuse. The maximum cache size is around %@." : {
+
+    },
+    "Import Settings" : {
+
+    },
+    "Import/Export Settings" : {
+
+    },
+    "Imported Settings" : {
 
     },
     "In Default Browser" : {
@@ -577,6 +607,9 @@
 
     },
     "Load directly from %@" : {
+
+    },
+    "Load This Image Directly" : {
 
     },
     "Loading instance details" : {
@@ -732,6 +765,12 @@
     "Other" : {
 
     },
+    "Other (%@)" : {
+
+    },
+    "Other..." : {
+
+    },
     "Outside NSFW Communities" : {
 
     },
@@ -751,6 +790,9 @@
 
     },
     "Permanently delete %@" : {
+
+    },
+    "Photo Library" : {
 
     },
     "Photos" : {
@@ -855,7 +897,16 @@
     "Reset" : {
 
     },
+    "Reset Settings State" : {
+
+    },
     "Restore" : {
+
+    },
+    "Restore Settings" : {
+
+    },
+    "Restored Settings" : {
 
     },
     "Right" : {
@@ -870,10 +921,22 @@
     "Save Image" : {
 
     },
+    "Save Settings" : {
+
+    },
+    "Save V1 Settings" : {
+
+    },
     "Saved" : {
 
     },
+    "Saved Settings" : {
+
+    },
     "Scaled" : {
+
+    },
+    "Score" : {
 
     },
     "Search" : {
@@ -940,7 +1003,14 @@
 
     },
     "Solarized" : {
-
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solarised"
+          }
+        }
+      }
     },
     "Some" : {
 
@@ -991,6 +1061,9 @@
 
     },
     "Subscription List" : {
+
+    },
+    "Subscription statuses can't be displayed when using these filters." : {
 
     },
     "Superscript" : {
@@ -1166,6 +1239,9 @@
 
     },
     "Users" : {
+
+    },
+    "Version" : {
 
     },
     "Viewing %@ as guest" : {

@@ -22,7 +22,7 @@ struct CommentEditorView: View {
         case success, notFound, error(ErrorDetails), resolving
     }
     
-    let textView: UITextView = .init()
+    @State var textView: UITextView = .init()
 
     let commentTreeTracker: CommentTreeTracker?
     
@@ -36,6 +36,8 @@ struct CommentEditorView: View {
     @State var presentationSelection: PresentationDetent = .large
     
     @State var textIsEmpty: Bool = true
+    
+    @State var uploadHistory: ImageUploadHistoryManager = .init()
     
     @FocusState var focused: Bool
     
@@ -78,7 +80,7 @@ struct CommentEditorView: View {
                                 AccountPickerMenu(account: $account) {
                                     HStack(spacing: 3) {
                                         FullyQualifiedLabelView(entity: account, labelStyle: .medium, showAvatar: false, blurred: false)
-                                        Image(systemName: "chevron.down.circle.fill")
+                                        Image(systemName: Icons.dropDownCircleFill)
                                             .symbolRenderingMode(.hierarchical)
                                             .tint(palette.secondary)
                                             .imageScale(.small)
@@ -108,6 +110,14 @@ struct CommentEditorView: View {
         .onAppear {
             textView.becomeFirstResponder()
         }
+        .onDisappear {
+            // If we didn't have the `isAlive` check here, the images would
+            // get deleted when you click on a link in the reply context
+            if !navigation.isAlive, !sending, !uploadHistory.uploads.isEmpty {
+                print("Deleting uploaded images...")
+                uploadHistory.deleteAll()
+            }
+        }
         .onChange(of: presentationSelection) {
             if presentationSelection == .large {
                 textView.becomeFirstResponder()
@@ -132,7 +142,11 @@ struct CommentEditorView: View {
                     prompt: "Start writing...",
                     textView: textView,
                     content: {
-                        MarkdownEditorToolbarView(textView: textView)
+                        MarkdownEditorToolbarView(
+                            textView: textView,
+                            uploadHistory: uploadHistory,
+                            imageUploadApi: account.api
+                        )
                     }
                 )
                 .frame(

@@ -7,11 +7,12 @@
 
 import Foundation
 
-enum InternetSpeed: String, SettingsOptions {
-    case slow, fast
+enum InternetSpeed: String, Codable {
+    case debug, slow, fast
     
     var label: LocalizedStringResource {
         switch self {
+        case .debug: "Debug"
         case .slow: "Slow"
         case .fast: "Fast"
         }
@@ -21,6 +22,7 @@ enum InternetSpeed: String, SettingsOptions {
     
     var pageSize: Int {
         switch self {
+        case .debug: return 11
         case .slow: return 25
         case .fast: return 50
         }

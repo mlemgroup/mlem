@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ThumbnailLocation: String, CaseIterable {
+enum ThumbnailLocation: String, CaseIterable, Codable {
     case left, right, none
     
     var label: LocalizedStringResource {

@@ -32,6 +32,8 @@ private enum Path {
     static var easterFlags = root.appendingPathComponent("Easter eggs flags", conformingTo: .json)
     static var instanceMetadata = root.appendingPathComponent("Instance Metadata", conformingTo: .json)
     static var layoutWidgets = root.appendingPathComponent("Layout Widgets", conformingTo: .json)
+    static var systemSettings = root.appendingPathComponent("System Settings", conformingTo: .directory)
+    static var userSettings = root.appendingPathComponent("User Settings", conformingTo: .directory)
 }
 
 private enum DiskAccess {
@@ -44,6 +46,19 @@ private enum DiskAccess {
             try data.write(to: path, options: .atomic)
         }
         .value
+    }
+}
+
+// Enumeration of system-managed settings
+enum SystemSetting {
+    // swiftlint:disable:next identifier_name
+    case v1, v2
+    
+    var path: String {
+        switch self {
+        case .v1: "v1"
+        case .v2: "v2"
+        }
     }
 }
 
@@ -65,6 +80,14 @@ class PersistenceRepository {
         self.read = read
         self.write = write
         self.bundle = bundle
+        
+        // set up settings directories--if this fails, something has gone _terribly_ wrong
+        do {
+            try FileManager.default.createDirectory(at: Path.systemSettings, withIntermediateDirectories: true)
+            try FileManager.default.createDirectory(at: Path.userSettings, withIntermediateDirectories: true)
+        } catch {
+            fatalError("Could not create settings directories")
+        }
     }
     
     // MARK: - Public methods
@@ -131,6 +154,39 @@ class PersistenceRepository {
     
     func saveInteractionBarConfigurations(_ value: InteractionBarConfigurations) async throws {
         try await save(value, to: Path.layoutWidgets)
+    }
+    
+    /// Saves the given user settings
+    func saveUserSettings(_ settings: CodableSettings, name: String) async throws {
+        try await save(settings, to: Path.userSettings.appendingPathComponent(name, conformingTo: .json))
+    }
+    
+    /// Loads given user settings, if present
+    func loadUserSettings(name: String) -> CodableSettings? {
+        load(CodableSettings.self, from: Path.userSettings.appendingPathComponent(name, conformingTo: .json))
+    }
+    
+    /// Returns true if the given system settings exist, false otherwise
+    func systemSettingsExists(_ setting: SystemSetting) -> Bool {
+        // FileManager does offer fileExists but it always returns false, this way is reliable
+        if loadSystemSettings(setting) != nil { return true }
+        return false
+    }
+    
+    /// Saves the given system settings
+    func saveSystemSettings(_ settings: CodableSettings, setting: SystemSetting) async throws {
+        try await save(settings, to: Path.systemSettings.appendingPathComponent(setting.path, conformingTo: .json))
+    }
+    
+    /// Loads given system settings, if present
+    func loadSystemSettings(_ setting: SystemSetting) -> CodableSettings? {
+        load(CodableSettings.self, from: Path.systemSettings.appendingPathComponent(setting.path, conformingTo: .json))
+    }
+    
+    // DEV ONLY
+    func deleteAllSystemSettings() throws {
+        try FileManager.default.removeItem(at: Path.systemSettings)
+        try FileManager.default.createDirectory(at: Path.systemSettings, withIntermediateDirectories: true)
     }
 
 //

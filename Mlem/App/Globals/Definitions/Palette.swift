@@ -52,7 +52,7 @@ protocol PaletteProviding {
     var commentIndentColors: [Color] { get }
 }
 
-enum PaletteOption: String, CaseIterable {
+enum PaletteOption: String, CaseIterable, Codable {
     case standard, monochrome, solarized, dracula
     
     var palette: ColorPalette {
