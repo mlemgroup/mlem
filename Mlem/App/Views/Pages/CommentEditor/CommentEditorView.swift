@@ -22,7 +22,7 @@ struct CommentEditorView: View {
         case success, notFound, error(ErrorDetails), resolving
     }
     
-    let textView: UITextView = .init()
+    @State var textView: UITextView = .init()
 
     let commentTreeTracker: CommentTreeTracker?
     
