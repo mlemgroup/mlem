@@ -83,7 +83,7 @@ struct ExpandedPostView: View {
                 }
             }
         }
-        .background(palette.background)
+        .background(palette.groupedBackground)
     }
     
     // swiftlint:disable:next function_body_length

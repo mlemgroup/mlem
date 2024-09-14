@@ -44,7 +44,13 @@ struct CommentView: View {
     var content: some View {
         let collapsed = (comment as? CommentWrapper)?.collapsed ?? false
         
-        VStack(spacing: 0) {
+        HStack(spacing: 12) {
+            Capsule()
+                .fill(palette.commentIndentColors[depth % palette.commentIndentColors.count])
+                .frame(width: 4)
+                .frame(maxHeight: .infinity)
+                .padding(.leading, 8)
+                .padding(.vertical, -2)
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 HStack(spacing: 0) {
                     FullyQualifiedLinkView(
@@ -86,20 +92,23 @@ struct CommentView: View {
                     }
                 }
             }
-            .padding(.vertical, 2)
-            .padding(Constants.main.standardSpacing)
-            .clipped()
-            .background(highlight ? palette.accent.opacity(0.2) : .clear)
-            .background(palette.background)
-            .border(
-                width: depth == 0 ? 0 : 2, edges: [.leading],
-                color: palette.commentIndentColors[depth % palette.commentIndentColors.count]
-            )
-            .quickSwipes(comment.swipeActions(behavior: .standard, commentTreeTracker: commentTreeTracker))
-            .contentShape(.rect)
-            .contextMenu { comment.menuActions(commentTreeTracker: commentTreeTracker) }
-            Divider()
         }
+        .padding(.vertical, 2)
+        .padding([.vertical, .trailing], Constants.main.standardSpacing)
+        .background(highlight ? palette.accent.opacity(0.2) : .clear)
+        .background(palette.secondaryGroupedBackground)
+//            .border(
+//                width: depth == 0 ? 0 : 2, edges: [.leading],
+//                color: palette.commentIndentColors[depth % palette.commentIndentColors.count]
+//            )
+        .quickSwipes(comment.swipeActions(behavior: .standard, commentTreeTracker: commentTreeTracker))
+        .contentShape(.rect)
+        .contextMenu { comment.menuActions(commentTreeTracker: commentTreeTracker) }
+        .clipShape(.rect(cornerRadius: 12))
+        .padding(.vertical, 2)
+        .padding(.trailing, 10)
+        // .shadow(color: palette.commentIndentColors[depth % palette.commentIndentColors.count], radius: 4)
+        // Divider()
         .padding(.leading, CGFloat(depth) * indent)
         .environment(\.commentContext, comment)
     }
