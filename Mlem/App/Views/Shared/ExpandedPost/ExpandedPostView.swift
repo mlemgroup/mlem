@@ -115,6 +115,7 @@ struct ExpandedPostView: View {
                             ) { [comment.actorId: $0] }
                         }
                     }
+                    .padding(.top, 10)
                     .animation(.easeInOut(duration: 0.4), value: highlightedComment?.actorId)
                 }
                 .onChange(of: tracker.loadingState, initial: true) {

@@ -86,21 +86,29 @@ struct CommentView: View {
                     }
                 }
             }
+            .padding(10)
             .padding(.vertical, 2)
             .padding(Constants.main.standardSpacing)
             .clipped()
             .background(highlight ? palette.accent.opacity(0.2) : .clear)
-            .background(palette.background)
-            .border(
-                width: depth == 0 ? 0 : 2, edges: [.leading],
-                color: palette.commentIndentColors[depth % palette.commentIndentColors.count]
-            )
+//            .background(palette.background)
+            .padding(.top, 10)
+            .cornerRadius(10)
+            // .background(palette.commentIndentColors[depth % palette.commentIndentColors.count].opacity(0.2))
+            .background {
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(palette.commentIndentColors[depth % palette.commentIndentColors.count].opacity(0.2))
+//                    .inset(by: 2)
+//                    .stroke(palette.commentIndentColors[depth % palette.commentIndentColors.count], lineWidth: 2)
+            }
             .quickSwipes(comment.swipeActions(behavior: .standard, commentTreeTracker: commentTreeTracker))
             .contentShape(.rect)
             .contextMenu { comment.menuActions(commentTreeTracker: commentTreeTracker) }
-            Divider()
+            .padding(.top, -10)
+            // Divider()
         }
-        .padding(.leading, CGFloat(depth) * indent)
+        .padding(.trailing, CGFloat(depth) * indent)
         .environment(\.commentContext, comment)
+        .padding(.horizontal, 10)
     }
 }
