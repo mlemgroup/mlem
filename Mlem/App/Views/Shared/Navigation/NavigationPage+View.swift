@@ -107,6 +107,8 @@ extension NavigationPage {
             InstanceView(instance: instance.wrappedValue)
         case let .deleteAccount(account):
             DeleteAccountView(account: account)
+        case let .bypassImageProxy(callback):
+            BypassProxyWarningSheet(callback: callback.wrappedValue)
         }
     }
 }

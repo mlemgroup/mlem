@@ -35,6 +35,7 @@ enum NavigationPage: Hashable {
     case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
     case createPost(community: AnyCommunity?)
     case deleteAccount(_ account: UserAccount)
+    case bypassImageProxy(callback: HashWrapper<() -> Void>)
     
     static func post(_ post: any PostStubProviding, highlightedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
         if let highlightedComment {
@@ -145,6 +146,10 @@ enum NavigationPage: Hashable {
     
     static func signUp(_ instance: any InstanceStubProviding) -> NavigationPage {
         signUp(.init(wrappedValue: instance))
+    }
+    
+    static func bypassImageProxyWarning(callback: @escaping () -> Void) -> NavigationPage {
+        bypassImageProxy(callback: .init(wrappedValue: callback))
     }
     
     var hasNavigationStack: Bool {

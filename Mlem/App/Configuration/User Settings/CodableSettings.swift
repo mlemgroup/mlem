@@ -62,6 +62,7 @@ struct CodableSettings: Codable {
     var post_webPreview_showHost: Bool
     var post_webPreview_showIcon: Bool
     var profile_showBanner: Bool
+    var privacy_autoBypassImageProxy: Bool
     var safety_blurNsfw: NsfwBlurBehavior
     var safety_enableModlogWarning: Bool
     var safety_enableNsfwCommunityWarning: Bool
@@ -72,6 +73,7 @@ struct CodableSettings: Codable {
     var tab_showNames: Bool
     var person_showAvatar: Bool
     var person_showInstance: Bool
+    var status_bypassImageProxyShown: Bool
     var subscriptions_instanceLocation: InstanceLocation
     var subscriptions_sort: SubscriptionListSort
     
@@ -128,6 +130,7 @@ struct CodableSettings: Codable {
         self.post_thumbnailLocation = try container.decodeIfPresent(ThumbnailLocation.self, forKey: .post_thumbnailLocation) ?? .left
         self.post_webPreview_showHost = try container.decodeIfPresent(Bool.self, forKey: .post_webPreview_showHost) ?? true
         self.post_webPreview_showIcon = try container.decodeIfPresent(Bool.self, forKey: .post_webPreview_showIcon) ?? true
+        self.privacy_autoBypassImageProxy = try container.decode(Bool.self, forKey: .privacy_autoBypassImageProxy) ?? false
         self.profile_showBanner = try container.decodeIfPresent(Bool.self, forKey: .profile_showBanner) ?? true
         self.safety_blurNsfw = try container.decodeIfPresent(NsfwBlurBehavior.self, forKey: .safety_blurNsfw) ?? .always
         self.safety_enableModlogWarning = try container.decodeIfPresent(Bool.self, forKey: .safety_enableModlogWarning) ?? true
@@ -139,6 +142,7 @@ struct CodableSettings: Codable {
         self.tab_showNames = try container.decodeIfPresent(Bool.self, forKey: .tab_showNames) ?? true
         self.person_showAvatar = try container.decodeIfPresent(Bool.self, forKey: .person_showAvatar) ?? true
         self.person_showInstance = try container.decodeIfPresent(Bool.self, forKey: .person_showInstance) ?? true
+        self.status_bypassImageProxyShown = try container.decodeIfPresent(Bool.self, forKey: .status_bypassImageProxyShown) ?? false
         self.subscriptions_instanceLocation = try container.decodeIfPresent(InstanceLocation.self, forKey: .subscriptions_instanceLocation) ?? (UIDevice.isPad ? .bottom : .trailing)
         self.subscriptions_sort = try container.decodeIfPresent(SubscriptionListSort.self, forKey: .subscriptions_sort) ?? .alphabetical
     }
@@ -207,6 +211,8 @@ struct CodableSettings: Codable {
         self.tab_showNames = true
         self.person_showAvatar = settings.showPersonAvatar
         self.person_showInstance = true
+        self.privacy_autoBypassImageProxy = settings.autoBypassImageProxy
+        self.status_bypassImageProxyShown = settings.bypassImageProxyShown
         self.subscriptions_instanceLocation = settings.subscriptionInstanceLocation
         self.subscriptions_sort = settings.subscriptionSort
     }

@@ -9,9 +9,14 @@ import Dependencies
 import SwiftUI
 
 struct GeneralSettingsView: View {
+    // safety
     @Setting(\.blurNsfw) var blurNsfw
     @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
     
+    // privacy
+    @Setting(\.autoBypassImageProxy) var bypassImageProxy
+    
+    // behavior
     @Setting(\.upvoteOnSave) var upvoteOnSave
     @Setting(\.quickSwipesEnabled) var swipeActionsEnabled
     @Setting(\.jumpButton) var jumpButton
@@ -32,6 +37,12 @@ struct GeneralSettingsView: View {
                 Toggle("Warn When Opening NSFW Community", isOn: $showNsfwCommunityWarning)
             } header: {
                 Text("Safety")
+            }
+            
+            Section {
+                Toggle("Auto-Bypass Image Proxy", isOn: $bypassImageProxy)
+            } header: {
+                Text("Privacy")
             }
             
             Section {

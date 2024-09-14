@@ -11,7 +11,10 @@ import SwiftUI
 
 @Observable
 class FixedImageLoader {
-    let url: URL?
+    @ObservationIgnored @Setting(\.autoBypassImageProxy) var autoBypassImageProxy
+    
+    private(set) var url: URL?
+    private var proxyBypass: URL?
     private(set) var uiImage: UIImage?
     private(set) var loading: ImageLoadingState
     private(set) var error: Error?
@@ -19,6 +22,11 @@ class FixedImageLoader {
     
     init(url: URL?, size: CGSize) {
         self.url = url
+        if let url,
+           let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+           let base = components.queryItems?.first(where: { $0.name == "url" })?.value {
+            self.proxyBypass = URL(string: base)
+        }
         self.size = size
         
         if let url {
@@ -48,8 +56,22 @@ class FixedImageLoader {
             uiImage = try await imageTask.image
             loading = .done
         } catch {
-            self.error = error
-            loading = .failed
+            if autoBypassImageProxy, proxyBypass != nil {
+                await bypassProxy()
+            } else {
+                self.error = error
+                loading = proxyBypass == nil ? .failed : .proxyFailed
+            }
         }
+    }
+    
+    @MainActor
+    func bypassProxy() async {
+        error = nil
+        uiImage = nil
+        loading = .loading
+        url = proxyBypass
+        proxyBypass = nil
+        await load()
     }
 }

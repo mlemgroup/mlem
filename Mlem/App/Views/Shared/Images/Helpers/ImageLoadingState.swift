@@ -8,5 +8,5 @@
 import Foundation
 
 enum ImageLoadingState {
-    case loading, done, failed
+    case loading, done, proxyFailed, failed
 }

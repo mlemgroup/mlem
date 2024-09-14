@@ -14,13 +14,23 @@ struct WarningView: View {
     let iconName: String
     let text: String
     let inList: Bool
+    let overrideColor: Color?
+    
+    init(iconName: String, text: String, inList: Bool, overrideColor: Color? = nil) {
+        self.iconName = iconName
+        self.text = text
+        self.inList = inList
+        self.overrideColor = overrideColor
+    }
+    
+    var color: Color { overrideColor ?? palette.warning }
     
     var body: some View {
         VStack(alignment: .center, spacing: 12) {
             Image(systemName: iconName)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .foregroundStyle(palette.warning)
+                .foregroundStyle(color)
                 .frame(width: 50)
             Text(text)
                 .font(.headline)
@@ -47,8 +57,8 @@ struct WarningView: View {
     
     var backgroundRect: some View {
         RoundedRectangle(cornerRadius: 10)
-            .stroke(palette.warning, lineWidth: 3)
-            .background(palette.warning.opacity(0.1))
+            .stroke(color, lineWidth: 3)
+            .background(color.opacity(0.1))
             .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }

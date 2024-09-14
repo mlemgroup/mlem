@@ -42,8 +42,10 @@ class Settings: ObservableObject {
     @AppStorage("safety.blurNsfw") var blurNsfw: NsfwBlurBehavior = .always
     @AppStorage("safety.showNsfwCommunityWarning") var showNsfwCommunityWarning: Bool = true
     
-    @AppStorage("links.openInBrowser") var openLinksInBrowser: Bool = false
-    @AppStorage("links.readerMode") var openLinksInReaderMode: Bool = false
+    @AppStorage("privacy.autoBypassImageProxy") var autoBypassImageProxy: Bool = false
+    
+    @AppStorage("links.openInBrowser") var openLinksInBrowser = false
+    @AppStorage("links.readerMode") var openLinksInReaderMode = false
     
     @AppStorage("feed.markReadOnScroll") var markReadOnScroll: Bool = false
     @AppStorage("feed.showRead") var showReadInFeed: Bool = true
@@ -62,6 +64,8 @@ class Settings: ObservableObject {
     @AppStorage("comment.compact") var compactComments: Bool = false
     @AppStorage("comment.jumpButton") var jumpButton: CommentJumpButtonLocation = .bottomTrailing
     @AppStorage("comment.sort") var commentSort: ApiCommentSortType = .top
+    
+    @AppStorage("status.bypassImageProxyShown") var bypassImageProxyShown: Bool = false
     
     var codable: CodableSettings { .init(from: self) }
     
@@ -117,5 +121,7 @@ class Settings: ObservableObject {
         compactComments = settings.comment_compact
         jumpButton = settings.comment_jumpButton
         commentSort = settings.comment_defaultSort
+        bypassImageProxyShown = settings.status_bypassImageProxyShown
+        autoBypassImageProxy = settings.privacy_autoBypassImageProxy
     }
 }

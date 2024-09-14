@@ -52,7 +52,7 @@ struct ThumbnailImageView: View {
             case let .image(url):
                 content
                     .onTapGesture {
-                        if let loading, loading == .done {
+                        if let loading, loading == .done || loading == .proxyFailed {
                             post.markRead()
                             
                             // Sheets don't cover the whole screen on iPad, so use a fullScreenCover instead
