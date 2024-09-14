@@ -94,7 +94,6 @@ struct PostEditorView: View {
         .onDisappear {
             if !navigation.isAlive, !sending {
                 Task {
-                    print("Deleting image...")
                     do {
                         try await imageManager?.image?.delete()
                     } catch {

@@ -82,7 +82,7 @@ extension CommentEditorView {
                 }
                 commentTreeTracker?.insertCreatedComment(result, parent: parent)
             } else {
-                // This should never happen
+                assertionFailure()
                 return
             }
             Task { @MainActor in
