@@ -44,17 +44,19 @@ struct InstanceListRow<Content2: View>: View {
     }
     
     var body: some View {
-        FormChevron { content }
-            .padding(.trailing)
-            .padding(.vertical, 6)
-            .onTapGesture {
-                if let instanceStub {
-                    navigation.push(.instance(instanceStub))
-                }
+        Button {
+            if let instanceStub {
+                navigation.push(.instance(instanceStub))
             }
-            .background(palette.background)
-            .contextMenu {
-                instanceStub?.menuActions(allowExternalBlocking: true) ?? []
-            }
+        } label: {
+            FormChevron { content }
+                .padding(.trailing)
+        }
+        .buttonStyle(EmptyButtonStyle())
+        .padding(.vertical, 6)
+        .background(palette.background)
+        .contextMenu {
+            instanceStub?.menuActions(allowExternalBlocking: true) ?? []
+        }
     }
 }
