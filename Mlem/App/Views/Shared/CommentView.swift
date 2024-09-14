@@ -106,7 +106,7 @@ struct CommentView: View {
         .contextMenu { comment.menuActions(commentTreeTracker: commentTreeTracker) }
         .clipShape(.rect(cornerRadius: 12))
         .padding(.vertical, 2)
-        .padding(.trailing, 10)
+        .padding(.horizontal, 10)
         // .shadow(color: palette.commentIndentColors[depth % palette.commentIndentColors.count], radius: 4)
         // Divider()
         .padding(.leading, CGFloat(depth) * indent)
