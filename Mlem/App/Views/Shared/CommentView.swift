@@ -97,36 +97,31 @@ struct CommentView: View {
                 width: depth == 0 ? 0 : 2, edges: [.leading],
                 color: threadingColor
             )
-            .background {
-                UnevenRoundedRectangle(
-                    topLeadingRadius: 0,
-                    bottomLeadingRadius: 0,
-                    bottomTrailingRadius: 10,
-                    topTrailingRadius: 0
-                )
-                .fill(palette.accent)
-                .shadow(radius: 5)
-            }
-            // .zIndex(Double(-depth))
+            .background(palette.background)
+            .quickSwipes(comment.swipeActions(behavior: .standard, commentTreeTracker: commentTreeTracker))
             .clipShape(
                 .rect(
-                    topLeadingRadius: 0,
-                    bottomLeadingRadius: 0,
-                    bottomTrailingRadius: 10,
-                    topTrailingRadius: 0
+                    topLeadingRadius: depth == 0 ? 10 : 0,
+                    bottomLeadingRadius: 10,
+                    bottomTrailingRadius: 00,
+                    topTrailingRadius: depth == 0 ? 10 : 0
                 )
             )
-//            .shadow(radius: 5)
-//            .cornerRadius(10)
-//            .background {
-//                RoundedRectangle(cornerRadius: 10)
-//                    .fill(palette.commentIndentColors[depth % palette.commentIndentColors.count].opacity(0.2))
-//            }
-            .quickSwipes(comment.swipeActions(behavior: .standard, commentTreeTracker: commentTreeTracker))
+            .background {
+                UnevenRoundedRectangle(
+                    topLeadingRadius: depth == 0 ? 10 : 0,
+                    bottomLeadingRadius: 10,
+                    bottomTrailingRadius: 0,
+                    topTrailingRadius: depth == 0 ? 10 : 0
+                )
+                .fill(palette.background)
+                .shadow(radius: 5)
+            }
             .contentShape(.rect)
             .contextMenu { comment.menuActions(commentTreeTracker: commentTreeTracker) }
         }
-        .padding(.trailing, CGFloat(depth) * indent)
+        .padding(.top, depth == 0 ? 10 : 0)
+        .padding(.leading, CGFloat(depth) * indent)
         .environment(\.commentContext, comment)
     }
 }
