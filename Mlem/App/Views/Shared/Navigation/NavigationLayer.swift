@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 28/04/2024.
 //
 
+import MlemMiddleware
 import SwiftUI
 
 @Observable
@@ -104,5 +105,33 @@ class NavigationLayer {
         )
     }
     
+    func showPhotosPicker(for imageUploadManager: ImageUploadManager, api: ApiClient) {
+        model?.photosPickerCallback = { photo in
+            Task {
+                do {
+                    try await imageUploadManager.uploadPhoto(photo, api: api)
+                } catch {
+                    handleError(error)
+                }
+            }
+        }
+    }
+    
+    func showFilePicker(for imageUploadManager: ImageUploadManager, api: ApiClient) {
+        model?.showingFilePicker = true
+        model?.filePickerCallback = { url in
+            Task {
+                do {
+                    try await imageUploadManager.uploadFile(localUrl: url, api: api)
+                } catch {
+                    handleError(error)
+                }
+            }
+        }
+    }
+    
     var isInsideSheet: Bool { index != -1 }
+    
+    // Can be used inside of an `.onDisappear` to determine whether the disappearance was caused by the sheet closing
+    var isAlive: Bool { model != nil }
 }

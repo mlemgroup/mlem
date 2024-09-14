@@ -65,6 +65,7 @@ extension CommentEditorView {
     }
     
     func send() async {
+        uploadHistory.deleteWhereNotPresent(in: textView.text)
         do {
             if let commentToEdit {
                 try await commentToEdit.edit(content: textView.text, languageId: commentToEdit.languageId)
@@ -81,6 +82,7 @@ extension CommentEditorView {
                 }
                 commentTreeTracker?.insertCreatedComment(result, parent: parent)
             } else {
+                assertionFailure()
                 return
             }
             Task { @MainActor in

@@ -122,10 +122,10 @@
     "Always" : {
 
     },
-    "Any Instance" : {
+    "Answer..." : {
 
     },
-    "Answer..." : {
+    "Any Instance" : {
 
     },
     "App Icon" : {
@@ -216,10 +216,13 @@
     "Choose Account Type" : {
 
     },
-    "Choose..." : {
+    "Choose File" : {
 
     },
     "Choose wisely - you cannot change this later." : {
+
+    },
+    "Choose..." : {
 
     },
     "Clear Cache" : {
@@ -774,6 +777,9 @@
     "Permanently delete %@" : {
 
     },
+    "Photo Library" : {
+
+    },
     "Photos" : {
 
     },
@@ -976,7 +982,14 @@
 
     },
     "Solarized" : {
-
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solarised"
+          }
+        }
+      }
     },
     "Some" : {
 
