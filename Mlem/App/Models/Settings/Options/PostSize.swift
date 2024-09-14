@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-enum PostSize: String, CaseIterable {
+enum PostSize: String, CaseIterable, Codable {
     case compact, tile, headline, large
     
     /// Convenience because this check comes up a lot

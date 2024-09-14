@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum CommentJumpButtonLocation: String, CaseIterable {
+enum CommentJumpButtonLocation: String, CaseIterable, Codable {
     case bottomLeading, bottomTrailing, bottomCenter, none
     
     var alignment: Alignment {

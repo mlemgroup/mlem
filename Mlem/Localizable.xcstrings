@@ -285,6 +285,9 @@
     "Copy Name" : {
 
     },
+    "Could not find settings" : {
+
+    },
     "Couldn't read URL" : {
 
     },
@@ -302,6 +305,9 @@
       }
     },
     "Day" : {
+
+    },
+    "Debug" : {
 
     },
     "Default" : {
@@ -377,6 +383,9 @@
 
     },
     "example.com" : {
+
+    },
+    "Export Settings" : {
 
     },
     "Failed to connect to %@" : {
@@ -511,6 +520,15 @@
 
     },
     "Images are cached on your device for fast reuse. The maximum cache size is around %@." : {
+
+    },
+    "Import Settings" : {
+
+    },
+    "Import/Export Settings" : {
+
+    },
+    "Imported Settings" : {
 
     },
     "In Default Browser" : {
@@ -858,7 +876,16 @@
     "Reset" : {
 
     },
+    "Reset Settings State" : {
+
+    },
     "Restore" : {
+
+    },
+    "Restore Settings" : {
+
+    },
+    "Restored Settings" : {
 
     },
     "Right" : {
@@ -873,7 +900,16 @@
     "Save Image" : {
 
     },
+    "Save Settings" : {
+
+    },
+    "Save V1 Settings" : {
+
+    },
     "Saved" : {
+
+    },
+    "Saved Settings" : {
 
     },
     "Scaled" : {

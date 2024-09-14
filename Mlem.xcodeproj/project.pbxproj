@@ -275,7 +275,6 @@
 		CD4D59142B87B36B00B82964 /* InternetConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59132B87B36B00B82964 /* InternetConnectionManager.swift */; };
 		CD4D59162B87B38C00B82964 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */; };
 		CD4D59182B87B3B000B82964 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D59172B87B3B000B82964 /* UIViewController+Extensions.swift */; };
-		CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D591F2B87B63300B82964 /* SettingsOptions.swift */; };
 		CD4E386B2C836837009B24F2 /* DraculaPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4E386A2C836837009B24F2 /* DraculaPalette.swift */; };
 		CD4E386D2C836F8C009B24F2 /* UIUserInterfaceStyle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4E386C2C836F8C009B24F2 /* UIUserInterfaceStyle+Extensions.swift */; };
 		CD4ED8472BF110FA00EFA0A2 /* TabReselectTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED8462BF110FA00EFA0A2 /* TabReselectTracker.swift */; };
@@ -335,6 +334,9 @@
 		CDCA44B22C17675600C092B3 /* Haptic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44B12C17675600C092B3 /* Haptic.swift */; };
 		CDCA44B42C176A4700C092B3 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44B32C176A4700C092B3 /* Array+Extensions.swift */; };
 		CDCA44B62C176C5000C092B3 /* View+EdgeBorders.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44B52C176C5000C092B3 /* View+EdgeBorders.swift */; };
+		CDD4A09C2C8A122F0001AD1A /* CodableSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09B2C8A122F0001AD1A /* CodableSettings.swift */; };
+		CDD4A09E2C8B69FC0001AD1A /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09D2C8B69FC0001AD1A /* Button.swift */; };
+		CDD4A0A02C8B985D0001AD1A /* ImportExportSettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09F2C8B985D0001AD1A /* ImportExportSettingsPage.swift */; };
 		CDD8B94C2C8234BC00510EBB /* Form.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD8B94B2C8234BC00510EBB /* Form.swift */; };
 		CDD99C3C2C73F3FF0010367F /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD99C3B2C73F3FF0010367F /* DeleteAccountView.swift */; };
 		CDD99C3E2C73F4380010367F /* WarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD99C3D2C73F4380010367F /* WarningView.swift */; };
@@ -629,7 +631,6 @@
 		CD4D59132B87B36B00B82964 /* InternetConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetConnectionManager.swift; sourceTree = "<group>"; };
 		CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		CD4D59172B87B3B000B82964 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
-		CD4D591F2B87B63300B82964 /* SettingsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOptions.swift; sourceTree = "<group>"; };
 		CD4E386A2C836837009B24F2 /* DraculaPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraculaPalette.swift; sourceTree = "<group>"; };
 		CD4E386C2C836F8C009B24F2 /* UIUserInterfaceStyle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUserInterfaceStyle+Extensions.swift"; sourceTree = "<group>"; };
 		CD4ED8462BF110FA00EFA0A2 /* TabReselectTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabReselectTracker.swift; sourceTree = "<group>"; };
@@ -691,6 +692,9 @@
 		CDCA44B12C17675600C092B3 /* Haptic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptic.swift; sourceTree = "<group>"; };
 		CDCA44B32C176A4700C092B3 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		CDCA44B52C176C5000C092B3 /* View+EdgeBorders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+EdgeBorders.swift"; sourceTree = "<group>"; };
+		CDD4A09B2C8A122F0001AD1A /* CodableSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableSettings.swift; sourceTree = "<group>"; };
+		CDD4A09D2C8B69FC0001AD1A /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		CDD4A09F2C8B985D0001AD1A /* ImportExportSettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExportSettingsPage.swift; sourceTree = "<group>"; };
 		CDD8B94B2C8234BC00510EBB /* Form.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Form.swift; sourceTree = "<group>"; };
 		CDD99C3B2C73F3FF0010367F /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		CDD99C3D2C73F4380010367F /* WarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningView.swift; sourceTree = "<group>"; };
@@ -781,6 +785,7 @@
 				03531EEB2C2D81DC004A3464 /* LinkSettingsView.swift */,
 				033FCB262C5E3933007B7CD1 /* Icon */,
 				039F588D2C7B598000C61658 /* Components */,
+				CDD4A09F2C8B985D0001AD1A /* ImportExportSettingsPage.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1445,7 +1450,6 @@
 			children = (
 				CD4D58CE2B86DDEC00B82964 /* AccountSortMode.swift */,
 				CD4D58F72B87B0D100B82964 /* InternetSpeed.swift */,
-				CD4D591F2B87B63300B82964 /* SettingsOptions.swift */,
 				CDB2EC7A2BFADA8B00DBC0EF /* PostSize.swift */,
 				CD7882A62BFFD1A3002E1A30 /* ThumbnailLocation.swift */,
 			);
@@ -1597,6 +1601,7 @@
 				CDAA02E22C821C9100D75633 /* Divider.swift */,
 				CDD8B94B2C8234BC00510EBB /* Form.swift */,
 				CDB41E892C83C24400BD2DE9 /* Section.swift */,
+				CDD4A09D2C8B69FC0001AD1A /* Button.swift */,
 			);
 			path = "Palette Components";
 			sourceTree = "<group>";
@@ -1702,6 +1707,7 @@
 				CDE1F18E2C63D75A008AF042 /* Settings.swift */,
 				CDE1F19B2C63E2EB008AF042 /* SettingPropertyWrapper.swift */,
 				0315B1C92C767847006D4F82 /* InteractionBarTracker.swift */,
+				CDD4A09B2C8A122F0001AD1A /* CodableSettings.swift */,
 			);
 			path = "User Settings";
 			sourceTree = "<group>";
@@ -2011,9 +2017,11 @@
 				032C32082C34469900595286 /* SelectableContentProviding+Extensions.swift in Sources */,
 				037658DF2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift in Sources */,
 				032C32182C36F70300595286 /* ReplyBarConfiguration.swift in Sources */,
+				CDD4A0A02C8B985D0001AD1A /* ImportExportSettingsPage.swift in Sources */,
 				03B431B62C454D49001A1EB5 /* UIImage+Extensions.swift in Sources */,
 				CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */,
 				03AFD0E32C3C0C540054B8AD /* InstanceView.swift in Sources */,
+				CDD4A09C2C8A122F0001AD1A /* CodableSettings.swift in Sources */,
 				03ECD7212C8654BA00D48BF6 /* PostEditorView+Toolbar.swift in Sources */,
 				03FE140C2BF953B000A8377F /* HandleError.swift in Sources */,
 				0320B65A2C8CBB0D00D38548 /* SignUpView+EmailConfirmationView.swift in Sources */,
@@ -2104,6 +2112,7 @@
 				CD0507732C6AA0C8008B1505 /* FeedSelection.swift in Sources */,
 				039F58862C7A810100C61658 /* ExpandedPostView+Logic.swift in Sources */,
 				031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */,
+				CDD4A09E2C8B69FC0001AD1A /* Button.swift in Sources */,
 				030FF67B2BC8521600F6BFAC /* CustomTabView.swift in Sources */,
 				03531EF52C2DA610004A3464 /* NavigationSearchType.swift in Sources */,
 				CD8DCAF92C5E92E8003E4DD7 /* Profile1Providing+Extensions.swift in Sources */,
@@ -2196,7 +2205,6 @@
 				03036C762C71427B00C6DA1D /* InteractionBarCounterLabelView.swift in Sources */,
 				030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */,
 				CDAA02E32C821C9100D75633 /* Divider.swift in Sources */,
-				CD4D59202B87B63300B82964 /* SettingsOptions.swift in Sources */,
 				CDCA44972C17666C00C092B3 /* HapticManager.swift in Sources */,
 				033FCAEC2C57DCCD007B7CD1 /* ApiListingType+Extensions.swift in Sources */,
 				033FCB272C5E3933007B7CD1 /* AlternateIconLabel.swift in Sources */,

@@ -5,6 +5,7 @@
 //  Created by David Bureš on 25.03.2022.
 //
 
+import Dependencies
 import MlemMiddleware
 import Nuke
 import SwiftUI
@@ -15,6 +16,10 @@ struct ContentView: View {
     }
     
     @Environment(\.scenePhase) var scenePhase
+    
+    @AppStorage("status.firstAppearance") var firstAppearance: Bool = true
+    
+    @Dependency(\.persistenceRepository) var persistenceRepository
     
     @Setting(\.interfaceStyle) var interfaceStyle
     @Setting(\.colorPalette) var colorPalette
@@ -66,9 +71,20 @@ struct ContentView: View {
                         handleError(error)
                     }
                 }
+                .onAppear {
+                    if firstAppearance, persistenceRepository.systemSettingsExists(.v1) {
+                        firstAppearance = false
+                        Settings.main.restore(from: .v1)
+                    }
+                }
                 .onChange(of: interfaceStyle, initial: true) {
                     let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
                     windowScene?.windows.first?.overrideUserInterfaceStyle = interfaceStyle
+                }
+                .onChange(of: colorPalette) {
+                    withAnimation {
+                        palette.changePalette(to: colorPalette)
+                    }
                 }
                 .onChange(of: palette.supportedModes, initial: true) {
                     let newStyle: UIUserInterfaceStyle = palette.supportedModes != .unspecified ? palette.supportedModes : interfaceStyle

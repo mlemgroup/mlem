@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum AccountSortMode: String, CaseIterable {
+enum AccountSortMode: String, CaseIterable, Codable {
     case custom, name, instance, mostRecent
     
     var label: String {

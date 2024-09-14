@@ -9,7 +9,7 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-enum InstanceLocation: String, CaseIterable {
+enum InstanceLocation: String, CaseIterable, Codable {
     case disabled
     case trailing
     case bottom

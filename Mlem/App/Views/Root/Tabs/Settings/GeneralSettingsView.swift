@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 25/08/2024.
 //
 
+import Dependencies
 import SwiftUI
 
 struct GeneralSettingsView: View {
@@ -55,6 +56,8 @@ struct GeneralSettingsView: View {
             } header: {
                 Text("Behavior")
             }
+            
+            NavigationLink("Import/Export Settings", destination: .settings(.importExportSettings))
         }
         .navigationTitle("General")
     }
