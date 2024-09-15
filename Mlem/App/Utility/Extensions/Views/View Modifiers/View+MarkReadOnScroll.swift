@@ -1,5 +1,5 @@
 //
-//  MarkReadOnScroll.swift
+//  View+MarkReadOnScroll.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-08-28.
