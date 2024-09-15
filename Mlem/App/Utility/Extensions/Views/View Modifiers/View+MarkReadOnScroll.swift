@@ -19,6 +19,26 @@ private struct MarkReadOnScroll: ViewModifier {
     @Binding var bottomAppearedItemIndex: Int
     
     func body(content: Content) -> some View {
+        if #available(iOS 18.0, *) {
+            ios18Body(content: content)
+        } else {
+            legacyBody(content: content)
+        }
+    }
+    
+    @available(iOS 18.0, *)
+    func ios18Body(content: Content) -> some View {
+        content
+            .onGeometryChange(for: Bool.self) { geometry in
+                geometry.frame(in: .global).maxY < 0
+            } action: { wasAboveTop, isAboveTop in
+                if !wasAboveTop, isAboveTop {
+                    post.updateRead(true, shouldQueue: true)
+                }
+            }
+    }
+    
+    func legacyBody(content: Content) -> some View {
         content
             .task {
                 do {
