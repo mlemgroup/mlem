@@ -37,12 +37,14 @@ struct ReplyView: View {
         .padding(.vertical, 2)
         .padding(Constants.main.standardSpacing)
         .clipped()
-        .background(palette.background)
+        .background(palette.secondaryGroupedBackground)
         .contentShape(.rect)
         .onTapGesture {
             navigation.push(.post(reply.post, highlightedComment: reply.comment))
         }
         .quickSwipes(reply.swipeActions(behavior: .standard))
+        .clipShape(.rect(cornerRadius: 10))
+        .contentShape(.contextMenuPreview, .rect(cornerRadius: 10))
         .contextMenu { reply.menuActions() }
     }
 }

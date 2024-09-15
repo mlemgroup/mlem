@@ -76,25 +76,21 @@ struct PersonContentGridView: View {
     
     var content: some View {
         VStack(spacing: 0) {
-            LazyVGrid(columns: columns, spacing: postSize.tiled ? Constants.main.standardSpacing : 0) {
+            LazyVGrid(columns: columns, spacing: Constants.main.standardSpacing) {
                 ForEach(items, id: \.hashValue) { item in
-                    VStack(spacing: 0) { // this improves performance O_o
-                        personContentItem(item)
-                            .buttonStyle(EmptyButtonStyle())
-                        if !postSize.tiled { Divider() }
-                    }
-                    .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 0)
-                    .onAppear {
-                        do {
-                            try feedLoader.loadIfThreshold(item, asChild: contentType != .all)
-                        } catch {
-                            // TODO: is postFeedLoader.loadIfThreshold throws 400, this line is not executed
-                            handleError(error)
+                    personContentItem(item)
+                        .buttonStyle(EmptyButtonStyle())
+                        .padding(.horizontal, postSize.tiled ? 0 : 10)
+                        .onAppear {
+                            do {
+                                try feedLoader.loadIfThreshold(item, asChild: contentType != .all)
+                            } catch {
+                                // TODO: is postFeedLoader.loadIfThreshold throws 400, this line is not executed
+                                handleError(error)
+                            }
                         }
-                    }
                 }
             }
-            
             EndOfFeedView(loadingState: loadingState, viewType: .hobbit)
         }
     }

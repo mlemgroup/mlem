@@ -69,7 +69,6 @@ struct CommunityView: View {
     }
         
     @ViewBuilder
-    // swiftlint:disable:next function_body_length
     func content(community: any Community) -> some View {
         FancyScrollView {
             HStack {
@@ -82,11 +81,9 @@ struct CommunityView: View {
                 subscribeButton(community: community)
                     .padding(.top, Constants.main.halfSpacing)
             }
-            .padding(.bottom, postSize.tiled ? 0 : Constants.main.standardSpacing)
             BubblePicker(
                 tabs(community: community),
                 selected: $selectedTab,
-                withDividers: postSize.tiled ? [] : [.top, .bottom],
                 label: \.label
             )
             VStack {
@@ -94,16 +91,13 @@ struct CommunityView: View {
                 case .posts:
                     if let postFeedLoader {
                         postsTab(community: community, postFeedLoader: postFeedLoader)
+                            .padding(.bottom, -4)
                     }
                 case .about:
                     aboutTab(community: community)
                 case .moderation:
-                    if postSize == .tile {
-                        FormSection { moderationTab(community: community) }
-                            .padding(.horizontal, 16)
-                    } else {
-                        moderationTab(community: community)
-                    }
+                    FormSection { moderationTab(community: community) }
+                        .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                 case .details:
                     CommunityDetailsView(community: community)
                 default:
@@ -112,7 +106,7 @@ struct CommunityView: View {
             }
             .environment(\.communityContext, community)
         }
-        .background(postSize.tiled ? palette.groupedBackground : palette.background)
+        .background(palette.groupedBackground)
         .outdatedFeedPopup(feedLoader: postFeedLoader, showPopup: selectedTab == .posts)
         .navigationTitle(isAtTop ? "" : community.name)
         .isAtTopSubscriber(isAtTop: $isAtTop)
@@ -145,9 +139,11 @@ struct CommunityView: View {
             }
             if let description = community.description {
                 Markdown(description, configuration: .default)
+                    .padding(Constants.main.standardSpacing)
+                    .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: 10))
             }
         }
-        .padding(Constants.main.standardSpacing)
+        .padding([.horizontal, .bottom], Constants.main.standardSpacing)
     }
     
     @ViewBuilder
@@ -159,6 +155,8 @@ struct CommunityView: View {
                     .padding(.leading, 71)
             }
         }
+        .background(palette.secondaryGroupedBackground)
+        .clipShape(.rect(cornerRadius: 10))
     }
     
     @ViewBuilder

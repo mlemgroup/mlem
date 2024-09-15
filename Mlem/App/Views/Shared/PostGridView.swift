@@ -81,19 +81,15 @@ struct PostGridView: View {
     
     var content: some View {
         VStack(spacing: 0) {
-            LazyVGrid(columns: columns, spacing: postSize.tiled ? Constants.main.standardSpacing : 0) {
+            LazyVGrid(columns: columns, spacing: Constants.main.standardSpacing) {
                 ForEach(Array(postFeedLoader.items.enumerated()), id: \.element.hashValue) { index, post in
                     if !post.creator.blocked, !post.community.blocked, !post.hidden {
-                        VStack(spacing: 0) { // this improves performance O_o
-                            NavigationLink(.post(post, communityContext: communityContext, navigationNamespace: navigationNamespace)) {
-                                FeedPostView(post: post)
-                                    .matchedTransitionSource_(id: "post\(post.actorId)", in: navigationNamespace)
-                                    .padding(.vertical, 5)
-                                    .padding(.horizontal, 10)
-                            }
-                            .buttonStyle(EmptyButtonStyle())
-                            // if !postSize.tiled { Divider() }
+                        NavigationLink(.post(post, communityContext: communityContext, navigationNamespace: navigationNamespace)) {
+                            FeedPostView(post: post)
+                                .matchedTransitionSource_(id: "post\(post.actorId)", in: navigationNamespace)
                         }
+                        .buttonStyle(EmptyButtonStyle())
+                        .padding(.horizontal, postSize.tiled ? 0 : 10)
                         .markReadOnScroll(
                             index: index,
                             post: post,

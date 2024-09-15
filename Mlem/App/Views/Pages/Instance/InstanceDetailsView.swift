@@ -168,8 +168,7 @@ struct InstanceDetailsView: View {
                 }
             }
         }
-        .padding(16)
-        .background(palette.groupedBackground)
+        .padding([.horizontal, .bottom], 16)
     }
     
     var captchaLabel: LocalizedStringResource {

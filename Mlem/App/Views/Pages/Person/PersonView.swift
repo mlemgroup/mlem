@@ -119,10 +119,11 @@ struct PersonView: View {
     func content(person: any Person) -> some View {
         FancyScrollView {
             VStack(spacing: Constants.main.standardSpacing) {
-                ProfileHeaderView(person, fallback: .person)
-                    .padding(.horizontal, Constants.main.standardSpacing)
-                
-                bio(person: person)
+                VStack(spacing: Constants.main.standardSpacing) {
+                    ProfileHeaderView(person, fallback: .person)
+                    bio(person: person)
+                }
+                .padding([.horizontal], Constants.main.standardSpacing)
                 
                 if let person = person as? any Person3Providing {
                     VStack(spacing: 0) {
@@ -141,7 +142,7 @@ struct PersonView: View {
             .animation(.easeOut(duration: 0.2), value: person is any Person3Providing)
         }
         .outdatedFeedPopup(feedLoader: feedLoader, showPopup: selectedTab != .communities)
-        .background(postSize.tiled ? palette.groupedBackground : palette.background)
+        .background(palette.groupedBackground)
     }
     
     @ViewBuilder
@@ -182,21 +183,13 @@ struct PersonView: View {
         Section {
             switch selectedTab {
             case .communities:
-                if postSize == .tile {
-                    FormSection { communitiesTab(person: person) }
-                        .padding(.horizontal, 16)
-                } else {
-                    communitiesTab(person: person)
-                }
+                FormSection { communitiesTab(person: person) }
+                    .padding(.horizontal, 16)
             default:
                 if let feedLoader {
                     if isProfileTab, selectedTab == .overview || selectedTab == .posts {
                         newPostButton
-                            .padding(postSize.tiled ? [.horizontal, .bottom] : [.horizontal, .top], Constants.main.standardSpacing)
-                        if !postSize.tiled {
-                            Divider()
-                                .padding(.top, Constants.main.standardSpacing)
-                        }
+                            .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                     }
                     PersonContentGridView(feedLoader: feedLoader, contentType: $selectedContentType)
                 } else {
@@ -207,7 +200,7 @@ struct PersonView: View {
             BubblePicker(
                 tabs(person: person),
                 selected: $selectedTab,
-                withDividers: postSize.tiled ? [] : [.top, .bottom],
+                withDividers: [],
                 label: \.label,
                 value: { tab in
                     switch tab {
@@ -234,6 +227,8 @@ struct PersonView: View {
                     .padding(.leading, 71)
             }
         }
+        .background(palette.secondaryGroupedBackground)
+        .clipShape(.rect(cornerRadius: 10))
     }
     
     @ViewBuilder
@@ -247,14 +242,8 @@ struct PersonView: View {
                 .padding(.vertical, 10)
                 .frame(maxWidth: .infinity)
                 .background {
-                    Group {
-                        if postSize.tiled {
-                            Capsule()
-                        } else {
-                            RoundedRectangle(cornerRadius: Constants.main.mediumItemCornerRadius)
-                        }
-                    }
-                    .foregroundStyle(palette.accent.opacity(0.2))
+                    Capsule()
+                        .fill(palette.accent.opacity(0.2))
                 }
         }
     }

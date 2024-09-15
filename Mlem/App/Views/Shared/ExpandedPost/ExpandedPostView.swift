@@ -25,6 +25,7 @@ struct ExpandedPostView: View {
     @Environment(\.dismiss) var dismiss
     
     @Setting(\.jumpButton) var jumpButton
+    @Setting(\.compactComments) var compactComments
     
     let post: AnyPost
     @State var tracker: CommentTreeTracker?
@@ -91,7 +92,10 @@ struct ExpandedPostView: View {
         GeometryReader { geo in
             ScrollViewReader { proxy in
                 FancyScrollView {
-                    LazyVStack(alignment: .leading, spacing: 0) {
+                    LazyVStack(
+                        alignment: .leading,
+                        spacing: Constants.main.standardSpacing
+                    ) {
                         LargePostView(post: post, isExpanded: true)
                             .id(post.actorId)
                             .transition(.opacity)
@@ -100,8 +104,7 @@ struct ExpandedPostView: View {
                                 key: AnchorsKey.self,
                                 value: .center
                             ) { [post.actorId: $0] }
-                            .padding(10)
-                        Divider()
+                            .padding(.horizontal, Constants.main.standardSpacing)
                         ForEach(tracker.comments.tree(), id: \.actorId) { comment in
                             CommentView(
                                 comment: comment,
@@ -114,12 +117,11 @@ struct ExpandedPostView: View {
                                 key: AnchorsKey.self,
                                 value: .center
                             ) { [comment.actorId: $0] }
+                            .padding(.horizontal, Constants.main.standardSpacing)
                         }
-                        Color.clear
-                            .frame(height: 500)
-                            .contentShape(.rect)
                     }
                     .animation(.easeInOut(duration: 0.4), value: highlightedComment?.actorId)
+                    .padding(.bottom, 80)
                 }
                 .onChange(of: tracker.loadingState, initial: true) {
                     if tracker.loadingState == .done, let highlightedComment {

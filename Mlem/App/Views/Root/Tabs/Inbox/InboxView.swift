@@ -61,7 +61,7 @@ struct InboxView: View {
     
     var body: some View {
         content
-            .background(palette.background)
+            .background(palette.groupedBackground)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbar }
             .onChange(of: taskId) {
@@ -103,7 +103,7 @@ struct InboxView: View {
     @ViewBuilder
     var content: some View {
         FancyScrollView {
-            LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
+            VStack(spacing: 0) {
                 FeedHeaderView(
                     feedDescription: .init(
                         label: "Inbox",
@@ -115,7 +115,6 @@ struct InboxView: View {
                     ),
                     dropdownStyle: .disabled
                 )
-                .padding(.bottom, Constants.main.standardSpacing)
                 GeometryReader { geo in
                     Color.red.preference(
                         key: ScrollOffsetKey.self,
@@ -128,33 +127,34 @@ struct InboxView: View {
                         headerPinned = value
                     }
                 })
-                Divider()
-                Section {
-                    if loadingState == .loading, replies.isEmpty, mentions.isEmpty {
-                        ProgressView()
-                            .controlSize(.large)
-                            .padding()
-                            .tint(palette.secondary)
-                    } else {
-                        if items.isEmpty {
-                            Text("Nothing to see here")
-                                .foregroundStyle(palette.secondary)
+                LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
+                    Section {
+                        if loadingState == .loading, replies.isEmpty, mentions.isEmpty {
+                            ProgressView()
+                                .controlSize(.large)
                                 .padding()
+                                .tint(palette.secondary)
                         } else {
-                            ForEach(items, id: \.id) { item in
-                                VStack(alignment: .leading, spacing: 0) {
-                                    if let reply = item as? Reply2, !reply.creator.blocked {
-                                        ReplyView(reply: reply)
+                            if items.isEmpty {
+                                Text("Nothing to see here")
+                                    .foregroundStyle(palette.secondary)
+                                    .padding()
+                            } else {
+                                ForEach(items, id: \.id) { item in
+                                    Group {
+                                        if let reply = item as? Reply2, !reply.creator.blocked {
+                                            ReplyView(reply: reply)
+                                        }
+                                        if let message = item as? Message2, !message.creator.blocked {
+                                            MessageView(message: message)
+                                        }
                                     }
-                                    if let message = item as? Message2, !message.creator.blocked {
-                                        MessageView(message: message)
-                                    }
-                                    Divider()
+                                    .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                                 }
                             }
                         }
-                    }
-                } header: { sectionHeader }
+                    } header: { sectionHeader }
+                }
             }
         }
         .coordinateSpace(name: "inboxScrollView")
@@ -165,7 +165,6 @@ struct InboxView: View {
         BubblePicker(
             Tab.allCases,
             selected: $selectedTab,
-            withDividers: [.bottom],
             label: \.label,
             value: { tab in
                 if let unreadCount = (appState.firstSession as? UserSession)?.unreadCount {
@@ -183,7 +182,7 @@ struct InboxView: View {
                 return 0
             }
         )
-        .background(palette.background.opacity(headerPinned ? 1 : 0))
+        .background(palette.groupedBackground.opacity(headerPinned ? 1 : 0))
         .background(.bar)
     }
     

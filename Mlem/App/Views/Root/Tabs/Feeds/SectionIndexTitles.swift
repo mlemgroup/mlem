@@ -67,11 +67,6 @@ struct SectionIndexTitles: View {
                     )
             }
         }
-        .padding(.vertical, 6)
-        .background {
-            Capsule()
-                .foregroundStyle(.ultraThinMaterial)
-        }
     }
 }
 

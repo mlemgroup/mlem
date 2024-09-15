@@ -45,12 +45,21 @@ struct CommentView: View {
         let collapsed = (comment as? CommentWrapper)?.collapsed ?? false
         
         HStack(spacing: 12) {
-            Capsule()
-                .fill(palette.commentIndentColors[depth % palette.commentIndentColors.count])
-                .frame(width: 4)
-                .frame(maxHeight: .infinity)
-                .padding(.leading, 8)
-                .padding(.vertical, -2)
+            if depth != 0 {
+//                UnevenRoundedRectangle(
+//                    cornerRadii: .init(topLeading: 6, bottomLeading: 6, bottomTrailing: 0, topTrailing: 0),
+//                    style: .circular
+//                )
+//                .fill(palette.commentIndentColors[depth % palette.commentIndentColors.count].gradient)
+//                .frame(width: 8)
+//                .padding(2)
+                Capsule()
+                    .fill(palette.commentIndentColors[depth % palette.commentIndentColors.count])
+                    .frame(width: 3)
+                    .frame(maxHeight: .infinity)
+                    .padding(.leading, 8)
+                    .padding(.vertical, 8)
+            }
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 HStack(spacing: 0) {
                     FullyQualifiedLinkView(
@@ -81,6 +90,7 @@ struct CommentView: View {
                 }
                 if !collapsed {
                     CommentBodyView(comment: comment)
+                        .padding(.trailing, 2)
                     if !compactComments {
                         InteractionBarView(
                             comment: comment,
@@ -88,27 +98,21 @@ struct CommentView: View {
                             commentTreeTracker: commentTreeTracker,
                             communityContext: communityContext
                         )
-                        .padding(.top, 2)
+                        .padding(.horizontal, 2)
+                        .padding(.vertical, 5)
                     }
                 }
             }
+            .padding(.vertical, Constants.main.standardSpacing)
         }
-        .padding(.vertical, 2)
-        .padding([.vertical, .trailing], Constants.main.standardSpacing)
+        .padding(depth == 0 ? .horizontal : .trailing, Constants.main.standardSpacing)
         .background(highlight ? palette.accent.opacity(0.2) : .clear)
         .background(palette.secondaryGroupedBackground)
-//            .border(
-//                width: depth == 0 ? 0 : 2, edges: [.leading],
-//                color: palette.commentIndentColors[depth % palette.commentIndentColors.count]
-//            )
         .quickSwipes(comment.swipeActions(behavior: .standard, commentTreeTracker: commentTreeTracker))
-        .contentShape(.rect)
+        .contentShape(.interaction, .rect)
+        .contentShape(.contextMenuPreview, .rect(cornerRadius: 10))
         .contextMenu { comment.menuActions(commentTreeTracker: commentTreeTracker) }
-        .clipShape(.rect(cornerRadius: 12))
-        .padding(.vertical, 2)
-        .padding(.horizontal, 10)
-        // .shadow(color: palette.commentIndentColors[depth % palette.commentIndentColors.count], radius: 4)
-        // Divider()
+        .clipShape(.rect(cornerRadius: 10))
         .padding(.leading, CGFloat(depth) * indent)
         .environment(\.commentContext, comment)
     }

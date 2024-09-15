@@ -29,7 +29,7 @@ struct CompactPostView: View {
     var body: some View {
         content
             .padding(Constants.main.standardSpacing)
-            .background(palette.background)
+            .background(palette.secondaryGroupedBackground)
             .environment(\.postContext, post)
     }
     

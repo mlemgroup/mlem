@@ -84,7 +84,7 @@ struct FeedsView: View {
     
     var body: some View {
         content
-            .background(postSize == .large ? palette.groupedBackground : palette.background)
+            .background(palette.groupedBackground)
             .scrollContentBackground(.hidden)
             .toolbar {
                 if !isAtTop {
@@ -146,8 +146,6 @@ struct FeedsView: View {
     var content: some View {
         FancyScrollView(scrollToTopTrigger: $scrollToTopTrigger) {
             Section {
-                if !postSize.tiled { Divider() }
-                
                 if let savedFeedLoader, feedSelection == .saved {
                     PersonContentGridView(feedLoader: savedFeedLoader, contentType: .constant(.all))
                 } else if let postFeedLoader {
