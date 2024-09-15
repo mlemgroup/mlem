@@ -11,7 +11,7 @@ import Foundation
 /// - sentinel: denotes that the user has selected no haptics. Should never be used as a haptic priority!
 /// - high: denotes a haptic that always plays if the user has selected any degree of haptic feedback
 /// - low: denotes a haptic that only plays if the user has selected "all" haptic feedback
-enum HapticPriority: String, CaseIterable, Comparable {
+enum HapticPriority: String, CaseIterable, Comparable, Codable {
     case sentinel, high, low
     
     var intValue: Int {
@@ -25,7 +25,7 @@ enum HapticPriority: String, CaseIterable, Comparable {
     static func < (lhs: HapticPriority, rhs: HapticPriority) -> Bool { lhs.intValue < rhs.intValue }
 }
 
-extension HapticPriority: SettingsOptions {
+extension HapticPriority {
     var label: LocalizedStringResource {
         switch self {
         case .sentinel: "None"

@@ -122,10 +122,13 @@
     "Always" : {
 
     },
-    "Any Instance" : {
+    "Always Allow Direct Loading" : {
 
     },
     "Answer..." : {
+
+    },
+    "Any Instance" : {
 
     },
     "App Icon" : {
@@ -144,6 +147,9 @@
 
     },
     "Authentication code is incorrect." : {
+
+    },
+    "Auto-Bypass Image Proxy" : {
 
     },
     "Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser." : {
@@ -216,10 +222,13 @@
     "Choose Account Type" : {
 
     },
-    "Choose..." : {
+    "Choose File" : {
 
     },
     "Choose wisely - you cannot change this later." : {
+
+    },
+    "Choose..." : {
 
     },
     "Clear Cache" : {
@@ -282,6 +291,9 @@
     "Copy Name" : {
 
     },
+    "Could not find settings" : {
+
+    },
     "Couldn't read URL" : {
 
     },
@@ -299,6 +311,9 @@
       }
     },
     "Day" : {
+
+    },
+    "Debug" : {
 
     },
     "Default" : {
@@ -374,6 +389,9 @@
 
     },
     "example.com" : {
+
+    },
+    "Export Settings" : {
 
     },
     "Failed to connect to %@" : {
@@ -510,6 +528,15 @@
     "Images are cached on your device for fast reuse. The maximum cache size is around %@." : {
 
     },
+    "Import Settings" : {
+
+    },
+    "Import/Export Settings" : {
+
+    },
+    "Imported Settings" : {
+
+    },
     "In Default Browser" : {
 
     },
@@ -579,6 +606,12 @@
     "Links" : {
 
     },
+    "Load directly from %@" : {
+
+    },
+    "Load This Image Directly" : {
+
+    },
     "Loading instance details" : {
 
     },
@@ -619,6 +652,9 @@
 
     },
     "Mlem Developer" : {
+
+    },
+    "Mlem will always try to load from the proxy first." : {
 
     },
     "Moderated" : {
@@ -756,6 +792,9 @@
     "Permanently delete %@" : {
 
     },
+    "Photo Library" : {
+
+    },
     "Photos" : {
 
     },
@@ -783,10 +822,16 @@
     "Pride" : {
 
     },
+    "Privacy" : {
+
+    },
     "Privacy Policy" : {
 
     },
     "Private" : {
+
+    },
+    "Proxy Failure" : {
 
     },
     "Quick Look" : {
@@ -852,7 +897,16 @@
     "Reset" : {
 
     },
+    "Reset Settings State" : {
+
+    },
     "Restore" : {
+
+    },
+    "Restore Settings" : {
+
+    },
+    "Restored Settings" : {
 
     },
     "Right" : {
@@ -867,7 +921,16 @@
     "Save Image" : {
 
     },
+    "Save Settings" : {
+
+    },
+    "Save V1 Settings" : {
+
+    },
     "Saved" : {
+
+    },
+    "Saved Settings" : {
 
     },
     "Scaled" : {
@@ -940,9 +1003,19 @@
 
     },
     "Solarized" : {
-
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solarised"
+          }
+        }
+      }
     },
     "Some" : {
+
+    },
+    "Some instances proxy images to protect your privacy. In certain cases, this causes image loading to fail. You can bypass the image proxy and load directly, but this will expose your IP address to the image host." : {
 
     },
     "Sort" : {

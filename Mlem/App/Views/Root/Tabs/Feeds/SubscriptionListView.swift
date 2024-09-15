@@ -121,7 +121,7 @@ private struct SubscriptionListSectionView: View {
     }
 }
 
-enum SubscriptionListSort: String, CaseIterable {
+enum SubscriptionListSort: String, CaseIterable, Codable {
     case alphabetical
     case instance
     

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-extension UIUserInterfaceStyle {
+extension UIUserInterfaceStyle: Codable {
     var label: String {
         switch self {
         case .unspecified:

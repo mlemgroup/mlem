@@ -39,6 +39,7 @@ extension PostEditorView {
     
     @MainActor
     func send() async {
+        uploadHistory.deleteWhereNotPresent(in: contentTextView.text)
         let validTargets = targets.filter { $0.sendState != .sent }
         
         let posts = await withTaskGroup(

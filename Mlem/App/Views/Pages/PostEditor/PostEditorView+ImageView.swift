@@ -37,10 +37,14 @@ extension PostEditorView {
             VStack {
                 Text("Uploading...")
                     .foregroundStyle(palette.accent)
-                ProgressView(value: progress)
-                    .progressViewStyle(.linear)
-                    .frame(maxWidth: .infinity)
-                    .padding([.bottom, .horizontal], 4)
+                if progress == 1.0 {
+                    ProgressView()
+                } else {
+                    ProgressView(value: progress)
+                        .progressViewStyle(.linear)
+                        .frame(maxWidth: .infinity)
+                        .padding([.bottom, .horizontal], 4)
+                }
             }
             .frame(maxWidth: .infinity)
             .padding(8)
@@ -72,10 +76,12 @@ extension PostEditorView {
             .foregroundStyle(palette.accent)
             HVStack {
                 Button("Photos", systemImage: "photo.on.rectangle.angled") {
-                    imageUploadPresentationState = .photos
+                    guard let imageManager else { return }
+                    navigation.showPhotosPicker(for: imageManager, api: primaryApi)
                 }
                 Button("Files", systemImage: "folder") {
-                    imageUploadPresentationState = .files
+                    guard let imageManager else { return }
+                    navigation.showFilePicker(for: imageManager, api: primaryApi)
                 }
                 Button("Paste", systemImage: Icons.paste) {
                     Task {

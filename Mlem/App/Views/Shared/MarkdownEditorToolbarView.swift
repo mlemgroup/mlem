@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 15/07/2024.
 //
 
+import MlemMiddleware
 import SwiftUI
 
 struct MarkdownEditorToolbarView: View {
@@ -12,15 +13,64 @@ struct MarkdownEditorToolbarView: View {
         case all, inlineOnly
     }
     
+    @Environment(NavigationLayer.self) var navigation
+    
     let actions: AvailableActions
     let textView: UITextView
+    let imageUploadApi: ApiClient?
+    let uploadHistory: ImageUploadHistoryManager
     
-    init(showing actions: AvailableActions = .all, textView: UITextView) {
+    @State var imageManager: ImageUploadManager = .init()
+    
+    init(
+        showing actions: AvailableActions = .all,
+        textView: UITextView,
+        uploadHistory: ImageUploadHistoryManager = .init(),
+        imageUploadApi: ApiClient?
+    ) {
         self.actions = actions
         self.textView = textView
+        self.uploadHistory = uploadHistory
+        self.imageUploadApi = imageUploadApi
     }
     
+    @ViewBuilder
     var body: some View {
+        Group {
+            switch imageManager.state {
+            case let .uploading(progress):
+                if progress == 1 {
+                    HStack {
+                        Text("Uploading...")
+                        ProgressView()
+                            .tint(Palette.main.secondary)
+                    }
+                } else {
+                    ProgressView(value: progress)
+                        .progressViewStyle(.linear)
+                        .padding(.horizontal)
+                }
+            default:
+                content
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .frame(height: 32, alignment: .bottom)
+        .onChange(of: imageManager.state) {
+            switch imageManager.state {
+            case let .done(upload):
+                if let range = textView.selectedTextRange {
+                    textView.replace(range, withText: "![](\(upload.url.absoluteString))")
+                    uploadHistory.add(upload)
+                    imageManager.clear()
+                }
+            default:
+                break
+            }
+        }
+    }
+    
+    var content: some View {
         ScrollView(.horizontal) {
             Spacer()
             HStack(spacing: 16) {
@@ -64,7 +114,20 @@ struct MarkdownEditorToolbarView: View {
                     Button("Quote", systemImage: Icons.quote) {
                         textView.toggleQuoteAtCursor()
                     }
-                    Button("Image", systemImage: Icons.uploadImage) {}
+                    if let imageUploadApi {
+                        Menu("Image", systemImage: Icons.uploadImage) {
+                            Button("Photo Library", systemImage: Icons.photo) {
+                                navigation.showPhotosPicker(for: imageManager, api: imageUploadApi)
+                            }
+                            Button("Choose File", systemImage: "folder") {
+                                navigation.showFilePicker(for: imageManager, api: imageUploadApi)
+                            }
+                            Button("Paste", systemImage: Icons.paste) {
+                                Task { try await imageManager.pasteFromClipboard(api: imageUploadApi) }
+                            }
+                        }
+                        .disabled(imageManager.state != .idle)
+                    }
                     Button("Spoiler", systemImage: Icons.spoiler) {
                         textView.wrapSelectionWithSpoiler()
                     }
@@ -78,7 +141,5 @@ struct MarkdownEditorToolbarView: View {
             .padding(.bottom, 2)
         }
         .scrollIndicators(.hidden)
-        .frame(maxWidth: .infinity)
-        .frame(height: 32)
     }
 }
