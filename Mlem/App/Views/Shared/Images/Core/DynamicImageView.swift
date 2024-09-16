@@ -43,19 +43,22 @@ struct DynamicImageView: View {
     var body: some View {
         if actionsEnabled {
             if let url = fullSizeUrl(url: loader.url) {
-                content
-                    .contextMenu {
-                        Button("Save Image", systemImage: Icons.import) {
-                            Task { await saveImage(url: url) }
+                VStack {
+                    content
+                        .contextMenu {
+                            Button("Save Image", systemImage: Icons.import) {
+                                Task { await saveImage(url: url) }
+                            }
+                            Button("Share Image", systemImage: Icons.share) {
+                                Task { await shareImage(url: url) }
+                            }
+                            Button("Quick Look", systemImage: Icons.imageDetails) {
+                                Task { await showQuickLook(url: url) }
+                            }
                         }
-                        Button("Share Image", systemImage: Icons.share) {
-                            Task { await shareImage(url: url) }
-                        }
-                        Button("Quick Look", systemImage: Icons.imageDetails) {
-                            Task { await showQuickLook(url: url) }
-                        }
-                    }
-                    .quickLookPreview($quickLookUrl)
+                        .quickLookPreview($quickLookUrl)
+                    Text("Context menu active")
+                }
             } else {
                 VStack {
                     content
