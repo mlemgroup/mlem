@@ -63,6 +63,8 @@ extension NavigationPage {
             } else {
                 Text(verbatim: "Error: No active UserAccount")
             }
+        case let .editPost(post):
+            PostEditorView(postToEdit: post, community: nil)
         case let .communityPicker(api: api, callback: callback):
             SearchSheetView(api: api) { (community: Community2, navigation: NavigationLayer) in
                 Button {
