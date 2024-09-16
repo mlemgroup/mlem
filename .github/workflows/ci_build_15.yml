@@ -22,8 +22,8 @@ jobs:
     - name: Build
       uses: "./.github/actions/ci_xcodebuild"
       with:
-        xcode_version: "15.4"
-        xcodebuild_destination: "platform=iOS Simulator,name=iPhone 15,OS=17.5"
+        xcode_version: "16.0"
+        xcodebuild_destination: "platform=iOS Simulator,name=iPhone 15,OS=18.0"
         xcodebuild_action: "build"
 
   Test:
@@ -36,6 +36,6 @@ jobs:
     - name: Build
       uses: "./.github/actions/ci_xcodebuild"
       with:
-        xcode_version: "15.4"
-        xcodebuild_destination: "platform=iOS Simulator,name=iPhone 15,OS=17.5"
+        xcode_version: "16.0"
+        xcodebuild_destination: "platform=iOS Simulator,name=iPhone 15,OS=18.0"
         xcodebuild_action: "test"
