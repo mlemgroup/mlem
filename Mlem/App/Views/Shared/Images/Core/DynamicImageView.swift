@@ -127,14 +127,12 @@ struct DynamicImageView: View {
     }
     
     func shareImage(url: URL) async {
-        print(url)
         if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "image") {
             navigation.shareUrl = fileUrl
         }
     }
     
     func showQuickLook(url: URL) async {
-        print("DEBUG \(url)")
         if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "quicklook") {
             quickLookUrl = fileUrl
         }
