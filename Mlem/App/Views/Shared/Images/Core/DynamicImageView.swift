@@ -41,22 +41,32 @@ struct DynamicImageView: View {
     }
     
     var body: some View {
-        if actionsEnabled, let url = fullSizeUrl(url: loader.url) {
-            content
-                .contextMenu {
-                    Button("Save Image", systemImage: Icons.import) {
-                        Task { await saveImage(url: url) }
+        if actionsEnabled {
+            if let url = fullSizeUrl(url: loader.url) {
+                content
+                    .contextMenu {
+                        Button("Save Image", systemImage: Icons.import) {
+                            Task { await saveImage(url: url) }
+                        }
+                        Button("Share Image", systemImage: Icons.share) {
+                            Task { await shareImage(url: url) }
+                        }
+                        Button("Quick Look", systemImage: Icons.imageDetails) {
+                            Task { await showQuickLook(url: url) }
+                        }
                     }
-                    Button("Share Image", systemImage: Icons.share) {
-                        Task { await shareImage(url: url) }
-                    }
-                    Button("Quick Look", systemImage: Icons.imageDetails) {
-                        Task { await showQuickLook(url: url) }
-                    }
+                    .quickLookPreview($quickLookUrl)
+            } else {
+                VStack {
+                    content
+                    Text("Could not produce full size URL for \(loader.url?.absoluteString)")
                 }
-                .quickLookPreview($quickLookUrl)
+            }
         } else {
-            content
+            VStack {
+                content
+                Text("Actions disabled")
+            }
         }
     }
     
