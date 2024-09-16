@@ -80,6 +80,9 @@
     "Accounts" : {
 
     },
+    "Actions disabled" : {
+
+    },
     "Active" : {
 
     },
@@ -271,6 +274,9 @@
 
     },
     "Connecting..." : {
+
+    },
+    "Context menu active" : {
 
     },
     "Continue" : {
