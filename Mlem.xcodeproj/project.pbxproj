@@ -2687,8 +2687,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
 			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 0.37.0;
+				branch = "sjmarf/missing-post-properties";
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

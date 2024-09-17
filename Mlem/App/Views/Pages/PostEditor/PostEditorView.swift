@@ -63,13 +63,12 @@ struct PostEditorView: View {
         
         titleTextView.text = postToEdit?.title ?? ""
         contentTextView.text = postToEdit?.content ?? ""
-        self.hasNsfwTag = postToEdit?.nsfw ?? false
+        self._hasNsfwTag = .init(wrappedValue: postToEdit?.nsfw ?? false)
         if let url = postToEdit?.linkUrl {
-            print("URL", url)
             if url.isImage {
-                self.imageUrl = url
+                self._imageUrl = .init(wrappedValue: url)
             } else {
-                self.link = .value(url)
+                self._link = .init(wrappedValue: .value(url))
             }
         }
     }

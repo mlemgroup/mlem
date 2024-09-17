@@ -155,7 +155,7 @@ enum NavigationPage: Hashable {
     
     var hasNavigationStack: Bool {
         switch self {
-        case .quickSwitcher, .report, .externalApiInfo, .selectText, .createComment, .editComment, .createPost:
+        case .quickSwitcher, .report, .externalApiInfo, .selectText, .createComment, .editComment, .createPost, .editPost:
             false
         default:
             true

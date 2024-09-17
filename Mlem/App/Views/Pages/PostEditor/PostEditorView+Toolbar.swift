@@ -57,12 +57,12 @@ extension PostEditorView {
                     }
                 }
             }
-            if sending {
+            if self.sending {
                 ProgressView()
             } else {
                 Button("Send", systemImage: Icons.send) {
-                    sending = true
-                    Task { await send() }
+                    self.sending = true
+                    Task { await submit() }
                 }
                 .disabled(!canSubmit)
             }
