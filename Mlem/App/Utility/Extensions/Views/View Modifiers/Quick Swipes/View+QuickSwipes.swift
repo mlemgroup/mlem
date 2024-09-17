@@ -148,7 +148,6 @@ struct QuickSwipeView: ViewModifier {
             dragPosition = dragState
             
             let edgeForActions = edgeForActions(at: dragPosition)
-            print(edgeForActions)
             let actionIndex = actionIndex(edge: edgeForActions, at: dragPosition)
             let action = action(edge: edgeForActions, index: actionIndex)
             let threshold = actionThreshold(edge: edgeForActions, index: actionIndex)
@@ -172,7 +171,6 @@ struct QuickSwipeView: ViewModifier {
                     dragBackground = action?.appearance.color.opacity(dragPosition / threshold)
                 }
             }
-            print(leadingSwipeSymbol)
             
             // If crossed an edge, play a gentle haptic
             let previousIndex = self.actionIndex(edge: edgeForActions, at: prevDragPosition)
