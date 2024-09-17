@@ -8,6 +8,41 @@
 import Dependencies
 import SwiftUI
 
+@available(iOS 18.0, *)
+struct PanGesture: UIGestureRecognizerRepresentable {
+    var handle: (UIPanGestureRecognizer) -> Void
+    
+    func makeCoordinator(converter: CoordinateSpaceConverter) -> Coordinator { .init() }
+    
+    func makeUIGestureRecognizer(context: Context) -> UIPanGestureRecognizer {
+        let gesture = UIPanGestureRecognizer()
+        gesture.delegate = context.coordinator
+        gesture.isEnabled = true
+        return gesture
+    }
+    
+    func handleUIGestureRecognizerAction(_ recognizer: UIPanGestureRecognizer, context: Context) {
+        handle(recognizer)
+    }
+    
+    class Coordinator: NSObject, UIGestureRecognizerDelegate {
+        func gestureRecognizer(
+            _ gestureRecognizer: UIGestureRecognizer,
+            shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
+        ) -> Bool {
+            false
+        }
+        
+        func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+            guard let panRecognizer = gestureRecognizer as? UIPanGestureRecognizer else { return false }
+
+            let velocity = panRecognizer.velocity(in: gestureRecognizer.view)
+            return abs(velocity.y) < abs(velocity.x)
+        }
+    }
+}
+
+// swiftlint:disable:next type_body_length
 struct QuickSwipeView: ViewModifier {
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
@@ -42,33 +77,60 @@ struct QuickSwipeView: ViewModifier {
     
     func body(content: Content) -> some View {
         if quickSwipesEnabled {
-            content
-                .background(shadowBackground)
-                .geometryGroup()
-                .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
-                .highPriorityGesture(
-                    DragGesture(
-                        minimumDistance: config.behavior.minimumDrag, // min distance prevents conflict with scrolling drag gesture
-                        coordinateSpace: .global
-                    )
-                    .updating($dragState) { value, state, _ in
-                        // this check adds a dead zone to the left side of the screen so it doesn't interfere with navigation
-                        if dragState == .zero && abs(value.translation.height) * 1.7 > abs(value.translation.width) {
-                            return
+            Group {
+                if #available(iOS 18.0, *) {
+                    iOS18Body(content: content)
+                } else {
+                    legacyBody(content: content)
+                        .onChange(of: dragState) {
+                            draggingUpdated(dragState: dragState)
                         }
-                        if dragState != .zero || value.location.x > 70 {
-                            state = value.translation.width
-                        }
-                    }
-                )
-                .background(iconBackground)
-                .onChange(of: dragState, draggingUpdated)
-                // disables links from highlighting when tapped
-                .buttonStyle(EmptyButtonStyle())
-                .clipShape(RoundedRectangle(cornerRadius: config.behavior.cornerRadius))
+                }
+            }
+            .background(shadowBackground)
+            .geometryGroup()
+            .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
+            .background(iconBackground)
+            // disables links from highlighting when tapped
+            .buttonStyle(EmptyButtonStyle())
+            .clipShape(RoundedRectangle(cornerRadius: config.behavior.cornerRadius))
         } else {
             content
         }
+    }
+    
+    @available(iOS 18.0, *) @ViewBuilder
+    func iOS18Body(content: Content) -> some View {
+        content
+            .gesture(
+                PanGesture { recognizer in
+                    if recognizer.state == .ended {
+                        draggingUpdated(dragState: 0)
+                    } else {
+                        draggingUpdated(dragState: recognizer.translation(in: recognizer.view).x)
+                    }
+                }
+            )
+    }
+    
+    @ViewBuilder
+    func legacyBody(content: Content) -> some View {
+        content
+            .highPriorityGesture(
+                DragGesture(
+                    minimumDistance: config.behavior.minimumDrag, // min distance prevents conflict with scrolling drag gesture
+                    coordinateSpace: .global
+                )
+                .updating($dragState) { value, state, _ in
+                    // this check adds a dead zone to the left side of the screen so it doesn't interfere with navigation
+                    if dragState == .zero && abs(value.translation.height) * 1.7 > abs(value.translation.width) {
+                        return
+                    }
+                    if dragState != .zero || value.location.x > 70 {
+                        state = value.translation.width
+                    }
+                }
+            )
     }
     
     var shadowBackground: some View {
@@ -85,7 +147,7 @@ struct QuickSwipeView: ViewModifier {
         dragBackground
             .overlay {
                 HStack(spacing: 0) {
-                    if dragState > 0 {
+                    if dragPosition > 0 {
                         Image(systemName: leadingSwipeSymbol ?? Icons.warning)
                             .font(.system(size: config.behavior.iconSize))
                             .foregroundColor(palette.selectedInteractionBarItem)
@@ -93,7 +155,7 @@ struct QuickSwipeView: ViewModifier {
                             .padding(.horizontal, iconWidth)
                     }
                     Spacer()
-                    if dragState < 0 {
+                    if dragPosition < 0 {
                         Image(systemName: trailingSwipeSymbol ?? Icons.warning)
                             .font(.system(size: config.behavior.iconSize))
                             .foregroundColor(palette.selectedInteractionBarItem)
@@ -102,11 +164,11 @@ struct QuickSwipeView: ViewModifier {
                     }
                 }
                 .accessibilityHidden(true) // prevent these from popping up in VO
-                .opacity(dragState == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
+                .opacity(dragPosition == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
             }
     }
     
-    private func draggingUpdated() {
+    private func draggingUpdated(dragState: CGFloat) {
         // if dragState changes and is now 0, gesture has ended; compute action based on last detected position
         if dragState == .zero {
             draggingDidEnd()
@@ -120,6 +182,7 @@ struct QuickSwipeView: ViewModifier {
             dragPosition = dragState
             
             let edgeForActions = edgeForActions(at: dragPosition)
+            print(edgeForActions)
             let actionIndex = actionIndex(edge: edgeForActions, at: dragPosition)
             let action = action(edge: edgeForActions, index: actionIndex)
             let threshold = actionThreshold(edge: edgeForActions, index: actionIndex)
@@ -143,6 +206,7 @@ struct QuickSwipeView: ViewModifier {
                     dragBackground = action?.appearance.color.opacity(dragPosition / threshold)
                 }
             }
+            print(leadingSwipeSymbol)
             
             // If crossed an edge, play a gentle haptic
             let previousIndex = self.actionIndex(edge: edgeForActions, at: prevDragPosition)
