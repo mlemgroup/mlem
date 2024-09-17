@@ -44,7 +44,7 @@ struct ExternalApiInfoView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.easeOut(duration: 0.2), value: isLoading)
         .background(palette.groupedBackground)
-        .task(loadData)
+        .task { await loadData() }
         .presentationDetents([.medium])
         .presentationBackgroundInteraction(.enabled)
     }
@@ -151,7 +151,6 @@ struct ExternalApiInfoView: View {
         }
     }
     
-    @Sendable
     @MainActor
     func loadData() async {
         do {
