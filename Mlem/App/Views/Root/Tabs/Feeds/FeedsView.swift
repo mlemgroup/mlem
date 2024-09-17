@@ -100,6 +100,7 @@ struct FeedsView: View {
                 }
             }
             .navigationTitle(isAtTop ? "" : String(localized: feedSelection.description.label))
+            .navigationBarTitleDisplayMode(.inline)
             .isAtTopSubscriber(isAtTop: $isAtTop)
             .onChange(of: showRead) {
                 scrollToTopTrigger.toggle()
