@@ -28,7 +28,7 @@ struct DynamicImageView: View {
     let actionsEnabled: Bool
     
     init(
-        url: URL?,
+        // url: URL?,
         maxSize: CGFloat? = nil,
         showError: Bool = true,
         cornerRadius: CGFloat = Constants.main.mediumItemCornerRadius,
