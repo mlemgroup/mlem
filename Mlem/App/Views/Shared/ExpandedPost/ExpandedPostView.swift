@@ -97,6 +97,7 @@ struct ExpandedPostView: View {
                         spacing: Constants.main.standardSpacing
                     ) {
                         LargePostView(post: post, isExpanded: true)
+                            .clipShape(.rect(cornerRadius: 10))
                             .id(post.actorId)
                             .transition(.opacity)
                             .animation(.easeOut(duration: 0.1), value: post is any Post2Providing)

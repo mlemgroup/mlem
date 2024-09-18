@@ -46,13 +46,6 @@ struct CommentView: View {
         
         HStack(spacing: 12) {
             if depth != 0 {
-//                UnevenRoundedRectangle(
-//                    cornerRadii: .init(topLeading: 6, bottomLeading: 6, bottomTrailing: 0, topTrailing: 0),
-//                    style: .circular
-//                )
-//                .fill(palette.commentIndentColors[depth % palette.commentIndentColors.count].gradient)
-//                .frame(width: 8)
-//                .padding(2)
                 Capsule()
                     .fill(palette.commentIndentColors[depth % palette.commentIndentColors.count])
                     .frame(width: 3)
