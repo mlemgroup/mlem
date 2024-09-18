@@ -93,6 +93,7 @@ struct CommentView: View {
                         )
                         .padding(.horizontal, 2)
                         .padding(.bottom, 5)
+                        .padding(.top, 1)
                     }
                 }
             }
