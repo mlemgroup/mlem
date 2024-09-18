@@ -92,11 +92,12 @@ struct CommentView: View {
                             communityContext: communityContext
                         )
                         .padding(.horizontal, 2)
-                        .padding(.vertical, 5)
+                        .padding(.bottom, 5)
                     }
                 }
             }
             .padding(.vertical, Constants.main.standardSpacing)
+            .padding(.top, compactComments ? 0 : 3)
         }
         .padding(depth == 0 ? .horizontal : .trailing, Constants.main.standardSpacing)
         .background(highlight ? palette.accent.opacity(0.2) : .clear)

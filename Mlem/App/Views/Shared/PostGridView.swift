@@ -89,13 +89,12 @@ struct PostGridView: View {
                                 .matchedTransitionSource_(id: "post\(post.actorId)", in: navigationNamespace)
                         }
                         .buttonStyle(EmptyButtonStyle())
-                        .padding(.horizontal, postSize.tiled ? 0 : 10)
+                        .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 10)
                         .markReadOnScroll(
                             index: index,
                             post: post,
                             postFeedLoader: postFeedLoader, bottomAppearedItemIndex: $bottomAppearedPostIndex
                         )
-                        .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 0)
                         .onAppear {
                             do {
                                 try postFeedLoader.loadIfThreshold(post)
