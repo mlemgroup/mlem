@@ -101,6 +101,7 @@ struct CommentView: View {
         .padding(depth == 0 ? .horizontal : .trailing, Constants.main.standardSpacing)
         .background(highlight ? palette.accent.opacity(0.2) : .clear)
         .background(palette.secondaryGroupedBackground)
+        .clipShape(.rect(cornerRadius: 10))
         .quickSwipes(comment.swipeActions(behavior: .standard, commentTreeTracker: commentTreeTracker))
         .contentShape(.interaction, .rect)
         .contentShape(.contextMenuPreview, .rect(cornerRadius: 10))
