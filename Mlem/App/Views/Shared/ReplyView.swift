@@ -43,8 +43,8 @@ struct ReplyView: View {
             navigation.push(.post(reply.post, highlightedComment: reply.comment))
         }
         .quickSwipes(reply.swipeActions(behavior: .standard))
-        .clipShape(.rect(cornerRadius: 10))
-        .contentShape(.contextMenuPreview, .rect(cornerRadius: 10))
+        .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
+        .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu { reply.menuActions() }
     }
 }

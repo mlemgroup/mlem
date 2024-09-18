@@ -93,7 +93,7 @@ struct InstanceView: View {
                 if let description = instance.description {
                     Markdown(description, configuration: .default)
                         .padding(Constants.main.standardSpacing)
-                        .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: 10))
+                        .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                 }
             case .details:
@@ -119,7 +119,7 @@ struct InstanceView: View {
             }
         }
         .background(palette.secondaryGroupedBackground)
-        .clipShape(.rect(cornerRadius: 10))
+        .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
     }
 }

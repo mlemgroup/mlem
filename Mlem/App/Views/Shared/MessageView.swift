@@ -49,8 +49,8 @@ struct MessageView: View {
         .background(palette.secondaryGroupedBackground)
         .contentShape(.rect)
         .quickSwipes(message.swipeActions(behavior: .standard))
-        .clipShape(.rect(cornerRadius: 10))
-        .contentShape(.contextMenuPreview, .rect(cornerRadius: 10))
+        .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
+        .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu { message.menuActions() }
     }
 }

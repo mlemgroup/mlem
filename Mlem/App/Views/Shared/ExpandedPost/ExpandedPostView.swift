@@ -97,7 +97,7 @@ struct ExpandedPostView: View {
                         spacing: compactComments ? Constants.main.halfSpacing : Constants.main.standardSpacing
                     ) {
                         LargePostView(post: post, isExpanded: true)
-                            .clipShape(.rect(cornerRadius: 10))
+                            .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
                             .id(post.actorId)
                             .transition(.opacity)
                             .animation(.easeOut(duration: 0.1), value: post is any Post2Providing)

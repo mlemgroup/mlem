@@ -99,7 +99,7 @@ extension NavigationPage {
                     Text("This feature is only supported for instances running version \(minimumVersion) or later.")
                         .padding()
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(Palette.main.caution.opacity(0.2), in: .rect(cornerRadius: 10))
+                        .background(Palette.main.caution.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
                         .foregroundStyle(Palette.main.caution)
                         .padding([.horizontal, .bottom])
                 }

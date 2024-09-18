@@ -101,12 +101,12 @@ struct CommentView: View {
         .padding(depth == 0 ? .horizontal : .trailing, Constants.main.standardSpacing)
         .background(highlight ? palette.accent.opacity(0.2) : .clear)
         .background(palette.secondaryGroupedBackground)
-        .clipShape(.rect(cornerRadius: 10))
+        .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .quickSwipes(comment.swipeActions(behavior: .standard, commentTreeTracker: commentTreeTracker))
         .contentShape(.interaction, .rect)
-        .contentShape(.contextMenuPreview, .rect(cornerRadius: 10))
+        .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu { comment.menuActions(commentTreeTracker: commentTreeTracker) }
-        .clipShape(.rect(cornerRadius: 10))
+        .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .padding(.leading, CGFloat(depth) * indent)
         .environment(\.commentContext, comment)
     }

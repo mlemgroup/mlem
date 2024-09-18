@@ -28,7 +28,7 @@ extension View {
 //        Group {
 //            if #available(iOS 18.0, *) {
 //                self.matchedTransitionSource(id: id, in: namespace, configuration: { config in
-//                    config.clipShape(.rect(cornerRadius: 10))
+//                    config.clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
 //                })
 //            } else {
 //                self

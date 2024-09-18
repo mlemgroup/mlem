@@ -140,7 +140,7 @@ struct CommunityView: View {
             if let description = community.description {
                 Markdown(description, configuration: .default)
                     .padding(Constants.main.standardSpacing)
-                    .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: 10))
+                    .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
             }
         }
         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
@@ -156,7 +156,7 @@ struct CommunityView: View {
             }
         }
         .background(palette.secondaryGroupedBackground)
-        .clipShape(.rect(cornerRadius: 10))
+        .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
     }
     
     @ViewBuilder

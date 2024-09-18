@@ -228,7 +228,7 @@ struct PersonView: View {
             }
         }
         .background(palette.secondaryGroupedBackground)
-        .clipShape(.rect(cornerRadius: 10))
+        .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
     }
     
     @ViewBuilder

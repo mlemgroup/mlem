@@ -20,8 +20,8 @@ struct FeedPostView: View {
     var body: some View {
         content
             .contentShape(.interaction, .rect)
-            .contentShape(.contextMenuPreview, .rect(cornerRadius: 10))
-            .clipShape(.rect(cornerRadius: 10))
+            .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
+            .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
             .quickSwipes(post.swipeActions(behavior: postSize.swipeBehavior))
             .contextMenu { post.menuActions() }
             .shadow(color: postSize.tiled ? palette.primary.opacity(0.1) : .clear, radius: 3) // after quickSwipes to prevent clipping
