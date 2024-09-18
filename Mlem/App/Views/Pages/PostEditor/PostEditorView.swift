@@ -218,15 +218,13 @@ struct PostEditorView: View {
                 .padding(.horizontal)
                 Divider()
             } else {
-                ForEach(targets, id: \.id) { target in
+                ForEach(Array(targets.enumerated()), id: \.element.id) { index, target in
                     HStack(spacing: 0) {
                         PostEditorTargetView(target: target)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         if targets.count > 1 {
                             Button("Remove", systemImage: Icons.closeCircleFill) {
-                                if let index = targets.firstIndex(where: { $0.id == target.id }) {
-                                    targets.remove(at: index)
-                                }
+                                targets.remove(at: index)
                             }
                             .symbolRenderingMode(.hierarchical)
                             .imageScale(.large)
