@@ -18,10 +18,18 @@ struct SubscriptionListItemView: View {
     let section: SubscriptionListSection
     let sectionIndicesShown: Bool
     
+    @ViewBuilder
+    func multiPlatformButton(_ destination: NavigationPage, @ViewBuilder label: () -> some View) -> some View {}
+
     var body: some View {
-        NavigationLink(.community(community)) {
-            HStack(spacing: 15, content: label)
-        }
+        MultiplatformView(phone: {
+            NavigationLink(.community(community), label: label)
+        }, pad: {
+            Button(action: {
+                navigation.root = .community(community)
+            }, label: label)
+                .buttonStyle(EmptyButtonStyle())
+        })
         .contextMenu { community.menuActions(feedback: [.toast], navigation: navigation) }
         .swipeActions(edge: .trailing) {
             Button("Unsubscribe", systemImage: Icons.failure) {
@@ -35,30 +43,34 @@ struct SubscriptionListItemView: View {
     
     @ViewBuilder
     private func label() -> some View {
-        switch instanceLocation(section: section) {
-        case .trailing:
-            CircleCroppedImageView(community, frame: 28)
-            (
-                Text(community.name)
-                    + Text(verbatim: "@\(community.host ?? "unknown")")
-                    .foregroundStyle(.secondary)
-                    .font(.footnote)
-            )
-            .lineLimit(1)
-        case .bottom:
-            CircleCroppedImageView(community, frame: 36)
-            VStack(alignment: .leading, spacing: 0) {
+        HStack(spacing: 15) {
+            switch instanceLocation(section: section) {
+            case .trailing:
+                CircleCroppedImageView(community, frame: 28)
+                (
+                    Text(community.name)
+                        + Text(verbatim: "@\(community.host ?? "unknown")")
+                        .foregroundStyle(.secondary)
+                        .font(.footnote)
+                )
+                .lineLimit(1)
+            case .bottom:
+                CircleCroppedImageView(community, frame: 36)
+                VStack(alignment: .leading, spacing: 0) {
+                    Text(community.name)
+                        .lineLimit(1)
+                    Text(verbatim: "@\(community.host ?? "")")
+                        .foregroundStyle(.secondary)
+                        .font(.footnote)
+                }
+            case .disabled:
+                CircleCroppedImageView(community, frame: 28)
                 Text(community.name)
                     .lineLimit(1)
-                Text(verbatim: "@\(community.host ?? "")")
-                    .foregroundStyle(.secondary)
-                    .font(.footnote)
             }
-        case .disabled:
-            CircleCroppedImageView(community, frame: 28)
-            Text(community.name)
-                .lineLimit(1)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .contentShape(.rect)
     }
     
     private func instanceLocation(section: SubscriptionListSection) -> InstanceLocation {
