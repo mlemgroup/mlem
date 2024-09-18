@@ -94,7 +94,7 @@ struct ExpandedPostView: View {
                 FancyScrollView {
                     LazyVStack(
                         alignment: .leading,
-                        spacing: Constants.main.standardSpacing
+                        spacing: compactComments ? Constants.main.halfSpacing : Constants.main.standardSpacing
                     ) {
                         LargePostView(post: post, isExpanded: true)
                             .clipShape(.rect(cornerRadius: 10))

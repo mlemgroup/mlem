@@ -76,7 +76,7 @@ struct PersonContentGridView: View {
     
     var content: some View {
         VStack(spacing: 0) {
-            LazyVGrid(columns: columns, spacing: Constants.main.standardSpacing) {
+            LazyVGrid(columns: columns, spacing: postSize.sectionSpacing) {
                 ForEach(items, id: \.hashValue) { item in
                     personContentItem(item)
                         .buttonStyle(EmptyButtonStyle())

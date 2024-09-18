@@ -81,7 +81,7 @@ struct PostGridView: View {
     
     var content: some View {
         VStack(spacing: 0) {
-            LazyVGrid(columns: columns, spacing: Constants.main.standardSpacing) {
+            LazyVGrid(columns: columns, spacing: postSize.sectionSpacing) {
                 ForEach(Array(postFeedLoader.items.enumerated()), id: \.element.hashValue) { index, post in
                     if !post.creator.blocked, !post.community.blocked, !post.hidden {
                         NavigationLink(.post(post, communityContext: communityContext, navigationNamespace: navigationNamespace)) {
