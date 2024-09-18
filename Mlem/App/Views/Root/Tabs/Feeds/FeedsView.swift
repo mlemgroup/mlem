@@ -134,7 +134,7 @@ struct FeedsView: View {
                     }
                 }
             }
-            .task(setupFeedLoader)
+            .task { await setupFeedLoader() }
             .outdatedFeedPopup(feedLoader: {
                 if feedSelection == .saved, let savedFeedLoader {
                     return savedFeedLoader
@@ -184,7 +184,6 @@ struct FeedsView: View {
         }
     }
     
-    @Sendable
     @MainActor
     func setupFeedLoader() async {
         guard postFeedLoader == nil else { return }
