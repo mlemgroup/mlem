@@ -80,7 +80,7 @@ struct PersonContentGridView: View {
                 ForEach(items, id: \.hashValue) { item in
                     personContentItem(item)
                         .buttonStyle(EmptyButtonStyle())
-                        .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 0)
+                        .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 10)
                         .onAppear {
                             do {
                                 try feedLoader.loadIfThreshold(item, asChild: contentType != .all)
