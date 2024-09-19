@@ -198,10 +198,20 @@ extension Interactable1Providing {
     }
     
     var commentReadout: Readout {
-        .init(
+        let value: String?
+        if let unreadCount = (self as? any Post1Providing)?.unreadCommentCount_,
+           unreadCount > 0, unreadCount != commentCount_ {
+            value = "+\(unreadCount)"
+        } else {
+            value = nil
+        }
+        
+        return .init(
             id: "comment\(uid)",
             label: self2?.commentCount.description,
-            icon: Icons.replies
+            icon: Icons.replies,
+            value: value,
+            valueColor: Palette.main.positive
         )
     }
 }
