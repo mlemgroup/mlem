@@ -5,6 +5,8 @@
 //  Created by Eric Andrews on 2023-06-20.
 //
 
+// swiftlint:disable file_length
+
 import Dependencies
 import SwiftUI
 
@@ -104,21 +106,37 @@ struct SwipeyView: ViewModifier {
         _trailingSwipeSymbol = State(initialValue: primaryTrailingAction?.symbol.fillName)
     }
     
-    // swiftlint:disable function_body_length
     func body(content: Content) -> some View {
-        content
-            // add a little shadow under the edge
-            .background {
-                GeometryReader { proxy in
-                    Rectangle()
-                        .foregroundColor(.clear)
-                        .border(width: 10, edges: [.leading, .trailing], color: .black)
-                        .shadow(radius: 5)
-                        .mask(Rectangle().frame(width: proxy.size.width + 20)) // clip top/bottom
-                        .opacity(dragState == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
-                }
+        Group {
+            if #available(iOS 18.0, *) {
+                iOS18Body(content: content)
+            } else {
+                legacyBody(content: content)
+                    .onChange(of: dragState) { newDragState in
+                        draggingUpdated(dragState: newDragState)
+                    }
             }
-            .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
+        }
+        // add a little shadow under the edge
+        .background {
+            GeometryReader { proxy in
+                Rectangle()
+                    .foregroundColor(.clear)
+                    .border(width: 10, edges: [.leading, .trailing], color: .black)
+                    .shadow(radius: 5)
+                    .mask(Rectangle().frame(width: proxy.size.width + 20)) // clip top/bottom
+                    .opacity(dragPosition == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
+            }
+        }
+        .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
+        .background {
+            iconBackground
+        }
+        .buttonStyle(EmptyButtonStyle())
+    }
+    
+    func legacyBody(content: Content) -> some View {
+        content
             // needs to be high priority or else dragging on links leads to navigating to the link at conclusion of drag
             .highPriorityGesture(
                 DragGesture(minimumDistance: 20, coordinateSpace: .global) // min distance prevents conflict with scrolling drag gesture
@@ -132,84 +150,103 @@ struct SwipeyView: ViewModifier {
                         }
                     }
             )
-            .onChange(of: dragState) { newDragState in
-                // if dragState changes and is now 0, gesture has ended; compute action based on last detected position
-                if newDragState == .zero {
-                    draggingDidEnd()
-                } else {
-                    guard shouldRespondToDragPosition(newDragState) else {
-                        // as swipe actions are optional we don't allow dragging without a primary action
-                        return
-                    }
-                    
-                    // update position
-                    dragPosition = newDragState
-                    
-                    let edgeForActions = edgeForActions(at: dragPosition)
-                    let actionIndex = actionIndex(edge: edgeForActions, at: dragPosition)
-                    let action = action(edge: edgeForActions, index: actionIndex)
-                    let threshold = actionThreshold(edge: edgeForActions, index: actionIndex)
-                    
-                    // update color and symbol. If crossed an edge, play a gentle haptic
-                    switch edgeForActions {
-                    case .leading:
-                        if actionIndex == nil {
-                            leadingSwipeSymbol = primaryLeadingAction?.symbol.emptyName
-                            dragBackground = primaryLeadingAction?.color.opacity(dragPosition / threshold)
-                            iconColor = primaryLeadingAction?.iconColor
-                        } else {
-                            leadingSwipeSymbol = action?.symbol.fillName
-                            dragBackground = action?.color.opacity(dragPosition / threshold)
-                            iconColor = action?.iconColor
-                        }
-                    case .trailing:
-                        if actionIndex == nil {
-                            trailingSwipeSymbol = primaryTrailingAction?.symbol.emptyName
-                            dragBackground = primaryTrailingAction?.color.opacity(dragPosition / threshold)
-                            iconColor = primaryTrailingAction?.iconColor
-                        } else {
-                            trailingSwipeSymbol = action?.symbol.fillName
-                            dragBackground = action?.color.opacity(dragPosition / threshold)
-                            iconColor = action?.iconColor
-                        }
-                    }
-                    
-                    // If crossed an edge, play a gentle haptic
-                    let previousIndex = self.actionIndex(edge: edgeForActions, at: prevDragPosition)
-                    let currentIndex = self.actionIndex(edge: edgeForActions, at: dragPosition)
-                    if let hapticInfo = hapticInfo(transitioningFrom: previousIndex, to: currentIndex) {
-                        hapticManager.play(haptic: hapticInfo.0, priority: hapticInfo.1)
-                    }
-                                  
-                    prevDragPosition = dragPosition
-                }
-            }
-            .background {
-                dragBackground
-                    .overlay {
-                        HStack(spacing: 0) {
-                            Image(systemName: leadingSwipeSymbol ?? Icons.warning)
-                                .font(.title)
-                                .frame(width: 20, height: 20)
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 20)
-                            Spacer()
-                            Image(systemName: trailingSwipeSymbol ?? Icons.warning)
-                                .font(.title)
-                                .frame(width: 20, height: 20)
-                                .foregroundColor(iconColor ?? .white)
-                                .padding(.horizontal, 20)
-                        }
-                        .accessibilityHidden(true) // prevent these from popping up in VO
-                        .opacity(dragState == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
-                    }
-            }
             // prevents various animation glitches
             .transaction { transaction in
                 transaction.disablesAnimations = true
             }
-            // disables links from highlighting when tapped
-            .buttonStyle(EmptyButtonStyle())
+    }
+    
+    @available(iOS 18.0, *) @ViewBuilder
+    func iOS18Body(content: Content) -> some View {
+        content
+            .geometryGroup()
+            .gesture(
+                PanGesture { recognizer in
+                    if recognizer.state == .ended {
+                        draggingUpdated(dragState: 0)
+                    } else {
+                        draggingUpdated(dragState: recognizer.translation(in: recognizer.view).x)
+                    }
+                }
+            )
+    }
+    
+    var iconBackground: some View {
+        dragBackground
+            .overlay {
+                HStack(spacing: 0) {
+                    if dragPosition > 0 {
+                        Image(systemName: leadingSwipeSymbol ?? Icons.warning)
+                            .font(.title)
+                            .frame(width: 20, height: 20)
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 20)
+                    }
+                    Spacer()
+                    if dragPosition < 0 {
+                        Image(systemName: trailingSwipeSymbol ?? Icons.warning)
+                            .font(.title)
+                            .frame(width: 20, height: 20)
+                            .foregroundColor(iconColor ?? .white)
+                            .padding(.horizontal, 20)
+                    }
+                }
+                .accessibilityHidden(true) // prevent these from popping up in VO
+                .opacity(dragPosition == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
+            }
+    }
+    
+    private func draggingUpdated(dragState: CGFloat) {
+        // if dragState changes and is now 0, gesture has ended; compute action based on last detected position
+        if dragState == .zero {
+            draggingDidEnd()
+        } else {
+            guard shouldRespondToDragPosition(dragState) else {
+                // as swipe actions are optional we don't allow dragging without a primary action
+                return
+            }
+            
+            // update position
+            dragPosition = dragState
+            
+            let edgeForActions = edgeForActions(at: dragPosition)
+            let actionIndex = actionIndex(edge: edgeForActions, at: dragPosition)
+            let action = action(edge: edgeForActions, index: actionIndex)
+            let threshold = actionThreshold(edge: edgeForActions, index: actionIndex)
+            
+            // update color and symbol. If crossed an edge, play a gentle haptic
+            switch edgeForActions {
+            case .leading:
+                if actionIndex == nil {
+                    leadingSwipeSymbol = primaryLeadingAction?.symbol.emptyName
+                    dragBackground = primaryLeadingAction?.color.opacity(dragPosition / threshold)
+                    iconColor = primaryLeadingAction?.iconColor
+                } else {
+                    leadingSwipeSymbol = action?.symbol.fillName
+                    dragBackground = action?.color.opacity(dragPosition / threshold)
+                    iconColor = action?.iconColor
+                }
+            case .trailing:
+                if actionIndex == nil {
+                    trailingSwipeSymbol = primaryTrailingAction?.symbol.emptyName
+                    dragBackground = primaryTrailingAction?.color.opacity(dragPosition / threshold)
+                    iconColor = primaryTrailingAction?.iconColor
+                } else {
+                    trailingSwipeSymbol = action?.symbol.fillName
+                    dragBackground = action?.color.opacity(dragPosition / threshold)
+                    iconColor = action?.iconColor
+                }
+            }
+            
+            // If crossed an edge, play a gentle haptic
+            let previousIndex = self.actionIndex(edge: edgeForActions, at: prevDragPosition)
+            let currentIndex = self.actionIndex(edge: edgeForActions, at: dragPosition)
+            if let hapticInfo = hapticInfo(transitioningFrom: previousIndex, to: currentIndex) {
+                hapticManager.play(haptic: hapticInfo.0, priority: hapticInfo.1)
+            }
+                          
+            prevDragPosition = dragPosition
+        }
     }
     
     private func draggingDidEnd() {
@@ -360,8 +397,6 @@ struct SwipeyView: ViewModifier {
     }
 }
 
-// swiftlint:enable function_body_length
-
 extension View {
     /// Adds swipey actions to a view.
     ///
@@ -388,3 +423,5 @@ extension View {
         )
     }
 }
+
+// swiftlint:enable file_length
