@@ -25,6 +25,7 @@ struct ExpandedPostView: View {
     @Environment(\.dismiss) var dismiss
     
     @Setting(\.jumpButton) var jumpButton
+    @Setting(\.compactComments) var compactComments
     
     let post: AnyPost
     @State var tracker: CommentTreeTracker?
@@ -83,7 +84,7 @@ struct ExpandedPostView: View {
                 }
             }
         }
-        .background(palette.background)
+        .background(palette.groupedBackground)
     }
     
     // swiftlint:disable:next function_body_length
@@ -91,8 +92,12 @@ struct ExpandedPostView: View {
         GeometryReader { geo in
             ScrollViewReader { proxy in
                 FancyScrollView {
-                    LazyVStack(alignment: .leading, spacing: 0) {
+                    LazyVStack(
+                        alignment: .leading,
+                        spacing: compactComments ? Constants.main.halfSpacing : Constants.main.standardSpacing
+                    ) {
                         LargePostView(post: post, isExpanded: true)
+                            .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
                             .id(post.actorId)
                             .transition(.opacity)
                             .animation(.easeOut(duration: 0.1), value: post is any Post2Providing)
@@ -100,7 +105,7 @@ struct ExpandedPostView: View {
                                 key: AnchorsKey.self,
                                 value: .center
                             ) { [post.actorId: $0] }
-                        Divider()
+                            .padding(.horizontal, Constants.main.standardSpacing)
                         ForEach(tracker.comments.tree(), id: \.actorId) { comment in
                             CommentView(
                                 comment: comment,
@@ -113,9 +118,11 @@ struct ExpandedPostView: View {
                                 key: AnchorsKey.self,
                                 value: .center
                             ) { [comment.actorId: $0] }
+                            .padding(.horizontal, Constants.main.standardSpacing)
                         }
                     }
                     .animation(.easeInOut(duration: 0.4), value: highlightedComment?.actorId)
+                    .padding(.bottom, 80)
                 }
                 .onChange(of: tracker.loadingState, initial: true) {
                     if tracker.loadingState == .done, let highlightedComment {
