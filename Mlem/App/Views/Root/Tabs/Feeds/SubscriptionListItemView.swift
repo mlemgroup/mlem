@@ -19,23 +19,16 @@ struct SubscriptionListItemView: View {
     let sectionIndicesShown: Bool
     
     var body: some View {
-        MultiplatformView(phone: {
-            NavigationLink(.community(community), label: label)
-        }, pad: {
-            Button(action: {
-                navigation.root = .community(community)
-            }, label: label)
-                .buttonStyle(EmptyButtonStyle())
-        })
-        .contextMenu { community.menuActions(feedback: [.toast], navigation: navigation) }
-        .swipeActions(edge: .trailing) {
-            Button("Unsubscribe", systemImage: Icons.failure) {
-                community.toggleSubscribe(feedback: [.toast])
+        SubscriptionListNavigationButton(.community(community), label: label)
+            .contextMenu { community.menuActions(feedback: [.toast], navigation: navigation) }
+            .swipeActions(edge: .trailing) {
+                Button("Unsubscribe", systemImage: Icons.failure) {
+                    community.toggleSubscribe(feedback: [.toast])
+                }
+                .labelStyle(.iconOnly)
+                .tint(.red)
             }
-            .labelStyle(.iconOnly)
-            .tint(.red)
-        }
-        .padding(.trailing, sectionIndicesShown ? 5 : 0)
+            .padding(.trailing, sectionIndicesShown ? 5 : 0)
     }
     
     @ViewBuilder

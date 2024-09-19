@@ -51,7 +51,7 @@ struct SubscriptionListView: View {
             List {
                 Section {
                     ForEach(feedOptions, id: \.hashValue) { feedOption in
-                        multiPlatformButton(.feeds(feedOption)) {
+                        SubscriptionListNavigationButton(.feeds(feedOption)) {
                             HStack(spacing: 15) {
                                 FeedIconView(feedDescription: feedOption.description, size: 28)
                                 Text(feedOption.description.label)
@@ -106,18 +106,6 @@ struct SubscriptionListView: View {
             }
             .background(palette.background)
         }
-    }
-    
-    @ViewBuilder
-    func multiPlatformButton(_ destination: NavigationPage, @ViewBuilder label: () -> some View) -> some View {
-        MultiplatformView(phone: {
-            NavigationLink(destination, label: label)
-        }, pad: {
-            Button(action: {
-                navigation.root = destination
-            }, label: label)
-                .buttonStyle(EmptyButtonStyle())
-        })
     }
     
     var sectionIndicesShown: Bool {

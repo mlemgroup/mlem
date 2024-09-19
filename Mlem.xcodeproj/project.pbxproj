@@ -91,6 +91,7 @@
 		03531EEE2C2D9298004A3464 /* SearchSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03531EED2C2D9298004A3464 /* SearchSheetView.swift */; };
 		03531EF12C2DA298004A3464 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03531EF02C2DA298004A3464 /* SearchResultsView.swift */; };
 		03531EF52C2DA610004A3464 /* NavigationSearchType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03531EF42C2DA610004A3464 /* NavigationSearchType.swift */; };
+		035394862C9CDC1100795AA5 /* SubscriptionListNavigationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035394852C9CDC1100795AA5 /* SubscriptionListNavigationButton.swift */; };
 		0355F9462C150B2300605248 /* ExternalApiInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0355F9452C150B2300605248 /* ExternalApiInfoView.swift */; };
 		0355F9492C16406E00605248 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0355F9482C16406E00605248 /* Line.swift */; };
 		035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */; };
@@ -454,6 +455,7 @@
 		03531EED2C2D9298004A3464 /* SearchSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSheetView.swift; sourceTree = "<group>"; };
 		03531EF02C2DA298004A3464 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
 		03531EF42C2DA610004A3464 /* NavigationSearchType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationSearchType.swift; sourceTree = "<group>"; };
+		035394852C9CDC1100795AA5 /* SubscriptionListNavigationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListNavigationButton.swift; sourceTree = "<group>"; };
 		0355F9452C150B2300605248 /* ExternalApiInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalApiInfoView.swift; sourceTree = "<group>"; };
 		0355F9482C16406E00605248 /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRootView.swift; sourceTree = "<group>"; };
@@ -1261,6 +1263,7 @@
 				CD7DB9742C4D6BEF00DCC542 /* Feed Comments */,
 				CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */,
 				031E2D502BEF961D0003BC45 /* SubscriptionListView.swift */,
+				035394852C9CDC1100795AA5 /* SubscriptionListNavigationButton.swift */,
 				03DAEA762C64074E0064DE64 /* SubscriptionListItemView.swift */,
 				CD9CFA2D2C2E22E200739BBC /* Feed Header */,
 				CDE021AB2BFA43220052FD61 /* Feed Posts */,
@@ -2048,6 +2051,7 @@
 				CD4E386D2C836F8C009B24F2 /* UIUserInterfaceStyle+Extensions.swift in Sources */,
 				0355F9492C16406E00605248 /* Line.swift in Sources */,
 				CD4D58A52B86BD1B00B82964 /* PersistenceRepository.swift in Sources */,
+				035394862C9CDC1100795AA5 /* SubscriptionListNavigationButton.swift in Sources */,
 				039F58842C7A7F2C00C61658 /* CommentJumpButtonLocation.swift in Sources */,
 				CD1B2E212C7F84160075C7EA /* View+MarkReadOnScroll.swift in Sources */,
 				033F84AD2C298466002E3EDF /* SectionIndexTitles.swift in Sources */,
