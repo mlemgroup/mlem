@@ -136,6 +136,7 @@ enum Icons {
     static let heading: String = "textformat.size"
     static let uploadImage: String = "photo"
     static let spoiler: String = "eye"
+    static let codeBlock: String = "text.viewfinder"
     
     // entities/general Lemmy concepts
     static let federation: String = "point.3.filled.connected.trianglepath.dotted"
