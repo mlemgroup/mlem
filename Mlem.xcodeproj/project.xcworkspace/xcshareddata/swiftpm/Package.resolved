@@ -1,5 +1,5 @@
 {
-  "originHash" : "693546cfc633cb179f53728b918542e0d98a3518ffce28aa97b5c239441ee75a",
+  "originHash" : "558da2d1e1bcbbf34ce2b1d5614e34d106cc0974e1224a2d70af93dc78da0ec8",
   "pins" : [
     {
       "identity" : "combine-schedulers",
@@ -8,6 +8,23 @@
       "state" : {
         "revision" : "ec62f32d21584214a4b27c8cee2b2ad70ab2c38a",
         "version" : "0.11.0"
+      }
+    },
+    {
+      "identity" : "flanimatedimage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Flipboard/FLAnimatedImage",
+      "state" : {
+        "revision" : "d4f07b6f164d53c1212c3e54d6460738b1981e9f",
+        "version" : "1.0.17"
+      }
+    },
+    {
+      "identity" : "gifu",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:kaishin/Gifu.git",
+      "state" : {
+        "revision" : "7abb6bb59284d5c515b57f9d5070cc153efdcd88"
       }
     },
     {
@@ -31,7 +48,7 @@
     {
       "identity" : "mlemmiddleware",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mlemgroup/MlemMiddleware.git",
+      "location" : "https://github.com/mlemgroup/MlemMiddleware",
       "state" : {
         "revision" : "2b6fbde045d342676487cf8c8c8467eec8b31a69",
         "version" : "0.37.0"

@@ -50,7 +50,10 @@ struct TilePostView: View {
     
     var content: some View {
         VStack(alignment: .leading, spacing: 0) {
-            BaseImage(post: post, width: width, height: contentHeight)
+            // BaseImage(post: post, width: width, height: contentHeight)
+            // TestVideoView(url: URL(string: "https://kean.github.io/videos/cat_video.mp4")!)
+            // TestVideoView(url: URL(string: "https://files.catbox.moe/6jr6cz.gif")!)
+            TestVideoView(url: URL(string: "https://files.catbox.moe/icrnre.MP4")!)
             
             Divider()
             

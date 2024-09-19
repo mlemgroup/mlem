@@ -26,6 +26,9 @@ struct MlemApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .onAppear {
+                    ImageDecoderRegistry.shared.register(ImageDecoders.Video.init)
+                }
         }
     }
 }
