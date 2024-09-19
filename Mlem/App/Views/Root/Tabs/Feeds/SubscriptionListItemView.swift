@@ -18,9 +18,6 @@ struct SubscriptionListItemView: View {
     let section: SubscriptionListSection
     let sectionIndicesShown: Bool
     
-    @ViewBuilder
-    func multiPlatformButton(_ destination: NavigationPage, @ViewBuilder label: () -> some View) -> some View {}
-
     var body: some View {
         MultiplatformView(phone: {
             NavigationLink(.community(community), label: label)
