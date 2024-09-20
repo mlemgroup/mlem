@@ -84,8 +84,8 @@ struct FeedsView: View {
     
     var body: some View {
         content
-            .background(postSize.tiled ? palette.groupedBackground : palette.background)
-            .navigationBarTitleDisplayMode(.inline)
+            .background(palette.groupedBackground)
+            .scrollContentBackground(.hidden)
             .toolbar {
                 if !isAtTop {
                     ToolbarTitleMenu {
@@ -100,6 +100,7 @@ struct FeedsView: View {
                 }
             }
             .navigationTitle(isAtTop ? "" : String(localized: feedSelection.description.label))
+            .navigationBarTitleDisplayMode(.inline)
             .isAtTopSubscriber(isAtTop: $isAtTop)
             .onChange(of: showRead) {
                 scrollToTopTrigger.toggle()
@@ -133,7 +134,7 @@ struct FeedsView: View {
                     }
                 }
             }
-            .task(setupFeedLoader)
+            .task { await setupFeedLoader() }
             .outdatedFeedPopup(feedLoader: {
                 if feedSelection == .saved, let savedFeedLoader {
                     return savedFeedLoader
@@ -146,8 +147,6 @@ struct FeedsView: View {
     var content: some View {
         FancyScrollView(scrollToTopTrigger: $scrollToTopTrigger) {
             Section {
-                if !postSize.tiled { Divider() }
-                
                 if let savedFeedLoader, feedSelection == .saved {
                     PersonContentGridView(feedLoader: savedFeedLoader, contentType: .constant(.all))
                 } else if let postFeedLoader {
@@ -185,7 +184,6 @@ struct FeedsView: View {
         }
     }
     
-    @Sendable
     @MainActor
     func setupFeedLoader() async {
         guard postFeedLoader == nil else { return }

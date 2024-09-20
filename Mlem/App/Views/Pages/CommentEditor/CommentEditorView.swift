@@ -105,7 +105,7 @@ struct CommentEditorView: View {
                     }
                     .background(palette.background)
             }
-            .task(id: account, resolveContext)
+            .task(id: account) { await resolveContext() }
         }
         .onAppear {
             textView.becomeFirstResponder()
@@ -164,7 +164,7 @@ struct CommentEditorView: View {
             .padding(.bottom, Constants.main.standardSpacing)
         }
         .scrollBounceBehavior(.basedOnSize)
-        .task(inferContextFromCommentToEdit)
+        .task { await inferContextFromCommentToEdit() }
     }
     
     @ViewBuilder

@@ -35,7 +35,7 @@ struct PostEditorTargetView: View {
                             .fontWeight(.semibold)
                         accountPicker
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .task(id: target.account, resolveCommunity)
+                            .task(id: target.account) { await resolveCommunity() }
                     }
                 }
             }
@@ -118,7 +118,6 @@ struct PostEditorTargetView: View {
         }
     }
     
-    @Sendable
     @MainActor
     func resolveCommunity() async {
         guard target.community?.api !== target.account.api else { return }

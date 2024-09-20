@@ -43,12 +43,11 @@ struct SimpleAvatarView: View {
                 Image(uiImage: defaultImage)
             } else {
                 Image(uiImage: uiImage)
-                    .task(loadImage)
+                    .task { await loadImage() }
             }
         }
     }
 
-    @Sendable
     func loadImage() async {
         guard let url else { return }
 

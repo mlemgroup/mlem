@@ -9,7 +9,6 @@ import MlemMiddleware
 import SwiftUI
 
 extension CommentEditorView {
-    @Sendable
     func resolveContext() async {
         guard let originalContext else { return }
         do {
@@ -48,7 +47,6 @@ extension CommentEditorView {
         }
     }
     
-    @Sendable
     func inferContextFromCommentToEdit() async {
         guard originalContext == nil else { return }
         do {
