@@ -48,6 +48,13 @@ enum PostSize: String, CaseIterable, Codable {
         }
     }
     
+    var sectionSpacing: CGFloat {
+        switch self {
+        case .compact: Constants.main.halfSpacing
+        default: Constants.main.standardSpacing
+        }
+    }
+    
     func icon(filled: Bool) -> String {
         switch self {
         case .compact: filled ? Icons.compactPostFill : Icons.compactPost

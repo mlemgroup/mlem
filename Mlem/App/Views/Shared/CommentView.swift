@@ -44,7 +44,15 @@ struct CommentView: View {
     var content: some View {
         let collapsed = (comment as? CommentWrapper)?.collapsed ?? false
         
-        VStack(spacing: 0) {
+        HStack(spacing: 12) {
+            if depth != 0 {
+                Capsule()
+                    .fill(palette.commentIndentColors[depth % palette.commentIndentColors.count])
+                    .frame(width: 3)
+                    .frame(maxHeight: .infinity)
+                    .padding(.leading, 8)
+                    .padding(.vertical, 8)
+            }
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 HStack(spacing: 0) {
                     FullyQualifiedLinkView(
@@ -75,6 +83,7 @@ struct CommentView: View {
                 }
                 if !collapsed {
                     CommentBodyView(comment: comment)
+                        .padding(.trailing, 2)
                     if !compactComments {
                         InteractionBarView(
                             comment: comment,
@@ -82,24 +91,24 @@ struct CommentView: View {
                             commentTreeTracker: commentTreeTracker,
                             communityContext: communityContext
                         )
-                        .padding(.top, 2)
+                        .padding(.horizontal, 2)
+                        .padding(.bottom, 5)
+                        .padding(.top, 1)
                     }
                 }
             }
-            .padding(.vertical, 2)
-            .padding(Constants.main.standardSpacing)
-            .clipped()
-            .background(highlight ? palette.accent.opacity(0.2) : .clear)
-            .background(palette.background)
-            .border(
-                width: depth == 0 ? 0 : 2, edges: [.leading],
-                color: palette.commentIndentColors[depth % palette.commentIndentColors.count]
-            )
-            .quickSwipes(comment.swipeActions(behavior: .standard, commentTreeTracker: commentTreeTracker))
-            .contentShape(.rect)
-            .contextMenu { comment.menuActions(commentTreeTracker: commentTreeTracker) }
-            Divider()
+            .padding(.vertical, Constants.main.standardSpacing)
+            .padding(.top, compactComments ? 0 : 3)
         }
+        .padding(depth == 0 ? .horizontal : .trailing, Constants.main.standardSpacing)
+        .background(highlight ? palette.accent.opacity(0.2) : .clear)
+        .background(palette.secondaryGroupedBackground)
+        .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
+        .quickSwipes(comment.swipeActions(behavior: .standard, commentTreeTracker: commentTreeTracker))
+        .contentShape(.interaction, .rect)
+        .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
+        .contextMenu { comment.menuActions(commentTreeTracker: commentTreeTracker) }
+        .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .padding(.leading, CGFloat(depth) * indent)
         .environment(\.commentContext, comment)
     }

@@ -19,46 +19,48 @@ struct SubscriptionListItemView: View {
     let sectionIndicesShown: Bool
     
     var body: some View {
-        NavigationLink(.community(community)) {
-            HStack(spacing: 15, content: label)
-        }
-        .contextMenu { community.menuActions(feedback: [.toast], navigation: navigation) }
-        .swipeActions(edge: .trailing) {
-            Button("Unsubscribe", systemImage: Icons.failure) {
-                community.toggleSubscribe(feedback: [.toast])
+        SubscriptionListNavigationButton(.community(community), label: label)
+            .contextMenu { community.menuActions(feedback: [.toast], navigation: navigation) }
+            .swipeActions(edge: .trailing) {
+                Button("Unsubscribe", systemImage: Icons.failure) {
+                    community.toggleSubscribe(feedback: [.toast])
+                }
+                .labelStyle(.iconOnly)
+                .tint(.red)
             }
-            .labelStyle(.iconOnly)
-            .tint(.red)
-        }
-        .padding(.trailing, sectionIndicesShown ? 5 : 0)
+            .padding(.trailing, sectionIndicesShown ? 5 : 0)
     }
     
     @ViewBuilder
     private func label() -> some View {
-        switch instanceLocation(section: section) {
-        case .trailing:
-            CircleCroppedImageView(community, frame: 28)
-            (
-                Text(community.name)
-                    + Text(verbatim: "@\(community.host ?? "unknown")")
-                    .foregroundStyle(.secondary)
-                    .font(.footnote)
-            )
-            .lineLimit(1)
-        case .bottom:
-            CircleCroppedImageView(community, frame: 36)
-            VStack(alignment: .leading, spacing: 0) {
+        HStack(spacing: 15) {
+            switch instanceLocation(section: section) {
+            case .trailing:
+                CircleCroppedImageView(community, frame: 28)
+                (
+                    Text(community.name)
+                        + Text(verbatim: "@\(community.host ?? "unknown")")
+                        .foregroundStyle(.secondary)
+                        .font(.footnote)
+                )
+                .lineLimit(1)
+            case .bottom:
+                CircleCroppedImageView(community, frame: 36)
+                VStack(alignment: .leading, spacing: 0) {
+                    Text(community.name)
+                        .lineLimit(1)
+                    Text(verbatim: "@\(community.host ?? "")")
+                        .foregroundStyle(.secondary)
+                        .font(.footnote)
+                }
+            case .disabled:
+                CircleCroppedImageView(community, frame: 28)
                 Text(community.name)
                     .lineLimit(1)
-                Text(verbatim: "@\(community.host ?? "")")
-                    .foregroundStyle(.secondary)
-                    .font(.footnote)
             }
-        case .disabled:
-            CircleCroppedImageView(community, frame: 28)
-            Text(community.name)
-                .lineLimit(1)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .contentShape(.rect)
     }
     
     private func instanceLocation(section: SubscriptionListSection) -> InstanceLocation {

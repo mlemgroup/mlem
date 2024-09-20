@@ -28,6 +28,7 @@ struct EllipsisMenu: View {
                 .frame(width: 24, height: size)
                 .contentShape(.rect)
         }
+        .popupAnchor()
         .buttonStyle(EmptyButtonStyle())
         .onTapGesture {} // prevent NavigationLink from disabling menu (thanks Swift)
     }

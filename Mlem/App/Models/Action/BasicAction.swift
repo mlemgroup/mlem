@@ -34,10 +34,10 @@ struct BasicAction: Action {
         self.callback = enabled ? callback : nil
     }
     
-    func callbackWithConfirmation(navigation: NavigationLayer) {
+    func callbackWithConfirmation(popupModel: PopupAnchorModel) {
         if let callback {
             if let confirmationPrompt {
-                navigation.showPopup(ActionGroup(
+                popupModel.showPopup(ActionGroup(
                     appearance: .init(label: "Confirm", color: .gray, icon: Icons.success),
                     prompt: confirmationPrompt,
                     children: [

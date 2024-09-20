@@ -32,8 +32,8 @@ struct LargePostView: View {
     
     var body: some View {
         content
-            .padding(Constants.main.standardSpacing)
-            .background(palette.background)
+            .padding(.vertical, Constants.main.standardSpacing)
+            .background(palette.secondaryGroupedBackground)
             .environment(\.postContext, post)
     }
     
@@ -57,11 +57,18 @@ struct LargePostView: View {
                     EllipsisMenu(size: 24) { post.menuActions(commentTreeTracker: commentTreeTracker) }
                 }
             }
+            .padding(.horizontal, Constants.main.standardSpacing)
             
             LargePostBodyView(post: post, isExpanded: isExpanded, shouldBlur: shouldBlur)
+                .padding(.horizontal, Constants.main.standardSpacing)
             
             if showCreator || isExpanded, communityContext == nil {
                 personLink
+                    .padding(.horizontal, Constants.main.standardSpacing)
+            }
+            
+            if !(post.content?.isEmpty ?? true) {
+                Divider()
             }
             
             InteractionBarView(
@@ -70,7 +77,8 @@ struct LargePostView: View {
                 commentTreeTracker: commentTreeTracker,
                 communityContext: communityContext
             )
-            .padding(.vertical, 2)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 5)
         }
     }
     

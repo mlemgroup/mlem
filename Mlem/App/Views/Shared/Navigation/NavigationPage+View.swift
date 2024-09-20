@@ -40,9 +40,10 @@ extension NavigationPage {
             QuickSwitcherView()
         case let .report(target, community):
             ReportComposerView(target: target.wrappedValue, community: community)
-        case let .post(post, highlightedComment, communityContext):
+        case let .post(post, highlightedComment, communityContext, navigationNamespace):
             ExpandedPostView(post: post, highlightedComment: highlightedComment?.wrappedValue)
                 .environment(\.communityContext, communityContext?.wrappedValue)
+                .navigationTransition_(sourceID: "post\(post.wrappedValue.actorId)", in: navigationNamespace)
         case let .person(person):
             PersonView(person: person)
         case let .createComment(context, commentTreeTracker):
@@ -98,7 +99,7 @@ extension NavigationPage {
                     Text("This feature is only supported for instances running version \(minimumVersion) or later.")
                         .padding()
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(Palette.main.caution.opacity(0.2), in: .rect(cornerRadius: 10))
+                        .background(Palette.main.caution.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
                         .foregroundStyle(Palette.main.caution)
                         .padding([.horizontal, .bottom])
                 }
