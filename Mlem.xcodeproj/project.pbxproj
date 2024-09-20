@@ -472,6 +472,7 @@
 		CD391F9C2A53980900E213B5 /* ReplyToCommentReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD391F9B2A53980900E213B5 /* ReplyToCommentReply.swift */; };
 		CD391F9E2A539F1800E213B5 /* ReplyToMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD391F9D2A539F1800E213B5 /* ReplyToMention.swift */; };
 		CD391FA02A545F8600E213B5 /* Compact Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD391F9F2A545F8600E213B5 /* Compact Post.swift */; };
+		CD3A06B02C9CCE5200B6EB90 /* PanGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3A06AF2C9CCE5200B6EB90 /* PanGesture.swift */; };
 		CD3FBCDD2A4A6F0600B2063F /* GetReplies.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCDC2A4A6F0600B2063F /* GetReplies.swift */; };
 		CD3FBCE92A4B482700B2063F /* Generic Merge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCE82A4B482700B2063F /* Generic Merge.swift */; };
 		CD4368AE2AE23ED400BD8BD1 /* StandardTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4368AD2AE23ED400BD8BD1 /* StandardTracker.swift */; };
@@ -1202,6 +1203,7 @@
 		CD391F9B2A53980900E213B5 /* ReplyToCommentReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToCommentReply.swift; sourceTree = "<group>"; };
 		CD391F9D2A539F1800E213B5 /* ReplyToMention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToMention.swift; sourceTree = "<group>"; };
 		CD391F9F2A545F8600E213B5 /* Compact Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Compact Post.swift"; sourceTree = "<group>"; };
+		CD3A06AF2C9CCE5200B6EB90 /* PanGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanGesture.swift; sourceTree = "<group>"; };
 		CD3FBCDC2A4A6F0600B2063F /* GetReplies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetReplies.swift; sourceTree = "<group>"; };
 		CD3FBCE82A4B482700B2063F /* Generic Merge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Generic Merge.swift"; sourceTree = "<group>"; };
 		CD4368AD2AE23ED400BD8BD1 /* StandardTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardTracker.swift; sourceTree = "<group>"; };
@@ -2717,6 +2719,7 @@
 		CD18243E2AA8E23100D9BEB5 /* View Modifiers */ = {
 			isa = PBXGroup;
 			children = (
+				CD3A06AF2C9CCE5200B6EB90 /* PanGesture.swift */,
 				CD82A24B2A70A26900111034 /* View+CustomBadge.swift */,
 				CD18243F2AA8E24100D9BEB5 /* View+DestructiveConfirmation.swift */,
 				CDDCF6442A66375E003DA3AC /* View+FancyTabItem.swift */,
@@ -4032,6 +4035,7 @@
 				CDD0B8CB2BB7844F003E7174 /* BanButtonView.swift in Sources */,
 				CDD0B8B42BB4DAFE003E7174 /* CommentReportModel+TrackerItem.swift in Sources */,
 				CD2697F02B9E157E0002B459 /* APIModBanFromCommunityView.swift in Sources */,
+				CD3A06B02C9CCE5200B6EB90 /* PanGesture.swift in Sources */,
 				B1955A1F2A606F010056CF99 /* EasterFlagsTracker.swift in Sources */,
 				CDD0B8FA2BC07EA9003E7174 /* APIRegistrationApplicationView.swift in Sources */,
 				CD0D5A482B8EC6F3005E3365 /* ReasonView.swift in Sources */,
@@ -4618,7 +4622,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.5;
+				MARKETING_VERSION = 1.3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -4661,7 +4665,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.5;
+				MARKETING_VERSION = 1.3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
