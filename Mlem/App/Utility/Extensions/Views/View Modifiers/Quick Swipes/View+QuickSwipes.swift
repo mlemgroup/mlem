@@ -54,13 +54,14 @@ struct QuickSwipeView: ViewModifier {
                         }
                 }
             }
+            .clipShape(RoundedRectangle(cornerRadius: config.behavior.cornerRadius)) // clip slidable card
             .background(shadowBackground)
             .geometryGroup()
             .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
             .background(iconBackground)
             // disables links from highlighting when tapped
             .buttonStyle(EmptyButtonStyle())
-            .clipShape(RoundedRectangle(cornerRadius: config.behavior.cornerRadius))
+            .clipShape(RoundedRectangle(cornerRadius: config.behavior.cornerRadius)) // clip entire view
             .popupAnchor(model: popupModel)
         } else {
             content
@@ -108,7 +109,7 @@ struct QuickSwipeView: ViewModifier {
             .border(width: 10, edges: [.leading, .trailing], color: .black)
             .clipShape(RoundedRectangle(cornerRadius: config.behavior.cornerRadius))
             .shadow(radius: 5)
-            .opacity(dragState == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
+            .opacity(dragPosition == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
     }
     
     var iconBackground: some View {
