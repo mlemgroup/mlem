@@ -22,6 +22,7 @@ struct QuickSwipeView: ViewModifier {
     @State var dragBackground: Color? = Palette.main.background
     @State var leadingSwipeSymbol: String?
     @State var trailingSwipeSymbol: String?
+    @State var popupModel: PopupAnchorModel = .init()
     
     let config: SwipeConfiguration
     
@@ -61,6 +62,7 @@ struct QuickSwipeView: ViewModifier {
             // disables links from highlighting when tapped
             .buttonStyle(EmptyButtonStyle())
             .clipShape(RoundedRectangle(cornerRadius: config.behavior.cornerRadius)) // clip entire view
+            .popupAnchor(model: popupModel)
         } else {
             content
         }
@@ -192,11 +194,11 @@ struct QuickSwipeView: ViewModifier {
         let action = swipeAction(at: finalDragPosition)
         
         if let action = action as? BasicAction {
-            action.callbackWithConfirmation(navigation: navigation)
+            action.callbackWithConfirmation(popupModel: popupModel)
         } else if let action = action as? ShareAction {
             navigation.shareUrl = action.url
         } else if let action = action as? ActionGroup {
-            navigation.showPopup(action)
+            popupModel.showPopup(action)
         }
     }
     

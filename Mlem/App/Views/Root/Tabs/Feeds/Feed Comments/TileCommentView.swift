@@ -104,5 +104,6 @@ struct TileCommentView: View {
             TileScoreView(comment)
         }
         .onTapGesture {}
+        .popupAnchor()
     }
 }
