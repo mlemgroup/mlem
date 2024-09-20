@@ -50,7 +50,7 @@ struct WebsitePreviewView: View {
     var content: some View {
         complex
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(palette.secondaryBackground)
+            .background(palette.tertiaryGroupedBackground)
             .clipShape(RoundedRectangle(cornerRadius: Constants.main.mediumItemCornerRadius))
             .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.mediumItemCornerRadius))
     }

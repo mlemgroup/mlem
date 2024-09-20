@@ -50,8 +50,7 @@ struct CommunityDetailsView: View {
             }
             .frame(maxWidth: .infinity)
         }
-        .padding(16)
-        .background(palette.groupedBackground)
+        .padding([.horizontal, .bottom], 16)
     }
     
     var localSubscriberCountText: String {

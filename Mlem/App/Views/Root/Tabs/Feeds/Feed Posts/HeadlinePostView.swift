@@ -33,7 +33,7 @@ struct HeadlinePostView: View {
     var body: some View {
         content
             .padding(Constants.main.standardSpacing)
-            .background(palette.background)
+            .background(palette.secondaryGroupedBackground)
             .environment(\.postContext, post)
     }
     
@@ -99,7 +99,8 @@ struct HeadlinePostView: View {
                 commentTreeTracker: commentTreeTracker,
                 communityContext: communityContext
             )
-            .padding(.vertical, 2)
+            .padding(.horizontal, 2)
+            .padding(.vertical, 5)
         }
     }
     

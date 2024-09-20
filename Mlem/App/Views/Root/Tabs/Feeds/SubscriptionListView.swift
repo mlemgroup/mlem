@@ -23,15 +23,9 @@ struct SubscriptionListView: View {
     }
     
     var body: some View {
-        MultiplatformView(phone: {
-            content
-                .listStyle(.plain)
-        }, pad: {
-            content
-                .listStyle(.sidebar)
-        })
-        .navigationTitle("Feeds")
-        .navigationBarTitleDisplayMode(.inline)
+        content
+            .listStyle(.sidebar)
+            .navigationTitle("Feeds")
     }
     
     var detailDisplayed: Bool {
@@ -48,7 +42,7 @@ struct SubscriptionListView: View {
         let sections = subscriptions?.visibleSections(sort: sort) ?? []
         
         ScrollViewReader { proxy in
-            List {
+            Form {
                 Section {
                     ForEach(feedOptions, id: \.hashValue) { feedOption in
                         NavigationLink(.feeds(feedOption)) {
@@ -60,12 +54,10 @@ struct SubscriptionListView: View {
                         }
                     }
                 }
-                .listRowBackground(palette.background)
                 
                 ForEach(sections) { section in
                     SubscriptionListSectionView(section: section, sectionIndicesShown: sectionIndicesShown)
                         .id(section.label)
-                        .listRowBackground(palette.background)
                 }
                 .scrollTargetLayout()
             }
