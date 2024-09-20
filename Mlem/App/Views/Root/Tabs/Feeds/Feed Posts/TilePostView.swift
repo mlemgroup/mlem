@@ -100,6 +100,7 @@ struct TilePostView: View {
             TileScoreView(saved: post.saved_ ?? false, votes: post.votes_ ?? .init(upvotes: 0, downvotes: 0, myVote: .none))
         }
         .onTapGesture {}
+        .popupAnchor()
     }
     
     // MARK: - BaseImage
