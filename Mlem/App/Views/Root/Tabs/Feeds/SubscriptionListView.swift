@@ -45,12 +45,13 @@ struct SubscriptionListView: View {
             Form {
                 Section {
                     ForEach(feedOptions, id: \.hashValue) { feedOption in
-                        NavigationLink(.feeds(feedOption)) {
+                        SubscriptionListNavigationButton(.feeds(feedOption)) {
                             HStack(spacing: 15) {
                                 FeedIconView(feedDescription: feedOption.description, size: 28)
-                                
                                 Text(feedOption.description.label)
                             }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .contentShape(.rect)
                         }
                     }
                 }

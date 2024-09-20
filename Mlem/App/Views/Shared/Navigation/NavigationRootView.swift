@@ -35,6 +35,7 @@ struct NavigationSplitRootView: View {
                     },
                     detail: {
                         NavigationLayerView(layer: layer, hasSheetModifiers: false)
+                            .id(layer.root)
                     }
                 )
             }
