@@ -1,5 +1,5 @@
 {
-  "originHash" : "558da2d1e1bcbbf34ce2b1d5614e34d106cc0974e1224a2d70af93dc78da0ec8",
+  "originHash" : "6e48be56886eee62f689ed8f35a8f64875438c9d44aaffb7879ee001a578a527",
   "pins" : [
     {
       "identity" : "combine-schedulers",
@@ -8,23 +8,6 @@
       "state" : {
         "revision" : "ec62f32d21584214a4b27c8cee2b2ad70ab2c38a",
         "version" : "0.11.0"
-      }
-    },
-    {
-      "identity" : "flanimatedimage",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Flipboard/FLAnimatedImage",
-      "state" : {
-        "revision" : "d4f07b6f164d53c1212c3e54d6460738b1981e9f",
-        "version" : "1.0.17"
-      }
-    },
-    {
-      "identity" : "gifu",
-      "kind" : "remoteSourceControl",
-      "location" : "git@github.com:kaishin/Gifu.git",
-      "state" : {
-        "revision" : "7abb6bb59284d5c515b57f9d5070cc153efdcd88"
       }
     },
     {
