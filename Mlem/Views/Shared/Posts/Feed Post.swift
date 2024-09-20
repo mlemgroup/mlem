@@ -108,6 +108,7 @@ struct FeedPost: View {
                     .border(width: barThickness, edges: [.leading], color: .secondary)
                     .background(Color.systemBackground)
                     .destructiveConfirmation(menuFunctionPopup: $menuFunctionPopup)
+                    .id(postModel.uid)
                     .addSwipeyActions(
                         leading: [
                             enableSwipeActions ? upvoteSwipeAction : nil,
