@@ -57,22 +57,6 @@ struct NavigationLayerView: View {
             )
             .padding(.bottom, 8)
         }
-        .confirmationDialog(
-            layer.popup?.appearance.label ?? "",
-            isPresented: Binding(
-                get: { layer.popup != nil },
-                set: {
-                    if !$0 { layer.dismissPopup() }
-                }
-            )
-        ) {
-            ForEach(layer.popup?.children ?? [], id: \.id) { action in
-                MenuButton(action: action)
-            }
-            Button("Cancel", role: .cancel) {}
-        } message: {
-            Text(layer.popup?.prompt ?? "")
-        }
         // https://stackoverflow.com/questions/69693871/how-to-open-share-sheet-from-presented-sheet
         .background(SharingViewController(
             isPresenting: Binding(get: { layer.shareUrl != nil }, set: { if !$0 { layer.shareUrl = nil }})

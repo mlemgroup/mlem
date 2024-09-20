@@ -217,6 +217,7 @@
 		03ECD7212C8654BA00D48BF6 /* PostEditorView+Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ECD7202C8654BA00D48BF6 /* PostEditorView+Toolbar.swift */; };
 		03FA318C2C6FECAE00D47FA3 /* Flow in Frameworks */ = {isa = PBXBuildFile; productRef = 03FA318B2C6FECAE00D47FA3 /* Flow */; };
 		03FA318F2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA318E2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift */; };
+		03FD6CB02C9B719100500FD6 /* View+PopupAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FD6CAF2C9B719100500FD6 /* View+PopupAnchor.swift */; };
 		03FE14042BF93FDD00A8377F /* ErrorDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FE14032BF93FDD00A8377F /* ErrorDetails.swift */; };
 		03FE14062BF9445F00A8377F /* CloseButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FE14052BF9445F00A8377F /* CloseButtonView.swift */; };
 		03FE14082BF94FFB00A8377F /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FE14072BF94FFB00A8377F /* ErrorView.swift */; };
@@ -577,6 +578,7 @@
 		03ECD71E2C864DB700D48BF6 /* ImageUploadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploadManager.swift; sourceTree = "<group>"; };
 		03ECD7202C8654BA00D48BF6 /* PostEditorView+Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditorView+Toolbar.swift"; sourceTree = "<group>"; };
 		03FA318E2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarActionLabelView.swift; sourceTree = "<group>"; };
+		03FD6CAF2C9B719100500FD6 /* View+PopupAnchor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+PopupAnchor.swift"; sourceTree = "<group>"; };
 		03FE14032BF93FDD00A8377F /* ErrorDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDetails.swift; sourceTree = "<group>"; };
 		03FE14052BF9445F00A8377F /* CloseButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButtonView.swift; sourceTree = "<group>"; };
 		03FE14072BF94FFB00A8377F /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
@@ -1512,6 +1514,7 @@
 				CD0F28092C6CEFBE00C1F65B /* View+IsAtTopSubscriber.swift */,
 				CDFB8C682C7796020070845F /* View+DynamicBlur.swift */,
 				CD1B2E202C7F84160075C7EA /* View+MarkReadOnScroll.swift */,
+				03FD6CAF2C9B719100500FD6 /* View+PopupAnchor.swift */,
 			);
 			path = "View Modifiers";
 			sourceTree = "<group>";
@@ -1979,6 +1982,7 @@
 				CD13CC652C5D2B9D001AF428 /* CircleCroppedImageView.swift in Sources */,
 				CDAA02DD2C81792500D75633 /* SolarizedPalette.swift in Sources */,
 				035EDF032C2ED0DE00F51144 /* PersonListRowBody.swift in Sources */,
+				03FD6CB02C9B719100500FD6 /* View+PopupAnchor.swift in Sources */,
 				CDBFCB652C03920C008CD468 /* PostLinkHostView.swift in Sources */,
 				03B04FC02C5FC32300824128 /* SimpleAvatarView.swift in Sources */,
 				035BE08D2BDE88EC00F77D73 /* NavigationLayerView.swift in Sources */,
