@@ -351,6 +351,8 @@
 		CDE1F19E2C63E306008AF042 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE1F19D2C63E306008AF042 /* Constants.swift */; };
 		CDF9EF332AB2845C003F885B /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF9EF322AB2845C003F885B /* Icons.swift */; };
 		CDFB8C692C7796020070845F /* View+DynamicBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFB8C682C7796020070845F /* View+DynamicBlur.swift */; };
+		CDFCB9762C9D103700A93CC9 /* TestVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFCB9752C9D103700A93CC9 /* TestVideoView.swift */; };
+		CDFCB9782C9D106E00A93CC9 /* Gifu in Frameworks */ = {isa = PBXBuildFile; productRef = CDFCB9772C9D106E00A93CC9 /* Gifu */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -711,6 +713,7 @@
 		CDE1F19D2C63E306008AF042 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CDF9EF322AB2845C003F885B /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
 		CDFB8C682C7796020070845F /* View+DynamicBlur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+DynamicBlur.swift"; sourceTree = "<group>"; };
+		CDFCB9752C9D103700A93CC9 /* TestVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestVideoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -729,6 +732,7 @@
 				B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */,
 				B104A6DC2A59BF3C00B3E725 /* NukeUI in Frameworks */,
 				03B0EB6C2C86587200F79FDF /* MlemMiddleware in Frameworks */,
+				CDFCB9782C9D106E00A93CC9 /* Gifu in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1321,6 +1325,7 @@
 		CD4D58A82B86BE4C00B82964 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				CDFCB9752C9D103700A93CC9 /* TestVideoView.swift */,
 				CDAA02E42C82236200D75633 /* Palette Components */,
 				03B431C32C45BA45001A1EB5 /* AccountPickerMenu.swift */,
 				CD4D58AB2B86BE6100B82964 /* Accounts */,
@@ -1777,6 +1782,7 @@
 				037386462BDAFE81007492B5 /* LemmyMarkdownUI */,
 				03FA318B2C6FECAE00D47FA3 /* Flow */,
 				03B0EB6B2C86587200F79FDF /* MlemMiddleware */,
+				CDFCB9772C9D106E00A93CC9 /* Gifu */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -1862,6 +1868,7 @@
 				037386452BDAFE81007492B5 /* XCRemoteSwiftPackageReference "LemmyMarkdownUI" */,
 				03FA318A2C6FEC5400D47FA3 /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */,
 				CD9243272C861F040046EBB6 /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
+				CDFCB9742C9D100300A93CC9 /* XCRemoteSwiftPackageReference "Gifu" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -2162,6 +2169,7 @@
 				CD7882A22BFE4B47002E1A30 /* PostContext.swift in Sources */,
 				0315B1C82C7635D4006D4F82 /* ApiCommentSortType+Extensions.swift in Sources */,
 				CDB2EC882BFAE14800DBC0EF /* FullyQualifiedNameView.swift in Sources */,
+				CDFCB9762C9D103700A93CC9 /* TestVideoView.swift in Sources */,
 				03500C272BF69D1D00CAA076 /* ToastModel.swift in Sources */,
 				033F84BF2C2ACC9F002E3EDF /* Comment1Providing+Extensions.swift in Sources */,
 				0369B35D2BFB86E3001EFEDF /* Account.swift in Sources */,
@@ -2695,6 +2703,14 @@
 				minimumVersion = 0.37.0;
 			};
 		};
+		CDFCB9742C9D100300A93CC9 /* XCRemoteSwiftPackageReference "Gifu" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kaishin/Gifu";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -2752,6 +2768,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */;
 			productName = Semaphore;
+		};
+		CDFCB9772C9D106E00A93CC9 /* Gifu */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CDFCB9742C9D100300A93CC9 /* XCRemoteSwiftPackageReference "Gifu" */;
+			productName = Gifu;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

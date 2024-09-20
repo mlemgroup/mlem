@@ -1,5 +1,5 @@
 {
-  "originHash" : "693546cfc633cb179f53728b918542e0d98a3518ffce28aa97b5c239441ee75a",
+  "originHash" : "290ce2f6d86164294a6f15dfde1a0435a7ea3c25e1deae14fdc412cdf8e195c6",
   "pins" : [
     {
       "identity" : "combine-schedulers",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "ec62f32d21584214a4b27c8cee2b2ad70ab2c38a",
         "version" : "0.11.0"
+      }
+    },
+    {
+      "identity" : "gifu",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kaishin/Gifu",
+      "state" : {
+        "branch" : "master",
+        "revision" : "639e40d5dbd86dfa94fc61296c270b49af6f8a2a"
       }
     },
     {
@@ -31,7 +40,7 @@
     {
       "identity" : "mlemmiddleware",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mlemgroup/MlemMiddleware.git",
+      "location" : "https://github.com/mlemgroup/MlemMiddleware",
       "state" : {
         "revision" : "2b6fbde045d342676487cf8c8c8467eec8b31a69",
         "version" : "0.37.0"
