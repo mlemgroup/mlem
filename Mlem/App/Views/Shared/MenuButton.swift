@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MenuButton: View {
-    @Environment(NavigationLayer.self) var navigation
+    @Environment(PopupAnchorModel.self) var popupModel: PopupAnchorModel?
     
     let action: any Action
     
@@ -22,7 +22,13 @@ struct MenuButton: View {
                 action.appearance.label,
                 systemImage: action.appearance.menuIcon,
                 role: action.appearance.isDestructive ? .destructive : nil,
-                action: { action.callbackWithConfirmation(navigation: navigation) }
+                action: {
+                    if let popupModel {
+                        action.callbackWithConfirmation(popupModel: popupModel)
+                    } else {
+                        assertionFailure()
+                    }
+                }
             )
             .disabled(action.disabled)
         } else if let action = action as? ShareAction {
@@ -50,7 +56,11 @@ struct MenuButton: View {
                     systemImage: action.appearance.menuIcon,
                     role: action.appearance.isDestructive ? .destructive : nil,
                     action: {
-                        navigation.showPopup(action)
+                        if let popupModel {
+                            popupModel.showPopup(action)
+                        } else {
+                            assertionFailure()
+                        }
                     }
                 )
                 .disabled(action.disabled)
