@@ -13,9 +13,14 @@ extension UIImage {
     static let blank: UIImage = .init()
 }
 
+extension Data {
+    static let blank: Data = .init()
+}
+
 struct DynamicImageView: View {
     @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
+    @Environment(\.openURL) private var openURL
     
     @Setting(\.bypassImageProxyShown) var bypassImageProxyShown
     
@@ -60,23 +65,32 @@ struct DynamicImageView: View {
         }
     }
     
+    @ViewBuilder
     var content: some View {
-        Image(uiImage: loader.uiImage ?? .blank)
-            .resizable()
-            .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
-            .overlay {
-                if showError, loader.error != nil {
-                    errorOverlay
-                }
+        Group {
+            if loader.url?.proxyAwarePathExtension == "gif" {
+                GifImage(data: loader.gifData ?? .blank)
+            } else {
+                Image(uiImage: loader.uiImage ?? .blank)
+                    .resizable()
             }
-            .clipShape(.rect(cornerRadius: cornerRadius))
-            .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
-            .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
-            .onAppear {
-                Task {
-                    await loader.load()
-                }
+        }
+        .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
+        .overlay {
+            if showError, loader.error != nil {
+                errorOverlay
+            } else if loader.loading == .loading {
+                ProgressView()
             }
+        }
+        .clipShape(.rect(cornerRadius: cornerRadius))
+        .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
+        .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
+        .onAppear {
+            Task {
+                await loader.load()
+            }
+        }
     }
     
     @ViewBuilder
@@ -115,12 +129,23 @@ struct DynamicImageView: View {
                     }
                     .foregroundStyle(palette.tertiary)
                 case .error:
-                    Image(systemName: Icons.missing)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: 50)
-                        .padding(4)
-                        .foregroundStyle(palette.tertiary)
+                    VStack(spacing: Constants.main.standardSpacing) {
+                        Image(systemName: Icons.missing)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: 50)
+                            .padding(4)
+                            .foregroundStyle(palette.tertiary)
+                        
+                        if let url = loader.url {
+                            Button("Open in Browser") {
+                                openURL(url)
+                            }
+                            .foregroundStyle(palette.accent)
+                            .buttonStyle(.bordered)
+                            .padding(.horizontal, Constants.main.standardSpacing)
+                        }
+                    }
                 }
             }
         }

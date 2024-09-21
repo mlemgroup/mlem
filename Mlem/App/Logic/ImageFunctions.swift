@@ -37,18 +37,7 @@ func fullSizeUrl(url: URL?) -> URL? {
 func downloadImageToFileSystem(url: URL, fileName: String) async -> URL? {
     do {
         let (data, _) = try await ImagePipeline.shared.data(for: .init(url: url))
-        var fileType = url.pathExtension
-        
-        // image proxies that use url query param don't have pathExtension so we extract it from the embedded url
-        if fileType.isEmpty,
-           let components = URLComponents(url: url, resolvingAgainstBaseURL: true),
-           let queryItems = components.queryItems,
-           let baseUrlString = queryItems.first(where: { $0.name == "url" })?.value,
-           let baseUrl = URL(string: baseUrlString) {
-            fileType = baseUrl.pathExtension
-        }
-        
-        if fileType.isEmpty {
+        guard let fileType = url.proxyAwarePathExtension else {
             assertionFailure("Empty fileType!")
             return nil
         }
