@@ -46,7 +46,7 @@ struct DynamicImageView: View {
     }
     
     var body: some View {
-        if actionsEnabled, let url = fullSizeUrl(url: loader.url) {
+        if actionsEnabled, let url = loader.url {
             content
                 .contextMenu {
                     Button("Save Image", systemImage: Icons.import) {
@@ -69,7 +69,7 @@ struct DynamicImageView: View {
     var content: some View {
         Group {
             if loader.url?.proxyAwarePathExtension == "gif" {
-                GifImage(data: loader.gifData ?? .blank)
+                GifView(data: loader.gifData ?? .blank)
             } else {
                 Image(uiImage: loader.uiImage ?? .blank)
                     .resizable()

@@ -11,61 +11,34 @@
 import Gifu
 import SwiftUI
 
-// public struct GifImage: View {
-//     private let data: Data
-//     private var loopCount = 0
-//     private var isResizable = false
-//
-//     /// Initialzies the view with the given data
-//     public init(_ data: Data) {
-//         self.data = data
-//     }
-//
-//     /// Sets the desired number of loops. By default, the number of loops infinite.
-//     public func loopCount(_ value: Int) -> GifImage {
-//         var copy = self
-//         copy.loopCount = value
-//         return copy
-//     }
-//
-//     /// Sets an image to fit its space.
-//     public func resizable() -> GifImage {
-//         var copy = self
-//         copy.isResizable = true
-//         return copy
-//     }
-//
-//     public var body: some View {
-//         _GifImage(data: data, loopCount: loopCount, isResizable: isResizable)
-//     }
-// }
+struct GifView: View {
+    let data: Data
+    
+    var body: some View {
+        // This wrapper fixes an issue where the gif doesn't work with .contextMenu
+        // There's probably a slick UIKit/UIViewControllerRepresentable way to do it, but this is simple and easy
+        // - Eric 2024-09-20
+        GifImage(data: data)
+            .overlay(Color.clear.contentShape(.rect()))
+    }
+}
 
 struct GifImage: UIViewRepresentable {
     let data: Data
-    let loopCount: Int
-    let isResizable: Bool
      
-    init(
-        data: Data,
-        loopCount: Int = 0,
-        resizable: Bool = true
-    ) {
+    init(data: Data) {
         self.data = data
-        self.loopCount = loopCount
-        self.isResizable = resizable
     }
 
     func makeUIView(context: Context) -> GIFImageView {
         let imageView = GIFImageView()
-        if isResizable {
-            imageView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-            imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-        }
+        imageView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         return imageView
     }
 
     func updateUIView(_ imageView: GIFImageView, context: Context) {
-        imageView.animate(withGIFData: data, loopCount: loopCount)
+        imageView.animate(withGIFData: data, loopCount: 0)
     }
 
     static func dismantleUIView(_ imageView: GIFImageView, coordinator: ()) {
