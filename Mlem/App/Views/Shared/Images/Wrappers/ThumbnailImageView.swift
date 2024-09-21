@@ -102,7 +102,7 @@ struct ThumbnailImageView: View {
     var standardContent: some View {
         if let url {
             FixedImageView(
-                url: url.withIconSize(Constants.main.feedImageResolution),
+                url: url,
                 size: frame,
                 fallback: .image,
                 showProgress: true
@@ -126,7 +126,7 @@ struct ThumbnailImageView: View {
     var tileContent: some View {
         if let url {
             FixedImageView(
-                url: url.withIconSize(Constants.main.feedImageResolution),
+                url: url,
                 size: frame,
                 fallback: .image,
                 showProgress: true

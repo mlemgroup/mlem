@@ -27,7 +27,6 @@ struct LargePostBodyView: View {
             switch post.type {
             case let .image(url):
                 LargeImageView(
-                    // url: url.withIconSize(Constants.main.feedImageResolution),
                     url: url,
                     shouldBlur: shouldBlur
                 ) {
