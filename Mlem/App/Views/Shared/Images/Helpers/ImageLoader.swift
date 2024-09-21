@@ -28,7 +28,6 @@ class ImageLoader {
     private(set) var url: URL?
     private var proxyBypass: URL?
     private(set) var uiImage: UIImage?
-    private(set) var gifData: Data?
     private(set) var loading: ImageLoadingState
     private(set) var error: ImageLoadingError?
     private(set) var maxSize: CGFloat?
@@ -44,11 +43,6 @@ class ImageLoader {
         
         if let url {
             if let container = ImagePipeline.shared.cache.cachedImage(for: .init(url: url)) {
-                if container.type == .gif {
-                    self.gifData = container.data
-                }
-                
-                // always set uiImage, even if gif, because we use that first frame to determine size
                 self.uiImage = resizeImage(image: container.image, maxSize: maxSize)
                 
                 self.loading = .done
@@ -58,9 +52,6 @@ class ImageLoader {
             if let container = ImagePipeline.shared.cache.cachedImage(
                 for: .init(url: url)
             ) {
-                if container.type == .gif {
-                    self.gifData = container.data
-                }
                 self.uiImage = container.image
                 if [container.image.size.width, container.image.size.height].contains(CGFloat(Constants.main.feedImageResolution)) {
                     self.loading = .loading
@@ -83,9 +74,6 @@ class ImageLoader {
             imageTask.priority = .veryHigh
             let container = try await imageTask.response.container
             
-            if container.type == .gif {
-                gifData = container.data
-            }
             uiImage = resizeImage(image: container.image, maxSize: maxSize)
             loading = .done
         } catch {

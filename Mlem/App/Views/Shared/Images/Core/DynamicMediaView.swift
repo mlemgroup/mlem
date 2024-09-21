@@ -29,6 +29,7 @@ struct DynamicMediaView: View {
     @State var loader: ImageLoader
     @State var loadingPref: ImageLoadingState?
     @State var quickLookUrl: URL?
+    @State var isAnimating: Bool = false
     
     let showError: Bool
     let cornerRadius: CGFloat
@@ -94,6 +95,21 @@ struct DynamicMediaView: View {
                 ProgressView()
             }
         }
+        .overlay {
+            if let ext = loader.url?.proxyAwarePathExtension?.uppercased() {
+                Text(ext)
+                    .font(.footnote)
+                    .fontWeight(.semibold)
+                    .padding(2)
+                    .padding(.horizontal, 2)
+                    .background {
+                        Capsule()
+                            .fill(.regularMaterial)
+                    }
+                    .padding(2)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+            }
+        }
         .clipShape(.rect(cornerRadius: cornerRadius))
         .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
         .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
@@ -149,6 +165,10 @@ struct DynamicMediaView: View {
                             .foregroundStyle(palette.tertiary)
                         
                         if let url = loader.url {
+                            Text(url.host() ?? "unknown host")
+                                .font(.caption)
+                                .foregroundStyle(palette.secondary)
+                            
                             Button("Open in Browser") {
                                 openURL(url)
                             }

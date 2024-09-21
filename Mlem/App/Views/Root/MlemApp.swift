@@ -19,14 +19,20 @@ struct MlemApp: App {
         imageConfig.imageDecompressingQueue = OperationQueue(maxConcurrentCount: 8)
         
         // TODO: rate limiting
+        // set up Nuke
         ImagePipeline.shared = ImagePipeline(configuration: imageConfig)
-        
         ImageDecoderRegistry.shared.register(ImageDecoders.Video.init)
+        URLCache.shared = Constants.main.urlCache
+        
+        // set up SDWebImage
+        let cache = SDImageCache(namespace: "tiny")
+        cache.config.maxMemoryCost = 100 * 1024 * 1024 // 100MB memory
+        cache.config.maxDiskSize = 500 * 1024 * 1024 // 500MB disk
+        SDImageCachesManager.shared.addCache(cache)
+        SDWebImageManager.defaultImageCache = SDImageCachesManager.shared
         
         let WebPCoder = SDImageWebPCoder.shared
         SDImageCodersManager.shared.addCoder(WebPCoder)
-        
-        URLCache.shared = Constants.main.urlCache
     }
     
     var body: some Scene {

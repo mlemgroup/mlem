@@ -61,10 +61,6 @@ struct InboxView: View {
     }
     
     var body: some View {
-        AnimatedImage(url: .init(string: "http://littlesvr.ca/apng/images/SteamEngine.webp")!, isAnimating: .constant(true))
-    }
-    
-    var ody: some View {
         content
             .background(palette.background)
             .navigationBarTitleDisplayMode(.inline)
