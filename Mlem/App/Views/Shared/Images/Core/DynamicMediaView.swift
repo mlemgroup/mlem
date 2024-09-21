@@ -6,7 +6,9 @@
 //
 
 import Nuke
+import NukeUI
 import QuickLook
+import SDWebImageSwiftUI
 import SwiftUI
 
 extension UIImage {
@@ -17,7 +19,7 @@ extension Data {
     static let blank: Data = .init()
 }
 
-struct DynamicImageView: View {
+struct DynamicMediaView: View {
     @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.openURL) private var openURL
@@ -68,11 +70,20 @@ struct DynamicImageView: View {
     @ViewBuilder
     var content: some View {
         Group {
-            if loader.url?.proxyAwarePathExtension == "gif" {
-                GifView(data: loader.gifData ?? .blank)
-            } else {
-                Image(uiImage: loader.uiImage ?? .blank)
+            if let url = loader.url {
+                switch url.mediaType {
+                case .image:
+                    Image(uiImage: loader.uiImage ?? .blank).resizable()
+                case .animatedImage:
+                    AnimatedImage(url: loader.url) {
+                        ProgressView()
+                    }
                     .resizable()
+                case .video:
+                    TestVideoView(url: url)
+                case .unsupported:
+                    Text("Placeholder")
+                }
             }
         }
         .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)

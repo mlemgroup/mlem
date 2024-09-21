@@ -30,7 +30,7 @@ struct LargeImageView: View {
     @State private var loading: ImageLoadingState?
 
     var body: some View {
-        DynamicImageView(url: url)
+        DynamicMediaView(url: url)
             .dynamicBlur(blurred: blurred)
             .clipShape(.rect(cornerRadius: Constants.main.mediumItemCornerRadius))
             .overlay {

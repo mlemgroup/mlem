@@ -6,6 +6,7 @@
 //
 
 import Nuke
+import SDWebImageWebPCoder
 import SwiftUI
 
 /// Root view for the app
@@ -19,6 +20,11 @@ struct MlemApp: App {
         
         // TODO: rate limiting
         ImagePipeline.shared = ImagePipeline(configuration: imageConfig)
+        
+        ImageDecoderRegistry.shared.register(ImageDecoders.Video.init)
+        
+        let WebPCoder = SDImageWebPCoder.shared
+        SDImageCodersManager.shared.addCoder(WebPCoder)
         
         URLCache.shared = Constants.main.urlCache
     }

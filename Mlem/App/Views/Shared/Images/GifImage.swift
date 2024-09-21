@@ -11,18 +11,6 @@
 import Gifu
 import SwiftUI
 
-struct GifView: View {
-    let data: Data
-    
-    var body: some View {
-        // This wrapper fixes an issue where the gif doesn't work with .contextMenu
-        // There's probably a slick UIKit/UIViewControllerRepresentable way to do it, but this is simple and easy
-        // - Eric 2024-09-20
-        GifImage(data: data)
-            .overlay(Color.clear.contentShape(.rect()))
-    }
-}
-
 struct GifImage: UIViewRepresentable {
     let data: Data
      
