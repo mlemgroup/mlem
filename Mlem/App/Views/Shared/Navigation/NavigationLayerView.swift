@@ -7,18 +7,6 @@
 
 import SwiftUI
 
-struct DeferredContextMenu<Content: View>: View {
-    let content: () -> Content
-
-    init(@ViewBuilder content: @escaping () -> Content) {
-        self.content = content
-    }
-
-    var body: some View {
-        content()
-    }
-}
-
 struct NavigationLayerView: View {
     @Bindable var layer: NavigationLayer
     let hasSheetModifiers: Bool
@@ -27,14 +15,12 @@ struct NavigationLayerView: View {
         Group {
             if layer.hasNavigationStack {
                 NavigationStack(path: $layer.path) {
-                    DeferredContextMenu {
-                        rootView()
-                            .environment(\.isRootView, true)
-                    }
-                    .navigationDestination(for: NavigationPage.self) {
-                        $0.view()
-                            .environment(\.isRootView, false)
-                    }
+                    rootView()
+                        .environment(\.isRootView, true)
+                        .navigationDestination(for: NavigationPage.self) {
+                            $0.view()
+                                .environment(\.isRootView, false)
+                        }
                 }
                
             } else {
@@ -56,22 +42,6 @@ struct NavigationLayerView: View {
                 location: .bottom
             )
             .padding(.bottom, 8)
-        }
-        .confirmationDialog(
-            layer.popup?.appearance.label ?? "",
-            isPresented: Binding(
-                get: { layer.popup != nil },
-                set: {
-                    if !$0 { layer.dismissPopup() }
-                }
-            )
-        ) {
-            ForEach(layer.popup?.children ?? [], id: \.id) { action in
-                MenuButton(action: action)
-            }
-            Button("Cancel", role: .cancel) {}
-        } message: {
-            Text(layer.popup?.prompt ?? "")
         }
         // https://stackoverflow.com/questions/69693871/how-to-open-share-sheet-from-presented-sheet
         .background(SharingViewController(

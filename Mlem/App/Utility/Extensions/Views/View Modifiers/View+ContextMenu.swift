@@ -17,6 +17,7 @@ extension View {
             // Having a proper view here is necessary - if `ForEach` is used directly, `actions()` gets called early.
             MenuButtons(actions: actions)
         }
+        .popupAnchor()
     }
 }
 

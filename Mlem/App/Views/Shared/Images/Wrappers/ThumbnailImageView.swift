@@ -88,6 +88,7 @@ struct ThumbnailImageView: View {
             }
         }
         .frame(width: frame.width, height: frame.width)
+        // if !postSize.tiled { Divider() }
     }
     
     @ViewBuilder
