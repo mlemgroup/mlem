@@ -25,14 +25,15 @@ struct MlemApp: App {
         URLCache.shared = Constants.main.urlCache
         
         // set up SDWebImage
-        let cache = SDImageCache(namespace: "tiny")
-        cache.config.maxMemoryCost = 100 * 1024 * 1024 // 100MB memory
-        cache.config.maxDiskSize = 500 * 1024 * 1024 // 500MB disk
-        SDImageCachesManager.shared.addCache(cache)
-        SDWebImageManager.defaultImageCache = SDImageCachesManager.shared
-        
-        let WebPCoder = SDImageWebPCoder.shared
-        SDImageCodersManager.shared.addCoder(WebPCoder)
+//        let cache = SDImageCache(namespace: "tiny")
+//        cache.config.maxMemoryCost = 100 * 1024 * 1024 // 500MB memory
+//        cache.config.maxDiskSize = 500 * 1024 * 1024 // 500MB disk
+//        SDImageCachesManager.shared.addCache(cache)
+//        SDWebImageManager.defaultImageCache = SDImageCachesManager.shared
+//
+//        let WebPCoder = SDImageWebPCoder.shared
+//        SDImageCodersManager.shared.addCoder(WebPCoder)
+//        SDImageCodersManager.shared.addCoder(SDImageGIFCoder.shared)
     }
     
     var body: some Scene {

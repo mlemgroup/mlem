@@ -26,7 +26,7 @@ struct DynamicMediaView: View {
     
     @Setting(\.bypassImageProxyShown) var bypassImageProxyShown
     
-    @State var loader: ImageLoader
+    @State var loader: any ImageLoading
     @State var loadingPref: ImageLoadingState?
     @State var quickLookUrl: URL?
     @State var isAnimating: Bool = false
@@ -45,7 +45,12 @@ struct DynamicMediaView: View {
         self.showError = showError
         self.cornerRadius = cornerRadius
         self.actionsEnabled = actionsEnabled
-        self._loader = .init(wrappedValue: .init(url: url, maxSize: maxSize))
+        
+        if url?.mediaType == .animatedImage {
+            self._loader = .init(wrappedValue: AnimatedImageLoader())
+        } else {
+            self._loader = .init(wrappedValue: ImageLoader(url: url, maxSize: maxSize))
+        }
     }
     
     var body: some View {
@@ -74,14 +79,25 @@ struct DynamicMediaView: View {
             if let url = loader.url {
                 switch url.mediaType {
                 case .image:
-                    Image(uiImage: loader.uiImage ?? .blank).resizable()
+                    // Image(uiImage: loader.uiImage ?? .blank).resizable()
+                    Text("Image")
                 case .animatedImage:
-                    AnimatedImage(url: loader.url) {
-                        ProgressView()
-                    }
-                    .resizable()
+                    Text("Howdy")
+//                    if let cacheKey = SDWebImageManager.shared.cacheKey(for: loader.url) {
+//                        Text("\(cacheKey)")
+//                    } else {
+//                        Text("Huh?")
+//                    }
+                    
+                    // if let data = SDImage
+                    
+//                    AnimatedImage(url: loader.url) {
+//                        ProgressView()
+//                    }
+//                    .resizable()
                 case .video:
-                    TestVideoView(url: url)
+                    Text("Video goes here")
+                // TestVideoView(url: url)
                 case .unsupported:
                     Text("Placeholder")
                 }
@@ -95,29 +111,31 @@ struct DynamicMediaView: View {
                 ProgressView()
             }
         }
+        #if DEBUG
         .overlay {
-            if let ext = loader.url?.proxyAwarePathExtension?.uppercased() {
-                Text(ext)
-                    .font(.footnote)
-                    .fontWeight(.semibold)
-                    .padding(2)
-                    .padding(.horizontal, 2)
-                    .background {
-                        Capsule()
-                            .fill(.regularMaterial)
-                    }
-                    .padding(2)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                if let ext = loader.url?.proxyAwarePathExtension?.uppercased() {
+                    Text(ext)
+                        .font(.footnote)
+                        .fontWeight(.semibold)
+                        .padding(2)
+                        .padding(.horizontal, 2)
+                        .background {
+                            Capsule()
+                                .fill(.regularMaterial)
+                        }
+                        .padding(2)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                }
             }
-        }
-        .clipShape(.rect(cornerRadius: cornerRadius))
-        .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
-        .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
-        .onAppear {
-            Task {
-                await loader.load()
-            }
-        }
+        #endif
+            .clipShape(.rect(cornerRadius: cornerRadius))
+            .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
+            .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
+//        .onAppear {
+//            Task {
+//                await loader.load()
+//            }
+//        }
     }
     
     @ViewBuilder

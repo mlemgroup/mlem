@@ -22,7 +22,7 @@ enum ImageLoadingError {
 }
 
 @Observable
-class ImageLoader {
+class ImageLoader: ImageLoading {
     @ObservationIgnored @Setting(\.autoBypassImageProxy) var bypassImageProxy
     
     private(set) var url: URL?
@@ -66,27 +66,31 @@ class ImageLoader {
         self.loading = url == nil ? .failed : .loading
     }
     
-    @MainActor
     func load() async {
         guard let url, loading == .loading else { return }
         do {
             let imageTask = ImagePipeline.shared.imageTask(with: url)
             imageTask.priority = .veryHigh
             let container = try await imageTask.response.container
+            let resizedImage = resizeImage(image: container.image, maxSize: maxSize)
             
-            uiImage = resizeImage(image: container.image, maxSize: maxSize)
-            loading = .done
+            Task { @MainActor in
+                uiImage = resizedImage
+                loading = .done
+            }
         } catch {
-            if let proxyBypass {
-                if bypassImageProxy {
-                    await bypassProxy()
+            Task { @MainActor in
+                if let proxyBypass {
+                    if bypassImageProxy {
+                        await bypassProxy()
+                    } else {
+                        self.error = .proxyFailure(proxyBypass: proxyBypass)
+                        loading = .proxyFailed
+                    }
                 } else {
-                    self.error = .proxyFailure(proxyBypass: proxyBypass)
-                    loading = .proxyFailed
+                    self.error = .error(error: error)
+                    loading = .failed
                 }
-            } else {
-                self.error = .error(error: error)
-                loading = .failed
             }
         }
     }
