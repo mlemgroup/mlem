@@ -83,6 +83,7 @@ struct MarkdownEditorToolbarView: View {
                         textView.undoManager?.redo()
                     }
                     SwiftUI.Divider()
+                        .padding(.top, 2)
                 }
                 Button("Bold", systemImage: Icons.bold) {
                     textView.wrapSelectionWithDelimiters("**")
@@ -102,8 +103,12 @@ struct MarkdownEditorToolbarView: View {
                 Button("Code", systemImage: Icons.inlineCode) {
                     textView.wrapSelectionWithDelimiters("`")
                 }
+                Button("Link", systemImage: Icons.websiteAddress) {
+                    textView.wrapSelectionWithLink()
+                }
                 if actions == .all {
                     SwiftUI.Divider()
+                        .padding(.top, 2)
                     Menu("Heading", systemImage: Icons.heading) {
                         ForEach(1 ..< 7) { level in
                             Button("Heading \(level)") {
@@ -131,6 +136,32 @@ struct MarkdownEditorToolbarView: View {
                     Button("Spoiler", systemImage: Icons.spoiler) {
                         textView.wrapSelectionWithSpoiler()
                     }
+                    Button("Code Block", systemImage: Icons.codeBlock) {
+                        textView.wrapSelectionWithCodeBlock()
+                    }
+                }
+                SwiftUI.Divider()
+                    .padding(.top, 2)
+                Button("Community Link", systemImage: Icons.community) {
+                    navigation.openSheet(.communityPicker { community in
+                        if let prefix = community.fullNameWithPrefix {
+                            textView.insertText(prefix)
+                        }
+                    })
+                }
+                Button("User Link", systemImage: Icons.person) {
+                    navigation.openSheet(.personPicker { person in
+                        if let prefix = person.fullNameWithPrefix {
+                            // lemmy-ui doesn't recognize the @user@example.com format, so we have to do this instead :(
+                            // See this issue https://github.com/LemmyNet/lemmy-ui/issues/2579
+                            textView.insertText("[\(prefix)](\(person.actorId))")
+                        }
+                    })
+                }
+                Button("Instance Link", systemImage: Icons.instance) {
+                    navigation.openSheet(.instancePicker { instance in
+                        textView.insertText("[\(instance.host)](https://\(instance.host))")
+                    })
                 }
             }
             .imageScale(.large)
