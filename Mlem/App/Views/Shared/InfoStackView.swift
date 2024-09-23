@@ -29,6 +29,11 @@ struct InfoStackView: View {
                     }
                     .contentTransition(.numericText(value: Double(readout.label ?? "") ?? 0))
                     .animation(.default, value: readout.label)
+                    if let value = readout.value {
+                        Text(value)
+                            .monospacedDigit()
+                            .foregroundStyle(readout.valueColor ?? palette.secondary)
+                    }
                 }
                 .foregroundStyle((showColor ? readout.color : nil) ?? palette.secondary)
             }

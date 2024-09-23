@@ -29,6 +29,8 @@ struct PostGridView: View {
     @State var frameWidth: CGFloat = .zero
     @State var bottomAppearedPostIndex: Int = -1
     
+    @Namespace var navigationNamespace
+    
     let postFeedLoader: CorePostFeedLoader
 
     init(postFeedLoader: CorePostFeedLoader, actions: [any Action]? = nil) {
@@ -79,22 +81,20 @@ struct PostGridView: View {
     
     var content: some View {
         VStack(spacing: 0) {
-            LazyVGrid(columns: columns, spacing: postSize.tiled ? Constants.main.standardSpacing : 0) {
+            LazyVGrid(columns: columns, spacing: postSize.sectionSpacing) {
                 ForEach(Array(postFeedLoader.items.enumerated()), id: \.element.hashValue) { index, post in
                     if !post.creator.blocked, !post.community.blocked, !post.hidden {
-                        VStack(spacing: 0) { // this improves performance O_o
-                            NavigationLink(.post(post, communityContext: communityContext)) {
-                                FeedPostView(post: post)
-                            }
-                            .buttonStyle(EmptyButtonStyle())
-                            if !postSize.tiled { Divider() }
+                        NavigationLink(.post(post, communityContext: communityContext, navigationNamespace: navigationNamespace)) {
+                            FeedPostView(post: post)
+                                .matchedTransitionSource_(id: "post\(post.actorId)", in: navigationNamespace)
                         }
+                        .buttonStyle(EmptyButtonStyle())
+                        .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 10)
                         .markReadOnScroll(
                             index: index,
                             post: post,
                             postFeedLoader: postFeedLoader, bottomAppearedItemIndex: $bottomAppearedPostIndex
                         )
-                        .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 0)
                         .onAppear {
                             do {
                                 try postFeedLoader.loadIfThreshold(post)

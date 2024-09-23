@@ -52,6 +52,7 @@ struct InstanceView: View {
             } else {
                 ProgressView()
                     .tint(palette.secondary)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .animation(.easeOut(duration: 0.2), value: instance is any Instance)
@@ -70,7 +71,7 @@ struct InstanceView: View {
         }
         .isAtTopSubscriber(isAtTop: $isAtTop)
         .navigationBarTitleDisplayMode(.inline)
-        .background(palette.background)
+        .background(palette.groupedBackground)
     }
     
     @ViewBuilder
@@ -85,20 +86,18 @@ struct InstanceView: View {
             BubblePicker(
                 [.about, .administration, .details],
                 selected: $selectedTab,
-                withDividers: [.top, .bottom], label: { $0.label }
+                label: { $0.label }
             )
             switch selectedTab {
             case .about:
                 if let description = instance.description {
                     Markdown(description, configuration: .default)
-                        .padding(.horizontal, Constants.main.standardSpacing)
-                        .padding(.vertical, 16)
+                        .padding(Constants.main.standardSpacing)
+                        .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                        .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                 }
             case .details:
                 InstanceDetailsView(instance: instance)
-                if colorScheme == .light {
-                    Divider()
-                }
             case .administration:
                 administrationTab(instance: instance)
             default:
@@ -119,5 +118,8 @@ struct InstanceView: View {
                     .padding(.leading, 71)
             }
         }
+        .background(palette.secondaryGroupedBackground)
+        .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
+        .padding([.horizontal, .bottom], Constants.main.standardSpacing)
     }
 }

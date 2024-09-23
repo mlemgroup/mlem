@@ -30,5 +30,6 @@ struct ToolbarEllipsisMenu<Content: View>: View {
                 .frame(height: Constants.main.barIconHitbox)
                 .contentShape(Rectangle())
         }
+        .popupAnchor()
     }
 }

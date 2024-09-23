@@ -95,6 +95,7 @@ class CommentTreeTracker: Hashable {
             loadingState = .done
         } catch {
             handleError(error)
+            loadingState = .idle
         }
     }
     
