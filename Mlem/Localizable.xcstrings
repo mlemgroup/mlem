@@ -31,6 +31,15 @@
         }
       }
     },
+    "%@ has been unresponsive recently." : {
+
+    },
+    "%@ is " : {
+
+    },
+    "%@ Older Incidents" : {
+
+    },
     "%@ Read" : {
 
     },
@@ -153,6 +162,9 @@
 
     },
     "Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser." : {
+
+    },
+    "Average: %@" : {
 
     },
     "Banned from Community" : {
@@ -549,6 +561,9 @@
     "Inbox is outdated" : {
 
     },
+    "Incidents" : {
+
+    },
     "Instance" : {
 
     },
@@ -655,6 +670,9 @@
 
     },
     "Mlem will always try to load from the proxy first." : {
+
+    },
+    "Mlem will refresh this automatically every 30 seconds." : {
 
     },
     "Moderated" : {
@@ -855,6 +873,9 @@
     "Received %@" : {
 
     },
+    "Recent Checks" : {
+
+    },
     "Redo" : {
 
     },
@@ -898,6 +919,9 @@
 
     },
     "Reset Settings State" : {
+
+    },
+    "Response Time" : {
 
     },
     "Restore" : {
@@ -1110,7 +1134,23 @@
         }
       }
     },
+    "The most recent outage was %@, and lasted for %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The most recent outage was %1$@, and lasted for %2$@."
+          }
+        }
+      }
+    },
     "Theme" : {
+
+    },
+    "There were %lld recorded incidents today." : {
+
+    },
+    "There were no recorded incidents today." : {
 
     },
     "This content will be loaded from **%@** instead." : {
@@ -1129,6 +1169,9 @@
 
     },
     "Tiled" : {
+
+    },
+    "Time" : {
 
     },
     "Title" : {
@@ -1202,6 +1245,9 @@
         }
       }
     },
+    "Unhealthy for %@" : {
+
+    },
     "Unknown" : {
 
     },
@@ -1221,6 +1267,9 @@
 
     },
     "Uptime" : {
+
+    },
+    "Uptime data fetched from %@" : {
 
     },
     "Upvote" : {

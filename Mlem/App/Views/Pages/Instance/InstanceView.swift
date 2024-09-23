@@ -26,12 +26,21 @@ struct InstanceView: View {
         var id: Self { self }
     }
     
+    enum UptimeDataStatus {
+        case success(UptimeData)
+        case failure(Error)
+    }
+    
+    var uptimeRefreshTimer = Timer.publish(every: 30, tolerance: 0.5, on: .main, in: .common)
+        .autoconnect()
+    
     @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
     @Environment(\.colorScheme) var colorScheme
     
     // This is fetched from the instance itself, not from the logged-in account.
     @State var instance: any InstanceStubProviding
+    @State var uptimeData: UptimeDataStatus?
     @State var upgradeState: LoadingState = .idle
     
     @State var selectedTab: Tab = .about
@@ -72,6 +81,8 @@ struct InstanceView: View {
         .isAtTopSubscriber(isAtTop: $isAtTop)
         .navigationBarTitleDisplayMode(.inline)
         .background(palette.groupedBackground)
+        .onAppear(perform: attemptToLoadUptimeData)
+        .onReceive(uptimeRefreshTimer) { _ in attemptToLoadUptimeData() }
     }
     
     @ViewBuilder
@@ -84,7 +95,7 @@ struct InstanceView: View {
             )
             .padding([.horizontal, .bottom], Constants.main.standardSpacing)
             BubblePicker(
-                [.about, .administration, .details],
+                tabs,
                 selected: $selectedTab,
                 label: { $0.label }
             )
@@ -100,6 +111,8 @@ struct InstanceView: View {
                 InstanceDetailsView(instance: instance)
             case .administration:
                 administrationTab(instance: instance)
+            case .uptime:
+                uptimeTab(instance: instance)
             default:
                 EmptyView()
             }
@@ -121,5 +134,19 @@ struct InstanceView: View {
         .background(palette.secondaryGroupedBackground)
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+    }
+    
+    @ViewBuilder
+    func uptimeTab(instance: any Instance) -> some View {
+        switch uptimeData {
+        case let .success(uptimeData):
+            InstanceUptimeView(instance: instance, uptimeData: uptimeData)
+        case let .failure(error):
+            ErrorView(.init(error: error))
+                .padding(.top, 5)
+        default:
+            ProgressView()
+                .padding(.top, 30)
+        }
     }
 }
