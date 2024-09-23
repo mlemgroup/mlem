@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware.git",
       "state" : {
-        "branch" : "sjmarf/missing-post-properties",
-        "revision" : "16cd1ef0c23dac3c055dcfdc476c057c2501df7c"
+        "revision" : "1486eb4ed2834cc56f047535e42346bcbc2d5c19",
+        "version" : "0.38.0"
       }
     },
     {
