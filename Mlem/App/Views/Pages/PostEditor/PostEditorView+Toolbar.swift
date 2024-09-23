@@ -45,22 +45,24 @@ extension PostEditorView {
                 )
                 .disabled(link != .none)
                 Toggle("NSFW Tag", systemImage: "tag", isOn: $hasNsfwTag)
-                Button("Crosspost", systemImage: "shuffle") {
-                    if let account = targets.last?.account {
-                        let newTarget: PostEditorTarget = .init(account: account)
-                        targets.append(newTarget)
-                        navigation.openSheet(.communityPicker(api: account.api, callback: { community in
-                            newTarget.community = community
-                        }))
+                if postToEdit == nil {
+                    Button("Crosspost", systemImage: "shuffle") {
+                        if let account = targets.last?.account {
+                            let newTarget: PostEditorTarget = .init(account: account)
+                            targets.append(newTarget)
+                            navigation.openSheet(.communityPicker(api: account.api, callback: { community in
+                                newTarget.community = community
+                            }))
+                        }
                     }
                 }
             }
-            if sending {
+            if self.sending {
                 ProgressView()
             } else {
                 Button("Send", systemImage: Icons.send) {
-                    sending = true
-                    Task { await send() }
+                    self.sending = true
+                    Task { await submit() }
                 }
                 .disabled(!canSubmit)
             }

@@ -10,29 +10,18 @@ import SwiftUI
 
 extension PostEditorView {
     @ViewBuilder
-    func imageView(imageManager: ImageUploadManager) -> some View {
-        switch imageManager.state {
+    var imageView: some View {
+        switch imageManager?.state {
         case let .done(image):
-            DynamicImageView(url: image.url, actionsEnabled: false)
-                .overlay(alignment: .topTrailing) {
-                    Button("Remove", systemImage: Icons.closeCircleFill) {
-                        Task {
-                            do {
-                                try await image.delete()
-                            } catch {
-                                handleError(error)
-                            }
-                        }
-                        self.imageManager = nil
+            uploadedImageView(url: image.url) {
+                Task {
+                    do {
+                        try await image.delete()
+                    } catch {
+                        handleError(error)
                     }
-                    .symbolRenderingMode(.palette)
-                    .foregroundStyle(.secondary, .thinMaterial)
-                    .font(.title)
-                    .labelStyle(.iconOnly)
-                    .padding()
                 }
-                .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
-                .frame(maxWidth: .infinity)
+            }
         case let .uploading(progress: progress):
             VStack {
                 Text("Uploading...")
@@ -49,9 +38,32 @@ extension PostEditorView {
             .frame(maxWidth: .infinity)
             .padding(8)
             .background(palette.accent.opacity(0.2), in: .rect(cornerRadius: 16))
-        default:
+        case .idle:
             imageWaitingView
+        case nil:
+            if let imageUrl {
+                uploadedImageView(url: imageUrl)
+            }
         }
+    }
+    
+    @ViewBuilder
+    private func uploadedImageView(url: URL, onRemove: @escaping () -> Void = {}) -> some View {
+        DynamicImageView(url: url, actionsEnabled: false)
+            .overlay(alignment: .topTrailing) {
+                Button("Remove", systemImage: Icons.closeCircleFill) {
+                    onRemove()
+                    self.imageManager = nil
+                    self.imageUrl = nil
+                }
+                .symbolRenderingMode(.palette)
+                .foregroundStyle(.secondary, .thinMaterial)
+                .font(.title)
+                .labelStyle(.iconOnly)
+                .padding()
+            }
+            .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
+            .frame(maxWidth: .infinity)
     }
     
     @ViewBuilder
