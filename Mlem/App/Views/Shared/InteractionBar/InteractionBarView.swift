@@ -159,6 +159,7 @@ struct InteractionBarView: View {
                 return false
             }
         }())
+        .popupAnchor()
     }
 }
 
