@@ -47,18 +47,6 @@ class ImageLoader {
                 self.loading = .done
                 return
             }
-                        
-            if let image = ImagePipeline.shared.cache.cachedImage(
-                for: .init(url: url.withIconSize(Constants.main.feedImageResolution))
-            )?.image {
-                self.uiImage = image
-                if [image.size.width, image.size.height].contains(CGFloat(Constants.main.feedImageResolution)) {
-                    self.loading = .loading
-                } else {
-                    self.loading = .done
-                }
-                return
-            }
         }
 
         self.uiImage = nil
