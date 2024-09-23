@@ -9,14 +9,18 @@ import UIKit
 
 extension UITextView {
     func wrapSelectionWithDelimiters(_ delimiter: String) {
+        wrapSelectionWithDelimiters(leading: delimiter, trailing: delimiter)
+    }
+    
+    func wrapSelectionWithDelimiters(leading leadingDelimiter: String, trailing trailingDelimiter: String) {
         if let range = selectedTextRange, let text = text(in: range) {
             if range.start == range.end {
-                let checkStart = position(from: range.start, offset: -delimiter.count)
-                let checkEnd = position(from: range.end, offset: delimiter.count)
+                let checkStart = position(from: range.start, offset: -leadingDelimiter.count)
+                let checkEnd = position(from: range.end, offset: trailingDelimiter.count)
                 
                 // Checking for delimiters on both sides of the cursor, in which case the delimiters are removed
                 if let checkStart, let checkEnd, let checkRange = textRange(from: checkStart, to: checkEnd) {
-                    if self.text(in: checkRange) == delimiter + delimiter {
+                    if self.text(in: checkRange) == leadingDelimiter + trailingDelimiter {
                         // Removing delimiters around the cursor
                         replace(checkRange, withText: "")
                         return
@@ -25,28 +29,28 @@ extension UITextView {
                 
                 // Checking for delimiters on the trailing side, in which case the cursor is moved to after the delimiters
                 if let checkEnd, let checkRange = textRange(from: range.end, to: checkEnd) {
-                    if self.text(in: checkRange) == delimiter {
+                    if self.text(in: checkRange) == trailingDelimiter {
                         selectedTextRange = textRange(from: checkEnd, to: checkEnd)
                         return
                     }
                 }
                 
                 // If no surrounding delimiters are detected, add some
-                replace(range, withText: delimiter + text + delimiter)
-                if let newPosition = position(from: range.start, offset: delimiter.count) {
+                replace(range, withText: leadingDelimiter + text + trailingDelimiter)
+                if let newPosition = position(from: range.start, offset: leadingDelimiter.count) {
                     selectedTextRange = textRange(from: newPosition, to: newPosition)
                 }
             } else {
-                if text.hasPrefix(delimiter), text.hasSuffix(delimiter) {
+                if text.hasPrefix(leadingDelimiter), text.hasSuffix(trailingDelimiter) {
                     // If delimiters are detected in selection, remove them
-                    replace(range, withText: String(text.dropLast(delimiter.count).dropFirst(delimiter.count)))
-                    if let newEnd = position(from: range.end, offset: -delimiter.count * 2) {
+                    replace(range, withText: String(text.dropLast(trailingDelimiter.count).dropFirst(leadingDelimiter.count)))
+                    if let newEnd = position(from: range.end, offset: -(leadingDelimiter.count + trailingDelimiter.count)) {
                         selectedTextRange = textRange(from: range.start, to: newEnd)
                     }
                 } else {
                     // Otherwise, wrap the selection in delimiters
-                    replace(range, withText: delimiter + text + delimiter)
-                    if let newEnd = position(from: range.end, offset: delimiter.count * 2) {
+                    replace(range, withText: leadingDelimiter + text + trailingDelimiter)
+                    if let newEnd = position(from: range.end, offset: leadingDelimiter.count + trailingDelimiter.count) {
                         selectedTextRange = textRange(from: range.start, to: newEnd)
                     }
                 }
@@ -55,15 +59,47 @@ extension UITextView {
     }
     
     func wrapSelectionWithSpoiler() {
+        insertBlock(prefix: "::: spoiler \(String(localized: "Spoiler"))", suffix: ":::")
+    }
+    
+    func wrapSelectionWithCodeBlock() {
+        insertBlock(prefix: "```", suffix: "```")
+    }
+    
+    private func insertBlock(prefix: String, suffix: String) {
         if let range = selectedTextRange, let text = text(in: range) {
-            let atStart = range.start == beginningOfDocument
+//            let atStart = range.start == beginningOfDocument
             let atEnd = range.end == endOfDocument
-            let newText = "\(atStart ? "" : "\n")::: spoiler Spoiler\n\(text)\n:::\(atEnd ? "" : "\n")"
+            let newText = "\(prefix)\n\(text)\n\(suffix)\(atEnd ? "" : "\n")"
             replace(range, withText: newText)
-            if let newPosition = position(from: range.start, offset: 20 + text.count) {
+            if let newPosition = position(from: range.start, offset: prefix.count + 1 + text.count) {
                 selectedTextRange = textRange(from: newPosition, to: newPosition)
             }
         }
+    }
+    
+    func wrapSelectionWithLink() {
+        let url: URL?
+        if let pastedUrl = UIPasteboard.general.url {
+            url = pastedUrl
+        } else if let pastedString = UIPasteboard.general.string, pastedString.starts(with: "http") {
+            url = URL(string: pastedString, encodingInvalidCharacters: false)
+        } else {
+            url = nil
+        }
+        guard let url else {
+            ToastModel.main.add(
+                .basic(
+                    title: "No URL Copied",
+                    subtitle: "Copy a URL to the clipboard, then try again.",
+                    systemImage: nil,
+                    color: Palette.main.accent,
+                    duration: 2
+                )
+            )
+            return
+        }
+        wrapSelectionWithDelimiters(leading: "[", trailing: "](\(url.absoluteString))")
     }
     
     func toggleQuoteAtCursor() {
