@@ -42,7 +42,9 @@ class ImageLoader: ImageLoading {
         self.maxSize = maxSize
         
         if let url {
-            if let container = ImagePipeline.shared.cache.cachedImage(for: .init(url: url)) {
+            if let container = ImagePipeline.shared.cache.cachedImage(
+                for: .init(url: url.withIconSize(Constants.main.feedImageResolution))
+            ) {
                 self.uiImage = resizeImage(image: container.image, maxSize: maxSize)
                 
                 self.loading = .done
