@@ -35,6 +35,7 @@ enum NavigationPage: Hashable {
     case editComment(_ comment: Comment2, context: CommentEditorView.Context?)
     case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
     case createPost(community: AnyCommunity?)
+    case editPost(_ post: Post2)
     case deleteAccount(_ account: UserAccount)
     case bypassImageProxy(callback: HashWrapper<() -> Void>)
     
@@ -167,7 +168,7 @@ enum NavigationPage: Hashable {
     
     var hasNavigationStack: Bool {
         switch self {
-        case .quickSwitcher, .report, .externalApiInfo, .selectText, .createComment, .editComment, .createPost:
+        case .quickSwitcher, .report, .externalApiInfo, .selectText, .createComment, .editComment, .createPost, .editPost:
             false
         default:
             true

@@ -13,6 +13,12 @@ extension Post1Providing {
     private var self2: (any Post2Providing)? { self as? any Post2Providing }
     
     var isOwnPost: Bool { creatorId == api.myPerson?.id }
+    
+    func showEditSheet() {
+        if let self = self as? any Post2Providing {
+            NavigationModel.main.openSheet(.editPost(self.post2))
+        }
+    }
 
     func toggleHidden(feedback: Set<FeedbackType>) {
         if let self2 {
@@ -86,6 +92,7 @@ extension Post1Providing {
             }
 
             if self.isOwnPost {
+                editAction()
                 deleteAction(feedback: feedback)
             } else {
                 reportAction()
@@ -212,6 +219,14 @@ extension Post1Providing {
             ),
             confirmationPrompt: showConfirmation ? "Really block this community?" : nil,
             callback: api.canInteract ? { self.self2?.community.toggleBlocked(feedback: feedback) } : nil
+        )
+    }
+    
+    func editAction() -> BasicAction {
+        .init(
+            id: "edit\(uid)",
+            appearance: .edit(),
+            callback: api.canInteract ? { self.showEditSheet() } : nil
         )
     }
 }
