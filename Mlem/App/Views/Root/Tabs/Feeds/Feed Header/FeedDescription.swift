@@ -26,14 +26,22 @@ struct FeedDescription {
         iconScaleFactor: 0.6
     )
     
-    static var local: FeedDescription = .init(
-        label: "Local",
-        subtitle: "Posts from \(AppState.main.firstApi.host ?? "your instance's") communities",
-        color: { $0.localFeed },
-        iconName: Icons.instanceFeed,
-        iconNameFill: Icons.instanceFeedFill,
-        iconScaleFactor: 0.55
-    )
+    static var local: FeedDescription {
+        let subtitle: LocalizedStringResource
+        if let host = AppState.main.firstApi.host {
+            subtitle = "Posts from \(host) communities"
+        } else {
+            subtitle = "Posts from your instance's communities"
+        }
+        return .init(
+            label: "Local",
+            subtitle: subtitle,
+            color: { $0.localFeed },
+            iconName: Icons.instanceFeed,
+            iconNameFill: Icons.instanceFeedFill,
+            iconScaleFactor: 0.55
+        )
+    }
     
     static var subscribed: FeedDescription = .init(
         label: "Subscribed",

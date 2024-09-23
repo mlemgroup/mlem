@@ -38,7 +38,6 @@ struct SubscriptionListView: View {
 
     @ViewBuilder
     var content: some View {
-        let subscriptions = (appState.firstSession as? UserSession)?.subscriptions
         let sections = subscriptions?.visibleSections(sort: sort) ?? []
         
         ScrollViewReader { proxy in
@@ -47,12 +46,29 @@ struct SubscriptionListView: View {
                     ForEach(feedOptions, id: \.hashValue) { feedOption in
                         SubscriptionListNavigationButton(.feeds(feedOption)) {
                             HStack(spacing: 15) {
-                                FeedIconView(feedDescription: feedOption.description, size: 28)
-                                Text(feedOption.description.label)
+                                FeedIconView(
+                                    feedDescription: feedOption.description,
+                                    size: appState.firstSession is GuestSession ? 36 : 28
+                                )
+                                VStack(alignment: .leading) {
+                                    Text(feedOption.description.label)
+                                    if appState.firstSession is GuestSession {
+                                        Text(feedOption.description.subtitle)
+                                            .font(.footnote)
+                                            .foregroundStyle(palette.secondary)
+                                    }
+                                }
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .contentShape(.rect)
                         }
+                    }
+                }
+                
+                if AccountsTracker.main.isEmpty {
+                    Section {
+                        signedOutInfoView
+                            .listRowBackground(Color.clear)
                     }
                 }
                 
@@ -73,9 +89,11 @@ struct SubscriptionListView: View {
                 }
             }
             .toolbar {
-                Picker("Sort", selection: $sort) {
-                    ForEach(SubscriptionListSort.allCases, id: \.self) { item in
-                        Label(item.label, systemImage: item.systemImage)
+                if !(subscriptions?.communities.isEmpty ?? true) {
+                    Picker("Sort", selection: $sort) {
+                        ForEach(SubscriptionListSort.allCases, id: \.self) { item in
+                            Label(item.label, systemImage: item.systemImage)
+                        }
                     }
                 }
             }
@@ -100,8 +118,47 @@ struct SubscriptionListView: View {
         }
     }
     
+    @ViewBuilder
+    var signedOutInfoView: some View {
+        VStack {
+            Image(systemName: "list.bullet")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(height: 50)
+                .foregroundStyle(palette.tertiary)
+                .padding(.bottom, 5)
+            Text("Your subscriptions live here.")
+                .font(.title2)
+                .fontWeight(.semibold)
+            Text("Log in or sign up to view your subscriptions.")
+            HStack {
+                Button {
+                    navigation.openSheet(.logIn(.pickInstance))
+                } label: {
+                    Text("Log In")
+                        .frame(minWidth: 80)
+                }
+                Button {
+                    navigation.openSheet(.signUp())
+                } label: {
+                    Text("Sign Up")
+                        .frame(minWidth: 80)
+                }
+            }
+            .tint(palette.secondary)
+            .buttonStyle(.bordered)
+        }
+        .multilineTextAlignment(.center)
+        .frame(maxWidth: .infinity)
+        .foregroundColor(palette.secondary)
+    }
+    
+    var subscriptions: SubscriptionList? {
+        (appState.firstSession as? UserSession)?.subscriptions
+    }
+    
     var sectionIndicesShown: Bool {
-        !UIDevice.isPad && sort == .alphabetical
+        !UIDevice.isPad && sort == .alphabetical && (subscriptions?.communities.count ?? 0) > 10
     }
 }
 

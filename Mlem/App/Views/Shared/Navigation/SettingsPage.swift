@@ -15,7 +15,7 @@ enum SettingsPage: Hashable {
     case importExportSettings
     case theme, icon
     case post, comment, inbox, subscriptionList
-    case about, advanced
+    case about, advanced, developer
     case postInteractionBar, commentInteractionBar, replyInteractionBar
     case licences, document(Document)
     
@@ -35,6 +35,8 @@ enum SettingsPage: Hashable {
             ImportExportSettingsPage()
         case .advanced:
             AdvancedSettingsView()
+        case .developer:
+            DeveloperSettingsView()
         case .about:
             AboutMlemView()
         case .theme:
