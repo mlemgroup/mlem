@@ -17,11 +17,6 @@ struct FeedWelcomeView: View {
     var body: some View {
         VStack(spacing: Constants.main.standardSpacing) {
             HStack(spacing: Constants.main.standardSpacing) {
-                Image("logo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 70)
-                    .clipShape(.circle)
                 VStack(alignment: .leading) {
                     Text("Welcome to Lemmy!")
                         .fontWeight(.semibold)
