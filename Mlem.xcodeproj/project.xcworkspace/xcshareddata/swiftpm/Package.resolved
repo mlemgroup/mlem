@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/LemmyMarkdownUI",
       "state" : {
-        "revision" : "7e9f376f9254d165901fb5b1e8b90de4f05a5ac7",
-        "version" : "0.4.6"
+        "revision" : "9b3b11ba95e3b4c262177956a81fb262fabb5da4",
+        "version" : "0.4.7"
       }
     },
     {
