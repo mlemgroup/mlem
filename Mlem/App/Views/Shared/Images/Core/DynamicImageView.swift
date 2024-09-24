@@ -5,8 +5,10 @@
 //  Created by Sjmarf on 12/06/2024.
 //
 
+import AVFoundation
 import Nuke
 import QuickLook
+import SDWebImageSwiftUI
 import SwiftUI
 
 extension UIImage {
@@ -109,6 +111,29 @@ struct DynamicImageView: View {
                     // overlay to prevent visual hitch when swapping views and to implicitly preserve frame/cropping
                     if shouldPlayVideo {
                         VideoView(asset: videoAsset)
+                            .background(ProgressView())
+                            .onTapGesture {
+                                shouldPlayVideo = false
+                            }
+                    }
+                }
+        } else if let url = loader.url, url.proxyAwarePathExtension == "webp" {
+            // for performance, only render the image in feed and replace with VideoView on demand
+            Image(uiImage: loader.uiImage ?? .blank)
+                .resizable()
+                .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
+                .onTapGesture {
+                    shouldPlayVideo = true
+                }
+                .overlay {
+                    // overlay to prevent visual hitch when swapping views and to implicitly preserve frame/cropping
+                    if shouldPlayVideo {
+                        AnimatedImage(url: url)
+                            .onViewUpdate { context, _ in
+                                print("DEBUG image: \(context.image == nil)")
+                                print("DEBUG \(context.playbackMode)")
+                            }
+                            .resizable()
                             .background(ProgressView())
                             .onTapGesture {
                                 shouldPlayVideo = false

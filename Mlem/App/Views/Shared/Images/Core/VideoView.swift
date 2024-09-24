@@ -12,6 +12,18 @@ import NukeUI
 import NukeVideo
 import SwiftUI
 
+// struct WebpView: UIViewRepresentable {
+//    let data: Data
+//
+//    func makeUIView(context: Context) -> some UIView {
+//        <#code#>
+//    }
+//
+//    func updateUIView(_ uiView: UIViewType, context: Context) {
+//        // noop
+//    }
+// }
+
 struct VideoView: UIViewRepresentable {
     let asset: AVAsset
     

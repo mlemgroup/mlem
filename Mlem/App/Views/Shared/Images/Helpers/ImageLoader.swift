@@ -22,6 +22,12 @@ enum ImageLoadingError {
     }
 }
 
+enum MediaHandler {
+    case nuke
+    case nukeVideo(AVAsset)
+    case sdWebImage(URL)
+}
+
 @Observable
 class ImageLoader {
     @ObservationIgnored @Setting(\.autoBypassImageProxy) var bypassImageProxy
@@ -59,25 +65,10 @@ class ImageLoader {
                 if let container = ImagePipeline.shared.cache.cachedImage(for: .init(url: url)) {
                     self.uiImage = resizeImage(image: container.image, maxSize: maxSize)
                     self.loading = .done
-                    self.isVideo = false
+                    self.isVideo = url.proxyAwarePathExtension == "webp"
                     return
                 }
             }
-            
-//            if let container = ImagePipeline.shared.cache.cachedImage(for: .init(url: url)) {
-//                if container.type?.isVideo ?? false {
-//                    self.loading = .loading
-//                    self.isVideo = true
-//                    Task(priority: .background) {
-//                        parseVideo(container: container)
-//                    }
-//                } else {
-//                    self.uiImage = resizeImage(image: container.image, maxSize: maxSize)
-//                    self.loading = .done
-//                    self.isVideo = false
-//                    return
-//                }
-//            }
         }
 
         self.isVideo = false
