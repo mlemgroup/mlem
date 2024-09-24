@@ -40,7 +40,7 @@ struct InstanceUptimeView: View {
                     responseTimeChart
                         .padding(.horizontal, 20)
                     let milliseconds = uptimeData.results.map(\.durationMs).reduce(0, +) / uptimeData.results.count
-                    footnote("Average: \(millisecondFormatter.string(from: .init(nanosecond: milliseconds * 1000)) ?? "")")
+                    footnote("Average: \(formatMilliseconds(milliseconds))")
                         .padding(.leading, 20)
                 }
                 .padding(.top, 17)
@@ -192,7 +192,7 @@ struct InstanceUptimeView: View {
                 AxisGridLine()
                 AxisValueLabel {
                     if let intValue = value.as(Int.self) {
-                        Text(millisecondFormatter.string(from: .init(nanosecond: intValue * 1000)) ?? "")
+                        Text(formatMilliseconds(intValue))
                     }
                 }
             }
@@ -247,11 +247,12 @@ struct InstanceUptimeView: View {
         return dateFormatter
     }
 
-    var millisecondFormatter: DateComponentsFormatter {
-        let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .abbreviated
-        formatter.maximumUnitCount = 1
-        return formatter
+    func formatMilliseconds(_ milliseconds: Int) -> String {
+        let measurement = Measurement(value: Double(milliseconds), unit: UnitDuration.milliseconds)
+        let formatter = MeasurementFormatter()
+        formatter.unitOptions = .providedUnit
+        formatter.unitStyle = .short
+        return formatter.string(from: measurement)
     }
 }
 
