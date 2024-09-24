@@ -22,6 +22,7 @@ struct DynamicImageView: View {
     @State var loader: ImageLoader
     @State var loadingPref: ImageLoadingState?
     @State var quickLookUrl: URL?
+    @State var shouldPlayVideo: Bool = false
     
     let showError: Bool
     let cornerRadius: CGFloat
@@ -61,9 +62,7 @@ struct DynamicImageView: View {
     }
     
     var content: some View {
-        Image(uiImage: loader.uiImage ?? .blank)
-            .resizable()
-            .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
+        media
             .overlay {
                 if showError, loader.error != nil {
                     errorOverlay
@@ -77,6 +76,50 @@ struct DynamicImageView: View {
                     await loader.load()
                 }
             }
+        #if DEBUG
+            .overlay {
+                if let ext = loader.url?.proxyAwarePathExtension?.uppercased() {
+                    Text(ext)
+                        .font(.footnote)
+                        .fontWeight(.semibold)
+                        .padding(2)
+                        .padding(.horizontal, 2)
+                        .background {
+                            Capsule()
+                                .fill(.regularMaterial)
+                        }
+                        .padding(4)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                }
+            }
+        #endif
+    }
+    
+    @ViewBuilder
+    var media: some View {
+        if let videoAsset = loader.avAsset {
+            // for performance, only render the image in feed and replace with VideoView on demand
+            Image(uiImage: loader.uiImage ?? .blank)
+                .resizable()
+                .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
+                .onTapGesture {
+                    shouldPlayVideo = true
+                }
+                .overlay {
+                    // overlay to prevent visual hitch when swapping views and to implicitly preserve frame/cropping
+                    if shouldPlayVideo {
+                        VideoView(asset: videoAsset)
+                            .background(ProgressView())
+                            .onTapGesture {
+                                shouldPlayVideo = false
+                            }
+                    }
+                }
+        } else {
+            Image(uiImage: loader.uiImage ?? .blank)
+                .resizable()
+                .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
+        }
     }
     
     @ViewBuilder

@@ -20,6 +20,8 @@ struct MlemApp: App {
         // TODO: rate limiting
         ImagePipeline.shared = ImagePipeline(configuration: imageConfig)
         
+        ImageDecoderRegistry.shared.register(ImageDecoders.Video.init)
+        
         URLCache.shared = Constants.main.urlCache
     }
     
