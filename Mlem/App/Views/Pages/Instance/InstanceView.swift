@@ -81,8 +81,6 @@ struct InstanceView: View {
         .isAtTopSubscriber(isAtTop: $isAtTop)
         .navigationBarTitleDisplayMode(.inline)
         .background(palette.groupedBackground)
-        .onAppear(perform: attemptToLoadUptimeData)
-        .onReceive(uptimeRefreshTimer) { _ in attemptToLoadUptimeData() }
     }
     
     @ViewBuilder
@@ -113,6 +111,8 @@ struct InstanceView: View {
                 administrationTab(instance: instance)
             case .uptime:
                 uptimeTab(instance: instance)
+                    .onAppear(perform: attemptToLoadUptimeData)
+                    .onReceive(uptimeRefreshTimer) { _ in attemptToLoadUptimeData() }
             default:
                 EmptyView()
             }

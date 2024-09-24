@@ -30,7 +30,8 @@ struct InstanceUptimeView: View {
                     .padding(.vertical, 15)
             }
             .padding(.top, 20)
-            footnote("Mlem will refresh this automatically every 30 seconds.")
+            // String interpolation used here to avoid localizing the number
+            footnote("Mlem will refresh this automatically every \(30) seconds.")
                 .padding(.top, 8)
                 .padding(.leading, 6)
                 .padding(.bottom, 30)
@@ -84,7 +85,7 @@ struct InstanceUptimeView: View {
                     showingAllDowntimes.toggle()
                 }
             } label: {
-                Text("\(showingAllDowntimes ? "Hide" : "Show") Older Incidents")
+                Text(showingAllDowntimes ? "Hide Older Incidents" : "Show Older Incidents")
                     .foregroundStyle(.blue)
                     .padding(.leading, 12)
                     .frame(maxWidth: .infinity, alignment: .leading)
