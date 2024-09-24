@@ -37,9 +37,6 @@
     "%@ is " : {
 
     },
-    "%@ Older Incidents" : {
-
-    },
     "%@ Read" : {
 
     },
@@ -519,6 +516,9 @@
     "Hide" : {
 
     },
+    "Hide Older Incidents" : {
+
+    },
     "Hide Read" : {
 
     },
@@ -672,7 +672,7 @@
     "Mlem will always try to load from the proxy first." : {
 
     },
-    "Mlem will refresh this automatically every 30 seconds." : {
+    "Mlem will refresh this automatically every %lld seconds." : {
 
     },
     "Moderated" : {
@@ -997,6 +997,9 @@
 
     },
     "Show NSFW Content" : {
+
+    },
+    "Show Older Incidents" : {
 
     },
     "Show Post Creator in Feed" : {

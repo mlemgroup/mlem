@@ -11,7 +11,7 @@ import SwiftUI
 
 struct InstanceUptimeView: View {
     @Environment(\.accessibilityDifferentiateWithoutColor) var diffWithoutColor: Bool
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(Palette.self) var palette
     
     @State var showingExactTime: Bool = false
     @State var showingAllDowntimes: Bool = false
@@ -57,7 +57,7 @@ struct InstanceUptimeView: View {
                     : "There were \(todayDowntimes.count) recorded incidents today."
             )
             .font(.footnote)
-            .foregroundStyle(.secondary)
+            .foregroundStyle(palette.secondary)
             .padding(.leading, 6)
             .padding(.bottom, 7)
             
@@ -86,13 +86,13 @@ struct InstanceUptimeView: View {
                 }
             } label: {
                 Text(showingAllDowntimes ? "Hide Older Incidents" : "Show Older Incidents")
-                    .foregroundStyle(.blue)
+                    .foregroundStyle(palette.accent)
                     .padding(.leading, 12)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical, 10)
                     .background(
                         RoundedRectangle(cornerRadius: Constants.main.standardSpacing)
-                            .fill(Color(uiColor: .secondarySystemGroupedBackground))
+                            .fill(palette.secondaryGroupedBackground)
                     )
             }
             .buttonStyle(EmptyButtonStyle())
@@ -101,7 +101,7 @@ struct InstanceUptimeView: View {
                 // Extra string interpolation used here to avoid unnecessary localization
                 Text((try? AttributedString(markdown: .init(localized: "Uptime data fetched from \("[lemmy-status.org](\(url))")"))) ?? .init())
                     .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(palette.secondary)
                     .padding(.vertical, 8)
                     .padding(.leading, 6)
             }
@@ -114,10 +114,10 @@ struct InstanceUptimeView: View {
         VStack(alignment: .leading) {
             if let mostRecentOutage = uptimeData.downtimes.first {
                 if uptimeData.results.filter(\.success).count < 15 {
-                    summaryHeader(statusText: "unhealthy", systemImage: Icons.uptimeOutage, color: .red)
+                    summaryHeader(statusText: "unhealthy", systemImage: Icons.uptimeOutage, color: palette.negative)
                     footnote("\(instance.name) has been unresponsive recently.")
                 } else {
-                    summaryHeader(statusText: "online", systemImage: Icons.uptimeOnline, color: .green)
+                    summaryHeader(statusText: "online", systemImage: Icons.uptimeOnline, color: palette.positive)
                     let relTime = mostRecentOutage.relativeTimeCaption
                     let length = mostRecentOutage.differenceTitle(unitsStyle: .full)
                     footnote("The most recent outage was \(relTime), and lasted for \(length).")
@@ -149,12 +149,12 @@ struct InstanceUptimeView: View {
                         Image(systemName: result.success ? Icons.uptimeOnline : Icons.uptimeOffline)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .foregroundStyle(result.success ? .green : .red)
+                            .foregroundStyle(result.success ? palette.positive : palette.negative)
                             .frame(maxWidth: 20)
                             .frame(maxWidth: 25)
                     } else {
                         Circle()
-                            .fill(result.success ? .green : .red)
+                            .fill(result.success ? palette.positive : palette.negative)
                             .frame(maxWidth: 20)
                             .frame(maxWidth: 25)
                     }
@@ -212,7 +212,7 @@ struct InstanceUptimeView: View {
                 content()
             }
             .frame(maxWidth: .infinity)
-            .background(Color(uiColor: .secondarySystemGroupedBackground))
+            .background(palette.secondaryGroupedBackground)
             .cornerRadius(Constants.main.standardSpacing)
         }
     }
@@ -229,7 +229,7 @@ struct InstanceUptimeView: View {
     func footnote(_ title: LocalizedStringResource) -> some View {
         Text(title)
             .font(.footnote)
-            .foregroundStyle(.secondary)
+            .foregroundStyle(palette.secondary)
     }
     
     @_disfavoredOverload
@@ -237,7 +237,7 @@ struct InstanceUptimeView: View {
     func footnote(_ title: String) -> some View {
         Text(title)
             .font(.footnote)
-            .foregroundStyle(.secondary)
+            .foregroundStyle(palette.secondary)
     }
     
     var timeOnlyFormatter: DateFormatter {
@@ -256,6 +256,8 @@ struct InstanceUptimeView: View {
 }
 
 private struct IncidentRow: View {
+    @Environment(Palette.self) var palette
+    
     let event: DowntimePeriod
     let showingExactTime: Bool
     
@@ -264,12 +266,12 @@ private struct IncidentRow: View {
             HStack {
                 Image(systemName: Icons.uptimeOutage)
                     .foregroundStyle(event.severityColor)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(palette.secondary)
                 Text("Unhealthy for \(event.differenceTitle())")
             }
             Text(showingExactTime ? event.differenceCaption : event.relativeTimeCaption)
                 .font(.footnote)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(palette.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .contentShape(.rect)
