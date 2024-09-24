@@ -2677,7 +2677,7 @@
 		};
 		CD9243272C861F040046EBB6 /* XCRemoteSwiftPackageReference "MlemMiddleware" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware.git";
+			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
 				kind = upToNextMinorVersion;
 				minimumVersion = 0.38.0;

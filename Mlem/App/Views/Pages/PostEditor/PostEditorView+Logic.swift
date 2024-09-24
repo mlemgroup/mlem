@@ -74,7 +74,7 @@ extension PostEditorView {
         ) { taskGroup in
             for target in validTargets {
                 if let community = target.community as? any Community {
-                    taskGroup.addTask {
+                    taskGroup.addTask { @MainActor in
                         let post: Post2?
                         do {
                             post = try await community.api.createPost(
