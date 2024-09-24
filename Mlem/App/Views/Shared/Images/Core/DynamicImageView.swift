@@ -109,6 +109,7 @@ struct DynamicImageView: View {
                 }
                 .overlay {
                     // overlay to prevent visual hitch when swapping views and to implicitly preserve frame/cropping
+                    // TODO: tap should play/pause
                     if shouldPlayVideo {
                         VideoView(asset: videoAsset)
                             .background(ProgressView())
@@ -118,27 +119,11 @@ struct DynamicImageView: View {
                     }
                 }
         } else if let url = loader.url, url.proxyAwarePathExtension == "webp" {
-            // for performance, only render the image in feed and replace with VideoView on demand
-            Image(uiImage: loader.uiImage ?? .blank)
+            AnimatedImage(url: url, isAnimating: $shouldPlayVideo)
                 .resizable()
                 .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
                 .onTapGesture {
-                    shouldPlayVideo = true
-                }
-                .overlay {
-                    // overlay to prevent visual hitch when swapping views and to implicitly preserve frame/cropping
-                    if shouldPlayVideo {
-                        AnimatedImage(url: url)
-                            .onViewUpdate { context, _ in
-                                print("DEBUG image: \(context.image == nil)")
-                                print("DEBUG \(context.playbackMode)")
-                            }
-                            .resizable()
-                            .background(ProgressView())
-                            .onTapGesture {
-                                shouldPlayVideo = false
-                            }
-                    }
+                    shouldPlayVideo.toggle()
                 }
         } else {
             Image(uiImage: loader.uiImage ?? .blank)
