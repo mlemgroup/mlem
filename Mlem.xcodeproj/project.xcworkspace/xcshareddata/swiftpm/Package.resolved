@@ -1,5 +1,5 @@
 {
-  "originHash" : "12ce0a2dfd303e1279f566da7e086aa577abfe1ee52c816de01e63dccbe9f8ac",
+  "originHash" : "0573013e35e4ef44bb59dbb738c8257cd0dbb2c9d74da7b56df3cf119b35c33d",
   "pins" : [
     {
       "identity" : "combine-schedulers",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "ec62f32d21584214a4b27c8cee2b2ad70ab2c38a",
         "version" : "0.11.0"
+      }
+    },
+    {
+      "identity" : "gifu",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kaishin/Gifu",
+      "state" : {
+        "branch" : "master",
+        "revision" : "639e40d5dbd86dfa94fc61296c270b49af6f8a2a"
       }
     },
     {

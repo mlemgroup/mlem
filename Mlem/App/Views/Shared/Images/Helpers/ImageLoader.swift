@@ -36,6 +36,7 @@ class ImageLoader {
     private var proxyBypass: URL?
     private(set) var uiImage: UIImage?
     private(set) var avAsset: AVAsset?
+    private(set) var gifAsset: Data?
     private(set) var isVideo: Bool
     private(set) var loading: ImageLoadingState
     private(set) var error: ImageLoadingError?
@@ -51,7 +52,7 @@ class ImageLoader {
         self.maxSize = maxSize
         
         if let url {
-            if url.proxyAwarePathExtension == "mp4" {
+            if url.proxyAwarePathExtension == "mp4" || url.proxyAwarePathExtension == "gif" {
                 self.loading = .loading
                 self.isVideo = true
                 Task(priority: .background) {
@@ -63,9 +64,12 @@ class ImageLoader {
                 }
             } else {
                 if let container = ImagePipeline.shared.cache.cachedImage(for: .init(url: url)) {
+                    if container.type == .gif {
+                        self.gifAsset = container.data
+                    }
                     self.uiImage = resizeImage(image: container.image, maxSize: maxSize)
                     self.loading = .done
-                    self.isVideo = url.proxyAwarePathExtension == "webp"
+                    self.isVideo = url.proxyAwarePathExtension == "gif"
                     return
                 }
             }
@@ -89,6 +93,9 @@ class ImageLoader {
                     parseVideo(container: container)
                 }
             } else {
+                if container.type == .gif {
+                    gifAsset = container.data
+                }
                 uiImage = resizeImage(image: container.image, maxSize: maxSize)
                 loading = .done
                 return

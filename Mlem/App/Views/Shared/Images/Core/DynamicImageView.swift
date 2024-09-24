@@ -125,6 +125,12 @@ struct DynamicImageView: View {
                 .onTapGesture {
                     shouldPlayVideo.toggle()
                 }
+        } else if let url = loader.url, url.proxyAwarePathExtension == "gif" {
+            if let gifData = loader.gifAsset {
+                NukeGifView(data: gifData)
+            } else {
+                Text("No gif data!")
+            }
         } else {
             Image(uiImage: loader.uiImage ?? .blank)
                 .resizable()

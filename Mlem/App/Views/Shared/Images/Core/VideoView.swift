@@ -7,22 +7,27 @@
 
 import AVFoundation
 import Foundation
+import Gifu
 import Nuke
 import NukeUI
 import NukeVideo
 import SwiftUI
 
-// struct WebpView: UIViewRepresentable {
-//    let data: Data
-//
-//    func makeUIView(context: Context) -> some UIView {
-//        <#code#>
-//    }
-//
-//    func updateUIView(_ uiView: UIViewType, context: Context) {
-//        // noop
-//    }
-// }
+struct NukeGifView: UIViewRepresentable {
+    let data: Data
+    
+    func makeUIView(context: Context) -> some UIView {
+        let imageView = GIFImageView()
+        imageView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        imageView.animate(withGIFData: data, loopCount: 0)
+        return imageView
+    }
+    
+    func updateUIView(_ uiView: UIViewType, context: Context) {
+        // noop
+    }
+}
 
 struct VideoView: UIViewRepresentable {
     let asset: AVAsset
