@@ -457,7 +457,6 @@
 		03531EF02C2DA298004A3464 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
 		03531EF42C2DA610004A3464 /* NavigationSearchType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationSearchType.swift; sourceTree = "<group>"; };
 		035394852C9CDC1100795AA5 /* SubscriptionListNavigationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListNavigationButton.swift; sourceTree = "<group>"; };
-		0353949A2CA4AC9500795AA5 /* MlemMiddleware */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MlemMiddleware; path = ../MlemMiddleware; sourceTree = SOURCE_ROOT; };
 		0353949B2CA4B3E800795AA5 /* CrossPostListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossPostListView.swift; sourceTree = "<group>"; };
 		0355F9452C150B2300605248 /* ExternalApiInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalApiInfoView.swift; sourceTree = "<group>"; };
 		0355F9482C16406E00605248 /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
@@ -1110,7 +1109,6 @@
 		6363D5B827EE196700E34822 = {
 			isa = PBXGroup;
 			children = (
-				0353949A2CA4AC9500795AA5 /* MlemMiddleware */,
 				6363D5C327EE196700E34822 /* Mlem */,
 				6363D5D927EE196A00E34822 /* MlemTests */,
 				6363D5E327EE196A00E34822 /* MlemUITests */,
@@ -2689,8 +2687,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 0.38.0;
+				branch = sjmarf/post3;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
