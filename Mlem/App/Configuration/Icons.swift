@@ -234,6 +234,7 @@ enum Icons {
     static let expandComment: String = "arrow.up.and.line.horizontal.and.arrow.down"
     static let refresh: String = "arrow.clockwise"
     static let select: String = "selection.pin.in.out"
+    static let crossPost: String = "shuffle"
     
     // settings
     static let upvoteOnSave: String = "arrow.up.heart"

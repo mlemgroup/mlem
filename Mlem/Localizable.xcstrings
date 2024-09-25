@@ -37,6 +37,9 @@
     "%@ rules:" : {
 
     },
+    "%lld Crossposts..." : {
+
+    },
     "%lld on %@" : {
       "localizations" : {
         "en" : {
@@ -304,6 +307,9 @@
 
     },
     "Crosspost" : {
+
+    },
+    "Crossposts" : {
 
     },
     "Customize Interaction Bar" : {

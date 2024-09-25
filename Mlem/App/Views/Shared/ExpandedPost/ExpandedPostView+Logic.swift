@@ -10,7 +10,7 @@ import SwiftUI
 
 extension ExpandedPostView {
     var showLoadingSymbol: Bool {
-        !(highlightedComment == nil || (post.wrappedValue is any Post2Providing && scrolledToHighlightedComment))
+        !(highlightedComment == nil || (post.wrappedValue is any Post3Providing && scrolledToHighlightedComment))
     }
     
     func load(tracker: CommentTreeTracker) async {

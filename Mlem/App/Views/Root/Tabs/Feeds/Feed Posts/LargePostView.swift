@@ -67,9 +67,7 @@ struct LargePostView: View {
                     .padding(.horizontal, Constants.main.standardSpacing)
             }
             
-            if !(post.content?.isEmpty ?? true) {
-                Divider()
-            }
+            if showDivider { Divider() }
             
             InteractionBarView(
                 post: post,
@@ -80,6 +78,10 @@ struct LargePostView: View {
             .padding(.horizontal, 12)
             .padding(.vertical, 5)
         }
+    }
+    
+    var showDivider: Bool {
+        !(post.content?.isEmpty ?? true)
     }
     
     @ViewBuilder
