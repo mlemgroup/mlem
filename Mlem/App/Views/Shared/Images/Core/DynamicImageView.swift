@@ -128,6 +128,9 @@ struct DynamicImageView: View {
         } else if let url = loader.url, url.proxyAwarePathExtension == "webp" {
             if let webpData = loader.webpData {
                 AnimatedImage(data: webpData)
+                    .onViewUpdate { view, _ in
+                        print("DEBUG \(view.image?.sd_isAnimated)")
+                    }
                     .resizable()
                     .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
             } else {
