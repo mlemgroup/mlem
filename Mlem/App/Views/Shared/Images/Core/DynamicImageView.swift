@@ -118,18 +118,20 @@ struct DynamicImageView: View {
                             }
                     }
                 }
-        } else if let url = loader.url, url.proxyAwarePathExtension == "webp" {
-            AnimatedImage(url: url, isAnimating: $shouldPlayVideo)
-                .resizable()
-                .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
-                .onTapGesture {
-                    shouldPlayVideo.toggle()
-                }
         } else if let url = loader.url, url.proxyAwarePathExtension == "gif" {
             if let gifData = loader.gifAsset {
                 NukeGifView(data: gifData)
+                    .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
             } else {
                 Text("No gif data!")
+            }
+        } else if let url = loader.url, url.proxyAwarePathExtension == "webp" {
+            if let webpData = loader.webpData {
+                AnimatedImage(data: webpData)
+                    .resizable()
+                    .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
+            } else {
+                Text("No data here!")
             }
         } else {
             Image(uiImage: loader.uiImage ?? .blank)

@@ -37,6 +37,7 @@ class ImageLoader {
     private(set) var uiImage: UIImage?
     private(set) var avAsset: AVAsset?
     private(set) var gifAsset: Data?
+    private(set) var webpData: Data?
     private(set) var isVideo: Bool
     private(set) var loading: ImageLoadingState
     private(set) var error: ImageLoadingError?
@@ -66,6 +67,8 @@ class ImageLoader {
                 if let container = ImagePipeline.shared.cache.cachedImage(for: .init(url: url)) {
                     if container.type == .gif {
                         self.gifAsset = container.data
+                    } else if container.type == .webp {
+                        self.webpData = container.data
                     }
                     self.uiImage = resizeImage(image: container.image, maxSize: maxSize)
                     self.loading = .done
@@ -95,6 +98,8 @@ class ImageLoader {
             } else {
                 if container.type == .gif {
                     gifAsset = container.data
+                } else if container.type == .webp {
+                    webpData = container.data
                 }
                 uiImage = resizeImage(image: container.image, maxSize: maxSize)
                 loading = .done
