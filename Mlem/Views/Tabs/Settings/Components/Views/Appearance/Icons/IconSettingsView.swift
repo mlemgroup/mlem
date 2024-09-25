@@ -15,7 +15,7 @@ struct IconSettingsView: View {
     
     let icons: [AlternativeIconGroup] = [
         .init(authorName: "Sjmarf", collapsed: false, icons: [
-            .init(id: "icon.sjmarf.default", name: "Default"),
+            .init(id: nil, name: "Default"),
             .init(id: "icon.sjmarf.pink", name: "Pink"),
             .init(id: "icon.sjmarf.orange", name: "Orange"),
             .init(id: "icon.sjmarf.green", name: "Green"),
