@@ -8,6 +8,7 @@
 import AVFoundation
 import Foundation
 import Nuke
+import SDWebImageWebPCoder
 import SwiftUI
 
 enum ImageLoadingError {
@@ -38,6 +39,7 @@ class ImageLoader {
     private(set) var avAsset: AVAsset?
     private(set) var gifAsset: Data?
     private(set) var webpData: Data?
+    private(set) var webpImage: [UIImage]?
     private(set) var isVideo: Bool
     private(set) var loading: ImageLoadingState
     private(set) var error: ImageLoadingError?
@@ -69,6 +71,7 @@ class ImageLoader {
                         self.gifAsset = container.data
                     } else if container.type == .webp {
                         self.webpData = container.data
+                        self.webpImage = SDImageWebPCoder().decodedImage(with: container.data)?.images
                     }
                     self.uiImage = resizeImage(image: container.image, maxSize: maxSize)
                     self.loading = .done
@@ -100,6 +103,7 @@ class ImageLoader {
                     gifAsset = container.data
                 } else if container.type == .webp {
                     webpData = container.data
+                    webpImage = SDImageWebPCoder().decodedImage(with: container.data)?.images
                 }
                 uiImage = resizeImage(image: container.image, maxSize: maxSize)
                 loading = .done

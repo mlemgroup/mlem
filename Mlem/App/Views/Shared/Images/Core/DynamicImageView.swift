@@ -6,6 +6,7 @@
 //
 
 import AVFoundation
+import Gifu
 import Nuke
 import QuickLook
 import SDWebImageSwiftUI
@@ -126,10 +127,14 @@ struct DynamicImageView: View {
                 Text("No gif data!")
             }
         } else if let url = loader.url, url.proxyAwarePathExtension == "webp" {
-            if let webpData = loader.webpData {
-                AnimatedImage(data: webpData)
-                    .resizable()
-                    .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
+            if let webpImage = loader.webpImage {
+                // Image(uiImage: webpImage, ani)
+                // GIFImageView(image: webpImage)
+                NukeWebpView(image: webpImage)
+//            if let webpData = loader.webpData {
+//                AnimatedImage(data: webpData)
+//                    .resizable()
+//                    .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
             } else {
                 Text("No data here!")
             }
