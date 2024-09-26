@@ -125,14 +125,26 @@ struct DynamicImageView: View {
             } else {
                 Text("No gif data!")
             }
-        } else if let url = loader.url, url.proxyAwarePathExtension == "webp" {
-            if let webpData = loader.webpData {
-                AnimatedImage(data: webpData)
-                    .resizable()
-                    .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
-            } else {
-                Text("No data here!")
-            }
+        } else if let url = loader.url, url.proxyAwarePathExtension == "webp", let webpData = loader.webpData {
+            // for performance, only render the image in feed and replace with VideoView on demand
+            Image(uiImage: loader.uiImage ?? .blank)
+                .resizable()
+                .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
+                .onTapGesture {
+                    shouldPlayVideo = true
+                }
+                .overlay {
+                    // overlay to prevent visual hitch when swapping views and to implicitly preserve frame/cropping
+                    // TODO: tap should play/pause
+                    if shouldPlayVideo {
+                        AnimatedImage(data: webpData)
+                            .resizable()
+                            .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
+                            .onTapGesture {
+                                shouldPlayVideo = false
+                            }
+                    }
+                }
         } else {
             Image(uiImage: loader.uiImage ?? .blank)
                 .resizable()
