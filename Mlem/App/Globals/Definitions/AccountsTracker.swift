@@ -32,6 +32,8 @@ class AccountsTracker {
         try! (guestAccounts.first ?? .getGuestAccount(url: URL(string: "https://lemmy.world/")!))
     }
     
+    var isEmpty: Bool { userAccounts.isEmpty && guestAccounts.isEmpty }
+    
     private var cancellables = Set<AnyCancellable>()
     
     private init() {

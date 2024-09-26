@@ -13,6 +13,7 @@ import SwiftUI
 struct FeedsView: View {
     @Setting(\.postSize) var postSize
     @Setting(\.showReadInFeed) var showRead
+    @Setting(\.showFeedWelcomePrompt) var showWelcomePrompt
     
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
@@ -147,6 +148,10 @@ struct FeedsView: View {
     var content: some View {
         FancyScrollView(scrollToTopTrigger: $scrollToTopTrigger) {
             Section {
+                if AccountsTracker.main.isEmpty, showWelcomePrompt {
+                    FeedWelcomeView()
+                        .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+                }
                 if let savedFeedLoader, feedSelection == .saved {
                     PersonContentGridView(feedLoader: savedFeedLoader, contentType: .constant(.all))
                 } else if let postFeedLoader {

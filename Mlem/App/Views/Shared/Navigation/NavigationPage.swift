@@ -105,6 +105,14 @@ enum NavigationPage: Hashable {
         return instancePicker(callback: .init(wrappedValue: callback), minimumVersion: minimumVersion)
     }
     
+    static func signUp() -> NavigationPage {
+        .instancePicker(callback: { instance, navigation in
+            if let stub = instance.instanceStub {
+                navigation.push(.signUp(stub))
+            }
+        })
+    }
+    
     static func communityPicker(
         api: ApiClient? = nil,
         callback: @escaping (Community2) -> Void

@@ -94,6 +94,9 @@
 		03531EF52C2DA610004A3464 /* NavigationSearchType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03531EF42C2DA610004A3464 /* NavigationSearchType.swift */; };
 		035394862C9CDC1100795AA5 /* SubscriptionListNavigationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035394852C9CDC1100795AA5 /* SubscriptionListNavigationButton.swift */; };
 		0353949C2CA4B3E800795AA5 /* CrossPostListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0353949B2CA4B3E800795AA5 /* CrossPostListView.swift */; };
+		0353948B2CA076D000795AA5 /* InboxView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0353948A2CA076D000795AA5 /* InboxView+Views.swift */; };
+		0353948D2CA080EB00795AA5 /* FeedWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0353948C2CA080EB00795AA5 /* FeedWelcomeView.swift */; };
+		0353948F2CA088E600795AA5 /* DeveloperSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0353948E2CA088E600795AA5 /* DeveloperSettingsView.swift */; };
 		0355F9462C150B2300605248 /* ExternalApiInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0355F9452C150B2300605248 /* ExternalApiInfoView.swift */; };
 		0355F9492C16406E00605248 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0355F9482C16406E00605248 /* Line.swift */; };
 		035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */; };
@@ -457,6 +460,9 @@
 		03531EF42C2DA610004A3464 /* NavigationSearchType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationSearchType.swift; sourceTree = "<group>"; };
 		035394852C9CDC1100795AA5 /* SubscriptionListNavigationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListNavigationButton.swift; sourceTree = "<group>"; };
 		0353949B2CA4B3E800795AA5 /* CrossPostListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossPostListView.swift; sourceTree = "<group>"; };
+		0353948A2CA076D000795AA5 /* InboxView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InboxView+Views.swift"; sourceTree = "<group>"; };
+		0353948C2CA080EB00795AA5 /* FeedWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedWelcomeView.swift; sourceTree = "<group>"; };
+		0353948E2CA088E600795AA5 /* DeveloperSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettingsView.swift; sourceTree = "<group>"; };
 		0355F9452C150B2300605248 /* ExternalApiInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalApiInfoView.swift; sourceTree = "<group>"; };
 		0355F9482C16406E00605248 /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		035BE0862BDD8DA000F77D73 /* NavigationRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRootView.swift; sourceTree = "<group>"; };
@@ -777,6 +783,7 @@
 				031E2D5C2BEFCC630003BC45 /* SettingsView.swift */,
 				039F58892C7B54FE00C61658 /* GeneralSettingsView.swift */,
 				039F588B2C7B574E00C61658 /* AdvancedSettingsView.swift */,
+				0353948E2CA088E600795AA5 /* DeveloperSettingsView.swift */,
 				039F58962C7B68F100C61658 /* AboutMlemView.swift */,
 				0397D46B2C67E583002C6CDC /* SortingSettingsView.swift */,
 				03267D832BED49CE009D6268 /* AccountSettingsView.swift */,
@@ -937,6 +944,7 @@
 			isa = PBXGroup;
 			children = (
 				0369B3552BFA6824001EFEDF /* InboxView.swift */,
+				0353948A2CA076D000795AA5 /* InboxView+Views.swift */,
 				03B431BD2C455F1B001A1EB5 /* InboxView+Logic.swift */,
 			);
 			path = Inbox;
@@ -1519,6 +1527,7 @@
 			isa = PBXGroup;
 			children = (
 				CD7928222C73CBA400FA712D /* TileScoreView.swift */,
+				0353948C2CA080EB00795AA5 /* FeedWelcomeView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1955,6 +1964,7 @@
 				0389DDCF2C39CB0E0005B808 /* SearchView.swift in Sources */,
 				0397D4742C680FFC002C6CDC /* ImageLoader.swift in Sources */,
 				03FE14042BF93FDD00A8377F /* ErrorDetails.swift in Sources */,
+				0353948B2CA076D000795AA5 /* InboxView+Views.swift in Sources */,
 				0389DDD12C39E1030005B808 /* InstanceListRowBody.swift in Sources */,
 				033FCAF42C59843E007B7CD1 /* CommunityView.swift in Sources */,
 				CD7928262C73E73400FA712D /* PersonView+Logic.swift in Sources */,
@@ -2091,6 +2101,7 @@
 				03D3A1F32BB9D49B009DE55E /* ActionGroup.swift in Sources */,
 				03049A222C650B2C00FF6889 /* CommunityDetailsView.swift in Sources */,
 				CD7882A92BFFDFC7002E1A30 /* PostTag.swift in Sources */,
+				0353948F2CA088E600795AA5 /* DeveloperSettingsView.swift in Sources */,
 				CD7882AB2C013005002E1A30 /* EllipsisMenu.swift in Sources */,
 				039D75672C4FC5A3004F24C2 /* LargeImageView.swift in Sources */,
 				CDBFCB6A2C04EFFE008CD468 /* PostSettingsView.swift in Sources */,
@@ -2196,6 +2207,7 @@
 				03A82FA32C0D1F2400D01A5C /* View+ExternalApiWarning.swift in Sources */,
 				033F84C32C2B12AA002E3EDF /* InstanceSummary.swift in Sources */,
 				0369B3532BFA514B001EFEDF /* ToastLocation.swift in Sources */,
+				0353948D2CA080EB00795AA5 /* FeedWelcomeView.swift in Sources */,
 				03049A202C650A8100FF6889 /* FormReadout.swift in Sources */,
 				0397D49A2C6EA6EE002C6CDC /* InteractionBarEditorView.swift in Sources */,
 				0300309D2C4163C9009A65FF /* CommentTreeTracker.swift in Sources */,

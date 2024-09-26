@@ -32,6 +32,9 @@ struct AdvancedSettingsView: View {
                 URLCache.shared.removeAllCachedResponses()
                 ImagePipeline.shared.cache.removeAll()
             }
+            Section {
+                NavigationLink("Developer", destination: .settings(.developer))
+            }
         }
         .navigationTitle("Advanced")
     }
