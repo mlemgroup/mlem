@@ -27,6 +27,12 @@ struct AccountSettingsView: View {
                 .padding(.horizontal, -16)
             }
             
+            Section {
+                Button("Sign Out") {
+                    appState.firstAccount.signOut()
+                }
+            }
+            
             if let account = appState.firstAccount as? UserAccount {
                 Section {
                     Button("Delete Account", role: .destructive) {
