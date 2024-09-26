@@ -26,8 +26,6 @@ extension NavigationPage {
             FeedsView(feedSelection: feedSelection)
         case let .community(community):
             CommunityView(community: community)
-        case let .crossPostList(post):
-            CrossPostListPage(post: post)
         case .profile:
             ProfileView()
         case .inbox:

@@ -10,58 +10,67 @@ import SwiftUI
 
 struct CrossPostListView: View {
     @Environment(AppState.self) private var appState
+    @Environment(NavigationLayer.self) private var navigation
     @Environment(Palette.self) private var palette
-    
-    @Environment(\.colorScheme) var colorScheme
     
     let post: any Post3Providing
     
-    var shownCrossPosts: [Post2] {
-        var output: [Post2] = []
-        if let first = post.crossPosts.sorted(by: { $0.commentCount > $1.commentCount }).first {
-            // Include the crosspost with highest comment count if it has a lot of comments
-            if Double(first.commentCount) > Double(post.commentCount) * 0.8 {
-                output.append(first)
-            }
-            // Include any crossposts from communities that you moderate
-            output.append(contentsOf: post.crossPosts.dropFirst().filter { crossPost in
-                (appState.firstSession as? UserSession)?.person?.moderates(community: crossPost.community) ?? false
-            })
-        }
-        return output
-    }
+    @State private var isExpanded: Bool = false
     
     var body: some View {
         if !post.crossPosts.isEmpty {
-            VStack(spacing: 0) {
-                NavigationLink(.crossPostList(.init(post))) {
+            VStack(spacing: Constants.main.halfSpacing) {
+                Button {
+                    HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        isExpanded.toggle()
+                    }
+                } label: {
                     HStack {
                         Image(systemName: Icons.crossPost)
-                            .foregroundStyle(palette.tertiary)
+                            .foregroundStyle(palette.secondary)
                             .fontWeight(.semibold)
                         Text("\(post.crossPosts.count) Crossposts...")
                         Spacer()
-                        Image(systemName: Icons.forward)
-                            .imageScale(.small)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(palette.tertiary)
-                            .padding(.trailing, 4)
+                        HStack(spacing: 2) {
+                            Image(systemName: Icons.replies)
+                            Text(String(post.crossPosts.reduce(0) { $0 + $1.commentCount }))
+                        }
+                        .font(.footnote)
+                        .foregroundStyle(palette.secondary)
                     }
-                    .foregroundStyle(palette.secondary)
                     .padding(.horizontal, Constants.main.standardSpacing)
-                    .padding(.vertical, 8)
                     .contentShape(.rect)
                 }
                 .buttonStyle(EmptyButtonStyle())
-                .background(colorScheme == .light || shownCrossPosts.isEmpty ? .clear : palette.tertiaryGroupedBackground)
-                ForEach(shownCrossPosts) { crossPost in
+                if isExpanded {
                     Divider()
-                    NavigationLink(.post(crossPost, communityContext: post.community)) {
-                        FeedPostView(post: crossPost, overridePostSize: .compact)
+                        .padding(.vertical, 3)
+                    Grid(alignment: .leading) {
+                        ForEach(post.crossPosts) { crossPost in
+                            GridRow {
+                                FullyQualifiedLabelView(
+                                    entity: crossPost.community,
+                                    labelStyle: .medium,
+                                    blurred: crossPost.nsfw
+                                )
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                ReadoutView(readout: crossPost.createdReadout, showColor: true)
+                                ReadoutView(readout: crossPost.scoreReadout, showColor: true)
+                                ReadoutView(readout: crossPost.commentReadout, showColor: true)
+                            }
+                            .contentShape(.rect)
+                            .onTapGesture {
+                                navigation.push(.post(crossPost))
+                            }
+                        }
                     }
-                    .buttonStyle(EmptyButtonStyle())
+                    .padding(.horizontal, Constants.main.standardSpacing)
+                    .font(.footnote)
+                    .foregroundStyle(palette.secondary)
                 }
             }
+            .padding(.vertical, 8)
             .background(palette.secondaryGroupedBackground)
             .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         }

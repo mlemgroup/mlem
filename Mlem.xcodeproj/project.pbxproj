@@ -115,7 +115,6 @@
 		0369B3562BFA6824001EFEDF /* InboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0369B3552BFA6824001EFEDF /* InboxView.swift */; };
 		0369B35D2BFB86E3001EFEDF /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0369B35A2BFB86E3001EFEDF /* Account.swift */; };
 		036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CC3AE2B8145C30098B6A1 /* AppState.swift */; };
-		036F51412CA4CA6600704044 /* CrossPostListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036F51402CA4CA6600704044 /* CrossPostListPage.swift */; };
 		037331A42C9CB12D00C826E1 /* EnvironmentValues+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037331A32C9CB12D00C826E1 /* EnvironmentValues+Extensions.swift */; };
 		037386472BDAFE81007492B5 /* LemmyMarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 037386462BDAFE81007492B5 /* LemmyMarkdownUI */; };
 		037658DF2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037658DE2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift */; };
@@ -480,7 +479,6 @@
 		0369B3552BFA6824001EFEDF /* InboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxView.swift; sourceTree = "<group>"; };
 		0369B35A2BFB86E3001EFEDF /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		036CC3AE2B8145C30098B6A1 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
-		036F51402CA4CA6600704044 /* CrossPostListPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossPostListPage.swift; sourceTree = "<group>"; };
 		037331A32C9CB12D00C826E1 /* EnvironmentValues+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+Extensions.swift"; sourceTree = "<group>"; };
 		037658DE2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		0380965E2C10AA80003ED1D8 /* AppState+Transition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppState+Transition.swift"; sourceTree = "<group>"; };
@@ -973,7 +971,6 @@
 				0397D4902C6CE871002C6CDC /* PostEditor */,
 				0397D4792C693444002C6CDC /* ReportComposerView.swift */,
 				CDD99C3B2C73F3FF0010367F /* DeleteAccountView.swift */,
-				036F51402CA4CA6600704044 /* CrossPostListPage.swift */,
 			);
 			name = Pages;
 			path = Mlem/App/Views/Pages;
@@ -2150,7 +2147,6 @@
 				03AF91E32C1C616F00E56644 /* InteractionBarView.swift in Sources */,
 				03B431B22C44409D001A1EB5 /* CommentEditorView.swift in Sources */,
 				0397D4802C693A88002C6CDC /* [BlockNode]+Extensions.swift in Sources */,
-				036F51412CA4CA6600704044 /* CrossPostListPage.swift in Sources */,
 				03B431B22C44409D001A1EB5 /* CommentEditorView.swift in Sources */,
 				0320B6612C8DFCF100D38548 /* SearchView+FiltersView.swift in Sources */,
 				CD4D58DA2B86E11D00B82964 /* Mockable.swift in Sources */,

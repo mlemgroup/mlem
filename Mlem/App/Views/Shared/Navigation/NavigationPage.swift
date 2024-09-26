@@ -24,7 +24,6 @@ enum NavigationPage: Hashable {
     case community(_ community: AnyCommunity)
     case person(_ person: AnyPerson)
     case instance(_ instance: InstanceHashWrapper)
-    case crossPostList(_ post: AnyPost)
     case externalApiInfo(api: ApiClient, actorId: URL)
     case imageViewer(_ url: URL)
     case communityPicker(api: ApiClient?, callback: HashWrapper<(Community2, NavigationLayer) -> Void>)
