@@ -15,7 +15,7 @@ extension UIImage {
     static let blank: UIImage = .init()
 }
 
-struct DynamicImageView: View {
+struct DynamicMediaView: View {
     @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     

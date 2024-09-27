@@ -13,7 +13,7 @@ extension PostEditorView {
     func imageView(imageManager: ImageUploadManager) -> some View {
         switch imageManager.state {
         case let .done(image):
-            DynamicImageView(url: image.url, actionsEnabled: false)
+            DynamicMediaView(url: image.url, actionsEnabled: false)
                 .overlay(alignment: .topTrailing) {
                     Button("Remove", systemImage: Icons.closeCircleFill) {
                         Task {
