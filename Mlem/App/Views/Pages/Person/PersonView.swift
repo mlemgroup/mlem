@@ -82,6 +82,7 @@ struct PersonView: View {
                             }
                         }
                     }
+                    .popupAnchor()
             } else {
                 ProgressView()
                     .tint(palette.secondary)
