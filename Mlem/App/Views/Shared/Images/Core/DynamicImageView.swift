@@ -24,7 +24,7 @@ struct DynamicImageView: View {
     @State var loader: ImageLoader
     @State var loadingPref: ImageLoadingState?
     @State var quickLookUrl: URL?
-    @State var shouldPlayVideo: Bool = false
+    @State var playing: Bool = false
     
     let showError: Bool
     let cornerRadius: CGFloat
@@ -40,7 +40,7 @@ struct DynamicImageView: View {
         self.showError = showError
         self.cornerRadius = cornerRadius
         self.actionsEnabled = actionsEnabled
-        self._loader = .init(wrappedValue: .init(url: url, maxSize: maxSize))
+        self._loader = .init(wrappedValue: .init(url: url))
     }
     
     var body: some View {
@@ -64,7 +64,11 @@ struct DynamicImageView: View {
     }
     
     var content: some View {
-        media
+        // media
+        MediaView(media: loader.animatedMediaType, playing: $playing)
+            .onTapGesture {
+                playing.toggle()
+            }
             .overlay {
                 if showError, loader.error != nil {
                     errorOverlay
@@ -95,61 +99,6 @@ struct DynamicImageView: View {
                 }
             }
         #endif
-    }
-    
-    @ViewBuilder
-    var media: some View {
-        if let videoAsset = loader.avAsset {
-            // for performance, only render the image in feed and replace with VideoView on demand
-            Image(uiImage: loader.uiImage ?? .blank)
-                .resizable()
-                .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
-                .onTapGesture {
-                    shouldPlayVideo = true
-                }
-                .overlay {
-                    // overlay to prevent visual hitch when swapping views and to implicitly preserve frame/cropping
-                    // TODO: tap should play/pause
-                    if shouldPlayVideo {
-                        VideoView(asset: videoAsset)
-                            .background(ProgressView())
-                            .onTapGesture {
-                                shouldPlayVideo = false
-                            }
-                    }
-                }
-        } else if let url = loader.url, url.proxyAwarePathExtension == "gif" {
-            if let gifData = loader.gifAsset {
-                NukeGifView(data: gifData)
-                    .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
-            } else {
-                Text("No gif data!")
-            }
-        } else if let url = loader.url, url.proxyAwarePathExtension == "webp", let webpData = loader.webpData {
-            // for performance, only render the image in feed and replace with VideoView on demand
-            Image(uiImage: loader.uiImage ?? .blank)
-                .resizable()
-                .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
-                .onTapGesture {
-                    shouldPlayVideo = true
-                }
-                .overlay {
-                    // overlay to prevent visual hitch when swapping views and to implicitly preserve frame/cropping
-                    // TODO: tap should play/pause
-                    if shouldPlayVideo {
-                        AnimatedImage(data: webpData)
-                            .resizable()
-                            .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
-                            .onTapGesture {
-                                shouldPlayVideo = false
-                            }
-                    }
-                }
-        } else {
-            Image(uiImage: loader.uiImage ?? .blank)
-                .resizable()
-                .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
-        }
     }
     
     @ViewBuilder

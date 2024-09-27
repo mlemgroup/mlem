@@ -13,7 +13,19 @@ import NukeUI
 import NukeVideo
 import SwiftUI
 
-struct NukeGifView: UIViewRepresentable {
+struct GifView: View {
+    let data: Data
+    
+    var body: some View {
+        GifView_(data: data)
+            .allowsHitTesting(false)
+            .overlay {
+                Color.clear.contentShape(.rect)
+            }
+    }
+}
+
+private struct GifView_: UIViewRepresentable {
     let data: Data
     
     func makeUIView(context: Context) -> some UIView {
