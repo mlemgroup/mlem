@@ -52,7 +52,7 @@ extension Comment1Providing {
             shareAction()
             
             if self.isOwnComment {
-                editAction(feedback: feedback)
+                editAction()
                 deleteAction(feedback: feedback)
             } else {
                 reportAction()
@@ -101,10 +101,10 @@ extension Comment1Providing {
     
     // MARK: Actions
     
-    func editAction(feedback: Set<FeedbackType>) -> BasicAction {
+    func editAction() -> BasicAction {
         .init(
             id: "edit\(uid)",
-            appearance: .init(label: "Edit", color: Palette.main.accent, icon: Icons.edit),
+            appearance: .edit(),
             callback: api.canInteract ? { self.showEditSheet() } : nil
         )
     }

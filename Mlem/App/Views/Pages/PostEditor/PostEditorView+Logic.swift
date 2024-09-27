@@ -26,10 +26,9 @@ extension PostEditorView {
     }
     
     var canSubmit: Bool {
-        !titleIsEmpty
-            && targets.allSatisfy { $0.community != nil && $0.resolutionState == .success }
-            && link != .waiting
-            && (imageManager?.state.isDone ?? true)
+        if !(imageManager?.state.isDone ?? true) || link == .waiting { return false }
+        if postToEdit != nil { return true }
+        return !titleIsEmpty && targets.allSatisfy { $0.community != nil && $0.resolutionState == .success }
     }
     
     // ApiClient for uploading images etc
@@ -38,17 +37,44 @@ extension PostEditorView {
     }
     
     @MainActor
-    func send() async {
+    func submit() async {
         uploadHistory.deleteWhereNotPresent(in: contentTextView.text)
+        if postToEdit != nil {
+            await editPost()
+        } else {
+            await send()
+        }
+    }
+    
+    private func editPost() async {
+        guard let post = postToEdit else { return }
+        do {
+            try await post.edit(
+                title: titleTextView.text,
+                content: contentTextView.text,
+                linkUrl: imageManager?.image?.url ?? link.url ?? imageUrl,
+                altText: post.altText,
+                thumbnail: nil,
+                nsfw: hasNsfwTag,
+                languageId: post.languageId
+            )
+            HapticManager.main.play(haptic: .success, priority: .low)
+            dismiss()
+        } catch {
+            handleError(error)
+            sending = false
+        }
+    }
+    
+    private func send() async {
         let validTargets = targets.filter { $0.sendState != .sent }
-        
         let posts = await withTaskGroup(
             of: (target: PostEditorTarget, post: Post2?).self,
             returning: [Post2].self
         ) { taskGroup in
             for target in validTargets {
                 if let community = target.community as? any Community {
-                    taskGroup.addTask {
+                    taskGroup.addTask { @MainActor in
                         let post: Post2?
                         do {
                             post = try await community.api.createPost(
@@ -59,7 +85,6 @@ extension PostEditorView {
                                 nsfw: hasNsfwTag
                             )
                         } catch {
-                            print(error)
                             post = nil
                         }
                         return (target, post)

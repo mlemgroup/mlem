@@ -118,4 +118,8 @@ extension ActionAppearance {
             swipeIcon2: isOn ? Icons.markUnreadFill : Icons.markReadFill
         )
     }
+    
+    static func edit() -> Self {
+        .init(label: "Edit", color: Palette.main.accent, icon: Icons.edit)
+    }
 }

@@ -67,6 +67,8 @@ class Settings: ObservableObject {
     
     @AppStorage("status.bypassImageProxyShown") var bypassImageProxyShown: Bool = false
     
+    @AppStorage("tip.feedWelcomePrompt") var showFeedWelcomePrompt: Bool = true
+    
     var codable: CodableSettings { .init(from: self) }
     
     @MainActor

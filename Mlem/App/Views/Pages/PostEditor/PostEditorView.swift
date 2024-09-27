@@ -30,30 +30,47 @@ struct PostEditorView: View {
     @State var titleTextView: UITextView
     @State var contentTextView: UITextView
     
+    @State var postToEdit: Post2?
     @State var presentationSelection: PresentationDetent = .large
     @State var titleIsEmpty: Bool = true
     @State var contentIsEmpty: Bool = true
     @State var lastFocusedField: Field = .title
     @State var hasNsfwTag: Bool = false
     @State var link: LinkState = .none
+    @State var imageUrl: URL?
     @State var imageManager: ImageUploadManager?
     @State var uploadHistory: ImageUploadHistoryManager = .init()
     @State var sending: Bool = false
         
     @State var targets: [PostEditorTarget]
     
-    init?(community: AnyCommunity?) {
+    init?(
+        postToEdit: Post2? = nil,
+        community: AnyCommunity?
+    ) {
         if let account = (AppState.main.firstAccount as? UserAccount) {
             self._targets = .init(wrappedValue: [.init(community: community?.wrappedValue, account: account)])
         } else {
             return nil
         }
+        self.postToEdit = postToEdit
         self.titleTextView = .init()
         self.contentTextView = .init()
         titleTextView.tag = 0
         titleTextView.backgroundColor = UIColor(Palette.main.background)
         contentTextView.tag = 1
         contentTextView.backgroundColor = UIColor(Palette.main.background)
+        
+        titleTextView.text = postToEdit?.title ?? ""
+        contentTextView.text = postToEdit?.content ?? ""
+        self._hasNsfwTag = .init(wrappedValue: postToEdit?.nsfw ?? false)
+        if let url = postToEdit?.linkUrl {
+            if url.isMedia {
+                self._imageUrl = .init(wrappedValue: url)
+            } else {
+                self._link = .init(wrappedValue: .value(url))
+            }
+        }
     }
     
     var body: some View {
@@ -65,8 +82,12 @@ struct PostEditorView: View {
                     .background(palette.background)
             }
             .onAppear {
+                contentTextView.resignFirstResponder()
                 titleTextView.becomeFirstResponder()
             }
+        }
+        .onChange(of: imageManager?.image) {
+            imageUrl = imageManager?.image?.url
         }
         .onChange(of: presentationSelection) {
             if presentationSelection == .large {
@@ -146,8 +167,8 @@ struct PostEditorView: View {
                             .padding(.horizontal, 12)
                             .transition(attachmentTransition)
                     }
-                    if let imageManager {
-                        imageView(imageManager: imageManager)
+                    if imageManager != nil || imageUrl != nil {
+                        imageView
                             .padding(.horizontal, 12)
                             .transition(attachmentTransition)
                     }
@@ -187,24 +208,32 @@ struct PostEditorView: View {
     
     @ViewBuilder
     var targetSelectionView: some View {
-        VStack(spacing: Constants.main.standardSpacing) {
-            ForEach(targets, id: \.id) { target in
-                HStack(spacing: 0) {
-                    PostEditorTargetView(target: target)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    if targets.count > 1 {
-                        Button("Remove", systemImage: Icons.closeCircleFill) {
-                            if let index = targets.firstIndex(where: { $0.id == target.id }) {
+        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+            if let postToEdit {
+                FullyQualifiedLinkView(
+                    entity: postToEdit.community,
+                    labelStyle: .medium,
+                    showAvatar: true
+                )
+                .padding(.horizontal)
+                Divider()
+            } else {
+                ForEach(Array(targets.enumerated()), id: \.element.id) { index, target in
+                    HStack(spacing: 0) {
+                        PostEditorTargetView(target: target)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        if targets.count > 1 {
+                            Button("Remove", systemImage: Icons.closeCircleFill) {
                                 targets.remove(at: index)
                             }
+                            .symbolRenderingMode(.hierarchical)
+                            .imageScale(.large)
+                            .labelStyle(.iconOnly)
+                            .padding(.trailing)
                         }
-                        .symbolRenderingMode(.hierarchical)
-                        .imageScale(.large)
-                        .labelStyle(.iconOnly)
-                        .padding(.trailing)
                     }
+                    Divider()
                 }
-                Divider()
             }
             let showWarning = !targets.allSatisfy { $0.sendState != .failed }
             Group {

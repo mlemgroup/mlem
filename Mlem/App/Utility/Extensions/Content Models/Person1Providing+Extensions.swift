@@ -28,13 +28,13 @@ extension Person1Providing {
         let intervalSinceCreation = Date.now.timeIntervalSince(created)
         if intervalSinceCreation < 30 * 24 * 60 * 60 {
             output.insert(.new(intervalSinceCreation))
-        }
-        
-        let calendar = Calendar.current
-        let createdComponents = calendar.dateComponents([.month, .day], from: created)
-        let currentComponents = calendar.dateComponents([.month, .day], from: .now)
-        if createdComponents.month == currentComponents.month, createdComponents.day == currentComponents.day {
-            output.insert(.cakeDay)
+        } else {
+            let calendar = Calendar.current
+            let createdComponents = calendar.dateComponents([.month, .day], from: created)
+            let currentComponents = calendar.dateComponents([.month, .day], from: .now)
+            if createdComponents.month == currentComponents.month, createdComponents.day == currentComponents.day {
+                output.insert(.cakeDay)
+            }
         }
         
         if let interactable {

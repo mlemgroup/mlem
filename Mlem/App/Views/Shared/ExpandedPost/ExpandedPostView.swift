@@ -57,6 +57,19 @@ struct ExpandedPostView: View {
                         }
                 }
             }
+            .refreshable {
+                _ = await Task {
+                    do {
+                        try await post.refresh(upgradeOperation: nil)
+                    } catch {
+                        handleError(error)
+                    }
+                    if let tracker {
+                        tracker.clear()
+                        await load(tracker: tracker)
+                    }
+                }.result
+            }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .overlay {
                 VStack {
