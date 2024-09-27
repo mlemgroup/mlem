@@ -32,7 +32,7 @@ private struct MarkReadOnScroll: ViewModifier {
             .onGeometryChange(for: Bool.self) { geometry in
                 geometry.frame(in: .global).maxY < 0
             } action: { wasAboveTop, isAboveTop in
-                if !wasAboveTop, isAboveTop {
+                if markReadOnScroll, !wasAboveTop, isAboveTop {
                     post.updateRead(true, shouldQueue: true)
                 }
             }
