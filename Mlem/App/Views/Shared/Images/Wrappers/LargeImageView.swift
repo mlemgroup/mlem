@@ -27,7 +27,7 @@ struct LargeImageView: View {
         self._blurred = .init(wrappedValue: shouldBlur)
     }
     
-    @State private var loading: ImageLoadingState?
+    @State private var loading: MediaLoadingState?
 
     var body: some View {
         DynamicMediaView(url: url)
@@ -56,6 +56,6 @@ struct LargeImageView: View {
                     }
                 }
             }
-            .onPreferenceChange(ImageLoadingPreferenceKey.self, perform: { loading = $0 })
+            .onPreferenceChange(MediaLoadingPreferenceKey.self, perform: { loading = $0 })
     }
 }

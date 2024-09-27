@@ -1,5 +1,5 @@
 //
-//  ImageLoader.swift
+//  MediaLoader.swift
 //  Mlem
 //
 //  Created by Sjmarf on 10/08/2024.
@@ -46,13 +46,13 @@ enum MediaType {
 }
 
 @Observable
-class ImageLoader {
+class MediaLoader {
     @ObservationIgnored @Setting(\.autoBypassImageProxy) var bypassImageProxy
     
     private(set) var url: URL?
     private var proxyBypass: URL?
-    private(set) var animatedMediaType: MediaType
-    private(set) var loading: ImageLoadingState
+    private(set) var mediaType: MediaType
+    private(set) var loading: MediaLoadingState
     private(set) var error: ImageLoadingError?
     
     init(url: URL?) {
@@ -64,12 +64,12 @@ class ImageLoader {
         }
         
         if let url, let container = ImagePipeline.shared.cache.cachedImage(for: .init(url: url)) {
-            self.animatedMediaType = container.animatedMediaType
+            self.mediaType = container.animatedMediaType
             self.loading = .done
             return
         }
         
-        self.animatedMediaType = .image(.blank)
+        self.mediaType = .image(.blank)
         self.loading = url == nil ? .failed : .loading
     }
     
@@ -81,7 +81,7 @@ class ImageLoader {
             
             let container = try await imageTask.response.container
             
-            animatedMediaType = container.animatedMediaType
+            mediaType = container.animatedMediaType
             loading = .done
             return
         } catch {
@@ -143,7 +143,6 @@ func generateAVThumbnail(asset: AVAsset) -> UIImage {
     do {
         return try .init(cgImage: assetImgGenerate.copyCGImage(at: time, actualTime: nil))
     } catch {
-        // TODO: elegantly handle
         print(error)
         return .blank
     }

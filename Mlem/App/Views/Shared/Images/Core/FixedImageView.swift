@@ -14,7 +14,7 @@ import SwiftUI
 struct FixedImageView: View {
     @Environment(Palette.self) var palette
     
-    @State var loadingPref: ImageLoadingState? // tracked separately to allow correct propagation of inital value
+    @State var loadingPref: MediaLoadingState? // tracked separately to allow correct propagation of inital value
     
     @State var loader: FixedImageLoader
     let fallback: Fallback
@@ -23,7 +23,7 @@ struct FixedImageView: View {
     
     /// Enumeration of placeholder images to use if image loading fails
     enum Fallback {
-        case person, community, instance, favicon, image
+        case person, community, instance, favicon, image, movie
         
         var icon: String {
             switch self {
@@ -32,6 +32,7 @@ struct FixedImageView: View {
             case .instance: Icons.instanceCircleFill
             case .favicon: Icons.browser
             case .image: Icons.missing
+            case .movie: "film"
             }
         }
     }
@@ -49,27 +50,37 @@ struct FixedImageView: View {
         self.blurred = blurred
     }
     
+    var isMovie: Bool { loader.url?.proxyAwarePathExtension?.isMovieExtension ?? false }
+    
     var body: some View {
         Color.clear
             .contentShape(.rect)
             .overlay {
                 content
                     .onAppear {
-                        Task {
+                        Task(priority: .background) {
                             await loader.load()
                         }
                     }
                     .aspectRatio(1, contentMode: .fill)
                     .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
-                    .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
+                    .preference(key: MediaLoadingPreferenceKey.self, value: loadingPref)
                     .allowsHitTesting(false)
             }
     }
     
     @ViewBuilder
     var content: some View {
-        if loader.loading == .failed || loader.loading == .proxyFailed || (loader.loading == .loading && !showProgress) {
+        if loader.loading == .failed
+            || isMovie
+            || loader.loading == .proxyFailed
+            || (loader.loading == .loading && !showProgress) {
             fallbackImage
+                .overlay {
+                    if loader.isAnimated {
+                        PlayButton()
+                    }
+                }
         } else {
             if loader.loading == .loading {
                 ProgressView().tint(.secondary)
@@ -99,8 +110,8 @@ struct FixedImageView: View {
         case .favicon:
             Image(systemName: fallback.icon)
                 .foregroundStyle(palette.secondary)
-        case .image:
-            let icon: String = loader.loading == .failed ? fallback.icon : Icons.proxy
+        case .image, .movie:
+            let icon: String = (loader.loading == .failed || isMovie) ? fallback.icon : Icons.proxy
             Image(systemName: icon)
                 .font(.title)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)

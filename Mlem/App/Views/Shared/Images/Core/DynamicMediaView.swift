@@ -21,8 +21,8 @@ struct DynamicMediaView: View {
     
     @Setting(\.bypassImageProxyShown) var bypassImageProxyShown
     
-    @State var loader: ImageLoader
-    @State var loadingPref: ImageLoadingState?
+    @State var loader: MediaLoader
+    @State var loadingPref: MediaLoadingState?
     @State var quickLookUrl: URL?
     @State var playing: Bool
     
@@ -66,11 +66,11 @@ struct DynamicMediaView: View {
     }
     
     var content: some View {
-        MediaView(media: loader.animatedMediaType, playing: $playing)
+        MediaView(media: loader.mediaType, playing: $playing)
             .overlay {
                 if showError, loader.error != nil {
                     errorOverlay
-                } else if loader.animatedMediaType.isAnimated {
+                } else if loader.mediaType.isAnimated {
                     if playing {
                         Color.clear.contentShape(.rect)
                             .onTapGesture {
@@ -86,7 +86,7 @@ struct DynamicMediaView: View {
             }
             .clipShape(.rect(cornerRadius: cornerRadius))
             .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
-            .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
+            .preference(key: MediaLoadingPreferenceKey.self, value: loadingPref)
             .onAppear {
                 Task {
                     await loader.load()

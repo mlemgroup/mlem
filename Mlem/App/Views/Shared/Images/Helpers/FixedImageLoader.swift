@@ -5,6 +5,7 @@
 //  Created by Eric Andrews on 2024-09-01.
 //
 
+import AVFoundation
 import Foundation
 import Nuke
 import SwiftUI
@@ -17,7 +18,7 @@ class FixedImageLoader {
     private var proxyBypass: URL?
     private(set) var uiImage: UIImage?
     private(set) var isAnimated: Bool
-    private(set) var loading: ImageLoadingState
+    private(set) var loading: MediaLoadingState
     private(set) var error: Error?
     private(set) var size: CGSize
     
@@ -30,16 +31,19 @@ class FixedImageLoader {
         }
         self.size = size
         
-        if let url {
-            if let container = ImagePipeline.shared.cache.cachedImage(for: .init(
-                url: url,
-                processors: [.resize(size: size, crop: true)]
-            )) {
-                self.isAnimated = container.animatedMediaType.isAnimated
-                self.uiImage = container.image
-                self.loading = .done
-                return
-            }
+        if url?.proxyAwarePathExtension?.isMovieExtension ?? false {
+            self.isAnimated = true
+            self.uiImage = nil
+            self.loading = .done
+            return
+        } else if let url, let container = ImagePipeline.shared.cache.cachedImage(for: .init(
+            url: url,
+            processors: [.resize(size: size, crop: true)]
+        )) {
+            self.isAnimated = container.animatedMediaType.isAnimated
+            self.uiImage = container.image
+            self.loading = .done
+            return
         }
 
         self.isAnimated = false
@@ -47,21 +51,19 @@ class FixedImageLoader {
         self.loading = url == nil ? .failed : .loading
     }
     
-    @MainActor
     func load() async {
         guard let url, loading == .loading else { return }
         do {
-            let imageTask = ImagePipeline.shared.imageTask(with: .init(
-                url: url,
-                processors: [.resize(size: size, contentMode: .aspectFit)]
-            ))
-            imageTask.priority = .veryHigh
-            
-            let container = try await imageTask.response.container
-            
-            isAnimated = container.animatedMediaType.isAnimated
-            uiImage = container.image
-            loading = .done
+            if !(url.proxyAwarePathExtension?.isMovieExtension ?? false) {
+                let imageTask = ImagePipeline.shared.imageTask(with: .init(
+                    url: url,
+                    processors: [.resize(size: size, crop: true)]
+                ))
+                let container = try await imageTask.response.container
+                isAnimated = container.animatedMediaType.isAnimated
+                uiImage = container.image
+                loading = .done
+            }
         } catch {
             if autoBypassImageProxy, proxyBypass != nil {
                 await bypassProxy()

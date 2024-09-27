@@ -14,7 +14,7 @@ struct ThumbnailImageView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.openURL) var openURL
     
-    @State var loading: ImageLoadingState?
+    @State var loading: MediaLoadingState?
     @State var quickLookUrl: URL?
     
     let post: any Post1Providing
@@ -104,12 +104,12 @@ struct ThumbnailImageView: View {
             FixedImageView(
                 url: url,
                 size: frame,
-                fallback: .image,
+                fallback: url.proxyAwarePathExtension?.isMovieExtension ?? false ? .movie : .image,
                 showProgress: true
             )
             .dynamicBlur(blurred: blurred && loading == .done)
             .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
-            .onPreferenceChange(ImageLoadingPreferenceKey.self, perform: { loading = $0 })
+            .onPreferenceChange(MediaLoadingPreferenceKey.self, perform: { loading = $0 })
         } else {
             Image(systemName: post.placeholderImageName)
                 .font(.title)
@@ -132,7 +132,7 @@ struct ThumbnailImageView: View {
                 showProgress: true
             )
             .dynamicBlur(blurred: blurred)
-            .onPreferenceChange(ImageLoadingPreferenceKey.self, perform: { loading = $0 })
+            .onPreferenceChange(MediaLoadingPreferenceKey.self, perform: { loading = $0 })
         } else {
             Image(systemName: post.placeholderImageName)
                 .resizable()
