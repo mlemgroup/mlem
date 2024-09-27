@@ -12,9 +12,7 @@ struct PlayButton: View {
     
     let fontSize: CGFloat
     
-    init() {
-        @Setting(\.postSize) var postSize
-        
+    init(postSize: PostSize) {
         self.fontSize = switch postSize {
         case .compact, .headline: 10
         case .tile: 20

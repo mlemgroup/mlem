@@ -14,6 +14,8 @@ import SwiftUI
 struct FixedImageView: View {
     @Environment(Palette.self) var palette
     
+    @Setting(\.postSize) var postSize
+    
     @State var loadingPref: MediaLoadingState? // tracked separately to allow correct propagation of inital value
     
     @State var loader: FixedImageLoader
@@ -78,7 +80,7 @@ struct FixedImageView: View {
             fallbackImage
                 .overlay {
                     if loader.isAnimated {
-                        PlayButton()
+                        PlayButton(postSize: postSize)
                     }
                 }
         } else {
@@ -91,7 +93,7 @@ struct FixedImageView: View {
                     .dynamicBlur(blurred: blurred)
                     .overlay {
                         if loader.isAnimated {
-                            PlayButton()
+                            PlayButton(postSize: postSize)
                         }
                     }
             }

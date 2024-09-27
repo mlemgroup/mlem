@@ -77,7 +77,7 @@ struct DynamicMediaView: View {
                                 playing = false
                             }
                     } else {
-                        PlayButton()
+                        PlayButton(postSize: .large)
                             .onTapGesture {
                                 playing = true
                             }
