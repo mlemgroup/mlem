@@ -20,7 +20,7 @@ struct ImageViewer: View {
     
     var body: some View {
         ZoomableContainer {
-            DynamicMediaView(url: url)
+            DynamicMediaView(url: url, playImmediately: true)
                 .padding(Constants.main.standardSpacing)
         }
         .toolbar {
