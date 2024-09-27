@@ -66,12 +66,26 @@ struct DynamicMediaView: View {
     var content: some View {
         // media
         MediaView(media: loader.animatedMediaType, playing: $playing)
-            .onTapGesture {
-                playing.toggle()
-            }
             .overlay {
                 if showError, loader.error != nil {
                     errorOverlay
+                } else if loader.animatedMediaType.isAnimated {
+                    if playing {
+                        Color.clear.contentShape(.rect)
+                            .onTapGesture {
+                                playing = false
+                            }
+                    } else {
+                        Image(systemName: "play.fill")
+                            .font(.title)
+                            .foregroundStyle(palette.background)
+                            .padding(20)
+                            .background(Circle().fill(.ultraThinMaterial))
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .onTapGesture {
+                                playing = true
+                            }
+                    }
                 }
             }
             .clipShape(.rect(cornerRadius: cornerRadius))
