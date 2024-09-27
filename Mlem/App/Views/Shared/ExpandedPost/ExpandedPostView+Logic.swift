@@ -10,16 +10,7 @@ import SwiftUI
 
 extension ExpandedPostView {
     var showLoadingSymbol: Bool {
-        false
-        // !(highlightedComment == nil || (post.wrappedValue is any Post3Providing && scrolledToHighlightedComment))
-    }
-    
-    func load(tracker: CommentTreeTracker) async {
-        if let highlightedComment {
-            await tracker.load(ensuringPresenceOf: highlightedComment)
-        } else {
-            await tracker.load()
-        }
+        !(highlightedComment == nil || (post is any Post3Providing && scrolledToHighlightedComment))
     }
     
     func topCommentRow(of anchors: AnchorsKey.Value, in proxy: GeometryProxy) -> URL? {
@@ -37,7 +28,7 @@ extension ExpandedPostView {
     func scrollToNextComment() {
         guard let tracker else { return }
         if let topVisibleItem {
-            if topVisibleItem == root.wrappedValue.actorId, let first = tracker.comments.first {
+            if topVisibleItem == post?.actorId, let first = tracker.comments.first {
                 jumpButtonTarget = first.actorId
                 return
             }
@@ -52,11 +43,11 @@ extension ExpandedPostView {
     
     func scrollToPreviousComment() {
         guard let tracker else { return }
-        if let topVisibleItem, topVisibleItem != root.wrappedValue.actorId {
+        if let topVisibleItem, topVisibleItem != post?.actorId {
             if let comment = tracker.commentsKeyedByActorId[topVisibleItem] {
                 if var topLevelIndex = tracker.comments.firstIndex(of: comment.topParent) {
                     if topLevelIndex < 0 || comment == tracker.comments.first {
-                        jumpButtonTarget = root.wrappedValue.actorId
+                        jumpButtonTarget = post?.actorId
                     } else {
                         if comment.parent == nil { topLevelIndex -= 1 }
                         jumpButtonTarget = tracker.comments[topLevelIndex].actorId

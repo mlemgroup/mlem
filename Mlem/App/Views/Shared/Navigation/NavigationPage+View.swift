@@ -41,9 +41,11 @@ extension NavigationPage {
         case let .report(target, community):
             ReportComposerView(target: target.wrappedValue, community: community)
         case let .post(post, highlightedComment, communityContext, navigationNamespace):
-            ExpandedPostView(post: post, highlightedComment: highlightedComment?.wrappedValue)
+            PostPage(post: post, highlightedComment: highlightedComment?.wrappedValue)
                 .environment(\.communityContext, communityContext?.wrappedValue)
                 .navigationTransition_(sourceID: "post\(post.wrappedValue.actorId)", in: navigationNamespace)
+        case let .comment(comment):
+            CommentPage(comment: comment)
         case let .person(person):
             PersonView(person: person)
         case let .createComment(context, commentTreeTracker):

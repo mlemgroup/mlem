@@ -8,7 +8,7 @@
 import MlemMiddleware
 import SwiftUI
 
-struct ExpandedPostView: View {
+struct ExpandedPostView<Content: View>: View {
     struct AnchorsKey: PreferenceKey {
         // swiftlint:disable:next nesting
         typealias Value = [URL?: Anchor<CGPoint>]
@@ -19,18 +19,6 @@ struct ExpandedPostView: View {
             value.merge(nextValue()) { $1 }
         }
     }
-    
-    enum Root {
-        case post(AnyPost)
-        case comment(AnyComment)
-        
-        var wrappedValue: any ContentModel & ActorIdentifiable {
-            switch self {
-            case let .post(post): post.wrappedValue
-            case let .comment(comment): comment.wrappedValue
-            }
-        }
-    }
 
     @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
@@ -39,71 +27,42 @@ struct ExpandedPostView: View {
     @Setting(\.jumpButton) var jumpButton
     @Setting(\.compactComments) var compactComments
     
-    let root: Root
-    @State var tracker: CommentTreeTracker?
-    @State var highlightedComment: (any CommentStubProviding)?
-    @State var scrolledToHighlightedComment: Bool
+    var post: (any PostStubProviding)?
+    let isLoading: Bool
+    let content: Content
     
+    @Binding var tracker: CommentTreeTracker?
+    @State var highlightedComment: (any CommentStubProviding)?
+
+    @State var scrolledToHighlightedComment: Bool = false
     @State var jumpButtonTarget: URL?
     @State var topVisibleItem: URL?
     
-    init(post: AnyPost, highlightedComment: (any CommentStubProviding)?) {
-        self.root = .post(post)
+    init(
+        post: (any PostStubProviding)?,
+        isLoading: Bool,
+        tracker: Binding<CommentTreeTracker?>,
+        highlightedComment: (any CommentStubProviding)?,
+        @ViewBuilder content: () -> Content = { EmptyView() }
+    ) {
+        self.post = post
+        self.isLoading = isLoading
+        self.content = content()
+        self._tracker = tracker
         self._highlightedComment = .init(wrappedValue: highlightedComment)
-        self._scrolledToHighlightedComment = .init(wrappedValue: highlightedComment == nil)
-        if let post = post.wrappedValue as? any Post {
-            self._tracker = .init(wrappedValue: .init(root: .post(post)))
-        } else {
-            self._tracker = .init(wrappedValue: nil)
-        }
-    }
-    
-    init(comment: AnyComment, highlightedComment: (any CommentStubProviding)?) {
-        self.root = .comment(comment)
-        self._highlightedComment = .init(wrappedValue: highlightedComment)
-        self._scrolledToHighlightedComment = .init(wrappedValue: highlightedComment == nil)
-        if let comment = comment.wrappedValue as? any Comment {
-            self._tracker = .init(wrappedValue: .init(root: .comment(comment, parentCount: 1)))
-        } else {
-            self._tracker = .init(wrappedValue: nil)
-        }
     }
     
     var body: some View {
-        switch root {
-        case let .post(post):
-            ContentLoader(model: post) { proxy in
-                topContent(post: proxy.entity, isLoading: proxy.isLoading)
-            } upgradeOperation: { model, api in
-                try await model.upgrade(api: api, upgradeOperation: nil)
-                if let post = model.wrappedValue as? any Post {
-                    if let tracker {
-                        tracker.root = .post(post)
-                        tracker.loadingState = .idle
-                        await load(tracker: tracker)
-                    } else {
-                        tracker = .init(root: .post(post))
-                    }
-                }
-            }
-            .background(palette.groupedBackground)
-        case .comment:
-            Text("Comment")
-        }
-    }
-    
-    @ViewBuilder
-    func topContent(post: (any Post)?, isLoading: Bool) -> some View {
         // Using a `ZStack` here rather than `if`/`else` because there needs to
         // be a delay between the `content()` appearing and calling `scrollTo`
         VStack {
-            if let post {
+            if let post = post as? any Post {
                 content(post: post, isLoading: isLoading)
                     .externalApiWarning(entity: post, isLoading: isLoading)
                     .task(id: tracker == nil) {
                         if let tracker, post.api == appState.firstApi, tracker.loadingState == .idle {
                             // post.markRead()
-                            await load(tracker: tracker)
+                            await tracker.load()
                         }
                     }
             }
@@ -153,23 +112,22 @@ struct ExpandedPostView: View {
                                 value: .center
                             ) { [post.actorId: $0] }
                             .padding(.horizontal, Constants.main.standardSpacing)
-                        if let post = post as? any Post3Providing, !post.crossPosts.isEmpty {
-                            CrossPostListView(post: post)
+                        content
+                        if let tracker {
+                            ForEach(tracker.comments.tree(), id: \.actorId) { comment in
+                                CommentView(
+                                    comment: comment,
+                                    highlight: highlightedComment?.actorId == comment.actorId,
+                                    depthOffset: tracker.proposedDepthOffset
+                                )
+                                .transition(.move(edge: .top).combined(with: .opacity))
+                                .zIndex(1000 - Double(comment.depth))
+                                .anchorPreference(
+                                    key: AnchorsKey.self,
+                                    value: .center
+                                ) { [comment.actorId: $0] }
                                 .padding(.horizontal, Constants.main.standardSpacing)
-                        }
-                        ForEach(tracker?.comments.tree() ?? [], id: \.actorId) { comment in
-                            CommentView(
-                                comment: comment,
-                                highlight: highlightedComment?.actorId == comment.actorId,
-                                depthOffset: 0
-                            )
-                            .transition(.move(edge: .top).combined(with: .opacity))
-                            .zIndex(1000 - Double(comment.depth))
-                            .anchorPreference(
-                                key: AnchorsKey.self,
-                                value: .center
-                            ) { [comment.actorId: $0] }
-                            .padding(.horizontal, Constants.main.standardSpacing)
+                            }
                         }
                     }
                     .animation(.easeInOut(duration: 0.4), value: highlightedComment?.actorId)
@@ -234,7 +192,7 @@ struct ExpandedPostView: View {
             })
         ) {
             ForEach(ApiCommentSortType.allCases, id: \.self) { item in
-                if (root.wrappedValue.api.fetchedVersion ?? .infinity) >= item.minimumVersion {
+                if (post?.api.fetchedVersion ?? .infinity) >= item.minimumVersion {
                     Label(String(localized: item.label), systemImage: item.systemImage)
                 }
             }

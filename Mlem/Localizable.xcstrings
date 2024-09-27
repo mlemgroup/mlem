@@ -249,9 +249,6 @@
     "Code Block" : {
 
     },
-    "Comment" : {
-
-    },
     "Comment was deleted" : {
 
     },
@@ -1278,6 +1275,9 @@
 
     },
     "Version" : {
+
+    },
+    "View All Comments" : {
 
     },
     "Viewing %@ as guest" : {

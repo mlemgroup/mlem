@@ -23,7 +23,9 @@ struct CommentView: View {
     var inFeed: Bool = false // flag to suppress threading/collapsing behavior
     var depthOffset: Int = 0
     
-    var depth: Int { inFeed ? 0 : comment.depth - depthOffset }
+    var depth: Int {
+        inFeed ? 0 : comment.depth - depthOffset
+    }
     
     var body: some View {
         if inFeed {

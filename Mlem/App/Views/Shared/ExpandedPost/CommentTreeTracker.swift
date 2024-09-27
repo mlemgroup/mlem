@@ -42,6 +42,14 @@ class CommentTreeTracker: Hashable {
         self.root = root
     }
     
+    var proposedDepthOffset: Int {
+        switch root {
+        case let .comment(comment, parentCount: parentCount):
+            max(0, comment.depth - parentCount - 1)
+        default: 0
+        }
+    }
+    
     private var appState: AppState { .main }
     
     func load(ensuringPresenceOf ensuredComment: (any CommentStubProviding)? = nil) async {
