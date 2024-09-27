@@ -19,6 +19,18 @@ struct ExpandedPostView: View {
             value.merge(nextValue()) { $1 }
         }
     }
+    
+    enum Root {
+        case post(AnyPost)
+        case comment(AnyComment)
+        
+        var wrappedValue: any ContentModel & ActorIdentifiable {
+            switch self {
+            case let .post(post): post.wrappedValue
+            case let .comment(comment): comment.wrappedValue
+            }
+        }
+    }
 
     @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
@@ -27,7 +39,7 @@ struct ExpandedPostView: View {
     @Setting(\.jumpButton) var jumpButton
     @Setting(\.compactComments) var compactComments
     
-    let post: AnyPost
+    let root: Root
     @State var tracker: CommentTreeTracker?
     @State var highlightedComment: (any CommentStubProviding)?
     @State var scrolledToHighlightedComment: Bool
@@ -36,7 +48,7 @@ struct ExpandedPostView: View {
     @State var topVisibleItem: URL?
     
     init(post: AnyPost, highlightedComment: (any CommentStubProviding)?) {
-        self.post = post
+        self.root = .post(post)
         self._highlightedComment = .init(wrappedValue: highlightedComment)
         self._scrolledToHighlightedComment = .init(wrappedValue: highlightedComment == nil)
         if let post = post.wrappedValue as? any Post {
@@ -46,67 +58,80 @@ struct ExpandedPostView: View {
         }
     }
     
+    init(comment: AnyComment, highlightedComment: (any CommentStubProviding)?) {
+        self.root = .comment(comment)
+        self._highlightedComment = .init(wrappedValue: highlightedComment)
+        self._scrolledToHighlightedComment = .init(wrappedValue: highlightedComment == nil)
+        if let comment = comment.wrappedValue as? any Comment {
+            self._tracker = .init(wrappedValue: .init(root: .comment(comment, parentCount: 1)))
+        } else {
+            self._tracker = .init(wrappedValue: nil)
+        }
+    }
+    
     var body: some View {
-        ContentLoader(model: post) { proxy in
-            // Using a `ZStack` here rather than `if`/`else` because there needs to
-            // be a delay between the `content()` appearing and calling `scrollTo`
-            VStack {
-                if let post = proxy.entity {
-                    content(post: post, isLoading: proxy.isLoading)
-                        .externalApiWarning(entity: post, isLoading: proxy.isLoading)
-                        .task(id: tracker == nil) {
-                            if let tracker, post.api == appState.firstApi, tracker.loadingState == .idle {
-                                // post.markRead()
-                                await load(tracker: tracker)
-                            }
-                        }
-                }
-            }
-            .refreshable {
-                _ = await Task {
-                    do {
-                        try await post.refresh(upgradeOperation: nil)
-                    } catch {
-                        handleError(error)
-                    }
+        switch root {
+        case let .post(post):
+            ContentLoader(model: post) { proxy in
+                topContent(post: proxy.entity, isLoading: proxy.isLoading)
+            } upgradeOperation: { model, api in
+                try await model.upgrade(api: api, upgradeOperation: nil)
+                if let post = model.wrappedValue as? any Post {
                     if let tracker {
-                        tracker.clear()
-                        await load(tracker: tracker)
-                    }
-                }.result
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .overlay {
-                VStack {
-                    if showLoadingSymbol {
-                        ZStack {
-                            palette.background
-                                .ignoresSafeArea()
-                            ProgressView()
-                                .tint(.secondary)
-                        }
-                        .transition(.opacity)
-                    }
-                }
-                .animation(.easeOut(duration: 0.1), value: showLoadingSymbol)
-            }
-        } upgradeOperation: { model, api in
-            try await model.upgrade(api: api, upgradeOperation: nil)
-            if let post = model.wrappedValue as? any Post {
-                if let tracker {
-                    if tracker.root.wrappedValue.id != post.id {
                         tracker.root = .post(post)
                         tracker.loadingState = .idle
-                        Task {
+                        await load(tracker: tracker)
+                    } else {
+                        tracker = .init(root: .post(post))
+                    }
+                }
+            }
+            .background(palette.groupedBackground)
+        case .comment:
+            Text("Comment")
+        }
+    }
+    
+    @ViewBuilder
+    func topContent(post: (any Post)?, isLoading: Bool) -> some View {
+        // Using a `ZStack` here rather than `if`/`else` because there needs to
+        // be a delay between the `content()` appearing and calling `scrollTo`
+        VStack {
+            if let post {
+                content(post: post, isLoading: isLoading)
+                    .externalApiWarning(entity: post, isLoading: isLoading)
+                    .task(id: tracker == nil) {
+                        if let tracker, post.api == appState.firstApi, tracker.loadingState == .idle {
+                            // post.markRead()
                             await load(tracker: tracker)
                         }
                     }
-                } else {
-                    tracker = .init(root: .post(post))
+            }
+        }
+        .refreshable {
+            _ = await Task {
+                do {
+                    // try await post.refresh(upgradeOperation: nil)
+                } catch {
+                    handleError(error)
                 }
             }
         }
-        .background(palette.groupedBackground)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .overlay {
+            VStack {
+                if showLoadingSymbol {
+                    ZStack {
+                        palette.background
+                            .ignoresSafeArea()
+                        ProgressView()
+                            .tint(.secondary)
+                    }
+                    .transition(.opacity)
+                }
+            }
+            .animation(.easeOut(duration: 0.1), value: showLoadingSymbol)
+        }
     }
     
     // swiftlint:disable:next function_body_length
@@ -209,7 +234,7 @@ struct ExpandedPostView: View {
             })
         ) {
             ForEach(ApiCommentSortType.allCases, id: \.self) { item in
-                if (post.wrappedValue.api.fetchedVersion ?? .infinity) >= item.minimumVersion {
+                if (root.wrappedValue.api.fetchedVersion ?? .infinity) >= item.minimumVersion {
                     Label(String(localized: item.label), systemImage: item.systemImage)
                 }
             }
