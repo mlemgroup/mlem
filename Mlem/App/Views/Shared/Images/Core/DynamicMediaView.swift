@@ -66,7 +66,6 @@ struct DynamicMediaView: View {
     }
     
     var content: some View {
-        // media
         MediaView(media: loader.animatedMediaType, playing: $playing)
             .overlay {
                 if showError, loader.error != nil {
@@ -78,12 +77,7 @@ struct DynamicMediaView: View {
                                 playing = false
                             }
                     } else {
-                        Image(systemName: "play.fill")
-                            .font(.title)
-                            .foregroundStyle(palette.background)
-                            .padding(20)
-                            .background(Circle().fill(.ultraThinMaterial))
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        PlayButton()
                             .onTapGesture {
                                 playing = true
                             }

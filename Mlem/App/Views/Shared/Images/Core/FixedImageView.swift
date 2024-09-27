@@ -78,6 +78,11 @@ struct FixedImageView: View {
                     .resizable()
                     .scaledToFill()
                     .dynamicBlur(blurred: blurred)
+                    .overlay {
+                        if loader.isAnimated {
+                            PlayButton()
+                        }
+                    }
             }
         }
     }

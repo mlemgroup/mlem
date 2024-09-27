@@ -16,6 +16,7 @@ class FixedImageLoader {
     private(set) var url: URL?
     private var proxyBypass: URL?
     private(set) var uiImage: UIImage?
+    private(set) var isAnimated: Bool
     private(set) var loading: ImageLoadingState
     private(set) var error: Error?
     private(set) var size: CGSize
@@ -30,16 +31,18 @@ class FixedImageLoader {
         self.size = size
         
         if let url {
-            if let image = ImagePipeline.shared.cache.cachedImage(for: .init(
+            if let container = ImagePipeline.shared.cache.cachedImage(for: .init(
                 url: url,
                 processors: [.resize(size: size, crop: true)]
-            ))?.image {
-                self.uiImage = image
+            )) {
+                self.isAnimated = container.animatedMediaType.isAnimated
+                self.uiImage = container.image
                 self.loading = .done
                 return
             }
         }
 
+        self.isAnimated = false
         self.uiImage = nil
         self.loading = url == nil ? .failed : .loading
     }
@@ -53,7 +56,11 @@ class FixedImageLoader {
                 processors: [.resize(size: size, contentMode: .aspectFit)]
             ))
             imageTask.priority = .veryHigh
-            uiImage = try await imageTask.image
+            
+            let container = try await imageTask.response.container
+            
+            isAnimated = container.animatedMediaType.isAnimated
+            uiImage = container.image
             loading = .done
         } catch {
             if autoBypassImageProxy, proxyBypass != nil {
