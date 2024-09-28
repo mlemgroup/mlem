@@ -252,6 +252,9 @@
     "Code" : {
 
     },
+    "Code Block" : {
+
+    },
     "Comment was deleted" : {
 
     },
@@ -265,6 +268,9 @@
 
     },
     "Community Creation" : {
+
+    },
+    "Community Link" : {
 
     },
     "Compact" : {
@@ -347,6 +353,9 @@
 
     },
     "Details" : {
+
+    },
+    "Developer" : {
 
     },
     "Diagnosing..." : {
@@ -567,6 +576,9 @@
     "Instance" : {
 
     },
+    "Instance Link" : {
+
+    },
     "Instances" : {
 
     },
@@ -637,6 +649,12 @@
 
     },
     "Log In" : {
+
+    },
+    "Log in or sign up to view your inbox." : {
+
+    },
+    "Log in or sign up to view your subscriptions." : {
 
     },
     "Mark Read" : {
@@ -837,6 +855,9 @@
     "Posts from communities you subscribe to" : {
 
     },
+    "Posts from your instance's communities" : {
+
+    },
     "Pride" : {
 
     },
@@ -1017,6 +1038,9 @@
     "Sign In to Lemmy" : {
 
     },
+    "Sign Out" : {
+
+    },
     "Sign Up" : {
 
     },
@@ -1100,6 +1124,9 @@
 
     },
     "Switch Account" : {
+
+    },
+    "Switch account to view your inbox." : {
 
     },
     "Switch to this account and..." : {
@@ -1300,6 +1327,9 @@
     "Upvote on Save" : {
 
     },
+    "User Link" : {
+
+    },
     "Username" : {
 
     },
@@ -1342,6 +1372,9 @@
     "Welcome to %@" : {
       "comment" : "Example: \"Welcome to lemmy.world\""
     },
+    "Welcome to Lemmy!" : {
+
+    },
     "What is Federation?" : {
 
     },
@@ -1352,6 +1385,9 @@
 
     },
     "Yes (%@)" : {
+
+    },
+    "You are browsing %@ as a guest. If you'd like to vote or reply, you'll need to log in or sign up." : {
 
     },
     "You are required to provide an email on this instance." : {
@@ -1396,6 +1432,9 @@
 
     },
     "Your session has expired. Enter your password to authenticate a new session." : {
+
+    },
+    "Your subscriptions live here." : {
 
     }
   },

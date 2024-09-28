@@ -27,10 +27,10 @@ struct LargeImageView: View {
         self._blurred = .init(wrappedValue: shouldBlur)
     }
     
-    @State private var loading: ImageLoadingState?
+    @State private var loading: MediaLoadingState?
 
     var body: some View {
-        DynamicImageView(url: url)
+        DynamicMediaView(url: url)
             .dynamicBlur(blurred: blurred)
             .clipShape(.rect(cornerRadius: Constants.main.mediumItemCornerRadius))
             .overlay {
@@ -56,6 +56,6 @@ struct LargeImageView: View {
                     }
                 }
             }
-            .onPreferenceChange(ImageLoadingPreferenceKey.self, perform: { loading = $0 })
+            .onPreferenceChange(MediaLoadingPreferenceKey.self, perform: { loading = $0 })
     }
 }

@@ -71,7 +71,7 @@ extension NavigationPage {
                 Button {
                     callback.wrappedValue(community, navigation)
                 } label: {
-                    CommunityListRowBody(community)
+                    CommunityListRowBody(community, readout: .subscribers)
                         .tint(Palette.main.primary)
                 }
                 .padding(.vertical, 6)

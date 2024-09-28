@@ -106,11 +106,7 @@ struct AccountListView: View {
                     navigation.openSheet(.logIn())
                 }
                 Button("Sign Up") {
-                    navigation.openSheet(.instancePicker(callback: { instance, navigation in
-                        if let stub = instance.instanceStub {
-                            navigation.push(.signUp(stub))
-                        }
-                    }))
+                    navigation.openSheet(.signUp())
                 }
                 Button("Add Guest") {
                     navigation.openSheet(.instancePicker(callback: { instance in

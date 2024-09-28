@@ -130,7 +130,7 @@ struct CodableSettings: Codable {
         self.post_thumbnailLocation = try container.decodeIfPresent(ThumbnailLocation.self, forKey: .post_thumbnailLocation) ?? .left
         self.post_webPreview_showHost = try container.decodeIfPresent(Bool.self, forKey: .post_webPreview_showHost) ?? true
         self.post_webPreview_showIcon = try container.decodeIfPresent(Bool.self, forKey: .post_webPreview_showIcon) ?? true
-        self.privacy_autoBypassImageProxy = try container.decode(Bool.self, forKey: .privacy_autoBypassImageProxy) ?? false
+        self.privacy_autoBypassImageProxy = try container.decode(Bool.self, forKey: .privacy_autoBypassImageProxy)
         self.profile_showBanner = try container.decodeIfPresent(Bool.self, forKey: .profile_showBanner) ?? true
         self.safety_blurNsfw = try container.decodeIfPresent(NsfwBlurBehavior.self, forKey: .safety_blurNsfw) ?? .always
         self.safety_enableModlogWarning = try container.decodeIfPresent(Bool.self, forKey: .safety_enableModlogWarning) ?? true
