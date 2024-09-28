@@ -16,7 +16,7 @@ struct FixedImageView: View {
     
     @Setting(\.postSize) var postSize
     
-    @State var loadingPref: MediaLoadingState? // tracked separately to allow correct propagation of inital value
+    @State var loadingPref: MediaLoadingState? // tracked separately to allow correct propagation of initial value
     
     @State var loader: FixedImageLoader
     let fallback: Fallback
