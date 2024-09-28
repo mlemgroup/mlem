@@ -20,8 +20,9 @@ struct ExpandedPostView<Content: View>: View {
         }
     }
 
-    @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
+    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
     @Setting(\.jumpButton) var jumpButton
@@ -29,12 +30,13 @@ struct ExpandedPostView<Content: View>: View {
     
     var post: (any PostStubProviding)?
     let isLoading: Bool
+    let highlightedComment: (any CommentStubProviding)?
     let content: Content
     
     @Binding var tracker: CommentTreeTracker?
-    @State var highlightedComment: (any CommentStubProviding)?
+    @State var scrollTargetedComment: (any CommentStubProviding)?
 
-    @State var scrolledToHighlightedComment: Bool = false
+    @State var scrolledToscrollTargetedComment: Bool = false
     @State var jumpButtonTarget: URL?
     @State var topVisibleItem: URL?
     
@@ -42,14 +44,16 @@ struct ExpandedPostView<Content: View>: View {
         post: (any PostStubProviding)?,
         isLoading: Bool,
         tracker: Binding<CommentTreeTracker?>,
-        highlightedComment: (any CommentStubProviding)?,
+        highlightedComment: (any CommentStubProviding)? = nil,
+        scrollTargetedComment: (any CommentStubProviding)? = nil,
         @ViewBuilder content: () -> Content = { EmptyView() }
     ) {
         self.post = post
         self.isLoading = isLoading
+        self.highlightedComment = highlightedComment
         self.content = content()
         self._tracker = tracker
-        self._highlightedComment = .init(wrappedValue: highlightedComment)
+        self._scrollTargetedComment = .init(wrappedValue: scrollTargetedComment)
     }
     
     var body: some View {
@@ -65,15 +69,6 @@ struct ExpandedPostView<Content: View>: View {
                             await tracker.load()
                         }
                     }
-            }
-        }
-        .refreshable {
-            _ = await Task {
-                do {
-                    // try await post.refresh(upgradeOperation: nil)
-                } catch {
-                    handleError(error)
-                }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -114,34 +109,24 @@ struct ExpandedPostView<Content: View>: View {
                             .padding(.horizontal, Constants.main.standardSpacing)
                         content
                         if let tracker {
-                            ForEach(tracker.comments.tree(), id: \.actorId) { comment in
-                                CommentView(
-                                    comment: comment,
-                                    highlight: highlightedComment?.actorId == comment.actorId,
-                                    depthOffset: tracker.proposedDepthOffset
-                                )
-                                .transition(.move(edge: .top).combined(with: .opacity))
-                                .zIndex(1000 - Double(comment.depth))
-                                .anchorPreference(
-                                    key: AnchorsKey.self,
-                                    value: .center
-                                ) { [comment.actorId: $0] }
-                                .padding(.horizontal, Constants.main.standardSpacing)
-                            }
+                            commentTree(tracker: tracker)
                         }
                     }
-                    .animation(.easeInOut(duration: 0.4), value: highlightedComment?.actorId)
+                    .animation(.easeInOut(duration: 0.4), value: scrollTargetedComment?.actorId)
                     .padding(.bottom, 80)
+                    .id(tracker?.proposedDepthOffset)
+                    .transition(.opacity)
+                    .animation(.easeInOut(duration: 0.4), value: tracker?.proposedDepthOffset)
                 }
                 .onChange(of: tracker?.loadingState, initial: true) {
-                    if tracker?.loadingState == .done, let highlightedComment {
+                    if tracker?.loadingState == .done, let scrollTargetedComment {
                         // Without a slight delay here, `scrollTo` can sometimes fail. I'm not sure why this is.
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            proxy.scrollTo(highlightedComment.actorId, anchor: .center)
-                            scrolledToHighlightedComment = true
+                            proxy.scrollTo(scrollTargetedComment.actorId, anchor: .center)
+                            scrolledToscrollTargetedComment = true
                         }
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            self.highlightedComment = nil
+                            self.scrollTargetedComment = nil
                         }
                     }
                 }
@@ -179,6 +164,52 @@ struct ExpandedPostView<Content: View>: View {
             }
         }
         .environment(tracker)
+    }
+    
+    @ViewBuilder
+    func commentTree(tracker: CommentTreeTracker) -> some View {
+        ForEach(tracker.comments.itemTree(), id: \.hashValue) { item in
+            Group {
+                switch item {
+                case let .comment(comment):
+                    CommentView(
+                        comment: comment,
+                        highlight: [scrollTargetedComment?.actorId, highlightedComment?.actorId].contains(comment.actorId),
+                        depthOffset: tracker.proposedDepthOffset
+                    )
+                    .transition(.move(edge: .top).combined(with: .opacity))
+                    .zIndex(1000 - Double(comment.depth))
+                    .anchorPreference(
+                        key: AnchorsKey.self,
+                        value: .center
+                    ) { [comment.actorId: $0] }
+                    .padding(.leading, CGFloat(comment.depth - tracker.proposedDepthOffset) * 10)
+                case let .unloadedComments(comment, _):
+                    Button {
+                        navigation.push(.comment(comment))
+                    } label: {
+                        HStack {
+                            CommentBarView(depth: comment.depth + 1)
+                            HStack {
+                                Text("More Replies \(comment.votes.total)")
+                                Image(systemName: Icons.forward)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 2)
+                            .foregroundStyle(.secondary)
+                        }
+                        .background(
+                            palette.secondaryGroupedBackground,
+                            in: .rect(cornerRadius: Constants.main.standardSpacing)
+                        )
+                    }
+                    .font(.footnote)
+                    .padding(.leading, CGFloat(comment.depth + 1 - tracker.proposedDepthOffset) * 10)
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(.horizontal, Constants.main.standardSpacing)
+        }
     }
     
     @ViewBuilder

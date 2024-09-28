@@ -33,27 +33,52 @@ struct CommentPage: View {
                 post: post,
                 isLoading: proxy.isLoading,
                 tracker: $tracker,
-                highlightedComment: proxy.entity
+                highlightedComment: proxy.entity,
+                scrollTargetedComment: proxy.entity
             ) {
-                Button {
-                    if let post {
-                        navigation.push(.post(.init(post)))
+                if let post {
+                    HStack(spacing: Constants.main.standardSpacing) {
+                        if tracker?.comments.first?.depth != 0 {
+                            Button {
+                                if let comment = comment.wrappedValue as? any Comment {
+                                    tracker?.root = .comment(comment, parentCount: currentDepth + 1)
+                                    Task {
+                                        await tracker?.refresh()
+                                    }
+                                }
+                            } label: {
+                                HStack {
+                                    Text("Show Parent")
+                                    if tracker?.loadingState == .loading {
+                                        ProgressView()
+                                    } else {
+                                        Image(systemName: "chevron.up")
+                                    }
+                                }
+                                .animation(.easeOut(duration: 0.1), value: tracker?.loadingState == .loading)
+                            }
+                        }
+                        Button {
+                            navigation.push(.post(.init(post)))
+                        } label: {
+                            HStack {
+                                Text("View All")
+                                Image(systemName: Icons.forward)
+                            }
+                        }
                     }
-                } label: {
-                    HStack {
-                        Text("View All Comments")
-                        Image(systemName: Icons.forward)
-                    }
-                    .fontWeight(.semibold)
-                    .foregroundStyle(palette.accent)
-                    .padding(.vertical, 10)
-                    .frame(maxWidth: .infinity)
-                    .background {
-                        Capsule()
-                            .fill(palette.accent.opacity(0.2))
-                    }
+                    .buttonStyle(.capsule)
+                    .padding(.horizontal, Constants.main.standardSpacing)
                 }
-                .padding(.horizontal, Constants.main.standardSpacing)
+            }
+            .refreshable {
+                _ = await Task {
+                    do {
+                        await tracker?.refresh()
+                    } catch {
+                        handleError(error)
+                    }
+                }.value
             }
         } upgradeOperation: { model, api in
             try await model.upgrade(api: api, upgradeOperation: nil)
@@ -80,6 +105,13 @@ struct CommentPage: View {
                     }
                 }
             }
+        }
+    }
+    
+    var currentDepth: Int {
+        switch tracker?.root {
+        case let .comment(_, currentDepth): currentDepth
+        default: 0
         }
     }
 }

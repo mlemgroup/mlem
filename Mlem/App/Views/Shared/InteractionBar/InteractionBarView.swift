@@ -151,7 +151,7 @@ struct InteractionBarView: View {
         .accessibilityAction(.default) {
             (action as? BasicAction)?.callback?()
         }
-        .buttonStyle(EmptyButtonStyle())
+        .buttonStyle(.empty)
         .disabled({
             if let action = action as? BasicAction {
                 return action.callback == nil

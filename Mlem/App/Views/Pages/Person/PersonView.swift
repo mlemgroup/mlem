@@ -189,8 +189,11 @@ struct PersonView: View {
             default:
                 if let feedLoader {
                     if isProfileTab, selectedTab == .overview || selectedTab == .posts {
-                        newPostButton
-                            .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+                        Button("New Post", systemImage: "plus") {
+                            navigation.openSheet(.createPost(community: nil))
+                        }
+                        .buttonStyle(.capsule)
+                        .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                     }
                     PersonContentGridView(feedLoader: feedLoader, contentType: $selectedContentType)
                 } else {
@@ -230,22 +233,5 @@ struct PersonView: View {
         }
         .background(palette.secondaryGroupedBackground)
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
-    }
-    
-    @ViewBuilder
-    var newPostButton: some View {
-        Button {
-            navigation.openSheet(.createPost(community: nil))
-        } label: {
-            Label("New Post", systemImage: "plus")
-                .fontWeight(.semibold)
-                .foregroundStyle(palette.accent)
-                .padding(.vertical, 10)
-                .frame(maxWidth: .infinity)
-                .background {
-                    Capsule()
-                        .fill(palette.accent.opacity(0.2))
-                }
-        }
     }
 }

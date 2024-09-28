@@ -44,7 +44,7 @@ struct JumpButtonView: View {
                     }
                 )
         }
-        .buttonStyle(EmptyButtonStyle())
+        .buttonStyle(.empty)
         .padding(10)
     }
 }

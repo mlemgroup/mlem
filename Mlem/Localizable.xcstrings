@@ -699,6 +699,9 @@
     "More Info" : {
 
     },
+    "More Replies %lld" : {
+
+    },
     "More..." : {
 
     },
@@ -999,6 +1002,9 @@
     "Show NSFW Content" : {
 
     },
+    "Show Parent" : {
+
+    },
     "Show Post Creator in Feed" : {
 
     },
@@ -1277,7 +1283,7 @@
     "Version" : {
 
     },
-    "View All Comments" : {
+    "View All" : {
 
     },
     "Viewing %@ as guest" : {

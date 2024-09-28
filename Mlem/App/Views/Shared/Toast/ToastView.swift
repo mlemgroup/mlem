@@ -59,7 +59,7 @@ struct ToastView: View {
                     )
                     .contentShape(.rect)
                 }
-                .buttonStyle(EmptyButtonStyle())
+                .buttonStyle(.empty)
             case let .error(details):
                 errorView(details)
             case let .loading(title):
@@ -189,7 +189,7 @@ struct ToastView: View {
                 .background(isExpanded ? Palette.main.negative.opacity(0.15) : .clear)
             }
         }
-        .buttonStyle(EmptyButtonStyle())
+        .buttonStyle(.empty)
     }
     
     @ViewBuilder

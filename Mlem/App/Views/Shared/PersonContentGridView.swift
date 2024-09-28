@@ -79,7 +79,7 @@ struct PersonContentGridView: View {
             LazyVGrid(columns: columns, spacing: postSize.sectionSpacing) {
                 ForEach(items, id: \.hashValue) { item in
                     personContentItem(item)
-                        .buttonStyle(EmptyButtonStyle())
+                        .buttonStyle(.empty)
                         .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 10)
                         .onAppear {
                             do {
@@ -103,7 +103,7 @@ struct PersonContentGridView: View {
                 FeedPostView(post: post)
             }
         case let .comment(comment):
-            NavigationLink(.post(comment.post, highlightedComment: comment)) {
+            NavigationLink(.post(comment.post, scrollTargetedComment: comment)) {
                 FeedCommentView(comment: comment)
             }
         }

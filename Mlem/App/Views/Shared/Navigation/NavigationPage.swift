@@ -17,7 +17,7 @@ enum NavigationPage: Hashable {
     case quickSwitcher
     case post(
         _ post: AnyPost,
-        highlightedComment: HashWrapper<any CommentStubProviding>? = nil,
+        scrollTargetedComment: HashWrapper<any CommentStubProviding>? = nil,
         communityContext: HashWrapper<any Community1Providing>? = nil,
         navigationNamespace: Namespace.ID? = nil
     )
@@ -40,9 +40,9 @@ enum NavigationPage: Hashable {
     case deleteAccount(_ account: UserAccount)
     case bypassImageProxy(callback: HashWrapper<() -> Void>)
     
-    static func post(_ post: any PostStubProviding, highlightedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
-        if let highlightedComment {
-            return Self.post(.init(post), highlightedComment: .init(wrappedValue: highlightedComment))
+    static func post(_ post: any PostStubProviding, scrollTargetedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
+        if let scrollTargetedComment {
+            return Self.post(.init(post), scrollTargetedComment: .init(wrappedValue: scrollTargetedComment))
         } else {
             return Self.post(.init(post))
         }

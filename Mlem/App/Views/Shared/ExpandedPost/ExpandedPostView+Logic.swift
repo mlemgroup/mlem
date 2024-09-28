@@ -10,7 +10,7 @@ import SwiftUI
 
 extension ExpandedPostView {
     var showLoadingSymbol: Bool {
-        !(highlightedComment == nil || (post is any Post3Providing && scrolledToHighlightedComment))
+        !(scrollTargetedComment == nil || (post is any Post3Providing && scrolledToscrollTargetedComment))
     }
     
     func topCommentRow(of anchors: AnchorsKey.Value, in proxy: GeometryProxy) -> URL? {
