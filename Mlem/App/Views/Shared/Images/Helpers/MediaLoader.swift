@@ -136,7 +136,7 @@ extension ImageContainer {
     }
 }
 
-func generateAVThumbnail(asset: AVAsset) -> UIImage {
+private func generateAVThumbnail(asset: AVAsset) -> UIImage {
     let assetImgGenerate = AVAssetImageGenerator(asset: asset)
     assetImgGenerate.appliesPreferredTrackTransform = true
     let time = CMTimeMakeWithSeconds(1.0, preferredTimescale: 600)
