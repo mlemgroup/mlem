@@ -12,7 +12,7 @@ import UIKit
 struct MediaView: View {
     let media: MediaType
     
-    @Binding var playing: Bool
+    let playing: Bool
     
     var body: some View {
         if media.isAnimated {
