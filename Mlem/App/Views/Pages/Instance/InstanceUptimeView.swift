@@ -31,7 +31,7 @@ struct InstanceUptimeView: View {
             }
             .padding(.top, 20)
             // String interpolation used here to avoid localizing the number
-            footnote("Mlem will refresh this automatically every \(30) seconds.")
+            footnote("Automatically refreshes every \(30) seconds.")
                 .padding(.top, 8)
                 .padding(.leading, 6)
                 .padding(.bottom, 30)
