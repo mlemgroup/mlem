@@ -161,6 +161,9 @@
     "Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser." : {
 
     },
+    "Automatically refreshes every %lld seconds." : {
+
+    },
     "Average: %@" : {
 
     },
@@ -688,9 +691,6 @@
 
     },
     "Mlem will always try to load from the proxy first." : {
-
-    },
-    "Mlem will refresh this automatically every %lld seconds." : {
 
     },
     "Moderated" : {
