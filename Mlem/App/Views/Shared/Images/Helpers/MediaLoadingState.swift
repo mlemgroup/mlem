@@ -1,5 +1,5 @@
 //
-//  ImageLoadingState.swift
+//  MediaLoadingState.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-08-02.
@@ -7,6 +7,6 @@
 
 import Foundation
 
-enum ImageLoadingState {
+enum MediaLoadingState {
     case loading, done, proxyFailed, failed
 }
