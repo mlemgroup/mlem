@@ -260,6 +260,7 @@
 		CD332D792CA7175500A53988 /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD332D782CA7175200A53988 /* PlayButton.swift */; };
 		CD332D7C2CA71E6F00A53988 /* GifView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD332D7B2CA71E6E00A53988 /* GifView.swift */; };
 		CD332D7E2CA7486000A53988 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD332D7D2CA7485D00A53988 /* String+Extensions.swift */; };
+		CD332D852CA8686900A53988 /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CD332D842CA8686900A53988 /* MlemMiddleware */; };
 		CD4368C12AE23FD400BD8BD1 /* Semaphore in Frameworks */ = {isa = PBXBuildFile; productRef = CD4368C02AE23FD400BD8BD1 /* Semaphore */; };
 		CD43E8B32BF2C24E007C3D71 /* ContentLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */; };
 		CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */; };
@@ -745,6 +746,7 @@
 				636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */,
 				CDE4AC452CA370E000981010 /* SDWebImageSwiftUI in Frameworks */,
 				CD4368C12AE23FD400BD8BD1 /* Semaphore in Frameworks */,
+				CD332D852CA8686900A53988 /* MlemMiddleware in Frameworks */,
 				B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */,
 				CDE4AC472CA372B600981010 /* SDWebImageWebPCoder in Frameworks */,
 				B104A6DC2A59BF3C00B3E725 /* NukeUI in Frameworks */,
@@ -1807,6 +1809,7 @@
 				CDE4AC442CA370E000981010 /* SDWebImageSwiftUI */,
 				CDE4AC462CA372B600981010 /* SDWebImageWebPCoder */,
 				CD64A9192CA37E8D007CA7E6 /* Gifu */,
+				CD332D842CA8686900A53988 /* MlemMiddleware */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -1962,7 +1965,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "exit 0\n\nif [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint lint --strict\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint lint --strict\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2724,8 +2727,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
-				branch = eric/gifs;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.39.0;
 			};
 		};
 		CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */ = {
@@ -2807,6 +2810,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */;
 			productName = NukeVideo;
+		};
+		CD332D842CA8686900A53988 /* MlemMiddleware */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD332D832CA75C0000A53988 /* XCRemoteSwiftPackageReference "MlemMiddleware" */;
+			productName = MlemMiddleware;
 		};
 		CD4368C02AE23FD400BD8BD1 /* Semaphore */ = {
 			isa = XCSwiftPackageProductDependency;

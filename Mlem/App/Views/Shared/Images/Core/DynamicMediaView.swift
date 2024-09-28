@@ -66,7 +66,7 @@ struct DynamicMediaView: View {
     }
     
     var content: some View {
-        MediaView(media: loader.mediaType, playing: $playing)
+        MediaView(media: loader.mediaType, playing: playing)
             .overlay {
                 if showError, loader.error != nil {
                     errorOverlay

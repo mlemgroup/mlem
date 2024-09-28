@@ -12,7 +12,7 @@ struct GifView: View {
     let data: Data
     
     var body: some View {
-        GifView_(data: data)
+        UIGifView(data: data)
             .allowsHitTesting(false)
             .overlay {
                 Color.clear.contentShape(.rect)
@@ -20,7 +20,7 @@ struct GifView: View {
     }
 }
 
-private struct GifView_: UIViewRepresentable {
+private struct UIGifView: UIViewRepresentable {
     let data: Data
     
     func makeUIView(context: Context) -> some UIView {
