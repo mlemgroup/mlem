@@ -103,7 +103,7 @@ struct PersonContentGridView: View {
                 FeedPostView(post: post)
             }
         case let .comment(comment):
-            NavigationLink(.post(comment.post, scrollTargetedComment: comment)) {
+            NavigationLink(.comment(comment)) {
                 FeedCommentView(comment: comment)
             }
         }
