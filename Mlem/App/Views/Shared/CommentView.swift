@@ -47,8 +47,8 @@ struct CommentView: View {
         let collapsed = (comment as? CommentWrapper)?.collapsed ?? false
         
         HStack(spacing: 12) {
-            if depth != 0 {
-                CommentBarView(depth: depth)
+            if !inFeed, comment.depth != 0 {
+                CommentBarView(depth: comment.depth)
             }
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 HStack(spacing: 0) {

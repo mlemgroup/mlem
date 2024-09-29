@@ -184,6 +184,7 @@ struct ExpandedPostView<Content: View>: View {
                         value: .center
                     ) { [comment.actorId: $0] }
                     .padding(.leading, CGFloat(comment.depth - tracker.proposedDepthOffset) * 10)
+                    .id(comment.actorId)
                 case let .unloadedComments(comment, _):
                     Button {
                         navigation.push(.comment(comment))
@@ -191,7 +192,7 @@ struct ExpandedPostView<Content: View>: View {
                         HStack {
                             CommentBarView(depth: comment.depth + 1)
                             HStack {
-                                Text("More Replies \(comment.votes.total)")
+                                Text("More Replies")
                                 Image(systemName: Icons.forward)
                             }
                             .frame(maxWidth: .infinity)

@@ -38,7 +38,8 @@ class CommentWrapper: Identifiable, Comment2Providing {
         if creator.blocked { return [] }
         if collapsed { return [.comment(self)] }
         var output: [CommentTreeItem] = children.reduce([.comment(self)]) { $0 + $1.itemTree() }
-        if output.count < commentCount + 1 {
+        let directChildCount = children.reduce(commentCount) { $0 - $1.commentCount }
+        if children.count < directChildCount {
             output.append(.unloadedComments(comment: self, count: commentCount - output.count))
         }
         return output

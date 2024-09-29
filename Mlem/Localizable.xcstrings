@@ -717,7 +717,7 @@
     "More Info" : {
 
     },
-    "More Replies %lld" : {
+    "More Replies" : {
 
     },
     "More..." : {
@@ -1026,10 +1026,10 @@
     "Show NSFW Content" : {
 
     },
-    "Show Parent" : {
+    "Show Older Incidents" : {
 
     },
-    "Show Older Incidents" : {
+    "Show Parent" : {
 
     },
     "Show Post Creator in Feed" : {
