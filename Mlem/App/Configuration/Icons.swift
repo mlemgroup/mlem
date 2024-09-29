@@ -201,6 +201,11 @@ enum Icons {
     static let errorCircleFill: String = "exclamationmark.circle.fill"
     static let proxy: String = "firewall"
     
+    // uptime
+    static let uptimeOffline: String = "xmark.circle.fill"
+    static let uptimeOnline: String = "checkmark.circle.fill"
+    static let uptimeOutage: String = "exclamationmark.circle.fill"
+    
     // end of feed
     static let endOfFeedHobbit: String = "figure.climbing"
     static let endOfFeedCartoon: String = "figure.wave"

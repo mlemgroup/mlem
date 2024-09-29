@@ -31,6 +31,12 @@
         }
       }
     },
+    "%@ has been unresponsive recently." : {
+
+    },
+    "%@ is " : {
+
+    },
     "%@ Read" : {
 
     },
@@ -175,6 +181,12 @@
 
     },
     "Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser." : {
+
+    },
+    "Automatically refreshes every %lld seconds." : {
+
+    },
+    "Average: %@" : {
 
     },
     "Banned from Community" : {
@@ -538,6 +550,9 @@
     "Hide" : {
 
     },
+    "Hide Older Incidents" : {
+
+    },
     "Hide Read" : {
 
     },
@@ -578,6 +593,9 @@
 
     },
     "Inbox is outdated" : {
+
+    },
+    "Incidents" : {
 
     },
     "Instance" : {
@@ -898,6 +916,9 @@
     "Received %@" : {
 
     },
+    "Recent Checks" : {
+
+    },
     "Redo" : {
 
     },
@@ -941,6 +962,9 @@
 
     },
     "Reset Settings State" : {
+
+    },
+    "Response Time" : {
 
     },
     "Restore" : {
@@ -1016,6 +1040,9 @@
 
     },
     "Show NSFW Content" : {
+
+    },
+    "Show Older Incidents" : {
 
     },
     "Show Post Creator in Feed" : {
@@ -1159,7 +1186,42 @@
         }
       }
     },
+    "The most recent outage was %@, and lasted for %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The most recent outage was %1$@, and lasted for %2$@."
+          }
+        }
+      }
+    },
     "Theme" : {
+
+    },
+    "There were %lld recorded incidents today." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "There was %lld recorded incidents today."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "There were %lld recorded incidents today."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "There were no recorded incidents today." : {
 
     },
     "This content will be loaded from **%@** instead." : {
@@ -1178,6 +1240,9 @@
 
     },
     "Tiled" : {
+
+    },
+    "Time" : {
 
     },
     "Title" : {
@@ -1251,6 +1316,9 @@
         }
       }
     },
+    "Unhealthy for %@" : {
+
+    },
     "Unknown" : {
 
     },
@@ -1270,6 +1338,9 @@
 
     },
     "Uptime" : {
+
+    },
+    "Uptime data fetched from %@" : {
 
     },
     "Upvote" : {
