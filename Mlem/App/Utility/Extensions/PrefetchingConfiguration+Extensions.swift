@@ -12,7 +12,7 @@ extension PrefetchingConfiguration {
     static func forPostSize(_ postSize: PostSize) -> Self {
         .init(
             prefetcher: .init(pipeline: .shared, destination: .memoryCache, maxConcurrentRequestCount: 40),
-            imageSize: .limited(Constants.main.feedImageResolution),
+            imageSize: .unlimited,
             avatarSize: postSize.avatarSize
         )
     }

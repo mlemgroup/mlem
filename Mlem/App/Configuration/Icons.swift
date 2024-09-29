@@ -282,4 +282,5 @@ enum Icons {
     static let imageDetails: String = "doc.badge.ellipsis"
     static let accountSwitchReload: String = "arrow.2.circlepath"
     static let accountSwitchKeepPlace: String = "checkmark.diamond"
+    static let play: String = "play.fill"
 }

@@ -132,7 +132,8 @@ struct TilePostView: View {
                             .symbolRenderingMode(.palette)
                             .foregroundStyle(palette.background, palette.warning)
                             .imageScale(.small)
-                            .padding(Constants.main.halfSpacing)
+                            .padding(.top, Constants.main.standardSpacing)
+                            .padding(.trailing, Constants.main.halfSpacing)
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                     }
                 }
