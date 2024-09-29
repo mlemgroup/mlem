@@ -5,23 +5,26 @@
 //  Created by Sjmarf on 12/06/2024.
 //
 
+import AVFoundation
 import Nuke
 import QuickLook
+import SDWebImageSwiftUI
 import SwiftUI
 
 extension UIImage {
     static let blank: UIImage = .init()
 }
 
-struct DynamicImageView: View {
+struct DynamicMediaView: View {
     @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
     
     @Setting(\.bypassImageProxyShown) var bypassImageProxyShown
     
-    @State var loader: ImageLoader
-    @State var loadingPref: ImageLoadingState?
+    @State var loader: MediaLoader
+    @State var loadingPref: MediaLoadingState?
     @State var quickLookUrl: URL?
+    @State var playing: Bool
     
     let showError: Bool
     let cornerRadius: CGFloat
@@ -32,12 +35,14 @@ struct DynamicImageView: View {
         maxSize: CGFloat? = nil,
         showError: Bool = true,
         cornerRadius: CGFloat = Constants.main.mediumItemCornerRadius,
-        actionsEnabled: Bool = true
+        actionsEnabled: Bool = true,
+        playImmediately: Bool = false
     ) {
         self.showError = showError
         self.cornerRadius = cornerRadius
         self.actionsEnabled = actionsEnabled
-        self._loader = .init(wrappedValue: .init(url: url, maxSize: maxSize))
+        self._loader = .init(wrappedValue: .init(url: url))
+        self._playing = .init(wrappedValue: playImmediately ? true : false)
     }
     
     var body: some View {
@@ -61,22 +66,49 @@ struct DynamicImageView: View {
     }
     
     var content: some View {
-        Image(uiImage: loader.uiImage ?? .blank)
-            .resizable()
-            .aspectRatio(loader.uiImage?.size ?? .init(width: 4, height: 3), contentMode: .fit)
+        MediaView(media: loader.mediaType, playing: playing)
             .overlay {
                 if showError, loader.error != nil {
                     errorOverlay
+                } else if loader.mediaType.isAnimated {
+                    if playing {
+                        Color.clear.contentShape(.rect)
+                            .onTapGesture {
+                                playing = false
+                            }
+                    } else {
+                        PlayButton(postSize: .large)
+                            .onTapGesture {
+                                playing = true
+                            }
+                    }
                 }
             }
             .clipShape(.rect(cornerRadius: cornerRadius))
             .onChange(of: loader.loading, initial: true) { loadingPref = loader.loading }
-            .preference(key: ImageLoadingPreferenceKey.self, value: loadingPref)
+            .preference(key: MediaLoadingPreferenceKey.self, value: loadingPref)
             .onAppear {
                 Task {
                     await loader.load()
                 }
             }
+        #if DEBUG
+            .overlay {
+                if let ext = loader.url?.proxyAwarePathExtension?.uppercased() {
+                    Text(ext)
+                        .font(.footnote)
+                        .fontWeight(.semibold)
+                        .padding(2)
+                        .padding(.horizontal, 2)
+                        .background {
+                            Capsule()
+                                .fill(.regularMaterial)
+                        }
+                        .padding(4)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                }
+            }
+        #endif
     }
     
     @ViewBuilder
