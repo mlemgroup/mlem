@@ -60,7 +60,7 @@ enum NavigationPage: Hashable {
         }
     }
     
-    static func comment(_ comment: any Comment) -> NavigationPage {
+    static func comment(_ comment: any CommentStubProviding) -> NavigationPage {
         Self.comment(.init(comment))
     }
     
