@@ -64,14 +64,20 @@ struct InteractionBarView: View {
     }
 
     var body: some View {
-        HStack(spacing: Constants.main.doubleSpacing) {
+        HStack(spacing: Constants.main.standardSpacing) {
             ForEach(leading, id: \.viewId, content: widgetView)
             InfoStackView(readouts: readouts, showColor: false)
                 .frame(maxWidth: .infinity, alignment: infoStackAlignment)
                 .padding(infoStackPaddingEdges, -Constants.main.doubleSpacing)
             ForEach(trailing, id: \.viewId, content: widgetView)
         }
-        .frame(height: Constants.main.barIconSize)
+        .frame(height: Constants.main.barIconHitbox - Constants.main.standardSpacing)
+        .padding(.horizontal, Constants.main.halfSpacing)
+        .background {
+            Capsule()
+                .foregroundStyle(palette.tertiaryGroupedBackground)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
         .geometryGroup()
     }
     

@@ -48,7 +48,7 @@ struct ReadoutView: View {
             }
         }
         .foregroundStyle((showColor ? readout.color : nil) ?? palette.secondary)
-        .font(.footnote)
+        .font(.caption)
         .lineLimit(1)
     }
 }

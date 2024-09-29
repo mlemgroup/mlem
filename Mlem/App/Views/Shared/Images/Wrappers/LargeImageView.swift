@@ -32,7 +32,7 @@ struct LargeImageView: View {
     var body: some View {
         DynamicMediaView(url: url)
             .dynamicBlur(blurred: blurred)
-            .clipShape(.rect(cornerRadius: Constants.main.mediumItemCornerRadius))
+            .clipShape(.rect(cornerRadius: 22))
             .overlay {
                 NsfwOverlay(blurred: $blurred, shouldBlur: shouldBlur)
             }

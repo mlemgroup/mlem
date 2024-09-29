@@ -11,15 +11,15 @@ import SwiftUI
 /// SFSymbol names for icons
 enum Icons {
     // votes
-    static let votes: String = "arrow.up.arrow.down.square"
+    static let votes: String = "arrow.up.arrow.down.circle"
     static let upvote: String = "arrow.up"
-    static let upvoteSquare: String = "arrow.up.square"
-    static let upvoteSquareFill: String = "arrow.up.square.fill"
+    static let upvoteSquare: String = "arrow.up.circle"
+    static let upvoteSquareFill: String = "arrow.up.circle.fill"
     static let downvote: String = "arrow.down"
-    static let downvoteSquare: String = "arrow.down.square"
-    static let downvoteSquareFill: String = "arrow.down.square.fill"
-    static let resetVoteSquare: String = "minus.square"
-    static let resetVoteSquareFill: String = "minus.square.fill"
+    static let downvoteSquare: String = "arrow.down.circle"
+    static let downvoteSquareFill: String = "arrow.down.circle.fill"
+    static let resetVoteSquare: String = "minus.circle"
+    static let resetVoteSquareFill: String = "minus.circle.fill"
     
     // reply/send
     static let reply: String = "arrowshape.turn.up.left"

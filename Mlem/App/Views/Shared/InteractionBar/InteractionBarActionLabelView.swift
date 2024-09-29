@@ -27,7 +27,7 @@ struct InteractionBarActionLabelView: View {
             .frame(width: Constants.main.barIconSize, height: Constants.main.barIconSize)
             .padding(Constants.main.barIconPadding)
             .foregroundColor(appearance.isOn ? palette.selectedInteractionBarItem : palette.primary)
-            .background(appearance.isOn ? appearance.color : .clear, in: .rect(cornerRadius: Constants.main.barIconCornerRadius))
+            .background(appearance.isOn ? appearance.color : .clear, in: .circle)
             .contentShape(Rectangle())
     }
 }

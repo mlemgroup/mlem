@@ -66,7 +66,7 @@ struct SwipeBehavior {
         secondaryThreshold: 150,
         tertiaryThreshold: 240,
         minimumDrag: 20,
-        cornerRadius: Constants.main.standardSpacing,
+        cornerRadius: 27,
         iconSize: 28
     )
     
