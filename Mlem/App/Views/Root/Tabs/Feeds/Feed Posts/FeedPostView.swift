@@ -11,11 +11,12 @@ import SwiftUI
 
 /// View for rendering posts in feed
 struct FeedPostView: View {
-    @Setting(\.postSize) var postSize
+    @Setting(\.postSize) private var postSize
     
-    @Environment(Palette.self) var palette
+    @Environment(Palette.self) private var palette
     
     let post: any Post1Providing
+    var overridePostSize: PostSize?
     
     var body: some View {
         content
@@ -29,7 +30,7 @@ struct FeedPostView: View {
     
     @ViewBuilder
     var content: some View {
-        switch postSize {
+        switch overridePostSize ?? postSize {
         case .compact:
             CompactPostView(post: post)
         case .tile:
