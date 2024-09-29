@@ -44,7 +44,26 @@
 
     },
     "%lld Crossposts..." : {
-
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Crosspost..."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld Crossposts..."
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "%lld on %@" : {
       "localizations" : {
