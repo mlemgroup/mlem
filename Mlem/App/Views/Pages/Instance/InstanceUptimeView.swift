@@ -99,11 +99,15 @@ struct InstanceUptimeView: View {
             
             if let url = instance.uptimeFrontendUrl {
                 // Extra string interpolation used here to avoid unnecessary localization
-                Text((try? AttributedString(markdown: .init(localized: "Uptime data fetched from \("[lemmy-status.org](\(url))")"))) ?? .init())
-                    .font(.footnote)
-                    .foregroundStyle(palette.secondary)
-                    .padding(.vertical, 8)
-                    .padding(.leading, 6)
+                Text(
+                    (try? AttributedString(
+                        markdown: .init(localized: "Uptime data fetched from \("[lemmy-status.org](\(url))")"))
+                    ) ?? .init()
+                )
+                .font(.footnote)
+                .foregroundStyle(palette.secondary)
+                .padding(.vertical, 8)
+                .padding(.leading, 6)
             }
         }
         .padding([.horizontal, .bottom], 16)
