@@ -56,7 +56,7 @@ struct ExpandedPostView: View {
                         .externalApiWarning(entity: post, isLoading: proxy.isLoading)
                         .task(id: tracker == nil) {
                             if let tracker, post.api == appState.firstApi, tracker.loadingState == .idle {
-                                // post.markRead()
+                                post.markRead()
                                 await load(tracker: tracker)
                             }
                         }
