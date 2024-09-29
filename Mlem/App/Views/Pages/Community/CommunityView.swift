@@ -115,6 +115,7 @@ struct CommunityView: View {
                 MenuButtons { community.menuActions(navigation: navigation) }
             }
         }
+        .popupAnchor()
         .fullScreenCover(isPresented: $warningPresented) {
             nsfwWarningOverlay
                 .presentationBackground(.ultraThinMaterial)
