@@ -10,12 +10,33 @@ import SwiftUI
 
 @Observable
 class NavigationLayer {
+    struct ShareInfo {
+        let url: URL
+        let activities: [ShareActivity]
+        
+        init(url: URL, activities: [ShareActivity] = []) {
+            self.url = url
+            self.activities = activities
+        }
+        
+        init(_ action: ShareAction) {
+            self.url = action.url
+            self.activities = action.actions.compactMap { action in
+                if let callback = action.callback {
+                    .init(appearance: action.appearance, performAction: callback)
+                } else {
+                    nil
+                }
+            }
+        }
+    }
+    
     weak var model: NavigationModel?
     var index: Int
     
     var root: NavigationPage
     var path: [NavigationPage]
-    var shareUrl: URL?
+    var shareInfo: ShareInfo?
     var hasNavigationStack: Bool
     var isFullScreenCover: Bool
     var canDisplayToasts: Bool

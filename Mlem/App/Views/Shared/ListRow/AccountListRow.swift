@@ -40,10 +40,12 @@ struct AccountListRow: View {
                         Button("Reload", systemImage: Icons.accountSwitchReload) {
                             changeAccount(keepPlace: false)
                         }
+                        .buttonStyle(.automatic)
                     } else {
                         Button("Keep Place", systemImage: Icons.accountSwitchKeepPlace) {
                             changeAccount(keepPlace: true)
                         }
+                        .buttonStyle(.automatic)
                     }
                 }
                 .tint(.blue)
@@ -54,6 +56,7 @@ struct AccountListRow: View {
                 Button(signOutLabel) {
                     showingSignOutConfirmation = true
                 }
+                .buttonStyle(.automatic)
                 .tint(.red)
             }
         }

@@ -9,6 +9,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct InteractionBarView: View {
+    @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     
     private let leading: [EnrichedWidget]
@@ -127,7 +128,9 @@ struct InteractionBarView: View {
     private func actionView(_ action: any Action) -> some View {
         Group {
             if let action = action as? ShareAction {
-                ShareLink(item: action.url) {
+                Button {
+                    navigation.shareInfo = .init(action)
+                } label: {
                     InteractionBarActionLabelView(action.appearance)
                 }
             } else {
