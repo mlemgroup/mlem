@@ -122,4 +122,8 @@ extension ActionAppearance {
     static func edit() -> Self {
         .init(label: "Edit", color: Palette.main.accent, icon: Icons.edit)
     }
+    
+    static func crossPost() -> Self {
+        .init(label: "Crosspost", color: Palette.main.accent, icon: Icons.crossPost)
+    }
 }

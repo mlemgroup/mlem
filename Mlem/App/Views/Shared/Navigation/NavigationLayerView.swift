@@ -45,11 +45,11 @@ struct NavigationLayerView: View {
         }
         // https://stackoverflow.com/questions/69693871/how-to-open-share-sheet-from-presented-sheet
         .background(SharingViewController(
-            isPresenting: Binding(get: { layer.shareUrl != nil }, set: { if !$0 { layer.shareUrl = nil }})
+            isPresenting: Binding(get: { layer.shareInfo != nil }, set: { if !$0 { layer.shareInfo = nil }})
         ) {
             let activityView = UIActivityViewController(
-                activityItems: [layer.shareUrl ?? URL(string: "www.apple.com")!],
-                applicationActivities: nil
+                activityItems: [layer.shareInfo?.url ?? URL(string: "www.apple.com")!],
+                applicationActivities: layer.shareInfo?.activities
             )
           
             if UIDevice.isPad {
@@ -57,7 +57,7 @@ struct NavigationLayerView: View {
             }
 
             activityView.completionWithItemsHandler = { _, _, _, _ in
-                layer.shareUrl = nil
+                layer.shareInfo = nil
             }
             return activityView
         })

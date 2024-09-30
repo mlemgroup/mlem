@@ -34,7 +34,13 @@ enum NavigationPage: Hashable {
     case createComment(_ context: CommentEditorView.Context, commentTreeTracker: CommentTreeTracker? = nil)
     case editComment(_ comment: Comment2, context: CommentEditorView.Context?)
     case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
-    case createPost(community: AnyCommunity?)
+    case createPost(
+        community: AnyCommunity?,
+        title: String,
+        content: String,
+        url: URL?,
+        nsfw: Bool
+    )
     case editPost(_ post: Post2)
     case deleteAccount(_ account: UserAccount)
     case bypassImageProxy(callback: HashWrapper<() -> Void>)
@@ -144,8 +150,26 @@ enum NavigationPage: Hashable {
         }))
     }
     
-    static func createPost(community: any CommunityStubProviding) -> NavigationPage {
-        createPost(community: .init(community))
+    static func createPost(
+        community: (any CommunityStubProviding)?,
+        title: String = "",
+        content: String = "",
+        url: URL? = nil,
+        nsfw: Bool = false
+    ) -> NavigationPage {
+        let anyCommunity: AnyCommunity?
+        if let community {
+            anyCommunity = .init(community)
+        } else {
+            anyCommunity = nil
+        }
+        return createPost(
+            community: anyCommunity,
+            title: title,
+            content: content,
+            url: url,
+            nsfw: nsfw
+        )
     }
 
     static func report(_ interactable: any ReportableProviding, community: (any CommunityStubProviding)?) -> NavigationPage {

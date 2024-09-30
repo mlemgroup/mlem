@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MenuButton: View {
+    @Environment(NavigationLayer.self) var navigation
     @Environment(PopupAnchorModel.self) var popupModel: PopupAnchorModel?
     
     let action: any Action
@@ -32,7 +33,11 @@ struct MenuButton: View {
             )
             .disabled(action.disabled)
         } else if let action = action as? ShareAction {
-            ShareLink(item: action.url)
+            Button {
+                navigation.shareInfo = .init(action)
+            } label: {
+                Label("Share...", systemImage: Icons.share)
+            }
         } else if let action = action as? ActionGroup {
             switch action.displayMode {
             case .section:
