@@ -45,7 +45,7 @@ class NavigationModel {
         for layer in layers.dropFirst(index) {
             layer.model = nil
         }
-        layers.removeLast(layers.count - index)
+        layers.removeLast(max(0, layers.count - index))
     }
     
     func clear() {
