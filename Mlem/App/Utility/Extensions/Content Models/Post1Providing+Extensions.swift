@@ -14,6 +14,10 @@ extension Post1Providing {
     
     var isOwnPost: Bool { creatorId == api.myPerson?.id }
     
+    var canModerate: Bool {
+        api.myPerson?.moderates(communityId: communityId) ?? false || api.isAdmin
+    }
+    
     func showEditSheet() {
         if let self = self as? any Post2Providing {
             NavigationModel.main.openSheet(.editPost(self.post2))
@@ -97,6 +101,12 @@ extension Post1Providing {
             } else {
                 reportAction()
                 blockAction(feedback: feedback)
+            }
+        }
+        if canModerate {
+            ActionGroup {
+                pinToCommunityAction()
+                pinToInstanceAction()
             }
         }
     }
@@ -227,6 +237,24 @@ extension Post1Providing {
             id: "edit\(uid)",
             appearance: .edit(),
             callback: api.canInteract ? { self.showEditSheet() } : nil
+        )
+    }
+    
+    func pinToCommunityAction() -> BasicAction {
+        let isOn = self2?.pinnedCommunity ?? false
+        return .init(
+            id: "pinToCommunity\(uid)",
+            appearance: .pinToCommunity(isOn: isOn),
+            callback: api.canInteract ? {} : nil
+        )
+    }
+    
+    func pinToInstanceAction() -> BasicAction {
+        let isOn = self2?.pinnedInstance ?? false
+        return .init(
+            id: "pinToInstance\(uid)",
+            appearance: .pinToInstance(isOn: isOn),
+            callback: api.canInteract ? {} : nil
         )
     }
 }

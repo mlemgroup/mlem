@@ -856,6 +856,15 @@
     "Photos" : {
 
     },
+    "Pin" : {
+
+    },
+    "Pin to Community" : {
+
+    },
+    "Pin to Instance" : {
+
+    },
     "Pink" : {
 
     },
@@ -1320,6 +1329,15 @@
 
     },
     "Unknown" : {
+
+    },
+    "Unpin" : {
+
+    },
+    "Unpin From Community" : {
+
+    },
+    "Unpin From Instance" : {
 
     },
     "Unsave" : {
