@@ -71,13 +71,11 @@ struct InteractionBarView: View {
                 .padding(infoStackPaddingEdges, -Constants.main.doubleSpacing)
             ForEach(trailing, id: \.viewId, content: widgetView)
         }
-        .frame(height: Constants.main.barIconHitbox - Constants.main.standardSpacing)
-        .padding(.horizontal, Constants.main.halfSpacing)
-        .background {
-            Capsule()
-                .foregroundStyle(palette.tertiaryGroupedBackground)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-        }
+//        .background {
+//            Capsule()
+//                .foregroundStyle(palette.tertiaryGroupedBackground)
+//                .frame(maxWidth: .infinity, maxHeight: .infinity)
+//        }
         .geometryGroup()
     }
     

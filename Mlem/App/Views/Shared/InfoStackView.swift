@@ -13,7 +13,7 @@ struct InfoStackView: View {
     let showColor: Bool
     
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 8) {
             ForEach(readouts, id: \.viewId) { readout in
                 ReadoutView(readout: readout, showColor: showColor)
             }

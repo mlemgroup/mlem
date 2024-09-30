@@ -86,5 +86,6 @@ struct LargePostView: View {
     @ViewBuilder
     var communityLink: some View {
         FullyQualifiedLinkView(entity: post.community_, labelStyle: .medium, showAvatar: showCommunityAvatar, blurred: shouldBlur)
+            .padding([.top, .leading], 4)
     }
 }

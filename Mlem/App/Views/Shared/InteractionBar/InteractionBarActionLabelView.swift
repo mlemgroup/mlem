@@ -25,9 +25,15 @@ struct InteractionBarActionLabelView: View {
             .symbolVariant(appearance.isOn ? .fill : .none)
             .scaledToFit()
             .frame(width: Constants.main.barIconSize, height: Constants.main.barIconSize)
-            .padding(Constants.main.barIconPadding)
-            .foregroundColor(appearance.isOn ? palette.selectedInteractionBarItem : palette.primary)
-            .background(appearance.isOn ? appearance.color : .clear, in: .circle)
+            .frame(width: Constants.main.barIconHitbox, height: Constants.main.barIconHitbox)
+            .foregroundColor(appearance.isOn ? palette.selectedInteractionBarItem : palette.accent)
+            .background {
+                if appearance.isOn {
+                    Circle().foregroundStyle(appearance.color)
+                } else {
+                    Circle().foregroundStyle(.ultraThinMaterial)
+                }
+            }
             .contentShape(Rectangle())
     }
 }
