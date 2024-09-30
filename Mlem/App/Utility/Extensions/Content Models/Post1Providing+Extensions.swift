@@ -117,6 +117,7 @@ extension Post1Providing {
         case .hide: hideAction(feedback: feedback)
         case .block: blockAction(feedback: feedback)
         case .report: reportAction(communityContext: communityContext)
+        case .crossPost: crossPostAction()
         }
     }
     
@@ -179,6 +180,31 @@ extension Post1Providing {
     }
     
     // MARK: Actions
+    
+    // Overrides the `ActorIdentifiable+Extensions` implementation
+    func shareAction() -> ShareAction {
+        .init(id: "share\(actorId)", url: actorId, actions: [crossPostAction()])
+    }
+    
+    func crossPostAction() -> BasicAction {
+        .init(
+            id: "crosspost\(uid)",
+            appearance: .crossPost(),
+            callback: {
+                var crossPostContent: String = .init(localized: "Crossposted from \(self.actorId.absoluteString)")
+                if let content = self.content {
+                    crossPostContent += "\n-----\n\(content)"
+                }
+                NavigationModel.main.openSheet(.createPost(
+                    community: nil as AnyCommunity?,
+                    title: self.title,
+                    content: crossPostContent,
+                    url: self.linkUrl,
+                    nsfw: self.nsfw
+                ))
+            }
+        )
+    }
     
     func hideAction(feedback: Set<FeedbackType>) -> BasicAction {
         let hidden = hidden_ ?? false

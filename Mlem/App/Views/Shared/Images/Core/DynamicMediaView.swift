@@ -160,7 +160,7 @@ struct DynamicMediaView: View {
     
     func shareImage(url: URL) async {
         if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "image") {
-            navigation.shareUrl = fileUrl
+            navigation.shareInfo = .init(url: fileUrl)
         }
     }
     
