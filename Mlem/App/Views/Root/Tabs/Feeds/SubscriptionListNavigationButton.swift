@@ -24,7 +24,7 @@ struct SubscriptionListNavigationButton<Content: View>: View {
             Button(action: {
                 navigation.root = destination
             }, label: label)
-                .buttonStyle(EmptyButtonStyle())
+                .buttonStyle(.empty)
         })
     }
 }

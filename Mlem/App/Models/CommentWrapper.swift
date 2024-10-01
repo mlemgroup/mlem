@@ -34,6 +34,21 @@ class CommentWrapper: Identifiable, Comment2Providing {
         return children.reduce([self]) { $0 + $1.tree() }
     }
     
+    func itemTree() -> [CommentTreeItem] {
+        if creator.blocked { return [] }
+        if collapsed { return [.comment(self)] }
+        var output: [CommentTreeItem] = children.reduce([.comment(self)]) { $0 + $1.itemTree() }
+        let directChildCount = children.reduce(commentCount) { $0 - $1.commentCount }
+        if children.count < directChildCount {
+            output.append(.unloadedComments(comment: self, count: commentCount - output.count))
+        }
+        return output
+    }
+    
+    var recursiveChildCount: Int {
+        children.reduce(0) { $0 + $1.recursiveChildCount + 1 }
+    }
+    
     var api: ApiClient { comment2.api }
     
     /// Returns the top-level parent
@@ -43,5 +58,25 @@ class CommentWrapper: Identifiable, Comment2Providing {
 extension [CommentWrapper] {
     func tree() -> [CommentWrapper] {
         reduce([]) { $0 + $1.tree() }
+    }
+    
+    func itemTree() -> [CommentTreeItem] {
+        reduce([]) { $0 + $1.itemTree() }
+    }
+}
+
+enum CommentTreeItem: Hashable {
+    case comment(CommentWrapper)
+    case unloadedComments(comment: CommentWrapper, count: Int)
+    
+    func hash(into hasher: inout Hasher) {
+        switch self {
+        case let .comment(comment):
+            hasher.combine(1)
+            hasher.combine(comment.actorId)
+        case let .unloadedComments(comment, _):
+            hasher.combine(2)
+            hasher.combine(comment.actorId)
+        }
     }
 }

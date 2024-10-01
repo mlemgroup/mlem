@@ -60,7 +60,7 @@ struct QuickSwipeView: ViewModifier {
             .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
             .background(iconBackground)
             // disables links from highlighting when tapped
-            .buttonStyle(EmptyButtonStyle())
+            .buttonStyle(.empty)
             .clipShape(RoundedRectangle(cornerRadius: config.behavior.cornerRadius)) // clip entire view
             .popupAnchor(model: popupModel)
         } else {

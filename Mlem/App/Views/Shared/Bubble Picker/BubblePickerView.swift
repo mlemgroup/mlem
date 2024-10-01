@@ -133,7 +133,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
         } label: {
             bubbleButtonLabel(tab: tab, isSelected: isSelected)
         }
-        .buttonStyle(EmptyButtonStyle())
+        .buttonStyle(.empty)
         .id(index)
     }
     

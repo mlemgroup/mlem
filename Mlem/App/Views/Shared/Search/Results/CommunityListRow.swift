@@ -44,7 +44,7 @@ struct CommunityListRow<Content2: View>: View {
             FormChevron { content }
                 .padding(.trailing)
         }
-        .buttonStyle(EmptyButtonStyle())
+        .buttonStyle(.empty)
         .padding(.vertical, 6)
         .background(palette.background)
         .contextMenu { community.menuActions(navigation: navigation) }
