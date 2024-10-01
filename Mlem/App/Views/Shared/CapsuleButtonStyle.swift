@@ -16,10 +16,7 @@ struct CapsuleButtonStyle: ButtonStyle {
             .foregroundStyle(palette.accent)
             .padding(.vertical, 10)
             .frame(maxWidth: .infinity)
-            .background {
-                Capsule()
-                    .fill(palette.accent.opacity(0.2))
-            }
+            .background(palette.secondaryGroupedBackground, in: .capsule)
             .opacity(configuration.isPressed ? 0.8 : 1)
             .animation(.easeOut(duration: 0.1), value: configuration.isPressed)
     }

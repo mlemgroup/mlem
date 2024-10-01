@@ -11,14 +11,17 @@ import SwiftUI
 struct CommentPage: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) private var palette
+    @Environment(\.dismiss) var dismiss
     
     let comment: AnyComment
     @State var tracker: CommentTreeTracker?
+    let showViewPostButton: Bool
     
     @State var post: Post3?
     
-    init(comment: AnyComment) {
+    init(comment: AnyComment, showViewPostButton: Bool = false) {
         self.comment = comment
+        self.showViewPostButton = showViewPostButton
         if let comment = comment.wrappedValue as? any Comment {
             self._tracker = .init(wrappedValue: .init(root: .comment(comment, parentCount: 1)))
         } else {
@@ -33,10 +36,9 @@ struct CommentPage: View {
                 post: post,
                 isLoading: proxy.isLoading,
                 tracker: $tracker,
-                highlightedComment: proxy.entity,
                 scrollTargetedComment: proxy.entity
             ) {
-                if let post {
+                if let post, showViewPostButton || tracker?.comments.first?.depth != 0 {
                     HStack(spacing: Constants.main.standardSpacing) {
                         if tracker?.comments.first?.depth != 0 {
                             Button {
@@ -58,12 +60,14 @@ struct CommentPage: View {
                                 .animation(.easeOut(duration: 0.1), value: tracker?.loadingState == .loading)
                             }
                         }
-                        Button {
-                            navigation.push(.post(.init(post)))
-                        } label: {
-                            HStack {
-                                Text("View All")
-                                Image(systemName: Icons.forward)
+                        if showViewPostButton {
+                            Button {
+                                navigation.push(.post(.init(post)))
+                            } label: {
+                                HStack {
+                                    Text("View All")
+                                    Image(systemName: Icons.forward)
+                                }
                             }
                         }
                     }

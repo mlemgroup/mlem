@@ -187,7 +187,7 @@ struct ExpandedPostView<Content: View>: View {
                     .id(comment.actorId)
                 case let .unloadedComments(comment, _):
                     Button {
-                        navigation.push(.comment(comment))
+                        navigation.push(.comment(comment, showViewPostButton: false))
                     } label: {
                         HStack {
                             CommentBarView(depth: comment.depth + 1)
@@ -196,15 +196,14 @@ struct ExpandedPostView<Content: View>: View {
                                 Image(systemName: Icons.forward)
                             }
                             .frame(maxWidth: .infinity)
-                            .padding(.vertical, 2)
-                            .foregroundStyle(.secondary)
+                            .padding(.vertical, 8)
+                            .foregroundStyle(palette.accent)
                         }
                         .background(
                             palette.secondaryGroupedBackground,
                             in: .rect(cornerRadius: Constants.main.standardSpacing)
                         )
                     }
-                    .font(.footnote)
                     .padding(.leading, CGFloat(comment.depth + 1 - tracker.proposedDepthOffset) * 10)
                     .buttonStyle(.plain)
                 }

@@ -55,6 +55,7 @@ class CommentTreeTracker: Hashable {
     
     private var appState: AppState { .main }
     
+    @MainActor
     func load(ensuringPresenceOf ensuredComment: (any CommentStubProviding)? = nil) async {
         guard loadingState == .idle else { return }
         loadingState = .loading
