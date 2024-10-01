@@ -59,7 +59,7 @@ struct CompactPostView: View {
                             .imageScale(.small)
                     }
 
-                    EllipsisMenu(size: 18) { post.menuActions() }
+                    EllipsisMenu(style: .compact) { post.menuActions() }
                 }
                 .padding(.bottom, -2)
   

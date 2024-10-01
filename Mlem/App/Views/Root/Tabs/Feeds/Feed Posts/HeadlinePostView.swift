@@ -40,11 +40,15 @@ struct HeadlinePostView: View {
     var content: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             HStack {
-                if communityContext == nil {
-                    communityLink
-                } else {
-                    personLink
+                Group {
+                    if communityContext == nil {
+                        communityLink
+                    } else {
+                        personLink
+                    }
                 }
+                // TODO: (pending customizable avatar size) only apply this padding when avatar is small
+                .padding([.top, .leading], 5) // outer radius (28) - inner radius (12) = padding (10 + 5)
                 
                 Spacer()
                 
@@ -53,7 +57,8 @@ struct HeadlinePostView: View {
                         .foregroundStyle(palette.warning)
                 }
                 
-                EllipsisMenu(size: 24) { post.menuActions() }
+                EllipsisMenu(style: .standard) { post.menuActions() }
+                    .padding([.top, .trailing], 5)
             }
             
             HStack(alignment: .top, spacing: Constants.main.standardSpacing) {
@@ -100,7 +105,6 @@ struct HeadlinePostView: View {
                 communityContext: communityContext
             )
             .padding(.horizontal, 2)
-            .padding(.vertical, 5)
         }
     }
     

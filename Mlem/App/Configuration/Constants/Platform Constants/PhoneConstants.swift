@@ -16,8 +16,8 @@ extension PlatformConstants {
         compactSpacing: 6,
         thumbnailSize: 60,
         listRowAvatarSize: 46,
-        largeAvatarSize: 32,
-        mediumAvatarSize: 22,
+        largeAvatarSize: 36,
+        mediumAvatarSize: 24,
         smallAvatarSize: 16,
         largeItemCornerRadius: 16,
         mediumItemCornerRadius: 8,
@@ -28,6 +28,6 @@ extension PlatformConstants {
         barIconSize: 18,
         barIconCornerRadius: 4,
         barIconPadding: 4.24,
-        barIconHitbox: 36
+        barIconHitbox: 36 // TODO: ERIC make "circle" constants
     )
 }

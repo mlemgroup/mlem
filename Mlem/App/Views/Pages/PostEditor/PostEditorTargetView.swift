@@ -75,7 +75,7 @@ struct PostEditorTargetView: View {
                 .padding(.init(top: 2, leading: 4, bottom: 2, trailing: 8))
                 .background(palette.secondaryBackground, in: .capsule)
             } else if let community = target.community {
-                FullyQualifiedNameView(name: community.name, instance: community.host, instanceLocation: .trailing)
+                FullyQualifiedNameView(name: community.name, instance: community.host, labelStyle: .small)
                     .task {
                         do {
                             target.community = try await community.upgrade()

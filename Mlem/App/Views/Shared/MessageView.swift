@@ -23,7 +23,7 @@ struct MessageView: View {
                 Image(systemName: message.isOwnMessage ? Icons.send : Icons.message)
                     .symbolVariant(message.read ? .none : .fill)
                     .foregroundStyle(palette.accent)
-                EllipsisMenu(size: 24) { message.menuActions() }
+                EllipsisMenu(style: .standard) { message.menuActions() }
                     .frame(height: 10)
             }
             if message.deleted {

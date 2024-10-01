@@ -40,11 +40,15 @@ struct LargePostView: View {
     var content: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             HStack {
-                if communityContext == nil {
-                    communityLink
-                } else {
-                    personLink
+                Group {
+                    if communityContext == nil {
+                        communityLink
+                    } else {
+                        personLink
+                    }
                 }
+                // TODO: (pending customizable avatar size) only apply this padding when avatar is small
+                .padding([.top, .leading], 5) // outer radius (28) - inner radius (12) = padding (10 + 5)
                 
                 Spacer()
                 
@@ -54,7 +58,8 @@ struct LargePostView: View {
                 }
                 
                 if !isExpanded {
-                    EllipsisMenu(size: 24) { post.menuActions(commentTreeTracker: commentTreeTracker) }
+                    EllipsisMenu(style: .standard) { post.menuActions(commentTreeTracker: commentTreeTracker) }
+                        .padding([.top, .trailing], 5)
                 }
             }
             
@@ -86,6 +91,5 @@ struct LargePostView: View {
     @ViewBuilder
     var communityLink: some View {
         FullyQualifiedLinkView(entity: post.community_, labelStyle: .medium, showAvatar: showCommunityAvatar, blurred: shouldBlur)
-            .padding([.top, .leading], 4)
     }
 }

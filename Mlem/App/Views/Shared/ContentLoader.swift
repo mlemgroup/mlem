@@ -102,7 +102,9 @@ class ContentLoaderProxy<Model: Upgradable> {
                     try await model.upgradeFromLocal()
                 }
             }
-            upgradeState = .done
+            Task { @MainActor in
+                upgradeState = .done
+            }
         } catch ApiClientError.cancelled {
             // if the task is cancelled, reset upgradeState--upgrade will be retried on next render
             upgradeState = .idle

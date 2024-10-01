@@ -72,11 +72,6 @@ struct InteractionBarView: View {
                 .padding(infoStackPaddingEdges, -Constants.main.doubleSpacing)
             ForEach(trailing, id: \.viewId, content: widgetView)
         }
-//        .background {
-//            Capsule()
-//                .foregroundStyle(palette.tertiaryGroupedBackground)
-//                .frame(maxWidth: .infinity, maxHeight: .infinity)
-//        }
         .geometryGroup()
     }
     

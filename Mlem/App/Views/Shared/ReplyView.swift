@@ -23,7 +23,7 @@ struct ReplyView: View {
                 Image(systemName: reply.isMention ? Icons.mention : Icons.reply)
                     .symbolVariant(reply.read ? .none : .fill)
                     .foregroundStyle(palette.accent)
-                EllipsisMenu(size: 24) { reply.menuActions() }
+                EllipsisMenu(style: .standard) { reply.menuActions() }
                     .frame(height: 10)
             }
           

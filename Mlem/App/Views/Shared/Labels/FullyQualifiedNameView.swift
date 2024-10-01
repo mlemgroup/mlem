@@ -29,7 +29,7 @@ struct FullyQualifiedNameView: View {
     // parameters
     let name: String?
     let instance: String?
-    let instanceLocation: InstanceLocation
+    let labelStyle: FullyQualifiedLabelStyle
     var prependedText: Text = .init(verbatim: "")
     
     // scale placeholder capsule height and spacing according to font size
@@ -43,8 +43,8 @@ struct FullyQualifiedNameView: View {
     var body: some View {
         if let name, let instance {
             (prependedText + nameText(name: name) + instanceText(instance: instance))
-                .lineLimit(instanceLocation != .bottom ? 1 : nil)
-                .font(.footnote)
+                .lineLimit(labelStyle.instanceLocation != .bottom ? 1 : nil)
+                .font(labelStyle.fontSize)
         } else {
             placeholder
         }
@@ -57,10 +57,10 @@ struct FullyQualifiedNameView: View {
     }
     
     func instanceText(instance: String) -> Text {
-        if instanceLocation != .disabled {
+        if labelStyle.instanceLocation != .disabled {
             // prepend a newline if location is bottom for easy concatenation
-            Text(verbatim: "\(instanceLocation == .bottom ? "\n" : "")@\(instance)")
-                .font(.footnote)
+            Text(verbatim: "\(labelStyle.instanceLocation == .bottom ? "\n" : "")@\(instance)")
+                .font(labelStyle.fontSize)
                 .foregroundStyle(palette.tertiary)
         } else {
             Text(verbatim: "") // return empty Text for easy concatenation
@@ -75,9 +75,9 @@ struct FullyQualifiedNameView: View {
                     startPoint: .leading,
                     endPoint: .trailing
                 ))
-                .frame(width: instanceLocation == .bottom ? 100 : 160, height: capsuleHeight)
+                .frame(width: labelStyle.instanceLocation == .bottom ? 100 : 160, height: capsuleHeight)
             
-            if instanceLocation == .bottom {
+            if labelStyle.instanceLocation == .bottom {
                 Capsule()
                     .fill(LinearGradient(
                         colors: [palette.tertiary.opacity(gradientBegin), palette.tertiary.opacity(gradientEnd)],
@@ -92,7 +92,7 @@ struct FullyQualifiedNameView: View {
 }
 
 extension FullyQualifiedNameView {
-    init(_ entity: any CommunityOrPersonStub, instanceLocation: InstanceLocation) {
-        self.init(name: entity.name, instance: entity.host ?? "unknown", instanceLocation: instanceLocation)
+    init(_ entity: any CommunityOrPersonStub, labelStyle: FullyQualifiedLabelStyle) {
+        self.init(name: entity.name, instance: entity.host ?? "unknown", labelStyle: labelStyle)
     }
 }

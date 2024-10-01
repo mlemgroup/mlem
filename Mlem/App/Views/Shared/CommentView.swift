@@ -75,7 +75,7 @@ struct CommentView: View {
                                 .frame(height: 10)
                                 .imageScale(.small)
                         } else {
-                            EllipsisMenu(size: 24) { comment.menuActions(commentTreeTracker: commentTreeTracker) }
+                            EllipsisMenu(style: .standard) { comment.menuActions(commentTreeTracker: commentTreeTracker) }
                                 .frame(height: 10)
                         }
                     }
@@ -91,9 +91,6 @@ struct CommentView: View {
                             commentTreeTracker: commentTreeTracker,
                             communityContext: communityContext
                         )
-                        .padding(.horizontal, 2)
-                        .padding(.bottom, 5)
-                        .padding(.top, 1)
                     }
                 }
             }

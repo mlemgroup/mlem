@@ -16,7 +16,8 @@ enum PostSize: String, CaseIterable, Codable {
     
     var swipeBehavior: SwipeBehavior {
         switch self {
-        case .compact, .headline, .large: .standard
+        case .compact: .compact
+        case .headline, .large: .standard
         case .tile: .tile
         }
     }

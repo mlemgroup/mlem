@@ -61,6 +61,15 @@ struct SwipeBehavior {
     /// Font size for the icon
     let iconSize: CGFloat
     
+    static let compact: SwipeBehavior = .init(
+        primaryThreshold: 60,
+        secondaryThreshold: 150,
+        tertiaryThreshold: 240,
+        minimumDrag: 20,
+        cornerRadius: Constants.main.largeItemCornerRadius,
+        iconSize: 28
+    )
+    
     static let standard: SwipeBehavior = .init(
         primaryThreshold: 60,
         secondaryThreshold: 150,

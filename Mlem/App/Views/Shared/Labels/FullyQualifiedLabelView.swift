@@ -37,6 +37,14 @@ enum FullyQualifiedLabelStyle {
         case .large: .bottom
         }
     }
+    
+    var fontSize: Font {
+        switch self {
+        case .small: .footnote
+        case .medium: .subheadline
+        case .large: .footnote
+        }
+    }
 }
 
 /// View for rendering fully qualified labels (i.e., user or community names)
@@ -75,7 +83,7 @@ struct FullyQualifiedLabelView: View {
             FullyQualifiedNameView(
                 name: entity?.name,
                 instance: entity?.host,
-                instanceLocation: showInstance ? labelStyle.instanceLocation : .disabled,
+                labelStyle: labelStyle,
                 prependedText: flairs.textView()
             )
             .imageScale(.small)
