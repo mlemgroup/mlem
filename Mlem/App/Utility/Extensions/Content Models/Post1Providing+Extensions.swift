@@ -52,16 +52,18 @@ extension Post1Providing {
     
     func toggleLocked(feedback: Set<FeedbackType>) {
         Task {
-            let shouldLock = !locked
-            let result = await self.toggleLocked().result.get()
+            await handleModerationActionCompletion(
+                message: locked ? "Failed to unlock post" : "Failed to lock post",
+                result: self.toggleLocked().result.get(),
+                feedback: feedback
+            )
         }
     }
     
     func togglePinnedCommunity(feedback: Set<FeedbackType>) {
         Task {
-            let shouldLock = !pinnedCommunity
-            await handleTogglePinCompletion(
-                shouldPin: !pinnedCommunity,
+            await handleModerationActionCompletion(
+                message: pinnedCommunity ? "Failed to unpin post" : "Failed to pin post",
                 result: self.togglePinnedCommunity().result.get(),
                 feedback: feedback
             )
@@ -70,21 +72,25 @@ extension Post1Providing {
     
     func togglePinnedInstance(feedback: Set<FeedbackType>) {
         Task {
-            await handleTogglePinCompletion(
-                shouldPin: !pinnedInstance,
+            await handleModerationActionCompletion(
+                message: pinnedInstance ? "Failed to unpin post" : "Failed to pin post",
                 result: self.togglePinnedInstance().result.get(),
                 feedback: feedback
             )
         }
     }
     
-    private func handleTogglePinCompletion(shouldPin: Bool, result: StateUpdateResult, feedback: Set<FeedbackType>) async {
+    private func handleModerationActionCompletion(
+        message: String,
+        result: StateUpdateResult,
+        feedback: Set<FeedbackType>
+    ) async {
         if feedback.contains(.haptic) {
             await HapticManager.main.play(haptic: .success, priority: .low)
         }
         switch result {
         case .failed:
-            ToastModel.main.add(.failure(shouldPin ? "Failed to lock post" : "Failed to unlock post"))
+            ToastModel.main.add(.failure(message))
         default:
             break
         }
