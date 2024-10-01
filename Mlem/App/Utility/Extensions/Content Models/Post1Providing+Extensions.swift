@@ -13,7 +13,7 @@ extension Post1Providing {
     private var self2: (any Post2Providing)? { self as? any Post2Providing }
     
     var isOwnPost: Bool { creatorId == api.myPerson?.id }
-    
+
     var canModerate: Bool {
         api.myPerson?.moderates(communityId: communityId) ?? false || api.isAdmin
     }
@@ -54,47 +54,39 @@ extension Post1Providing {
         Task {
             let shouldLock = !locked
             let result = await self.toggleLocked().result.get()
-            if feedback.contains(.haptic) {
-                await HapticManager.main.play(haptic: .success, priority: .low)
-            }
-            switch result {
-            case .failed:
-                ToastModel.main.add(.failure(shouldLock ? "Failed to lock post" : "Failed to unlock post"))
-            default:
-                break
-            }
         }
     }
     
     func togglePinnedCommunity(feedback: Set<FeedbackType>) {
         Task {
             let shouldLock = !pinnedCommunity
-            let result = await self.togglePinnedCommunity().result.get()
-            if feedback.contains(.haptic) {
-                await HapticManager.main.play(haptic: .success, priority: .low)
-            }
-            switch result {
-            case .failed:
-                ToastModel.main.add(.failure(shouldLock ? "Failed to pin post" : "Failed to unpin post"))
-            default:
-                break
-            }
+            await handleTogglePinCompletion(
+                shouldPin: !pinnedCommunity,
+                result: self.togglePinnedCommunity().result.get(),
+                feedback: feedback
+            )
         }
     }
     
     func togglePinnedInstance(feedback: Set<FeedbackType>) {
         Task {
-            let shouldLock = !pinnedInstance
-            let result = await self.togglePinnedInstance().result.get()
-            if feedback.contains(.haptic) {
-                await HapticManager.main.play(haptic: .success, priority: .low)
-            }
-            switch result {
-            case .failed:
-                ToastModel.main.add(.failure(shouldLock ? "Failed to pin post" : "Failed to unpin post"))
-            default:
-                break
-            }
+            await handleTogglePinCompletion(
+                shouldPin: !pinnedInstance,
+                result: self.togglePinnedInstance().result.get(),
+                feedback: feedback
+            )
+        }
+    }
+    
+    private func handleTogglePinCompletion(shouldPin: Bool, result: StateUpdateResult, feedback: Set<FeedbackType>) async {
+        if feedback.contains(.haptic) {
+            await HapticManager.main.play(haptic: .success, priority: .low)
+        }
+        switch result {
+        case .failed:
+            ToastModel.main.add(.failure(shouldPin ? "Failed to lock post" : "Failed to unlock post"))
+        default:
+            break
         }
     }
     
@@ -422,4 +414,5 @@ extension Post1Providing {
             callback: api.canInteract && api.isAdmin ? { self.togglePinnedInstance(feedback: feedback) } : nil
         )
     }
+    // swiftlint:disable:next file_length
 }
