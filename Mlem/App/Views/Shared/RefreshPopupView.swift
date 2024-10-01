@@ -41,7 +41,7 @@ struct RefreshPopupView: View {
                             .background(palette.accent, in: .capsule)
                     }
                 }
-                .buttonStyle(EmptyButtonStyle())
+                .buttonStyle(.empty)
                 .padding(4)
                 .background(palette.secondaryBackground, in: .capsule)
                 .shadow(color: .black.opacity(0.1), radius: 5)

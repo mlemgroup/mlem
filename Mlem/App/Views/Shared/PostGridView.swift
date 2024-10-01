@@ -88,7 +88,7 @@ struct PostGridView: View {
                             FeedPostView(post: post)
                                 .matchedTransitionSource_(id: "post\(post.actorId)", in: navigationNamespace)
                         }
-                        .buttonStyle(EmptyButtonStyle())
+                        .buttonStyle(.empty)
                         .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 10)
                         .markReadOnScroll(
                             index: index,

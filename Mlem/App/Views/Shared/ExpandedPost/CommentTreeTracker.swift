@@ -24,7 +24,7 @@ class CommentTreeTracker: Hashable {
         var depth: Int {
             switch self {
             case .post: -1
-            case let .comment(comment, _): comment.depth
+            case let .comment(comment, parentCount): max(0, comment.depth - parentCount)
             }
         }
     }
@@ -42,8 +42,20 @@ class CommentTreeTracker: Hashable {
         self.root = root
     }
     
+    var proposedDepthOffset: Int {
+        switch root {
+        case .comment:
+            if let first = comments.first, first.depth > 0 {
+                return first.depth - 1
+            }
+            return 0
+        default: return 0
+        }
+    }
+    
     private var appState: AppState { .main }
     
+    @MainActor
     func load(ensuringPresenceOf ensuredComment: (any CommentStubProviding)? = nil) async {
         guard loadingState == .idle else { return }
         loadingState = .loading
@@ -58,7 +70,7 @@ class CommentTreeTracker: Hashable {
                     includedParentCount: parentCount,
                     page: 1,
                     maxDepth: 8,
-                    limit: 50
+                    limit: 999
                 )
             }
             if let ensuredComment, !commentsKeyedByActorId.keys.contains(ensuredComment.actorId) {
@@ -82,12 +94,12 @@ class CommentTreeTracker: Hashable {
                         sort: sort,
                         page: 1,
                         maxDepth: 8,
-                        limit: 50
+                        limit: 999
                     )
                     newComments.append(contentsOf: extraComments)
                 }
             }
-            if let first = comments.first, first.api != root.wrappedValue.api {
+            if let first = newComments.first, first.api != root.wrappedValue.api {
                 resolveCommentTree(comments: newComments)
             } else {
                 buildCommentTree(comments: newComments)
@@ -97,6 +109,11 @@ class CommentTreeTracker: Hashable {
             handleError(error)
             loadingState = .idle
         }
+    }
+    
+    func refresh() async {
+        loadingState = .idle
+        await load()
     }
     
     func clear() {
@@ -125,7 +142,7 @@ class CommentTreeTracker: Hashable {
             let wrapper: CommentWrapper = .init(comment)
             commentsKeyedById[comment.id] = wrapper
             commentsKeyedByActorId[comment.actorId] = wrapper
-            if let parentId = comment.parentCommentIds.last, comment.parentCommentIds.count > root.depth {
+            if let parentId = comment.parentCommentIds.last, comment.depth > root.depth {
                 commentsKeyedById[parentId]?.addChild(wrapper)
             } else {
                 output.append(wrapper)

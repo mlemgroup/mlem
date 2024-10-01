@@ -8,7 +8,7 @@
 import MlemMiddleware
 import SwiftUI
 
-struct ExpandedPostView: View {
+struct ExpandedPostView<Content: View>: View {
     struct AnchorsKey: PreferenceKey {
         // swiftlint:disable:next nesting
         typealias Value = [URL?: Anchor<CGPoint>]
@@ -20,93 +20,72 @@ struct ExpandedPostView: View {
         }
     }
 
-    @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
+    @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
     @Setting(\.jumpButton) var jumpButton
     @Setting(\.compactComments) var compactComments
     
-    let post: AnyPost
-    @State var tracker: CommentTreeTracker?
-    @State var highlightedComment: (any CommentStubProviding)?
-    @State var scrolledToHighlightedComment: Bool
+    var post: (any PostStubProviding)?
+    let isLoading: Bool
+    let highlightedComment: (any CommentStubProviding)?
+    let content: Content
     
+    @Binding var tracker: CommentTreeTracker?
+    @State var scrollTargetedComment: (any CommentStubProviding)?
+
+    @State var scrolledToscrollTargetedComment: Bool = false
     @State var jumpButtonTarget: URL?
     @State var topVisibleItem: URL?
     
-    init(post: AnyPost, highlightedComment: (any CommentStubProviding)?) {
+    init(
+        post: (any PostStubProviding)?,
+        isLoading: Bool,
+        tracker: Binding<CommentTreeTracker?>,
+        highlightedComment: (any CommentStubProviding)? = nil,
+        scrollTargetedComment: (any CommentStubProviding)? = nil,
+        @ViewBuilder content: () -> Content = { EmptyView() }
+    ) {
         self.post = post
-        self._highlightedComment = .init(wrappedValue: highlightedComment)
-        self._scrolledToHighlightedComment = .init(wrappedValue: highlightedComment == nil)
-        if let post = post.wrappedValue as? any Post {
-            self._tracker = .init(wrappedValue: .init(root: .post(post)))
-        } else {
-            self._tracker = .init(wrappedValue: nil)
-        }
+        self.isLoading = isLoading
+        self.highlightedComment = highlightedComment
+        self.content = content()
+        self._tracker = tracker
+        self._scrollTargetedComment = .init(wrappedValue: scrollTargetedComment)
     }
     
     var body: some View {
-        ContentLoader(model: post) { proxy in
-            // Using a `ZStack` here rather than `if`/`else` because there needs to
-            // be a delay between the `content()` appearing and calling `scrollTo`
-            VStack {
-                if let post = proxy.entity {
-                    content(post: post, isLoading: proxy.isLoading)
-                        .externalApiWarning(entity: post, isLoading: proxy.isLoading)
-                        .task(id: tracker == nil) {
-                            if let tracker, post.api == appState.firstApi, tracker.loadingState == .idle {
-                                post.markRead()
-                                await load(tracker: tracker)
-                            }
-                        }
-                }
-            }
-            .refreshable {
-                _ = await Task {
-                    do {
-                        try await post.refresh(upgradeOperation: nil)
-                    } catch {
-                        handleError(error)
-                    }
-                    if let tracker {
-                        tracker.clear()
-                        await load(tracker: tracker)
-                    }
-                }.result
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .overlay {
-                VStack {
-                    if showLoadingSymbol {
-                        ZStack {
-                            palette.background
-                                .ignoresSafeArea()
-                            ProgressView()
-                                .tint(.secondary)
-                        }
-                        .transition(.opacity)
-                    }
-                }
-                .animation(.easeOut(duration: 0.1), value: showLoadingSymbol)
-            }
-        } upgradeOperation: { model, api in
-            try await model.upgrade(api: api, upgradeOperation: nil)
-            if let post = model.wrappedValue as? any Post {
-                if let tracker {
-                    if tracker.root.wrappedValue.id != post.id {
-                        tracker.root = .post(post)
-                        tracker.loadingState = .idle
-                        Task {
-                            await load(tracker: tracker)
+        // Using a `ZStack` here rather than `if`/`else` because there needs to
+        // be a delay between the `content()` appearing and calling `scrollTo`
+        VStack {
+            if let post = post as? any Post {
+                content(post: post, isLoading: isLoading)
+                    .externalApiWarning(entity: post, isLoading: isLoading)
+                    .task(id: tracker == nil) {
+                        if let tracker, post.api == appState.firstApi, tracker.loadingState == .idle {
+                            // post.markRead()
+                            await tracker.load()
                         }
                     }
-                } else {
-                    tracker = .init(root: .post(post))
-                }
             }
         }
-        .background(palette.groupedBackground)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .overlay {
+            VStack {
+                if showLoadingSymbol {
+                    ZStack {
+                        palette.background
+                            .ignoresSafeArea()
+                        ProgressView()
+                            .tint(.secondary)
+                    }
+                    .transition(.opacity)
+                }
+            }
+            .animation(.easeOut(duration: 0.1), value: showLoadingSymbol)
+        }
     }
     
     // swiftlint:disable:next function_body_length
@@ -128,37 +107,26 @@ struct ExpandedPostView: View {
                                 value: .center
                             ) { [post.actorId: $0] }
                             .padding(.horizontal, Constants.main.standardSpacing)
-                        if let post = post as? any Post3Providing, !post.crossPosts.isEmpty {
-                            CrossPostListView(post: post)
-                                .padding(.horizontal, Constants.main.standardSpacing)
-                        }
-                        ForEach(tracker?.comments.tree() ?? [], id: \.actorId) { comment in
-                            CommentView(
-                                comment: comment,
-                                highlight: highlightedComment?.actorId == comment.actorId,
-                                depthOffset: 0
-                            )
-                            .transition(.move(edge: .top).combined(with: .opacity))
-                            .zIndex(1000 - Double(comment.depth))
-                            .anchorPreference(
-                                key: AnchorsKey.self,
-                                value: .center
-                            ) { [comment.actorId: $0] }
-                            .padding(.horizontal, Constants.main.standardSpacing)
+                        content
+                        if let tracker {
+                            commentTree(tracker: tracker)
                         }
                     }
-                    .animation(.easeInOut(duration: 0.4), value: highlightedComment?.actorId)
+                    .animation(.easeInOut(duration: 0.4), value: scrollTargetedComment?.actorId)
                     .padding(.bottom, 80)
+                    .id(tracker?.proposedDepthOffset)
+                    .transition(.opacity)
+                    .animation(.easeInOut(duration: 0.4), value: tracker?.proposedDepthOffset)
                 }
                 .onChange(of: tracker?.loadingState, initial: true) {
-                    if tracker?.loadingState == .done, let highlightedComment {
+                    if tracker?.loadingState == .done, let scrollTargetedComment {
                         // Without a slight delay here, `scrollTo` can sometimes fail. I'm not sure why this is.
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            proxy.scrollTo(highlightedComment.actorId, anchor: .center)
-                            scrolledToHighlightedComment = true
+                            proxy.scrollTo(scrollTargetedComment.actorId, anchor: .center)
+                            scrolledToscrollTargetedComment = true
                         }
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            self.highlightedComment = nil
+                            self.scrollTargetedComment = nil
                         }
                     }
                 }
@@ -199,6 +167,52 @@ struct ExpandedPostView: View {
     }
     
     @ViewBuilder
+    func commentTree(tracker: CommentTreeTracker) -> some View {
+        ForEach(tracker.comments.itemTree(), id: \.hashValue) { item in
+            Group {
+                switch item {
+                case let .comment(comment):
+                    CommentView(
+                        comment: comment,
+                        highlight: [scrollTargetedComment?.actorId, highlightedComment?.actorId].contains(comment.actorId),
+                        depthOffset: tracker.proposedDepthOffset
+                    )
+                    .transition(.move(edge: .top).combined(with: .opacity))
+                    .zIndex(1000 - Double(comment.depth))
+                    .anchorPreference(
+                        key: AnchorsKey.self,
+                        value: .center
+                    ) { [comment.actorId: $0] }
+                    .padding(.leading, CGFloat(comment.depth - tracker.proposedDepthOffset) * 10)
+                    .id(comment.actorId)
+                case let .unloadedComments(comment, _):
+                    Button {
+                        navigation.push(.comment(comment, showViewPostButton: false))
+                    } label: {
+                        HStack {
+                            CommentBarView(depth: comment.depth + 1)
+                            HStack {
+                                Text("More Replies")
+                                Image(systemName: Icons.forward)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 8)
+                            .foregroundStyle(palette.accent)
+                        }
+                        .background(
+                            palette.secondaryGroupedBackground,
+                            in: .rect(cornerRadius: Constants.main.standardSpacing)
+                        )
+                    }
+                    .padding(.leading, CGFloat(comment.depth + 1 - tracker.proposedDepthOffset) * 10)
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(.horizontal, Constants.main.standardSpacing)
+        }
+    }
+    
+    @ViewBuilder
     func sortPicker(tracker: CommentTreeTracker) -> some View {
         Picker(
             "Sort",
@@ -209,7 +223,7 @@ struct ExpandedPostView: View {
             })
         ) {
             ForEach(ApiCommentSortType.allCases, id: \.self) { item in
-                if (post.wrappedValue.api.fetchedVersion ?? .infinity) >= item.minimumVersion {
+                if (post?.api.fetchedVersion ?? .infinity) >= item.minimumVersion {
                     Label(String(localized: item.label), systemImage: item.systemImage)
                 }
             }

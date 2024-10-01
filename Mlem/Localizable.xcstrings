@@ -739,6 +739,9 @@
     "More Info" : {
 
     },
+    "More Replies" : {
+
+    },
     "More..." : {
 
     },
@@ -1046,6 +1049,9 @@
 
     },
     "Show Older Incidents" : {
+
+    },
+    "Show Parent" : {
 
     },
     "Show Post Creator in Feed" : {
@@ -1368,6 +1374,9 @@
 
     },
     "Version" : {
+
+    },
+    "View All" : {
 
     },
     "Viewing %@ as guest" : {

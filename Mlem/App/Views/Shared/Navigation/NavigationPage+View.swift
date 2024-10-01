@@ -40,10 +40,12 @@ extension NavigationPage {
             QuickSwitcherView()
         case let .report(target, community):
             ReportComposerView(target: target.wrappedValue, community: community)
-        case let .post(post, highlightedComment, communityContext, navigationNamespace):
-            ExpandedPostView(post: post, highlightedComment: highlightedComment?.wrappedValue)
+        case let .post(post, scrollTargetedComment, communityContext, navigationNamespace):
+            PostPage(post: post, scrollTargetedComment: scrollTargetedComment?.wrappedValue)
                 .environment(\.communityContext, communityContext?.wrappedValue)
                 .navigationTransition_(sourceID: "post\(post.wrappedValue.actorId)", in: navigationNamespace)
+        case let .comment(comment, showViewPostButton):
+            CommentPage(comment: comment, showViewPostButton: showViewPostButton)
         case let .person(person):
             PersonView(person: person)
         case let .createComment(context, commentTreeTracker):

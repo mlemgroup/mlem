@@ -199,6 +199,7 @@
 		03B431C62C45C09F001A1EB5 /* CollapsibleSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431C52C45C09F001A1EB5 /* CollapsibleSheetView.swift */; };
 		03B72B672C2888EE0023A6C4 /* View+ContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B72B662C2888EE0023A6C4 /* View+ContextMenu.swift */; };
 		03B72B6B2C28A0190023A6C4 /* SubscriptionListSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */; };
+		03C0EAEF2CA8288A00B4B2A5 /* CapsuleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C0EAEE2CA8288A00B4B2A5 /* CapsuleButtonStyle.swift */; };
 		03C93CF02BEFFB1A00327BFE /* LoginCredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C93CEF2BEFFB1A00327BFE /* LoginCredentialsView.swift */; };
 		03CBD18D2C6120F600E870BC /* PersonFlair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CBD18C2C6120F600E870BC /* PersonFlair.swift */; };
 		03CBD1932C61369A00E870BC /* Interactable2Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CBD1922C61369A00E870BC /* Interactable2Providing+Extensions.swift */; };
@@ -217,6 +218,8 @@
 		03D3A1F12BB9D48E009DE55E /* BasicAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1F02BB9D48E009DE55E /* BasicAction.swift */; };
 		03D3A1F32BB9D49B009DE55E /* ActionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1F22BB9D49B009DE55E /* ActionGroup.swift */; };
 		03DAEA772C64074E0064DE64 /* SubscriptionListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DAEA762C64074E0064DE64 /* SubscriptionListItemView.swift */; };
+		03E0EF432CA73D7A002CB66C /* PostPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0EF422CA73D7A002CB66C /* PostPage.swift */; };
+		03E0EF452CA74036002CB66C /* CommentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0EF442CA74036002CB66C /* CommentPage.swift */; };
 		03E614E42C0BCC7B00F692A4 /* Post1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E614E32C0BCC7B00F692A4 /* Post1Providing+Extensions.swift */; };
 		03E614E52C0BCCAA00F692A4 /* PostSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7A2BFADA8B00DBC0EF /* PostSize.swift */; };
 		03E614E72C0BCDC200F692A4 /* FullyQualifiedLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E614E62C0BCDC200F692A4 /* FullyQualifiedLinkView.swift */; };
@@ -579,6 +582,7 @@
 		03B431C52C45C09F001A1EB5 /* CollapsibleSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleSheetView.swift; sourceTree = "<group>"; };
 		03B72B662C2888EE0023A6C4 /* View+ContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ContextMenu.swift"; sourceTree = "<group>"; };
 		03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListSettingsView.swift; sourceTree = "<group>"; };
+		03C0EAEE2CA8288A00B4B2A5 /* CapsuleButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleButtonStyle.swift; sourceTree = "<group>"; };
 		03C93CEF2BEFFB1A00327BFE /* LoginCredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCredentialsView.swift; sourceTree = "<group>"; };
 		03CBD18C2C6120F600E870BC /* PersonFlair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonFlair.swift; sourceTree = "<group>"; };
 		03CBD1922C61369A00E870BC /* Interactable2Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Interactable2Providing+Extensions.swift"; sourceTree = "<group>"; };
@@ -597,6 +601,8 @@
 		03D3A1F02BB9D48E009DE55E /* BasicAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAction.swift; sourceTree = "<group>"; };
 		03D3A1F22BB9D49B009DE55E /* ActionGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionGroup.swift; sourceTree = "<group>"; };
 		03DAEA762C64074E0064DE64 /* SubscriptionListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListItemView.swift; sourceTree = "<group>"; };
+		03E0EF422CA73D7A002CB66C /* PostPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostPage.swift; sourceTree = "<group>"; };
+		03E0EF442CA74036002CB66C /* CommentPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentPage.swift; sourceTree = "<group>"; };
 		03E614E32C0BCC7B00F692A4 /* Post1Providing+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Post1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		03E614E62C0BCDC200F692A4 /* FullyQualifiedLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullyQualifiedLinkView.swift; sourceTree = "<group>"; };
 		03ECD7182C81195000D48BF6 /* PostEditorView+LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditorView+LinkView.swift"; sourceTree = "<group>"; };
@@ -1076,7 +1082,9 @@
 			children = (
 				0300309C2C4163C9009A65FF /* CommentTreeTracker.swift */,
 				039F58852C7A810100C61658 /* ExpandedPostView+Logic.swift */,
+				03E0EF442CA74036002CB66C /* CommentPage.swift */,
 				03B0EB6E2C87827A00F79FDF /* ExpandedPostView.swift */,
+				03E0EF422CA73D7A002CB66C /* PostPage.swift */,
 			);
 			path = ExpandedPost;
 			sourceTree = "<group>";
@@ -1392,6 +1400,7 @@
 				030FF6802BC859FD00F6BFAC /* CustomTabViewHostingController.swift */,
 				CD7882AA2C013005002E1A30 /* EllipsisMenu.swift */,
 				03D3A1E22BB8A40A009DE55E /* EmptyButtonStyle.swift */,
+				03C0EAEE2CA8288A00B4B2A5 /* CapsuleButtonStyle.swift */,
 				CD79281E2C73B52A00FA712D /* EndOfFeedView.swift */,
 				03FE14072BF94FFB00A8377F /* ErrorView.swift */,
 				03B0EB6D2C87673D00F79FDF /* ExpandedPost */,
@@ -2004,6 +2013,7 @@
 				03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */,
 				0397D47A2C693444002C6CDC /* ReportComposerView.swift in Sources */,
 				CDA683F82C77E577000C4486 /* NsfwBlurBehavior.swift in Sources */,
+				03E0EF452CA74036002CB66C /* CommentPage.swift in Sources */,
 				032C32022C3438DB00595286 /* ShareAction.swift in Sources */,
 				030BCB1B2C3EA5FD0037680F /* InstanceDetailsView.swift in Sources */,
 				03134A582BEC1C46002662CC /* AccountListSettingsView.swift in Sources */,
@@ -2221,6 +2231,7 @@
 				03AF91E32C1C616F00E56644 /* InteractionBarView.swift in Sources */,
 				03B431B22C44409D001A1EB5 /* CommentEditorView.swift in Sources */,
 				0397D4802C693A88002C6CDC /* [BlockNode]+Extensions.swift in Sources */,
+				03C0EAEF2CA8288A00B4B2A5 /* CapsuleButtonStyle.swift in Sources */,
 				03B431B22C44409D001A1EB5 /* CommentEditorView.swift in Sources */,
 				0320B6612C8DFCF100D38548 /* SearchView+FiltersView.swift in Sources */,
 				CD4D58DA2B86E11D00B82964 /* Mockable.swift in Sources */,
@@ -2249,6 +2260,7 @@
 				0397D4A42C6FBC04002C6CDC /* ActionAppearance+StaticValues.swift in Sources */,
 				03B431C02C45ABFB001A1EB5 /* UITextView+Extensions.swift in Sources */,
 				034B947F2C091EDD00039AF4 /* ProfileHeaderView.swift in Sources */,
+				03E0EF432CA73D7A002CB66C /* PostPage.swift in Sources */,
 				030030A12C416B0B009A65FF /* RefreshPopupView.swift in Sources */,
 				03E614E42C0BCC7B00F692A4 /* Post1Providing+Extensions.swift in Sources */,
 				0397D4A22C6EB035002C6CDC /* ActionAppearance.swift in Sources */,

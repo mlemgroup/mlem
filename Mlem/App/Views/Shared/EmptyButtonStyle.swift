@@ -14,3 +14,7 @@ struct EmptyButtonStyle: ButtonStyle {
         configuration.label
     }
 }
+
+extension ButtonStyle where Self == EmptyButtonStyle {
+    @MainActor static var empty: EmptyButtonStyle { .init() }
+}

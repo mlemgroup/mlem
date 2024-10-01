@@ -23,7 +23,9 @@ struct CommentView: View {
     var inFeed: Bool = false // flag to suppress threading/collapsing behavior
     var depthOffset: Int = 0
     
-    var depth: Int { inFeed ? 0 : comment.depth - depthOffset }
+    var depth: Int {
+        inFeed ? 0 : comment.depth - depthOffset
+    }
     
     var body: some View {
         if inFeed {
@@ -45,13 +47,8 @@ struct CommentView: View {
         let collapsed = (comment as? CommentWrapper)?.collapsed ?? false
         
         HStack(spacing: 12) {
-            if depth != 0 {
-                Capsule()
-                    .fill(palette.commentIndentColors[depth % palette.commentIndentColors.count])
-                    .frame(width: 3)
-                    .frame(maxHeight: .infinity)
-                    .padding(.leading, 8)
-                    .padding(.vertical, 8)
+            if !inFeed, comment.depth != 0 {
+                CommentBarView(depth: comment.depth)
             }
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 HStack(spacing: 0) {
@@ -109,7 +106,21 @@ struct CommentView: View {
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu { comment.menuActions(commentTreeTracker: commentTreeTracker) }
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
-        .padding(.leading, CGFloat(depth) * indent)
         .environment(\.commentContext, comment)
+    }
+}
+
+struct CommentBarView: View {
+    @Environment(Palette.self) var palette
+    
+    let depth: Int
+    
+    var body: some View {
+        Capsule()
+            .fill(palette.commentIndentColors[depth % palette.commentIndentColors.count])
+            .frame(width: 3)
+            .frame(maxHeight: .infinity)
+            .padding(.leading, 8)
+            .padding(.vertical, 8)
     }
 }

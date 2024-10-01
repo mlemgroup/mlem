@@ -42,7 +42,7 @@ struct CrossPostListView: View {
                     .padding(.horizontal, Constants.main.standardSpacing)
                     .contentShape(.rect)
                 }
-                .buttonStyle(EmptyButtonStyle())
+                .buttonStyle(.empty)
                 if isExpanded {
                     Divider()
                         .padding(.vertical, 3)

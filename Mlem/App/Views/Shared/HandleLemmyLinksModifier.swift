@@ -103,11 +103,12 @@ struct HandleLemmyLinksModifier: ViewModifier {
                 navigation.push(.post(PostStub(api: appState.firstApi, actorId: url)))
                 return true
             } else if components.count == 3 {
-                // TODO: comment in format `lemmy.world/post/21312/34534`
+                let newUrl = url.removingPathComponents().appendingPathComponent("comment/\(url.lastPathComponent)")
+                navigation.push(.comment(CommentStub(api: appState.firstApi, actorId: newUrl)))
                 return true
             }
         case "comment":
-            // TODO: comment
+            navigation.push(.comment(CommentStub(api: appState.firstApi, actorId: url)))
             return true
         default:
             break

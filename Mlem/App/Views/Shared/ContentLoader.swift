@@ -34,7 +34,7 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
     var body: some View {
         content(proxy)
             .animation(.easeOut(duration: 0.2), value: proxy.model.wrappedValue is Model.MinimumRenderable)
-            .task {
+            .task { @MainActor in
                 if resolveIfModelExternal || !proxy.model.isUpgraded, proxy.upgradeState == .idle {
                     await proxy.upgradeModel(
                         api: resolveIfModelExternal ? appState.firstApi : nil,
@@ -55,7 +55,7 @@ struct ContentLoader<Content: View, Model: Upgradable>: View {
     }
 }
 
-@Observable
+@Observable @MainActor
 class ContentLoaderProxy<Model: Upgradable> {
     fileprivate enum UpgradeState: String {
         case idle, loading, done, failed
