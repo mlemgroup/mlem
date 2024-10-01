@@ -2188,6 +2188,7 @@
 				039F58862C7A810100C61658 /* ExpandedPostView+Logic.swift in Sources */,
 				031E2D512BEF961D0003BC45 /* SubscriptionListView.swift in Sources */,
 				CDD4A09E2C8B69FC0001AD1A /* Button.swift in Sources */,
+				038028DA2CACACD30091A8A2 /* PostEllipsisMenus.swift in Sources */,
 				030FF67B2BC8521600F6BFAC /* CustomTabView.swift in Sources */,
 				03531EF52C2DA610004A3464 /* NavigationSearchType.swift in Sources */,
 				CD8DCAF92C5E92E8003E4DD7 /* Profile1Providing+Extensions.swift in Sources */,
