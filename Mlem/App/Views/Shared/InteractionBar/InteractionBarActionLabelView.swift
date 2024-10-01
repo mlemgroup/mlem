@@ -13,35 +13,29 @@ struct InteractionBarActionLabelView: View {
     @Environment(Palette.self) private var palette
     
     let appearance: ActionAppearance
-    @State var isInProgress: Bool
     
-    init(_ appearance: ActionAppearance, isInProgress: Bool = false) {
+    init(_ appearance: ActionAppearance) {
         self.appearance = appearance
-        self._isInProgress = .init(wrappedValue: isInProgress)
     }
     
     var body: some View {
         Image(systemName: appearance.barIcon)
             .resizable()
             .fontWeight(Self.unweightedSymbols.contains(appearance.barIcon) ? .regular : .medium)
-            .symbolVariant(isOn ? .fill : .none)
-            .opacity(isInProgress ? 0 : 1)
+            .symbolVariant(appearance.isOn ? .fill : .none)
+            .opacity(appearance.isInProgress ? 0 : 1)
             .scaledToFit()
             .frame(width: Constants.main.barIconSize, height: Constants.main.barIconSize)
             .padding(Constants.main.barIconPadding)
-            .foregroundColor(isOn ? palette.selectedInteractionBarItem : palette.primary)
-            .background(isOn ? appearance.color : .clear, in: .rect(cornerRadius: Constants.main.barIconCornerRadius))
+            .foregroundColor(appearance.isOn ? palette.selectedInteractionBarItem : palette.primary)
+            .background(appearance.isOn ? appearance.color : .clear, in: .rect(cornerRadius: Constants.main.barIconCornerRadius))
             .contentShape(Rectangle())
-            .opacity(isInProgress ? 0.5 : 1)
+            .opacity(appearance.isInProgress ? 0.5 : 1)
             .overlay {
-                if isInProgress {
+                if appearance.isInProgress {
                     ProgressView()
-                        .tint(palette.selectedInteractionBarItem)
+                        .tint(appearance.isOn ? palette.selectedInteractionBarItem : palette.primary)
                 }
             }
-    }
-    
-    var isOn: Bool {
-        appearance.isOn || isInProgress
     }
 }

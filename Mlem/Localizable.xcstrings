@@ -389,10 +389,16 @@
     "Disabled" : {
 
     },
+    "Disclosure Group" : {
+
+    },
     "Disk Usage" : {
 
     },
     "Dismiss" : {
+
+    },
+    "Divider" : {
 
     },
     "Domain" : {
@@ -444,6 +450,9 @@
 
     },
     "Failed to lock post" : {
+
+    },
+    "Failed to pin post" : {
 
     },
     "Failed to resolve post. Try another account." : {
@@ -524,6 +533,9 @@
 
     },
     "Green" : {
+
+    },
+    "Group actions using" : {
 
     },
     "Grouped" : {
@@ -727,6 +739,9 @@
     "Moderation" : {
 
     },
+    "Moderation..." : {
+
+    },
     "Moderator" : {
 
     },
@@ -925,6 +940,18 @@
     "Really delete %@?" : {
 
     },
+    "Really pin this post to %@?" : {
+
+    },
+    "Really pin this post to the community?" : {
+
+    },
+    "Really unpin this post from %@?" : {
+
+    },
+    "Really unpin this post from the community?" : {
+
+    },
     "Reason (Optional)" : {
 
     },
@@ -1031,6 +1058,12 @@
 
     },
     "Sent %@" : {
+
+    },
+    "Separate Menu" : {
+
+    },
+    "Separate moderator actions using..." : {
 
     },
     "Settings" : {

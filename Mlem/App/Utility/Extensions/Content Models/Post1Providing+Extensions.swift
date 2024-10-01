@@ -66,6 +66,38 @@ extension Post1Providing {
         }
     }
     
+    func togglePinnedCommunity(feedback: Set<FeedbackType>) {
+        Task {
+            let shouldLock = !pinnedCommunity
+            let result = await self.togglePinnedCommunity().result.get()
+            if feedback.contains(.haptic) {
+                await HapticManager.main.play(haptic: .success, priority: .low)
+            }
+            switch result {
+            case .failed:
+                ToastModel.main.add(.failure(shouldLock ? "Failed to pin post" : "Failed to unpin post"))
+            default:
+                break
+            }
+        }
+    }
+    
+    func togglePinnedInstance(feedback: Set<FeedbackType>) {
+        Task {
+            let shouldLock = !pinnedInstance
+            let result = await self.togglePinnedInstance().result.get()
+            if feedback.contains(.haptic) {
+                await HapticManager.main.play(haptic: .success, priority: .low)
+            }
+            switch result {
+            case .failed:
+                ToastModel.main.add(.failure(shouldLock ? "Failed to pin post" : "Failed to unpin post"))
+            default:
+                break
+            }
+        }
+    }
+    
     func markRead() {
         self2?.updateRead(true)
     }
@@ -92,7 +124,24 @@ extension Post1Providing {
     }
     
     @ActionBuilder
-    func menuActions(
+    func allMenuActions(
+        expanded: Bool = false,
+        feedback: Set<FeedbackType> = [.haptic, .toast],
+        commentTreeTracker: CommentTreeTracker? = nil
+    ) -> [any Action] {
+        basicMenuActions(feedback: feedback, commentTreeTracker: commentTreeTracker)
+        if canModerate {
+            ActionGroup(
+                appearance: .init(label: "Moderation...", color: Palette.main.moderation, icon: Icons.moderation),
+                displayMode: Settings.main.moderatorActionGrouping == .divider || expanded ? .section : .disclosure
+            ) {
+                moderatorMenuActions(feedback: feedback)
+            }
+        }
+    }
+    
+    @ActionBuilder
+    func basicMenuActions(
         feedback: Set<FeedbackType> = [.haptic, .toast],
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> [any Action] {
@@ -120,13 +169,15 @@ extension Post1Providing {
                 blockAction(feedback: feedback)
             }
         }
-        if canModerate {
-            ActionGroup {
-                pinToCommunityAction()
-                pinToInstanceAction()
-                lockAction(feedback: feedback)
-            }
+    }
+    
+    @ActionBuilder
+    func moderatorMenuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
+        pinToCommunityAction(feedback: feedback, verboseTitle: api.isAdmin)
+        if api.isAdmin {
+            pinToInstanceAction(feedback: feedback)
         }
+        lockAction(feedback: feedback)
     }
     
     // swiftlint:disable:next cyclomatic_complexity
@@ -147,7 +198,7 @@ extension Post1Providing {
         case .block: blockAction(feedback: feedback)
         case .report: reportAction(communityContext: communityContext)
         case .lock: lockAction(feedback: feedback)
-        case .pin: api.isAdmin ? pinAction() : pinToCommunityAction()
+        case .pin: api.isAdmin ? pinAction(feedback: feedback) : pinToCommunityAction(feedback: feedback)
         }
     }
     
@@ -183,7 +234,7 @@ extension Post1Providing {
         return postTag(active: removed, icon: Icons.removeFill, color: Palette.main.negative) +
             postTag(active: deleted, icon: Icons.delete, color: Palette.main.negative) +
             postTag(active: pinnedInstance, icon: Icons.pinFill, color: Palette.main.administration) +
-            postTag(active: communityContext != nil && pinnedCommunity, icon: Icons.pinFill, color: Palette.main.moderation) +
+            postTag(active: pinnedCommunity && communityContext != nil, icon: Icons.pinFill, color: Palette.main.moderation) +
             postTag(active: locked, icon: Icons.lockFill, color: Palette.main.lockAccent) +
             Text(verbatim: "\(hasTags ? "  " : "")\(title)")
     }
@@ -198,19 +249,21 @@ extension Post1Providing {
     
     var placeholderImageName: String {
         switch type {
-        case .text:
-            Icons.textPost
-        case .image:
-            Icons.photo
-        case .link:
-            Icons.websiteIcon
-        case .titleOnly:
-            Icons.titleOnlyPost
+        case .text: Icons.textPost
+        case .image: Icons.photo
+        case .link: Icons.websiteIcon
+        case .titleOnly: Icons.titleOnlyPost
         }
     }
     
-    func shouldShowLoadingSymbol(for barConfiguration: PostBarConfiguration) -> Bool {
-        if !lockedManager.isInSync, !barConfiguration.all.contains(.action(.lock)) {
+    func shouldShowLoadingSymbol(for barConfiguration: PostBarConfiguration? = nil) -> Bool {
+        if !lockedManager.isInSync, !(barConfiguration?.all.contains(.action(.lock)) ?? false) {
+            return true
+        }
+        if !pinnedCommunityManager.isInSync, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
+            return true
+        }
+        if !pinnedInstanceManager.isInSync, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
             return true
         }
         return false
@@ -271,39 +324,76 @@ extension Post1Providing {
     func lockAction(feedback: Set<FeedbackType> = []) -> BasicAction {
         .init(
             id: "lock\(uid)",
-            appearance: .lock(isOn: locked),
+            appearance: .lock(isOn: locked, isInProgress: !lockedManager.isInSync),
             confirmationPrompt: locked ? "Really unlock this post?" : "Really lock this post?",
-            isInProgress: !lockedManager.isInSync,
             callback: api.canInteract && canModerate ? { self.self2?.toggleLocked(feedback: feedback) } : nil
         )
     }
     
-    func pinAction() -> ActionGroup {
+    func pinAction(feedback: Set<FeedbackType> = []) -> ActionGroup {
         .init(
-            appearance: .pin(isOn: false),
+            appearance: .pin(isOn: false, isInProgress: !(pinnedCommunityManager.isInSync && pinnedInstanceManager.isInSync)),
             prompt: "Pin to Community or Instance?",
             displayMode: .popup
         ) {
-            pinToCommunityAction()
-            pinToInstanceAction()
+            pinToCommunityAction(feedback: feedback, showConfirmation: false)
+            pinToInstanceAction(feedback: feedback, showConfirmation: false)
         }
     }
     
-    func pinToCommunityAction() -> BasicAction {
+    func pinToCommunityAction(
+        feedback: Set<FeedbackType> = [],
+        verboseTitle: Bool = true,
+        showConfirmation: Bool = true
+    ) -> BasicAction {
         let isOn = self2?.pinnedCommunity ?? false
+        let prompt: String?
+        if showConfirmation {
+            if let communityName = community_?.name {
+                if isOn {
+                    prompt = .init(localized: "Really unpin this post from \(communityName)?")
+                } else {
+                    prompt = .init(localized: "Really pin this post to \(communityName)?")
+                }
+            } else {
+                if isOn {
+                    prompt = .init(localized: "Really unpin this post from the community?")
+                } else {
+                    prompt = .init(localized: "Really pin this post to the community?")
+                }
+            }
+        } else {
+            prompt = nil
+        }
         return .init(
             id: "pinToCommunity\(uid)",
-            appearance: .pinToCommunity(isOn: isOn),
-            callback: api.canInteract && canModerate ? { self.self2?.togglePinnedCommunity() } : nil
+            appearance: verboseTitle ? .pinToCommunity(
+                isOn: isOn, isInProgress: !pinnedCommunityManager.isInSync
+            ) : .pin(
+                isOn: isOn, isInProgress: !pinnedCommunityManager.isInSync
+            ),
+            confirmationPrompt: prompt,
+            callback: api.canInteract && canModerate ? { self.togglePinnedCommunity(feedback: feedback) } : nil
         )
     }
     
-    func pinToInstanceAction() -> BasicAction {
+    func pinToInstanceAction(feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction {
         let isOn = self2?.pinnedInstance ?? false
+        let prompt: String?
+        if showConfirmation {
+            if isOn {
+                prompt = .init(localized: "Really unpin this post from \(host ?? "")?")
+            } else {
+                prompt = .init(localized: "Really pin this post to \(host ?? "")?")
+            }
+        } else {
+            prompt = nil
+        }
         return .init(
             id: "pinToInstance\(uid)",
-            appearance: .pinToInstance(isOn: isOn),
-            callback: api.canInteract && api.isAdmin ? { self.self2?.togglePinnedInstance() } : nil
+            appearance: .pinToInstance(isOn: isOn, isInProgress: !pinnedInstanceManager.isInSync),
+            confirmationPrompt: prompt,
+            callback: api.canInteract && api.isAdmin ? { self.togglePinnedInstance(feedback: feedback) } : nil
         )
     }
 }

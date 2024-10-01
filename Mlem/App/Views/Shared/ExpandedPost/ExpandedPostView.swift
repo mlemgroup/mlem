@@ -189,10 +189,10 @@ struct ExpandedPostView: View {
             if let tracker {
                 sortPicker(tracker: tracker)
             }
-            if isLoading {
+            if isLoading || post.shouldShowLoadingSymbol() {
                 ProgressView()
             } else {
-                ToolbarEllipsisMenu(post.menuActions())
+                ToolbarEllipsisMenu(post.allMenuActions(expanded: true))
             }
         }
         .environment(tracker)

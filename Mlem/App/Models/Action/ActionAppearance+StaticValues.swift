@@ -123,37 +123,41 @@ extension ActionAppearance {
         .init(label: "Edit", color: Palette.main.accent, icon: Icons.edit)
     }
     
-    static func pin(isOn: Bool) -> Self {
+    static func pin(isOn: Bool, isInProgress: Bool = false) -> Self {
         .init(
             label: isOn ? "Unpin" : "Pin",
             isOn: isOn,
+            isInProgress: isInProgress,
             color: Palette.main.moderation,
             icon: isOn ? Icons.pinFill : Icons.pin
         )
     }
     
-    static func pinToCommunity(isOn: Bool) -> Self {
+    static func pinToCommunity(isOn: Bool, isInProgress: Bool = false) -> Self {
         .init(
             label: isOn ? "Unpin From Community" : "Pin to Community",
             isOn: isOn,
+            isInProgress: isInProgress,
             color: Palette.main.moderation,
             icon: isOn ? Icons.pinFill : Icons.pin
         )
     }
     
-    static func pinToInstance(isOn: Bool) -> Self {
+    static func pinToInstance(isOn: Bool, isInProgress: Bool = false) -> Self {
         .init(
             label: isOn ? "Unpin From Instance" : "Pin to Instance",
             isOn: isOn,
+            isInProgress: isInProgress,
             color: Palette.main.administration,
             icon: isOn ? Icons.pinFill : Icons.pin
         )
     }
     
-    static func lock(isOn: Bool) -> Self {
+    static func lock(isOn: Bool, isInProgress: Bool = false) -> Self {
         .init(
             label: isOn ? "Unlock" : "Lock",
             isOn: isOn,
+            isInProgress: isInProgress,
             color: Palette.main.lockAccent,
             icon: isOn ? Icons.unlock : Icons.lock,
             barIcon: isOn ? Icons.lockFill : Icons.lock

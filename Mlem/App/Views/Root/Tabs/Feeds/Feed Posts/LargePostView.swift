@@ -52,13 +52,9 @@ struct LargePostView: View {
                     Image(Icons.nsfwTag)
                         .foregroundStyle(palette.warning)
                 }
-                
-                if post.shouldShowLoadingSymbol(for: InteractionBarTracker.main.postInteractionBar) {
-                    ProgressView()
-                }
-                
+
                 if !isExpanded {
-                    EllipsisMenu(size: 24) { post.menuActions(commentTreeTracker: commentTreeTracker) }
+                    PostEllipsisMenus(post: post)
                 }
             }
             .padding(.horizontal, Constants.main.standardSpacing)
