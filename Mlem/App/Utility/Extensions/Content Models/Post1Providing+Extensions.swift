@@ -81,7 +81,7 @@ extension Post1Providing {
     }
     
     private func handleModerationActionCompletion(
-        message: String,
+        message: LocalizedStringResource,
         result: StateUpdateResult,
         feedback: Set<FeedbackType>
     ) async {

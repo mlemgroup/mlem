@@ -452,10 +452,22 @@
     "Failed to delete post!" : {
 
     },
+    "Failed to lock post" : {
+
+    },
+    "Failed to pin post" : {
+
+    },
     "Failed to resolve post. Try another account." : {
 
     },
     "Failed to Save Image" : {
+
+    },
+    "Failed to unlock post" : {
+
+    },
+    "Failed to unpin post" : {
 
     },
     "Fallback" : {
