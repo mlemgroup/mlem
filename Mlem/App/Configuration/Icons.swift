@@ -60,6 +60,7 @@ enum Icons {
     static let read: String = "book"
     static let lock: String = "lock"
     static let lockFill: String = "lock.fill"
+    static let unlock: String = "lock.slash"
     static let remove: String = "xmark.bin"
     static let removeFill: String = "xmark.bin.fill"
     

@@ -138,12 +138,8 @@ struct InteractionBarView: View {
                     }
                     .onTapGesture {}
                 } else if let action = action as? BasicAction {
-                    Button {
-                        action.callback?()
-                    } label: {
-                        InteractionBarActionLabelView(action.appearance)
-                            .opacity(action.disabled ? 0.5 : 1)
-                    }
+                    InteractionBarBasicButton(action: action)
+                        .popupAnchor()
                 }
             }
         }
@@ -163,6 +159,21 @@ struct InteractionBarView: View {
     }
 }
 
+private struct InteractionBarBasicButton: View {
+    @Environment(PopupAnchorModel.self) var popupModel
+    
+    let action: BasicAction
+    
+    var body: some View {
+        Button {
+            action.callbackWithConfirmation(popupModel: popupModel)
+        } label: {
+            InteractionBarActionLabelView(action.appearance, isInProgress: action.isInProgress)
+                .opacity(action.disabled ? 0.5 : 1)
+        }
+    }
+}
+
 private enum EnrichedWidget {
     case action(any Action)
     case counter(Counter)
@@ -175,6 +186,7 @@ private enum EnrichedWidget {
             hasher.combine(action.id)
             hasher.combine(action.appearance.isOn)
             hasher.combine((action as? BasicAction)?.disabled)
+            hasher.combine((action as? BasicAction)?.isInProgress)
         case let .counter(counter):
             // If `counter.value` is included in this, the fancy `.numericText()` transition
             // won't work. In theory, you *do* need to include `counter.value` if you want a

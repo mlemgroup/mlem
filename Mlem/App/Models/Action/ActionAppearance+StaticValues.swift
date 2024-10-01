@@ -149,4 +149,14 @@ extension ActionAppearance {
             icon: isOn ? Icons.pinFill : Icons.pin
         )
     }
+    
+    static func lock(isOn: Bool) -> Self {
+        .init(
+            label: isOn ? "Unlock" : "Lock",
+            isOn: isOn,
+            color: Palette.main.lockAccent,
+            icon: isOn ? Icons.unlock : Icons.lock,
+            barIcon: isOn ? Icons.lockFill : Icons.lock
+        )
+    }
 }

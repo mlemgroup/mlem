@@ -53,6 +53,10 @@ struct LargePostView: View {
                         .foregroundStyle(palette.warning)
                 }
                 
+                if post.shouldShowLoadingSymbol(for: InteractionBarTracker.main.postInteractionBar) {
+                    ProgressView()
+                }
+                
                 if !isExpanded {
                     EllipsisMenu(size: 24) { post.menuActions(commentTreeTracker: commentTreeTracker) }
                 }

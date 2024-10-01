@@ -23,7 +23,7 @@ extension Post1Providing {
             NavigationModel.main.openSheet(.editPost(self.post2))
         }
     }
-
+    
     func toggleHidden(feedback: Set<FeedbackType>) {
         if let self2 {
             if feedback.contains(.haptic) {
@@ -47,6 +47,22 @@ extension Post1Providing {
             self2.toggleHidden()
         } else {
             print("DEBUG no self2 found in toggleHidden!")
+        }
+    }
+    
+    func toggleLocked(feedback: Set<FeedbackType>) {
+        Task {
+            let shouldLock = !locked
+            let result = await self.toggleLocked().result.get()
+            if feedback.contains(.haptic) {
+                await HapticManager.main.play(haptic: .success, priority: .low)
+            }
+            switch result {
+            case .failed:
+                ToastModel.main.add(.failure(shouldLock ? "Failed to lock post" : "Failed to unlock post"))
+            default:
+                break
+            }
         }
     }
     
@@ -87,19 +103,20 @@ extension Post1Providing {
             replyAction(commentTreeTracker: commentTreeTracker)
             selectTextAction()
             shareAction()
-            
-            // If no version has been fetched yet, assume they're on <0.19.4 for now.
-            // Once 0.19.4 is widely adopted we could assume they're on >=0.19.4.
-            // See also the identical check within `hideAction` itself.
-            if (api.fetchedVersion ?? .zero) >= .v19_4 {
-                hideAction(feedback: feedback)
-            }
 
             if self.isOwnPost {
                 editAction()
                 deleteAction(feedback: feedback)
             } else {
-                reportAction()
+                // If no version has been fetched yet, assume they're on <0.19.4 for now.
+                // Once 0.19.4 is widely adopted we could assume they're on >=0.19.4.
+                // See also the identical check within `hideAction` itself.
+                if (api.fetchedVersion ?? .zero) >= .v19_4 {
+                    hideAction(feedback: feedback)
+                }
+                if !canModerate {
+                    reportAction()
+                }
                 blockAction(feedback: feedback)
             }
         }
@@ -107,10 +124,12 @@ extension Post1Providing {
             ActionGroup {
                 pinToCommunityAction()
                 pinToInstanceAction()
+                lockAction(feedback: feedback)
             }
         }
     }
     
+    // swiftlint:disable:next cyclomatic_complexity
     func action(
         type: PostBarConfiguration.ActionType,
         feedback: Set<FeedbackType> = [.haptic, .toast],
@@ -127,6 +146,8 @@ extension Post1Providing {
         case .hide: hideAction(feedback: feedback)
         case .block: blockAction(feedback: feedback)
         case .report: reportAction(communityContext: communityContext)
+        case .lock: lockAction(feedback: feedback)
+        case .pin: api.isAdmin ? pinAction() : pinToCommunityAction()
         }
     }
     
@@ -188,6 +209,13 @@ extension Post1Providing {
         }
     }
     
+    func shouldShowLoadingSymbol(for barConfiguration: PostBarConfiguration) -> Bool {
+        if !lockedManager.isInSync, !barConfiguration.all.contains(.action(.lock)) {
+            return true
+        }
+        return false
+    }
+    
     // MARK: Actions
     
     func hideAction(feedback: Set<FeedbackType>) -> BasicAction {
@@ -240,12 +268,33 @@ extension Post1Providing {
         )
     }
     
+    func lockAction(feedback: Set<FeedbackType> = []) -> BasicAction {
+        .init(
+            id: "lock\(uid)",
+            appearance: .lock(isOn: locked),
+            confirmationPrompt: locked ? "Really unlock this post?" : "Really lock this post?",
+            isInProgress: !lockedManager.isInSync,
+            callback: api.canInteract && canModerate ? { self.self2?.toggleLocked(feedback: feedback) } : nil
+        )
+    }
+    
+    func pinAction() -> ActionGroup {
+        .init(
+            appearance: .pin(isOn: false),
+            prompt: "Pin to Community or Instance?",
+            displayMode: .popup
+        ) {
+            pinToCommunityAction()
+            pinToInstanceAction()
+        }
+    }
+    
     func pinToCommunityAction() -> BasicAction {
         let isOn = self2?.pinnedCommunity ?? false
         return .init(
             id: "pinToCommunity\(uid)",
             appearance: .pinToCommunity(isOn: isOn),
-            callback: api.canInteract ? {} : nil
+            callback: api.canInteract && canModerate ? { self.self2?.togglePinnedCommunity() } : nil
         )
     }
     
@@ -254,7 +303,7 @@ extension Post1Providing {
         return .init(
             id: "pinToInstance\(uid)",
             appearance: .pinToInstance(isOn: isOn),
-            callback: api.canInteract ? {} : nil
+            callback: api.canInteract && api.isAdmin ? { self.self2?.togglePinnedInstance() } : nil
         )
     }
 }

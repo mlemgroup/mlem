@@ -9,10 +9,16 @@ import Dependencies
 import SwiftUI
 
 struct BasicAction: Action {
+    enum Importance {
+        case high, low
+    }
+    
     let id: String
     let appearance: ActionAppearance
     
     let confirmationPrompt: String?
+    let importance: Importance
+    let isInProgress: Bool
 
     /// If this is nil, the BasicAction is disabled
     var callback: (() -> Void)?
@@ -25,12 +31,16 @@ struct BasicAction: Action {
         id: String,
         appearance: ActionAppearance,
         confirmationPrompt: String? = nil,
+        importance: Importance = .low,
+        isInProgress: Bool = false,
         enabled: Bool = true,
         callback: (() -> Void)? = nil
     ) {
         self.id = id
         self.appearance = appearance
         self.confirmationPrompt = confirmationPrompt
+        self.importance = importance
+        self.isInProgress = isInProgress
         self.callback = enabled ? callback : nil
     }
     

@@ -443,6 +443,9 @@
     "Failed to delete post!" : {
 
     },
+    "Failed to lock post" : {
+
+    },
     "Failed to resolve post. Try another account." : {
 
     },
@@ -671,6 +674,9 @@
 
     },
     "Local" : {
+
+    },
+    "Lock" : {
 
     },
     "Log In" : {
@@ -1329,6 +1335,9 @@
 
     },
     "Unknown" : {
+
+    },
+    "Unlock" : {
 
     },
     "Unpin" : {
