@@ -20,6 +20,7 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         case report
         case lock
         case pin
+        case crossPost
         
         var appearance: ActionAppearance {
             switch self {
@@ -34,6 +35,7 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             case .report: .report()
             case .lock: .lock(isOn: false)
             case .pin: .pin(isOn: false)
+            case .crossPost: .crossPost()
             }
         }
     }

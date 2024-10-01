@@ -163,4 +163,8 @@ extension ActionAppearance {
             barIcon: isOn ? Icons.lockFill : Icons.lock
         )
     }
+    
+    static func crossPost() -> Self {
+        .init(label: "Crosspost", color: Palette.main.accent, icon: Icons.crossPost)
+    }
 }

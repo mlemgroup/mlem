@@ -45,15 +45,31 @@ struct PostEditorView: View {
     @State var targets: [PostEditorTarget]
     
     init?(
-        postToEdit: Post2? = nil,
+        postToEdit: Post2,
         community: AnyCommunity?
+    ) {
+        self.init(
+            community: community,
+            title: postToEdit.title,
+            content: postToEdit.content ?? "",
+            url: postToEdit.linkUrl,
+            nsfw: postToEdit.nsfw
+        )
+        self.postToEdit = postToEdit
+    }
+    
+    init?(
+        community: AnyCommunity?,
+        title: String = "",
+        content: String = "",
+        url: URL? = nil,
+        nsfw: Bool = false
     ) {
         if let account = (AppState.main.firstAccount as? UserAccount) {
             self._targets = .init(wrappedValue: [.init(community: community?.wrappedValue, account: account)])
         } else {
             return nil
         }
-        self.postToEdit = postToEdit
         self.titleTextView = .init()
         self.contentTextView = .init()
         titleTextView.tag = 0
@@ -61,10 +77,10 @@ struct PostEditorView: View {
         contentTextView.tag = 1
         contentTextView.backgroundColor = UIColor(Palette.main.background)
         
-        titleTextView.text = postToEdit?.title ?? ""
-        contentTextView.text = postToEdit?.content ?? ""
-        self._hasNsfwTag = .init(wrappedValue: postToEdit?.nsfw ?? false)
-        if let url = postToEdit?.linkUrl {
+        titleTextView.text = title
+        contentTextView.text = content
+        self._hasNsfwTag = .init(wrappedValue: nsfw)
+        if let url {
             if url.isMedia {
                 self._imageUrl = .init(wrappedValue: url)
             } else {
@@ -203,70 +219,6 @@ struct PostEditorView: View {
                 .background(palette.background)
             }
             .animation(.snappy(duration: 0.2, extraBounce: 0.1), value: animationHashValue)
-        }
-    }
-    
-    @ViewBuilder
-    var targetSelectionView: some View {
-        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-            if let postToEdit {
-                FullyQualifiedLinkView(
-                    entity: postToEdit.community,
-                    labelStyle: .medium,
-                    showAvatar: true
-                )
-                .padding(.horizontal)
-                Divider()
-            } else {
-                ForEach(Array(targets.enumerated()), id: \.element.id) { index, target in
-                    HStack(spacing: 0) {
-                        PostEditorTargetView(target: target)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        if targets.count > 1 {
-                            Button("Remove", systemImage: Icons.closeCircleFill) {
-                                targets.remove(at: index)
-                            }
-                            .symbolRenderingMode(.hierarchical)
-                            .imageScale(.large)
-                            .labelStyle(.iconOnly)
-                            .padding(.trailing)
-                        }
-                    }
-                    Divider()
-                }
-            }
-            let showWarning = !targets.allSatisfy { $0.sendState != .failed }
-            Group {
-                if showWarning {
-                    Text("One of more of your posts failed to send.")
-                        .multilineTextAlignment(.center)
-                        .padding(.vertical, 3)
-                        .frame(maxWidth: .infinity)
-                        .background(.opacity(0.2), in: .capsule)
-                        .foregroundStyle(palette.negative)
-                        .padding(.horizontal)
-                }
-            }.animation(.easeOut(duration: 0.2), value: showWarning)
-        }
-    }
-    
-    @ViewBuilder
-    var nsfwTagView: some View {
-        Button {
-            hasNsfwTag = false
-        } label: {
-            HStack {
-                Text("NSFW")
-                    .font(.footnote)
-                    .fontWeight(.black)
-                    .foregroundStyle(palette.selectedInteractionBarItem)
-                Image(systemName: Icons.close)
-                    .foregroundStyle(.opacity(0.8))
-            }
-            .foregroundStyle(.white)
-            .padding(.vertical, 2)
-            .padding(.horizontal, 8)
-            .background(palette.warning, in: .capsule)
         }
     }
 }
