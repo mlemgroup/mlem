@@ -25,6 +25,7 @@ struct SubscriptionListItemView: View {
                 Button("Unsubscribe", systemImage: Icons.failure) {
                     community.toggleSubscribe(feedback: [.toast])
                 }
+                .buttonStyle(.automatic)
                 .labelStyle(.iconOnly)
                 .tint(.red)
             }

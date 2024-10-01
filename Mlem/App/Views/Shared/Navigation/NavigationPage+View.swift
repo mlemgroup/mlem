@@ -60,8 +60,20 @@ extension NavigationPage {
             } else {
                 Text(verbatim: "Error: No active UserAccount")
             }
-        case let .createPost(community: community):
-            if let view = PostEditorView(community: community) {
+        case let .createPost(
+            community: community,
+            title: title,
+            content: content,
+            url: url,
+            nsfw: nsfw
+        ):
+            if let view = PostEditorView(
+                community: community,
+                title: title,
+                content: content,
+                url: url,
+                nsfw: nsfw
+            ) {
                 view
             } else {
                 Text(verbatim: "Error: No active UserAccount")
