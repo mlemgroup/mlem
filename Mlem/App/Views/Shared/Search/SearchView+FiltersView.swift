@@ -21,9 +21,11 @@ extension SearchView {
                         personFiltersView
                     case .instances:
                         instanceFiltersView
+                    case .posts:
+                        Text("Post filters")
                     }
                 }
-                .padding(.vertical, 12)
+                .padding(.bottom, 12)
                 .padding(.horizontal, Constants.main.standardSpacing)
             }
             .scrollIndicators(.hidden)
@@ -38,7 +40,6 @@ extension SearchView {
                 .padding(.horizontal, Constants.main.standardSpacing)
             }
         }
-        .background(palette.accent.opacity(0.1))
         .animation(.easeOut(duration: 0.1), value: filterAnimationHashValue)
     }
     
@@ -106,6 +107,7 @@ extension SearchView {
                     }
                 }
                 Toggle(isOn: .init(get: { filter.isOther }, set: { _ in
+                    print("TOGGLE", isForPersonSearch)
                     navigation.openSheet(.instancePicker(callback: { instance in
                         filter = .other(instance)
                     }, minimumVersion: isForPersonSearch ? .v19_4 : nil))

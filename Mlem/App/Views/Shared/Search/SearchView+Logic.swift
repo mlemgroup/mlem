@@ -10,6 +10,9 @@ import SwiftUI
 
 extension SearchView {
     func returnToHome() {
+        if selectedTab == .posts {
+            selectedTab = .communities
+        }
         page = .home
         if !query.isEmpty {
             query = ""
@@ -39,6 +42,8 @@ extension SearchView {
                     query: query,
                     sort: filtersActive ? instanceFilters.sort : .score
                 ))
+            case .posts:
+                try await refreshPosts(clearBeforeRefresh: clearBeforeRefresh)
             }
         } catch {
             handleError(error)
@@ -63,6 +68,12 @@ extension SearchView {
             sort: filtersActive ? personFilters.sort : .topAll,
             clearBeforeRefresh: clearBeforeRefresh
         )
+    }
+    
+    private func refreshPosts(clearBeforeRefresh: Bool) async throws {
+        postLoader.api = getRefreshApi(for: personFilters.instance)
+        postLoader.query = query
+        try await postLoader.refresh(clearBeforeRefresh: clearBeforeRefresh)
     }
     
     private func getRefreshApi(for filter: InstanceFilter) -> ApiClient {

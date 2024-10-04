@@ -26,8 +26,8 @@ struct SearchResultsView<Item: Searchable, Content: View>: View {
     var body: some View {
         ForEach(results) { item in
             content(item)
-            Divider()
-                .padding(.leading, dividerPadding)
+                .padding(.horizontal, Constants.main.standardSpacing)
+                .padding(.bottom, Constants.main.halfSpacing)
         }
     }
 }
