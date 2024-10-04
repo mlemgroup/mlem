@@ -141,12 +141,8 @@ struct InteractionBarView: View {
                     }
                     .onTapGesture {}
                 } else if let action = action as? BasicAction {
-                    Button {
-                        action.callback?()
-                    } label: {
-                        InteractionBarActionLabelView(action.appearance)
-                            .opacity(action.disabled ? 0.5 : 1)
-                    }
+                    InteractionBarBasicButton(action: action)
+                        .popupAnchor()
                 }
             }
         }
@@ -166,6 +162,21 @@ struct InteractionBarView: View {
     }
 }
 
+private struct InteractionBarBasicButton: View {
+    @Environment(PopupAnchorModel.self) var popupModel
+    
+    let action: BasicAction
+    
+    var body: some View {
+        Button {
+            action.callbackWithConfirmation(popupModel: popupModel)
+        } label: {
+            InteractionBarActionLabelView(action.appearance)
+                .opacity(action.disabled ? 0.5 : 1)
+        }
+    }
+}
+
 private enum EnrichedWidget {
     case action(any Action)
     case counter(Counter)
@@ -177,6 +188,7 @@ private enum EnrichedWidget {
             hasher.combine(1)
             hasher.combine(action.id)
             hasher.combine(action.appearance.isOn)
+            hasher.combine(action.appearance.isInProgress)
             hasher.combine((action as? BasicAction)?.disabled)
         case let .counter(counter):
             // If `counter.value` is included in this, the fancy `.numericText()` transition

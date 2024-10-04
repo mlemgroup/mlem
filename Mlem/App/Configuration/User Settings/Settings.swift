@@ -69,6 +69,8 @@ class Settings: ObservableObject {
     
     @AppStorage("tip.feedWelcomePrompt") var showFeedWelcomePrompt: Bool = true
     
+    @AppStorage("menus.moderatorActionGrouping") var moderatorActionGrouping: ModeratorActionGrouping = .divider
+    
     var codable: CodableSettings { .init(from: self) }
     
     @MainActor
