@@ -127,5 +127,6 @@ class Settings: ObservableObject {
         commentSort = settings.comment_defaultSort
         bypassImageProxyShown = settings.status_bypassImageProxyShown
         autoBypassImageProxy = settings.privacy_autoBypassImageProxy
+        sidebarVisibleByDefault = settings.navigation_sidebarVisibleByDefault
     }
 }
