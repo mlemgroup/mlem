@@ -69,6 +69,8 @@ class Settings: ObservableObject {
     
     @AppStorage("tip.feedWelcomePrompt") var showFeedWelcomePrompt: Bool = true
     
+    @AppStorage("navigation.sidebarVisibleByDefault") var sidebarVisibleByDefault: Bool = true
+    
     var codable: CodableSettings { .init(from: self) }
     
     @MainActor
