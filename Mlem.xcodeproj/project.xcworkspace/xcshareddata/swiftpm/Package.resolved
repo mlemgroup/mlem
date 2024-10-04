@@ -51,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware",
       "state" : {
-        "branch" : "sjmarf/pin-and-lock",
-        "revision" : "13d76c9be22cdab1df0165ce3f7c77dc5463d449"
+        "revision" : "a41b8d436e9fa1bc90ec3de83bf947cb018008bf",
+        "version" : "0.41.0"
       }
     },
     {
