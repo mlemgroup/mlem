@@ -32,6 +32,10 @@ struct SettingsView: View {
                     .tint(palette.colorfulAccent(6))
                 NavigationLink("Sorting", systemImage: "arrow.up.and.down.text.horizontal", destination: .settings(.sorting))
                     .tint(palette.colorfulAccent(5))
+                if !(appState.firstApi.myPerson?.moderatedCommunities.isEmpty ?? true) || appState.firstApi.isAdmin {
+                    NavigationLink("Moderation", systemImage: Icons.moderationFill, destination: .settings(.moderation))
+                        .tint(palette.moderation)
+                }
             }
             
             Section {

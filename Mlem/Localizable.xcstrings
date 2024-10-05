@@ -401,10 +401,16 @@
     "Disabled" : {
 
     },
+    "Disclosure Group" : {
+
+    },
     "Disk Usage" : {
 
     },
     "Dismiss" : {
+
+    },
+    "Divider" : {
 
     },
     "Domain" : {
@@ -455,10 +461,22 @@
     "Failed to delete post!" : {
 
     },
+    "Failed to lock post" : {
+
+    },
+    "Failed to pin post" : {
+
+    },
     "Failed to resolve post. Try another account." : {
 
     },
     "Failed to Save Image" : {
+
+    },
+    "Failed to unlock post" : {
+
+    },
+    "Failed to unpin post" : {
 
     },
     "Fallback" : {
@@ -533,6 +551,9 @@
 
     },
     "Green" : {
+
+    },
+    "Group actions using" : {
 
     },
     "Grouped" : {
@@ -685,6 +706,9 @@
     "Local" : {
 
     },
+    "Lock" : {
+
+    },
     "Log In" : {
 
     },
@@ -731,6 +755,9 @@
 
     },
     "Moderation" : {
+
+    },
+    "Moderation..." : {
 
     },
     "Moderator" : {
@@ -865,6 +892,15 @@
     "Photos" : {
 
     },
+    "Pin" : {
+
+    },
+    "Pin to Community" : {
+
+    },
+    "Pin to Instance" : {
+
+    },
     "Pink" : {
 
     },
@@ -917,6 +953,18 @@
 
     },
     "Really delete %@?" : {
+
+    },
+    "Really pin this post to %@?" : {
+
+    },
+    "Really pin this post to the community?" : {
+
+    },
+    "Really unpin this post from %@?" : {
+
+    },
+    "Really unpin this post from the community?" : {
 
     },
     "Reason (Optional)" : {
@@ -1028,6 +1076,12 @@
 
     },
     "Sent %@" : {
+
+    },
+    "Separate Menu" : {
+
+    },
+    "Separate moderator actions using..." : {
 
     },
     "Settings" : {
@@ -1335,6 +1389,18 @@
 
     },
     "Unknown" : {
+
+    },
+    "Unlock" : {
+
+    },
+    "Unpin" : {
+
+    },
+    "Unpin From Community" : {
+
+    },
+    "Unpin From Instance" : {
 
     },
     "Unsave" : {
