@@ -47,7 +47,7 @@ struct CommentEditorView: View {
         commentTreeTracker: CommentTreeTracker? = nil
     ) {
         self.commentToEdit = commentToEdit
-        self.originalContext = context
+        self._originalContext = .init(wrappedValue: context)
         self._resolvedContext = .init(wrappedValue: context)
         self.commentTreeTracker = commentTreeTracker
         if let userAccount = (AppState.main.firstAccount as? UserAccount) {
@@ -169,9 +169,9 @@ struct CommentEditorView: View {
     
     @ViewBuilder
     var contextView: some View {
-        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-            switch originalContext {
-            case let .post(post):
+        switch originalContext {
+        case let .post(post):
+            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 HStack {
                     FullyQualifiedLinkView(
                         entity: post.community_,
@@ -189,7 +189,16 @@ struct CommentEditorView: View {
                     showAvatar: showPersonAvatar,
                     blurred: post.nsfw
                 )
-            case let .comment(comment):
+            }
+            .onAppear {
+                if !(post is any Post2Providing) {
+                    Task {
+                        originalContext = try await .post(post.upgrade())
+                    }
+                }
+            }
+        case let .comment(comment):
+            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 HStack {
                     FullyQualifiedLinkView(
                         entity: comment.creator_,
@@ -201,9 +210,16 @@ struct CommentEditorView: View {
                     selectTextButton
                 }
                 CommentBodyView(comment: comment)
-            case nil:
-                ProgressView()
             }
+            .onAppear {
+                if !(comment is any Comment2Providing) {
+                    Task {
+                        originalContext = try await .comment(comment.upgrade())
+                    }
+                }
+            }
+        case nil:
+            ProgressView()
         }
     }
     
