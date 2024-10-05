@@ -71,8 +71,25 @@ extension SearchView {
     }
     
     private func refreshPosts(clearBeforeRefresh: Bool) async throws {
-        postLoader.api = getRefreshApi(for: personFilters.instance)
+        guard !query.isEmpty else { return }
+        postLoader.api = getRefreshApi(for: postFilters.location)
         postLoader.query = query
+        postLoader.sortType = postFilters.sort
+        postLoader.creatorId = postFilters.creator?.id
+        postLoader.communityId = nil
+        postLoader.listing = .all
+        switch postFilters.location {
+        case .subscribed:
+            postLoader.listing = .subscribed
+        case .moderated:
+            postLoader.listing = .moderatorView
+        case .localInstance, .instance:
+            postLoader.listing = .local
+        case let .community(community):
+            postLoader.communityId = community.id
+        default:
+            break
+        }
         try await postLoader.refresh(clearBeforeRefresh: clearBeforeRefresh)
     }
     
@@ -85,6 +102,35 @@ extension SearchView {
                 instance.instanceStub?.asLocal().api ?? appState.firstApi
             default:
                 appState.firstApi
+            }
+        }
+    }
+    
+    private func getRefreshApi(for filter: LocationFilter) -> ApiClient {
+        if !filtersActive {
+            appState.firstApi
+        } else {
+            switch filter {
+            case let .instance(instance):
+                instance.instanceStub?.asLocal().api ?? appState.firstApi
+            default:
+                appState.firstApi
+            }
+        }
+    }
+    
+    func resolvePostFilterCreator() {
+        let api = postFilters.location.instanceStub?.api ?? appState.firstApi
+        if let creator = postFilters.creator, api !== creator.api {
+            Task {
+                let stub = PersonStub(api: api, actorId: creator.actorId)
+                do {
+                    if let person = try await (stub.upgrade()) as? Person2 {
+                        postFilters.creator = person
+                    }
+                } catch {
+                    handleError(error)
+                }
             }
         }
     }
@@ -110,6 +156,9 @@ extension SearchView {
         hasher.combine(personFilters.sort)
         hasher.combine(personFilters.instance)
         hasher.combine(instanceFilters.sort)
+        hasher.combine(postFilters.sort)
+        hasher.combine(postFilters.creator?.actorId)
+        hasher.combine(postFilters.location)
         return hasher.finalize()
     }
 }

@@ -159,6 +159,12 @@
     "Any Instance" : {
 
     },
+    "Anyone" : {
+
+    },
+    "Anywhere" : {
+
+    },
     "App Icon" : {
 
     },
@@ -256,13 +262,16 @@
     "Choose Account Type" : {
 
     },
+    "Choose Community..." : {
+
+    },
     "Choose File" : {
 
     },
-    "Choose wisely - you cannot change this later." : {
+    "Choose Instance..." : {
 
     },
-    "Choose..." : {
+    "Choose wisely - you cannot change this later." : {
 
     },
     "Clear Cache" : {
@@ -829,12 +838,6 @@
     "Other" : {
 
     },
-    "Other (%@)" : {
-
-    },
-    "Other..." : {
-
-    },
     "Outside NSFW Communities" : {
 
     },
@@ -863,9 +866,6 @@
 
     },
     "Pink" : {
-
-    },
-    "Post filters" : {
 
     },
     "Post Size" : {

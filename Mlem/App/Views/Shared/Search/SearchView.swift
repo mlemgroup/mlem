@@ -28,8 +28,9 @@ struct SearchView: View {
         }
     }
     
-    @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
+    @Environment(Palette.self) var palette
     
     @State var searchBarFocused: Bool = false
     @State var isSearching: Bool = false
@@ -41,6 +42,7 @@ struct SearchView: View {
     @State var communityFilters: CommunityFilters = .init()
     @State var personFilters: PersonFilters = .init()
     @State var instanceFilters: InstanceFilters = .init()
+    @State var postFilters: PostFilters = .init()
 
     @State var selectedTab: Tab = .communities
     @State var resultsScrollToTopTrigger: Bool = false
@@ -127,10 +129,12 @@ struct SearchView: View {
                 }
             }
             .onChange(of: filterRefreshHashValue) {
-                print("FILTER REFRESH")
                 Task {
-                    await refresh(clearBeforeRefresh: false)
+                    await refresh(clearBeforeRefresh: selectedTab == .posts)
                 }
+            }
+            .onChange(of: postFilters.location.instanceStub) {
+                resolvePostFilterCreator()
             }
     }
     
