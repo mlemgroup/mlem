@@ -39,6 +39,7 @@ struct ExpandedPostView<Content: View>: View {
     @State var scrolledToscrollTargetedComment: Bool = false
     @State var jumpButtonTarget: URL?
     @State var topVisibleItem: URL?
+    @State var postCollapsed: Bool = false
     
     init(
         post: (any PostStubProviding)?,
@@ -97,15 +98,7 @@ struct ExpandedPostView<Content: View>: View {
                         alignment: .leading,
                         spacing: compactComments ? Constants.main.halfSpacing : Constants.main.standardSpacing
                     ) {
-                        LargePostView(post: post, isExpanded: true)
-                            .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
-                            .id(post.actorId)
-                            .transition(.opacity)
-                            .animation(.easeOut(duration: 0.1), value: type(of: post).tierNumber)
-                            .anchorPreference(
-                                key: AnchorsKey.self,
-                                value: .center
-                            ) { [post.actorId: $0] }
+                        postView(post)
                             .padding(.horizontal, Constants.main.standardSpacing)
                         content
                         if let tracker {
@@ -164,6 +157,41 @@ struct ExpandedPostView<Content: View>: View {
             }
         }
         .environment(tracker)
+    }
+    
+    @ViewBuilder
+    func postView(_ post: any Post) -> some View {
+        Group {
+            if postCollapsed {
+                HStack {
+                    post.taggedTitle(communityContext: post.community_)
+                        .font(.headline)
+                        .background(palette.secondaryGroupedBackground)
+                    Spacer()
+                    Image(systemName: Icons.expandComment)
+                        .frame(height: 10)
+                }
+                .imageScale(.small)
+                .padding(Constants.main.standardSpacing)
+            } else {
+                LargePostView(post: post, isPostPage: true)
+            }
+        }
+        .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
+        .quickSwipes(post.swipeActions(behavior: .standard, commentTreeTracker: tracker))
+        .contextMenu { post.allMenuActions() }
+        .onTapGesture {
+            withAnimation {
+                postCollapsed.toggle()
+            }
+        }
+        .id(post.actorId)
+        .transition(.opacity)
+        .animation(.easeOut(duration: 0.1), value: type(of: post).tierNumber)
+        .anchorPreference(
+            key: AnchorsKey.self,
+            value: .center
+        ) { [post.actorId: $0] }
     }
     
     @ViewBuilder

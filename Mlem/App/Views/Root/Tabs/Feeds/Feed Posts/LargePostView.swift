@@ -20,7 +20,7 @@ struct LargePostView: View {
     @Environment(\.communityContext) private var communityContext
     
     let post: any Post1Providing
-    var isExpanded: Bool = false
+    var isPostPage: Bool = false
     
     var shouldBlur: Bool {
         switch blurNsfw {
@@ -40,7 +40,7 @@ struct LargePostView: View {
     var content: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             HStack {
-                if communityContext == nil {
+                if communityContext == nil || isPostPage {
                     communityLink
                 } else {
                     personLink
@@ -53,16 +53,16 @@ struct LargePostView: View {
                         .foregroundStyle(palette.warning)
                 }
 
-                if !isExpanded {
+                if !isPostPage {
                     PostEllipsisMenus(post: post)
                 }
             }
             .padding(.horizontal, Constants.main.standardSpacing)
             
-            LargePostBodyView(post: post, isExpanded: isExpanded, shouldBlur: shouldBlur)
+            LargePostBodyView(post: post, isPostPage: isPostPage, shouldBlur: shouldBlur)
                 .padding(.horizontal, Constants.main.standardSpacing)
             
-            if showCreator || isExpanded, communityContext == nil {
+            if (showCreator && communityContext == nil) || isPostPage {
                 personLink
                     .padding(.horizontal, Constants.main.standardSpacing)
             }
