@@ -23,6 +23,8 @@ struct SectionIndexTitles: View {
     // Track which sidebar label we picked last so we
     // only send a haptic when selecting a new one
     @State var lastSelectedLabel: String = ""
+    
+    @State var debounce: Date = .now
 
     var body: some View {
         VStack {
@@ -57,11 +59,20 @@ struct SectionIndexTitles: View {
                                 if sectionLabel != lastSelectedLabel {
                                     Task { @MainActor in
                                         lastSelectedLabel = sectionLabel
-                                        proxy.scrollTo(sectionLabel, anchor: .top)
-
-                                        // Play nice tappy taps
                                         HapticManager.main.play(haptic: .rigidInfo, priority: .low)
+                                        
+                                        if debounce.advanced(by: 0.25) < .now {
+                                            debounce = .now
+                                            withAnimation {
+                                                proxy.scrollTo(sectionLabel, anchor: .top)
+                                            }
+                                        }
                                     }
+                                }
+                            }
+                            .onEnded { _ in
+                                withAnimation {
+                                    proxy.scrollTo(lastSelectedLabel, anchor: .top)
                                 }
                             }
                     )
