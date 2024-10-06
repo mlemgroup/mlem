@@ -96,11 +96,12 @@ struct ExpandedPostView<Content: View>: View {
                 FancyScrollView {
                     LazyVStack(
                         alignment: .leading,
-                        spacing: compactComments ? Constants.main.halfSpacing : Constants.main.standardSpacing
+                        spacing: 0
                     ) {
                         postView(post)
                             .padding(.horizontal, Constants.main.standardSpacing)
                         content
+                            .padding(.top, compactComments ? Constants.main.halfSpacing : Constants.main.standardSpacing)
                         if let tracker {
                             commentTree(tracker: tracker)
                         }
@@ -237,6 +238,7 @@ struct ExpandedPostView<Content: View>: View {
                 }
             }
             .padding(.horizontal, Constants.main.standardSpacing)
+            .padding(.top, compactComments ? Constants.main.halfSpacing : Constants.main.standardSpacing)
         }
     }
     
