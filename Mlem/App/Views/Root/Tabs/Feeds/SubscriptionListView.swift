@@ -46,28 +46,40 @@ struct SubscriptionListView: View {
                 VStack(spacing: 0) {
                     SectionMimicView {
                         ForEach(Array(feedOptions.enumerated()), id: \.element.hashValue) { index, feedOption in
-                            if index > 0 {
-                                Divider()
-                            }
-                            
                             SubscriptionListNavigationButton(.feeds(feedOption)) {
-                                HStack(spacing: 15) {
+                                HStack(alignment: .center, spacing: 15) {
                                     FeedIconView(
                                         feedDescription: feedOption.description,
                                         size: appState.firstSession is GuestSession ? 36 : 28
                                     )
-                                    VStack(alignment: .leading) {
-                                        Text(feedOption.description.label)
-                                        if appState.firstSession is GuestSession {
-                                            Text(feedOption.description.subtitle)
+                                    
+                                    VStack(spacing: 0) {
+                                        if index > 0 { Divider() }
+                                        
+                                        HStack(spacing: 0) {
+                                            VStack(alignment: .leading) {
+                                                Text(feedOption.description.label)
+                                                if appState.firstSession is GuestSession {
+                                                    Text(feedOption.description.subtitle)
+                                                        .font(.footnote)
+                                                        .foregroundStyle(palette.secondary)
+                                                }
+                                            }
+                                            
+                                            Spacer()
+                                            
+                                            Image(systemName: Icons.forward)
                                                 .font(.footnote)
-                                                .foregroundStyle(palette.secondary)
+                                                .fontWeight(.bold)
+                                                .foregroundStyle(palette.tertiary)
                                         }
+                                        .padding(.vertical, 12)
+                                        .padding(.trailing, 16)
                                     }
                                 }
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .contentShape(.rect)
-                                .padding(10)
+                                .padding(.leading, 16)
                             }
                         }
                     }
