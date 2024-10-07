@@ -18,6 +18,8 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         case hide
         case block
         case report
+        case lock
+        case pin
         case crossPost
         
         var appearance: ActionAppearance {
@@ -31,6 +33,8 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             case .hide: .hide(isOn: false)
             case .block: .block(isOn: false)
             case .report: .report()
+            case .lock: .lock(isOn: false)
+            case .pin: .pin(isOn: false)
             case .crossPost: .crossPost()
             }
         }
@@ -81,6 +85,8 @@ struct PostBarConfiguration: InteractionBarConfiguration {
     var leading: [Item]
     var trailing: [Item]
     var readouts: [ReadoutType]
+    
+    var all: [Item] { leading + trailing }
     
     static var `default`: Self {
         .init(

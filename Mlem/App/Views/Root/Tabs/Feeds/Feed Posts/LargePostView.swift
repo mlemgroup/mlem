@@ -52,9 +52,9 @@ struct LargePostView: View {
                     Image(Icons.nsfwTag)
                         .foregroundStyle(palette.warning)
                 }
-                
+
                 if !isExpanded {
-                    EllipsisMenu(size: 24) { post.menuActions(commentTreeTracker: commentTreeTracker) }
+                    PostEllipsisMenus(post: post)
                 }
             }
             .padding(.horizontal, Constants.main.standardSpacing)

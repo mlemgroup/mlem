@@ -10,6 +10,7 @@ import SwiftUI
 struct ActionAppearance {
     let label: String
     let isOn: Bool
+    let isInProgress: Bool
     let isDestructive: Bool
     let color: Color
     let barIcon: String
@@ -20,6 +21,7 @@ struct ActionAppearance {
     init(
         label: LocalizedStringResource,
         isOn: Bool = false,
+        isInProgress: Bool = false,
         isDestructive: Bool = false,
         color: Color,
         icon: String,
@@ -31,6 +33,7 @@ struct ActionAppearance {
         self.init(
             label: .init(localized: label),
             isOn: isOn,
+            isInProgress: isInProgress,
             isDestructive: isDestructive,
             color: color,
             icon: icon,
@@ -45,6 +48,7 @@ struct ActionAppearance {
     init(
         label: String,
         isOn: Bool = false,
+        isInProgress: Bool = false,
         isDestructive: Bool = false,
         color: Color,
         icon: String,
@@ -55,6 +59,7 @@ struct ActionAppearance {
     ) {
         self.label = label
         self.isOn = isOn
+        self.isInProgress = isInProgress
         self.isDestructive = isDestructive
         self.color = color
         self.barIcon = barIcon ?? icon

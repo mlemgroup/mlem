@@ -93,7 +93,7 @@ struct TilePostView: View {
     
     var score: some View {
         Menu {
-            ForEach(post.menuActions(), id: \.id) { action in
+            ForEach(post.allMenuActions(), id: \.id) { action in
                 MenuButton(action: action)
             }
         } label: {

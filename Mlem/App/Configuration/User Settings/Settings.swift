@@ -71,6 +71,8 @@ class Settings: ObservableObject {
     
     @AppStorage("navigation.sidebarVisibleByDefault") var sidebarVisibleByDefault: Bool = true
     
+    @AppStorage("menus.moderatorActionGrouping") var moderatorActionGrouping: ModeratorActionGrouping = .divider
+    
     var codable: CodableSettings { .init(from: self) }
     
     @MainActor
