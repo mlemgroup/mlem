@@ -76,6 +76,7 @@ struct CodableSettings: Codable {
     var status_bypassImageProxyShown: Bool
     var subscriptions_instanceLocation: InstanceLocation
     var subscriptions_sort: SubscriptionListSort
+    var navigation_sidebarVisibleByDefault: Bool
     
     // swiftlint:disable line_length function_body_length
     init(from decoder: any Decoder) throws {
@@ -145,6 +146,7 @@ struct CodableSettings: Codable {
         self.status_bypassImageProxyShown = try container.decodeIfPresent(Bool.self, forKey: .status_bypassImageProxyShown) ?? false
         self.subscriptions_instanceLocation = try container.decodeIfPresent(InstanceLocation.self, forKey: .subscriptions_instanceLocation) ?? (UIDevice.isPad ? .bottom : .trailing)
         self.subscriptions_sort = try container.decodeIfPresent(SubscriptionListSort.self, forKey: .subscriptions_sort) ?? .alphabetical
+        self.navigation_sidebarVisibleByDefault = try container.decodeIfPresent(Bool.self, forKey: .navigation_sidebarVisibleByDefault) ?? true
     }
 
     // swiftlint:enable line_length
@@ -215,6 +217,7 @@ struct CodableSettings: Codable {
         self.status_bypassImageProxyShown = settings.bypassImageProxyShown
         self.subscriptions_instanceLocation = settings.subscriptionInstanceLocation
         self.subscriptions_sort = settings.subscriptionSort
+        self.navigation_sidebarVisibleByDefault = settings.sidebarVisibleByDefault
     }
     // swiftlint:enable function_body_length
 }

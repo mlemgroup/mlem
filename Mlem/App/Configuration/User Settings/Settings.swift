@@ -69,6 +69,8 @@ class Settings: ObservableObject {
     
     @AppStorage("tip.feedWelcomePrompt") var showFeedWelcomePrompt: Bool = true
     
+    @AppStorage("navigation.sidebarVisibleByDefault") var sidebarVisibleByDefault: Bool = true
+    
     @AppStorage("menus.moderatorActionGrouping") var moderatorActionGrouping: ModeratorActionGrouping = .divider
     
     var codable: CodableSettings { .init(from: self) }
@@ -127,5 +129,6 @@ class Settings: ObservableObject {
         commentSort = settings.comment_defaultSort
         bypassImageProxyShown = settings.status_bypassImageProxyShown
         autoBypassImageProxy = settings.privacy_autoBypassImageProxy
+        sidebarVisibleByDefault = settings.navigation_sidebarVisibleByDefault
     }
 }
