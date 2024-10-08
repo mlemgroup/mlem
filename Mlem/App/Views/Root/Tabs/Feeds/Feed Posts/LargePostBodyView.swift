@@ -14,13 +14,13 @@ struct LargePostBodyView: View {
     @Environment(\.communityContext) private var communityContext: (any Community1Providing)?
     
     let post: any Post1Providing
-    let isExpanded: Bool
+    let isPostPage: Bool
     let shouldBlur: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             post.taggedTitle(communityContext: communityContext)
-                .foregroundStyle((post.read_ ?? false) ? palette.secondary : palette.primary)
+                .foregroundStyle((post.read_ ?? false && !isPostPage) ? palette.secondary : palette.primary)
                 .font(.headline)
                 .imageScale(.small)
             
@@ -43,7 +43,7 @@ struct LargePostBodyView: View {
                 EmptyView()
             }
             if let content = post.content {
-                if isExpanded {
+                if isPostPage {
                     Markdown(content, configuration: .default)
                 } else {
                     // Cut down on compute time for very long text posts by only rendering the first 4 blocks
