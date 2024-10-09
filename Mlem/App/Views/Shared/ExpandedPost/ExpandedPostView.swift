@@ -174,6 +174,7 @@ struct ExpandedPostView<Content: View>: View {
                 }
                 .imageScale(.small)
                 .padding(Constants.main.standardSpacing)
+                .background(palette.secondaryGroupedBackground)
             } else {
                 LargePostView(post: post, isPostPage: true)
             }
