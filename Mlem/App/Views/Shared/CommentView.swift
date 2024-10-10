@@ -15,7 +15,8 @@ struct CommentView: View {
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     
     @Setting(\.compactComments) var compactComments
-    
+    @Setting(\.moderatorActionGrouping) var moderatorActionGrouping
+
     private let indent: CGFloat = 10
     
     let comment: any Comment1Providing
@@ -72,7 +73,8 @@ struct CommentView: View {
                                 .frame(height: 10)
                                 .imageScale(.small)
                         } else {
-                            EllipsisMenu(size: 24) { comment.menuActions(commentTreeTracker: commentTreeTracker) }
+                            ellipsisMenus
+//                            EllipsisMenu(size: 24) { comment.menuActions(commentTreeTracker: commentTreeTracker) }
                                 .frame(height: 10)
                         }
                     }
@@ -104,9 +106,31 @@ struct CommentView: View {
         .quickSwipes(comment.swipeActions(behavior: .standard, commentTreeTracker: commentTreeTracker))
         .contentShape(.interaction, .rect)
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .contextMenu { comment.menuActions(commentTreeTracker: commentTreeTracker) }
+        .contextMenu { comment.allMenuActions(commentTreeTracker: commentTreeTracker) }
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .environment(\.commentContext, comment)
+    }
+    
+    var ellipsisMenus: some View {
+        HStack {
+            if comment.shouldShowLoadingSymbol(for: InteractionBarTracker.main.commentInteractionBar) {
+                ProgressView()
+            }
+            if moderatorActionGrouping == .separateMenu {
+                if comment.canModerate {
+                    EllipsisMenu(systemImage: Icons.moderation, size: 24) {
+                        comment.moderatorMenuActions()
+                    }
+                }
+                EllipsisMenu(size: 24) {
+                    comment.basicMenuActions(commentTreeTracker: commentTreeTracker)
+                }
+            } else {
+                EllipsisMenu(size: 24) {
+                    comment.allMenuActions(commentTreeTracker: commentTreeTracker)
+                }
+            }
+        }
     }
 }
 

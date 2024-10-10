@@ -27,34 +27,7 @@ extension Interactable2Providing {
         return output
     }
     
-    func showRemoveSheet() {
-        NavigationModel.main.openSheet(.remove(self))
-    }
-    
     var canModerate: Bool {
         api.myPerson?.moderates(communityId: community.id) ?? false || api.isAdmin
-    }
-    
-    func toggleRemoved(reason: String?, feedback: Set<FeedbackType>) {
-        Task {
-            let initialValue = removed
-            if feedback.contains(.haptic) {
-                await HapticManager.main.play(haptic: .success, priority: .low)
-            }
-            switch await self.toggleRemoved(reason: reason).result.get() {
-            case .failed:
-                ToastModel.main.add(.failure(initialValue ? "Failed to remove content" : "Failed to restore content"))
-            default:
-                break
-            }
-        }
-    }
-    
-    func removeAction(feedback: Set<FeedbackType> = []) -> BasicAction {
-        .init(
-            id: "remove\(uid)",
-            appearance: .remove(isOn: removed, isInProgress: !removedManager.isInSync),
-            callback: api.canInteract && canModerate ? showRemoveSheet : nil
-        )
     }
 }

@@ -16,6 +16,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         case share
         case selectText
         case report
+        case remove
         
         var appearance: ActionAppearance {
             switch self {
@@ -26,6 +27,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
             case .share: .share()
             case .selectText: .selectText()
             case .report: .report()
+            case .remove: .remove(isOn: false)
             }
         }
     }

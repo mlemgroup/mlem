@@ -198,12 +198,13 @@ extension Post1Providing {
         case .hide: hideAction(feedback: feedback)
         case .block: blockAction(feedback: feedback)
         case .report: reportAction(communityContext: communityContext)
+        case .crossPost: crossPostAction()
         case .lock: lockAction(feedback: feedback)
         // SwiftLint is erroneously warning here. This could be fixed by wrapping the expression
         // in parenthesis, but the pre-commit hook removed the paranthesis
         // swiftlint:disable:next void_function_in_ternary
         case .pin: api.isAdmin ? pinAction(feedback: feedback) : pinToCommunityAction(feedback: feedback)
-        case .crossPost: crossPostAction()
+        case .remove: removeAction(feedback: feedback)
         }
     }
     
