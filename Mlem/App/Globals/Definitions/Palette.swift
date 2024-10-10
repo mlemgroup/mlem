@@ -53,11 +53,12 @@ protocol PaletteProviding {
 }
 
 enum PaletteOption: String, CaseIterable, Codable {
-    case standard, monochrome, solarized, dracula
+    case standard, oled, monochrome, solarized, dracula
     
     var palette: ColorPalette {
         switch self {
         case .standard: ColorPalette.standard
+        case .oled: ColorPalette.oled
         case .monochrome: ColorPalette.monochrome
         case .solarized: ColorPalette.solarized
         case .dracula: ColorPalette.dracula
@@ -67,6 +68,7 @@ enum PaletteOption: String, CaseIterable, Codable {
     var label: LocalizedStringResource {
         switch self {
         case .standard: "Default"
+        case .oled: "Oled"
         case .monochrome: "Monochrome"
         case .solarized: "Solarized"
         case .dracula: "Dracula"
