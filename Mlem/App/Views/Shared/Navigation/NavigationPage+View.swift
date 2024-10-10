@@ -89,8 +89,9 @@ extension NavigationPage {
                 } label: {
                     CommunityListRowBody(community, readout: .subscribers)
                         .tint(Palette.main.primary)
+                        .padding(.vertical, 6)
+                        .background(Palette.main.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                 }
-                .padding(.vertical, 6)
             }
         case let .personPicker(api: api, callback: callback):
             SearchSheetView(api: api) { (person: Person2, navigation: NavigationLayer) in
@@ -99,8 +100,9 @@ extension NavigationPage {
                 } label: {
                     PersonListRowBody(person)
                         .tint(Palette.main.primary)
+                        .padding(.vertical, 6)
+                        .background(Palette.main.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                 }
-                .padding(.vertical, 6)
             }
         case let .instancePicker(callback: callback, minimumVersion: minimumVersion):
             SearchSheetView { (instance: InstanceSummary, navigation: NavigationLayer) in
@@ -109,8 +111,9 @@ extension NavigationPage {
                 } label: {
                     InstanceListRowBody(instance)
                         .tint(Palette.main.primary)
+                        .padding(.vertical, 6)
+                        .background(Palette.main.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                 }
-                .padding(.vertical, 6)
                 .disabled(instance.version < (minimumVersion ?? .zero))
             } header: {
                 if let minimumVersion {
@@ -119,7 +122,8 @@ extension NavigationPage {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(Palette.main.caution.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
                         .foregroundStyle(Palette.main.caution)
-                        .padding([.horizontal, .bottom])
+                        .padding(.horizontal, Constants.main.standardSpacing)
+                        .padding(.bottom, Constants.main.halfSpacing)
                 }
             }
         case let .instance(instance):

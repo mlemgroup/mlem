@@ -131,6 +131,9 @@
 		038028DA2CACACD30091A8A2 /* PostEllipsisMenus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028D92CACACD30091A8A2 /* PostEllipsisMenus.swift */; };
 		038028FD2CB72A2A0091A8A2 /* ContentRemovalEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028FC2CB72A2A0091A8A2 /* ContentRemovalEditorView.swift */; };
 		038028FF2CB72AC90091A8A2 /* ReasonPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028FE2CB72AC90091A8A2 /* ReasonPickerView.swift */; };
+		038028F62CB096960091A8A2 /* SearchView+FilterModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028F52CB096960091A8A2 /* SearchView+FilterModels.swift */; };
+		038028F82CB097A10091A8A2 /* SearchView+InstancePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028F72CB097A10091A8A2 /* SearchView+InstancePicker.swift */; };
+		038028FA2CB097CB0091A8A2 /* SearchView+LocationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028F92CB097CB0091A8A2 /* SearchView+LocationPicker.swift */; };
 		0380965F2C10AA80003ED1D8 /* AppState+Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0380965E2C10AA80003ED1D8 /* AppState+Transition.swift */; };
 		038096612C10AAD8003ED1D8 /* TransitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038096602C10AAD8003ED1D8 /* TransitionView.swift */; };
 		0382A7F02C09F0F800C79DDA /* PersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0382A7EF2C09F0F800C79DDA /* PersonView.swift */; };
@@ -520,6 +523,9 @@
 		038028FC2CB72A2A0091A8A2 /* ContentRemovalEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentRemovalEditorView.swift; sourceTree = "<group>"; };
 		038028FE2CB72AC90091A8A2 /* ReasonPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonPickerView.swift; sourceTree = "<group>"; };
 		038029002CB72BE30091A8A2 /* MlemMiddleware */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MlemMiddleware; path = ../MlemMiddleware; sourceTree = SOURCE_ROOT; };
+		038028F52CB096960091A8A2 /* SearchView+FilterModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+FilterModels.swift"; sourceTree = "<group>"; };
+		038028F72CB097A10091A8A2 /* SearchView+InstancePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+InstancePicker.swift"; sourceTree = "<group>"; };
+		038028F92CB097CB0091A8A2 /* SearchView+LocationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+LocationPicker.swift"; sourceTree = "<group>"; };
 		0380965E2C10AA80003ED1D8 /* AppState+Transition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppState+Transition.swift"; sourceTree = "<group>"; };
 		038096602C10AAD8003ED1D8 /* TransitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionView.swift; sourceTree = "<group>"; };
 		0382A7EF2C09F0F800C79DDA /* PersonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonView.swift; sourceTree = "<group>"; };
@@ -938,6 +944,9 @@
 				035EDEEB2C2DE93E00F51144 /* SearchBar */,
 				0389DDCE2C39CB0E0005B808 /* SearchView.swift */,
 				0320B6602C8DFCF100D38548 /* SearchView+FiltersView.swift */,
+				038028F72CB097A10091A8A2 /* SearchView+InstancePicker.swift */,
+				038028F92CB097CB0091A8A2 /* SearchView+LocationPicker.swift */,
+				038028F52CB096960091A8A2 /* SearchView+FilterModels.swift */,
 				0320B6682C93506300D38548 /* SearchView+Logic.swift */,
 				0389DDD22C39E4D40005B808 /* PasteLinkButtonView.swift */,
 				03531EED2C2D9298004A3464 /* SearchSheetView.swift */,
@@ -2102,6 +2111,7 @@
 				03134A522BEAD69F002662CC /* SettingsPage.swift in Sources */,
 				03049A1C2C65039400FF6889 /* ActiveUserCountView.swift in Sources */,
 				0389DDDB2C3AB6340005B808 /* ActionBuilder.swift in Sources */,
+				038028FA2CB097CB0091A8A2 /* SearchView+LocationPicker.swift in Sources */,
 				CDD8B94C2C8234BC00510EBB /* Form.swift in Sources */,
 				0320B6652C91DBD500D38548 /* NavigationPage+View.swift in Sources */,
 				03CCDAA02BF2795300C0C851 /* LoginPage.swift in Sources */,
@@ -2139,6 +2149,7 @@
 				CDCA44B62C176C5000C092B3 /* View+EdgeBorders.swift in Sources */,
 				03FA318F2C6FEF2000D47FA3 /* InteractionBarActionLabelView.swift in Sources */,
 				CDE1F1982C63DFC9008AF042 /* PadConstants.swift in Sources */,
+				038028F82CB097A10091A8A2 /* SearchView+InstancePicker.swift in Sources */,
 				CD9CFA2C2C2E1EF300739BBC /* FeedIconView.swift in Sources */,
 				CD1446252A5B357900610EF1 /* Document.swift in Sources */,
 				033F84B12C29907F002E3EDF /* FeedbackType.swift in Sources */,
@@ -2316,6 +2327,7 @@
 				033FCAEC2C57DCCD007B7CD1 /* ApiListingType+Extensions.swift in Sources */,
 				033FCB272C5E3933007B7CD1 /* AlternateIconLabel.swift in Sources */,
 				033FCB282C5E3933007B7CD1 /* AlternateIcon.swift in Sources */,
+				038028F62CB096960091A8A2 /* SearchView+FilterModels.swift in Sources */,
 				033FCB292C5E3933007B7CD1 /* IconSettingsView.swift in Sources */,
 				035394932CA1AE2C00795AA5 /* UptimeData.swift in Sources */,
 				033FCB2A2C5E3933007B7CD1 /* AlternateIconCell.swift in Sources */,
@@ -2786,7 +2798,7 @@
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.41.0;
+				minimumVersion = 0.42.0;
 			};
 		};
 		CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */ = {

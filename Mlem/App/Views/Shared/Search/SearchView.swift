@@ -14,7 +14,7 @@ struct SearchView: View {
     }
     
     enum Tab: CaseIterable, Identifiable {
-        case communities, users, instances
+        case communities, users, instances, posts
         
         var id: Self { self }
         
@@ -23,12 +23,14 @@ struct SearchView: View {
             case .communities: "Communities"
             case .users: "Users"
             case .instances: "Instances"
+            case .posts: "Posts"
             }
         }
     }
     
-    @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
+    @Environment(Palette.self) var palette
     
     @State var searchBarFocused: Bool = false
     @State var isSearching: Bool = false
@@ -40,6 +42,7 @@ struct SearchView: View {
     @State var communityFilters: CommunityFilters = .init()
     @State var personFilters: PersonFilters = .init()
     @State var instanceFilters: InstanceFilters = .init()
+    @State var postFilters: PostFilters = .init()
 
     @State var selectedTab: Tab = .communities
     @State var resultsScrollToTopTrigger: Bool = false
@@ -47,17 +50,35 @@ struct SearchView: View {
     @State var communityLoader: CommunityFeedLoader = .init(api: AppState.main.firstApi)
     @State var personLoader: PersonFeedLoader = .init(api: AppState.main.firstApi)
     @State var instances: [InstanceSummary] = []
+    @State var postLoader: SearchPostFeedLoader = .init(
+        api: AppState.main.firstApi,
+        filteredKeywords: [],
+        prefetchingConfiguration: .forPostSize(Settings.main.postSize),
+        urlCache: Constants.main.urlCache
+    )
     
     var body: some View {
         content
-            .background(palette.background)
+            .background(palette.groupedBackground)
             .navigationTitle("Search")
             .navigationBarTitleDisplayMode(.large)
             .navigationSearchBar {
-                SearchBar("Communities, Users & Instances", text: $query, isEditing: $isSearching)
-                    .showsCancelButton(page != .home)
-                    .onCancel(perform: returnToHome)
-                    .focused($searchBarFocused)
+                SearchBar(
+                    "Search...",
+                    text: $query,
+                    isEditing: $isSearching,
+                    onCommit: {
+                        if selectedTab == .posts {
+                            Task { @MainActor in
+                                await refresh(clearBeforeRefresh: true)
+                            }
+                        }
+                    }
+                )
+                .returnKeyType(.search)
+                .showsCancelButton(page != .home)
+                .onCancel(perform: returnToHome)
+                .focused($searchBarFocused)
             }
             .navigationSearchBarHiddenWhenScrolling(false)
             .toolbar { PasteLinkButtonView() }
@@ -75,10 +96,19 @@ struct SearchView: View {
                     page = .recents
                 }
             }
-            .task(id: query, priority: .userInitiated) { @MainActor in
-                guard !hasAppeared || searchBarFocused else { return }
-                hasAppeared = true
-                await refresh(clearBeforeRefresh: false)
+            // Don't use `.task` here, because it triggers when navigating back
+            .onChange(of: query, initial: true) { oldValue, newValue in
+                Task { @MainActor in
+                    if selectedTab == .posts {
+                        if oldValue != newValue {
+                            await postLoader.clear()
+                        }
+                        return
+                    }
+                    guard !hasAppeared || searchBarFocused else { return }
+                    hasAppeared = true
+                    await refresh(clearBeforeRefresh: false)
+                }
             }
             .onChange(of: appState.firstApi.actorId) {
                 Task {
@@ -88,14 +118,23 @@ struct SearchView: View {
                 }
             }
             .onChange(of: selectedTab) {
-                Task {
-                    await refresh(clearBeforeRefresh: false, onlyRefreshIfEmpty: true)
+                if selectedTab == .posts {
+                    if page != .results {
+                        searchBarFocused = true
+                    }
+                } else {
+                    Task {
+                        await refresh(clearBeforeRefresh: false, onlyRefreshIfEmpty: true)
+                    }
                 }
             }
             .onChange(of: filterRefreshHashValue) {
                 Task {
-                    await refresh(clearBeforeRefresh: false)
+                    await refresh(clearBeforeRefresh: selectedTab == .posts)
                 }
+            }
+            .onChange(of: postFilters.location.instanceStub) {
+                resolvePostFilterCreator()
             }
     }
     
@@ -104,16 +143,14 @@ struct SearchView: View {
         FancyScrollView(scrollToTopTrigger: $resultsScrollToTopTrigger) { searchBarFocused = true } content: {
             VStack(alignment: .leading, spacing: 0) {
                 tabView
-                Divider()
                 if filtersActive, page != .home {
                     filtersView
-                    Divider()
                 }
             }
             .padding(.top, -8)
-            LazyVStack(spacing: 0) {
-                switch selectedTab {
-                case .communities:
+            switch selectedTab {
+            case .communities:
+                LazyVStack(spacing: 0) {
                     SearchResultsView(results: communityLoader.items) { community in
                         CommunityListRow(community, readout: .subscribers)
                             .onAppear {
@@ -125,7 +162,9 @@ struct SearchView: View {
                             }
                     }
                     EndOfFeedView(loadingState: communityLoader.loadingState, viewType: .hobbit)
-                case .users:
+                }
+            case .users:
+                LazyVStack(spacing: 0) {
                     SearchResultsView(results: personLoader.items) { person in
                         PersonListRow(person, complications: [.instance, .date], readout: .postsAndComments)
                             .onAppear {
@@ -137,11 +176,20 @@ struct SearchView: View {
                             }
                     }
                     EndOfFeedView(loadingState: personLoader.loadingState, viewType: .hobbit)
-                case .instances:
+                }
+            case .instances:
+                LazyVStack(spacing: 0) {
                     SearchResultsView(results: instances) { instance in
                         InstanceListRow(instance, readout: .users)
                     }
                     EndOfFeedView(loadingState: .done, viewType: .hobbit)
+                }
+            case .posts:
+                if postLoader.loadingState == .idle, postLoader.items.isEmpty {
+                    searchPlaceholder
+                        .padding(.top, 30)
+                } else {
+                    PostGridView(postFeedLoader: postLoader)
                 }
             }
         }
@@ -157,7 +205,7 @@ struct SearchView: View {
             )
             .overlay(alignment: .trailing) {
                 LinearGradient(
-                    colors: [Color.clear, palette.background],
+                    colors: [Color.clear, palette.groupedBackground],
                     startPoint: .leading,
                     endPoint: .trailing
                 )
@@ -177,5 +225,23 @@ struct SearchView: View {
             }
         }
         .animation(.easeOut(duration: 0.1), value: page)
+    }
+    
+    @ViewBuilder
+    var searchPlaceholder: some View {
+        VStack(spacing: 20) {
+            Image(systemName: Icons.search)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 120)
+                .fontWeight(.thin)
+                .foregroundStyle(palette.tertiary)
+            Text("Search for posts across Lemmy")
+                .font(.title2)
+                .fontWeight(.semibold)
+                .foregroundStyle(palette.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 20)
+        }
     }
 }

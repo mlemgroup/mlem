@@ -46,7 +46,8 @@ struct CommunityListRow<Content2: View>: View {
         }
         .buttonStyle(.empty)
         .padding(.vertical, 6)
-        .background(palette.background)
+        .background(palette.secondaryGroupedBackground)
+        .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu { community.menuActions(navigation: navigation) }
         .quickSwipes(community.swipeActions(behavior: .standard))
     }
