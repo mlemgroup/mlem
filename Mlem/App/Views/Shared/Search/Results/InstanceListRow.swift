@@ -54,7 +54,8 @@ struct InstanceListRow<Content2: View>: View {
         }
         .buttonStyle(.empty)
         .padding(.vertical, 6)
-        .background(palette.background)
+        .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+        .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu {
             instanceStub?.menuActions(allowExternalBlocking: true) ?? []
         }

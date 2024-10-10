@@ -124,15 +124,11 @@ struct InstanceView: View {
     
     @ViewBuilder
     func administrationTab(instance: any Instance) -> some View {
-        VStack(spacing: 0) {
+        VStack(spacing: Constants.main.halfSpacing) {
             ForEach(instance.administrators_ ?? []) { person in
                 PersonListRow(person)
-                Divider()
-                    .padding(.leading, 71)
             }
         }
-        .background(palette.secondaryGroupedBackground)
-        .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
     }
     

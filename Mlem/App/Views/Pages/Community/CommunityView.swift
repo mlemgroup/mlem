@@ -96,8 +96,7 @@ struct CommunityView: View {
                 case .about:
                     aboutTab(community: community)
                 case .moderation:
-                    FormSection { moderationTab(community: community) }
-                        .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+                    moderationTab(community: community)
                 case .details:
                     CommunityDetailsView(community: community)
                 default:
@@ -149,15 +148,12 @@ struct CommunityView: View {
     
     @ViewBuilder
     func moderationTab(community: any Community) -> some View {
-        VStack(spacing: 0) {
+        VStack(spacing: Constants.main.halfSpacing) {
             ForEach(community.moderators_ ?? []) { person in
                 PersonListRow(person)
-                Divider()
-                    .padding(.leading, 71)
             }
         }
-        .background(palette.secondaryGroupedBackground)
-        .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
+        .padding([.horizontal, .bottom], Constants.main.standardSpacing)
     }
     
     @ViewBuilder

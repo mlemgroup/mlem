@@ -33,7 +33,7 @@ struct PostGridView: View {
     
     let postFeedLoader: CorePostFeedLoader
 
-    init(postFeedLoader: CorePostFeedLoader, actions: [any Action]? = nil) {
+    init(postFeedLoader: CorePostFeedLoader) {
         self.postFeedLoader = postFeedLoader
     }
     
