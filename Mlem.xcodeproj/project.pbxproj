@@ -2787,8 +2787,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
-				branch = "sjmarf/search-posts-tracker";
-				kind = branch;
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.42.0;
 			};
 		};
 		CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */ = {
