@@ -16,7 +16,7 @@ extension ReportableProviding {
         .init(
             id: "report\(uid)",
             appearance: .report(),
-            callback: true ? { self.showReportSheet(communityContext: communityContext) } : nil
+            callback: api.canInteract ? { self.showReportSheet(communityContext: communityContext) } : nil
         )
     }
 }
