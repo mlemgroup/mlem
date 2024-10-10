@@ -151,7 +151,7 @@ extension Post1Providing {
             selectTextAction()
             shareAction()
 
-            if self.isOwnPost {
+            if isOwnPost {
                 editAction()
                 deleteAction(feedback: feedback)
             } else {
@@ -176,6 +176,9 @@ extension Post1Providing {
             pinToInstanceAction(feedback: feedback)
         }
         lockAction(feedback: feedback)
+        if let self2, !isOwnPost {
+            self2.removeAction()
+        }
     }
     
     // swiftlint:disable:next cyclomatic_complexity

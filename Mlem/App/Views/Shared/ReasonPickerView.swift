@@ -1,38 +1,31 @@
 //
-//  ReportComposerView.swift
+//  ReasonPickerView.swift
 //  Mlem
 //
-//  Created by Sjmarf on 11/08/2024.
+//  Created by Sjmarf on 09/10/2024.
 //
 
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
 
-struct ReportComposerView: View {
+struct ReasonPickerView: View {
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
-    let target: any ReportableProviding
+    var onSubmit: (String) async -> Void
+    @State var community: (any Community)?
+    
+    init(community: (any Community)?, onSubmit: @escaping (String) async -> Void) {
+        self._community = .init(wrappedValue: community)
+        self.onSubmit = onSubmit
+    }
     
     @State var reason: String = ""
     @FocusState var reasonFocused: Bool
-    @State var community: (any Community)?
     @State var presentationSelection: PresentationDetent = .large
     
-    init(target: any ReportableProviding, community: AnyCommunity?) {
-        self.target = target
-        
-        if let community {
-            self._community = .init(wrappedValue: community.wrappedValue as? any Community)
-        } else if let community = (target as? any Interactable2Providing)?.community {
-            self._community = .init(wrappedValue: community)
-        } else {
-            self._community = .init(wrappedValue: nil)
-        }
-    }
-
     var body: some View {
         CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: reason.isEmpty) {
             NavigationStack {
@@ -56,7 +49,7 @@ struct ReportComposerView: View {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button("Send", systemImage: Icons.send) {
                             Task {
-                                await send()
+                                await onSubmit(reason)
                             }
                         }
                     }
@@ -129,16 +122,6 @@ struct ReportComposerView: View {
                         .textCase(nil)
                 }
             }
-        }
-    }
-    
-    func send() async {
-        do {
-            try await target.report(reason: reason)
-            HapticManager.main.play(haptic: .success, priority: .low)
-            dismiss()
-        } catch {
-            handleError(error)
         }
     }
 }
