@@ -14,48 +14,23 @@ struct ReasonPickerView: View {
     @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
-    var onSubmit: (String) async -> Void
+    @Binding var reason: String
     @State var community: (any Community)?
     
-    init(community: (any Community)?, onSubmit: @escaping (String) async -> Void) {
+    init(reason: Binding<String>, community: (any Community)?) {
+        self._reason = reason
         self._community = .init(wrappedValue: community)
-        self.onSubmit = onSubmit
     }
     
-    @State var reason: String = ""
-    @FocusState var reasonFocused: Bool
-    @State var presentationSelection: PresentationDetent = .large
-    
     var body: some View {
-        CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: reason.isEmpty) {
-            NavigationStack {
-                Form {
-                    TextField("Reason (Optional)", text: $reason, axis: .vertical)
-                        .focused($reasonFocused)
-                    suggestions
-                    if let community {
-                        ruleList(community)
-                    }
-                    if let instance = appState.firstSession.instance {
-                        ruleList(instance)
-                    }
-                }
-                .scrollDismissesKeyboard(.interactively)
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button("Cancel") { dismiss() }
-                    }
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button("Send", systemImage: Icons.send) {
-                            Task {
-                                await onSubmit(reason)
-                            }
-                        }
-                    }
-                }
+        Group {
+            suggestions
+            if let community {
+                ruleList(community)
             }
-            .onAppear { reasonFocused = true }
+            if let instance = appState.firstSession.instance {
+                ruleList(instance)
+            }
         }
     }
     

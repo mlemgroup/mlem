@@ -74,7 +74,6 @@ struct CommentView: View {
                                 .imageScale(.small)
                         } else {
                             ellipsisMenus
-//                            EllipsisMenu(size: 24) { comment.menuActions(commentTreeTracker: commentTreeTracker) }
                                 .frame(height: 10)
                         }
                     }

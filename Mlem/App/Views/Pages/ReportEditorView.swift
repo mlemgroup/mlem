@@ -16,6 +16,9 @@ struct ReportEditorView: View {
     let target: any ReportableProviding
     
     @State var community: (any Community)?
+    @State var reason: String = ""
+    @FocusState var reasonFocused: Bool
+    @State var presentationSelection: PresentationDetent = .large
     
     init(target: any ReportableProviding, community: AnyCommunity?) {
         self.target = target
@@ -30,10 +33,33 @@ struct ReportEditorView: View {
     }
 
     var body: some View {
-        ReasonPickerView(community: community, onSubmit: send)
+        CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: reason.isEmpty) {
+            NavigationStack {
+                Form {
+                    TextField("Reason (Optional)", text: $reason, axis: .vertical)
+                        .focused($reasonFocused)
+                    ReasonPickerView(reason: $reason, community: community)
+                }
+                .scrollDismissesKeyboard(.interactively)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button("Cancel") { dismiss() }
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Send", systemImage: Icons.send) {
+                            Task {
+                                await send()
+                            }
+                        }
+                    }
+                }
+            }
+            .onAppear { reasonFocused = true }
+        }
     }
     
-    func send(_ reason: String) async {
+    func send() async {
         do {
             try await target.report(reason: reason)
             HapticManager.main.play(haptic: .success, priority: .low)
