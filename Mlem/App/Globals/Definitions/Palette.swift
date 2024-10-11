@@ -69,7 +69,7 @@ enum PaletteOption: String, CaseIterable, Codable {
     var label: LocalizedStringResource {
         switch self {
         case .standard: "Default"
-        case .oled: "Oled"
+        case .oled: "OLED"
         case .monochrome: "Monochrome"
         case .solarized: "Solarized"
         case .dracula: "Dracula"
