@@ -36,7 +36,7 @@ struct ReportEditorView: View {
         CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: reason.isEmpty) {
             NavigationStack {
                 Form {
-                    TextField("Reason (Optional)", text: $reason, axis: .vertical)
+                    TextField("Reason", text: $reason, axis: .vertical)
                         .focused($reasonFocused)
                     ReasonPickerView(reason: $reason, community: community)
                 }
@@ -52,6 +52,7 @@ struct ReportEditorView: View {
                                 await send()
                             }
                         }
+                        .disabled(reason.isEmpty)
                     }
                 }
             }
