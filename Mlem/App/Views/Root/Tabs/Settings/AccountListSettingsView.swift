@@ -57,5 +57,6 @@ struct AccountListSettingsView: View {
             .foregroundStyle(palette.primary) // override default .secondary style
         }
         .textCase(nil) // override default all-caps
+        .listRowInsets(.init(top: 40, leading: 0, bottom: 0, trailing: 0))
     }
 }

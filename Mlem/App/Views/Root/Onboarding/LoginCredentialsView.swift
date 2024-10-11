@@ -154,6 +154,7 @@ struct LoginCredentialsView: View {
             RoundedRectangle(cornerRadius: 16)
                 .fill(palette.secondaryGroupedBackground)
         )
+        .paletteBorder(cornerRadius: 16)
         .onAppear { focused = showUsernameField ? .username : .password }
         .onChange(of: username) { failureReason = nil }
         .onChange(of: password) { failureReason = nil }
