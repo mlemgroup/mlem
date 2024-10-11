@@ -10,11 +10,33 @@ import SwiftUI
 
 func handleError(
     _ error: Error,
-    errorDetails: Binding<ErrorDetails?>? = nil,
     file: StaticString = #fileID,
     function: StaticString = #function,
     line: Int = #line
 ) {
+    if !_handleError(error, file: file, function: function, line: line) {
+        ToastModel.main.add(.error(.init(error: error)))
+    }
+}
+
+func handleErrorWithDetails(
+    _ error: Error,
+    file: StaticString = #fileID,
+    function: StaticString = #function,
+    line: Int = #line
+) -> ErrorDetails? {
+    if !_handleError(error, file: file, function: function, line: line) {
+        return .init(error: error)
+    }
+    return nil
+}
+
+private func _handleError(
+    _ error: Error,
+    file: StaticString = #fileID,
+    function: StaticString = #function,
+    line: Int = #line
+) -> Bool {
     #if DEBUG
         print("☠️ ERROR ☠️")
         print("📝 -> \(error.localizedDescription)")
@@ -28,14 +50,12 @@ func handleError(
     // TODO: Modify MlemMiddleware to attach the ApiClient throwing the error to ApiClientError.invalidSession, so that we can access the relevant UserStub in a multi-account context
     case ApiClientError.invalidSession:
         showReauthSheet()
+        return true
     case ApiClientError.cancelled, is CancellationError:
         print("Cancellation error")
+        return true
     default:
-        if let errorDetails {
-            errorDetails.wrappedValue = .init(error: error)
-        } else {
-            ToastModel.main.add(.error(.init(error: error)))
-        }
+        return false
     }
 }
 
