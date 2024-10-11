@@ -69,6 +69,7 @@ struct ErrorView: View {
                             }
                         }
                     }
+                    .tint(palette.secondary)
                     .buttonStyle(.bordered)
                     .animation(.default, value: refreshInProgress)
                 }
@@ -79,7 +80,7 @@ struct ErrorView: View {
                     showingFullError.toggle()
                 }
                 .buttonStyle(.plain)
-                .foregroundStyle(.tertiary)
+                .foregroundStyle(palette.tertiary)
             }
         }
         .padding()
