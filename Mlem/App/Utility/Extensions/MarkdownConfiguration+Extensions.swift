@@ -36,8 +36,8 @@ extension MarkdownConfiguration {
     static let caption: Self = .init(
         inlineImageLoader: { _ in },
         imageBlockView: { imageView($0, shouldBlur: false) },
-        primaryColor: Palette.main.secondary,
-        secondaryColor: Palette.main.tertiary,
+        primaryColor: Palette.main.primary,
+        secondaryColor: Palette.main.secondary,
         font: .caption1
     )
 }

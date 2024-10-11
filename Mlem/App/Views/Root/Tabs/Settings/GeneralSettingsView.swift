@@ -22,6 +22,7 @@ struct GeneralSettingsView: View {
     @Setting(\.jumpButton) var jumpButton
     @Setting(\.markReadOnScroll) var markReadOnScroll
     @Setting(\.defaultFeed) var defaultFeed
+    @Setting(\.sidebarVisibleByDefault) var sidebarVisibleByDefault
     @Setting(\.hapticLevel) var hapticLevel
     
     var body: some View {
@@ -50,6 +51,9 @@ struct GeneralSettingsView: View {
                     ForEach(FeedSelection.allCases, id: \.self) { item in
                         Text(item.rawValue.capitalized)
                     }
+                }
+                if UIDevice.isPad {
+                    Toggle("Show Sidebar on App Launch", isOn: $sidebarVisibleByDefault)
                 }
                 Toggle("Mark Read on Scroll", isOn: $markReadOnScroll)
                 Toggle("Upvote on Save", isOn: $upvoteOnSave)

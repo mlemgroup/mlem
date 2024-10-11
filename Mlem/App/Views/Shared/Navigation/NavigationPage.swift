@@ -152,7 +152,7 @@ enum NavigationPage: Hashable {
         return instancePicker(callback: .init(wrappedValue: { value, navigation in
             callback(value)
             navigation.dismissSheet()
-        }))
+        }), minimumVersion: minimumVersion)
     }
     
     static func createPost(

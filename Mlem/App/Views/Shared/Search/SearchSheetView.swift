@@ -45,7 +45,7 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
                 content(results, navigation)
             }
         }
-        .background(palette.background)
+        .background(palette.groupedBackground)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {

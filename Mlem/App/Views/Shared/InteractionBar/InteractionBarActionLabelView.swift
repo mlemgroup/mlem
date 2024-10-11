@@ -37,5 +37,6 @@ struct InteractionBarActionLabelView: View {
                         .tint(appearance.isOn ? palette.selectedInteractionBarItem : palette.primary)
                 }
             }
+            .transaction { $0.animation = nil }
     }
 }

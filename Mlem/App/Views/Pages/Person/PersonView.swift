@@ -184,8 +184,7 @@ struct PersonView: View {
         Section {
             switch selectedTab {
             case .communities:
-                FormSection { communitiesTab(person: person) }
-                    .padding(.horizontal, 16)
+                communitiesTab(person: person)
             default:
                 if let feedLoader {
                     if isProfileTab, selectedTab == .overview || selectedTab == .posts {
@@ -224,14 +223,11 @@ struct PersonView: View {
     
     @ViewBuilder
     func communitiesTab(person: any Person) -> some View {
-        VStack(spacing: 0) {
+        VStack(spacing: Constants.main.halfSpacing) {
             ForEach(person.moderatedCommunities_ ?? []) { community in
                 CommunityListRow(community)
-                Divider()
-                    .padding(.leading, 71)
             }
         }
-        .background(palette.secondaryGroupedBackground)
-        .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
+        .padding([.horizontal, .bottom], Constants.main.standardSpacing)
     }
 }
