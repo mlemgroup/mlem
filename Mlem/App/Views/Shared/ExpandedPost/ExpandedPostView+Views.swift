@@ -15,12 +15,8 @@ extension ExpandedPostView {
             Image(systemName: Icons.noContent)
                 .font(.title)
                 .foregroundStyle(.tertiary)
-            VStack {
-                Text("No comments to be found")
-                    .fontWeight(.semibold)
-                Text("Why not post the first one?")
-                    .font(.footnote)
-            }
+            Text("No comments found")
+                .fontWeight(.semibold)
         }
         .multilineTextAlignment(.center)
         .foregroundStyle(palette.secondary)
