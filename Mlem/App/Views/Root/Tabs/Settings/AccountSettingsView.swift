@@ -23,7 +23,6 @@ struct AccountSettingsView: View {
                     }
                 }
                 .listRowBackground(palette.groupedBackground)
-                .padding(.vertical, -12)
                 .padding(.horizontal, -16)
             }
             

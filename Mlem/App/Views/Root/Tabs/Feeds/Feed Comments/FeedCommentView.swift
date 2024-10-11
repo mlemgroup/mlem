@@ -18,9 +18,9 @@ struct FeedCommentView: View {
     var body: some View {
         content
             .contentShape(.interaction, .rect)
-            // .quickSwipes(comment.swipeActions(behavior: postSize.swipeBehavior))
+            .quickSwipes(comment.swipeActions(behavior: postSize.swipeBehavior))
             .contextMenu { comment.menuActions() }
-            .shadow(color: postSize.tiled ? palette.primary.opacity(0.1) : .clear, radius: 3) // after quickSwipes to prevent clipping
+            .paletteBorder(cornerRadius: postSize.swipeBehavior.cornerRadius)
     }
     
     @ViewBuilder

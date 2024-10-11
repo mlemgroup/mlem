@@ -52,5 +52,6 @@ struct MessageView: View {
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu { message.menuActions() }
+        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
 }
