@@ -107,6 +107,7 @@ struct CommentView: View {
         .contextMenu { comment.menuActions(commentTreeTracker: commentTreeTracker) }
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .environment(\.commentContext, comment)
+        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
 }
 

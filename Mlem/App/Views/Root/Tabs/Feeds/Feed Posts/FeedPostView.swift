@@ -24,12 +24,7 @@ struct FeedPostView: View {
             .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
             .quickSwipes(post.swipeActions(behavior: postSize.swipeBehavior))
             .contextMenu { post.allMenuActions() }
-            .overlay {
-                RoundedRectangle(cornerRadius: postSize.swipeBehavior.cornerRadius)
-                    .stroke(palette.neutralAccent.opacity(0.35), lineWidth: 0.5)
-            }
-        // .shadow(color: .white.opacity(0.5), radius: 3)
-        // .shadow(color: postSize.tiled ? palette.primary.opacity(0.1) : .clear, radius: 3) // after quickSwipes to prevent clipping
+            .paletteBorder(cornerRadius: postSize.swipeBehavior.cornerRadius)
     }
     
     @ViewBuilder

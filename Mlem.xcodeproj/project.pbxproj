@@ -338,6 +338,7 @@
 		CDB41E8A2C83C24400BD2DE9 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB41E892C83C24400BD2DE9 /* Section.swift */; };
 		CDB41E8C2C84CED500BD2DE9 /* FixedImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB41E8B2C84CED500BD2DE9 /* FixedImageLoader.swift */; };
 		CDB41E8E2C84CFA200BD2DE9 /* FixedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB41E8D2C84CFA200BD2DE9 /* FixedImageView.swift */; };
+		CDB738292CB8A6A5005B11BB /* View+PaletteBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB738282CB8A69D005B11BB /* View+PaletteBorder.swift */; };
 		CDBFCB652C03920C008CD468 /* PostLinkHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB642C03920C008CD468 /* PostLinkHostView.swift */; };
 		CDBFCB6A2C04EFFE008CD468 /* PostSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */; };
 		CDBFCB6C2C054AA7008CD468 /* TilePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB6B2C054AA7008CD468 /* TilePostView.swift */; };
@@ -721,6 +722,7 @@
 		CDB41E892C83C24400BD2DE9 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		CDB41E8B2C84CED500BD2DE9 /* FixedImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixedImageLoader.swift; sourceTree = "<group>"; };
 		CDB41E8D2C84CFA200BD2DE9 /* FixedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixedImageView.swift; sourceTree = "<group>"; };
+		CDB738282CB8A69D005B11BB /* View+PaletteBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+PaletteBorder.swift"; sourceTree = "<group>"; };
 		CDBFCB642C03920C008CD468 /* PostLinkHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLinkHostView.swift; sourceTree = "<group>"; };
 		CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSettingsView.swift; sourceTree = "<group>"; };
 		CDBFCB6B2C054AA7008CD468 /* TilePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TilePostView.swift; sourceTree = "<group>"; };
@@ -1573,6 +1575,7 @@
 		CD4ED8482BF1112A00EFA0A2 /* View Modifiers */ = {
 			isa = PBXGroup;
 			children = (
+				CDB738282CB8A69D005B11BB /* View+PaletteBorder.swift */,
 				CD17B2492C191073001E174B /* Quick Swipes */,
 				CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */,
 				CDCA44B52C176C5000C092B3 /* View+EdgeBorders.swift */,
@@ -2050,6 +2053,7 @@
 				CDE4AC3F2CA2083200981010 /* VideoView.swift in Sources */,
 				03D3A1F12BB9D48E009DE55E /* BasicAction.swift in Sources */,
 				03D2A6392C00FAE000ED4FF2 /* UserAccount.swift in Sources */,
+				CDB738292CB8A6A5005B11BB /* View+PaletteBorder.swift in Sources */,
 				03C93CF02BEFFB1A00327BFE /* LoginCredentialsView.swift in Sources */,
 				CD332D7C2CA71E6F00A53988 /* GifView.swift in Sources */,
 				CD13CC652C5D2B9D001AF428 /* CircleCroppedImageView.swift in Sources */,

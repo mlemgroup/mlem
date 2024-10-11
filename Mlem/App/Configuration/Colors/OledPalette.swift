@@ -10,6 +10,7 @@ import SwiftUI
 extension ColorPalette {
     static let oled: ColorPalette = .init(
         supportedModes: .dark,
+        bordered: true,
         primary: .primary,
         secondary: .secondary,
         tertiary: Color(UIColor.tertiaryLabel),
