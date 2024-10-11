@@ -27,7 +27,7 @@ private struct PaletteBorder: ViewModifier {
 }
 
 extension View {
-    /// Blurs an image relative to its size
+    /// Applies a rounded rect border to the view if the current palette `.bordered` is `true`
     func paletteBorder(cornerRadius: CGFloat) -> some View {
         modifier(PaletteBorder(cornerRadius: cornerRadius))
     }

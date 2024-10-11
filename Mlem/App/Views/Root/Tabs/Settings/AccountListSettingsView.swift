@@ -47,7 +47,6 @@ struct AccountListSettingsView: View {
                     }
                 }
                 .frame(height: 64)
-                // .padding(.top, -12)
                 
                 Text("Accounts")
                     .font(.title)
