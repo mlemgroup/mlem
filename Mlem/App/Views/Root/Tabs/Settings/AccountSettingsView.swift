@@ -14,7 +14,8 @@ struct AccountSettingsView: View {
     
     var body: some View {
         Form {
-            Section {
+            // empty section disables background
+            Section {} header: {
                 Group {
                     if let userAccount = appState.firstSession as? UserSession {
                         ProfileHeaderView(userAccount.person)
@@ -22,9 +23,8 @@ struct AccountSettingsView: View {
                         ProfileHeaderView(appState.firstSession.instance)
                     }
                 }
-                .listRowBackground(palette.groupedBackground)
-                .padding(.horizontal, -16)
-            }
+                .foregroundStyle(palette.primary) // override default .secondary style
+            }.textCase(nil) // override default all-caps
             
             Section {
                 Button("Sign Out") {
