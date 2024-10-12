@@ -66,7 +66,7 @@ struct ExpandedPostView<Content: View>: View {
                     .externalApiWarning(entity: post, isLoading: isLoading)
                     .task(id: tracker == nil) {
                         if let tracker, post.api == appState.firstApi, tracker.loadingState == .idle {
-                            // post.markRead()
+                            post.markRead()
                             await tracker.load()
                         }
                     }
@@ -94,7 +94,7 @@ struct ExpandedPostView<Content: View>: View {
         GeometryReader { geo in
             ScrollViewReader { proxy in
                 FancyScrollView {
-                    LazyVStack(
+                    VStack(
                         alignment: .leading,
                         spacing: 0
                     ) {
@@ -102,13 +102,35 @@ struct ExpandedPostView<Content: View>: View {
                             .padding(.horizontal, Constants.main.standardSpacing)
                         content
                             .padding(.top, compactComments ? Constants.main.halfSpacing : Constants.main.standardSpacing)
-                        if let tracker {
-                            commentTree(tracker: tracker)
+                        
+                        if let errorDetails = tracker?.errorDetails {
+                            ErrorView(errorDetails)
+                                .frame(maxWidth: .infinity)
+                        } else if (post.commentCount_ ?? -1) == 0 {
+                            noCommentsView
+                                .padding(.top, Constants.main.doubleSpacing)
+                        } else if let tracker {
+                            switch tracker.loadingState {
+                            case .done:
+                                LazyVStack(spacing: 0) {
+                                    commentTree(tracker: tracker)
+                                }
+                                .geometryGroup()
+                            default:
+                                ProgressView()
+                                    .tint(palette.secondary)
+                                    .padding(.top, 50)
+                                    // This prevents the tab bar going transparent whilst the comments are loading
+                                    .padding(.bottom, 500)
+                                    .frame(maxWidth: .infinity)
+                            }
                         }
                     }
+                    .animation(.easeInOut(duration: 0.1), value: (tracker?.loadingState ?? .loading) == .loading)
+                    .animation(.easeInOut(duration: 0.1), value: tracker?.errorDetails == nil)
                     .animation(.easeInOut(duration: 0.4), value: scrollTargetedComment?.actorId)
                     .padding(.bottom, 80)
-                    .id(tracker?.proposedDepthOffset)
+                    .id(tracker?.proposedDepthOffset ?? 0)
                     .transition(.opacity)
                     .animation(.easeInOut(duration: 0.4), value: tracker?.proposedDepthOffset)
                 }
@@ -195,70 +217,5 @@ struct ExpandedPostView<Content: View>: View {
             key: AnchorsKey.self,
             value: .center
         ) { [post.actorId: $0] }
-    }
-    
-    @ViewBuilder
-    func commentTree(tracker: CommentTreeTracker) -> some View {
-        ForEach(tracker.comments.itemTree(), id: \.hashValue) { item in
-            Group {
-                switch item {
-                case let .comment(comment):
-                    CommentView(
-                        comment: comment,
-                        highlight: [scrollTargetedComment?.actorId, highlightedComment?.actorId].contains(comment.actorId),
-                        depthOffset: tracker.proposedDepthOffset
-                    )
-                    .transition(.move(edge: .top).combined(with: .opacity))
-                    .zIndex(1000 - Double(comment.depth))
-                    .anchorPreference(
-                        key: AnchorsKey.self,
-                        value: .center
-                    ) { [comment.actorId: $0] }
-                    .padding(.leading, CGFloat(comment.depth - tracker.proposedDepthOffset) * 10)
-                    .id(comment.actorId)
-                case let .unloadedComments(comment, _):
-                    Button {
-                        navigation.push(.comment(comment, showViewPostButton: false))
-                    } label: {
-                        HStack {
-                            CommentBarView(depth: comment.depth + 1)
-                            HStack {
-                                Text("More Replies")
-                                Image(systemName: Icons.forward)
-                            }
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 8)
-                            .foregroundStyle(palette.accent)
-                        }
-                        .background(
-                            palette.secondaryGroupedBackground,
-                            in: .rect(cornerRadius: Constants.main.standardSpacing)
-                        )
-                    }
-                    .padding(.leading, CGFloat(comment.depth + 1 - tracker.proposedDepthOffset) * 10)
-                    .buttonStyle(.plain)
-                }
-            }
-            .padding(.horizontal, Constants.main.standardSpacing)
-            .padding(.top, compactComments ? Constants.main.halfSpacing : Constants.main.standardSpacing)
-        }
-    }
-    
-    @ViewBuilder
-    func sortPicker(tracker: CommentTreeTracker) -> some View {
-        Picker(
-            "Sort",
-            selection: Binding(get: { tracker.sort }, set: {
-                tracker.sort = $0
-                tracker.clear()
-                Task { await tracker.load() }
-            })
-        ) {
-            ForEach(ApiCommentSortType.allCases, id: \.self) { item in
-                if (post?.api.fetchedVersion ?? .infinity) >= item.minimumVersion {
-                    Label(String(localized: item.label), systemImage: item.systemImage)
-                }
-            }
-        }
     }
 }
