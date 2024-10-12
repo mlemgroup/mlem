@@ -33,6 +33,7 @@ class CommentTreeTracker: Hashable {
     private(set) var commentsKeyedByActorId: [URL: CommentWrapper] = [:]
     
     var loadingState: LoadingState = .idle
+    var errorDetails: ErrorDetails?
     
     var root: Root
     
@@ -105,13 +106,24 @@ class CommentTreeTracker: Hashable {
                 buildCommentTree(comments: newComments)
             }
             loadingState = .done
+            errorDetails = nil
         } catch {
-            handleError(error)
-            loadingState = .idle
+            handleFailure(error)
         }
     }
     
+    private func handleFailure(_ error: Error) {
+        var details = handleErrorWithDetails(error)
+        details?.refresh = {
+            await self.load()
+            return self.loadingState == .done
+        }
+        errorDetails = details
+        loadingState = .idle
+    }
+    
     func refresh() async {
+        errorDetails = nil
         loadingState = .idle
         await load()
     }

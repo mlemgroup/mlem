@@ -60,6 +60,7 @@
 		032C32162C36F65500595286 /* ReplyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032C32152C36F65500595286 /* ReplyView.swift */; };
 		032C32182C36F70300595286 /* ReplyBarConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032C32172C36F70300595286 /* ReplyBarConfiguration.swift */; };
 		032C321A2C36F75800595286 /* Reply1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032C32192C36F75800595286 /* Reply1Providing+Extensions.swift */; };
+		033EF4102CB9AEF7004D8A3F /* ExpandedPostView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033EF40F2CB9AEF7004D8A3F /* ExpandedPostView+Views.swift */; };
 		033F84AD2C298466002E3EDF /* SectionIndexTitles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84AC2C298466002E3EDF /* SectionIndexTitles.swift */; };
 		033F84B12C29907F002E3EDF /* FeedbackType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84B02C29907F002E3EDF /* FeedbackType.swift */; };
 		033F84BB2C2ACB96002E3EDF /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84BA2C2ACB96002E3EDF /* CommentView.swift */; };
@@ -451,6 +452,7 @@
 		032C32152C36F65500595286 /* ReplyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyView.swift; sourceTree = "<group>"; };
 		032C32172C36F70300595286 /* ReplyBarConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyBarConfiguration.swift; sourceTree = "<group>"; };
 		032C32192C36F75800595286 /* Reply1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reply1Providing+Extensions.swift"; sourceTree = "<group>"; };
+		033EF40F2CB9AEF7004D8A3F /* ExpandedPostView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExpandedPostView+Views.swift"; sourceTree = "<group>"; };
 		033F84AC2C298466002E3EDF /* SectionIndexTitles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionIndexTitles.swift; sourceTree = "<group>"; };
 		033F84B02C29907F002E3EDF /* FeedbackType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackType.swift; sourceTree = "<group>"; };
 		033F84BA2C2ACB96002E3EDF /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
@@ -1100,9 +1102,10 @@
 			isa = PBXGroup;
 			children = (
 				0300309C2C4163C9009A65FF /* CommentTreeTracker.swift */,
-				039F58852C7A810100C61658 /* ExpandedPostView+Logic.swift */,
 				03E0EF442CA74036002CB66C /* CommentPage.swift */,
 				03B0EB6E2C87827A00F79FDF /* ExpandedPostView.swift */,
+				033EF40F2CB9AEF7004D8A3F /* ExpandedPostView+Views.swift */,
+				039F58852C7A810100C61658 /* ExpandedPostView+Logic.swift */,
 				03E0EF422CA73D7A002CB66C /* PostPage.swift */,
 			);
 			path = ExpandedPost;
@@ -2122,6 +2125,7 @@
 				03AFD0E32C3C0C540054B8AD /* InstanceView.swift in Sources */,
 				CDD4A09C2C8A122F0001AD1A /* CodableSettings.swift in Sources */,
 				03ECD7212C8654BA00D48BF6 /* PostEditorView+Toolbar.swift in Sources */,
+				033EF4102CB9AEF7004D8A3F /* ExpandedPostView+Views.swift in Sources */,
 				03FE140C2BF953B000A8377F /* HandleError.swift in Sources */,
 				0320B65A2C8CBB0D00D38548 /* SignUpView+EmailConfirmationView.swift in Sources */,
 				03ECD71F2C864DB700D48BF6 /* ImageUploadManager.swift in Sources */,
