@@ -24,7 +24,7 @@ struct CommentBodyView: View {
                 .italic()
                 .foregroundStyle(palette.secondary)
         } else {
-            Markdown(comment.content, configuration: .default)
+            MarkdownWithLinks(comment.content)
         }
     }
 }
