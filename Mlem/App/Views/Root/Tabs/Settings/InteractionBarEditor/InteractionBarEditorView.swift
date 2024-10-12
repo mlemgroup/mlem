@@ -262,6 +262,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
             .frame(height: Constants.main.barIconSize)
             .padding(12)
             .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.smallItemCornerRadius))
+            .paletteBorder(cornerRadius: Constants.main.smallItemCornerRadius)
     }
 }
 

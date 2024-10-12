@@ -46,5 +46,6 @@ struct ReplyView: View {
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu { reply.menuActions() }
+        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
 }
