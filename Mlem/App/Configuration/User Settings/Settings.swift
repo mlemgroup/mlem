@@ -46,6 +46,7 @@ class Settings: ObservableObject {
     
     @AppStorage("links.openInBrowser") var openLinksInBrowser = false
     @AppStorage("links.readerMode") var openLinksInReaderMode = false
+    @AppStorage("links.showTappable") var showTappableLinks = true
     
     @AppStorage("feed.markReadOnScroll") var markReadOnScroll: Bool = false
     @AppStorage("feed.showRead") var showReadInFeed: Bool = true
@@ -116,6 +117,7 @@ class Settings: ObservableObject {
         showNsfwCommunityWarning = settings.safety_enableNsfwCommunityWarning
         openLinksInBrowser = settings.links_openInBrowser
         openLinksInReaderMode = settings.links_readerMode
+        showTappableLinks = settings.links_showTappableLinks
         markReadOnScroll = settings.feed_markReadOnScroll
         showReadInFeed = settings.feed_showRead
         defaultFeed = settings.feed_default

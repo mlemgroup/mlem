@@ -10,6 +10,7 @@ import SwiftUI
 struct LinkSettingsView: View {
     @Setting(\.openLinksInBrowser) var openLinksInBrowser
     @Setting(\.openLinksInReaderMode) var openLinksInReaderMode
+    @Setting(\.showTappableLinks) var showTappableLinks
     
     var body: some View {
         Form {
@@ -27,6 +28,10 @@ struct LinkSettingsView: View {
                     .disabled(openLinksInBrowser)
             } footer: {
                 Text("Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser.")
+            }
+            
+            Section {
+                Toggle("Show Tappable Links", isOn: $showTappableLinks)
             }
         }
         .navigationTitle("Links")

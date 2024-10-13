@@ -12,6 +12,8 @@ struct MarkdownWithLinks: View {
     @Environment(Palette.self) var palette
     @Environment(\.openURL) var openURL
     
+    @Setting(\.showTappableLinks) var showTappableLinks
+    
     let blocks: [BlockNode]
     let showLinkCaptions: Bool
     
@@ -28,8 +30,10 @@ struct MarkdownWithLinks: View {
     var body: some View {
         VStack(spacing: Constants.main.standardSpacing) {
             Markdown(blocks, configuration: .default)
-            ForEach(Array(blocks.links.enumerated()), id: \.offset) { _, link in
-                linkView(link)
+            if showTappableLinks {
+                ForEach(Array(blocks.links.enumerated()), id: \.offset) { _, link in
+                    linkView(link)
+                }
             }
         }
     }
