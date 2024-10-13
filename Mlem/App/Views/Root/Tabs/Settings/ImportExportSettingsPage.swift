@@ -34,10 +34,18 @@ struct ImportExportSettingsPage: View {
                 allowedContentTypes: [.json]
             ) { result in
                 do {
-                    let fileData = try Data(contentsOf: result.get(), options: .mappedIfSafe)
-                    let importedSettings = try JSONDecoder().decode(CodableSettings.self, from: fileData)
-                    Settings.main.reinit(from: importedSettings)
-                    ToastModel.main.add(.success("Imported Settings"))
+                    let fileUrl = try result.get()
+                    if fileUrl.startAccessingSecurityScopedResource() {
+                        let fileData = try Data(contentsOf: fileUrl, options: .mappedIfSafe)
+                        fileUrl.stopAccessingSecurityScopedResource()
+                        
+                        let importedSettings = try JSONDecoder().decode(CodableSettings.self, from: fileData)
+                        Settings.main.reinit(from: importedSettings)
+                        ToastModel.main.add(.success("Imported Settings"))
+                    } else {
+                        assertionFailure("Failed to access requested file")
+                        ToastModel.main.add(.failure("Failed to Import Settings"))
+                    }
                 } catch {
                     handleError(error)
                 }
