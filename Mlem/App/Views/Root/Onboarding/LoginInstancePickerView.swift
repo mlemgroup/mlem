@@ -105,6 +105,7 @@ struct LoginInstancePickerView: View {
         .frame(maxWidth: .infinity)
         .background(palette.secondaryGroupedBackground)
         .clipShape(RoundedRectangle(cornerRadius: 16))
+        .paletteBorder(cornerRadius: 16)
     }
     
     @ViewBuilder

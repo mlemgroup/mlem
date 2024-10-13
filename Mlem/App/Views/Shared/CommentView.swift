@@ -96,7 +96,7 @@ struct CommentView: View {
                 }
             }
             .padding(.vertical, Constants.main.standardSpacing)
-            .padding(.top, compactComments ? 0 : 3)
+            .padding(.top, compactComments || collapsed ? 0 : 3)
         }
         .padding(depth == 0 ? .horizontal : .trailing, Constants.main.standardSpacing)
         .background(highlight ? palette.accent.opacity(0.2) : .clear)
@@ -108,6 +108,7 @@ struct CommentView: View {
         .contextMenu { comment.allMenuActions(commentTreeTracker: commentTreeTracker) }
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .environment(\.commentContext, comment)
+        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
     
     var ellipsisMenus: some View {

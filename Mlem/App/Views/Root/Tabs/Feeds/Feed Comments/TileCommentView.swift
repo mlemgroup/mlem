@@ -53,6 +53,7 @@ struct TileCommentView: View {
                     RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
                         .fill(palette.tertiaryGroupedBackground)
                 }
+                .paletteBorder(cornerRadius: Constants.main.smallItemCornerRadius)
             
             MarkdownText(comment.content, configuration: .caption)
                 .frame(height: contentHeight, alignment: .top)

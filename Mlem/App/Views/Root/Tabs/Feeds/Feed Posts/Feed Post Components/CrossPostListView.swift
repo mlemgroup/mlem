@@ -73,6 +73,7 @@ struct CrossPostListView: View {
             .padding(.vertical, 8)
             .background(palette.secondaryGroupedBackground)
             .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
+            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         }
     }
 }

@@ -27,7 +27,8 @@ struct AccountListSettingsView: View {
     
     @ViewBuilder
     var headerView: some View {
-        Section {
+        // empty section disables background
+        Section {} header: {
             VStack(alignment: .center) {
                 Group {
                     if accounts.count >= 2 {
@@ -47,14 +48,15 @@ struct AccountListSettingsView: View {
                     }
                 }
                 .frame(height: 64)
-                .padding(.top, -12)
                 
                 Text("Accounts")
                     .font(.title)
                     .fontWeight(.bold)
             }
             .frame(maxWidth: .infinity)
-            .listRowBackground(palette.groupedBackground)
+            .foregroundStyle(palette.primary) // override default .secondary style
         }
+        .textCase(nil) // override default all-caps
+        .listRowInsets(.init(top: 40, leading: 0, bottom: 0, trailing: 0))
     }
 }

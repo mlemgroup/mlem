@@ -11,6 +11,7 @@ import SwiftUI
 protocol PaletteProviding {
     // meta
     var supportedModes: UIUserInterfaceStyle { get }
+    var bordered: Bool { get }
     
     // basics
     var primary: Color { get }
@@ -53,11 +54,12 @@ protocol PaletteProviding {
 }
 
 enum PaletteOption: String, CaseIterable, Codable {
-    case standard, monochrome, solarized, dracula
+    case standard, oled, monochrome, solarized, dracula
     
     var palette: ColorPalette {
         switch self {
         case .standard: ColorPalette.standard
+        case .oled: ColorPalette.oled
         case .monochrome: ColorPalette.monochrome
         case .solarized: ColorPalette.solarized
         case .dracula: ColorPalette.dracula
@@ -67,6 +69,7 @@ enum PaletteOption: String, CaseIterable, Codable {
     var label: LocalizedStringResource {
         switch self {
         case .standard: "Default"
+        case .oled: "OLED"
         case .monochrome: "Monochrome"
         case .solarized: "Solarized"
         case .dracula: "Dracula"
@@ -77,6 +80,7 @@ enum PaletteOption: String, CaseIterable, Codable {
 struct ColorPalette: PaletteProviding {
     // meta
     var supportedModes: UIUserInterfaceStyle
+    var bordered: Bool
     
     // basics
     var primary: Color
@@ -124,6 +128,7 @@ struct ColorPalette: PaletteProviding {
     
     init(
         supportedModes: UIUserInterfaceStyle,
+        bordered: Bool = false,
         primary: Color,
         secondary: Color,
         tertiary: Color,
@@ -158,6 +163,7 @@ struct ColorPalette: PaletteProviding {
         commentIndentColors: [Color]
     ) {
         self.supportedModes = supportedModes
+        self.bordered = bordered
         self.primary = primary
         self.secondary = secondary
         self.tertiary = tertiary
@@ -212,6 +218,7 @@ class Palette: PaletteProviding {
     
     // ColorProviding conformance
     var supportedModes: UIUserInterfaceStyle { palette.supportedModes }
+    var bordered: Bool { palette.bordered }
     
     var primary: Color { palette.primary }
     var secondary: Color { palette.secondary }
@@ -261,4 +268,5 @@ class Palette: PaletteProviding {
     var userAccent: Color { colorfulAccent(2) }
     var communityAccent: Color { colorfulAccent(3) }
     var lockAccent: Color { colorfulAccent(0) }
+    var divider: Color { .init(light: secondary.opacity(0.5), dark: neutralAccent.opacity(0.35)) }
 }
