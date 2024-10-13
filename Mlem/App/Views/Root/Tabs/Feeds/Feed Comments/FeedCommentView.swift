@@ -19,7 +19,7 @@ struct FeedCommentView: View {
         content
             .contentShape(.interaction, .rect)
             .quickSwipes(comment.swipeActions(behavior: postSize.swipeBehavior))
-            .contextMenu { comment.menuActions() }
+            .contextMenu { comment.allMenuActions() }
             .paletteBorder(cornerRadius: postSize.swipeBehavior.cornerRadius)
     }
     

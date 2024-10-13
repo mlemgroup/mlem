@@ -63,6 +63,8 @@ enum Icons {
     static let unlock: String = "lock.slash"
     static let remove: String = "xmark.bin"
     static let removeFill: String = "xmark.bin.fill"
+    static let restore: String = "arrow.up.bin"
+    static let restoreFill: String = "arrow.up.bin.fill"
     
     // post sizes
     static let postSizeSetting: String = "rectangle.expand.vertical"

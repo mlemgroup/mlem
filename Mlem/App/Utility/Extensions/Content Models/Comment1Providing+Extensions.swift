@@ -9,6 +9,8 @@ import Foundation
 import MlemMiddleware
 
 extension Comment1Providing {
+    private var self2: (any Comment2Providing)? { self as? any Comment2Providing }
+
     var isOwnComment: Bool { creatorId == api.myPerson?.id }
     
     func showEditSheet() {
@@ -38,8 +40,30 @@ extension Comment1Providing {
         )
     }
     
+    var canModerate: Bool {
+        guard let id = community_?.id as? Int else { return false }
+        return api.myPerson?.moderates(communityId: id) ?? false || api.isAdmin
+    }
+
     @ActionBuilder
-    func menuActions(
+    func allMenuActions(
+        expanded: Bool = false,
+        feedback: Set<FeedbackType> = [.haptic, .toast],
+        commentTreeTracker: CommentTreeTracker? = nil
+    ) -> [any Action] {
+        basicMenuActions(feedback: feedback, commentTreeTracker: commentTreeTracker)
+        if canModerate {
+            ActionGroup(
+                appearance: .init(label: "Moderation...", color: Palette.main.moderation, icon: Icons.moderation),
+                displayMode: Settings.main.moderatorActionGrouping == .divider || expanded ? .section : .disclosure
+            ) {
+                moderatorMenuActions(feedback: feedback)
+            }
+        }
+    }
+    
+    @ActionBuilder
+    func basicMenuActions(
         feedback: Set<FeedbackType> = [.haptic, .toast],
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> [any Action] {
@@ -51,7 +75,7 @@ extension Comment1Providing {
             selectTextAction()
             shareAction()
             
-            if self.isOwnComment {
+            if isOwnComment {
                 editAction()
                 deleteAction(feedback: feedback)
             } else {
@@ -59,6 +83,17 @@ extension Comment1Providing {
                 blockCreatorAction(feedback: feedback)
             }
         }
+    }
+    
+    @ActionBuilder
+    func moderatorMenuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
+        if let self2, !isOwnComment {
+            self2.removeAction()
+        }
+    }
+    
+    func shouldShowLoadingSymbol(for barConfiguration: CommentBarConfiguration? = nil) -> Bool {
+        false
     }
     
     func action(
@@ -74,6 +109,7 @@ extension Comment1Providing {
         case .share: shareAction()
         case .selectText: selectTextAction()
         case .report: reportAction(communityContext: communityContext)
+        case .remove: removeAction()
         }
     }
     

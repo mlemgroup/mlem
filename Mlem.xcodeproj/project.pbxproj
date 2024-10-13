@@ -133,6 +133,8 @@
 		038028F62CB096960091A8A2 /* SearchView+FilterModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028F52CB096960091A8A2 /* SearchView+FilterModels.swift */; };
 		038028F82CB097A10091A8A2 /* SearchView+InstancePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028F72CB097A10091A8A2 /* SearchView+InstancePicker.swift */; };
 		038028FA2CB097CB0091A8A2 /* SearchView+LocationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028F92CB097CB0091A8A2 /* SearchView+LocationPicker.swift */; };
+		038028FD2CB72A2A0091A8A2 /* ContentRemovalEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028FC2CB72A2A0091A8A2 /* ContentRemovalEditorView.swift */; };
+		038028FF2CB72AC90091A8A2 /* ReasonPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028FE2CB72AC90091A8A2 /* ReasonPickerView.swift */; };
 		0380965F2C10AA80003ED1D8 /* AppState+Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0380965E2C10AA80003ED1D8 /* AppState+Transition.swift */; };
 		038096612C10AAD8003ED1D8 /* TransitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038096602C10AAD8003ED1D8 /* TransitionView.swift */; };
 		0382A7F02C09F0F800C79DDA /* PersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0382A7EF2C09F0F800C79DDA /* PersonView.swift */; };
@@ -153,7 +155,7 @@
 		0397D46C2C67E583002C6CDC /* SortingSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D46B2C67E583002C6CDC /* SortingSettingsView.swift */; };
 		0397D4722C68078F002C6CDC /* PrefetchingConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4712C68078F002C6CDC /* PrefetchingConfiguration+Extensions.swift */; };
 		0397D4742C680FFC002C6CDC /* MediaLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4732C680FFC002C6CDC /* MediaLoader.swift */; };
-		0397D47A2C693444002C6CDC /* ReportComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4792C693444002C6CDC /* ReportComposerView.swift */; };
+		0397D47A2C693444002C6CDC /* ReportEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4792C693444002C6CDC /* ReportEditorView.swift */; };
 		0397D4802C693A88002C6CDC /* [BlockNode]+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D47F2C693A88002C6CDC /* [BlockNode]+Extensions.swift */; };
 		0397D4862C6A24D2002C6CDC /* ReportableProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4852C6A24D2002C6CDC /* ReportableProviding+Extensions.swift */; };
 		0397D48C2C6BE9A2002C6CDC /* CollapsibleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D48B2C6BE9A2002C6CDC /* CollapsibleSection.swift */; };
@@ -525,6 +527,8 @@
 		038028F52CB096960091A8A2 /* SearchView+FilterModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+FilterModels.swift"; sourceTree = "<group>"; };
 		038028F72CB097A10091A8A2 /* SearchView+InstancePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+InstancePicker.swift"; sourceTree = "<group>"; };
 		038028F92CB097CB0091A8A2 /* SearchView+LocationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+LocationPicker.swift"; sourceTree = "<group>"; };
+		038028FC2CB72A2A0091A8A2 /* ContentRemovalEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentRemovalEditorView.swift; sourceTree = "<group>"; };
+		038028FE2CB72AC90091A8A2 /* ReasonPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonPickerView.swift; sourceTree = "<group>"; };
 		0380965E2C10AA80003ED1D8 /* AppState+Transition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppState+Transition.swift"; sourceTree = "<group>"; };
 		038096602C10AAD8003ED1D8 /* TransitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionView.swift; sourceTree = "<group>"; };
 		0382A7EF2C09F0F800C79DDA /* PersonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonView.swift; sourceTree = "<group>"; };
@@ -545,7 +549,7 @@
 		0397D46B2C67E583002C6CDC /* SortingSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingSettingsView.swift; sourceTree = "<group>"; };
 		0397D4712C68078F002C6CDC /* PrefetchingConfiguration+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PrefetchingConfiguration+Extensions.swift"; sourceTree = "<group>"; };
 		0397D4732C680FFC002C6CDC /* MediaLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaLoader.swift; sourceTree = "<group>"; };
-		0397D4792C693444002C6CDC /* ReportComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportComposerView.swift; sourceTree = "<group>"; };
+		0397D4792C693444002C6CDC /* ReportEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportEditorView.swift; sourceTree = "<group>"; };
 		0397D47F2C693A88002C6CDC /* [BlockNode]+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "[BlockNode]+Extensions.swift"; sourceTree = "<group>"; };
 		0397D4852C6A24D2002C6CDC /* ReportableProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReportableProviding+Extensions.swift"; sourceTree = "<group>"; };
 		0397D48B2C6BE9A2002C6CDC /* CollapsibleSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleSection.swift; sourceTree = "<group>"; };
@@ -1036,7 +1040,8 @@
 				03AF91DC2C1B23E500E56644 /* ImageViewer.swift */,
 				0315B1BC2C74C3CD006D4F82 /* CommentEditor */,
 				0397D4902C6CE871002C6CDC /* PostEditor */,
-				0397D4792C693444002C6CDC /* ReportComposerView.swift */,
+				0397D4792C693444002C6CDC /* ReportEditorView.swift */,
+				038028FC2CB72A2A0091A8A2 /* ContentRemovalEditorView.swift */,
 				CDD99C3B2C73F3FF0010367F /* DeleteAccountView.swift */,
 			);
 			name = Pages;
@@ -1443,6 +1448,7 @@
 				03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */,
 				0316CD632C382A6A009EA8EA /* MessageView.swift */,
 				CD77437E2C1BA5CE0085BB43 /* MultiplatformView.swift */,
+				038028FE2CB72AC90091A8A2 /* ReasonPickerView.swift */,
 				035BE0852BDD8D9100F77D73 /* Navigation */,
 				0382A7EE2C09F0F800C79DDA /* Pages */,
 				CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */,
@@ -2035,7 +2041,7 @@
 				039F58992C7B697D00C61658 /* Bundle+Extensions.swift in Sources */,
 				033F84D92C2B61FB002E3EDF /* ToastType.swift in Sources */,
 				03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */,
-				0397D47A2C693444002C6CDC /* ReportComposerView.swift in Sources */,
+				0397D47A2C693444002C6CDC /* ReportEditorView.swift in Sources */,
 				CDA683F82C77E577000C4486 /* NsfwBlurBehavior.swift in Sources */,
 				03E0EF452CA74036002CB66C /* CommentPage.swift in Sources */,
 				032C32022C3438DB00595286 /* ShareAction.swift in Sources */,
@@ -2164,6 +2170,7 @@
 				0397D4722C68078F002C6CDC /* PrefetchingConfiguration+Extensions.swift in Sources */,
 				0389DDC32C38907C0005B808 /* Message1Providing+Extensions.swift in Sources */,
 				03B431B42C4481C3001A1EB5 /* MarkdownTextEditor.swift in Sources */,
+				038028FD2CB72A2A0091A8A2 /* ContentRemovalEditorView.swift in Sources */,
 				03B431C42C45BA45001A1EB5 /* AccountPickerMenu.swift in Sources */,
 				039F58812C7A7E5900C61658 /* JumpButtonView.swift in Sources */,
 				03AF91DF2C1B243D00E56644 /* ZoomableContainer.swift in Sources */,
@@ -2195,6 +2202,7 @@
 				CD9857A42C5E7F9D0084C71F /* NsfwOverlayView.swift in Sources */,
 				CD64A91C2CA38DBA007CA7E6 /* NukeWebpBridgeDecoder.swift in Sources */,
 				030E95E72C80A20A0045BC2C /* View+NavigationTransition.swift in Sources */,
+				038028FF2CB72AC90091A8A2 /* ReasonPickerView.swift in Sources */,
 				03FE14062BF9445F00A8377F /* CloseButtonView.swift in Sources */,
 				03D2A6422C011F4A00ED4FF2 /* AccountListRowBody.swift in Sources */,
 				03134A5A2BEC2253002662CC /* AvatarStackView.swift in Sources */,
@@ -2800,7 +2808,7 @@
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.42.0;
+				minimumVersion = 0.43.0;
 			};
 		};
 		CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */ = {

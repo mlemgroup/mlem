@@ -467,6 +467,9 @@
     "Failed to pin post" : {
 
     },
+    "Failed to remove content" : {
+
+    },
     "Failed to resolve post. Try another account." : {
 
     },
@@ -971,6 +974,9 @@
 
     },
     "Really unpin this post from the community?" : {
+
+    },
+    "Reason" : {
 
     },
     "Reason (Optional)" : {
