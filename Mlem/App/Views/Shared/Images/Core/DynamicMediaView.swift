@@ -46,6 +46,25 @@ struct DynamicMediaView: View {
     }
     
     var body: some View {
+        if #available(iOS 18.0, *) {
+            ios18Body()
+        } else {
+            legacyBody
+        }
+    }
+    
+    @available(iOS 18.0, *)
+    func ios18Body() -> some View {
+        legacyBody
+            .onScrollVisibilityChange(threshold: 1.0) { isVisible in
+                if playing != isVisible {
+                    playing = isVisible
+                }
+            }
+    }
+    
+    @ViewBuilder
+    var legacyBody: some View {
         if actionsEnabled, let url = fullSizeUrl(url: loader.url) {
             content
                 .contextMenu {
