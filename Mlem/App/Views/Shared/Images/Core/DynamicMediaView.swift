@@ -42,7 +42,7 @@ struct DynamicMediaView: View {
         self.cornerRadius = cornerRadius
         self.actionsEnabled = actionsEnabled
         self._loader = .init(wrappedValue: .init(url: url))
-        self._playing = .init(wrappedValue: playImmediately ? true : false)
+        self._playing = .init(wrappedValue: playImmediately)
     }
     
     var body: some View {
@@ -56,10 +56,8 @@ struct DynamicMediaView: View {
     @available(iOS 18.0, *)
     func ios18Body() -> some View {
         legacyBody
-            .onScrollVisibilityChange(threshold: 1.0) { isVisible in
-                if playing != isVisible {
-                    playing = isVisible
-                }
+            .onScrollVisibilityChange(threshold: 0.5) { isVisible in
+                playing = isVisible
             }
     }
     
