@@ -20,6 +20,7 @@ struct DynamicMediaView: View {
     @Environment(NavigationLayer.self) var navigation
     
     @Setting(\.bypassImageProxyShown) var bypassImageProxyShown
+    @Setting(\.autoplayMedia) var autoplayMedia
     
     @State var loader: MediaLoader
     @State var loadingPref: MediaLoadingState?
@@ -42,10 +43,29 @@ struct DynamicMediaView: View {
         self.cornerRadius = cornerRadius
         self.actionsEnabled = actionsEnabled
         self._loader = .init(wrappedValue: .init(url: url))
-        self._playing = .init(wrappedValue: playImmediately ? true : false)
+        self._playing = .init(wrappedValue: playImmediately)
     }
     
     var body: some View {
+        if #available(iOS 18.0, *) {
+            ios18Body()
+        } else {
+            legacyBody
+        }
+    }
+    
+    @available(iOS 18.0, *)
+    func ios18Body() -> some View {
+        legacyBody
+            .onScrollVisibilityChange(threshold: 0.5) { isVisible in
+                if autoplayMedia {
+                    playing = isVisible
+                }
+            }
+    }
+    
+    @ViewBuilder
+    var legacyBody: some View {
         if actionsEnabled, let url = fullSizeUrl(url: loader.url) {
             content
                 .contextMenu {

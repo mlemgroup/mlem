@@ -27,6 +27,7 @@ struct CodableSettings: Codable {
     var behavior_hapticLevel: HapticPriority
     var behavior_internetSpeed: InternetSpeed
     var behavior_upvoteOnSave: Bool
+    var behavior_autoplayMedia: Bool
     var comment_behaviors_collapseChildren: Bool
     var comment_compact: Bool
     var comment_defaultSort: ApiCommentSortType
@@ -96,6 +97,7 @@ struct CodableSettings: Codable {
         self.behavior_enableQuickSwipes = try container.decodeIfPresent(Bool.self, forKey: .behavior_enableQuickSwipes) ?? true
         self.behavior_hapticLevel = try container.decodeIfPresent(HapticPriority.self, forKey: .behavior_hapticLevel) ?? .high
         self.behavior_internetSpeed = try container.decodeIfPresent(InternetSpeed.self, forKey: .behavior_internetSpeed) ?? .fast
+        self.behavior_autoplayMedia = try container.decodeIfPresent(Bool.self, forKey: .behavior_autoplayMedia) ?? false
         self.behavior_upvoteOnSave = try container.decodeIfPresent(Bool.self, forKey: .behavior_upvoteOnSave) ?? false
         self.comment_behaviors_collapseChildren = try container.decodeIfPresent(Bool.self, forKey: .comment_behaviors_collapseChildren) ?? false
         self.comment_compact = try container.decodeIfPresent(Bool.self, forKey: .comment_compact) ?? false
@@ -168,6 +170,7 @@ struct CodableSettings: Codable {
         self.behavior_hapticLevel = settings.hapticLevel
         self.behavior_internetSpeed = settings.internetSpeed
         self.behavior_upvoteOnSave = settings.upvoteOnSave
+        self.behavior_autoplayMedia = settings.autoplayMedia
         self.comment_behaviors_collapseChildren = false
         self.comment_compact = settings.compactComments
         self.comment_defaultSort = settings.commentSort
