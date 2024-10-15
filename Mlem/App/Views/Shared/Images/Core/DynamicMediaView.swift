@@ -20,6 +20,7 @@ struct DynamicMediaView: View {
     @Environment(NavigationLayer.self) var navigation
     
     @Setting(\.bypassImageProxyShown) var bypassImageProxyShown
+    @Setting(\.autoplayMedia) var autoplayMedia
     
     @State var loader: MediaLoader
     @State var loadingPref: MediaLoadingState?
@@ -57,7 +58,9 @@ struct DynamicMediaView: View {
     func ios18Body() -> some View {
         legacyBody
             .onScrollVisibilityChange(threshold: 0.5) { isVisible in
-                playing = isVisible
+                if autoplayMedia {
+                    playing = isVisible
+                }
             }
     }
     
