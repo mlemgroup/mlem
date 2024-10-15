@@ -192,6 +192,9 @@
     "Automatically refreshes every %lld seconds." : {
 
     },
+    "Autoplay Media" : {
+
+    },
     "Average: %@" : {
 
     },
