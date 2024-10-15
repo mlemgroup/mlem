@@ -49,7 +49,7 @@ extension PostEditorView {
     
     @ViewBuilder
     private func uploadedImageView(url: URL, onRemove: @escaping () -> Void = {}) -> some View {
-        DynamicMediaView(url: url, actionsEnabled: false)
+        DynamicMediaView(url: url, actionsEnabled: false, playing: .constant(false)) // TODO: NOW dynamic
             .overlay(alignment: .topTrailing) {
                 Button("Remove", systemImage: Icons.closeCircleFill) {
                     onRemove()

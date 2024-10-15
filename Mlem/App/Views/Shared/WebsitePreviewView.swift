@@ -14,6 +14,7 @@ struct WebsitePreviewView: View {
     @Environment(\.openURL) private var openURL
     
     @State var blurred: Bool
+    @Binding var playing: Bool
     
     let link: PostLink
     var onTapActions: (() -> Void)?
@@ -59,7 +60,7 @@ struct WebsitePreviewView: View {
     var complex: some View {
         VStack(alignment: .leading, spacing: 0) {
             if let thumbnailUrl = link.thumbnail {
-                DynamicMediaView(url: thumbnailUrl, cornerRadius: 0, actionsEnabled: false)
+                DynamicMediaView(url: thumbnailUrl, cornerRadius: 0, actionsEnabled: false, playing: $playing)
                     .dynamicBlur(blurred: blurred)
                     .clipped()
                     .overlay {

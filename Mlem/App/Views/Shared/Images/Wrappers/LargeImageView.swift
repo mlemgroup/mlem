@@ -19,9 +19,11 @@ struct LargeImageView: View {
     let shouldBlur: Bool
     var onTapActions: (() -> Void)?
     @State var blurred: Bool = false
+    @Binding var playing: Bool
     
-    init(url: URL?, shouldBlur: Bool, onTapActions: (() -> Void)? = nil) {
+    init(url: URL?, playing: Binding<Bool>, shouldBlur: Bool, onTapActions: (() -> Void)? = nil) {
         self.url = url
+        self._playing = playing
         self.onTapActions = onTapActions
         self.shouldBlur = shouldBlur
         self._blurred = .init(wrappedValue: shouldBlur)
@@ -30,7 +32,7 @@ struct LargeImageView: View {
     @State private var loading: MediaLoadingState?
 
     var body: some View {
-        DynamicMediaView(url: url)
+        DynamicMediaView(url: url, playing: $playing)
             .dynamicBlur(blurred: blurred)
             .clipShape(.rect(cornerRadius: Constants.main.mediumItemCornerRadius))
             .overlay {

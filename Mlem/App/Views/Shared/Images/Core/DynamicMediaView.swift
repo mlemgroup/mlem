@@ -24,7 +24,7 @@ struct DynamicMediaView: View {
     @State var loader: MediaLoader
     @State var loadingPref: MediaLoadingState?
     @State var quickLookUrl: URL?
-    @State var playing: Bool
+    @Binding var playing: Bool
     
     let showError: Bool
     let cornerRadius: CGFloat
@@ -36,35 +36,16 @@ struct DynamicMediaView: View {
         showError: Bool = true,
         cornerRadius: CGFloat = Constants.main.mediumItemCornerRadius,
         actionsEnabled: Bool = true,
-        playImmediately: Bool = false
+        playing: Binding<Bool>
     ) {
         self.showError = showError
         self.cornerRadius = cornerRadius
         self.actionsEnabled = actionsEnabled
         self._loader = .init(wrappedValue: .init(url: url))
-        self._playing = .init(wrappedValue: playImmediately ? true : false)
+        self._playing = playing
     }
     
     var body: some View {
-        if #available(iOS 18.0, *) {
-            ios18Body()
-        } else {
-            legacyBody
-        }
-    }
-    
-    @available(iOS 18.0, *)
-    func ios18Body() -> some View {
-        legacyBody
-            .onScrollVisibilityChange(threshold: 1.0) { isVisible in
-                if playing != isVisible {
-                    playing = isVisible
-                }
-            }
-    }
-    
-    @ViewBuilder
-    var legacyBody: some View {
         if actionsEnabled, let url = fullSizeUrl(url: loader.url) {
             content
                 .contextMenu {

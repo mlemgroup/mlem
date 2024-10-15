@@ -10,6 +10,8 @@ import SwiftUI
 struct ImageViewer: View {
     @Environment(Palette.self) var palette
     
+    @State var playing: Bool = true
+    
     let url: URL
     
     init(url: URL) {
@@ -20,7 +22,7 @@ struct ImageViewer: View {
     
     var body: some View {
         ZoomableContainer {
-            DynamicMediaView(url: url, playImmediately: true)
+            DynamicMediaView(url: url, playing: $playing)
                 .padding(Constants.main.standardSpacing)
         }
         .toolbar {
