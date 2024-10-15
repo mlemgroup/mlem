@@ -464,6 +464,9 @@
     "Failed to delete post!" : {
 
     },
+    "Failed to Import Settings" : {
+
+    },
     "Failed to lock post" : {
 
     },
