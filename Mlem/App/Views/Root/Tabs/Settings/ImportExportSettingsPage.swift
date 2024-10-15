@@ -33,9 +33,10 @@ struct ImportExportSettingsPage: View {
                 isPresented: $importingSettingsFile,
                 allowedContentTypes: [.json]
             ) { result in
+                var fileUrl: URL?
                 do {
-                    let fileUrl = try result.get()
-                    if fileUrl.startAccessingSecurityScopedResource() {
+                    fileUrl = try result.get()
+                    if let fileUrl, fileUrl.startAccessingSecurityScopedResource() {
                         let fileData = try Data(contentsOf: fileUrl, options: .mappedIfSafe)
                         fileUrl.stopAccessingSecurityScopedResource()
                         
@@ -47,6 +48,7 @@ struct ImportExportSettingsPage: View {
                         ToastModel.main.add(.failure("Failed to Import Settings"))
                     }
                 } catch {
+                    fileUrl?.stopAccessingSecurityScopedResource()
                     handleError(error)
                 }
             }
