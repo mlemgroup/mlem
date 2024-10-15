@@ -1,5 +1,5 @@
 //
-//  MarkdownWithLinks.swift
+//  MarkdownWithLinkList.swift
 //  Mlem
 //
 //  Created by Sjmarf on 12/10/2024.
@@ -8,11 +8,11 @@
 import LemmyMarkdownUI
 import SwiftUI
 
-struct MarkdownWithLinks: View {
+struct MarkdownWithLinkList: View {
     @Environment(Palette.self) var palette
     @Environment(\.openURL) var openURL
     
-    @Setting(\.showTappableLinks) var showTappableLinks
+    @Setting(\.tappableLinksDisplayMode) var tappableLinksDisplayMode
     
     let blocks: [BlockNode]
     let showLinkCaptions: Bool
@@ -30,8 +30,11 @@ struct MarkdownWithLinks: View {
     var body: some View {
         VStack(spacing: Constants.main.standardSpacing) {
             Markdown(blocks, configuration: .default)
-            if showTappableLinks {
-                ForEach(Array(blocks.links.enumerated()), id: \.offset) { _, link in
+            if tappableLinksDisplayMode != .disabled {
+                ForEach(
+                    Array(blocks.links.filter { !$0.insideSpoiler }.enumerated()),
+                    id: \.offset
+                ) { _, link in
                     linkView(link)
                 }
             }
@@ -46,7 +49,7 @@ struct MarkdownWithLinks: View {
                 .font(.subheadline)
                 .fontWeight(.semibold)
 
-            if showLinkCaptions {
+            if tappableLinksDisplayMode == .large || tappableLinksDisplayMode == .contextual && showLinkCaptions {
                 Text(data.url.absoluteURL.description)
                     .font(.footnote)
                     .lineLimit(1)
@@ -54,8 +57,8 @@ struct MarkdownWithLinks: View {
         }
         .foregroundStyle(palette.secondary)
         .padding(Constants.main.standardSpacing)
-        // TODO: before merge: Add OLED palette border
         .background(palette.tertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu {
             Button("Open", systemImage: Icons.browser) {
@@ -83,4 +86,8 @@ private extension LinkData {
         }
         return literal
     }
+}
+
+enum TappableLinksDisplayMode: String, Codable, CaseIterable {
+    case disabled, large, compact, contextual
 }

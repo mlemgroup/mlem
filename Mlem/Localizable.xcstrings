@@ -796,6 +796,9 @@
     "Never" : {
 
     },
+    "Never in Comments" : {
+
+    },
     "New" : {
 
     },
@@ -1120,6 +1123,9 @@
     "Show Details" : {
 
     },
+    "Show Full URL" : {
+
+    },
     "Show Mod Names in Modlog" : {
 
     },
@@ -1136,9 +1142,6 @@
 
     },
     "Show Sidebar on App Launch" : {
-
-    },
-    "Show Tappable Links" : {
 
     },
     "Show User Avatar" : {
@@ -1251,6 +1254,9 @@
 
     },
     "Tap to show slur filter regex." : {
+
+    },
+    "Tappable Links" : {
 
     },
     "Temporary" : {

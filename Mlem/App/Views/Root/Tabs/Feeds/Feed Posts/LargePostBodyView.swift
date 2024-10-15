@@ -44,7 +44,7 @@ struct LargePostBodyView: View {
             }
             if let content = post.content {
                 if isPostPage {
-                    MarkdownWithLinks(content)
+                    MarkdownWithLinkList(content)
                 } else {
                     // Cut down on compute time for very long text posts by only rendering the first 4 blocks
                     MarkdownText(Array([BlockNode](content).prefix(4)), configuration: .dimmed)

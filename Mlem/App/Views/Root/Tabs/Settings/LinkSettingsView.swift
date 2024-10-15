@@ -10,7 +10,8 @@ import SwiftUI
 struct LinkSettingsView: View {
     @Setting(\.openLinksInBrowser) var openLinksInBrowser
     @Setting(\.openLinksInReaderMode) var openLinksInReaderMode
-    @Setting(\.showTappableLinks) var showTappableLinks
+    @Setting(\.compactComments) var compactComments
+    @Setting(\.tappableLinksDisplayMode) var tappableLinksDisplayMode
     
     var body: some View {
         Form {
@@ -31,7 +32,35 @@ struct LinkSettingsView: View {
             }
             
             Section {
-                Toggle("Show Tappable Links", isOn: $showTappableLinks)
+                Toggle(
+                    "Tappable Links",
+                    isOn: Binding(
+                        get: { tappableLinksDisplayMode != .disabled },
+                        set: { newValue in
+                            withAnimation(.easeOut(duration: 0.1)) {
+                                tappableLinksDisplayMode = newValue ? .large : .disabled
+                            }
+                        }
+                    )
+                )
+                if compactComments {
+                    Picker("Show Full URL", selection: $tappableLinksDisplayMode) {
+                        Text("Always").tag(TappableLinksDisplayMode.large)
+                        Text("Never").tag(TappableLinksDisplayMode.compact)
+                        Text("Never in Comments").tag(TappableLinksDisplayMode.contextual)
+                    }
+                    .pickerStyle(.menu)
+                } else {
+                    if tappableLinksDisplayMode != .disabled {
+                        Toggle(
+                            "Show Full URL",
+                            isOn: Binding(
+                                get: { tappableLinksDisplayMode != .compact },
+                                set: { tappableLinksDisplayMode = $0 ? .large : .compact }
+                            )
+                        )
+                    }
+                }
             }
         }
         .navigationTitle("Links")
