@@ -1,5 +1,5 @@
 //
-//  PostComposerTargetView.swift
+//  PostEditorTargetView.swift
 //  Mlem
 //
 //  Created by Sjmarf on 14/08/2024.

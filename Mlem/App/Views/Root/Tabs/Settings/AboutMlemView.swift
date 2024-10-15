@@ -12,10 +12,13 @@ struct AboutMlemView: View {
     
     var body: some View {
         Form {
-            Section {
+            Section {} header: {
                 appHeaderView
                     .listRowBackground(palette.groupedBackground)
+                    .foregroundStyle(palette.primary)
             }
+            .textCase(nil)
+            .listRowInsets(.init(top: 50, leading: 0, bottom: 15, trailing: 0))
             Section {
                 Link(destination: URL(string: "https://mlem.group")!) {
                     FormChevron { Label("Website", systemImage: Icons.websiteIcon) }
@@ -28,11 +31,11 @@ struct AboutMlemView: View {
                 Link(destination: URL(string: "https://matrix.to/#/#mlemappspace:matrix.org")!) {
                     FormChevron { Label("Matrix Room", image: "matrix.logo") }
                 }
-                .tint(palette.primary)
+                .tint(.black) // non-palette because white tint turns this into white square
                 Link(destination: URL(string: "https://github.com/mlemgroup/mlem")!) {
                     FormChevron { Label("GitHub Repository", image: "github.logo") }
                 }
-                .tint(palette.primary)
+                .tint(.black) // non-palette because white tint turns this into white square
             }
             Section {
                 NavigationLink("Privacy Policy", systemImage: "hand.raised.fill", destination: .settings(.document(.privacyPolicy)))

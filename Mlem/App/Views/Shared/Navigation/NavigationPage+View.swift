@@ -39,7 +39,9 @@ extension NavigationPage {
         case .quickSwitcher:
             QuickSwitcherView()
         case let .report(target, community):
-            ReportComposerView(target: target.wrappedValue, community: community)
+            ReportEditorView(target: target.wrappedValue, community: community)
+        case let .remove(target):
+            ContentRemovalEditorView(target: target.wrappedValue)
         case let .post(post, scrollTargetedComment, communityContext, navigationNamespace):
             PostPage(post: post, scrollTargetedComment: scrollTargetedComment?.wrappedValue)
                 .environment(\.communityContext, communityContext?.wrappedValue)

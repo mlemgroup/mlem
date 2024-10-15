@@ -29,6 +29,7 @@ class Settings: ObservableObject {
     @AppStorage("behavior.hapticLevel") var hapticLevel: HapticPriority = .low
     @AppStorage("behavior.upvoteOnSave") var upvoteOnSave: Bool = false
     @AppStorage("behavior.internetSpeed") var internetSpeed: InternetSpeed = .fast
+    @AppStorage("behavior.autoplayMedia") var autoplayMedia: Bool = false
     
     @AppStorage("accounts.keepPlace") var keepPlaceOnAccountSwitch: Bool = false
     @AppStorage("accounts.sort") var accountSort: AccountSortMode = .name

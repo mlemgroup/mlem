@@ -192,6 +192,9 @@
     "Automatically refreshes every %lld seconds." : {
 
     },
+    "Autoplay Media" : {
+
+    },
     "Average: %@" : {
 
     },
@@ -461,10 +464,16 @@
     "Failed to delete post!" : {
 
     },
+    "Failed to Import Settings" : {
+
+    },
     "Failed to lock post" : {
 
     },
     "Failed to pin post" : {
+
+    },
+    "Failed to remove content" : {
 
     },
     "Failed to resolve post. Try another account." : {
@@ -832,6 +841,9 @@
     "Old" : {
 
     },
+    "OLED" : {
+
+    },
     "Once approved, you'll be able to log in to your account from the Settings tab." : {
 
     },
@@ -968,6 +980,9 @@
 
     },
     "Really unpin this post from the community?" : {
+
+    },
+    "Reason" : {
 
     },
     "Reason (Optional)" : {

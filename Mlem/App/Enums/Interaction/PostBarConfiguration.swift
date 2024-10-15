@@ -18,9 +18,10 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         case hide
         case block
         case report
+        case crossPost
         case lock
         case pin
-        case crossPost
+        case remove
         
         var appearance: ActionAppearance {
             switch self {
@@ -33,9 +34,10 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             case .hide: .hide(isOn: false)
             case .block: .block(isOn: false)
             case .report: .report()
+            case .crossPost: .crossPost()
             case .lock: .lock(isOn: false)
             case .pin: .pin(isOn: false)
-            case .crossPost: .crossPost()
+            case .remove: .remove(isOn: false)
             }
         }
     }

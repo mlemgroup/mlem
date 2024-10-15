@@ -164,6 +164,18 @@ extension ActionAppearance {
         )
     }
     
+    static func remove(isOn: Bool, isInProgress: Bool = false) -> Self {
+        .init(
+            label: isOn ? "Restore" : "Remove",
+            isOn: false,
+            isInProgress: isInProgress,
+            isDestructive: !isOn,
+            color: isOn ? Palette.main.positive : Palette.main.negative,
+            icon: isOn ? Icons.restore : Icons.remove,
+            swipeIcon2: isOn ? Icons.restoreFill : Icons.removeFill
+        )
+    }
+    
     static func crossPost() -> Self {
         .init(label: "Crosspost", color: Palette.main.accent, icon: Icons.crossPost)
     }

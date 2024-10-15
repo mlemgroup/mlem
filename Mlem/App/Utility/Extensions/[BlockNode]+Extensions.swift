@@ -13,9 +13,10 @@ extension [BlockNode] {
         var output: [[BlockNode]] = []
         
         /// Is `true` when the previous block was a "Rules" title, or if there is only one block in the array.
-        var isProbableRuleList: Bool = self.count == 1
+        var isProbableRuleList: Bool = count == 1
        
         /// Stores the parts of a rule currently being parsed.
+        /// This happens when a rule consists of a heading followed by a paragraph.
         var currentRuleParts: [BlockNode]?
         
         // Matches "1. ", "2) ", "Rule 1" etc
@@ -58,7 +59,7 @@ extension [BlockNode] {
                 
                 // AskLemmy uses "criteria" rather than "rules"
                 // TODO: localize this?
-                if ["Rules", "Criteria"].contains(where: { inlines.stringLiteral.localizedCaseInsensitiveContains($0) }) {
+                if stringIsRulesTitle(inlines.stringLiteral) {
                     isProbableRuleList = true
                     continue loop
                 }
@@ -69,6 +70,12 @@ extension [BlockNode] {
                 }
                 isProbableRuleList = false
             case let .spoiler(title: title, blocks: blocks):
+                // This handles the situation where a spoiler is used to enclose the rules list.
+                if let title, stringIsRulesTitle(title) {
+                    return blocks.rules()
+                }
+                // This handles situations where each item of the rules list contains a spoiler
+                // block that can be expanded for more info on that rule.
                 if let title, title.starts(with: numberedListRegex) {
                     let text = String(title.trimmingPrefix(numberedListRegex))
                     let titleBlock: BlockNode = .paragraph(
@@ -89,4 +96,8 @@ extension [BlockNode] {
         
         return output
     }
+}
+
+private func stringIsRulesTitle(_ string: String) -> Bool {
+    ["Rules", "Criteria"].contains(where: { string.localizedCaseInsensitiveContains($0) })
 }

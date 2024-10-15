@@ -22,7 +22,9 @@ struct Form<Content: View>: View {
                 .tint(palette.accent)
                 .buttonStyle(PaletteButton())
         }
+        .listStyle(InsetListStyle())
         .scrollContentBackground(.hidden)
         .background(palette.groupedBackground)
+        .shadow(color: palette.primary.opacity(palette.bordered ? 0.2 : 0.0), radius: 5)
     }
 }

@@ -53,6 +53,7 @@ struct TileCommentView: View {
                     RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
                         .fill(palette.tertiaryGroupedBackground)
                 }
+                .paletteBorder(cornerRadius: Constants.main.smallItemCornerRadius)
             
             MarkdownText(comment.content, configuration: .caption)
                 .frame(height: contentHeight, alignment: .top)
@@ -97,7 +98,7 @@ struct TileCommentView: View {
     
     var score: some View {
         Menu {
-            ForEach(comment.menuActions(), id: \.id) { action in
+            ForEach(comment.allMenuActions(), id: \.id) { action in
                 MenuButton(action: action)
             }
         } label: {
