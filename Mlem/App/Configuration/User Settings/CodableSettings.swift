@@ -49,6 +49,7 @@ struct CodableSettings: Codable {
     var links_displayMode: String // TODO: pending easy-tap links
     var links_openInBrowser: Bool
     var links_readerMode: Bool
+    var links_tappableLinksDisplayMode: TappableLinksDisplayMode
     var menus_allModActions: Bool
     var menus_modActionGrouping: String // TODO: pending mod actions
     var post_defaultSort: ApiSortType
@@ -120,6 +121,7 @@ struct CodableSettings: Codable {
         self.links_displayMode = try container.decodeIfPresent(String.self, forKey: .links_displayMode) ?? "contextual"
         self.links_openInBrowser = try container.decodeIfPresent(Bool.self, forKey: .links_openInBrowser) ?? false
         self.links_readerMode = try container.decodeIfPresent(Bool.self, forKey: .links_readerMode) ?? false
+        self.links_tappableLinksDisplayMode = try container.decodeIfPresent(TappableLinksDisplayMode.self, forKey: .links_tappableLinksDisplayMode) ?? .contextual
         self.menus_allModActions = try container.decodeIfPresent(Bool.self, forKey: .menus_allModActions) ?? false
         self.menus_modActionGrouping = try container.decodeIfPresent(String.self, forKey: .menus_modActionGrouping) ?? "none"
         self.post_defaultSort = try container.decodeIfPresent(ApiSortType.self, forKey: .post_defaultSort) ?? .hot
@@ -192,6 +194,7 @@ struct CodableSettings: Codable {
         self.links_displayMode = "contextual"
         self.links_openInBrowser = settings.openLinksInBrowser
         self.links_readerMode = settings.openLinksInReaderMode
+        self.links_tappableLinksDisplayMode = settings.tappableLinksDisplayMode
         self.menus_allModActions = false
         self.menus_modActionGrouping = "none"
         self.post_defaultSort = settings.defaultPostSort

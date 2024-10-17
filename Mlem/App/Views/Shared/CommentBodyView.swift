@@ -12,6 +12,8 @@ import SwiftUI
 struct CommentBodyView: View {
     @Environment(Palette.self) var palette
     
+    @Setting(\.compactComments) var compactComments
+    
     let comment: any Comment
     
     var body: some View {
@@ -24,7 +26,7 @@ struct CommentBodyView: View {
                 .italic()
                 .foregroundStyle(palette.secondary)
         } else {
-            Markdown(comment.content, configuration: .default)
+            MarkdownWithLinkList(comment.content, showLinkCaptions: !compactComments)
         }
     }
 }

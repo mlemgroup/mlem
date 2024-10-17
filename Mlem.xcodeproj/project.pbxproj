@@ -184,6 +184,7 @@
 		039F589D2C7B6C0A00C61658 /* FormChevron.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039F589C2C7B6C0A00C61658 /* FormChevron.swift */; };
 		03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */; };
 		03A82FA32C0D1F2400D01A5C /* View+ExternalApiWarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A82FA22C0D1F2400D01A5C /* View+ExternalApiWarning.swift */; };
+		03AB484F2CBAE33500567FF9 /* MarkdownWithLinkList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AB484E2CBAE33500567FF9 /* MarkdownWithLinkList.swift */; };
 		03AF91DD2C1B23E500E56644 /* ImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AF91DC2C1B23E500E56644 /* ImageViewer.swift */; };
 		03AF91DF2C1B243D00E56644 /* ZoomableContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AF91DE2C1B243D00E56644 /* ZoomableContainer.swift */; };
 		03AF91E12C1B25DE00E56644 /* UIDevice+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AF91E02C1B25DE00E56644 /* UIDevice+Extensions.swift */; };
@@ -577,6 +578,7 @@
 		039F589C2C7B6C0A00C61658 /* FormChevron.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormChevron.swift; sourceTree = "<group>"; };
 		03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiClient+Extensions.swift"; sourceTree = "<group>"; };
 		03A82FA22C0D1F2400D01A5C /* View+ExternalApiWarning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ExternalApiWarning.swift"; sourceTree = "<group>"; };
+		03AB484E2CBAE33500567FF9 /* MarkdownWithLinkList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownWithLinkList.swift; sourceTree = "<group>"; };
 		03AF91DC2C1B23E500E56644 /* ImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewer.swift; sourceTree = "<group>"; };
 		03AF91DE2C1B243D00E56644 /* ZoomableContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableContainer.swift; sourceTree = "<group>"; };
 		03AF91E02C1B25DE00E56644 /* UIDevice+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extensions.swift"; sourceTree = "<group>"; };
@@ -1465,6 +1467,7 @@
 				CD13CC5A2C588B34001AF428 /* WebView.swift */,
 				03AF91DE2C1B243D00E56644 /* ZoomableContainer.swift */,
 				CD635E1A2C94DACD00864F75 /* BypassProxyWarningSheet.swift */,
+				03AB484E2CBAE33500567FF9 /* MarkdownWithLinkList.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -2093,6 +2096,7 @@
 				CD13CC5B2C588B34001AF428 /* WebView.swift in Sources */,
 				CDB41E8C2C84CED500BD2DE9 /* FixedImageLoader.swift in Sources */,
 				039EFEC32BEEBEE0003AC372 /* LoginInstancePickerView.swift in Sources */,
+				03AB484F2CBAE33500567FF9 /* MarkdownWithLinkList.swift in Sources */,
 				03531EF12C2DA298004A3464 /* SearchResultsView.swift in Sources */,
 				034B94852C09348400039AF4 /* MarkdownImageView.swift in Sources */,
 				CD9CFA2A2C2E1E8400739BBC /* FeedHeaderView.swift in Sources */,
@@ -2808,7 +2812,7 @@
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.43.0;
+				minimumVersion = 0.44.0;
 			};
 		};
 		CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */ = {
