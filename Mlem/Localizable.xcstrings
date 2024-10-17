@@ -186,6 +186,9 @@
     "Auto-Bypass Image Proxy" : {
 
     },
+    "Automatic" : {
+
+    },
     "Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser." : {
 
     },
@@ -607,6 +610,9 @@
     "I think I've found the bottom!" : {
 
     },
+    "If set to \"Automatic\", the full URL will be hidden in compact comments." : {
+
+    },
     "Image" : {
 
     },
@@ -794,9 +800,6 @@
 
     },
     "Never" : {
-
-    },
-    "Never in Comments" : {
 
     },
     "New" : {

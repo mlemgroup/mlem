@@ -43,23 +43,17 @@ struct LinkSettingsView: View {
                         }
                     )
                 )
-                if compactComments {
+                if tappableLinksDisplayMode != .disabled {
                     Picker("Show Full URL", selection: $tappableLinksDisplayMode) {
+                        Text("Automatic").tag(TappableLinksDisplayMode.contextual)
                         Text("Always").tag(TappableLinksDisplayMode.large)
                         Text("Never").tag(TappableLinksDisplayMode.compact)
-                        Text("Never in Comments").tag(TappableLinksDisplayMode.contextual)
                     }
                     .pickerStyle(.menu)
-                } else {
-                    if tappableLinksDisplayMode != .disabled {
-                        Toggle(
-                            "Show Full URL",
-                            isOn: Binding(
-                                get: { tappableLinksDisplayMode != .compact },
-                                set: { tappableLinksDisplayMode = $0 ? .large : .compact }
-                            )
-                        )
-                    }
+                }
+            } footer: {
+                if tappableLinksDisplayMode != .disabled {
+                    Text("If set to \"Automatic\", the full URL will be hidden in compact comments.")
                 }
             }
         }
