@@ -23,6 +23,7 @@ class UserAccount: Account, CommunityOrPersonStub {
     var avatar: URL?
     var lastUsed: Date?
     var favorites: Set<Int>
+    var accountType: AccountType
     
     init(person: Person4, instance: Instance3) {
         self.api = person.api
@@ -34,11 +35,12 @@ class UserAccount: Account, CommunityOrPersonStub {
         self.avatar = person.avatar
         self.lastUsed = .now
         self.favorites = []
+        self.accountType = person.moderatedCommunities.isEmpty ? .user : .moderator
     }
     
     enum CodingKeys: String, CodingKey {
         // These key names don't match the identifiers of their corresponding properties - this is because these key names must match the property names used in SavedAccount pre-1.3 in order to maintain compatibility
-        case id, username, storedNickname, instanceLink, siteVersion, avatarUrl, lastUsed, favorites
+        case id, username, storedNickname, instanceLink, siteVersion, avatarUrl, lastUsed, favorites, accountType
     }
     
     enum DecodingError: Error {
@@ -56,6 +58,7 @@ class UserAccount: Account, CommunityOrPersonStub {
         self.avatar = try values.decode(URL?.self, forKey: .avatarUrl)
         self.lastUsed = try values.decode(Date?.self, forKey: .lastUsed)
         self.favorites = try values.decodeIfPresent(Set<Int>.self, forKey: .favorites) ?? []
+        self.accountType = try values.decodeIfPresent(AccountType.self, forKey: .accountType) ?? .user
 
         // parse instance link
         let instanceLink = try values.decode(URL.self, forKey: .instanceLink)
@@ -101,6 +104,13 @@ class UserAccount: Account, CommunityOrPersonStub {
         }
         if cachedSiteVersion != instance.version {
             cachedSiteVersion = instance.version
+            shouldSave = true
+        }
+        if accountType == .user, !person.moderatedCommunities.isEmpty {
+            accountType = .moderator
+            shouldSave = true
+        } else if accountType == .moderator, person.moderatedCommunities.isEmpty {
+            accountType = .user
             shouldSave = true
         }
         if shouldSave {

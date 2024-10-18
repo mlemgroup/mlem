@@ -45,7 +45,7 @@ struct FeedsView: View {
     @State var scrollToTopTrigger: Bool = false
     
     var feedOptions: [FeedSelection] {
-        appState.firstAccount is UserAccount ? FeedSelection.allCases : FeedSelection.guestCases
+        FeedSelection.cases(for: appState.firstAccount.accountType)
     }
     
     init(feedSelection: FeedSelection? = nil) {
@@ -125,13 +125,13 @@ struct FeedsView: View {
                     }
                 } else {
                     savedFeedLoader = nil
-
-                    // ensure we only show non-authenticated feeds to non-authenticated users
-                    Task {
-                        if !FeedSelection.guestCases.contains(feedSelection) {
-                            postFeedLoader?.sortType = try await appState.initialFeedSortType
-                            feedSelection = .all
-                        }
+                }
+                
+                // ensure we always are showing an appropriate feed
+                Task {
+                    if !FeedSelection.cases(for: appState.firstAccount.accountType).contains(feedSelection) {
+                        postFeedLoader?.sortType = try await appState.initialFeedSortType
+                        feedSelection = appState.firstAccount.accountType == .user ? .subscribed : .all
                     }
                 }
             }

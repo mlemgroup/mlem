@@ -18,6 +18,7 @@ protocol Account: AnyObject, Codable, ActorIdentifiable, Profile1Providing, Hash
     var cachedSiteVersion: SiteVersion? { get }
     var avatar: URL? { get }
     var lastUsed: Date? { get set }
+    var accountType: AccountType { get }
     
     // Computed
     var nickname: String { get }
