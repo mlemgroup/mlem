@@ -201,7 +201,6 @@
 		03AFD0E52C3C14D50054B8AD /* InstanceStubProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFD0E42C3C14D50054B8AD /* InstanceStubProviding+Extensions.swift */; };
 		03B04FC02C5FC32300824128 /* SimpleAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B04FBF2C5FC32300824128 /* SimpleAvatarView.swift */; };
 		03B0EB6F2C87827A00F79FDF /* ExpandedPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B0EB6E2C87827A00F79FDF /* ExpandedPostView.swift */; };
-		03B25AED2CC3132A00EB6DF5 /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B25AEC2CC3132A00EB6DF5 /* ProfileSettingsView.swift */; };
 		03B431B22C44409D001A1EB5 /* CommentEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431B12C44409D001A1EB5 /* CommentEditorView.swift */; };
 		03B431B42C4481C3001A1EB5 /* MarkdownTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431B32C4481C3001A1EB5 /* MarkdownTextEditor.swift */; };
 		03B431B62C454D49001A1EB5 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431B52C454D49001A1EB5 /* UIImage+Extensions.swift */; };
@@ -600,7 +599,6 @@
 		03AFD0E42C3C14D50054B8AD /* InstanceStubProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InstanceStubProviding+Extensions.swift"; sourceTree = "<group>"; };
 		03B04FBF2C5FC32300824128 /* SimpleAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleAvatarView.swift; sourceTree = "<group>"; };
 		03B0EB6E2C87827A00F79FDF /* ExpandedPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedPostView.swift; sourceTree = "<group>"; };
-		03B25AEC2CC3132A00EB6DF5 /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		03B431B12C44409D001A1EB5 /* CommentEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentEditorView.swift; sourceTree = "<group>"; };
 		03B431B32C4481C3001A1EB5 /* MarkdownTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownTextEditor.swift; sourceTree = "<group>"; };
 		03B431B52C454D49001A1EB5 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
@@ -863,7 +861,6 @@
 				03AB48542CBC0B8000567FF9 /* AccountAdvancedSettingsView.swift */,
 				03AB48562CBC0DFC00567FF9 /* AccountSignInSettingsView.swift */,
 				03AB48582CBC14CE00567FF9 /* AccountEmailSettingsView.swift */,
-				03B25AEC2CC3132A00EB6DF5 /* ProfileSettingsView.swift */,
 				03134A572BEC1C46002662CC /* AccountListSettingsView.swift */,
 				031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */,
 				03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */,
