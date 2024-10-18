@@ -34,12 +34,6 @@ struct AccountSettingsView: View {
             if appState.firstSession is UserSession {
                 Section {
                     NavigationLink(
-                        "My Profile",
-                        systemImage: Icons.personFill,
-                        destination: .settings(.general)
-                    )
-                    .tint(palette.colorfulAccent(5))
-                    NavigationLink(
                         "Sign-In & Security",
                         systemImage: "key.fill",
                         destination: .settings(.accountSignIn)

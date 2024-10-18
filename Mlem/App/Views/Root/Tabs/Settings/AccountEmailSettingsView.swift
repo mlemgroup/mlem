@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct AccountEmailSettingsView: View {
+    @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
+    @Environment(\.dismiss) var dismiss
     
     @State var email: String = ""
+    @State var isSubmitting: Bool = false
     @FocusState var isFocused
-    @State var isUpdating: Bool = false
     
     init() {
         guard let session = AppState.main.firstSession as? UserSession else {
@@ -23,45 +25,54 @@ struct AccountEmailSettingsView: View {
         _email = .init(wrappedValue: person.email ?? "")
     }
     
+    var showToolbarOptions: Bool {
+        email != (appState.firstSession as? UserSession)?.person?.email
+    }
+    
     var body: some View {
         Form {
-            Section {
-                TextField("Email", text: $email)
-                    .focused($isFocused)
-                    .onAppear {
-                        isFocused = true
-                    }
-            }
-            Section {
-                Button {
-                    Task { @MainActor in
-                        isUpdating = true
-                        guard let person = (AppState.main.firstSession as? UserSession)?.person else { return }
-                        do {
-                            try await person.updateSettings(email: email)
-                        } catch {
-                            handleError(error)
-                            email = person.email ?? ""
-                        }
-                        isUpdating = false
-                    }
-                } label: {
-                    HStack {
-                        Text("Save")
-                        if isUpdating {
-                            ProgressView()
-                        }
-                    }
-                    .foregroundStyle(palette.selectedInteractionBarItem)
-                    .tint(palette.selectedInteractionBarItem)
-                    .padding(.vertical, 12)
-                    .frame(maxWidth: .infinity)
-                    .background(palette.accent)
-                    .contentShape(.rect)
+            TextField("Email", text: $email)
+                .focused($isFocused)
+                .onAppear {
+                    isFocused = true
                 }
-                .listRowInsets(.init())
+        }
+        .navigationBarBackButtonHidden(showToolbarOptions)
+        .disabled(isSubmitting)
+        .toolbar {
+            if showToolbarOptions {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") {
+                        if let session = AppState.main.firstSession as? UserSession {
+                            email = session.person?.email ?? ""
+                        }
+                    }
+                    .disabled(isSubmitting)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    if isSubmitting {
+                        ProgressView()
+                    } else {
+                        Button("Save") {
+                            submit()
+                        }
+                    }
+                }
             }
         }
-        .disabled(isUpdating)
+    }
+    
+    func submit() {
+        Task { @MainActor in
+            isSubmitting = true
+            guard let person = (AppState.main.firstSession as? UserSession)?.person else { return }
+            do {
+                try await person.updateSettings(email: email)
+            } catch {
+                handleError(error)
+                email = person.email ?? ""
+            }
+            isSubmitting = false
+        }
     }
 }

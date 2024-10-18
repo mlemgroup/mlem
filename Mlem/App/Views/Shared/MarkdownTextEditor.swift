@@ -9,6 +9,8 @@ import SwiftUI
 
 struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
     let content: Content
+    let includeInsets: Bool
+    let firstResponder: Bool
     let prompt: String
     let textView: UITextView
     let placeholderLabel: UILabel = .init()
@@ -26,12 +28,16 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         prompt: LocalizedStringResource,
         textView: UITextView,
         font: UIFont = .preferredFont(forTextStyle: .body),
+        includeInsets: Bool = true,
+        firstResponder: Bool = true,
         @ViewBuilder content: () -> Content
     ) {
         self.prompt = String(localized: prompt)
         self.textView = textView
         self.content = content()
         self.font = font
+        self.includeInsets = includeInsets
+        self.firstResponder = firstResponder
         self.onChange = onChange
     }
  
@@ -39,19 +45,32 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         Coordinator(self)
     }
  
+    // swiftlint:disable:next function_body_length
     func makeUIView(context: Context) -> UITextView {
         textView.font = font
-        textView.textContainerInset = .init(
-            top: Constants.main.halfSpacing,
-            left: Constants.main.standardSpacing,
-            bottom: Constants.main.standardSpacing,
-            right: Constants.main.standardSpacing
-        )
+        if includeInsets {
+            textView.textContainerInset = .init(
+                top: Constants.main.halfSpacing,
+                left: Constants.main.standardSpacing,
+                bottom: Constants.main.standardSpacing,
+                right: Constants.main.standardSpacing
+            )
+        } else {
+            textView.textContainerInset = .init(
+                top: Constants.main.halfSpacing,
+                left: 0,
+                bottom: Constants.main.standardSpacing,
+                right: 0
+            )
+        }
         textView.delegate = context.coordinator
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.setContentHuggingPriority(.defaultLow, for: .horizontal)
         textView.sizeToFit()
-        textView.becomeFirstResponder()
+        if firstResponder {
+            textView.becomeFirstResponder()
+        }
+        textView.backgroundColor = .clear
         
         let contentController = UIHostingController(
             // If we don't explicitly set the environment here the toolbar can't access it
@@ -74,7 +93,10 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         placeholderLabel.font = textView.font
         placeholderLabel.sizeToFit()
         textView.addSubview(placeholderLabel)
-        placeholderLabel.frame.origin = CGPoint(x: 15, y: 6)
+        placeholderLabel.frame.origin = CGPoint(
+            x: includeInsets ? 15 : 5,
+            y: includeInsets ? 6 : 7
+        )
         placeholderLabel.textColor = UIColor(Palette.main.tertiary)
         placeholderLabel.isHidden = !textView.text.isEmpty
         
@@ -102,9 +124,11 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         // `textView.contentSize` varies slightly on one line depending on which characters are typed.
         // To avoid this we get the line height from the font and round `contentSize` to the nearest line.
 
-        // "15" seems to be constant no matter the font size
         let lineHeight = font.lineHeight + font.leading
-        let calculatedHeight = 15 + round((textView.contentSize.height - 15) / lineHeight) * lineHeight
+        
+        // This value seems to be constant no matter the font size
+        let constant: CGFloat = 15
+        let calculatedHeight = constant + round((textView.contentSize.height - constant) / lineHeight) * lineHeight
           
         // The "+ 1" fixes a bug in which there wouldn't be enough room to render a second line when using
         // certain fonts (specifically, `.title2`). This would cause lines to sometimes not render. This

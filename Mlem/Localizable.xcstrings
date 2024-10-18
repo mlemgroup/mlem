@@ -210,6 +210,9 @@
     "Behavior" : {
 
     },
+    "Bio" : {
+
+    },
     "Block" : {
 
     },
@@ -264,9 +267,6 @@
           }
         }
       }
-    },
-    "Change Password" : {
-
     },
     "Choose a community..." : {
 
@@ -423,6 +423,9 @@
 
     },
     "Dismiss" : {
+
+    },
+    "Display Name" : {
 
     },
     "Divider" : {
@@ -1539,6 +1542,9 @@
 
     },
     "What is Federation?" : {
+
+    },
+    "Write a bit about yourself..." : {
 
     },
     "Year" : {

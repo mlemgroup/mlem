@@ -22,9 +22,6 @@ struct AccountSignInSettingsView: View {
                     }
                 }
             }
-            Section {
-                Button("Change Password") {}
-            }
         }
         .navigationTitle("Sign-In & Security")
     }
