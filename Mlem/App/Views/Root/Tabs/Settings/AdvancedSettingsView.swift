@@ -17,8 +17,10 @@ struct AdvancedSettingsView: View {
                 HStack {
                     Text("Cache")
                     Spacer()
-                    Text(ByteCountFormatter.string(fromByteCount: Int64(URLCache.shared.currentDiskUsage), countStyle: .file))
-                        .foregroundStyle(palette.secondary)
+                    TimelineView(.periodic(from: .now, by: 0.5)) { _ in
+                        Text(ByteCountFormatter.string(fromByteCount: Int64(URLCache.shared.currentDiskUsage), countStyle: .file))
+                            .foregroundStyle(palette.secondary)
+                    }
                 }
             }
             header: {
@@ -31,6 +33,7 @@ struct AdvancedSettingsView: View {
             Button("Clear Cache") {
                 URLCache.shared.removeAllCachedResponses()
                 ImagePipeline.shared.cache.removeAll()
+                ToastModel.main.add(.success("Cache Cleared"))
             }
             Section {
                 NavigationLink("Developer", destination: .settings(.developer))
