@@ -98,6 +98,7 @@ class ContentLoaderProxy<Model: Upgradable> {
                     try await model.upgrade(api: api ?? modelApi, upgradeOperation: nil)
                 }
             } catch ApiClientError.noEntityFound {
+                print("No entity found, upgrading from local...")
                 if !model.isUpgraded {
                     try await model.upgradeFromLocal()
                 }

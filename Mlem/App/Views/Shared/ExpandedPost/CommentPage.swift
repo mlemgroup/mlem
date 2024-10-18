@@ -77,11 +77,7 @@ struct CommentPage: View {
             }
             .refreshable {
                 _ = await Task {
-                    do {
-                        await tracker?.refresh()
-                    } catch {
-                        handleError(error)
-                    }
+                    await tracker?.refresh()
                 }.value
             }
         } upgradeOperation: { model, api in

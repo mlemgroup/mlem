@@ -11,6 +11,7 @@ import SwiftUI
 enum SettingsPage: Hashable {
     case root
     case accounts, account
+    case accountGeneral, accountAdvanced, accountSignIn, accountChangeEmail
     case general, links, sorting
     case importExportSettings
     case theme, icon
@@ -21,13 +22,21 @@ enum SettingsPage: Hashable {
     case licences, document(Document)
     
     @ViewBuilder
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func view() -> some View {
         switch self {
         case .root:
             SettingsView()
         case .account:
             AccountSettingsView()
+        case .accountGeneral:
+            AccountGeneralSettingsView()
+        case .accountSignIn:
+            AccountSignInSettingsView()
+        case .accountAdvanced:
+            AccountAdvancedSettingsView()
+        case .accountChangeEmail:
+            AccountEmailSettingsView()
         case .accounts:
             AccountListSettingsView()
         case .general:

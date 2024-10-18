@@ -70,6 +70,9 @@ struct ExpandedPostView<Content: View>: View {
                             await tracker.load()
                         }
                     }
+            } else {
+                ProgressView()
+                    .tint(palette.secondary)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
