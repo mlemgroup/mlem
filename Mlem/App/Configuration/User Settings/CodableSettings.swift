@@ -27,6 +27,7 @@ struct CodableSettings: Codable {
     var behavior_hapticLevel: HapticPriority
     var behavior_internetSpeed: InternetSpeed
     var behavior_upvoteOnSave: Bool
+    var behavior_autoplayMedia: Bool
     var comment_behaviors_collapseChildren: Bool
     var comment_compact: Bool
     var comment_defaultSort: ApiCommentSortType
@@ -48,6 +49,7 @@ struct CodableSettings: Codable {
     var links_displayMode: String // TODO: pending easy-tap links
     var links_openInBrowser: Bool
     var links_readerMode: Bool
+    var links_tappableLinksDisplayMode: TappableLinksDisplayMode
     var menus_allModActions: Bool
     var menus_modActionGrouping: String // TODO: pending mod actions
     var post_defaultSort: ApiSortType
@@ -96,6 +98,7 @@ struct CodableSettings: Codable {
         self.behavior_enableQuickSwipes = try container.decodeIfPresent(Bool.self, forKey: .behavior_enableQuickSwipes) ?? true
         self.behavior_hapticLevel = try container.decodeIfPresent(HapticPriority.self, forKey: .behavior_hapticLevel) ?? .high
         self.behavior_internetSpeed = try container.decodeIfPresent(InternetSpeed.self, forKey: .behavior_internetSpeed) ?? .fast
+        self.behavior_autoplayMedia = try container.decodeIfPresent(Bool.self, forKey: .behavior_autoplayMedia) ?? false
         self.behavior_upvoteOnSave = try container.decodeIfPresent(Bool.self, forKey: .behavior_upvoteOnSave) ?? false
         self.comment_behaviors_collapseChildren = try container.decodeIfPresent(Bool.self, forKey: .comment_behaviors_collapseChildren) ?? false
         self.comment_compact = try container.decodeIfPresent(Bool.self, forKey: .comment_compact) ?? false
@@ -118,6 +121,7 @@ struct CodableSettings: Codable {
         self.links_displayMode = try container.decodeIfPresent(String.self, forKey: .links_displayMode) ?? "contextual"
         self.links_openInBrowser = try container.decodeIfPresent(Bool.self, forKey: .links_openInBrowser) ?? false
         self.links_readerMode = try container.decodeIfPresent(Bool.self, forKey: .links_readerMode) ?? false
+        self.links_tappableLinksDisplayMode = try container.decodeIfPresent(TappableLinksDisplayMode.self, forKey: .links_tappableLinksDisplayMode) ?? .contextual
         self.menus_allModActions = try container.decodeIfPresent(Bool.self, forKey: .menus_allModActions) ?? false
         self.menus_modActionGrouping = try container.decodeIfPresent(String.self, forKey: .menus_modActionGrouping) ?? "none"
         self.post_defaultSort = try container.decodeIfPresent(ApiSortType.self, forKey: .post_defaultSort) ?? .hot
@@ -168,6 +172,7 @@ struct CodableSettings: Codable {
         self.behavior_hapticLevel = settings.hapticLevel
         self.behavior_internetSpeed = settings.internetSpeed
         self.behavior_upvoteOnSave = settings.upvoteOnSave
+        self.behavior_autoplayMedia = settings.autoplayMedia
         self.comment_behaviors_collapseChildren = false
         self.comment_compact = settings.compactComments
         self.comment_defaultSort = settings.commentSort
@@ -189,6 +194,7 @@ struct CodableSettings: Codable {
         self.links_displayMode = "contextual"
         self.links_openInBrowser = settings.openLinksInBrowser
         self.links_readerMode = settings.openLinksInReaderMode
+        self.links_tappableLinksDisplayMode = settings.tappableLinksDisplayMode
         self.menus_allModActions = false
         self.menus_modActionGrouping = "none"
         self.post_defaultSort = settings.defaultPostSort

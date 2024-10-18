@@ -98,7 +98,7 @@ struct TileCommentView: View {
     
     var score: some View {
         Menu {
-            ForEach(comment.menuActions(), id: \.id) { action in
+            ForEach(comment.allMenuActions(), id: \.id) { action in
                 MenuButton(action: action)
             }
         } label: {

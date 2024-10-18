@@ -68,6 +68,33 @@ extension Interactable1Providing {
         }
     }
     
+    func toggleRemoved(reason: String?, feedback: Set<FeedbackType>) {
+        guard let self2 else {
+            print("DEBUG no self2 found in toggleRemoved!")
+            return
+        }
+        Task {
+            let initialValue = self2.removed
+            if feedback.contains(.haptic) {
+                await HapticManager.main.play(haptic: .success, priority: .low)
+            }
+            switch await self2.toggleRemoved(reason: reason).result.get() {
+            case .failed:
+                ToastModel.main.add(.failure(initialValue ? "Failed to remove content" : "Failed to restore content"))
+            default:
+                break
+            }
+        }
+    }
+    
+    func showRemoveSheet() {
+        guard let self2 else {
+            print("DEBUG no self2 found in toggleRemoved!")
+            return
+        }
+        NavigationModel.main.openSheet(.remove(self2))
+    }
+
     // MARK: Counters
     
     var upvoteCounter: Counter {
@@ -142,6 +169,14 @@ extension Interactable1Providing {
             appearance: .blockCreator(),
             confirmationPrompt: showConfirmation ? "Really block this user?" : nil,
             callback: api.canInteract ? { self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
+        )
+    }
+    
+    func removeAction(feedback: Set<FeedbackType> = []) -> BasicAction {
+        .init(
+            id: "remove\(uid)",
+            appearance: .remove(isOn: self2?.removed ?? false, isInProgress: !(self2?.removedManager.isInSync ?? true)),
+            callback: api.canInteract && (self2?.canModerate ?? false) ? showRemoveSheet : nil
         )
     }
     

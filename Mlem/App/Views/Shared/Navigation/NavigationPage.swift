@@ -35,6 +35,7 @@ enum NavigationPage: Hashable {
     case createComment(_ context: CommentEditorView.Context, commentTreeTracker: CommentTreeTracker? = nil)
     case editComment(_ comment: Comment2, context: CommentEditorView.Context?)
     case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
+    case remove(_ interactable: Interactable2HashWrapper)
     case createPost(
         community: AnyCommunity?,
         title: String,
@@ -187,6 +188,10 @@ enum NavigationPage: Hashable {
         return report(.init(wrappedValue: interactable), community: anyCommunity)
     }
     
+    static func remove(_ interactable: any Interactable2Providing) -> NavigationPage {
+        remove(.init(wrappedValue: interactable))
+    }
+    
     static func signUp(_ instance: any InstanceStubProviding) -> NavigationPage {
         signUp(.init(wrappedValue: instance))
     }
@@ -237,6 +242,18 @@ struct InstanceHashWrapper: Hashable {
     
     static func == (lhs: InstanceHashWrapper, rhs: InstanceHashWrapper) -> Bool {
         lhs.id == rhs.id
+    }
+}
+
+struct Interactable2HashWrapper: Hashable {
+    var wrappedValue: any Interactable2Providing
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(wrappedValue.hashValue)
+    }
+    
+    static func == (lhs: Interactable2HashWrapper, rhs: Interactable2HashWrapper) -> Bool {
+        lhs.hashValue == rhs.hashValue
     }
 }
 

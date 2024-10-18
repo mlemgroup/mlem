@@ -21,6 +21,7 @@ struct GeneralSettingsView: View {
     @Setting(\.quickSwipesEnabled) var swipeActionsEnabled
     @Setting(\.jumpButton) var jumpButton
     @Setting(\.markReadOnScroll) var markReadOnScroll
+    @Setting(\.autoplayMedia) var autoplayMedia
     @Setting(\.defaultFeed) var defaultFeed
     @Setting(\.sidebarVisibleByDefault) var sidebarVisibleByDefault
     @Setting(\.hapticLevel) var hapticLevel
@@ -54,6 +55,9 @@ struct GeneralSettingsView: View {
                 }
                 if UIDevice.isPad {
                     Toggle("Show Sidebar on App Launch", isOn: $sidebarVisibleByDefault)
+                }
+                if #available(iOS 18.0, *) {
+                    Toggle("Autoplay Media", isOn: $autoplayMedia)
                 }
                 Toggle("Mark Read on Scroll", isOn: $markReadOnScroll)
                 Toggle("Upvote on Save", isOn: $upvoteOnSave)

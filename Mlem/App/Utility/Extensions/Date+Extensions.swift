@@ -19,7 +19,8 @@ extension Date {
     // Returns strings like "5/10/2023"
     var dateString: String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "ddMMYY", options: 0, locale: Locale.current)
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .none
         return dateFormatter.string(from: self)
     }
     

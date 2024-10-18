@@ -34,10 +34,15 @@ struct ImportExportSettingsPage: View {
                 allowedContentTypes: [.json]
             ) { result in
                 do {
-                    let fileData = try Data(contentsOf: result.get(), options: .mappedIfSafe)
-                    let importedSettings = try JSONDecoder().decode(CodableSettings.self, from: fileData)
-                    Settings.main.reinit(from: importedSettings)
-                    ToastModel.main.add(.success("Imported Settings"))
+                    let fileUrl = try result.get()
+                    if let fileData = readSettings(from: fileUrl) {
+                        let importedSettings = try JSONDecoder().decode(CodableSettings.self, from: fileData)
+                        Settings.main.reinit(from: importedSettings)
+                        ToastModel.main.add(.success("Imported Settings"))
+                    } else {
+                        assertionFailure("Failed to import settings")
+                        ToastModel.main.add(.failure("Failed to Import Settings"))
+                    }
                 } catch {
                     handleError(error)
                 }
@@ -99,6 +104,24 @@ struct ImportExportSettingsPage: View {
                     }
                 }
             #endif
+        }
+    }
+    
+    func readSettings(from fileUrl: URL) -> Data? {
+        let accessing = fileUrl.startAccessingSecurityScopedResource()
+        
+        // ensure we relinquish access
+        defer {
+            if accessing {
+                fileUrl.stopAccessingSecurityScopedResource()
+            }
+        }
+        
+        do {
+            return try Data(contentsOf: fileUrl, options: .mappedIfSafe)
+        } catch {
+            handleError(error)
+            return nil
         }
     }
 }

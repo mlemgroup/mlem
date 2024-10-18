@@ -29,6 +29,7 @@ class Settings: ObservableObject {
     @AppStorage("behavior.hapticLevel") var hapticLevel: HapticPriority = .low
     @AppStorage("behavior.upvoteOnSave") var upvoteOnSave: Bool = false
     @AppStorage("behavior.internetSpeed") var internetSpeed: InternetSpeed = .fast
+    @AppStorage("behavior.autoplayMedia") var autoplayMedia: Bool = false
     
     @AppStorage("accounts.keepPlace") var keepPlaceOnAccountSwitch: Bool = false
     @AppStorage("accounts.sort") var accountSort: AccountSortMode = .name
@@ -46,6 +47,7 @@ class Settings: ObservableObject {
     
     @AppStorage("links.openInBrowser") var openLinksInBrowser = false
     @AppStorage("links.readerMode") var openLinksInReaderMode = false
+    @AppStorage("links.displayMode") var tappableLinksDisplayMode: TappableLinksDisplayMode = .contextual
     
     @AppStorage("feed.markReadOnScroll") var markReadOnScroll: Bool = false
     @AppStorage("feed.showRead") var showReadInFeed: Bool = true
@@ -116,6 +118,7 @@ class Settings: ObservableObject {
         showNsfwCommunityWarning = settings.safety_enableNsfwCommunityWarning
         openLinksInBrowser = settings.links_openInBrowser
         openLinksInReaderMode = settings.links_readerMode
+        tappableLinksDisplayMode = settings.links_tappableLinksDisplayMode
         markReadOnScroll = settings.feed_markReadOnScroll
         showReadInFeed = settings.feed_showRead
         defaultFeed = settings.feed_default
