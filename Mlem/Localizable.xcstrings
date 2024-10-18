@@ -186,6 +186,9 @@
     "Auto-Bypass Image Proxy" : {
 
     },
+    "Automatic" : {
+
+    },
     "Automatically enable Reader for supported webpages. You can only enable this when using the in-app browser." : {
 
     },
@@ -605,6 +608,9 @@
 
     },
     "I think I've found the bottom!" : {
+
+    },
+    "If set to \"Automatic\", the full URL will be hidden in compact comments." : {
 
     },
     "Image" : {
@@ -1120,6 +1126,9 @@
     "Show Details" : {
 
     },
+    "Show Full URL" : {
+
+    },
     "Show Mod Names in Modlog" : {
 
     },
@@ -1248,6 +1257,9 @@
 
     },
     "Tap to show slur filter regex." : {
+
+    },
+    "Tappable Links" : {
 
     },
     "Temporary" : {
