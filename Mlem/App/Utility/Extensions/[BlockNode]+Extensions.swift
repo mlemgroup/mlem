@@ -63,8 +63,8 @@ extension [BlockNode] {
                     isProbableRuleList = true
                     continue loop
                 }
-            case .bulletedList(isTight: _, items: let items, truncatedRows: _),
-                 .numberedList(isTight: _, start: _, items: let items, truncatedRows: _):
+            case .bulletedList(isTight: _, items: let items),
+                 .numberedList(isTight: _, start: _, items: let items):
                 if isProbableRuleList {
                     output.append(contentsOf: items.map(\.blocks))
                 }
