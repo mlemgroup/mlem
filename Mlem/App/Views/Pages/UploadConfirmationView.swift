@@ -13,9 +13,13 @@ struct UploadConfirmationView: View {
     @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
+    @Setting(\.confirmImageUploads) var confirmImageUploads
+    
     var imageData: Data
     var imageManager: ImageUploadManager
     var uploadApi: ApiClient
+    
+    @State var isUploading: Bool = false
     
     var prompt: String {
         if let host = uploadApi.host {
@@ -49,40 +53,55 @@ struct UploadConfirmationView: View {
             }
             VStack(spacing: 0) {
                 VStack(spacing: 16) {
-                    Text(prompt)
-                        .font(.largeTitle)
-                        .multilineTextAlignment(.center)
-//                        Toggle("Ask to confirm every time", isOn: $confirmImageUploads)
-//                            .controlSize(.mini)
-//                            .padding(.horizontal)
-                    Button {
-                        Task {
-                            do {
-                                try await imageManager?.upload(data: imageData, api: uploadApi)
-                            } catch {
-                                handleError(error)
-                            }
+                    if isUploading {
+                        VStack {
+                            Text("Uploading...")
+                            ProgressView()
                         }
-                    } label: {
-                        Text("Upload")
-                            .frame(maxWidth: .infinity)
+                        .font(.title3)
+                        .padding(.vertical, 100)
+                    } else {
+                        Text(prompt)
+                            .font(.largeTitle)
+                            .multilineTextAlignment(.center)
+                        Toggle("Ask to confirm every time", isOn: $confirmImageUploads)
+                            .controlSize(.mini)
+                            .padding(.horizontal)
+                        Button {
+                            Task { @MainActor in
+                                isUploading = true
+                                do {
+                                    try await imageManager.upload(data: imageData, api: uploadApi)
+                                    HapticManager.main.play(haptic: .success, priority: .low)
+                                    dismiss()
+                                } catch {
+                                    handleError(error)
+                                }
+                                isUploading = false
+                            }
+                        } label: {
+                            Text("Upload")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .controlSize(.large)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .buttonStyle(.borderedProminent)
+                        Button {
+                            dismiss()
+                        } label: {
+                            Text("Cancel")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .controlSize(.large)
+                        .buttonStyle(.bordered)
                     }
-                    .controlSize(.large)
-                    .buttonStyle(.borderedProminent)
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("Cancel")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .controlSize(.large)
-                    .buttonStyle(.bordered)
                 }
                 .padding(.top, 15)
                 .padding(.bottom, 20)
                 .background(palette.background)
             }
             .interactiveDismissDisabled()
+            .animation(.easeOut(duration: 0.1), value: isUploading)
         }
         .padding()
     }

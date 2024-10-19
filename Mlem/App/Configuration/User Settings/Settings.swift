@@ -30,6 +30,7 @@ class Settings: ObservableObject {
     @AppStorage("behavior.upvoteOnSave") var upvoteOnSave: Bool = false
     @AppStorage("behavior.internetSpeed") var internetSpeed: InternetSpeed = .fast
     @AppStorage("behavior.autoplayMedia") var autoplayMedia: Bool = false
+    @AppStorage("behavior.confirmImageUploads") var confirmImageUploads: Bool = true
     
     @AppStorage("accounts.keepPlace") var keepPlaceOnAccountSwitch: Bool = false
     @AppStorage("accounts.sort") var accountSort: AccountSortMode = .name
@@ -116,6 +117,7 @@ class Settings: ObservableObject {
         developerMode = settings.dev_developerMode
         blurNsfw = settings.safety_blurNsfw
         showNsfwCommunityWarning = settings.safety_enableNsfwCommunityWarning
+        confirmImageUploads = settings.behavior_confirmImageUploads
         openLinksInBrowser = settings.links_openInBrowser
         openLinksInReaderMode = settings.links_readerMode
         tappableLinksDisplayMode = settings.links_tappableLinksDisplayMode

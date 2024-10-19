@@ -177,6 +177,9 @@
     "Apply to All Interaction Bars" : {
 
     },
+    "Ask to confirm every time" : {
+
+    },
     "Authenticating..." : {
 
     },
@@ -320,6 +323,9 @@
 
     },
     "Confirm" : {
+
+    },
+    "Confirm Image Uploads" : {
 
     },
     "Confirm Password" : {
@@ -1190,6 +1196,9 @@
     "Some instances proxy images to protect your privacy. In certain cases, this causes image loading to fail. You can bypass the image proxy and load directly, but this will expose your IP address to the image host." : {
 
     },
+    "Something went wrong" : {
+
+    },
     "Sort" : {
 
     },
@@ -1445,7 +1454,13 @@
     "Unsubscribed" : {
 
     },
+    "Upload" : {
+
+    },
     "Upload an image..." : {
+
+    },
+    "Upload this image to %@?" : {
 
     },
     "Uploading..." : {
