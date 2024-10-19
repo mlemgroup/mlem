@@ -114,7 +114,10 @@ class NavigationLayer {
         model?.photosPickerCallback = { photo in
             Task {
                 do {
-                    try await imageUploadManager.uploadPhoto(photo, api: api)
+                    guard let data = try await photo.loadTransferable(type: Data.self) else {
+                        throw ApiClientError.unsuccessful
+                    }
+                    self.openSheet(.confirmUpload(imageData: data, imageManager: imageUploadManager, uploadApi: api))
                 } catch {
                     handleError(error)
                 }
