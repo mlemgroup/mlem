@@ -15,7 +15,7 @@ struct ProfileView: View {
     @Environment(NavigationLayer.self) var navigation
     
     var body: some View {
-        if let person = (appState.firstSession as? UserSession)?.person {
+        if let person = appState.firstPerson {
             PersonView(person: .init(person), isProfileTab: true)
         } else if let instance = appState.firstSession.instance {
             InstanceView(instance: instance)

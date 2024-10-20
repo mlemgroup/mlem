@@ -11,6 +11,9 @@ struct AccountSettingsView: View {
     @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
+    @Environment(\.dismiss) var dismiss
+    
+    @State private var showingSignOutConfirmation: Bool = false
     
     var body: some View {
         Form {
@@ -26,22 +29,58 @@ struct AccountSettingsView: View {
                 .foregroundStyle(palette.primary) // override default .secondary style
             }
             .textCase(nil) // override default all-caps
-            .listRowInsets(.init(top: 40, leading: 0, bottom: 0, trailing: 0))
+            .listRowInsets(.init(top: 10, leading: 0, bottom: 0, trailing: 0))
             
-            Section {
-                Button("Sign Out") {
-                    appState.firstAccount.signOut()
+            if appState.firstSession is UserSession {
+                Section {
+                    NavigationLink(
+                        "Sign-In & Security",
+                        systemImage: "key.fill",
+                        destination: .settings(.accountSignIn)
+                    )
+                    .tint(palette.colorfulAccent(2))
+                    NavigationLink(
+                        "Content & Notifications",
+                        systemImage: "list.bullet.rectangle.fill",
+                        destination: .settings(.accountGeneral)
+                    )
+                    .tint(palette.colorfulAccent(0))
+                    NavigationLink(
+                        "Advanced",
+                        systemImage: "gearshape.2.fill",
+                        destination: .settings(.accountAdvanced)
+                    )
+                    .tint(palette.neutralAccent)
                 }
             }
             
-            if let account = appState.firstAccount as? UserAccount {
+            Group {
                 Section {
-                    Button("Delete Account", role: .destructive) {
-                        navigation.openSheet(.deleteAccount(account))
+                    Button(signOutLabel) {
+                        appState.firstAccount.signOut()
+                    }
+                    .frame(maxWidth: .infinity)
+                    .confirmationDialog(signOutPrompt, isPresented: $showingSignOutConfirmation) {
+                        Button(signOutLabel, role: .destructive) {
+                            appState.firstAccount.signOut()
+                        }
+                    } message: {
+                        Text(signOutPrompt)
+                    }
+                }
+                
+                if let account = appState.firstAccount as? UserAccount {
+                    Section {
+                        Button("Delete Account", role: .destructive) {
+                            navigation.openSheet(.deleteAccount(account))
+                        }
+                        .frame(maxWidth: .infinity)
                     }
                 }
             }
+            .tint(palette.warning)
         }
+        .labelStyle(.squircle)
         .navigationTitle(Text("Account"))
     }
     
@@ -58,5 +97,17 @@ struct AccountSettingsView: View {
             return userAccount.person?.fullNameWithPrefix ?? "Loading..."
         }
         return appState.firstSession.instance?.name ?? "Loading..."
+    }
+    
+    var signOutLabel: String {
+        appState.firstAccount is UserAccount ? "Sign Out" : "Remove"
+    }
+    
+    var signOutPrompt: String {
+        if appState.firstAccount is UserAccount {
+            "Really sign out of \(appState.firstAccount.nickname)?"
+        } else {
+            "Really remove \(appState.firstAccount.nickname)?"
+        }
     }
 }

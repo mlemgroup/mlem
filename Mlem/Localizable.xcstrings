@@ -237,10 +237,16 @@
     "Bot Account" : {
 
     },
+    "Bot accounts are unable to vote." : {
+
+    },
     "Bottom" : {
 
     },
     "Cache" : {
+
+    },
+    "Cache Cleared" : {
 
     },
     "Cake Day" : {
@@ -326,6 +332,9 @@
 
     },
     "Connecting..." : {
+
+    },
+    "Content & Notifications" : {
 
     },
     "Continue" : {
@@ -829,6 +838,9 @@
     "Nothing to see here" : {
 
     },
+    "Notifications will be sent to %@." : {
+
+    },
     "Now" : {
 
     },
@@ -1099,6 +1111,9 @@
     "Send" : {
 
     },
+    "Send Notifications to Email" : {
+
+    },
     "Sent %@" : {
 
     },
@@ -1120,7 +1135,13 @@
     "Show" : {
 
     },
+    "Show Bot Accounts" : {
+
+    },
     "Show Community Avatar" : {
+
+    },
+    "Show content flagged as Not Safe For Work." : {
 
     },
     "Show Details" : {
@@ -1159,10 +1180,10 @@
     "Sign In to Lemmy" : {
 
     },
-    "Sign Out" : {
+    "Sign Up" : {
 
     },
-    "Sign Up" : {
+    "Sign-In & Security" : {
 
     },
     "Silver" : {
@@ -1533,6 +1554,9 @@
 
     },
     "You are required to provide an email on this instance." : {
+
+    },
+    "You don't have an email attached to this account." : {
 
     },
     "You don't have any accounts." : {
