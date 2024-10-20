@@ -8,16 +8,13 @@
 import SwiftUI
 
 struct AccountAdvancedSettingsView: View {
+    @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
     @State var isBot: Bool = false
     
     init() {
-        guard let session = AppState.main.firstSession as? UserSession else {
-            assertionFailure()
-            return
-        }
-        guard let person = session.person else { return }
+        guard let person = AppState.main.firstPerson else { return }
         _isBot = .init(wrappedValue: person.isBot)
     }
     
@@ -28,12 +25,11 @@ struct AccountAdvancedSettingsView: View {
                     .tint(palette.colorfulAccent(5))
                     .onChange(of: isBot) {
                         Task {
-                            guard let person = (AppState.main.firstSession as? UserSession)?.person else { return }
                             do {
-                                try await person.updateSettings(isBot: isBot)
+                                try await appState.firstPerson?.updateSettings(isBot: isBot)
                             } catch {
                                 handleError(error)
-                                isBot = person.isBot
+                                isBot = appState.firstPerson?.isBot ?? false
                             }
                         }
                     }

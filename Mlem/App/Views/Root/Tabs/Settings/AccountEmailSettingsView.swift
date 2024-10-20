@@ -17,16 +17,12 @@ struct AccountEmailSettingsView: View {
     @FocusState var isFocused
     
     init() {
-        guard let session = AppState.main.firstSession as? UserSession else {
-            assertionFailure()
-            return
-        }
-        guard let person = session.person else { return }
+        guard let person = AppState.main.firstPerson else { return }
         _email = .init(wrappedValue: person.email ?? "")
     }
     
     var showToolbarOptions: Bool {
-        email != (appState.firstSession as? UserSession)?.person?.email
+        email != appState.firstPerson?.email
     }
     
     var body: some View {
@@ -43,9 +39,7 @@ struct AccountEmailSettingsView: View {
             if showToolbarOptions {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Cancel") {
-                        if let session = AppState.main.firstSession as? UserSession {
-                            email = session.person?.email ?? ""
-                        }
+                        email = appState.firstPerson?.email ?? ""
                     }
                     .disabled(isSubmitting)
                 }
@@ -54,7 +48,9 @@ struct AccountEmailSettingsView: View {
                         ProgressView()
                     } else {
                         Button("Save") {
-                            submit()
+                            Task { @MainActor in
+                                await submit()
+                            }
                         }
                     }
                 }
@@ -62,17 +58,15 @@ struct AccountEmailSettingsView: View {
         }
     }
     
-    func submit() {
-        Task { @MainActor in
-            isSubmitting = true
-            guard let person = (AppState.main.firstSession as? UserSession)?.person else { return }
-            do {
-                try await person.updateSettings(email: email)
-            } catch {
-                handleError(error)
-                email = person.email ?? ""
-            }
-            isSubmitting = false
+    @MainActor
+    func submit() async {
+        isSubmitting = true
+        do {
+            try await appState.firstPerson?.updateSettings(email: email)
+        } catch {
+            handleError(error)
+            email = appState.firstPerson?.email ?? ""
         }
+        isSubmitting = false
     }
 }

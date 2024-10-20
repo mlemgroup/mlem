@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AccountSignInSettingsView: View {
+    @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
     var body: some View {
@@ -17,7 +18,7 @@ struct AccountSignInSettingsView: View {
                     HStack {
                         Text("Email")
                         Spacer()
-                        Text((AppState.main.firstSession as? UserSession)?.person?.email ?? "")
+                        Text(appState.firstPerson?.email ?? "")
                             .foregroundStyle(palette.secondary)
                     }
                 }
