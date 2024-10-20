@@ -18,6 +18,7 @@ class GuestAccount: Account {
     var cachedSiteVersion: SiteVersion?
     var avatar: URL?
     var lastUsed: Date?
+    let accountType: AccountType = .guest
     
     fileprivate init(url: URL) throws {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
