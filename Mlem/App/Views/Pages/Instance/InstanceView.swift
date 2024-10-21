@@ -41,6 +41,7 @@ struct InstanceView: View {
     // This is fetched from the instance itself, not from the logged-in account.
     @State var instance: any InstanceStubProviding
     @State var uptimeData: UptimeDataStatus?
+    @State var fediseerData: FediseerData?
     @State var upgradeState: LoadingState = .idle
     
     @State var selectedTab: Tab = .about
@@ -113,8 +114,9 @@ struct InstanceView: View {
                 uptimeTab(instance: instance)
                     .onAppear(perform: attemptToLoadUptimeData)
                     .onReceive(uptimeRefreshTimer) { _ in attemptToLoadUptimeData() }
-            default:
-                EmptyView()
+            case .safety:
+                safetyTab(instance: instance)
+                    .onAppear(perform: attemptToLoadFediseerData)
             }
         }
         .toolbar {
@@ -141,6 +143,16 @@ struct InstanceView: View {
             ErrorView(.init(error: error))
                 .padding(.top, 5)
         default:
+            ProgressView()
+                .padding(.top, 30)
+        }
+    }
+    
+    @ViewBuilder
+    func safetyTab(instance: any Instance) -> some View {
+        if let fediseerData {
+            InstanceSafetyView(instance: instance, fediseerData: fediseerData)
+        } else {
             ProgressView()
                 .padding(.top, 30)
         }

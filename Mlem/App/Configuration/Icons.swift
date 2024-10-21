@@ -266,6 +266,14 @@ enum Icons {
     static let logIn: String = "person.text.rectangle"
     static let signUp: String = "pencil.and.list.clipboard"
     
+    // fediseer
+    static let fediseer: String = "shield.checkered"
+    static let fediseerGuarantee: String = "checkmark.seal.fill"
+    static let fediseerUnguarantee: String = "xmark.seal.fill"
+    static let fediseerEndorsement: String = "signature"
+    static let fediseerHesitation: String = "exclamationmark.triangle.fill"
+    static let fediseerCensure: String = "exclamationmark.octagon.fill"
+    
     // misc
     static let `private`: String = "lock"
     static let email: String = "envelope"
