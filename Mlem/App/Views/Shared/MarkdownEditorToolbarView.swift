@@ -128,7 +128,7 @@ struct MarkdownEditorToolbarView: View {
                                 navigation.showFilePicker(for: imageManager, api: imageUploadApi)
                             }
                             Button("Paste", systemImage: Icons.paste) {
-                                Task { try await imageManager.pasteFromClipboard(api: imageUploadApi) }
+                                navigation.uploadImageFromClipboard(for: imageManager, api: imageUploadApi)
                             }
                         }
                         .disabled(imageManager.state != .idle)

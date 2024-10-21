@@ -114,7 +114,14 @@ class NavigationLayer {
         model?.photosPickerCallback = { photo in
             Task {
                 do {
-                    try await imageUploadManager.uploadPhoto(photo, api: api)
+                    guard let data = try await photo.loadTransferable(type: Data.self) else {
+                        throw ApiClientError.unsuccessful
+                    }
+                    if Settings.main.confirmImageUploads {
+                        self.openSheet(.confirmUpload(imageData: data, imageManager: imageUploadManager, uploadApi: api))
+                    } else {
+                        try await imageUploadManager.upload(data: data, api: api)
+                    }
                 } catch {
                     handleError(error)
                 }
@@ -127,10 +134,38 @@ class NavigationLayer {
         model?.filePickerCallback = { url in
             Task {
                 do {
-                    try await imageUploadManager.uploadFile(localUrl: url, api: api)
+                    guard url.startAccessingSecurityScopedResource() else {
+                        throw ApiClientError.insufficientPermissions
+                    }
+                    let data = try Data(contentsOf: url)
+                    url.stopAccessingSecurityScopedResource()
+                    if Settings.main.confirmImageUploads {
+                        self.openSheet(.confirmUpload(imageData: data, imageManager: imageUploadManager, uploadApi: api))
+                    } else {
+                        try await imageUploadManager.upload(data: data, api: api)
+                    }
                 } catch {
+                    url.stopAccessingSecurityScopedResource()
                     handleError(error)
                 }
+            }
+        }
+    }
+    
+    func uploadImageFromClipboard(for imageUploadManager: ImageUploadManager, api: ApiClient) {
+        Task {
+            do {
+                if UIPasteboard.general.hasImages, let content = UIPasteboard.general.image {
+                    if let data = content.pngData() {
+                        if Settings.main.confirmImageUploads {
+                            self.openSheet(.confirmUpload(imageData: data, imageManager: imageUploadManager, uploadApi: api))
+                        } else {
+                            try await imageUploadManager.upload(data: data, api: api)
+                        }
+                    }
+                }
+            } catch {
+                handleError(error)
             }
         }
     }
