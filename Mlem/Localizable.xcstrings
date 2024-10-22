@@ -37,6 +37,16 @@
     "%@ is " : {
 
     },
+    "%@ is guaranteed by %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ is guaranteed by %2$@."
+          }
+        }
+      }
+    },
     "%@ Read" : {
 
     },
@@ -91,6 +101,12 @@
 
     },
     "12 Hours" : {
+
+    },
+    "A censure signifies that an instance disapproves of another instance. Like an endorsement, it is completely subjective and a reason does not have to be given." : {
+
+    },
+    "A hesitation signifies that an instance mistrusts another instance. It is a milder version of a censure." : {
 
     },
     "About" : {
@@ -151,6 +167,9 @@
 
     },
     "Always Allow Direct Loading" : {
+
+    },
+    "An endorsement signifies that an instance approves of another instance. It is completely subjective, and a reason does not have to be given." : {
 
     },
     "Answer..." : {
@@ -256,6 +275,12 @@
 
     },
     "Captcha" : {
+
+    },
+    "Censured" : {
+
+    },
+    "Censures" : {
 
     },
     "Center" : {
@@ -458,6 +483,9 @@
     "Email Verification" : {
 
     },
+    "Endorsements" : {
+
+    },
     "Enter your instance's domain name below." : {
 
     },
@@ -550,6 +578,9 @@
         }
       }
     },
+    "Fediseer GUI" : {
+
+    },
     "Feed is outdated" : {
 
     },
@@ -580,6 +611,12 @@
     "Grouped" : {
 
     },
+    "Guaranteed" : {
+
+    },
+    "Guarantees" : {
+
+    },
     "Guest" : {
 
     },
@@ -596,6 +633,9 @@
 
     },
     "Headline" : {
+
+    },
+    "Hesitations" : {
 
     },
     "Hidden" : {
@@ -617,6 +657,9 @@
 
     },
     "I think I've found the bottom!" : {
+
+    },
+    "If an instance is \"guaranteed\", it is known as definitely not spam. Unguaranteed instances are not necessarily spam; rather, it is unknown whether a non-guaranteed instance is spam or not.\n\nAn instance can be guaranteed by any other guaranteed instance. This forms a chain of guaranteed instances known as the \"Chain of Trust\". The Chain of Trust starts at the Fediseer itself, which guarantees several of the largest instances.\n\nA guarantee can be revoked by the guarantor at any time. If an instance's guarantee is revoked, it returns to a \"not guaranteed\" state along with any instances it guarantees.\n\nOnce an instance has been guaranteed, it is able to express its approval or disapproval of other instances using endorsements, hesitations and censures." : {
 
     },
     "If set to \"Automatic\", the full URL will be hidden in compact comments." : {
@@ -695,6 +738,9 @@
 
     },
     "Large" : {
+
+    },
+    "Learn more..." : {
 
     },
     "Left" : {
@@ -832,7 +878,13 @@
     "No comments found" : {
 
     },
+    "No reason given" : {
+
+    },
     "None" : {
+
+    },
+    "Not Guaranteed" : {
 
     },
     "Nothing to see here" : {
@@ -1105,6 +1157,9 @@
     "Search for posts across Lemmy" : {
 
     },
+    "See All" : {
+
+    },
     "Select Text" : {
 
     },
@@ -1309,6 +1364,12 @@
         }
       }
     },
+    "The Fediseer" : {
+
+    },
+    "The Fediseer is a service that instance administrators use to identify spam instances and express their approval or disapproval of other instances." : {
+
+    },
     "The most recent outage was %@, and lasted for %@." : {
       "localizations" : {
         "en" : {
@@ -1351,6 +1412,12 @@
 
     },
     "This field is optional." : {
+
+    },
+    "This instance is not part of the Fediseer Chain of Trust." : {
+
+    },
+    "This instance is viewed very negatively by one or more trusted instances." : {
 
     },
     "This probably contains foul language." : {
