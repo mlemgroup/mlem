@@ -13,7 +13,12 @@ struct PaletteButton: ButtonStyle {
     @Environment(\.isEnabled) var isEnabled
     
     func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .foregroundStyle(isEnabled ? palette.accent : palette.secondary)
+        if isEnabled {
+            configuration.label
+                .foregroundStyle(.tint)
+        } else {
+            configuration.label
+                .foregroundStyle(palette.secondary)
+        }
     }
 }
