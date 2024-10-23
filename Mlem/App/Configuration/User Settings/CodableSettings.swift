@@ -170,7 +170,7 @@ struct CodableSettings: Codable {
         self.appearance_showSettingsIcons = true
         self.markdown_wrapCodeBlockLines = settings.wrapCodeBlockLines
         self.behavior_biometricUnlock = false
-        self.behavior_confirmImageUploads = true
+        self.behavior_confirmImageUploads = settings.confirmImageUploads
         self.behavior_enableQuickSwipes = settings.quickSwipesEnabled
         self.behavior_hapticLevel = settings.hapticLevel
         self.behavior_internetSpeed = settings.internetSpeed
