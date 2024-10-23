@@ -19,7 +19,7 @@ struct SubscriptionListView: View {
     @State var noDetail: Bool = false
     
     var feedOptions: [FeedSelection] {
-        appState.firstAccount is UserAccount ? FeedSelection.allCases : FeedSelection.guestCases
+        FeedSelection.cases(for: appState.firstAccount.accountType)
     }
     
     var body: some View {

@@ -111,6 +111,7 @@ class AppState {
     var firstSession: any Session { activeSessions.first ?? guestSession }
     var firstAccount: any Account { firstSession.account }
     var firstApi: ApiClient { firstSession.api }
+    var firstPerson: Person4? { (firstSession as? UserSession)?.person }
     
     func accountThatModerates(actorId: URL) -> UserSession? {
         activeSessions.first(where: { session in

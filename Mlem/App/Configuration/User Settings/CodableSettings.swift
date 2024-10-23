@@ -21,6 +21,7 @@ struct CodableSettings: Codable {
     var appearance_interfaceStyle: UIUserInterfaceStyle
     var appearance_palette: PaletteOption
     var appearance_showSettingsIcons: Bool
+    var markdown_wrapCodeBlockLines: Bool
     var behavior_biometricUnlock: Bool
     var behavior_confirmImageUploads: Bool
     var behavior_enableQuickSwipes: Bool
@@ -93,6 +94,7 @@ struct CodableSettings: Codable {
         self.appearance_interfaceStyle = try container.decodeIfPresent(UIUserInterfaceStyle.self, forKey: .appearance_interfaceStyle) ?? .unspecified
         self.appearance_palette = try container.decodeIfPresent(PaletteOption.self, forKey: .appearance_palette) ?? .standard
         self.appearance_showSettingsIcons = try container.decodeIfPresent(Bool.self, forKey: .appearance_showSettingsIcons) ?? true
+        self.markdown_wrapCodeBlockLines = try container.decodeIfPresent(Bool.self, forKey: .markdown_wrapCodeBlockLines) ?? true
         self.behavior_biometricUnlock = try container.decodeIfPresent(Bool.self, forKey: .behavior_biometricUnlock) ?? false
         self.behavior_confirmImageUploads = try container.decodeIfPresent(Bool.self, forKey: .behavior_confirmImageUploads) ?? true
         self.behavior_enableQuickSwipes = try container.decodeIfPresent(Bool.self, forKey: .behavior_enableQuickSwipes) ?? true
@@ -166,6 +168,7 @@ struct CodableSettings: Codable {
         self.appearance_interfaceStyle = settings.interfaceStyle
         self.appearance_palette = settings.colorPalette
         self.appearance_showSettingsIcons = true
+        self.markdown_wrapCodeBlockLines = settings.wrapCodeBlockLines
         self.behavior_biometricUnlock = false
         self.behavior_confirmImageUploads = settings.confirmImageUploads
         self.behavior_enableQuickSwipes = settings.quickSwipesEnabled

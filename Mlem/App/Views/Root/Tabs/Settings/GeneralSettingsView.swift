@@ -26,6 +26,7 @@ struct GeneralSettingsView: View {
     @Setting(\.sidebarVisibleByDefault) var sidebarVisibleByDefault
     @Setting(\.confirmImageUploads) var confirmImageUploads
     @Setting(\.hapticLevel) var hapticLevel
+    @Setting(\.wrapCodeBlockLines) var wrapCodeBlockLines
     
     var body: some View {
         Form {
@@ -74,6 +75,7 @@ struct GeneralSettingsView: View {
                         Text(item.label)
                     }
                 }
+                Toggle("Wrap Code Block Lines", isOn: $wrapCodeBlockLines)
             } header: {
                 Text("Behavior")
             }

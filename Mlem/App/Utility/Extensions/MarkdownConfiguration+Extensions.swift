@@ -10,36 +10,48 @@ import Nuke
 import SwiftUI
 
 extension MarkdownConfiguration {
-    static let defaultBlurred: Self = .init(
+    static var defaultBlurred: MarkdownConfiguration { .init(
         inlineImageLoader: loadInlineImage,
         imageBlockView: {
             imageView($0, shouldBlur: true)
         },
-        primaryColor: Palette.main.primary,
-        secondaryColor: Palette.main.secondary
-    )
-    
-    static let `default`: Self = .init(
-        inlineImageLoader: loadInlineImage,
-        imageBlockView: { imageView($0, shouldBlur: false) },
-        primaryColor: Palette.main.primary,
-        secondaryColor: Palette.main.secondary
-    )
-    
-    static let dimmed: Self = .init(
-        inlineImageLoader: { _ in },
-        imageBlockView: { imageView($0, shouldBlur: false) },
-        primaryColor: Palette.main.secondary,
-        secondaryColor: Palette.main.tertiary
-    )
-    
-    static let caption: Self = .init(
-        inlineImageLoader: { _ in },
-        imageBlockView: { imageView($0, shouldBlur: false) },
+        wrapCodeBlockLines: Settings.main.wrapCodeBlockLines,
         primaryColor: Palette.main.primary,
         secondaryColor: Palette.main.secondary,
-        font: .caption1
-    )
+        codeBackgroundColor: Palette.main.tertiaryGroupedBackground,
+        codeFontScaleFactor: 0.9
+    ) }
+    
+    static var `default`: MarkdownConfiguration { .init(
+        inlineImageLoader: loadInlineImage,
+        imageBlockView: { imageView($0, shouldBlur: false) },
+        wrapCodeBlockLines: Settings.main.wrapCodeBlockLines,
+        primaryColor: Palette.main.primary,
+        secondaryColor: Palette.main.secondary,
+        codeBackgroundColor: Palette.main.tertiaryGroupedBackground,
+        codeFontScaleFactor: 0.9
+    ) }
+    
+    static var dimmed: MarkdownConfiguration { .init(
+        inlineImageLoader: { _ in },
+        imageBlockView: { imageView($0, shouldBlur: false) },
+        wrapCodeBlockLines: Settings.main.wrapCodeBlockLines,
+        primaryColor: Palette.main.secondary,
+        secondaryColor: Palette.main.tertiary,
+        codeBackgroundColor: Palette.main.tertiaryGroupedBackground,
+        codeFontScaleFactor: 0.9
+    ) }
+    
+    static var caption: MarkdownConfiguration { .init(
+        inlineImageLoader: { _ in },
+        imageBlockView: { imageView($0, shouldBlur: false) },
+        wrapCodeBlockLines: Settings.main.wrapCodeBlockLines,
+        primaryColor: Palette.main.primary,
+        secondaryColor: Palette.main.secondary,
+        codeBackgroundColor: Palette.main.tertiaryGroupedBackground,
+        font: .caption1,
+        codeFontScaleFactor: 0.9
+    ) }
 }
 
 private func imageView(_ inlineImage: InlineImage, shouldBlur: Bool) -> AnyView {

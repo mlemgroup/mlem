@@ -13,6 +13,7 @@ extension InstanceView {
         if instance.canFetchUptime {
             output.append(.uptime)
         }
+        output.append(.safety)
         return output
     }
     
@@ -26,6 +27,56 @@ extension InstanceView {
                     DispatchQueue.main.async {
                         withAnimation(.easeOut(duration: 0.2)) {
                             self.uptimeData = .success(uptimeData)
+                        }
+                    }
+                } catch {
+                    handleError(error)
+                }
+            }
+        }
+    }
+    
+    func attemptToLoadFediseerData() {
+        if fediseerData == nil, let host = instance.host {
+            Task {
+                do {
+                    guard let instanceURL = URL(string: "https://fediseer.com/api/v1/whitelist/\(host)") else { return }
+                    async let instanceData = try await URLSession.shared.data(from: instanceURL).0
+                    
+                    async let endorsementsData = try await URLSession.shared.data(
+                        from: URL(string: "https://fediseer.com/api/v1/endorsements/\(host)")!
+                    ).0
+                    
+                    async let hesitationsData = try await URLSession.shared.data(
+                        from: URL(string: "https://fediseer.com/api/v1/hesitations/\(host)")!
+                    ).0
+                    
+                    async let censuresData = try await URLSession.shared.data(
+                        from: URL(string: "https://fediseer.com/api/v1/censures/\(host)")!
+                    ).0
+                    
+                    let fediseerData = try await FediseerData(
+                        instance: JSONDecoder.defaultDecoder.decode(
+                            FediseerInstance.self,
+                            from: instanceData
+                        ),
+                        endorsements: JSONDecoder.defaultDecoder.decode(
+                            FediseerEndorsements.self,
+                            from: endorsementsData
+                        ).instances,
+                        hesitations: JSONDecoder.defaultDecoder.decode(
+                            FediseerHesitations.self,
+                            from: hesitationsData
+                        ).instances,
+                        censures: JSONDecoder.defaultDecoder.decode(
+                            FediseerCensures.self,
+                            from: censuresData
+                        ).instances
+                    )
+                    
+                    Task { @MainActor in
+                        withAnimation(.easeOut(duration: 0.2)) {
+                            self.fediseerData = fediseerData
                         }
                     }
                 } catch {

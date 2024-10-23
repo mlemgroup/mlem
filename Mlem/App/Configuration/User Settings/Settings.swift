@@ -39,6 +39,8 @@ class Settings: ObservableObject {
     @AppStorage("appearance.interfaceStyle") var interfaceStyle: UIUserInterfaceStyle = .unspecified
     @AppStorage("appearance.palette") var colorPalette: PaletteOption = .standard
     
+    @AppStorage("markdown.wrapCodeBlockLines") var wrapCodeBlockLines: Bool = true
+    
     @AppStorage("dev.developerMode") var developerMode: Bool = false
     
     @AppStorage("safety.blurNsfw") var blurNsfw: NsfwBlurBehavior = .always
@@ -114,6 +116,7 @@ class Settings: ObservableObject {
         groupAccountSort = settings.accounts_grouped
         interfaceStyle = settings.appearance_interfaceStyle
         colorPalette = settings.appearance_palette
+        wrapCodeBlockLines = settings.markdown_wrapCodeBlockLines
         developerMode = settings.dev_developerMode
         blurNsfw = settings.safety_blurNsfw
         showNsfwCommunityWarning = settings.safety_enableNsfwCommunityWarning
