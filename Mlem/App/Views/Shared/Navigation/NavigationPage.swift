@@ -25,6 +25,8 @@ enum NavigationPage: Hashable {
     case community(_ community: AnyCommunity)
     case person(_ person: AnyPerson)
     case instance(_ instance: InstanceHashWrapper)
+    case instanceOpinionList(instance: InstanceHashWrapper, opinionType: FediseerOpinionType, data: FediseerData)
+    case fediseerInfo
     case externalApiInfo(api: ApiClient, actorId: URL)
     case imageViewer(_ url: URL)
     case communityPicker(api: ApiClient?, callback: HashWrapper<(Community2, NavigationLayer) -> Void>)
@@ -46,6 +48,7 @@ enum NavigationPage: Hashable {
     case editPost(_ post: Post2)
     case deleteAccount(_ account: UserAccount)
     case bypassImageProxy(callback: HashWrapper<() -> Void>)
+    case confirmUpload(imageData: Data, imageManager: ImageUploadManager, uploadApi: ApiClient)
     
     static func post(_ post: any PostStubProviding, scrollTargetedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
         if let scrollTargetedComment {
@@ -81,6 +84,18 @@ enum NavigationPage: Hashable {
 
     static func instance(_ instance: any InstanceStubProviding) -> NavigationPage {
         Self.instance(.init(wrappedValue: instance))
+    }
+    
+    static func instanceOpinionList(
+        _ instance: any InstanceStubProviding,
+        opinionType: FediseerOpinionType,
+        data: FediseerData
+    ) -> NavigationPage {
+        instanceOpinionList(
+            instance: .init(wrappedValue: instance),
+            opinionType: opinionType,
+            data: data
+        )
     }
     
     static func instance(hostOf entity: any ActorIdentifiable) -> NavigationPage {

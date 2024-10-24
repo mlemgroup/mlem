@@ -128,10 +128,16 @@ extension NavigationPage {
             }
         case let .instance(instance):
             InstanceView(instance: instance.wrappedValue)
+        case let .instanceOpinionList(instance: instance, opinionType: opinionType, data: data):
+            FediseerOpinionListView(instance: instance.wrappedValue, opinionType: opinionType, fediseerData: data)
+        case .fediseerInfo:
+            FediseerInfoView()
         case let .deleteAccount(account):
             DeleteAccountView(account: account)
         case let .bypassImageProxy(callback):
             BypassProxyWarningSheet(callback: callback.wrappedValue)
+        case let .confirmUpload(imageData: imageData, imageManager: imageManager, uploadApi: uploadApi):
+            UploadConfirmationView(imageData: imageData, imageManager: imageManager, uploadApi: uploadApi)
         }
     }
 }
