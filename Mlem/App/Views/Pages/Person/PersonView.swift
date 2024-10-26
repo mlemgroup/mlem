@@ -168,6 +168,7 @@ struct PersonView: View {
         } else {
             dateLabel(person: person)
                 .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.bottom, Constants.main.halfSpacing)
         }
     }
     
@@ -175,7 +176,6 @@ struct PersonView: View {
     func dateLabel(person: any Person) -> some View {
         ProfileDateView(profilable: person)
             .padding(.horizontal, Constants.main.standardSpacing)
-            .padding(.vertical, 2)
     }
     
     @ViewBuilder
