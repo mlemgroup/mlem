@@ -82,16 +82,9 @@ struct GeneralSettingsView: View {
             
             Section("Gestures") {
                 Toggle("Swipe Actions", isOn: $swipeActionsEnabled)
-                    .onChange(of: swipeActionsEnabled) {
-                        if swipeActionsEnabled {
-                            swipeAnywhereToNavigate = false
-                        }
-                    }
-                Toggle("Swipe Anywhere to Navigate", isOn: .init(
-                    get: { !swipeActionsEnabled && swipeAnywhereToNavigate },
-                    set: { swipeAnywhereToNavigate = $0 }
-                ))
-                .disabled(swipeActionsEnabled)
+                    .disabled(swipeAnywhereToNavigate)
+                Toggle("Swipe Anywhere to Navigate", isOn: $swipeAnywhereToNavigate)
+                    .disabled(swipeActionsEnabled)
             }
             
             NavigationLink("Import/Export Settings", destination: .settings(.importExportSettings))
