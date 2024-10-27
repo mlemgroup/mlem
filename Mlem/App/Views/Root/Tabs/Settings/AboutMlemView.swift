@@ -22,18 +22,22 @@ struct AboutMlemView: View {
             Section {
                 Link(destination: URL(string: "https://mlem.group")!) {
                     FormChevron { Label("Website", systemImage: Icons.websiteIcon) }
+                        .foregroundStyle(palette.primary)
                 }
                 .tint(palette.colorfulAccent(2))
                 Link(destination: URL(string: "https://lemmy.ml/c/mlemapp")!) {
                     FormChevron { Label("Lemmy Community", systemImage: Icons.communityFill) }
+                        .foregroundStyle(palette.primary)
                 }
                 .tint(palette.colorfulAccent(3))
                 Link(destination: URL(string: "https://matrix.to/#/#mlemappspace:matrix.org")!) {
                     FormChevron { Label("Matrix Room", image: "matrix.logo") }
+                        .foregroundStyle(palette.primary)
                 }
                 .tint(.black) // non-palette because white tint turns this into white square
                 Link(destination: URL(string: "https://github.com/mlemgroup/mlem")!) {
                     FormChevron { Label("GitHub Repository", image: "github.logo") }
+                        .foregroundStyle(palette.primary)
                 }
                 .tint(.black) // non-palette because white tint turns this into white square
             }
