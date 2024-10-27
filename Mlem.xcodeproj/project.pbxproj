@@ -201,6 +201,7 @@
 		03AFD0E52C3C14D50054B8AD /* InstanceStubProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFD0E42C3C14D50054B8AD /* InstanceStubProviding+Extensions.swift */; };
 		03B04FC02C5FC32300824128 /* SimpleAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B04FBF2C5FC32300824128 /* SimpleAvatarView.swift */; };
 		03B0EB6F2C87827A00F79FDF /* ExpandedPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B0EB6E2C87827A00F79FDF /* ExpandedPostView.swift */; };
+		03B25B3B2CC44FFF00EB6DF5 /* UploadConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B25B3A2CC44FFF00EB6DF5 /* UploadConfirmationView.swift */; };
 		03B25B2F2CC43F8600EB6DF5 /* InstanceSafetyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B25B2E2CC43F8600EB6DF5 /* InstanceSafetyView.swift */; };
 		03B25B312CC4403500EB6DF5 /* Fediseer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B25B302CC4403500EB6DF5 /* Fediseer.swift */; };
 		03B25B332CC440A600EB6DF5 /* FediseerOpinionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B25B322CC440A600EB6DF5 /* FediseerOpinionView.swift */; };
@@ -605,6 +606,7 @@
 		03AFD0E42C3C14D50054B8AD /* InstanceStubProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InstanceStubProviding+Extensions.swift"; sourceTree = "<group>"; };
 		03B04FBF2C5FC32300824128 /* SimpleAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleAvatarView.swift; sourceTree = "<group>"; };
 		03B0EB6E2C87827A00F79FDF /* ExpandedPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedPostView.swift; sourceTree = "<group>"; };
+		03B25B3A2CC44FFF00EB6DF5 /* UploadConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadConfirmationView.swift; sourceTree = "<group>"; };
 		03B25B2E2CC43F8600EB6DF5 /* InstanceSafetyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceSafetyView.swift; sourceTree = "<group>"; };
 		03B25B302CC4403500EB6DF5 /* Fediseer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fediseer.swift; sourceTree = "<group>"; };
 		03B25B322CC440A600EB6DF5 /* FediseerOpinionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FediseerOpinionView.swift; sourceTree = "<group>"; };
@@ -1075,6 +1077,7 @@
 				0397D4792C693444002C6CDC /* ReportEditorView.swift */,
 				038028FC2CB72A2A0091A8A2 /* ContentRemovalEditorView.swift */,
 				CDD99C3B2C73F3FF0010367F /* DeleteAccountView.swift */,
+				03B25B3A2CC44FFF00EB6DF5 /* UploadConfirmationView.swift */,
 			);
 			name = Pages;
 			path = Mlem/App/Views/Pages;
@@ -2413,6 +2416,7 @@
 				0355F9462C150B2300605248 /* ExternalApiInfoView.swift in Sources */,
 				CD13CC612C5D262E001AF428 /* MediaLoadingState.swift in Sources */,
 				03CBD1932C61369A00E870BC /* Interactable2Providing+Extensions.swift in Sources */,
+				03B25B3B2CC44FFF00EB6DF5 /* UploadConfirmationView.swift in Sources */,
 				CDD99C3C2C73F3FF0010367F /* DeleteAccountView.swift in Sources */,
 				CD9CFA302C2E22F600739BBC /* FeedDescription.swift in Sources */,
 				6363D5C527EE196700E34822 /* MlemApp.swift in Sources */,

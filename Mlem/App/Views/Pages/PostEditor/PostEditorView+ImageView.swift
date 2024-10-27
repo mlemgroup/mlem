@@ -96,13 +96,8 @@ extension PostEditorView {
                     navigation.showFilePicker(for: imageManager, api: primaryApi)
                 }
                 Button("Paste", systemImage: Icons.paste) {
-                    Task {
-                        do {
-                            try await imageManager?.pasteFromClipboard(api: primaryApi)
-                        } catch {
-                            handleError(error)
-                        }
-                    }
+                    guard let imageManager else { return }
+                    navigation.uploadImageFromClipboard(for: imageManager, api: primaryApi)
                 }
             }
             .font(.subheadline)

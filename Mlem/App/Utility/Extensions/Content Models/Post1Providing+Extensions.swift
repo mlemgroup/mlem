@@ -227,6 +227,7 @@ extension Post1Providing {
         case .upvote: upvoteReadout
         case .downvote: downvoteReadout
         case .comment: commentReadout
+        case .saved: savedReadout
         }
     }
     

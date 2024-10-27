@@ -23,6 +23,7 @@ struct GeneralSettingsView: View {
     @Setting(\.autoplayMedia) var autoplayMedia
     @Setting(\.defaultFeed) var defaultFeed
     @Setting(\.sidebarVisibleByDefault) var sidebarVisibleByDefault
+    @Setting(\.confirmImageUploads) var confirmImageUploads
     @Setting(\.hapticLevel) var hapticLevel
     @Setting(\.wrapCodeBlockLines) var wrapCodeBlockLines
     
@@ -70,6 +71,7 @@ struct GeneralSettingsView: View {
                         Text(item.label)
                     }
                 }
+                Toggle("Confirm Image Uploads", isOn: $confirmImageUploads)
                 Picker("Haptic Level", selection: $hapticLevel) {
                     ForEach(HapticPriority.allCases, id: \.self) { item in
                         Text(item.label)

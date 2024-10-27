@@ -249,4 +249,14 @@ extension Interactable1Providing {
             valueColor: Palette.main.positive
         )
     }
+    
+    var savedReadout: Readout {
+        let isOn = saved_ ?? false
+        return .init(
+            id: "saved\(uid)",
+            label: nil,
+            icon: isOn ? Icons.saveFill : Icons.save,
+            color: isOn ? Palette.main.save : nil
+        )
+    }
 }
