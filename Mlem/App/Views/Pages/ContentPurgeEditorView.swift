@@ -13,16 +13,16 @@ struct ContentPurgeEditorView: View {
     @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
-    let target: any Interactable2Providing
+    let target: any PurgableProviding
     
-    @State var community: any Community
+    @State var community: (any Community)?
     @State var reason: String = ""
     @FocusState var reasonFocused: Bool
     @State var presentationSelection: PresentationDetent = .large
     
-    init(target: any Interactable2Providing) {
+    init(target: any PurgableProviding) {
         self.target = target
-        self._community = .init(wrappedValue: target.community)
+        self._community = .init(wrappedValue: (target as? any Interactable2Providing)?.community)
     }
 
     var body: some View {
@@ -54,12 +54,12 @@ struct ContentPurgeEditorView: View {
     }
     
     func send() async {
-        switch await target.toggleRemoved(reason: reason).result.get() {
-        case .succeeded:
+        do {
+            try await target.purge(reason: reason.isEmpty ? nil : reason)
             HapticManager.main.play(haptic: .success, priority: .low)
             dismiss()
-        default:
-            ToastModel.main.add(.failure())
+        } catch {
+            handleError(error)
         }
     }
 }

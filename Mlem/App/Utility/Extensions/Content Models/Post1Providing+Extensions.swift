@@ -179,6 +179,11 @@ extension Post1Providing {
         if let self2, !isOwnPost {
             self2.removeAction()
         }
+        if api.isAdmin {
+            if let purgable = self as? any PurgableProviding {
+                purgable.purgeAction()
+            }
+        }
     }
     
     // swiftlint:disable:next cyclomatic_complexity
