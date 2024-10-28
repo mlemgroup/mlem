@@ -29,8 +29,17 @@ struct ContentPurgeEditorView: View {
         CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: reason.isEmpty) {
             NavigationStack {
                 Form {
-                    TextField("Reason (Optional)", text: $reason, axis: .vertical)
-                        .focused($reasonFocused)
+                    Section {
+                        WarningView(
+                            iconName: Icons.purge,
+                            text: "Purged content is erased from the database and cannot be restored.",
+                            inList: true
+                        )
+                    }
+                    Section {
+                        TextField("Reason (Optional)", text: $reason, axis: .vertical)
+                            .focused($reasonFocused)
+                    }
                     ReasonPickerView(reason: $reason, community: community)
                 }
                 .scrollDismissesKeyboard(.interactively)
