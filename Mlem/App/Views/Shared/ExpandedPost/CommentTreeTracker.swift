@@ -103,7 +103,7 @@ class CommentTreeTracker: Hashable {
             if let first = newComments.first, first.api != root.wrappedValue.api {
                 resolveCommentTree(comments: newComments)
             } else {
-                buildCommentTree(comments: newComments)
+                await buildCommentTree(comments: newComments)
             }
             loadingState = .done
             errorDetails = nil
@@ -145,17 +145,35 @@ class CommentTreeTracker: Hashable {
         }
     }
     
-    private func buildCommentTree(comments newComments: [Comment2]) {
+    private func buildCommentTree(comments newComments: [Comment2]) async {
         var output: [CommentWrapper] = []
         var commentsKeyedById: [Int: CommentWrapper] = [:]
         var commentsKeyedByActorId: [URL: CommentWrapper] = [:]
         
-        for comment in newComments {
+        // From 0.19.0 onwards, a comment's parent is guaranteed to precede it in the array.
+        //
+        // In 0.18.x versions, this isn't always the case - sometimes the parent can come after
+        // the child. To solve this, we sort the comments by depth before processing them on
+        // 0.18.x instances. In super large comment threads where some comments are hidden under
+        // "More replies", comments may be included that don't have a parent *anywhere* in the
+        // list! There's nothing we can do in that circumstance, so those comments are ignored
+        // entirely.
+        
+        var sortedComments: [Comment2]
+        if let version = try? await newComments.first?.api.version, version < .v19_0 {
+            sortedComments = newComments.sorted { $0.depth < $1.depth }
+        } else {
+            sortedComments = newComments
+        }
+        
+        for comment in sortedComments {
             let wrapper: CommentWrapper = .init(comment)
             commentsKeyedById[comment.id] = wrapper
             commentsKeyedByActorId[comment.actorId] = wrapper
             if let parentId = comment.parentCommentIds.last, comment.depth > root.depth {
-                commentsKeyedById[parentId]?.addChild(wrapper)
+                if let parent = commentsKeyedById[parentId] {
+                    parent.addChild(wrapper)
+                }
             } else {
                 output.append(wrapper)
             }
