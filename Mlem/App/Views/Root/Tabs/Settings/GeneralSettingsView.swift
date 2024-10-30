@@ -18,7 +18,6 @@ struct GeneralSettingsView: View {
     
     // behavior
     @Setting(\.upvoteOnSave) var upvoteOnSave
-    @Setting(\.quickSwipesEnabled) var swipeActionsEnabled
     @Setting(\.jumpButton) var jumpButton
     @Setting(\.markReadOnScroll) var markReadOnScroll
     @Setting(\.autoplayMedia) var autoplayMedia
@@ -27,6 +26,10 @@ struct GeneralSettingsView: View {
     @Setting(\.confirmImageUploads) var confirmImageUploads
     @Setting(\.hapticLevel) var hapticLevel
     @Setting(\.wrapCodeBlockLines) var wrapCodeBlockLines
+    
+    // Gestures
+    @Setting(\.quickSwipesEnabled) var swipeActionsEnabled
+    @Setting(\.swipeAnywhereToNavigate) var swipeAnywhereToNavigate
     
     var body: some View {
         Form {
@@ -63,7 +66,6 @@ struct GeneralSettingsView: View {
                 }
                 Toggle("Mark Read on Scroll", isOn: $markReadOnScroll)
                 Toggle("Upvote on Save", isOn: $upvoteOnSave)
-                Toggle("Swipe Actions", isOn: $swipeActionsEnabled)
                 Picker("Jump Button", selection: $jumpButton) {
                     ForEach(CommentJumpButtonLocation.allCases, id: \.self) { item in
                         Text(item.label)
@@ -78,6 +80,33 @@ struct GeneralSettingsView: View {
                 Toggle("Wrap Code Block Lines", isOn: $wrapCodeBlockLines)
             } header: {
                 Text("Behavior")
+            }
+            
+            Section("Gestures") {
+                Toggle(
+                    "Swipe Actions",
+                    isOn: .init(
+                        get: { swipeActionsEnabled },
+                        set: {
+                            swipeActionsEnabled = $0
+                            if $0 {
+                                swipeAnywhereToNavigate = false
+                            }
+                        }
+                    )
+                )
+                Toggle(
+                    "Swipe Anywhere to Navigate",
+                    isOn: .init(
+                        get: { swipeAnywhereToNavigate },
+                        set: {
+                            swipeAnywhereToNavigate = $0
+                            if $0 {
+                                swipeActionsEnabled = false
+                            }
+                        }
+                    )
+                )
             }
             
             NavigationLink("Import/Export Settings", destination: .settings(.importExportSettings))
