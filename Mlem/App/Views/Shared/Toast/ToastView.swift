@@ -63,13 +63,7 @@ struct ToastView: View {
             case let .error(details):
                 errorView(details)
             case let .loading(title):
-                HStack {
-                    ProgressView()
-                        .tint(palette.secondary)
-                        .padding(.leading)
-                    Text(title)
-                        .padding(.horizontal, 30)
-                }
+                loadingView(title)
             case let .account(account):
                 accountView(account)
             }
@@ -190,6 +184,20 @@ struct ToastView: View {
             }
         }
         .buttonStyle(.empty)
+    }
+    
+    @ViewBuilder
+    func loadingView(_ title: String) -> some View {
+        HStack(spacing: Constants.main.doubleSpacing) {
+            ProgressView()
+                .tint(palette.secondary)
+                .frame(width: 22, height: 22)
+                .padding([.vertical, .leading], Constants.main.standardSpacing)
+            Text(title)
+                .frame(minWidth: 80)
+                .padding(.trailing, Constants.main.doubleSpacing)
+        }
+        .frame(minWidth: 152)
     }
     
     @ViewBuilder
