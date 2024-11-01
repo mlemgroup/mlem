@@ -156,13 +156,13 @@ class CommentTreeTracker: Hashable {
         // the child. As the tree-building logic relies on correct comment order, we need to sort
         // the comments by depth before processing them.
         //
-        // In super large comment threads where some comments are hidden under "More replies",
-        // comments may be included that don't have a parent *anywhere* in the list! There's
-        // nothing we can do in that circumstance, so those comments are ignored entirely. I'm
-        // not sure under what circumstances this happens. Going to the parent comment on lemmy-ui
-        // loads the comment just fine, but neither the "Show context" nor "Show replies" buttons
-        // work. This issue could be related to Lemmy 0.18, or maybe Beehaw's database is broken
-        // somehow. Comment example: https://beehaw.org/comment/4033679
+        // Also on 0.18.x, in super large comment threads where some comments are hidden under
+        // "More replies", comments may be included that don't have a parent *anywhere* in the
+        // list! There's nothing we can do in that circumstance, so those comments are ignored
+        // entirely. I'm not sure under what circumstances this happens. Going to the parent comment
+        // on lemmy-ui loads the comment just fine, but neither the "Show context" nor "Show replies"
+        // buttons work. This issue could be related to Lemmy 0.18, or maybe Beehaw's database is
+        // broken somehow. Comment example: https://beehaw.org/comment/4033679
         
         var sortedComments: [Comment2]
         if let version = try? await newComments.first?.api.version, version < .v19_0 {
