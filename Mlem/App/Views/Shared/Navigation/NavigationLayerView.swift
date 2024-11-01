@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
+import SwiftUIIntrospect
+import UIKit
 
 struct NavigationLayerView: View {
     @Bindable var layer: NavigationLayer
     let hasSheetModifiers: Bool
+    
+    private let fullWidthGestureRecognizerDelegate: FullWidthGestureRecognizerDelegate = .init()
     
     var body: some View {
         Group {
@@ -21,6 +25,22 @@ struct NavigationLayerView: View {
                             $0.view()
                                 .environment(\.isRootView, false)
                         }
+                }
+                .introspect(.navigationStack, on: .iOS(.v17, .v18)) { controller in
+                    // This is for the "Swipe anywhere to navigate" setting
+                    // https://stackoverflow.com/questions/20714595/extend-default-interactivepopgesturerecognizer-beyond-screen-edge
+                    guard
+                        let interactivePopGestureRecognizer = controller.interactivePopGestureRecognizer,
+                        let targets = interactivePopGestureRecognizer.value(forKey: "targets")
+                    else {
+                        return
+                    }
+                    
+                    let fullWidthBackGestureRecognizer = UIPanGestureRecognizer()
+                    fullWidthBackGestureRecognizer.setValue(targets, forKey: "targets")
+                    fullWidthGestureRecognizerDelegate.navigationController = controller
+                    fullWidthBackGestureRecognizer.delegate = fullWidthGestureRecognizerDelegate
+                    controller.view.addGestureRecognizer(fullWidthBackGestureRecognizer)
                 }
                
             } else {
@@ -87,5 +107,16 @@ private struct SharingViewController: UIViewControllerRepresentable {
         if isPresenting {
             uiViewController.present(content(), animated: true, completion: { isPresenting = false })
         }
+    }
+}
+
+private class FullWidthGestureRecognizerDelegate: NSObject, UIGestureRecognizerDelegate {
+    var navigationController: UINavigationController?
+
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if !Settings.main.swipeAnywhereToNavigate { return false }
+        let isSystemSwipeToBackEnabled = navigationController?.interactivePopGestureRecognizer?.isEnabled == true
+        let isThereStackedViewControllers = (navigationController?.viewControllers.count ?? 0) > 1
+        return isSystemSwipeToBackEnabled && isThereStackedViewControllers
     }
 }
