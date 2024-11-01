@@ -119,7 +119,7 @@ struct PersonView: View {
     @ViewBuilder
     func content(person: any Person) -> some View {
         FancyScrollView {
-            VStack(spacing: Constants.main.standardSpacing) {
+            VStack(spacing: 0) {
                 VStack(spacing: Constants.main.standardSpacing) {
                     ProfileHeaderView(person, fallback: .person)
                     bio(person: person)
@@ -133,7 +133,6 @@ struct PersonView: View {
                     .transition(.opacity)
                 } else {
                     VStack(spacing: 0) {
-                        Divider()
                         ProgressView()
                             .padding(.top)
                     }
@@ -149,26 +148,27 @@ struct PersonView: View {
     @ViewBuilder
     func bio(person: any Person) -> some View {
         if let bio = person.description_ {
-            Divider()
             VStack(spacing: Constants.main.standardSpacing) {
                 let blocks: [BlockNode] = .init(bio)
                 if blocks.isSimpleParagraphs, bio.count < 300 {
                     MarkdownText(blocks, configuration: .default)
                         .multilineTextAlignment(.center)
-                        .padding(.horizontal, Constants.main.standardSpacing)
                     dateLabel(person: person)
                         .frame(maxWidth: .infinity, alignment: .center)
                 } else {
                     Markdown(blocks, configuration: .default)
-                        .padding(.horizontal, Constants.main.standardSpacing)
                     dateLabel(person: person)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
+            .padding(Constants.main.standardSpacing)
+            .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
             .padding(.top, Constants.main.halfSpacing)
         } else {
             dateLabel(person: person)
                 .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.bottom, Constants.main.halfSpacing)
         }
     }
     
@@ -176,7 +176,6 @@ struct PersonView: View {
     func dateLabel(person: any Person) -> some View {
         ProfileDateView(profilable: person)
             .padding(.horizontal, Constants.main.standardSpacing)
-            .padding(.vertical, 2)
     }
     
     @ViewBuilder

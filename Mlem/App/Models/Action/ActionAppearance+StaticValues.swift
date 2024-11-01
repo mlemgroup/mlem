@@ -176,6 +176,16 @@ extension ActionAppearance {
         )
     }
     
+    static func purge(isInProgress: Bool = false) -> Self {
+        .init(
+            label: "Purge",
+            isInProgress: isInProgress,
+            isDestructive: true,
+            color: Palette.main.warning,
+            icon: Icons.purge
+        )
+    }
+    
     static func crossPost() -> Self {
         .init(label: "Crosspost", color: Palette.main.accent, icon: Icons.crossPost)
     }

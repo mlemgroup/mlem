@@ -13,6 +13,10 @@ extension Post1Providing {
     private var self2: (any Post2Providing)? { self as? any Post2Providing }
     
     var isOwnPost: Bool { creatorId == api.myPerson?.id }
+    
+    var shouldHideInFeed: Bool {
+        (creator_?.blocked ?? false) || (community_?.blocked ?? false) || (hidden_ ?? false) || purged
+    }
 
     var canModerate: Bool {
         api.myPerson?.moderates(communityId: communityId) ?? false || api.isAdmin
@@ -178,6 +182,11 @@ extension Post1Providing {
         lockAction(feedback: feedback)
         if let self2, !isOwnPost {
             self2.removeAction()
+        }
+        if api.isAdmin {
+            if let purgable = self as? any PurgableProviding {
+                purgable.purgeAction()
+            }
         }
     }
     
