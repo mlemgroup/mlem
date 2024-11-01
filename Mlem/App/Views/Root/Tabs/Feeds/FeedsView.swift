@@ -107,7 +107,7 @@ struct FeedsView: View {
                 scrollToTopTrigger.toggle()
             }
             .onChange(of: appState.firstApi, initial: false) {
-                postFeedLoader?.api = appState.firstApi
+                postFeedLoader?.api = appState.firstApi // TODO: handle better
                 
                 if appState.firstApi.canInteract, let firstUser = appState.firstAccount as? UserAccount {
                     if let savedFeedLoader {
