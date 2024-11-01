@@ -65,6 +65,7 @@ enum Icons {
     static let removeFill: String = "xmark.bin.fill"
     static let restore: String = "arrow.up.bin"
     static let restoreFill: String = "arrow.up.bin.fill"
+    static let purge: String = "burn"
     
     // post sizes
     static let postSizeSetting: String = "rectangle.expand.vertical"

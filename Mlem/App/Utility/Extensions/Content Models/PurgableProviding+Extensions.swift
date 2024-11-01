@@ -1,0 +1,23 @@
+//
+//  PurgableProviding+Extensions.swift
+//  Mlem
+//
+//  Created by Sjmarf on 2024-10-27.
+//
+
+import Foundation
+import MlemMiddleware
+
+extension PurgableProviding {
+    func showPurgeSheet() {
+        NavigationModel.main.openSheet(.purge(self))
+    }
+    
+    func purgeAction() -> BasicAction {
+        .init(
+            id: "purge\(uid)",
+            appearance: .purge(),
+            callback: (api.canInteract && api.isAdmin) ? showPurgeSheet : nil
+        )
+    }
+}

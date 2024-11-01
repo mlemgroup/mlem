@@ -16,6 +16,14 @@ struct WarningView: View {
     let inList: Bool
     let overrideColor: Color?
     
+    init(iconName: String, text: LocalizedStringResource, inList: Bool, overrideColor: Color? = nil) {
+        self.iconName = iconName
+        self.text = .init(localized: text)
+        self.inList = inList
+        self.overrideColor = overrideColor
+    }
+    
+    @_disfavoredOverload
     init(iconName: String, text: String, inList: Bool, overrideColor: Color? = nil) {
         self.iconName = iconName
         self.text = text
