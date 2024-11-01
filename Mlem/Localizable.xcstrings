@@ -265,6 +265,9 @@
     "Bottom" : {
 
     },
+    "Bypass Image Proxy?" : {
+
+    },
     "Cache" : {
 
     },
@@ -1034,6 +1037,12 @@
     "Proxy Failure" : {
 
     },
+    "Purge" : {
+
+    },
+    "Purged content is erased from the database and cannot be restored." : {
+
+    },
     "Quick Look" : {
 
     },
@@ -1423,6 +1432,9 @@
     "There were no recorded incidents today." : {
 
     },
+    "This community likely contains graphic or explicit content." : {
+
+    },
     "This content will be loaded from **%@** instead." : {
 
     },
@@ -1439,6 +1451,9 @@
 
     },
     "This username is taken." : {
+
+    },
+    "This will permanently remove it from %@, not just Mlem!" : {
 
     },
     "Thumbnail Location" : {
