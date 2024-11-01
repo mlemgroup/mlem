@@ -51,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware",
       "state" : {
-        "branch" : "sjmarf/purge",
-        "revision" : "9ce939f2e4dd257e0b09ebed8a8ff817a057e736"
+        "revision" : "6ce9ce56cb0e95b79e8a97e556952986f24c1498",
+        "version" : "0.46.0"
       }
     },
     {
