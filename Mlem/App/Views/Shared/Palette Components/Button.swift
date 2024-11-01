@@ -13,12 +13,16 @@ struct PaletteButton: ButtonStyle {
     @Environment(\.isEnabled) var isEnabled
     
     func makeBody(configuration: Configuration) -> some View {
-        if isEnabled {
-            configuration.label
-                .foregroundStyle(.tint)
-        } else {
-            configuration.label
-                .foregroundStyle(palette.secondary)
+        Group {
+            if isEnabled {
+                configuration.label
+                    .foregroundStyle(.tint)
+            } else {
+                configuration.label
+                    .foregroundStyle(palette.secondary)
+            }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .contentShape(.rect)
     }
 }
