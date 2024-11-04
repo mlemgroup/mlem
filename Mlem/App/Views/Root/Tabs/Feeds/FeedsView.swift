@@ -130,7 +130,8 @@ struct FeedsView: View {
                 // ensure we always are showing an appropriate feed
                 Task {
                     if !FeedSelection.cases(for: appState.firstAccount.accountType).contains(feedSelection) {
-                        postFeedLoader?.sortType = try await appState.initialFeedSortType
+                        // sortType = try await appState.initialFeedSortType
+                        try await postFeedLoader?.changeSortType(to: appState.initialFeedSortType)
                         feedSelection = appState.firstAccount.accountType == .user ? .subscribed : .all
                     }
                 }
