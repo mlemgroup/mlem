@@ -108,6 +108,18 @@ struct PostGridView: View {
             }
         
             EndOfFeedView(loadingState: postFeedLoader.loadingState, viewType: .hobbit)
+            
+            if postFeedLoader.loadingState == .idle {
+                Button("Load More") {
+                    Task {
+                        do {
+                            try await postFeedLoader.loadMoreItems()
+                        } catch {
+                            handleError(error)
+                        }
+                    }
+                }
+            }
         }
     }
     
