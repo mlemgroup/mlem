@@ -72,21 +72,21 @@ extension SearchView {
     
     private func refreshPosts(clearBeforeRefresh: Bool) async throws {
         guard !query.isEmpty else { return }
-        postLoader.searchPostFetchProvider.setApi(getRefreshApi(for: postFilters.location))
-        postLoader.searchPostFetchProvider.setSortType(postFilters.sort)
-        postLoader.searchPostFetchProvider.query = query
-        postLoader.searchPostFetchProvider.creatorId = postFilters.creator?.id
-        postLoader.searchPostFetchProvider.communityId = nil
-        postLoader.searchPostFetchProvider.listing = .all
+        postLoader.searchPostFetcher.setApi(getRefreshApi(for: postFilters.location))
+        postLoader.searchPostFetcher.setSortType(postFilters.sort)
+        postLoader.searchPostFetcher.query = query
+        postLoader.searchPostFetcher.creatorId = postFilters.creator?.id
+        postLoader.searchPostFetcher.communityId = nil
+        postLoader.searchPostFetcher.listing = .all
         switch postFilters.location {
         case .subscribed:
-            postLoader.searchPostFetchProvider.listing = .subscribed
+            postLoader.searchPostFetcher.listing = .subscribed
         case .moderated:
-            postLoader.searchPostFetchProvider.listing = .moderatorView
+            postLoader.searchPostFetcher.listing = .moderatorView
         case .localInstance, .instance:
-            postLoader.searchPostFetchProvider.listing = .local
+            postLoader.searchPostFetcher.listing = .local
         case let .community(community):
-            postLoader.searchPostFetchProvider.communityId = community.id
+            postLoader.searchPostFetcher.communityId = community.id
         default:
             break
         }
