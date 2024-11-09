@@ -77,17 +77,30 @@ extension Community1Providing {
     }
     
     func toggleBlocked(feedback: Set<FeedbackType>) {
-        if !blocked, feedback.contains(.toast) {
-            ToastModel.main.add(
-                .undoable(
-                    "Blocked",
-                    systemImage: Icons.blockFill,
-                    callback: {
-                        self.updateBlocked(false)
-                    },
-                    color: Palette.main.negative
+        if feedback.contains(.toast) {
+            if !blocked {
+                ToastModel.main.add(
+                    .undoable(
+                        "Blocked",
+                        systemImage: Icons.blockFill,
+                        callback: {
+                            self.updateBlocked(false)
+                        },
+                        color: Palette.main.negative
+                    )
                 )
-            )
+            } else {
+                ToastModel.main.add(
+                    .undoable(
+                        "Unblocked",
+                        systemImage: Icons.unblockFill,
+                        callback: {
+                            self.updateBlocked(true)
+                        },
+                        color: Palette.main.primary
+                    )
+                )
+            }
         }
         toggleBlocked()
     }
@@ -96,7 +109,7 @@ extension Community1Providing {
     
     @ActionBuilder
     func menuActions(
-        feedback: Set<FeedbackType> = [.haptic],
+        feedback: Set<FeedbackType> = [.haptic, .toast],
         navigation: NavigationLayer?
     ) -> [any Action] {
         newPostAction()
@@ -105,7 +118,7 @@ extension Community1Providing {
         openInstanceAction(navigation: navigation)
         copyNameAction()
         shareAction()
-        blockAction()
+        blockAction(feedback: feedback)
     }
     
     func swipeActions(behavior: SwipeBehavior) -> SwipeConfiguration {

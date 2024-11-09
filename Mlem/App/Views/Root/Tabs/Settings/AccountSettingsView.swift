@@ -52,6 +52,14 @@ struct AccountSettingsView: View {
                     )
                     .tint(palette.neutralAccent)
                 }
+                Section {
+                    NavigationLink(
+                        "Block List",
+                        systemImage: Icons.blockFill,
+                        destination: .blockList
+                    )
+                    .tint(palette.negative)
+                }
             }
             
             Group {

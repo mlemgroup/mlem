@@ -140,6 +140,8 @@ extension NavigationPage {
             BypassProxyWarningSheet(callback: callback.wrappedValue)
         case let .confirmUpload(imageData: imageData, imageManager: imageManager, uploadApi: uploadApi):
             UploadConfirmationView(imageData: imageData, imageManager: imageManager, uploadApi: uploadApi)
+        case .blockList:
+            BlockListView()
         }
     }
 }
