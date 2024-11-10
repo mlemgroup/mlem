@@ -82,6 +82,9 @@ struct CommentView: View {
                 if !collapsed {
                     CommentBodyView(comment: comment)
                         .padding(.trailing, 2)
+                    if inFeed, let post = comment.post_ {
+                        FooterLinkView(title: post.title, subtitle: comment.community_?.fullNameWithPrefix)
+                    }
                     if !compactComments {
                         InteractionBarView(
                             comment: comment,
