@@ -28,7 +28,9 @@ struct ReplyView: View {
             }
           
             MarkdownWithLinkList(reply.comment.content)
-            FooterLinkView(title: reply.post.title, subtitle: reply.community.fullNameWithPrefix)
+            NavigationLink(.post(reply.post)) {
+                FooterLinkView(title: reply.post.title, subtitle: reply.community.fullNameWithPrefix)
+            }
             InteractionBarView(
                 reply: reply,
                 configuration: InteractionBarTracker.main.replyInteractionBar
