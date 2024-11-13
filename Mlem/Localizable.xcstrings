@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "**%@** and **%@** chose to defederate from one another." : {
       "localizations" : {
         "en" : {
@@ -51,6 +54,9 @@
 
     },
     "%@ rules:" : {
+
+    },
+    "%@ rules..." : {
 
     },
     "%lld Crossposts..." : {
@@ -221,6 +227,21 @@
 
     },
     "Average: %@" : {
+
+    },
+    "Ban %@" : {
+
+    },
+    "Ban Duration" : {
+
+    },
+    "Ban from..." : {
+
+    },
+    "Ban Target" : {
+
+    },
+    "Ban User" : {
 
     },
     "Banned from Community" : {
@@ -414,6 +435,9 @@
     "Day" : {
 
     },
+    "Days:" : {
+
+    },
     "Debug" : {
 
     },
@@ -502,6 +526,9 @@
 
     },
     "example.com" : {
+
+    },
+    "Expiration Date:" : {
 
     },
     "Export Settings" : {
@@ -978,6 +1005,9 @@
 
     },
     "Paste" : {
+
+    },
+    "Permanent" : {
 
     },
     "Permanently delete %@" : {

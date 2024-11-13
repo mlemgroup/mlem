@@ -26,10 +26,10 @@ struct ReasonPickerView: View {
         Group {
             suggestions
             if let community {
-                ruleList(community)
+                RulesListView(model: community, reason: $reason)
             }
             if let instance = appState.firstSession.instance {
-                ruleList(instance)
+                RulesListView(model: instance, reason: $reason)
             }
         }
     }
@@ -58,45 +58,6 @@ struct ReasonPickerView: View {
             }
             .listRowBackground(Color.clear)
             .listRowInsets(.init())
-        }
-    }
-    
-    @ViewBuilder
-    func ruleList(_ profilable: any Profile2Providing) -> some View {
-        let rules = [BlockNode](profilable.description ?? "").rules()
-        if rules.count >= 1 {
-            Section {
-                ForEach(Array(rules.enumerated()), id: \.offset) { index, blocks in
-                    HStack(spacing: 12) {
-                        Image(systemName: "\(index + 1).circle.fill")
-                            .foregroundStyle(palette.secondary)
-                            .fontWeight(.semibold)
-                        Markdown(blocks, configuration: .default)
-                            .frame(maxWidth: .infinity)
-                    }
-                    .contentShape(.rect)
-                    .onTapGesture {
-                        switch blocks.first {
-                        case let .paragraph(inlines: inlines), .heading(level: _, inlines: let inlines):
-                            let text = inlines.stringLiteral
-                            if text.count < 100 {
-                                reason = "\(profilable.name) rule #\(index + 1): \"\(text)\""
-                                return
-                            }
-                        default:
-                            break
-                        }
-                        reason = "\(profilable.name) rule #\(index + 1)"
-                    }
-                }
-            } header: {
-                HStack {
-                    CircleCroppedImageView(profilable, frame: 22)
-                    Text("\(profilable.name) rules:")
-                        .foregroundStyle(palette.secondary)
-                        .textCase(nil)
-                }
-            }
         }
     }
 }

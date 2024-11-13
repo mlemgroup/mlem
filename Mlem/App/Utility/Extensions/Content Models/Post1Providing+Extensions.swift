@@ -182,11 +182,10 @@ extension Post1Providing {
         lockAction(feedback: feedback)
         if let self2, !isOwnPost {
             self2.removeAction()
+            self2.banCreatorAction()
         }
         if api.isAdmin {
-            if let purgable = self as? any PurgableProviding {
-                purgable.purgeAction()
-            }
+            purgeAction()
         }
     }
     

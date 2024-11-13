@@ -53,6 +53,10 @@ extension Person1Providing {
         return output.sorted { $0.sortVal < $1.sortVal }
     }
     
+    func showBanSheet(community: (any Community)?) {
+        NavigationModel.main.openSheet(.ban(self, community: community))
+    }
+    
     func toggleBlocked(feedback: Set<FeedbackType> = []) {
         if !blocked, feedback.contains(.toast) {
             ToastModel.main.add(

@@ -180,6 +180,16 @@ extension Interactable1Providing {
         )
     }
     
+    func banCreatorAction() -> BasicAction {
+        .init(
+            id: "banCreator\(uid)",
+            appearance: .banCreator(),
+            callback: api.canInteract && (self2?.canModerate ?? false) ? {
+                self.self2?.creator.showBanSheet(community: self.self2?.community)
+            } : nil
+        )
+    }
+    
     // MARK: Readouts
     
     var createdReadout: Readout {

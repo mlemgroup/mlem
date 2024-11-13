@@ -39,6 +39,7 @@ enum NavigationPage: Hashable {
     case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
     case remove(_ interactable: Interactable2HashWrapper)
     case purge(_ purgable: PurgableHashWrapper)
+    case ban(_ person: AnyPerson, community: AnyCommunity?)
     case createPost(
         community: AnyCommunity?,
         title: String,
@@ -50,6 +51,7 @@ enum NavigationPage: Hashable {
     case deleteAccount(_ account: UserAccount)
     case bypassImageProxy(callback: HashWrapper<() -> Void>)
     case confirmUpload(imageData: Data, imageManager: ImageUploadManager, uploadApi: ApiClient)
+    case rulesList(_ model: Profile2HashWrapper, callback: HashWrapper<(String) -> Void>)
     
     static func post(_ post: any PostStubProviding, scrollTargetedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
         if let scrollTargetedComment {
@@ -212,12 +214,24 @@ enum NavigationPage: Hashable {
         purge(.init(wrappedValue: purgable))
     }
     
+    static func ban(_ person: any Person, community: (any Community)? = nil) -> NavigationPage {
+        if let community {
+            ban(.init(person), community: .init(community))
+        } else {
+            ban(.init(person), community: nil)
+        }
+    }
+    
     static func signUp(_ instance: any InstanceStubProviding) -> NavigationPage {
         signUp(.init(wrappedValue: instance))
     }
     
     static func bypassImageProxyWarning(callback: @escaping () -> Void) -> NavigationPage {
         bypassImageProxy(callback: .init(wrappedValue: callback))
+    }
+    
+    static func rulesList(_ model: any Profile2Providing, callback: @escaping (String) -> Void) -> NavigationPage {
+        rulesList(.init(wrappedValue: model), callback: .init(wrappedValue: callback))
     }
     
     var hasNavigationStack: Bool {
@@ -297,6 +311,18 @@ struct PurgableHashWrapper: Hashable {
     }
     
     static func == (lhs: PurgableHashWrapper, rhs: PurgableHashWrapper) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
+}
+
+struct Profile2HashWrapper: Hashable {
+    var wrappedValue: any Profile2Providing
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(wrappedValue.actorId)
+    }
+    
+    static func == (lhs: Profile2HashWrapper, rhs: Profile2HashWrapper) -> Bool {
         lhs.hashValue == rhs.hashValue
     }
 }
