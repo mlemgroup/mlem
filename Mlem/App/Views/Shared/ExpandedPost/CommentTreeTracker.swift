@@ -145,6 +145,7 @@ class CommentTreeTracker: Hashable {
         }
     }
     
+    @MainActor
     private func buildCommentTree(comments newComments: [Comment2]) async {
         var output: [CommentWrapper] = []
         var commentsKeyedById: [Int: CommentWrapper] = [:]
