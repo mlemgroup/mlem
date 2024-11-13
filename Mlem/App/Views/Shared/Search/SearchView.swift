@@ -14,14 +14,14 @@ struct SearchView: View {
     }
     
     enum Tab: CaseIterable, Identifiable {
-        case communities, users, instances, posts
+        case communities, people, instances, posts
         
         var id: Self { self }
         
         var label: LocalizedStringResource {
             switch self {
             case .communities: "Communities"
-            case .users: "Users"
+            case .people: "Users"
             case .instances: "Instances"
             case .posts: "Posts"
             }
@@ -163,7 +163,7 @@ struct SearchView: View {
                     }
                     EndOfFeedView(loadingState: communityLoader.loadingState, viewType: .hobbit)
                 }
-            case .users:
+            case .people:
                 LazyVStack(spacing: 0) {
                     SearchResultsView(results: personLoader.items) { person in
                         PersonListRow(person, complications: [.instance, .date], readout: .postsAndComments)

@@ -8,7 +8,7 @@
 import MlemMiddleware
 import SwiftUI
 
-struct SearchResultsView<Item: Searchable, Content: View>: View {
+struct SearchResultsView<Item: Identifiable, Content: View>: View {
     @ViewBuilder let content: (Item) -> Content
     let results: [Item]
     
