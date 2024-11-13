@@ -66,10 +66,12 @@ struct InstanceListRowBody<Content: View>: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(host)
                     .lineLimit(1)
-                Text(version?.description ?? "")
-                    .font(.footnote)
-                    .foregroundStyle(palette.secondary)
-                    .lineLimit(1)
+                if let version {
+                    Text(version.description)
+                        .font(.footnote)
+                        .foregroundStyle(palette.secondary)
+                        .lineLimit(1)
+                }
             }
             Spacer()
             switch readout {

@@ -238,6 +238,9 @@
     "Block Community" : {
 
     },
+    "Block List" : {
+
+    },
     "Block User" : {
 
     },
@@ -1502,6 +1505,9 @@
 
     },
     "Unblock" : {
+
+    },
+    "Unblocked" : {
 
     },
     "Unblocking..." : {

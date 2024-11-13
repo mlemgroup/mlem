@@ -17,17 +17,30 @@ extension InstanceStubProviding {
             return
         }
         
-        if !self.blocked, feedback.contains(.toast) {
-            ToastModel.main.add(
-                .undoable(
-                    "Blocked",
-                    systemImage: Icons.hideFill,
-                    callback: {
-                        self.updateBlocked(false)
-                    },
-                    color: Palette.main.negative
+        if feedback.contains(.toast) {
+            if !self.blocked {
+                ToastModel.main.add(
+                    .undoable(
+                        "Blocked",
+                        systemImage: Icons.hideFill,
+                        callback: {
+                            self.updateBlocked(false)
+                        },
+                        color: Palette.main.negative
+                    )
                 )
-            )
+            } else {
+                ToastModel.main.add(
+                    .undoable(
+                        "Unblocked",
+                        systemImage: Icons.unblockFill,
+                        callback: {
+                            self.updateBlocked(true)
+                        },
+                        color: Palette.main.primary
+                    )
+                )
+            }
         }
         self.toggleBlocked()
     }
