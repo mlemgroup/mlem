@@ -528,7 +528,7 @@
     "example.com" : {
 
     },
-    "Expiration Date:" : {
+    "Expires:" : {
 
     },
     "Export Settings" : {
@@ -1131,6 +1131,9 @@
 
     },
     "Remove" : {
+
+    },
+    "Remove Content" : {
 
     },
     "Replies" : {

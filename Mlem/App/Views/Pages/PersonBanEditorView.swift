@@ -16,14 +16,18 @@ struct PersonBanEditorView: View {
     
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
+    @Environment(Palette.self) var palette
+    @Environment(\.dismiss) var dismiss
     
     let person: any Person
     let community: (any Community)?
+    var shouldBan: Bool = true
     
     @State var banFromInstance: Bool
     @State var isPermanent: Bool = true
-    @State var days: Int = 1
+    @State var expiryDate: Date = Calendar.current.date(byAdding: .day, value: 1, to: .now) ?? .now
     @State var reason: String = ""
+    @State var removeContent: Bool = false
     
     @FocusState var focusedField: FocusedField?
     @State var presentationSelection: PresentationDetent = .large
@@ -42,6 +46,20 @@ struct PersonBanEditorView: View {
         self._banFromInstance = .init(wrappedValue: AppState.main.firstApi.isAdmin)
     }
     
+    var days: Int {
+        get {
+            Calendar.current.dateComponents(
+                [.day],
+                from: .now,
+                // This prevents the number of days ticking down if you leave the sheet open for more than a minute
+                to: expiryDate.addingTimeInterval(60 * 60)
+            ).day ?? 0
+        }
+        nonmutating set {
+            expiryDate = Calendar.current.date(byAdding: .day, value: newValue, to: .now) ?? .now
+        }
+    }
+    
     var body: some View {
         CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: reason.isEmpty) {
             NavigationStack {
@@ -50,12 +68,30 @@ struct PersonBanEditorView: View {
                     reasonSection
                     Section {
                         Toggle("Permanent", isOn: $isPermanent)
-                            .tint(.red)
+                            .tint(palette.warning)
                     }
                     durationSection
+                    Section {
+                        Toggle("Remove Content", isOn: $removeContent)
+                            .tint(palette.warning)
+                    }
                 }
-                .navigationTitle("Ban \(person.name)")
+                .navigationTitle(shouldBan ? "Ban \(person.name)" : "Unban \(person.name)")
                 .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button("Cancel") {
+                            dismiss()
+                        }
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Send", systemImage: Icons.send) {
+                            Task {
+                                await send()
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -63,28 +99,41 @@ struct PersonBanEditorView: View {
     @ViewBuilder
     var scopeSection: some View {
         Section {
-            if let selectedTarget, let community, let instance = appState.firstSession.instance {
-                Menu {
-                    Picker("Ban Target", selection: $banFromInstance) {
-                        Label(instance).tag(true)
-                        Label(community).tag(false)
+            if let selectedTarget, let instance = appState.firstSession.instance {
+                if let community, appState.firstApi.isAdmin {
+                    Menu {
+                        Picker("Ban Target", selection: $banFromInstance) {
+                            Label(instance).tag(true)
+                            Label(community).tag(false)
+                        }
+                    } label: {
+                        HStack {
+                            targetLabel
+                            Spacer()
+                            Image(systemName: Icons.dropDown)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(palette.secondary)
+                        }
                     }
-                } label: {
-                    HStack {
-                        CircleCroppedImageView(selectedTarget, frame: 24)
-                            .id(selectedTarget.actorId)
-                        Text(selectedTarget.name)
-                        Spacer()
-                        Image(systemName: Icons.dropDown)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.secondary)
-                    }
+                    .buttonStyle(.empty)
+                } else {
+                    targetLabel
                 }
-                .buttonStyle(.empty)
             }
         } header: {
-            Text("Ban from...")
+            Text(shouldBan ? "Ban from..." : "Unban from...")
                 .textCase(nil)
+        }
+    }
+    
+    @ViewBuilder
+    var targetLabel: some View {
+        if let selectedTarget {
+            HStack {
+                CircleCroppedImageView(selectedTarget, frame: 24)
+                    .id(selectedTarget.actorId)
+                Text(selectedTarget.name)
+            }
         }
     }
     
@@ -92,7 +141,7 @@ struct PersonBanEditorView: View {
     var reasonSection: some View {
         if let selectedTarget {
             Section {
-                TextField("Reason (Optional)", text: $reason, axis: .vertical)
+                TextField("Reason", text: $reason, axis: .vertical)
                     .focused($focusedField, equals: .reason)
                 if ![BlockNode](selectedTarget.description ?? "").rules().isEmpty {
                     Button("\(selectedTarget.name) rules...", systemImage: "book.pages") {
@@ -115,25 +164,16 @@ struct PersonBanEditorView: View {
                     }
                 TextField("", value: Binding(
                     get: { days },
-                    set: { newValue in
-                        days = newValue > 1 ? newValue : 0
-                    }
+                    set: { days = $0 }
                 ), format: .number)
                     .keyboardType(.numberPad)
                     .focused($focusedField, equals: .days)
             }
             DatePicker(
-                "Expiration Date:",
-                selection: Binding(
-                    get: {
-                        .now.advanced(by: Double(60 * 60 * 24 * days))
-                    },
-                    set: { newValue in
-                        days = Int(round(newValue.timeIntervalSince(.now) / (60 * 60 * 24)))
-                    }
-                ),
-                in: Date.now.advanced(by: Double(60 * 60 * 24))...,
-                displayedComponents: [.date]
+                "Expires:",
+                selection: $expiryDate,
+                in: Date.now...,
+                displayedComponents: [.date, .hourAndMinute]
             )
             HStack {
                 daysPresetButton(.init(day: 1), value: 1)
@@ -165,17 +205,41 @@ struct PersonBanEditorView: View {
         formatter.maximumUnitCount = 1
         return formatter
     }
+    
+    func send() async {
+        do {
+            if banFromInstance {
+                try await person.banFromInstance(
+                    removeContent: removeContent,
+                    reason: reason,
+                    expires: isPermanent ? nil : expiryDate
+                )
+            } else if let community {
+                try await person.ban(
+                    from: community,
+                    removeContent: removeContent,
+                    reason: reason,
+                    expires: isPermanent ? nil : expiryDate
+                )
+            }
+            dismiss()
+        } catch {
+            handleError(error)
+        }
+    }
 }
 
-struct BanFormButtonStyle: ButtonStyle {
+private struct BanFormButtonStyle: ButtonStyle {
+    @Environment(Palette.self) var palette
+    
     let selected: Bool
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.callout)
-            .foregroundStyle(selected ? .white : .primary)
+            .foregroundStyle(selected ? palette.selectedInteractionBarItem : palette.primary)
             .padding(.vertical, 4)
             .frame(maxWidth: 150)
-            .background(selected ? .blue : Color(uiColor: .systemGroupedBackground), in: .rect(cornerRadius: 6))
+            .background(selected ? palette.accent : palette.groupedBackground, in: .rect(cornerRadius: 6))
     }
 }
