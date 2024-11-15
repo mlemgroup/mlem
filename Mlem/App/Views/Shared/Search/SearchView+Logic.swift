@@ -33,7 +33,7 @@ extension SearchView {
             case .communities:
                 if onlyRefreshIfEmpty, !communityLoader.items.isEmpty { return }
                 try await refreshCommunities(clearBeforeRefresh: clearBeforeRefresh)
-            case .users:
+            case .people:
                 if onlyRefreshIfEmpty, !personLoader.items.isEmpty { return }
                 try await refreshPeople(clearBeforeRefresh: clearBeforeRefresh)
             case .instances:

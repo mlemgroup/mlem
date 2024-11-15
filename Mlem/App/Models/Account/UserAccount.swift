@@ -43,9 +43,7 @@ class UserAccount: Account, CommunityOrPersonStub {
         case id, username, storedNickname, instanceLink, siteVersion, avatarUrl, lastUsed, favorites, accountType
     }
     
-    enum DecodingError: Error {
-        case cannotModifyPathComponents, noTokenInKeychain
-    }
+    enum DecodingError: Error { case cannotModifyPathComponents }
     
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
@@ -73,9 +71,11 @@ class UserAccount: Account, CommunityOrPersonStub {
         self.actorId = actorId
         
         // retrive token and initialize ApiClient
-        guard let token = Constants.main.keychain[getKeychainId(actorId: actorId)] ?? Constants.main.keychain[getKeychainId(id: id)] else {
-            throw DecodingError.noTokenInKeychain
-        }
+        // Fallback to "cannotRetrieveFromKeychain" if a token cannot be found,
+        // rather than throwing an error. This will cause Mlem to ask for the user's password again
+        let token = Constants.main.keychain[getKeychainId(actorId: actorId)]
+            ?? Constants.main.keychain[getKeychainId(id: id)]
+            ?? "cannotRetrieveFromKeychain"
         self.api = ApiClient.getApiClient(for: instanceLink, with: token)
     }
     

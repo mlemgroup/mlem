@@ -17,7 +17,7 @@ extension SearchView {
                     switch selectedTab {
                     case .communities:
                         communityFiltersView
-                    case .users:
+                    case .people:
                         personFiltersView
                     case .instances:
                         instanceFiltersView

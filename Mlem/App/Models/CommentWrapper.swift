@@ -35,7 +35,7 @@ class CommentWrapper: Identifiable, Comment2Providing {
     }
     
     func itemTree() -> [CommentTreeItem] {
-        if creator.blocked { return [] }
+        if shouldHideInFeed { return [] }
         if collapsed { return [.comment(self)] }
         var output: [CommentTreeItem] = children.reduce([.comment(self)]) { $0 + $1.itemTree() }
         let directChildCount = children.reduce(commentCount) { $0 - $1.commentCount }

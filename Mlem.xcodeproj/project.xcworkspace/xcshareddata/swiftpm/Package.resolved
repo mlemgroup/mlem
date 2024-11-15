@@ -1,5 +1,5 @@
 {
-  "originHash" : "741161cefb0674ba95c43c14afc8238177d21974f95f4e66fe76b72259069ef1",
+  "originHash" : "e91c2cec61691543665fad5843f30eafc5288bb40fc3a60d50c7d7e9194f3135",
   "pins" : [
     {
       "identity" : "combine-schedulers",
@@ -52,7 +52,7 @@
       "location" : "https://github.com/mlemgroup/MlemMiddleware",
       "state" : {
         "branch" : "eric/actor-feed-loaders",
-        "revision" : "1f6808f5524962e2ea9bc53ca519d726ccb7b649"
+        "revision" : "7ca87aa05093420df3ad4aba509f5072ba749198"
       }
     },
     {

@@ -27,7 +27,10 @@ struct ReplyView: View {
                     .frame(height: 10)
             }
           
-            Markdown(reply.comment.content, configuration: .default)
+            MarkdownWithLinkList(reply.comment.content)
+            NavigationLink(.post(reply.post)) {
+                FooterLinkView(title: reply.post.title, subtitle: reply.community.fullNameWithPrefix)
+            }
             InteractionBarView(
                 reply: reply,
                 configuration: InteractionBarTracker.main.replyInteractionBar

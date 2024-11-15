@@ -80,6 +80,7 @@ struct CodableSettings: Codable {
     var subscriptions_instanceLocation: InstanceLocation
     var subscriptions_sort: SubscriptionListSort
     var navigation_sidebarVisibleByDefault: Bool
+    var navigation_swipeAnywhere: Bool
     
     // swiftlint:disable line_length function_body_length
     init(from decoder: any Decoder) throws {
@@ -153,6 +154,7 @@ struct CodableSettings: Codable {
         self.subscriptions_instanceLocation = try container.decodeIfPresent(InstanceLocation.self, forKey: .subscriptions_instanceLocation) ?? (UIDevice.isPad ? .bottom : .trailing)
         self.subscriptions_sort = try container.decodeIfPresent(SubscriptionListSort.self, forKey: .subscriptions_sort) ?? .alphabetical
         self.navigation_sidebarVisibleByDefault = try container.decodeIfPresent(Bool.self, forKey: .navigation_sidebarVisibleByDefault) ?? true
+        self.navigation_swipeAnywhere = try container.decodeIfPresent(Bool.self, forKey: .navigation_swipeAnywhere) ?? false
     }
 
     // swiftlint:enable line_length
@@ -227,6 +229,7 @@ struct CodableSettings: Codable {
         self.subscriptions_instanceLocation = settings.subscriptionInstanceLocation
         self.subscriptions_sort = settings.subscriptionSort
         self.navigation_sidebarVisibleByDefault = settings.sidebarVisibleByDefault
+        self.navigation_swipeAnywhere = settings.swipeAnywhereToNavigate
     }
     // swiftlint:enable function_body_length
 }

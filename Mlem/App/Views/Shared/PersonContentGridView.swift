@@ -78,17 +78,19 @@ struct PersonContentGridView: View {
         VStack(spacing: 0) {
             LazyVGrid(columns: columns, spacing: postSize.sectionSpacing) {
                 ForEach(items, id: \.hashValue) { item in
-                    personContentItem(item)
-                        .buttonStyle(.empty)
-                        .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 10)
-                        .onAppear {
-                            do {
-                                try feedLoader.loadIfThreshold(item, asChild: contentType != .all)
-                            } catch {
-                                // TODO: is postFeedLoader.loadIfThreshold throws 400, this line is not executed
-                                handleError(error)
+                    if !item.shouldHideInFeed {
+                        personContentItem(item)
+                            .buttonStyle(.empty)
+                            .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 10)
+                            .onAppear {
+                                do {
+                                    try feedLoader.loadIfThreshold(item, asChild: contentType != .all)
+                                } catch {
+                                    // TODO: is postFeedLoader.loadIfThreshold throws 400, this line is not executed
+                                    handleError(error)
+                                }
                             }
-                        }
+                    }
                 }
             }
             EndOfFeedView(loadingState: loadingState, loadMore: nil, viewType: .hobbit)

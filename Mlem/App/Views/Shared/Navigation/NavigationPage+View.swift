@@ -42,6 +42,8 @@ extension NavigationPage {
             ReportEditorView(target: target.wrappedValue, community: community)
         case let .remove(target):
             ContentRemovalEditorView(target: target.wrappedValue)
+        case let .purge(target):
+            ContentPurgeEditorView(target: target.wrappedValue)
         case let .post(post, scrollTargetedComment, communityContext, navigationNamespace):
             PostPage(post: post, scrollTargetedComment: scrollTargetedComment?.wrappedValue)
                 .environment(\.communityContext, communityContext?.wrappedValue)
@@ -138,6 +140,8 @@ extension NavigationPage {
             BypassProxyWarningSheet(callback: callback.wrappedValue)
         case let .confirmUpload(imageData: imageData, imageManager: imageManager, uploadApi: uploadApi):
             UploadConfirmationView(imageData: imageData, imageManager: imageManager, uploadApi: uploadApi)
+        case .blockList:
+            BlockListView()
         }
     }
 }

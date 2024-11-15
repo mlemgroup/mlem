@@ -38,6 +38,7 @@ enum NavigationPage: Hashable {
     case editComment(_ comment: Comment2, context: CommentEditorView.Context?)
     case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
     case remove(_ interactable: Interactable2HashWrapper)
+    case purge(_ purgable: PurgableHashWrapper)
     case createPost(
         community: AnyCommunity?,
         title: String,
@@ -49,6 +50,7 @@ enum NavigationPage: Hashable {
     case deleteAccount(_ account: UserAccount)
     case bypassImageProxy(callback: HashWrapper<() -> Void>)
     case confirmUpload(imageData: Data, imageManager: ImageUploadManager, uploadApi: ApiClient)
+    case blockList
     
     static func post(_ post: any PostStubProviding, scrollTargetedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
         if let scrollTargetedComment {
@@ -207,6 +209,10 @@ enum NavigationPage: Hashable {
         remove(.init(wrappedValue: interactable))
     }
     
+    static func purge(_ purgable: any PurgableProviding) -> NavigationPage {
+        purge(.init(wrappedValue: purgable))
+    }
+    
     static func signUp(_ instance: any InstanceStubProviding) -> NavigationPage {
         signUp(.init(wrappedValue: instance))
     }
@@ -280,6 +286,18 @@ struct ReportableHashWrapper: Hashable {
     }
     
     static func == (lhs: ReportableHashWrapper, rhs: ReportableHashWrapper) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
+}
+
+struct PurgableHashWrapper: Hashable {
+    var wrappedValue: any PurgableProviding
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(wrappedValue.hashValue)
+    }
+    
+    static func == (lhs: PurgableHashWrapper, rhs: PurgableHashWrapper) -> Bool {
         lhs.hashValue == rhs.hashValue
     }
 }

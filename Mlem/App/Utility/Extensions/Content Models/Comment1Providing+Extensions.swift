@@ -13,6 +13,10 @@ extension Comment1Providing {
 
     var isOwnComment: Bool { creatorId == api.myPerson?.id }
     
+    var shouldHideInFeed: Bool {
+        (creator_?.blocked ?? false) || purged
+    }
+    
     func showEditSheet() {
         if let self = self as? any Comment2Providing {
             NavigationModel.main.openSheet(.editComment(self.comment2, context: nil))
@@ -89,6 +93,11 @@ extension Comment1Providing {
     func moderatorMenuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
         if let self2, !isOwnComment {
             self2.removeAction()
+        }
+        if api.isAdmin {
+            if let purgable = self as? any PurgableProviding {
+                purgable.purgeAction()
+            }
         }
     }
     
