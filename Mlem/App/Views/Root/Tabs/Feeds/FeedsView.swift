@@ -114,7 +114,6 @@ struct FeedsView: View {
                 if appState.firstApi.canInteract, let firstUser = appState.firstAccount as? UserAccount {
                     if let savedFeedLoader {
                         Task {
-                            print("DEBUG changing savedFeedLoader api")
                             await savedFeedLoader.changeUser(api: appState.firstApi, userId: firstUser.id)
                         }
                     } else {
