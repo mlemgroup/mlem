@@ -188,12 +188,21 @@ extension Interactable1Providing {
             isModerator = false
         }
         var output: [any Action] = .init()
-        let showBoth = api.isAdmin && (bannedFromCommunity_ ?? false) != (creator_?.bannedFromInstance ?? false)
-        if api.isAdmin, !isModerator || showBoth {
-            output.append(banCreatorFromInstanceAction())
-        }
-        if isModerator || showBoth {
+        // admins should see separate 'ban' and 'unban' actions if ban statuses conflict; otherwise actions are grouped under a single entry (community or instance, depending on moderation status)
+        let showBoth: Bool = api.isAdmin, (bannedFromCommunity_ ?? false) != (creator_?.bannedFromInstance ?? false)
+        // moderators see community ban action by default, regardless of admin status
+        if isModerator {
+            if showBoth {
+                output.append(banCreatorFromInstanceAction())
+            }
             output.append(banCreatorFromCommunityAction())
+        }
+        // non-moderator admins see instance ban action by default
+        else if api.isAdmin {
+            output.append(banCreatorFromInstanceAction())
+            if showBoth {
+                output.append(banCreatorFromCommunityAction())
+            }
         }
         return output
     }
