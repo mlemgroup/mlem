@@ -51,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware",
       "state" : {
-        "branch" : "eric/actor-feed-loaders",
-        "revision" : "c62070aa7e65342005dc5d62503f5a665a493acd"
+        "revision" : "4ba5f4702c33954ff46fc0275e412e078b816fbd",
+        "version" : "0.47.0"
       }
     },
     {
