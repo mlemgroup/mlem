@@ -11,7 +11,7 @@ import SwiftUI
 struct EllipsisMenu: View {
     @Environment(Palette.self) private var palette: Palette
     
-    @ActionBuilder let actions: () -> [any Action]
+    @State @ActionBuilder var actions: () -> [any Action]
     let systemImage: String
     let size: CGFloat
     

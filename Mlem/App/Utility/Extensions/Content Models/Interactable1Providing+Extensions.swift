@@ -189,7 +189,7 @@ extension Interactable1Providing {
         }
         var output: [any Action] = .init()
         // admins should see separate 'ban' and 'unban' actions if ban statuses conflict; otherwise actions are grouped under a single entry (community or instance, depending on moderation status)
-        let showBoth: Bool = api.isAdmin, (bannedFromCommunity_ ?? false) != (creator_?.bannedFromInstance ?? false)
+        let showBoth: Bool = api.isAdmin && (bannedFromCommunity_ ?? false) != (creator_?.bannedFromInstance ?? false)
         // moderators see community ban action by default, regardless of admin status
         if isModerator {
             if showBoth {
