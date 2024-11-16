@@ -38,7 +38,13 @@ struct ContentRemovalEditorView: View {
                     TextField("Reason (Optional)", text: $reason, axis: .vertical)
                         .focused($reasonFocused)
                     if mode == .remove {
-                        ReasonPickerView(reason: $reason, community: community)
+                        Section {
+                            ReasonShortcutView(reason: $reason)
+                        }
+                        RulesListView(model: community, reason: $reason)
+                        if let instance = appState.firstSession.instance {
+                            RulesListView(model: instance, reason: $reason)
+                        }
                     }
                 }
                 .scrollDismissesKeyboard(.interactively)

@@ -15,11 +15,11 @@ struct SimpleAvatarView: View {
     @State private var loading: Bool
 
     let url: URL?
-    let type: AvatarType
+    let type: FixedImageView.Fallback
 
     init(
         url: URL?,
-        type: AvatarType
+        type: FixedImageView.Fallback
     ) {
         self.url = url
         self.type = type
@@ -29,7 +29,7 @@ struct SimpleAvatarView: View {
     }
 
     var defaultImage: UIImage {
-        .init(systemName: type.iconName)!
+        .init(systemName: type.icon)!
             .applyingSymbolConfiguration(.init(
                 font: .systemFont(ofSize: 17),
                 scale: .large

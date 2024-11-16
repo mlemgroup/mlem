@@ -16,7 +16,7 @@ extension Interactable2Providing {
         if creatorIsModerator ?? false {
             output.insert(.moderator)
         }
-        if bannedFromCommunity ?? false {
+        if bannedFromCommunity {
             output.insert(.bannedFromCommunity)
         }
         if let comment = self as? any Comment2Providing {

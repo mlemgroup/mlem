@@ -13,7 +13,9 @@ struct PostEllipsisMenus: View {
     
     @Setting(\.moderatorActionGrouping) var moderatorActionGrouping
 
-    let post: any Post
+    // This @State is necessary!
+    @State var post: any Post
+    
     var size: CGFloat = 24
     
     var body: some View {

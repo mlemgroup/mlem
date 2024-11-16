@@ -25,11 +25,7 @@ struct AccountPickerMenu<Content: View>: View {
             Picker("Switch Account", selection: $account) {
                 ForEach(accountsTracker.userAccounts, id: \.actorId) { account in
                     Button {} label: {
-                        Label {
-                            Text(account.name)
-                        } icon: {
-                            SimpleAvatarView(url: account.avatar, type: .person)
-                        }
+                        Label(account)
                         Text(verbatim: "@\(account.host ?? "unknown")")
                     }
                     .tag(account)

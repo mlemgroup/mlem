@@ -77,6 +77,7 @@ class ContentLoaderProxy<Model: Upgradable> {
     
     var isLoading: Bool { upgradeState == .loading }
     
+    @MainActor
     func upgradeModel(
         api: ApiClient? = nil,
         upgradeOperation: ((_ model: Model, _ api: ApiClient) async throws -> Void)?

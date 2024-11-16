@@ -180,6 +180,61 @@ extension Interactable1Providing {
         )
     }
     
+    func banActions() -> [any Action] {
+        let isModerator: Bool
+        if let myPerson = api.myPerson, let community = community_ {
+            isModerator = myPerson.moderates(communityId: community.id)
+        } else {
+            isModerator = false
+        }
+        var output: [any Action] = .init()
+        // admins should see separate 'ban' and 'unban' actions if ban statuses conflict; otherwise actions are grouped under a single entry (community or instance, depending on moderation status)
+        let showBoth: Bool = api.isAdmin && (bannedFromCommunity_ ?? false) != (creator_?.bannedFromInstance ?? false)
+        // moderators see community ban action by default, regardless of admin status
+        if isModerator {
+            if showBoth {
+                output.append(banCreatorFromInstanceAction())
+            }
+            output.append(banCreatorFromCommunityAction())
+        }
+        // non-moderator admins see instance ban action by default
+        else if api.isAdmin {
+            output.append(banCreatorFromInstanceAction())
+            if showBoth {
+                output.append(banCreatorFromCommunityAction())
+            }
+        }
+        return output
+    }
+    
+    func banCreatorFromInstanceAction() -> BasicAction {
+        .init(
+            id: "banCreatorFromInstance\(uid)",
+            appearance: .banCreatorFromInstance(isOn: creator_?.bannedFromInstance ?? false),
+            callback: api.canInteract && (self2?.canModerate ?? false) ? {
+                self.self2?.creator.showBanSheet(
+                    community: self.self2?.community,
+                    isBannedFromCommunity: self.bannedFromCommunity_ ?? false,
+                    shouldBan: !(self.creator_?.bannedFromInstance ?? false)
+                )
+            } : nil
+        )
+    }
+    
+    func banCreatorFromCommunityAction() -> BasicAction {
+        .init(
+            id: "banCreatorFromCommunity\(uid)",
+            appearance: .banCreatorFromCommunity(isOn: self2?.bannedFromCommunity ?? false),
+            callback: api.canInteract && (self2?.canModerate ?? false) ? {
+                self.self2?.creator.showBanSheet(
+                    community: self.self2?.community,
+                    isBannedFromCommunity: self.bannedFromCommunity_ ?? false,
+                    shouldBan: !(self.self2?.bannedFromCommunity ?? false)
+                )
+            } : nil
+        )
+    }
+    
     // MARK: Readouts
     
     var createdReadout: Readout {
