@@ -93,7 +93,7 @@ extension Comment1Providing {
     func moderatorMenuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
         if let self2, !isOwnComment {
             self2.removeAction()
-            self2.banCreatorAction()
+            banActions()
         }
         if api.isAdmin {
             purgeAction()

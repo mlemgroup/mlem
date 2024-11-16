@@ -136,7 +136,7 @@
 		038028F82CB097A10091A8A2 /* SearchView+InstancePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028F72CB097A10091A8A2 /* SearchView+InstancePicker.swift */; };
 		038028FA2CB097CB0091A8A2 /* SearchView+LocationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028F92CB097CB0091A8A2 /* SearchView+LocationPicker.swift */; };
 		038028FD2CB72A2A0091A8A2 /* ContentRemovalEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028FC2CB72A2A0091A8A2 /* ContentRemovalEditorView.swift */; };
-		038028FF2CB72AC90091A8A2 /* ReasonPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028FE2CB72AC90091A8A2 /* ReasonPickerView.swift */; };
+		038028FF2CB72AC90091A8A2 /* ReasonShortcutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038028FE2CB72AC90091A8A2 /* ReasonShortcutView.swift */; };
 		0380965F2C10AA80003ED1D8 /* AppState+Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0380965E2C10AA80003ED1D8 /* AppState+Transition.swift */; };
 		038096612C10AAD8003ED1D8 /* TransitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038096602C10AAD8003ED1D8 /* TransitionView.swift */; };
 		0382A7F02C09F0F800C79DDA /* PersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0382A7EF2C09F0F800C79DDA /* PersonView.swift */; };
@@ -220,6 +220,7 @@
 		03B431C62C45C09F001A1EB5 /* CollapsibleSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431C52C45C09F001A1EB5 /* CollapsibleSheetView.swift */; };
 		03B62B772CE295530077E9C8 /* RulesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B62B762CE295530077E9C8 /* RulesListView.swift */; };
 		03B62B792CE2A2C00077E9C8 /* RulesPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B62B782CE2A2C00077E9C8 /* RulesPickerView.swift */; };
+		03B62C402CE811CB0077E9C8 /* PersonBanEditorView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B62C3F2CE811CB0077E9C8 /* PersonBanEditorView+Logic.swift */; };
 		03B72B672C2888EE0023A6C4 /* View+ContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B72B662C2888EE0023A6C4 /* View+ContextMenu.swift */; };
 		03B72B6B2C28A0190023A6C4 /* SubscriptionListSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */; };
 		03C0EAEF2CA8288A00B4B2A5 /* CapsuleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C0EAEE2CA8288A00B4B2A5 /* CapsuleButtonStyle.swift */; };
@@ -549,7 +550,7 @@
 		038028F72CB097A10091A8A2 /* SearchView+InstancePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+InstancePicker.swift"; sourceTree = "<group>"; };
 		038028F92CB097CB0091A8A2 /* SearchView+LocationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+LocationPicker.swift"; sourceTree = "<group>"; };
 		038028FC2CB72A2A0091A8A2 /* ContentRemovalEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentRemovalEditorView.swift; sourceTree = "<group>"; };
-		038028FE2CB72AC90091A8A2 /* ReasonPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonPickerView.swift; sourceTree = "<group>"; };
+		038028FE2CB72AC90091A8A2 /* ReasonShortcutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonShortcutView.swift; sourceTree = "<group>"; };
 		0380965E2C10AA80003ED1D8 /* AppState+Transition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppState+Transition.swift"; sourceTree = "<group>"; };
 		038096602C10AAD8003ED1D8 /* TransitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionView.swift; sourceTree = "<group>"; };
 		0382A7EF2C09F0F800C79DDA /* PersonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonView.swift; sourceTree = "<group>"; };
@@ -632,7 +633,7 @@
 		03B431C52C45C09F001A1EB5 /* CollapsibleSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleSheetView.swift; sourceTree = "<group>"; };
 		03B62B762CE295530077E9C8 /* RulesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesListView.swift; sourceTree = "<group>"; };
 		03B62B782CE2A2C00077E9C8 /* RulesPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesPickerView.swift; sourceTree = "<group>"; };
-		03B62C3B2CE551370077E9C8 /* MlemMiddleware */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MlemMiddleware; path = ../MlemMiddleware; sourceTree = SOURCE_ROOT; };
+		03B62C3F2CE811CB0077E9C8 /* PersonBanEditorView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonBanEditorView+Logic.swift"; sourceTree = "<group>"; };
 		03B72B662C2888EE0023A6C4 /* View+ContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ContextMenu.swift"; sourceTree = "<group>"; };
 		03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListSettingsView.swift; sourceTree = "<group>"; };
 		03C0EAEE2CA8288A00B4B2A5 /* CapsuleButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleButtonStyle.swift; sourceTree = "<group>"; };
@@ -1094,6 +1095,7 @@
 				038028FC2CB72A2A0091A8A2 /* ContentRemovalEditorView.swift */,
 				0331715D2CCD6D95002DA370 /* ContentPurgeEditorView.swift */,
 				03F967262CE218110081C9A3 /* PersonBanEditorView.swift */,
+				03B62C3F2CE811CB0077E9C8 /* PersonBanEditorView+Logic.swift */,
 				CDD99C3B2C73F3FF0010367F /* DeleteAccountView.swift */,
 				03B25B3A2CC44FFF00EB6DF5 /* UploadConfirmationView.swift */,
 			);
@@ -1236,7 +1238,6 @@
 		6363D5B827EE196700E34822 = {
 			isa = PBXGroup;
 			children = (
-				03B62C3B2CE551370077E9C8 /* MlemMiddleware */,
 				6363D5C327EE196700E34822 /* Mlem */,
 				6363D5D927EE196A00E34822 /* MlemTests */,
 				6363D5E327EE196A00E34822 /* MlemUITests */,
@@ -1502,7 +1503,7 @@
 				03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */,
 				0316CD632C382A6A009EA8EA /* MessageView.swift */,
 				CD77437E2C1BA5CE0085BB43 /* MultiplatformView.swift */,
-				038028FE2CB72AC90091A8A2 /* ReasonPickerView.swift */,
+				038028FE2CB72AC90091A8A2 /* ReasonShortcutView.swift */,
 				03B62B762CE295530077E9C8 /* RulesListView.swift */,
 				03B62B782CE2A2C00077E9C8 /* RulesPickerView.swift */,
 				035BE0852BDD8D9100F77D73 /* Navigation */,
@@ -2271,7 +2272,7 @@
 				CD9857A42C5E7F9D0084C71F /* NsfwOverlayView.swift in Sources */,
 				CD64A91C2CA38DBA007CA7E6 /* NukeWebpBridgeDecoder.swift in Sources */,
 				030E95E72C80A20A0045BC2C /* View+NavigationTransition.swift in Sources */,
-				038028FF2CB72AC90091A8A2 /* ReasonPickerView.swift in Sources */,
+				038028FF2CB72AC90091A8A2 /* ReasonShortcutView.swift in Sources */,
 				03FE14062BF9445F00A8377F /* CloseButtonView.swift in Sources */,
 				03D2A6422C011F4A00ED4FF2 /* AccountListRowBody.swift in Sources */,
 				03134A5A2BEC2253002662CC /* AvatarStackView.swift in Sources */,
@@ -2394,6 +2395,7 @@
 				CD869FCC2C15F8AC00FC8B5B /* BubblePickerView.swift in Sources */,
 				03267D842BED49CE009D6268 /* AccountSettingsView.swift in Sources */,
 				CDAA02E12C817AAB00D75633 /* Color+Extensions.swift in Sources */,
+				03B62C402CE811CB0077E9C8 /* PersonBanEditorView+Logic.swift in Sources */,
 				03A82FA32C0D1F2400D01A5C /* View+ExternalApiWarning.swift in Sources */,
 				033F84C32C2B12AA002E3EDF /* InstanceSummary.swift in Sources */,
 				0369B3532BFA514B001EFEDF /* ToastLocation.swift in Sources */,
@@ -2901,8 +2903,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 0.46.0;
+				branch = sjmarf/ban;
+				kind = branch;
 			};
 		};
 		CDE4AC402CA3706400981010 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {

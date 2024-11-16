@@ -180,12 +180,48 @@ extension Interactable1Providing {
         )
     }
     
-    func banCreatorAction() -> BasicAction {
+    func banActions() -> [any Action] {
+        let isModerator: Bool
+        if let myPerson = api.myPerson, let community = community_ {
+            isModerator = myPerson.moderates(communityId: community.id)
+        } else {
+            isModerator = false
+        }
+        var output: [any Action] = .init()
+        let showBoth = api.isAdmin && (bannedFromCommunity_ ?? false) != (creator_?.bannedFromInstance ?? false)
+        if api.isAdmin, !isModerator || showBoth {
+            output.append(banCreatorFromInstanceAction())
+        }
+        if isModerator || showBoth {
+            output.append(banCreatorFromCommunityAction())
+        }
+        return output
+    }
+    
+    func banCreatorFromInstanceAction() -> BasicAction {
         .init(
-            id: "banCreator\(uid)",
-            appearance: .banCreator(),
+            id: "banCreatorFromInstance\(uid)",
+            appearance: .banCreatorFromInstance(isOn: creator_?.bannedFromInstance ?? false),
             callback: api.canInteract && (self2?.canModerate ?? false) ? {
-                self.self2?.creator.showBanSheet(community: self.self2?.community)
+                self.self2?.creator.showBanSheet(
+                    community: self.self2?.community,
+                    isBannedFromCommunity: self.bannedFromCommunity_ ?? false,
+                    shouldBan: !(self.creator_?.bannedFromInstance ?? false)
+                )
+            } : nil
+        )
+    }
+    
+    func banCreatorFromCommunityAction() -> BasicAction {
+        .init(
+            id: "banCreatorFromCommunity\(uid)",
+            appearance: .banCreatorFromCommunity(isOn: self2?.bannedFromCommunity ?? false),
+            callback: api.canInteract && (self2?.canModerate ?? false) ? {
+                self.self2?.creator.showBanSheet(
+                    community: self.self2?.community,
+                    isBannedFromCommunity: self.bannedFromCommunity_ ?? false,
+                    shouldBan: !(self.self2?.bannedFromCommunity ?? false)
+                )
             } : nil
         )
     }

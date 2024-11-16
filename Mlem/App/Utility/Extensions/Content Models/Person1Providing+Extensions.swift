@@ -21,7 +21,7 @@ extension Person1Providing {
         if isBot {
             output.insert(.bot)
         }
-        if instanceBan != .notBanned {
+        if bannedFromInstance {
             output.insert(.bannedFromInstance)
         }
         
@@ -53,8 +53,10 @@ extension Person1Providing {
         return output.sorted { $0.sortVal < $1.sortVal }
     }
     
-    func showBanSheet(community: (any Community)?) {
-        NavigationModel.main.openSheet(.ban(self, community: community))
+    func showBanSheet(community: (any Community)?, isBannedFromCommunity: Bool, shouldBan: Bool) {
+        NavigationModel.main.openSheet(
+            .ban(self, isBannedFromCommunity: isBannedFromCommunity, shouldBan: shouldBan, community: community)
+        )
     }
     
     func toggleBlocked(feedback: Set<FeedbackType> = []) {

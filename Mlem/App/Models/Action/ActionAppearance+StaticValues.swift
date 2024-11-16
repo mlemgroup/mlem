@@ -62,13 +62,23 @@ extension ActionAppearance {
         )
     }
     
-    static func banCreator() -> Self {
+    static func banCreatorFromInstance(isOn: Bool) -> Self {
         .init(
-            label: "Ban User",
-            isOn: false,
-            isDestructive: true,
-            color: Palette.main.negative,
-            icon: Icons.ban
+            label: isOn ? "Unban User" : "Ban User",
+            isOn: isOn,
+            isDestructive: !isOn,
+            color: isOn ? Palette.main.positive : Palette.main.negative,
+            icon: isOn ? Icons.unbanFromInstance : Icons.banFromInstance
+        )
+    }
+    
+    static func banCreatorFromCommunity(isOn: Bool) -> Self {
+        .init(
+            label: isOn ? "Unban User" : "Ban User",
+            isOn: isOn,
+            isDestructive: !isOn,
+            color: isOn ? Palette.main.positive : Palette.main.negative,
+            icon: isOn ? Icons.unbanFromCommunity : Icons.banFromCommunity
         )
     }
     

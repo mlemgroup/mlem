@@ -235,9 +235,6 @@
     "Ban Duration" : {
 
     },
-    "Ban from..." : {
-
-    },
     "Ban Target" : {
 
     },
@@ -1532,6 +1529,12 @@
 
     },
     "Two-Factor Authentication" : {
+
+    },
+    "Unban %@" : {
+
+    },
+    "Unban User" : {
 
     },
     "Unblock" : {

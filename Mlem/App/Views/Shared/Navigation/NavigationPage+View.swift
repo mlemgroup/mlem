@@ -44,9 +44,14 @@ extension NavigationPage {
             ContentRemovalEditorView(target: target.wrappedValue)
         case let .purge(target):
             ContentPurgeEditorView(target: target.wrappedValue)
-        case let .ban(person, community: community):
+        case let .ban(person, isBannedFromCommunity: isBannedFromCommunity, shouldBan: shouldBan, community: community):
             if let person = person.wrappedValue as? any Person {
-                PersonBanEditorView(person: person, community: community?.wrappedValue as? any Community)
+                PersonBanEditorView(
+                    person: person,
+                    community: community?.wrappedValue as? any Community,
+                    isBannedFromCommunity: isBannedFromCommunity,
+                    shouldBan: shouldBan
+                )
             } else {
                 Text(verbatim: "Error")
             }

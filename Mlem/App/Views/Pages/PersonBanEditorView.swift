@@ -21,9 +21,10 @@ struct PersonBanEditorView: View {
     
     let person: any Person
     let community: (any Community)?
+    var isBannedFromCommunity: Bool
     var shouldBan: Bool = true
     
-    @State var banFromInstance: Bool
+    @State var targetInstance: Bool
     @State var isPermanent: Bool = true
     @State var expiryDate: Date = Calendar.current.date(byAdding: .day, value: 1, to: .now) ?? .now
     @State var reason: String = ""
@@ -33,17 +34,34 @@ struct PersonBanEditorView: View {
     @State var presentationSelection: PresentationDetent = .large
     
     var selectedTarget: (any Profile2Providing)? {
-        if banFromInstance {
+        if targetInstance {
             appState.firstSession.instance
         } else {
             community
         }
     }
     
-    init(person: any Person, community: (any Community)?) {
+    init(
+        person: any Person,
+        community: (any Community)?,
+        isBannedFromCommunity: Bool,
+        shouldBan: Bool
+    ) {
         self.person = person
         self.community = community
-        self._banFromInstance = .init(wrappedValue: AppState.main.firstApi.isAdmin)
+        self.isBannedFromCommunity = isBannedFromCommunity
+        self.shouldBan = shouldBan
+        
+        let isCommunityModerator: Bool
+        if let community {
+            isCommunityModerator = (AppState.main.firstSession as? UserSession)?.person?.moderates(community: community) ?? false
+        } else {
+            isCommunityModerator = false
+        }
+//        var targetCommunity = isCommunityModerator && isBannedFromCommunity != shouldBan
+        self._targetInstance = .init(
+            wrappedValue: !isCommunityModerator || isBannedFromCommunity == shouldBan
+        )
     }
     
     var days: Int {
@@ -70,11 +88,9 @@ struct PersonBanEditorView: View {
                         Toggle("Permanent", isOn: $isPermanent)
                             .tint(palette.warning)
                     }
+                    .listSectionSpacing(60)
                     durationSection
-                    Section {
-                        Toggle("Remove Content", isOn: $removeContent)
-                            .tint(palette.warning)
-                    }
+                    removeContentSection
                 }
                 .navigationTitle(shouldBan ? "Ban \(person.name)" : "Unban \(person.name)")
                 .navigationBarTitleDisplayMode(.inline)
@@ -96,13 +112,21 @@ struct PersonBanEditorView: View {
         }
     }
     
+    var scopeSectionTitle: String {
+        if community != nil, appState.firstApi.isAdmin {
+            shouldBan ? "Ban from..." : "Unban from..."
+        } else {
+            shouldBan ? "Banning from..." : "Unbanning from..."
+        }
+    }
+    
     @ViewBuilder
     var scopeSection: some View {
         Section {
-            if let selectedTarget, let instance = appState.firstSession.instance {
-                if let community, appState.firstApi.isAdmin {
+            if let instance = appState.firstSession.instance {
+                if let community, appState.firstApi.isAdmin, isBannedFromCommunity == person.bannedFromInstance {
                     Menu {
-                        Picker("Ban Target", selection: $banFromInstance) {
+                        Picker("Ban Target", selection: $targetInstance) {
                             Label(instance).tag(true)
                             Label(community).tag(false)
                         }
@@ -121,7 +145,7 @@ struct PersonBanEditorView: View {
                 }
             }
         } header: {
-            Text(shouldBan ? "Ban from..." : "Unban from...")
+            Text(scopeSectionTitle)
                 .textCase(nil)
         }
     }
@@ -140,16 +164,15 @@ struct PersonBanEditorView: View {
     @ViewBuilder
     var reasonSection: some View {
         if let selectedTarget {
-            Section {
-                TextField("Reason", text: $reason, axis: .vertical)
-                    .focused($focusedField, equals: .reason)
-                if ![BlockNode](selectedTarget.description ?? "").rules().isEmpty {
-                    Button("\(selectedTarget.name) rules...", systemImage: "book.pages") {
-                        navigation.openSheet(.rulesList(selectedTarget, callback: {
-                            reason = $0
-                        }))
-                    }
+            Group {
+                Section {
+                    TextField("Reason", text: $reason, axis: .vertical)
+                        .focused($focusedField, equals: .reason)
                 }
+                Section {
+                    ReasonShortcutView(reason: $reason, rulesTarget: selectedTarget)
+                }
+                .listSectionSpacing(10)
             }
         }
     }
@@ -199,32 +222,11 @@ struct PersonBanEditorView: View {
         .buttonStyle(BanFormButtonStyle(selected: days == value && !isPermanent))
     }
     
-    var dateFormatter: DateComponentsFormatter {
-        let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .abbreviated
-        formatter.maximumUnitCount = 1
-        return formatter
-    }
-    
-    func send() async {
-        do {
-            if banFromInstance {
-                try await person.banFromInstance(
-                    removeContent: removeContent,
-                    reason: reason,
-                    expires: isPermanent ? nil : expiryDate
-                )
-            } else if let community {
-                try await person.ban(
-                    from: community,
-                    removeContent: removeContent,
-                    reason: reason,
-                    expires: isPermanent ? nil : expiryDate
-                )
-            }
-            dismiss()
-        } catch {
-            handleError(error)
+    @ViewBuilder
+    var removeContentSection: some View {
+        Section {
+            Toggle("Remove Content", isOn: $removeContent)
+                .tint(palette.warning)
         }
     }
 }
