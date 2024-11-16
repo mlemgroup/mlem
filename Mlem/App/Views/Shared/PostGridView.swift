@@ -19,6 +19,7 @@ import SwiftUI
 struct PostGridView: View {
     @Setting(\.postSize) var postSize
     @Setting(\.showReadInFeed) var showRead
+    @Setting(\.infiniteScroll) var infiniteScroll
     
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
@@ -96,11 +97,13 @@ struct PostGridView: View {
                             postFeedLoader: postFeedLoader, bottomAppearedItemIndex: $bottomAppearedPostIndex
                         )
                         .onAppear {
-                            do {
-                                try postFeedLoader.loadIfThreshold(post)
-                            } catch {
-                                // TODO: if postFeedLoader.loadIfThreshold throws 400, this line is not executed
-                                handleError(error)
+                            if infiniteScroll {
+                                do {
+                                    try postFeedLoader.loadIfThreshold(post)
+                                } catch {
+                                    // TODO: if postFeedLoader.loadIfThreshold throws 400, this line is not executed
+                                    handleError(error)
+                                }
                             }
                         }
                     }

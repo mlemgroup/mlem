@@ -20,6 +20,7 @@ struct GeneralSettingsView: View {
     @Setting(\.upvoteOnSave) var upvoteOnSave
     @Setting(\.jumpButton) var jumpButton
     @Setting(\.markReadOnScroll) var markReadOnScroll
+    @Setting(\.infiniteScroll) var infiniteScroll
     @Setting(\.autoplayMedia) var autoplayMedia
     @Setting(\.defaultFeed) var defaultFeed
     @Setting(\.sidebarVisibleByDefault) var sidebarVisibleByDefault
@@ -65,6 +66,7 @@ struct GeneralSettingsView: View {
                     Toggle("Autoplay Media", isOn: $autoplayMedia)
                 }
                 Toggle("Mark Read on Scroll", isOn: $markReadOnScroll)
+                Toggle("Infinite Scroll", isOn: $infiniteScroll)
                 Toggle("Upvote on Save", isOn: $upvoteOnSave)
                 Picker("Jump Button", selection: $jumpButton) {
                     ForEach(CommentJumpButtonLocation.allCases, id: \.self) { item in
