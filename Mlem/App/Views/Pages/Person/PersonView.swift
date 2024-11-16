@@ -25,6 +25,7 @@ struct PersonView: View {
     }
     
     @Setting(\.postSize) var postSize
+    @Setting(\.internetSpeed) var internetSpeed
     
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
@@ -44,6 +45,7 @@ struct PersonView: View {
         if let person1 = person.wrappedValue as? any Person1Providing, person1.api === AppState.main.firstApi {
             self._feedLoader = .init(wrappedValue: .init(
                 api: AppState.main.firstApi,
+                pageSize: internetSpeed.pageSize,
                 userId: person1.id,
                 sortType: .new,
                 savedOnly: false,
@@ -95,6 +97,7 @@ struct PersonView: View {
                     if feedLoader == nil {
                         feedLoader = .init(
                             api: AppState.main.firstApi,
+                            pageSize: internetSpeed.pageSize,
                             userId: response.person.id,
                             sortType: .new,
                             savedOnly: false,
@@ -103,7 +106,7 @@ struct PersonView: View {
                         preheatFeedLoader()
                     } else if let feedLoader, feedLoader.api !== entity.api {
                         Task {
-                            await feedLoader.switchUser(api: entity.api, userId: entity.id)
+                            await feedLoader.changeUser(api: entity.api, userId: entity.id)
                         }
                     }
                     

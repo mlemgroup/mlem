@@ -14,6 +14,7 @@ struct FeedsView: View {
     @Setting(\.postSize) var postSize
     @Setting(\.showReadInFeed) var showRead
     @Setting(\.showFeedWelcomePrompt) var showWelcomePrompt
+    @Setting(\.internetSpeed) var internetSpeed
     
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
@@ -31,7 +32,7 @@ struct FeedsView: View {
                         await postFeedLoader?.clear()
                         try await savedFeedLoader?.refresh(clearBeforeRefresh: true)
                     } else {
-                        savedFeedLoader?.clear()
+                        await savedFeedLoader?.clear()
                         try await postFeedLoader?.changeFeedType(to: feedSelection.associatedApiType)
                     }
                 } catch {
@@ -75,6 +76,7 @@ struct FeedsView: View {
         if let firstUser = AppState.main.firstAccount as? UserAccount {
             _savedFeedLoader = .init(wrappedValue: .init(
                 api: AppState.main.firstApi,
+                pageSize: internetSpeed.pageSize,
                 userId: firstUser.id,
                 sortType: .new,
                 savedOnly: true,
@@ -107,16 +109,17 @@ struct FeedsView: View {
                 scrollToTopTrigger.toggle()
             }
             .onChange(of: appState.firstApi, initial: false) {
-                postFeedLoader?.api = appState.firstApi
+                postFeedLoader?.changeApi(to: appState.firstApi)
                 
                 if appState.firstApi.canInteract, let firstUser = appState.firstAccount as? UserAccount {
                     if let savedFeedLoader {
                         Task {
-                            await savedFeedLoader.switchUser(api: appState.firstApi, userId: firstUser.id)
+                            await savedFeedLoader.changeUser(api: appState.firstApi, userId: firstUser.id)
                         }
                     } else {
                         savedFeedLoader = .init(
                             api: appState.firstApi,
+                            pageSize: internetSpeed.pageSize,
                             userId: firstUser.id,
                             sortType: .new,
                             savedOnly: true,
@@ -130,7 +133,7 @@ struct FeedsView: View {
                 // ensure we always are showing an appropriate feed
                 Task {
                     if !FeedSelection.cases(for: appState.firstAccount.accountType).contains(feedSelection) {
-                        postFeedLoader?.sortType = try await appState.initialFeedSortType
+                        try await postFeedLoader?.changeSortType(to: appState.initialFeedSortType)
                         feedSelection = appState.firstAccount.accountType == .user ? .subscribed : .all
                     }
                 }

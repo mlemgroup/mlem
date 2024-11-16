@@ -161,7 +161,7 @@ struct SearchView: View {
                                 }
                             }
                     }
-                    EndOfFeedView(loadingState: communityLoader.loadingState, viewType: .hobbit)
+                    EndOfFeedView(loadingState: communityLoader.loadingState, loadMore: nil, viewType: .hobbit)
                 }
             case .people:
                 LazyVStack(spacing: 0) {
@@ -175,14 +175,14 @@ struct SearchView: View {
                                 }
                             }
                     }
-                    EndOfFeedView(loadingState: personLoader.loadingState, viewType: .hobbit)
+                    EndOfFeedView(loadingState: personLoader.loadingState, loadMore: nil, viewType: .hobbit)
                 }
             case .instances:
                 LazyVStack(spacing: 0) {
                     SearchResultsView(results: instances) { instance in
                         InstanceListRow(instance, readout: .users)
                     }
-                    EndOfFeedView(loadingState: .done, viewType: .hobbit)
+                    EndOfFeedView(loadingState: .done, loadMore: nil, viewType: .hobbit)
                 }
             case .posts:
                 if postLoader.loadingState == .idle, postLoader.items.isEmpty {

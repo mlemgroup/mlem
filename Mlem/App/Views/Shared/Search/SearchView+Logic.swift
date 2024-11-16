@@ -27,7 +27,7 @@ extension SearchView {
                 try await Task.sleep(for: .seconds(0.2))
             }
             if clearBeforeRefresh {
-                await setInstances(.init())
+                setInstances(.init())
             }
             switch selectedTab {
             case .communities:
@@ -72,21 +72,21 @@ extension SearchView {
     
     private func refreshPosts(clearBeforeRefresh: Bool) async throws {
         guard !query.isEmpty else { return }
-        postLoader.api = getRefreshApi(for: postFilters.location)
-        postLoader.query = query
-        postLoader.sortType = postFilters.sort
-        postLoader.creatorId = postFilters.creator?.id
-        postLoader.communityId = nil
-        postLoader.listing = .all
+        postLoader.searchPostFetcher.setApi(getRefreshApi(for: postFilters.location))
+        postLoader.searchPostFetcher.setSortType(postFilters.sort)
+        postLoader.searchPostFetcher.query = query
+        postLoader.searchPostFetcher.creatorId = postFilters.creator?.id
+        postLoader.searchPostFetcher.communityId = nil
+        postLoader.searchPostFetcher.listing = .all
         switch postFilters.location {
         case .subscribed:
-            postLoader.listing = .subscribed
+            postLoader.searchPostFetcher.listing = .subscribed
         case .moderated:
-            postLoader.listing = .moderatorView
+            postLoader.searchPostFetcher.listing = .moderatorView
         case .localInstance, .instance:
-            postLoader.listing = .local
+            postLoader.searchPostFetcher.listing = .local
         case let .community(community):
-            postLoader.communityId = community.id
+            postLoader.searchPostFetcher.communityId = community.id
         default:
             break
         }

@@ -93,7 +93,7 @@ struct PersonContentGridView: View {
                     }
                 }
             }
-            EndOfFeedView(loadingState: loadingState, viewType: .hobbit)
+            EndOfFeedView(loadingState: loadingState, loadMore: nil, viewType: .hobbit)
         }
     }
     
