@@ -31,7 +31,7 @@ struct MessageView: View {
                     .italic()
                     .foregroundStyle(palette.secondary)
             } else {
-                Markdown(message.content, configuration: .default)
+                MarkdownWithLinkList(message.content)
             }
             Group {
                 if message.isOwnMessage {

@@ -154,6 +154,8 @@ extension NavigationPage {
         case let .rulesList(model, callback):
             RulesPickerView(model: model.wrappedValue, callback: callback.wrappedValue)
                 .presentationDetents([.medium, .large])
+        case .blockList:
+            BlockListView()
         }
     }
 }

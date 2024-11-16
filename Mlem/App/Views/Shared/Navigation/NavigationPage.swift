@@ -52,6 +52,7 @@ enum NavigationPage: Hashable {
     case bypassImageProxy(callback: HashWrapper<() -> Void>)
     case confirmUpload(imageData: Data, imageManager: ImageUploadManager, uploadApi: ApiClient)
     case rulesList(_ model: Profile2HashWrapper, callback: HashWrapper<(String) -> Void>)
+    case blockList
     
     static func post(_ post: any PostStubProviding, scrollTargetedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
         if let scrollTargetedComment {
