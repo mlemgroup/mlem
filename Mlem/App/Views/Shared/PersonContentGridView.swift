@@ -16,6 +16,7 @@ enum PersonContentType {
 struct PersonContentGridView: View {
     @Environment(AppState.self) var appState
     @Setting(\.postSize) var postSize
+    @Setting(\.infiniteScroll) var infiniteScroll
     
     @State var columns: [GridItem] = [GridItem(.flexible())]
     @State var frameWidth: CGFloat = .zero
@@ -83,17 +84,19 @@ struct PersonContentGridView: View {
                             .buttonStyle(.empty)
                             .padding(.horizontal, postSize.tiled ? Constants.main.halfSpacing : 10)
                             .onAppear {
-                                do {
-                                    try feedLoader.loadIfThreshold(item, asChild: contentType != .all)
-                                } catch {
-                                    // TODO: is postFeedLoader.loadIfThreshold throws 400, this line is not executed
-                                    handleError(error)
+                                if infiniteScroll {
+                                    do {
+                                        try feedLoader.loadIfThreshold(item, asChild: contentType != .all)
+                                    } catch {
+                                        // TODO: is postFeedLoader.loadIfThreshold throws 400, this line is not executed
+                                        handleError(error)
+                                    }
                                 }
                             }
                     }
                 }
             }
-            EndOfFeedView(loadingState: loadingState, loadMore: nil, viewType: .hobbit)
+            EndOfFeedView(loadingState: loadingState, loadMore: loadMore, viewType: .hobbit)
         }
     }
     
@@ -107,6 +110,16 @@ struct PersonContentGridView: View {
         case let .comment(comment):
             NavigationLink(.comment(comment)) {
                 FeedCommentView(comment: comment)
+            }
+        }
+    }
+    
+    func loadMore() {
+        Task {
+            do {
+                try await feedLoader.loadMoreItems()
+            } catch {
+                handleError(error)
             }
         }
     }
