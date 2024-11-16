@@ -33,13 +33,19 @@ struct EndOfFeedView: View {
     @Environment(Palette.self) var palette
     
     let loadingState: LoadingState
+    let loadMore: (() -> Void)?
     let viewType: EndOfFeedViewType
     
     var body: some View {
         Group {
             switch loadingState {
             case .idle:
-                EmptyView()
+                if let loadMore {
+                    Button("Load More") {
+                        loadMore()
+                    }
+                    .buttonStyle(.bordered)
+                }
             case .loading:
                 ProgressView()
             case .done:
