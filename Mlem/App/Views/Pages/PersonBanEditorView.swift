@@ -185,7 +185,7 @@ struct PersonBanEditorView: View {
                     .onTapGesture {
                         focusedField = .days
                     }
-                TextField("", value: Binding(
+                TextField(String(""), value: Binding(
                     get: { days },
                     set: { days = $0 }
                 ), format: .number)
