@@ -58,7 +58,6 @@ struct PersonBanEditorView: View {
         } else {
             isCommunityModerator = false
         }
-//        var targetCommunity = isCommunityModerator && isBannedFromCommunity != shouldBan
         self._targetInstance = .init(
             wrappedValue: !isCommunityModerator || isBannedFromCommunity == shouldBan
         )
