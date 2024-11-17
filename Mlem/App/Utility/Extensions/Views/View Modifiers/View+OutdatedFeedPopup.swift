@@ -46,6 +46,7 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
                             Task {
                                 do {
                                     showRefreshPopup = false
+                                    await feedLoader.changeApi(to: appState.firstApi)
                                     try await refresh()
                                 } catch {
                                     handleError(error)

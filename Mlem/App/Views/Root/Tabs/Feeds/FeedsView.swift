@@ -109,32 +109,15 @@ struct FeedsView: View {
                 scrollToTopTrigger.toggle()
             }
             .onChange(of: appState.firstApi, initial: false) {
-                postFeedLoader?.changeApi(to: appState.firstApi)
-                
-                if appState.firstApi.canInteract, let firstUser = appState.firstAccount as? UserAccount {
-                    if let savedFeedLoader {
-                        Task {
-                            await savedFeedLoader.changeUser(api: appState.firstApi, userId: firstUser.id)
-                        }
-                    } else {
-                        savedFeedLoader = .init(
-                            api: appState.firstApi,
-                            pageSize: internetSpeed.pageSize,
-                            userId: firstUser.id,
-                            sortType: .new,
-                            savedOnly: true,
-                            prefetchingConfiguration: .forPostSize(postSize)
-                        )
-                    }
-                } else {
-                    savedFeedLoader = nil
-                }
-                
                 // ensure we always are showing an appropriate feed
                 Task {
                     if !FeedSelection.cases(for: appState.firstAccount.accountType).contains(feedSelection) {
                         try await postFeedLoader?.changeSortType(to: appState.initialFeedSortType)
-                        feedSelection = appState.firstAccount.accountType == .user ? .subscribed : .all
+                        let newFeedSelection: FeedSelection = appState.firstAccount.accountType == .user ? .subscribed : .all
+                        if newFeedSelection != feedSelection {
+                            await postFeedLoader?.changeApi(to: appState.firstApi)
+                        }
+                        feedSelection = newFeedSelection
                     }
                 }
             }

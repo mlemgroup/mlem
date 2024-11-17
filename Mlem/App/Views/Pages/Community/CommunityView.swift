@@ -106,7 +106,8 @@ struct CommunityView: View {
             .environment(\.communityContext, community)
         }
         .background(palette.groupedBackground)
-        .outdatedFeedPopup(feedLoader: postFeedLoader, showPopup: selectedTab == .posts)
+        // don't show the refresh popup if community api inactive, since that indicates an unresolvable community from the new API
+        .outdatedFeedPopup(feedLoader: postFeedLoader, showPopup: selectedTab == .posts && community.api.isActive)
         .navigationTitle(isAtTop ? "" : community.name)
         .isAtTopSubscriber(isAtTop: $isAtTop)
         .toolbar {
