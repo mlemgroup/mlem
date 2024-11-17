@@ -8,6 +8,8 @@
 import Foundation
 import SwiftUI
 
+// swiftlint:disable type_body_length
+
 /// SFSymbol names for icons
 enum Icons {
     // votes
@@ -263,7 +265,10 @@ enum Icons {
     static let limitImageHeightSetting: String = "rectangle.compress.vertical"
     static let appLockSettings: String = "lock.app.dashed"
     static let collapseComments: String = "arrow.down.and.line.horizontal.and.arrow.up"
-    static let ban: String = "xmark.circle"
+    static let banFromInstance: String = "xmark.circle"
+    static let unbanFromInstance: String = "checkmark.circle"
+    static let banFromCommunity: String = "xmark.shield"
+    static let unbanFromCommunity: String = "checkmark.shield"
     static let logIn: String = "person.text.rectangle"
     static let signUp: String = "pencil.and.list.clipboard"
     
@@ -302,3 +307,5 @@ enum Icons {
     static let accountSwitchKeepPlace: String = "checkmark.diamond"
     static let play: String = "play.fill"
 }
+
+// swiftlint:enable type_body_length

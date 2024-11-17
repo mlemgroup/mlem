@@ -44,6 +44,17 @@ extension NavigationPage {
             ContentRemovalEditorView(target: target.wrappedValue)
         case let .purge(target):
             ContentPurgeEditorView(target: target.wrappedValue)
+        case let .ban(person, isBannedFromCommunity: isBannedFromCommunity, shouldBan: shouldBan, community: community):
+            if let person = person.wrappedValue as? any Person {
+                PersonBanEditorView(
+                    person: person,
+                    community: community?.wrappedValue as? any Community,
+                    isBannedFromCommunity: isBannedFromCommunity,
+                    shouldBan: shouldBan
+                )
+            } else {
+                Text(verbatim: "Error")
+            }
         case let .post(post, scrollTargetedComment, communityContext, navigationNamespace):
             PostPage(post: post, scrollTargetedComment: scrollTargetedComment?.wrappedValue)
                 .environment(\.communityContext, communityContext?.wrappedValue)
@@ -140,6 +151,9 @@ extension NavigationPage {
             BypassProxyWarningSheet(callback: callback.wrappedValue)
         case let .confirmUpload(imageData: imageData, imageManager: imageManager, uploadApi: uploadApi):
             UploadConfirmationView(imageData: imageData, imageManager: imageManager, uploadApi: uploadApi)
+        case let .rulesList(model, callback):
+            RulesPickerView(model: model.wrappedValue, callback: callback.wrappedValue)
+                .presentationDetents([.medium, .large])
         case .blockList:
             BlockListView()
         }

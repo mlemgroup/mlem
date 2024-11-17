@@ -38,7 +38,15 @@ struct ReportEditorView: View {
                 Form {
                     TextField("Reason", text: $reason, axis: .vertical)
                         .focused($reasonFocused)
-                    ReasonPickerView(reason: $reason, community: community)
+                    Section {
+                        ReasonShortcutView(reason: $reason)
+                    }
+                    if let community {
+                        RulesListView(model: community, reason: $reason)
+                    }
+                    if let instance = appState.firstSession.instance {
+                        RulesListView(model: instance, reason: $reason)
+                    }
                 }
                 .scrollDismissesKeyboard(.interactively)
                 .navigationBarTitleDisplayMode(.inline)

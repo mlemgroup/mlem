@@ -53,6 +53,9 @@
     "%@ rules:" : {
 
     },
+    "%@ rules..." : {
+
+    },
     "%lld Crossposts..." : {
       "localizations" : {
         "en" : {
@@ -221,6 +224,18 @@
 
     },
     "Average: %@" : {
+
+    },
+    "Ban %@" : {
+
+    },
+    "Ban Duration" : {
+
+    },
+    "Ban Target" : {
+
+    },
+    "Ban User" : {
 
     },
     "Banned from Community" : {
@@ -417,6 +432,9 @@
     "Day" : {
 
     },
+    "Days:" : {
+
+    },
     "Debug" : {
 
     },
@@ -505,6 +523,9 @@
 
     },
     "example.com" : {
+
+    },
+    "Expires:" : {
 
     },
     "Export Settings" : {
@@ -989,6 +1010,9 @@
     "Paste" : {
 
     },
+    "Permanent" : {
+
+    },
     "Permanently delete %@" : {
 
     },
@@ -1110,6 +1134,9 @@
 
     },
     "Remove" : {
+
+    },
+    "Remove Content" : {
 
     },
     "Replies" : {
@@ -1508,6 +1535,12 @@
 
     },
     "Two-Factor Authentication" : {
+
+    },
+    "Unban %@" : {
+
+    },
+    "Unban User" : {
 
     },
     "Unblock" : {
