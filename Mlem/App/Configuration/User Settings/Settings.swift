@@ -31,6 +31,7 @@ class Settings: ObservableObject {
     @AppStorage("behavior.internetSpeed") var internetSpeed: InternetSpeed = .fast
     @AppStorage("behavior.autoplayMedia") var autoplayMedia: Bool = false
     @AppStorage("behavior.confirmImageUploads") var confirmImageUploads: Bool = true
+    @AppStorage("behavior.infiniteScroll") var infiniteScroll: Bool = true
     
     @AppStorage("accounts.keepPlace") var keepPlaceOnAccountSwitch: Bool = false
     @AppStorage("accounts.sort") var accountSort: AccountSortMode = .name
@@ -112,6 +113,7 @@ class Settings: ObservableObject {
         hapticLevel = settings.behavior_hapticLevel
         upvoteOnSave = settings.behavior_upvoteOnSave
         internetSpeed = settings.behavior_internetSpeed
+        infiniteScroll = settings.behavior_infiniteScroll
         keepPlaceOnAccountSwitch = settings.accounts_keepPlace
         accountSort = settings.accounts_sort
         groupAccountSort = settings.accounts_grouped
