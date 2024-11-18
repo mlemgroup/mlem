@@ -69,6 +69,7 @@ struct CommunityView: View {
     }
         
     @ViewBuilder
+    // swiftlint:disable:next function_body_length
     func content(community: any Community) -> some View {
         FancyScrollView {
             HStack {
@@ -106,8 +107,11 @@ struct CommunityView: View {
             .environment(\.communityContext, community)
         }
         .background(palette.groupedBackground)
-        // don't show the refresh popup if community api inactive, since that indicates an unresolvable community from the new API
-        .outdatedFeedPopup(feedLoader: postFeedLoader, showPopup: selectedTab == .posts && community.api.isActive)
+        // don't show the refresh popup if community api isn't the active api, since that indicates an unresolvable community
+        .outdatedFeedPopup(
+            feedLoader: postFeedLoader,
+            showPopup: selectedTab == .posts && community.api === AppState.main.firstApi
+        )
         .navigationTitle(isAtTop ? "" : community.name)
         .isAtTopSubscriber(isAtTop: $isAtTop)
         .toolbar {
