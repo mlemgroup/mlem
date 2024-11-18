@@ -54,7 +54,6 @@ struct PostEditorTargetView: View {
                     .foregroundStyle(palette.negative)
             }
         }
-        .padding(.horizontal, 15)
     }
     
     @ViewBuilder

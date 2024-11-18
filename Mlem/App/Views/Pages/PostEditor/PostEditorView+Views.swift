@@ -17,8 +17,6 @@ extension PostEditorView {
                     labelStyle: .medium,
                     showAvatar: true
                 )
-                .padding(.horizontal)
-                Divider()
             } else {
                 ForEach(Array(targets.enumerated()), id: \.element.id) { index, target in
                     HStack(spacing: 0) {
@@ -31,10 +29,11 @@ extension PostEditorView {
                             .symbolRenderingMode(.hierarchical)
                             .imageScale(.large)
                             .labelStyle(.iconOnly)
-                            .padding(.trailing)
                         }
                     }
-                    Divider()
+                    .padding(.horizontal, Constants.main.standardSpacing)
+                    .padding(.vertical, Constants.main.standardSpacing)
+                    .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                 }
             }
             let showWarning = !targets.allSatisfy { $0.sendState != .failed }

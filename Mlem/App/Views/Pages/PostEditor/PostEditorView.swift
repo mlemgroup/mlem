@@ -95,7 +95,7 @@ struct PostEditorView: View {
                 contentView
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar { toolbar }
-                    .background(palette.background)
+                    .background(palette.groupedBackground)
             }
             .onAppear {
                 contentTextView.resignFirstResponder()
@@ -145,9 +145,8 @@ struct PostEditorView: View {
     @ViewBuilder
     var contentView: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 targetSelectionView
-                    .padding(.bottom, 6)
                 MarkdownTextEditor(
                     onChange: {
                         // Avoid unnecessary view update
@@ -172,25 +171,22 @@ struct PostEditorView: View {
                     maxHeight: .infinity,
                     alignment: .topLeading
                 )
-                VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-                    if hasNsfwTag {
-                        nsfwTagView
-                            .padding(.leading, 15)
-                            .transition(attachmentTransition)
-                    }
-                    if link != .none {
-                        linkView
-                            .padding(.horizontal, 12)
-                            .transition(attachmentTransition)
-                    }
-                    if imageManager != nil || imageUrl != nil {
-                        imageView
-                            .padding(.horizontal, 12)
-                            .transition(attachmentTransition)
-                    }
+                .padding(.vertical, Constants.main.standardSpacing)
+                .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                if hasNsfwTag {
+                    nsfwTagView
+                        .padding(.leading, 15)
+                        .transition(attachmentTransition)
                 }
-                if !(hasNsfwTag || link != .none || imageManager != nil) {
-                    Divider()
+                if link != .none {
+                    linkView
+                        .padding(.horizontal, 12)
+                        .transition(attachmentTransition)
+                }
+                if imageManager != nil || imageUrl != nil {
+                    imageView
+                        .padding(.horizontal, 12)
+                        .transition(attachmentTransition)
                 }
                 MarkdownTextEditor(
                     onChange: {
@@ -215,9 +211,10 @@ struct PostEditorView: View {
                     maxHeight: .infinity,
                     alignment: .topLeading
                 )
-                .padding(.top, 4)
-                .background(palette.background)
+                .padding(.vertical, Constants.main.standardSpacing)
+                .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
             }
+            .padding(.horizontal, Constants.main.standardSpacing)
             .animation(.snappy(duration: 0.2, extraBounce: 0.1), value: animationHashValue)
         }
     }
