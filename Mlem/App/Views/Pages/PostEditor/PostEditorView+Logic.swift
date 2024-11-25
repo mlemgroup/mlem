@@ -121,4 +121,26 @@ extension PostEditorView {
         hasher.combine(hasNsfwTag)
         return hasher.finalize()
     }
+    
+    func restoreFocusState() {
+        switch lastFocusedField {
+        case .title:
+            titleTextView.becomeFirstResponder()
+        case .content:
+            contentTextView.becomeFirstResponder()
+        case nil:
+            break
+        }
+    }
+    
+    func saveFocusState() {
+        if contentTextView.isFirstResponder {
+            lastFocusedField = .content
+        } else if titleTextView.isFirstResponder {
+            lastFocusedField = .title
+        } else {
+            lastFocusedField = nil
+        }
+        print(lastFocusedField)
+    }
 }

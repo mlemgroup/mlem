@@ -17,8 +17,10 @@ struct ProfileView: View {
     var body: some View {
         if let person = appState.firstPerson {
             PersonView(person: .init(person), isProfileTab: true)
+                .id(person.actorId)
         } else if let instance = appState.firstSession.instance {
             InstanceView(instance: instance)
+                .id(instance.actorId)
         }
     }
 }

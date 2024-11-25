@@ -10,6 +10,7 @@ import SwiftUI
 extension PostEditorView {
     @ViewBuilder
     var targetSelectionView: some View {
+        let showWarning = !targets.allSatisfy { $0.sendState != .failed }
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             if let postToEdit {
                 FullyQualifiedLinkView(
@@ -17,10 +18,11 @@ extension PostEditorView {
                     labelStyle: .medium,
                     showAvatar: true
                 )
+                .padding(.horizontal, Constants.main.standardSpacing)
             } else {
                 ForEach(Array(targets.enumerated()), id: \.element.id) { index, target in
-                    HStack(spacing: 0) {
-                        PostEditorTargetView(target: target)
+                    HStack(spacing: Constants.main.standardSpacing) {
+                        PostEditorTargetView(target: target, isMoreThanOneTarget: targets.count > 1)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         if targets.count > 1 {
                             Button("Remove", systemImage: Icons.closeCircleFill) {
@@ -31,24 +33,20 @@ extension PostEditorView {
                             .labelStyle(.iconOnly)
                         }
                     }
-                    .padding(.horizontal, Constants.main.standardSpacing)
-                    .padding(.vertical, Constants.main.standardSpacing)
-                    .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
-            let showWarning = !targets.allSatisfy { $0.sendState != .failed }
-            Group {
-                if showWarning {
-                    Text("One of more of your posts failed to send.")
-                        .multilineTextAlignment(.center)
-                        .padding(.vertical, 3)
-                        .frame(maxWidth: .infinity)
-                        .background(.opacity(0.2), in: .capsule)
-                        .foregroundStyle(palette.negative)
-                        .padding(.horizontal)
-                }
-            }.animation(.easeOut(duration: 0.2), value: showWarning)
+            if showWarning {
+                Text(targets.count == 1 ? "Post failed to send." : "One of more of your posts failed to send.")
+                    .multilineTextAlignment(.center)
+                    .padding(.vertical, 3)
+                    .frame(maxWidth: .infinity)
+                    .background(.opacity(0.2), in: .capsule)
+                    .foregroundStyle(palette.negative)
+                    .padding(.horizontal)
+            }
         }
+        .animation(.easeOut(duration: 0.2), value: showWarning)
     }
     
     @ViewBuilder
