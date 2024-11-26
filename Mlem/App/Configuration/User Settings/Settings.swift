@@ -70,6 +70,7 @@ class Settings: ObservableObject {
     @AppStorage("comment.compact") var compactComments: Bool = false
     @AppStorage("comment.jumpButton") var jumpButton: CommentJumpButtonLocation = .bottomTrailing
     @AppStorage("comment.sort") var commentSort: ApiCommentSortType = .top
+    @AppStorage("comment.maxDepth") var maxCommentDepth: Int = 8
     
     @AppStorage("status.bypassImageProxyShown") var bypassImageProxyShown: Bool = false
     
@@ -138,6 +139,7 @@ class Settings: ObservableObject {
         compactComments = settings.comment_compact
         jumpButton = settings.comment_jumpButton
         commentSort = settings.comment_defaultSort
+        maxCommentDepth = settings.comment_maxDepth
         bypassImageProxyShown = settings.status_bypassImageProxyShown
         autoBypassImageProxy = settings.privacy_autoBypassImageProxy
         sidebarVisibleByDefault = settings.navigation_sidebarVisibleByDefault

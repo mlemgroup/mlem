@@ -36,6 +36,7 @@ struct CodableSettings: Codable {
     var comment_gestures_tapToCollapse: Bool
     var comment_jumpButton: CommentJumpButtonLocation
     var comment_showCreatorInstance: Bool
+    var comment_maxDepth: Int
     var community_showAvatar: Bool
     var community_showBanner: Bool
     var community_showInstance: Bool
@@ -111,6 +112,7 @@ struct CodableSettings: Codable {
         self.comment_gestures_tapToCollapse = try container.decodeIfPresent(Bool.self, forKey: .comment_gestures_tapToCollapse) ?? true
         self.comment_jumpButton = try container.decodeIfPresent(CommentJumpButtonLocation.self, forKey: .comment_jumpButton) ?? .bottomTrailing
         self.comment_showCreatorInstance = try container.decodeIfPresent(Bool.self, forKey: .comment_showCreatorInstance) ?? true
+        self.comment_maxDepth = try container.decodeIfPresent(Int.self, forKey: .comment_maxDepth) ?? 8
         self.community_showAvatar = try container.decodeIfPresent(Bool.self, forKey: .community_showAvatar) ?? true
         self.community_showBanner = try container.decodeIfPresent(Bool.self, forKey: .community_showBanner) ?? true
         self.community_showInstance = try container.decodeIfPresent(Bool.self, forKey: .community_showInstance) ?? true
@@ -187,6 +189,7 @@ struct CodableSettings: Codable {
         self.comment_gestures_tapToCollapse = true
         self.comment_jumpButton = settings.jumpButton
         self.comment_showCreatorInstance = true
+        self.comment_maxDepth = 8
         self.community_showAvatar = settings.showCommunityAvatar
         self.community_showBanner = true
         self.community_showInstance = true
