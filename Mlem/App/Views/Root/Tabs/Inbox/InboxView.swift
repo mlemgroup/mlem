@@ -42,6 +42,8 @@ struct InboxView: View {
     @State var messages: [Message2] = []
     @State var combined: [any InboxItemProviding] = []
     
+    @State var messageFeedLoader: MessageFeedLoader
+    
     @State var showRefreshPopup: Bool = false
     @State var waitingOnMarkAllAsRead: Bool = false
     @State var markAllAsReadTrigger: Bool = false
@@ -57,6 +59,13 @@ struct InboxView: View {
         case .messages:
             messages
         }
+    }
+    
+    init() {
+        @Setting(\.internetSpeed) var internetSpeed
+        
+        var messageFeedLoader: MessageFeedLoader = .init(api: AppState.main.firstApi, pageSize: internetSpeed.pageSize)
+        self._messageFeedLoader = .init(wrappedValue: messageFeedLoader)
     }
     
     var body: some View {
