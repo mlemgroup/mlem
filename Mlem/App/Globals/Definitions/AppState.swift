@@ -85,6 +85,9 @@ class AppState {
         
         if let account = account as? UserAccount {
             let activeAccount = UserSession(account: account)
+            if activeSessions.isEmpty {
+                guestSession.deactivate()
+            }
             activeSessions = [activeAccount]
         } else if let account = account as? GuestAccount {
             activeSessions = []
