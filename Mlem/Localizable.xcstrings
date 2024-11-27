@@ -842,6 +842,9 @@
     "Matrix Room" : {
 
     },
+    "Maximum Comment Depth" : {
+
+    },
     "Medium" : {
 
     },
@@ -1442,6 +1445,9 @@
           }
         }
       }
+    },
+    "The number of child comments that are shown in a chain before the \"More Replies\" button is shown." : {
+
     },
     "Theme" : {
 
