@@ -67,7 +67,7 @@ struct InboxView: View {
         let inboxFeedLoader: InboxFeedLoader = .init(
             api: AppState.main.firstApi,
             pageSize: internetSpeed.pageSize,
-            sources: [messageFeedLoader, replyFeedLoader],
+            sources: [replyFeedLoader, messageFeedLoader    ],
             sortType: .new
         )
         
@@ -153,13 +153,12 @@ struct InboxView: View {
                     Section {
                         ForEach(inboxFeedLoader.items, id: \.actorId) { item in
                             Group {
-                                Text("Item!")
-//                                switch item {
-//                                case let .message(message):
-//                                    MessageView(message: message)
-//                                case let .reply(reply):
-//                                    ReplyView(reply: reply)
-//                                }
+                                switch item {
+                                case let .message(message):
+                                    MessageView(message: message)
+                                case let .reply(reply):
+                                    ReplyView(reply: reply)
+                                }
                             }
                             .onAppear {
                                 do {
