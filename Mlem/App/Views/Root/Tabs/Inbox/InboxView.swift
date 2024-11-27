@@ -44,7 +44,6 @@ struct InboxView: View {
     
     @State var messageFeedLoader: MessageFeedLoader
     @State var replyFeedLoader: ReplyFeedLoader
-    @State var inboxFeedLoader: InboxFeedLoader
     
     @State var showRefreshPopup: Bool = false
     @State var waitingOnMarkAllAsRead: Bool = false
@@ -68,16 +67,16 @@ struct InboxView: View {
         
         let messageFeedLoader: MessageFeedLoader = .init(api: AppState.main.firstApi, pageSize: internetSpeed.pageSize)
         let replyFeedLoader: ReplyFeedLoader = .init(api: AppState.main.firstApi, pageSize: internetSpeed.pageSize)
-        let inboxFeedLoader: InboxFeedLoader = .init(
-            api: AppState.main.firstApi,
-            pageSize: internetSpeed.pageSize,
-            sources: [MessageFeedLoader, ReplyFeedLoader],
-            sortType: .new
-        )
+//        let inboxFeedLoader: InboxFeedLoader = .init(
+//            api: AppState.main.firstApi,
+//            pageSize: internetSpeed.pageSize,
+//            sources: [MessageFeedLoader, ReplyFeedLoader],
+//            sortType: .new
+//        )
         
         self._messageFeedLoader = .init(wrappedValue: messageFeedLoader)
         self._replyFeedLoader = .init(wrappedValue: replyFeedLoader)
-        self._inboxFeedLoader = .init(wrappedValue: inboxFeedLoader)
+        // self._inboxFeedLoader = .init(wrappedValue: inboxFeedLoader)
     }
     
     var body: some View {
