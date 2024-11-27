@@ -43,8 +43,9 @@ extension InboxView {
                 showRefreshPopup = false
                 HapticManager.main.play(haptic: .lightSuccess, priority: .high)
                 Task { @MainActor in
-                    removeAll()
-                    await loadReplies()
+                    print("TODO")
+                    // removeAll()
+                    // await loadReplies()
                 }
             } label: {
                 Label("Refresh", systemImage: Icons.refresh)
@@ -90,7 +91,8 @@ extension InboxView {
                     do {
                         try await appState.firstApi.markAllAsRead()
                         if !showRead {
-                            removeAll()
+                            print("TODO")
+                            // removeAll()
                         }
                         try await Task.sleep(for: .seconds(0.05))
                     } catch {
