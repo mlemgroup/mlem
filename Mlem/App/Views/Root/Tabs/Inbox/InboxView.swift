@@ -43,6 +43,7 @@ struct InboxView: View {
     @State var combined: [any InboxItemProviding] = []
     
     @State var messageFeedLoader: MessageFeedLoader
+    @State var replyFeedLoader: ReplyFeedLoader
     
     @State var showRefreshPopup: Bool = false
     @State var waitingOnMarkAllAsRead: Bool = false
@@ -64,8 +65,11 @@ struct InboxView: View {
     init() {
         @Setting(\.internetSpeed) var internetSpeed
         
-        var messageFeedLoader: MessageFeedLoader = .init(api: AppState.main.firstApi, pageSize: internetSpeed.pageSize)
+        let messageFeedLoader: MessageFeedLoader = .init(api: AppState.main.firstApi, pageSize: internetSpeed.pageSize)
+        let replyFeedLoader: ReplyFeedLoader = .init(api: AppState.main.firstApi, pageSize: internetSpeed.pageSize)
+        
         self._messageFeedLoader = .init(wrappedValue: messageFeedLoader)
+        self._replyFeedLoader = .init(wrappedValue: replyFeedLoader)
     }
     
     var body: some View {
@@ -76,6 +80,8 @@ struct InboxView: View {
                 .background(palette.groupedBackground)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar { toolbar }
+                .loadFeed(messageFeedLoader)
+                .loadFeed(replyFeedLoader)
                 .onChange(of: taskId) {
                     Task { @MainActor in
                         showRefreshPopup = false
@@ -142,30 +148,50 @@ struct InboxView: View {
                 })
                 LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
                     Section {
-                        if loadingState == .loading, replies.isEmpty, mentions.isEmpty {
-                            ProgressView()
-                                .controlSize(.large)
-                                .padding()
-                                .tint(palette.secondary)
-                        } else {
-                            if items.isEmpty {
-                                Text("Nothing to see here")
-                                    .foregroundStyle(palette.secondary)
-                                    .padding()
-                            } else {
-                                ForEach(items, id: \.id) { item in
-                                    Group {
-                                        if let reply = item as? Reply2, !reply.creator.blocked {
-                                            ReplyView(reply: reply)
-                                        }
-                                        if let message = item as? Message2, !message.creator.blocked {
-                                            MessageView(message: message)
-                                        }
+                        ForEach(replyFeedLoader.items) { reply in
+                            ReplyView(reply: reply)
+                                .onAppear {
+                                    do {
+                                        try replyFeedLoader.loadIfThreshold(reply)
+                                    } catch {
+                                        handleError(error)
                                     }
-                                    .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                                 }
-                            }
                         }
+//                        ForEach(messageFeedLoader.items) { message in
+//                            MessageView(message: message)
+//                                .onAppear {
+//                                    do {
+//                                        try messageFeedLoader.loadIfThreshold(message)
+//                                    } catch {
+//                                        handleError(error)
+//                                    }
+//                                }
+//                        }
+//                        if loadingState == .loading, replies.isEmpty, mentions.isEmpty {
+//                            ProgressView()
+//                                .controlSize(.large)
+//                                .padding()
+//                                .tint(palette.secondary)
+//                        } else {
+//                            if items.isEmpty {
+//                                Text("Nothing to see here")
+//                                    .foregroundStyle(palette.secondary)
+//                                    .padding()
+//                            } else {
+//                                ForEach(items, id: \.id) { item in
+//                                    Group {
+//                                        if let reply = item as? Reply2, !reply.creator.blocked {
+//                                            ReplyView(reply: reply)
+//                                        }
+//                                        if let message = item as? Message2, !message.creator.blocked {
+//                                            MessageView(message: message)
+//                                        }
+//                                    }
+//                                    .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+//                                }
+//                            }
+//                        }
                     } header: { sectionHeader }
                 }
             }
