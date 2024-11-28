@@ -141,6 +141,5 @@ extension PostEditorView {
         } else {
             lastFocusedField = nil
         }
-        print(lastFocusedField)
     }
 }
