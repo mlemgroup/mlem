@@ -170,12 +170,6 @@ struct PostEditorView: View {
                         prompt: "Title",
                         textView: titleTextView,
                         font: .preferredFont(forTextStyle: .title2),
-                        insets: .init(
-                            top: 0,
-                            left: Constants.main.standardSpacing,
-                            bottom: 0,
-                            right: Constants.main.standardSpacing
-                        ),
                         content: {
                             MarkdownEditorToolbarView(
                                 showing: .inlineOnly,
@@ -186,12 +180,11 @@ struct PostEditorView: View {
                     )
                     .frame(
                         maxWidth: .infinity,
-                        minHeight: 0,
+                        minHeight: minTitleEditorHeight,
                         maxHeight: .infinity,
                         alignment: .topLeading
                     )
-                    .padding(.top, Constants.main.standardSpacing)
-                    .padding(.bottom, -4)
+                    .padding(.top, Constants.main.halfSpacing)
                     .background(
                         palette.secondaryGroupedBackground,
                         in: UnevenRoundedRectangle(cornerRadii: .init(

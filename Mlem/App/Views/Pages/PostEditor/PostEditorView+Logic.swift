@@ -10,7 +10,11 @@ import SwiftUI
 
 extension PostEditorView {
     var minTextEditorHeight: CGFloat {
-        UIFont.preferredFont(forTextStyle: .title2).lineHeight * 4 + 15
+        UIFont.preferredFont(forTextStyle: .body).lineHeight * 4 + 15
+    }
+    
+    var minTitleEditorHeight: CGFloat {
+        UIFont.preferredFont(forTextStyle: .title2).lineHeight + 15
     }
     
     var attachmentTransition: AnyTransition {
