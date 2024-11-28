@@ -43,26 +43,7 @@ extension ExpandedPostView {
                     .padding(.leading, CGFloat(comment.depth - tracker.proposedDepthOffset) * 10)
                     .id(comment.actorId)
                 case let .unloadedComments(comment, _):
-                    Button {
-                        navigation.push(.comment(comment, showViewPostButton: false))
-                    } label: {
-                        HStack {
-                            CommentBarView(depth: comment.depth + 1)
-                            HStack {
-                                Text("More Replies")
-                                Image(systemName: Icons.forward)
-                            }
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 8)
-                            .foregroundStyle(palette.accent)
-                        }
-                        .background(
-                            palette.secondaryGroupedBackground,
-                            in: .rect(cornerRadius: Constants.main.standardSpacing)
-                        )
-                    }
-                    .padding(.leading, CGFloat(comment.depth + 1 - tracker.proposedDepthOffset) * 10)
-                    .buttonStyle(.plain)
+                    MoreRepliesButton(tracker: tracker, comment: comment)
                 }
             }
             .padding(.horizontal, Constants.main.standardSpacing)
