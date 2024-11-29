@@ -115,7 +115,7 @@ class CommentTreeTracker: Hashable {
                 sort: sort,
                 includedParentCount: parentCount,
                 page: page,
-                maxDepth: min(8, Settings.main.maxCommentDepth),
+                maxDepth: min(8, Settings.main.maxCommentDepth) + parentCount,
                 limit: 999
             )
         }

@@ -72,7 +72,11 @@ struct MoreRepliesButton: View {
         // and then the user makes the window less wide (e.g. on iPad), in which case we'd need to hide
         // the comments that exceed the new maximum width.
         if maxDepth > 12 {
-            navigation.push(.comment(comment, showViewPostButton: false))
+            var comments = comments
+            if let parent = comment.parent {
+                comments.prepend(parent.comment2)
+            }
+            navigation.push(.comment(comment, comments: comments, showViewPostButton: false))
         } else {
             await tracker.insertAdditionalComments(comments: comments)
         }

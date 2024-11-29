@@ -67,7 +67,6 @@ struct ExpandedPostView<Content: View>: View {
                     .task(id: tracker == nil) {
                         if let tracker, post.api == appState.firstApi, tracker.loadingState == .idle {
                             post.markRead()
-                            await tracker.load()
                         }
                     }
             } else {
