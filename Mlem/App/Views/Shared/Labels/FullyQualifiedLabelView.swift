@@ -62,7 +62,7 @@ struct FullyQualifiedLabelView: View {
     }
     
     var body: some View {
-        HStack(spacing: Constants.main.halfSpacing) {
+        HStack(spacing: 7) {
             if showAvatar {
                 CircleCroppedImageView(
                     url: entity?.avatar?.withIconSize(labelStyle.avatarResolution),
@@ -79,6 +79,7 @@ struct FullyQualifiedLabelView: View {
                 prependedText: flairs.textView()
             )
             .imageScale(.small)
+            .offset(y: 1)
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)

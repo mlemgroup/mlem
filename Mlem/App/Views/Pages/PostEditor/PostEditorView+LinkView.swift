@@ -49,7 +49,7 @@ extension PostEditorView {
             .fontWeight(.semibold)
         }
         .padding(8)
-        .background(palette.accent.opacity(0.2), in: .rect(cornerRadius: 16))
+        .background(palette.accent.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
     }
     
     private var linkLabel: String {

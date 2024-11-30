@@ -10,7 +10,11 @@ import SwiftUI
 
 extension PostEditorView {
     var minTextEditorHeight: CGFloat {
-        UIFont.preferredFont(forTextStyle: .title2).lineHeight * 4 + 15
+        UIFont.preferredFont(forTextStyle: .body).lineHeight * 4 + 15
+    }
+    
+    var minTitleEditorHeight: CGFloat {
+        UIFont.preferredFont(forTextStyle: .title2).lineHeight + 15
     }
     
     var attachmentTransition: AnyTransition {
@@ -120,5 +124,26 @@ extension PostEditorView {
         hasher.combine(imageManager)
         hasher.combine(hasNsfwTag)
         return hasher.finalize()
+    }
+    
+    func restoreFocusState() {
+        switch lastFocusedField {
+        case .title:
+            titleTextView.becomeFirstResponder()
+        case .content:
+            contentTextView.becomeFirstResponder()
+        case nil:
+            break
+        }
+    }
+    
+    func saveFocusState() {
+        if contentTextView.isFirstResponder {
+            lastFocusedField = .content
+        } else if titleTextView.isFirstResponder {
+            lastFocusedField = .title
+        } else {
+            lastFocusedField = nil
+        }
     }
 }

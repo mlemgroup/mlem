@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
     let content: Content
-    let includeInsets: Bool
+    let insets: UIEdgeInsets
     let firstResponder: Bool
     let prompt: String
     let textView: UITextView
@@ -28,7 +28,12 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         prompt: LocalizedStringResource,
         textView: UITextView,
         font: UIFont = .preferredFont(forTextStyle: .body),
-        includeInsets: Bool = true,
+        insets: UIEdgeInsets = .init(
+            top: Constants.main.halfSpacing,
+            left: Constants.main.standardSpacing,
+            bottom: Constants.main.standardSpacing,
+            right: Constants.main.standardSpacing
+        ),
         firstResponder: Bool = true,
         @ViewBuilder content: () -> Content
     ) {
@@ -36,7 +41,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         self.textView = textView
         self.content = content()
         self.font = font
-        self.includeInsets = includeInsets
+        self.insets = insets
         self.firstResponder = firstResponder
         self.onChange = onChange
     }
@@ -45,24 +50,9 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         Coordinator(self)
     }
  
-    // swiftlint:disable:next function_body_length
     func makeUIView(context: Context) -> UITextView {
         textView.font = font
-        if includeInsets {
-            textView.textContainerInset = .init(
-                top: Constants.main.halfSpacing,
-                left: Constants.main.standardSpacing,
-                bottom: Constants.main.standardSpacing,
-                right: Constants.main.standardSpacing
-            )
-        } else {
-            textView.textContainerInset = .init(
-                top: Constants.main.halfSpacing,
-                left: 0,
-                bottom: Constants.main.standardSpacing,
-                right: 0
-            )
-        }
+        textView.textContainerInset = insets
         textView.delegate = context.coordinator
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.setContentHuggingPriority(.defaultLow, for: .horizontal)
@@ -94,8 +84,8 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         placeholderLabel.sizeToFit()
         textView.addSubview(placeholderLabel)
         placeholderLabel.frame.origin = CGPoint(
-            x: includeInsets ? 15 : 5,
-            y: includeInsets ? 6 : 7
+            x: 15,
+            y: insets.top + 1
         )
         placeholderLabel.textColor = UIColor(Palette.main.tertiary)
         placeholderLabel.isHidden = !textView.text.isEmpty
