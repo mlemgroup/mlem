@@ -48,6 +48,7 @@ struct MoreRepliesButton: View {
                 palette.secondaryGroupedBackground,
                 in: .rect(cornerRadius: Constants.main.standardSpacing)
             )
+            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         }
         .padding(.leading, CGFloat(comment.depth + 1 - tracker.proposedDepthOffset) * 10)
         .buttonStyle(.plain)
