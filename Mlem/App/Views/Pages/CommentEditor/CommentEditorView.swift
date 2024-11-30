@@ -157,10 +157,12 @@ struct CommentEditorView: View {
                 )
                 .padding(.vertical, Constants.main.standardSpacing)
                 .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                 .padding(.horizontal, Constants.main.standardSpacing)
                 contextView
                     .padding(Constants.main.standardSpacing)
                     .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                    .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                     .padding(.horizontal, Constants.main.standardSpacing)
             }
             .animation(.easeOut(duration: 0.2), value: resolutionState == .notFound)

@@ -90,10 +90,7 @@ struct InstanceUptimeView: View {
                     .padding(.leading, 12)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical, 10)
-                    .background(
-                        RoundedRectangle(cornerRadius: Constants.main.standardSpacing)
-                            .fill(palette.secondaryGroupedBackground)
-                    )
+                    .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
             }
             .buttonStyle(EmptyButtonStyle())
             
@@ -218,6 +215,7 @@ struct InstanceUptimeView: View {
             .frame(maxWidth: .infinity)
             .background(palette.secondaryGroupedBackground)
             .cornerRadius(Constants.main.standardSpacing)
+            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         }
     }
     

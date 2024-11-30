@@ -12,13 +12,15 @@ struct FooterLinkView: View {
     
     let title: String
     let subtitle: String?
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             Text(title)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .font(.subheadline)
                 .fontWeight(.semibold)
+                .multilineTextAlignment(.leading)
+                .lineLimit(2)
 
             if let subtitle {
                 Text(subtitle)
