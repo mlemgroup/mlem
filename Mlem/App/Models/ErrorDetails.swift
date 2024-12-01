@@ -34,9 +34,17 @@ struct ErrorDetails: Hashable {
     }
     
     var errorText: String {
+        var output: String
         if let error = error as? ApiClientError {
-            return error.description
+            output = error.description
+        } else {
+            output = error?.localizedDescription ?? ""
         }
-        return error?.localizedDescription ?? ""
+        for account in AccountsTracker.main.userAccounts {
+            if let token = account.api.token {
+                output.replace(token, with: "TOKEN_REDACTED")
+            }
+        }
+        return output
     }
 }
