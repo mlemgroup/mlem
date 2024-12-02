@@ -199,6 +199,9 @@
     "Apply to All Interaction Bars" : {
 
     },
+    "Are you sure you want to delete all community favorites for this account? This cannot be undone." : {
+
+    },
     "Ask to confirm every time" : {
 
     },
@@ -451,6 +454,9 @@
 
     },
     "Delete Account" : {
+
+    },
+    "Delete Community Favorites" : {
 
     },
     "Delete posts and comments" : {
@@ -818,6 +824,9 @@
     "Local" : {
 
     },
+    "Local Options" : {
+
+    },
     "Lock" : {
 
     },
@@ -915,6 +924,9 @@
 
     },
     "Next" : {
+
+    },
+    "Nickname" : {
 
     },
     "No" : {
@@ -1446,6 +1458,9 @@
         }
       }
     },
+    "The name shown in the account switcher." : {
+
+    },
     "The number of child comments that are shown in a chain before the \"More Replies\" button is shown." : {
 
     },
@@ -1475,6 +1490,9 @@
       }
     },
     "There were no recorded incidents today." : {
+
+    },
+    "These options are stored locally in Mlem and not on your Lemmy account." : {
 
     },
     "This community likely contains graphic or explicit content." : {
@@ -1717,6 +1735,12 @@
 
     },
     "You don't have any accounts." : {
+
+    },
+    "You have favorited %lld communities on this account." : {
+
+    },
+    "You have not favorited any communities on this account." : {
 
     },
     "You may need to allow Mlem to access your Photo Library in System Settings." : {

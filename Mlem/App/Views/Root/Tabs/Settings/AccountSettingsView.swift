@@ -60,14 +60,28 @@ struct AccountSettingsView: View {
                     )
                     .tint(palette.negative)
                 }
+                Section {
+                    NavigationLink(
+                        "Local Options",
+                        systemImage: "iphone",
+                        destination: .settings(.accountLocal)
+                    )
+                    .tint(palette.colorfulAccent(2))
+                } footer: {
+                    Text("These options are stored locally in Mlem and not on your Lemmy account.")
+                }
+            } else {
+                AccountNicknameFieldView()
             }
             
             Group {
                 Section {
-                    Button(signOutLabel) {
+                    Button {
                         appState.firstAccount.signOut()
+                    } label: {
+                        Text(signOutLabel)
+                            .frame(maxWidth: .infinity)
                     }
-                    .frame(maxWidth: .infinity)
                     .confirmationDialog(signOutPrompt, isPresented: $showingSignOutConfirmation) {
                         Button(signOutLabel, role: .destructive) {
                             appState.firstAccount.signOut()
@@ -79,10 +93,12 @@ struct AccountSettingsView: View {
                 
                 if let account = appState.firstAccount as? UserAccount {
                     Section {
-                        Button("Delete Account", role: .destructive) {
+                        Button(role: .destructive) {
                             navigation.openSheet(.deleteAccount(account))
+                        } label: {
+                            Text("Delete Account")
+                                .frame(maxWidth: .infinity)
                         }
-                        .frame(maxWidth: .infinity)
                     }
                 }
             }

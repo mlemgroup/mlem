@@ -193,6 +193,8 @@
 		03AB48552CBC0B8000567FF9 /* AccountAdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AB48542CBC0B8000567FF9 /* AccountAdvancedSettingsView.swift */; };
 		03AB48572CBC0DFC00567FF9 /* AccountSignInSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AB48562CBC0DFC00567FF9 /* AccountSignInSettingsView.swift */; };
 		03AB48592CBC14CE00567FF9 /* AccountEmailSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AB48582CBC14CE00567FF9 /* AccountEmailSettingsView.swift */; };
+		03AD0A822CFDBFA0001EF9F7 /* AccountLocalSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AD0A812CFDBFA0001EF9F7 /* AccountLocalSettingsView.swift */; };
+		03AD0A842CFDC557001EF9F7 /* AccountNicknameFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AD0A832CFDC557001EF9F7 /* AccountNicknameFieldView.swift */; };
 		03AF91DD2C1B23E500E56644 /* ImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AF91DC2C1B23E500E56644 /* ImageViewer.swift */; };
 		03AF91DF2C1B243D00E56644 /* ZoomableContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AF91DE2C1B243D00E56644 /* ZoomableContainer.swift */; };
 		03AF91E12C1B25DE00E56644 /* UIDevice+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AF91E02C1B25DE00E56644 /* UIDevice+Extensions.swift */; };
@@ -608,6 +610,8 @@
 		03AB48542CBC0B8000567FF9 /* AccountAdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAdvancedSettingsView.swift; sourceTree = "<group>"; };
 		03AB48562CBC0DFC00567FF9 /* AccountSignInSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSignInSettingsView.swift; sourceTree = "<group>"; };
 		03AB48582CBC14CE00567FF9 /* AccountEmailSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountEmailSettingsView.swift; sourceTree = "<group>"; };
+		03AD0A812CFDBFA0001EF9F7 /* AccountLocalSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountLocalSettingsView.swift; sourceTree = "<group>"; };
+		03AD0A832CFDC557001EF9F7 /* AccountNicknameFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNicknameFieldView.swift; sourceTree = "<group>"; };
 		03AF91DC2C1B23E500E56644 /* ImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewer.swift; sourceTree = "<group>"; };
 		03AF91DE2C1B243D00E56644 /* ZoomableContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableContainer.swift; sourceTree = "<group>"; };
 		03AF91E02C1B25DE00E56644 /* UIDevice+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extensions.swift"; sourceTree = "<group>"; };
@@ -901,6 +905,8 @@
 				03AB48542CBC0B8000567FF9 /* AccountAdvancedSettingsView.swift */,
 				03AB48562CBC0DFC00567FF9 /* AccountSignInSettingsView.swift */,
 				03AB48582CBC14CE00567FF9 /* AccountEmailSettingsView.swift */,
+				03AD0A812CFDBFA0001EF9F7 /* AccountLocalSettingsView.swift */,
+				03AD0A832CFDC557001EF9F7 /* AccountNicknameFieldView.swift */,
 				03134A572BEC1C46002662CC /* AccountListSettingsView.swift */,
 				031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */,
 				03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */,
@@ -2107,6 +2113,7 @@
 				03AB48552CBC0B8000567FF9 /* AccountAdvancedSettingsView.swift in Sources */,
 				039F588A2C7B54FE00C61658 /* GeneralSettingsView.swift in Sources */,
 				03F967272CE218110081C9A3 /* PersonBanEditorView.swift in Sources */,
+				03AD0A822CFDBFA0001EF9F7 /* AccountLocalSettingsView.swift in Sources */,
 				039F58992C7B697D00C61658 /* Bundle+Extensions.swift in Sources */,
 				033F84D92C2B61FB002E3EDF /* ToastType.swift in Sources */,
 				03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */,
@@ -2146,6 +2153,7 @@
 				03C93CF02BEFFB1A00327BFE /* LoginCredentialsView.swift in Sources */,
 				CD332D7C2CA71E6F00A53988 /* GifView.swift in Sources */,
 				CD13CC652C5D2B9D001AF428 /* CircleCroppedImageView.swift in Sources */,
+				03AD0A842CFDC557001EF9F7 /* AccountNicknameFieldView.swift in Sources */,
 				CDAA02DD2C81792500D75633 /* SolarizedPalette.swift in Sources */,
 				035EDF032C2ED0DE00F51144 /* PersonListRowBody.swift in Sources */,
 				03FD6CB02C9B719100500FD6 /* View+PopupAnchor.swift in Sources */,

@@ -145,6 +145,11 @@ class UserAccount: Account, CommunityOrPersonStub {
         guard let host else { return nil }
         return "@\(name)@\(host)"
     }
+    
+    func setNickname(_ newValue: String) {
+        storedNickname = newValue.isEmpty ? nil : newValue
+        AccountsTracker.main.saveAccounts(ofType: .user)
+    }
 }
 
 private func getKeychainId(actorId: URL) -> String {
