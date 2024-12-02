@@ -200,7 +200,14 @@
 
     },
     "Are you sure you want to delete all community favorites for this account? This cannot be undone." : {
-
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete all community favourites for this account? This cannot be undone."
+          }
+        }
+      }
     },
     "Ask to confirm every time" : {
 
@@ -457,7 +464,14 @@
 
     },
     "Delete Community Favorites" : {
-
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Community Favourites"
+          }
+        }
+      }
     },
     "Delete posts and comments" : {
 
@@ -1738,10 +1752,54 @@
 
     },
     "You have favorited %lld communities on this account." : {
-
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You have favorited %lld community on this account."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "You have favorited %lld communities on this account."
+                }
+              }
+            }
+          }
+        },
+        "en-GB" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You have favourited %lld community on this account."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You have favourited %lld communities on this account."
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "You have not favorited any communities on this account." : {
-
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have not favourited any communities on this account."
+          }
+        }
+      }
     },
     "You may need to allow Mlem to access your Photo Library in System Settings." : {
 
