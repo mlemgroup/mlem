@@ -113,7 +113,9 @@ extension Post1Providing {
             leadingActions: {
                 if api.canInteract {
                     upvoteAction(feedback: [.haptic])
-                    downvoteAction(feedback: [.haptic])
+                    if api.myInstance?.downvotesEnabled ?? true {
+                        downvoteAction(feedback: [.haptic])
+                    }
                 }
             },
             trailingActions: {
@@ -195,10 +197,10 @@ extension Post1Providing {
         feedback: Set<FeedbackType> = [.haptic, .toast],
         commentTreeTracker: CommentTreeTracker? = nil,
         communityContext: (any CommunityStubProviding)? = nil
-    ) -> any Action {
+    ) -> (any Action)? {
         switch type {
         case .upvote: upvoteAction(feedback: feedback)
-        case .downvote: downvoteAction(feedback: feedback)
+        case .downvote: (api.myInstance?.downvotesEnabled ?? true) ? downvoteAction(feedback: feedback) : nil
         case .save: saveAction(feedback: feedback)
         case .reply: replyAction(commentTreeTracker: commentTreeTracker)
         case .share: shareAction()
@@ -219,21 +221,21 @@ extension Post1Providing {
     func counter(
         type: PostBarConfiguration.CounterType,
         commentTreeTracker: CommentTreeTracker? = nil
-    ) -> Counter {
+    ) -> Counter? {
         switch type {
         case .score: scoreCounter
         case .upvote: upvoteCounter
-        case .downvote: downvoteCounter
+        case .downvote: (api.myInstance?.downvotesEnabled ?? true) ? downvoteCounter : nil
         case .reply: replyCounter(commentTreeTracker: commentTreeTracker)
         }
     }
     
-    func readout(type: PostBarConfiguration.ReadoutType) -> Readout {
+    func readout(type: PostBarConfiguration.ReadoutType) -> Readout? {
         switch type {
         case .created: createdReadout
-        case .score: scoreReadout
+        case .score: (api.myInstance?.downvotesEnabled ?? true) ? scoreReadout : upvoteReadout
         case .upvote: upvoteReadout
-        case .downvote: downvoteReadout
+        case .downvote: (api.myInstance?.downvotesEnabled ?? true) ? downvoteReadout : nil
         case .comment: commentReadout
         case .saved: savedReadout
         }
