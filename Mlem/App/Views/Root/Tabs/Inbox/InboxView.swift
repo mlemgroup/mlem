@@ -32,47 +32,49 @@ struct InboxView: View {
     @Setting(\.showReadInInbox) var showRead
     
     @State var hasDoneInitialLoad: Bool = false
-    @State var loadingState: LoadingState = .idle
     
     @State var headerPinned: Bool = false
     @State var selectedTab: Tab = .all
     
-    @State var messageFeedLoader: MessageFeedLoader
     @State var replyFeedLoader: ReplyFeedLoader
+    @State var mentionFeedLoader: MentionFeedLoader
+    @State var messageFeedLoader: MessageFeedLoader
     @State var inboxFeedLoader: InboxFeedLoader
     
     @State var showRefreshPopup: Bool = false
     @State var waitingOnMarkAllAsRead: Bool = false
     @State var markAllAsReadTrigger: Bool = false
     
-//    var items: [any InboxItemProviding] {
-//        switch selectedTab {
-//        case .all:
-//            combined
-//        case .replies:
-//            replies
-//        case .mentions:
-//            mentions
-//        case .messages:
-//            messages
-//        }
-//    }
+    var loadingState: LoadingState {
+        switch selectedTab {
+        case .all:
+            inboxFeedLoader.loadingState
+        case .replies:
+            replyFeedLoader.loadingState
+        case .mentions:
+            mentionFeedLoader.loadingState
+        case .messages:
+            messageFeedLoader.loadingState
+        }
+    }
     
     init() {
         @Setting(\.internetSpeed) var internetSpeed
         
-        let messageFeedLoader: MessageFeedLoader = .init(api: AppState.main.firstApi, pageSize: internetSpeed.pageSize, sortType: .new)
         let replyFeedLoader: ReplyFeedLoader = .init(api: AppState.main.firstApi, pageSize: internetSpeed.pageSize, sortType: .new)
+        let mentionFeedLoader: MentionFeedLoader = .init(api: AppState.main.firstApi, pageSize: internetSpeed.pageSize, sortType: .new)
+        let messageFeedLoader: MessageFeedLoader = .init(api: AppState.main.firstApi, pageSize: internetSpeed.pageSize, sortType: .new)
         
         let inboxFeedLoader: InboxFeedLoader = .init(
             api: AppState.main.firstApi,
             pageSize: internetSpeed.pageSize,
-            sources: [replyFeedLoader, messageFeedLoader    ],
+            sources: [replyFeedLoader, mentionFeedLoader, messageFeedLoader],
             sortType: .new
         )
         
-        self._messageFeedLoader = .init(wrappedValue: messageFeedLoader)
         self._replyFeedLoader = .init(wrappedValue: replyFeedLoader)
+        self._mentionFeedLoader = .init(wrappedValue: mentionFeedLoader)
+        self._messageFeedLoader = .init(wrappedValue: messageFeedLoader)
         self._inboxFeedLoader = .init(wrappedValue: inboxFeedLoader)
     }
     
@@ -85,25 +87,24 @@ struct InboxView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar { toolbar }
                 .loadFeed(inboxFeedLoader)
-//                .onChange(of: taskId) {
-//                    Task { @MainActor in
-//                        showRefreshPopup = false
-//                        removeAll()
-//                        await loadReplies()
-//                    }
-//                }
-//                .refreshable {
-//                    _ = await Task {
-//                        await loadReplies()
-//                    }.result
-//                }
-//                .onAppear {
-//                    guard !hasDoneInitialLoad else { return }
-//                    hasDoneInitialLoad = true
-//                    Task { @MainActor in
-//                        await loadReplies()
-//                    }
-//                }
+                .onChange(of: appState.firstApi, initial: false) {
+                    if appState.firstAccount is UserAccount {
+                        Task {
+                            await inboxFeedLoader.changeApi(to: appState.firstApi)
+                        }
+                        showRefreshPopup = true
+                    }
+                }
+                .onChange(of: showRead, initial: false) {
+                    Task {
+                        await inboxFeedLoader.add
+                    }
+                }
+                .refreshable {
+                    _ = await Task {
+                        await refresh()
+                    }.result
+                }
                 .onChange(of: (appState.firstSession as? UserSession)?.unreadCount?.updateId ?? 0) { oldValue, newValue in
                     // The newValue > oldValue check stops the popup from appearing when the user switches accounts.
                     // This is a little janky, but it works
@@ -111,14 +112,13 @@ struct InboxView: View {
                         showRefreshPopup = true
                     }
                 }
-//                .overlay(alignment: .bottom) {
-//                    RefreshPopupView("Inbox is outdated", isPresented: $showRefreshPopup) {
-//                        Task { @MainActor in
-//                            removeAll()
-//                            await loadReplies()
-//                        }
-//                    }
-//                }
+                .overlay(alignment: .bottom) {
+                    RefreshPopupView("Inbox is outdated", isPresented: $showRefreshPopup) {
+                        Task { @MainActor in
+                            await refresh()
+                        }
+                    }
+                }
         }
     }
     
@@ -151,73 +151,31 @@ struct InboxView: View {
                 })
                 LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
                     Section {
-                        ForEach(inboxFeedLoader.items, id: \.actorId) { item in
-                            Group {
-                                switch item {
-                                case let .message(message):
-                                    MessageView(message: message)
-                                case let .reply(reply):
-                                    ReplyView(reply: reply)
-                                }
-                            }
-                            .onAppear {
-                                do {
-                                    try inboxFeedLoader.loadIfThreshold(item)
-                                } catch {
-                                    handleError(error)
-                                }
+                        Group {
+                            switch selectedTab {
+                            case .all:
+                                allItemsView
+                            case .replies:
+                                repliesView
+                            case .mentions:
+                                mentionsView
+                            case .messages:
+                                messagesView
                             }
                         }
-                        
-//                        ForEach(replyFeedLoader.items) { reply in
-//                            ReplyView(reply: reply)
-//                                .onAppear {
-//                                    do {
-//                                        try replyFeedLoader.loadIfThreshold(reply)
-//                                    } catch {
-//                                        handleError(error)
-//                                    }
-//                                }
-//                        }
-//                        ForEach(messageFeedLoader.items) { message in
-//                            MessageView(message: message)
-//                                .onAppear {
-//                                    do {
-//                                        try messageFeedLoader.loadIfThreshold(message)
-//                                    } catch {
-//                                        handleError(error)
-//                                    }
-//                                }
-//                        }
-//                        if loadingState == .loading, replies.isEmpty, mentions.isEmpty {
-//                            ProgressView()
-//                                .controlSize(.large)
-//                                .padding()
-//                                .tint(palette.secondary)
-//                        } else {
-//                            if items.isEmpty {
-//                                Text("Nothing to see here")
-//                                    .foregroundStyle(palette.secondary)
-//                                    .padding()
-//                            } else {
-//                                ForEach(items, id: \.id) { item in
-//                                    Group {
-//                                        if let reply = item as? Reply2, !reply.creator.blocked {
-//                                            ReplyView(reply: reply)
-//                                        }
-//                                        if let message = item as? Message2, !message.creator.blocked {
-//                                            MessageView(message: message)
-//                                        }
-//                                    }
-//                                    .padding([.horizontal, .bottom], Constants.main.standardSpacing)
-//                                }
-//                            }
-//                        }
                     } header: { sectionHeader }
                 }
             }
         }
         .coordinateSpace(name: "inboxScrollView")
+    }
+    
+    private func refresh() async {
+        do {
+            try await inboxFeedLoader.refresh(clearBeforeRefresh: true)
+        } catch {
+            handleError(error)
+        }
     }
 }
 
