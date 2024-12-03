@@ -84,7 +84,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         placeholderLabel.sizeToFit()
         textView.addSubview(placeholderLabel)
         placeholderLabel.frame.origin = CGPoint(
-            x: 15,
+            x: insets.left + 5,
             y: insets.top + 1
         )
         placeholderLabel.textColor = UIColor(Palette.main.tertiary)

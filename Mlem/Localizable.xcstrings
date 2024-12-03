@@ -247,6 +247,9 @@
     "Behavior" : {
 
     },
+    "Biography" : {
+
+    },
     "Block" : {
 
     },
@@ -478,6 +481,9 @@
 
     },
     "Dismiss" : {
+
+    },
+    "Display Name" : {
 
     },
     "Divider" : {
@@ -897,6 +903,9 @@
 
     },
     "Most Comments" : {
+
+    },
+    "My Profile" : {
 
     },
     "Never" : {
@@ -1446,6 +1455,9 @@
         }
       }
     },
+    "The name that is displayed on your profile. This is not the same as your username, which cannot be changed." : {
+
+    },
     "The number of child comments that are shown in a chain before the \"More Replies\" button is shown." : {
 
     },
@@ -1696,6 +1708,9 @@
 
     },
     "Wrap Code Block Lines" : {
+
+    },
+    "Write a bit about yourself..." : {
 
     },
     "Year" : {
