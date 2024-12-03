@@ -97,7 +97,11 @@ struct InboxView: View {
                 }
                 .onChange(of: showRead, initial: false) {
                     Task {
-                        await inboxFeedLoader.add
+                        do {
+                            try await inboxFeedLoader.addFilter(.todo)
+                        } catch {
+                            handleError(error)
+                        }
                     }
                 }
                 .refreshable {
