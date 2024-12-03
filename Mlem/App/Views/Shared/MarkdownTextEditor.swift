@@ -15,6 +15,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
     let textView: UITextView
     let placeholderLabel: UILabel = .init()
     let font: UIFont
+    let sizingOffset: CGFloat
     
     let onChange: (String) -> Void
     
@@ -35,6 +36,8 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
             right: Constants.main.standardSpacing
         ),
         firstResponder: Bool = true,
+        // In forms this needs to be set to ~10 (I don't know why this is the case)
+        sizingOffset: CGFloat = 1,
         @ViewBuilder content: () -> Content
     ) {
         self.prompt = String(localized: prompt)
@@ -43,6 +46,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         self.font = font
         self.insets = insets
         self.firstResponder = firstResponder
+        self.sizingOffset = sizingOffset
         self.onChange = onChange
     }
  
@@ -126,7 +130,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         // of the rounding logic above; it still happens when simply using `contentSize`.
         return .init(
             width: dimensions.width,
-            height: calculatedHeight + 1
+            height: calculatedHeight + sizingOffset
         )
     }
  

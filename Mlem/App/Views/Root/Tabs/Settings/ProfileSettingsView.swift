@@ -14,6 +14,8 @@ struct ProfileSettingsView: View {
     @State var bioTextView: UITextView = .init()
     @State var uploadHistory: ImageUploadHistoryManager = .init()
     
+    @State var avatarManager: ImageUploadManager?
+    
     var minTextEditorHeight: CGFloat {
         UIFont.preferredFont(forTextStyle: .body).lineHeight * 6 + 20
     }
@@ -31,14 +33,14 @@ struct ProfileSettingsView: View {
                     },
                     prompt: "Write a bit about yourself...",
                     textView: bioTextView,
-                    insets: .init(),
-//                    insets: .init(
-//                        top: Constants.main.standardSpacing,
-//                        left: Constants.main.standardSpacing,
-//                        bottom: Constants.main.standardSpacing,
-//                        right: Constants.main.standardSpacing
-//                    ),
+                    insets: .init(
+                        top: Constants.main.standardSpacing,
+                        left: Constants.main.standardSpacing,
+                        bottom: Constants.main.standardSpacing,
+                        right: Constants.main.standardSpacing
+                    ),
                     firstResponder: false,
+                    sizingOffset: 10,
                     content: {
                         MarkdownEditorToolbarView(
                             textView: bioTextView,
@@ -53,12 +55,7 @@ struct ProfileSettingsView: View {
                     maxHeight: .infinity,
                     alignment: .topLeading
                 )
-                .listRowInsets(.init(
-                    top: Constants.main.standardSpacing,
-                    leading: Constants.main.standardSpacing,
-                    bottom: Constants.main.standardSpacing,
-                    trailing: Constants.main.standardSpacing
-                ))
+                .listRowInsets(.init())
             }
         }
         .navigationTitle("My Profile")
