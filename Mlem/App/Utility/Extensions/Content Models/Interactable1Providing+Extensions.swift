@@ -117,7 +117,7 @@ extension Interactable1Providing {
         .init(
             value: self2?.votes.total,
             leadingAction: upvoteAction(feedback: [.haptic]),
-            trailingAction: downvoteAction(feedback: [.haptic])
+            trailingAction: api.downvotesEnabled ? downvoteAction(feedback: [.haptic]) : nil
         )
     }
     
@@ -140,10 +140,11 @@ extension Interactable1Providing {
     }
     
     func downvoteAction(feedback: Set<FeedbackType> = []) -> BasicAction {
-        .init(
+        let enabled = api.canInteract && api.downvotesEnabled
+        return .init(
             id: "downvote\(uid)",
             appearance: .downvote(isOn: self2?.votes.myVote ?? .none == .downvote),
-            callback: api.canInteract ? { self.self2?.toggleDownvoted(feedback: feedback) } : nil
+            callback: enabled ? { self.self2?.toggleDownvoted(feedback: feedback) } : nil
         )
     }
     

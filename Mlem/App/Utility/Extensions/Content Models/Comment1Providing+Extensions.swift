@@ -32,7 +32,9 @@ extension Comment1Providing {
             leadingActions: {
                 if api.canInteract {
                     upvoteAction(feedback: [.haptic])
-                    downvoteAction(feedback: [.haptic])
+                    if api.downvotesEnabled {
+                        downvoteAction(feedback: [.haptic])
+                    }
                 }
             },
             trailingActions: {
@@ -111,10 +113,10 @@ extension Comment1Providing {
         type: CommentBarConfiguration.ActionType,
         commentTreeTracker: CommentTreeTracker? = nil,
         communityContext: (any CommunityStubProviding)? = nil
-    ) -> any Action {
+    ) -> (any Action)? {
         switch type {
         case .upvote: upvoteAction(feedback: [.haptic])
-        case .downvote: downvoteAction(feedback: [.haptic])
+        case .downvote: api.downvotesEnabled ? downvoteAction(feedback: [.haptic]) : nil
         case .save: saveAction(feedback: [.haptic])
         case .reply: replyAction(commentTreeTracker: commentTreeTracker)
         case .share: shareAction()
@@ -127,21 +129,21 @@ extension Comment1Providing {
     func counter(
         type: CommentBarConfiguration.CounterType,
         commentTreeTracker: CommentTreeTracker? = nil
-    ) -> Counter {
+    ) -> Counter? {
         switch type {
         case .score: scoreCounter
         case .upvote: upvoteCounter
-        case .downvote: downvoteCounter
+        case .downvote: api.downvotesEnabled ? downvoteCounter : nil
         case .reply: replyCounter(commentTreeTracker: commentTreeTracker)
         }
     }
     
-    func readout(type: CommentBarConfiguration.ReadoutType) -> Readout {
+    func readout(type: CommentBarConfiguration.ReadoutType) -> Readout? {
         switch type {
         case .created: createdReadout
-        case .score: scoreReadout
+        case .score: api.downvotesEnabled ? scoreReadout : upvoteReadout
         case .upvote: upvoteReadout
-        case .downvote: downvoteReadout
+        case .downvote: api.downvotesEnabled ? downvoteReadout : nil
         case .comment: commentReadout
         }
     }
