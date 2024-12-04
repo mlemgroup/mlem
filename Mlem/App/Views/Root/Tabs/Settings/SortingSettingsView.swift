@@ -9,6 +9,8 @@ import MlemMiddleware
 import SwiftUI
 
 struct SortingSettingsView: View {
+    @Environment(Palette.self) var palette
+    
     @Setting(\.defaultPostSort) var defaultPostSort
     @Setting(\.fallbackPostSort) var fallbackPostSort
     @Setting(\.commentSort) var commentSort
@@ -20,6 +22,7 @@ struct SortingSettingsView: View {
                     Text("Posts")
                     Spacer()
                     FeedSortPicker(sort: $defaultPostSort)
+                        .foregroundStyle(palette.accent)
                         .frame(minHeight: 50)
                         .buttonStyle(.bordered)
                 }
@@ -28,6 +31,7 @@ struct SortingSettingsView: View {
                         Text("Fallback")
                         Spacer()
                         FeedSortPicker(sort: $fallbackPostSort, filters: [.alwaysAvailable])
+                            .foregroundStyle(palette.accent)
                             .frame(minHeight: 50)
                             .buttonStyle(.bordered)
                     }
@@ -50,6 +54,7 @@ struct SortingSettingsView: View {
                             }
                         }
                     }
+                    .foregroundStyle(palette.accent)
                     .frame(minHeight: 50)
                     .buttonStyle(.bordered)
                 }

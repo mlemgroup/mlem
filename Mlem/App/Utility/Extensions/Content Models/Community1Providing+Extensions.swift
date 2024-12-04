@@ -11,6 +11,8 @@ import MlemMiddleware
 extension Community1Providing {
     private var self2: (any Community2Providing)? { self as? any Community2Providing }
     
+    var shouldHideInFeed: Bool { blocked }
+    
     // MARK: Operations
     
     func showNewPostSheet() {
