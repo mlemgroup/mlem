@@ -18,6 +18,8 @@ struct FeedSortPicker: View {
     let filters: Set<Filter>
     @Binding var sort: ApiSortType
     
+    @State var topSortPopupPresented: Bool = false
+    
     init(sort: Binding<ApiSortType>, filters: Set<Filter> = []) {
         self._sort = sort
         self.filters = filters
@@ -40,18 +42,29 @@ struct FeedSortPicker: View {
         Menu(sort.fullLabel(shortTopMode: topModes.count == 1), systemImage: sort.systemImage) {
             Picker("Sort", selection: $sort) {
                 itemLabels(filterSortModes(ApiSortType.nonTopCases))
-                if topModes.count == 1, let first = topModes.first {
-                    Label("Top", systemImage: Icons.topSort)
-                        .tag(first)
-                } else {
-                    Picker("Top...", systemImage: Icons.topSort, selection: $sort) {
-                        itemLabels(topModes)
-                    }
-                    .pickerStyle(.menu)
-                }
+//                if topModes.count == 1, let first = topModes.first {
+//                    Label("Top", systemImage: Icons.topSort)
+//                        .tag(first)
+//                } else {
+//                    Picker("Top...", systemImage: Icons.topSort, selection: $sort) {
+//                        itemLabels(topModes)
+//                    }
+//                    .pickerStyle(.menu)
+//                }
+            }
+            Button("Top...", systemImage: Icons.topSort) {
+                topSortPopupPresented = true
             }
         }
         .disabled(filters.contains(.availableOnInstance) && appState.firstApi.fetchedVersion == nil)
+        .popover(isPresented: $topSortPopupPresented) {
+            TopSortPicker(selected: $sort)
+                // This background is always drawn over a material background unfortunately,
+                // meaning that we can't use thin materials
+                .presentationBackground(.clear)
+                .presentationCornerRadius(18)
+                .presentationCompactAdaptation(.popover)
+        }
     }
     
     @ViewBuilder
@@ -75,5 +88,74 @@ struct FeedSortPicker: View {
                 }
             }
         }
+    }
+}
+
+struct TopSortPicker: View {
+    @Environment(AppState.self) var appState
+    @Environment(Palette.self) var palette
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.colorScheme) var colorScheme
+    
+    @Binding var selected: ApiSortType
+    
+    var body: some View {
+        VStack(spacing: 10) {
+            Text("Choose timeframe...")
+                .font(.footnote)
+                .foregroundStyle(palette.secondary)
+                .fontWeight(.semibold)
+            HStack(spacing: 10) {
+                button(.topHour)
+                button(.topSixHour)
+                button(.topTwelveHour)
+            }
+            HStack(spacing: 10) {
+                button(.topDay)
+                button(.topWeek)
+                button(.topMonth)
+            }
+            if (appState.firstSession.api.fetchedVersion ?? .infinity) >= .v18_1 {
+                HStack(spacing: 10) {
+                    button(.topThreeMonths)
+                    button(.topSixMonths)
+                    button(.topNineMonths)
+                }
+            }
+            HStack(spacing: 10) {
+                button(.topYear)
+                    .frame(width: 54)
+                button(.topAll, label: .init(localized: "All Time"))
+            }
+        }
+        .padding(10)
+        .frame(width: 202, height: (appState.firstSession.api.fetchedVersion ?? .infinity) >= .v18_1 ? 230 : 180)
+    }
+    
+    @ViewBuilder
+    func button(_ type: ApiSortType, label: String? = nil) -> some View {
+        Button(label ?? formatter.string(from: type.dateComponents ?? .init()) ?? "") {
+            selected = type
+            dismiss()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background {
+            if colorScheme == .dark {
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(palette.primary.opacity(0.2))
+            } else {
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(palette.background)
+                    .shadow(color: .black.opacity(0.05), radius: 3)
+            }
+        }
+        .foregroundStyle(palette.primary)
+    }
+    
+    var formatter: DateComponentsFormatter {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .abbreviated
+        formatter.maximumUnitCount = 1
+        return formatter
     }
 }

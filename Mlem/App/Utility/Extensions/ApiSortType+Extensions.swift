@@ -89,4 +89,20 @@ extension ApiSortType {
         default: Icons.topSort
         }
     }
+    
+    var dateComponents: DateComponents? {
+        switch self {
+        case .topHour: .init(hour: 1)
+        case .topSixHour: .init(hour: 6)
+        case .topTwelveHour: .init(hour: 12)
+        case .topDay: .init(day: 1)
+        case .topWeek: .init(weekOfMonth: 1)
+        case .topMonth: .init(month: 1)
+        case .topThreeMonths: .init(month: 3)
+        case .topSixMonths: .init(month: 6)
+        case .topNineMonths: .init(month: 9)
+        case .topYear: .init(year: 1)
+        default: nil
+        }
+    }
 }
