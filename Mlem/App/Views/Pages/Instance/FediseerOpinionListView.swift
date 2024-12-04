@@ -24,8 +24,6 @@ struct FediseerOpinionListView: View {
                 
                 ForEach(items, id: \.domain) { opinion in
                     FediseerOpinionView(opinion: opinion)
-                        .background(palette.secondaryGroupedBackground)
-                        .cornerRadius(Constants.main.standardSpacing)
                 }
             }
             .padding(16)

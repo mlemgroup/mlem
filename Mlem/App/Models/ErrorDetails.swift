@@ -19,6 +19,32 @@ struct ErrorDetails: Hashable {
     var refresh: (() async -> Bool)?
     var autoRefresh: Bool = false
     
+    init(
+        title: String? = nil,
+        body: String? = nil,
+        error: Error? = nil,
+        systemImage: String? = nil,
+        buttonText: String? = nil,
+        refresh: (() -> Bool)? = nil,
+        autoRefresh: Bool = false
+    ) {
+        self.title = title
+        self.body = body
+        self.error = error
+        self.systemImage = systemImage
+        self.buttonText = buttonText
+        self.refresh = refresh
+        self.autoRefresh = autoRefresh
+        if let error {
+            switch error {
+            case ApiClientError.imageTooLarge:
+                self.title = self.title ?? "Image too large"
+            default:
+                break
+            }
+        }
+    }
+    
     func hash(into hasher: inout Hasher) {
         hasher.combine(title)
         hasher.combine(body)
