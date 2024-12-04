@@ -211,7 +211,7 @@ extension Interactable1Providing {
         .init(
             id: "banCreatorFromInstance\(uid)",
             appearance: .banCreatorFromInstance(isOn: creator_?.bannedFromInstance ?? false),
-            callback: api.canInteract && (self2?.canModerate ?? false) ? {
+            callback: api.canInteract && api.isAdmin ? {
                 self.self2?.creator.showBanSheet(
                     community: self.self2?.community,
                     isBannedFromCommunity: self.bannedFromCommunity_ ?? false,
@@ -232,6 +232,14 @@ extension Interactable1Providing {
                     shouldBan: !(self.self2?.bannedFromCommunity ?? false)
                 )
             } : nil
+        )
+    }
+    
+    func purgeCreatorAction() -> BasicAction {
+        .init(
+            id: "purgeCreator\(uid)",
+            appearance: .purgePerson(),
+            callback: (api.canInteract && api.isAdmin) ? self2?.creator.showPurgeSheet : nil
         )
     }
     

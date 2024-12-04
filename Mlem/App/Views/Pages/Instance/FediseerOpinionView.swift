@@ -45,6 +45,9 @@ struct FediseerOpinionView: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 10)
         .font(.callout)
+        .background(palette.secondaryGroupedBackground)
+        .cornerRadius(Constants.main.standardSpacing)
+        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
     
     @ViewBuilder

@@ -50,7 +50,7 @@ struct PostEditorTargetView: View {
                 callback: { target.community = .init($0) }
             ))
         } label: {
-            var singleAccount = AccountsTracker.main.userAccounts.count == 1
+            let singleAccount = AccountsTracker.main.userAccounts.count == 1
             HStack(spacing: 0) {
                 if let community = target.community as? any Community {
                     FullyQualifiedLabelView(
