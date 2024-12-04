@@ -104,7 +104,7 @@ struct InstanceSafetyView: View {
                             destination: items.count > 5 ? destination : nil
                         )
                         ForEach(items.prefix(5), id: \.domain) { item in
-                            section { FediseerOpinionView(opinion: item) }
+                            FediseerOpinionView(opinion: item)
                                 .padding(.bottom, 9)
                         }
                     }
@@ -121,6 +121,7 @@ struct InstanceSafetyView: View {
             .frame(maxWidth: .infinity)
             .background(palette.secondaryGroupedBackground)
             .cornerRadius(Constants.main.standardSpacing)
+            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         }
     }
     
