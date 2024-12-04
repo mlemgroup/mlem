@@ -2926,8 +2926,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
-				branch = "sjmarf/purge-users";
-				kind = branch;
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.50.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
