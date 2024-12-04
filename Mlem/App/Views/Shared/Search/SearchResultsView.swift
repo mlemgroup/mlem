@@ -23,7 +23,6 @@ struct SearchResultsView<Item: Identifiable, Content: View>: View {
     var body: some View {
         ForEach(results) { item in
             content(item)
-                .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                 .padding(.horizontal, Constants.main.standardSpacing)
                 .padding(.bottom, Constants.main.halfSpacing)
         }

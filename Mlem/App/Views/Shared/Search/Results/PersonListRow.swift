@@ -49,5 +49,6 @@ struct PersonListRow<Content2: View>: View {
         .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu { person.menuActions(navigation: navigation) }
+        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
 }

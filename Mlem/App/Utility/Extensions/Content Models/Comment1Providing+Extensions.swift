@@ -14,7 +14,7 @@ extension Comment1Providing {
     var isOwnComment: Bool { creatorId == api.myPerson?.id }
     
     var shouldHideInFeed: Bool {
-        (creator_?.blocked ?? false) || purged
+        (creator_?.shouldHideInFeed ?? false) || purged
     }
     
     func showEditSheet() {
@@ -99,6 +99,9 @@ extension Comment1Providing {
         }
         if api.isAdmin {
             purgeAction()
+            if !isOwnComment {
+                purgeCreatorAction()
+            }
         }
     }
     

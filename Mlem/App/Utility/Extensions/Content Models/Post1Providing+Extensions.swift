@@ -15,7 +15,7 @@ extension Post1Providing {
     var isOwnPost: Bool { creatorId == api.myPerson?.id }
     
     var shouldHideInFeed: Bool {
-        (creator_?.blocked ?? false) || (community_?.blocked ?? false) || (hidden_ ?? false) || purged
+        (creator_?.shouldHideInFeed ?? false) || (community_?.shouldHideInFeed ?? false) || (hidden_ ?? false) || purged
     }
 
     var canModerate: Bool {
@@ -188,6 +188,9 @@ extension Post1Providing {
         }
         if api.isAdmin {
             purgeAction()
+            if !isOwnPost {
+                purgeCreatorAction()
+            }
         }
     }
     
