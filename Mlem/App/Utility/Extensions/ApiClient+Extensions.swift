@@ -19,4 +19,8 @@ extension ApiClient {
     }
     
     var canInteract: Bool { isActive && token != nil }
+    
+    var downvotesEnabled: Bool {
+        myInstance?.downvotesEnabled ?? true
+    }
 }

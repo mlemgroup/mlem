@@ -113,7 +113,7 @@ extension Post1Providing {
             leadingActions: {
                 if api.canInteract {
                     upvoteAction(feedback: [.haptic])
-                    if api.myInstance?.downvotesEnabled ?? true {
+                    if api.downvotesEnabled {
                         downvoteAction(feedback: [.haptic])
                     }
                 }
@@ -200,7 +200,7 @@ extension Post1Providing {
     ) -> (any Action)? {
         switch type {
         case .upvote: upvoteAction(feedback: feedback)
-        case .downvote: (api.myInstance?.downvotesEnabled ?? true) ? downvoteAction(feedback: feedback) : nil
+        case .downvote: api.downvotesEnabled ? downvoteAction(feedback: feedback) : nil
         case .save: saveAction(feedback: feedback)
         case .reply: replyAction(commentTreeTracker: commentTreeTracker)
         case .share: shareAction()
@@ -225,7 +225,7 @@ extension Post1Providing {
         switch type {
         case .score: scoreCounter
         case .upvote: upvoteCounter
-        case .downvote: (api.myInstance?.downvotesEnabled ?? true) ? downvoteCounter : nil
+        case .downvote: api.downvotesEnabled ? downvoteCounter : nil
         case .reply: replyCounter(commentTreeTracker: commentTreeTracker)
         }
     }
@@ -233,9 +233,9 @@ extension Post1Providing {
     func readout(type: PostBarConfiguration.ReadoutType) -> Readout? {
         switch type {
         case .created: createdReadout
-        case .score: (api.myInstance?.downvotesEnabled ?? true) ? scoreReadout : upvoteReadout
+        case .score: api.downvotesEnabled ? scoreReadout : upvoteReadout
         case .upvote: upvoteReadout
-        case .downvote: (api.myInstance?.downvotesEnabled ?? true) ? downvoteReadout : nil
+        case .downvote: api.downvotesEnabled ? downvoteReadout : nil
         case .comment: commentReadout
         case .saved: savedReadout
         }

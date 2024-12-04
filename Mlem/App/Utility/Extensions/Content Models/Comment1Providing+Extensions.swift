@@ -32,7 +32,7 @@ extension Comment1Providing {
             leadingActions: {
                 if api.canInteract {
                     upvoteAction(feedback: [.haptic])
-                    if api.myInstance?.downvotesEnabled ?? true {
+                    if api.downvotesEnabled {
                         downvoteAction(feedback: [.haptic])
                     }
                 }
@@ -113,7 +113,7 @@ extension Comment1Providing {
     ) -> (any Action)? {
         switch type {
         case .upvote: upvoteAction(feedback: [.haptic])
-        case .downvote: (api.myInstance?.downvotesEnabled ?? true) ? downvoteAction(feedback: [.haptic]) : nil
+        case .downvote: api.downvotesEnabled ? downvoteAction(feedback: [.haptic]) : nil
         case .save: saveAction(feedback: [.haptic])
         case .reply: replyAction(commentTreeTracker: commentTreeTracker)
         case .share: shareAction()
@@ -130,7 +130,7 @@ extension Comment1Providing {
         switch type {
         case .score: scoreCounter
         case .upvote: upvoteCounter
-        case .downvote: (api.myInstance?.downvotesEnabled ?? true) ? downvoteCounter : nil
+        case .downvote: api.downvotesEnabled ? downvoteCounter : nil
         case .reply: replyCounter(commentTreeTracker: commentTreeTracker)
         }
     }
@@ -138,9 +138,9 @@ extension Comment1Providing {
     func readout(type: CommentBarConfiguration.ReadoutType) -> Readout? {
         switch type {
         case .created: createdReadout
-        case .score: (api.myInstance?.downvotesEnabled ?? true) ? scoreReadout : upvoteReadout
+        case .score: api.downvotesEnabled ? scoreReadout : upvoteReadout
         case .upvote: upvoteReadout
-        case .downvote: (api.myInstance?.downvotesEnabled ?? true) ? downvoteReadout : nil
+        case .downvote: api.downvotesEnabled ? downvoteReadout : nil
         case .comment: commentReadout
         }
     }
