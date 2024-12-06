@@ -34,57 +34,6 @@ extension InboxView {
     }
     
     @ViewBuilder
-    var repliesView: some View {
-        ForEach(replyFeedLoader.items, id: \.actorId) { reply in
-            ReplyView(reply: reply)
-                .padding([.horizontal, .bottom], Constants.main.standardSpacing)
-                .onAppear {
-                    do {
-                        try replyFeedLoader.loadIfThreshold(reply)
-                    } catch {
-                        handleError(error)
-                    }
-                }
-        }
-        
-        EndOfFeedView(loadingState: replyFeedLoader.loadingState, loadMore: nil, viewType: .cartoon)
-    }
-    
-    @ViewBuilder
-    var mentionsView: some View {
-        ForEach(mentionFeedLoader.items, id: \.actorId) { mention in
-            ReplyView(reply: mention)
-                .padding([.horizontal, .bottom], Constants.main.standardSpacing)
-                .onAppear {
-                    do {
-                        try mentionFeedLoader.loadIfThreshold(mention)
-                    } catch {
-                        handleError(error)
-                    }
-                }
-        }
-        
-        EndOfFeedView(loadingState: replyFeedLoader.loadingState, loadMore: nil, viewType: .cartoon)
-    }
-    
-    @ViewBuilder
-    var messagesView: some View {
-        ForEach(messageFeedLoader.items, id: \.actorId) { message in
-            MessageView(message: message)
-                .padding([.horizontal, .bottom], Constants.main.standardSpacing)
-                .onAppear {
-                    do {
-                        try messageFeedLoader.loadIfThreshold(message)
-                    } catch {
-                        handleError(error)
-                    }
-                }
-        }
-        
-        EndOfFeedView(loadingState: messageFeedLoader.loadingState, loadMore: nil, viewType: .cartoon)
-    }
-    
-    @ViewBuilder
     var sectionHeader: some View {
         BubblePicker(
             Tab.allCases,

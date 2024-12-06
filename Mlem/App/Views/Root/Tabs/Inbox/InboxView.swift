@@ -45,31 +45,48 @@ struct InboxView: View {
     @State var waitingOnMarkAllAsRead: Bool = false
     @State var markAllAsReadTrigger: Bool = false
     
-    var loadingState: LoadingState {
+    var feedLoader: StandardFeedLoader<InboxItem> {
         switch selectedTab {
         case .all:
-            inboxFeedLoader.loadingState
+            inboxFeedLoader
         case .replies:
-            replyFeedLoader.loadingState
+            replyFeedLoader
         case .mentions:
-            mentionFeedLoader.loadingState
+            mentionFeedLoader
         case .messages:
-            messageFeedLoader.loadingState
+            messageFeedLoader
         }
     }
     
     init() {
         @Setting(\.internetSpeed) var internetSpeed
+        @Setting(\.showReadInInbox) var showRead
         
-        let replyFeedLoader: ReplyFeedLoader = .init(api: AppState.main.firstApi, pageSize: internetSpeed.pageSize, sortType: .new)
-        let mentionFeedLoader: MentionFeedLoader = .init(api: AppState.main.firstApi, pageSize: internetSpeed.pageSize, sortType: .new)
-        let messageFeedLoader: MessageFeedLoader = .init(api: AppState.main.firstApi, pageSize: internetSpeed.pageSize, sortType: .new)
+        let replyFeedLoader: ReplyFeedLoader = .init(
+            api: AppState.main.firstApi,
+            pageSize: internetSpeed.pageSize,
+            sortType: .new,
+            showRead: showRead
+        )
+        let mentionFeedLoader: MentionFeedLoader = .init(
+            api: AppState.main.firstApi,
+            pageSize: internetSpeed.pageSize,
+            sortType: .new,
+            showRead: showRead
+        )
+        let messageFeedLoader: MessageFeedLoader = .init(
+            api: AppState.main.firstApi,
+            pageSize: internetSpeed.pageSize,
+            sortType: .new,
+            showRead: showRead
+        )
         
         let inboxFeedLoader: InboxFeedLoader = .init(
             api: AppState.main.firstApi,
             pageSize: internetSpeed.pageSize,
             sources: [replyFeedLoader, mentionFeedLoader, messageFeedLoader],
-            sortType: .new
+            sortType: .new,
+            showRead: showRead
         )
         
         self._replyFeedLoader = .init(wrappedValue: replyFeedLoader)
@@ -98,7 +115,11 @@ struct InboxView: View {
                 .onChange(of: showRead, initial: false) {
                     Task {
                         do {
-                            try await inboxFeedLoader.addFilter(.todo)
+                            if showRead {
+                                try await inboxFeedLoader.showRead() // inboxFeedLoader.addFilter(.todo)
+                            } else {
+                                try await inboxFeedLoader.hideRead()
+                            }
                         } catch {
                             handleError(error)
                         }
@@ -112,7 +133,7 @@ struct InboxView: View {
                 .onChange(of: (appState.firstSession as? UserSession)?.unreadCount?.updateId ?? 0) { oldValue, newValue in
                     // The newValue > oldValue check stops the popup from appearing when the user switches accounts.
                     // This is a little janky, but it works
-                    if newValue > oldValue, loadingState == .done {
+                    if newValue > oldValue, feedLoader.loadingState == .done {
                         showRefreshPopup = true
                     }
                 }
@@ -155,18 +176,26 @@ struct InboxView: View {
                 })
                 LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
                     Section {
-                        Group {
-                            switch selectedTab {
-                            case .all:
-                                allItemsView
-                            case .replies:
-                                repliesView
-                            case .mentions:
-                                mentionsView
-                            case .messages:
-                                messagesView
+                        ForEach(feedLoader.items, id: \.actorId) { item in
+                            Group {
+                                switch item {
+                                case let .message(message):
+                                    MessageView(message: message)
+                                case let .reply(reply):
+                                    ReplyView(reply: reply)
+                                }
+                            }
+                            .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+                            .onAppear {
+                                do {
+                                    try inboxFeedLoader.loadIfThreshold(item)
+                                } catch {
+                                    handleError(error)
+                                }
                             }
                         }
+                        
+                        EndOfFeedView(loadingState: feedLoader.loadingState, loadMore: nil, viewType: .cartoon)
                     } header: { sectionHeader }
                 }
             }

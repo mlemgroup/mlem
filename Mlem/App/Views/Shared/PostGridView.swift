@@ -46,9 +46,9 @@ struct PostGridView: View {
             .task(id: showRead) {
                 do {
                     if showRead {
-                        try await postFeedLoader.removeFilter(.read)
+                        try await postFeedLoader.deactivateFilter(.read)
                     } else {
-                        try await postFeedLoader.addFilter(.read)
+                        try await postFeedLoader.activateFilter(.read)
                     }
                 } catch {
                     handleError(error)
