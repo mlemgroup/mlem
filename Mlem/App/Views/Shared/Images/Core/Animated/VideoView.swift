@@ -8,19 +8,25 @@
 import AVFoundation
 import NukeVideo
 import SwiftUI
+import AVKit
 
-struct VideoView: UIViewRepresentable {
-    let asset: AVAsset
+struct VideoView: View {
+    let player: AVPlayer
     
-    func makeUIView(context: Context) -> some UIView {
-        let view = VideoPlayerView()
-        view.asset = asset
-        view.videoGravity = .resizeAspect
-        view.play()
-        return view
+    init(asset: AVAsset) {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback)
+        } catch {
+            print(error)
+        }
+        player = .init(playerItem: .init(asset: asset))
+        player.isMuted = true
     }
     
-    func updateUIView(_ uiView: UIViewType, context: Context) {
-        // noop
+    var body: some View {
+        VideoPlayer(player: player)
+            .onAppear {
+                player.play()
+            }
     }
 }

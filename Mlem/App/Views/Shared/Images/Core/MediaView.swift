@@ -46,8 +46,7 @@ struct MediaView: View {
         case let .gif(_, animated):
             GifView(data: animated)
         case let .webp(_, animated):
-            AnimatedImage(data: animated)
-                .resizable()
+            WebpView(data: animated)
         default:
             EmptyView()
         }

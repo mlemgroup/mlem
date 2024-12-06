@@ -30,6 +30,7 @@ struct DynamicMediaView: View {
     let showError: Bool
     let cornerRadius: CGFloat
     let actionsEnabled: Bool
+    let viewerEnabled: Bool
     
     init(
         url: URL?,
@@ -37,11 +38,13 @@ struct DynamicMediaView: View {
         showError: Bool = true,
         cornerRadius: CGFloat = Constants.main.mediumItemCornerRadius,
         actionsEnabled: Bool = true,
+        viewerEnabled: Bool = false,
         playImmediately: Bool = false
     ) {
         self.showError = showError
         self.cornerRadius = cornerRadius
         self.actionsEnabled = actionsEnabled
+        self.viewerEnabled = viewerEnabled
         self._loader = .init(wrappedValue: .init(url: url))
         self._playing = .init(wrappedValue: playImmediately)
     }
@@ -91,17 +94,17 @@ struct DynamicMediaView: View {
                 if showError, loader.error != nil {
                     errorOverlay
                 } else if loader.mediaType.isAnimated {
-                    if playing {
-                        Color.clear.contentShape(.rect)
-                            .onTapGesture {
-                                playing = false
-                            }
-                    } else {
+                    if !playing {
                         PlayButton(postSize: .large)
                             .onTapGesture {
                                 playing = true
                             }
                     }
+                }
+            }
+            .onTapGesture {
+                if viewerEnabled, !loader.mediaType.isAnimated {
+                    
                 }
             }
             .clipShape(.rect(cornerRadius: cornerRadius))
@@ -111,6 +114,9 @@ struct DynamicMediaView: View {
                 Task {
                     await loader.load()
                 }
+            }
+            .onDisappear {
+                playing = false
             }
         #if DEBUG
             .overlay {
