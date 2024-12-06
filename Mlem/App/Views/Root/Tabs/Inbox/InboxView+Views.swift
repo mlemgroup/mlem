@@ -59,36 +59,6 @@ extension InboxView {
         .background(.bar)
     }
     
-    @ViewBuilder
-    var refreshPopup: some View {
-        HStack(spacing: 0) {
-            Text("Inbox is outdated")
-                .padding(.horizontal, 10)
-            Button {
-                showRefreshPopup = false
-                HapticManager.main.play(haptic: .lightSuccess, priority: .high)
-                Task { @MainActor in
-                    print("TODO")
-                    // removeAll()
-                    // await loadReplies()
-                }
-            } label: {
-                Label("Refresh", systemImage: Icons.refresh)
-                    .foregroundStyle(palette.selectedInteractionBarItem)
-                    .fontWeight(.semibold)
-                    .padding(.vertical, 4)
-                    .padding(.horizontal, 10)
-                    .background(palette.accent, in: .capsule)
-            }
-            .buttonStyle(.plain)
-        }
-        .padding(4)
-        .background(palette.secondaryBackground, in: .capsule)
-        .shadow(color: .black.opacity(0.1), radius: 5)
-        .shadow(color: .black.opacity(0.1), radius: 1)
-        .padding()
-    }
-    
     @ToolbarContentBuilder
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
@@ -115,10 +85,6 @@ extension InboxView {
                 Task {
                     do {
                         try await appState.firstApi.markAllAsRead()
-                        if !showRead {
-                            print("TODO")
-                            // removeAll()
-                        }
                         try await Task.sleep(for: .seconds(0.05))
                     } catch {
                         handleError(error)

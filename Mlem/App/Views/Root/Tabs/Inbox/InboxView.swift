@@ -116,7 +116,7 @@ struct InboxView: View {
                     Task {
                         do {
                             if showRead {
-                                try await inboxFeedLoader.showRead() // inboxFeedLoader.addFilter(.todo)
+                                try await inboxFeedLoader.showRead()
                             } else {
                                 try await inboxFeedLoader.hideRead()
                             }
