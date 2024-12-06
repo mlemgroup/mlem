@@ -31,8 +31,6 @@ struct InboxView: View {
     
     @Setting(\.showReadInInbox) var showRead
     
-    @State var hasDoneInitialLoad: Bool = false
-    
     @State var headerPinned: Bool = false
     @State var selectedTab: Tab = .all
     
