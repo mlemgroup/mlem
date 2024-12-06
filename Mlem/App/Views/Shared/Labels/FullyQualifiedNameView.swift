@@ -43,8 +43,10 @@ struct FullyQualifiedNameView: View {
     var body: some View {
         if let name, let instance {
             (prependedText + nameText(name: name) + instanceText(instance: instance))
-                .lineLimit(instanceLocation != .bottom ? 1 : nil)
+                .lineLimit(instanceLocation == .bottom ? 2 : 1)
                 .font(.footnote)
+                .multilineTextAlignment(.leading)
+                .environment(\._lineHeightMultiple, 0.8)
         } else {
             placeholder
         }

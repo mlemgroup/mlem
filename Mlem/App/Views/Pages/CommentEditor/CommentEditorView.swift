@@ -103,7 +103,7 @@ struct CommentEditorView: View {
                             }
                         }
                     }
-                    .background(palette.background)
+                    .background(palette.groupedBackground)
             }
             .task(id: account) { await resolveContext() }
         }
@@ -128,7 +128,7 @@ struct CommentEditorView: View {
     @ViewBuilder
     var content: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
                 if resolutionState == .notFound {
                     resolutionWarning
                         .padding([.horizontal, .bottom], 10)
@@ -155,9 +155,14 @@ struct CommentEditorView: View {
                     maxHeight: .infinity,
                     alignment: .topLeading
                 )
-                Divider()
-                    .padding(.vertical, Constants.main.standardSpacing)
+                .padding(.vertical, Constants.main.standardSpacing)
+                .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+                .padding(.horizontal, Constants.main.standardSpacing)
                 contextView
+                    .padding(Constants.main.standardSpacing)
+                    .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                    .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                     .padding(.horizontal, Constants.main.standardSpacing)
             }
             .animation(.easeOut(duration: 0.2), value: resolutionState == .notFound)
@@ -202,7 +207,7 @@ struct CommentEditorView: View {
                 HStack {
                     FullyQualifiedLinkView(
                         entity: comment.creator_,
-                        labelStyle: .medium,
+                        labelStyle: .small,
                         showAvatar: showPersonAvatar,
                         blurred: false
                     )

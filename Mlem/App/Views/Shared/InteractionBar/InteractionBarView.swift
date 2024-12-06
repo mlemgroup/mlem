@@ -34,7 +34,7 @@ struct InteractionBarView: View {
             commentTreeTracker: commentTreeTracker,
             communityContext: communityContext
         )
-        self.readouts = configuration.readouts.map { post.readout(type: $0) }
+        self.readouts = configuration.readouts.compactMap { post.readout(type: $0) }
     }
     
     init(
@@ -55,13 +55,13 @@ struct InteractionBarView: View {
             commentTreeTracker: commentTreeTracker,
             communityContext: communityContext
         )
-        self.readouts = configuration.readouts.map { comment.readout(type: $0) }
+        self.readouts = configuration.readouts.compactMap { comment.readout(type: $0) }
     }
     
     init(reply: any Reply1Providing, configuration: ReplyBarConfiguration) {
         self.leading = .init(reply: reply, items: configuration.leading)
         self.trailing = .init(reply: reply, items: configuration.trailing)
-        self.readouts = configuration.readouts.map { reply.readout(type: $0) }
+        self.readouts = configuration.readouts.compactMap { reply.readout(type: $0) }
     }
 
     var body: some View {
@@ -213,24 +213,22 @@ extension [EnrichedWidget] {
         commentTreeTracker: CommentTreeTracker?,
         communityContext: (any CommunityStubProviding)?
     ) {
-        self = items.map { item in
+        self = items.compactMap { item in
             switch item {
             case let .action(action):
-                return .action(
-                    post.action(
-                        type: action,
-                        commentTreeTracker: commentTreeTracker,
-                        communityContext: communityContext
-                    )
-                )
+                if let action = post.action(
+                    type: action,
+                    commentTreeTracker: commentTreeTracker,
+                    communityContext: communityContext
+                ) {
+                    return .action(action)
+                }
             case let .counter(counter):
-                return .counter(
-                    post.counter(
-                        type: counter,
-                        commentTreeTracker: commentTreeTracker
-                    )
-                )
+                if let counter = post.counter(type: counter, commentTreeTracker: commentTreeTracker) {
+                    return .counter(counter)
+                }
             }
+            return nil
         }
     }
     
@@ -240,24 +238,25 @@ extension [EnrichedWidget] {
         commentTreeTracker: CommentTreeTracker?,
         communityContext: (any CommunityStubProviding)?
     ) {
-        self = items.map { item in
+        self = items.compactMap { item in
             switch item {
             case let .action(action):
-                return .action(
-                    comment.action(
-                        type: action,
-                        commentTreeTracker: commentTreeTracker,
-                        communityContext: communityContext
-                    )
-                )
+                if let action = comment.action(
+                    type: action,
+                    commentTreeTracker: commentTreeTracker,
+                    communityContext: communityContext
+                ) {
+                    return .action(action)
+                }
             case let .counter(counter):
-                return .counter(
-                    comment.counter(
-                        type: counter,
-                        commentTreeTracker: commentTreeTracker
-                    )
-                )
+                if let counter = comment.counter(
+                    type: counter,
+                    commentTreeTracker: commentTreeTracker
+                ) {
+                    return .counter(counter)
+                }
             }
+            return nil
         }
     }
     
@@ -265,13 +264,18 @@ extension [EnrichedWidget] {
         reply: any Reply1Providing,
         items: [ReplyBarConfiguration.Item]
     ) {
-        self = items.map { item in
+        self = items.compactMap { item in
             switch item {
             case let .action(action):
-                return .action(reply.action(type: action))
+                if let action = reply.action(type: action) {
+                    return .action(action)
+                }
             case let .counter(counter):
-                return .counter(reply.counter(type: counter))
+                if let counter = reply.counter(type: counter) {
+                    return .counter(counter)
+                }
             }
+            return nil
         }
     }
 }

@@ -61,19 +61,7 @@ class CommentTreeTracker: Hashable {
         guard loadingState == .idle else { return }
         loadingState = .loading
         do {
-            var newComments: [Comment2]
-            switch root {
-            case let .post(post):
-                newComments = try await post.getComments(sort: sort, page: 1, maxDepth: 8, limit: 50)
-            case let .comment(comment, parentCount):
-                newComments = try await comment.getChildren(
-                    sort: sort,
-                    includedParentCount: parentCount,
-                    page: 1,
-                    maxDepth: 8,
-                    limit: 999
-                )
-            }
+            var newComments = try await fetchComments(page: 1)
             if let ensuredComment, !commentsKeyedByActorId.keys.contains(ensuredComment.actorId) {
                 let comment: any Comment
                 let api = root.wrappedValue.api
@@ -109,6 +97,27 @@ class CommentTreeTracker: Hashable {
             errorDetails = nil
         } catch {
             handleFailure(error)
+        }
+    }
+    
+    @MainActor
+    private func fetchComments(page: Int) async throws -> [Comment2] {
+        switch root {
+        case let .post(post):
+            return try await post.getComments(
+                sort: sort,
+                page: page,
+                maxDepth: Settings.main.maxCommentDepth,
+                limit: 50
+            )
+        case let .comment(comment, parentCount):
+            return try await comment.getChildren(
+                sort: sort,
+                includedParentCount: parentCount,
+                page: page,
+                maxDepth: Settings.main.maxCommentDepth,
+                limit: 999
+            )
         }
     }
     

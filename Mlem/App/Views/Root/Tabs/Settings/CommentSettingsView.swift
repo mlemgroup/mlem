@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct CommentSettingsView: View {
+    @Environment(Palette.self) var palette
+    
     @Setting(\.compactComments) var compactComments
+    @Setting(\.maxCommentDepth) var maxCommentDepth
     
     var body: some View {
         Form {
@@ -22,7 +25,31 @@ struct CommentSettingsView: View {
                     destination: .settings(.commentInteractionBar)
                 )
             }
+            maxDepthSection
         }
         .navigationTitle("Comments")
+    }
+    
+    @ViewBuilder
+    var maxDepthSection: some View {
+        Section {
+            HStack {
+                Text("Maximum Comment Depth")
+                Spacer()
+                Text(String(maxCommentDepth))
+                    .foregroundStyle(palette.secondary)
+                    .monospaced()
+            }
+            Slider(
+                value: .init(
+                    get: { Double(maxCommentDepth) },
+                    set: { maxCommentDepth = Int($0) }
+                ),
+                in: 1.0 ... 12.0,
+                step: 1
+            )
+        } footer: {
+            Text("The number of child comments that are shown in a chain before the \"More Replies\" button is shown.")
+        }
     }
 }

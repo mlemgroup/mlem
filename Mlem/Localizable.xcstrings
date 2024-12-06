@@ -226,6 +226,9 @@
     "Average: %@" : {
 
     },
+    "Ban" : {
+
+    },
     "Ban %@" : {
 
     },
@@ -842,6 +845,9 @@
     "Matrix Room" : {
 
     },
+    "Maximum Comment Depth" : {
+
+    },
     "Medium" : {
 
     },
@@ -1031,6 +1037,9 @@
     "Pink" : {
 
     },
+    "Post failed to send." : {
+
+    },
     "Post Size" : {
 
     },
@@ -1068,6 +1077,9 @@
 
     },
     "Purge" : {
+
+    },
+    "Purge User" : {
 
     },
     "Purged content is erased from the database and cannot be restored." : {
@@ -1437,6 +1449,9 @@
         }
       }
     },
+    "The number of child comments that are shown in a chain before the \"More Replies\" button is shown." : {
+
+    },
     "Theme" : {
 
     },
@@ -1532,6 +1547,9 @@
 
     },
     "Two-Factor Authentication" : {
+
+    },
+    "Unban" : {
 
     },
     "Unban %@" : {

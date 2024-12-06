@@ -29,13 +29,7 @@ struct ErrorView: View {
     var body: some View {
         VStack(spacing: 15) {
             if showingFullError {
-                if let error = errorDetails.error {
-                    if let error = error as? ApiClientError {
-                        errorDetails(error.description)
-                    } else {
-                        errorDetails(error.localizedDescription)
-                    }
-                }
+                errorDetails(errorDetails.errorText)
             } else {
                 if let systemImage = errorDetails.systemImage {
                     Image(systemName: systemImage)

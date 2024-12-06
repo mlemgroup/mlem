@@ -106,7 +106,7 @@ extension PostEditorView {
         }
         .frame(maxWidth: .infinity)
         .padding(8)
-        .background(palette.accent.opacity(0.2), in: .rect(cornerRadius: 16))
+        .background(palette.accent.opacity(0.2), in: .rect(cornerRadius: Constants.main.standardSpacing))
     }
 }
 
