@@ -9,12 +9,17 @@ import MlemMiddleware
 import SwiftUI
 
 struct ProfileSettingsView: View {
+    @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     
+    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.dismiss) var dismiss
+    
     let person: Person4
-    @State var displayName: String = ""
+    @State var displayName: String
     
     @State var bioTextView: UITextView = .init()
+    @State var bioHasChanged: Bool = false
     @State var uploadHistory: ImageUploadHistoryManager = .init()
     
     @State var avatarUrl: URL?
@@ -23,9 +28,11 @@ struct ProfileSettingsView: View {
     @State var bannerUrl: URL?
     @State var bannerManager: ImageUploadManager = .init()
     
+    @State var isSubmitting: Bool = false
+    
     init(person: Person4) {
         self.person = person
-        self.displayName = person.displayName == person.name ? "" : person.displayName
+        self._displayName = .init(wrappedValue: person.displayName == person.name ? "" : person.displayName)
         bioTextView.text = person.description ?? ""
         self._avatarUrl = .init(wrappedValue: person.avatar)
         self._bannerUrl = .init(wrappedValue: person.banner)
@@ -39,12 +46,15 @@ struct ProfileSettingsView: View {
         Form {
             Section("Display Name") {
                 TextField("Display Name", text: $displayName, prompt: Text(person.name))
+                    .autocorrectionDisabled()
+                    .textInputAutocapitalization(.never)
             } footer: {
                 Text("The name that is displayed on your profile. This is not the same as your username, which cannot be changed.")
             }
             Section("Biography") {
                 MarkdownTextEditor(
-                    onChange: { _ in
+                    onChange: { newValue in
+                        bioHasChanged = (person.description ?? "") != newValue
                     },
                     prompt: "Write a bit about yourself...",
                     textView: bioTextView,
@@ -76,7 +86,44 @@ struct ProfileSettingsView: View {
             bannerSection
         }
         .navigationTitle("My Profile")
+        .navigationBarTitleDisplayMode(.inline)
         .scrollDismissesKeyboard(.interactively)
+        .navigationBarBackButtonHidden(showToolbarOptions)
+        .interactiveDismissDisabled(showToolbarOptions)
+        .toolbar {
+            if showToolbarOptions {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") {
+                        displayName = person.displayName == person.name ? "" : person.displayName
+                        bioTextView.text = person.description ?? ""
+                        bioHasChanged = false
+                        avatarUrl = person.avatar
+                        bannerUrl = person.banner
+                    }
+                    .disabled(isSubmitting)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    if isSubmitting {
+                        ProgressView()
+                    } else {
+                        Button("Save") {
+                            Task { @MainActor in
+                                await submit()
+                            }
+                        }
+                    }
+                }
+            } else if navigation.isInsideSheet {
+                ToolbarItem(placement: .topBarTrailing) {
+                    CloseButtonView()
+                }
+            }
+        }
+    }
+    
+    var showToolbarOptions: Bool {
+        let originalDisplayName = (person.displayName == person.name) ? "" : person.displayName
+        return bioHasChanged || displayName != originalDisplayName || avatarUrl != person.avatar || bannerUrl != person.banner
     }
     
     @ViewBuilder
@@ -106,7 +153,7 @@ struct ProfileSettingsView: View {
                         .frame(height: 150)
                         .clipped()
                 } else {
-                    palette.tertiaryGroupedBackground
+                    palette.secondary.opacity(0.5)
                         .frame(height: 150)
                 }
                 HStack(spacing: 15) {
@@ -122,6 +169,23 @@ struct ProfileSettingsView: View {
             }
         }
         .listRowInsets(.init())
+    }
+    
+    @MainActor
+    func submit() async {
+        isSubmitting = true
+        do {
+            try await person.updateProfile(
+                displayName: displayName.isEmpty ? nil : displayName,
+                description: bioTextView.text.isEmpty ? nil : bioTextView.text,
+                avatar: avatarUrl,
+                banner: bannerUrl
+            )
+            dismiss()
+        } catch {
+            handleError(error)
+        }
+        isSubmitting = false
     }
 }
 
