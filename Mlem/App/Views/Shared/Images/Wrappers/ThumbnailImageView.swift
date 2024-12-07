@@ -144,13 +144,13 @@ struct ThumbnailImageView: View {
     }
     
     func shareImage(url: URL) async {
-        if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "image") {
+        if let fileUrl = await downloadImageToFileSystem(url: url) {
             navigation.shareInfo = .init(url: fileUrl)
         }
     }
     
     func showQuickLook(url: URL) async {
-        if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "quicklook") {
+        if let fileUrl = await downloadImageToFileSystem(url: url) {
             quickLookUrl = fileUrl
         }
     }
