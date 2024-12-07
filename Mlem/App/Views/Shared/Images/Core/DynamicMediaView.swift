@@ -103,8 +103,8 @@ struct DynamicMediaView: View {
                 }
             }
             .onTapGesture {
-                if viewerEnabled, !loader.mediaType.isAnimated {
-                    
+                if viewerEnabled, let url = loader.url, loader.loading == .done, !loader.mediaType.isAnimated {
+                    showViewer(url: url)
                 }
             }
             .clipShape(.rect(cornerRadius: cornerRadius))
@@ -187,6 +187,15 @@ struct DynamicMediaView: View {
     func shareImage(url: URL) async {
         if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "image") {
             navigation.shareInfo = .init(url: fileUrl)
+        }
+    }
+    
+    func showViewer(url: URL) {
+        // Sheets don't cover the whole screen on iPad, so use a fullScreenCover instead
+        if UIDevice.isPad {
+            navigation.showFullScreenCover(.imageViewer(url))
+        } else {
+            navigation.openSheet(.imageViewer(url))
         }
     }
     

@@ -30,7 +30,7 @@ struct LargeImageView: View {
     @State private var loading: MediaLoadingState?
 
     var body: some View {
-        DynamicMediaView(url: url)
+        DynamicMediaView(url: url, viewerEnabled: true)
             .dynamicBlur(blurred: blurred)
             .clipShape(.rect(cornerRadius: Constants.main.mediumItemCornerRadius))
             .overlay {
@@ -43,19 +43,11 @@ struct LargeImageView: View {
                 }
             }
             .animation(.easeOut(duration: 0.1), value: blurred)
-            .onTapGesture {
+            .simultaneousGesture(TapGesture().onEnded {
                 if let onTapActions {
                     onTapActions()
                 }
-                if let loading, loading == .done, let url {
-                    // Sheets don't cover the whole screen on iPad, so use a fullScreenCover instead
-                    if UIDevice.isPad {
-                        navigation.showFullScreenCover(.imageViewer(url))
-                    } else {
-                        navigation.openSheet(.imageViewer(url))
-                    }
-                }
-            }
+            })
             .onPreferenceChange(MediaLoadingPreferenceKey.self, perform: { loading = $0 })
     }
 }
