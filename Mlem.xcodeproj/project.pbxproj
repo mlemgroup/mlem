@@ -195,6 +195,7 @@
 		03AB48592CBC14CE00567FF9 /* AccountEmailSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AB48582CBC14CE00567FF9 /* AccountEmailSettingsView.swift */; };
 		03AD0A822CFDBFA0001EF9F7 /* AccountLocalSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AD0A812CFDBFA0001EF9F7 /* AccountLocalSettingsView.swift */; };
 		03AD0A842CFDC557001EF9F7 /* AccountNicknameFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AD0A832CFDC557001EF9F7 /* AccountNicknameFieldView.swift */; };
+		03AD09E82CF88007001EF9F7 /* MoreRepliesButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AD09E72CF88007001EF9F7 /* MoreRepliesButton.swift */; };
 		03AF91DD2C1B23E500E56644 /* ImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AF91DC2C1B23E500E56644 /* ImageViewer.swift */; };
 		03AF91DF2C1B243D00E56644 /* ZoomableContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AF91DE2C1B243D00E56644 /* ZoomableContainer.swift */; };
 		03AF91E12C1B25DE00E56644 /* UIDevice+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AF91E02C1B25DE00E56644 /* UIDevice+Extensions.swift */; };
@@ -612,6 +613,7 @@
 		03AB48582CBC14CE00567FF9 /* AccountEmailSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountEmailSettingsView.swift; sourceTree = "<group>"; };
 		03AD0A812CFDBFA0001EF9F7 /* AccountLocalSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountLocalSettingsView.swift; sourceTree = "<group>"; };
 		03AD0A832CFDC557001EF9F7 /* AccountNicknameFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNicknameFieldView.swift; sourceTree = "<group>"; };
+		03AD09E72CF88007001EF9F7 /* MoreRepliesButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreRepliesButton.swift; sourceTree = "<group>"; };
 		03AF91DC2C1B23E500E56644 /* ImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewer.swift; sourceTree = "<group>"; };
 		03AF91DE2C1B243D00E56644 /* ZoomableContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableContainer.swift; sourceTree = "<group>"; };
 		03AF91E02C1B25DE00E56644 /* UIDevice+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extensions.swift"; sourceTree = "<group>"; };
@@ -1175,6 +1177,7 @@
 				03E0EF442CA74036002CB66C /* CommentPage.swift */,
 				03B0EB6E2C87827A00F79FDF /* ExpandedPostView.swift */,
 				033EF40F2CB9AEF7004D8A3F /* ExpandedPostView+Views.swift */,
+				03AD09E72CF88007001EF9F7 /* MoreRepliesButton.swift */,
 				039F58852C7A810100C61658 /* ExpandedPostView+Logic.swift */,
 				03E0EF422CA73D7A002CB66C /* PostPage.swift */,
 			);
@@ -2274,6 +2277,7 @@
 				CD317D4F2BE983ED008F63E2 /* MonochromePalette.swift in Sources */,
 				03AF91EA2C1CE96600E56644 /* Counter.swift in Sources */,
 				03B431C22C45BA00001A1EB5 /* MarkdownEditorToolbarView.swift in Sources */,
+				03AD09E82CF88007001EF9F7 /* MoreRepliesButton.swift in Sources */,
 				034B948E2C0937BA00039AF4 /* FancyScrollView.swift in Sources */,
 				CD332D7E2CA7486000A53988 /* String+Extensions.swift in Sources */,
 				CD64A91E2CA62592007CA7E6 /* MediaView.swift in Sources */,
