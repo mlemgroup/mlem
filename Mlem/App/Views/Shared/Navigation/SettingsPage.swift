@@ -30,8 +30,8 @@ enum SettingsPage: Hashable {
         case .account:
             AccountSettingsView()
         case .profile:
-            if let session = AppState.main.firstSession as? UserSession {
-                ProfileSettingsView(session: session)
+            if let person = AppState.main.firstPerson {
+                ProfileSettingsView(person: person)
             } else {
                 Text(verbatim: "Error: No active user account")
             }
