@@ -226,6 +226,9 @@
     "Average: %@" : {
 
     },
+    "Ban" : {
+
+    },
     "Ban %@" : {
 
     },
@@ -1037,6 +1040,9 @@
     "Pink" : {
 
     },
+    "Post failed to send." : {
+
+    },
     "Post Size" : {
 
     },
@@ -1074,6 +1080,9 @@
 
     },
     "Purge" : {
+
+    },
+    "Purge User" : {
 
     },
     "Purged content is erased from the database and cannot be restored." : {
@@ -1541,6 +1550,9 @@
 
     },
     "Two-Factor Authentication" : {
+
+    },
+    "Unban" : {
 
     },
     "Unban %@" : {

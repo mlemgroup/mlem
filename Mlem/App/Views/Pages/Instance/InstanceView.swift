@@ -104,6 +104,7 @@ struct InstanceView: View {
                     Markdown(description, configuration: .default)
                         .padding(Constants.main.standardSpacing)
                         .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
                 }
             case .details:

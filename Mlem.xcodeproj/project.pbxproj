@@ -212,7 +212,6 @@
 		03B25B352CC4446400EB6DF5 /* FediseerOpinionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B25B342CC4446400EB6DF5 /* FediseerOpinionListView.swift */; };
 		03B25B372CC4478600EB6DF5 /* FediseerInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B25B362CC4478600EB6DF5 /* FediseerInfoView.swift */; };
 		03B25B3B2CC44FFF00EB6DF5 /* UploadConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B25B3A2CC44FFF00EB6DF5 /* UploadConfirmationView.swift */; };
-		03B431B22C44409D001A1EB5 /* CommentEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431B12C44409D001A1EB5 /* CommentEditorView.swift */; };
 		03B431B42C4481C3001A1EB5 /* MarkdownTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431B32C4481C3001A1EB5 /* MarkdownTextEditor.swift */; };
 		03B431B62C454D49001A1EB5 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431B52C454D49001A1EB5 /* UIImage+Extensions.swift */; };
 		03B431BC2C455838001A1EB5 /* LargePostBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431BB2C455838001A1EB5 /* LargePostBodyView.swift */; };
@@ -245,6 +244,7 @@
 		03D3A1EF2BB9CA1D009DE55E /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */; };
 		03D3A1F12BB9D48E009DE55E /* BasicAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1F02BB9D48E009DE55E /* BasicAction.swift */; };
 		03D3A1F32BB9D49B009DE55E /* ActionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1F22BB9D49B009DE55E /* ActionGroup.swift */; };
+		03DA4FB72CF115FB001C3C77 /* CommentEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B431B12C44409D001A1EB5 /* CommentEditorView.swift */; };
 		03DAEA772C64074E0064DE64 /* SubscriptionListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DAEA762C64074E0064DE64 /* SubscriptionListItemView.swift */; };
 		03E0EF432CA73D7A002CB66C /* PostPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0EF422CA73D7A002CB66C /* PostPage.swift */; };
 		03E0EF452CA74036002CB66C /* CommentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0EF442CA74036002CB66C /* CommentPage.swift */; };
@@ -2103,6 +2103,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03DA4FB72CF115FB001C3C77 /* CommentEditorView.swift in Sources */,
 				039F58822C7A7EF300C61658 /* ToolbarEllipsisMenu.swift in Sources */,
 				CD332D792CA7175500A53988 /* PlayButton.swift in Sources */,
 				03531EEC2C2D81DC004A3464 /* LinkSettingsView.swift in Sources */,
@@ -2351,10 +2352,8 @@
 				0316CD642C382A6A009EA8EA /* MessageView.swift in Sources */,
 				CDF9EF332AB2845C003F885B /* Icons.swift in Sources */,
 				03AF91E32C1C616F00E56644 /* InteractionBarView.swift in Sources */,
-				03B431B22C44409D001A1EB5 /* CommentEditorView.swift in Sources */,
 				0397D4802C693A88002C6CDC /* [BlockNode]+Extensions.swift in Sources */,
 				03C0EAEF2CA8288A00B4B2A5 /* CapsuleButtonStyle.swift in Sources */,
-				03B431B22C44409D001A1EB5 /* CommentEditorView.swift in Sources */,
 				0320B6612C8DFCF100D38548 /* SearchView+FiltersView.swift in Sources */,
 				CD4D58DA2B86E11D00B82964 /* Mockable.swift in Sources */,
 				034B94892C09360A00039AF4 /* Int+Extensions.swift in Sources */,
@@ -2931,8 +2930,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.49.0;
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.50.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

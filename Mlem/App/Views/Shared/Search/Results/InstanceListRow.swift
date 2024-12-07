@@ -59,5 +59,6 @@ struct InstanceListRow<Content2: View>: View {
         .contextMenu {
             instanceStub?.menuActions(allowExternalBlocking: true) ?? []
         }
+        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
 }

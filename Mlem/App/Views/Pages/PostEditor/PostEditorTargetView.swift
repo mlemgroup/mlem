@@ -13,34 +13,20 @@ struct PostEditorTargetView: View {
     @Environment(Palette.self) private var palette
     
     @Bindable var target: PostEditorTarget
+    let isMoreThanOneTarget: Bool
     
     var body: some View {
         HStack {
-            Grid(
-                alignment: .center,
-                horizontalSpacing: 8,
-                verticalSpacing: 8
-            ) {
-                GridRow {
-                    Image(systemName: Icons.communityFill)
-                        .foregroundStyle(palette.secondary)
-                        .fontWeight(.semibold)
+            HStack(spacing: Constants.main.standardSpacing) {
+                if AccountsTracker.main.userAccounts.count > 1 {
                     communityPicker
                         .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                if AccountsTracker.main.userAccounts.count > 1 {
-                    GridRow {
-                        Image(systemName: Icons.personFill)
-                            .foregroundStyle(palette.secondary)
-                            .fontWeight(.semibold)
-                        accountPicker
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .task(id: target.account) { await resolveCommunity() }
-                    }
+                    accountPicker
+                        .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                } else {
+                    communityPicker
                 }
             }
-            .font(.footnote)
-            Spacer()
             switch target.sendState {
             case .unsent:
                 EmptyView()
@@ -54,7 +40,6 @@ struct PostEditorTargetView: View {
                     .foregroundStyle(palette.negative)
             }
         }
-        .padding(.horizontal, 15)
     }
     
     @ViewBuilder
@@ -65,30 +50,47 @@ struct PostEditorTargetView: View {
                 callback: { target.community = .init($0) }
             ))
         } label: {
-            if let community = target.community as? any Community {
-                FullyQualifiedLabelView(
-                    entity: community,
-                    labelStyle: .small,
-                    blurred: false
-                )
-                .id(community.hashValue)
-                .padding(.init(top: 2, leading: 4, bottom: 2, trailing: 8))
-                .background(palette.secondaryBackground, in: .capsule)
-            } else if let community = target.community {
-                FullyQualifiedNameView(name: community.name, instance: community.host, instanceLocation: .trailing)
-                    .task {
-                        do {
-                            target.community = try await community.upgrade()
-                        } catch {
-                            handleError(error)
+            let singleAccount = AccountsTracker.main.userAccounts.count == 1
+            HStack(spacing: 0) {
+                if let community = target.community as? any Community {
+                    FullyQualifiedLabelView(
+                        entity: community,
+                        labelStyle: singleAccount ? .medium : .large,
+                        blurred: false
+                    )
+                    .id(community.hashValue)
+                } else if let community = target.community {
+                    FullyQualifiedNameView(name: community.name, instance: community.host, instanceLocation: .trailing)
+                        .task {
+                            do {
+                                target.community = try await community.upgrade()
+                            } catch {
+                                handleError(error)
+                            }
                         }
+                } else {
+                    HStack(spacing: 7) {
+                        Image(systemName: Icons.communityCircleFill)
+                            .resizable()
+                            .aspectRatio(1, contentMode: .fit)
+                            .frame(
+                                width: singleAccount ? Constants.main.mediumAvatarSize : Constants.main.largeAvatarSize
+                            )
+                            .symbolRenderingMode(.hierarchical)
+                        Text("Choose a community...")
+                            .font(.footnote)
+                            .multilineTextAlignment(.leading)
+                            .environment(\._lineHeightMultiple, 0.8)
+                            .offset(y: 1)
                     }
-            } else {
-                Text("Choose a community...")
-                    .padding(.vertical, 2)
-                    .padding(.horizontal, 8)
-                    .background(palette.secondaryBackground, in: .capsule)
+                }
+                if !singleAccount || isMoreThanOneTarget {
+                    Spacer()
+                }
             }
+            .padding(.vertical, 6)
+            .padding(.horizontal, 8)
+            .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         }
     }
     
@@ -98,12 +100,13 @@ struct PostEditorTargetView: View {
             AccountPickerMenu(account: $target.account) {
                 FullyQualifiedLabelView(
                     entity: target.account,
-                    labelStyle: .small,
+                    labelStyle: .large,
                     blurred: false
                 )
                 .id(target.account.hashValue)
-                .padding(.init(top: 2, leading: 4, bottom: 2, trailing: 8))
-                .background(palette.secondaryBackground, in: .capsule)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, 6)
+                .padding(.horizontal, 8)
             }
             switch target.resolutionState {
             case .notFound, .error:
