@@ -199,6 +199,16 @@
     "Apply to All Interaction Bars" : {
 
     },
+    "Are you sure you want to delete all community favorites for this account? This cannot be undone." : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete all community favourites for this account? This cannot be undone."
+          }
+        }
+      }
+    },
     "Ask to confirm every time" : {
 
     },
@@ -455,6 +465,16 @@
     },
     "Delete Account" : {
 
+    },
+    "Delete Community Favorites" : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Community Favourites"
+          }
+        }
+      }
     },
     "Delete posts and comments" : {
 
@@ -821,6 +841,9 @@
     "Local" : {
 
     },
+    "Local Options" : {
+
+    },
     "Lock" : {
 
     },
@@ -918,6 +941,9 @@
 
     },
     "Next" : {
+
+    },
+    "Nickname" : {
 
     },
     "No" : {
@@ -1452,6 +1478,9 @@
         }
       }
     },
+    "The name shown in the account switcher." : {
+
+    },
     "The number of child comments that are shown in a chain before the \"More Replies\" button is shown." : {
 
     },
@@ -1482,6 +1511,59 @@
     },
     "There were no recorded incidents today." : {
 
+    },
+    "These options are stored locally in Mlem and not on your Lemmy account." : {
+
+    },
+    "This account has %lld favorite communities." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "This account has %lld favorite community."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "This account has %lld favorite communities."
+                }
+              }
+            }
+          }
+        },
+        "en-GB" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "This account has %lld favourite community."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "This account has %lld favourite communities."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "This account has no favorite communities." : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This account has no favourite communities."
+          }
+        }
+      }
     },
     "This community likely contains graphic or explicit content." : {
 
