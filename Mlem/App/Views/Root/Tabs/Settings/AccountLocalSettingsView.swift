@@ -37,9 +37,9 @@ struct AccountLocalSettingsView: View {
                     }
                 } footer: {
                     if userSession.account.favorites.isEmpty {
-                        Text("You have not favorited any communities on this account.")
+                        Text("This account has no favorite communities.")
                     } else {
-                        Text("You have favorited \(userSession.account.favorites.count) communities on this account.")
+                        Text("This account has \(userSession.account.favorites.count) favorite communities.")
                     }
                 }
             }

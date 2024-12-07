@@ -1515,6 +1515,56 @@
     "These options are stored locally in Mlem and not on your Lemmy account." : {
 
     },
+    "This account has %lld favorite communities." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "This account has %lld favorite community."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "This account has %lld favorite communities."
+                }
+              }
+            }
+          }
+        },
+        "en-GB" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "This account has %lld favourite community."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "This account has %lld favourite communities."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "This account has no favorite communities." : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This account has no favourite communities."
+          }
+        }
+      }
+    },
     "This community likely contains graphic or explicit content." : {
 
     },
@@ -1759,56 +1809,6 @@
     },
     "You don't have any accounts." : {
 
-    },
-    "You have favorited %lld communities on this account." : {
-      "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "You have favorited %lld community on this account."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "You have favorited %lld communities on this account."
-                }
-              }
-            }
-          }
-        },
-        "en-GB" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "You have favourited %lld community on this account."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "You have favourited %lld communities on this account."
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "You have not favorited any communities on this account." : {
-      "localizations" : {
-        "en-GB" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You have not favourited any communities on this account."
-          }
-        }
-      }
     },
     "You may need to allow Mlem to access your Photo Library in System Settings." : {
 
