@@ -115,7 +115,7 @@ class CommentTreeTracker: Hashable {
                 sort: sort,
                 includedParentCount: parentCount,
                 page: page,
-                maxDepth: Settings.main.maxCommentDepth,
+                maxDepth: min(8, Settings.main.maxCommentDepth) + parentCount,
                 limit: 999
             )
         }
@@ -155,10 +155,15 @@ class CommentTreeTracker: Hashable {
     }
     
     @MainActor
-    private func buildCommentTree(comments newComments: [Comment2]) async {
-        var output: [CommentWrapper] = []
+    func insertAdditionalComments(comments newComments: [Comment2]) async {
+        await buildCommentTree(comments: newComments, clear: false)
+    }
+    
+    @MainActor
+    private func buildCommentTree(comments newComments: [Comment2], clear: Bool = true) async {
+        var output: [CommentWrapper] = clear ? [] : comments
         var commentsKeyedById: [Int: CommentWrapper] = [:]
-        var commentsKeyedByActorId: [URL: CommentWrapper] = [:]
+        var commentsKeyedByActorId: [URL: CommentWrapper] = clear ? [:] : commentsKeyedByActorId
         
         // From 0.19.0 onwards, a comment's parent is guaranteed to precede it in the array.
         //
@@ -182,6 +187,10 @@ class CommentTreeTracker: Hashable {
         }
         
         for comment in sortedComments {
+            if commentsKeyedByActorId.keys.contains(comment.actorId) {
+                commentsKeyedById[comment.id] = commentsKeyedByActorId[comment.actorId]
+                continue
+            }
             let wrapper: CommentWrapper = .init(comment)
             commentsKeyedById[comment.id] = wrapper
             commentsKeyedByActorId[comment.actorId] = wrapper
