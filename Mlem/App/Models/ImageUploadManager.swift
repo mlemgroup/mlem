@@ -85,8 +85,15 @@ class ImageUploadManager: Hashable {
     }
     
     func upload(data: Data, api: ApiClient) async throws {
-        let image = try await api.uploadImage(data, onProgress: { self.state = .uploading(progress: $0) })
-        state = .done(image)
+        do {
+            let image = try await api.uploadImage(data, onProgress: {
+                self.state = .uploading(progress: $0)
+            })
+            state = .done(image)
+        } catch {
+            state = .idle
+            throw error
+        }
     }
     
     func hash(into hasher: inout Hasher) {

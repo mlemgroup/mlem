@@ -236,6 +236,9 @@
     "Average: %@" : {
 
     },
+    "Ban" : {
+
+    },
     "Ban %@" : {
 
     },
@@ -1105,6 +1108,9 @@
     "Purge" : {
 
     },
+    "Purge User" : {
+
+    },
     "Purged content is erased from the database and cannot be restored." : {
 
     },
@@ -1576,6 +1582,9 @@
 
     },
     "Two-Factor Authentication" : {
+
+    },
+    "Unban" : {
 
     },
     "Unban %@" : {
