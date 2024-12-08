@@ -51,7 +51,7 @@ func downloadImageToFileSystem(url: URL) async -> URL? {
         }
         
         if fileName.isEmpty {
-            assertionFailure("Empty fileType!")
+            assertionFailure("Empty fileName!")
             return nil
         }
         
