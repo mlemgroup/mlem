@@ -14,6 +14,7 @@ struct FeedSortPicker: View {
     }
     
     @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
     
     let filters: Set<Filter>
     @Binding var sort: ApiSortType
@@ -62,7 +63,9 @@ struct FeedSortPicker: View {
                 Toggle("Show Hidden", systemImage: Icons.hide, isOn: .constant(false))
             }
             Section {
-                Button("More...", systemImage: Icons.menuCircle) {}
+                Button("More...", systemImage: Icons.menuCircle) {
+                    navigation.openSheet(.advancedSorting)
+                }
             }
         }
         .disabled(filters.contains(.availableOnInstance) && appState.firstApi.fetchedVersion == nil)

@@ -156,6 +156,10 @@ extension NavigationPage {
                 .presentationDetents([.medium, .large])
         case .blockList:
             BlockListView()
+        case .advancedSorting:
+            AdvancedSortView()
+//                .presentationDetents([.medium, .large])
+//                .presentationDragIndicator(.hidden)
         }
     }
 }

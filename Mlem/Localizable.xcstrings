@@ -626,6 +626,9 @@
     "Files" : {
 
     },
+    "Filter" : {
+
+    },
     "Filters" : {
 
     },
@@ -713,9 +716,6 @@
     "Images are cached on your device for fast reuse. The maximum cache size is around %@." : {
 
     },
-    "Images Only" : {
-
-    },
     "Import Settings" : {
 
     },
@@ -777,9 +777,6 @@
 
     },
     "Keep Place" : {
-
-    },
-    "Keyword Filtering" : {
 
     },
     "Label Style" : {
@@ -1274,6 +1271,9 @@
     "Show Full URL" : {
 
     },
+    "Show Hidden" : {
+
+    },
     "Show Mod Names in Modlog" : {
 
     },
@@ -1408,6 +1408,9 @@
 
     },
     "Switch to this account and..." : {
+
+    },
+    "Tab" : {
 
     },
     "Tap and hold items to add, remove or rearrange them." : {
