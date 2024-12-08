@@ -51,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware",
       "state" : {
-        "branch" : "eric/inbox-feed-loader",
-        "revision" : "881656c2e629c92f819fbef29e17b3f514d53432"
+        "revision" : "4014fd91a40312e3c5b20c3badac3c7f45d4fe19",
+        "version" : "0.51.0"
       }
     },
     {
