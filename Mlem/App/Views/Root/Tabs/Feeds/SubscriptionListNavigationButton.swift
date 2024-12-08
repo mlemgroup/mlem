@@ -22,6 +22,7 @@ struct SubscriptionListNavigationButton<Content: View>: View {
             NavigationLink(destination, label: label)
         }, pad: {
             Button(action: {
+                navigation.path = []
                 navigation.root = destination
             }, label: label)
                 .buttonStyle(.empty)

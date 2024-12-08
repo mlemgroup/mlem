@@ -25,6 +25,8 @@ protocol Account: AnyObject, Codable, ActorIdentifiable, Profile1Providing, Hash
     var nicknameSortKey: String { get }
     var instanceSortKey: String { get }
     var isActive: Bool { get }
+    
+    func setNickname(_ newValue: String)
 }
 
 // Profile1Providing conformance

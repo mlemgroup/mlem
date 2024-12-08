@@ -63,12 +63,12 @@ extension InfoStackView {
     }
     
     init(comment: any Comment1Providing, readouts: [CommentBarConfiguration.ReadoutType], showColor: Bool) {
-        self.readouts = readouts.map { comment.readout(type: $0) }
+        self.readouts = readouts.compactMap { comment.readout(type: $0) }
         self.showColor = showColor
     }
     
     init(reply: any Reply1Providing, readouts: [ReplyBarConfiguration.ReadoutType], showColor: Bool) {
-        self.readouts = readouts.map { reply.readout(type: $0) }
+        self.readouts = readouts.compactMap { reply.readout(type: $0) }
         self.showColor = showColor
     }
 }

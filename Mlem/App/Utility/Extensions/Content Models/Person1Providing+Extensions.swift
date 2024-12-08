@@ -9,6 +9,8 @@ import Foundation
 import MlemMiddleware
 
 extension Person1Providing {
+    var shouldHideInFeed: Bool { blocked || purged }
+    
     func flairs(
         interactableContext interactable: (any Interactable2Providing)? = nil,
         communityContext community: (any Community3Providing)? = nil
@@ -93,11 +95,19 @@ extension Person1Providing {
         feedback: Set<FeedbackType> = [.haptic, .toast],
         navigation: NavigationLayer?
     ) -> [any Action] {
-        openInstanceAction(navigation: navigation)
-        copyNameAction()
-        shareAction()
-        if (AppState.main.firstSession as? UserSession)?.person?.person1 !== person1 {
-            blockAction(feedback: feedback)
+        ActionGroup {
+            openInstanceAction(navigation: navigation)
+            copyNameAction()
+            shareAction()
+            if (AppState.main.firstSession as? UserSession)?.person?.person1 !== person1 {
+                blockAction(feedback: feedback)
+            }
+        }
+        if api.isAdmin {
+            ActionGroup {
+                banFromInstanceAction()
+                purgeAction()
+            }
         }
     }
     
@@ -106,6 +116,20 @@ extension Person1Providing {
             id: "block\(uid)",
             appearance: .block(isOn: blocked),
             callback: api.canInteract ? { self.toggleBlocked(feedback: feedback) } : nil
+        )
+    }
+    
+    func banFromInstanceAction() -> BasicAction {
+        .init(
+            id: "banFromInstance\(uid)",
+            appearance: .banFromInstance(isOn: bannedFromInstance),
+            callback: api.canInteract && api.isAdmin ? {
+                self.showBanSheet(
+                    community: nil,
+                    isBannedFromCommunity: false,
+                    shouldBan: !self.bannedFromInstance
+                )
+            } : nil
         )
     }
 }

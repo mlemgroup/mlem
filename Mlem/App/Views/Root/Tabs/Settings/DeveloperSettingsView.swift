@@ -12,9 +12,11 @@ import SwiftUI
 
 struct DeveloperSettingsView: View {
     @Setting(\.showFeedWelcomePrompt) var showFeedWelcomePrompt
+    @Setting(\.developerMode) var developerMode
     
     var body: some View {
         Form {
+            Toggle(String("Developer Mode"), isOn: $developerMode)
             Button(String("Reset Feed Welcome Prompt")) {
                 showFeedWelcomePrompt = true
             }
