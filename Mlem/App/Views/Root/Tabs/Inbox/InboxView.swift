@@ -131,7 +131,7 @@ struct InboxView: View {
                 .onChange(of: (appState.firstSession as? UserSession)?.unreadCount?.updateId ?? 0) { oldValue, newValue in
                     // The newValue > oldValue check stops the popup from appearing when the user switches accounts.
                     // This is a little janky, but it works
-                    if newValue > oldValue, feedLoader.loadingState == .done {
+                    if newValue > oldValue, feedLoader.loadingState != .loading {
                         showRefreshPopup = true
                     }
                 }
