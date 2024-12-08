@@ -21,6 +21,7 @@ struct DynamicMediaView: View {
     
     @Setting(\.bypassImageProxyShown) var bypassImageProxyShown
     @Setting(\.autoplayMedia) var autoplayMedia
+    @Setting(\.developerMode) var developerMode
     
     @State var loader: MediaLoader
     @State var loadingPref: MediaLoadingState?
@@ -112,9 +113,8 @@ struct DynamicMediaView: View {
                     await loader.load()
                 }
             }
-        #if DEBUG
             .overlay {
-                if let ext = loader.url?.proxyAwarePathExtension?.uppercased() {
+                if developerMode, let ext = loader.url?.proxyAwarePathExtension?.uppercased() {
                     Text(ext)
                         .font(.footnote)
                         .fontWeight(.semibold)
@@ -128,7 +128,6 @@ struct DynamicMediaView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
                 }
             }
-        #endif
     }
     
     @ViewBuilder
