@@ -30,7 +30,7 @@ extension InboxView {
             }
         }
         
-        EndOfFeedView(loadingState: inboxFeedLoader.loadingState, loadMore: nil, viewType: .cartoon)
+        EndOfFeedView(loadingState: feedLoader.loadingState, loadMore: nil, viewType: .cartoon)
     }
     
     @ViewBuilder
