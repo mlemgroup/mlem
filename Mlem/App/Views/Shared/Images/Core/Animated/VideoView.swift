@@ -13,6 +13,8 @@ import AVKit
 struct VideoView: View {
     let player: AVPlayer
     
+    @State var animating: Bool = true
+    
     init(asset: AVAsset) {
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback)
@@ -25,8 +27,14 @@ struct VideoView: View {
     
     var body: some View {
         VideoPlayer(player: player)
-            .onAppear {
-                player.play()
+            .disabled(true)
+            .onChange(of: animating, initial: true) {
+                if animating {
+                    player.play()
+                } else {
+                    player.pause()
+                }
             }
+            .withAnimationControls(animating: $animating)
     }
 }

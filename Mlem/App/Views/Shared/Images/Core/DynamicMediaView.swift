@@ -103,7 +103,7 @@ struct DynamicMediaView: View {
                 }
             }
             .onTapGesture {
-                if viewerEnabled, let url = loader.url, loader.loading == .done, !loader.mediaType.isAnimated {
+                if viewerEnabled, let url = loader.url, loader.loading == .done {
                     showViewer(url: url)
                 }
             }
