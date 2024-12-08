@@ -8,31 +8,6 @@
 import SwiftUI
 
 extension InboxView {
-    
-    @ViewBuilder
-    var allItemsView: some View {
-        ForEach(inboxFeedLoader.items, id: \.actorId) { item in
-            Group {
-                switch item {
-                case let .message(message):
-                    MessageView(message: message)
-                case let .reply(reply):
-                    ReplyView(reply: reply)
-                }
-            }
-            .padding([.horizontal, .bottom], Constants.main.standardSpacing)
-            .onAppear {
-                do {
-                    try inboxFeedLoader.loadIfThreshold(item)
-                } catch {
-                    handleError(error)
-                }
-            }
-        }
-        
-        EndOfFeedView(loadingState: feedLoader.loadingState, loadMore: nil, viewType: .cartoon)
-    }
-    
     @ViewBuilder
     var sectionHeader: some View {
         BubblePicker(

@@ -31,6 +31,7 @@ enum EndOfFeedViewType {
 
 struct EndOfFeedView: View {
     @Environment(Palette.self) var palette
+    @Setting(\.developerMode) var developerMode
     
     let loadingState: LoadingState
     let loadMore: (() -> Void)?
@@ -45,6 +46,12 @@ struct EndOfFeedView: View {
                         loadMore()
                     }
                     .buttonStyle(.bordered)
+                } else {
+                    if developerMode {
+                        Text("IDLE")
+                    } else {
+                        ProgressView()
+                    }
                 }
             case .loading:
                 ProgressView()
