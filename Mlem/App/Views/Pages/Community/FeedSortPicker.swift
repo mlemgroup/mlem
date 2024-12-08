@@ -27,7 +27,7 @@ struct FeedSortPicker: View {
     
     init(feedLoader: CorePostFeedLoader) {
         self.init(sort: .init(get: { feedLoader.sortType }, set: { newSort in
-            Task {
+            Task { @MainActor in
                 do {
                     try await feedLoader.changeSortType(to: newSort, forceRefresh: false)
                 } catch {
@@ -40,20 +40,29 @@ struct FeedSortPicker: View {
     var body: some View {
         let topModes = filterSortModes(ApiSortType.topCases)
         Menu(sort.fullLabel(shortTopMode: topModes.count == 1), systemImage: sort.systemImage) {
-            Picker("Sort", selection: $sort) {
-                itemLabels(filterSortModes(ApiSortType.nonTopCases))
-//                if topModes.count == 1, let first = topModes.first {
-//                    Label("Top", systemImage: Icons.topSort)
-//                        .tag(first)
-//                } else {
-//                    Picker("Top...", systemImage: Icons.topSort, selection: $sort) {
-//                        itemLabels(topModes)
-//                    }
-//                    .pickerStyle(.menu)
-//                }
+            Section("Sort by...") {
+                Toggle(
+                    "Hot",
+                    systemImage: Icons.hotSort,
+                    isOn: .init(get: { sort == .hot }, set: { _ in sort = .hot })
+                )
+                Toggle(
+                    "New",
+                    systemImage: Icons.newSort,
+                    isOn: .init(get: { sort == .new }, set: { _ in sort = .new })
+                )
+                Toggle(
+                    "Top...",
+                    systemImage: Icons.topSort,
+                    isOn: .init(get: { ApiSortType.topCases.contains(sort) }, set: { _ in topSortPopupPresented = true })
+                )
             }
-            Button("Top...", systemImage: Icons.topSort) {
-                topSortPopupPresented = true
+            Section("Filters") {
+                Toggle("Show Read", systemImage: Icons.read, isOn: .constant(true))
+                Toggle("Show Hidden", systemImage: Icons.hide, isOn: .constant(false))
+            }
+            Section {
+                Button("More...", systemImage: Icons.menuCircle) {}
             }
         }
         .disabled(filters.contains(.availableOnInstance) && appState.firstApi.fetchedVersion == nil)
@@ -101,44 +110,67 @@ struct TopSortPicker: View {
     
     var body: some View {
         VStack(spacing: 10) {
-            Text("Choose timeframe...")
+            Text("Choose Timeframe...")
                 .font(.footnote)
                 .foregroundStyle(palette.secondary)
                 .fontWeight(.semibold)
             HStack(spacing: 10) {
-                button(.topHour)
                 button(.topSixHour)
-                button(.topTwelveHour)
-            }
-            HStack(spacing: 10) {
                 button(.topDay)
                 button(.topWeek)
-                button(.topMonth)
-            }
-            if (appState.firstSession.api.fetchedVersion ?? .infinity) >= .v18_1 {
-                HStack(spacing: 10) {
-                    button(.topThreeMonths)
-                    button(.topSixMonths)
-                    button(.topNineMonths)
-                }
             }
             HStack(spacing: 10) {
+                button(.topMonth)
                 button(.topYear)
-                    .frame(width: 54)
-                button(.topAll, label: .init(localized: "All Time"))
+                button(.topAll, label: "All")
             }
+//            HStack(spacing: 10) {
+//                button(.topHour)
+//                button(.topSixHour)
+//                button(.topTwelveHour)
+//            }
+//            HStack(spacing: 10) {
+//                button(.topDay)
+//                button(.topWeek)
+//                button(.topMonth)
+//            }
+//            if (appState.firstSession.api.fetchedVersion ?? .infinity) >= .v18_1 {
+//                HStack(spacing: 10) {
+//                    button(.topThreeMonths)
+//                    button(.topSixMonths)
+//                    button(.topNineMonths)
+//                }
+//            }
+//            HStack(spacing: 10) {
+//                button(.topYear)
+//                    .frame(width: 54)
+//                button(.topAll, label: .init(localized: "All Time"))
+//            }
         }
         .padding(10)
-        .frame(width: 202, height: (appState.firstSession.api.fetchedVersion ?? .infinity) >= .v18_1 ? 230 : 180)
+        .frame(width: 222)
     }
     
     @ViewBuilder
-    func button(_ type: ApiSortType, label: String? = nil) -> some View {
-        Button(label ?? formatter.string(from: type.dateComponents ?? .init()) ?? "") {
+    func button(_ type: ApiSortType, label: String? = nil, systemImage: String? = nil) -> some View {
+        Button {
             selected = type
             dismiss()
+        } label: {
+            if let systemImage {
+                Label {
+                    Text(label ?? "")
+                } icon: {
+                    Image(systemName: systemImage)
+                        .imageScale(.small)
+                        .foregroundStyle(.secondary)
+                }
+            } else {
+                Text(label ?? formatter.string(from: type.dateComponents ?? .init()) ?? "")
+            }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
+        .frame(height: 40)
         .background {
             if colorScheme == .dark {
                 RoundedRectangle(cornerRadius: 8)

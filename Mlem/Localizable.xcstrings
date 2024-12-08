@@ -332,7 +332,7 @@
     "Choose Instance..." : {
 
     },
-    "Choose timeframe..." : {
+    "Choose Timeframe..." : {
 
     },
     "Choose wisely - you cannot change this later." : {
@@ -713,6 +713,9 @@
     "Images are cached on your device for fast reuse. The maximum cache size is around %@." : {
 
     },
+    "Images Only" : {
+
+    },
     "Import Settings" : {
 
     },
@@ -774,6 +777,9 @@
 
     },
     "Keep Place" : {
+
+    },
+    "Keyword Filtering" : {
 
     },
     "Label Style" : {
@@ -1283,6 +1289,9 @@
     "Show Post Creator in Feed" : {
 
     },
+    "Show Read" : {
+
+    },
     "Show Sidebar on App Launch" : {
 
     },
@@ -1336,6 +1345,9 @@
 
     },
     "Sort by: %@" : {
+
+    },
+    "Sort by..." : {
 
     },
     "Sorting" : {
