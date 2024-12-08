@@ -48,7 +48,7 @@ struct EndOfFeedView: View {
                     .buttonStyle(.bordered)
                 } else {
                     if developerMode {
-                        Text("IDLE")
+                        Text(verbatim: "IDLE")
                     } else {
                         ProgressView()
                     }
