@@ -105,6 +105,11 @@ class GuestAccount: Account {
             AccountsTracker.main.saveAccounts(ofType: .guest)
         }
     }
+    
+    func setNickname(_ newValue: String) {
+        storedNickname = newValue.isEmpty ? nil : newValue
+        AccountsTracker.main.saveAccounts(ofType: .guest)
+    }
 }
 
 extension GuestAccount: CacheIdentifiable {
