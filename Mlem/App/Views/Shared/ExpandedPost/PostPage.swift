@@ -63,5 +63,12 @@ struct PostPage: View {
             }
         }
         .background(palette.groupedBackground)
+        .onAppear {
+            if post.isUpgraded, let tracker {
+                Task {
+                    await tracker.load(ensuringPresenceOf: scrollTargetedComment)
+                }
+            }
+        }
     }
 }

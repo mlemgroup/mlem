@@ -50,5 +50,6 @@ struct CommunityListRow<Content2: View>: View {
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu { community.menuActions(navigation: navigation) }
         .quickSwipes(community.swipeActions(behavior: .standard))
+        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
 }

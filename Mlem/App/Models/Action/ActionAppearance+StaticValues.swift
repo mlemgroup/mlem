@@ -62,6 +62,16 @@ extension ActionAppearance {
         )
     }
     
+    static func banFromInstance(isOn: Bool) -> Self {
+        .init(
+            label: isOn ? "Unban" : "Ban",
+            isOn: isOn,
+            isDestructive: !isOn,
+            color: isOn ? Palette.main.positive : Palette.main.negative,
+            icon: isOn ? Icons.unbanFromInstance : Icons.banFromInstance
+        )
+    }
+    
     static func banCreatorFromInstance(isOn: Bool) -> Self {
         .init(
             label: isOn ? "Unban User" : "Ban User",
@@ -199,6 +209,16 @@ extension ActionAppearance {
     static func purge(isInProgress: Bool = false) -> Self {
         .init(
             label: "Purge",
+            isInProgress: isInProgress,
+            isDestructive: true,
+            color: Palette.main.warning,
+            icon: Icons.purge
+        )
+    }
+    
+    static func purgePerson(isInProgress: Bool = false) -> Self {
+        .init(
+            label: "Purge User",
             isInProgress: isInProgress,
             isDestructive: true,
             color: Palette.main.warning,

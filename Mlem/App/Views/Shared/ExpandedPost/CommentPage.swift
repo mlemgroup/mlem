@@ -14,14 +14,16 @@ struct CommentPage: View {
     @Environment(\.dismiss) var dismiss
     
     let comment: AnyComment
+    let initialComments: [Comment2]?
     @State var tracker: CommentTreeTracker?
     let showViewPostButton: Bool
     
     @State var post: Post3?
     
-    init(comment: AnyComment, showViewPostButton: Bool = false) {
+    init(comment: AnyComment, initialComments: [Comment2]?, showViewPostButton: Bool = false) {
         self.comment = comment
         self.showViewPostButton = showViewPostButton
+        self.initialComments = initialComments
         if let comment = comment.wrappedValue as? any Comment {
             self._tracker = .init(wrappedValue: .init(root: .comment(comment, parentCount: 1)))
         } else {
@@ -85,9 +87,14 @@ struct CommentPage: View {
             if let comment = model.wrappedValue as? any Comment {
                 if let tracker {
                     tracker.root = .comment(comment, parentCount: 1)
-                    tracker.loadingState = .idle
                     Task {
-                        await tracker.load()
+                        if let initialComments {
+                            await tracker.insertAdditionalComments(comments: initialComments)
+                            tracker.loadingState = .done
+                        } else {
+                            tracker.loadingState = .idle
+                            await tracker.load()
+                        }
                     }
                 } else {
                     tracker = .init(root: .comment(comment, parentCount: 1))
@@ -103,6 +110,13 @@ struct CommentPage: View {
                     } catch {
                         handleError(error)
                     }
+                }
+            }
+        }
+        .onAppear {
+            if comment.isUpgraded, let tracker {
+                Task {
+                    await tracker.load()
                 }
             }
         }

@@ -20,6 +20,7 @@ struct FormSection<Content: View>: View {
         content
             .frame(maxWidth: .infinity)
             .background(palette.secondaryGroupedBackground)
-            .clipShape(.rect(cornerRadius: 10))
+            .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
+            .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
 }

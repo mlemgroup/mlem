@@ -21,7 +21,7 @@ enum NavigationPage: Hashable {
         communityContext: HashWrapper<any Community1Providing>? = nil,
         navigationNamespace: Namespace.ID? = nil
     )
-    case comment(_ comment: AnyComment, showViewPostButton: Bool)
+    case comment(_ comment: AnyComment, comments: [Comment2]?, showViewPostButton: Bool)
     case community(_ community: AnyCommunity)
     case person(_ person: AnyPerson)
     case instance(_ instance: InstanceHashWrapper)
@@ -74,8 +74,12 @@ enum NavigationPage: Hashable {
         }
     }
     
-    static func comment(_ comment: any CommentStubProviding, showViewPostButton: Bool = true) -> NavigationPage {
-        Self.comment(.init(comment), showViewPostButton: showViewPostButton)
+    static func comment(
+        _ comment: any CommentStubProviding,
+        comments: [Comment2]? = nil,
+        showViewPostButton: Bool = true
+    ) -> NavigationPage {
+        Self.comment(.init(comment), comments: comments, showViewPostButton: showViewPostButton)
     }
     
     static func person(_ person: any PersonStubProviding) -> NavigationPage {
