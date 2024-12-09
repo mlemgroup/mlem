@@ -28,7 +28,7 @@ private struct AnimationControlLayer: ViewModifier {
             }
             .overlay(alignment: .topTrailing) {
                 if let muted {
-                    Image(systemName: muted.wrappedValue ? "speaker.slash.fill" : "speaker.wave.2.fill")
+                    Image(systemName: muted.wrappedValue ? Icons.muted : Icons.unmuted)
                         .resizable()
                         .scaledToFit()
                         .frame(width: 15, height: 15)

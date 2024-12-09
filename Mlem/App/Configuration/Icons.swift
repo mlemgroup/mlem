@@ -280,6 +280,11 @@ enum Icons {
     static let fediseerHesitation: String = "exclamationmark.triangle.fill"
     static let fediseerCensure: String = "exclamationmark.octagon.fill"
     
+    // media
+    static let play: String = "play.fill"
+    static let muted: String = "speaker.slash.fill"
+    static let unmuted: String = "speaker.wave.2.fill"
+    
     // misc
     static let `private`: String = "lock"
     static let email: String = "envelope"
@@ -305,7 +310,6 @@ enum Icons {
     static let imageDetails: String = "doc.badge.ellipsis"
     static let accountSwitchReload: String = "arrow.2.circlepath"
     static let accountSwitchKeepPlace: String = "checkmark.diamond"
-    static let play: String = "play.fill"
 }
 
 // swiftlint:enable type_body_length
