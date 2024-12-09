@@ -33,9 +33,7 @@ private struct AnimationControlLayer: ViewModifier {
                         .scaledToFit()
                         .frame(width: 15, height: 15)
                         .padding(5)
-                        .background {
-                            Circle().foregroundStyle(.ultraThinMaterial)
-                        }
+                        .background(.ultraThinMaterial, in: .circle)
                         .foregroundStyle(.white)
                         .padding([.top, .trailing], 5)
                         .padding([.bottom, .leading], 15)
