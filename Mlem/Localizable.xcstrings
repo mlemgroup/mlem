@@ -1123,6 +1123,9 @@
     "Quote" : {
 
     },
+    "Ranks posts based on the post score and creation time." : {
+
+    },
     "Readouts:" : {
 
     },
@@ -1626,6 +1629,9 @@
 
     },
     "Top" : {
+
+    },
+    "Top of..." : {
 
     },
     "Top: %@" : {

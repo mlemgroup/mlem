@@ -64,7 +64,7 @@ struct FeedSortPicker: View {
             }
             Section {
                 Button("More...", systemImage: Icons.menuCircle) {
-                    navigation.openSheet(.advancedSorting)
+                    navigation.openSheet(.advancedSorting($sort))
                 }
             }
         }

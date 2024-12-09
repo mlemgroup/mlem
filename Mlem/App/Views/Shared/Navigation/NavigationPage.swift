@@ -53,7 +53,7 @@ enum NavigationPage: Hashable {
     case confirmUpload(imageData: Data, imageManager: ImageUploadManager, uploadApi: ApiClient)
     case rulesList(_ model: Profile2HashWrapper, callback: HashWrapper<(String) -> Void>)
     case blockList
-    case advancedSorting
+    case advancedSorting(_ sort: HashWrapper<Binding<ApiSortType>>)
     
     static func post(_ post: any PostStubProviding, scrollTargetedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
         if let scrollTargetedComment {
@@ -243,6 +243,10 @@ enum NavigationPage: Hashable {
     
     static func rulesList(_ model: any Profile2Providing, callback: @escaping (String) -> Void) -> NavigationPage {
         rulesList(.init(wrappedValue: model), callback: .init(wrappedValue: callback))
+    }
+    
+    static func advancedSorting(_ sort: Binding<ApiSortType>) -> NavigationPage {
+        advancedSorting(.init(wrappedValue: sort))
     }
     
     var hasNavigationStack: Bool {

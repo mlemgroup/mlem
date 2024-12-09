@@ -105,4 +105,13 @@ extension ApiSortType {
         default: nil
         }
     }
+    
+    var explanation: LocalizedStringResource? {
+        switch self {
+        case .hot: "Ranks posts based on the post score and creation time."
+        case .scaled: "Similar to \"Hot\", but ranks posts from smaller communities higher."
+        case .active: "Ranks posts based on the post score and the time since the last comment was created."
+        default: nil
+        }
+    }
 }
