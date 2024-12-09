@@ -11,28 +11,39 @@ import SwiftUI
 import AVKit
 
 struct VideoView: View {
-    let player: AVPlayer
+    let player: AVQueuePlayer
+    let playerLooper: AVPlayerLooper
     
-    @State var animating: Bool = true
-    @State var soundOn: Bool
+    @State var animating: Bool = false
+    @State var muted: Bool
+    @State var audioAvailable: Bool = false
     
     init(asset: AVAsset) {
-        do {
-            try AVAudioSession.sharedInstance().setCategory(.playback)
-        } catch {
-            print(error)
-        }
-        player = .init(playerItem: .init(asset: asset))
+        // set up AVQueuePlayer and AVPlayerLooper to loop the video
+        let playerItem: AVPlayerItem = .init(asset: asset)
+        player = .init(playerItem: playerItem)
+        playerLooper = .init(player: player, templateItem: playerItem)
         
-        player.isMuted = false
-        self._soundOn = .init(wrappedValue: true)
-        
-        player.play()
+        // set initial audio state to user preference
+        @Setting(\.muteVideos) var muteVideos
+        player.isMuted = muteVideos
+        self._muted = .init(wrappedValue: muteVideos)
     }
     
     var body: some View {
         VideoPlayer(player: player)
             .disabled(true)
+            .task {
+                // parse whether the video has audio or not before playing so we can appropriately display audio controls
+                do {
+                    audioAvailable = try await player.isAudioAvailable() ?? false
+                } catch {
+                    handleError(error)
+                }
+                
+                // if parse fails, assume no audio and play anyway
+                animating = true
+            }
             .onChange(of: animating, initial: false) {
                 if animating {
                     player.play()
@@ -40,9 +51,9 @@ struct VideoView: View {
                     player.pause()
                 }
             }
-            .onChange(of: soundOn, initial: false) {
-                player.isMuted = !soundOn
+            .onChange(of: muted, initial: false) {
+                player.isMuted = muted
             }
-            .withAnimationControls(animating: $animating, soundOn: $soundOn)
+            .withAnimationControls(animating: $animating, muted: audioAvailable ? $muted : nil)
     }
 }

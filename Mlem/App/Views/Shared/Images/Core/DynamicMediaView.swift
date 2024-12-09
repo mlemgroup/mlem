@@ -31,7 +31,6 @@ struct DynamicMediaView: View {
     let showError: Bool
     let cornerRadius: CGFloat
     let actionsEnabled: Bool
-    let viewerEnabled: Bool
     
     init(
         url: URL?,
@@ -39,13 +38,11 @@ struct DynamicMediaView: View {
         showError: Bool = true,
         cornerRadius: CGFloat = Constants.main.mediumItemCornerRadius,
         actionsEnabled: Bool = true,
-        viewerEnabled: Bool = false,
         playImmediately: Bool = false
     ) {
         self.showError = showError
         self.cornerRadius = cornerRadius
         self.actionsEnabled = actionsEnabled
-        self.viewerEnabled = viewerEnabled
         self._loader = .init(wrappedValue: .init(url: url))
         self._playing = .init(wrappedValue: playImmediately)
     }
@@ -101,12 +98,6 @@ struct DynamicMediaView: View {
                                 playing = true
                             }
                     }
-                }
-            }
-            .onTapGesture {
-                if viewerEnabled, let url = loader.url, loader.loading == .done {
-                    playing = false
-                    showViewer(url: url)
                 }
             }
             .clipShape(.rect(cornerRadius: cornerRadius))

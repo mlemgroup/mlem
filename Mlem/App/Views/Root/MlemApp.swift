@@ -8,6 +8,7 @@
 import Nuke
 import SDWebImageWebPCoder
 import SwiftUI
+import AVFAudio
 
 /// Root view for the app
 @main
@@ -28,7 +29,15 @@ struct MlemApp: App {
         ImageDecoderRegistry.shared.register(NukeWebpBridgeDecoder.init)
         SDImageCodersManager.shared.addCoder(SDImageWebPCoder.shared)
         
+        // caching
         URLCache.shared = Constants.main.urlCache
+        
+        // set up audio
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback)
+        } catch {
+            handleError(error)
+        }
     }
     
     var body: some Scene {
