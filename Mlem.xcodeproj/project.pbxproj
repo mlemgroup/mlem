@@ -195,9 +195,9 @@
 		03AB48552CBC0B8000567FF9 /* AccountAdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AB48542CBC0B8000567FF9 /* AccountAdvancedSettingsView.swift */; };
 		03AB48572CBC0DFC00567FF9 /* AccountSignInSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AB48562CBC0DFC00567FF9 /* AccountSignInSettingsView.swift */; };
 		03AB48592CBC14CE00567FF9 /* AccountEmailSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AB48582CBC14CE00567FF9 /* AccountEmailSettingsView.swift */; };
+		03AD09E82CF88007001EF9F7 /* MoreRepliesButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AD09E72CF88007001EF9F7 /* MoreRepliesButton.swift */; };
 		03AD0A822CFDBFA0001EF9F7 /* AccountLocalSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AD0A812CFDBFA0001EF9F7 /* AccountLocalSettingsView.swift */; };
 		03AD0A842CFDC557001EF9F7 /* AccountNicknameFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AD0A832CFDC557001EF9F7 /* AccountNicknameFieldView.swift */; };
-		03AD09E82CF88007001EF9F7 /* MoreRepliesButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AD09E72CF88007001EF9F7 /* MoreRepliesButton.swift */; };
 		03AF91DD2C1B23E500E56644 /* ImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AF91DC2C1B23E500E56644 /* ImageViewer.swift */; };
 		03AF91DF2C1B243D00E56644 /* ZoomableContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AF91DE2C1B243D00E56644 /* ZoomableContainer.swift */; };
 		03AF91E12C1B25DE00E56644 /* UIDevice+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AF91E02C1B25DE00E56644 /* UIDevice+Extensions.swift */; };
@@ -614,9 +614,9 @@
 		03AB48542CBC0B8000567FF9 /* AccountAdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAdvancedSettingsView.swift; sourceTree = "<group>"; };
 		03AB48562CBC0DFC00567FF9 /* AccountSignInSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSignInSettingsView.swift; sourceTree = "<group>"; };
 		03AB48582CBC14CE00567FF9 /* AccountEmailSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountEmailSettingsView.swift; sourceTree = "<group>"; };
+		03AD09E72CF88007001EF9F7 /* MoreRepliesButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreRepliesButton.swift; sourceTree = "<group>"; };
 		03AD0A812CFDBFA0001EF9F7 /* AccountLocalSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountLocalSettingsView.swift; sourceTree = "<group>"; };
 		03AD0A832CFDC557001EF9F7 /* AccountNicknameFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNicknameFieldView.swift; sourceTree = "<group>"; };
-		03AD09E72CF88007001EF9F7 /* MoreRepliesButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreRepliesButton.swift; sourceTree = "<group>"; };
 		03AF91DC2C1B23E500E56644 /* ImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewer.swift; sourceTree = "<group>"; };
 		03AF91DE2C1B243D00E56644 /* ZoomableContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableContainer.swift; sourceTree = "<group>"; };
 		03AF91E02C1B25DE00E56644 /* UIDevice+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extensions.swift"; sourceTree = "<group>"; };
@@ -2927,7 +2927,7 @@
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.51.0;
+				minimumVersion = 0.52.0;
 			};
 		};
 		CDE4AC402CA3706400981010 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
@@ -2944,14 +2944,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.14.6;
-			};
-		};
-		CDFA5CAE2CEAB8AF00FDF998 /* XCRemoteSwiftPackageReference "MlemMiddleware" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
-			requirement = {
-				branch = "sjmarf/profile-settings";
-				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
