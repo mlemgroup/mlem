@@ -200,7 +200,7 @@ private struct CircleImageUploadButton: View {
                 Button {
                     url = nil
                 } label: {
-                    Image(systemName: "xmark.circle.fill")
+                    Image(systemName: Icons.closeCircleFill)
                         .resizable()
                 }
             } else {
@@ -210,7 +210,7 @@ private struct CircleImageUploadButton: View {
                         .controlSize(.extraLarge)
                 default:
                     ImageUploadMenu(imageManager: imageManager, imageUploadApi: api) {
-                        Image(systemName: "plus.circle.fill")
+                        Image(systemName: Icons.addCircleFill)
                             .resizable()
                     }
                 }

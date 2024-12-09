@@ -201,6 +201,7 @@ enum Icons {
     static let close: String = "multiply"
     static let closeCircle: String = "xmark.circle"
     static let closeCircleFill: String = "xmark.circle.fill"
+    static let addCircleFill: String = "plus.circle.fill"
     static let cakeDay: String = "birthday.cake"
     static let cakeDayFill: String = "birthday.cake.fill"
     static let undoCircleFill: String = "arrow.uturn.backward.circle.fill"
@@ -246,6 +247,7 @@ enum Icons {
     static let refresh: String = "arrow.clockwise"
     static let select: String = "selection.pin.in.out"
     static let crossPost: String = "shuffle"
+    static let chooseFile: String = "folder"
     
     // settings
     static let upvoteOnSave: String = "arrow.up.heart"

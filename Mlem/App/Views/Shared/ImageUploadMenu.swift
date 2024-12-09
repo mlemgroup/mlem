@@ -26,7 +26,7 @@ struct ImageUploadMenu<Label: View>: View {
             Button("Photo Library", systemImage: Icons.photo) {
                 navigation.showPhotosPicker(for: imageManager, api: imageUploadApi)
             }
-            Button("Choose File", systemImage: "folder") {
+            Button("Choose File", systemImage: Icons.chooseFile) {
                 navigation.showFilePicker(for: imageManager, api: imageUploadApi)
             }
             Button("Paste", systemImage: Icons.paste) {
