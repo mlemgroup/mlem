@@ -178,15 +178,6 @@ struct DynamicMediaView: View {
         }
     }
     
-    func showViewer(url: URL) {
-        // Sheets don't cover the whole screen on iPad, so use a fullScreenCover instead
-        if UIDevice.isPad {
-            navigation.showFullScreenCover(.imageViewer(url))
-        } else {
-            navigation.openSheet(.imageViewer(url))
-        }
-    }
-    
     func showQuickLook(url: URL) async {
         if let fileUrl = await downloadImageToFileSystem(url: url) {
             quickLookUrl = fileUrl

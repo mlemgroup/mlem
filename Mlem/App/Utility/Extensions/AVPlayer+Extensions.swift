@@ -10,14 +10,6 @@ import AVFoundation
 
 extension AVPlayer {
     func isAudioAvailable() async throws -> Bool? {
-        let result = try await self.currentItem?.asset.loadTracks(withMediaType: .audio).count != 0
-        print("DEBUG \(result)")
-        return result
-        // print("DEBUG \(self.currentItem?.tracks)")
-        // return self.currentItem?.tracks.filter({$0.assetTrack!.mediaType == AVMediaType.audio}).count != 0
-    }
-
-    var isVideoAvailable: Bool? {
-        return self.currentItem?.tracks.filter({$0.assetTrack!.mediaType == AVMediaType.video}).count != 0
+        return try await self.currentItem?.asset.loadTracks(withMediaType: .audio).count != 0
     }
 }
