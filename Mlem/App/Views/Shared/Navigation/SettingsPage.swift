@@ -11,7 +11,7 @@ import SwiftUI
 enum SettingsPage: Hashable {
     case root
     case accounts, account
-    case accountGeneral, accountAdvanced, accountSignIn, accountChangeEmail, accountLocal
+    case profile, accountGeneral, accountAdvanced, accountSignIn, accountChangeEmail, accountLocal
     case general, links, sorting
     case importExportSettings
     case theme, icon
@@ -29,6 +29,12 @@ enum SettingsPage: Hashable {
             SettingsView()
         case .account:
             AccountSettingsView()
+        case .profile:
+            if let person = AppState.main.firstPerson {
+                ProfileSettingsView(person: person)
+            } else {
+                Text(verbatim: "Error: No active user account")
+            }
         case .accountGeneral:
             AccountGeneralSettingsView()
         case .accountSignIn:

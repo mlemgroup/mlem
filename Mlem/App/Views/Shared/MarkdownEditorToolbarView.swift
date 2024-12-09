@@ -120,18 +120,9 @@ struct MarkdownEditorToolbarView: View {
                         textView.toggleQuoteAtCursor()
                     }
                     if let imageUploadApi {
-                        Menu("Image", systemImage: Icons.uploadImage) {
-                            Button("Photo Library", systemImage: Icons.photo) {
-                                navigation.showPhotosPicker(for: imageManager, api: imageUploadApi)
-                            }
-                            Button("Choose File", systemImage: "folder") {
-                                navigation.showFilePicker(for: imageManager, api: imageUploadApi)
-                            }
-                            Button("Paste", systemImage: Icons.paste) {
-                                navigation.uploadImageFromClipboard(for: imageManager, api: imageUploadApi)
-                            }
+                        ImageUploadMenu(imageManager: imageManager, imageUploadApi: imageUploadApi) {
+                            Label("Image", systemImage: Icons.uploadImage)
                         }
-                        .disabled(imageManager.state != .idle)
                     }
                     Button("Spoiler", systemImage: Icons.spoiler) {
                         textView.wrapSelectionWithSpoiler()
