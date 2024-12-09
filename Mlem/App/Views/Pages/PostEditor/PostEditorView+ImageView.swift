@@ -91,7 +91,7 @@ extension PostEditorView {
                     guard let imageManager else { return }
                     navigation.showPhotosPicker(for: imageManager, api: primaryApi)
                 }
-                Button("Files", systemImage: "folder") {
+                Button("Files", systemImage: Icons.chooseFile) {
                     guard let imageManager else { return }
                     navigation.showFilePicker(for: imageManager, api: primaryApi)
                 }

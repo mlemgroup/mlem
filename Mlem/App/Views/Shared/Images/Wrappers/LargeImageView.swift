@@ -17,22 +17,29 @@ struct LargeImageView: View {
 
     let url: URL?
     let shouldBlur: Bool
-    var onTapActions: (() -> Void)?
+    let onTapActions: (() -> Void)?
+    let cornerRadius: CGFloat
     @State var blurred: Bool = false
     
-    init(url: URL?, shouldBlur: Bool, onTapActions: (() -> Void)? = nil) {
+    init(
+        url: URL?,
+        shouldBlur: Bool,
+        cornerRadius: CGFloat = Constants.main.mediumItemCornerRadius,
+        onTapActions: (() -> Void)? = nil
+    ) {
         self.url = url
         self.onTapActions = onTapActions
         self.shouldBlur = shouldBlur
+        self.cornerRadius = cornerRadius
         self._blurred = .init(wrappedValue: shouldBlur)
     }
     
     @State private var loading: MediaLoadingState?
 
     var body: some View {
-        DynamicMediaView(url: url)
+        DynamicMediaView(url: url, cornerRadius: cornerRadius)
             .dynamicBlur(blurred: blurred)
-            .clipShape(.rect(cornerRadius: Constants.main.mediumItemCornerRadius))
+            .clipShape(.rect(cornerRadius: cornerRadius))
             .overlay {
                 NsfwOverlay(blurred: $blurred, shouldBlur: shouldBlur)
             }

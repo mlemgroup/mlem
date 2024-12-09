@@ -233,6 +233,9 @@
     "Autoplay Media" : {
 
     },
+    "Avatar" : {
+
+    },
     "Average: %@" : {
 
     },
@@ -257,7 +260,13 @@
     "Banned from Instance" : {
 
     },
+    "Banner" : {
+
+    },
     "Behavior" : {
+
+    },
+    "Biography" : {
 
     },
     "Block" : {
@@ -501,6 +510,9 @@
 
     },
     "Dismiss" : {
+
+    },
+    "Display Name" : {
 
     },
     "Divider" : {
@@ -923,6 +935,9 @@
 
     },
     "Most Comments" : {
+
+    },
+    "My Profile" : {
 
     },
     "Never" : {
@@ -1475,6 +1490,9 @@
         }
       }
     },
+    "The name that is displayed on your profile. This is not the same as your username, which cannot be changed." : {
+
+    },
     "The name shown in the account switcher." : {
 
     },
@@ -1784,6 +1802,9 @@
 
     },
     "Wrap Code Block Lines" : {
+
+    },
+    "Write a bit about yourself..." : {
 
     },
     "Year" : {
