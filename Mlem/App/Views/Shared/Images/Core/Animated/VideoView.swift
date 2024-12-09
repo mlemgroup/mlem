@@ -14,6 +14,7 @@ struct VideoView: View {
     let player: AVPlayer
     
     @State var animating: Bool = true
+    @State var soundOn: Bool
     
     init(asset: AVAsset) {
         do {
@@ -22,19 +23,26 @@ struct VideoView: View {
             print(error)
         }
         player = .init(playerItem: .init(asset: asset))
-        player.isMuted = true
+        
+        player.isMuted = false
+        self._soundOn = .init(wrappedValue: true)
+        
+        player.play()
     }
     
     var body: some View {
         VideoPlayer(player: player)
             .disabled(true)
-            .onChange(of: animating, initial: true) {
+            .onChange(of: animating, initial: false) {
                 if animating {
                     player.play()
                 } else {
                     player.pause()
                 }
             }
-            .withAnimationControls(animating: $animating)
+            .onChange(of: soundOn, initial: false) {
+                player.isMuted = !soundOn
+            }
+            .withAnimationControls(animating: $animating, soundOn: $soundOn)
     }
 }

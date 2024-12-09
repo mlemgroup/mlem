@@ -21,6 +21,7 @@ struct DynamicMediaView: View {
     
     @Setting(\.bypassImageProxyShown) var bypassImageProxyShown
     @Setting(\.autoplayMedia) var autoplayMedia
+    @Setting(\.developerMode) var developerMode
     
     @State var loader: MediaLoader
     @State var loadingPref: MediaLoadingState?
@@ -104,6 +105,7 @@ struct DynamicMediaView: View {
             }
             .onTapGesture {
                 if viewerEnabled, let url = loader.url, loader.loading == .done {
+                    playing = false
                     showViewer(url: url)
                 }
             }
@@ -115,12 +117,8 @@ struct DynamicMediaView: View {
                     await loader.load()
                 }
             }
-            .onDisappear {
-                playing = false
-            }
-        #if DEBUG
             .overlay {
-                if let ext = loader.url?.proxyAwarePathExtension?.uppercased() {
+                if developerMode, let ext = loader.url?.proxyAwarePathExtension?.uppercased() {
                     Text(ext)
                         .font(.footnote)
                         .fontWeight(.semibold)
@@ -134,7 +132,6 @@ struct DynamicMediaView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
                 }
             }
-        #endif
     }
     
     @ViewBuilder
@@ -185,7 +182,7 @@ struct DynamicMediaView: View {
     }
     
     func shareImage(url: URL) async {
-        if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "image") {
+        if let fileUrl = await downloadImageToFileSystem(url: url) {
             navigation.shareInfo = .init(url: fileUrl)
         }
     }
@@ -200,7 +197,7 @@ struct DynamicMediaView: View {
     }
     
     func showQuickLook(url: URL) async {
-        if let fileUrl = await downloadImageToFileSystem(url: url, fileName: "quicklook") {
+        if let fileUrl = await downloadImageToFileSystem(url: url) {
             quickLookUrl = fileUrl
         }
     }

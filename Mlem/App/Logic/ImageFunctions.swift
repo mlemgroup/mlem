@@ -34,26 +34,28 @@ func fullSizeUrl(url: URL?) -> URL? {
 }
 
 /// Downloads the image at the given URL to the file system, returning the path to the downloaded image
-func downloadImageToFileSystem(url: URL, fileName: String) async -> URL? {
+func downloadImageToFileSystem(url: URL) async -> URL? {
     do {
         let (data, _) = try await ImagePipeline.shared.data(for: .init(url: url))
-        var fileType = url.pathExtension
+        var fileName: String
         
         // image proxies that use url query param don't have pathExtension so we extract it from the embedded url
-        if fileType.isEmpty,
+        if url.pathExtension.isEmpty,
            let components = URLComponents(url: url, resolvingAgainstBaseURL: true),
            let queryItems = components.queryItems,
            let baseUrlString = queryItems.first(where: { $0.name == "url" })?.value,
            let baseUrl = URL(string: baseUrlString) {
-            fileType = baseUrl.pathExtension
+            fileName = baseUrl.lastPathComponent
+        } else {
+            fileName = url.lastPathComponent
         }
         
-        if fileType.isEmpty {
-            assertionFailure("Empty fileType!")
+        if fileName.isEmpty {
+            assertionFailure("Empty fileName!")
             return nil
         }
         
-        let fileUrl = FileManager.default.temporaryDirectory.appending(path: "\(fileName).\(fileType)")
+        let fileUrl = FileManager.default.temporaryDirectory.appending(path: fileName)
         if FileManager.default.fileExists(atPath: fileUrl.absoluteString) {
             try FileManager.default.removeItem(at: fileUrl)
         }
