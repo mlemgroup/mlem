@@ -10,21 +10,40 @@ import NukeVideo
 import SwiftUI
 import AVKit
 
+// class PlayerManager: NSObject {
+//    override func observeValue(
+//        forKeyPath keyPath: String?,
+//        of object: Any?,
+//        change: [NSKeyValueChangeKey : Any]?,
+//        context: UnsafeMutableRawPointer?) {
+//        if keyPath == "currentItem", let player = object as? AVPlayer, let currentItem = player.currentItem {
+//            print("DEBUG howdy \(player.isMuted)")
+//        }
+//    }
+// }
+
 struct VideoView: View {
     let player: AVQueuePlayer
     let playerLooper: AVPlayerLooper
     
+    /// Controls the video's animation (true for playing). Defaults to false; video is automatically started once audio is resolved
     @State var animating: Bool = false
+    
+    /// Controls the video's audio state (true for muted).
     @State var muted: Bool
+    
+    /// Whether the video has an audio track. Set post-appearance since this is asynchronously computed.
     @State var audioAvailable: Bool = false
+    
+    /// Observer to track external modifications to the `isMuted` status of the player.
+    @State var observer: NSKeyValueObservation?
     
     init(asset: AVAsset) {
         // set up AVQueuePlayer and AVPlayerLooper to loop the video
         let playerItem: AVPlayerItem = .init(asset: asset)
         player = .init(playerItem: playerItem)
         playerLooper = .init(player: player, templateItem: playerItem)
-        
-        // set initial audio state to user preference
+
         @Setting(\.muteVideos) var muteVideos
         player.isMuted = muteVideos
         self._muted = .init(wrappedValue: muteVideos)
@@ -33,6 +52,14 @@ struct VideoView: View {
     var body: some View {
         VideoPlayer(player: player)
             .disabled(true)
+            .onAppear {
+                // audio is automatically turned on if the user modifies their volume. This listens to that event and updates muted to match.
+                observer = player.observe(\.isMuted, options: [.new]) { _, value in
+                    if let newValue = value.newValue, newValue != muted {
+                        muted = newValue
+                    }
+                }
+            }
             .task {
                 // parse whether the video has audio or not before playing so we can appropriately display audio controls
                 do {
@@ -52,7 +79,9 @@ struct VideoView: View {
                 }
             }
             .onChange(of: muted, initial: false) {
-                player.isMuted = muted
+                if player.isMuted != muted {
+                    player.isMuted = muted
+                }
             }
             .withAnimationControls(animating: $animating, muted: audioAvailable ? $muted : nil)
     }
