@@ -10,18 +10,6 @@ import NukeVideo
 import SwiftUI
 import AVKit
 
-// class PlayerManager: NSObject {
-//    override func observeValue(
-//        forKeyPath keyPath: String?,
-//        of object: Any?,
-//        change: [NSKeyValueChangeKey : Any]?,
-//        context: UnsafeMutableRawPointer?) {
-//        if keyPath == "currentItem", let player = object as? AVPlayer, let currentItem = player.currentItem {
-//            print("DEBUG howdy \(player.isMuted)")
-//        }
-//    }
-// }
-
 struct VideoView: View {
     let player: AVQueuePlayer
     let playerLooper: AVPlayerLooper
@@ -37,6 +25,9 @@ struct VideoView: View {
     
     /// Observer to track external modifications to the `isMuted` status of the player.
     @State var observer: NSKeyValueObservation?
+
+    /// Whether this is the first time this view has appeared
+    @State var isFirstAppearance: Bool = true
     
     init(asset: AVAsset) {
         // set up AVQueuePlayer and AVPlayerLooper to loop the video
@@ -52,7 +43,12 @@ struct VideoView: View {
     var body: some View {
         VideoPlayer(player: player)
             .disabled(true)
+            .onDisappear {
+                observer = nil
+            }
             .onAppear {
+                guard observer == nil else { return }
+                
                 // audio is automatically turned on if the user modifies their volume. This listens to that event and updates muted to match.
                 observer = player.observe(\.isMuted, options: [.new]) { _, value in
                     if let newValue = value.newValue, newValue != muted {
@@ -69,7 +65,10 @@ struct VideoView: View {
                 }
                 
                 // if parse fails, assume no audio and play anyway
-                animating = true
+                if isFirstAppearance {
+                    animating = true
+                    isFirstAppearance = false
+                }
             }
             .onChange(of: animating, initial: false) {
                 if animating {
