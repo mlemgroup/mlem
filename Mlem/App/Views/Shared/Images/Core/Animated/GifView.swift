@@ -10,20 +10,19 @@ import SwiftUI
 
 struct GifView: View {
     let data: Data
+    @State var animating: Bool = true
     
     var body: some View {
-        UIGifView(data: data)
-            .allowsHitTesting(false)
-            .overlay {
-                Color.clear.contentShape(.rect)
-            }
+        UIGifView(data: data, animating: animating)
+            .withAnimationControls(animating: $animating)
     }
 }
 
 private struct UIGifView: UIViewRepresentable {
     let data: Data
+    let animating: Bool
     
-    func makeUIView(context: Context) -> some UIView {
+    func makeUIView(context: Context) -> GIFImageView {
         let imageView = GIFImageView()
         imageView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
@@ -31,7 +30,11 @@ private struct UIGifView: UIViewRepresentable {
         return imageView
     }
     
-    func updateUIView(_ uiView: UIViewType, context: Context) {
-        // noop
+    func updateUIView(_ uiView: GIFImageView, context: Context) {
+        if animating {
+            uiView.startAnimatingGIF()
+        } else {
+            uiView.stopAnimatingGIF()
+        }
     }
 }

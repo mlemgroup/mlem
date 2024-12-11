@@ -331,6 +331,8 @@
 		CD4ED8472BF110FA00EFA0A2 /* TabReselectTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED8462BF110FA00EFA0A2 /* TabReselectTracker.swift */; };
 		CD4ED84A2BF1113800EFA0A2 /* View+TabReselectConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */; };
 		CD5581DE2C7B8B820043FAC3 /* ImageFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5581DD2C7B8B820043FAC3 /* ImageFunctions.swift */; };
+		CD57AFA32D03761500AB3956 /* WebpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57AFA22D03761300AB3956 /* WebpView.swift */; };
+		CD57AFA52D0377EB00AB3956 /* AnimationControlLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57AFA42D0377E400AB3956 /* AnimationControlLayer.swift */; };
 		CD5F3F452D06167F008C55D5 /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CD5F3F442D06167F008C55D5 /* MlemMiddleware */; };
 		CD635E1B2C94DACD00864F75 /* BypassProxyWarningSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD635E1A2C94DACD00864F75 /* BypassProxyWarningSheet.swift */; };
 		CD64A91A2CA37E8D007CA7E6 /* Gifu in Frameworks */ = {isa = PBXBuildFile; productRef = CD64A9192CA37E8D007CA7E6 /* Gifu */; };
@@ -347,6 +349,7 @@
 		CD7DB9712C49C17200DCC542 /* PersonContentGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */; };
 		CD7DB9732C4AEDDE00DCC542 /* TileCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */; };
 		CD7DB9762C4D6C0A00DCC542 /* FeedCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9752C4D6C0A00DCC542 /* FeedCommentView.swift */; };
+		CD8457142D07576A00CEA2B8 /* AVPlayer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8457132D07576700CEA2B8 /* AVPlayer+Extensions.swift */; };
 		CD869FCC2C15F8AC00FC8B5B /* BubblePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD869FCB2C15F8AC00FC8B5B /* BubblePickerView.swift */; };
 		CD869FCE2C15F90C00FC8B5B /* ChildSizeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD869FCD2C15F90C00FC8B5B /* ChildSizeReader.swift */; };
 		CD8DCAF92C5E92E8003E4DD7 /* Profile1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8DCAF82C5E92E8003E4DD7 /* Profile1Providing+Extensions.swift */; };
@@ -747,6 +750,8 @@
 		CD4ED8462BF110FA00EFA0A2 /* TabReselectTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabReselectTracker.swift; sourceTree = "<group>"; };
 		CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+TabReselectConsumer.swift"; sourceTree = "<group>"; };
 		CD5581DD2C7B8B820043FAC3 /* ImageFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFunctions.swift; sourceTree = "<group>"; };
+		CD57AFA22D03761300AB3956 /* WebpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebpView.swift; sourceTree = "<group>"; };
+		CD57AFA42D0377E400AB3956 /* AnimationControlLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationControlLayer.swift; sourceTree = "<group>"; };
 		CD635E1A2C94DACD00864F75 /* BypassProxyWarningSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BypassProxyWarningSheet.swift; sourceTree = "<group>"; };
 		CD64A91B2CA38DA7007CA7E6 /* NukeWebpBridgeDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NukeWebpBridgeDecoder.swift; sourceTree = "<group>"; };
 		CD64A91D2CA6255A007CA7E6 /* MediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaView.swift; sourceTree = "<group>"; };
@@ -761,6 +766,7 @@
 		CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonContentGridView.swift; sourceTree = "<group>"; };
 		CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileCommentView.swift; sourceTree = "<group>"; };
 		CD7DB9752C4D6C0A00DCC542 /* FeedCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCommentView.swift; sourceTree = "<group>"; };
+		CD8457132D07576700CEA2B8 /* AVPlayer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVPlayer+Extensions.swift"; sourceTree = "<group>"; };
 		CD869FCB2C15F8AC00FC8B5B /* BubblePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubblePickerView.swift; sourceTree = "<group>"; };
 		CD869FCD2C15F90C00FC8B5B /* ChildSizeReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildSizeReader.swift; sourceTree = "<group>"; };
 		CD869FCF2C15F92E00FC8B5B /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
@@ -1341,6 +1347,7 @@
 		CD13CC662C5D3CA7001AF428 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				CD57AFA42D0377E400AB3956 /* AnimationControlLayer.swift */,
 				CD332D782CA7175200A53988 /* PlayButton.swift */,
 				CD64A91B2CA38DA7007CA7E6 /* NukeWebpBridgeDecoder.swift */,
 				CD13CC602C5D262E001AF428 /* MediaLoadingState.swift */,
@@ -1409,6 +1416,7 @@
 		CD332D7A2CA71E5D00A53988 /* Animated */ = {
 			isa = PBXGroup;
 			children = (
+				CD57AFA22D03761300AB3956 /* WebpView.swift */,
 				CD332D7B2CA71E6E00A53988 /* GifView.swift */,
 				CDE4AC3E2CA2082F00981010 /* VideoView.swift */,
 			);
@@ -1558,6 +1566,7 @@
 		CD4D58C22B86DC5800B82964 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				CD8457132D07576700CEA2B8 /* AVPlayer+Extensions.swift */,
 				CD332D7D2CA7485D00A53988 /* String+Extensions.swift */,
 				0397D47F2C693A88002C6CDC /* [BlockNode]+Extensions.swift */,
 				03A82FA02C0D1E8500D01A5C /* ApiClient+Extensions.swift */,
@@ -2317,6 +2326,7 @@
 				CDCA44B42C176A4700C092B3 /* Array+Extensions.swift in Sources */,
 				03CCDAA42BF2852E00C0C851 /* LoginTotpView.swift in Sources */,
 				CD4ED8472BF110FA00EFA0A2 /* TabReselectTracker.swift in Sources */,
+				CD8457142D07576A00CEA2B8 /* AVPlayer+Extensions.swift in Sources */,
 				033FCAEE2C57DD14007B7CD1 /* CaptchaDifficulty+Extensions.swift in Sources */,
 				035BE0912BDEA01E00F77D73 /* View+NavigationSheetModifiers.swift in Sources */,
 				CDAA02DB2C810DB200D75633 /* Calendar+Extensions.swift in Sources */,
@@ -2334,6 +2344,7 @@
 				CD8DCAF92C5E92E8003E4DD7 /* Profile1Providing+Extensions.swift in Sources */,
 				CDB2EC8A2BFAEFDF00DBC0EF /* ThumbnailImageView.swift in Sources */,
 				0397D4932C6CE87E002C6CDC /* PostEditorTargetView.swift in Sources */,
+				CD57AFA32D03761500AB3956 /* WebpView.swift in Sources */,
 				0369B3562BFA6824001EFEDF /* InboxView.swift in Sources */,
 				CD4D59162B87B38C00B82964 /* UIApplication+Extensions.swift in Sources */,
 				CDB41E8A2C83C24400BD2DE9 /* Section.swift in Sources */,
@@ -2385,6 +2396,7 @@
 				CDC199EA2BE449790077B4F1 /* Interactable1Providing+Extensions.swift in Sources */,
 				03500C2B2BF7F1B100CAA076 /* ToastOverlayView.swift in Sources */,
 				032C32042C3439C600595286 /* ActorIdentifiable+Extensions.swift in Sources */,
+				CD57AFA52D0377EB00AB3956 /* AnimationControlLayer.swift in Sources */,
 				CD4D59182B87B3B000B82964 /* UIViewController+Extensions.swift in Sources */,
 				CD13CC572C582DD8001AF428 /* DynamicMediaView.swift in Sources */,
 				034B94812C09306D00039AF4 /* CommunityOrPersonStub+Extensions.swift in Sources */,
