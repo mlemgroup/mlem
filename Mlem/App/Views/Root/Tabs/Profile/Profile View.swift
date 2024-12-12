@@ -17,6 +17,13 @@ struct ProfileView: View {
     var body: some View {
         if let person = appState.firstPerson {
             PersonView(person: .init(person), isProfileTab: true)
+                .toolbar {
+                    ToolbarItem(placement: .secondaryAction) {
+                        Button("Edit", systemImage: Icons.edit) {
+                            navigation.openSheet(.settings(.profile))
+                        }
+                    }
+                }
                 .id(person.actorId)
         } else if let instance = appState.firstSession.instance {
             InstanceView(instance: instance)

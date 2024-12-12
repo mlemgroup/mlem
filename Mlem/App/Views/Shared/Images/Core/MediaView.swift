@@ -19,7 +19,6 @@ struct MediaView: View {
             image
                 .overlay {
                     // overlay to prevent visual hitch when swapping views and to implicitly preserve frame/cropping
-                    // TODO: tap should play/pause
                     if playing {
                         animatedContent
                             .background {
@@ -46,8 +45,7 @@ struct MediaView: View {
         case let .gif(_, animated):
             GifView(data: animated)
         case let .webp(_, animated):
-            AnimatedImage(data: animated)
-                .resizable()
+            WebpView(data: animated)
         default:
             EmptyView()
         }

@@ -48,10 +48,16 @@ struct DynamicMediaView: View {
     }
     
     var body: some View {
-        if #available(iOS 18.0, *) {
-            ios18Body()
-        } else {
-            legacyBody
+        Group {
+            if #available(iOS 18.0, *) {
+                ios18Body()
+            } else {
+                legacyBody
+            }
+        }
+        .onDisappear {
+            // TODO: iOS 17 deprecation remove this--redundant with onScrollVisibilityChange handler
+            playing = false
         }
     }
     
@@ -59,8 +65,11 @@ struct DynamicMediaView: View {
     func ios18Body() -> some View {
         legacyBody
             .onScrollVisibilityChange(threshold: 0.5) { isVisible in
-                if autoplayMedia {
+                if isVisible, autoplayMedia {
                     playing = isVisible
+                }
+                if !isVisible {
+                    playing = false
                 }
             }
     }
@@ -92,12 +101,7 @@ struct DynamicMediaView: View {
                 if showError, loader.error != nil {
                     errorOverlay
                 } else if loader.mediaType.isAnimated {
-                    if playing {
-                        Color.clear.contentShape(.rect)
-                            .onTapGesture {
-                                playing = false
-                            }
-                    } else {
+                    if !playing {
                         PlayButton(postSize: .large)
                             .onTapGesture {
                                 playing = true

@@ -22,6 +22,7 @@ struct GeneralSettingsView: View {
     @Setting(\.markReadOnScroll) var markReadOnScroll
     @Setting(\.infiniteScroll) var infiniteScroll
     @Setting(\.autoplayMedia) var autoplayMedia
+    @Setting(\.muteVideos) var muteVideos
     @Setting(\.defaultFeed) var defaultFeed
     @Setting(\.sidebarVisibleByDefault) var sidebarVisibleByDefault
     @Setting(\.confirmImageUploads) var confirmImageUploads
@@ -65,6 +66,7 @@ struct GeneralSettingsView: View {
                 if #available(iOS 18.0, *) {
                     Toggle("Autoplay Media", isOn: $autoplayMedia)
                 }
+                Toggle("Mute Videos", isOn: $muteVideos)
                 Toggle("Mark Read on Scroll", isOn: $markReadOnScroll)
                 Toggle("Infinite Scroll", isOn: $infiniteScroll)
                 Toggle("Upvote on Save", isOn: $upvoteOnSave)
