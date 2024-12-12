@@ -10,21 +10,15 @@ import MlemMiddleware
 import SwiftUI
 
 struct FeedSortPicker: View {
-    enum Filter {
-        case alwaysAvailable, availableOnInstance, communitySearchable, personSearchable
-    }
-    
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     
-    let filters: Set<Filter>
     @Binding var sort: ApiSortType
     
     @State var topSortPopupPresented: Bool = false
     
-    init(sort: Binding<ApiSortType>, filters: Set<Filter> = []) {
+    init(sort: Binding<ApiSortType>) {
         self._sort = sort
-        self.filters = filters
     }
     
     init(feedLoader: CorePostFeedLoader) {
@@ -36,7 +30,7 @@ struct FeedSortPicker: View {
                     handleError(error)
                 }
             }
-        }), filters: [.availableOnInstance])
+        }))
     }
     
     var nonTopSortTypes: [ApiSortType] {
@@ -52,9 +46,8 @@ struct FeedSortPicker: View {
     }
     
     var body: some View {
-        let topModes = filterSortModes(ApiSortType.topCases)
-        Menu(sort.label(topFormat: topModes.count == 1 ? .topOnly : .topAndTimescale), systemImage: sort.systemImage) {
-            Section("Sort by...") {
+        Menu(sort.label(topFormat: topSortTypes.count == 1 ? .topOnly : .topAndTimescale), systemImage: sort.systemImage) {
+            Section {
                 ForEach(nonTopSortTypes, id: \.self) { type in
                     Toggle(
                         type.label(),
@@ -85,7 +78,7 @@ struct FeedSortPicker: View {
                 }
             }
         }
-        .disabled(filters.contains(.availableOnInstance) && appState.firstApi.fetchedVersion == nil)
+        .disabled(appState.firstApi.fetchedVersion == nil)
         .popover(isPresented: $topSortPopupPresented) {
             TopSortPicker(selected: $sort)
                 // This background is always drawn over a material background unfortunately,
@@ -93,22 +86,6 @@ struct FeedSortPicker: View {
                 .presentationBackground(.clear)
                 .presentationCornerRadius(18)
                 .presentationCompactAdaptation(.popover)
-        }
-    }
-    
-    private func filterSortModes(_ collection: any Collection<ApiSortType>) -> [ApiSortType] {
-        collection.filter { sortType in
-            filters.allSatisfy { filter in
-                switch filter {
-                case .alwaysAvailable: sortType.minimumVersion == .zero
-                case .availableOnInstance:
-                    (appState.firstApi.fetchedVersion ?? .infinity) >= sortType.minimumVersion
-                case .communitySearchable:
-                    ApiSortType.communitySearchCases.contains(sortType)
-                case .personSearchable:
-                    ApiSortType.personSearchCases.contains(sortType)
-                }
-            }
         }
     }
 }

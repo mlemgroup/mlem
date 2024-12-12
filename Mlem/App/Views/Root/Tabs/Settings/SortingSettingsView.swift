@@ -30,7 +30,7 @@ struct SortingSettingsView: View {
                     HStack {
                         Text("Fallback")
                         Spacer()
-                        FeedSortPicker(sort: $fallbackPostSort, filters: [.alwaysAvailable])
+                        FeedSortPicker(sort: $fallbackPostSort)
                             .foregroundStyle(palette.accent)
                             .frame(minHeight: 50)
                             .buttonStyle(.bordered)

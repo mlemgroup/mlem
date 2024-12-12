@@ -127,7 +127,8 @@
 		036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CC3AE2B8145C30098B6A1 /* AppState.swift */; };
 		036ED6792D0AF3740018E5EA /* PinnedSortTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036ED6782D0AF3740018E5EA /* PinnedSortTracker.swift */; };
 		036ED67B2D0B004D0018E5EA /* AdvancedSortView+SortButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036ED67A2D0B004D0018E5EA /* AdvancedSortView+SortButton.swift */; };
-		036ED67D2D0B006C0018E5EA /* FeedSortPicker+TopSortPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036ED67C2D0B006C0018E5EA /* FeedSortPicker+TopSortPicker.swift */; };
+		036ED67D2D0B006C0018E5EA /* TopSortPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036ED67C2D0B006C0018E5EA /* TopSortPicker.swift */; };
+		036ED67F2D0B9A520018E5EA /* CommunitySearchSortPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036ED67E2D0B9A520018E5EA /* CommunitySearchSortPicker.swift */; };
 		037331A42C9CB12D00C826E1 /* EnvironmentValues+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037331A32C9CB12D00C826E1 /* EnvironmentValues+Extensions.swift */; };
 		037386472BDAFE81007492B5 /* LemmyMarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 037386462BDAFE81007492B5 /* LemmyMarkdownUI */; };
 		037658DF2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037658DE2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift */; };
@@ -555,7 +556,8 @@
 		036CC3AE2B8145C30098B6A1 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		036ED6782D0AF3740018E5EA /* PinnedSortTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedSortTracker.swift; sourceTree = "<group>"; };
 		036ED67A2D0B004D0018E5EA /* AdvancedSortView+SortButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AdvancedSortView+SortButton.swift"; sourceTree = "<group>"; };
-		036ED67C2D0B006C0018E5EA /* FeedSortPicker+TopSortPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedSortPicker+TopSortPicker.swift"; sourceTree = "<group>"; };
+		036ED67C2D0B006C0018E5EA /* TopSortPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSortPicker.swift; sourceTree = "<group>"; };
+		036ED67E2D0B9A520018E5EA /* CommunitySearchSortPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitySearchSortPicker.swift; sourceTree = "<group>"; };
 		037331A32C9CB12D00C826E1 /* EnvironmentValues+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+Extensions.swift"; sourceTree = "<group>"; };
 		037658DE2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community1Providing+Extensions.swift"; sourceTree = "<group>"; };
 		037DE0742CE023E3007F7B92 /* BlockListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockListView.swift; sourceTree = "<group>"; };
@@ -994,7 +996,8 @@
 				033FCAF32C59843E007B7CD1 /* CommunityView.swift */,
 				03049A212C650B2C00FF6889 /* CommunityDetailsView.swift */,
 				0397D4632C676CA8002C6CDC /* FeedSortPicker.swift */,
-				036ED67C2D0B006C0018E5EA /* FeedSortPicker+TopSortPicker.swift */,
+				036ED67C2D0B006C0018E5EA /* TopSortPicker.swift */,
+				036ED67E2D0B9A520018E5EA /* CommunitySearchSortPicker.swift */,
 				0391E0FD2D05B2DF0040CCA8 /* AdvancedSortView.swift */,
 				036ED67A2D0B004D0018E5EA /* AdvancedSortView+SortButton.swift */,
 			);
@@ -2228,6 +2231,7 @@
 				03134A522BEAD69F002662CC /* SettingsPage.swift in Sources */,
 				03049A1C2C65039400FF6889 /* ActiveUserCountView.swift in Sources */,
 				0389DDDB2C3AB6340005B808 /* ActionBuilder.swift in Sources */,
+				036ED67F2D0B9A520018E5EA /* CommunitySearchSortPicker.swift in Sources */,
 				038028FA2CB097CB0091A8A2 /* SearchView+LocationPicker.swift in Sources */,
 				CDD8B94C2C8234BC00510EBB /* Form.swift in Sources */,
 				0320B6652C91DBD500D38548 /* NavigationPage+View.swift in Sources */,
@@ -2471,7 +2475,7 @@
 				032C320C2C3482CA00595286 /* Person1Providing+Extensions.swift in Sources */,
 				038028D32CAB3D2D0091A8A2 /* ShareActivity.swift in Sources */,
 				CD09BA7F2CB4698E00C93926 /* OledPalette.swift in Sources */,
-				036ED67D2D0B006C0018E5EA /* FeedSortPicker+TopSortPicker.swift in Sources */,
+				036ED67D2D0B006C0018E5EA /* TopSortPicker.swift in Sources */,
 				030FF67F2BC8544700F6BFAC /* CustomTabBarController.swift in Sources */,
 				CD4D58F82B87B0D100B82964 /* InternetSpeed.swift in Sources */,
 				0353949C2CA4B3E800795AA5 /* CrossPostListView.swift in Sources */,
