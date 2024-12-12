@@ -158,8 +158,6 @@ extension NavigationPage {
             BlockListView()
         case let .advancedSorting(sort):
             AdvancedSortView(selectedSort: sort.wrappedValue)
-//                .presentationDetents([.medium, .large])
-//                .presentationDragIndicator(.hidden)
         }
     }
 }
