@@ -11,12 +11,14 @@ struct CommentSettingsView: View {
     @Environment(Palette.self) var palette
     
     @Setting(\.compactComments) var compactComments
+    @Setting(\.tapCommentsToCollapse) var tapCommentsToCollapse
     @Setting(\.maxCommentDepth) var maxCommentDepth
     
     var body: some View {
         Form {
             Section {
                 Toggle("Compact Comments", isOn: $compactComments)
+                Toggle("Tap to Collapse", isOn: $tapCommentsToCollapse)
             }
             Section {
                 NavigationLink(
