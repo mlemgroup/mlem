@@ -91,21 +91,6 @@
     "%lld on your instance" : {
 
     },
-    "3 Months" : {
-
-    },
-    "6 Hours" : {
-
-    },
-    "6 Months" : {
-
-    },
-    "9 Months" : {
-
-    },
-    "12 Hours" : {
-
-    },
     "A censure signifies that an instance disapproves of another instance. Like an endorsement, it is completely subjective and a reason does not have to be given." : {
 
     },
@@ -454,9 +439,6 @@
         }
       }
     },
-    "Day" : {
-
-    },
     "Days:" : {
 
     },
@@ -730,9 +712,6 @@
     "Hot" : {
 
     },
-    "Hour" : {
-
-    },
     "I think I've found the bottom!" : {
 
     },
@@ -923,9 +902,6 @@
 
     },
     "Monochrome" : {
-
-    },
-    "Month" : {
 
     },
     "More" : {
@@ -1321,9 +1297,6 @@
     "Show Full URL" : {
 
     },
-    "Show Hidden" : {
-
-    },
     "Show Mod Names in Modlog" : {
 
     },
@@ -1337,9 +1310,6 @@
 
     },
     "Show Post Creator in Feed" : {
-
-    },
-    "Show Read" : {
 
     },
     "Show Sidebar on App Launch" : {
@@ -1460,9 +1430,6 @@
     "Switch to this account and..." : {
 
     },
-    "Tab" : {
-
-    },
     "Tap and hold items to add, remove or rearrange them." : {
 
     },
@@ -1514,10 +1481,10 @@
         }
       }
     },
-    "The name that is displayed on your profile. This is not the same as your username, which cannot be changed." : {
+    "The name shown in the account switcher." : {
 
     },
-    "The name shown in the account switcher." : {
+    "The name that is displayed on your profile. This is not the same as your username, which cannot be changed." : {
 
     },
     "The number of child comments that are shown in a chain before the \"More Replies\" button is shown." : {
@@ -1676,6 +1643,9 @@
     "Two-Factor Authentication" : {
 
     },
+    "Unavailable" : {
+
+    },
     "Unban" : {
 
     },
@@ -1813,9 +1783,6 @@
     "Website" : {
 
     },
-    "Week" : {
-
-    },
     "Welcome %@" : {
       "comment" : "Example: \"Welcome John\""
     },
@@ -1832,9 +1799,6 @@
 
     },
     "Write a bit about yourself..." : {
-
-    },
-    "Year" : {
 
     },
     "Yes" : {

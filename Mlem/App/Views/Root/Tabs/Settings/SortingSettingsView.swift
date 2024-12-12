@@ -39,7 +39,7 @@ struct SortingSettingsView: View {
             } footer: {
                 if defaultPostSort.minimumVersion != .zero {
                     // swiftlint:disable:next line_length
-                    Text("The \"\(defaultPostSort.fullLabel())\" sort mode is only available on instances running version \(defaultPostSort.minimumVersion.description) or later. On instances running earlier versions, the \"Fallback\" sort mode will be used instead.")
+                    Text("The \"\(defaultPostSort.label())\" sort mode is only available on instances running version \(defaultPostSort.minimumVersion.description) or later. On instances running earlier versions, the \"Fallback\" sort mode will be used instead.")
                 }
             }
             
