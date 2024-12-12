@@ -78,14 +78,18 @@ extension Comment1Providing {
             downvoteAction(feedback: feedback)
             saveAction(feedback: feedback)
             replyAction(commentTreeTracker: commentTreeTracker)
-            selectTextAction()
+            if !deleted {
+                selectTextAction()
+            }
             shareAction()
             
             if isOwnComment {
                 editAction()
                 deleteAction(feedback: feedback)
             } else {
-                reportAction()
+                if !canModerate, !deleted {
+                    reportAction()
+                }
                 blockCreatorAction(feedback: feedback)
             }
         }

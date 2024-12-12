@@ -29,7 +29,9 @@ extension Message1Providing {
             replyAction()
             markReadAction(feedback: feedback)
         }
-        selectTextAction()
+        if !deleted {
+            selectTextAction()
+        }
         if isOwnMessage {
             deleteAction(feedback: feedback)
         } else {
