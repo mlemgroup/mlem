@@ -12,6 +12,8 @@ extension NavigationPage {
     // swiftlint:disable:next cyclomatic_complexity function_body_length
     @ViewBuilder func view() -> some View {
         switch self {
+        case let .mediaOverlay(url):
+            MediaOverlayView(url: url)
         case .subscriptionList:
             SubscriptionListView()
         case let .selectText(string):

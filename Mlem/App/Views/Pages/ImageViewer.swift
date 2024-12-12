@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ImageViewer: View {
     @Environment(Palette.self) var palette
+    @Environment(MediaState.self) var mediaState
     
     let url: URL
     
@@ -25,9 +26,14 @@ struct ImageViewer: View {
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                CloseButtonView()
+                CloseButtonView {
+                    withAnimation {
+                        mediaState.url = nil
+                    }
+                }
             }
         }
-        .background(palette.background)
+        .background(Color.black)
+        // .background(palette.background)
     }
 }

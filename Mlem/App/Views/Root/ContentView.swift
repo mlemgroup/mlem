@@ -32,6 +32,7 @@ struct ContentView: View {
     var palette: Palette { .main }
     var tabReselectTracker: TabReselectTracker { .main }
     var navigationModel: NavigationModel { .main }
+    var mediaState: MediaState = .init()
 
     @State var avatarImage: UIImage?
     @State var selectedAvatarImage: UIImage?
@@ -59,9 +60,7 @@ struct ContentView: View {
                         try await (appState.firstSession as? UserSession)?.unreadCount?.refresh()
                     }
                 }
-                .navigationSheetModifiers(nextLayer: navigationModel.layers.first, model: navigationModel)
                 .tint(palette.accent)
-                .environment(palette)
                 .environment(tabReselectTracker)
                 .environment(appState)
                 .task {
@@ -102,6 +101,8 @@ struct ContentView: View {
                         }
                     }
                 }
+                .environment(mediaState)
+                .environment(palette)
                 .environment(AppState.main)
         }
     }
@@ -169,6 +170,11 @@ struct ContentView: View {
                 shouldDisplayNewToasts: shouldDisplayToasts,
                 location: .top
             )
+        }
+        .overlay {
+            if let url = mediaState.url {
+                NavigationLayerView(layer: .init(root: .mediaOverlay(url), model: navigationModel), hasSheetModifiers: true)
+            }
         }
     }
 }

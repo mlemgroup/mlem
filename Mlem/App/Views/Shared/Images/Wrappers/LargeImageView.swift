@@ -12,6 +12,8 @@ import SwiftUI
 // and anything else that can't go in thumbnail views etc.
 
 struct LargeImageView: View {
+    @Environment(MediaState.self) var mediaState
+    
     @Environment(NavigationLayer.self) private var navigation
     @Setting(\.blurNsfw) var blurNsfw
 
@@ -55,12 +57,7 @@ struct LargeImageView: View {
                     onTapActions()
                 }
                 if let loading, loading == .done, let url {
-                    // Sheets don't cover the whole screen on iPad, so use a fullScreenCover instead
-                    if UIDevice.isPad {
-                        navigation.showFullScreenCover(.imageViewer(url))
-                    } else {
-                        navigation.openSheet(.imageViewer(url))
-                    }
+                    mediaState.setUrl(url)
                 }
             }
             .onPreferenceChange(MediaLoadingPreferenceKey.self, perform: { loading = $0 })
