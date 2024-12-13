@@ -25,16 +25,10 @@ struct TopSortPicker: View {
     }
     
     var body: some View {
-        VStack(spacing: 10) {
-            Text("Choose Timeframe...")
-                .font(.footnote)
-                .foregroundStyle(palette.secondary)
-                .fontWeight(.semibold)
-            HFlow(spacing: 10, justification: .stretchItems) {
-                ForEach(sortTypes, id: \.self) { type in
-                    button(type)
-                        .frame(minWidth: 60)
-                }
+        HFlow(spacing: 10, justification: .stretchItems) {
+            ForEach(sortTypes, id: \.self) { type in
+                button(type)
+                    .frame(minWidth: 60)
             }
         }
         .padding(10)
