@@ -12,7 +12,7 @@ extension Profile2Providing {
     var isCakeDay: Bool { created.isAnniversaryToday }
     
     var createdRecently: Bool {
-        var intervalSinceCreation = Date.now.timeIntervalSince(created)
+        let intervalSinceCreation = Date.now.timeIntervalSince(created)
         return intervalSinceCreation < 30 * 24 * 60 * 60
     }
 }
