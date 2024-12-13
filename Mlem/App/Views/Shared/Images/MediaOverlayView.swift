@@ -9,9 +9,9 @@ import SwiftUI
 
 @Observable
 class MediaState {
-    var url: URL?
+    private(set) var url: URL?
     
-    func setUrl(_ url: URL) {
+    func setUrl(_ url: URL?) {
         withAnimation {
             self.url = url
         }

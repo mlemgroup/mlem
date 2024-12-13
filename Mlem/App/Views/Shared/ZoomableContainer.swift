@@ -17,9 +17,11 @@ struct ZoomableContainer<Content: View>: View {
     let content: Content
     @State private var currentScale: CGFloat = 1.0
     @State private var tapLocation: CGPoint = .zero
+    @Binding var isZoomed: Bool
 
-    init(@ViewBuilder content: () -> Content) {
+    init(isZoomed: Binding<Bool> = .constant(false), @ViewBuilder content: () -> Content) {
         self.content = content()
+        self._isZoomed = isZoomed
     }
 
     func doubleTapAction(location: CGPoint) {
@@ -31,7 +33,11 @@ struct ZoomableContainer<Content: View>: View {
         ZoomableScrollView(scale: $currentScale, tapLocation: $tapLocation) {
             content
         }
+        .border(.red)
         .onTapGesture(count: 2, perform: doubleTapAction)
+        .onChange(of: currentScale) {
+            isZoomed = currentScale != 1.0
+        }
     }
 
     fileprivate struct ZoomableScrollView<ScollContent: View>: UIViewRepresentable {
@@ -101,6 +107,10 @@ struct ZoomableContainer<Content: View>: View {
             init(hostingController: UIHostingController<ScollContent>, scale: Binding<CGFloat>) {
                 self.hostingController = hostingController
                 _currentScale = scale
+            }
+            
+            func scrollViewDidScroll(_ scrollView: UIScrollView) {
+                print("DEBUG \(scrollView.contentOffset)")
             }
 
             func viewForZooming(in _: UIScrollView) -> UIView? {

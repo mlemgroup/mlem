@@ -1493,10 +1493,10 @@
         }
       }
     },
-    "The name that is displayed on your profile. This is not the same as your username, which cannot be changed." : {
+    "The name shown in the account switcher." : {
 
     },
-    "The name shown in the account switcher." : {
+    "The name that is displayed on your profile. This is not the same as your username, which cannot be changed." : {
 
     },
     "The number of child comments that are shown in a chain before the \"More Replies\" button is shown." : {

@@ -13,7 +13,7 @@ extension NavigationPage {
     @ViewBuilder func view() -> some View {
         switch self {
         case let .mediaOverlay(url):
-            MediaOverlayView(url: url)
+            ImageViewer(url: url)
         case .subscriptionList:
             SubscriptionListView()
         case let .selectText(string):
