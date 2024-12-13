@@ -40,8 +40,8 @@ extension Date {
     
     var isAnniversaryToday: Bool {
         let calendar = Calendar.current
-        let date = calendar.dateComponents([.month, .day], from: self)
-        let current = calendar.dateComponents([.month, .day], from: .now)
+        let date = calendar.dateComponents([.month, .day, .year], from: self)
+        let current = calendar.dateComponents([.month, .day, .year], from: .now)
         return date.month == current.month && date.day == current.day && date.year != current.year
     }
 }
