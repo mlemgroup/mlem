@@ -76,7 +76,7 @@ struct ImageViewer: View {
     }
     
     private func updateDragDistance(_ newDistance: CGFloat, callback: (() -> Void)? = nil) {
-        let duration: CGFloat = 0.35
+        let duration: CGFloat = 0.25
         withAnimation(.easeOut(duration: duration)) {
             offset = newDistance
         }
