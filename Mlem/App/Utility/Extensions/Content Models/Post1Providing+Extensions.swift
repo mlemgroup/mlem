@@ -140,7 +140,7 @@ extension Post1Providing {
                 appearance: .init(label: "Moderation...", color: Palette.main.moderation, icon: Icons.moderation),
                 displayMode: Settings.main.moderatorActionGrouping == .divider || expanded ? .section : .disclosure
             ) {
-                moderatorMenuActions(feedback: feedback)
+                moderatorMenuActions(feedback: feedback, showAllActions: showAllActions)
             }
         }
     }
