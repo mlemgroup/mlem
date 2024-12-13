@@ -39,10 +39,14 @@ extension Reply1Providing {
             replyAction()
             markReadAction(feedback: feedback)
             if let comment = self2?.comment {
-                comment.selectTextAction()
+                if !comment.deleted {
+                    comment.selectTextAction()
+                }
                 comment.shareAction()
+                if !comment.deleted {
+                    reportAction()
+                }
             }
-            reportAction()
             blockCreatorAction(feedback: feedback)
         }
     }
