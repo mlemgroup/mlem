@@ -56,6 +56,9 @@
     "%@ rules..." : {
 
     },
+    "%@ today!" : {
+
+    },
     "%lld Crossposts..." : {
       "localizations" : {
         "en" : {
