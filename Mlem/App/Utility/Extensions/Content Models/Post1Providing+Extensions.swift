@@ -131,6 +131,7 @@ extension Post1Providing {
     func allMenuActions(
         expanded: Bool = false,
         feedback: Set<FeedbackType> = [.haptic, .toast],
+        showAllActions: Bool = true,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> [any Action] {
         basicMenuActions(feedback: feedback, commentTreeTracker: commentTreeTracker)
@@ -176,12 +177,17 @@ extension Post1Providing {
     }
     
     @ActionBuilder
-    func moderatorMenuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
-        pinToCommunityAction(feedback: feedback, verboseTitle: api.isAdmin)
-        if api.isAdmin {
-            pinToInstanceAction(feedback: feedback)
+    func moderatorMenuActions(
+        feedback: Set<FeedbackType> = [.haptic, .toast],
+        showAllActions: Bool = true
+    ) -> [any Action] {
+        if showAllActions || Settings.main.showAllModActions {
+            pinToCommunityAction(feedback: feedback, verboseTitle: api.isAdmin)
+            if api.isAdmin {
+                pinToInstanceAction(feedback: feedback)
+            }
+            lockAction(feedback: feedback)
         }
-        lockAction(feedback: feedback)
         if let self2, !isOwnPost {
             self2.removeAction()
             banActions()

@@ -81,6 +81,7 @@ class Settings: ObservableObject {
     @AppStorage("navigation.swipeAnywhere") var swipeAnywhereToNavigate: Bool = false
     
     @AppStorage("menus.moderatorActionGrouping") var moderatorActionGrouping: ModeratorActionGrouping = .divider
+    @AppStorage("menus.allModActions") var showAllModActions: Bool = false
     
     var codable: CodableSettings { .init(from: self) }
     
@@ -147,5 +148,7 @@ class Settings: ObservableObject {
         autoBypassImageProxy = settings.privacy_autoBypassImageProxy
         sidebarVisibleByDefault = settings.navigation_sidebarVisibleByDefault
         swipeAnywhereToNavigate = settings.navigation_swipeAnywhere
+        moderatorActionGrouping = settings.menus_modActionGrouping
+        showAllModActions = settings.menus_allModActions
     }
 }

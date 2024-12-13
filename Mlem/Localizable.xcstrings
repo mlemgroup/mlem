@@ -1297,6 +1297,9 @@
     "Show" : {
 
     },
+    "Show All Actions in Feed" : {
+
+    },
     "Show Bot Accounts" : {
 
     },
@@ -1493,10 +1496,10 @@
         }
       }
     },
-    "The name that is displayed on your profile. This is not the same as your username, which cannot be changed." : {
+    "The name shown in the account switcher." : {
 
     },
-    "The name shown in the account switcher." : {
+    "The name that is displayed on your profile. This is not the same as your username, which cannot be changed." : {
 
     },
     "The number of child comments that are shown in a chain before the \"More Replies\" button is shown." : {
@@ -1802,6 +1805,9 @@
 
     },
     "What is Federation?" : {
+
+    },
+    "When disabled, some moderator actions will be hidden from the feed and will only be visible from when viewing a post page." : {
 
     },
     "Wrap Code Block Lines" : {

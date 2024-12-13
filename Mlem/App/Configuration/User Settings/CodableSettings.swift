@@ -55,7 +55,7 @@ struct CodableSettings: Codable {
     var links_readerMode: Bool
     var links_tappableLinksDisplayMode: TappableLinksDisplayMode
     var menus_allModActions: Bool
-    var menus_modActionGrouping: String // TODO: pending mod actions
+    var menus_modActionGrouping: ModeratorActionGrouping
     var post_defaultSort: ApiSortType
     var post_fallbackSort: ApiSortType
     var post_limitImageHeight: Bool
@@ -132,7 +132,7 @@ struct CodableSettings: Codable {
         self.links_readerMode = try container.decodeIfPresent(Bool.self, forKey: .links_readerMode) ?? false
         self.links_tappableLinksDisplayMode = try container.decodeIfPresent(TappableLinksDisplayMode.self, forKey: .links_tappableLinksDisplayMode) ?? .contextual
         self.menus_allModActions = try container.decodeIfPresent(Bool.self, forKey: .menus_allModActions) ?? false
-        self.menus_modActionGrouping = try container.decodeIfPresent(String.self, forKey: .menus_modActionGrouping) ?? "none"
+        self.menus_modActionGrouping = try container.decodeIfPresent(ModeratorActionGrouping.self, forKey: .menus_modActionGrouping) ?? .divider
         self.post_defaultSort = try container.decodeIfPresent(ApiSortType.self, forKey: .post_defaultSort) ?? .hot
         self.post_fallbackSort = try container.decodeIfPresent(ApiSortType.self, forKey: .post_fallbackSort) ?? .hot
         self.post_limitImageHeight = try container.decodeIfPresent(Bool.self, forKey: .post_limitImageHeight) ?? true
@@ -209,8 +209,8 @@ struct CodableSettings: Codable {
         self.links_openInBrowser = settings.openLinksInBrowser
         self.links_readerMode = settings.openLinksInReaderMode
         self.links_tappableLinksDisplayMode = settings.tappableLinksDisplayMode
-        self.menus_allModActions = false
-        self.menus_modActionGrouping = "none"
+        self.menus_allModActions = settings.showAllModActions
+        self.menus_modActionGrouping = settings.moderatorActionGrouping
         self.post_defaultSort = settings.defaultPostSort
         self.post_fallbackSort = settings.fallbackPostSort
         self.post_limitImageHeight = true
