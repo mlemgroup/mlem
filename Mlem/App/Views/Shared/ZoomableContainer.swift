@@ -107,10 +107,6 @@ struct ZoomableContainer<Content: View>: View {
                 self.hostingController = hostingController
                 _currentScale = scale
             }
-            
-//            func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//                print("DEBUG \(scrollView.contentOffset)")
-//            }
 
             func viewForZooming(in _: UIScrollView) -> UIView? {
                 hostingController.view

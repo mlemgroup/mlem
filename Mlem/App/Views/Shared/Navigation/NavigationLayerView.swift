@@ -83,7 +83,6 @@ struct NavigationLayerView: View {
         })
         .modifier(HandleLemmyLinksModifier())
         .environment(layer)
-        .presentationBackground(.clear)
     }
     
     @ViewBuilder

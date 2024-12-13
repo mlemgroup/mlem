@@ -60,7 +60,9 @@ struct ContentView: View {
                         try await (appState.firstSession as? UserSession)?.unreadCount?.refresh()
                     }
                 }
+                .navigationSheetModifiers(nextLayer: navigationModel.layers.first, model: navigationModel)
                 .tint(palette.accent)
+                .environment(palette)
                 .environment(tabReselectTracker)
                 .environment(appState)
                 .task {
@@ -102,7 +104,6 @@ struct ContentView: View {
                     }
                 }
                 .environment(mediaState)
-                .environment(palette)
                 .environment(AppState.main)
         }
     }
