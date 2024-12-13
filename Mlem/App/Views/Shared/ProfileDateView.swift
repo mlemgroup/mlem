@@ -14,13 +14,36 @@ struct ProfileDateView: View {
     var profilable: any Profile2Providing
     
     var body: some View {
-        Label(format(profilable.created), systemImage: Icons.cakeDay)
-            .foregroundStyle(palette.secondary)
+        Label(format(profilable.created), systemImage: systemImage)
+            .foregroundStyle(color)
             .font(.footnote)
     }
     
+    var color: Color {
+        if profilable.createdRecently {
+            palette.colorfulAccent(3)
+        } else if profilable.isCakeDay {
+            palette.colorfulAccent(1)
+        } else {
+            palette.secondary
+        }
+    }
+    
+    var systemImage: String {
+        if profilable.createdRecently {
+            Icons.newAccountFlair
+        } else if profilable.isCakeDay {
+            Icons.cakeDayFill
+        } else {
+            Icons.cakeDay
+        }
+    }
+    
     func format(_ date: Date) -> String {
-        let relTime = date.getRelativeTime(date: Date.now, unitsStyle: .abbreviated)
+        var relTime = date.getRelativeTime(date: Date.now, unitsStyle: .abbreviated)
+        if profilable.isCakeDay {
+            relTime = String(localized: "\(relTime) today!")
+        }
         return "\(date.dateString), \(relTime)"
     }
 }

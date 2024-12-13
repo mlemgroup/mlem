@@ -27,16 +27,10 @@ extension Person1Providing {
             output.insert(.bannedFromInstance)
         }
         
-        let intervalSinceCreation = Date.now.timeIntervalSince(created)
-        if intervalSinceCreation < 30 * 24 * 60 * 60 {
-            output.insert(.new(intervalSinceCreation))
-        } else {
-            let calendar = Calendar.current
-            let createdComponents = calendar.dateComponents([.month, .day], from: created)
-            let currentComponents = calendar.dateComponents([.month, .day], from: .now)
-            if createdComponents.month == currentComponents.month, createdComponents.day == currentComponents.day {
-                output.insert(.cakeDay)
-            }
+        if createdRecently {
+            output.insert(.new(Date.now.timeIntervalSince(created)))
+        } else if isCakeDay {
+            output.insert(.cakeDay)
         }
         
         if let interactable {
