@@ -33,7 +33,6 @@ struct ZoomableContainer<Content: View>: View {
         ZoomableScrollView(scale: $currentScale, tapLocation: $tapLocation) {
             content
         }
-        .border(.red)
         .onTapGesture(count: 2, perform: doubleTapAction)
         .onChange(of: currentScale) {
             isZoomed = currentScale != 1.0
@@ -109,9 +108,9 @@ struct ZoomableContainer<Content: View>: View {
                 _currentScale = scale
             }
             
-            func scrollViewDidScroll(_ scrollView: UIScrollView) {
-                print("DEBUG \(scrollView.contentOffset)")
-            }
+//            func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//                print("DEBUG \(scrollView.contentOffset)")
+//            }
 
             func viewForZooming(in _: UIScrollView) -> UIView? {
                 hostingController.view

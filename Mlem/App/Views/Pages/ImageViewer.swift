@@ -14,7 +14,10 @@ struct ImageViewer: View {
     let url: URL
     
     @State var isZoomed: Bool = false
-    @State var dragDistance: CGFloat = 0
+    @State var offset: CGFloat = UIScreen.main.bounds.height
+    @State var isDismissing: Bool = false
+    
+    var screenHeight: CGFloat { UIScreen.main.bounds.height }
     
     init(url: URL) {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
@@ -24,33 +27,63 @@ struct ImageViewer: View {
     
     var body: some View {
         ZoomableContainer(isZoomed: $isZoomed) {
-            DynamicMediaView(url: url, playImmediately: true)
-                .padding(Constants.main.standardSpacing)
-                .offset(y: dragDistance)
+            DynamicMediaView(url: url, cornerRadius: 0, playImmediately: true)
         }
-        // .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                CloseButtonView {
-                    mediaState.setUrl(nil)
+        .offset(y: offset)
+        .onAppear {
+            updateDragDistance(0)
+        }
+        .background(Color.black.opacity(1.0 - (abs(offset) / screenHeight)))
+        .overlay(alignment: .topTrailing) {
+            if offset == 0 {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: Icons.close)
+                        .resizable()
+                        .frame(width: 15, height: 15)
+                        .foregroundStyle(.white)
+                        .padding([.top, .trailing], Constants.main.standardSpacing)
+                        .padding([.bottom, .leading], Constants.main.doubleSpacing)
+                        .contentShape(.rect)
                 }
+                .padding(Constants.main.standardSpacing)
             }
         }
-        .background(Color.black.opacity(1.0 - (abs(dragDistance) / UIScreen.main.bounds.height)))
-//        .gesture(DragGesture(minimumDistance: 0.0)
-//            .onChanged { value in
-//                if !isZoomed {
-//                    dragDistance = value.translation.height
-//                }
-//            }
-//            .onEnded { value in
-//                if abs(value.translation.height) > 200 {
-//                    dragDistance = (value.translation.height > 0 ? 1000 : -1000)
-//                    mediaState.setUrl(nil)
-//                } else {
-//                    dragDistance = 0
-//                }
-//            }
-//        )
+        .simultaneousGesture(DragGesture(minimumDistance: 0.0)
+            .onChanged { value in
+                if !isZoomed, !isDismissing {
+                    offset = value.translation.height
+                }
+            }
+            .onEnded { value in
+                guard !isDismissing, !isZoomed else { return }
+                
+                if abs(value.translation.height) > 100 {
+                    dismiss(finalOffset: value.translation.height > 0 ? screenHeight : -screenHeight)
+                } else {
+                    updateDragDistance(0)
+                }
+            }
+        )
+    }
+    
+    private func dismiss(finalOffset: CGFloat = UIScreen.main.bounds.height) {
+        isDismissing = true
+        updateDragDistance(finalOffset) {
+            mediaState.url = nil
+        }
+    }
+    
+    private func updateDragDistance(_ newDistance: CGFloat, callback: (() -> Void)? = nil) {
+        let duration: CGFloat = 0.35
+        withAnimation(.easeOut(duration: duration)) {
+            offset = newDistance
+        }
+        if let callback {
+            DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
+                callback()
+            }
+        }
     }
 }

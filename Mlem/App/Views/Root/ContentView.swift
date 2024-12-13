@@ -173,8 +173,11 @@ struct ContentView: View {
         }
         .overlay {
             if let url = mediaState.url {
-                NavigationLayerView(layer: .init(root: .mediaOverlay(url), model: navigationModel), hasSheetModifiers: false)
-                    .background(.clear)
+                NavigationLayerView(
+                    layer: .init(root: .imageViewer(url),
+                                 model: navigationModel,
+                                 hasNavigationStack: false),
+                    hasSheetModifiers: false)
             }
         }
     }

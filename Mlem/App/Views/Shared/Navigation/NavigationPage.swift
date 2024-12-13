@@ -9,8 +9,6 @@ import MlemMiddleware
 import SwiftUI
 
 enum NavigationPage: Hashable {
-    case mediaOverlay(_ url: URL)
-    
     case settings(_ page: SettingsPage = .root)
     case logIn(_ page: LoginPage = .pickInstance)
     case signUp(_ instance: HashWrapper<any InstanceStubProviding>)
