@@ -30,7 +30,7 @@ extension AdvancedSortView {
                     HStack(spacing: Constants.main.standardSpacing) {
                         Image(systemName: type.systemImage)
                             .frame(width: 30, alignment: .center)
-                            .foregroundStyle(palette.secondary)
+                            .foregroundStyle(.secondary) // No palette!
                         VStack(alignment: .leading) {
                             titleView
                             if (appState.firstApi.fetchedVersion ?? .infinity) < type.minimumVersion {
@@ -42,33 +42,27 @@ extension AdvancedSortView {
                         }
                         .padding(.vertical, Constants.main.halfSpacing)
                         Spacer()
-                        if selectedSort == type {
-                            Image(systemName: "checkmark")
-                                .fontWeight(.semibold)
-                                .foregroundStyle(palette.accent)
-                                .padding(.trailing, Constants.main.halfSpacing)
+                        Button("Pin", systemImage: PinnedSortTracker.main.pinnedSortTypes.contains(type) ? Icons.pinFill : Icons.pin) {
+                            HapticManager.main.play(haptic: .gentleInfo, priority: .low)
+                            if PinnedSortTracker.main.pinnedSortTypes.contains(type) {
+                                PinnedSortTracker.main.pinnedSortTypes.remove(type)
+                            } else {
+                                PinnedSortTracker.main.pinnedSortTypes.insert(type)
+                            }
                         }
+                        .labelStyle(.iconOnly)
+                        .foregroundStyle(type == selectedSort ? palette.selectedInteractionBarItem : palette.accent)
                     }
                     .frame(minHeight: 45)
-                    .foregroundStyle(palette.primary)
                     .buttonStyle(.plain)
                     .padding(.horizontal, Constants.main.standardSpacing)
-                    .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                    .foregroundStyle(type == selectedSort ? palette.selectedInteractionBarItem : palette.primary)
+                    .background(
+                        type == selectedSort ? palette.accent : palette.secondaryGroupedBackground,
+                        in: .rect(cornerRadius: Constants.main.standardSpacing)
+                    )
                     .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                 }
-                Button("Pin", systemImage: PinnedSortTracker.main.pinnedSortTypes.contains(type) ? Icons.pinFill : Icons.pin) {
-                    HapticManager.main.play(haptic: .gentleInfo, priority: .low)
-                    if PinnedSortTracker.main.pinnedSortTypes.contains(type) {
-                        PinnedSortTracker.main.pinnedSortTypes.remove(type)
-                    } else {
-                        PinnedSortTracker.main.pinnedSortTypes.insert(type)
-                    }
-                }
-                .labelStyle(.iconOnly)
-                .padding(.horizontal, Constants.main.standardSpacing)
-                .frame(maxHeight: .infinity)
-                .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
-                .paletteBorder(cornerRadius: Constants.main.standardSpacing)
             }
             .disabled((appState.firstApi.fetchedVersion ?? .infinity) < type.minimumVersion)
         }
@@ -82,8 +76,7 @@ extension AdvancedSortView {
                         showingExplanation.toggle()
                     } label: {
                         Image(systemName: "questionmark.circle")
-                            .foregroundStyle(palette.secondary)
-                            .foregroundStyle(palette.primary)
+                            .foregroundStyle(.secondary) // No palette!
                     }
                     .popover(isPresented: $showingExplanation) {
                         Text(explanation)
