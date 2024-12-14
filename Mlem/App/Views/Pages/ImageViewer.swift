@@ -13,6 +13,8 @@ struct ImageViewer: View {
     
     let url: URL
     
+    @GestureState var dragState: Bool = false
+    
     @State var isZoomed: Bool = false
     @State var offset: CGFloat = UIScreen.main.bounds.height
     @State var isDismissing: Bool = false
@@ -56,16 +58,19 @@ struct ImageViewer: View {
                     offset = value.translation.height
                 }
             }
-            .onEnded { value in
-                guard !isDismissing, !isZoomed else { return }
-                
-                if abs(value.translation.height) > 100 {
-                    dismiss(finalOffset: value.translation.height > 0 ? screenHeight : -screenHeight)
+            .updating($dragState) { _, state, _ in
+                state = true
+            }
+        )
+        .onChange(of: dragState) {
+            if !dragState {
+                if abs(offset) > 100 {
+                    dismiss(finalOffset: offset > 0 ? screenHeight : -screenHeight)
                 } else {
                     updateDragDistance(0)
                 }
             }
-        )
+        }
     }
     
     private func dismiss(finalOffset: CGFloat = UIScreen.main.bounds.height) {
