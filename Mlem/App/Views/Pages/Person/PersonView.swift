@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 30/05/2024.
 //
 
+import Flow
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
@@ -125,6 +126,7 @@ struct PersonView: View {
             VStack(spacing: 0) {
                 VStack(spacing: Constants.main.standardSpacing) {
                     ProfileHeaderView(person, fallback: .person)
+                    flairsView(person: person)
                     bio(person: person)
                 }
                 .padding([.horizontal], Constants.main.standardSpacing)
@@ -172,6 +174,27 @@ struct PersonView: View {
             dateLabel(person: person)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.bottom, Constants.main.halfSpacing)
+        }
+    }
+    
+    @ViewBuilder
+    func flairsView(person: any Person) -> some View {
+        if person.isBot || person.isMlemDeveloper || person.isAdmin_ ?? false {
+            HFlow(spacing: Constants.main.halfSpacing) {
+                if person.isMlemDeveloper {
+                    Label("Mlem Developer", systemImage: Icons.developerFlair)
+                        .tint(palette.colorfulAccent(4))
+                }
+                if person.isAdmin_ ?? false {
+                    Label("\(person.host ?? "") Administrator", systemImage: Icons.adminFlair)
+                        .tint(palette.administration)
+                }
+                if person.isBot {
+                    Label("Bot Account", systemImage: Icons.botFlair)
+                        .tint(palette.colorfulAccent(5))
+                }
+            }
+            .labelStyle(FlairLabelStyle())
         }
     }
     
@@ -231,5 +254,22 @@ struct PersonView: View {
             }
         }
         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+    }
+}
+
+private struct FlairLabelStyle: LabelStyle {
+    @Environment(Palette.self) private var palette
+    
+    func makeBody(configuration: Configuration) -> some View {
+        HStack(spacing: 5) {
+            configuration.icon
+                .imageScale(.small)
+            configuration.title
+        }
+        .font(.footnote)
+        .padding(.vertical, 2)
+        .padding(.horizontal, 8)
+        .foregroundStyle(.tint)
+        .background(.tint.opacity(0.2), in: .capsule)
     }
 }

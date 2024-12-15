@@ -31,6 +31,9 @@
         }
       }
     },
+    "%@ Administrator" : {
+
+    },
     "%@ has been unresponsive recently." : {
 
     },
