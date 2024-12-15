@@ -37,10 +37,12 @@ struct PersonView: View {
     @State private var selectedContentType: PersonContentType = .all
     @State private var isAtTop: Bool = true
     @State var feedLoader: PersonContentFeedLoader?
+    @State var isAdmin: Bool
     let isProfileTab: Bool
     
     init(person: AnyPerson, isProfileTab: Bool = false) {
         self._person = .init(wrappedValue: person)
+        self._isAdmin = .init(wrappedValue: person.wrappedValue.isAdmin_ ?? false)
         self.isProfileTab = isProfileTab
         
         if let person1 = person.wrappedValue as? any Person1Providing, person1.api === AppState.main.firstApi {
@@ -115,6 +117,12 @@ struct PersonView: View {
                 }
                 return try await entity.upgrade()
             }
+            // This prevents the admin flair from disappearing if the `ContentLoader`
+            // switches from an external ApiClient to the active ApiClient, e.g. when
+            // navigating to `PersonView` from the administrator list in `InstanceView`.
+            if model.wrappedValue.isAdmin_ ?? false {
+                isAdmin = true
+            }
         }
         .navigationTitle(isAtTop ? "" : (person.wrappedValue.displayName_ ?? person.wrappedValue.name))
         .navigationBarTitleDisplayMode(.inline)
@@ -179,13 +187,13 @@ struct PersonView: View {
     
     @ViewBuilder
     func flairsView(person: any Person) -> some View {
-        if person.isBot || person.isMlemDeveloper || person.isAdmin_ ?? false {
+        if person.isBot || person.isMlemDeveloper || isAdmin {
             HFlow(spacing: Constants.main.halfSpacing) {
                 if person.isMlemDeveloper {
                     Label("Mlem Developer", systemImage: Icons.developerFlair)
                         .tint(palette.colorfulAccent(4))
                 }
-                if person.isAdmin_ ?? false {
+                if isAdmin {
                     Label("\(person.host ?? "") Administrator", systemImage: Icons.adminFlair)
                         .tint(palette.administration)
                 }
