@@ -86,14 +86,6 @@ extension Interactable1Providing {
             }
         }
     }
-    
-    func showRemoveSheet() {
-        guard let self2 else {
-            print("DEBUG no self2 found in toggleRemoved!")
-            return
-        }
-        NavigationModel.main.openSheet(.remove(self2))
-    }
 
     // MARK: Counters
     
@@ -170,14 +162,6 @@ extension Interactable1Providing {
             appearance: .blockCreator(),
             confirmationPrompt: showConfirmation ? "Really block this user?" : nil,
             callback: api.canInteract ? { self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
-        )
-    }
-    
-    func removeAction(feedback: Set<FeedbackType> = []) -> BasicAction {
-        .init(
-            id: "remove\(uid)",
-            appearance: .remove(isOn: self2?.removed ?? false, isInProgress: !(self2?.removedManager.isInSync ?? true)),
-            callback: api.canInteract && (self2?.canModerate ?? false) ? showRemoveSheet : nil
         )
     }
     

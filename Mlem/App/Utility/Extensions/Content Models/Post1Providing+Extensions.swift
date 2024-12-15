@@ -185,7 +185,7 @@ extension Post1Providing {
         }
         lockAction(feedback: feedback)
         if let self2, !isOwnPost {
-            self2.removeAction()
+            self2.removeAction().disabled(!canModerate)
             banActions()
         }
         if api.isAdmin {
@@ -219,7 +219,7 @@ extension Post1Providing {
         // in parenthesis, but the pre-commit hook removed the paranthesis
         // swiftlint:disable:next void_function_in_ternary
         case .pin: api.isAdmin ? pinAction(feedback: feedback) : pinToCommunityAction(feedback: feedback)
-        case .remove: removeAction(feedback: feedback)
+        case .remove: removeAction(feedback: feedback).disabled(!canModerate)
         }
     }
     
