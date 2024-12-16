@@ -14,15 +14,14 @@ struct ImageViewer: View {
     let url: URL
     
     let duration: CGFloat = 0.25
+    let screenHeight: CGFloat = UIScreen.main.bounds.height
     
     @GestureState var dragState: Bool = false
     
     @State var isZoomed: Bool = false
-    @State var offset: CGFloat = 0 // UIScreen.main.bounds.height
+    @State var offset: CGFloat = 0
     @State var isDismissing: Bool = false
     @State var opacity: CGFloat = 0
-    
-    var screenHeight: CGFloat { UIScreen.main.bounds.height }
     
     init(url: URL) {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
@@ -35,15 +34,12 @@ struct ImageViewer: View {
             DynamicMediaView(url: url, cornerRadius: 0, playImmediately: true)
         }
         .offset(y: offset)
-//        .onAppear {
-//            updateDragDistance(0)
-//        }
+        .background(Color.black.opacity(1.0 - (abs(offset) / screenHeight)))
         .opacity(opacity)
-        .background(Color.black.opacity((1.0 - (abs(offset) / screenHeight)) * opacity))
         .overlay(alignment: .topTrailing) {
             if offset == 0 {
                 Button {
-                    dismiss()
+                    fadeDismiss()
                 } label: {
                     Image(systemName: Icons.close)
                         .resizable()
@@ -57,9 +53,7 @@ struct ImageViewer: View {
             }
         }
         .onAppear {
-            withAnimation(.easeOut(duration: duration)) {
-                opacity = 1.0
-            }
+            updateOpacity(1.0)
         }
         .simultaneousGesture(DragGesture(minimumDistance: 0.0)
             .onChanged { value in
@@ -74,7 +68,7 @@ struct ImageViewer: View {
         .onChange(of: dragState) {
             if !dragState {
                 if abs(offset) > 100 {
-                    dismiss(finalOffset: offset > 0 ? screenHeight : -screenHeight)
+                    swipeDismiss(finalOffset: offset > 0 ? screenHeight : -screenHeight)
                 } else {
                     updateDragDistance(0)
                 }
@@ -82,20 +76,28 @@ struct ImageViewer: View {
         }
     }
     
-    private func dismiss() {
+    private func fadeDismiss() {
         isDismissing = true
-        withAnimation(.easeOut(duration: duration)) {
-            opacity = 0
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
+        updateOpacity(0) {
             mediaState.url = nil
         }
     }
     
-    private func dismiss(finalOffset: CGFloat = UIScreen.main.bounds.height) {
+    private func swipeDismiss(finalOffset: CGFloat = UIScreen.main.bounds.height) {
         isDismissing = true
         updateDragDistance(finalOffset) {
             mediaState.url = nil
+        }
+    }
+    
+    private func updateOpacity(_ newOpacity: CGFloat, callback: (() -> Void)? = nil) {
+        withAnimation(.easeOut(duration: duration)) {
+            opacity = 0
+        }
+        if let callback {
+            DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
+                callback()
+            }
         }
     }
     
