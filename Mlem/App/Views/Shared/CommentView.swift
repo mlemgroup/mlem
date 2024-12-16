@@ -15,6 +15,7 @@ struct CommentView: View {
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     
     @Setting(\.compactComments) var compactComments
+    @Setting(\.tapCommentsToCollapse) var tapCommentsToCollapse
     @Setting(\.moderatorActionGrouping) var moderatorActionGrouping
 
     private let indent: CGFloat = 10
@@ -34,7 +35,7 @@ struct CommentView: View {
         } else {
             content
                 .onTapGesture {
-                    if let comment = comment as? CommentWrapper {
+                    if tapCommentsToCollapse, let comment = comment as? CommentWrapper {
                         withAnimation {
                             comment.collapsed.toggle()
                         }
