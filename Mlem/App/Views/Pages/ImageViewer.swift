@@ -34,7 +34,7 @@ struct ImageViewer: View {
             DynamicMediaView(url: url, cornerRadius: 0, playImmediately: true)
         }
         .offset(y: offset)
-        .background(Color.black.opacity(1.0 - (abs(offset) / screenHeight)))
+        .background(.black)
         .opacity(opacity)
         .overlay(alignment: .topTrailing) {
             if offset == 0 {
@@ -52,19 +52,18 @@ struct ImageViewer: View {
                 .padding(Constants.main.standardSpacing)
             }
         }
+        .simultaneousGesture(DragGesture(minimumDistance: 0.0)
+            .updating($dragState) { value, state, _ in
+                state = true
+                if !isZoomed, !isDismissing {
+                    offset = value.translation.height
+                    opacity = 1.0 - (abs(value.translation.height) / screenHeight)
+                }
+            }
+        )
         .onAppear {
             updateOpacity(1.0)
         }
-        .simultaneousGesture(DragGesture(minimumDistance: 0.0)
-            .onChanged { value in
-                if !isZoomed, !isDismissing {
-                    offset = value.translation.height
-                }
-            }
-            .updating($dragState) { _, state, _ in
-                state = true
-            }
-        )
         .onChange(of: dragState) {
             if !dragState {
                 if abs(offset) > 100 {
@@ -104,6 +103,7 @@ struct ImageViewer: View {
     private func updateDragDistance(_ newDistance: CGFloat, callback: (() -> Void)? = nil) {
         withAnimation(.easeOut(duration: duration)) {
             offset = newDistance
+            opacity = 1.0 - (abs(newDistance) / screenHeight)
         }
         if let callback {
             DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
