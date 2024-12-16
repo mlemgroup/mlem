@@ -92,7 +92,7 @@ struct ImageViewer: View {
     
     private func updateOpacity(_ newOpacity: CGFloat, callback: (() -> Void)? = nil) {
         withAnimation(.easeOut(duration: duration)) {
-            opacity = 0
+            opacity = newOpacity
         }
         if let callback {
             DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
