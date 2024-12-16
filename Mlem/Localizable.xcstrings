@@ -652,6 +652,9 @@
     "Fediseer GUI" : {
 
     },
+    "Feed" : {
+
+    },
     "Feed is outdated" : {
 
     },
@@ -905,6 +908,9 @@
 
     },
     "Mlem will always try to load from the proxy first." : {
+
+    },
+    "Mod Mail" : {
 
     },
     "Moderated" : {
@@ -1207,7 +1213,23 @@
     "Report" : {
 
     },
+    "Reported %@ by %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Reported %1$@ by %2$@"
+          }
+        }
+      }
+    },
+    "Reports and Registration Applications" : {
+
+    },
     "Reports Email Admins" : {
+
+    },
+    "Reports from communities you moderate" : {
 
     },
     "Requires Application" : {

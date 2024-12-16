@@ -9,7 +9,7 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-struct HeadlinePostView: View {
+struct HeadlinePostView<EmbeddedContent: View>: View {
     @Setting(\.thumbnailLocation) var thumbnailLocation
     @Setting(\.showPostCreator) var showCreator
     @Setting(\.showPersonAvatar) var showPersonAvatar
@@ -21,6 +21,12 @@ struct HeadlinePostView: View {
     @Environment(Palette.self) var palette: Palette
     
     let post: any Post1Providing
+    let embeddedContent: EmbeddedContent
+    
+    init(post: any Post1Providing, @ViewBuilder embeddedContent: () -> EmbeddedContent = { EmptyView() }) {
+        self.post = post
+        self.embeddedContent = embeddedContent()
+    }
     
     var blurred: Bool {
         switch blurNsfw {
@@ -31,13 +37,13 @@ struct HeadlinePostView: View {
     }
     
     var body: some View {
-        content
+        contentView
             .padding(Constants.main.standardSpacing)
             .background(palette.secondaryGroupedBackground)
             .environment(\.postContext, post)
     }
     
-    var content: some View {
+    var contentView: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             HStack {
                 if communityContext == nil {
@@ -92,6 +98,8 @@ struct HeadlinePostView: View {
             if showCreator, communityContext == nil {
                 personLink
             }
+            
+            embeddedContent
             
             InteractionBarView(
                 post: post,
