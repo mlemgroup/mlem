@@ -12,6 +12,7 @@ import NukeUI
 import SwiftUI
 
 struct TilePostView: View {
+    @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(Palette.self) var palette: Palette
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(\.parentFrameWidth) var parentFrameWidth: CGFloat
@@ -93,7 +94,7 @@ struct TilePostView: View {
     
     var score: some View {
         Menu {
-            ForEach(post.allMenuActions(), id: \.id) { action in
+            ForEach(post.allMenuActions(showAllActions: false, commentTreeTracker: commentTreeTracker), id: \.id) { action in
                 MenuButton(action: action)
             }
         } label: {

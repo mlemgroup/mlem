@@ -26,7 +26,7 @@ private struct AnimationControlLayer: ViewModifier {
                         }
                 }
             }
-            .overlay(alignment: .topTrailing) {
+            .overlay(alignment: .bottomTrailing) {
                 if let muted {
                     Image(systemName: muted.wrappedValue ? Icons.muted : Icons.unmuted)
                         .resizable()
