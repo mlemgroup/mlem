@@ -29,8 +29,9 @@ extension AdvancedSortView {
                 } label: {
                     HStack(spacing: Constants.main.standardSpacing) {
                         Image(systemName: type.systemImage)
+                            .symbolVariant(type == selectedSort ? .fill : .none)
                             .frame(width: 30, alignment: .center)
-                            .foregroundStyle(.secondary) // No palette!
+                            .foregroundStyle(type == selectedSort ? .primary : .secondary) // No palette!
                         VStack(alignment: .leading) {
                             titleView
                             if (appState.firstApi.fetchedVersion ?? .infinity) < type.minimumVersion {
