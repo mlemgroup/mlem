@@ -45,21 +45,21 @@ extension SearchView {
     
     @ViewBuilder
     private var communityFiltersView: some View {
-        FeedSortPicker(
-            sort: $communityFilters.sort,
-            filters: [.availableOnInstance, .communitySearchable]
-        )
-        .buttonStyle(FilterButtonStyle(isOn: communityFilters.sort != .topAll))
+        CommunitySearchSortPicker(sort: $communityFilters.sort)
+            .buttonStyle(FilterButtonStyle(isOn: communityFilters.sort != .topAll))
         InstancePicker(filter: $communityFilters.instance, isForPersonSearch: false)
             .buttonStyle(FilterButtonStyle(isOn: communityFilters.instance != .any))
     }
     
     @ViewBuilder
     private var personFiltersView: some View {
-        FeedSortPicker(
-            sort: $personFilters.sort,
-            filters: [.availableOnInstance, .personSearchable]
-        )
+        Menu(personFilters.sort.label(topFormat: .topOnly), systemImage: personFilters.sort.systemImage) {
+            Picker("Sort", selection: $personFilters.sort) {
+                ForEach(ApiSortType.personSearchCases, id: \.self) { item in
+                    Label(item.label(topFormat: .topOnly), systemImage: item.systemImage)
+                }
+            }
+        }
         .buttonStyle(FilterButtonStyle(isOn: personFilters.sort != .topAll))
         InstancePicker(filter: $personFilters.instance, isForPersonSearch: true)
             .buttonStyle(FilterButtonStyle(isOn: personFilters.instance != .any))
@@ -67,11 +67,8 @@ extension SearchView {
     
     @ViewBuilder
     private var postFiltersView: some View {
-        FeedSortPicker(
-            sort: $postFilters.sort,
-            filters: [.availableOnInstance]
-        )
-        .buttonStyle(FilterButtonStyle(isOn: postFilters.sort != .topAll))
+        FeedSortPicker(sort: $postFilters.sort)
+            .buttonStyle(FilterButtonStyle(isOn: postFilters.sort != .topAll))
         LocationPicker(filter: $postFilters.location)
             .buttonStyle(FilterButtonStyle(isOn: postFilters.location != .any))
         Button(postFilters.creator?.name ?? .init(localized: "Anyone"), systemImage: Icons.person) {
