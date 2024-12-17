@@ -52,7 +52,7 @@ struct ImageViewer: View {
                 .padding(Constants.main.standardSpacing)
             }
         }
-        .simultaneousGesture(DragGesture(minimumDistance: 0.0)
+        .simultaneousGesture(DragGesture(minimumDistance: 1.0)
             .updating($dragState) { value, state, _ in
                 state = true
                 if !isZoomed, !isDismissing {
