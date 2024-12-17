@@ -87,6 +87,7 @@ struct CommentView: View {
                         NavigationLink(.post(post)) {
                             FooterLinkView(title: post.title, subtitle: comment.community_?.fullNameWithPrefix)
                         }
+                        .id("\(comment.id)_commment_footer")
                     }
                     if !compactComments {
                         InteractionBarView(
