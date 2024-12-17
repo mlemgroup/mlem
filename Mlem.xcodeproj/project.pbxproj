@@ -2946,8 +2946,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
-				branch = "sjmarf/purge-community";
-				kind = branch;
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.53.0;
 			};
 		};
 		CDE4AC402CA3706400981010 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
