@@ -90,7 +90,6 @@ struct ImageViewer: View {
     }
     
     private func updateOpacity(_ newOpacity: CGFloat, callback: (() -> Void)? = nil) {
-        print("DEBUG updating opacity to \(newOpacity)")
         withAnimation(.easeOut(duration: duration)) {
             opacity = newOpacity
         }
