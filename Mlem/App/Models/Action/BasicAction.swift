@@ -53,4 +53,12 @@ struct BasicAction: Action {
             }
         }
     }
+    
+    func disabled(_ value: Bool) -> BasicAction {
+        var new = self
+        if value {
+            new.callback = nil
+        }
+        return new
+    }
 }

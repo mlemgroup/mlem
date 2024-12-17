@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 30/05/2024.
 //
 
+import Flow
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
@@ -36,10 +37,12 @@ struct PersonView: View {
     @State private var selectedContentType: PersonContentType = .all
     @State private var isAtTop: Bool = true
     @State var feedLoader: PersonContentFeedLoader?
+    @State var isAdmin: Bool
     let isProfileTab: Bool
     
     init(person: AnyPerson, isProfileTab: Bool = false) {
         self._person = .init(wrappedValue: person)
+        self._isAdmin = .init(wrappedValue: person.wrappedValue.isAdmin_ ?? false)
         self.isProfileTab = isProfileTab
         
         if let person1 = person.wrappedValue as? any Person1Providing, person1.api === AppState.main.firstApi {
@@ -114,6 +117,12 @@ struct PersonView: View {
                 }
                 return try await entity.upgrade()
             }
+            // This prevents the admin flair from disappearing if the `ContentLoader`
+            // switches from an external ApiClient to the active ApiClient, e.g. when
+            // navigating to `PersonView` from the administrator list in `InstanceView`.
+            if model.wrappedValue.isAdmin_ ?? false {
+                isAdmin = true
+            }
         }
         .navigationTitle(isAtTop ? "" : (person.wrappedValue.displayName_ ?? person.wrappedValue.name))
         .navigationBarTitleDisplayMode(.inline)
@@ -125,6 +134,7 @@ struct PersonView: View {
             VStack(spacing: 0) {
                 VStack(spacing: Constants.main.standardSpacing) {
                     ProfileHeaderView(person, fallback: .person)
+                    flairsView(person: person)
                     bio(person: person)
                 }
                 .padding([.horizontal], Constants.main.standardSpacing)
@@ -172,6 +182,27 @@ struct PersonView: View {
             dateLabel(person: person)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.bottom, Constants.main.halfSpacing)
+        }
+    }
+    
+    @ViewBuilder
+    func flairsView(person: any Person) -> some View {
+        if person.isBot || person.isMlemDeveloper || isAdmin {
+            HFlow(spacing: Constants.main.halfSpacing) {
+                if person.isMlemDeveloper {
+                    Label("Mlem Developer", systemImage: Icons.developerFlair)
+                        .tint(palette.colorfulAccent(4))
+                }
+                if isAdmin {
+                    Label("\(person.host ?? "") Administrator", systemImage: Icons.adminFlair)
+                        .tint(palette.administration)
+                }
+                if person.isBot {
+                    Label("Bot Account", systemImage: Icons.botFlair)
+                        .tint(palette.colorfulAccent(5))
+                }
+            }
+            .labelStyle(FlairLabelStyle())
         }
     }
     
@@ -231,5 +262,22 @@ struct PersonView: View {
             }
         }
         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+    }
+}
+
+private struct FlairLabelStyle: LabelStyle {
+    @Environment(Palette.self) private var palette
+    
+    func makeBody(configuration: Configuration) -> some View {
+        HStack(spacing: 5) {
+            configuration.icon
+                .imageScale(.small)
+            configuration.title
+        }
+        .font(.footnote)
+        .padding(.vertical, 2)
+        .padding(.horizontal, 8)
+        .foregroundStyle(.tint)
+        .background(.tint.opacity(0.2), in: .capsule)
     }
 }

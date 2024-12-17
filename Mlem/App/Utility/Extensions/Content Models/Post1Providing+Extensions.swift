@@ -131,6 +131,7 @@ extension Post1Providing {
     func allMenuActions(
         expanded: Bool = false,
         feedback: Set<FeedbackType> = [.haptic, .toast],
+        showAllActions: Bool = true,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> [any Action] {
         basicMenuActions(feedback: feedback, commentTreeTracker: commentTreeTracker)
@@ -139,7 +140,7 @@ extension Post1Providing {
                 appearance: .init(label: "Moderation...", color: Palette.main.moderation, icon: Icons.moderation),
                 displayMode: Settings.main.moderatorActionGrouping == .divider || expanded ? .section : .disclosure
             ) {
-                moderatorMenuActions(feedback: feedback)
+                moderatorMenuActions(feedback: feedback, showAllActions: showAllActions)
             }
         }
     }
@@ -178,14 +179,19 @@ extension Post1Providing {
     }
     
     @ActionBuilder
-    func moderatorMenuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
-        pinToCommunityAction(feedback: feedback, verboseTitle: api.isAdmin)
-        if api.isAdmin {
-            pinToInstanceAction(feedback: feedback)
+    func moderatorMenuActions(
+        feedback: Set<FeedbackType> = [.haptic, .toast],
+        showAllActions: Bool = true
+    ) -> [any Action] {
+        if showAllActions || Settings.main.showAllModActions {
+            pinToCommunityAction(feedback: feedback, verboseTitle: api.isAdmin)
+            if api.isAdmin {
+                pinToInstanceAction(feedback: feedback)
+            }
+            lockAction(feedback: feedback)
         }
-        lockAction(feedback: feedback)
         if let self2, !isOwnPost {
-            self2.removeAction()
+            self2.removeAction().disabled(!canModerate)
             banActions()
         }
         if api.isAdmin {
@@ -219,7 +225,7 @@ extension Post1Providing {
         // in parenthesis, but the pre-commit hook removed the paranthesis
         // swiftlint:disable:next void_function_in_ternary
         case .pin: api.isAdmin ? pinAction(feedback: feedback) : pinToCommunityAction(feedback: feedback)
-        case .remove: removeAction(feedback: feedback)
+        case .remove: removeAction(feedback: feedback).disabled(!canModerate)
         }
     }
     

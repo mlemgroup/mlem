@@ -71,6 +71,7 @@ class GuestAccount: Account {
         try container.encode(api.baseUrl, forKey: .instanceLink)
     }
     
+    @MainActor
     func update(instance: Instance3) {
         var shouldSave = false
         if avatar != instance.avatar {

@@ -34,7 +34,7 @@ struct PostEllipsisMenus: View {
                 }
             } else {
                 EllipsisMenu(size: 24) {
-                    post.allMenuActions(commentTreeTracker: commentTreeTracker)
+                    post.allMenuActions(showAllActions: false, commentTreeTracker: commentTreeTracker)
                 }
             }
         }
