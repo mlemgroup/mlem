@@ -9,7 +9,7 @@ import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
 
-struct CommentView: View {
+struct CommentView<EmbeddedContent: View>: View {
     @Environment(Palette.self) private var palette
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
@@ -21,9 +21,24 @@ struct CommentView: View {
     private let indent: CGFloat = 10
     
     let comment: any Comment1Providing
-    var highlight: Bool = false
-    var inFeed: Bool = false // flag to suppress threading/collapsing behavior
-    var depthOffset: Int = 0
+    let embeddedContent: EmbeddedContent
+    let inFeed: Bool
+    let highlight: Bool
+    let depthOffset: Int
+    
+    init(
+        comment: any Comment1Providing,
+        inFeed: Bool = false, // flag to suppress threading/collapsing behavior
+        highlight: Bool = false,
+        depthOffset: Int = 0,
+        @ViewBuilder embeddedContent: () -> EmbeddedContent = { EmptyView() }
+    ) {
+        self.comment = comment
+        self.inFeed = inFeed
+        self.highlight = highlight
+        self.depthOffset = depthOffset
+        self.embeddedContent = embeddedContent()
+    }
     
     var depth: Int {
         inFeed ? 0 : comment.depth - depthOffset
@@ -88,6 +103,7 @@ struct CommentView: View {
                             FooterLinkView(title: post.title, subtitle: comment.community_?.fullNameWithPrefix)
                         }
                     }
+                    embeddedContent
                     if !compactComments {
                         InteractionBarView(
                             comment: comment,

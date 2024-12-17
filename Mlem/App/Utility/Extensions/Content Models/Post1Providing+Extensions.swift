@@ -178,7 +178,10 @@ extension Post1Providing {
     }
     
     @ActionBuilder
-    func moderatorMenuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
+    func moderatorMenuActions(
+        feedback: Set<FeedbackType> = [.haptic, .toast],
+        report: Report? = nil
+    ) -> [any Action] {
         pinToCommunityAction(feedback: feedback, verboseTitle: api.isAdmin)
         if api.isAdmin {
             pinToInstanceAction(feedback: feedback)
