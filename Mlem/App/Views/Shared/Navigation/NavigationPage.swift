@@ -37,7 +37,7 @@ enum NavigationPage: Hashable {
     case createComment(_ context: CommentEditorView.Context, commentTreeTracker: CommentTreeTracker? = nil)
     case editComment(_ comment: Comment2, context: CommentEditorView.Context?)
     case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
-    case remove(_ interactable: Interactable2HashWrapper)
+    case remove(_ removable: RemovableHashWrapper)
     case purge(_ purgable: PurgableHashWrapper)
     case ban(_ person: AnyPerson, isBannedFromCommunity: Bool, shouldBan: Bool, community: AnyCommunity?)
     case createPost(
@@ -212,7 +212,7 @@ enum NavigationPage: Hashable {
         return report(.init(wrappedValue: interactable), community: anyCommunity)
     }
     
-    static func remove(_ interactable: any Interactable2Providing) -> NavigationPage {
+    static func remove(_ interactable: any RemovableProviding) -> NavigationPage {
         remove(.init(wrappedValue: interactable))
     }
     
@@ -314,6 +314,18 @@ struct ReportableHashWrapper: Hashable {
     }
     
     static func == (lhs: ReportableHashWrapper, rhs: ReportableHashWrapper) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
+}
+
+struct RemovableHashWrapper: Hashable {
+    var wrappedValue: any RemovableProviding
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(wrappedValue.hashValue)
+    }
+    
+    static func == (lhs: RemovableHashWrapper, rhs: RemovableHashWrapper) -> Bool {
         lhs.hashValue == rhs.hashValue
     }
 }

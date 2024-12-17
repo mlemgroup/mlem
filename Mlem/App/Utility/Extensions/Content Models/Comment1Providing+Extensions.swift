@@ -98,7 +98,7 @@ extension Comment1Providing {
     @ActionBuilder
     func moderatorMenuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
         if let self2, !isOwnComment {
-            self2.removeAction()
+            self2.removeAction().disabled(!canModerate)
             banActions()
         }
         if api.isAdmin {
@@ -126,7 +126,7 @@ extension Comment1Providing {
         case .share: shareAction()
         case .selectText: selectTextAction()
         case .report: reportAction(communityContext: communityContext)
-        case .remove: removeAction()
+        case .remove: removeAction().disabled(!canModerate)
         }
     }
     

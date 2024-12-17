@@ -17,18 +17,18 @@ struct ContentRemovalEditorView: View {
         case remove, restore
     }
     
-    let target: any Interactable2Providing
+    let target: any RemovableProviding
     @State var mode: Mode
     
-    @State var community: any Community
+    @State var community: (any Community)?
     @State var reason: String = ""
     @FocusState var reasonFocused: Bool
     @State var presentationSelection: PresentationDetent = .large
     
-    init(target: any Interactable2Providing) {
+    init(target: any RemovableProviding) {
         self.target = target
         self._mode = .init(wrappedValue: target.removed ? .restore : .remove)
-        self._community = .init(wrappedValue: target.community)
+        self._community = .init(wrappedValue: (target as? any Interactable2Providing)?.community)
     }
 
     var body: some View {
@@ -41,7 +41,9 @@ struct ContentRemovalEditorView: View {
                         Section {
                             ReasonShortcutView(reason: $reason)
                         }
-                        RulesListView(model: community, reason: $reason)
+                        if let community {
+                            RulesListView(model: community, reason: $reason)
+                        }
                         if let instance = appState.firstSession.instance {
                             RulesListView(model: instance, reason: $reason)
                         }
