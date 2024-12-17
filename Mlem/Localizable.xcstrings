@@ -31,6 +31,9 @@
         }
       }
     },
+    "%@ Administrator" : {
+
+    },
     "%@ has been unresponsive recently." : {
 
     },
@@ -54,6 +57,9 @@
 
     },
     "%@ rules..." : {
+
+    },
+    "%@ today!" : {
 
     },
     "%lld Crossposts..." : {
@@ -1279,6 +1285,9 @@
     "Show" : {
 
     },
+    "Show All Actions in Feed" : {
+
+    },
     "Show Bot Accounts" : {
 
     },
@@ -1425,6 +1434,9 @@
 
     },
     "Tap and hold items to add, remove or rearrange them." : {
+
+    },
+    "Tap to Collapse" : {
 
     },
     "Tap to show slur filter regex." : {
@@ -1787,6 +1799,9 @@
 
     },
     "What is Federation?" : {
+
+    },
+    "When disabled, some moderator actions will be hidden from the feed and will only be visible from when viewing a post page." : {
 
     },
     "Wrap Code Block Lines" : {

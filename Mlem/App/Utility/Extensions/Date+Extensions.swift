@@ -37,4 +37,11 @@ extension Date {
         let value = formatter.string(from: interval)
         return value ?? String(localized: "Unknown")
     }
+    
+    var isAnniversaryToday: Bool {
+        let calendar = Calendar.current
+        let date = calendar.dateComponents([.month, .day, .year], from: self)
+        let current = calendar.dateComponents([.month, .day, .year], from: .now)
+        return date.month == current.month && date.day == current.day && date.year != current.year
+    }
 }
