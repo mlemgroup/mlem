@@ -56,6 +56,9 @@
     "%@ rules..." : {
 
     },
+    "%@ today!" : {
+
+    },
     "%lld Crossposts..." : {
       "localizations" : {
         "en" : {
@@ -1446,6 +1449,9 @@
 
     },
     "Tap and hold items to add, remove or rearrange them." : {
+
+    },
+    "Tap to Collapse" : {
 
     },
     "Tap to show slur filter regex." : {

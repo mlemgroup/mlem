@@ -155,7 +155,9 @@ extension Post1Providing {
             downvoteAction(feedback: feedback)
             saveAction(feedback: feedback)
             replyAction(commentTreeTracker: commentTreeTracker)
-            selectTextAction()
+            if !deleted {
+                selectTextAction()
+            }
             shareAction()
 
             if isOwnPost {
@@ -168,7 +170,7 @@ extension Post1Providing {
                 if (api.fetchedVersion ?? .zero) >= .v19_4 {
                     hideAction(feedback: feedback)
                 }
-                if !canModerate {
+                if !canModerate, !deleted {
                     reportAction()
                 }
                 blockAction(feedback: feedback)

@@ -189,7 +189,7 @@ struct CodableSettings: Codable {
         self.comment_behaviors_collapseChildren = false
         self.comment_compact = settings.compactComments
         self.comment_defaultSort = settings.commentSort
-        self.comment_gestures_tapToCollapse = true
+        self.comment_gestures_tapToCollapse = settings.tapCommentsToCollapse
         self.comment_jumpButton = settings.jumpButton
         self.comment_showCreatorInstance = true
         self.comment_maxDepth = 8
