@@ -205,7 +205,7 @@ struct ExpandedPostView<Content: View>: View {
         }
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .quickSwipes(post.swipeActions(behavior: .standard, commentTreeTracker: tracker))
-        .contextMenu { post.allMenuActions() }
+        .contextMenu { post.allMenuActions(showAllActions: false, commentTreeTracker: tracker) }
         .paletteBorder(cornerRadius: PostSize.large.swipeBehavior.cornerRadius)
         .onTapGesture {
             withAnimation {
