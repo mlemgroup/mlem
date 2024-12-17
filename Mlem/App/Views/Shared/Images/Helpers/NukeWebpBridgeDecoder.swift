@@ -49,7 +49,7 @@ private extension Data {
         // data is a webp, indicate an animated webp; it is assumed that the data is long enough and correctly formatted.
         
         // Sanity checks that the data conforms to the webp spec
-        assert(self.count >= 33,"Invalid data (too short)")
+        assert(self.count >= 33, "Invalid data (too short)")
         assert(self[..<4] == Data([82, 73, 70, 70]), "Invalid data (no RIFF header)")
         assert(self[8..<12] == Data([87, 69, 66, 80]), "Invalid data (no WEBP header)")
         assert(self[12..<15] == Data([86, 80, 56]), "Invalid data (no VP8X header)")
