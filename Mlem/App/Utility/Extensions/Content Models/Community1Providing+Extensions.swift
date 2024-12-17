@@ -121,6 +121,12 @@ extension Community1Providing {
         copyNameAction()
         shareAction()
         blockAction(feedback: feedback)
+        if api.isAdmin {
+            ActionGroup {
+                removeAction()
+                purgeAction()
+            }
+        }
     }
     
     func swipeActions(behavior: SwipeBehavior) -> SwipeConfiguration {

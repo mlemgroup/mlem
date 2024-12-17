@@ -38,7 +38,7 @@ class UserSession: Session {
                 try await self.api.fetchSiteVersion(task: Task {
                     let (person, instance, blocks) = try await self.api.getMyPerson()
                     if let person {
-                        self.account.update(person: person, instance: instance)
+                        await self.account.update(person: person, instance: instance)
                         self.person = person
                     }
                     self.blocks = blocks

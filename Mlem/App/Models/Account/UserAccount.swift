@@ -96,6 +96,7 @@ class UserAccount: Account, CommunityOrPersonStub {
         getKeychainId(actorId: actorId)
     }
     
+    @MainActor
     func update(person: Person4, instance: Instance3) {
         var shouldSave = false
         if avatar != person.avatar {

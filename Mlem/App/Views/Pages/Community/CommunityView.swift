@@ -128,12 +128,23 @@ struct CommunityView: View {
     
     @ViewBuilder
     func postsTab(community: any Community, postFeedLoader: CommunityPostFeedLoader) -> some View {
-        PostGridView(postFeedLoader: postFeedLoader)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    FeedSortPicker(feedLoader: postFeedLoader)
-                }
+        if community.removed {
+            VStack(spacing: Constants.main.standardSpacing) {
+                Image(systemName: Icons.remove)
+                    .font(.title)
+                Text("This community has been removed.")
+                    .fontWeight(.semibold)
             }
+            .foregroundStyle(palette.warning)
+            .padding(.top, Constants.main.doubleSpacing)
+        } else {
+            PostGridView(postFeedLoader: postFeedLoader)
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        FeedSortPicker(feedLoader: postFeedLoader)
+                    }
+                }
+        }
     }
 
     @ViewBuilder

@@ -31,6 +31,9 @@
         }
       }
     },
+    "%@ Administrator" : {
+
+    },
     "%@ has been unresponsive recently." : {
 
     },
@@ -1322,6 +1325,9 @@
     "Show" : {
 
     },
+    "Show All Actions in Feed" : {
+
+    },
     "Show Bot Accounts" : {
 
     },
@@ -1611,6 +1617,9 @@
         }
       }
     },
+    "This community has been removed." : {
+
+    },
     "This community likely contains graphic or explicit content." : {
 
     },
@@ -1830,6 +1839,9 @@
 
     },
     "What is Federation?" : {
+
+    },
+    "When disabled, some moderator actions will be hidden from the feed and will only be visible from when viewing a post page." : {
 
     },
     "Wrap Code Block Lines" : {

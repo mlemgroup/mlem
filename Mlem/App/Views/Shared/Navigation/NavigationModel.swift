@@ -23,6 +23,8 @@ class NavigationModel {
     var showingFilePicker: Bool = false
     var filePickerCallback: ((URL) -> Void)?
     
+    var mediaUrl: URL?
+    
     private func openSheet(_ page: NavigationPage, hasNavigationStack: Bool? = nil, isFullScreenCover: Bool) {
         layers.append(
             .init(

@@ -17,6 +17,8 @@ struct FullyQualifiedLinkView: View {
     let showInstance: Bool
     let blurred: Bool
     
+    @State private var id = UUID()
+    
     init(
         entity: (any CommunityOrPersonStub & Profile2Providing)?,
         labelStyle: FullyQualifiedLabelStyle,
@@ -48,5 +50,6 @@ struct FullyQualifiedLinkView: View {
             )
         }
         .buttonStyle(.plain)
+        .id(id)
     }
 }
