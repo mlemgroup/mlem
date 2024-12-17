@@ -52,7 +52,7 @@ struct ImageViewer: View {
                 .padding(Constants.main.standardSpacing)
             }
         }
-        .simultaneousGesture(DragGesture(minimumDistance: 0.0)
+        .simultaneousGesture(DragGesture(minimumDistance: 1.0)
             .updating($dragState) { value, state, _ in
                 state = true
                 if !isZoomed, !isDismissing {
@@ -90,6 +90,7 @@ struct ImageViewer: View {
     }
     
     private func updateOpacity(_ newOpacity: CGFloat, callback: (() -> Void)? = nil) {
+        print("DEBUG updating opacity to \(newOpacity)")
         withAnimation(.easeOut(duration: duration)) {
             opacity = newOpacity
         }

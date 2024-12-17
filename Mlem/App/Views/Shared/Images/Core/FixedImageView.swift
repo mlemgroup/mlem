@@ -22,6 +22,7 @@ struct FixedImageView: View {
     let fallback: Fallback
     let showProgress: Bool
     let blurred: Bool
+    let showPlayButton: Bool
     
     /// Enumeration of placeholder images to use if image loading fails
     enum Fallback {
@@ -44,12 +45,14 @@ struct FixedImageView: View {
         size: CGSize,
         fallback: Fallback,
         showProgress: Bool,
-        blurred: Bool = false
+        blurred: Bool = false,
+        showPlayButton: Bool = true
     ) {
         self.fallback = fallback
         self.showProgress = showProgress
         self._loader = .init(wrappedValue: .init(url: url, size: size))
         self.blurred = blurred
+        self.showPlayButton = showPlayButton
     }
     
     var isMovie: Bool { loader.url?.proxyAwarePathExtension?.isMovieExtension ?? false }
@@ -79,7 +82,7 @@ struct FixedImageView: View {
             || (loader.loading == .loading && !showProgress) {
             fallbackImage
                 .overlay {
-                    if loader.isAnimated {
+                    if loader.isAnimated, showPlayButton {
                         PlayButton(postSize: postSize)
                     }
                 }
@@ -92,7 +95,7 @@ struct FixedImageView: View {
                     .scaledToFill()
                     .dynamicBlur(blurred: blurred)
                     .overlay {
-                        if loader.isAnimated {
+                        if loader.isAnimated, showPlayButton {
                             PlayButton(postSize: postSize)
                         }
                     }

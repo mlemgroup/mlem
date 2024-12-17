@@ -37,7 +37,8 @@ struct CircleCroppedImageView: View {
             size: .init(width: frame, height: frame),
             fallback: fallback,
             showProgress: showProgress,
-            blurred: blurred
+            blurred: blurred,
+            showPlayButton: false
         )
         .clipShape(Circle())
         .geometryGroup()
