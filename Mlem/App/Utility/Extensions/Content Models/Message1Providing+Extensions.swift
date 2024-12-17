@@ -30,7 +30,10 @@ extension Message1Providing {
     ) -> [any Action] {
         basicMenuActions(feedback: feedback)
         if api.isAdmin {
-            ActionGroup {
+            ActionGroup(
+                appearance: .init(label: "Moderation...", color: Palette.main.moderation, icon: Icons.moderation),
+                displayMode: Settings.main.moderatorActionGrouping == .divider ? .section : .disclosure
+            ) {
                 moderatorMenuActions(feedback: feedback, report: report)
             }
         }
