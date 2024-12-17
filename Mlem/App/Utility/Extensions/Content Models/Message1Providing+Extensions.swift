@@ -24,7 +24,23 @@ extension Message1Providing {
     }
     
     @ActionBuilder
-    func menuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
+    func allMenuActions(
+        feedback: Set<FeedbackType> = [.haptic, .toast],
+        report: Report? = nil
+    ) -> [any Action] {
+        basicMenuActions(feedback: feedback)
+        if api.isAdmin {
+            ActionGroup {
+                moderatorMenuActions(feedback: feedback, report: report)
+            }
+        }
+    }
+        
+    @ActionBuilder
+    func basicMenuActions(
+        feedback: Set<FeedbackType> = [.haptic, .toast],
+        report: Report? = nil
+    ) -> [any Action] {
         if !isOwnMessage {
             replyAction()
             markReadAction(feedback: feedback)
@@ -35,8 +51,22 @@ extension Message1Providing {
         if isOwnMessage {
             deleteAction(feedback: feedback)
         } else {
-            reportAction()
+            if report == nil {
+                reportAction()
+            }
             blockCreatorAction(feedback: feedback)
+        }
+    }
+    
+    @ActionBuilder
+    func moderatorMenuActions(
+        feedback: Set<FeedbackType> = [.haptic, .toast],
+        report: Report? = nil
+    ) -> [any Action] {
+        if let report {
+            ActionGroup {
+                report.menuActions()
+            }
         }
     }
     

@@ -31,19 +31,6 @@ struct InboxView: View {
     @State var waitingOnMarkAllAsRead: Bool = false
     @State var markAllAsReadTrigger: Bool = false
     
-    var feedLoader: StandardFeedLoader<InboxItem> {
-        switch selectedTab {
-        case .all:
-            inboxFeedLoader
-        case .replies:
-            replyFeedLoader
-        case .mentions:
-            mentionFeedLoader
-        case .messages:
-            messageFeedLoader
-        }
-    }
-    
     init() {
         @Setting(\.internetSpeed) var internetSpeed
         @Setting(\.showReadInInbox) var showRead
@@ -79,6 +66,26 @@ struct InboxView: View {
         self._mentionFeedLoader = .init(wrappedValue: mentionFeedLoader)
         self._messageFeedLoader = .init(wrappedValue: messageFeedLoader)
         self._inboxFeedLoader = .init(wrappedValue: inboxFeedLoader)
+    }
+    
+    var feedLoader: StandardFeedLoader<InboxItem> {
+        switch selectedTab {
+        case .all:
+            inboxFeedLoader
+        case .replies:
+            replyFeedLoader
+        case .mentions:
+            mentionFeedLoader
+        case .messages:
+            messageFeedLoader
+        }
+    }
+    
+    var availableFeeds: [Feed] {
+        if appState.firstApi.isAdmin || !(appState.firstPerson?.moderatedCommunities.isEmpty ?? true) {
+            return [.inbox, .modMail]
+        }
+        return [.inbox]
     }
     
     var body: some View {

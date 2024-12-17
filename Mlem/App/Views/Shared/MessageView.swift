@@ -12,15 +12,21 @@ import SwiftUI
 struct MessageView<EmbeddedContent: View>: View {
     @Environment(Palette.self) private var palette
     @Environment(AppState.self) private var appState
+    @Environment(\.reportContext) private var reportContext
+    
+    @Setting(\.moderatorActionGrouping) var moderatorActionGrouping
     
     let message: any Message
+    let isInInbox: Bool
     let embeddedContent: EmbeddedContent
     
     init(
         message: any Message,
+        isInInbox: Bool = false,
         @ViewBuilder embeddedContent: () -> EmbeddedContent = { EmptyView() }
     ) {
         self.message = message
+        self.isInInbox = isInInbox
         self.embeddedContent = embeddedContent()
     }
     
@@ -29,10 +35,12 @@ struct MessageView<EmbeddedContent: View>: View {
             HStack {
                 FullyQualifiedLinkView(entity: message.creator_, labelStyle: .small, showAvatar: true)
                 Spacer()
-                Image(systemName: message.isOwnMessage ? Icons.send : Icons.message)
-                    .symbolVariant(message.read ? .none : .fill)
-                    .foregroundStyle(palette.accent)
-                EllipsisMenu(size: 24) { message.menuActions() }
+                if isInInbox {
+                    Image(systemName: message.isOwnMessage ? Icons.send : Icons.message)
+                        .symbolVariant(message.read ? .none : .fill)
+                        .foregroundStyle(palette.accent)
+                }
+                ellipsisMenus
                     .frame(height: 10)
             }
             if message.deleted {
@@ -61,7 +69,26 @@ struct MessageView<EmbeddedContent: View>: View {
         .quickSwipes(message.swipeActions(behavior: .standard))
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .contextMenu { message.menuActions() }
+        .contextMenu { message.allMenuActions(report: reportContext) }
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+    }
+    
+    var ellipsisMenus: some View {
+        HStack {
+            if moderatorActionGrouping == .separateMenu {
+                if message.api.isAdmin {
+                    EllipsisMenu(systemImage: Icons.moderation, size: 24) {
+                        message.moderatorMenuActions(report: reportContext)
+                    }
+                }
+                EllipsisMenu(size: 24) {
+                    message.basicMenuActions()
+                }
+            } else {
+                EllipsisMenu(size: 24) {
+                    message.allMenuActions(report: reportContext)
+                }
+            }
+        }
     }
 }

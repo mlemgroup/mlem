@@ -17,7 +17,7 @@ extension InboxView {
                     Group {
                         switch item {
                         case let .message(message):
-                            MessageView(message: message)
+                            MessageView(message: message, isInInbox: true)
                         case let .reply(reply):
                             ReplyView(reply: reply)
                         }
@@ -137,11 +137,14 @@ extension InboxView {
     
     @ViewBuilder
     var headerView: some View {
+        let availableFeeds = availableFeeds
         Menu {
-            Picker("Feed", selection: $selectedFeed) {
-                ForEach(Feed.allCases) { feedType in
-                    Label(String(localized: feedType.label), systemImage: feedType.systemImage)
-                        .tag(feedType)
+            if availableFeeds.count > 1 {
+                Picker("Feed", selection: $selectedFeed) {
+                    ForEach(availableFeeds) { feedType in
+                        Label(String(localized: feedType.label), systemImage: feedType.systemImage)
+                            .tag(feedType)
+                    }
                 }
             }
         } label: {
@@ -154,7 +157,7 @@ extension InboxView {
                     iconNameFill: selectedFeed.systemImageFill,
                     iconScaleFactor: 0.5
                 ),
-                dropdownStyle: .enabled(showBadge: false)
+                dropdownStyle: availableFeeds.count > 1 ? .enabled(showBadge: false) : .disabled
             )
         }
     }
