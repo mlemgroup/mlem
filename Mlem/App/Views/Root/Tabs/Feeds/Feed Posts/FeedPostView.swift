@@ -13,6 +13,7 @@ import SwiftUI
 struct FeedPostView: View {
     @Setting(\.postSize) private var postSize
     
+    @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(Palette.self) private var palette
     
     let post: any Post1Providing
@@ -23,7 +24,7 @@ struct FeedPostView: View {
             .contentShape(.interaction, .rect)
             .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
             .quickSwipes(post.swipeActions(behavior: postSize.swipeBehavior))
-            .contextMenu { post.allMenuActions() }
+            .contextMenu { post.allMenuActions(showAllActions: false, commentTreeTracker: commentTreeTracker) }
             .paletteBorder(cornerRadius: postSize.swipeBehavior.cornerRadius)
     }
     

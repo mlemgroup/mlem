@@ -31,6 +31,9 @@
         }
       }
     },
+    "%@ Administrator" : {
+
+    },
     "%@ has been unresponsive recently." : {
 
     },
@@ -1300,6 +1303,9 @@
     "Show" : {
 
     },
+    "Show All Actions in Feed" : {
+
+    },
     "Show Bot Accounts" : {
 
     },
@@ -1811,6 +1817,9 @@
 
     },
     "What is Federation?" : {
+
+    },
+    "When disabled, some moderator actions will be hidden from the feed and will only be visible from when viewing a post page." : {
 
     },
     "Wrap Code Block Lines" : {

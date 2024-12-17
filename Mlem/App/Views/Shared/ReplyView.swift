@@ -31,6 +31,7 @@ struct ReplyView: View {
             NavigationLink(.post(reply.post)) {
                 FooterLinkView(title: reply.post.title, subtitle: reply.community.fullNameWithPrefix)
             }
+            .id("\(reply.id)_reply_footer")
             InteractionBarView(
                 reply: reply,
                 configuration: InteractionBarTracker.main.replyInteractionBar

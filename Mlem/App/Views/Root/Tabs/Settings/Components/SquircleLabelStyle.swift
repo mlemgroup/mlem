@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SquircleLabelStyle: LabelStyle {
     @Environment(Palette.self) private var palette
+    
     func makeBody(configuration: Configuration) -> some View {
         HStack(alignment: .center, spacing: 16) {
             configuration.icon
