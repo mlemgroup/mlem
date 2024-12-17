@@ -31,8 +31,7 @@ struct ModeratorSettingsView: View {
             Section {
                 Toggle("Show All Actions in Feed", isOn: $showAllModActions)
             } footer: {
-                // swiftlint:disable:next line_length
-                Text("When disabled, some moderator actions will only be visible from the post page.")
+                Text("When disabled, some moderator actions will only be accessible from the post page.")
             }
         }
         .navigationTitle("Moderation")
