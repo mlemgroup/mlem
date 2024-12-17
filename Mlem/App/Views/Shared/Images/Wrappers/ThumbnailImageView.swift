@@ -12,6 +12,7 @@ import SwiftUI
 struct ThumbnailImageView: View {
     @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
+    @Environment(MediaState.self) var mediaState
     @Environment(\.openURL) var openURL
     
     @State var loading: MediaLoadingState?
@@ -55,12 +56,7 @@ struct ThumbnailImageView: View {
                         if let loading, loading == .done || loading == .proxyFailed {
                             post.markRead()
                             
-                            // Sheets don't cover the whole screen on iPad, so use a fullScreenCover instead
-                            if UIDevice.isPad {
-                                navigation.showFullScreenCover(.imageViewer(url))
-                            } else {
-                                navigation.openSheet(.imageViewer(url))
-                            }
+                            mediaState.url = url
                         }
                     }
                     .contextMenu {
