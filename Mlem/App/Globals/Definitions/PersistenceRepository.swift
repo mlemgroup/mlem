@@ -32,6 +32,7 @@ private enum Path {
     static var easterFlags = root.appendingPathComponent("Easter eggs flags", conformingTo: .json)
     static var instanceMetadata = root.appendingPathComponent("Instance Metadata", conformingTo: .json)
     static var layoutWidgets = root.appendingPathComponent("Layout Widgets", conformingTo: .json)
+    static var pinnedSortTypes = root.appendingPathComponent("Sort Settings", conformingTo: .json)
     static var systemSettings = root.appendingPathComponent("System Settings", conformingTo: .directory)
     static var userSettings = root.appendingPathComponent("User Settings", conformingTo: .directory)
 }
@@ -154,6 +155,16 @@ class PersistenceRepository {
     
     func saveInteractionBarConfigurations(_ value: InteractionBarConfigurations) async throws {
         try await save(value, to: Path.layoutWidgets)
+    }
+    
+    func loadPinnedSortTypes() -> Set<ApiSortType> {
+        load(Set<ApiSortType>.self, from: Path.pinnedSortTypes) ?? [
+            .hot, .new, .topSixHour, .topDay, .topWeek, .topMonth, .topYear, .topAll
+        ]
+    }
+    
+    func savePinnedSortTypes(_ value: Set<ApiSortType>) async throws {
+        try await save(value, to: Path.pinnedSortTypes)
     }
     
     /// Saves the given user settings

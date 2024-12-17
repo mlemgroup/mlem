@@ -31,6 +31,9 @@
         }
       }
     },
+    "%@ Administrator" : {
+
+    },
     "%@ has been unresponsive recently." : {
 
     },
@@ -92,21 +95,6 @@
       }
     },
     "%lld on your instance" : {
-
-    },
-    "3 Months" : {
-
-    },
-    "6 Hours" : {
-
-    },
-    "6 Months" : {
-
-    },
-    "9 Months" : {
-
-    },
-    "12 Hours" : {
 
     },
     "A censure signifies that an instance disapproves of another instance. Like an endorsement, it is completely subjective and a reason does not have to be given." : {
@@ -454,9 +442,6 @@
         }
       }
     },
-    "Day" : {
-
-    },
     "Days:" : {
 
     },
@@ -661,6 +646,9 @@
     "Files" : {
 
     },
+    "Filter" : {
+
+    },
     "Filters" : {
 
     },
@@ -725,9 +713,6 @@
 
     },
     "Hot" : {
-
-    },
-    "Hour" : {
 
     },
     "I think I've found the bottom!" : {
@@ -920,9 +905,6 @@
 
     },
     "Monochrome" : {
-
-    },
-    "Month" : {
 
     },
     "More" : {
@@ -1138,6 +1120,9 @@
     "Quote" : {
 
     },
+    "Ranks posts based on the post score and creation time." : {
+
+    },
     "Readouts:" : {
 
     },
@@ -1298,6 +1283,9 @@
 
     },
     "Show" : {
+
+    },
+    "Show All Actions in Feed" : {
 
     },
     "Show Bot Accounts" : {
@@ -1589,6 +1577,9 @@
         }
       }
     },
+    "This community has been removed." : {
+
+    },
     "This community likely contains graphic or explicit content." : {
 
     },
@@ -1637,6 +1628,9 @@
     "Top" : {
 
     },
+    "Top of..." : {
+
+    },
     "Top: %@" : {
 
     },
@@ -1656,6 +1650,9 @@
 
     },
     "Two-Factor Authentication" : {
+
+    },
+    "Unavailable" : {
 
     },
     "Unban" : {
@@ -1795,9 +1792,6 @@
     "Website" : {
 
     },
-    "Week" : {
-
-    },
     "Welcome %@" : {
       "comment" : "Example: \"Welcome John\""
     },
@@ -1810,13 +1804,13 @@
     "What is Federation?" : {
 
     },
+    "When disabled, some moderator actions will only be accessible from the post page." : {
+
+    },
     "Wrap Code Block Lines" : {
 
     },
     "Write a bit about yourself..." : {
-
-    },
-    "Year" : {
 
     },
     "Yes" : {

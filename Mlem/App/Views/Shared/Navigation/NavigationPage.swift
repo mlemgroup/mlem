@@ -37,7 +37,7 @@ enum NavigationPage: Hashable {
     case createComment(_ context: CommentEditorView.Context, commentTreeTracker: CommentTreeTracker? = nil)
     case editComment(_ comment: Comment2, context: CommentEditorView.Context?)
     case report(_ interactable: ReportableHashWrapper, community: AnyCommunity? = nil)
-    case remove(_ interactable: Interactable2HashWrapper)
+    case remove(_ removable: RemovableHashWrapper)
     case purge(_ purgable: PurgableHashWrapper)
     case ban(_ person: AnyPerson, isBannedFromCommunity: Bool, shouldBan: Bool, community: AnyCommunity?)
     case createPost(
@@ -53,6 +53,7 @@ enum NavigationPage: Hashable {
     case confirmUpload(imageData: Data, imageManager: ImageUploadManager, uploadApi: ApiClient)
     case rulesList(_ model: Profile2HashWrapper, callback: HashWrapper<(String) -> Void>)
     case blockList
+    case advancedSorting(_ sort: HashWrapper<Binding<ApiSortType>>)
     
     static func post(_ post: any PostStubProviding, scrollTargetedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
         if let scrollTargetedComment {
@@ -211,7 +212,7 @@ enum NavigationPage: Hashable {
         return report(.init(wrappedValue: interactable), community: anyCommunity)
     }
     
-    static func remove(_ interactable: any Interactable2Providing) -> NavigationPage {
+    static func remove(_ interactable: any RemovableProviding) -> NavigationPage {
         remove(.init(wrappedValue: interactable))
     }
     
@@ -244,6 +245,10 @@ enum NavigationPage: Hashable {
         rulesList(.init(wrappedValue: model), callback: .init(wrappedValue: callback))
     }
     
+    static func advancedSorting(_ sort: Binding<ApiSortType>) -> NavigationPage {
+        advancedSorting(.init(wrappedValue: sort))
+    }
+    
     var hasNavigationStack: Bool {
         switch self {
         case .quickSwitcher, .report, .externalApiInfo, .selectText, .createComment, .editComment, .createPost, .editPost:
@@ -255,7 +260,7 @@ enum NavigationPage: Hashable {
     
     var canDisplayToasts: Bool {
         switch self {
-        case .quickSwitcher, .externalApiInfo, .selectText:
+        case .quickSwitcher, .externalApiInfo, .selectText, .advancedSorting:
             false
         default:
             true
@@ -309,6 +314,18 @@ struct ReportableHashWrapper: Hashable {
     }
     
     static func == (lhs: ReportableHashWrapper, rhs: ReportableHashWrapper) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
+}
+
+struct RemovableHashWrapper: Hashable {
+    var wrappedValue: any RemovableProviding
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(wrappedValue.hashValue)
+    }
+    
+    static func == (lhs: RemovableHashWrapper, rhs: RemovableHashWrapper) -> Bool {
         lhs.hashValue == rhs.hashValue
     }
 }

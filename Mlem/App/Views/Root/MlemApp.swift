@@ -5,10 +5,10 @@
 //  Created by Eric Andrews on 2024-02-21.
 //
 
+import AVFAudio
 import Nuke
 import SDWebImageWebPCoder
 import SwiftUI
-import AVFAudio
 
 /// Root view for the app
 @main
