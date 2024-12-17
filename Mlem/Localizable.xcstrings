@@ -97,21 +97,6 @@
     "%lld on your instance" : {
 
     },
-    "3 Months" : {
-
-    },
-    "6 Hours" : {
-
-    },
-    "6 Months" : {
-
-    },
-    "9 Months" : {
-
-    },
-    "12 Hours" : {
-
-    },
     "A censure signifies that an instance disapproves of another instance. Like an endorsement, it is completely subjective and a reason does not have to be given." : {
 
     },
@@ -457,9 +442,6 @@
         }
       }
     },
-    "Day" : {
-
-    },
     "Days:" : {
 
     },
@@ -664,6 +646,9 @@
     "Files" : {
 
     },
+    "Filter" : {
+
+    },
     "Filters" : {
 
     },
@@ -728,9 +713,6 @@
 
     },
     "Hot" : {
-
-    },
-    "Hour" : {
 
     },
     "I think I've found the bottom!" : {
@@ -923,9 +905,6 @@
 
     },
     "Monochrome" : {
-
-    },
-    "Month" : {
 
     },
     "More" : {
@@ -1139,6 +1118,9 @@
 
     },
     "Quote" : {
+
+    },
+    "Ranks posts based on the post score and creation time." : {
 
     },
     "Readouts:" : {
@@ -1646,6 +1628,9 @@
     "Top" : {
 
     },
+    "Top of..." : {
+
+    },
     "Top: %@" : {
 
     },
@@ -1665,6 +1650,9 @@
 
     },
     "Two-Factor Authentication" : {
+
+    },
+    "Unavailable" : {
 
     },
     "Unban" : {
@@ -1804,9 +1792,6 @@
     "Website" : {
 
     },
-    "Week" : {
-
-    },
     "Welcome %@" : {
       "comment" : "Example: \"Welcome John\""
     },
@@ -1819,16 +1804,13 @@
     "What is Federation?" : {
 
     },
-    "When disabled, some moderator actions will be hidden from the feed and will only be visible from when viewing a post page." : {
+    "When disabled, some moderator actions will only be accessible from the post page." : {
 
     },
     "Wrap Code Block Lines" : {
 
     },
     "Write a bit about yourself..." : {
-
-    },
-    "Year" : {
 
     },
     "Yes" : {

@@ -6,9 +6,9 @@
 //
 
 import AVFoundation
+import AVKit
 import NukeVideo
 import SwiftUI
-import AVKit
 
 struct VideoView: View {
     let player: AVQueuePlayer
@@ -32,8 +32,8 @@ struct VideoView: View {
     init(asset: AVAsset) {
         // set up AVQueuePlayer and AVPlayerLooper to loop the video
         let playerItem: AVPlayerItem = .init(asset: asset)
-        player = .init(playerItem: playerItem)
-        playerLooper = .init(player: player, templateItem: playerItem)
+        self.player = .init(playerItem: playerItem)
+        self.playerLooper = .init(player: player, templateItem: playerItem)
 
         @Setting(\.muteVideos) var muteVideos
         player.isMuted = muteVideos

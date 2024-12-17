@@ -156,6 +156,8 @@ extension NavigationPage {
                 .presentationDetents([.medium, .large])
         case .blockList:
             BlockListView()
+        case let .advancedSorting(sort):
+            AdvancedSortView(selectedSort: sort.wrappedValue)
         }
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 import MlemMiddleware
 
-extension ApiSortType {
+extension ApiSortType: @retroactive CaseIterable {
     static let nonTopCases: [Self] = [
         .hot,
         .scaled,
@@ -34,7 +34,16 @@ extension ApiSortType {
         .topAll
     ]
     
-    static let communitySearchCases: [Self] = [.controversial, .new, .old] + topCases
+    public static let allCases: [Self] = nonTopCases + topCases
+    
+    enum TopSortModeFormatStyle {
+        case topOnly
+        case timescaleAbbreviated
+        case timescaleFull
+        case topAndTimescale
+    }
+    
+    static let communitySearchCases: [Self] = [.controversial, .new, .old]
     static let personSearchCases: [Self] = [.new, .old, .topAll]
     
     var minimumVersion: SiteVersion {
@@ -45,35 +54,44 @@ extension ApiSortType {
         }
     }
     
-    var label: LocalizedStringResource {
+    private func basicLabel(abbreviateUnits: Bool = false) -> String {
         switch self {
-        case .active: "Active"
-        case .hot: "Hot"
-        case .new: "New"
-        case .old: "Old"
-        case .topDay: "Day"
-        case .topWeek: "Week"
-        case .topMonth: "Month"
-        case .topYear: "Year"
-        case .topAll: "All Time"
-        case .mostComments: "Most Comments"
-        case .newComments: "New Comments"
-        case .topHour: "Hour"
-        case .topSixHour: "6 Hours"
-        case .topTwelveHour: "12 Hours"
-        case .topThreeMonths: "3 Months"
-        case .topSixMonths: "6 Months"
-        case .topNineMonths: "9 Months"
-        case .controversial: "Controversial"
-        case .scaled: "Scaled"
+        case .active:
+            .init(localized: "Active")
+        case .hot:
+            .init(localized: "Hot")
+        case .new:
+            .init(localized: "New")
+        case .old:
+            .init(localized: "Old")
+        case .topAll:
+            .init(localized: "All Time")
+        case .mostComments:
+            .init(localized: "Most Comments")
+        case .newComments:
+            .init(localized: "New Comments")
+        case .controversial:
+            .init(localized: "Controversial")
+        case .scaled:
+            .init(localized: "Scaled")
+        default:
+            formatter(unitsStyle: abbreviateUnits ? .abbreviated : .full)
+                .string(for: dateComponents)?
+                .capitalized ?? ""
         }
     }
     
-    func fullLabel(shortTopMode: Bool = false) -> String {
+    func label(topFormat: TopSortModeFormatStyle = .timescaleFull) -> String {
         if ApiSortType.topCases.contains(self) {
-            return shortTopMode ? String(localized: "Top") : String(localized: "Top: \(String(localized: label))")
+            switch topFormat {
+            case .topOnly:
+                return String(localized: "Top")
+            case .topAndTimescale:
+                return String(localized: "Top: \(basicLabel(abbreviateUnits: true))")
+            default: break
+            }
         }
-        return String(localized: label)
+        return basicLabel(abbreviateUnits: topFormat != .timescaleFull)
     }
     
     var systemImage: String {
@@ -88,5 +106,37 @@ extension ApiSortType {
         case .scaled: Icons.scaledSort
         default: Icons.topSort
         }
+    }
+    
+    var dateComponents: DateComponents? {
+        switch self {
+        case .topHour: .init(hour: 1)
+        case .topSixHour: .init(hour: 6)
+        case .topTwelveHour: .init(hour: 12)
+        case .topDay: .init(day: 1)
+        case .topWeek: .init(weekOfMonth: 1)
+        case .topMonth: .init(month: 1)
+        case .topThreeMonths: .init(month: 3)
+        case .topSixMonths: .init(month: 6)
+        case .topNineMonths: .init(month: 9)
+        case .topYear: .init(year: 1)
+        default: nil
+        }
+    }
+    
+    var explanation: LocalizedStringResource? {
+        switch self {
+        case .hot: "Ranks posts based on the post score and creation time."
+        case .scaled: "Similar to \"Hot\", but ranks posts from smaller communities higher."
+        case .active: "Ranks posts based on the post score and the time since the last comment was created."
+        default: nil
+        }
+    }
+    
+    private func formatter(unitsStyle: DateComponentsFormatter.UnitsStyle) -> DateComponentsFormatter {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .full
+        formatter.maximumUnitCount = 1
+        return formatter
     }
 }
