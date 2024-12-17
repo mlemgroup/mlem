@@ -8,6 +8,13 @@
 import MlemMiddleware
 
 extension Report {
+    func toggleResolved(feedback: Set<FeedbackType>) {
+        if feedback.contains(.haptic) {
+            HapticManager.main.play(haptic: .success, priority: .low)
+        }
+        toggleResolved()
+    }
+    
     @ActionBuilder
     func menuActions(
         feedback: Set<FeedbackType> = [.haptic]
@@ -19,12 +26,12 @@ extension Report {
         .init(
             id: "resolve\(cacheId)",
             appearance: .init(
-                label: "Resolve",
-                color: Palette.main.positive,
-                icon: Icons.successCircle,
-                swipeIcon2: Icons.successCircleFill
+                label: resolved ? "Unresolve" : "Resolve",
+                color: resolved ? Palette.main.negative : Palette.main.positive,
+                icon: resolved ? Icons.failureCircle : Icons.successCircle,
+                swipeIcon2: resolved ? Icons.failureCircleFill : Icons.successCircleFill
             ),
-            callback: api.canInteract ? {} : nil
+            callback: api.canInteract ? { self.toggleResolved(feedback: feedback) } : nil
         )
     }
 }

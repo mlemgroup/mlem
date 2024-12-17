@@ -1226,6 +1226,12 @@
     "Reset Settings State" : {
 
     },
+    "Resolve" : {
+
+    },
+    "Resolved by %@" : {
+
+    },
     "Response Time" : {
 
     },
@@ -1740,6 +1746,9 @@
 
     },
     "Unpin From Instance" : {
+
+    },
+    "Unresolve" : {
 
     },
     "Unsave" : {

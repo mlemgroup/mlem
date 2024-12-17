@@ -13,6 +13,7 @@ struct CommentView<EmbeddedContent: View>: View {
     @Environment(Palette.self) private var palette
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
+    @Environment(\.reportContext) private var reportContext: Report?
     
     @Setting(\.compactComments) var compactComments
     @Setting(\.tapCommentsToCollapse) var tapCommentsToCollapse
@@ -125,11 +126,8 @@ struct CommentView<EmbeddedContent: View>: View {
         .background(highlight ? palette.accent.opacity(0.2) : .clear)
         .background(palette.secondaryGroupedBackground)
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
-        .quickSwipes(comment.swipeActions(behavior: .standard, commentTreeTracker: commentTreeTracker))
         .contentShape(.interaction, .rect)
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .contextMenu { comment.allMenuActions(commentTreeTracker: commentTreeTracker) }
-        .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .environment(\.commentContext, comment)
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
@@ -142,7 +140,7 @@ struct CommentView<EmbeddedContent: View>: View {
             if moderatorActionGrouping == .separateMenu {
                 if comment.canModerate {
                     EllipsisMenu(systemImage: Icons.moderation, size: 24) {
-                        comment.moderatorMenuActions()
+                        comment.moderatorMenuActions(report: reportContext)
                     }
                 }
                 EllipsisMenu(size: 24) {
@@ -150,7 +148,7 @@ struct CommentView<EmbeddedContent: View>: View {
                 }
             } else {
                 EllipsisMenu(size: 24) {
-                    comment.allMenuActions(commentTreeTracker: commentTreeTracker)
+                    comment.allMenuActions(commentTreeTracker: commentTreeTracker, report: reportContext)
                 }
             }
         }

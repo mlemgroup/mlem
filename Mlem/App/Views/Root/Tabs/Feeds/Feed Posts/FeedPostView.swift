@@ -10,14 +10,29 @@ import MlemMiddleware
 import SwiftUI
 
 /// View for rendering posts in feed
-struct FeedPostView: View {
-    @Setting(\.postSize) private var postSize
-    
+struct FeedPostView<EmbeddedContent: View>: View {
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(Palette.self) private var palette
     
+    @Setting(\.postSize) private var postSize
+    
     let post: any Post1Providing
-    var overridePostSize: PostSize?
+    let favoredLink: PostViewNavigationLink?
+    let overridePostSize: PostSize?
+    
+    @ViewBuilder let embeddedContent: () -> EmbeddedContent
+    
+    init(
+        post: any Post1Providing,
+        overridePostSize: PostSize? = nil,
+        favoredLink: PostViewNavigationLink? = nil,
+        @ViewBuilder embeddedContent: @escaping () -> EmbeddedContent = { EmptyView() }
+    ) {
+        self.post = post
+        self.overridePostSize = overridePostSize
+        self.favoredLink = favoredLink
+        self.embeddedContent = embeddedContent
+    }
     
     var body: some View {
         content
@@ -36,9 +51,9 @@ struct FeedPostView: View {
         case .tile:
             TilePostView(post: post)
         case .headline:
-            HeadlinePostView(post: post)
+            HeadlinePostView(post: post, favoredLink: favoredLink, embeddedContent: embeddedContent)
         case .large:
-            LargePostView(post: post)
+            LargePostView(post: post, favoredLink: favoredLink)
         }
     }
 }

@@ -132,7 +132,8 @@ extension Post1Providing {
         expanded: Bool = false,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         showAllActions: Bool = true,
-        commentTreeTracker: CommentTreeTracker? = nil
+        commentTreeTracker: CommentTreeTracker? = nil,
+        report: Report? = nil
     ) -> [any Action] {
         basicMenuActions(feedback: feedback, commentTreeTracker: commentTreeTracker)
         if canModerate {
@@ -140,7 +141,7 @@ extension Post1Providing {
                 appearance: .init(label: "Moderation...", color: Palette.main.moderation, icon: Icons.moderation),
                 displayMode: Settings.main.moderatorActionGrouping == .divider || expanded ? .section : .disclosure
             ) {
-                moderatorMenuActions(feedback: feedback, showAllActions: showAllActions)
+                moderatorMenuActions(feedback: feedback, showAllActions: showAllActions, report: report)
             }
         }
     }
@@ -191,14 +192,19 @@ extension Post1Providing {
             }
             lockAction(feedback: feedback)
         }
-        if let self2, !isOwnPost {
-            self2.removeAction().disabled(!canModerate)
-            banActions()
+        if !isOwnPost {
+            removeAction().disabled(!canModerate)
+            banActions(communityId: communityId)
         }
         if api.isAdmin {
             purgeAction()
             if !isOwnPost {
                 purgeCreatorAction()
+            }
+        }
+        if let report {
+            ActionGroup {
+                report.menuActions()
             }
         }
     }

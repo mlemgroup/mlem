@@ -9,11 +9,20 @@ import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
 
-struct MessageView: View {
+struct MessageView<EmbeddedContent: View>: View {
     @Environment(Palette.self) private var palette
     @Environment(AppState.self) private var appState
     
     let message: any Message
+    let embeddedContent: EmbeddedContent
+    
+    init(
+        message: any Message,
+        @ViewBuilder embeddedContent: () -> EmbeddedContent = { EmptyView() }
+    ) {
+        self.message = message
+        self.embeddedContent = embeddedContent()
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
@@ -42,6 +51,7 @@ struct MessageView: View {
             }
             .font(.caption)
             .foregroundStyle(palette.secondary)
+            embeddedContent
         }
         .padding(.vertical, 2)
         .padding(Constants.main.standardSpacing)

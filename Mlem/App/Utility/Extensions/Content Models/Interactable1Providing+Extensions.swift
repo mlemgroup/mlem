@@ -165,10 +165,10 @@ extension Interactable1Providing {
         )
     }
     
-    func banActions() -> [any Action] {
+    func banActions(communityId: Int? = nil) -> [any Action] {
         let isModerator: Bool
-        if let myPerson = api.myPerson, let community = community_ {
-            isModerator = myPerson.moderates(communityId: community.id)
+        if let myPerson = api.myPerson, let communityId = (communityId ?? community_?.id) {
+            isModerator = myPerson.moderates(communityId: communityId)
         } else {
             isModerator = false
         }
