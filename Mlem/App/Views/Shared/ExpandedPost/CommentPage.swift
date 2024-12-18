@@ -87,17 +87,20 @@ struct CommentPage: View {
             if let comment = model.wrappedValue as? any Comment {
                 if let tracker {
                     tracker.root = .comment(comment, parentCount: 1)
-                    Task {
-                        if let initialComments {
+                    if let initialComments {
+                        Task {
                             await tracker.insertAdditionalComments(comments: initialComments)
-                            tracker.loadingState = .done
-                        } else {
-                            tracker.loadingState = .idle
-                            await tracker.load()
                         }
+                        tracker.loadingState = .done
+                        return
+                    } else {
+                        tracker.loadingState = .idle
                     }
                 } else {
                     tracker = .init(root: .comment(comment, parentCount: 1))
+                }
+                Task {
+                    await tracker?.load()
                 }
             }
         }
