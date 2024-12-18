@@ -13,6 +13,10 @@ extension Community1Providing {
     
     var shouldHideInFeed: Bool { blocked }
     
+    var canModerate: Bool {
+        api.myPerson?.moderates(communityId: id) ?? false || api.isAdmin
+    }
+    
     // MARK: Operations
     
     func showNewPostSheet() {
