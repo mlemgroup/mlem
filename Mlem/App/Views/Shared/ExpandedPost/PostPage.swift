@@ -54,11 +54,11 @@ struct PostPage: View {
                 if let tracker {
                     tracker.root = .post(post)
                     tracker.loadingState = .idle
-                    Task {
-                        await tracker.load(ensuringPresenceOf: scrollTargetedComment)
-                    }
                 } else {
                     tracker = .init(root: .post(post))
+                }
+                Task {
+                    await tracker?.load(ensuringPresenceOf: scrollTargetedComment)
                 }
             }
         }
