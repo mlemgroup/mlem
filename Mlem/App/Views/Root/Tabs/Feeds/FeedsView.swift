@@ -188,6 +188,7 @@ struct FeedsView: View {
                 sortType: appState.initialFeedSortType,
                 showReadPosts: showReadPosts,
                 filteredKeywords: [],
+                moderatedCommunities: [], // TODO: NOW
                 prefetchingConfiguration: .forPostSize(postSize),
                 urlCache: Constants.main.urlCache,
                 api: AppState.main.firstApi,

@@ -77,7 +77,7 @@ struct CommunityView: View {
                     title: Text(community.displayName),
                     subtitle: Text(community.fullNameWithPrefix ?? ""),
                     dropdownStyle: .disabled,
-                    image: { CircleCroppedImageView(community, frame: 44) } // TODO: NOW 44 as constant
+                    image: { CircleCroppedImageView(community, frame: Constants.main.feedHeaderSize) }
                 )
                 subscribeButton(community: community)
                     .padding(.top, Constants.main.halfSpacing)
@@ -258,6 +258,7 @@ struct CommunityView: View {
                 sortType: appState.initialFeedSortType,
                 showReadPosts: showReadInFeed,
                 filteredKeywords: [],
+                moderatedCommunities: .init(), // TODO: NOW
                 prefetchingConfiguration: .forPostSize(postSize),
                 urlCache: Constants.main.urlCache,
                 community: community

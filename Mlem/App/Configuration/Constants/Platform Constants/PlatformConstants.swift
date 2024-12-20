@@ -21,6 +21,7 @@ struct PlatformConstants {
     let largeAvatarSize: CGFloat
     let mediumAvatarSize: CGFloat
     let smallAvatarSize: CGFloat
+    let feedHeaderSize: CGFloat
     
     // Standard corner radii
     let largeItemCornerRadius: CGFloat
