@@ -230,9 +230,6 @@
     "Average: %@" : {
 
     },
-    "Ban" : {
-
-    },
     "Ban %@" : {
 
     },
@@ -240,9 +237,6 @@
 
     },
     "Ban Target" : {
-
-    },
-    "Ban User" : {
 
     },
     "Banned from Community" : {
@@ -1655,13 +1649,7 @@
     "Unavailable" : {
 
     },
-    "Unban" : {
-
-    },
     "Unban %@" : {
-
-    },
-    "Unban User" : {
 
     },
     "Unblock" : {
@@ -1774,6 +1762,9 @@
     "View All" : {
 
     },
+    "View Votes" : {
+
+    },
     "Viewing %@ as guest" : {
 
     },
@@ -1781,6 +1772,9 @@
 
     },
     "Visit" : {
+
+    },
+    "Votes" : {
 
     },
     "Warn When Opening NSFW Community" : {

@@ -178,7 +178,7 @@ struct ExpandedPostView<Content: View>: View {
             if isLoading || post.shouldShowLoadingSymbol() {
                 ProgressView()
             } else {
-                ToolbarEllipsisMenu(post.allMenuActions(expanded: true))
+                ToolbarEllipsisMenu(post.allMenuActions(expanded: true, navigation: navigation))
             }
         }
         .environment(tracker)
@@ -205,7 +205,13 @@ struct ExpandedPostView<Content: View>: View {
         }
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .quickSwipes(post.swipeActions(behavior: .standard, commentTreeTracker: tracker))
-        .contextMenu { post.allMenuActions(showAllActions: false, commentTreeTracker: tracker) }
+        .contextMenu {
+            post.allMenuActions(
+                showAllActions: false,
+                navigation: navigation,
+                commentTreeTracker: tracker
+            )
+        }
         .paletteBorder(cornerRadius: PostSize.large.swipeBehavior.cornerRadius)
         .onTapGesture {
             withAnimation {

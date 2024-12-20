@@ -54,6 +54,7 @@ enum NavigationPage: Hashable {
     case rulesList(_ model: Profile2HashWrapper, callback: HashWrapper<(String) -> Void>)
     case blockList
     case advancedSorting(_ sort: HashWrapper<Binding<ApiSortType>>)
+    case votesList(_ target: VotesListView.Target)
     
     static func post(_ post: any PostStubProviding, scrollTargetedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
         if let scrollTargetedComment {

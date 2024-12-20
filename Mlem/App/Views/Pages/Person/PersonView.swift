@@ -82,7 +82,7 @@ struct PersonView: View {
                                 if person is any Person3Providing, proxy.isLoading {
                                     ProgressView()
                                 } else {
-                                    MenuButtons { person.menuActions(navigation: navigation) }
+                                    MenuButtons { person.menuActions(navigation: navigation, community: nil) }
                                 }
                             }
                         }
