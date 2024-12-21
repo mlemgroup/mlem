@@ -72,7 +72,7 @@ extension SearchView {
     
     private func refreshPosts(clearBeforeRefresh: Bool) async throws {
         guard !query.isEmpty else { return }
-        await postLoader.searchPostFetcher.changeApi(to: getRefreshApi(for: postFilters.location))
+        await postLoader.searchPostFetcher.changeApi(to: getRefreshApi(for: postFilters.location), user: appState.firstPerson)
         postLoader.searchPostFetcher.setSortType(postFilters.sort)
         postLoader.searchPostFetcher.query = query
         postLoader.searchPostFetcher.creatorId = postFilters.creator?.id

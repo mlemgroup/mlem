@@ -105,7 +105,7 @@ struct InboxView: View {
                 .onChange(of: appState.firstApi, initial: false) {
                     if appState.firstAccount is UserAccount {
                         Task {
-                            await inboxFeedLoader.changeApi(to: appState.firstApi)
+                            await inboxFeedLoader.changeApi(to: appState.firstApi, user: appState.firstPerson)
                         }
                         showRefreshPopup = true
                     }

@@ -43,9 +43,10 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
                 .overlay(alignment: .bottom) {
                     RefreshPopupView("Feed is outdated", isPresented: $showRefreshPopup) {
                         Task {
+                            print("DEBUG here")
                             do {
                                 showRefreshPopup = false
-                                await feedLoader.changeApi(to: appState.firstApi)
+                                await feedLoader.changeApi(to: appState.firstApi, user: appState.firstPerson)
                                 try await refresh()
                             } catch {
                                 handleError(error)

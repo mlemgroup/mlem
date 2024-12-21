@@ -117,7 +117,7 @@ struct FeedsView: View {
                         try await postFeedLoader?.changeSortType(to: appState.initialFeedSortType)
                         let newFeedSelection: FeedSelection = appState.firstAccount.accountType == .user ? .subscribed : .all
                         if newFeedSelection != feedSelection {
-                            await postFeedLoader?.changeApi(to: appState.firstApi)
+                            await postFeedLoader?.changeApi(to: appState.firstApi, user: appState.firstPerson)
                         }
                         feedSelection = newFeedSelection
                     }
@@ -186,12 +186,6 @@ struct FeedsView: View {
         
         // TODO: NOW move this to AppState
         // TODO: NOW AppState (or similar) should track filteredKeywords for fast access
-        let moderatedCommunities: Set<URL>
-        if let person = appState.firstPerson {
-            moderatedCommunities = .init(person.moderatedCommunities.map { $0.actorId })
-        } else {
-            moderatedCommunities = .init()
-        }
         
         do {
             postFeedLoader = try await .init(
@@ -199,7 +193,7 @@ struct FeedsView: View {
                 sortType: appState.initialFeedSortType,
                 showReadPosts: showReadPosts,
                 filteredKeywords: persistenceRepository.loadFilteredKeywords(),
-                moderatedCommunities: moderatedCommunities,
+                moderatedCommunities: appState.moderatedCommunityIds,
                 prefetchingConfiguration: .forPostSize(postSize),
                 urlCache: Constants.main.urlCache,
                 api: AppState.main.firstApi,
