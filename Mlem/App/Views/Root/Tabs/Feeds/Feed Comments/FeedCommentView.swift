@@ -14,40 +14,35 @@ struct FeedCommentView<EmbeddedContent: View>: View {
     @Environment(Palette.self) var palette
     @Environment(\.reportContext) var reportContext: Report?
     
-    @Setting(\.postSize) var postSize
+    @Setting(\.postSize) var settingsPostSize
     
     let comment: any Comment
-    var overrideIsTiled: Bool?
+    var overriddenSize: PostSize?
     @ViewBuilder var embeddedContent: () -> EmbeddedContent
     
     init(
         comment: any Comment,
-        overrideIsTiled: Bool? = nil,
+        overriddenSize: PostSize? = nil,
         @ViewBuilder embeddedContent: @escaping () -> EmbeddedContent = { EmptyView() }
     ) {
         self.comment = comment
-        self.overrideIsTiled = overrideIsTiled
+        self.overriddenSize = overriddenSize
         self.embeddedContent = embeddedContent
     }
     
-    var overridenSize: PostSize {
-        if let overrideIsTiled {
-            return overrideIsTiled ? .tile : .large
-        }
-        return postSize
-    }
+    var postSize: PostSize { overriddenSize ?? settingsPostSize }
     
     var body: some View {
         content
             .contentShape(.interaction, .rect)
-            .quickSwipes(comment.swipeActions(behavior: overridenSize.swipeBehavior, commentTreeTracker: commentTreeTracker))
+            .quickSwipes(comment.swipeActions(behavior: postSize.swipeBehavior, commentTreeTracker: commentTreeTracker))
             .contextMenu { comment.allMenuActions(report: reportContext) }
             .paletteBorder(cornerRadius: postSize.swipeBehavior.cornerRadius)
     }
     
     @ViewBuilder
     var content: some View {
-        if overridenSize.tiled {
+        if postSize.tiled {
             TileCommentView(comment: comment)
         } else {
             CommentView(comment: comment, inFeed: true, embeddedContent: embeddedContent)

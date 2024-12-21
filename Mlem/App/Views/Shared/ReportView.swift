@@ -31,7 +31,7 @@ struct ReportView: View {
             }
         case let .comment(comment):
             NavigationLink(.comment(comment)) {
-                FeedCommentView(comment: comment, overrideIsTiled: false) { embeddedContent }
+                FeedCommentView(comment: comment, overriddenSize: .large) { embeddedContent }
             }
         case let .message(message):
             MessageView(message: message) { embeddedContent }

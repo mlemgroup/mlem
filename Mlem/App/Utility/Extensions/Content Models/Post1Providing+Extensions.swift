@@ -134,7 +134,7 @@ extension Post1Providing {
         showAllActions: Bool = true,
         navigation: NavigationLayer?,
         report: Report? = nil,
-        commentTreeTracker: CommentTreeTracker? = nil,
+        commentTreeTracker: CommentTreeTracker? = nil
     ) -> [any Action] {
         basicMenuActions(feedback: feedback, commentTreeTracker: commentTreeTracker)
         if canModerate {
