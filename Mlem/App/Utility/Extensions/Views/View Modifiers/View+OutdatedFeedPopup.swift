@@ -26,12 +26,7 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
         if let feedLoader {
             content
                 .refreshable {
-                    do {
-                        showRefreshPopup = false
-                        try await refresh()
-                    } catch {
-                        handleError(error)
-                    }
+                    await refresh(feedLoader)
                 }
                 .onChange(of: onChangeHash) {
                     if let newApi = feedLoader.items.first?.api {
@@ -43,14 +38,7 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
                 .overlay(alignment: .bottom) {
                     RefreshPopupView("Feed is outdated", isPresented: $showRefreshPopup) {
                         Task {
-                            print("DEBUG here")
-                            do {
-                                showRefreshPopup = false
-                                await feedLoader.changeApi(to: appState.firstApi, user: appState.firstPerson)
-                                try await refresh()
-                            } catch {
-                                handleError(error)
-                            }
+                            await refresh(feedLoader)
                         }
                     }
                 }
@@ -68,14 +56,21 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
         return hasher.finalize()
     }
     
-    func refresh() async throws {
-        if let feedLoader = feedLoader as? CorePostFeedLoader {
-            if try await appState.firstApi.version < feedLoader.sortType.minimumVersion {
-                try await feedLoader.changeSortType(to: appState.initialFeedSortType, forceRefresh: true)
-                return
+    func refresh(_ feedLoader: any FeedLoading) async {
+        do {
+            showRefreshPopup = false
+            await feedLoader.changeApi(to: appState.firstApi, user: appState.firstPerson)
+            
+            if let feedLoader = feedLoader as? CorePostFeedLoader {
+                if try await appState.firstApi.version < feedLoader.sortType.minimumVersion {
+                    try await feedLoader.changeSortType(to: appState.initialFeedSortType, forceRefresh: true)
+                    return
+                }
             }
+            try await feedLoader.refresh(clearBeforeRefresh: true)
+        } catch {
+            handleError(error)
         }
-        try await feedLoader?.refresh(clearBeforeRefresh: true)
     }
 }
 
