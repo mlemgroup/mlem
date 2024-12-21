@@ -101,9 +101,12 @@ extension Comment1Providing {
         feedback: Set<FeedbackType> = [.haptic, .toast],
         report: Report? = nil
     ) -> [any Action] {
+        if api.isAdmin || (api.fetchedVersion ?? .infinity) > .v19_4 {
+            viewVotesAction()
+        }
         if let self2, !isOwnComment {
             self2.removeAction().disabled(!canModerate)
-            banActions()
+            self2.creator.banActions(community: self2.community, withUserLabel: true)
         }
         if api.isAdmin {
             purgeAction()
@@ -168,6 +171,23 @@ extension Comment1Providing {
             id: "edit\(uid)",
             appearance: .edit(),
             callback: api.canInteract ? { self.showEditSheet() } : nil
+        )
+    }
+    
+    func viewVotesAction() -> BasicAction {
+        let enabled = canModerate && (api.isAdmin || (api.fetchedVersion ?? .infinity) > .v19_4)
+        let callback: (() -> Void)?
+        if let self2, enabled {
+            callback = {
+                NavigationModel.main.openSheet(.votesList(.comment(self2)))
+            }
+        } else {
+            callback = nil
+        }
+        return .init(
+            id: "viewVotes\(uid)",
+            appearance: .viewVotes(),
+            callback: callback
         )
     }
 }

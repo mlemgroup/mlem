@@ -89,7 +89,7 @@ struct FullyQualifiedLabelView: View {
         guard let person = entity as? any Person else { return [] }
         return person.flairs(
             interactableContext: (commentContext as? any Comment2Providing) ?? (postContext as? any Post2Providing),
-            communityContext: communityContext as? any Community3Providing
+            communityContext: communityContext
         )
     }
     

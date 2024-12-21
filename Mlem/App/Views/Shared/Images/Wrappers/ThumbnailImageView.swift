@@ -101,9 +101,9 @@ struct ThumbnailImageView: View {
                 url: url,
                 size: frame,
                 fallback: url.proxyAwarePathExtension?.isMovieExtension ?? false ? .movie : .image,
-                showProgress: true
+                showProgress: true,
+                blurred: blurred && loading == .done
             )
-            .dynamicBlur(blurred: blurred && loading == .done)
             .clipShape(RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius))
             .onPreferenceChange(MediaLoadingPreferenceKey.self, perform: { loading = $0 })
         } else {
@@ -125,9 +125,9 @@ struct ThumbnailImageView: View {
                 url: url,
                 size: frame,
                 fallback: .image,
-                showProgress: true
+                showProgress: true,
+                blurred: blurred && loading == .done
             )
-            .dynamicBlur(blurred: blurred)
             .onPreferenceChange(MediaLoadingPreferenceKey.self, perform: { loading = $0 })
         } else {
             Image(systemName: post.placeholderImageName)

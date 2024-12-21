@@ -13,6 +13,7 @@ struct PersonListRow<Content2: View>: View {
     
     @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
+    @Environment(\.communityContext) var communityContext
     
     let person: any Person
     let content: Content
@@ -48,7 +49,7 @@ struct PersonListRow<Content2: View>: View {
         .padding(.vertical, 6)
         .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .contextMenu { person.menuActions(navigation: navigation) }
+        .contextMenu { person.menuActions(navigation: navigation, community: communityContext) }
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
 }

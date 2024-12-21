@@ -132,8 +132,9 @@ extension Post1Providing {
         expanded: Bool = false,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         showAllActions: Bool = true,
+        navigation: NavigationLayer?,
+        report: Report? = nil,
         commentTreeTracker: CommentTreeTracker? = nil,
-        report: Report? = nil
     ) -> [any Action] {
         basicMenuActions(feedback: feedback, commentTreeTracker: commentTreeTracker)
         if canModerate {
@@ -141,7 +142,7 @@ extension Post1Providing {
                 appearance: .init(label: "Moderation...", color: Palette.main.moderation, icon: Icons.moderation),
                 displayMode: Settings.main.moderatorActionGrouping == .divider || expanded ? .section : .disclosure
             ) {
-                moderatorMenuActions(feedback: feedback, showAllActions: showAllActions, report: report)
+                moderatorMenuActions(feedback: feedback, navigation: navigation, report: report, showAllActions: showAllActions)
             }
         }
     }
@@ -182,8 +183,9 @@ extension Post1Providing {
     @ActionBuilder
     func moderatorMenuActions(
         feedback: Set<FeedbackType> = [.haptic, .toast],
-        showAllActions: Bool = true,
-        report: Report? = nil
+        navigation: NavigationLayer?,
+        report: Report? = nil,
+        showAllActions: Bool = true
     ) -> [any Action] {
         if showAllActions || Settings.main.showAllModActions {
             pinToCommunityAction(feedback: feedback, verboseTitle: api.isAdmin)
@@ -191,10 +193,13 @@ extension Post1Providing {
                 pinToInstanceAction(feedback: feedback)
             }
             lockAction(feedback: feedback)
+            if let navigation, api.isAdmin || (api.fetchedVersion ?? .infinity) > .v19_4 {
+                viewVotesAction(navigation: navigation)
+            }
         }
-        if !isOwnPost {
-            removeAction().disabled(!canModerate)
-            banActions(communityId: communityId)
+        if let self2, !isOwnPost {
+            self2.removeAction().disabled(!canModerate)
+            self2.creator.banActions(community: self2.community, withUserLabel: true)
         }
         if api.isAdmin {
             purgeAction()
@@ -454,6 +459,15 @@ extension Post1Providing {
             appearance: .pinToInstance(isOn: isOn, isInProgress: !pinnedInstanceManager.isInSync),
             confirmationPrompt: prompt,
             callback: api.canInteract && api.isAdmin ? { self.togglePinnedInstance(feedback: feedback) } : nil
+        )
+    }
+    
+    func viewVotesAction(navigation: NavigationLayer) -> BasicAction {
+        let enabled = canModerate && (api.isAdmin || (api.fetchedVersion ?? .infinity) > .v19_4)
+        return .init(
+            id: "viewVotes\(uid)",
+            appearance: .viewVotes(),
+            callback: enabled ? { navigation.push(.votesList(.post(self))) } : nil
         )
     }
     // swiftlint:disable:next file_length
