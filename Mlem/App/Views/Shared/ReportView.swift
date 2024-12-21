@@ -124,6 +124,7 @@ struct ReportView: View {
             .foregroundStyle(report.resolved ? palette.selectedInteractionBarItem : palette.primary)
             .padding(.vertical, 3)
             .padding(.horizontal, 8)
+            .imageScale(.small)
             .background(
                 report.resolved ? palette.positive : palette.tertiaryGroupedBackground,
                 in: .rect(cornerRadius: Constants.main.standardSpacing)
