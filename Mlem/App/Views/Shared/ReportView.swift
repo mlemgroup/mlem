@@ -27,14 +27,27 @@ struct ReportView: View {
         switch report.target {
         case let .post(post):
             NavigationLink(.post(post)) {
-                FeedPostView(post: post, overridePostSize: .headline, favoredLink: .creator) { embeddedContent }
+                FeedPostView(post: post, overridePostSize: .headline, favoredLink: .creator) {
+                    reportDetailsView
+                    resolutionInfoView
+                }
             }
         case let .comment(comment):
             NavigationLink(.comment(comment)) {
-                FeedCommentView(comment: comment, overriddenSize: .large) { embeddedContent }
+                FeedCommentView(comment: comment, overriddenSize: .large) {
+                    reportDetailsView
+                    resolutionInfoView
+                }
             }
         case let .message(message):
-            MessageView(message: message) { embeddedContent }
+            MessageView(message: message) {
+                reportDetailsView
+                if (message.api.fetchedVersion ?? .infinity) < .v19_4 {
+                    resolveButton
+                } else {
+                    resolutionInfoView
+                }
+            }
         case let .legacyPost(post, community: community, creator: creator):
             legacyPostView(post: post, community: community, creator: creator)
         case let .legacyComment(comment, community: community, creator: creator):
@@ -43,7 +56,7 @@ struct ReportView: View {
     }
     
     @ViewBuilder
-    var embeddedContent: some View {
+    var reportDetailsView: some View {
         VStack(alignment: .leading) {
             Text("Reported \(report.created.getRelativeTime()) by \(report.creator.fullName ?? "")")
                 .foregroundStyle(.secondary) // No palette!
@@ -57,6 +70,10 @@ struct ReportView: View {
             palette.warning.opacity(0.1),
             in: .rect(cornerRadius: Constants.main.standardSpacing)
         )
+    }
+    
+    @ViewBuilder
+    var resolutionInfoView: some View {
         if report.resolved, let resolver = report.resolver {
             Label("Resolved by \(resolver.fullName ?? "")", systemImage: Icons.successCircleFill)
                 .foregroundStyle(palette.positive)
@@ -69,13 +86,10 @@ struct ReportView: View {
     func legacyPostView(post: Post1, community: Community1, creator: Person1) -> some View {
         NavigationLink(.post(post)) {
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-                HStack {
-                    FullyQualifiedLinkView(entity: creator, labelStyle: .medium, showAvatar: true)
-                    Spacer()
-                    resolveButton
-                }
+                FullyQualifiedLinkView(entity: creator, labelStyle: .medium, showAvatar: true)
                 HeadlinePostBodyView(post: post)
-                embeddedContent
+                reportDetailsView
+                resolveButton
             }
             .padding(Constants.main.standardSpacing)
             .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
@@ -87,13 +101,10 @@ struct ReportView: View {
     func legacyCommentView(comment: Comment1, community: Community1, creator: Person1) -> some View {
         NavigationLink(.comment(comment)) {
             VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-                HStack {
-                    FullyQualifiedLinkView(entity: creator, labelStyle: .medium, showAvatar: true)
-                    Spacer()
-                    resolveButton
-                }
+                FullyQualifiedLinkView(entity: creator, labelStyle: .medium, showAvatar: true)
                 Markdown(comment.content, configuration: .default)
-                embeddedContent
+                reportDetailsView
+                resolveButton
             }
             .padding(Constants.main.standardSpacing)
             .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
@@ -103,13 +114,25 @@ struct ReportView: View {
     
     @ViewBuilder
     var resolveButton: some View {
-        Button(
-            report.resolved ? "Unresolve" : "Resolve",
-            systemImage: report.resolved ? Icons.successCircleFill : Icons.successCircle
-        ) {
-            report.toggleResolved(feedback: [.haptic])
+        HStack {
+            Button(
+                report.resolved ? "Resolved" : "Resolve",
+                systemImage: Icons.success
+            ) {
+                report.toggleResolved(feedback: [.haptic])
+            }
+            .foregroundStyle(report.resolved ? palette.selectedInteractionBarItem : palette.primary)
+            .padding(.vertical, 3)
+            .padding(.horizontal, 8)
+            .background(
+                report.resolved ? palette.positive : palette.tertiaryGroupedBackground,
+                in: .rect(cornerRadius: Constants.main.standardSpacing)
+            )
+            if report.resolved, let resolver = report.resolver {
+                Text("by \(resolver.fullName ?? "")")
+                    .foregroundStyle(palette.positive)
+            }
         }
-        .foregroundStyle(palette.positive)
-        .labelStyle(.iconOnly)
+        .font(.footnote)
     }
 }

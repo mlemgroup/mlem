@@ -290,6 +290,9 @@
     "Bottom" : {
 
     },
+    "by %@" : {
+
+    },
     "Bypass Image Proxy?" : {
 
     },
@@ -1221,6 +1224,9 @@
 
     },
     "Resolve" : {
+
+    },
+    "Resolved" : {
 
     },
     "Resolved by %@" : {
