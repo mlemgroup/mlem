@@ -263,8 +263,6 @@ struct CommunityView: View {
                 moderatedCommunities = .init()
             }
             
-            print("DEBUG setting up feed loader")
-            
             postFeedLoader = try await .init(
                 pageSize: internetSpeed.pageSize,
                 sortType: appState.initialFeedSortType,

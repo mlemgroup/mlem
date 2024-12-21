@@ -185,6 +185,7 @@ struct FeedsView: View {
         @Setting(\.showReadInFeed) var showReadPosts
         
         // TODO: NOW move this to AppState
+        // TODO: NOW AppState (or similar) should track filteredKeywords for fast access
         let moderatedCommunities: Set<URL>
         if let person = appState.firstPerson {
             moderatedCommunities = .init(person.moderatedCommunities.map { $0.actorId })
