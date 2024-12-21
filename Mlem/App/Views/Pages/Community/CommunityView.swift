@@ -8,6 +8,7 @@
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
+import Dependencies
 
 struct CommunityView: View {
     enum Tab: String, CaseIterable, Identifiable {
@@ -32,6 +33,8 @@ struct CommunityView: View {
     
     @Setting(\.postSize) var postSize
     @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
+    
+    @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
     
     @State var community: AnyCommunity
     @State private var selectedTab: Tab = .posts
@@ -253,12 +256,21 @@ struct CommunityView: View {
             @Setting(\.internetSpeed) var internetSpeed
             @Setting(\.showReadInFeed) var showReadInFeed
             
+            let moderatedCommunities: Set<URL>
+            if let person = appState.firstPerson {
+                moderatedCommunities = .init(person.moderatedCommunities.map { $0.actorId })
+            } else {
+                moderatedCommunities = .init()
+            }
+            
+            print("DEBUG setting up feed loader")
+            
             postFeedLoader = try await .init(
                 pageSize: internetSpeed.pageSize,
                 sortType: appState.initialFeedSortType,
                 showReadPosts: showReadInFeed,
-                filteredKeywords: [],
-                moderatedCommunities: .init(), // TODO: NOW
+                filteredKeywords: persistenceRepository.loadFilteredKeywords(),
+                moderatedCommunities: moderatedCommunities,
                 prefetchingConfiguration: .forPostSize(postSize),
                 urlCache: Constants.main.urlCache,
                 community: community

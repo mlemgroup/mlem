@@ -19,6 +19,8 @@ struct FeedsView: View {
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
+    @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
+    
     @State var postFeedLoader: AggregatePostFeedLoader?
     @State var savedFeedLoader: PersonContentFeedLoader?
     
@@ -182,13 +184,21 @@ struct FeedsView: View {
         @Setting(\.internetSpeed) var internetSpeed
         @Setting(\.showReadInFeed) var showReadPosts
         
+        // TODO: NOW move this to AppState
+        let moderatedCommunities: Set<URL>
+        if let person = appState.firstPerson {
+            moderatedCommunities = .init(person.moderatedCommunities.map { $0.actorId })
+        } else {
+            moderatedCommunities = .init()
+        }
+        
         do {
             postFeedLoader = try await .init(
                 pageSize: internetSpeed.pageSize,
                 sortType: appState.initialFeedSortType,
                 showReadPosts: showReadPosts,
-                filteredKeywords: [],
-                moderatedCommunities: [], // TODO: NOW
+                filteredKeywords: persistenceRepository.loadFilteredKeywords(),
+                moderatedCommunities: moderatedCommunities,
                 prefetchingConfiguration: .forPostSize(postSize),
                 urlCache: Constants.main.urlCache,
                 api: AppState.main.firstApi,

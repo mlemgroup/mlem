@@ -137,8 +137,9 @@ class PersistenceRepository {
 //        try await save(value, to: Path.easterFlags)
 //    }
     
-    func loadFilteredKeywords() -> [String] {
-        load([String].self, from: Path.filteredKeywords) ?? []
+    func loadFilteredKeywords() -> Set<String> {
+        // Set(load([String].self, from: Path.filteredKeywords) ?? [])
+        return ["test"] // TODO: NOW add frontend to save this
     }
     
     func saveFilteredKeywords(_ value: [String]) async throws {

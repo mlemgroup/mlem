@@ -16,16 +16,33 @@ struct FeedPostView: View {
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(Palette.self) private var palette
     
+    @State var obscured: Bool
+    
     let post: any Post1Providing
     var overridePostSize: PostSize?
     
+    init(post: any Post1Providing, obscured: Bool, overridePostSize: PostSize? = nil) {
+        self.post = post
+        self.overridePostSize = overridePostSize
+        self._obscured = .init(wrappedValue: obscured)
+    }
+    
     var body: some View {
-        content
-            .contentShape(.interaction, .rect)
-            .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-            .quickSwipes(post.swipeActions(behavior: postSize.swipeBehavior))
-            .contextMenu { post.allMenuActions(showAllActions: false, commentTreeTracker: commentTreeTracker) }
-            .paletteBorder(cornerRadius: postSize.swipeBehavior.cornerRadius)
+        Group {
+            if obscured {
+                Text("Obscured")
+                    .onTapGesture {
+                        obscured = false
+                    }
+            } else {
+                content
+            }
+        }
+        .contentShape(.interaction, .rect)
+        .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
+        .quickSwipes(post.swipeActions(behavior: postSize.swipeBehavior))
+        .contextMenu { post.allMenuActions(showAllActions: false, commentTreeTracker: commentTreeTracker) }
+        .paletteBorder(cornerRadius: postSize.swipeBehavior.cornerRadius)
     }
     
     @ViewBuilder
