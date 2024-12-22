@@ -133,6 +133,7 @@ extension Post1Providing {
         feedback: Set<FeedbackType> = [.haptic, .toast],
         showAllActions: Bool = true,
         navigation: NavigationLayer?,
+        report: Report? = nil,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> [any Action] {
         basicMenuActions(feedback: feedback, commentTreeTracker: commentTreeTracker)
@@ -141,7 +142,7 @@ extension Post1Providing {
                 appearance: .init(label: "Moderation...", color: Palette.main.moderation, icon: Icons.moderation),
                 displayMode: Settings.main.moderatorActionGrouping == .divider || expanded ? .section : .disclosure
             ) {
-                moderatorMenuActions(feedback: feedback, navigation: navigation, showAllActions: showAllActions)
+                moderatorMenuActions(feedback: feedback, navigation: navigation, report: report, showAllActions: showAllActions)
             }
         }
     }
@@ -183,6 +184,7 @@ extension Post1Providing {
     func moderatorMenuActions(
         feedback: Set<FeedbackType> = [.haptic, .toast],
         navigation: NavigationLayer?,
+        report: Report? = nil,
         showAllActions: Bool = true
     ) -> [any Action] {
         if showAllActions || Settings.main.showAllModActions {
@@ -203,6 +205,11 @@ extension Post1Providing {
             purgeAction()
             if !isOwnPost {
                 purgeCreatorAction()
+            }
+        }
+        if let report {
+            ActionGroup {
+                report.menuActions()
             }
         }
     }

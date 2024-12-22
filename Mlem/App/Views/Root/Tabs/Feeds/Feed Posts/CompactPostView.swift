@@ -64,6 +64,7 @@ struct CompactPostView: View {
                 .padding(.bottom, -2)
   
                 post.taggedTitle(communityContext: communityContext)
+                    .multilineTextAlignment(.leading)
                     .imageScale(.small)
                     .foregroundStyle(post.read_ ?? false ? palette.secondary : palette.primary)
                     .font(.subheadline)

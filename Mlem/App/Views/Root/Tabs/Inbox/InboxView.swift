@@ -10,21 +10,6 @@ import MlemMiddleware
 import SwiftUI
 
 struct InboxView: View {
-    enum Tab: CaseIterable, Identifiable {
-        case all, replies, mentions, messages
-        
-        var id: Tab { self }
-        
-        var label: LocalizedStringResource {
-            switch self {
-            case .all: "All"
-            case .replies: "Replies"
-            case .mentions: "Mentions"
-            case .messages: "Messages"
-            }
-        }
-    }
-    
     @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
@@ -32,7 +17,10 @@ struct InboxView: View {
     @Setting(\.showReadInInbox) var showRead
     
     @State var headerPinned: Bool = false
+    @State var selectedFeed: Feed = .inbox
     @State var selectedTab: Tab = .all
+    
+    @State var reports: [Report]?
     
     @State var replyFeedLoader: ReplyFeedLoader
     @State var mentionFeedLoader: MentionFeedLoader
@@ -42,19 +30,6 @@ struct InboxView: View {
     @State var showRefreshPopup: Bool = false
     @State var waitingOnMarkAllAsRead: Bool = false
     @State var markAllAsReadTrigger: Bool = false
-    
-    var feedLoader: StandardFeedLoader<InboxItem> {
-        switch selectedTab {
-        case .all:
-            inboxFeedLoader
-        case .replies:
-            replyFeedLoader
-        case .mentions:
-            mentionFeedLoader
-        case .messages:
-            messageFeedLoader
-        }
-    }
     
     init() {
         @Setting(\.internetSpeed) var internetSpeed
@@ -91,6 +66,26 @@ struct InboxView: View {
         self._mentionFeedLoader = .init(wrappedValue: mentionFeedLoader)
         self._messageFeedLoader = .init(wrappedValue: messageFeedLoader)
         self._inboxFeedLoader = .init(wrappedValue: inboxFeedLoader)
+    }
+    
+    var feedLoader: StandardFeedLoader<InboxItem> {
+        switch selectedTab {
+        case .all:
+            inboxFeedLoader
+        case .replies:
+            replyFeedLoader
+        case .mentions:
+            mentionFeedLoader
+        case .messages:
+            messageFeedLoader
+        }
+    }
+    
+    var availableFeeds: [Feed] {
+        if appState.firstApi.isAdmin || !(appState.firstPerson?.moderatedCommunities.isEmpty ?? true) {
+            return [.inbox, .modMail]
+        }
+        return [.inbox]
     }
     
     var body: some View {
@@ -149,17 +144,7 @@ struct InboxView: View {
     var content: some View {
         FancyScrollView {
             VStack(spacing: 0) {
-                FeedHeaderView(
-                    feedDescription: .init(
-                        label: "Inbox",
-                        subtitle: "Replies, mentions and messages",
-                        color: { $0.inbox },
-                        iconName: Icons.inbox,
-                        iconNameFill: Icons.inboxFill,
-                        iconScaleFactor: 0.5
-                    ),
-                    dropdownStyle: .disabled
-                )
+                headerView
                 GeometryReader { geo in
                     Color.red.preference(
                         key: ScrollOffsetKey.self,
@@ -172,29 +157,11 @@ struct InboxView: View {
                         headerPinned = value
                     }
                 })
-                LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
-                    Section {
-                        ForEach(feedLoader.items, id: \.actorId) { item in
-                            Group {
-                                switch item {
-                                case let .message(message):
-                                    MessageView(message: message)
-                                case let .reply(reply):
-                                    ReplyView(reply: reply)
-                                }
-                            }
-                            .padding([.horizontal, .bottom], Constants.main.standardSpacing)
-                            .onAppear {
-                                do {
-                                    try inboxFeedLoader.loadIfThreshold(item)
-                                } catch {
-                                    handleError(error)
-                                }
-                            }
-                        }
-                        
-                        EndOfFeedView(loadingState: feedLoader.loadingState, loadMore: nil, viewType: .cartoon)
-                    } header: { sectionHeader }
+                switch selectedFeed {
+                case .inbox:
+                    inboxFeedView
+                case .modMail:
+                    modMailFeedView
                 }
             }
         }

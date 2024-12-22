@@ -55,7 +55,8 @@ extension Comment1Providing {
     func allMenuActions(
         expanded: Bool = false,
         feedback: Set<FeedbackType> = [.haptic, .toast],
-        commentTreeTracker: CommentTreeTracker? = nil
+        commentTreeTracker: CommentTreeTracker? = nil,
+        report: Report? = nil
     ) -> [any Action] {
         basicMenuActions(feedback: feedback, commentTreeTracker: commentTreeTracker)
         if canModerate {
@@ -63,7 +64,7 @@ extension Comment1Providing {
                 appearance: .init(label: "Moderation...", color: Palette.main.moderation, icon: Icons.moderation),
                 displayMode: Settings.main.moderatorActionGrouping == .divider || expanded ? .section : .disclosure
             ) {
-                moderatorMenuActions(feedback: feedback)
+                moderatorMenuActions(feedback: feedback, report: report)
             }
         }
     }
@@ -96,7 +97,10 @@ extension Comment1Providing {
     }
     
     @ActionBuilder
-    func moderatorMenuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
+    func moderatorMenuActions(
+        feedback: Set<FeedbackType> = [.haptic, .toast],
+        report: Report? = nil
+    ) -> [any Action] {
         if api.isAdmin || (api.fetchedVersion ?? .infinity) > .v19_4 {
             viewVotesAction()
         }
@@ -108,6 +112,11 @@ extension Comment1Providing {
             purgeAction()
             if !isOwnComment {
                 purgeCreatorAction()
+            }
+        }
+        if let report {
+            ActionGroup {
+                report.menuActions()
             }
         }
     }

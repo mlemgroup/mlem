@@ -33,7 +33,7 @@ class UserSession: Session {
             }
         )
         
-        Task {
+        Task { @MainActor in
             do {
                 try await self.api.fetchSiteVersion(task: Task {
                     let (person, instance, blocks) = try await self.api.getMyPerson()

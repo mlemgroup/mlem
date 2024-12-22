@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct LargePostView: View {
-    @Setting(\.showPostCreator) private var showCreator
+    @Setting(\.showPostCreator) private var alwaysShowCreator
     @Setting(\.showPersonAvatar) private var showPersonAvatar
     @Setting(\.showCommunityAvatar) private var showCommunityAvatar
     @Setting(\.blurNsfw) var blurNsfw
@@ -20,7 +20,18 @@ struct LargePostView: View {
     @Environment(\.communityContext) private var communityContext
     
     let post: any Post1Providing
-    var isPostPage: Bool = false
+    let isPostPage: Bool
+    let favoredLink: PostViewNavigationLink?
+    
+    init(
+        post: any Post1Providing,
+        isPostPage: Bool = false,
+        favoredLink: PostViewNavigationLink? = nil
+    ) {
+        self.post = post
+        self.isPostPage = isPostPage
+        self.favoredLink = favoredLink
+    }
     
     var shouldBlur: Bool {
         switch blurNsfw {
@@ -28,6 +39,11 @@ struct LargePostView: View {
         case .outsideCommunity: post.nsfw && !(communityContext?.nsfw ?? false)
         case .never: false
         }
+    }
+    
+    var topNavigationLink: PostViewNavigationLink {
+        if let favoredLink { return favoredLink }
+        return communityContext == nil || isPostPage ? .community : .creator
     }
     
     var body: some View {
@@ -40,10 +56,9 @@ struct LargePostView: View {
     var content: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             HStack {
-                if communityContext == nil || isPostPage {
-                    communityLink
-                } else {
-                    personLink
+                switch topNavigationLink {
+                case .community: communityLink
+                case .creator: personLink
                 }
                 
                 Spacer()
@@ -62,7 +77,7 @@ struct LargePostView: View {
             LargePostBodyView(post: post, isPostPage: isPostPage, shouldBlur: shouldBlur)
                 .padding(.horizontal, Constants.main.standardSpacing)
             
-            if (showCreator && communityContext == nil) || isPostPage {
+            if (alwaysShowCreator && communityContext == nil) || isPostPage {
                 personLink
                     .padding(.horizontal, Constants.main.standardSpacing)
             }
