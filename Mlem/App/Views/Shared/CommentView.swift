@@ -36,7 +36,7 @@ struct CommentView: View {
             content
                 .onTapGesture {
                     if tapCommentsToCollapse, let comment = comment as? CommentWrapper {
-                        withAnimation {
+                        withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
                             comment.collapsed.toggle()
                         }
                     }
