@@ -117,7 +117,7 @@ struct FeedsView: View {
                         try await postFeedLoader?.changeSortType(to: appState.initialFeedSortType)
                         let newFeedSelection: FeedSelection = appState.firstAccount.accountType == .user ? .subscribed : .all
                         if newFeedSelection != feedSelection {
-                            await postFeedLoader?.changeApi(to: appState.firstApi, user: appState.firstPerson)
+                            await postFeedLoader?.changeApi(to: appState.firstApi, context: appState.filterContext)
                         }
                         feedSelection = newFeedSelection
                     }
@@ -192,7 +192,7 @@ struct FeedsView: View {
                 sortType: appState.initialFeedSortType,
                 showReadPosts: showReadPosts,
                 filteredKeywords: persistenceRepository.loadFilteredKeywords(),
-                moderatedCommunities: appState.moderatedCommunityIds,
+                moderatedCommunities: appState.filterContext.moderatedCommunityIds,
                 prefetchingConfiguration: .forPostSize(postSize),
                 urlCache: Constants.main.urlCache,
                 api: AppState.main.firstApi,

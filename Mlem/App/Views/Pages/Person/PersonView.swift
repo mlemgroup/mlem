@@ -109,7 +109,7 @@ struct PersonView: View {
                         preheatFeedLoader()
                     } else if let feedLoader, feedLoader.api !== entity.api {
                         Task {
-                            await feedLoader.changeUser(api: entity.api, user: appState.firstPerson, userId: entity.id)
+                            await feedLoader.changeUser(api: entity.api, context: appState.filterContext, userId: entity.id)
                         }
                     }
                     

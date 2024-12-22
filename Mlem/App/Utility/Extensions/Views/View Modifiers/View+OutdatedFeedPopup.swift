@@ -59,7 +59,7 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
     func refresh(_ feedLoader: any FeedLoading) async {
         do {
             showRefreshPopup = false
-            await feedLoader.changeApi(to: appState.firstApi, user: appState.firstPerson)
+            await feedLoader.changeApi(to: appState.firstApi, context: appState.filterContext)
             
             if let feedLoader = feedLoader as? CorePostFeedLoader {
                 if try await appState.firstApi.version < feedLoader.sortType.minimumVersion {
