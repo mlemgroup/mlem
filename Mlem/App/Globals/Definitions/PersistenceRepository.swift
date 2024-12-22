@@ -138,8 +138,23 @@ class PersistenceRepository {
 //    }
     
     func loadFilteredKeywords() -> Set<String> {
-        // Set(load([String].self, from: Path.filteredKeywords) ?? [])
-        return ["test"] // TODO: NOW add frontend to save this
+        Set(load([String].self, from: Path.filteredKeywords) ?? [])
+    }
+    
+    /// Saves the given keyword and returns the updated set of filtered keywords
+    func saveFilteredKeyword(_ value: String) async throws -> Set<String> {
+        var keywords = loadFilteredKeywords()
+        keywords.insert(value)
+        try await saveFilteredKeywords(.init(keywords))
+        return keywords
+    }
+    
+    /// Removes the given keyword and returns the updated set of filtered keywords
+    func removeFilteredKeyword(_ value: String) async throws -> Set<String> {
+        var keywords = loadFilteredKeywords()
+        keywords.remove(value)
+        try await saveFilteredKeywords(.init(keywords))
+        return keywords
     }
     
     func saveFilteredKeywords(_ value: [String]) async throws {

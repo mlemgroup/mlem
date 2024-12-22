@@ -30,19 +30,32 @@ struct FeedPostView: View {
     var body: some View {
         Group {
             if obscured {
-                Text("Obscured")
+                obscuredContent
                     .onTapGesture {
-                        obscured = false
+                        withAnimation {
+                            obscured = false
+                        }
                     }
             } else {
                 content
+                    .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
+                    .quickSwipes(post.swipeActions(behavior: postSize.swipeBehavior))
+                    .contextMenu { post.allMenuActions(showAllActions: false, commentTreeTracker: commentTreeTracker) }
             }
         }
         .contentShape(.interaction, .rect)
-        .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .quickSwipes(post.swipeActions(behavior: postSize.swipeBehavior))
-        .contextMenu { post.allMenuActions(showAllActions: false, commentTreeTracker: commentTreeTracker) }
         .paletteBorder(cornerRadius: postSize.swipeBehavior.cornerRadius)
+    }
+    
+    @ViewBuilder
+    var obscuredContent: some View {
+        Text("Hidden by user filters")
+            .italic()
+            .foregroundStyle(palette.secondary)
+            .padding(Constants.main.standardSpacing)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .background(palette.secondaryGroupedBackground)
+            .clipShape(.rect(cornerRadius: postSize.swipeBehavior.cornerRadius))
     }
     
     @ViewBuilder

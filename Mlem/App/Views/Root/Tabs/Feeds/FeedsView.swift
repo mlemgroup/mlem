@@ -184,7 +184,6 @@ struct FeedsView: View {
         @Setting(\.internetSpeed) var internetSpeed
         @Setting(\.showReadInFeed) var showReadPosts
         
-        // TODO: NOW move this to AppState
         // TODO: NOW AppState (or similar) should track filteredKeywords for fast access
         
         do {
