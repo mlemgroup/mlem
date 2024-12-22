@@ -214,7 +214,7 @@ struct ExpandedPostView<Content: View>: View {
         }
         .paletteBorder(cornerRadius: PostSize.large.swipeBehavior.cornerRadius)
         .onTapGesture {
-            withAnimation {
+            withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
                 postCollapsed.toggle()
             }
         }
