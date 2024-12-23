@@ -10,8 +10,9 @@ import MlemMiddleware
 import SwiftUI
 
 struct MessageView<EmbeddedContent: View>: View {
-    @Environment(Palette.self) private var palette
     @Environment(AppState.self) private var appState
+    @Environment(NavigationLayer.self) private var navigation
+    @Environment(Palette.self) private var palette
     @Environment(\.reportContext) private var reportContext
     
     @Setting(\.moderatorActionGrouping) var moderatorActionGrouping
@@ -69,8 +70,15 @@ struct MessageView<EmbeddedContent: View>: View {
         .quickSwipes(message.swipeActions(behavior: .standard))
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .contextMenu { message.allMenuActions(report: reportContext) }
+        .contextMenu {
+            message.allMenuActions(navigation: navigation, report: reportContext)
+        }
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+        .onTapGesture {
+            if let creator = (message.isOwnMessage ? message.recipient_ : message.creator_), message.api.canInteract {
+                navigation.push(.messageFeed(creator))
+            }
+        }
     }
     
     var ellipsisMenus: some View {
@@ -82,11 +90,11 @@ struct MessageView<EmbeddedContent: View>: View {
                     }
                 }
                 EllipsisMenu(size: 24) {
-                    message.basicMenuActions()
+                    message.basicMenuActions(navigation: navigation)
                 }
             } else {
                 EllipsisMenu(size: 24) {
-                    message.allMenuActions(report: reportContext)
+                    message.allMenuActions(navigation: navigation, report: reportContext)
                 }
             }
         }

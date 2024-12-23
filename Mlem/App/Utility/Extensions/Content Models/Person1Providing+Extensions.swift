@@ -91,6 +91,7 @@ extension Person1Providing {
     @ActionBuilder
     func menuActions(
         feedback: Set<FeedbackType> = [.haptic, .toast],
+        isInMessageFeed: Bool = false,
         navigation: NavigationLayer?,
         community: (any Community)?
     ) -> [any Action] {
@@ -99,6 +100,9 @@ extension Person1Providing {
             copyNameAction()
             shareAction()
             if (AppState.main.firstSession as? UserSession)?.person?.person1 !== person1 {
+                if !isInMessageFeed {
+                    sendMessageAction()
+                }
                 blockAction(feedback: feedback)
             }
         }
@@ -115,6 +119,14 @@ extension Person1Providing {
             id: "block\(uid)",
             appearance: .block(isOn: blocked),
             callback: api.canInteract ? { self.toggleBlocked(feedback: feedback) } : nil
+        )
+    }
+    
+    func sendMessageAction() -> BasicAction {
+        .init(
+            id: "sendMessage\(uid)",
+            appearance: .init(label: "Send Message", color: Palette.main.accent, icon: Icons.message),
+            callback: { NavigationModel.main.openSheet(.messageFeed(self, focusTextField: true)) }
         )
     }
     

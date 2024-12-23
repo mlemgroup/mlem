@@ -56,10 +56,12 @@ struct LargeImageView: View {
                 if let onTapActions {
                     onTapActions()
                 }
-                if let loading, loading == .done, let url {
+                if loading == .done || loading == nil, let url {
                     mediaState.url = url
                 }
             }
-            .onPreferenceChange(MediaLoadingPreferenceKey.self, perform: { loading = $0 })
+            .onPreferenceChange(MediaLoadingPreferenceKey.self, perform: {
+                loading = $0
+            })
     }
 }
