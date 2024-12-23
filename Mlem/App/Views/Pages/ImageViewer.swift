@@ -53,12 +53,15 @@ struct ImageViewer: View {
             }
         }
         .simultaneousGesture(DragGesture(minimumDistance: 1.0)
-            .updating($dragState) { value, state, _ in
-                state = true
+            .onChanged { value in
                 if !isZoomed, !isDismissing {
                     offset = value.translation.height
                     opacity = 1.0 - (abs(value.translation.height) / screenHeight)
                 }
+            }
+            .updating($dragState) { _, state, _ in
+                // this detects cancelled gestures (e.g., if you zoom while dragging)
+                state = true
             }
         )
         .onAppear {
