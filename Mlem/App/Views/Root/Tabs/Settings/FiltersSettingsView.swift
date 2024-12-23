@@ -38,7 +38,7 @@ struct FiltersSettingsView: View {
     
     @ViewBuilder
     var keywordSection: some View {
-        TextField("New keyword", text: $newKeyword)
+        TextField("New Keyword...", text: $newKeyword)
             .textCase(.lowercase)
             .textInputAutocapitalization(.never)
             .submitLabel(.done)
