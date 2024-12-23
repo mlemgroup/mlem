@@ -29,6 +29,7 @@ struct CommunityView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
+    @Environment(FiltersTracker.self) var filtersTracker
     @Environment(\.dismiss) var dismiss
     
     @Setting(\.postSize) var postSize
@@ -256,19 +257,11 @@ struct CommunityView: View {
             @Setting(\.internetSpeed) var internetSpeed
             @Setting(\.showReadInFeed) var showReadInFeed
             
-            let moderatedCommunities: Set<URL>
-            if let person = appState.firstPerson {
-                moderatedCommunities = .init(person.moderatedCommunities.map { $0.actorId })
-            } else {
-                moderatedCommunities = .init()
-            }
-            
             postFeedLoader = try await .init(
                 pageSize: internetSpeed.pageSize,
                 sortType: appState.initialFeedSortType,
                 showReadPosts: showReadInFeed,
-                filteredKeywords: persistenceRepository.loadFilteredKeywords(),
-                moderatedCommunities: moderatedCommunities,
+                filterContext: filtersTracker.filterContext,
                 prefetchingConfiguration: .forPostSize(postSize),
                 urlCache: Constants.main.urlCache,
                 community: community

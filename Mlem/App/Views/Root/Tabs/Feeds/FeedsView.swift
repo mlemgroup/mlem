@@ -185,15 +185,12 @@ struct FeedsView: View {
         @Setting(\.internetSpeed) var internetSpeed
         @Setting(\.showReadInFeed) var showReadPosts
         
-        // TODO: NOW AppState (or similar) should track filteredKeywords for fast access
-        
         do {
             postFeedLoader = try await .init(
                 pageSize: internetSpeed.pageSize,
                 sortType: appState.initialFeedSortType,
                 showReadPosts: showReadPosts,
-                filteredKeywords: persistenceRepository.loadFilteredKeywords(),
-                moderatedCommunities: filtersTracker.filterContext.moderatedCommunityIds,
+                filterContext: filtersTracker.filterContext,
                 prefetchingConfiguration: .forPostSize(postSize),
                 urlCache: Constants.main.urlCache,
                 api: AppState.main.firstApi,

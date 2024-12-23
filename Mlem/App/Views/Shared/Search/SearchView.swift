@@ -53,7 +53,6 @@ struct SearchView: View {
     @State var instances: [InstanceSummary] = []
     @State var postLoader: SearchPostFeedLoader = .init(
         api: AppState.main.firstApi,
-        filteredKeywords: [],
         prefetchingConfiguration: .forPostSize(Settings.main.postSize),
         urlCache: Constants.main.urlCache
     )
