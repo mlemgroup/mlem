@@ -183,7 +183,7 @@ struct MessageFeedView: View {
                     }
                 }
             },
-            prompt: textInputPrompt,
+            prompt: "Send a Message...",
             textView: textView,
             insets: .init(
                 top: Constants.main.standardSpacing,
@@ -205,17 +205,6 @@ struct MessageFeedView: View {
             maxWidth: .infinity,
             minHeight: minTextEditorHeight
         )
-    }
-    
-    var textInputPrompt: LocalizedStringResource {
-        if feedLoader?.loadingState == .loading {
-            return "Loading..."
-        }
-        if feedLoader?.items.count == 0 {
-            return "Send a Message..."
-        } else {
-            return "Reply..."
-        }
     }
     
     func messageIsFirstOfDay(_ message: Message2) -> Bool {
