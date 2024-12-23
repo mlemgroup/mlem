@@ -82,7 +82,7 @@ struct ContentView: View {
                 .onChange(of: appState.firstPerson) {
                     // Observe AppState.main.firstPerson to update FiltersTracker as needed
                     // TODO: when Observation adds continous observation monitoring, move this into FiltersTracker
-                    filtersTracker.moderatedCommunityIds = appState.firstPerson?.moderatedCommunityIds ?? .init()
+                    filtersTracker.moderatedCommunityActorIds = appState.firstPerson?.moderatedCommunityActorIds ?? .init()
                 }
                 .onChange(of: interfaceStyle, initial: true) {
                     let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene

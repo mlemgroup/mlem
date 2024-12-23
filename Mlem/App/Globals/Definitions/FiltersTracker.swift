@@ -13,16 +13,16 @@ import MlemMiddleware
 @Observable
 class FiltersTracker {
     var isAdmin: Bool
-    var moderatedCommunityIds: Set<URL>
+    var moderatedCommunityActorIds: Set<URL>
     var filteredKeywords: Set<String>
     
     var filterContext: FilterContext {
-        .init(isAdmin: isAdmin, moderatedCommunityIds: moderatedCommunityIds, filteredKeywords: filteredKeywords)
+        .init(isAdmin: isAdmin, moderatedCommunityActorIds: moderatedCommunityActorIds, filteredKeywords: filteredKeywords)
     }
     
     var changeHash: Int {
         var hasher = Hasher()
-        hasher.combine(moderatedCommunityIds)
+        hasher.combine(moderatedCommunityActorIds)
         hasher.combine(filteredKeywords)
         return hasher.finalize()
     }
@@ -31,7 +31,7 @@ class FiltersTracker {
         @Dependency(\.persistenceRepository) var persistenceRepository
         
         isAdmin = AppState.main.firstPerson?.isAdmin ?? false
-        moderatedCommunityIds = AppState.main.firstPerson?.moderatedCommunityIds ?? .init()
+        moderatedCommunityActorIds = AppState.main.firstPerson?.moderatedCommunityActorIds ?? .init()
         filteredKeywords = persistenceRepository.loadFilteredKeywords()
     }
     
