@@ -34,7 +34,7 @@ class FiltersTracker {
     }
     
     func postWouldBeFiltered(_ post: any Post) -> Bool {
-        post.title.lowercased().isContainedIn(filteredKeywords)
+        return post.title.lowercased().isContainedIn(filteredKeywords)
     }
     
     static var main: FiltersTracker = .init()

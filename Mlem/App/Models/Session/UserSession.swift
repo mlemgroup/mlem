@@ -40,6 +40,7 @@ class UserSession: Session {
                     if let person {
                         await self.account.update(person: person, instance: instance)
                         self.person = person
+                        // TODO: NOW if this firstApi, update FiltersTracker?
                     }
                     self.blocks = blocks
                     self.instance = instance

@@ -15,16 +15,17 @@ struct FeedPostView: View {
     
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(Palette.self) private var palette
+    @Environment(FiltersTracker.self) var filtersTracker
     
     @State var obscured: Bool
     
     let post: any Post1Providing
     var overridePostSize: PostSize?
     
-    init(post: any Post1Providing, obscured: Bool, overridePostSize: PostSize? = nil) {
+    init(post: any Post1Providing, overridePostSize: PostSize? = nil) {
         self.post = post
         self.overridePostSize = overridePostSize
-        self._obscured = .init(wrappedValue: obscured)
+        self._obscured = .init(wrappedValue: FiltersTracker.main.postWouldBeFiltered(post))
     }
     
     var body: some View {
@@ -45,6 +46,9 @@ struct FeedPostView: View {
         }
         .contentShape(.interaction, .rect)
         .paletteBorder(cornerRadius: postSize.swipeBehavior.cornerRadius)
+        .onChange(of: filtersTracker.changeHash) {
+            obscured = filtersTracker.postWouldBeFiltered(post)
+        }
     }
     
     @ViewBuilder

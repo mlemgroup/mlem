@@ -37,7 +37,9 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
                     }
                 }
                 .onChange(of: filtersChangeHash) {
-                    showRefreshPopup = true
+                    if feedLoader.items.count > 0 {
+                        showRefreshPopup = true
+                    }
                 }
                 .overlay(alignment: .bottom) {
                     RefreshPopupView("Feed is outdated", isPresented: $showRefreshPopup) {
