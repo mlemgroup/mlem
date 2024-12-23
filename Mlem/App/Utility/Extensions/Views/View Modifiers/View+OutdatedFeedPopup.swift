@@ -10,6 +10,7 @@ import SwiftUI
 
 private struct OutdatedFeedPopupModifier: ViewModifier {
     @Environment(AppState.self) var appState
+    @Environment(FiltersTracker.self) var filtersTracker
     
     let feedLoader: (any FeedLoading)?
     
@@ -28,12 +29,15 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
                 .refreshable {
                     await refresh(feedLoader)
                 }
-                .onChange(of: onChangeHash) {
+                .onChange(of: apiChangeHash) {
                     if let newApi = feedLoader.items.first?.api {
                         showRefreshPopup = canShowPopup && (newApi !== appState.firstApi && feedLoader.loadingState != .loading)
                     } else {
                         showRefreshPopup = false
                     }
+                }
+                .onChange(of: filtersChangeHash) {
+                    showRefreshPopup = true
                 }
                 .overlay(alignment: .bottom) {
                     RefreshPopupView("Feed is outdated", isPresented: $showRefreshPopup) {
@@ -47,7 +51,14 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
         }
     }
     
-    var onChangeHash: Int {
+    var filtersChangeHash: Int {
+        var hasher = Hasher()
+        hasher.combine(canShowPopup)
+        hasher.combine(filtersTracker.changeHash)
+        return hasher.finalize()
+    }
+    
+    var apiChangeHash: Int {
         var hasher = Hasher()
         hasher.combine(canShowPopup)
         hasher.combine(appState.firstApi)
@@ -59,7 +70,7 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
     func refresh(_ feedLoader: any FeedLoading) async {
         do {
             showRefreshPopup = false
-            await feedLoader.changeApi(to: appState.firstApi, context: appState.filterContext)
+            await feedLoader.changeApi(to: appState.firstApi, context: filtersTracker.filterContext)
             
             if let feedLoader = feedLoader as? CorePostFeedLoader {
                 if try await appState.firstApi.version < feedLoader.sortType.minimumVersion {

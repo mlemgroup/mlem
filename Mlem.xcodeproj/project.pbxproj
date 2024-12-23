@@ -355,6 +355,8 @@
 		CD79281F2C73B52A00FA712D /* EndOfFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD79281E2C73B52A00FA712D /* EndOfFeedView.swift */; };
 		CD7928232C73CBA400FA712D /* TileScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7928222C73CBA400FA712D /* TileScoreView.swift */; };
 		CD7928262C73E73400FA712D /* PersonView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7928252C73E73400FA712D /* PersonView+Logic.swift */; };
+		CD7BF9322D18F4ED0020F2C5 /* FiltersTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7BF9312D18F4EB0020F2C5 /* FiltersTracker.swift */; };
+		CD7BF9342D18F8D70020F2C5 /* PersonProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7BF9332D18F8D50020F2C5 /* PersonProviding+Extensions.swift */; };
 		CD7DB9712C49C17200DCC542 /* PersonContentGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */; };
 		CD7DB9732C4AEDDE00DCC542 /* TileCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */; };
 		CD7DB9762C4D6C0A00DCC542 /* FeedCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9752C4D6C0A00DCC542 /* FeedCommentView.swift */; };
@@ -781,6 +783,8 @@
 		CD79281E2C73B52A00FA712D /* EndOfFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndOfFeedView.swift; sourceTree = "<group>"; };
 		CD7928222C73CBA400FA712D /* TileScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileScoreView.swift; sourceTree = "<group>"; };
 		CD7928252C73E73400FA712D /* PersonView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonView+Logic.swift"; sourceTree = "<group>"; };
+		CD7BF9312D18F4EB0020F2C5 /* FiltersTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersTracker.swift; sourceTree = "<group>"; };
+		CD7BF9332D18F8D50020F2C5 /* PersonProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonProviding+Extensions.swift"; sourceTree = "<group>"; };
 		CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonContentGridView.swift; sourceTree = "<group>"; };
 		CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileCommentView.swift; sourceTree = "<group>"; };
 		CD7DB9752C4D6C0A00DCC542 /* FeedCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCommentView.swift; sourceTree = "<group>"; };
@@ -1589,6 +1593,7 @@
 		CD4D58C22B86DC5800B82964 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				CD7BF9332D18F8D50020F2C5 /* PersonProviding+Extensions.swift */,
 				CD8457132D07576700CEA2B8 /* AVPlayer+Extensions.swift */,
 				CD332D7D2CA7485D00A53988 /* String+Extensions.swift */,
 				0397D47F2C693A88002C6CDC /* [BlockNode]+Extensions.swift */,
@@ -1687,6 +1692,7 @@
 		CD4D59212B87BD0800B82964 /* Definitions */ = {
 			isa = PBXGroup;
 			children = (
+				CD7BF9312D18F4EB0020F2C5 /* FiltersTracker.swift */,
 				CD4D58B22B86BFD400B82964 /* AccountsTracker.swift */,
 				036CC3AE2B8145C30098B6A1 /* AppState.swift */,
 				0380965E2C10AA80003ED1D8 /* AppState+Transition.swift */,
@@ -2381,6 +2387,7 @@
 				CD4D59162B87B38C00B82964 /* UIApplication+Extensions.swift in Sources */,
 				CDB41E8A2C83C24400BD2DE9 /* Section.swift in Sources */,
 				CDCA44B22C17675600C092B3 /* Haptic.swift in Sources */,
+				CD7BF9322D18F4ED0020F2C5 /* FiltersTracker.swift in Sources */,
 				0391E0FB2D0066240040CCA8 /* ImageUploadMenu.swift in Sources */,
 				035BE08B2BDD903100F77D73 /* NavigationModel.swift in Sources */,
 				033F84BB2C2ACB96002E3EDF /* CommentView.swift in Sources */,
@@ -2421,6 +2428,7 @@
 				033F84BF2C2ACC9F002E3EDF /* Comment1Providing+Extensions.swift in Sources */,
 				0369B35D2BFB86E3001EFEDF /* Account.swift in Sources */,
 				036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */,
+				CD7BF9342D18F8D70020F2C5 /* PersonProviding+Extensions.swift in Sources */,
 				03134A502BEAD245002662CC /* NavigationLink+NavigationPage.swift in Sources */,
 				03B431BC2C455838001A1EB5 /* LargePostBodyView.swift in Sources */,
 				CDFB8C692C7796020070845F /* View+DynamicBlur.swift in Sources */,

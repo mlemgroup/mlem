@@ -12,6 +12,7 @@ struct FiltersSettingsView: View {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
     @Environment(Palette.self) var palette
+    @Environment(FiltersTracker.self) var filtersTracker
     
     @State var filteredKeywords: [String]
     @State var newKeyword: String = ""
@@ -64,10 +65,14 @@ struct FiltersSettingsView: View {
     func saveNewKeyword() {
         guard !newKeyword.isEmpty else { return }
         
+        let cleanedKeyword = newKeyword.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+        
         Task {
             do {
-                filteredKeywords = .init(try await persistenceRepository.saveFilteredKeyword(newKeyword.lowercased()))
+                let newFilteredKeywords = try await persistenceRepository.saveFilteredKeyword(cleanedKeyword)
+                filteredKeywords = .init(newFilteredKeywords)
                 newKeyword = ""
+                filtersTracker.filteredKeywords = newFilteredKeywords
             } catch {
                 handleError(error)
             }
@@ -79,7 +84,9 @@ struct FiltersSettingsView: View {
         
         Task {
             do {
-                filteredKeywords = .init(try await persistenceRepository.removeFilteredKeyword(keyword))
+                let newFilteredKeywords = try await persistenceRepository.removeFilteredKeyword(keyword)
+                filteredKeywords = .init(newFilteredKeywords)
+                filtersTracker.filteredKeywords = newFilteredKeywords
             } catch {
                 handleError(error)
             }
