@@ -18,6 +18,9 @@ struct FeedsView: View {
     
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
+    @Environment(FiltersTracker.self) var filtersTracker
+    
+    @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
     
     @State var postFeedLoader: AggregatePostFeedLoader?
     @State var savedFeedLoader: PersonContentFeedLoader?
@@ -115,7 +118,7 @@ struct FeedsView: View {
                         try await postFeedLoader?.changeSortType(to: appState.initialFeedSortType)
                         let newFeedSelection: FeedSelection = appState.firstAccount.accountType == .user ? .subscribed : .all
                         if newFeedSelection != feedSelection {
-                            await postFeedLoader?.changeApi(to: appState.firstApi)
+                            await postFeedLoader?.changeApi(to: appState.firstApi, context: filtersTracker.filterContext)
                         }
                         feedSelection = newFeedSelection
                     }
@@ -187,7 +190,7 @@ struct FeedsView: View {
                 pageSize: internetSpeed.pageSize,
                 sortType: appState.initialFeedSortType,
                 showReadPosts: showReadPosts,
-                filteredKeywords: [],
+                filterContext: filtersTracker.filterContext,
                 prefetchingConfiguration: .forPostSize(postSize),
                 urlCache: Constants.main.urlCache,
                 api: AppState.main.firstApi,

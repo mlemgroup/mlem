@@ -19,6 +19,7 @@ extension PlatformConstants {
         largeAvatarSize: 32,
         mediumAvatarSize: 22,
         smallAvatarSize: 16,
+        feedHeaderSize: 44,
         largeItemCornerRadius: 16,
         mediumItemCornerRadius: 8,
         smallItemCornerRadius: 6,

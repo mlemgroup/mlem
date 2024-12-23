@@ -703,6 +703,9 @@
     "Hidden" : {
 
     },
+    "Hidden by user filters" : {
+
+    },
     "Hide" : {
 
     },
@@ -794,6 +797,9 @@
 
     },
     "Keep Place" : {
+
+    },
+    "Keyword Filters" : {
 
     },
     "Label Style" : {
@@ -943,6 +949,9 @@
     "New Comments" : {
 
     },
+    "New keyword" : {
+
+    },
     "New Post" : {
 
     },
@@ -1076,6 +1085,9 @@
 
     },
     "Posts" : {
+
+    },
+    "Posts containing these keywords will not be shown. If you are a moderator or administrator for a given post, it will be present in your feed but require a tap to display the content." : {
 
     },
     "Posts from %@ communities" : {

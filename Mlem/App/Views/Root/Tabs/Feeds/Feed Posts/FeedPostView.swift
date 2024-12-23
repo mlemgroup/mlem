@@ -14,6 +14,9 @@ struct FeedPostView<EmbeddedContent: View>: View {
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(NavigationLayer.self) private var navigation
     @Environment(Palette.self) private var palette
+    @Environment(FiltersTracker.self) var filtersTracker
+    
+    @State var obscured: Bool
     
     @Setting(\.postSize) private var postSize
     
@@ -33,19 +36,45 @@ struct FeedPostView<EmbeddedContent: View>: View {
         self.overridePostSize = overridePostSize
         self.favoredLink = favoredLink
         self.embeddedContent = embeddedContent
+        self._obscured = .init(wrappedValue: FiltersTracker.main.postWouldBeFiltered(post))
     }
     
     var body: some View {
-        content
-            .contentShape(.interaction, .rect)
-            .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-            .quickSwipes(post.swipeActions(behavior: postSize.swipeBehavior))
-            .contextMenu { post.allMenuActions(
-                showAllActions: false,
-                navigation: navigation,
-                commentTreeTracker: commentTreeTracker
-            ) }
-            .paletteBorder(cornerRadius: postSize.swipeBehavior.cornerRadius)
+        Group {
+            if obscured {
+                obscuredContent
+                    .onTapGesture {
+                        withAnimation {
+                            obscured = false
+                        }
+                    }
+            } else {
+                content
+                    .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
+                    .quickSwipes(post.swipeActions(behavior: postSize.swipeBehavior))
+                    .contextMenu { post.allMenuActions(
+                        showAllActions: false,
+                        navigation: navigation,
+                        commentTreeTracker: commentTreeTracker
+                    ) }
+            }
+        }
+        .contentShape(.interaction, .rect)
+        .paletteBorder(cornerRadius: postSize.swipeBehavior.cornerRadius)
+        .onChange(of: filtersTracker.changeHash) {
+            obscured = filtersTracker.postWouldBeFiltered(post)
+        }
+    }
+    
+    @ViewBuilder
+    var obscuredContent: some View {
+        Text("Hidden by keyword filters")
+            .italic()
+            .foregroundStyle(palette.secondary)
+            .padding(Constants.main.standardSpacing)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .background(palette.secondaryGroupedBackground)
+            .clipShape(.rect(cornerRadius: postSize.swipeBehavior.cornerRadius))
     }
     
     @ViewBuilder

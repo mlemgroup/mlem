@@ -23,6 +23,7 @@ struct PostGridView: View {
     
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
+    @Environment(FiltersTracker.self) var filtersTracker
     
     @Environment(\.communityContext) var communityContext
     
