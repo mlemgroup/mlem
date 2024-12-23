@@ -65,6 +65,10 @@
 		0331715E2CCD6D95002DA370 /* ContentPurgeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0331715D2CCD6D95002DA370 /* ContentPurgeEditorView.swift */; };
 		033171782CCE89E3002DA370 /* PurgableProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033171772CCE89E3002DA370 /* PurgableProviding+Extensions.swift */; };
 		033EF4102CB9AEF7004D8A3F /* ExpandedPostView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033EF40F2CB9AEF7004D8A3F /* ExpandedPostView+Views.swift */; };
+		033F84492D18D1F400D87A9E /* MessageFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84482D18D1F400D87A9E /* MessageFeedView.swift */; };
+		033F844D2D18D90900D87A9E /* MessageBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F844C2D18D90900D87A9E /* MessageBubbleView.swift */; };
+		033F844F2D196AC700D87A9E /* OptimalHeightLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F844E2D196AC700D87A9E /* OptimalHeightLayout.swift */; };
+		033F84512D196AFD00D87A9E /* MessageFeedView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84502D196AFD00D87A9E /* MessageFeedView+Logic.swift */; };
 		033F84AD2C298466002E3EDF /* SectionIndexTitles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84AC2C298466002E3EDF /* SectionIndexTitles.swift */; };
 		033F84B12C29907F002E3EDF /* FeedbackType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84B02C29907F002E3EDF /* FeedbackType.swift */; };
 		033F84BB2C2ACB96002E3EDF /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84BA2C2ACB96002E3EDF /* CommentView.swift */; };
@@ -503,6 +507,11 @@
 		0331715D2CCD6D95002DA370 /* ContentPurgeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentPurgeEditorView.swift; sourceTree = "<group>"; };
 		033171772CCE89E3002DA370 /* PurgableProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PurgableProviding+Extensions.swift"; sourceTree = "<group>"; };
 		033EF40F2CB9AEF7004D8A3F /* ExpandedPostView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExpandedPostView+Views.swift"; sourceTree = "<group>"; };
+		033F84482D18D1F400D87A9E /* MessageFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageFeedView.swift; sourceTree = "<group>"; };
+		033F844A2D18D43D00D87A9E /* MlemMiddleware */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MlemMiddleware; path = ../MlemMiddleware; sourceTree = SOURCE_ROOT; };
+		033F844C2D18D90900D87A9E /* MessageBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBubbleView.swift; sourceTree = "<group>"; };
+		033F844E2D196AC700D87A9E /* OptimalHeightLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimalHeightLayout.swift; sourceTree = "<group>"; };
+		033F84502D196AFD00D87A9E /* MessageFeedView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageFeedView+Logic.swift"; sourceTree = "<group>"; };
 		033F84AC2C298466002E3EDF /* SectionIndexTitles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionIndexTitles.swift; sourceTree = "<group>"; };
 		033F84B02C29907F002E3EDF /* FeedbackType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackType.swift; sourceTree = "<group>"; };
 		033F84BA2C2ACB96002E3EDF /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
@@ -992,6 +1001,16 @@
 			path = Avatar;
 			sourceTree = "<group>";
 		};
+		033F844B2D18D8F400D87A9E /* MessageFeedView */ = {
+			isa = PBXGroup;
+			children = (
+				033F84482D18D1F400D87A9E /* MessageFeedView.swift */,
+				033F84502D196AFD00D87A9E /* MessageFeedView+Logic.swift */,
+				033F844C2D18D90900D87A9E /* MessageBubbleView.swift */,
+			);
+			path = MessageFeedView;
+			sourceTree = "<group>";
+		};
 		033F84C62C2B192F002E3EDF /* MlemStats */ = {
 			isa = PBXGroup;
 			children = (
@@ -1155,6 +1174,7 @@
 				CDD99C3B2C73F3FF0010367F /* DeleteAccountView.swift */,
 				03B25B3A2CC44FFF00EB6DF5 /* UploadConfirmationView.swift */,
 				03E46AD12D130681002589DB /* VotesListView.swift */,
+				033F844B2D18D8F400D87A9E /* MessageFeedView */,
 			);
 			name = Pages;
 			path = Mlem/App/Views/Pages;
@@ -1296,6 +1316,7 @@
 		6363D5B827EE196700E34822 = {
 			isa = PBXGroup;
 			children = (
+				033F844A2D18D43D00D87A9E /* MlemMiddleware */,
 				6363D5C327EE196700E34822 /* Mlem */,
 				6363D5D927EE196A00E34822 /* MlemTests */,
 				6363D5E327EE196A00E34822 /* MlemUITests */,
@@ -1586,6 +1607,7 @@
 				CD635E1A2C94DACD00864F75 /* BypassProxyWarningSheet.swift */,
 				03AB484E2CBAE33500567FF9 /* MarkdownWithLinkList.swift */,
 				037DE0792CE108D9007F7B92 /* FooterLinkView.swift */,
+				033F844E2D196AC700D87A9E /* OptimalHeightLayout.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -2237,6 +2259,7 @@
 				03AB484F2CBAE33500567FF9 /* MarkdownWithLinkList.swift in Sources */,
 				03531EF12C2DA298004A3464 /* SearchResultsView.swift in Sources */,
 				034B94852C09348400039AF4 /* MarkdownImageView.swift in Sources */,
+				033F84512D196AFD00D87A9E /* MessageFeedView+Logic.swift in Sources */,
 				CD9CFA2A2C2E1E8400739BBC /* FeedHeaderView.swift in Sources */,
 				CDB41E8E2C84CFA200BD2DE9 /* FixedImageView.swift in Sources */,
 				033F84C12C2AD072002E3EDF /* CommentWrapper.swift in Sources */,
@@ -2279,6 +2302,7 @@
 				CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */,
 				03AFD0E32C3C0C540054B8AD /* InstanceView.swift in Sources */,
 				CDD4A09C2C8A122F0001AD1A /* CodableSettings.swift in Sources */,
+				033F844F2D196AC700D87A9E /* OptimalHeightLayout.swift in Sources */,
 				03ECD7212C8654BA00D48BF6 /* PostEditorView+Toolbar.swift in Sources */,
 				033EF4102CB9AEF7004D8A3F /* ExpandedPostView+Views.swift in Sources */,
 				03FE140C2BF953B000A8377F /* HandleError.swift in Sources */,
@@ -2397,6 +2421,7 @@
 				CDB2EC8A2BFAEFDF00DBC0EF /* ThumbnailImageView.swift in Sources */,
 				0397D4932C6CE87E002C6CDC /* PostEditorTargetView.swift in Sources */,
 				034690992D105DFD0073E664 /* InboxView+Types.swift in Sources */,
+				033F84492D18D1F400D87A9E /* MessageFeedView.swift in Sources */,
 				030050D52D10AE30002B1E99 /* Report+Extensions.swift in Sources */,
 				CD57AFA32D03761500AB3956 /* WebpView.swift in Sources */,
 				0369B3562BFA6824001EFEDF /* InboxView.swift in Sources */,
@@ -2443,6 +2468,7 @@
 				033F84BF2C2ACC9F002E3EDF /* Comment1Providing+Extensions.swift in Sources */,
 				0369B35D2BFB86E3001EFEDF /* Account.swift in Sources */,
 				036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */,
+				033F844D2D18D90900D87A9E /* MessageBubbleView.swift in Sources */,
 				03134A502BEAD245002662CC /* NavigationLink+NavigationPage.swift in Sources */,
 				03B431BC2C455838001A1EB5 /* LargePostBodyView.swift in Sources */,
 				CDFB8C692C7796020070845F /* View+DynamicBlur.swift in Sources */,
