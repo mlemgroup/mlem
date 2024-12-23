@@ -36,7 +36,7 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
                         showRefreshPopup = false
                     }
                 }
-                .onChange(of: filtersChangeHash) {
+                .onChange(of: filtersTracker.changeHash) {
                     if feedLoader.items.count > 0 {
                         showRefreshPopup = true
                     }
@@ -51,13 +51,6 @@ private struct OutdatedFeedPopupModifier: ViewModifier {
         } else {
             content
         }
-    }
-    
-    var filtersChangeHash: Int {
-        var hasher = Hasher()
-        hasher.combine(canShowPopup)
-        hasher.combine(filtersTracker.changeHash)
-        return hasher.finalize()
     }
     
     var apiChangeHash: Int {
