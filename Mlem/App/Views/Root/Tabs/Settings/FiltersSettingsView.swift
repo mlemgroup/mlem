@@ -31,7 +31,7 @@ struct FiltersSettingsView: View {
                 Text("Keyword Filters")
             } footer: {
                 // swiftlint:disable:next line_length
-                Text("Posts containing these keywords will not be shown. If you are a moderator or administrator for a given post, it will be present in your feed but require a tap to display the content.")
+                Text("Posts with these keywords in their titles will be hidden. If you are a moderator or administrator of a matching post, it will appear in your feed but require you to tap to view its content.")
             }
         }
     }
