@@ -390,7 +390,6 @@
 		CDB41E8A2C83C24400BD2DE9 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB41E892C83C24400BD2DE9 /* Section.swift */; };
 		CDB41E8C2C84CED500BD2DE9 /* FixedImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB41E8B2C84CED500BD2DE9 /* FixedImageLoader.swift */; };
 		CDB41E8E2C84CFA200BD2DE9 /* FixedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB41E8D2C84CFA200BD2DE9 /* FixedImageView.swift */; };
-		CDB64BE92D19FB51001A0094 /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CDB64BE82D19FB51001A0094 /* MlemMiddleware */; };
 		CDB738292CB8A6A5005B11BB /* View+PaletteBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB738282CB8A69D005B11BB /* View+PaletteBorder.swift */; };
 		CDBFCB652C03920C008CD468 /* PostLinkHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB642C03920C008CD468 /* PostLinkHostView.swift */; };
 		CDBFCB6A2C04EFFE008CD468 /* PostSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */; };
@@ -411,6 +410,7 @@
 		CDCA44B22C17675600C092B3 /* Haptic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44B12C17675600C092B3 /* Haptic.swift */; };
 		CDCA44B42C176A4700C092B3 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44B32C176A4700C092B3 /* Array+Extensions.swift */; };
 		CDCA44B62C176C5000C092B3 /* View+EdgeBorders.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44B52C176C5000C092B3 /* View+EdgeBorders.swift */; };
+		CDCE757E2D1A04AC001A008A /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CDCE757D2D1A04AC001A008A /* MlemMiddleware */; };
 		CDD4A09C2C8A122F0001AD1A /* CodableSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09B2C8A122F0001AD1A /* CodableSettings.swift */; };
 		CDD4A09E2C8B69FC0001AD1A /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09D2C8B69FC0001AD1A /* Button.swift */; };
 		CDD4A0A02C8B985D0001AD1A /* ImportExportSettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4A09F2C8B985D0001AD1A /* ImportExportSettingsPage.swift */; };
@@ -880,7 +880,7 @@
 				636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */,
 				CDE4AC452CA370E000981010 /* SDWebImageSwiftUI in Frameworks */,
 				CD4368C12AE23FD400BD8BD1 /* Semaphore in Frameworks */,
-				CDB64BE92D19FB51001A0094 /* MlemMiddleware in Frameworks */,
+				CDCE757E2D1A04AC001A008A /* MlemMiddleware in Frameworks */,
 				B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */,
 				CDE4AC472CA372B600981010 /* SDWebImageWebPCoder in Frameworks */,
 				B104A6DC2A59BF3C00B3E725 /* NukeUI in Frameworks */,
@@ -2010,7 +2010,7 @@
 				CDE4AC442CA370E000981010 /* SDWebImageSwiftUI */,
 				CDE4AC462CA372B600981010 /* SDWebImageWebPCoder */,
 				CD64A9192CA37E8D007CA7E6 /* Gifu */,
-				CDB64BE82D19FB51001A0094 /* MlemMiddleware */,
+				CDCE757D2D1A04AC001A008A /* MlemMiddleware */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -2098,7 +2098,7 @@
 				CDE4AC402CA3706400981010 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				CDE4AC412CA3706F00981010 /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */,
 				CD64A9182CA37D63007CA7E6 /* XCRemoteSwiftPackageReference "Gifu" */,
-				CDBBC9DB2D19FB1F00E4D5AA /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
+				CDCE757C2D1A04A3001A008A /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -3006,7 +3006,7 @@
 				kind = branch;
 			};
 		};
-		CDBBC9DB2D19FB1F00E4D5AA /* XCRemoteSwiftPackageReference "MlemMiddleware" */ = {
+		CDCE757C2D1A04A3001A008A /* XCRemoteSwiftPackageReference "MlemMiddleware" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
@@ -3088,9 +3088,9 @@
 			package = CD64A9182CA37D63007CA7E6 /* XCRemoteSwiftPackageReference "Gifu" */;
 			productName = Gifu;
 		};
-		CDB64BE82D19FB51001A0094 /* MlemMiddleware */ = {
+		CDCE757D2D1A04AC001A008A /* MlemMiddleware */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CDBBC9DB2D19FB1F00E4D5AA /* XCRemoteSwiftPackageReference "MlemMiddleware" */;
+			package = CDCE757C2D1A04A3001A008A /* XCRemoteSwiftPackageReference "MlemMiddleware" */;
 			productName = MlemMiddleware;
 		};
 		CDE4AC442CA370E000981010 /* SDWebImageSwiftUI */ = {

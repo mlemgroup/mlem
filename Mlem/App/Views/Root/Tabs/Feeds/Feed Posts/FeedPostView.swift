@@ -36,11 +36,6 @@ struct FeedPostView<EmbeddedContent: View>: View {
         self.overridePostSize = overridePostSize
         self.favoredLink = favoredLink
         self.embeddedContent = embeddedContent
-    }
-    
-    init(post: any Post1Providing, overridePostSize: PostSize? = nil) {
-        self.post = post
-        self.overridePostSize = overridePostSize
         self._obscured = .init(wrappedValue: FiltersTracker.main.postWouldBeFiltered(post))
     }
     
@@ -59,7 +54,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
                     .quickSwipes(post.swipeActions(behavior: postSize.swipeBehavior))
                     .contextMenu { post.allMenuActions(
                         showAllActions: false,
-                        navigatoin: navigation,
+                        navigation: navigation,
                         commentTreeTracker: commentTreeTracker
                     ) }
             }
