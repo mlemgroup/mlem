@@ -87,7 +87,8 @@ struct PostGridView: View {
                 ForEach(Array(postFeedLoader.items.enumerated()), id: \.element.hashValue) { index, post in
                     if !post.shouldHideInFeed {
                         NavigationLink(.post(post, communityContext: communityContext, navigationNamespace: navigationNamespace)) {
-                            FeedPostView(post: post, obscured: postFeedLoader.keywordFilterBypassed(for: post))
+                            // FeedPostView(post: post, obscured: postFeedLoader.keywordFilterBypassed(for: post))
+                            FeedPostView(post: post, obscured: filtersTracker.postWouldBeFiltered(post))
                                 .matchedTransitionSource_(id: "post\(post.actorId)", in: navigationNamespace)
                         }
                         .buttonStyle(.empty)

@@ -79,7 +79,7 @@ struct ContentView: View {
                         Settings.main.restore(from: .v1)
                     }
                 }
-                .onChange(of: appState.firstApi) {
+                .onChange(of: appState.firstPerson) {
                     // Observe AppState.main.firstPerson to update FiltersTracker as needed
                     // TODO: when Observation adds continous observation monitoring, move this into FiltersTracker
                     filtersTracker.moderatedCommunityIds = appState.firstPerson?.moderatedCommunityIds ?? .init()

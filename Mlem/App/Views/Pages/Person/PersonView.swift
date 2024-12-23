@@ -31,6 +31,7 @@ struct PersonView: View {
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
+    @Environment(FiltersTracker.self) var filtersTracker
     
     @State var person: AnyPerson
     @State private var selectedTab: Tab = .overview
@@ -109,7 +110,7 @@ struct PersonView: View {
                         preheatFeedLoader()
                     } else if let feedLoader, feedLoader.api !== entity.api {
                         Task {
-                            await feedLoader.changeUser(api: entity.api, context: appState.filterContext, userId: entity.id)
+                            await feedLoader.changeUser(api: entity.api, context: filtersTracker.filterContext, userId: entity.id)
                         }
                     }
                     

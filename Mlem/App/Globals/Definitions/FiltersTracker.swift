@@ -16,7 +16,7 @@ class FiltersTracker {
     var filteredKeywords: Set<String>
     
     var filterContext: FilterContext {
-        .init(moderatedCommunityIds: moderatedCommunityIds)
+        .init(moderatedCommunityIds: moderatedCommunityIds, filteredKeywords: filteredKeywords)
     }
     
     var changeHash: Int {
@@ -31,6 +31,10 @@ class FiltersTracker {
         
         moderatedCommunityIds = AppState.main.firstPerson?.moderatedCommunityIds ?? .init()
         filteredKeywords = persistenceRepository.loadFilteredKeywords()
+    }
+    
+    func postWouldBeFiltered(_ post: any Post) -> Bool {
+        post.title.lowercased().isContainedIn(filteredKeywords)
     }
     
     static var main: FiltersTracker = .init()
