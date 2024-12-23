@@ -34,6 +34,9 @@ extension ExpandedPostView {
                         highlight: [scrollTargetedComment?.actorId, highlightedComment?.actorId].contains(comment.actorId),
                         depthOffset: tracker.proposedDepthOffset
                     )
+                    .quickSwipes(comment.swipeActions(behavior: .standard, commentTreeTracker: tracker))
+                    .contextMenu { comment.allMenuActions() }
+                    .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                     .transition(.move(edge: .top).combined(with: .opacity))
                     .zIndex(1000 - Double(comment.depth))
                     .anchorPreference(

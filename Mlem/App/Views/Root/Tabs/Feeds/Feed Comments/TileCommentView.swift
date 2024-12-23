@@ -14,7 +14,7 @@ struct TileCommentView: View {
     @Environment(Palette.self) var palette
     @Environment(\.parentFrameWidth) var parentFrameWidth: CGFloat
     
-    let comment: any Comment2Providing
+    let comment: any Comment
     
     @ScaledMetric(relativeTo: .footnote) var titleHeight: CGFloat = 36 // (2 * .footnote height), including built-in spacing
     @ScaledMetric(relativeTo: .caption) var communityHeight: CGFloat = 16 // .caption height, including built-in spacing
@@ -45,16 +45,17 @@ struct TileCommentView: View {
     
     var content: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-            titleSection
-                .typesettingLanguage(.init(languageCode: .english))
-                .frame(height: titleHeight, alignment: .topLeading)
-                .padding(Constants.main.halfSpacing)
-                .background {
-                    RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
-                        .fill(palette.tertiaryGroupedBackground)
-                }
-                .paletteBorder(cornerRadius: Constants.main.smallItemCornerRadius)
-            
+            if let post = comment.post_ {
+                titleSection(post: post)
+                    .typesettingLanguage(.init(languageCode: .english))
+                    .frame(height: titleHeight, alignment: .topLeading)
+                    .padding(Constants.main.halfSpacing)
+                    .background {
+                        RoundedRectangle(cornerRadius: Constants.main.smallItemCornerRadius)
+                            .fill(palette.tertiaryGroupedBackground)
+                    }
+                    .paletteBorder(cornerRadius: Constants.main.smallItemCornerRadius)
+            }
             MarkdownText(comment.content, configuration: .caption)
                 .frame(height: contentHeight, alignment: .top)
                 .clipped()
@@ -65,8 +66,8 @@ struct TileCommentView: View {
     }
     
     @ViewBuilder
-    var titleSection: some View {
-        Text(comment.post.title)
+    func titleSection(post: any Post) -> some View {
+        Text(post.title)
             .lineLimit(2)
             .foregroundStyle(palette.secondary)
             .font(.footnote)
@@ -102,7 +103,11 @@ struct TileCommentView: View {
                 MenuButton(action: action)
             }
         } label: {
-            TileScoreView(comment)
+            if let comment = comment as? any Comment2Providing {
+                TileScoreView(comment)
+            } else {
+                Image(systemName: Icons.menu)
+            }
         }
         .onTapGesture {}
         .popupAnchor()

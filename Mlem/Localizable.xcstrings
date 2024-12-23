@@ -230,9 +230,6 @@
     "Average: %@" : {
 
     },
-    "Ban" : {
-
-    },
     "Ban %@" : {
 
     },
@@ -240,9 +237,6 @@
 
     },
     "Ban Target" : {
-
-    },
-    "Ban User" : {
 
     },
     "Banned from Community" : {
@@ -294,6 +288,9 @@
 
     },
     "Bottom" : {
+
+    },
+    "by %@" : {
 
     },
     "Bypass Image Proxy?" : {
@@ -637,6 +634,9 @@
     "Fediseer GUI" : {
 
     },
+    "Feed" : {
+
+    },
     "Feed is outdated" : {
 
     },
@@ -896,6 +896,9 @@
 
     },
     "Mlem will always try to load from the proxy first." : {
+
+    },
+    "Mod Mail" : {
 
     },
     "Moderated" : {
@@ -1204,7 +1207,23 @@
     "Report" : {
 
     },
+    "Reported %@ by %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Reported %1$@ by %2$@"
+          }
+        }
+      }
+    },
+    "Reports and Registration Applications" : {
+
+    },
     "Reports Email Admins" : {
+
+    },
+    "Reports from communities you moderate" : {
 
     },
     "Requires Application" : {
@@ -1214,6 +1233,15 @@
 
     },
     "Reset Settings State" : {
+
+    },
+    "Resolve" : {
+
+    },
+    "Resolved" : {
+
+    },
+    "Resolved by %@" : {
 
     },
     "Response Time" : {
@@ -1667,13 +1695,7 @@
     "Unavailable" : {
 
     },
-    "Unban" : {
-
-    },
     "Unban %@" : {
-
-    },
-    "Unban User" : {
 
     },
     "Unblock" : {
@@ -1732,6 +1754,9 @@
     "Unpin From Instance" : {
 
     },
+    "Unresolve" : {
+
+    },
     "Unsave" : {
 
     },
@@ -1786,6 +1811,9 @@
     "View All" : {
 
     },
+    "View Votes" : {
+
+    },
     "Viewing %@ as guest" : {
 
     },
@@ -1793,6 +1821,9 @@
 
     },
     "Visit" : {
+
+    },
+    "Votes" : {
 
     },
     "Warn When Opening NSFW Community" : {

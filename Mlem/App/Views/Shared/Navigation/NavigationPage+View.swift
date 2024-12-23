@@ -158,6 +158,8 @@ extension NavigationPage {
             BlockListView()
         case let .advancedSorting(sort):
             AdvancedSortView(selectedSort: sort.wrappedValue)
+        case let .votesList(target):
+            VotesListView(target: target)
         }
     }
 }

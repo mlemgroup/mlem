@@ -10,6 +10,8 @@ import SwiftUI
 
 struct PostEllipsisMenus: View {
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
+    @Environment(NavigationLayer.self) private var navigation
+    @Environment(\.reportContext) private var reportContext: Report?
     
     @Setting(\.moderatorActionGrouping) var moderatorActionGrouping
 
@@ -26,7 +28,7 @@ struct PostEllipsisMenus: View {
             if moderatorActionGrouping == .separateMenu {
                 if post.canModerate {
                     EllipsisMenu(systemImage: Icons.moderation, size: 24) {
-                        post.moderatorMenuActions()
+                        post.moderatorMenuActions(navigation: navigation, report: reportContext, showAllActions: false)
                     }
                 }
                 EllipsisMenu(size: 24) {
@@ -34,7 +36,12 @@ struct PostEllipsisMenus: View {
                 }
             } else {
                 EllipsisMenu(size: 24) {
-                    post.allMenuActions(showAllActions: false, commentTreeTracker: commentTreeTracker)
+                    post.allMenuActions(
+                        showAllActions: false,
+                        navigation: navigation,
+                        report: reportContext,
+                        commentTreeTracker: commentTreeTracker
+                    )
                 }
             }
         }

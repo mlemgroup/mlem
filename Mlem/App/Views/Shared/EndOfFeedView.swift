@@ -58,7 +58,6 @@ struct EndOfFeedView: View {
             case .done:
                 HStack {
                     Image(systemName: viewType.viewContent.icon)
-                    
                     Text(viewType.viewContent.message)
                 }
                 .foregroundColor(palette.secondary)

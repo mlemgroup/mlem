@@ -5,9 +5,55 @@
 //  Created by Sjmarf on 22/09/2024.
 //
 
+import MlemMiddleware
 import SwiftUI
 
 extension InboxView {
+    @ViewBuilder
+    var inboxFeedView: some View {
+        LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
+            Section {
+                ForEach(feedLoader.items, id: \.actorId) { item in
+                    Group {
+                        switch item {
+                        case let .message(message):
+                            MessageView(message: message, isInInbox: true)
+                        case let .reply(reply):
+                            ReplyView(reply: reply)
+                        }
+                    }
+                    .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+                    .onAppear {
+                        do {
+                            try inboxFeedLoader.loadIfThreshold(item)
+                        } catch {
+                            handleError(error)
+                        }
+                    }
+                }
+                
+                EndOfFeedView(loadingState: feedLoader.loadingState, loadMore: nil, viewType: .cartoon)
+            } header: { sectionHeader }
+        }
+    }
+    
+    @ViewBuilder
+    var modMailFeedView: some View {
+        LazyVStack(spacing: 0) {
+            if let reports {
+                ForEach(reports, id: \.cacheId) { report in
+                    ReportView(report: report)
+                        .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+                }
+            } else {
+                ProgressView()
+                    .padding(.top)
+            }
+        }
+        .onAppear(perform: loadReports)
+        .padding(.top, Constants.main.standardSpacing)
+    }
+    
     @ViewBuilder
     var sectionHeader: some View {
         BubblePicker(
@@ -90,6 +136,33 @@ extension InboxView {
     }
     
     @ViewBuilder
+    var headerView: some View {
+        let availableFeeds = availableFeeds
+        Menu {
+            if availableFeeds.count > 1 {
+                Picker("Feed", selection: $selectedFeed) {
+                    ForEach(availableFeeds) { feedType in
+                        Label(String(localized: feedType.label), systemImage: feedType.systemImage)
+                            .tag(feedType)
+                    }
+                }
+            }
+        } label: {
+            FeedHeaderView(
+                feedDescription: .init(
+                    label: selectedFeed.label,
+                    subtitle: selectedFeed.subtitle(isAdmin: appState.firstApi.isAdmin),
+                    color: { _ in selectedFeed.color },
+                    iconName: selectedFeed.systemImage,
+                    iconNameFill: selectedFeed.systemImageFill,
+                    iconScaleFactor: 0.5
+                ),
+                dropdownStyle: availableFeeds.count > 1 ? .enabled(showBadge: false) : .disabled
+            )
+        }
+    }
+    
+    @ViewBuilder
     var signedOutInfoView: some View {
         VStack {
             Image(systemName: Icons.inbox)
@@ -130,6 +203,29 @@ extension InboxView {
                 .padding(.vertical, 4)
                 .padding(.horizontal, 8)
                 .frame(minWidth: 100)
+        }
+    }
+    
+    func loadReports() {
+        if reports == nil {
+            Task {
+                do {
+                    async let postReports = await appState.firstApi.getPostReports()
+                    async let commentReports = await appState.firstApi.getCommentReports()
+                    async let messageReports: [Report] = await {
+                        if await appState.firstApi.isAdmin {
+                            return try await appState.firstApi.getMessageReports()
+                        } else {
+                            return []
+                        }
+                    }()
+                    
+                    let combined = try await (postReports + commentReports + messageReports)
+                    self.reports = combined.sorted { $0.created > $1.created }
+                } catch {
+                    handleError(error)
+                }
+            }
         }
     }
 }

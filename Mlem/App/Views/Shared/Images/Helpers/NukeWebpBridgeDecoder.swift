@@ -38,7 +38,7 @@ struct NukeWebpBridgeDecoder: ImageDecoding {
 
 /// Raw values of "ANIM", which we can use to identify whether a webp is animated or not without decoding it
 /// https://stackoverflow.com/questions/45190469/how-to-identify-whether-webp-image-is-static-or-animated
-private let animHeader: Data = Data([65, 78, 73, 77])
+private let animHeader: Data = .init([65, 78, 73, 77])
 
 private extension Data {
     /// If the given data is a webp, returns true if that webp is animated and false otherwise.
@@ -49,11 +49,11 @@ private extension Data {
         // data is a webp, indicate an animated webp; it is assumed that the data is long enough and correctly formatted.
         
         // Sanity checks that the data conforms to the webp spec
-        assert(self.count >= 33, "Invalid data (too short)")
+        assert(count >= 33, "Invalid data (too short)")
         assert(self[..<4] == Data([82, 73, 70, 70]), "Invalid data (no RIFF header)")
-        assert(self[8..<12] == Data([87, 69, 66, 80]), "Invalid data (no WEBP header)")
-        assert(self[12..<15] == Data([86, 80, 56]), "Invalid data (no VP8X header)")
+        assert(self[8 ..< 12] == Data([87, 69, 66, 80]), "Invalid data (no WEBP header)")
+        assert(self[12 ..< 15] == Data([86, 80, 56]), "Invalid data (no VP8X header)")
         
-        return self[30..<34] == animHeader
+        return self[30 ..< 34] == animHeader
     }
 }

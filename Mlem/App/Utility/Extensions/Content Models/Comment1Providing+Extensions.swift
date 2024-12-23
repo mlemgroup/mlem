@@ -55,7 +55,8 @@ extension Comment1Providing {
     func allMenuActions(
         expanded: Bool = false,
         feedback: Set<FeedbackType> = [.haptic, .toast],
-        commentTreeTracker: CommentTreeTracker? = nil
+        commentTreeTracker: CommentTreeTracker? = nil,
+        report: Report? = nil
     ) -> [any Action] {
         basicMenuActions(feedback: feedback, commentTreeTracker: commentTreeTracker)
         if canModerate {
@@ -63,7 +64,7 @@ extension Comment1Providing {
                 appearance: .init(label: "Moderation...", color: Palette.main.moderation, icon: Icons.moderation),
                 displayMode: Settings.main.moderatorActionGrouping == .divider || expanded ? .section : .disclosure
             ) {
-                moderatorMenuActions(feedback: feedback)
+                moderatorMenuActions(feedback: feedback, report: report)
             }
         }
     }
@@ -96,15 +97,26 @@ extension Comment1Providing {
     }
     
     @ActionBuilder
-    func moderatorMenuActions(feedback: Set<FeedbackType> = [.haptic, .toast]) -> [any Action] {
+    func moderatorMenuActions(
+        feedback: Set<FeedbackType> = [.haptic, .toast],
+        report: Report? = nil
+    ) -> [any Action] {
+        if api.isAdmin || (api.fetchedVersion ?? .infinity) > .v19_4 {
+            viewVotesAction()
+        }
         if let self2, !isOwnComment {
             self2.removeAction().disabled(!canModerate)
-            banActions()
+            self2.creator.banActions(community: self2.community, withUserLabel: true)
         }
         if api.isAdmin {
             purgeAction()
             if !isOwnComment {
                 purgeCreatorAction()
+            }
+        }
+        if let report {
+            ActionGroup {
+                report.menuActions()
             }
         }
     }
@@ -159,6 +171,23 @@ extension Comment1Providing {
             id: "edit\(uid)",
             appearance: .edit(),
             callback: api.canInteract ? { self.showEditSheet() } : nil
+        )
+    }
+    
+    func viewVotesAction() -> BasicAction {
+        let enabled = canModerate && (api.isAdmin || (api.fetchedVersion ?? .infinity) > .v19_4)
+        let callback: (() -> Void)?
+        if let self2, enabled {
+            callback = {
+                NavigationModel.main.openSheet(.votesList(.comment(self2)))
+            }
+        } else {
+            callback = nil
+        }
+        return .init(
+            id: "viewVotes\(uid)",
+            appearance: .viewVotes(),
+            callback: callback
         )
     }
 }

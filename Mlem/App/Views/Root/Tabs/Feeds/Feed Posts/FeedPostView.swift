@@ -10,17 +10,33 @@ import MlemMiddleware
 import SwiftUI
 
 /// View for rendering posts in feed
-struct FeedPostView: View {
-    @Setting(\.postSize) private var postSize
-    
+struct FeedPostView<EmbeddedContent: View>: View {
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
+    @Environment(NavigationLayer.self) private var navigation
     @Environment(Palette.self) private var palette
     @Environment(FiltersTracker.self) var filtersTracker
     
     @State var obscured: Bool
     
+    @Setting(\.postSize) private var postSize
+    
     let post: any Post1Providing
-    var overridePostSize: PostSize?
+    let favoredLink: PostViewNavigationLink?
+    let overridePostSize: PostSize?
+    
+    @ViewBuilder let embeddedContent: () -> EmbeddedContent
+    
+    init(
+        post: any Post1Providing,
+        overridePostSize: PostSize? = nil,
+        favoredLink: PostViewNavigationLink? = nil,
+        @ViewBuilder embeddedContent: @escaping () -> EmbeddedContent = { EmptyView() }
+    ) {
+        self.post = post
+        self.overridePostSize = overridePostSize
+        self.favoredLink = favoredLink
+        self.embeddedContent = embeddedContent
+    }
     
     init(post: any Post1Providing, overridePostSize: PostSize? = nil) {
         self.post = post
@@ -41,7 +57,11 @@ struct FeedPostView: View {
                 content
                     .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
                     .quickSwipes(post.swipeActions(behavior: postSize.swipeBehavior))
-                    .contextMenu { post.allMenuActions(showAllActions: false, commentTreeTracker: commentTreeTracker) }
+                    .contextMenu { post.allMenuActions(
+                        showAllActions: false,
+                        navigatoin: navigation,
+                        commentTreeTracker: commentTreeTracker
+                    ) }
             }
         }
         .contentShape(.interaction, .rect)
@@ -70,9 +90,9 @@ struct FeedPostView: View {
         case .tile:
             TilePostView(post: post)
         case .headline:
-            HeadlinePostView(post: post)
+            HeadlinePostView(post: post, favoredLink: favoredLink, embeddedContent: embeddedContent)
         case .large:
-            LargePostView(post: post)
+            LargePostView(post: post, favoredLink: favoredLink)
         }
     }
 }

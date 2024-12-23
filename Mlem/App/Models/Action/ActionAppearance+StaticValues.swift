@@ -62,9 +62,9 @@ extension ActionAppearance {
         )
     }
     
-    static func banFromInstance(isOn: Bool) -> Self {
+    static func banFromInstance(isOn: Bool, withUserLabel: Bool = false) -> Self {
         .init(
-            label: isOn ? "Unban" : "Ban",
+            label: getBanLabel(isOn: isOn, withUserLabel: withUserLabel),
             isOn: isOn,
             isDestructive: !isOn,
             color: isOn ? Palette.main.positive : Palette.main.negative,
@@ -72,24 +72,22 @@ extension ActionAppearance {
         )
     }
     
-    static func banCreatorFromInstance(isOn: Bool) -> Self {
+    static func banFromCommunity(isOn: Bool, withUserLabel: Bool = false) -> Self {
         .init(
-            label: isOn ? "Unban User" : "Ban User",
-            isOn: isOn,
-            isDestructive: !isOn,
-            color: isOn ? Palette.main.positive : Palette.main.negative,
-            icon: isOn ? Icons.unbanFromInstance : Icons.banFromInstance
-        )
-    }
-    
-    static func banCreatorFromCommunity(isOn: Bool) -> Self {
-        .init(
-            label: isOn ? "Unban User" : "Ban User",
+            label: getBanLabel(isOn: isOn, withUserLabel: withUserLabel),
             isOn: isOn,
             isDestructive: !isOn,
             color: isOn ? Palette.main.positive : Palette.main.negative,
             icon: isOn ? Icons.unbanFromCommunity : Icons.banFromCommunity
         )
+    }
+    
+    private static func getBanLabel(isOn: Bool, withUserLabel: Bool) -> String {
+        if withUserLabel {
+            isOn ? "Unban User" : "Ban User"
+        } else {
+            isOn ? "Unban" : "Ban"
+        }
     }
     
     static func block(isOn: Bool) -> Self {
@@ -228,5 +226,9 @@ extension ActionAppearance {
     
     static func crossPost() -> Self {
         .init(label: "Crosspost", color: Palette.main.accent, icon: Icons.crossPost)
+    }
+    
+    static func viewVotes() -> Self {
+        .init(label: "View Votes", color: Palette.main.accent, icon: Icons.votes)
     }
 }
