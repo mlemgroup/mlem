@@ -89,6 +89,11 @@ struct MessageFeedView: View {
                     }
                     .scrollTargetLayout()
                     .padding(.top, 50)
+                    .onChange(of: feedLoader.items.isEmpty) {
+                        for message in feedLoader.items {
+                            message.updateRead(true)
+                        }
+                    }
                     .onChange(of: (appState.firstSession as? UserSession)?.unreadCount?.messages) {
                         Task { @MainActor in
                             do {
@@ -139,7 +144,6 @@ struct MessageFeedView: View {
                     } catch {
                         handleError(error)
                     }
-                    message.updateRead(true)
                 }
             if message === feedLoader.items.first, Calendar.current.isDateInToday(message.created) {
                 Text(message.created.formatted(date: .omitted, time: .shortened))
