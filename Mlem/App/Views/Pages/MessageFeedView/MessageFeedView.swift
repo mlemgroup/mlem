@@ -31,37 +31,40 @@ struct MessageFeedView: View {
         ContentLoader(model: person) { proxy in
             if let person = proxy.entity {
                 content(person: person)
+                    .navigationTitle(person.displayName)
+                    .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         if navigation.isInsideSheet {
-                            ToolbarItem(placement: .topBarLeading) {
+                            ToolbarItem(placement: .topBarTrailing) {
                                 CloseButtonView()
                             }
-                        }
-                        ToolbarItem(placement: .principal) {
-                            NavigationLink(.person(person)) {
-                                HStack(spacing: Constants.main.halfSpacing) {
-                                    CircleCroppedImageView(person, frame: 24)
-                                    Text(person.displayName)
-                                        .foregroundStyle(palette.primary)
-                                        .font(.headline)
-                                    Image(systemName: Icons.forward)
-                                        .imageScale(.small)
-                                        .fontWeight(.semibold)
-                                        .foregroundStyle(palette.tertiary)
+                        } else {
+                            ToolbarItem(placement: .principal) {
+                                NavigationLink(.person(person)) {
+                                    HStack(spacing: Constants.main.halfSpacing) {
+                                        CircleCroppedImageView(person, frame: 24)
+                                        Text(person.displayName)
+                                            .foregroundStyle(palette.primary)
+                                            .font(.headline)
+                                        Image(systemName: Icons.forward)
+                                            .imageScale(.small)
+                                            .fontWeight(.semibold)
+                                            .foregroundStyle(palette.tertiary)
+                                    }
                                 }
                             }
-                        }
-                        ToolbarItemGroup(placement: .secondaryAction) {
-                            SwiftUI.Section {
-                                if person is any Person3Providing, proxy.isLoading {
-                                    ProgressView()
-                                } else {
-                                    MenuButtons {
-                                        person.menuActions(
-                                            isInMessageFeed: true,
-                                            navigation: navigation,
-                                            community: nil
-                                        )
+                            ToolbarItemGroup(placement: .secondaryAction) {
+                                SwiftUI.Section {
+                                    if person is any Person3Providing, proxy.isLoading {
+                                        ProgressView()
+                                    } else {
+                                        MenuButtons {
+                                            person.menuActions(
+                                                isInMessageFeed: true,
+                                                navigation: navigation,
+                                                community: nil
+                                            )
+                                        }
                                     }
                                 }
                             }
@@ -86,6 +89,15 @@ struct MessageFeedView: View {
                     }
                     .scrollTargetLayout()
                     .padding(.top, 50)
+                    .onChange(of: (appState.firstSession as? UserSession)?.unreadCount?.messages) {
+                        Task { @MainActor in
+                            do {
+                                try await feedLoader.refresh(clearBeforeRefresh: false)
+                            } catch {
+                                handleError(error)
+                            }
+                        }
+                    }
                 }
             }
             .safeAreaInset(edge: .bottom) {
@@ -127,6 +139,7 @@ struct MessageFeedView: View {
                     } catch {
                         handleError(error)
                     }
+                    message.updateRead(true)
                 }
             if message === feedLoader.items.first, Calendar.current.isDateInToday(message.created) {
                 Text(message.created.formatted(date: .omitted, time: .shortened))
