@@ -88,11 +88,9 @@ extension Message1Providing {
     // These actions are also defined in Interactable1Providing... another protocol for these may be a good idea
        
     func replyAction(navigation: NavigationLayer) -> BasicAction {
-        let callback: (() -> Void)?
+        let callback: (() -> Void)? = nil
         if let creator = creator_, api.canInteract {
             callback = { navigation.push(.messageFeed(creator, focusTextField: true)) }
-        } else {
-            callback = nil
         }
         return .init(
             id: "reply\(uid)",
