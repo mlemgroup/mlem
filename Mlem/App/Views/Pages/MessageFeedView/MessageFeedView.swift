@@ -17,6 +17,8 @@ struct MessageFeedView: View {
     let person: AnyPerson
     let focusTextField: Bool
     
+    let timer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
+    
     init(person: AnyPerson, focusTextField: Bool) {
         self.person = person
         self.focusTextField = focusTextField
@@ -92,6 +94,15 @@ struct MessageFeedView: View {
                     .onChange(of: feedLoader.items.isEmpty) {
                         for message in feedLoader.items {
                             message.updateRead(true)
+                        }
+                    }
+                    .onReceive(timer) { _ in
+                        Task { @MainActor in
+                            do {
+                                try await feedLoader.refresh(clearBeforeRefresh: false)
+                            } catch {
+                                handleError(error)
+                            }
                         }
                     }
                 }
