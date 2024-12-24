@@ -53,6 +53,7 @@ extension Person1Providing {
         return output.sorted { $0.sortVal < $1.sortVal }
     }
     
+    @MainActor
     func showBanSheet(community: (any Community)?, isBannedFromCommunity: Bool, shouldBan: Bool) {
         NavigationModel.main.openSheet(
             .ban(self, isBannedFromCommunity: isBannedFromCommunity, shouldBan: shouldBan, community: community)
@@ -114,7 +115,7 @@ extension Person1Providing {
         .init(
             id: "block\(uid)",
             appearance: .block(isOn: blocked),
-            callback: api.canInteract ? { self.toggleBlocked(feedback: feedback) } : nil
+            callback: api.canInteract ? { @MainActor in self.toggleBlocked(feedback: feedback) } : nil
         )
     }
     
@@ -153,7 +154,7 @@ extension Person1Providing {
         .init(
             id: "banFromInstance\(uid)",
             appearance: .banFromInstance(isOn: bannedFromInstance, withUserLabel: withUserLabel),
-            callback: api.canInteract && api.isAdmin ? {
+            callback: api.canInteract && api.isAdmin ? { @MainActor in
                 self.showBanSheet(
                     community: nil,
                     isBannedFromCommunity: false,
@@ -165,7 +166,7 @@ extension Person1Providing {
     
     func banFromCommunityAction(community: any Community, withUserLabel: Bool = false) -> BasicAction {
         let isBanned = isBannedFromCommunity(community)
-        let callback: (() -> Void)?
+        let callback: (@MainActor () -> Void)?
         if let isBanned, api.canInteract, community.canModerate {
             callback = {
                 self.showBanSheet(

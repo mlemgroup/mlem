@@ -8,6 +8,7 @@
 import MlemMiddleware
 
 extension RemovableProviding {
+    @MainActor
     func showRemoveSheet() {
         NavigationModel.main.openSheet(.remove(self))
     }

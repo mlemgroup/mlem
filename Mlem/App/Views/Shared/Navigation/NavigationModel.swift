@@ -25,6 +25,7 @@ class NavigationModel {
     
     var mediaUrl: URL?
     
+    @MainActor
     private func openSheet(_ page: NavigationPage, hasNavigationStack: Bool? = nil, isFullScreenCover: Bool) {
         layers.append(
             .init(
@@ -38,11 +39,13 @@ class NavigationModel {
         )
     }
     
+    @MainActor
     func addLayer(_ navigationLayer: NavigationLayer) {
         layers.append(navigationLayer)
     }
     
     // Closes all sheets above and including the given index
+    @MainActor
     func closeSheets(aboveIndex index: Int) {
         for layer in layers.dropFirst(index) {
             layer.model = nil
@@ -50,15 +53,18 @@ class NavigationModel {
         layers.removeLast(max(0, layers.count - index))
     }
     
+    @MainActor
     func clear() {
         layers.forEach { $0.model = nil }
         layers = []
     }
     
+    @MainActor
     func openSheet(_ page: NavigationPage, hasNavigationStack: Bool? = nil) {
         openSheet(page, hasNavigationStack: hasNavigationStack, isFullScreenCover: false)
     }
     
+    @MainActor
     func showFullScreenCover(_ page: NavigationPage, hasNavigationStack: Bool? = nil) {
         openSheet(page, hasNavigationStack: hasNavigationStack, isFullScreenCover: true)
     }

@@ -17,6 +17,7 @@ extension Comment1Providing {
         (creator_?.shouldHideInFeed ?? false) || purged
     }
     
+    @MainActor
     func showEditSheet() {
         if let self = self as? any Comment2Providing {
             NavigationModel.main.openSheet(.editComment(self.comment2, context: nil))
@@ -170,13 +171,13 @@ extension Comment1Providing {
         .init(
             id: "edit\(uid)",
             appearance: .edit(),
-            callback: api.canInteract ? { self.showEditSheet() } : nil
+            callback: api.canInteract ? { @MainActor in self.showEditSheet() } : nil
         )
     }
     
     func viewVotesAction() -> BasicAction {
         let enabled = canModerate && (api.isAdmin || (api.fetchedVersion ?? .infinity) > .v19_4)
-        let callback: (() -> Void)?
+        let callback: (@MainActor () -> Void)?
         if let self2, enabled {
             callback = {
                 NavigationModel.main.openSheet(.votesList(.comment(self2)))

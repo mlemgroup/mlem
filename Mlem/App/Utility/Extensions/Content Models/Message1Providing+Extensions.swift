@@ -87,7 +87,7 @@ extension Message1Providing {
         .init(
             id: "blockCreator\(uid)",
             appearance: .blockCreator(),
-            callback: api.canInteract ? { self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
+            callback: api.canInteract ? { @MainActor in self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
         )
     }
 }
