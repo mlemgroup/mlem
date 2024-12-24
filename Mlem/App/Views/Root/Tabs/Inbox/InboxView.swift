@@ -13,6 +13,7 @@ struct InboxView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
+    @Environment(FiltersTracker.self) var filtersTracker
     
     @Setting(\.showReadInInbox) var showRead
     
@@ -100,7 +101,7 @@ struct InboxView: View {
                 .onChange(of: appState.firstApi, initial: false) {
                     if appState.firstAccount is UserAccount {
                         Task {
-                            await inboxFeedLoader.changeApi(to: appState.firstApi)
+                            await inboxFeedLoader.changeApi(to: appState.firstApi, context: filtersTracker.filterContext)
                         }
                         showRefreshPopup = true
                     }

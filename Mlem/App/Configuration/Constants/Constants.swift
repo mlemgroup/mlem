@@ -85,6 +85,8 @@ class Constants {
     var mediumAvatarSize: CGFloat { platformConstants.mediumAvatarSize }
     /// Size of an avatar in a compact label display
     var smallAvatarSize: CGFloat { platformConstants.smallAvatarSize }
+    /// Size of a feed header avatar
+    var feedHeaderSize: CGFloat { platformConstants.feedHeaderSize }
     
     // MARK: Non-Standard Dimensions
     

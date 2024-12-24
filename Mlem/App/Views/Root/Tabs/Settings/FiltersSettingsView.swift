@@ -1,0 +1,95 @@
+//
+//  FiltersSettingsView.swift
+//  Mlem
+//
+//  Created by Eric Andrews on 2024-12-22.
+//
+
+import Dependencies
+import SwiftUI
+
+struct FiltersSettingsView: View {
+    @Dependency(\.persistenceRepository) var persistenceRepository
+    
+    @Environment(Palette.self) var palette
+    @Environment(FiltersTracker.self) var filtersTracker
+    
+    @State var filteredKeywords: [String]
+    @State var newKeyword: String = ""
+    
+    init() {
+        @Dependency(\.persistenceRepository) var persistenceRepository
+        
+        _filteredKeywords = .init(wrappedValue: .init(persistenceRepository.loadFilteredKeywords()))
+    }
+    
+    var body: some View {
+        List {
+            Section {
+                keywordSection
+            } header: {
+                Text("Keyword Filters")
+            } footer: {
+                // swiftlint:disable:next line_length
+                Text("Posts with these keywords in their titles will be hidden. If you are a moderator or administrator of a matching post, it will appear in your feed but require you to tap to view its content.")
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var keywordSection: some View {
+        TextField("New Keyword...", text: $newKeyword)
+            .textCase(.lowercase)
+            .textInputAutocapitalization(.never)
+            .submitLabel(.done)
+            .onSubmit {
+                saveNewKeyword()
+            }
+        
+        ForEach(filteredKeywords, id: \.self) { filter in
+            HStack {
+                Text(filter)
+                
+                Spacer()
+                
+                // using a Button to do this makes the whole row register tap gestures :/
+                Image(systemName: Icons.delete)
+                    .foregroundStyle(palette.warning)
+                    .onTapGesture {
+                        deleteKeyword(filter)
+                    }
+            }
+        }
+    }
+    
+    func saveNewKeyword() {
+        guard !newKeyword.isEmpty else { return }
+        
+        let cleanedKeyword = newKeyword.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        Task {
+            do {
+                let newFilteredKeywords = try await persistenceRepository.saveFilteredKeyword(cleanedKeyword)
+                filteredKeywords = .init(newFilteredKeywords)
+                newKeyword = ""
+                filtersTracker.filteredKeywords = newFilteredKeywords
+            } catch {
+                handleError(error)
+            }
+        }
+    }
+    
+    func deleteKeyword(_ keyword: String) {
+        assert(filteredKeywords.contains(keyword), "Filtered keywords does not contain \(keyword)")
+        
+        Task {
+            do {
+                let newFilteredKeywords = try await persistenceRepository.removeFilteredKeyword(keyword)
+                filteredKeywords = .init(newFilteredKeywords)
+                filtersTracker.filteredKeywords = newFilteredKeywords
+            } catch {
+                handleError(error)
+            }
+        }
+    }
+}

@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 30/07/2024.
 //
 
+import Dependencies
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
@@ -28,10 +29,13 @@ struct CommunityView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
+    @Environment(FiltersTracker.self) var filtersTracker
     @Environment(\.dismiss) var dismiss
     
     @Setting(\.postSize) var postSize
     @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
+    
+    @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
     
     @State var community: AnyCommunity
     @State private var selectedTab: Tab = .posts
@@ -77,7 +81,7 @@ struct CommunityView: View {
                     title: Text(community.displayName),
                     subtitle: Text(community.fullNameWithPrefix ?? ""),
                     dropdownStyle: .disabled,
-                    image: { CircleCroppedImageView(community, frame: 44) } // TODO: NOW 44 as constant
+                    image: { CircleCroppedImageView(community, frame: Constants.main.feedHeaderSize) }
                 )
                 subscribeButton(community: community)
                     .padding(.top, Constants.main.halfSpacing)
@@ -257,7 +261,7 @@ struct CommunityView: View {
                 pageSize: internetSpeed.pageSize,
                 sortType: appState.initialFeedSortType,
                 showReadPosts: showReadInFeed,
-                filteredKeywords: [],
+                filterContext: filtersTracker.filterContext,
                 prefetchingConfiguration: .forPostSize(postSize),
                 urlCache: Constants.main.urlCache,
                 community: community

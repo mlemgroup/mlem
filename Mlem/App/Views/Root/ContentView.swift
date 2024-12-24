@@ -33,6 +33,7 @@ struct ContentView: View {
     var tabReselectTracker: TabReselectTracker { .main }
     var navigationModel: NavigationModel { .main }
     var mediaState: MediaState = .init()
+    var filtersTracker: FiltersTracker { .main }
 
     @State var avatarImage: UIImage?
     @State var selectedAvatarImage: UIImage?
@@ -55,7 +56,6 @@ struct ContentView: View {
                     appState.cleanCaches()
                 }
                 .onReceive(unreadCountTimer) { _ in
-                    print("Refreshing unread count...")
                     Task { @MainActor in
                         try await (appState.firstSession as? UserSession)?.unreadCount?.refresh()
                     }
@@ -65,6 +65,7 @@ struct ContentView: View {
                 .environment(palette)
                 .environment(tabReselectTracker)
                 .environment(appState)
+                .environment(filtersTracker)
                 .task {
                     do {
                         try await MlemStats.main.loadInstances()
@@ -77,6 +78,11 @@ struct ContentView: View {
                         firstAppearance = false
                         Settings.main.restore(from: .v1)
                     }
+                }
+                .onChange(of: appState.firstPerson) {
+                    // Observe AppState.main.firstPerson to update FiltersTracker as needed
+                    // TODO: when Observation adds continous observation monitoring, move this into FiltersTracker
+                    filtersTracker.moderatedCommunityActorIds = appState.firstPerson?.moderatedCommunityActorIds ?? .init()
                 }
                 .onChange(of: interfaceStyle, initial: true) {
                     let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene

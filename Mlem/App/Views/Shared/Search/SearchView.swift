@@ -31,6 +31,7 @@ struct SearchView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
+    @Environment(FiltersTracker.self) var filtersTracker
     
     @State var searchBarFocused: Bool = false
     @State var isSearching: Bool = false
@@ -52,7 +53,6 @@ struct SearchView: View {
     @State var instances: [InstanceSummary] = []
     @State var postLoader: SearchPostFeedLoader = .init(
         api: AppState.main.firstApi,
-        filteredKeywords: [],
         prefetchingConfiguration: .forPostSize(Settings.main.postSize),
         urlCache: Constants.main.urlCache
     )

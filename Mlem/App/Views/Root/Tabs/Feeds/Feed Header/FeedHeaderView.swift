@@ -44,7 +44,7 @@ struct FeedHeaderView<ImageContent: View>: View {
     ) where ImageContent == FeedIconView {
         self.title = Text(feedDescription.label)
         self.subtitle = Text(customSubtitle ?? feedDescription.subtitle)
-        self.image = FeedIconView(feedDescription: feedDescription, size: 44)
+        self.image = FeedIconView(feedDescription: feedDescription, size: Constants.main.feedHeaderSize)
         self.dropdownStyle = dropdownStyle
     }
     
@@ -52,7 +52,7 @@ struct FeedHeaderView<ImageContent: View>: View {
         VStack(spacing: 0) {
             HStack(alignment: .center, spacing: Constants.main.standardSpacing) {
                 image
-                    .frame(width: 44, height: 44)
+                    .frame(width: Constants.main.feedHeaderSize, height: Constants.main.feedHeaderSize)
                     .padding(.leading, Constants.main.standardSpacing)
                     
                 VStack(alignment: .leading, spacing: 0) {
@@ -81,7 +81,7 @@ struct FeedHeaderView<ImageContent: View>: View {
                         .font(.footnote)
                         .foregroundStyle(palette.secondary)
                 }
-                .frame(height: 44)
+                .frame(height: Constants.main.feedHeaderSize)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.top, Constants.main.halfSpacing)
