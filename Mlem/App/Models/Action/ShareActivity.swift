@@ -9,9 +9,9 @@ import UIKit
 
 class ShareActivity: UIActivity {
     let appearance: ActionAppearance
-    let action: () -> Void
+    let action: @MainActor () -> Void
     
-    init(appearance: ActionAppearance, performAction: @escaping () -> Void) {
+    init(appearance: ActionAppearance, performAction: @escaping @MainActor () -> Void) {
         self.appearance = appearance
         self.action = performAction
         super.init()
@@ -37,6 +37,7 @@ class ShareActivity: UIActivity {
         true
     }
     
+    @MainActor
     override func perform() {
         action()
         activityDidFinish(true)
