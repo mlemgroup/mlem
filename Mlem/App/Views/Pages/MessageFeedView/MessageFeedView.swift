@@ -94,15 +94,6 @@ struct MessageFeedView: View {
                             message.updateRead(true)
                         }
                     }
-                    .onChange(of: (appState.firstSession as? UserSession)?.unreadCount?.messages) {
-                        Task { @MainActor in
-                            do {
-                                try await feedLoader.refresh(clearBeforeRefresh: false)
-                            } catch {
-                                handleError(error)
-                            }
-                        }
-                    }
                 }
             }
             .safeAreaInset(edge: .bottom) {
