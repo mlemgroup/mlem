@@ -395,6 +395,8 @@
 		CDBFCB6A2C04EFFE008CD468 /* PostSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */; };
 		CDBFCB6C2C054AA7008CD468 /* TilePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBFCB6B2C054AA7008CD468 /* TilePostView.swift */; };
 		CDC199EA2BE449790077B4F1 /* Interactable1Providing+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC199E92BE449790077B4F1 /* Interactable1Providing+Extensions.swift */; };
+		CDC44A342D1CBBD30030F01C /* AccessibilitySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC44A332D1CBBCC0030F01C /* AccessibilitySettingsView.swift */; };
+		CDC44A362D1CBC280030F01C /* ReadPostIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC44A352D1CBC200030F01C /* ReadPostIndicator.swift */; };
 		CDCA44952C17658000C092B3 /* View+QuickSwipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44942C17658000C092B3 /* View+QuickSwipes.swift */; };
 		CDCA44972C17666C00C092B3 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA44962C17666C00C092B3 /* HapticManager.swift */; };
 		CDCA449B2C1766CF00C092B3 /* Failure.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CDCA449A2C1766CF00C092B3 /* Failure.ahap */; };
@@ -831,6 +833,8 @@
 		CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSettingsView.swift; sourceTree = "<group>"; };
 		CDBFCB6B2C054AA7008CD468 /* TilePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TilePostView.swift; sourceTree = "<group>"; };
 		CDC199E92BE449790077B4F1 /* Interactable1Providing+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Interactable1Providing+Extensions.swift"; sourceTree = "<group>"; };
+		CDC44A332D1CBBCC0030F01C /* AccessibilitySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilitySettingsView.swift; sourceTree = "<group>"; };
+		CDC44A352D1CBC200030F01C /* ReadPostIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadPostIndicator.swift; sourceTree = "<group>"; };
 		CDCA44942C17658000C092B3 /* View+QuickSwipes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+QuickSwipes.swift"; sourceTree = "<group>"; };
 		CDCA44962C17666C00C092B3 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		CDCA449A2C1766CF00C092B3 /* Failure.ahap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Failure.ahap; sourceTree = "<group>"; };
@@ -935,6 +939,7 @@
 		03134A492BEACF46002662CC /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				CDC44A332D1CBBCC0030F01C /* AccessibilitySettingsView.swift */,
 				CD45CB0C2D1880E3008BC729 /* FiltersSettingsView.swift */,
 				0397D4982C6EA68A002C6CDC /* InteractionBarEditor */,
 				031E2D5C2BEFCC630003BC45 /* SettingsView.swift */,
@@ -1645,6 +1650,7 @@
 		CD4D58C62B86DCE500B82964 /* Enums */ = {
 			isa = PBXGroup;
 			children = (
+				CDC44A352D1CBC200030F01C /* ReadPostIndicator.swift */,
 				CD4D58C72B86DCED00B82964 /* AvatarType.swift */,
 				03CBD18C2C6120F600E870BC /* PersonFlair.swift */,
 				03AF91E62C1C65AE00E56644 /* Interaction */,
@@ -2254,6 +2260,7 @@
 				03D2A6372C00F92400ED4FF2 /* Session.swift in Sources */,
 				03AF91DD2C1B23E500E56644 /* ImageViewer.swift in Sources */,
 				CD13CC592C583C7A001AF428 /* WebsitePreviewView.swift in Sources */,
+				CDC44A342D1CBBD30030F01C /* AccessibilitySettingsView.swift in Sources */,
 				CD869FCE2C15F90C00FC8B5B /* ChildSizeReader.swift in Sources */,
 				035EDEF12C2DE94B00F51144 /* DefaultTextInputType.swift in Sources */,
 				039F588C2C7B574E00C61658 /* AdvancedSettingsView.swift in Sources */,
@@ -2498,6 +2505,7 @@
 				033F84C32C2B12AA002E3EDF /* InstanceSummary.swift in Sources */,
 				0369B3532BFA514B001EFEDF /* ToastLocation.swift in Sources */,
 				036ED6792D0AF3740018E5EA /* PinnedSortTracker.swift in Sources */,
+				CDC44A362D1CBC280030F01C /* ReadPostIndicator.swift in Sources */,
 				0353948D2CA080EB00795AA5 /* FeedWelcomeView.swift in Sources */,
 				03049A202C650A8100FF6889 /* FormReadout.swift in Sources */,
 				030050D32D109B7E002B1E99 /* ReportView.swift in Sources */,

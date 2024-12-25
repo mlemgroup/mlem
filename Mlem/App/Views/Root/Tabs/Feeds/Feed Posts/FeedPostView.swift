@@ -18,12 +18,18 @@ struct FeedPostView<EmbeddedContent: View>: View {
     
     @State var obscured: Bool
     
-    @Setting(\.postSize) private var postSize
+    @Setting(\.postSize) private var settingsPostSize
+    @Setting(\.readPostIndicator) var readPostIndicator
+    @Setting(\.readOutlineThickness) var readOutlineThickness
     
     let post: any Post1Providing
     let favoredLink: PostViewNavigationLink?
     let overridePostSize: PostSize?
     
+    var postSize: PostSize {
+        overridePostSize ?? settingsPostSize
+    }
+
     @ViewBuilder let embeddedContent: () -> EmbeddedContent
     
     init(
@@ -50,7 +56,14 @@ struct FeedPostView<EmbeddedContent: View>: View {
                     }
             } else {
                 content
-                    .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
+                    .overlay(alignment: .topLeading) {
+                        if !(post.read_ ?? false), readPostIndicator == .outline {
+                            RoundedRectangle(cornerRadius: postSize.swipeBehavior.cornerRadius)
+                                .stroke(lineWidth: .init(readOutlineThickness))
+                                .foregroundStyle(palette.secondary)
+                        }
+                    }
+                    .contentShape(.contextMenuPreview, .rect(cornerRadius: postSize.swipeBehavior.cornerRadius))
                     .quickSwipes(post.swipeActions(behavior: postSize.swipeBehavior))
                     .contextMenu { post.allMenuActions(
                         showAllActions: false,
@@ -79,7 +92,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
     
     @ViewBuilder
     var content: some View {
-        switch overridePostSize ?? postSize {
+        switch postSize {
         case .compact:
             CompactPostView(post: post)
         case .tile:

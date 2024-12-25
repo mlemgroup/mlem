@@ -18,6 +18,9 @@ class Settings: ObservableObject {
     /// Default initializer. Will take current AppStorage values.
     init() {}
 
+    @AppStorage("a11y.readPostIndicator") var readPostIndicator: ReadPostIndicator = .none
+    @AppStorage("a11y.readOutlineThickness") var readOutlineThickness: Int = 3
+
     @AppStorage("post.size") var postSize: PostSize = .compact
     @AppStorage("post.defaultSort") var defaultPostSort: ApiSortType = .hot
     @AppStorage("post.fallbackSort") var fallbackPostSort: ApiSortType = .hot
@@ -152,5 +155,7 @@ class Settings: ObservableObject {
         swipeAnywhereToNavigate = settings.navigation_swipeAnywhere
         moderatorActionGrouping = settings.menus_modActionGrouping
         showAllModActions = settings.menus_allModActions
+        readPostIndicator = settings.a11y_readPostIndicator
+        readOutlineThickness = settings.a11y_readOutlineThickness
     }
 }
