@@ -72,6 +72,7 @@ struct MessageFeedView: View {
                             }
                         }
                     }
+                    .popupAnchor()
             }
         }
     }
