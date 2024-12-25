@@ -52,6 +52,18 @@ extension MarkdownConfiguration {
         font: .caption1,
         codeFontScaleFactor: 0.9
     ) }
+    
+    static var inverted: MarkdownConfiguration { .init(
+        inlineImageLoader: loadInlineImage,
+        imageBlockView: { imageView($0, shouldBlur: false) },
+        wrapCodeBlockLines: Settings.main.wrapCodeBlockLines,
+        primaryColor: Palette.main.selectedInteractionBarItem,
+        secondaryColor: Palette.main.selectedInteractionBarItem.opacity(0.8),
+        spoilerHeaderBackgroundColor: Palette.main.selectedInteractionBarItem.opacity(0.1),
+        spoilerOutlineColor: Palette.main.selectedInteractionBarItem.opacity(0.5),
+        codeBackgroundColor: Palette.main.selectedInteractionBarItem.opacity(0.1),
+        codeFontScaleFactor: 0.9
+    ) }
 }
 
 private func imageView(_ inlineImage: InlineImage, shouldBlur: Bool) -> AnyView {

@@ -247,7 +247,7 @@ struct PostEditorView: View {
                     )
                 }
             }
-            .padding(.horizontal, Constants.main.standardSpacing)
+            .padding([.horizontal, .bottom], Constants.main.standardSpacing)
             .animation(.snappy(duration: 0.2, extraBounce: 0.1), value: animationHashValue)
         }
     }

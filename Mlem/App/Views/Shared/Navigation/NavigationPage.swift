@@ -26,6 +26,7 @@ enum NavigationPage: Hashable {
     case person(_ person: AnyPerson)
     case instance(_ instance: InstanceHashWrapper)
     case instanceOpinionList(instance: InstanceHashWrapper, opinionType: FediseerOpinionType, data: FediseerData)
+    case messageFeed(_ person: AnyPerson, focusTextField: Bool)
     case fediseerInfo
     case externalApiInfo(api: ApiClient, actorId: URL)
     case imageViewer(_ url: URL)
@@ -106,6 +107,10 @@ enum NavigationPage: Hashable {
             opinionType: opinionType,
             data: data
         )
+    }
+    
+    static func messageFeed(_ person: any PersonStubProviding, focusTextField: Bool = false) -> NavigationPage {
+        messageFeed(.init(person), focusTextField: focusTextField)
     }
     
     static func instance(hostOf entity: any ActorIdentifiable) -> NavigationPage {

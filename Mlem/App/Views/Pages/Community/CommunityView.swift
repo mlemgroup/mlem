@@ -5,10 +5,10 @@
 //  Created by Sjmarf on 30/07/2024.
 //
 
+import Dependencies
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
-import Dependencies
 
 struct CommunityView: View {
     enum Tab: String, CaseIterable, Identifiable {
