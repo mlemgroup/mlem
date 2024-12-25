@@ -5,10 +5,10 @@
 //  Created by Eric Andrews on 2024-12-22.
 //
 
-import Observation
 import Dependencies
 import Foundation
 import MlemMiddleware
+import Observation
 
 @Observable
 class FiltersTracker {
@@ -30,13 +30,13 @@ class FiltersTracker {
     init() {
         @Dependency(\.persistenceRepository) var persistenceRepository
         
-        isAdmin = AppState.main.firstPerson?.isAdmin ?? false
-        moderatedCommunityActorIds = AppState.main.firstPerson?.moderatedCommunityActorIds ?? .init()
-        filteredKeywords = persistenceRepository.loadFilteredKeywords()
+        self.isAdmin = AppState.main.firstPerson?.isAdmin ?? false
+        self.moderatedCommunityActorIds = AppState.main.firstPerson?.moderatedCommunityActorIds ?? .init()
+        self.filteredKeywords = persistenceRepository.loadFilteredKeywords()
     }
     
     func postWouldBeFiltered(_ post: any Post) -> Bool {
-        return post.title.lowercased().containsWordsIn(filteredKeywords)
+        post.title.lowercased().containsWordsIn(filteredKeywords)
     }
     
     static var main: FiltersTracker = .init()

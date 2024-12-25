@@ -5,8 +5,8 @@
 //  Created by Eric Andrews on 2024-12-22.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct FiltersSettingsView: View {
     @Dependency(\.persistenceRepository) var persistenceRepository
@@ -20,7 +20,7 @@ struct FiltersSettingsView: View {
     init() {
         @Dependency(\.persistenceRepository) var persistenceRepository
         
-        self._filteredKeywords = .init(wrappedValue: .init(persistenceRepository.loadFilteredKeywords()))
+        _filteredKeywords = .init(wrappedValue: .init(persistenceRepository.loadFilteredKeywords()))
     }
     
     var body: some View {
