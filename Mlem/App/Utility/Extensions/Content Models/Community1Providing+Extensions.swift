@@ -19,6 +19,7 @@ extension Community1Providing {
     
     // MARK: Operations
     
+    @MainActor
     func showNewPostSheet() {
         NavigationModel.main.openSheet(.createPost(community: self))
     }
@@ -174,7 +175,7 @@ extension Community1Providing {
                 swipeIcon1: isOn ? Icons.unsubscribePerson : Icons.subscribePerson,
                 swipeIcon2: isOn ? Icons.unsubscribePersonFill : Icons.subscribePersonFill
             ),
-            callback: api.canInteract ? { self.self2?.toggleSubscribe(feedback: feedback) } : nil
+            callback: api.canInteract ? { @MainActor in self.self2?.toggleSubscribe(feedback: feedback) } : nil
         )
     }
     
@@ -191,7 +192,7 @@ extension Community1Providing {
                 swipeIcon1: isOn ? Icons.unfavorite : Icons.favorite,
                 swipeIcon2: isOn ? Icons.unfavoriteFill : Icons.favoriteFill
             ),
-            callback: api.canInteract ? { self.self2?.toggleFavorite(feedback: feedback) } : nil
+            callback: api.canInteract ? { @MainActor in self.self2?.toggleFavorite(feedback: feedback) } : nil
         )
     }
     
@@ -200,7 +201,7 @@ extension Community1Providing {
             id: "block\(uid)",
             appearance: .block(isOn: blocked),
             confirmationPrompt: (!blocked && showConfirmation) ? "Really block this community?" : nil,
-            callback: api.canInteract ? { self.toggleBlocked(feedback: feedback) } : nil
+            callback: api.canInteract ? { @MainActor in self.toggleBlocked(feedback: feedback) } : nil
         )
     }
 }
