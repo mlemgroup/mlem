@@ -19,8 +19,8 @@ struct ModlogView: View {
     var body: some View {
         Group {
             if let community {
-                ContentLoader(model: community) { _ in
-                    content
+                ContentLoader(model: community) { proxy in
+                    content(community: proxy.entity)
                 }
             }
         }
@@ -29,11 +29,11 @@ struct ModlogView: View {
     }
     
     @ViewBuilder
-    var content: some View {
+    func content(community: (any Community)?) -> some View {
         ScrollView {
             LazyVStack(spacing: Constants.main.standardSpacing) {
                 ForEach(Array(entries.enumerated()), id: \.offset) { _, entry in
-                    ModlogEntryView(entry: entry)
+                    ModlogEntryView(entry: entry, targetCommunity: community)
                 }
             }
             .padding([.horizontal, .bottom], Constants.main.standardSpacing)
@@ -42,7 +42,7 @@ struct ModlogView: View {
         .onAppear {
             Task { @MainActor in
                 do {
-                    entries = try await appState.firstApi.getModlog(type: .modRemovePost)
+                    entries = try await appState.firstApi.getModlog(communityId: community?.id, type: .modRemovePost)
                 } catch {
                     handleError(error)
                 }

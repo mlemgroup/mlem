@@ -69,9 +69,9 @@
 		033F844D2D18D90900D87A9E /* MessageBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F844C2D18D90900D87A9E /* MessageBubbleView.swift */; };
 		033F844F2D196AC700D87A9E /* OptimalHeightLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F844E2D196AC700D87A9E /* OptimalHeightLayout.swift */; };
 		033F84512D196AFD00D87A9E /* MessageFeedView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84502D196AFD00D87A9E /* MessageFeedView+Logic.swift */; };
-		033F845B2D1C4E1D00D87A9E /* ModlogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F845A2D1C4E1D00D87A9E /* ModlogView.swift */; };
-		033F845D2D1C4EFE00D87A9E /* ModlogButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F845C2D1C4EFE00D87A9E /* ModlogButtonView.swift */; };
-		033F845F2D1C702B00D87A9E /* ModlogEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F845E2D1C702B00D87A9E /* ModlogEntryView.swift */; };
+		033F84662D1C780900D87A9E /* ModlogButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84652D1C780900D87A9E /* ModlogButtonView.swift */; };
+		033F84732D1C784600D87A9E /* ModlogEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84702D1C784600D87A9E /* ModlogEntryView.swift */; };
+		033F84742D1C784600D87A9E /* ModlogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84712D1C784600D87A9E /* ModlogView.swift */; };
 		033F84AD2C298466002E3EDF /* SectionIndexTitles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84AC2C298466002E3EDF /* SectionIndexTitles.swift */; };
 		033F84B12C29907F002E3EDF /* FeedbackType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84B02C29907F002E3EDF /* FeedbackType.swift */; };
 		033F84BB2C2ACB96002E3EDF /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84BA2C2ACB96002E3EDF /* CommentView.swift */; };
@@ -517,9 +517,9 @@
 		033F844E2D196AC700D87A9E /* OptimalHeightLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimalHeightLayout.swift; sourceTree = "<group>"; };
 		033F84502D196AFD00D87A9E /* MessageFeedView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageFeedView+Logic.swift"; sourceTree = "<group>"; };
 		033F84582D1C47CB00D87A9E /* MlemMiddleware */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MlemMiddleware; path = ../MlemMiddleware; sourceTree = SOURCE_ROOT; };
-		033F845A2D1C4E1D00D87A9E /* ModlogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogView.swift; sourceTree = "<group>"; };
-		033F845C2D1C4EFE00D87A9E /* ModlogButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogButtonView.swift; sourceTree = "<group>"; };
-		033F845E2D1C702B00D87A9E /* ModlogEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogEntryView.swift; sourceTree = "<group>"; };
+		033F84652D1C780900D87A9E /* ModlogButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogButtonView.swift; sourceTree = "<group>"; };
+		033F84702D1C784600D87A9E /* ModlogEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogEntryView.swift; sourceTree = "<group>"; };
+		033F84712D1C784600D87A9E /* ModlogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogView.swift; sourceTree = "<group>"; };
 		033F84AC2C298466002E3EDF /* SectionIndexTitles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionIndexTitles.swift; sourceTree = "<group>"; };
 		033F84B02C29907F002E3EDF /* FeedbackType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackType.swift; sourceTree = "<group>"; };
 		033F84BA2C2ACB96002E3EDF /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
@@ -1022,11 +1022,11 @@
 			path = MessageFeedView;
 			sourceTree = "<group>";
 		};
-		033F84592D1C4E1400D87A9E /* Modlog */ = {
+		033F84722D1C784600D87A9E /* Modlog */ = {
 			isa = PBXGroup;
 			children = (
-				033F845A2D1C4E1D00D87A9E /* ModlogView.swift */,
-				033F845E2D1C702B00D87A9E /* ModlogEntryView.swift */,
+				033F84702D1C784600D87A9E /* ModlogEntryView.swift */,
+				033F84712D1C784600D87A9E /* ModlogView.swift */,
 			);
 			path = Modlog;
 			sourceTree = "<group>";
@@ -1179,7 +1179,6 @@
 		0382A7EE2C09F0F800C79DDA /* Pages */ = {
 			isa = PBXGroup;
 			children = (
-				033F84592D1C4E1400D87A9E /* Modlog */,
 				033FCAF22C598435007B7CD1 /* Community */,
 				033FCAF12C598406007B7CD1 /* Person */,
 				030BCB192C3EA5E20037680F /* Instance */,
@@ -1195,6 +1194,7 @@
 				CDD99C3B2C73F3FF0010367F /* DeleteAccountView.swift */,
 				03B25B3A2CC44FFF00EB6DF5 /* UploadConfirmationView.swift */,
 				03E46AD12D130681002589DB /* VotesListView.swift */,
+				033F84722D1C784600D87A9E /* Modlog */,
 				033F844B2D18D8F400D87A9E /* MessageFeedView */,
 			);
 			name = Pages;
@@ -1609,7 +1609,7 @@
 				038028FE2CB72AC90091A8A2 /* ReasonShortcutView.swift */,
 				03B62B762CE295530077E9C8 /* RulesListView.swift */,
 				03B62B782CE2A2C00077E9C8 /* RulesPickerView.swift */,
-				033F845C2D1C4EFE00D87A9E /* ModlogButtonView.swift */,
+				033F84652D1C780900D87A9E /* ModlogButtonView.swift */,
 				035BE0852BDD8D9100F77D73 /* Navigation */,
 				0382A7EE2C09F0F800C79DDA /* Pages */,
 				CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */,
@@ -2253,6 +2253,7 @@
 				031E2D5B2BEFC9460003BC45 /* ThemeSettingsView.swift in Sources */,
 				CDE4AC3F2CA2083200981010 /* VideoView.swift in Sources */,
 				03D3A1F12BB9D48E009DE55E /* BasicAction.swift in Sources */,
+				033F84662D1C780900D87A9E /* ModlogButtonView.swift in Sources */,
 				03D2A6392C00FAE000ED4FF2 /* UserAccount.swift in Sources */,
 				CDB738292CB8A6A5005B11BB /* View+PaletteBorder.swift in Sources */,
 				03C93CF02BEFFB1A00327BFE /* LoginCredentialsView.swift in Sources */,
@@ -2328,7 +2329,6 @@
 				033F844F2D196AC700D87A9E /* OptimalHeightLayout.swift in Sources */,
 				03ECD7212C8654BA00D48BF6 /* PostEditorView+Toolbar.swift in Sources */,
 				033EF4102CB9AEF7004D8A3F /* ExpandedPostView+Views.swift in Sources */,
-				033F845B2D1C4E1D00D87A9E /* ModlogView.swift in Sources */,
 				03FE140C2BF953B000A8377F /* HandleError.swift in Sources */,
 				0320B65A2C8CBB0D00D38548 /* SignUpView+EmailConfirmationView.swift in Sources */,
 				03ECD71F2C864DB700D48BF6 /* ImageUploadManager.swift in Sources */,
@@ -2336,6 +2336,8 @@
 				CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */,
 				CD79281F2C73B52A00FA712D /* EndOfFeedView.swift in Sources */,
 				CDE1F19C2C63E2EB008AF042 /* SettingPropertyWrapper.swift in Sources */,
+				033F84732D1C784600D87A9E /* ModlogEntryView.swift in Sources */,
+				033F84742D1C784600D87A9E /* ModlogView.swift in Sources */,
 				038096612C10AAD8003ED1D8 /* TransitionView.swift in Sources */,
 				0382A7F42C0A76A900C79DDA /* Date+Extensions.swift in Sources */,
 				CD9D243D2CC1DF59006E5F3F /* AccountType.swift in Sources */,
@@ -2497,7 +2499,6 @@
 				033F844D2D18D90900D87A9E /* MessageBubbleView.swift in Sources */,
 				03134A502BEAD245002662CC /* NavigationLink+NavigationPage.swift in Sources */,
 				03B431BC2C455838001A1EB5 /* LargePostBodyView.swift in Sources */,
-				033F845F2D1C702B00D87A9E /* ModlogEntryView.swift in Sources */,
 				CDFB8C692C7796020070845F /* View+DynamicBlur.swift in Sources */,
 				03B25B372CC4478600EB6DF5 /* FediseerInfoView.swift in Sources */,
 				03B62B772CE295530077E9C8 /* RulesListView.swift in Sources */,
@@ -2606,7 +2607,6 @@
 				039F58972C7B68F100C61658 /* AboutMlemView.swift in Sources */,
 				035EDEFB2C2DF98700F51144 /* CommunityListRowBody.swift in Sources */,
 				CD77437F2C1BA5CE0085BB43 /* MultiplatformView.swift in Sources */,
-				033F845D2D1C4EFE00D87A9E /* ModlogButtonView.swift in Sources */,
 				0391E0F92CFF17AE0040CCA8 /* ProfileSettingsView.swift in Sources */,
 				03E614E72C0BCDC200F692A4 /* FullyQualifiedLinkView.swift in Sources */,
 				B1B78D642A51D53900F72485 /* AppDelegate.swift in Sources */,
