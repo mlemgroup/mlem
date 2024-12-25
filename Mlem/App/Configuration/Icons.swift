@@ -46,6 +46,7 @@ enum Icons {
     static let moderation: String = "shield"
     static let moderationFill: String = "shield.fill"
     static let moderationReport: String = "flag"
+    static let modlog: String = "book.pages"
     
     // inbox
     static let mention: String = "quote.bubble"

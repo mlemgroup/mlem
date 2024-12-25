@@ -162,6 +162,8 @@ extension NavigationPage {
             VotesListView(target: target)
         case let .messageFeed(person, focusTextField: focusTextField):
             MessageFeedView(person: person, focusTextField: focusTextField)
+        case let .modlog(community: community):
+            ModlogView(community: community)
         }
     }
 }
