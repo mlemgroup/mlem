@@ -58,9 +58,17 @@ struct ReportView: View {
     @ViewBuilder
     var reportDetailsView: some View {
         VStack(alignment: .leading) {
-            Text("Reported \(report.created.getRelativeTime()) by \(report.creator.fullName ?? "")")
+            let reporterLabel = report.creator.nameTextView(
+                showFlairs: false,
+                showInstance: true,
+                font: .footnote,
+                nameColor: palette.warning.opacity(0.5),
+                instanceColor: palette.warning.opacity(0.3)
+            )
+            Text("Reported \(report.created.getRelativeTime()) by \(reporterLabel)")
                 .foregroundStyle(.secondary) // No palette!
                 .font(.footnote)
+                .lineLimit(1)
             Text(report.reason)
         }
         .foregroundStyle(palette.warning)
@@ -75,10 +83,18 @@ struct ReportView: View {
     @ViewBuilder
     var resolutionInfoView: some View {
         if report.resolved, let resolver = report.resolver {
-            Label("Resolved by \(resolver.fullName ?? "")", systemImage: Icons.successCircleFill)
+            let resolverLabel = resolver.nameTextView(
+                showFlairs: false,
+                showInstance: true,
+                font: .footnote,
+                nameColor: palette.positive,
+                instanceColor: palette.positive.opacity(0.5)
+            )
+            Label("Resolved by \(resolverLabel)", systemImage: Icons.successCircleFill)
                 .foregroundStyle(palette.positive)
                 .font(.footnote)
                 .padding(.horizontal, Constants.main.halfSpacing)
+                .lineLimit(1)
         }
     }
     
