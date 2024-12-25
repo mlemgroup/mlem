@@ -159,7 +159,9 @@ enum NavigationPage: Hashable {
     static func signUp() -> NavigationPage {
         .instancePicker(callback: { instance, navigation in
             if let stub = instance.instanceStub {
-                navigation.push(.signUp(stub))
+                Task { @MainActor in
+                    navigation.push(.signUp(stub))
+                }
             }
         })
     }
@@ -170,7 +172,9 @@ enum NavigationPage: Hashable {
     ) -> NavigationPage {
         communityPicker(api: api, callback: .init(wrappedValue: { value, navigation in
             callback(value)
-            navigation.dismissSheet()
+            Task { @MainActor in
+                navigation.dismissSheet()
+            }
         }))
     }
     
@@ -180,7 +184,9 @@ enum NavigationPage: Hashable {
     ) -> NavigationPage {
         personPicker(api: api, callback: .init(wrappedValue: { value, navigation in
             callback(value)
-            navigation.dismissSheet()
+            Task { @MainActor in
+                navigation.dismissSheet()
+            }
         }))
     }
     
@@ -191,7 +197,9 @@ enum NavigationPage: Hashable {
         assert((minimumVersion ?? .infinity) > Constants.main.minimumLemmyVersion)
         return instancePicker(callback: .init(wrappedValue: { value, navigation in
             callback(value)
-            navigation.dismissSheet()
+            Task { @MainActor in
+                navigation.dismissSheet()
+            }
         }), minimumVersion: minimumVersion)
     }
     

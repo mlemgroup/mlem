@@ -49,7 +49,9 @@ private func _handleError(
     switch error {
     // TODO: Modify MlemMiddleware to attach the ApiClient throwing the error to ApiClientError.invalidSession, so that we can access the relevant UserStub in a multi-account context
     case ApiClientError.invalidSession:
-        showReauthSheet()
+        Task { @MainActor in
+            showReauthSheet()
+        }
         return true
     case ApiClientError.cancelled, is CancellationError:
         print("Cancellation error")
@@ -59,6 +61,7 @@ private func _handleError(
     }
 }
 
+@MainActor
 private func showReauthSheet() {
     if let user = AppState.main.firstSession.account as? UserAccount {
         for layer in NavigationModel.main.layers {

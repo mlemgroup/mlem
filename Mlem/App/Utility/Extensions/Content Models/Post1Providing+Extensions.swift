@@ -22,6 +22,7 @@ extension Post1Providing {
         api.myPerson?.moderates(communityId: communityId) ?? false || api.isAdmin
     }
     
+    @MainActor
     func showEditSheet() {
         if let self = self as? any Post2Providing {
             NavigationModel.main.openSheet(.editPost(self.post2))
@@ -342,7 +343,7 @@ extension Post1Providing {
         return .init(
             id: "hide\(uid)",
             appearance: .hide(isOn: hidden),
-            callback: available ? { self.self2?.toggleHidden(feedback: feedback) } : nil
+            callback: available ? { @MainActor in self.self2?.toggleHidden(feedback: feedback) } : nil
         )
     }
     
@@ -374,7 +375,7 @@ extension Post1Providing {
                 icon: Icons.block
             ),
             confirmationPrompt: showConfirmation ? "Really block this community?" : nil,
-            callback: api.canInteract ? { self.self2?.community.toggleBlocked(feedback: feedback) } : nil
+            callback: api.canInteract ? { @MainActor in self.self2?.community.toggleBlocked(feedback: feedback) } : nil
         )
     }
     
@@ -382,7 +383,7 @@ extension Post1Providing {
         .init(
             id: "edit\(uid)",
             appearance: .edit(),
-            callback: api.canInteract ? { self.showEditSheet() } : nil
+            callback: api.canInteract ? showEditSheet : nil
         )
     }
     
@@ -391,7 +392,7 @@ extension Post1Providing {
             id: "lock\(uid)",
             appearance: .lock(isOn: locked, isInProgress: !lockedManager.isInSync),
             confirmationPrompt: locked ? "Really unlock this post?" : "Really lock this post?",
-            callback: api.canInteract && canModerate ? { self.self2?.toggleLocked(feedback: feedback) } : nil
+            callback: api.canInteract && canModerate ? { @MainActor in self.self2?.toggleLocked(feedback: feedback) } : nil
         )
     }
     
@@ -438,7 +439,7 @@ extension Post1Providing {
                 isOn: isOn, isInProgress: !pinnedCommunityManager.isInSync
             ),
             confirmationPrompt: prompt,
-            callback: api.canInteract && canModerate ? { self.togglePinnedCommunity(feedback: feedback) } : nil
+            callback: api.canInteract && canModerate ? { @MainActor in self.togglePinnedCommunity(feedback: feedback) } : nil
         )
     }
     
@@ -458,7 +459,7 @@ extension Post1Providing {
             id: "pinToInstance\(uid)",
             appearance: .pinToInstance(isOn: isOn, isInProgress: !pinnedInstanceManager.isInSync),
             confirmationPrompt: prompt,
-            callback: api.canInteract && api.isAdmin ? { self.togglePinnedInstance(feedback: feedback) } : nil
+            callback: api.canInteract && api.isAdmin ? { @MainActor in self.togglePinnedInstance(feedback: feedback) } : nil
         )
     }
     
@@ -467,7 +468,7 @@ extension Post1Providing {
         return .init(
             id: "viewVotes\(uid)",
             appearance: .viewVotes(),
-            callback: enabled ? { navigation.push(.votesList(.post(self))) } : nil
+            callback: enabled ? { @MainActor in navigation.push(.votesList(.post(self))) } : nil
         )
     }
     // swiftlint:disable:next file_length

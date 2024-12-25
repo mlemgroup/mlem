@@ -14,7 +14,7 @@ extension ActorIdentifiable {
     }
     
     func openInstanceAction(navigation: NavigationLayer?) -> BasicAction {
-        let callback: (() -> Void)?
+        let callback: (@MainActor () -> Void)?
         if let navigation {
             callback = { navigation.push(.instance(hostOf: self)) }
         } else {

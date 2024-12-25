@@ -12,6 +12,7 @@ extension Interactable1Providing {
     private var self2: (any Interactable2Providing)? { self as? any Interactable2Providing }
     private var inboxItem: (any InboxItemProviding)? { self as? any InboxItemProviding }
     
+    @MainActor
     func showReplySheet(commentTreeTracker: CommentTreeTracker? = nil) {
         if let responseContext {
             NavigationModel.main.openSheet(.createComment(responseContext, commentTreeTracker: commentTreeTracker))
@@ -127,7 +128,7 @@ extension Interactable1Providing {
         .init(
             id: "upvote\(uid)",
             appearance: .upvote(isOn: self2?.votes.myVote ?? .none == .upvote),
-            callback: api.canInteract ? { self.self2?.toggleUpvoted(feedback: feedback) } : nil
+            callback: api.canInteract ? { @MainActor in self.self2?.toggleUpvoted(feedback: feedback) } : nil
         )
     }
     
@@ -136,7 +137,7 @@ extension Interactable1Providing {
         return .init(
             id: "downvote\(uid)",
             appearance: .downvote(isOn: self2?.votes.myVote ?? .none == .downvote),
-            callback: enabled ? { self.self2?.toggleDownvoted(feedback: feedback) } : nil
+            callback: enabled ? { @MainActor in self.self2?.toggleDownvoted(feedback: feedback) } : nil
         )
     }
     
@@ -144,7 +145,7 @@ extension Interactable1Providing {
         .init(
             id: "save\(uid)",
             appearance: .save(isOn: self2?.saved ?? false),
-            callback: api.canInteract ? { self.self2?.toggleSaved(feedback: feedback) } : nil
+            callback: api.canInteract ? { @MainActor in self.self2?.toggleSaved(feedback: feedback) } : nil
         )
     }
     
@@ -152,7 +153,7 @@ extension Interactable1Providing {
         .init(
             id: "reply\(uid)",
             appearance: .reply(),
-            callback: api.canInteract ? { self.showReplySheet(commentTreeTracker: commentTreeTracker) } : nil
+            callback: api.canInteract ? { @MainActor in self.showReplySheet(commentTreeTracker: commentTreeTracker) } : nil
         )
     }
     
@@ -161,7 +162,7 @@ extension Interactable1Providing {
             id: "blockCreator\(uid)",
             appearance: .blockCreator(),
             confirmationPrompt: showConfirmation ? "Really block this user?" : nil,
-            callback: api.canInteract ? { self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
+            callback: api.canInteract ? { @MainActor in self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
         )
     }
     

@@ -59,6 +59,7 @@ class NavigationLayer {
         self.canDisplayToasts = canDisplayToasts
     }
     
+    @MainActor
     func push(_ page: NavigationPage) {
         if hasNavigationStack {
             path.append(page)
@@ -67,6 +68,7 @@ class NavigationLayer {
         }
     }
 
+    @MainActor
     func pop() {
         if !path.isEmpty {
             path.removeLast()
@@ -76,6 +78,7 @@ class NavigationLayer {
         }
     }
     
+    @MainActor
     func dismissSheet() {
         model?.closeSheets(aboveIndex: index)
     }
@@ -95,6 +98,7 @@ class NavigationLayer {
     }
     
     /// Open a new sheet, optionally with navigation enabled. If `nil` is specified for `hasNavigationStack`, the value of `page.hasNavigationStack` will be used.
+    @MainActor
     func openSheet(_ page: NavigationPage, hasNavigationStack: Bool? = nil) {
         model?.openSheet(
             page,
@@ -103,6 +107,7 @@ class NavigationLayer {
     }
     
     /// Open a new sheet, optionally with navigation enabled. If `nil` is specified for `hasNavigationStack`, the value of `page.hasNavigationStack` will be used.
+    @MainActor
     func showFullScreenCover(_ page: NavigationPage, hasNavigationStack: Bool? = nil) {
         model?.showFullScreenCover(
             page,
@@ -110,6 +115,7 @@ class NavigationLayer {
         )
     }
     
+    @MainActor
     func showPhotosPicker(for imageUploadManager: ImageUploadManager, api: ApiClient) {
         model?.photosPickerCallback = { photo in
             Task {
@@ -129,6 +135,7 @@ class NavigationLayer {
         }
     }
     
+    @MainActor
     func showFilePicker(for imageUploadManager: ImageUploadManager, api: ApiClient) {
         model?.showingFilePicker = true
         model?.filePickerCallback = { url in
@@ -153,7 +160,7 @@ class NavigationLayer {
     }
     
     func uploadImageFromClipboard(for imageUploadManager: ImageUploadManager, api: ApiClient) {
-        Task {
+        Task { @MainActor in
             do {
                 if UIPasteboard.general.hasImages, let content = UIPasteboard.general.image {
                     if let data = content.pngData() {
