@@ -8,6 +8,7 @@
 import MlemMiddleware
 
 extension SelectableContentProviding {
+    @MainActor
     func showTextSelectionSheet() {
         NavigationModel.main.openSheet(.selectText(selectableContent ?? ""))
     }

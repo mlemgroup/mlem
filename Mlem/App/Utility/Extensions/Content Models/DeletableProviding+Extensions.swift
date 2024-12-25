@@ -45,7 +45,7 @@ extension DeletableProviding {
                 icon: deleted ? Icons.undelete : Icons.delete
             ),
             confirmationPrompt: deleted ? nil : "Really delete?",
-            callback: api.canInteract ? { self.toggleDeleted(feedback: feedback) } : nil
+            callback: api.canInteract ? { @MainActor in self.toggleDeleted(feedback: feedback) } : nil
         )
     }
 }

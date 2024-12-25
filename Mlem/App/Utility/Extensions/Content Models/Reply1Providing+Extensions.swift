@@ -85,7 +85,7 @@ extension Reply1Providing {
     // MARK: Actions
     
     func selectTextAction() -> BasicAction {
-        let callback: (() -> Void)?
+        let callback: (@MainActor () -> Void)?
         if let comment = comment_ {
             callback = comment.showTextSelectionSheet
         } else {

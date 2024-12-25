@@ -15,7 +15,7 @@ struct BasicAction: Action {
     let confirmationPrompt: String?
 
     /// If this is nil, the BasicAction is disabled
-    var callback: (() -> Void)?
+    var callback: (@MainActor () -> Void)?
     
     var disabled: Bool { callback == nil }
     
@@ -26,7 +26,7 @@ struct BasicAction: Action {
         appearance: ActionAppearance,
         confirmationPrompt: String? = nil,
         enabled: Bool = true,
-        callback: (() -> Void)? = nil
+        callback: (@MainActor () -> Void)? = nil
     ) {
         self.id = id
         self.appearance = appearance
@@ -34,6 +34,7 @@ struct BasicAction: Action {
         self.callback = enabled ? callback : nil
     }
     
+    @MainActor
     func callbackWithConfirmation(popupModel: PopupAnchorModel) {
         if let callback {
             if let confirmationPrompt {

@@ -45,6 +45,7 @@ extension InstanceStubProviding {
         self.toggleBlocked()
     }
     
+    @MainActor
     func visit() {
         if let account = try? GuestAccount.getGuestAccount(url: actorId) {
             AppState.main.changeAccount(to: account)
@@ -52,10 +53,12 @@ extension InstanceStubProviding {
         }
     }
     
+    @MainActor
     func openLoginSheet() {
         NavigationModel.main.openSheet(.logIn(.instance(self)))
     }
     
+    @MainActor
     func openSignUpSheet() {
         NavigationModel.main.openSheet(.signUp(self))
     }

@@ -31,7 +31,7 @@ extension Report {
                 icon: resolved ? Icons.failureCircle : Icons.successCircle,
                 swipeIcon2: resolved ? Icons.failureCircleFill : Icons.successCircleFill
             ),
-            callback: api.canInteract ? { self.toggleResolved(feedback: feedback) } : nil
+            callback: api.canInteract ? { @MainActor in self.toggleResolved(feedback: feedback) } : nil
         )
     }
 }
