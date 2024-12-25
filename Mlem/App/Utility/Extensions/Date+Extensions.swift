@@ -44,4 +44,27 @@ extension Date {
         let current = calendar.dateComponents([.month, .day, .year], from: .now)
         return date.month == current.month && date.day == current.day && date.year != current.year
     }
+    
+    // https://stackoverflow.com/a/48652058/17629371
+    func messagesRelativeDate() -> String {
+        let dateFormatter = DateFormatter()
+        let calendar = Calendar(identifier: .gregorian)
+        dateFormatter.doesRelativeDateFormatting = true
+
+        if calendar.isDateInToday(self) {
+            dateFormatter.timeStyle = .short
+            dateFormatter.dateStyle = .medium
+        } else if calendar.isDateInYesterday(self) {
+            dateFormatter.timeStyle = .short
+            dateFormatter.dateStyle = .medium
+        } else if calendar.compare(Date(), to: self, toGranularity: .weekOfYear) == .orderedSame {
+            let weekday = calendar.dateComponents([.weekday], from: self).weekday ?? 0
+            return dateFormatter.weekdaySymbols[weekday - 1]
+        } else {
+            dateFormatter.timeStyle = .none
+            dateFormatter.dateStyle = .short
+        }
+
+        return dateFormatter.string(from: self)
+    }
 }

@@ -23,9 +23,9 @@ struct InboxView: View {
     
     @State var reports: [Report]?
     
-    @State var replyFeedLoader: ReplyFeedLoader
-    @State var mentionFeedLoader: MentionFeedLoader
-    @State var messageFeedLoader: MessageFeedLoader
+    @State var replyFeedLoader: ReplyChildFeedLoader
+    @State var mentionFeedLoader: MentionChildFeedLoader
+    @State var messageFeedLoader: MessageChildFeedLoader
     @State var inboxFeedLoader: InboxFeedLoader
     
     @State var showRefreshPopup: Bool = false
@@ -36,19 +36,19 @@ struct InboxView: View {
         @Setting(\.internetSpeed) var internetSpeed
         @Setting(\.showReadInInbox) var showRead
         
-        let replyFeedLoader: ReplyFeedLoader = .init(
+        let replyFeedLoader: ReplyChildFeedLoader = .init(
             api: AppState.main.firstApi,
             pageSize: internetSpeed.pageSize,
             sortType: .new,
             showRead: showRead
         )
-        let mentionFeedLoader: MentionFeedLoader = .init(
+        let mentionFeedLoader: MentionChildFeedLoader = .init(
             api: AppState.main.firstApi,
             pageSize: internetSpeed.pageSize,
             sortType: .new,
             showRead: showRead
         )
-        let messageFeedLoader: MessageFeedLoader = .init(
+        let messageFeedLoader: MessageChildFeedLoader = .init(
             api: AppState.main.firstApi,
             pageSize: internetSpeed.pageSize,
             sortType: .new,
