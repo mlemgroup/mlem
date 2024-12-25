@@ -53,6 +53,9 @@
     "%@ Read" : {
 
     },
+    "%@ removed a post" : {
+
+    },
     "%@ rules:" : {
 
     },
@@ -1196,9 +1199,6 @@
 
     },
     "Remove Content" : {
-
-    },
-    "removed a post" : {
 
     },
     "Replies" : {
