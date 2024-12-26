@@ -15,6 +15,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
     @Environment(NavigationLayer.self) private var navigation
     @Environment(Palette.self) private var palette
     @Environment(FiltersTracker.self) var filtersTracker
+    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     
     @State var obscured: Bool
     
@@ -29,7 +30,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
     var postSize: PostSize {
         overridePostSize ?? settingsPostSize
     }
-
+    
     @ViewBuilder let embeddedContent: () -> EmbeddedContent
     
     init(
@@ -57,7 +58,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
             } else {
                 content
                     .overlay(alignment: .topLeading) {
-                        if !(post.read_ ?? false), readPostIndicator == .outline {
+                        if differentiateWithoutColor, !(post.read_ ?? false), readPostIndicator == .outline {
                             RoundedRectangle(cornerRadius: postSize.swipeBehavior.cornerRadius)
                                 .stroke(lineWidth: .init(readOutlineThickness))
                                 .foregroundStyle(palette.secondary)

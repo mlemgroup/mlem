@@ -12,11 +12,14 @@ import NukeUI
 import SwiftUI
 
 struct TilePostView: View {
+    @Setting(\.readPostIndicator) var readPostIndicator
+    
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette: Palette
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(\.parentFrameWidth) var parentFrameWidth: CGFloat
+    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     
     let post: any Post1Providing
 
@@ -87,6 +90,10 @@ struct TilePostView: View {
             }
             
             Spacer()
+            
+            if differentiateWithoutColor, readPostIndicator == .checkmark, post.read_ ?? false {
+                ReadCheck(tiled: true)
+            }
             
             score
         }

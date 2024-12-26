@@ -9,6 +9,8 @@ import SwiftUI
 
 struct AccessibilitySettingsView: View {
     
+    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
+    
     @Setting(\.readPostIndicator) var readPostIndicator
     @Setting(\.readOutlineThickness) var readOutlineThickness
     
@@ -49,6 +51,8 @@ struct AccessibilitySettingsView: View {
                         }
                     }
                 }
+            } footer: {
+                Text("These settings control how Mlem behaves when the system-wide \"Differentiate Without Color\" option is enabled.")
             }
         }
     }
