@@ -41,9 +41,9 @@ struct AccessibilitySettingsView: View {
                         ) {
                             Text("Outline Thickness")
                         } minimumValueLabel: {
-                            Text("1")
+                            Text(verbatim: "1")
                         } maximumValueLabel: {
-                            Text("5")
+                            Text(verbatim: "5")
                         } onEditingChanged: { editing in
                             if !editing {
                                 readOutlineThickness = Int(readBarThicknessSlider)
