@@ -131,14 +131,6 @@ extension Person1Providing {
         )
     }
     
-    func sendMessageAction() -> BasicAction {
-        .init(
-            id: "sendMessage\(uid)",
-            appearance: .init(label: "Send Message", color: Palette.main.accent, icon: Icons.message),
-            callback: { NavigationModel.main.openSheet(.messageFeed(self, focusTextField: true)) }
-        )
-    }
-    
     func banActions(community: (any Community)?, withUserLabel: Bool = false) -> [any Action] {
         let isModerator: Bool
         let showBoth: Bool

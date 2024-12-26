@@ -8,6 +8,7 @@
 import MlemMiddleware
 import SwiftUI
 
+// swiftlint:disable:next type_body_length
 enum NavigationPage: Hashable {
     case settings(_ page: SettingsPage = .root)
     case logIn(_ page: LoginPage = .pickInstance)

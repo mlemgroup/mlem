@@ -50,10 +50,44 @@
         }
       }
     },
+    "%@ locked a post" : {
+
+    },
+    "%@ pinned a post to %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ pinned a post to %2$@"
+          }
+        }
+      }
+    },
+    "%@ purged a comment" : {
+
+    },
+    "%@ purged a post" : {
+
+    },
     "%@ Read" : {
 
     },
+    "%@ removed a comment" : {
+
+    },
+    "%@ removed a community" : {
+
+    },
     "%@ removed a post" : {
+
+    },
+    "%@ restored a comment" : {
+
+    },
+    "%@ restored a community" : {
+
+    },
+    "%@ restored a post" : {
 
     },
     "%@ rules:" : {
@@ -64,6 +98,19 @@
     },
     "%@ today!" : {
 
+    },
+    "%@ unlocked a post" : {
+
+    },
+    "%@ unpinned a post from %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ unpinned a post from %2$@"
+          }
+        }
+      }
     },
     "%lld Crossposts..." : {
       "localizations" : {
@@ -366,7 +413,13 @@
     "Comment was deleted" : {
 
     },
+    "Comment was purged" : {
+
+    },
     "Comment was removed" : {
+
+    },
+    "Comment was restored" : {
 
     },
     "Comments" : {
@@ -379,6 +432,12 @@
 
     },
     "Community Link" : {
+
+    },
+    "Community was removed" : {
+
+    },
+    "Community was restored" : {
 
     },
     "Compact" : {
@@ -1090,6 +1149,27 @@
     "Post Size" : {
 
     },
+    "Post was locked" : {
+
+    },
+    "Post was pinned to %@" : {
+
+    },
+    "Post was purged" : {
+
+    },
+    "Post was removed" : {
+
+    },
+    "Post was restored" : {
+
+    },
+    "Post was unlocked" : {
+
+    },
+    "Post was unpinned from %@" : {
+
+    },
     "Posts" : {
 
     },
@@ -1169,6 +1249,9 @@
 
     },
     "Reason (Optional)" : {
+
+    },
+    "Reason: " : {
 
     },
     "Received %@" : {
@@ -1498,6 +1581,9 @@
 
     },
     "Temporary" : {
+
+    },
+    "Test" : {
 
     },
     "That's all, folks!" : {

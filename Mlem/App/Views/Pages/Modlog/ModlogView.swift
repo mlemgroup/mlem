@@ -22,6 +22,8 @@ struct ModlogView: View {
                 ContentLoader(model: community) { proxy in
                     content(community: proxy.entity)
                 }
+            } else {
+                content(community: nil)
             }
         }
         .navigationTitle("Modlog")
@@ -42,7 +44,7 @@ struct ModlogView: View {
         .onAppear {
             Task { @MainActor in
                 do {
-                    entries = try await appState.firstApi.getModlog(communityId: community?.id, type: .modRemovePost)
+                    entries = try await appState.firstApi.getModlog(communityId: community?.id, type: .modRemoveCommunity)
                 } catch {
                     handleError(error)
                 }
