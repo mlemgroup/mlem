@@ -72,7 +72,7 @@ struct PersonListRowBody<Content: View>: View {
                 )
             }
             VStack(alignment: .leading, spacing: 4) {
-                (flairs.textView() + Text(title))
+                (flairs.textView + Text(title))
                     .lineLimit(1)
                     .imageScale(.small)
                 caption
