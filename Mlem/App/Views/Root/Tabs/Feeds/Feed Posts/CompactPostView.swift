@@ -12,9 +12,11 @@ import SwiftUI
 struct CompactPostView: View {
     @Setting(\.thumbnailLocation) var thumbnailLocation
     @Setting(\.blurNsfw) var blurNsfw
+    @Setting(\.readPostIndicator) var readPostIndicator
     
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(Palette.self) var palette: Palette
+    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     
     let post: any Post1Providing
     
@@ -52,6 +54,10 @@ struct CompactPostView: View {
                         FullyQualifiedLinkView(entity: post.community_, labelStyle: .small, showAvatar: false)
                     }
                     Spacer()
+
+                    if differentiateWithoutColor, readPostIndicator == .checkmark, post.read_ ?? false {
+                        ReadCheck()
+                    }
                     
                     if post.nsfw {
                         Image(Icons.nsfwTag)
