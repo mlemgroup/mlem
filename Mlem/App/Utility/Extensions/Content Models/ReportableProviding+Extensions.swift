@@ -8,6 +8,7 @@
 import MlemMiddleware
 
 extension ReportableProviding {
+    @MainActor
     func showReportSheet(communityContext: (any CommunityStubProviding)? = nil) {
         NavigationModel.main.openSheet(.report(self, community: communityContext))
     }
@@ -16,7 +17,7 @@ extension ReportableProviding {
         .init(
             id: "report\(uid)",
             appearance: .report(),
-            callback: api.canInteract ? { self.showReportSheet(communityContext: communityContext) } : nil
+            callback: api.canInteract ? { @MainActor in self.showReportSheet(communityContext: communityContext) } : nil
         )
     }
 }

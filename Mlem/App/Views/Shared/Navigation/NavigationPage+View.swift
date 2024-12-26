@@ -160,6 +160,8 @@ extension NavigationPage {
             AdvancedSortView(selectedSort: sort.wrappedValue)
         case let .votesList(target):
             VotesListView(target: target)
+        case let .messageFeed(person, focusTextField: focusTextField):
+            MessageFeedView(person: person, focusTextField: focusTextField)
         }
     }
 }

@@ -9,6 +9,7 @@ import Foundation
 import MlemMiddleware
 
 extension PurgableProviding {
+    @MainActor
     func showPurgeSheet() {
         NavigationModel.main.openSheet(.purge(self))
     }

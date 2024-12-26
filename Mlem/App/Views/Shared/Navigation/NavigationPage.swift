@@ -26,6 +26,7 @@ enum NavigationPage: Hashable {
     case person(_ person: AnyPerson)
     case instance(_ instance: InstanceHashWrapper)
     case instanceOpinionList(instance: InstanceHashWrapper, opinionType: FediseerOpinionType, data: FediseerData)
+    case messageFeed(_ person: AnyPerson, focusTextField: Bool)
     case fediseerInfo
     case externalApiInfo(api: ApiClient, actorId: URL)
     case imageViewer(_ url: URL)
@@ -108,6 +109,10 @@ enum NavigationPage: Hashable {
         )
     }
     
+    static func messageFeed(_ person: any PersonStubProviding, focusTextField: Bool = false) -> NavigationPage {
+        messageFeed(.init(person), focusTextField: focusTextField)
+    }
+    
     static func instance(hostOf entity: any ActorIdentifiable) -> NavigationPage {
         var instance: any InstanceStubProviding = InstanceStub(
             api: AppState.main.firstApi, actorId: entity.actorId.removingPathComponents()
@@ -145,7 +150,9 @@ enum NavigationPage: Hashable {
     static func signUp() -> NavigationPage {
         .instancePicker(callback: { instance, navigation in
             if let stub = instance.instanceStub {
-                navigation.push(.signUp(stub))
+                Task { @MainActor in
+                    navigation.push(.signUp(stub))
+                }
             }
         })
     }
@@ -156,7 +163,9 @@ enum NavigationPage: Hashable {
     ) -> NavigationPage {
         communityPicker(api: api, callback: .init(wrappedValue: { value, navigation in
             callback(value)
-            navigation.dismissSheet()
+            Task { @MainActor in
+                navigation.dismissSheet()
+            }
         }))
     }
     
@@ -166,7 +175,9 @@ enum NavigationPage: Hashable {
     ) -> NavigationPage {
         personPicker(api: api, callback: .init(wrappedValue: { value, navigation in
             callback(value)
-            navigation.dismissSheet()
+            Task { @MainActor in
+                navigation.dismissSheet()
+            }
         }))
     }
     
@@ -177,7 +188,9 @@ enum NavigationPage: Hashable {
         assert((minimumVersion ?? .infinity) > Constants.main.minimumLemmyVersion)
         return instancePicker(callback: .init(wrappedValue: { value, navigation in
             callback(value)
-            navigation.dismissSheet()
+            Task { @MainActor in
+                navigation.dismissSheet()
+            }
         }), minimumVersion: minimumVersion)
     }
     

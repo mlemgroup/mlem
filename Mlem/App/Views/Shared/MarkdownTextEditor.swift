@@ -18,6 +18,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
     let sizingOffset: CGFloat
     
     let onChange: (String) -> Void
+    let onBeginEditing: () -> Void
     
     init(
         // A binding isn't used here because it creates a view update every time
@@ -25,7 +26,8 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         // and it appearing on the screen. Instead, parent views can access the
         // text directly from the `textView` and/or perform logic using the below
         // `onChange` callback.
-        onChange: @escaping (String) -> Void,
+        onChange: @escaping (String) -> Void = { _ in },
+        onBeginEditing: @escaping () -> Void = {},
         prompt: LocalizedStringResource,
         textView: UITextView,
         font: UIFont = .preferredFont(forTextStyle: .body),
@@ -48,6 +50,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         self.firstResponder = firstResponder
         self.sizingOffset = sizingOffset
         self.onChange = onChange
+        self.onBeginEditing = onBeginEditing
     }
  
     func makeCoordinator() -> Coordinator {
@@ -145,6 +148,10 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
             parent.onChange(textView.text)
             parent.placeholderLabel.isHidden = !textView.text.isEmpty
             textView.sizeToFit()
+        }
+        
+        func textViewDidBeginEditing(_ textView: UITextView) {
+            parent.onBeginEditing()
         }
     }
 }

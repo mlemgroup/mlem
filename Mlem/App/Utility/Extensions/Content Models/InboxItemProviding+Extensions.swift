@@ -19,7 +19,7 @@ extension InboxItemProviding {
         .init(
             id: "markRead\(uid)",
             appearance: .markRead(isOn: read),
-            callback: api.canInteract ? { self.toggleRead(feedback: feedback) } : nil
+            callback: api.canInteract ? { @MainActor in self.toggleRead(feedback: feedback) } : nil
         )
     }
 }

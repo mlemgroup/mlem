@@ -26,9 +26,15 @@ extension Message1Providing {
     @ActionBuilder
     func allMenuActions(
         feedback: Set<FeedbackType> = [.haptic, .toast],
+        isInMessageFeed: Bool = false,
+        navigation: NavigationLayer? = nil,
         report: Report? = nil
     ) -> [any Action] {
-        basicMenuActions(feedback: feedback)
+        basicMenuActions(
+            feedback: feedback,
+            isInMessageFeed: isInMessageFeed,
+            navigation: navigation
+        )
         if api.isAdmin {
             ActionGroup(
                 appearance: .init(label: "Moderation...", color: Palette.main.moderation, icon: Icons.moderation),
@@ -42,10 +48,14 @@ extension Message1Providing {
     @ActionBuilder
     func basicMenuActions(
         feedback: Set<FeedbackType> = [.haptic, .toast],
+        isInMessageFeed: Bool = false,
+        navigation: NavigationLayer? = nil,
         report: Report? = nil
     ) -> [any Action] {
         if !isOwnMessage {
-            replyAction()
+            if let navigation, !isInMessageFeed {
+                replyAction(navigation: navigation)
+            }
             markReadAction(feedback: feedback)
         }
         if !deleted {
@@ -57,7 +67,9 @@ extension Message1Providing {
             if report == nil {
                 reportAction()
             }
-            blockCreatorAction(feedback: feedback)
+            if !isInMessageFeed {
+                blockCreatorAction(feedback: feedback)
+            }
         }
     }
     
@@ -75,11 +87,15 @@ extension Message1Providing {
     
     // These actions are also defined in Interactable1Providing... another protocol for these may be a good idea
        
-    func replyAction() -> BasicAction {
-        .init(
+    func replyAction(navigation: NavigationLayer) -> BasicAction {
+        var callback: (@MainActor () -> Void)?
+        if let creator = creator_, api.canInteract {
+            callback = { @MainActor in navigation.push(.messageFeed(creator, focusTextField: true)) }
+        }
+        return .init(
             id: "reply\(uid)",
             appearance: .reply(),
-            callback: nil
+            callback: callback
         )
     }
     
@@ -87,7 +103,7 @@ extension Message1Providing {
         .init(
             id: "blockCreator\(uid)",
             appearance: .blockCreator(),
-            callback: api.canInteract ? { self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
+            callback: api.canInteract ? { @MainActor in self.self2?.creator.toggleBlocked(feedback: feedback) } : nil
         )
     }
 }
