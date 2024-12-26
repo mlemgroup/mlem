@@ -29,7 +29,7 @@ struct SettingsView: View {
                 NavigationLink("General", systemImage: "gear", destination: .settings(.general))
                     .tint(palette.neutralAccent)
                 NavigationLink("Accessibility", systemImage: "hand.point.up.braille.fill", destination: .settings(.accessibility))
-                    .tint(palette.accent)
+                    .tint(palette.colorfulAccent(2))
                 NavigationLink("Links", systemImage: Icons.websiteAddress, destination: .settings(.links))
                     .tint(palette.colorfulAccent(6))
                 NavigationLink("Sorting", systemImage: "arrow.up.and.down.text.horizontal", destination: .settings(.sorting))
