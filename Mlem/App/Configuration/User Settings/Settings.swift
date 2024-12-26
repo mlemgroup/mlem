@@ -18,7 +18,7 @@ class Settings: ObservableObject {
     /// Default initializer. Will take current AppStorage values.
     init() {}
 
-    @AppStorage("a11y.readPostIndicator") var readPostIndicator: ReadPostIndicator = .none
+    @AppStorage("a11y.readPostIndicator") var readPostIndicator: ReadPostIndicator = .checkmark
     @AppStorage("a11y.readOutlineThickness") var readOutlineThickness: Int = 3
 
     @AppStorage("post.size") var postSize: PostSize = .compact

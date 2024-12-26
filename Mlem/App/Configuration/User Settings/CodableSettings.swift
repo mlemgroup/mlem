@@ -88,7 +88,7 @@ struct CodableSettings: Codable {
     // swiftlint:disable line_length function_body_length
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.a11y_readPostIndicator = try container.decodeIfPresent(ReadPostIndicator.self, forKey: .a11y_readPostIndicator) ?? .outline
+        self.a11y_readPostIndicator = try container.decodeIfPresent(ReadPostIndicator.self, forKey: .a11y_readPostIndicator) ?? .checkmark
         self.a11y_readOutlineThickness = try container.decodeIfPresent(Int.self, forKey: .a11y_readOutlineThickness) ?? 3
         self.a11y_websiteThumbnailIcon = try container.decodeIfPresent(Bool.self, forKey: .a11y_websiteThumbnailIcon) ?? false
         self.accounts_defaultId = try container.decodeIfPresent(Int?.self, forKey: .accounts_defaultId) ?? nil
@@ -166,7 +166,7 @@ struct CodableSettings: Codable {
     // swiftlint:enable line_length
     
     init(from settings: Settings) {
-        self.a11y_readPostIndicator = .outline
+        self.a11y_readPostIndicator = .checkmark
         self.a11y_readOutlineThickness = 3
         self.a11y_websiteThumbnailIcon = false
         self.accounts_defaultId = nil
