@@ -112,6 +112,9 @@
     "Abuse" : {
 
     },
+    "Accessibility" : {
+
+    },
     "Account" : {
 
     },
@@ -327,6 +330,9 @@
         }
       }
     },
+    "Checkmark" : {
+
+    },
     "Choose a community..." : {
 
     },
@@ -483,6 +489,9 @@
 
     },
     "Diagnosing..." : {
+
+    },
+    "Differentiate Without Color" : {
 
     },
     "Disabled" : {
@@ -1036,6 +1045,12 @@
     "Other" : {
 
     },
+    "Outline" : {
+
+    },
+    "Outline Thickness" : {
+
+    },
     "Outside NSFW Communities" : {
 
     },
@@ -1136,6 +1151,9 @@
 
     },
     "Ranks posts based on the post score and creation time." : {
+
+    },
+    "Read Post Indicator" : {
 
     },
     "Readouts:" : {
@@ -1571,6 +1589,9 @@
 
     },
     "These options are stored locally in Mlem and not on your Lemmy account." : {
+
+    },
+    "These settings control how Mlem behaves when the system-wide \"Differentiate Without Color\" option is enabled." : {
 
     },
     "This account has %lld favorite communities." : {

@@ -11,9 +11,8 @@ import UIKit
 
 /// Mirror of Settings but without any AppStorage complexity and fully optionalized.
 struct CodableSettings: Codable {
-    // MARK: Settings mirrored in AppStorage
-    var a11y_markReadType: String // TODO: pending a11y mark read
-    var a11y_readBarThickness: Int
+    var a11y_readPostIndicator: ReadPostIndicator
+    var a11y_readOutlineThickness: Int
     var a11y_websiteThumbnailIcon: Bool
     var accounts_defaultId: Int?
     var accounts_grouped: Bool
@@ -91,8 +90,8 @@ struct CodableSettings: Codable {
     // swiftlint:disable line_length function_body_length
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.a11y_markReadType = try container.decodeIfPresent(String.self, forKey: .a11y_markReadType) ?? "bar"
-        self.a11y_readBarThickness = try container.decodeIfPresent(Int.self, forKey: .a11y_readBarThickness) ?? 3
+        self.a11y_readPostIndicator = try container.decodeIfPresent(ReadPostIndicator.self, forKey: .a11y_readPostIndicator) ?? .checkmark
+        self.a11y_readOutlineThickness = try container.decodeIfPresent(Int.self, forKey: .a11y_readOutlineThickness) ?? 3
         self.a11y_websiteThumbnailIcon = try container.decodeIfPresent(Bool.self, forKey: .a11y_websiteThumbnailIcon) ?? false
         self.accounts_defaultId = try container.decodeIfPresent(Int?.self, forKey: .accounts_defaultId) ?? nil
         self.accounts_grouped = try container.decodeIfPresent(Bool.self, forKey: .accounts_grouped) ?? false
@@ -169,8 +168,8 @@ struct CodableSettings: Codable {
     // swiftlint:enable line_length
     
     init(from settings: Settings) {
-        self.a11y_markReadType = "bar"
-        self.a11y_readBarThickness = 3
+        self.a11y_readPostIndicator = .checkmark
+        self.a11y_readOutlineThickness = 3
         self.a11y_websiteThumbnailIcon = false
         self.accounts_defaultId = nil
         self.accounts_grouped = settings.groupAccountSort

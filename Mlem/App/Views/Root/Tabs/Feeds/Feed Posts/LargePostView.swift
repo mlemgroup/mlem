@@ -14,10 +14,12 @@ struct LargePostView: View {
     @Setting(\.showPersonAvatar) private var showPersonAvatar
     @Setting(\.showCommunityAvatar) private var showCommunityAvatar
     @Setting(\.blurNsfw) var blurNsfw
+    @Setting(\.readPostIndicator) var readPostIndicator
     
     @Environment(Palette.self) private var palette: Palette
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(\.communityContext) private var communityContext
+    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     
     let post: any Post1Providing
     let isPostPage: Bool
@@ -63,11 +65,15 @@ struct LargePostView: View {
                 
                 Spacer()
                 
+                if !isPostPage, differentiateWithoutColor, readPostIndicator == .checkmark, post.read_ ?? false {
+                    ReadCheck()
+                }
+                
                 if post.nsfw {
                     Image(Icons.nsfwTag)
                         .foregroundStyle(palette.warning)
                 }
-
+                
                 if !isPostPage {
                     PostEllipsisMenus(post: post)
                 }
