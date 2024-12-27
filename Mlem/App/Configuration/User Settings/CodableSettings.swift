@@ -11,6 +11,7 @@ import UIKit
 
 /// Mirror of Settings but without any AppStorage complexity and fully optionalized.
 struct CodableSettings: Codable {
+    // MARK: Settings mirrored in AppStorage
     var a11y_markReadType: String // TODO: pending a11y mark read
     var a11y_readBarThickness: Int
     var a11y_websiteThumbnailIcon: Bool
@@ -84,6 +85,8 @@ struct CodableSettings: Codable {
     var subscriptions_sort: SubscriptionListSort
     var navigation_sidebarVisibleByDefault: Bool
     var navigation_swipeAnywhere: Bool
+    
+    var filteredKeywords: [String]
     
     // swiftlint:disable line_length function_body_length
     init(from decoder: any Decoder) throws {
