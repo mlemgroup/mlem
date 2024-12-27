@@ -44,7 +44,7 @@ struct ModlogView: View {
         .onAppear {
             Task { @MainActor in
                 do {
-                    entries = try await appState.firstApi.getModlog(communityId: community?.id, type: .modRemoveCommunity)
+                    entries = try await appState.firstApi.getModlog(communityId: community?.id, type: .modAddCommunity)
                 } catch {
                     handleError(error)
                 }

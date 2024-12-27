@@ -19,8 +19,14 @@ extension ModlogEntryType {
             locked ? Icons.lock : Icons.unlock
         case let .pinPost(_, _, pinned, _):
             pinned ? Icons.pin : Icons.unpin
-        case .purgePost, .purgeComment:
+        case .purgePost, .purgeComment, .purgeCommunity:
             Icons.purge
+        case let .hideCommunity(_, hidden, _):
+            hidden ? Icons.hide : Icons.show
+        case .transferCommunityOwnership:
+            Icons.transferCommunity
+        case let .updatePersonModeratorStatus(_, _, appointed):
+            appointed ? Icons.moderation : Icons.demoteModerator
         default: ""
         }
     }
@@ -35,14 +41,20 @@ extension ModlogEntryType {
             Palette.main.lockAccent
         case let .pinPost(_, _, _, type):
             type == .community ? Palette.main.moderation : Palette.main.administration
-        case .purgePost, .purgeComment:
+        case .purgePost, .purgeComment, .purgeCommunity:
             Palette.main.negative
+        case .hideCommunity:
+            Palette.main.colorfulAccent(4)
+        case .transferCommunityOwnership:
+            Palette.main.colorfulAccent(8)
+        case let .updatePersonModeratorStatus(_, _, appointed):
+            appointed ? Palette.main.moderation : Palette.main.negative
         default:
             Palette.main.accent
         }
     }
     
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func label(userText: Text?) -> LocalizedStringKey {
         switch self {
         case let .removePost(_, _, removed, _):
@@ -82,6 +94,30 @@ extension ModlogEntryType {
                 "\(userText) purged a comment"
             } else {
                 "Comment was purged"
+            }
+        case .purgeCommunity:
+            if let userText {
+                "\(userText) purged a community"
+            } else {
+                "Community was purged"
+            }
+        case let .hideCommunity(_, hidden, _):
+            if let userText {
+                hidden ? "\(userText) hid a community" : "\(userText) unhid a community"
+            } else {
+                hidden ? "Community was hidden" : "Community was unhidden"
+            }
+        case .transferCommunityOwnership:
+            if let userText {
+                "\(userText) transferred ownership of a community"
+            } else {
+                "Community ownership was transferred"
+            }
+        case let .updatePersonModeratorStatus(_, _, appointed):
+            if let userText {
+                appointed ? "\(userText) appointed a community moderator" : "\(userText) removed a community moderator"
+            } else {
+                appointed ? "Community moderator was appointed" : "Community moderator was removed"
             }
         default:
             "Test"

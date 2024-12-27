@@ -34,7 +34,13 @@
     "%@ Administrator" : {
 
     },
+    "%@ appointed a community moderator" : {
+
+    },
     "%@ has been unresponsive recently." : {
+
+    },
+    "%@ hid a community" : {
 
     },
     "%@ is " : {
@@ -66,6 +72,9 @@
     "%@ purged a comment" : {
 
     },
+    "%@ purged a community" : {
+
+    },
     "%@ purged a post" : {
 
     },
@@ -76,6 +85,9 @@
 
     },
     "%@ removed a community" : {
+
+    },
+    "%@ removed a community moderator" : {
 
     },
     "%@ removed a post" : {
@@ -97,6 +109,12 @@
 
     },
     "%@ today!" : {
+
+    },
+    "%@ transferred ownership of a community" : {
+
+    },
+    "%@ unhid a community" : {
 
     },
     "%@ unlocked a post" : {
@@ -238,6 +256,9 @@
 
     },
     "Apply to All Interaction Bars" : {
+
+    },
+    "Appointed %@" : {
 
     },
     "Are you sure you want to delete all community favorites for this account? This cannot be undone." : {
@@ -434,10 +455,28 @@
     "Community Link" : {
 
     },
+    "Community moderator was appointed" : {
+
+    },
+    "Community moderator was removed" : {
+
+    },
+    "Community ownership was transferred" : {
+
+    },
+    "Community was hidden" : {
+
+    },
+    "Community was purged" : {
+
+    },
     "Community was removed" : {
 
     },
     "Community was restored" : {
+
+    },
+    "Community was unhidden" : {
 
     },
     "Compact" : {
@@ -1047,6 +1086,9 @@
     "Now" : {
 
     },
+    "Now owned by %@" : {
+
+    },
     "NSFW" : {
 
     },
@@ -1282,6 +1324,9 @@
 
     },
     "Remove Content" : {
+
+    },
+    "Removed %@" : {
 
     },
     "Replies" : {

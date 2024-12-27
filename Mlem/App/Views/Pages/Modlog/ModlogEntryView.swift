@@ -35,7 +35,7 @@ struct ModlogEntryView: View {
     
     @ViewBuilder
     var headerView: some View {
-        HStack(spacing: Constants.main.halfSpacing) {
+        HStack(spacing: Constants.main.standardSpacing) {
             Circle()
                 .fill(entry.type.color.opacity(0.3))
                 .frame(width: 24, height: 24)
@@ -77,17 +77,86 @@ struct ModlogEntryView: View {
             postLink(post: post, community: community)
         case let .purgePost(reason: reason):
             reasonView(reason)
-        case let .removeComment(comment, creator: creator, post: post, community: community, removed: removed, reason: reason):
+        case let .removeComment(comment, creator: _, post: _, community: _, removed: _, reason: reason):
             reasonView(reason)
             commentLink(comment: comment)
         case let .purgeComment(reason: reason):
             reasonView(reason)
-        case let .removeCommunity(community, removed: removed, reason: reason):
+        case let .removeCommunity(community, removed: _, reason: reason):
             reasonView(reason)
             FullyQualifiedLinkView(entity: community, labelStyle: .medium, showAvatar: true)
+        case let .purgeCommunity(reason: reason):
+            reasonView(reason)
+        case let .hideCommunity(community, hidden: _, reason: reason):
+            reasonView(reason)
+            FullyQualifiedLinkView(entity: community, labelStyle: .medium, showAvatar: true)
+        case let .transferCommunityOwnership(person: person, community: community):
+            transferCommunityView(person: person, community: community)
+        case let .updatePersonModeratorStatus(person: person, community: community, appointed: appointed):
+            updatePersonModeratorStatusView(person: person, community: community, appointed: appointed)
         default:
             EmptyView()
         }
+    }
+    
+    @ViewBuilder
+    func transferCommunityView(
+        person: Person1,
+        community: Community1
+    ) -> some View {
+        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+            let userText = person.nameTextView(
+                showFlairs: true,
+                showInstance: true,
+                communityContext: targetCommunity ?? entry.type.community,
+                font: .footnote
+            )
+            FullyQualifiedLinkView(entity: community, labelStyle: .small, showAvatar: true)
+            HStack(spacing: Constants.main.halfSpacing) {
+                Image(systemName: Icons.transferCommunity)
+                Text("Now owned by \(userText)")
+                    .lineLimit(1)
+                    .imageScale(.small)
+            }
+            .foregroundStyle(palette.secondary)
+            .font(.footnote)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(Constants.main.standardSpacing)
+        .background(palette.tertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+    }
+    
+    @ViewBuilder
+    func updatePersonModeratorStatusView(
+        person: Person1,
+        community: Community1,
+        appointed: Bool
+    ) -> some View {
+        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+            let userText = person.nameTextView(
+                showFlairs: true,
+                showInstance: true,
+                communityContext: targetCommunity ?? entry.type.community,
+                font: .footnote
+            )
+            FullyQualifiedLinkView(entity: community, labelStyle: .small, showAvatar: true)
+            HStack(spacing: Constants.main.halfSpacing) {
+                Image(systemName: appointed ? "plus.circle.fill" : "minus.circle.fill")
+                    .symbolRenderingMode(.hierarchical)
+                    .foregroundStyle(appointed ? palette.positive : palette.negative)
+                    .fontWeight(.semibold)
+                Text(appointed ? "Appointed \(userText)" : "Removed \(userText)")
+                    .foregroundStyle(palette.secondary)
+                    .lineLimit(1)
+                    .imageScale(.small)
+            }
+            .font(.footnote)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(Constants.main.standardSpacing)
+        .background(palette.tertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
     
     @ViewBuilder
