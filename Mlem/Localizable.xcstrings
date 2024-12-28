@@ -34,7 +34,13 @@
     "%@ Administrator" : {
 
     },
-    "%@ appointed a community moderator" : {
+    "%@ appointed a moderator" : {
+
+    },
+    "%@ appointed an administrator" : {
+
+    },
+    "%@ banned a user" : {
 
     },
     "%@ has been unresponsive recently." : {
@@ -78,6 +84,9 @@
     "%@ purged a post" : {
 
     },
+    "%@ purged a user" : {
+
+    },
     "%@ Read" : {
 
     },
@@ -87,10 +96,13 @@
     "%@ removed a community" : {
 
     },
-    "%@ removed a community moderator" : {
+    "%@ removed a moderator" : {
 
     },
     "%@ removed a post" : {
+
+    },
+    "%@ removed an administrator" : {
 
     },
     "%@ restored a comment" : {
@@ -112,6 +124,9 @@
 
     },
     "%@ transferred ownership of a community" : {
+
+    },
+    "%@ unbanned a user" : {
 
     },
     "%@ unhid a community" : {
@@ -210,6 +225,12 @@
     "Administrator" : {
 
     },
+    "Administrator was removed" : {
+
+    },
+    "Adminstrator was appointed" : {
+
+    },
     "Advanced" : {
 
     },
@@ -258,8 +279,18 @@
     "Apply to All Interaction Bars" : {
 
     },
-    "Appointed %@" : {
+    "Appointed: %@" : {
 
+    },
+    "Appointed: %@\nTo: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Appointed: %1$@\nTo: %2$@"
+          }
+        }
+      }
     },
     "Are you sure you want to delete all community favorites for this account? This cannot be undone." : {
       "localizations" : {
@@ -315,6 +346,16 @@
     },
     "Banned from Instance" : {
 
+    },
+    "Banned: %@\nFrom: %@\nExpires: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Banned: %1$@\nFrom: %2$@\nExpires: %3$@"
+          }
+        }
+      }
     },
     "Banner" : {
 
@@ -455,12 +496,6 @@
     "Community Link" : {
 
     },
-    "Community moderator was appointed" : {
-
-    },
-    "Community moderator was removed" : {
-
-    },
     "Community ownership was transferred" : {
 
     },
@@ -478,6 +513,16 @@
     },
     "Community was unhidden" : {
 
+    },
+    "Community: %@\nNew Owner: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Community: %1$@\nNew Owner: %2$@"
+          }
+        }
+      }
     },
     "Compact" : {
 
@@ -1014,6 +1059,12 @@
     "Moderator" : {
 
     },
+    "Moderator was appointed" : {
+
+    },
+    "Moderator was removed" : {
+
+    },
     "Modlog" : {
 
     },
@@ -1084,9 +1135,6 @@
 
     },
     "Now" : {
-
-    },
-    "Now owned by %@" : {
 
     },
     "NSFW" : {
@@ -1326,8 +1374,18 @@
     "Remove Content" : {
 
     },
-    "Removed %@" : {
+    "Removed: %@" : {
 
+    },
+    "Removed: %@\nFrom: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Removed: %1$@\nFrom: %2$@"
+          }
+        }
+      }
     },
     "Replies" : {
 
@@ -1841,6 +1899,16 @@
     "Unban %@" : {
 
     },
+    "Unbanned: %@\nFrom: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Unbanned: %1$@\nFrom: %2$@"
+          }
+        }
+      }
+    },
     "Unblock" : {
 
     },
@@ -1934,6 +2002,15 @@
 
     },
     "User Link" : {
+
+    },
+    "User was banned" : {
+
+    },
+    "User was purged" : {
+
+    },
+    "User was unbanned" : {
 
     },
     "Username" : {

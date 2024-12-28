@@ -19,7 +19,7 @@ extension ModlogEntryType {
             locked ? Icons.lock : Icons.unlock
         case let .pinPost(_, _, pinned, _):
             pinned ? Icons.pin : Icons.unpin
-        case .purgePost, .purgeComment, .purgeCommunity:
+        case .purgePost, .purgeComment, .purgeCommunity, .purgePerson:
             Icons.purge
         case let .hideCommunity(_, hidden, _):
             hidden ? Icons.hide : Icons.show
@@ -27,7 +27,12 @@ extension ModlogEntryType {
             Icons.transferCommunity
         case let .updatePersonModeratorStatus(_, _, appointed):
             appointed ? Icons.moderation : Icons.demoteModerator
-        default: ""
+        case .updatePersonAdminStatus:
+            Icons.adminFlair
+        case let .banPersonFromCommunity(_, _, banned, _, _):
+            banned ? Icons.banFromCommunity : Icons.unbanFromCommunity
+        case let .banPersonFromInstance(_, banned, _, _):
+            banned ? Icons.banFromInstance : Icons.unbanFromInstance
         }
     }
     
@@ -41,7 +46,7 @@ extension ModlogEntryType {
             Palette.main.lockAccent
         case let .pinPost(_, _, _, type):
             type == .community ? Palette.main.moderation : Palette.main.administration
-        case .purgePost, .purgeComment, .purgeCommunity:
+        case .purgePost, .purgeComment, .purgeCommunity, .purgePerson:
             Palette.main.negative
         case .hideCommunity:
             Palette.main.colorfulAccent(4)
@@ -49,8 +54,10 @@ extension ModlogEntryType {
             Palette.main.colorfulAccent(8)
         case let .updatePersonModeratorStatus(_, _, appointed):
             appointed ? Palette.main.moderation : Palette.main.negative
-        default:
-            Palette.main.accent
+        case let .updatePersonAdminStatus(_, appointed):
+            appointed ? Palette.main.administration : Palette.main.negative
+        case let .banPersonFromCommunity(_, _, banned, _, _), let .banPersonFromInstance(_, banned, _, _):
+            banned ? Palette.main.negative : Palette.main.positive
         }
     }
     
@@ -101,6 +108,12 @@ extension ModlogEntryType {
             } else {
                 "Community was purged"
             }
+        case .purgePerson:
+            if let userText {
+                "\(userText) purged a user"
+            } else {
+                "User was purged"
+            }
         case let .hideCommunity(_, hidden, _):
             if let userText {
                 hidden ? "\(userText) hid a community" : "\(userText) unhid a community"
@@ -115,9 +128,21 @@ extension ModlogEntryType {
             }
         case let .updatePersonModeratorStatus(_, _, appointed):
             if let userText {
-                appointed ? "\(userText) appointed a community moderator" : "\(userText) removed a community moderator"
+                appointed ? "\(userText) appointed a moderator" : "\(userText) removed a moderator"
             } else {
-                appointed ? "Community moderator was appointed" : "Community moderator was removed"
+                appointed ? "Moderator was appointed" : "Moderator was removed"
+            }
+        case let .updatePersonAdminStatus(_, appointed):
+            if let userText {
+                appointed ? "\(userText) appointed an administrator" : "\(userText) removed an administrator"
+            } else {
+                appointed ? "Adminstrator was appointed" : "Administrator was removed"
+            }
+        case let .banPersonFromCommunity(_, _, banned, _, _), let .banPersonFromInstance(_, banned, _, _):
+            if let userText {
+                banned ? "\(userText) banned a user" : "\(userText) unbanned a user"
+            } else {
+                banned ? "User was banned" : "User was unbanned"
             }
         default:
             "Test"

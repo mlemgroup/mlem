@@ -94,9 +94,52 @@ struct ModlogEntryView: View {
             transferCommunityView(person: person, community: community)
         case let .updatePersonModeratorStatus(person: person, community: community, appointed: appointed):
             updatePersonModeratorStatusView(person: person, community: community, appointed: appointed)
-        default:
-            EmptyView()
+        case let .updatePersonAdminStatus(person: person, appointed: appointed):
+            updatePersonModeratorStatusView(person: person, community: nil, appointed: appointed)
+        case let .banPersonFromCommunity(person: person, community: community, banned: banned, reason: reason, expires: expires):
+            reasonView(reason)
+            banPersonView(person: person, community: community, banned: banned, expires: expires)
+        case let .banPersonFromInstance(person: person, banned: banned, reason: reason, expires: expires):
+            reasonView(reason)
+            banPersonView(person: person, community: nil, banned: banned, expires: expires)
+        case let .purgePerson(reason: reason):
+            reasonView(reason)
         }
+    }
+    
+    @ViewBuilder
+    func banPersonView(person: Person1, community: Community1?, banned: Bool, expires: Date?) -> some View {
+        VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
+            let userText = person.nameTextView(
+                showFlairs: true,
+                showInstance: true,
+                communityContext: targetCommunity ?? community,
+                font: .subheadline
+            )
+            let targetText: Text
+            if let community {
+                targetText = community.nameTextView(
+                    showFlairs: true,
+                    showInstance: true,
+                    font: .subheadline
+                )
+            } else {
+                targetText = Text("Instance")
+            }
+            if banned {
+                let expiresText = expires?.formatted(date: .abbreviated, time: .omitted) ?? "Never"
+                return Text("Banned: \(userText)\nFrom: \(targetText)\nExpires: \(expiresText)")
+            } else {
+                return Text("Unbanned: \(userText)\nFrom: \(targetText)")
+            }
+        }
+        .imageScale(.small)
+        .foregroundStyle(palette.secondary)
+        .font(.subheadline)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(Constants.main.standardSpacing)
+        .background(palette.tertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }
     
     @ViewBuilder
@@ -108,19 +151,19 @@ struct ModlogEntryView: View {
             let userText = person.nameTextView(
                 showFlairs: true,
                 showInstance: true,
-                communityContext: targetCommunity ?? entry.type.community,
-                font: .footnote
+                communityContext: targetCommunity ?? community,
+                font: .subheadline
             )
-            FullyQualifiedLinkView(entity: community, labelStyle: .small, showAvatar: true)
-            HStack(spacing: Constants.main.halfSpacing) {
-                Image(systemName: Icons.transferCommunity)
-                Text("Now owned by \(userText)")
-                    .lineLimit(1)
-                    .imageScale(.small)
-            }
-            .foregroundStyle(palette.secondary)
-            .font(.footnote)
+            let communityText = community.nameTextView(
+                showFlairs: true,
+                showInstance: true,
+                font: .subheadline
+            )
+            Text("Community: \(communityText)\nNew Owner: \(userText)")
+                .imageScale(.small)
         }
+        .foregroundStyle(palette.secondary)
+        .font(.subheadline)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Constants.main.standardSpacing)
         .background(palette.tertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
@@ -130,29 +173,32 @@ struct ModlogEntryView: View {
     @ViewBuilder
     func updatePersonModeratorStatusView(
         person: Person1,
-        community: Community1,
+        community: Community1?,
         appointed: Bool
     ) -> some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             let userText = person.nameTextView(
                 showFlairs: true,
                 showInstance: true,
-                communityContext: targetCommunity ?? entry.type.community,
-                font: .footnote
+                communityContext: targetCommunity ?? community,
+                font: .subheadline
             )
-            FullyQualifiedLinkView(entity: community, labelStyle: .small, showAvatar: true)
-            HStack(spacing: Constants.main.halfSpacing) {
-                Image(systemName: appointed ? "plus.circle.fill" : "minus.circle.fill")
-                    .symbolRenderingMode(.hierarchical)
-                    .foregroundStyle(appointed ? palette.positive : palette.negative)
-                    .fontWeight(.semibold)
-                Text(appointed ? "Appointed \(userText)" : "Removed \(userText)")
-                    .foregroundStyle(palette.secondary)
-                    .lineLimit(1)
-                    .imageScale(.small)
+            if let community {
+                let communityText = community.nameTextView(
+                    showFlairs: true,
+                    showInstance: true,
+                    font: .subheadline
+                )
+                Text(
+                    appointed ? "Appointed: \(userText)\nTo: \(communityText)" : "Removed: \(userText)\nFrom: \(communityText)"
+                )
+            } else {
+                Text(appointed ? "Appointed: \(userText)" : "Removed: \(userText)")
             }
-            .font(.footnote)
         }
+        .foregroundStyle(palette.secondary)
+        .imageScale(.small)
+        .font(.subheadline)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Constants.main.standardSpacing)
         .background(palette.tertiaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
