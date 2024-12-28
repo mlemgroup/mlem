@@ -76,7 +76,13 @@ class FiltersTracker {
 
 // The persisted file serves as the source of truth for filters. Since it's much more convenient to use FiltersTracker,
 // all access to the file is proxied through FiltersTracker so that FiltersTracker and the persistent file remain in sync
-// and the rest of the app can treat FiltersTracker as a source of truth.
+// and the rest of the app can treat FiltersTracker as a source of truth. Access to filters persistence is therefore
+// restricted to FiltersTracker.
+
+private extension PersistencePath {
+    static var filteredKeywords = root.appendingPathComponent("Blocked Keywords", conformingTo: .json)
+}
+
 private extension PersistenceRepository {
     func loadFilteredKeywords() -> Set<String> {
         load(Set<String>.self, from: PersistencePath.filteredKeywords) ?? .init()

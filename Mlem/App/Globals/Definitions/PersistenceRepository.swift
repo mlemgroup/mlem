@@ -11,7 +11,7 @@ import Foundation
 import MlemMiddleware
 
 enum PersistencePath {
-    private static var root = {
+    static var root = {
         guard let path = try? FileManager.default.url(
             for: .applicationSupportDirectory,
             in: .userDomainMask,
@@ -26,7 +26,6 @@ enum PersistencePath {
 
     static var userAccounts = root.appendingPathComponent("Saved Accounts", conformingTo: .json)
     static var guestAccounts = root.appendingPathComponent("Guest Accounts", conformingTo: .json)
-    static var filteredKeywords = root.appendingPathComponent("Blocked Keywords", conformingTo: .json)
     static var favoriteCommunities = root.appendingPathComponent("Favorite Communities", conformingTo: .json)
     static var recentSearches = root.appendingPathComponent("Recent Searches", conformingTo: .json)
     static var easterFlags = root.appendingPathComponent("Easter eggs flags", conformingTo: .json)
