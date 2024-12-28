@@ -59,7 +59,7 @@ class FiltersTracker {
         }
     }
     
-    func resetFilteredKeywords(_ filteredKeywords: Set<String>) async {
+    func resetFilteredKeywords(to filteredKeywords: Set<String>) async {
         do {
             try await setFilteredKeywords(to: persistenceRepository.saveFilteredKeywords(filteredKeywords))
         } catch {

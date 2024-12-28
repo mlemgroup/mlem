@@ -87,7 +87,7 @@ class Settings: ObservableObject {
     @AppStorage("menus.moderatorActionGrouping") var moderatorActionGrouping: ModeratorActionGrouping = .divider
     @AppStorage("menus.allModActions") var showAllModActions: Bool = false
     
-    var codable: CodableSettings { .init(from: self, filteredKeywords: .init(FiltersTracker.main.filteredKeywords)) }
+    var codable: CodableSettings { .init(from: self, filteredKeywords: FiltersTracker.main.filteredKeywords) }
     
     @MainActor
     func restore(from systemSetting: SystemSetting) {
@@ -160,7 +160,7 @@ class Settings: ObservableObject {
         readOutlineThickness = settings.a11y_readOutlineThickness
         
         Task {
-            await FiltersTracker.main.resetFilteredKeywords(settings.filteredKeywords)
+            await FiltersTracker.main.resetFilteredKeywords(to: settings.filteredKeywords)
             do {
                 try await persistenceRepository.saveSystemSettings(settings, setting: .v2)
             } catch {

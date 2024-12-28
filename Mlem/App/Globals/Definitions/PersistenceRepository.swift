@@ -155,15 +155,15 @@ class PersistenceRepository {
         try await save(value, to: PersistencePath.pinnedSortTypes)
     }
     
-//    /// Saves the given user settings
-//    func saveUserSettings(_ settings: CodableSettings, name: String) async throws {
-//        try await save(settings, to: Path.userSettings.appendingPathComponent(name, conformingTo: .json))
-//    }
-//    
-//    /// Loads given user settings, if present
-//    func loadUserSettings(name: String) -> CodableSettings? {
-//        load(CodableSettings.self, from: Path.userSettings.appendingPathComponent(name, conformingTo: .json))
-//    }
+    /// Saves the given user settings
+    func saveUserSettings(_ settings: CodableSettings, name: String) async throws {
+        try await save(settings, to: PersistencePath.userSettings.appendingPathComponent(name, conformingTo: .json))
+    }
+    
+    /// Loads given user settings, if present
+    func loadUserSettings(name: String) -> CodableSettings? {
+        load(CodableSettings.self, from: PersistencePath.userSettings.appendingPathComponent(name, conformingTo: .json))
+    }
     
     /// Returns true if the given system settings exist, false otherwise
     func systemSettingsExists(_ setting: SystemSetting) -> Bool {
