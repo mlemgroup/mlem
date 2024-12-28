@@ -11,6 +11,7 @@ import UIKit
 
 /// Mirror of Settings but without any AppStorage complexity and fully optionalized.
 struct CodableSettings: Codable {
+    // MARK: Settings mirrored in AppStorage
     var a11y_readPostIndicator: ReadPostIndicator
     var a11y_readOutlineThickness: Int
     var a11y_websiteThumbnailIcon: Bool
@@ -85,6 +86,7 @@ struct CodableSettings: Codable {
     var navigation_sidebarVisibleByDefault: Bool
     var navigation_swipeAnywhere: Bool
     
+    // MARK: Settings stored in files
     var filteredKeywords: [String]
     
     // swiftlint:disable line_length function_body_length
@@ -163,11 +165,12 @@ struct CodableSettings: Codable {
         self.subscriptions_sort = try container.decodeIfPresent(SubscriptionListSort.self, forKey: .subscriptions_sort) ?? .alphabetical
         self.navigation_sidebarVisibleByDefault = try container.decodeIfPresent(Bool.self, forKey: .navigation_sidebarVisibleByDefault) ?? true
         self.navigation_swipeAnywhere = try container.decodeIfPresent(Bool.self, forKey: .navigation_swipeAnywhere) ?? false
+        self.filteredKeywords = try container.decodeIfPresent([String].self, forKey: .filteredKeywords) ?? .init()
     }
 
     // swiftlint:enable line_length
     
-    init(from settings: Settings) {
+    init(from settings: Settings, filteredKeywords: [String]) {
         self.a11y_readPostIndicator = .checkmark
         self.a11y_readOutlineThickness = 3
         self.a11y_websiteThumbnailIcon = false
@@ -241,6 +244,8 @@ struct CodableSettings: Codable {
         self.subscriptions_sort = settings.subscriptionSort
         self.navigation_sidebarVisibleByDefault = settings.sidebarVisibleByDefault
         self.navigation_swipeAnywhere = settings.swipeAnywhereToNavigate
+        
+        self.filteredKeywords = filteredKeywords
     }
     // swiftlint:enable function_body_length
 }

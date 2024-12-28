@@ -136,35 +136,7 @@ class PersistenceRepository {
 //    func saveEasterFlags(_ value: Set<EasterFlag>) async throws {
 //        try await save(value, to: Path.easterFlags)
 //    }
-    
-    func loadFilteredKeywords() -> Set<String> {
-        Set(load([String].self, from: Path.filteredKeywords) ?? [])
-    }
-    
-    /// Saves the given keyword and returns the updated set of filtered keywords
-    func saveFilteredKeyword(_ value: String) async throws -> Set<String> {
-        var keywords = loadFilteredKeywords()
-        keywords.insert(value)
-        try await saveFilteredKeywords(.init(keywords))
-        return keywords
-    }
-    
-    /// Removes the given keyword and returns the updated set of filtered keywords
-    func removeFilteredKeyword(_ value: String) async throws -> Set<String> {
-        var keywords = loadFilteredKeywords()
-        keywords.remove(value)
-        try await saveFilteredKeywords(.init(keywords))
-        return keywords
-    }
-    
-    func saveFilteredKeywords(_ value: [String]) async throws {
-        try await save(value, to: Path.filteredKeywords)
-    }
-    
-    func getFilteredKeywordsPath() -> URL {
-        Path.filteredKeywords
-    }
-    
+
     func loadInteractionBarConfigurations() -> InteractionBarConfigurations {
         load(InteractionBarConfigurations.self, from: Path.layoutWidgets) ?? .default
     }
@@ -183,15 +155,15 @@ class PersistenceRepository {
         try await save(value, to: Path.pinnedSortTypes)
     }
     
-    /// Saves the given user settings
-    func saveUserSettings(_ settings: CodableSettings, name: String) async throws {
-        try await save(settings, to: Path.userSettings.appendingPathComponent(name, conformingTo: .json))
-    }
-    
-    /// Loads given user settings, if present
-    func loadUserSettings(name: String) -> CodableSettings? {
-        load(CodableSettings.self, from: Path.userSettings.appendingPathComponent(name, conformingTo: .json))
-    }
+//    /// Saves the given user settings
+//    func saveUserSettings(_ settings: CodableSettings, name: String) async throws {
+//        try await save(settings, to: Path.userSettings.appendingPathComponent(name, conformingTo: .json))
+//    }
+//    
+//    /// Loads given user settings, if present
+//    func loadUserSettings(name: String) -> CodableSettings? {
+//        load(CodableSettings.self, from: Path.userSettings.appendingPathComponent(name, conformingTo: .json))
+//    }
     
     /// Returns true if the given system settings exist, false otherwise
     func systemSettingsExists(_ setting: SystemSetting) -> Bool {
@@ -202,12 +174,45 @@ class PersistenceRepository {
     
     /// Saves the given system settings
     func saveSystemSettings(_ settings: CodableSettings, setting: SystemSetting) async throws {
+        print("DEBUG saving to \(setting), \(settings.filteredKeywords)")
         try await save(settings, to: Path.systemSettings.appendingPathComponent(setting.path, conformingTo: .json))
     }
     
     /// Loads given system settings, if present
     func loadSystemSettings(_ setting: SystemSetting) -> CodableSettings? {
         load(CodableSettings.self, from: Path.systemSettings.appendingPathComponent(setting.path, conformingTo: .json))
+    }
+    
+    func loadFilteredKeywords(for setting: SystemSetting = .v2) -> Set<String> {
+        let settings = loadSystemSettings(setting)
+        print("DEBUG loading filtered keywords \(settings?.filteredKeywords ?? [])")
+        return .init(settings?.filteredKeywords ?? [])
+    }
+    
+    /// Saves the given keyword and returns the updated set of filtered keywords
+    func saveFilteredKeyword(_ value: String, to setting: SystemSetting = .v2) async throws -> Set<String> {
+        var settings = Settings.main.codable
+        settings.filteredKeywords.append(value)
+        try await saveSystemSettings(settings, setting: setting)
+        return .init(settings.filteredKeywords)
+//        var keywords = loadFilteredKeywords(for: setting)
+//        keywords.insert(value)
+//        try await saveFilteredKeywords(.init(keywords), to: setting)
+//        return keywords
+    }
+    
+    /// Removes the given keyword and returns the updated set of filtered keywords
+    func removeFilteredKeyword(_ value: String, from setting: SystemSetting = .v2) async throws -> Set<String> {
+        var keywords = loadFilteredKeywords(for: setting)
+        keywords.remove(value)
+        try await saveFilteredKeywords(.init(keywords), to: setting)
+        return keywords
+    }
+    
+    func saveFilteredKeywords(_ value: [String], to setting: SystemSetting = .v2) async throws {
+        var settings = Settings.main.codable
+        settings.filteredKeywords = value
+        try await saveSystemSettings(settings, setting: setting)
     }
     
     // DEV ONLY
