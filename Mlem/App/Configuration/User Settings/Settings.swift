@@ -87,7 +87,7 @@ class Settings: ObservableObject {
     @AppStorage("menus.moderatorActionGrouping") var moderatorActionGrouping: ModeratorActionGrouping = .divider
     @AppStorage("menus.allModActions") var showAllModActions: Bool = false
     
-    var codable: CodableSettings { .init(from: self) }
+    var codable: CodableSettings { .init(from: self, filteredKeywords: FiltersTracker.main.filteredKeywords) }
     
     @MainActor
     func restore(from systemSetting: SystemSetting) {
@@ -110,6 +110,7 @@ class Settings: ObservableObject {
     
     /// Re-initializes all values from the given CodableSettings object.
     @MainActor
+    // swiftlint:disable:next function_body_length
     func reinit(from settings: CodableSettings) {
         postSize = settings.post_size
         defaultPostSort = settings.post_defaultSort
@@ -157,5 +158,14 @@ class Settings: ObservableObject {
         showAllModActions = settings.menus_allModActions
         readPostIndicator = settings.a11y_readPostIndicator
         readOutlineThickness = settings.a11y_readOutlineThickness
+        
+        Task {
+            await FiltersTracker.main.resetFilteredKeywords(to: settings.filteredKeywords)
+            do {
+                try await persistenceRepository.saveSystemSettings(settings, setting: .v2)
+            } catch {
+                handleError(error)
+            }
+        }
     }
 }

@@ -14,13 +14,10 @@ struct FiltersSettingsView: View {
     @Environment(Palette.self) var palette
     @Environment(FiltersTracker.self) var filtersTracker
     
-    @State var filteredKeywords: [String]
     @State var newKeyword: String = ""
     
     init() {
         @Dependency(\.persistenceRepository) var persistenceRepository
-        
-        _filteredKeywords = .init(wrappedValue: .init(persistenceRepository.loadFilteredKeywords()))
     }
     
     var body: some View {
@@ -46,7 +43,7 @@ struct FiltersSettingsView: View {
                 saveNewKeyword()
             }
         
-        ForEach(filteredKeywords, id: \.self) { filter in
+        ForEach(filtersTracker.filteredKeywords.sorted(by: <), id: \.self) { filter in
             HStack {
                 Text(filter)
                 
@@ -68,28 +65,18 @@ struct FiltersSettingsView: View {
         let cleanedKeyword = newKeyword.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
         
         Task {
-            do {
-                let newFilteredKeywords = try await persistenceRepository.saveFilteredKeyword(cleanedKeyword)
-                filteredKeywords = .init(newFilteredKeywords)
-                newKeyword = ""
-                filtersTracker.filteredKeywords = newFilteredKeywords
-            } catch {
-                handleError(error)
-            }
+            await filtersTracker.addFilteredKeyword(cleanedKeyword)
+            newKeyword = ""
         }
     }
     
     func deleteKeyword(_ keyword: String) {
-        assert(filteredKeywords.contains(keyword), "Filtered keywords does not contain \(keyword)")
+        guard filtersTracker.filteredKeywords.contains(keyword) else {
+            return
+        }
         
         Task {
-            do {
-                let newFilteredKeywords = try await persistenceRepository.removeFilteredKeyword(keyword)
-                filteredKeywords = .init(newFilteredKeywords)
-                filtersTracker.filteredKeywords = newFilteredKeywords
-            } catch {
-                handleError(error)
-            }
+            await filtersTracker.removeFilteredKeyword(keyword)
         }
     }
 }
