@@ -20,13 +20,13 @@ class GuestSession: Session {
         self.account = account
         
         Task {
-            try await self.api.fetchSiteVersion(task: Task {
+            try await self.api.contextDataManager.getValue(task: Task {
                 let (_, instance, _) = try await self.api.getMyPerson()
                 self.instance = instance
                 Task { @MainActor in
                     self.account.update(instance: instance)
                 }
-                return instance.version
+                return .init(instance: instance, person: nil)
             })
         }
     }

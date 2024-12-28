@@ -27,7 +27,7 @@ struct DeleteAccountView: View {
         content
             .task {
                 do {
-                    try await account.api.fetchSiteVersion()
+                    try await account.api.ensureContextPresence()
                 } catch {
                     handleError(error)
                 }
