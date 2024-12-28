@@ -159,10 +159,8 @@ class Settings: ObservableObject {
         readPostIndicator = settings.a11y_readPostIndicator
         readOutlineThickness = settings.a11y_readOutlineThickness
         
-        print("DEBUG \(settings.filteredKeywords)")
-        FiltersTracker.main.filteredKeywords = .init(settings.filteredKeywords)
-        
         Task {
+            await FiltersTracker.main.resetFilteredKeywords(settings.filteredKeywords)
             do {
                 try await persistenceRepository.saveSystemSettings(settings, setting: .v2)
             } catch {

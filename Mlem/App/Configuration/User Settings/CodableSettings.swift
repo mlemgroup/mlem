@@ -87,7 +87,7 @@ struct CodableSettings: Codable {
     var navigation_swipeAnywhere: Bool
     
     // MARK: Settings stored in files
-    var filteredKeywords: [String]
+    var filteredKeywords: Set<String>
     
     // swiftlint:disable line_length function_body_length
     init(from decoder: any Decoder) throws {
@@ -165,12 +165,12 @@ struct CodableSettings: Codable {
         self.subscriptions_sort = try container.decodeIfPresent(SubscriptionListSort.self, forKey: .subscriptions_sort) ?? .alphabetical
         self.navigation_sidebarVisibleByDefault = try container.decodeIfPresent(Bool.self, forKey: .navigation_sidebarVisibleByDefault) ?? true
         self.navigation_swipeAnywhere = try container.decodeIfPresent(Bool.self, forKey: .navigation_swipeAnywhere) ?? false
-        self.filteredKeywords = try container.decodeIfPresent([String].self, forKey: .filteredKeywords) ?? .init()
+        self.filteredKeywords = try container.decodeIfPresent(Set<String>.self, forKey: .filteredKeywords) ?? .init()
     }
 
     // swiftlint:enable line_length
     
-    init(from settings: Settings, filteredKeywords: [String]) {
+    init(from settings: Settings, filteredKeywords: Set<String>) {
         self.a11y_readPostIndicator = .checkmark
         self.a11y_readOutlineThickness = 3
         self.a11y_websiteThumbnailIcon = false
