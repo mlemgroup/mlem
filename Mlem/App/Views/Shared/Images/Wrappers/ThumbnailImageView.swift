@@ -12,7 +12,6 @@ import SwiftUI
 struct ThumbnailImageView: View {
     @Environment(Palette.self) var palette
     @Environment(NavigationLayer.self) var navigation
-    @Environment(MediaState.self) var mediaState
     @Environment(\.openURL) var openURL
     
     @State var loading: MediaLoadingState?
@@ -55,8 +54,7 @@ struct ThumbnailImageView: View {
                     .onTapGesture {
                         if let loading, loading == .done || loading == .proxyFailed {
                             post.markRead()
-                            
-                            mediaState.url = url
+                            navigation.showImageViewer(url: url)
                         }
                     }
                     .contextMenu {
