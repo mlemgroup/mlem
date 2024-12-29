@@ -13,6 +13,14 @@ extension ContentView {
         navigationModel.layers.allSatisfy { !$0.canDisplayToasts }
     }
     
+    var avatarRefreshHash: Int {
+        var hasher = Hasher()
+        hasher.combine(appState.firstAccount.avatar)
+        hasher.combine(palette.onChangeTrigger)
+        hasher.combine(colorScheme)
+        return hasher.finalize()
+    }
+    
     func loadAvatar(url: URL) async {
         do {
             let imageTask = ImagePipeline.shared.imageTask(with: url.withIconSize(128))

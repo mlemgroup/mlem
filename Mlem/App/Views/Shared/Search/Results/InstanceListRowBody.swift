@@ -65,6 +65,7 @@ struct InstanceListRowBody<Content: View>: View {
             
             VStack(alignment: .leading, spacing: 2) {
                 Text(host)
+                    .foregroundStyle(palette.primary)
                     .lineLimit(1)
                 if let version {
                     Text(version.description)

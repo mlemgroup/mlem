@@ -44,7 +44,7 @@ extension ColorPalette {
         save: _green,
         read: _purple,
         favorite: _cyan,
-        selectedInteractionBarItem: .white,
+        selectedInteractionBarItem: _primary,
         administration: _purple,
         moderation: _pink,
         federatedFeed: _pink,

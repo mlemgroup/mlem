@@ -10,6 +10,7 @@ import SwiftUI
 
 // See https://ethanschoonover.com/solarized/ for details
 // TODO: I'd love to do this in LAB space, but that involves some ugly manual CGColor work
+private let base04: Color = .init(red: 0.0, green: 0.0823529412, blue: 0.1137254902)
 private let base03: Color = .init(red: 0.0, green: 0.16862745098039217, blue: 0.21176470588235294)
 private let base02: Color = .init(red: 0.027450980392156862, green: 0.21176470588235294, blue: 0.25882352941176473)
 private let base01: Color = .init(red: 0.34509803921568627, green: 0.43137254901960786, blue: 0.4588235294117647)
@@ -26,7 +27,6 @@ private let violet: Color = .init(red: 0.4235294117647059, green: 0.443137254901
 private let blue: Color = .init(red: 0.14901960784313725, green: 0.5450980392156862, blue: 0.8235294117647058)
 private let cyan: Color = .init(red: 0.16470588235294117, green: 0.6313725490196078, blue: 0.596078431372549)
 private let green: Color = .init(red: 0.5215686274509804, green: 0.6, blue: 0.0)
-
 extension ColorPalette {
     static let solarized: ColorPalette = .init(
         supportedModes: .unspecified,
@@ -36,7 +36,7 @@ extension ColorPalette {
         background: .init(light: base3, dark: base03),
         secondaryBackground: .init(light: base2, dark: base02),
         tertiaryBackground: .init(light: base2, dark: base02),
-        groupedBackground: .init(light: base2, dark: base02),
+        groupedBackground: .init(light: base2, dark: base04),
         secondaryGroupedBackground: .init(light: base3, dark: base03),
         tertiaryGroupedBackground: .init(light: base2, dark: base02),
         thumbnailBackground: .init(light: base2, dark: base02),
@@ -49,7 +49,7 @@ extension ColorPalette {
         save: cyan,
         read: violet,
         favorite: blue,
-        selectedInteractionBarItem: base3,
+        selectedInteractionBarItem: base2,
         administration: violet,
         moderation: green,
         federatedFeed: blue,

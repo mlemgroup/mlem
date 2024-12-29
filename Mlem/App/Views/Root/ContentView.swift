@@ -16,6 +16,7 @@ struct ContentView: View {
     }
     
     @Environment(\.scenePhase) var scenePhase
+    @Environment(\.colorScheme) var colorScheme
     
     @AppStorage("status.firstAppearance") var firstAppearance: Bool = true
     
@@ -45,7 +46,7 @@ struct ContentView: View {
     var body: some View {
         if appState.appRefreshToggle {
             content
-                .task(id: appState.firstAccount.avatar) {
+                .task(id: avatarRefreshHash) {
                     avatarImage = nil
                     selectedAvatarImage = nil
                     if let url = appState.firstAccount.avatar {

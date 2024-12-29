@@ -43,6 +43,7 @@ struct ProfileHeaderView: View {
                 VStack(spacing: Constants.main.halfSpacing) {
                     HStack {
                         Text(profilable?.displayName_ ?? profilable?.name ?? "")
+                            .foregroundStyle(palette.primary)
                         if blockedOverride ?? profilable?.blocked ?? false {
                             Image(systemName: Icons.hide)
                                 .foregroundStyle(palette.secondary)

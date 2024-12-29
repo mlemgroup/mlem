@@ -111,7 +111,7 @@ struct FixedImageView: View {
                 .resizable()
                 .scaledToFit()
                 .symbolRenderingMode(.palette)
-                .foregroundStyle(.white, .gray.gradient)
+                .foregroundStyle(palette.selectedInteractionBarItem, palette.neutralAccent.gradient)
         case .favicon:
             Image(systemName: fallback.icon)
                 .foregroundStyle(palette.secondary)

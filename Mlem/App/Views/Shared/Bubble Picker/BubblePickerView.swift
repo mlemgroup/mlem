@@ -160,45 +160,6 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
         .frame(minHeight: 50)
         .contentShape(Rectangle())
     }
-    
-    @ViewBuilder
-    func bubbleButtonLabel2(
-        tab: Value,
-        isSelected: Bool
-    ) -> some View {
-        AnyView(HStack {
-            let value = value(tab)
-            Text(label(tab))
-                .font(.subheadline)
-                .fontWeight(.semibold)
-                .foregroundColor(isSelected ? .white : palette.primary)
-            if let value {
-                Text(value.abbreviated)
-                    .monospacedDigit()
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-                    .foregroundColor(isSelected ? .white.opacity(0.8) : palette.secondary)
-                    .padding(.horizontal, 5)
-                    .frame(minWidth: 22)
-                    .frame(height: 22)
-                    .background(
-                        Group {
-                            if value < 10 {
-                                Circle()
-                            } else {
-                                Capsule()
-                            }
-                        }
-                        .foregroundStyle(
-                            isSelected ? palette.background.opacity(0.3) : palette.secondaryBackground
-                        )
-                    )
-            }
-        })
-        .padding(.horizontal, 22)
-        .frame(minHeight: 50)
-        .contentShape(Rectangle())
-    }
 }
 
 // #Preview {
