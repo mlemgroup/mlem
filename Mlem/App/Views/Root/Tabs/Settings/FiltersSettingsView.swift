@@ -11,6 +11,8 @@ import SwiftUI
 struct FiltersSettingsView: View {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
+    @Setting(\.keywordFilterEnabled) var keywordFilterEnabled
+    
     @Environment(Palette.self) var palette
     @Environment(FiltersTracker.self) var filtersTracker
     
@@ -23,9 +25,11 @@ struct FiltersSettingsView: View {
     var body: some View {
         List {
             Section {
+                Toggle("Enable Keyword Filters", isOn: $keywordFilterEnabled)
+            }
+            
+            Section {
                 keywordSection
-            } header: {
-                Text("Keyword Filters")
             } footer: {
                 // swiftlint:disable:next line_length
                 Text("Posts with these keywords in their titles will be hidden. If you are a moderator or administrator of a matching post, it will appear in your feed but require you to tap to view its content.")

@@ -87,6 +87,12 @@ class Settings: ObservableObject {
     @AppStorage("menus.moderatorActionGrouping") var moderatorActionGrouping: ModeratorActionGrouping = .divider
     @AppStorage("menus.allModActions") var showAllModActions: Bool = false
     
+    @AppStorage("filters.keywordFilterEnabled") var keywordFilterEnabled: Bool = true {
+        didSet {
+            FiltersTracker.main.keywordFilterEnabled = keywordFilterEnabled
+        }
+    }
+    
     var codable: CodableSettings { .init(from: self, filteredKeywords: FiltersTracker.main.filteredKeywords) }
     
     @MainActor
@@ -158,6 +164,7 @@ class Settings: ObservableObject {
         showAllModActions = settings.menus_allModActions
         readPostIndicator = settings.a11y_readPostIndicator
         readOutlineThickness = settings.a11y_readOutlineThickness
+        keywordFilterEnabled = settings.filters_keywordFilterEnabled
         
         Task {
             await FiltersTracker.main.resetFilteredKeywords(to: settings.filteredKeywords)

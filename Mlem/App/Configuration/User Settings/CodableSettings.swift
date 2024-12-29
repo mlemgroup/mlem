@@ -85,6 +85,7 @@ struct CodableSettings: Codable {
     var subscriptions_sort: SubscriptionListSort
     var navigation_sidebarVisibleByDefault: Bool
     var navigation_swipeAnywhere: Bool
+    var filters_keywordFilterEnabled: Bool
     
     // MARK: Settings saved in files
     var filteredKeywords: Set<String>
@@ -165,6 +166,7 @@ struct CodableSettings: Codable {
         self.subscriptions_sort = try container.decodeIfPresent(SubscriptionListSort.self, forKey: .subscriptions_sort) ?? .alphabetical
         self.navigation_sidebarVisibleByDefault = try container.decodeIfPresent(Bool.self, forKey: .navigation_sidebarVisibleByDefault) ?? true
         self.navigation_swipeAnywhere = try container.decodeIfPresent(Bool.self, forKey: .navigation_swipeAnywhere) ?? false
+        self.filters_keywordFilterEnabled = try container.decodeIfPresent(Bool.self, forKey: .filters_keywordFilterEnabled) ?? true
         self.filteredKeywords = try container.decodeIfPresent(Set<String>.self, forKey: .filteredKeywords) ?? .init()
     }
 
@@ -244,6 +246,7 @@ struct CodableSettings: Codable {
         self.subscriptions_sort = settings.subscriptionSort
         self.navigation_sidebarVisibleByDefault = settings.sidebarVisibleByDefault
         self.navigation_swipeAnywhere = settings.swipeAnywhereToNavigate
+        self.filters_keywordFilterEnabled = settings.keywordFilterEnabled
         
         self.filteredKeywords = filteredKeywords
     }

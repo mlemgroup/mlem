@@ -17,24 +17,32 @@ class FiltersTracker {
     var isAdmin: Bool
     var moderatedCommunityActorIds: Set<URL>
     private(set) var filteredKeywords: Set<String>
+    var keywordFilterEnabled: Bool
     
     var filterContext: FilterContext {
-        .init(isAdmin: isAdmin, moderatedCommunityActorIds: moderatedCommunityActorIds, filteredKeywords: filteredKeywords)
+        .init(
+            isAdmin: isAdmin,
+            moderatedCommunityActorIds: moderatedCommunityActorIds,
+            filteredKeywords: keywordFilterEnabled ? filteredKeywords : .init()
+        )
     }
     
     var changeHash: Int {
         var hasher = Hasher()
         hasher.combine(moderatedCommunityActorIds)
         hasher.combine(filteredKeywords)
+        hasher.combine(keywordFilterEnabled)
         return hasher.finalize()
     }
     
     init() {
         @Dependency(\.persistenceRepository) var persistenceRepository
+        @Setting(\.keywordFilterEnabled) var keywordFilterEnabled
         
         self.isAdmin = AppState.main.firstPerson?.isAdmin ?? false
         self.moderatedCommunityActorIds = AppState.main.firstPerson?.moderatedCommunityActorIds ?? .init()
         self.filteredKeywords = persistenceRepository.loadFilteredKeywords()
+        self.keywordFilterEnabled = keywordFilterEnabled
     }
     
     @MainActor
@@ -68,7 +76,7 @@ class FiltersTracker {
     }
     
     func postWouldBeFiltered(_ post: any Post) -> Bool {
-        post.title.lowercased().containsWordsIn(filteredKeywords)
+        keywordFilterEnabled && post.title.lowercased().containsWordsIn(filteredKeywords)
     }
     
     static var main: FiltersTracker = .init()
