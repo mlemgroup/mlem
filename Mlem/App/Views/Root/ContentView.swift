@@ -33,7 +33,6 @@ struct ContentView: View {
     var palette: Palette { .main }
     var tabReselectTracker: TabReselectTracker { .main }
     var navigationModel: NavigationModel { .main }
-    var mediaState: MediaState = .init()
     var filtersTracker: FiltersTracker { .main }
 
     @State var avatarImage: UIImage?
@@ -110,7 +109,6 @@ struct ContentView: View {
                         }
                     }
                 }
-                .environment(mediaState)
                 .environment(AppState.main)
         }
     }
@@ -178,18 +176,6 @@ struct ContentView: View {
                 shouldDisplayNewToasts: shouldDisplayToasts,
                 location: .top
             )
-        }
-        .overlay {
-            if let url = mediaState.url {
-                NavigationLayerView(
-                    layer: .init(
-                        root: .imageViewer(url),
-                        model: navigationModel,
-                        hasNavigationStack: false
-                    ),
-                    hasSheetModifiers: false
-                )
-            }
         }
     }
 }
