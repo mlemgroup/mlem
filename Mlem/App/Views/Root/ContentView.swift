@@ -37,6 +37,8 @@ struct ContentView: View {
 
     @State var avatarImage: UIImage?
     @State var selectedAvatarImage: UIImage?
+    
+    @State var mediaOverlay: URL?
   
     init() {
         HapticManager.main.preheat()
@@ -109,6 +111,13 @@ struct ContentView: View {
                         }
                     }
                 }
+                .onChange(of: mediaState.url) {
+                    var transaction = Transaction()
+                    transaction.disablesAnimations = true
+                    withTransaction(transaction) {
+                        mediaOverlay = mediaState.url
+                    }
+                }
                 .environment(mediaState)
                 .environment(AppState.main)
         }
@@ -178,17 +187,28 @@ struct ContentView: View {
                 location: .top
             )
         }
-        .overlay {
-            if let url = mediaState.url {
-                NavigationLayerView(
-                    layer: .init(
-                        root: .imageViewer(url),
-                        model: navigationModel,
-                        hasNavigationStack: false
-                    ),
-                    hasSheetModifiers: false
-                )
-            }
+        .fullScreenCover(item: $mediaOverlay) { url in
+            NavigationLayerView(
+                layer: .init(
+                    root: .imageViewer(url),
+                    model: navigationModel,
+                    hasNavigationStack: false
+                ),
+                hasSheetModifiers: false
+            )
+            .presentationBackground(.clear)
         }
+//        .overlay {
+//            if let url = mediaState.url {
+//                NavigationLayerView(
+//                    layer: .init(
+//                        root: .imageViewer(url),
+//                        model: navigationModel,
+//                        hasNavigationStack: false
+//                    ),
+//                    hasSheetModifiers: false
+//                )
+//            }
+//        }
     }
 }
