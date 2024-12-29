@@ -87,12 +87,10 @@ struct NavigationLayerView: View {
     
     @ViewBuilder
     private func rootView() -> some View {
-        Group {
-            if hasSheetModifiers {
-                layer.root.view().navigationSheetModifiers(for: layer)
-            } else {
-                layer.root.view()
-            }
+        if hasSheetModifiers {
+            layer.root.view().navigationSheetModifiers(for: layer)
+        } else {
+            layer.root.view()
         }
     }
 }

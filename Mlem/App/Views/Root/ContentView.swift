@@ -36,8 +36,6 @@ struct ContentView: View {
 
     @State var avatarImage: UIImage?
     @State var selectedAvatarImage: UIImage?
-    
-    @State var mediaOverlay: URL?
   
     init() {
         HapticManager.main.preheat()
@@ -178,28 +176,5 @@ struct ContentView: View {
                 location: .top
             )
         }
-//        .fullScreenCover(item: $mediaOverlay) { url in
-//            NavigationLayerView(
-//                layer: .init(
-//                    root: .imageViewer(url),
-//                    model: navigationModel,
-//                    hasNavigationStack: false
-//                ),
-//                hasSheetModifiers: false
-//            )
-//            .presentationBackground(.clear)
-//        }
-//        .overlay {
-//            if let url = mediaState.url {
-//                NavigationLayerView(
-//                    layer: .init(
-//                        root: .imageViewer(url),
-//                        model: navigationModel,
-//                        hasNavigationStack: false
-//                    ),
-//                    hasSheetModifiers: false
-//                )
-//            }
-//        }
     }
 }
