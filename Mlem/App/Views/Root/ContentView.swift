@@ -32,7 +32,6 @@ struct ContentView: View {
     var palette: Palette { .main }
     var tabReselectTracker: TabReselectTracker { .main }
     var navigationModel: NavigationModel { .main }
-    var mediaState: MediaState = .init()
     var filtersTracker: FiltersTracker { .main }
 
     @State var avatarImage: UIImage?
@@ -111,14 +110,6 @@ struct ContentView: View {
                         }
                     }
                 }
-                .onChange(of: mediaState.url) {
-                    var transaction = Transaction()
-                    transaction.disablesAnimations = true
-                    withTransaction(transaction) {
-                        mediaOverlay = mediaState.url
-                    }
-                }
-                .environment(mediaState)
                 .environment(AppState.main)
         }
     }
@@ -187,17 +178,17 @@ struct ContentView: View {
                 location: .top
             )
         }
-        .fullScreenCover(item: $mediaOverlay) { url in
-            NavigationLayerView(
-                layer: .init(
-                    root: .imageViewer(url),
-                    model: navigationModel,
-                    hasNavigationStack: false
-                ),
-                hasSheetModifiers: false
-            )
-            .presentationBackground(.clear)
-        }
+//        .fullScreenCover(item: $mediaOverlay) { url in
+//            NavigationLayerView(
+//                layer: .init(
+//                    root: .imageViewer(url),
+//                    model: navigationModel,
+//                    hasNavigationStack: false
+//                ),
+//                hasSheetModifiers: false
+//            )
+//            .presentationBackground(.clear)
+//        }
 //        .overlay {
 //            if let url = mediaState.url {
 //                NavigationLayerView(

@@ -12,8 +12,6 @@ import SwiftUI
 // and anything else that can't go in thumbnail views etc.
 
 struct LargeImageView: View {
-    @Environment(MediaState.self) var mediaState
-    
     @Environment(NavigationLayer.self) private var navigation
     @Setting(\.blurNsfw) var blurNsfw
 
@@ -57,7 +55,7 @@ struct LargeImageView: View {
                     onTapActions()
                 }
                 if loading == .done || loading == nil, let url {
-                    mediaState.url = url
+                    navigation.showImageViewer(url: url)
                 }
             }
             .onPreferenceChange(MediaLoadingPreferenceKey.self, perform: {

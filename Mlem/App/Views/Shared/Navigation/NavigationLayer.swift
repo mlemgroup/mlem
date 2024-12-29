@@ -106,6 +106,14 @@ class NavigationLayer {
         )
     }
     
+    /// Convenience proxy for showFullScreenCover. Opens the image viewer with the given URL and disables animations on the fullScreenCover.
+    @MainActor
+    func showImageViewer(url: URL) {
+        withoutAnimation {
+            self.showFullScreenCover(.imageViewer(url), hasNavigationStack: false)
+        }
+    }
+    
     /// Open a new sheet, optionally with navigation enabled. If `nil` is specified for `hasNavigationStack`, the value of `page.hasNavigationStack` will be used.
     @MainActor
     func showFullScreenCover(_ page: NavigationPage, hasNavigationStack: Bool? = nil) {
