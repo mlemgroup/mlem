@@ -11,8 +11,10 @@ import UIKit
 
 /// Mirror of Settings but without any AppStorage complexity and fully optionalized.
 struct CodableSettings: Codable {
-    var a11y_markReadType: String // TODO: pending a11y mark read
-    var a11y_readBarThickness: Int
+    // MARK: Settings saved in AppStorage
+
+    var a11y_readPostIndicator: ReadPostIndicator
+    var a11y_readOutlineThickness: Int
     var a11y_websiteThumbnailIcon: Bool
     var accounts_defaultId: Int?
     var accounts_grouped: Bool
@@ -84,12 +86,17 @@ struct CodableSettings: Codable {
     var subscriptions_sort: SubscriptionListSort
     var navigation_sidebarVisibleByDefault: Bool
     var navigation_swipeAnywhere: Bool
+    var filters_keywordFilterEnabled: Bool
+    
+    // MARK: Settings saved in files
+
+    var filteredKeywords: Set<String>
     
     // swiftlint:disable line_length function_body_length
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.a11y_markReadType = try container.decodeIfPresent(String.self, forKey: .a11y_markReadType) ?? "bar"
-        self.a11y_readBarThickness = try container.decodeIfPresent(Int.self, forKey: .a11y_readBarThickness) ?? 3
+        self.a11y_readPostIndicator = try container.decodeIfPresent(ReadPostIndicator.self, forKey: .a11y_readPostIndicator) ?? .checkmark
+        self.a11y_readOutlineThickness = try container.decodeIfPresent(Int.self, forKey: .a11y_readOutlineThickness) ?? 3
         self.a11y_websiteThumbnailIcon = try container.decodeIfPresent(Bool.self, forKey: .a11y_websiteThumbnailIcon) ?? false
         self.accounts_defaultId = try container.decodeIfPresent(Int?.self, forKey: .accounts_defaultId) ?? nil
         self.accounts_grouped = try container.decodeIfPresent(Bool.self, forKey: .accounts_grouped) ?? false
@@ -161,13 +168,15 @@ struct CodableSettings: Codable {
         self.subscriptions_sort = try container.decodeIfPresent(SubscriptionListSort.self, forKey: .subscriptions_sort) ?? .alphabetical
         self.navigation_sidebarVisibleByDefault = try container.decodeIfPresent(Bool.self, forKey: .navigation_sidebarVisibleByDefault) ?? true
         self.navigation_swipeAnywhere = try container.decodeIfPresent(Bool.self, forKey: .navigation_swipeAnywhere) ?? false
+        self.filters_keywordFilterEnabled = try container.decodeIfPresent(Bool.self, forKey: .filters_keywordFilterEnabled) ?? true
+        self.filteredKeywords = try container.decodeIfPresent(Set<String>.self, forKey: .filteredKeywords) ?? .init()
     }
 
     // swiftlint:enable line_length
     
-    init(from settings: Settings) {
-        self.a11y_markReadType = "bar"
-        self.a11y_readBarThickness = 3
+    init(from settings: Settings, filteredKeywords: Set<String>) {
+        self.a11y_readPostIndicator = .checkmark
+        self.a11y_readOutlineThickness = 3
         self.a11y_websiteThumbnailIcon = false
         self.accounts_defaultId = nil
         self.accounts_grouped = settings.groupAccountSort
@@ -239,6 +248,9 @@ struct CodableSettings: Codable {
         self.subscriptions_sort = settings.subscriptionSort
         self.navigation_sidebarVisibleByDefault = settings.sidebarVisibleByDefault
         self.navigation_swipeAnywhere = settings.swipeAnywhereToNavigate
+        self.filters_keywordFilterEnabled = settings.keywordFilterEnabled
+        
+        self.filteredKeywords = filteredKeywords
     }
     // swiftlint:enable function_body_length
 }

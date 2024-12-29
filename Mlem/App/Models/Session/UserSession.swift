@@ -35,7 +35,7 @@ class UserSession: Session {
         
         Task { @MainActor in
             do {
-                try await self.api.fetchSiteVersion(task: Task {
+                try await self.api.contextDataManager.getValue(task: Task {
                     let (person, instance, blocks) = try await self.api.getMyPerson()
                     if let person {
                         self.account.update(person: person, instance: instance)
@@ -43,7 +43,7 @@ class UserSession: Session {
                     }
                     self.blocks = blocks
                     self.instance = instance
-                    return instance.version
+                    return .init(instance: instance, person: person)
                 })
                 
                 try await self.api.getSubscriptionList()

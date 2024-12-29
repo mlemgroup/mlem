@@ -11,24 +11,25 @@ import SwiftUI
 struct FiltersSettingsView: View {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
+    @Setting(\.keywordFilterEnabled) var keywordFilterEnabled
+    
     @Environment(Palette.self) var palette
     @Environment(FiltersTracker.self) var filtersTracker
     
-    @State var filteredKeywords: [String]
     @State var newKeyword: String = ""
     
     init() {
         @Dependency(\.persistenceRepository) var persistenceRepository
-        
-        _filteredKeywords = .init(wrappedValue: .init(persistenceRepository.loadFilteredKeywords()))
     }
     
     var body: some View {
         List {
             Section {
+                Toggle("Enable Keyword Filters", isOn: $keywordFilterEnabled)
+            }
+            
+            Section {
                 keywordSection
-            } header: {
-                Text("Keyword Filters")
             } footer: {
                 // swiftlint:disable:next line_length
                 Text("Posts with these keywords in their titles will be hidden. If you are a moderator or administrator of a matching post, it will appear in your feed but require you to tap to view its content.")
@@ -46,7 +47,7 @@ struct FiltersSettingsView: View {
                 saveNewKeyword()
             }
         
-        ForEach(filteredKeywords, id: \.self) { filter in
+        ForEach(filtersTracker.filteredKeywords.sorted(by: <), id: \.self) { filter in
             HStack {
                 Text(filter)
                 
@@ -68,28 +69,18 @@ struct FiltersSettingsView: View {
         let cleanedKeyword = newKeyword.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
         
         Task {
-            do {
-                let newFilteredKeywords = try await persistenceRepository.saveFilteredKeyword(cleanedKeyword)
-                filteredKeywords = .init(newFilteredKeywords)
-                newKeyword = ""
-                filtersTracker.filteredKeywords = newFilteredKeywords
-            } catch {
-                handleError(error)
-            }
+            await filtersTracker.addFilteredKeyword(cleanedKeyword)
+            newKeyword = ""
         }
     }
     
     func deleteKeyword(_ keyword: String) {
-        assert(filteredKeywords.contains(keyword), "Filtered keywords does not contain \(keyword)")
+        guard filtersTracker.filteredKeywords.contains(keyword) else {
+            return
+        }
         
         Task {
-            do {
-                let newFilteredKeywords = try await persistenceRepository.removeFilteredKeyword(keyword)
-                filteredKeywords = .init(newFilteredKeywords)
-                filtersTracker.filteredKeywords = newFilteredKeywords
-            } catch {
-                handleError(error)
-            }
+            await filtersTracker.removeFilteredKeyword(keyword)
         }
     }
 }

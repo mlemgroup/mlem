@@ -18,6 +18,9 @@ class Settings: ObservableObject {
     /// Default initializer. Will take current AppStorage values.
     init() {}
 
+    @AppStorage("a11y.readPostIndicator") var readPostIndicator: ReadPostIndicator = .checkmark
+    @AppStorage("a11y.readOutlineThickness") var readOutlineThickness: Int = 3
+
     @AppStorage("post.size") var postSize: PostSize = .compact
     @AppStorage("post.defaultSort") var defaultPostSort: ApiSortType = .hot
     @AppStorage("post.fallbackSort") var fallbackPostSort: ApiSortType = .hot
@@ -84,7 +87,13 @@ class Settings: ObservableObject {
     @AppStorage("menus.moderatorActionGrouping") var moderatorActionGrouping: ModeratorActionGrouping = .divider
     @AppStorage("menus.allModActions") var showAllModActions: Bool = false
     
-    var codable: CodableSettings { .init(from: self) }
+    @AppStorage("filters.keywordFilterEnabled") var keywordFilterEnabled: Bool = true {
+        didSet {
+            FiltersTracker.main.keywordFilterEnabled = keywordFilterEnabled
+        }
+    }
+    
+    var codable: CodableSettings { .init(from: self, filteredKeywords: FiltersTracker.main.filteredKeywords) }
     
     @MainActor
     func restore(from systemSetting: SystemSetting) {
@@ -107,6 +116,7 @@ class Settings: ObservableObject {
     
     /// Re-initializes all values from the given CodableSettings object.
     @MainActor
+    // swiftlint:disable:next function_body_length
     func reinit(from settings: CodableSettings) {
         postSize = settings.post_size
         defaultPostSort = settings.post_defaultSort
@@ -152,5 +162,17 @@ class Settings: ObservableObject {
         swipeAnywhereToNavigate = settings.navigation_swipeAnywhere
         moderatorActionGrouping = settings.menus_modActionGrouping
         showAllModActions = settings.menus_allModActions
+        readPostIndicator = settings.a11y_readPostIndicator
+        readOutlineThickness = settings.a11y_readOutlineThickness
+        keywordFilterEnabled = settings.filters_keywordFilterEnabled
+        
+        Task {
+            await FiltersTracker.main.resetFilteredKeywords(to: settings.filteredKeywords)
+            do {
+                try await persistenceRepository.saveSystemSettings(settings, setting: .v2)
+            } catch {
+                handleError(error)
+            }
+        }
     }
 }

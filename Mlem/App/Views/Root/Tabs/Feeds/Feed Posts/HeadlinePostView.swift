@@ -13,10 +13,12 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
     @Setting(\.showPostCreator) var alwaysShowCreator
     @Setting(\.showPersonAvatar) var showPersonAvatar
     @Setting(\.showCommunityAvatar) var showCommunityAvatar
+    @Setting(\.readPostIndicator) var readPostIndicator
     
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(Palette.self) var palette: Palette
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
+    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     
     let post: any Post1Providing
     let embeddedContent: EmbeddedContent
@@ -53,6 +55,10 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
                 }
                 
                 Spacer()
+                
+                if differentiateWithoutColor, readPostIndicator == .checkmark, post.read_ ?? false {
+                    ReadCheck()
+                }
                 
                 if post.nsfw {
                     Image(Icons.nsfwTag)

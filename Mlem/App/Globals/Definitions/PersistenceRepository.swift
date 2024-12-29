@@ -10,8 +10,8 @@ import Dependencies
 import Foundation
 import MlemMiddleware
 
-private enum Path {
-    private static var root = {
+enum PersistencePath {
+    static var root = {
         guard let path = try? FileManager.default.url(
             for: .applicationSupportDirectory,
             in: .userDomainMask,
@@ -26,7 +26,6 @@ private enum Path {
 
     static var userAccounts = root.appendingPathComponent("Saved Accounts", conformingTo: .json)
     static var guestAccounts = root.appendingPathComponent("Guest Accounts", conformingTo: .json)
-    static var filteredKeywords = root.appendingPathComponent("Blocked Keywords", conformingTo: .json)
     static var favoriteCommunities = root.appendingPathComponent("Favorite Communities", conformingTo: .json)
     static var recentSearches = root.appendingPathComponent("Recent Searches", conformingTo: .json)
     static var easterFlags = root.appendingPathComponent("Easter eggs flags", conformingTo: .json)
@@ -84,8 +83,8 @@ class PersistenceRepository {
         
         // set up settings directories--if this fails, something has gone _terribly_ wrong
         do {
-            try FileManager.default.createDirectory(at: Path.systemSettings, withIntermediateDirectories: true)
-            try FileManager.default.createDirectory(at: Path.userSettings, withIntermediateDirectories: true)
+            try FileManager.default.createDirectory(at: PersistencePath.systemSettings, withIntermediateDirectories: true)
+            try FileManager.default.createDirectory(at: PersistencePath.userSettings, withIntermediateDirectories: true)
         } catch {
             fatalError("Could not create settings directories")
         }
@@ -94,19 +93,19 @@ class PersistenceRepository {
     // MARK: - Public methods
     
     func loadUserAccounts() -> [UserAccount] {
-        load([UserAccount].self, from: Path.userAccounts) ?? []
+        load([UserAccount].self, from: PersistencePath.userAccounts) ?? []
     }
     
     func saveUserAccounts(_ value: [UserAccount]) async throws {
-        try await save(value, to: Path.userAccounts)
+        try await save(value, to: PersistencePath.userAccounts)
     }
     
     func loadGuestAccounts() -> [GuestAccount] {
-        load([GuestAccount].self, from: Path.guestAccounts) ?? []
+        load([GuestAccount].self, from: PersistencePath.guestAccounts) ?? []
     }
     
     func saveGuestAccounts(_ value: [GuestAccount]) async throws {
-        try await save(value, to: Path.guestAccounts)
+        try await save(value, to: PersistencePath.guestAccounts)
     }
 
 //
@@ -136,61 +135,33 @@ class PersistenceRepository {
 //    func saveEasterFlags(_ value: Set<EasterFlag>) async throws {
 //        try await save(value, to: Path.easterFlags)
 //    }
-    
-    func loadFilteredKeywords() -> Set<String> {
-        Set(load([String].self, from: Path.filteredKeywords) ?? [])
-    }
-    
-    /// Saves the given keyword and returns the updated set of filtered keywords
-    func saveFilteredKeyword(_ value: String) async throws -> Set<String> {
-        var keywords = loadFilteredKeywords()
-        keywords.insert(value)
-        try await saveFilteredKeywords(.init(keywords))
-        return keywords
-    }
-    
-    /// Removes the given keyword and returns the updated set of filtered keywords
-    func removeFilteredKeyword(_ value: String) async throws -> Set<String> {
-        var keywords = loadFilteredKeywords()
-        keywords.remove(value)
-        try await saveFilteredKeywords(.init(keywords))
-        return keywords
-    }
-    
-    func saveFilteredKeywords(_ value: [String]) async throws {
-        try await save(value, to: Path.filteredKeywords)
-    }
-    
-    func getFilteredKeywordsPath() -> URL {
-        Path.filteredKeywords
-    }
-    
+
     func loadInteractionBarConfigurations() -> InteractionBarConfigurations {
-        load(InteractionBarConfigurations.self, from: Path.layoutWidgets) ?? .default
+        load(InteractionBarConfigurations.self, from: PersistencePath.layoutWidgets) ?? .default
     }
     
     func saveInteractionBarConfigurations(_ value: InteractionBarConfigurations) async throws {
-        try await save(value, to: Path.layoutWidgets)
+        try await save(value, to: PersistencePath.layoutWidgets)
     }
     
     func loadPinnedSortTypes() -> Set<ApiSortType> {
-        load(Set<ApiSortType>.self, from: Path.pinnedSortTypes) ?? [
+        load(Set<ApiSortType>.self, from: PersistencePath.pinnedSortTypes) ?? [
             .hot, .new, .topSixHour, .topDay, .topWeek, .topMonth, .topYear, .topAll
         ]
     }
     
     func savePinnedSortTypes(_ value: Set<ApiSortType>) async throws {
-        try await save(value, to: Path.pinnedSortTypes)
+        try await save(value, to: PersistencePath.pinnedSortTypes)
     }
     
     /// Saves the given user settings
     func saveUserSettings(_ settings: CodableSettings, name: String) async throws {
-        try await save(settings, to: Path.userSettings.appendingPathComponent(name, conformingTo: .json))
+        try await save(settings, to: PersistencePath.userSettings.appendingPathComponent(name, conformingTo: .json))
     }
     
     /// Loads given user settings, if present
     func loadUserSettings(name: String) -> CodableSettings? {
-        load(CodableSettings.self, from: Path.userSettings.appendingPathComponent(name, conformingTo: .json))
+        load(CodableSettings.self, from: PersistencePath.userSettings.appendingPathComponent(name, conformingTo: .json))
     }
     
     /// Returns true if the given system settings exist, false otherwise
@@ -202,18 +173,18 @@ class PersistenceRepository {
     
     /// Saves the given system settings
     func saveSystemSettings(_ settings: CodableSettings, setting: SystemSetting) async throws {
-        try await save(settings, to: Path.systemSettings.appendingPathComponent(setting.path, conformingTo: .json))
+        try await save(settings, to: PersistencePath.systemSettings.appendingPathComponent(setting.path, conformingTo: .json))
     }
     
     /// Loads given system settings, if present
     func loadSystemSettings(_ setting: SystemSetting) -> CodableSettings? {
-        load(CodableSettings.self, from: Path.systemSettings.appendingPathComponent(setting.path, conformingTo: .json))
+        load(CodableSettings.self, from: PersistencePath.systemSettings.appendingPathComponent(setting.path, conformingTo: .json))
     }
     
     // DEV ONLY
     func deleteAllSystemSettings() throws {
-        try FileManager.default.removeItem(at: Path.systemSettings)
-        try FileManager.default.createDirectory(at: Path.systemSettings, withIntermediateDirectories: true)
+        try FileManager.default.removeItem(at: PersistencePath.systemSettings)
+        try FileManager.default.createDirectory(at: PersistencePath.systemSettings, withIntermediateDirectories: true)
     }
 
 //
@@ -233,9 +204,9 @@ class PersistenceRepository {
 //        try await save(timestamped, to: Path.instanceMetadata)
 //    }
     
-    // MARK: Private methods
+    // MARK: Loading methods
     
-    private func load<T: Decodable>(_ model: T.Type, from path: URL) -> T? {
+    func load<T: Decodable>(_ model: T.Type, from path: URL) -> T? {
         do {
             let data = try read(path)
             
@@ -264,7 +235,7 @@ class PersistenceRepository {
         }
     }
     
-    private func save(_ value: some Encodable, to path: URL) async throws {
+    func save(_ value: some Encodable, to path: URL) async throws {
         do {
             let data = try JSONEncoder().encode(value)
             try await write(data, path)
