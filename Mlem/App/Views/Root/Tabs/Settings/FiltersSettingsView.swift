@@ -26,8 +26,6 @@ struct FiltersSettingsView: View {
         List {
             Section {
                 Toggle("Enable Keyword Filters", isOn: $keywordFilterEnabled)
-            } header: {
-                Text("Keyword Filters")
             }
             
             Section {
