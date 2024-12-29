@@ -81,11 +81,14 @@ func sectionTitle(for section: SectionIndexTitles.Section) -> some View {
 }
 
 struct SectionIndexText: View {
+    @Environment(Palette.self) var palette
+    
     let label: String
     var body: some View {
         Text(label)
             .font(.system(size: 11))
             .fontWeight(.semibold)
+            .foregroundStyle(palette.primary)
     }
 }
 
