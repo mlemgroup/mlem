@@ -170,7 +170,6 @@ struct CommunityView: View {
     @ViewBuilder
     func moderationTab(community: any Community) -> some View {
         VStack(spacing: Constants.main.halfSpacing) {
-            ModlogButtonView(community: community)
             ForEach(community.moderators_ ?? []) { person in
                 PersonListRow(person)
             }

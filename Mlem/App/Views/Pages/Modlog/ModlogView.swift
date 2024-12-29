@@ -14,7 +14,18 @@ struct ModlogView: View {
     
     let community: AnyCommunity?
     
-    @State var entries: [ModlogEntry] = []
+    @State var feedLoader: ModlogFeedLoader
+    
+    init(community: AnyCommunity?) {
+        self._feedLoader = .init(
+            wrappedValue: .init(
+                api: AppState.main.firstApi,
+                pageSize: Settings.main.internetSpeed.pageSize,
+                sortType: .new
+            )
+        )
+        self.community = nil
+    }
     
     var body: some View {
         Group {
@@ -34,21 +45,21 @@ struct ModlogView: View {
     func content(community: (any Community)?) -> some View {
         ScrollView {
             LazyVStack(spacing: Constants.main.standardSpacing) {
-                ForEach(Array(entries.enumerated()), id: \.offset) { _, entry in
+                ForEach(Array(feedLoader.items.enumerated()), id: \.offset) { _, entry in
                     ModlogEntryView(entry: entry, targetCommunity: community)
+                        .onAppear {
+                            do {
+                                try feedLoader.loadIfThreshold(entry)
+                            } catch {
+                                handleError(error)
+                            }
+                        }
                 }
+                EndOfFeedView(loadingState: feedLoader.loadingState, loadMore: nil, viewType: .hobbit)
             }
             .padding([.horizontal, .bottom], Constants.main.standardSpacing)
         }
         .background(palette.groupedBackground)
-        .onAppear {
-            Task { @MainActor in
-                do {
-                    entries = try await appState.firstApi.getModlog(communityId: community?.id, type: .adminPurgePerson)
-                } catch {
-                    handleError(error)
-                }
-            }
-        }
+        .loadFeed(feedLoader)
     }
 }
