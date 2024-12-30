@@ -73,6 +73,7 @@ struct PersonListRowBody<Content: View>: View {
             }
             VStack(alignment: .leading, spacing: 4) {
                 (flairs.textView + Text(title))
+                    .foregroundStyle(palette.primary)
                     .lineLimit(1)
                     .imageScale(.small)
                 caption

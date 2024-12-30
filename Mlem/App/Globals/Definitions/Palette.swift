@@ -204,6 +204,7 @@ class Palette: PaletteProviding {
     /// Current color palette
     private var palette: ColorPalette
     
+    var onChangeTrigger: Int = 0
     static var main: Palette = .init()
     
     init() {
@@ -214,6 +215,7 @@ class Palette: PaletteProviding {
     /// Updates the current color palette
     func changePalette(to newPalette: PaletteOption) {
         palette = newPalette.palette
+        onChangeTrigger += 1
     }
     
     // ColorProviding conformance
