@@ -16,7 +16,7 @@ struct ErrorLogView: View {
         FancyScrollView {
             LazyVStack(spacing: Constants.main.standardSpacing) {
                 if errorsTracker.errors.isEmpty {
-                    Text("No errors")
+                    Text(verbatim: "No errors")
                         .foregroundStyle(palette.secondary)
                 }
                 ForEach(Array(errorsTracker.errors.enumerated()), id: \.offset) { _, errorDetails in
