@@ -26,7 +26,7 @@ struct ErrorLogView: View {
             }
         }
         .background(palette.groupedBackground)
-        .navigationTitle("Error Log")
+        .navigationTitle(String("Error Log"))
         .toolbar {
             if !errorsTracker.errors.isEmpty {
                 ToolbarItem(placement: .topBarTrailing) {
