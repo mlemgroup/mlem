@@ -71,12 +71,12 @@ struct MessageView<EmbeddedContent: View>: View {
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu {
-            message.allMenuActions(navigation: navigation, report: reportContext)
+            message.allMenuActions(editCallback: editMessage, navigation: navigation, report: reportContext)
         }
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         .onTapGesture {
-            if let creator = (message.isOwnMessage ? message.recipient_ : message.creator_), message.api.canInteract {
-                navigation.push(.messageFeed(creator))
+            if let otherPerson, message.api.canInteract {
+                navigation.push(.messageFeed(otherPerson))
             }
         }
     }
@@ -90,13 +90,24 @@ struct MessageView<EmbeddedContent: View>: View {
                     }
                 }
                 EllipsisMenu(size: 24) {
-                    message.basicMenuActions(navigation: navigation)
+                    message.basicMenuActions(editCallback: editMessage, navigation: navigation)
                 }
             } else {
                 EllipsisMenu(size: 24) {
-                    message.allMenuActions(navigation: navigation, report: reportContext)
+                    message.allMenuActions(editCallback: editMessage, navigation: navigation, report: reportContext)
                 }
             }
+        }
+    }
+    
+    var otherPerson: Person1? {
+        message.isOwnMessage ? message.recipient_ : message.creator_
+    }
+    
+    @MainActor
+    func editMessage() {
+        if let otherPerson {
+            navigation.push(.messageFeed(otherPerson, focusTextField: true, editing: message))
         }
     }
 }
