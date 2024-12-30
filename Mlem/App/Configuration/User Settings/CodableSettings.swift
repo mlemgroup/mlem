@@ -12,6 +12,7 @@ import UIKit
 /// Mirror of Settings but without any AppStorage complexity and fully optionalized.
 struct CodableSettings: Codable {
     // MARK: Settings saved in AppStorage
+
     var a11y_readPostIndicator: ReadPostIndicator
     var a11y_readOutlineThickness: Int
     var a11y_websiteThumbnailIcon: Bool
@@ -88,6 +89,7 @@ struct CodableSettings: Codable {
     var filters_keywordFilterEnabled: Bool
     
     // MARK: Settings saved in files
+
     var filteredKeywords: Set<String>
     
     // swiftlint:disable line_length function_body_length
@@ -231,8 +233,8 @@ struct CodableSettings: Codable {
         self.post_webPreview_showIcon = true
         self.profile_showBanner = true
         self.safety_blurNsfw = settings.blurNsfw
-        self.safety_enableModlogWarning = true
         self.safety_enableNsfwCommunityWarning = settings.showNsfwCommunityWarning
+        self.safety_enableModlogWarning = settings.showModlogWarning
         self.tab_gestures_enableLongPress = true
         self.tab_gestures_enableSwipeUp = true
         self.tab_profile_labelType = "nickname"
