@@ -19,7 +19,7 @@ struct DeveloperSettingsView: View {
         Form {
             Section {
                 Toggle(String("Developer Mode"), isOn: $developerMode)
-                NavigationLink("Error Log", destination: .settings(.errorLog))
+                NavigationLink(String("Error Log"), destination: .settings(.errorLog))
             }
             
             #if DEBUG
