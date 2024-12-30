@@ -45,7 +45,10 @@ enum Icons {
     // moderation
     static let moderation: String = "shield"
     static let moderationFill: String = "shield.fill"
+    static let demoteModerator: String = "shield.slash"
     static let moderationReport: String = "flag"
+    static let modlog: String = "book.pages"
+    static let transferCommunity: String = "arrow.right"
     
     // inbox
     static let mention: String = "quote.bubble"
@@ -59,11 +62,12 @@ enum Icons {
     static let titleOnlyPost: String = "character.bubble"
     static let pin: String = "pin"
     static let pinFill: String = "pin.fill"
+    static let unpin: String = "pin.slash"
     static let websiteIcon: String = "globe"
     static let read: String = "book"
     static let lock: String = "lock"
     static let lockFill: String = "lock.fill"
-    static let unlock: String = "lock.slash"
+    static let unlock: String = "lock.open"
     static let remove: String = "xmark.bin"
     static let removeFill: String = "xmark.bin.fill"
     static let restore: String = "arrow.up.bin"

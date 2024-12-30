@@ -69,6 +69,10 @@
 		033F844D2D18D90900D87A9E /* MessageBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F844C2D18D90900D87A9E /* MessageBubbleView.swift */; };
 		033F844F2D196AC700D87A9E /* OptimalHeightLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F844E2D196AC700D87A9E /* OptimalHeightLayout.swift */; };
 		033F84512D196AFD00D87A9E /* MessageFeedView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84502D196AFD00D87A9E /* MessageFeedView+Logic.swift */; };
+		033F84662D1C780900D87A9E /* ModlogButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84652D1C780900D87A9E /* ModlogButtonView.swift */; };
+		033F84732D1C784600D87A9E /* ModlogEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84702D1C784600D87A9E /* ModlogEntryView.swift */; };
+		033F84742D1C784600D87A9E /* ModlogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84712D1C784600D87A9E /* ModlogView.swift */; };
+		033F84782D1D68D200D87A9E /* ModlogEntryType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84772D1D68D200D87A9E /* ModlogEntryType+Extensions.swift */; };
 		033F84AD2C298466002E3EDF /* SectionIndexTitles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84AC2C298466002E3EDF /* SectionIndexTitles.swift */; };
 		033F84B12C29907F002E3EDF /* FeedbackType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84B02C29907F002E3EDF /* FeedbackType.swift */; };
 		033F84BB2C2ACB96002E3EDF /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84BA2C2ACB96002E3EDF /* CommentView.swift */; };
@@ -95,6 +99,7 @@
 		034B94852C09348400039AF4 /* MarkdownImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034B94842C09348400039AF4 /* MarkdownImageView.swift */; };
 		034B94892C09360A00039AF4 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034B94882C09360A00039AF4 /* Int+Extensions.swift */; };
 		034B948E2C0937BA00039AF4 /* FancyScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034B948D2C0937BA00039AF4 /* FancyScrollView.swift */; };
+		034CC0302D22C5BE00C557D3 /* WarningOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034CC02F2D22C5BE00C557D3 /* WarningOverlayView.swift */; };
 		03500C242BF55D0E00CAA076 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C232BF55D0E00CAA076 /* Toast.swift */; };
 		03500C272BF69D1D00CAA076 /* ToastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C262BF69D1D00CAA076 /* ToastModel.swift */; };
 		03500C2B2BF7F1B100CAA076 /* ToastOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C2A2BF7F1B100CAA076 /* ToastOverlayView.swift */; };
@@ -518,6 +523,10 @@
 		033F844C2D18D90900D87A9E /* MessageBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBubbleView.swift; sourceTree = "<group>"; };
 		033F844E2D196AC700D87A9E /* OptimalHeightLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimalHeightLayout.swift; sourceTree = "<group>"; };
 		033F84502D196AFD00D87A9E /* MessageFeedView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageFeedView+Logic.swift"; sourceTree = "<group>"; };
+		033F84652D1C780900D87A9E /* ModlogButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogButtonView.swift; sourceTree = "<group>"; };
+		033F84702D1C784600D87A9E /* ModlogEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogEntryView.swift; sourceTree = "<group>"; };
+		033F84712D1C784600D87A9E /* ModlogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogView.swift; sourceTree = "<group>"; };
+		033F84772D1D68D200D87A9E /* ModlogEntryType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModlogEntryType+Extensions.swift"; sourceTree = "<group>"; };
 		033F84AC2C298466002E3EDF /* SectionIndexTitles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionIndexTitles.swift; sourceTree = "<group>"; };
 		033F84B02C29907F002E3EDF /* FeedbackType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackType.swift; sourceTree = "<group>"; };
 		033F84BA2C2ACB96002E3EDF /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
@@ -543,6 +552,7 @@
 		034B94842C09348400039AF4 /* MarkdownImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownImageView.swift; sourceTree = "<group>"; };
 		034B94882C09360A00039AF4 /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 		034B948D2C0937BA00039AF4 /* FancyScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyScrollView.swift; sourceTree = "<group>"; };
+		034CC02F2D22C5BE00C557D3 /* WarningOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningOverlayView.swift; sourceTree = "<group>"; };
 		03500C212BF5594100CAA076 /* ToastType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastType.swift; sourceTree = "<group>"; };
 		03500C232BF55D0E00CAA076 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		03500C262BF69D1D00CAA076 /* ToastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastModel.swift; sourceTree = "<group>"; };
@@ -1027,6 +1037,15 @@
 			path = MessageFeedView;
 			sourceTree = "<group>";
 		};
+		033F84722D1C784600D87A9E /* Modlog */ = {
+			isa = PBXGroup;
+			children = (
+				033F84702D1C784600D87A9E /* ModlogEntryView.swift */,
+				033F84712D1C784600D87A9E /* ModlogView.swift */,
+			);
+			path = Modlog;
+			sourceTree = "<group>";
+		};
 		033F84C62C2B192F002E3EDF /* MlemStats */ = {
 			isa = PBXGroup;
 			children = (
@@ -1190,6 +1209,7 @@
 				CDD99C3B2C73F3FF0010367F /* DeleteAccountView.swift */,
 				03B25B3A2CC44FFF00EB6DF5 /* UploadConfirmationView.swift */,
 				03E46AD12D130681002589DB /* VotesListView.swift */,
+				033F84722D1C784600D87A9E /* Modlog */,
 				033F844B2D18D8F400D87A9E /* MessageFeedView */,
 			);
 			name = Pages;
@@ -1604,6 +1624,7 @@
 				038028FE2CB72AC90091A8A2 /* ReasonShortcutView.swift */,
 				03B62B762CE295530077E9C8 /* RulesListView.swift */,
 				03B62B782CE2A2C00077E9C8 /* RulesPickerView.swift */,
+				033F84652D1C780900D87A9E /* ModlogButtonView.swift */,
 				035BE0852BDD8D9100F77D73 /* Navigation */,
 				0382A7EE2C09F0F800C79DDA /* Pages */,
 				CD7DB9702C49C17200DCC542 /* PersonContentGridView.swift */,
@@ -1617,6 +1638,7 @@
 				03500C252BF694A800CAA076 /* Toast */,
 				CD0E07002C12707700445849 /* ToolbarEllipsisMenu.swift */,
 				CDD99C3D2C73F4380010367F /* WarningView.swift */,
+				034CC02F2D22C5BE00C557D3 /* WarningOverlayView.swift */,
 				CD13CC582C583C7A001AF428 /* WebsitePreviewView.swift */,
 				CD13CC5A2C588B34001AF428 /* WebView.swift */,
 				03AF91DE2C1B243D00E56644 /* ZoomableContainer.swift */,
@@ -1857,6 +1879,7 @@
 				0320B6532C8B65EB00D38548 /* Captcha+Extensions.swift */,
 				030050D42D10AE30002B1E99 /* Report+Extensions.swift */,
 				03E46AD32D130728002589DB /* ScoringOperation+Extensions.swift */,
+				033F84772D1D68D200D87A9E /* ModlogEntryType+Extensions.swift */,
 			);
 			path = "Content Models";
 			sourceTree = "<group>";
@@ -2249,6 +2272,7 @@
 				031E2D5B2BEFC9460003BC45 /* ThemeSettingsView.swift in Sources */,
 				CDE4AC3F2CA2083200981010 /* VideoView.swift in Sources */,
 				03D3A1F12BB9D48E009DE55E /* BasicAction.swift in Sources */,
+				033F84662D1C780900D87A9E /* ModlogButtonView.swift in Sources */,
 				03D2A6392C00FAE000ED4FF2 /* UserAccount.swift in Sources */,
 				CDB738292CB8A6A5005B11BB /* View+PaletteBorder.swift in Sources */,
 				03C93CF02BEFFB1A00327BFE /* LoginCredentialsView.swift in Sources */,
@@ -2283,6 +2307,7 @@
 				CDB41E8E2C84CFA200BD2DE9 /* FixedImageView.swift in Sources */,
 				033F84C12C2AD072002E3EDF /* CommentWrapper.swift in Sources */,
 				034B94832C09340A00039AF4 /* MarkdownConfiguration+Extensions.swift in Sources */,
+				034CC0302D22C5BE00C557D3 /* WarningOverlayView.swift in Sources */,
 				034690932D0F4D720073E664 /* RemovableProviding+Extensions.swift in Sources */,
 				039F58952C7B618F00C61658 /* InboxSettingsView.swift in Sources */,
 				CD4D58CF2B86DDEC00B82964 /* AccountSortMode.swift in Sources */,
@@ -2332,6 +2357,8 @@
 				CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */,
 				CD79281F2C73B52A00FA712D /* EndOfFeedView.swift in Sources */,
 				CDE1F19C2C63E2EB008AF042 /* SettingPropertyWrapper.swift in Sources */,
+				033F84732D1C784600D87A9E /* ModlogEntryView.swift in Sources */,
+				033F84742D1C784600D87A9E /* ModlogView.swift in Sources */,
 				038096612C10AAD8003ED1D8 /* TransitionView.swift in Sources */,
 				0382A7F42C0A76A900C79DDA /* Date+Extensions.swift in Sources */,
 				CD9D243D2CC1DF59006E5F3F /* AccountType.swift in Sources */,
@@ -2422,6 +2449,7 @@
 				031E2D5D2BEFCC630003BC45 /* SettingsView.swift in Sources */,
 				CDCA44B42C176A4700C092B3 /* Array+Extensions.swift in Sources */,
 				03CCDAA42BF2852E00C0C851 /* LoginTotpView.swift in Sources */,
+				033F84782D1D68D200D87A9E /* ModlogEntryType+Extensions.swift in Sources */,
 				CD4ED8472BF110FA00EFA0A2 /* TabReselectTracker.swift in Sources */,
 				CD8457142D07576A00CEA2B8 /* AVPlayer+Extensions.swift in Sources */,
 				033FCAEE2C57DD14007B7CD1 /* CaptchaDifficulty+Extensions.swift in Sources */,
@@ -3043,7 +3071,7 @@
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.58.0;
+				minimumVersion = 0.59.0;
 			};
 		};
 		CD64A9182CA37D63007CA7E6 /* XCRemoteSwiftPackageReference "Gifu" */ = {

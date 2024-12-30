@@ -40,7 +40,7 @@ struct ProfileDateView: View {
     }
     
     func format(_ date: Date) -> String {
-        var relTime = date.getRelativeTime(date: Date.now, unitsStyle: .abbreviated)
+        var relTime = date.getRelativeTime(unitsStyle: .abbreviated)
         if profilable.isCakeDay {
             relTime = String(localized: "\(relTime) today!")
         }
