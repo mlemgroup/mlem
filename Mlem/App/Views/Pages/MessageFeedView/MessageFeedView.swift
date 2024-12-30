@@ -23,7 +23,12 @@ struct MessageFeedView: View {
     init(person: AnyPerson, focusTextField: Bool, editing: (any Message)?) {
         self.person = person
         self.focusTextField = focusTextField
-        self.editing = editing
+        self._editing = .init(wrappedValue: editing)
+        if let editing {
+            let textView = UITextView()
+            textView.text = editing.content
+            _textView = .init(wrappedValue: textView)
+        }
     }
     
     @State var feedLoader: MessageFeedLoader?
