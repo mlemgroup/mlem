@@ -38,7 +38,7 @@ struct ErrorLogView: View {
                             ) {
                                 navigation.shareInfo = .init(url: url)
                             } else {
-                                ToastModel.main.add(.failure("Failed to share error log"))
+                                ToastModel.main.add(.failure(String("Failed to share error log")))
                             }
                         }
                     } label: {
