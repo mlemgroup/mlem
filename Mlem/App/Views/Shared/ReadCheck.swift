@@ -8,13 +8,12 @@
 import SwiftUI
 
 struct ReadCheck: View {
-    
     @Environment(Palette.self) var palette
     
     let dimension: CGFloat
     
     init(tiled: Bool = false) {
-        dimension = tiled ? 10 : 12
+        self.dimension = tiled ? 10 : 12
     }
     
     var body: some View {

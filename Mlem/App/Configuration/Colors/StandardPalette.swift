@@ -38,7 +38,7 @@ extension ColorPalette {
         inbox: .purple,
         accent: .blue,
         neutralAccent: .gray,
-        colorfulAccents: [.orange, .pink, .blue, .green, .purple, .indigo, .mint, .teal],
+        colorfulAccents: [.orange, .pink, .blue, .green, .purple, .indigo, .mint, .teal, .yellow],
         commentIndentColors: [.red, .orange, .yellow, .green, .blue, .purple]
     )
 }

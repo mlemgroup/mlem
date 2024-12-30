@@ -125,8 +125,11 @@ struct CommunityView: View {
         }
         .popupAnchor()
         .fullScreenCover(isPresented: $warningPresented) {
-            nsfwWarningOverlay
-                .presentationBackground(.ultraThinMaterial)
+            WarningOverlayView(
+                text: "This community likely contains graphic or explicit content.",
+                isPresented: $warningPresented,
+                showWarningAgain: $showNsfwCommunityWarning
+            )
         }
     }
     
@@ -207,49 +210,6 @@ struct CommunityView: View {
             output.insert(.about, at: 1)
         }
         return output
-    }
-    
-    @ViewBuilder
-    var nsfwWarningOverlay: some View {
-        VStack(spacing: Constants.main.doubleSpacing) {
-            WarningView(
-                iconName: Icons.warning,
-                text: "This community likely contains graphic or explicit content.",
-                inList: false
-            )
-            
-            Group {
-                HStack(spacing: Constants.main.doubleSpacing) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("Go back").frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.bordered)
-                    
-                    Button {
-                        warningPresented = false
-                    } label: {
-                        Text("Continue").frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.borderedProminent)
-                }
-                
-                Toggle(isOn: Binding(
-                    get: { !showNsfwCommunityWarning },
-                    set: { showNsfwCommunityWarning = !$0 }
-                ), label: {
-                    Text("Don't show this again")
-                })
-            }
-            .padding(.horizontal, 30)
-        }
-        .padding(Constants.main.doubleSpacing)
-        .background {
-            RoundedRectangle(cornerRadius: Constants.main.largeItemCornerRadius)
-                .fill(palette.background.opacity(0.8))
-        }
-        .padding(Constants.main.doubleSpacing)
     }
     
     func setupFeedLoader(community: any Community) {

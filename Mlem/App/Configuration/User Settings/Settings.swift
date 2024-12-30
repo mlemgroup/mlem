@@ -50,6 +50,7 @@ class Settings: ObservableObject {
     
     @AppStorage("safety.blurNsfw") var blurNsfw: NsfwBlurBehavior = .always
     @AppStorage("safety.showNsfwCommunityWarning") var showNsfwCommunityWarning: Bool = true
+    @AppStorage("safety.showModlogWarning") var showModlogWarning: Bool = true
     
     @AppStorage("privacy.autoBypassImageProxy") var autoBypassImageProxy: Bool = false
     
@@ -139,6 +140,7 @@ class Settings: ObservableObject {
         developerMode = settings.dev_developerMode
         blurNsfw = settings.safety_blurNsfw
         showNsfwCommunityWarning = settings.safety_enableNsfwCommunityWarning
+        showModlogWarning = settings.safety_enableModlogWarning
         confirmImageUploads = settings.behavior_confirmImageUploads
         openLinksInBrowser = settings.links_openInBrowser
         openLinksInReaderMode = settings.links_readerMode

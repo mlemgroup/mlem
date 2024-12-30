@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2024-11-10.
 //
 
+import MlemMiddleware
 import SwiftUI
 
 struct FooterLinkView: View {

@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct AccessibilitySettingsView: View {
-    
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     
     @Setting(\.readPostIndicator) var readPostIndicator
@@ -18,7 +17,7 @@ struct AccessibilitySettingsView: View {
     
     init() {
         @Setting(\.readOutlineThickness) var readOutlineThickness
-        self._readBarThicknessSlider = .init(wrappedValue: Double(readOutlineThickness))
+        _readBarThicknessSlider = .init(wrappedValue: Double(readOutlineThickness))
     }
     
     var body: some View {
