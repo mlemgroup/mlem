@@ -34,7 +34,19 @@
     "%@ Administrator" : {
 
     },
+    "%@ appointed a moderator" : {
+
+    },
+    "%@ appointed an administrator" : {
+
+    },
+    "%@ banned a user" : {
+
+    },
     "%@ has been unresponsive recently." : {
+
+    },
+    "%@ hid a community" : {
 
     },
     "%@ is " : {
@@ -50,7 +62,56 @@
         }
       }
     },
+    "%@ locked a post" : {
+
+    },
+    "%@ pinned a post to %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ pinned a post to %2$@"
+          }
+        }
+      }
+    },
+    "%@ purged a comment" : {
+
+    },
+    "%@ purged a community" : {
+
+    },
+    "%@ purged a post" : {
+
+    },
+    "%@ purged a user" : {
+
+    },
     "%@ Read" : {
+
+    },
+    "%@ removed a comment" : {
+
+    },
+    "%@ removed a community" : {
+
+    },
+    "%@ removed a moderator" : {
+
+    },
+    "%@ removed a post" : {
+
+    },
+    "%@ removed an administrator" : {
+
+    },
+    "%@ restored a comment" : {
+
+    },
+    "%@ restored a community" : {
+
+    },
+    "%@ restored a post" : {
 
     },
     "%@ rules:" : {
@@ -61,6 +122,28 @@
     },
     "%@ today!" : {
 
+    },
+    "%@ transferred ownership of a community" : {
+
+    },
+    "%@ unbanned a user" : {
+
+    },
+    "%@ unhid a community" : {
+
+    },
+    "%@ unlocked a post" : {
+
+    },
+    "%@ unpinned a post from %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ unpinned a post from %2$@"
+          }
+        }
+      }
     },
     "%lld Crossposts..." : {
       "localizations" : {
@@ -145,6 +228,12 @@
     "Administrator" : {
 
     },
+    "Administrator was removed" : {
+
+    },
+    "Adminstrator was appointed" : {
+
+    },
     "Advanced" : {
 
     },
@@ -192,6 +281,19 @@
     },
     "Apply to All Interaction Bars" : {
 
+    },
+    "Appointed: %@" : {
+
+    },
+    "Appointed: %@\nTo: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Appointed: %1$@\nTo: %2$@"
+          }
+        }
+      }
     },
     "Are you sure you want to delete all community favorites for this account? This cannot be undone." : {
       "localizations" : {
@@ -247,6 +349,16 @@
     },
     "Banned from Instance" : {
 
+    },
+    "Banned: %@\nFrom: %@\nExpires: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Banned: %1$@\nFrom: %2$@\nExpires: %3$@"
+          }
+        }
+      }
     },
     "Banner" : {
 
@@ -369,7 +481,13 @@
     "Comment was deleted" : {
 
     },
+    "Comment was purged" : {
+
+    },
     "Comment was removed" : {
+
+    },
+    "Comment was restored" : {
 
     },
     "Comments" : {
@@ -383,6 +501,34 @@
     },
     "Community Link" : {
 
+    },
+    "Community ownership was transferred" : {
+
+    },
+    "Community was hidden" : {
+
+    },
+    "Community was purged" : {
+
+    },
+    "Community was removed" : {
+
+    },
+    "Community was restored" : {
+
+    },
+    "Community was unhidden" : {
+
+    },
+    "Community: %@\nNew Owner: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Community: %1$@\nNew Owner: %2$@"
+          }
+        }
+      }
     },
     "Compact" : {
 
@@ -449,6 +595,9 @@
 
     },
     "Debug" : {
+
+    },
+    "Debug Tools" : {
 
     },
     "Default" : {
@@ -554,6 +703,9 @@
     "Enter your instance's domain name below." : {
 
     },
+    "Error Log" : {
+
+    },
     "EULA" : {
 
     },
@@ -588,6 +740,9 @@
 
     },
     "Failed to Save Image" : {
+
+    },
+    "Failed to share error log" : {
 
     },
     "Failed to unlock post" : {
@@ -925,6 +1080,15 @@
     "Moderator" : {
 
     },
+    "Moderator was appointed" : {
+
+    },
+    "Moderator was removed" : {
+
+    },
+    "Modlog" : {
+
+    },
     "Monochrome" : {
 
     },
@@ -977,6 +1141,9 @@
 
     },
     "No comments found" : {
+
+    },
+    "No errors" : {
 
     },
     "No reason given" : {
@@ -1102,6 +1269,27 @@
     "Post Size" : {
 
     },
+    "Post was locked" : {
+
+    },
+    "Post was pinned to %@" : {
+
+    },
+    "Post was purged" : {
+
+    },
+    "Post was removed" : {
+
+    },
+    "Post was restored" : {
+
+    },
+    "Post was unlocked" : {
+
+    },
+    "Post was unpinned from %@" : {
+
+    },
     "Posts" : {
 
     },
@@ -1186,6 +1374,9 @@
     "Reason (Optional)" : {
 
     },
+    "Reason: " : {
+
+    },
     "Received %@" : {
 
     },
@@ -1215,6 +1406,19 @@
     },
     "Remove Content" : {
 
+    },
+    "Removed: %@" : {
+
+    },
+    "Removed: %@\nFrom: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Removed: %1$@\nFrom: %2$@"
+          }
+        }
+      }
     },
     "Replies" : {
 
@@ -1515,6 +1719,9 @@
     "Temporary" : {
 
     },
+    "Test" : {
+
+    },
     "That's all, folks!" : {
 
     },
@@ -1542,6 +1749,9 @@
 
     },
     "The Fediseer is a service that instance administrators use to identify spam instances and express their approval or disapproval of other instances." : {
+
+    },
+    "The modlog may contain disturbing or adult material." : {
 
     },
     "The most recent outage was %@, and lasted for %@." : {
@@ -1728,6 +1938,16 @@
     "Unban %@" : {
 
     },
+    "Unbanned: %@\nFrom: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Unbanned: %1$@\nFrom: %2$@"
+          }
+        }
+      }
+    },
     "Unblock" : {
 
     },
@@ -1823,6 +2043,15 @@
     "User Link" : {
 
     },
+    "User was banned" : {
+
+    },
+    "User was purged" : {
+
+    },
+    "User was unbanned" : {
+
+    },
     "Username" : {
 
     },
@@ -1854,6 +2083,9 @@
 
     },
     "Votes" : {
+
+    },
+    "Warn When Opening Modlog" : {
 
     },
     "Warn When Opening NSFW Community" : {

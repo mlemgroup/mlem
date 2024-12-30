@@ -46,6 +46,10 @@ private func _handleError(
         print("📂 -> \(file) | \(function) | line: \(line)")
     #endif
     
+    Task {
+        await ErrorsTracker.main.addError(error)
+    }
+    
     switch error {
     // TODO: Modify MlemMiddleware to attach the ApiClient throwing the error to ApiClientError.invalidSession, so that we can access the relevant UserStub in a multi-account context
     case ApiClientError.invalidSession:

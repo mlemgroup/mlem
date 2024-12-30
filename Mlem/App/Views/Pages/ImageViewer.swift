@@ -126,11 +126,10 @@ struct ImageViewer: View {
 // TODO: iOS 17 deprecation: remove this and replace usage with .presentationBackground
 private struct ClearBackgroundView: UIViewRepresentable {
     func makeUIView(context: Context) -> UIView {
-        return InnerView()
+        InnerView()
     }
     
-    func updateUIView(_ uiView: UIView, context: Context) {
-    }
+    func updateUIView(_ uiView: UIView, context: Context) {}
     
     private class InnerView: UIView {
         override func didMoveToWindow() {
@@ -138,6 +137,5 @@ private struct ClearBackgroundView: UIViewRepresentable {
             
             superview?.superview?.backgroundColor = .clear
         }
-        
     }
 }

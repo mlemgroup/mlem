@@ -57,6 +57,7 @@ enum NavigationPage: Hashable {
     case blockList
     case advancedSorting(_ sort: HashWrapper<Binding<ApiSortType>>)
     case votesList(_ target: VotesListView.Target)
+    case modlog(community: AnyCommunity?)
     
     static func post(_ post: any PostStubProviding, scrollTargetedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
         if let scrollTargetedComment {
@@ -96,6 +97,14 @@ enum NavigationPage: Hashable {
 
     static func instance(_ instance: any InstanceStubProviding) -> NavigationPage {
         Self.instance(.init(wrappedValue: instance))
+    }
+    
+    static func modlog(community: (any Community)? = nil) -> NavigationPage {
+        if let community {
+            modlog(community: AnyCommunity(community))
+        } else {
+            modlog(community: nil as AnyCommunity?)
+        }
     }
     
     static func instanceOpinionList(

@@ -18,6 +18,7 @@ struct ErrorDetails: Hashable {
     var buttonText: String?
     var refresh: (() async -> Bool)?
     var autoRefresh: Bool = false
+    var when: Date
     
     init(
         title: String? = nil,
@@ -35,6 +36,8 @@ struct ErrorDetails: Hashable {
         self.buttonText = buttonText
         self.refresh = refresh
         self.autoRefresh = autoRefresh
+        self.when = Date.now
+        
         if let error {
             switch error {
             case ApiClientError.imageTooLarge:
