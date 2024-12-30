@@ -66,3 +66,17 @@ func downloadImageToFileSystem(url: URL) async -> URL? {
         return nil
     }
 }
+
+func downloadTextToFileSystem(fileName: String, text: String) async -> URL? {
+    do {
+        let fileUrl = FileManager.default.temporaryDirectory.appending(path: fileName)
+        if FileManager.default.fileExists(atPath: fileUrl.absoluteString) {
+            try FileManager.default.removeItem(at: fileUrl)
+        }
+        try text.write(to: fileUrl, atomically: true, encoding: String.Encoding.utf8)
+        return fileUrl
+    } catch {
+        handleError(error)
+        return nil
+    }
+}
