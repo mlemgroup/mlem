@@ -593,6 +593,9 @@
     "Failed to Save Image" : {
 
     },
+    "Failed to share error log" : {
+
+    },
     "Failed to unlock post" : {
 
     },
@@ -980,6 +983,9 @@
 
     },
     "No comments found" : {
+
+    },
+    "No errors" : {
 
     },
     "No reason given" : {
