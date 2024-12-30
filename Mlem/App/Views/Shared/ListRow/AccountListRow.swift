@@ -76,6 +76,10 @@ struct AccountListRow: View {
                     AccountsTracker.main.addAccount(account: account)
                 }
             }
+            Divider()
+            Button(signOutLabel, systemImage: Icons.signOut, role: .destructive) {
+                showingSignOutConfirmation = true
+            }
         }
         .confirmationDialog(signOutPrompt, isPresented: $showingSignOutConfirmation) {
             Button(signOutLabel, role: .destructive) {
