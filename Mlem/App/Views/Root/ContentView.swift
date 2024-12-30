@@ -34,6 +34,7 @@ struct ContentView: View {
     var tabReselectTracker: TabReselectTracker { .main }
     var navigationModel: NavigationModel { .main }
     var filtersTracker: FiltersTracker { .main }
+    var errorsTracker: ErrorsTracker { .main }
 
     @State var avatarImage: UIImage?
     @State var selectedAvatarImage: UIImage?
@@ -66,6 +67,7 @@ struct ContentView: View {
                 .environment(tabReselectTracker)
                 .environment(appState)
                 .environment(filtersTracker)
+                .environment(errorsTracker)
                 .task {
                     do {
                         try await MlemStats.main.loadInstances()

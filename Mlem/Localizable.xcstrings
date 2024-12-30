@@ -451,6 +451,9 @@
     "Debug" : {
 
     },
+    "Debug Tools" : {
+
+    },
     "Default" : {
 
     },
@@ -549,6 +552,9 @@
 
     },
     "Enter your instance's domain name below." : {
+
+    },
+    "Error Log" : {
 
     },
     "EULA" : {

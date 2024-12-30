@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MlemMiddleware
 
 // Strings in this view are intentionally left unlocalized; we shouldn't
 // be burdening translators with these when they'll never be used
@@ -16,10 +17,24 @@ struct DeveloperSettingsView: View {
     
     var body: some View {
         Form {
-            Toggle(String("Developer Mode"), isOn: $developerMode)
-            Button(String("Reset Feed Welcome Prompt")) {
-                showFeedWelcomePrompt = true
+            Section {
+                Toggle(String("Developer Mode"), isOn: $developerMode)
+                NavigationLink("Error Log", destination: .settings(.errorLog))
             }
+            
+            #if DEBUG
+            Section {
+                Button(String("Reset Feed Welcome Prompt")) {
+                    showFeedWelcomePrompt = true
+                }
+                
+                Button(String("Create Error")) {
+                    handleError(ApiClientError.insufficientPermissions)
+                }
+            } header: {
+                Text("Debug Tools")
+            }
+            #endif
         }
         .navigationTitle("Developer")
     }
