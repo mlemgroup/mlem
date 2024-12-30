@@ -71,14 +71,14 @@ struct AccountListRow: View {
                     }
                 }
                 .disabled(appState.firstSession.actorId == account.actorId)
+                Divider()
+                Button(signOutLabel, systemImage: Icons.signOut, role: .destructive) {
+                    showingSignOutConfirmation = true
+                }
             } else {
                 Button("Keep", systemImage: Icons.pin) {
                     AccountsTracker.main.addAccount(account: account)
                 }
-            }
-            Divider()
-            Button(signOutLabel, systemImage: Icons.signOut, role: .destructive) {
-                showingSignOutConfirmation = true
             }
         }
         .confirmationDialog(signOutPrompt, isPresented: $showingSignOutConfirmation) {
