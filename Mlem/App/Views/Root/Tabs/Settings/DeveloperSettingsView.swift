@@ -32,7 +32,7 @@ struct DeveloperSettingsView: View {
                     handleError(ApiClientError.insufficientPermissions)
                 }
             } header: {
-                Text("Debug Tools")
+                Text(verbatim: "Debug Tools")
             }
             #endif
         }
