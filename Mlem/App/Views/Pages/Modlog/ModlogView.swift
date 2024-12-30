@@ -12,9 +12,13 @@ struct ModlogView: View {
     @Environment(AppState.self) var appState
     @Environment(Palette.self) var palette
     
+    @Setting(\.showModlogWarning) var showModlogWarning
+    
     let community: AnyCommunity?
     
     @State var feedLoader: ModlogFeedLoader
+    
+    @State var warningPresented: Bool = Settings.main.showModlogWarning
     
     init(community: AnyCommunity?) {
         self._feedLoader = .init(
@@ -39,6 +43,13 @@ struct ModlogView: View {
         }
         .navigationTitle("Modlog")
         .navigationBarTitleDisplayMode(.inline)
+        .fullScreenCover(isPresented: $warningPresented) {
+            WarningOverlayView(
+                text: "The modlog may contain disturbing or adult material.",
+                isPresented: $warningPresented,
+                showWarningAgain: $showModlogWarning
+            )
+        }
     }
     
     @ViewBuilder

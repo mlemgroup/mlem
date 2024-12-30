@@ -1736,6 +1736,9 @@
     "The Fediseer is a service that instance administrators use to identify spam instances and express their approval or disapproval of other instances." : {
 
     },
+    "The modlog may contain disturbing or adult material." : {
+
+    },
     "The most recent outage was %@, and lasted for %@." : {
       "localizations" : {
         "en" : {
@@ -2065,6 +2068,9 @@
 
     },
     "Votes" : {
+
+    },
+    "Warn When Opening Modlog" : {
 
     },
     "Warn When Opening NSFW Community" : {

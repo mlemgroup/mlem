@@ -12,6 +12,7 @@ struct GeneralSettingsView: View {
     // safety
     @Setting(\.blurNsfw) var blurNsfw
     @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
+    @Setting(\.showModlogWarning) var showModlogWarning
     
     // privacy
     @Setting(\.autoBypassImageProxy) var bypassImageProxy
@@ -44,6 +45,7 @@ struct GeneralSettingsView: View {
                     Text("Blur NSFW")
                 }
                 Toggle("Warn When Opening NSFW Community", isOn: $showNsfwCommunityWarning)
+                Toggle("Warn When Opening Modlog", isOn: $showModlogWarning)
             } header: {
                 Text("Safety")
             }

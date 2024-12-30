@@ -99,6 +99,7 @@
 		034B94852C09348400039AF4 /* MarkdownImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034B94842C09348400039AF4 /* MarkdownImageView.swift */; };
 		034B94892C09360A00039AF4 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034B94882C09360A00039AF4 /* Int+Extensions.swift */; };
 		034B948E2C0937BA00039AF4 /* FancyScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034B948D2C0937BA00039AF4 /* FancyScrollView.swift */; };
+		034CC0302D22C5BE00C557D3 /* WarningOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034CC02F2D22C5BE00C557D3 /* WarningOverlayView.swift */; };
 		03500C242BF55D0E00CAA076 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C232BF55D0E00CAA076 /* Toast.swift */; };
 		03500C272BF69D1D00CAA076 /* ToastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C262BF69D1D00CAA076 /* ToastModel.swift */; };
 		03500C2B2BF7F1B100CAA076 /* ToastOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C2A2BF7F1B100CAA076 /* ToastOverlayView.swift */; };
@@ -549,6 +550,7 @@
 		034B94842C09348400039AF4 /* MarkdownImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownImageView.swift; sourceTree = "<group>"; };
 		034B94882C09360A00039AF4 /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 		034B948D2C0937BA00039AF4 /* FancyScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyScrollView.swift; sourceTree = "<group>"; };
+		034CC02F2D22C5BE00C557D3 /* WarningOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningOverlayView.swift; sourceTree = "<group>"; };
 		03500C212BF5594100CAA076 /* ToastType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastType.swift; sourceTree = "<group>"; };
 		03500C232BF55D0E00CAA076 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		03500C262BF69D1D00CAA076 /* ToastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastModel.swift; sourceTree = "<group>"; };
@@ -1631,6 +1633,7 @@
 				03500C252BF694A800CAA076 /* Toast */,
 				CD0E07002C12707700445849 /* ToolbarEllipsisMenu.swift */,
 				CDD99C3D2C73F4380010367F /* WarningView.swift */,
+				034CC02F2D22C5BE00C557D3 /* WarningOverlayView.swift */,
 				CD13CC582C583C7A001AF428 /* WebsitePreviewView.swift */,
 				CD13CC5A2C588B34001AF428 /* WebView.swift */,
 				03AF91DE2C1B243D00E56644 /* ZoomableContainer.swift */,
@@ -2298,6 +2301,7 @@
 				CDB41E8E2C84CFA200BD2DE9 /* FixedImageView.swift in Sources */,
 				033F84C12C2AD072002E3EDF /* CommentWrapper.swift in Sources */,
 				034B94832C09340A00039AF4 /* MarkdownConfiguration+Extensions.swift in Sources */,
+				034CC0302D22C5BE00C557D3 /* WarningOverlayView.swift in Sources */,
 				034690932D0F4D720073E664 /* RemovableProviding+Extensions.swift in Sources */,
 				039F58952C7B618F00C61658 /* InboxSettingsView.swift in Sources */,
 				CD4D58CF2B86DDEC00B82964 /* AccountSortMode.swift in Sources */,
