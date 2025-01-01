@@ -597,9 +597,6 @@
     "Debug" : {
 
     },
-    "Debug Tools" : {
-
-    },
     "Default" : {
 
     },
@@ -700,9 +697,6 @@
     "Enter your instance's domain name below." : {
 
     },
-    "Error Log" : {
-
-    },
     "EULA" : {
 
     },
@@ -737,9 +731,6 @@
 
     },
     "Failed to Save Image" : {
-
-    },
-    "Failed to share error log" : {
 
     },
     "Failed to unlock post" : {
@@ -1138,9 +1129,6 @@
 
     },
     "No comments found" : {
-
-    },
-    "No errors" : {
 
     },
     "No reason given" : {

@@ -112,8 +112,6 @@ struct SearchView: View {
             }
             .onChange(of: appState.firstApi.actorId) {
                 Task {
-                    communityLoader.api = appState.firstApi
-                    personLoader.api = appState.firstApi
                     await refresh(clearBeforeRefresh: false)
                 }
             }
