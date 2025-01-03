@@ -14,6 +14,7 @@ struct PersonListRowBody<Content: View>: View {
     
     @Environment(Palette.self) var palette
     @Environment(\.communityContext) var communityContext
+    @Environment(\.isEnabled) var isEnabled
     
     let person: any Person
     var showBlockStatus: Bool = true
@@ -73,12 +74,12 @@ struct PersonListRowBody<Content: View>: View {
             }
             VStack(alignment: .leading, spacing: 4) {
                 (flairs.textView + Text(title))
-                    .foregroundStyle(palette.primary)
+                    .foregroundStyle(isEnabled ? palette.primary : palette.secondary)
                     .lineLimit(1)
                     .imageScale(.small)
                 caption
                     .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(palette.secondary)
                     .lineLimit(1)
             }
             Spacer()

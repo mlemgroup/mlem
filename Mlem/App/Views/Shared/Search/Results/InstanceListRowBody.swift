@@ -14,6 +14,7 @@ struct InstanceListRowBody<Content: View>: View {
     @Setting(\.blurNsfw) var blurNsfw
     
     @Environment(Palette.self) var palette
+    @Environment(\.isEnabled) var isEnabled
     
     let instance: (any Instance)?
     let summary: InstanceSummary?
@@ -65,7 +66,7 @@ struct InstanceListRowBody<Content: View>: View {
             
             VStack(alignment: .leading, spacing: 2) {
                 Text(host)
-                    .foregroundStyle(palette.primary)
+                    .foregroundStyle(isEnabled ? palette.primary : palette.secondary)
                     .lineLimit(1)
                 if let version {
                     Text(version.description)

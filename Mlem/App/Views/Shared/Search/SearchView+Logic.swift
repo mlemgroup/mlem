@@ -51,7 +51,10 @@ extension SearchView {
     }
     
     private func refreshCommunities(clearBeforeRefresh: Bool) async throws {
-        communityLoader.api = getRefreshApi(for: communityFilters.instance)
+        await communityLoader.changeApi(
+            to: getRefreshApi(for: communityFilters.instance),
+            context: filtersTracker.filterContext
+        )
         try await communityLoader.refresh(
             query: query,
             listing: (!filtersActive || communityFilters.instance == .any) ? .all : .local,
@@ -61,10 +64,13 @@ extension SearchView {
     }
     
     private func refreshPeople(clearBeforeRefresh: Bool) async throws {
-        personLoader.api = getRefreshApi(for: personFilters.instance)
+        await personLoader.changeApi(
+            to: getRefreshApi(for: personFilters.instance),
+            context: filtersTracker.filterContext
+        )
         try await personLoader.refresh(
             query: query,
-            listing: (!filtersActive || communityFilters.instance == .any) ? .all : .local,
+            listing: (!filtersActive || personFilters.instance == .any) ? .all : .local,
             sort: filtersActive ? personFilters.sort : .topAll,
             clearBeforeRefresh: clearBeforeRefresh
         )
