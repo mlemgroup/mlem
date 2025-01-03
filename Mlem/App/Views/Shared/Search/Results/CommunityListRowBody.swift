@@ -11,10 +11,11 @@ import SwiftUI
 struct CommunityListRowBody<Content: View>: View {
     enum Complication { case instance, subscriberCount }
     enum Readout { case subscribers }
-
-    @Setting(\.blurNsfw) var blurNsfw
     
     @Environment(Palette.self) var palette
+    @Environment(\.isEnabled) var isEnabled
+    
+    @Setting(\.blurNsfw) var blurNsfw
     
     let community: any Community
     let showBlockStatus: Bool
@@ -80,7 +81,7 @@ struct CommunityListRowBody<Content: View>: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
                     .lineLimit(1)
-                    .foregroundStyle(community.nsfw ? palette.warning : palette.primary)
+                    .foregroundStyle(titleColor)
                 caption
                     .font(.footnote)
                     .foregroundStyle(palette.secondary)
@@ -118,6 +119,14 @@ struct CommunityListRowBody<Content: View>: View {
                     }
                 }
             }
+        }
+    }
+    
+    var titleColor: Color {
+        if community.nsfw {
+            palette.warning
+        } else {
+            isEnabled ? palette.primary : palette.secondary
         }
     }
     
