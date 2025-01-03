@@ -27,7 +27,7 @@ enum NavigationPage: Hashable {
     case person(_ person: AnyPerson)
     case instance(_ instance: InstanceHashWrapper)
     case instanceOpinionList(instance: InstanceHashWrapper, opinionType: FediseerOpinionType, data: FediseerData)
-    case messageFeed(_ person: AnyPerson, focusTextField: Bool)
+    case messageFeed(_ person: AnyPerson, focusTextField: Bool, editing: MessageHashWrapper?)
     case fediseerInfo
     case externalApiInfo(api: ApiClient, actorId: URL)
     case imageViewer(_ url: URL)
@@ -119,8 +119,16 @@ enum NavigationPage: Hashable {
         )
     }
     
-    static func messageFeed(_ person: any PersonStubProviding, focusTextField: Bool = false) -> NavigationPage {
-        messageFeed(.init(person), focusTextField: focusTextField)
+    static func messageFeed(
+        _ person: any PersonStubProviding,
+        focusTextField: Bool = false,
+        editing: (any Message1Providing)? = nil
+    ) -> NavigationPage {
+        var editingWrapper: MessageHashWrapper?
+        if let editing {
+            editingWrapper = .init(wrappedValue: editing)
+        }
+        return messageFeed(.init(person), focusTextField: focusTextField, editing: editingWrapper)
     }
     
     static func instance(hostOf entity: any ActorIdentifiable) -> NavigationPage {
@@ -374,6 +382,18 @@ struct Profile2HashWrapper: Hashable {
     }
     
     static func == (lhs: Profile2HashWrapper, rhs: Profile2HashWrapper) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
+}
+
+struct MessageHashWrapper: Hashable {
+    var wrappedValue: any Message1Providing
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(wrappedValue.actorId)
+    }
+    
+    static func == (lhs: MessageHashWrapper, rhs: MessageHashWrapper) -> Bool {
         lhs.hashValue == rhs.hashValue
     }
 }

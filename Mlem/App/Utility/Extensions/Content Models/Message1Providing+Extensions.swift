@@ -25,12 +25,14 @@ extension Message1Providing {
     func allMenuActions(
         feedback: Set<FeedbackType> = [.haptic, .toast],
         isInMessageFeed: Bool = false,
+        editCallback: (@MainActor () -> Void)?,
         navigation: NavigationLayer? = nil,
         report: Report? = nil
     ) -> [any Action] {
         basicMenuActions(
             feedback: feedback,
             isInMessageFeed: isInMessageFeed,
+            editCallback: editCallback,
             navigation: navigation
         )
         if api.isAdmin {
@@ -47,6 +49,7 @@ extension Message1Providing {
     func basicMenuActions(
         feedback: Set<FeedbackType> = [.haptic, .toast],
         isInMessageFeed: Bool = false,
+        editCallback: (@MainActor () -> Void)?,
         navigation: NavigationLayer? = nil,
         report: Report? = nil
     ) -> [any Action] {
@@ -60,6 +63,9 @@ extension Message1Providing {
             selectTextAction()
         }
         if isOwnMessage {
+            if let editCallback {
+                editAction(callback: editCallback)
+            }
             deleteAction(feedback: feedback)
         } else {
             if report == nil {
@@ -81,6 +87,14 @@ extension Message1Providing {
                 report.menuActions()
             }
         }
+    }
+    
+    func editAction(callback: @escaping @MainActor () -> Void) -> BasicAction {
+        .init(
+            id: "edit\(uid)",
+            appearance: .edit(),
+            callback: api.canInteract ? callback : nil
+        )
     }
     
     // These actions are also defined in Interactable1Providing... another protocol for these may be a good idea

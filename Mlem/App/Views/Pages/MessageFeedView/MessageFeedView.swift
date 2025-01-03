@@ -16,12 +16,19 @@ struct MessageFeedView: View {
     
     let person: AnyPerson
     let focusTextField: Bool
+    @State var editing: (any Message)?
     
     let timer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
     
-    init(person: AnyPerson, focusTextField: Bool) {
+    init(person: AnyPerson, focusTextField: Bool, editing: (any Message)?) {
         self.person = person
         self.focusTextField = focusTextField
+        self._editing = .init(wrappedValue: editing)
+        if let editing {
+            let textView = UITextView()
+            textView.text = editing.content
+            _textView = .init(wrappedValue: textView)
+        }
     }
     
     @State var feedLoader: MessageFeedLoader?
@@ -41,20 +48,7 @@ struct MessageFeedView: View {
                                 CloseButtonView()
                             }
                         } else {
-                            ToolbarItem(placement: .principal) {
-                                NavigationLink(.person(person)) {
-                                    HStack(spacing: Constants.main.halfSpacing) {
-                                        CircleCroppedImageView(person, frame: 24)
-                                        Text(person.displayName)
-                                            .foregroundStyle(palette.primary)
-                                            .font(.headline)
-                                        Image(systemName: Icons.forward)
-                                            .imageScale(.small)
-                                            .fontWeight(.semibold)
-                                            .foregroundStyle(palette.tertiary)
-                                    }
-                                }
-                            }
+                            ToolbarItem(placement: .principal) { navigationTitleView(person: person) }
                             ToolbarItemGroup(placement: .secondaryAction) {
                                 SwiftUI.Section {
                                     if person is any Person3Providing, proxy.isLoading {
@@ -77,8 +71,7 @@ struct MessageFeedView: View {
         }
     }
     
-    @ViewBuilder
-    func content(person: any Person) -> some View {
+    @ViewBuilder func content(person: any Person) -> some View {
         ScrollViewReader { scrollProxy in
             ScrollView {
                 if let feedLoader {
@@ -108,9 +101,7 @@ struct MessageFeedView: View {
                     }
                 }
             }
-            .safeAreaInset(edge: .bottom) {
-                textInput(scrollProxy)
-            }
+            .safeAreaInset(edge: .bottom) { textInput(scrollProxy) }
             .defaultScrollAnchor(.bottom)
             .scrollDismissesKeyboard(.interactively)
             .background(palette.groupedBackground)
@@ -138,28 +129,28 @@ struct MessageFeedView: View {
                 .padding(.bottom, Constants.main.halfSpacing)
         }
         VStack(alignment: message.isOwnMessage ? .trailing : .leading, spacing: Constants.main.halfSpacing) {
-            MessageBubbleView(message: message)
-                .padding(message.isOwnMessage ? .leading : .trailing, 50)
-                .frame(maxWidth: 400, alignment: message.isOwnMessage ? .trailing : .leading)
-                .onAppear {
-                    do {
-                        try feedLoader.loadIfThreshold(message)
-                    } catch {
-                        handleError(error)
-                    }
+            MessageBubbleView(message: message, editCallback: {
+                editing = message
+                textView.text = message.content
+                textView.becomeFirstResponder()
+            })
+            .padding(message.isOwnMessage ? .leading : .trailing, 50)
+            .frame(maxWidth: 400, alignment: message.isOwnMessage ? .trailing : .leading)
+            .onAppear {
+                do {
+                    try feedLoader.loadIfThreshold(message)
+                } catch {
+                    handleError(error)
                 }
-            if message === feedLoader.items.first, Calendar.current.isDateInToday(message.created) {
-                Text(message.created.formatted(date: .omitted, time: .shortened))
+            }
+            if let footerText = messageFooterText(for: message) {
+                Text(footerText)
                     .font(.footnote)
                     .foregroundStyle(palette.secondary)
                     .padding(.horizontal, Constants.main.halfSpacing)
             }
         }
         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
-    }
-    
-    var minTextEditorHeight: CGFloat {
-        Constants.main.standardSpacing * 2 + UIFont.preferredFont(forTextStyle: .body).lineHeight
     }
     
     @ViewBuilder
@@ -169,19 +160,15 @@ struct MessageFeedView: View {
                 ScrollView { textInputView(scrollProxy) }
                     .scrollBounceBehavior(.basedOnSize, axes: .vertical)
                     .scrollIndicators(.hidden)
-                Button {
-                    Task { @MainActor in
-                        await sendMessage(scrollProxy)
+                HStack(spacing: 6) {
+                    if editing != nil {
+                        cancelEditButton()
                     }
-                } label: {
-                    Image(systemName: "arrow.up.circle.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: minTextEditorHeight - 12)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(palette.selectedInteractionBarItem, palette.accent)
+                    sendButton(scrollProxy)
                 }
+                .frame(height: minTextEditorHeight - 12)
                 .padding(6)
+                .fontWeight(.semibold)
             }
             .frame(minHeight: minTextEditorHeight, maxHeight: 200)
         }
@@ -191,6 +178,43 @@ struct MessageFeedView: View {
         )
         .padding(Constants.main.standardSpacing)
         .background(.bar)
+    }
+    
+    @ViewBuilder
+    func cancelEditButton() -> some View {
+        Button {
+            editing = nil
+            textView.text = ""
+            textView.resignFirstResponder()
+        } label: {
+            textInputButtonLabel(systemImage: Icons.closeCircleFill)
+        }
+        .tint(palette.tertiary)
+    }
+    
+    @ViewBuilder
+    func sendButton(_ scrollProxy: ScrollViewProxy) -> some View {
+        Button {
+            Task { @MainActor in
+                if let editing {
+                    await editMessage(editing)
+                } else {
+                    await sendMessage(scrollProxy)
+                }
+            }
+        } label: {
+            textInputButtonLabel(systemImage: editing == nil ? Icons.sendMessage : Icons.successCircleFill)
+        }
+        .tint(palette.accent)
+    }
+    
+    @ViewBuilder
+    func textInputButtonLabel(systemImage: String) -> some View {
+        Image(systemName: systemImage)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(maxHeight: .infinity)
+            .foregroundStyle(palette.selectedInteractionBarItem, .tint)
     }
     
     @ViewBuilder
@@ -227,14 +251,19 @@ struct MessageFeedView: View {
         )
     }
     
-    func messageIsFirstOfDay(_ message: Message2) -> Bool {
-        guard let feedLoader else { return false }
-        guard let index = feedLoader.items.firstIndex(of: message) else {
-            assertionFailure()
-            return false
+    @ViewBuilder
+    func navigationTitleView(person: any Person) -> some View {
+        NavigationLink(.person(person)) {
+            HStack(spacing: Constants.main.halfSpacing) {
+                CircleCroppedImageView(person, frame: 24)
+                Text(person.displayName)
+                    .foregroundStyle(palette.primary)
+                    .font(.headline)
+                Image(systemName: Icons.forward)
+                    .imageScale(.small)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(palette.tertiary)
+            }
         }
-        guard index < feedLoader.items.count - 1 else { return true }
-        let previousMessage = feedLoader.items[index + 1]
-        return !Calendar.current.isDate(previousMessage.created, inSameDayAs: message.created)
     }
 }
