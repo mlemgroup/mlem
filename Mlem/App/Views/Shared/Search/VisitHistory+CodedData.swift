@@ -3,7 +3,7 @@
 //  Mlem
 //
 //  Created by Sjmarf on 2025-01-01.
-//  
+//
 
 import Foundation
 import MlemMiddleware
@@ -22,10 +22,10 @@ extension VisitHistory {
     
     convenience init(data: CodedData, api: ApiClient) async throws {
         let communityRecords = try await data.communities.mapValueArraysAsync { item in
-            VisitRecord<Community2>(value: try await api.decodeCommunity(item.value), date: item.date)
+            try await VisitRecord<Community2>(value: api.decodeCommunity(item.value), date: item.date)
         }
         let personRecords = try await data.people.mapValueArraysAsync { item in
-            VisitRecord<Person2>(value: try await api.decodePerson(item.value), date: item.date)
+            try await VisitRecord<Person2>(value: api.decodePerson(item.value), date: item.date)
         }
         self.init(
             communityRecords: communityRecords,
@@ -38,11 +38,11 @@ extension VisitHistory {
     
     func codedData() async throws -> CodedData {
         let communities = try await communityRecords.mapValueArraysAsync { item in
-            CodedVisitRecord<Community2.CodedData>(value: try await item.value.codedData(), date: item.date)
+            try await CodedVisitRecord<Community2.CodedData>(value: item.value.codedData(), date: item.date)
         }
         
         let people = try await personRecords.mapValueArraysAsync { item in
-            CodedVisitRecord<Person2.CodedData>(value: try await item.value.codedData(), date: item.date)
+            try await CodedVisitRecord<Person2.CodedData>(value: item.value.codedData(), date: item.date)
         }
         return .init(
             communities: communities,
@@ -62,7 +62,7 @@ private func decodeDictionary<InputValue, OutputValue>(
     for (context, items) in input {
         var outputValues: [OutputValue] = []
         for item in items {
-            outputValues.append(try await transform(item))
+            try await outputValues.append(transform(item))
         }
         output[context] = outputValues
     }
@@ -77,7 +77,7 @@ private extension Dictionary where Value: Collection, Key == VisitHistory.VisitC
         for (context, items) in self {
             var outputValues: [OutputValue] = []
             for item in items {
-                outputValues.append(try await transform(item))
+                try await outputValues.append(transform(item))
             }
             output[context] = outputValues
         }
