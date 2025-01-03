@@ -23,9 +23,9 @@ enum NavigationPage: Hashable {
         navigationNamespace: Namespace.ID? = nil
     )
     case comment(_ comment: AnyComment, comments: [Comment2]?, showViewPostButton: Bool)
-    case community(_ community: AnyCommunity)
-    case person(_ person: AnyPerson)
-    case instance(_ instance: InstanceHashWrapper)
+    case community(_ community: AnyCommunity, visitContext: VisitHistory.VisitContext)
+    case person(_ person: AnyPerson, visitContext: VisitHistory.VisitContext)
+    case instance(_ instance: InstanceHashWrapper, visitContext: VisitHistory.VisitContext)
     case instanceOpinionList(instance: InstanceHashWrapper, opinionType: FediseerOpinionType, data: FediseerData)
     case messageFeed(_ person: AnyPerson, focusTextField: Bool)
     case fediseerInfo
@@ -87,16 +87,25 @@ enum NavigationPage: Hashable {
         Self.comment(.init(comment), comments: comments, showViewPostButton: showViewPostButton)
     }
     
-    static func person(_ person: any PersonStubProviding) -> NavigationPage {
-        Self.person(.init(person))
+    static func person(
+        _ person: any PersonStubProviding,
+        visitContext: VisitHistory.VisitContext = .other
+    ) -> NavigationPage {
+        Self.person(.init(person), visitContext: visitContext)
     }
     
-    static func community(_ community: any CommunityStubProviding) -> NavigationPage {
-        Self.community(.init(community))
+    static func community(
+        _ community: any CommunityStubProviding,
+        visitContext: VisitHistory.VisitContext = .other
+    ) -> NavigationPage {
+        Self.community(.init(community), visitContext: visitContext)
     }
 
-    static func instance(_ instance: any InstanceStubProviding) -> NavigationPage {
-        Self.instance(.init(wrappedValue: instance))
+    static func instance(
+        _ instance: any InstanceStubProviding,
+        visitContext: VisitHistory.VisitContext = .other
+    ) -> NavigationPage {
+        Self.instance(.init(wrappedValue: instance), visitContext: visitContext)
     }
     
     static func modlog(community: (any Community)? = nil) -> NavigationPage {
@@ -123,7 +132,10 @@ enum NavigationPage: Hashable {
         messageFeed(.init(person), focusTextField: focusTextField)
     }
     
-    static func instance(hostOf entity: any ActorIdentifiable) -> NavigationPage {
+    static func instance(
+        hostOf entity: any ActorIdentifiable,
+        visitContext: VisitHistory.VisitContext = .other
+    ) -> NavigationPage {
         var instance: any InstanceStubProviding = InstanceStub(
             api: AppState.main.firstApi, actorId: entity.actorId.removingPathComponents()
         )
@@ -132,7 +144,7 @@ enum NavigationPage: Hashable {
         } else if let entity = entity as? any Community3Providing {
             instance = entity.instance ?? instance
         }
-        return Self.instance(.init(wrappedValue: instance))
+        return Self.instance(.init(wrappedValue: instance), visitContext: visitContext)
     }
     
     static func communityPicker(

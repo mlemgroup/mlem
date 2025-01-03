@@ -22,6 +22,7 @@ class UserSession: Session {
     private(set) var unreadCount: UnreadCount?
     /// This **only** includes requests made by calling `toggleInstanceBlock` on this `UserSession`.
     private(set) var ongoingInstanceBlockRequests: Set<URL> = []
+    private(set) var visitHistory: VisitHistory?
 
     init(account: UserAccount) {
         self.account = account
@@ -52,6 +53,14 @@ class UserSession: Session {
             } catch {
                 handleError(error)
             }
+            if account.visitHistoryEnabled {
+                do {
+                    self.visitHistory = try await PersistenceRepository.liveValue.loadVisitHistory(for: account)
+                } catch {
+                    self.visitHistory = .init()
+                    handleError(error)
+                }
+            }
         }
     }
     
@@ -66,6 +75,12 @@ class UserSession: Session {
     
     static func == (lhs: UserSession, rhs: UserSession) -> Bool {
         lhs.api == rhs.api
+    }
+    
+    func saveVisitHistory() async throws {
+        if let visitHistory {
+            try await PersistenceRepository.liveValue.saveVisitHistory(visitHistory, for: account)
+        }
     }
 
     func toggleInstanceBlock(actorId: URL) {
@@ -97,5 +112,18 @@ class UserSession: Session {
             }
             ongoingInstanceBlockRequests.remove(actorId)
         }
+    }
+    
+    @MainActor
+    func setVisitHistoryEnabled(_ newValue: Bool) async throws {
+        guard newValue != account.visitHistoryEnabled else { return }
+        account.visitHistoryEnabled = newValue
+        if newValue {
+            visitHistory = .init()
+        } else {
+            visitHistory = nil
+            try await PersistenceRepository.liveValue.saveVisitHistory(.init(), for: account)
+        }
+        AccountsTracker.main.saveAccounts(ofType: .user)
     }
 }

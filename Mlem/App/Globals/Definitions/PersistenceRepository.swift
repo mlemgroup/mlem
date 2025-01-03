@@ -27,13 +27,26 @@ enum PersistencePath {
     static var userAccounts = root.appendingPathComponent("Saved Accounts", conformingTo: .json)
     static var guestAccounts = root.appendingPathComponent("Guest Accounts", conformingTo: .json)
     static var favoriteCommunities = root.appendingPathComponent("Favorite Communities", conformingTo: .json)
-    static var recentSearches = root.appendingPathComponent("Recent Searches", conformingTo: .json)
-    static var easterFlags = root.appendingPathComponent("Easter eggs flags", conformingTo: .json)
     static var instanceMetadata = root.appendingPathComponent("Instance Metadata", conformingTo: .json)
     static var layoutWidgets = root.appendingPathComponent("Layout Widgets", conformingTo: .json)
     static var pinnedSortTypes = root.appendingPathComponent("Sort Settings", conformingTo: .json)
     static var systemSettings = root.appendingPathComponent("System Settings", conformingTo: .directory)
-    static var userSettings = root.appendingPathComponent("User Settings", conformingTo: .directory)
+    
+    static func accountSettingsDirectory(for account: any Account) -> URL {
+        root
+            .appendingPathComponent("Account Settings", conformingTo: .directory)
+            .appendingPathComponent(account.uniqueStringId, conformingTo: .directory)
+    }
+    
+    static func accountSettings(for account: any Account) -> URL {
+        accountSettingsDirectory(for: account)
+            .appendingPathComponent("Settings", conformingTo: .json)
+    }
+    
+    static func visitHistory(for account: any Account) -> URL {
+        accountSettingsDirectory(for: account)
+            .appendingPathComponent("Visit History", conformingTo: .json)
+    }
 }
 
 private enum DiskAccess {
@@ -43,6 +56,10 @@ private enum DiskAccess {
     
     static func save(_ data: Data, to path: URL) async throws {
         try await Task(priority: .background) {
+            try FileManager.default.createDirectory(
+                at: path.deletingLastPathComponent(),
+                withIntermediateDirectories: true
+            )
             try data.write(to: path, options: .atomic)
         }
         .value
@@ -63,6 +80,10 @@ enum SystemSetting {
 }
 
 class PersistenceRepository {
+    enum PersistenceRepositoryError: Error {
+        case noFullName
+    }
+    
     @Dependency(\.date) private var date
     
     private var keychainAccess: (String) -> String?
@@ -84,13 +105,16 @@ class PersistenceRepository {
         // set up settings directories--if this fails, something has gone _terribly_ wrong
         do {
             try FileManager.default.createDirectory(at: PersistencePath.systemSettings, withIntermediateDirectories: true)
-            try FileManager.default.createDirectory(at: PersistencePath.userSettings, withIntermediateDirectories: true)
         } catch {
             fatalError("Could not create settings directories")
         }
     }
     
     // MARK: - Public methods
+    
+    func deleteAccountSettings(for account: any Account) throws {
+        try FileManager.default.removeItem(at: PersistencePath.accountSettingsDirectory(for: account))
+    }
     
     func loadUserAccounts() -> [UserAccount] {
         load([UserAccount].self, from: PersistencePath.userAccounts) ?? []
@@ -108,40 +132,23 @@ class PersistenceRepository {
         try await save(value, to: PersistencePath.guestAccounts)
     }
 
-//
-//    func loadRecentSearches(for accountId: String) -> [ContentModelIdentifier] {
-//        let searches = load([String: [ContentModelIdentifier]].self, from: Path.recentSearches) ?? [:]
-//        return searches[accountId] ?? []
-//    }
-//
-//    func saveRecentSearches(for accountId: String, with searches: [ContentModelIdentifier]) async throws {
-//        var extant = load([String: [ContentModelIdentifier]].self, from: Path.recentSearches) ?? [:]
-//        extant[accountId] = searches
-//        try await save(extant, to: Path.recentSearches)
-//    }
-//
-//    func loadFavoriteCommunities() -> [FavoriteCommunity] {
-//        load([FavoriteCommunity].self, from: Path.favoriteCommunities) ?? []
-//    }
-//
-//    func saveFavoriteCommunities(_ value: [FavoriteCommunity]) async throws {
-//        try await save(value, to: Path.favoriteCommunities)
-//    }
-//
-//    func loadEasterFlags() -> Set<EasterFlag> {
-//        load(Set<EasterFlag>.self, from: Path.easterFlags) ?? .init()
-//    }
-//
-//    func saveEasterFlags(_ value: Set<EasterFlag>) async throws {
-//        try await save(value, to: Path.easterFlags)
-//    }
-
     func loadInteractionBarConfigurations() -> InteractionBarConfigurations {
         load(InteractionBarConfigurations.self, from: PersistencePath.layoutWidgets) ?? .default
     }
     
     func saveInteractionBarConfigurations(_ value: InteractionBarConfigurations) async throws {
         try await save(value, to: PersistencePath.layoutWidgets)
+    }
+    
+    func loadVisitHistory(for account: UserAccount) async throws -> VisitHistory {
+        let path = PersistencePath.visitHistory(for: account)
+        let data = load(VisitHistory.CodedData.self, from: path) ?? .init()
+        return try await .init(data: data, api: account.api)
+    }
+    
+    func saveVisitHistory(_ visitHistory: VisitHistory, for account: UserAccount) async throws {
+        let path = PersistencePath.visitHistory(for: account)
+        try await save(visitHistory.codedData(), to: path)
     }
     
     func loadPinnedSortTypes() -> Set<ApiSortType> {
@@ -155,13 +162,13 @@ class PersistenceRepository {
     }
     
     /// Saves the given user settings
-    func saveUserSettings(_ settings: CodableSettings, name: String) async throws {
-        try await save(settings, to: PersistencePath.userSettings.appendingPathComponent(name, conformingTo: .json))
+    func saveUserSettings(_ settings: CodableSettings, for account: any Account) async throws {
+        try await save(settings, to: PersistencePath.accountSettings(for: account))
     }
     
     /// Loads given user settings, if present
-    func loadUserSettings(name: String) -> CodableSettings? {
-        load(CodableSettings.self, from: PersistencePath.userSettings.appendingPathComponent(name, conformingTo: .json))
+    func loadUserSettings(for account: any Account) -> CodableSettings? {
+        load(CodableSettings.self, from: PersistencePath.accountSettings(for: account))
     }
     
     /// Returns true if the given system settings exist, false otherwise

@@ -463,7 +463,19 @@
     "Choose wisely - you cannot change this later." : {
 
     },
+    "Clear" : {
+
+    },
     "Clear Cache" : {
+
+    },
+    "Clear recent searches?" : {
+
+    },
+    "Clear Search History" : {
+
+    },
+    "Clear search history?" : {
 
     },
     "Click on the link in the email to continue." : {
@@ -597,9 +609,6 @@
     "Debug" : {
 
     },
-    "Debug Tools" : {
-
-    },
     "Default" : {
 
     },
@@ -700,9 +709,6 @@
     "Enter your instance's domain name below." : {
 
     },
-    "Error Log" : {
-
-    },
     "EULA" : {
 
     },
@@ -737,9 +743,6 @@
 
     },
     "Failed to Save Image" : {
-
-    },
-    "Failed to share error log" : {
 
     },
     "Failed to unlock post" : {
@@ -1140,9 +1143,6 @@
     "No comments found" : {
 
     },
-    "No errors" : {
-
-    },
     "No reason given" : {
 
     },
@@ -1380,6 +1380,9 @@
     "Recent Checks" : {
 
     },
+    "Recently Searched" : {
+
+    },
     "Redo" : {
 
     },
@@ -1396,6 +1399,9 @@
 
     },
     "Reload on Switch" : {
+
+    },
+    "Remember Search History" : {
 
     },
     "Remove" : {
@@ -1511,7 +1517,16 @@
     "Search" : {
 
     },
-    "Search for posts across Lemmy" : {
+    "Search for communities" : {
+
+    },
+    "Search for Lemmy instances" : {
+
+    },
+    "Search for posts" : {
+
+    },
+    "Search for users" : {
 
     },
     "See All" : {
@@ -1854,6 +1869,9 @@
         }
       }
     },
+    "This action cannot be undone." : {
+
+    },
     "This community has been removed." : {
 
     },
@@ -1876,6 +1894,9 @@
 
     },
     "This username is taken." : {
+
+    },
+    "This will clear your recent searches, which cannot be undone." : {
 
     },
     "This will permanently remove it from %@, not just Mlem!" : {
@@ -1924,6 +1945,15 @@
 
     },
     "Try a different Captcha..." : {
+
+    },
+    "Turn Off" : {
+
+    },
+    "Turn Off Search History" : {
+
+    },
+    "Turn off search history?" : {
 
     },
     "Two-Factor Authentication" : {
@@ -2125,6 +2155,9 @@
 
     },
     "You are required to provide an email on this instance." : {
+
+    },
+    "You can also turn off search history completely for this account." : {
 
     },
     "You don't have an email attached to this account." : {

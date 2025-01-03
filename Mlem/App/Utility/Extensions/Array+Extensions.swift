@@ -7,12 +7,19 @@
 
 import Foundation
 
-public extension Array {
+extension Array {
     subscript(safeIndex index: Int) -> Element? {
         guard index >= 0, index < endIndex else {
             return nil
         }
         
         return self[index]
+    }
+}
+
+extension Sequence where Element: Hashable {
+    func uniqued() -> [Element] {
+        var set = Set<Element>()
+        return filter { set.insert($0).inserted }
     }
 }
