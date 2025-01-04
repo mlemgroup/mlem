@@ -14,6 +14,7 @@ struct MessageBubbleView: View {
     @Environment(Palette.self) var palette
     
     let message: any Message
+    var editCallback: @MainActor () -> Void
     
     var body: some View {
         Group {
@@ -33,7 +34,7 @@ struct MessageBubbleView: View {
         )
         .contentShape(.contextMenuPreview, BubbleShape(myMessage: message.isOwnMessage))
         .contextMenu {
-            message.allMenuActions(isInMessageFeed: true, navigation: navigation)
+            message.allMenuActions(isInMessageFeed: true, editCallback: editCallback, navigation: navigation)
         }
     }
 }

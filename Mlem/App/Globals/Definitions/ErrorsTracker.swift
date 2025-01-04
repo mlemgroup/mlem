@@ -19,9 +19,9 @@ class ErrorsTracker {
     static var main: ErrorsTracker = .init()
     
     func createErrorLog() -> String {
-        var ret: String = ""
+        var ret = ""
         
-        errors.forEach { details in
+        for details in errors {
             let description = details.error?.localizedDescription ?? "No Description"
             ret += "\(details.when.formatted(.iso8601))\t\(details.title ?? "Error")\t\(description)\n"
         }

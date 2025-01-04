@@ -29,6 +29,7 @@ enum Icons {
     static let replyFill: String = "arrowshape.turn.up.left.fill"
     static let send: String = "paperplane"
     static let sendFill: String = "paperplane.fill"
+    static let sendMessage: String = "arrow.up.circle.fill"
     
     // save
     static let save: String = "bookmark"

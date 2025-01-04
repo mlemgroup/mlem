@@ -151,6 +151,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         }
         
         func textViewDidBeginEditing(_ textView: UITextView) {
+            parent.placeholderLabel.isHidden = !textView.text.isEmpty
             parent.onBeginEditing()
         }
     }

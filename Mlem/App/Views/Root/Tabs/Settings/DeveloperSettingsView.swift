@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 22/09/2024.
 //
 
-import SwiftUI
 import MlemMiddleware
+import SwiftUI
 
 // Strings in this view are intentionally left unlocalized; we shouldn't
 // be burdening translators with these when they'll never be used
@@ -23,17 +23,17 @@ struct DeveloperSettingsView: View {
             }
             
             #if DEBUG
-            Section {
-                Button(String("Reset Feed Welcome Prompt")) {
-                    showFeedWelcomePrompt = true
-                }
+                Section {
+                    Button(String("Reset Feed Welcome Prompt")) {
+                        showFeedWelcomePrompt = true
+                    }
                 
-                Button(String("Create Error")) {
-                    handleError(ApiClientError.insufficientPermissions)
+                    Button(String("Create Error")) {
+                        handleError(ApiClientError.insufficientPermissions)
+                    }
+                } header: {
+                    Text(verbatim: "Debug Tools")
                 }
-            } header: {
-                Text(verbatim: "Debug Tools")
-            }
             #endif
         }
         .navigationTitle("Developer")
