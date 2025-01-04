@@ -145,6 +145,7 @@ extension SearchView {
     var recentSearchesHeader: some View {
         HStack {
             Text("Recently Searched")
+                .foregroundStyle(palette.primary)
             Spacer()
             ClearRecentSearchesButton()
         }
