@@ -80,9 +80,9 @@ private func loadInlineImage(inlineImage: InlineImage) async {
     // with tooltips are displayed inline. I haven't found a better way to test for
     // a custom emoji.
     if inlineImage.tooltip == nil {
-        Task { @MainActor in
+        _ = await Task { @MainActor in
             inlineImage.renderFullWidth = true
-        }
+        }.result
         return
     }
     
