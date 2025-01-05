@@ -13,6 +13,7 @@ extension EnvironmentValues {
     @Entry var commentContext: (any Comment1Providing)?
     @Entry var communityContext: (any Community1Providing)?
     @Entry var reportContext: Report?
+    @Entry var feedContext: FeedContext?
     
     @Entry var parentFrameWidth: CGFloat = .zero
     @Entry var isRootView: Bool = false

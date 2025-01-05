@@ -134,6 +134,7 @@ struct SearchView: View {
             .onChange(of: postFilters.location.instanceStub) {
                 resolvePostFilterCreator()
             }
+            .environment(\.feedContext, .search)
     }
     
     @ViewBuilder

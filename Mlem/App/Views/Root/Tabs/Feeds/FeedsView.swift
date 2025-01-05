@@ -131,6 +131,7 @@ struct FeedsView: View {
                 }
                 return postFeedLoader
             }())
+            .environment(\.feedContext, feedSelection.feedContext)
     }
     
     @ViewBuilder

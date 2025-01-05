@@ -53,4 +53,27 @@ enum FeedSelection: String, CaseIterable, Codable {
         case .moderated: .moderatorView
         }
     }
+    
+    var feedContext: FeedContext {
+        switch self {
+        case .all: .all
+        case .local: .local
+        case .subscribed: .subscribed
+        case .saved: .saved
+        case .moderated: .moderated
+        }
+    }
+}
+
+enum FeedContext {
+    case all, local, subscribed, saved, moderated, community, search, person
+    
+    var showSubscriptionIndicator: Bool {
+        switch self {
+        case .all, .local, .saved, .search, .person:
+            return true
+        default:
+            return false
+        }
+    }
 }

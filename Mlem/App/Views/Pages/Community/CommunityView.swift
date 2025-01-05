@@ -131,6 +131,7 @@ struct CommunityView: View {
                 showWarningAgain: $showNsfwCommunityWarning
             )
         }
+        .environment(\.feedContext, .community)
     }
     
     @ViewBuilder
