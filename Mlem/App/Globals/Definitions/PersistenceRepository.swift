@@ -162,12 +162,12 @@ class PersistenceRepository {
     }
     
     /// Saves the given user settings
-    func saveUserSettings(_ settings: CodableSettings, for account: any Account) async throws {
+    func saveAccountSettings(_ settings: CodableSettings, for account: any Account) async throws {
         try await save(settings, to: PersistencePath.accountSettings(for: account))
     }
     
     /// Loads given user settings, if present
-    func loadUserSettings(for account: any Account) -> CodableSettings? {
+    func loadAccountSttings(for account: any Account) -> CodableSettings? {
         load(CodableSettings.self, from: PersistencePath.accountSettings(for: account))
     }
     
