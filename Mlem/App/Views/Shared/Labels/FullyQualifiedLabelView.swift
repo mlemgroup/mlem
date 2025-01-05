@@ -88,9 +88,20 @@ struct FullyQualifiedLabelView: View {
     var flairs: [PersonFlair] {
         guard let person = entity as? any Person else { return [] }
         return person.flairs(
-            interactableContext: (commentContext as? any Comment2Providing) ?? (postContext as? any Post2Providing),
+            interactableContext: interactableContext,
             communityContext: communityContext
         )
+    }
+    
+    var interactableContext: (any Interactable2Providing)? {
+        guard let person = entity as? any Person else { return nil }
+        if let commentContext2 = commentContext as? any Comment2Providing, commentContext2.creator.actorId == person.actorId {
+            return commentContext2
+        }
+        if let postContext2 = postContext as? any Post2Providing, postContext2.creator.actorId == person.actorId {
+            return postContext2
+        }
+        return nil
     }
     
     var accessibilityLabel: String {
