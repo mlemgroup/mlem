@@ -55,6 +55,9 @@ struct ModlogView: View {
     @ViewBuilder
     func content(community: (any Community)?) -> some View {
         ScrollView {
+            ScrollView(.horizontal) {
+                HStack {}
+            }
             LazyVStack(spacing: Constants.main.standardSpacing) {
                 ForEach(Array(feedLoader.items.enumerated()), id: \.offset) { _, entry in
                     ModlogEntryView(entry: entry, targetCommunity: community)
