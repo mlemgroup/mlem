@@ -3086,8 +3086,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
-				branch = "sjmarf/recent-searches";
-				kind = branch;
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.60.0;
 			};
 		};
 		CD64A9182CA37D63007CA7E6 /* XCRemoteSwiftPackageReference "Gifu" */ = {
