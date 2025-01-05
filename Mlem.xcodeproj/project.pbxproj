@@ -254,6 +254,8 @@
 		03CCDAA02BF2795300C0C851 /* LoginPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CCDA9F2BF2795300C0C851 /* LoginPage.swift */; };
 		03CCDAA42BF2852E00C0C851 /* LoginTotpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CCDAA32BF2852E00C0C851 /* LoginTotpView.swift */; };
 		03D0273C2CD3BA5100984519 /* PersonContent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D0273B2CD3BA5100984519 /* PersonContent+Extensions.swift */; };
+		03D284022D29E03C00A6659B /* FeedFilterButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D284012D29E03C00A6659B /* FeedFilterButtonStyle.swift */; };
+		03D284042D29E1C900A6659B /* Modlog+LocationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D284032D29E1C900A6659B /* Modlog+LocationPicker.swift */; };
 		03D2A6372C00F92400ED4FF2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2A6362C00F92400ED4FF2 /* Session.swift */; };
 		03D2A6392C00FAE000ED4FF2 /* UserAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2A6382C00FAE000ED4FF2 /* UserAccount.swift */; };
 		03D2A63B2C010B7500ED4FF2 /* GuestAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2A63A2C010B7500ED4FF2 /* GuestAccount.swift */; };
@@ -708,6 +710,8 @@
 		03CCDA9F2BF2795300C0C851 /* LoginPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPage.swift; sourceTree = "<group>"; };
 		03CCDAA32BF2852E00C0C851 /* LoginTotpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTotpView.swift; sourceTree = "<group>"; };
 		03D0273B2CD3BA5100984519 /* PersonContent+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonContent+Extensions.swift"; sourceTree = "<group>"; };
+		03D284012D29E03C00A6659B /* FeedFilterButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedFilterButtonStyle.swift; sourceTree = "<group>"; };
+		03D284032D29E1C900A6659B /* Modlog+LocationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Modlog+LocationPicker.swift"; sourceTree = "<group>"; };
 		03D2A6362C00F92400ED4FF2 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		03D2A6382C00FAE000ED4FF2 /* UserAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccount.swift; sourceTree = "<group>"; };
 		03D2A63A2C010B7500ED4FF2 /* GuestAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestAccount.swift; sourceTree = "<group>"; };
@@ -1042,6 +1046,7 @@
 			children = (
 				033F84702D1C784600D87A9E /* ModlogEntryView.swift */,
 				033F84712D1C784600D87A9E /* ModlogView.swift */,
+				03D284032D29E1C900A6659B /* Modlog+LocationPicker.swift */,
 			);
 			path = Modlog;
 			sourceTree = "<group>";
@@ -1632,6 +1637,7 @@
 				0382A7F12C0A758E00C79DDA /* ProfileDateView.swift */,
 				030030A02C416B0B009A65FF /* RefreshPopupView.swift */,
 				032C32152C36F65500595286 /* ReplyView.swift */,
+				03D284012D29E03C00A6659B /* FeedFilterButtonStyle.swift */,
 				030050D22D109B7E002B1E99 /* ReportView.swift */,
 				03531EEF2C2DA291004A3464 /* Search */,
 				032C32092C34495D00595286 /* SelectTextView.swift */,
@@ -2278,6 +2284,7 @@
 				03C93CF02BEFFB1A00327BFE /* LoginCredentialsView.swift in Sources */,
 				CD332D7C2CA71E6F00A53988 /* GifView.swift in Sources */,
 				CD13CC652C5D2B9D001AF428 /* CircleCroppedImageView.swift in Sources */,
+				03D284022D29E03C00A6659B /* FeedFilterButtonStyle.swift in Sources */,
 				03AD0A842CFDC557001EF9F7 /* AccountNicknameFieldView.swift in Sources */,
 				CDAA02DD2C81792500D75633 /* SolarizedPalette.swift in Sources */,
 				035EDF032C2ED0DE00F51144 /* PersonListRowBody.swift in Sources */,
@@ -2375,6 +2382,7 @@
 				035394862C9CDC1100795AA5 /* SubscriptionListNavigationButton.swift in Sources */,
 				039F58842C7A7F2C00C61658 /* CommentJumpButtonLocation.swift in Sources */,
 				CD1B2E212C7F84160075C7EA /* View+MarkReadOnScroll.swift in Sources */,
+				03D284042D29E1C900A6659B /* Modlog+LocationPicker.swift in Sources */,
 				033F84AD2C298466002E3EDF /* SectionIndexTitles.swift in Sources */,
 				CDCA44B62C176C5000C092B3 /* View+EdgeBorders.swift in Sources */,
 				CDEE15542D22364B00EB9D7B /* ErrorLogView.swift in Sources */,
