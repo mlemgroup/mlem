@@ -13,13 +13,16 @@ struct TabBarSettingsView: View {
     @Setting(\.tabProfileLabelType) var profileTabLabel: ProfileTabLabel
     @Setting(\.tabProfileShowAvatar) var showUserAvatar: Bool
     
+    var account: any Account {
+        appState.firstAccount
+    }
+    
     var body: some View {
         Form {
             Section {
                 HStack {
                     ForEach(ProfileTabLabel.allCases, id: \.self) { item in
                         VStack(spacing: 10) {
-                            let account = appState.firstAccount
                             if account.avatar != nil, showUserAvatar {
                                 CircleCroppedImageView(account, frame: 42)
                             } else {
