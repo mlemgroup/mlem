@@ -24,6 +24,8 @@ struct ContentView: View {
     
     @Setting(\.interfaceStyle) var interfaceStyle
     @Setting(\.colorPalette) var colorPalette
+    @Setting(\.tabProfileLabelType) var tabProfileLabelType
+    @Setting(\.tabProfileShowAvatar) var tabProfileShowAvatar
     
     let cacheCleanTimer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
     let unreadCountTimer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
@@ -138,7 +140,7 @@ struct ContentView: View {
                 NavigationLayerView(layer: .init(root: .inbox, model: navigationModel), hasSheetModifiers: false)
             },
             CustomTabItem(
-                title: AppState.main.firstAccount.nickname,
+                title: profileTabLabel,
                 image: avatarImage ?? UIImage(systemName: Icons.personCircle),
                 selectedImage: selectedAvatarImage ?? UIImage(systemName: Icons.personCircleFill),
                 onLongPress: {

@@ -28,6 +28,7 @@ struct AccountLocalSettingsView: View {
                 }
             }
         }
+        .navigationTitle("Local Options")
     }
     
     @ViewBuilder

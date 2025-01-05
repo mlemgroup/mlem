@@ -258,6 +258,8 @@
 		03D283FC2D25A3F700A6659B /* VisitHistory+CodedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D283FB2D25A3F700A6659B /* VisitHistory+CodedData.swift */; };
 		03D283FE2D25EEC500A6659B /* SearchView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D283FD2D25EEC500A6659B /* SearchView+Views.swift */; };
 		03D284002D26F09500A6659B /* Instance3+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D283FF2D26F09500A6659B /* Instance3+Extensions.swift */; };
+		03D284062D2AEE3A00A6659B /* TabBarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D284052D2AEE3A00A6659B /* TabBarSettingsView.swift */; };
+		03D284082D2AF05200A6659B /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D284072D2AF05200A6659B /* Checkbox.swift */; };
 		03D2A6372C00F92400ED4FF2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2A6362C00F92400ED4FF2 /* Session.swift */; };
 		03D2A6392C00FAE000ED4FF2 /* UserAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2A6382C00FAE000ED4FF2 /* UserAccount.swift */; };
 		03D2A63B2C010B7500ED4FF2 /* GuestAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2A63A2C010B7500ED4FF2 /* GuestAccount.swift */; };
@@ -716,6 +718,8 @@
 		03D283FB2D25A3F700A6659B /* VisitHistory+CodedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VisitHistory+CodedData.swift"; sourceTree = "<group>"; };
 		03D283FD2D25EEC500A6659B /* SearchView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+Views.swift"; sourceTree = "<group>"; };
 		03D283FF2D26F09500A6659B /* Instance3+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Instance3+Extensions.swift"; sourceTree = "<group>"; };
+		03D284052D2AEE3A00A6659B /* TabBarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarSettingsView.swift; sourceTree = "<group>"; };
+		03D284072D2AF05200A6659B /* Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
 		03D2A6362C00F92400ED4FF2 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		03D2A6382C00FAE000ED4FF2 /* UserAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccount.swift; sourceTree = "<group>"; };
 		03D2A63A2C010B7500ED4FF2 /* GuestAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestAccount.swift; sourceTree = "<group>"; };
@@ -994,6 +998,7 @@
 				03134A572BEC1C46002662CC /* AccountListSettingsView.swift */,
 				031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */,
 				03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */,
+				03D284052D2AEE3A00A6659B /* TabBarSettingsView.swift */,
 				CDBFCB692C04EFFE008CD468 /* PostSettingsView.swift */,
 				039F58922C7B616600C61658 /* CommentSettingsView.swift */,
 				039F58942C7B618F00C61658 /* InboxSettingsView.swift */,
@@ -1600,6 +1605,7 @@
 				03267D802BED4714009D6268 /* Avatar */,
 				CD869FCA2C15F8A100FC8B5B /* Bubble Picker */,
 				03FE14052BF9445F00A8377F /* CloseButtonView.swift */,
+				03D284072D2AF05200A6659B /* Checkbox.swift */,
 				03B431C52C45C09F001A1EB5 /* CollapsibleSheetView.swift */,
 				0397D45F2C66113F002C6CDC /* CommentBodyView.swift */,
 				033F84BA2C2ACB96002E3EDF /* CommentView.swift */,
@@ -2395,6 +2401,7 @@
 				CDE1F1982C63DFC9008AF042 /* PadConstants.swift in Sources */,
 				03B25B312CC4403500EB6DF5 /* Fediseer.swift in Sources */,
 				038028F82CB097A10091A8A2 /* SearchView+InstancePicker.swift in Sources */,
+				03D284082D2AF05200A6659B /* Checkbox.swift in Sources */,
 				CD9CFA2C2C2E1EF300739BBC /* FeedIconView.swift in Sources */,
 				CD1446252A5B357900610EF1 /* Document.swift in Sources */,
 				033F84B12C29907F002E3EDF /* FeedbackType.swift in Sources */,
@@ -2522,6 +2529,7 @@
 				03AF91E32C1C616F00E56644 /* InteractionBarView.swift in Sources */,
 				0397D4802C693A88002C6CDC /* [BlockNode]+Extensions.swift in Sources */,
 				03C0EAEF2CA8288A00B4B2A5 /* CapsuleButtonStyle.swift in Sources */,
+				03D284062D2AEE3A00A6659B /* TabBarSettingsView.swift in Sources */,
 				0320B6612C8DFCF100D38548 /* SearchView+FiltersView.swift in Sources */,
 				CD4D58DA2B86E11D00B82964 /* Mockable.swift in Sources */,
 				034B94892C09360A00039AF4 /* Int+Extensions.swift in Sources */,

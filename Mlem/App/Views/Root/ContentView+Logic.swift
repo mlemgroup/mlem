@@ -17,29 +17,43 @@ extension ContentView {
         var hasher = Hasher()
         hasher.combine(appState.firstAccount.avatar)
         hasher.combine(palette.onChangeTrigger)
+        hasher.combine(tabProfileShowAvatar)
         hasher.combine(colorScheme)
         return hasher.finalize()
     }
     
     func loadAvatar(url: URL) async {
         do {
-            let imageTask = ImagePipeline.shared.imageTask(with: url.withIconSize(128))
-            let avatarImage = try await imageTask.image
-                .resized(to: .init(width: imageTask.image.size.width / imageTask.image.size.height * 26, height: 26))
-                .circleMasked
-                .withRenderingMode(.alwaysOriginal)
-            
-            let selectedAvatarImage = try await imageTask.image
-                .resized(to: .init(width: imageTask.image.size.width / imageTask.image.size.height * 26, height: 26))
-                .circleBorder(color: .init(palette.accent), width: 3.5)
-                .withRenderingMode(.alwaysOriginal)
-            
-            Task { @MainActor in
-                self.avatarImage = avatarImage
-                self.selectedAvatarImage = selectedAvatarImage
+            if tabProfileShowAvatar {
+                let imageTask = ImagePipeline.shared.imageTask(with: url.withIconSize(128))
+                let avatarImage = try await imageTask.image
+                    .resized(to: .init(width: imageTask.image.size.width / imageTask.image.size.height * 26, height: 26))
+                    .circleMasked
+                    .withRenderingMode(.alwaysOriginal)
+                
+                let selectedAvatarImage = try await imageTask.image
+                    .resized(to: .init(width: imageTask.image.size.width / imageTask.image.size.height * 26, height: 26))
+                    .circleBorder(color: .init(palette.accent), width: 3.5)
+                    .withRenderingMode(.alwaysOriginal)
+                
+                Task { @MainActor in
+                    self.avatarImage = avatarImage
+                    self.selectedAvatarImage = selectedAvatarImage
+                }
             }
         } catch {
             print(error)
+        }
+    }
+    
+    var profileTabLabel: String {
+        switch tabProfileLabelType {
+        case .nickname:
+            AppState.main.firstAccount.nickname
+        case .instance:
+            AppState.main.firstAccount.host ?? .init(localized: "Profile")
+        case .anonymous:
+            .init(localized: "Profile")
         }
     }
 }

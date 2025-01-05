@@ -1320,6 +1320,9 @@
     "Private" : {
 
     },
+    "Profile" : {
+
+    },
     "Proxy Failure" : {
 
     },
@@ -1571,6 +1574,9 @@
     "Show All Actions in Feed" : {
 
     },
+    "Show Avatar" : {
+
+    },
     "Show Bot Accounts" : {
 
     },
@@ -1716,6 +1722,9 @@
     "Switch to this account and..." : {
 
     },
+    "Tab Bar" : {
+
+    },
     "Tap and hold items to add, remove or rearrange them." : {
 
     },
@@ -1775,6 +1784,9 @@
           }
         }
       }
+    },
+    "The name shown in the account switcher and tab bar." : {
+
     },
     "The name shown in the account switcher." : {
 
