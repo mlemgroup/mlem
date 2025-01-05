@@ -78,7 +78,7 @@ struct CommentPage: View {
                 }
             }
             .refreshable {
-                _ = await Task {
+                _ = await Task { @MainActor in
                     await tracker?.refresh()
                 }.value
             }
