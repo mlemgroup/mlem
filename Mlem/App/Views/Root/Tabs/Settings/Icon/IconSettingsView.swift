@@ -10,6 +10,8 @@ import SwiftUI
 
 // struct AlternateIcons: View {
 struct IconSettingsView: View {
+    @Environment(Palette.self) var palette
+    
     @State var currentIcon: String? = UIApplication.shared.alternateIconName
     
     let icons: [AlternateIconGroup] = [
@@ -52,7 +54,7 @@ struct IconSettingsView: View {
             }
             .padding(.vertical)
         }
-        .background(Color(uiColor: .systemGroupedBackground))
+        .background(palette.groupedBackground)
         .navigationTitle("App Icon")
     }
 

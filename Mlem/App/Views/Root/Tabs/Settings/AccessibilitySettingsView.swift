@@ -21,7 +21,7 @@ struct AccessibilitySettingsView: View {
     }
     
     var body: some View {
-        List {
+        Form {
             Section("Differentiate Without Color") {
                 Picker("Read Post Indicator", selection: $readPostIndicator) {
                     ForEach(ReadPostIndicator.allCases, id: \.self) { item in
@@ -54,5 +54,6 @@ struct AccessibilitySettingsView: View {
                 Text("These settings control how Mlem behaves when the system-wide \"Differentiate Without Color\" option is enabled.")
             }
         }
+        .navigationTitle("Accessibility")
     }
 }
