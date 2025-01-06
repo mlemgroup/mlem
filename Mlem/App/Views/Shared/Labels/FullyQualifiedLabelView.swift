@@ -64,7 +64,7 @@ struct FullyQualifiedLabelView: View {
             return false
         }
         
-        let subscribedToCommunity: Bool = userSession.subscriptions.communities.contains(where: { $0.id == communityId })
+        let subscribedToCommunity: Bool = userSession.subscriptions.communityIds.contains(communityId)
         
         return subscribedToCommunity && feedContextShowsIndicator
     }
