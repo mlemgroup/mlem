@@ -48,6 +48,8 @@ struct FullyQualifiedLabelView: View {
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
     @Environment(\.feedContext) var feedContext: FeedContext?
 
+    @Setting(\.showSubscribedStatus) var showSubscribedStatus
+    
     let entity: (any CommunityOrPersonStub & Profile1Providing)?
     let labelStyle: FullyQualifiedLabelStyle
     var showAvatar: Bool = true
@@ -55,7 +57,8 @@ struct FullyQualifiedLabelView: View {
     let blurred: Bool
     
     var showSubscriptionIndicator: Bool {
-        guard let userSession = appState.firstSession as? UserSession,
+        guard showSubscribedStatus,
+              let userSession = appState.firstSession as? UserSession,
               let communityId = postContext?.communityId,
               let feedContextShowsIndicator = feedContext?.showSubscriptionIndicator else {
             return false

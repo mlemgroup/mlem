@@ -225,7 +225,7 @@ struct CodableSettings: Codable {
         self.post_limitImageHeight = true
         self.post_showCreator = settings.showPostCreator
         self.post_showCreatorInstance = true
-        self.post_showSubscribedStatus = false
+        self.post_showSubscribedStatus = settings.showSubscribedStatus
         self.post_showWebsitePreview = true
         self.post_size = settings.postSize
         self.post_thumbnailLocation = settings.thumbnailLocation
