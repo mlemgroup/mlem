@@ -100,6 +100,11 @@ class GuestAccount: Account {
     var nicknameSortKey: String { storedNickname ?? name }
     var instanceSortKey: String { host ?? "" }
     
+    var uniqueStringId: String {
+        assert(host != nil)
+        return host ?? ""
+    }
+    
     func resetStoredSettings(withSave: Bool = true) {
         storedNickname = nil
         if withSave {

@@ -38,6 +38,8 @@ struct InstanceView: View {
     @Environment(AppState.self) var appState
     @Environment(\.colorScheme) var colorScheme
     
+    let visitContext: VisitHistory.VisitContext?
+
     // This is fetched from the instance itself, not from the logged-in account.
     @State var instance: any InstanceStubProviding
     @State var uptimeData: UptimeDataStatus?
@@ -47,11 +49,9 @@ struct InstanceView: View {
     @State var selectedTab: Tab = .about
     @State var isAtTop: Bool = true
     
-    // If != nil, blocking is in progress
-    @State var isBlocking: UUID?
-    
-    init(instance: any InstanceStubProviding) {
+    init(instance: any InstanceStubProviding, visitContext: VisitHistory.VisitContext?) {
         self._instance = .init(wrappedValue: instance)
+        self.visitContext = visitContext
     }
     
     var body: some View {
@@ -71,7 +71,9 @@ struct InstanceView: View {
             upgradeState = .loading
             do {
                 if !(instance is any Instance3Providing) {
-                    instance = try await instance.upgradeLocal()
+                    let instance3 = try await instance.upgradeLocal()
+                    instance = instance3
+                    logVisit(instance3)
                 }
                 upgradeState = .done
             } catch {

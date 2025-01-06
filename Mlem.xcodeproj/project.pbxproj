@@ -254,6 +254,10 @@
 		03CCDAA02BF2795300C0C851 /* LoginPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CCDA9F2BF2795300C0C851 /* LoginPage.swift */; };
 		03CCDAA42BF2852E00C0C851 /* LoginTotpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CCDAA32BF2852E00C0C851 /* LoginTotpView.swift */; };
 		03D0273C2CD3BA5100984519 /* PersonContent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D0273B2CD3BA5100984519 /* PersonContent+Extensions.swift */; };
+		03D283FA2D256E1E00A6659B /* VisitHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D283F92D256E1E00A6659B /* VisitHistory.swift */; };
+		03D283FC2D25A3F700A6659B /* VisitHistory+CodedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D283FB2D25A3F700A6659B /* VisitHistory+CodedData.swift */; };
+		03D283FE2D25EEC500A6659B /* SearchView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D283FD2D25EEC500A6659B /* SearchView+Views.swift */; };
+		03D284002D26F09500A6659B /* Instance3+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D283FF2D26F09500A6659B /* Instance3+Extensions.swift */; };
 		03D284062D2AEE3A00A6659B /* TabBarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D284052D2AEE3A00A6659B /* TabBarSettingsView.swift */; };
 		03D284082D2AF05200A6659B /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D284072D2AF05200A6659B /* Checkbox.swift */; };
 		03D2A6372C00F92400ED4FF2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2A6362C00F92400ED4FF2 /* Session.swift */; };
@@ -710,6 +714,10 @@
 		03CCDA9F2BF2795300C0C851 /* LoginPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPage.swift; sourceTree = "<group>"; };
 		03CCDAA32BF2852E00C0C851 /* LoginTotpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTotpView.swift; sourceTree = "<group>"; };
 		03D0273B2CD3BA5100984519 /* PersonContent+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonContent+Extensions.swift"; sourceTree = "<group>"; };
+		03D283F92D256E1E00A6659B /* VisitHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitHistory.swift; sourceTree = "<group>"; };
+		03D283FB2D25A3F700A6659B /* VisitHistory+CodedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VisitHistory+CodedData.swift"; sourceTree = "<group>"; };
+		03D283FD2D25EEC500A6659B /* SearchView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+Views.swift"; sourceTree = "<group>"; };
+		03D283FF2D26F09500A6659B /* Instance3+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Instance3+Extensions.swift"; sourceTree = "<group>"; };
 		03D284052D2AEE3A00A6659B /* TabBarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarSettingsView.swift; sourceTree = "<group>"; };
 		03D284072D2AF05200A6659B /* Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
 		03D2A6362C00F92400ED4FF2 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
@@ -1113,6 +1121,7 @@
 				035EDEF72C2DF93C00F51144 /* Results */,
 				035EDEEB2C2DE93E00F51144 /* SearchBar */,
 				0389DDCE2C39CB0E0005B808 /* SearchView.swift */,
+				03D283FD2D25EEC500A6659B /* SearchView+Views.swift */,
 				0320B6602C8DFCF100D38548 /* SearchView+FiltersView.swift */,
 				038028F72CB097A10091A8A2 /* SearchView+InstancePicker.swift */,
 				038028F92CB097CB0091A8A2 /* SearchView+LocationPicker.swift */,
@@ -1122,6 +1131,8 @@
 				03531EED2C2D9298004A3464 /* SearchSheetView.swift */,
 				03531EF02C2DA298004A3464 /* SearchResultsView.swift */,
 				035EDF002C2ECFE000F51144 /* Searchable.swift */,
+				03D283F92D256E1E00A6659B /* VisitHistory.swift */,
+				03D283FB2D25A3F700A6659B /* VisitHistory+CodedData.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -1872,6 +1883,7 @@
 				0389DDC22C38907C0005B808 /* Message1Providing+Extensions.swift */,
 				032C320B2C3482CA00595286 /* Person1Providing+Extensions.swift */,
 				03E614E32C0BCC7B00F692A4 /* Post1Providing+Extensions.swift */,
+				03D283FF2D26F09500A6659B /* Instance3+Extensions.swift */,
 				03D0273B2CD3BA5100984519 /* PersonContent+Extensions.swift */,
 				039D75632C4EEE69004F24C2 /* DeletableProviding+Extensions.swift */,
 				033171772CCE89E3002DA370 /* PurgableProviding+Extensions.swift */,
@@ -2261,6 +2273,7 @@
 				03B25B352CC4446400EB6DF5 /* FediseerOpinionListView.swift in Sources */,
 				CDB2EC7D2BFADAB300DBC0EF /* CompactPostView.swift in Sources */,
 				0315B1C12C74C71A006D4F82 /* CommentEditorView+Context.swift in Sources */,
+				03D283FE2D25EEC500A6659B /* SearchView+Views.swift in Sources */,
 				03AFD0DF2C3B2E000054B8AD /* PersonListRow.swift in Sources */,
 				0315B1CA2C767847006D4F82 /* InteractionBarTracker.swift in Sources */,
 				03DAEA772C64074E0064DE64 /* SubscriptionListItemView.swift in Sources */,
@@ -2418,6 +2431,7 @@
 				0389DDD32C39E4D40005B808 /* PasteLinkButtonView.swift in Sources */,
 				CD317D4F2BE983ED008F63E2 /* MonochromePalette.swift in Sources */,
 				03AF91EA2C1CE96600E56644 /* Counter.swift in Sources */,
+				03D283FC2D25A3F700A6659B /* VisitHistory+CodedData.swift in Sources */,
 				03B431C22C45BA00001A1EB5 /* MarkdownEditorToolbarView.swift in Sources */,
 				03AD09E82CF88007001EF9F7 /* MoreRepliesButton.swift in Sources */,
 				034B948E2C0937BA00039AF4 /* FancyScrollView.swift in Sources */,
@@ -2465,6 +2479,7 @@
 				CD4D59142B87B36B00B82964 /* InternetConnectionManager.swift in Sources */,
 				0324FA7B2C1F2CD200F6247D /* InfoStackView.swift in Sources */,
 				CD7DB9762C4D6C0A00DCC542 /* FeedCommentView.swift in Sources */,
+				03D283FA2D256E1E00A6659B /* VisitHistory.swift in Sources */,
 				03D3A1EF2BB9CA1D009DE55E /* MenuButton.swift in Sources */,
 				CD0507732C6AA0C8008B1505 /* FeedSelection.swift in Sources */,
 				039F58862C7A810100C61658 /* ExpandedPostView+Logic.swift in Sources */,
@@ -2588,6 +2603,7 @@
 				030FF67D2BC8524500F6BFAC /* CustomTabItem.swift in Sources */,
 				CDAA02E32C821C9100D75633 /* Divider.swift in Sources */,
 				CDCA44972C17666C00C092B3 /* HapticManager.swift in Sources */,
+				03D284002D26F09500A6659B /* Instance3+Extensions.swift in Sources */,
 				033FCAEC2C57DCCD007B7CD1 /* ApiListingType+Extensions.swift in Sources */,
 				033FCB272C5E3933007B7CD1 /* AlternateIconLabel.swift in Sources */,
 				033FCB282C5E3933007B7CD1 /* AlternateIcon.swift in Sources */,
@@ -3079,7 +3095,7 @@
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.59.0;
+				minimumVersion = 0.60.0;
 			};
 		};
 		CD64A9182CA37D63007CA7E6 /* XCRemoteSwiftPackageReference "Gifu" */ = {

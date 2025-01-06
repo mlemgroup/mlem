@@ -17,30 +17,35 @@ struct PersonListRow<Content2: View>: View {
     
     let person: any Person
     let content: Content
+    let visitContext: VisitHistory.VisitContext
 
     init(
         _ person: any Person,
         complications: [Content.Complication] = [.instance],
         showBlockStatus: Bool = true,
+        visitContext: VisitHistory.VisitContext = .other,
         @ViewBuilder content: @escaping () -> Content2
     ) {
         self.person = person
         self.content = .init(person, complications: complications, showBlockStatus: showBlockStatus, content: content)
+        self.visitContext = visitContext
     }
     
     init(
         _ person: any Person,
         complications: [Content.Complication] = [.instance],
         showBlockStatus: Bool = true,
-        readout: Content.Readout? = nil
+        readout: Content.Readout? = nil,
+        visitContext: VisitHistory.VisitContext = .other
     ) where Content2 == EmptyView {
         self.person = person
         self.content = .init(person, complications: complications, showBlockStatus: showBlockStatus, readout: readout)
+        self.visitContext = visitContext
     }
     
     var body: some View {
         Button {
-            navigation.push(.person(person))
+            navigation.push(.person(person, visitContext: visitContext))
         } label: {
             FormChevron { content }
                 .padding(.trailing)
