@@ -48,5 +48,6 @@ struct ThemeSettingsView: View {
             .labelsHidden()
             .pickerStyle(.inline)
         }
+        .navigationTitle("Theme")
     }
 }

@@ -44,7 +44,7 @@ struct SearchView: View {
     @State var personFilters: PersonFilters = .init()
     @State var instanceFilters: InstanceFilters = .init()
     @State var postFilters: PostFilters = .init()
-
+    
     @State var selectedTab: Tab = .communities
     @State var resultsScrollToTopTrigger: Bool = false
     
@@ -82,6 +82,7 @@ struct SearchView: View {
             }
             .navigationSearchBarHiddenWhenScrolling(false)
             .toolbar { PasteLinkButtonView() }
+            .scrollDismissesKeyboard(.interactively)
             .onChange(of: query) {
                 if page != .home {
                     if query.isEmpty {
@@ -147,100 +148,13 @@ struct SearchView: View {
                 }
             }
             .padding(.top, -8)
-            switch selectedTab {
-            case .communities:
-                LazyVStack(spacing: 0) {
-                    SearchResultsView(results: communityLoader.items) { community in
-                        CommunityListRow(community, readout: .subscribers)
-                            .onAppear {
-                                do {
-                                    try communityLoader.loadIfThreshold(community)
-                                } catch {
-                                    handleError(error)
-                                }
-                            }
-                    }
-                    EndOfFeedView(loadingState: communityLoader.loadingState, loadMore: nil, viewType: .hobbit)
-                }
-            case .people:
-                LazyVStack(spacing: 0) {
-                    SearchResultsView(results: personLoader.items) { person in
-                        PersonListRow(person, complications: [.instance, .date], readout: .postsAndComments)
-                            .onAppear {
-                                do {
-                                    try personLoader.loadIfThreshold(person)
-                                } catch {
-                                    handleError(error)
-                                }
-                            }
-                    }
-                    EndOfFeedView(loadingState: personLoader.loadingState, loadMore: nil, viewType: .hobbit)
-                }
-            case .instances:
-                LazyVStack(spacing: 0) {
-                    SearchResultsView(results: instances) { instance in
-                        InstanceListRow(instance, readout: .users)
-                    }
-                    EndOfFeedView(loadingState: .done, loadMore: nil, viewType: .hobbit)
-                }
-            case .posts:
-                if postLoader.loadingState == .idle, postLoader.items.isEmpty {
-                    searchPlaceholder
-                        .padding(.top, 30)
-                } else {
-                    PostGridView(postFeedLoader: postLoader)
-                }
+            if page == .recents {
+                recentSearchesListView
+            } else {
+                resultsListView
             }
         }
         .animation(.easeOut(duration: 0.1), value: filtersActive)
-    }
-    
-    @ViewBuilder
-    var tabView: some View {
-        HStack {
-            BubblePicker(
-                Tab.allCases, selected: $selectedTab,
-                label: { $0.label }
-            )
-            .overlay(alignment: .trailing) {
-                LinearGradient(
-                    colors: [Color.clear, palette.groupedBackground],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-                .frame(width: 10)
-            }
-            if page != .home {
-                Button {
-                    HapticManager.main.play(haptic: .gentleInfo, priority: .low)
-                    filtersActive.toggle()
-                } label: {
-                    Label("Filters", systemImage: filtersActive ? Icons.filterFill : Icons.filter)
-                        .transaction { $0.animation = nil }
-                }
-                .labelStyle(.iconOnly)
-                .padding(.trailing)
-                .imageScale(.large)
-            }
-        }
-        .animation(.easeOut(duration: 0.1), value: page)
-    }
-    
-    @ViewBuilder
-    var searchPlaceholder: some View {
-        VStack(spacing: 20) {
-            Image(systemName: Icons.search)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 120)
-                .fontWeight(.thin)
-                .foregroundStyle(palette.tertiary)
-            Text("Search for posts across Lemmy")
-                .font(.title2)
-                .fontWeight(.semibold)
-                .foregroundStyle(palette.secondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 20)
-        }
+        .animation(.easeOut(duration: 0.2), value: page)
     }
 }

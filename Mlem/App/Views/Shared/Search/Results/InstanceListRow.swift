@@ -18,25 +18,30 @@ struct InstanceListRow<Content2: View>: View {
     let instance: (any Instance)?
     let summary: InstanceSummary?
     let content: Content
+    let visitContext: VisitHistory.VisitContext
 
     init(
         _ instance: any Instance,
         @ViewBuilder content: @escaping () -> Content2 = { EmptyView() },
-        readout: Content.Readout? = nil
+        readout: Content.Readout? = nil,
+        visitContext: VisitHistory.VisitContext = .other
     ) {
         self.instance = instance
         self.summary = nil
         self.content = .init(instance, content: content, readout: readout)
+        self.visitContext = visitContext
     }
     
     init(
         _ summary: InstanceSummary,
         @ViewBuilder content: @escaping () -> Content2 = { EmptyView() },
-        readout: Content.Readout? = nil
+        readout: Content.Readout? = nil,
+        visitContext: VisitHistory.VisitContext = .other
     ) where Content2 == EmptyView {
         self.summary = summary
         self.instance = nil
         self.content = .init(summary, content: content, readout: readout)
+        self.visitContext = visitContext
     }
     
     private var instanceStub: (any InstanceStubProviding)? {
@@ -46,7 +51,7 @@ struct InstanceListRow<Content2: View>: View {
     var body: some View {
         Button {
             if let instanceStub {
-                navigation.push(.instance(instanceStub))
+                navigation.push(.instance(instanceStub, visitContext: visitContext))
             }
         } label: {
             FormChevron { content }

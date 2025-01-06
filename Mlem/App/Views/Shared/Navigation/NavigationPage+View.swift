@@ -24,8 +24,8 @@ extension NavigationPage {
             SignUpView(instance: instance.wrappedValue)
         case let .feeds(feedSelection):
             FeedsView(feedSelection: feedSelection)
-        case let .community(community):
-            CommunityView(community: community)
+        case let .community(community, visitContext):
+            CommunityView(community: community, visitContext: visitContext)
         case .profile:
             ProfileView()
         case .inbox:
@@ -61,8 +61,8 @@ extension NavigationPage {
                 .navigationTransition_(sourceID: "post\(post.wrappedValue.actorId)", in: navigationNamespace)
         case let .comment(comment, comments: comments, showViewPostButton):
             CommentPage(comment: comment, initialComments: comments, showViewPostButton: showViewPostButton)
-        case let .person(person):
-            PersonView(person: person)
+        case let .person(person, visitContext):
+            PersonView(person: person, visitContext: visitContext)
         case let .createComment(context, commentTreeTracker):
             if let view = CommentEditorView(context: context, commentTreeTracker: commentTreeTracker) {
                 view
@@ -139,8 +139,8 @@ extension NavigationPage {
                         .padding(.bottom, Constants.main.halfSpacing)
                 }
             }
-        case let .instance(instance):
-            InstanceView(instance: instance.wrappedValue)
+        case let .instance(instance, visitContext):
+            InstanceView(instance: instance.wrappedValue, visitContext: visitContext)
         case let .instanceOpinionList(instance: instance, opinionType: opinionType, data: data):
             FediseerOpinionListView(instance: instance.wrappedValue, opinionType: opinionType, fediseerData: data)
         case .fediseerInfo:

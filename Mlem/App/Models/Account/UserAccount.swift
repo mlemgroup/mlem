@@ -23,6 +23,7 @@ class UserAccount: Account, CommunityOrPersonStub {
     var avatar: URL?
     var lastUsed: Date?
     var favorites: Set<Int>
+    var visitHistoryEnabled: Bool
     var accountType: AccountType
     
     init(person: Person4, instance: Instance3) {
@@ -35,12 +36,13 @@ class UserAccount: Account, CommunityOrPersonStub {
         self.avatar = person.avatar
         self.lastUsed = .now
         self.favorites = []
+        self.visitHistoryEnabled = true
         self.accountType = person.moderatedCommunities.isEmpty ? .user : .moderator
     }
     
     enum CodingKeys: String, CodingKey {
         // These key names don't match the identifiers of their corresponding properties - this is because these key names must match the property names used in SavedAccount pre-1.3 in order to maintain compatibility
-        case id, username, storedNickname, instanceLink, siteVersion, avatarUrl, lastUsed, favorites, accountType
+        case id, username, storedNickname, instanceLink, siteVersion, avatarUrl, lastUsed, favorites, accountType, visitHistoryEnabled
     }
     
     enum DecodingError: Error { case cannotModifyPathComponents }
@@ -56,6 +58,7 @@ class UserAccount: Account, CommunityOrPersonStub {
         self.avatar = try values.decode(URL?.self, forKey: .avatarUrl)
         self.lastUsed = try values.decode(Date?.self, forKey: .lastUsed)
         self.favorites = try values.decodeIfPresent(Set<Int>.self, forKey: .favorites) ?? []
+        self.visitHistoryEnabled = try values.decodeIfPresent(Bool.self, forKey: .visitHistoryEnabled) ?? true
         self.accountType = try values.decodeIfPresent(AccountType.self, forKey: .accountType) ?? .user
 
         // parse instance link
@@ -89,6 +92,7 @@ class UserAccount: Account, CommunityOrPersonStub {
         try container.encode(avatar, forKey: .avatarUrl)
         try container.encode(lastUsed, forKey: .lastUsed)
         try container.encode(api.baseUrl, forKey: .instanceLink)
+        try container.encode(visitHistoryEnabled, forKey: .visitHistoryEnabled)
         try container.encode(favorites, forKey: .favorites)
     }
     
@@ -136,6 +140,11 @@ class UserAccount: Account, CommunityOrPersonStub {
     
     var nicknameSortKey: String { nickname + (actorId.host() ?? "") }
     var instanceSortKey: String { (actorId.host() ?? "") + nickname }
+    
+    var uniqueStringId: String {
+        assert(fullName != nil)
+        return fullName ?? ""
+    }
     
     var fullName: String? {
         guard let host else { return nil }

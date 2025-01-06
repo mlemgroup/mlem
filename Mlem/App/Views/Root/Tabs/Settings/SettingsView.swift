@@ -59,6 +59,8 @@ struct SettingsView: View {
                     .tint(palette.colorfulAccent(4))
                 NavigationLink("Subscription List", systemImage: "list.bullet", destination: .settings(.subscriptionList))
                     .tint(palette.communityAccent)
+                NavigationLink("Tab Bar", systemImage: "platter.filled.bottom.iphone", destination: .settings(.tabBar))
+                    .tint(palette.colorfulAccent(5))
             }
             
             Section {

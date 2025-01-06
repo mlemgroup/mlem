@@ -76,7 +76,7 @@ struct CodableSettings: Codable {
     var safety_enableNsfwCommunityWarning: Bool
     var tab_gestures_enableLongPress: Bool
     var tab_gestures_enableSwipeUp: Bool
-    var tab_profile_labelType: String // TODO: pending tab label customization
+    var tab_profile_labelType: ProfileTabLabel
     var tab_profile_showAvatar: Bool
     var tab_showNames: Bool
     var person_showAvatar: Bool
@@ -158,7 +158,7 @@ struct CodableSettings: Codable {
         self.safety_enableNsfwCommunityWarning = try container.decodeIfPresent(Bool.self, forKey: .safety_enableNsfwCommunityWarning) ?? true
         self.tab_gestures_enableLongPress = try container.decodeIfPresent(Bool.self, forKey: .tab_gestures_enableLongPress) ?? true
         self.tab_gestures_enableSwipeUp = try container.decodeIfPresent(Bool.self, forKey: .tab_gestures_enableSwipeUp) ?? true
-        self.tab_profile_labelType = try container.decodeIfPresent(String.self, forKey: .tab_profile_labelType) ?? "nickname"
+        self.tab_profile_labelType = try container.decodeIfPresent(ProfileTabLabel.self, forKey: .tab_profile_labelType) ?? .nickname
         self.tab_profile_showAvatar = try container.decodeIfPresent(Bool.self, forKey: .tab_profile_showAvatar) ?? true
         self.tab_showNames = try container.decodeIfPresent(Bool.self, forKey: .tab_showNames) ?? true
         self.person_showAvatar = try container.decodeIfPresent(Bool.self, forKey: .person_showAvatar) ?? true
@@ -237,8 +237,8 @@ struct CodableSettings: Codable {
         self.safety_enableModlogWarning = settings.showModlogWarning
         self.tab_gestures_enableLongPress = true
         self.tab_gestures_enableSwipeUp = true
-        self.tab_profile_labelType = "nickname"
-        self.tab_profile_showAvatar = true
+        self.tab_profile_labelType = settings.tabProfileLabelType
+        self.tab_profile_showAvatar = settings.tabProfileShowAvatar
         self.tab_showNames = true
         self.person_showAvatar = settings.showPersonAvatar
         self.person_showInstance = true
