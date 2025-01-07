@@ -168,7 +168,7 @@ extension Community1Providing {
                 icon: Icons.send,
                 swipeIcon2: Icons.sendFill
             ),
-            callback: callback // api.canInteract ? showNewPostSheet : nil
+            callback: callback
         )
     }
     
