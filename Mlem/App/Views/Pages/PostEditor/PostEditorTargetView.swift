@@ -177,7 +177,8 @@ class PostEditorTarget: Identifiable {
         }
         
         if let personContentFeedLoader = feedLoader as? PersonContentFeedLoader,
-           personContentFeedLoader.userId == account.id {
+           personContentFeedLoader.userId == account.id,
+           personContentFeedLoader.api == account.api {
             Task { @MainActor in
                 withAnimation {
                     personContentFeedLoader.prependItem(.init(wrappedValue: .post(post)))
