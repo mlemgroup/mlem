@@ -77,6 +77,7 @@ struct PersonView: View {
                 default: selectedContentType = .all
                 }
             }
+            .environment(\.feedContext, .person)
     }
     
     var content: some View {

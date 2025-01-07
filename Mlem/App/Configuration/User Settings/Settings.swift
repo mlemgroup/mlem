@@ -26,6 +26,7 @@ class Settings: ObservableObject {
     @AppStorage("post.fallbackSort") var fallbackPostSort: ApiSortType = .hot
     @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
     @AppStorage("post.showCreator") var showPostCreator: Bool = false
+    @AppStorage("post.showSubscribedStatus") var showSubscribedStatus: Bool = true
     
     @AppStorage("quickSwipes.enabled") var quickSwipesEnabled: Bool = true
     
@@ -127,6 +128,7 @@ class Settings: ObservableObject {
         fallbackPostSort = settings.post_fallbackSort
         thumbnailLocation = settings.post_thumbnailLocation
         showPostCreator = settings.post_showCreator
+        showSubscribedStatus = settings.post_showSubscribedStatus
         quickSwipesEnabled = settings.behavior_enableQuickSwipes
         hapticLevel = settings.behavior_hapticLevel
         upvoteOnSave = settings.behavior_upvoteOnSave

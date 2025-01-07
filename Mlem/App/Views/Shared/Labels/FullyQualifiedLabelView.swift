@@ -41,15 +41,35 @@ enum FullyQualifiedLabelStyle {
 
 /// View for rendering fully qualified labels (i.e., user or community names)
 struct FullyQualifiedLabelView: View {
+    @Environment(Palette.self) var palette
+    @Environment(AppState.self) var appState
     @Environment(\.postContext) var postContext: (any Post1Providing)?
     @Environment(\.commentContext) var commentContext: (any Comment1Providing)?
     @Environment(\.communityContext) var communityContext: (any Community1Providing)?
+    @Environment(\.feedContext) var feedContext: FeedContext?
 
+    @Setting(\.showSubscribedStatus) var showSubscribedStatus
+    
     let entity: (any CommunityOrPersonStub & Profile1Providing)?
     let labelStyle: FullyQualifiedLabelStyle
     var showAvatar: Bool = true
     var showInstance: Bool = true
     let blurred: Bool
+    
+    var showSubscriptionIndicator: Bool {
+        guard showSubscribedStatus,
+              let userSession = appState.firstSession as? UserSession,
+              let communityId = postContext?.communityId,
+              let feedContextShowsIndicator = feedContext?.showSubscriptionIndicator else {
+            return false
+        }
+        
+        let subscribedToCommunity: Bool = userSession.subscriptions.communityIds.contains(communityId)
+        
+        return subscribedToCommunity && feedContextShowsIndicator
+    }
+    
+    @ScaledMetric(relativeTo: .body) var subscriptionIndicatorSize: CGFloat = 8.0
     
     var fallback: FixedImageView.Fallback {
         if entity is any CommunityStubProviding {
@@ -72,12 +92,22 @@ struct FullyQualifiedLabelView: View {
                     blurred: blurred
                 )
             }
-            FullyQualifiedNameView(
-                name: entity?.name,
-                instance: entity?.host,
-                instanceLocation: showInstance ? labelStyle.instanceLocation : .disabled,
-                prependedText: flairs.textView
-            )
+            
+            HStack(spacing: 4) {
+                if showSubscriptionIndicator {
+                    Image(systemName: Icons.present)
+                        .font(.system(size: subscriptionIndicatorSize))
+                        .foregroundStyle(palette.secondary)
+                        .padding(.bottom, 2)
+                }
+                
+                FullyQualifiedNameView(
+                    name: entity?.name,
+                    instance: entity?.host,
+                    instanceLocation: showInstance ? labelStyle.instanceLocation : .disabled,
+                    prependedText: flairs.textView
+                )
+            }
             .imageScale(.small)
             .offset(y: 1)
         }

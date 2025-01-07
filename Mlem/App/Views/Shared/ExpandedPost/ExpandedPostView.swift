@@ -188,6 +188,7 @@ struct ExpandedPostView<Content: View>: View {
             }
         }
         .environment(tracker)
+        .environment(\.feedContext, .post)
     }
     
     @ViewBuilder

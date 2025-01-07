@@ -15,6 +15,7 @@ struct PostSettingsView: View {
     @Setting(\.showPostCreator) var showCreator
     @Setting(\.showPersonAvatar) var showPersonAvatar
     @Setting(\.showCommunityAvatar) var showCommunityAvatar
+    @Setting(\.showSubscribedStatus) var showSubscribedStatus
     
     var body: some View {
         Form {
@@ -46,6 +47,9 @@ struct PostSettingsView: View {
                 }
                 Toggle(isOn: $showCommunityAvatar) {
                     Text("Show Community Avatar")
+                }
+                Toggle(isOn: $showSubscribedStatus) {
+                    Text("Show Subscribed Status")
                 }
             }
         }
