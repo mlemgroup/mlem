@@ -20,8 +20,8 @@ extension Community1Providing {
     // MARK: Operations
     
     @MainActor
-    func showNewPostSheet() {
-        NavigationModel.main.openSheet(.createPost(community: self))
+    func showNewPostSheet(feedLoader: CommunityPostFeedLoader? = nil) {
+        NavigationModel.main.openSheet(.createPost(community: self, feedLoader: feedLoader))
     }
     
     func toggleSubscribe(feedback: Set<FeedbackType>) {
@@ -117,9 +117,10 @@ extension Community1Providing {
     @ActionBuilder
     func menuActions(
         feedback: Set<FeedbackType> = [.haptic, .toast],
-        navigation: NavigationLayer?
+        navigation: NavigationLayer?,
+        feedLoader: CommunityPostFeedLoader?
     ) -> [any Action] {
-        newPostAction()
+        newPostAction(feedLoader: feedLoader)
         subscribeAction(feedback: feedback)
         favoriteAction(feedback: feedback)
         openInstanceAction(navigation: navigation)
@@ -149,8 +150,17 @@ extension Community1Providing {
     
     // MARK: Actions
     
-    func newPostAction() -> BasicAction {
-        .init(
+    func newPostAction(feedLoader: CommunityPostFeedLoader?) -> BasicAction {
+        let callback: (@MainActor () -> Void)?
+        if api.canInteract {
+            callback = {
+                self.showNewPostSheet(feedLoader: feedLoader)
+            }
+        } else {
+            callback = nil
+        }
+        
+        return .init(
             id: "newPost\(uid)",
             appearance: .init(
                 label: "New Post",
@@ -158,7 +168,7 @@ extension Community1Providing {
                 icon: Icons.send,
                 swipeIcon2: Icons.sendFill
             ),
-            callback: api.canInteract ? showNewPostSheet : nil
+            callback: callback
         )
     }
     

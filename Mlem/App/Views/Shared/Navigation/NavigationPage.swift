@@ -48,7 +48,8 @@ enum NavigationPage: Hashable {
         title: String,
         content: String,
         url: URL?,
-        nsfw: Bool
+        nsfw: Bool,
+        feedLoader: HashWrapper<(any FeedLoading)?>
     )
     case editPost(_ post: Post2)
     case deleteAccount(_ account: UserAccount)
@@ -230,7 +231,8 @@ enum NavigationPage: Hashable {
         title: String = "",
         content: String = "",
         url: URL? = nil,
-        nsfw: Bool = false
+        nsfw: Bool = false,
+        feedLoader: (any FeedLoading)?
     ) -> NavigationPage {
         let anyCommunity: AnyCommunity?
         if let community {
@@ -243,7 +245,8 @@ enum NavigationPage: Hashable {
             title: title,
             content: content,
             url: url,
-            nsfw: nsfw
+            nsfw: nsfw,
+            feedLoader: .init(wrappedValue: feedLoader)
         )
     }
 

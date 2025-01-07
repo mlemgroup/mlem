@@ -80,14 +80,16 @@ extension NavigationPage {
             title: title,
             content: content,
             url: url,
-            nsfw: nsfw
+            nsfw: nsfw,
+            feedLoader: feedLoader
         ):
             if let view = PostEditorView(
                 community: community,
                 title: title,
                 content: content,
                 url: url,
-                nsfw: nsfw
+                nsfw: nsfw,
+                feedLoader: feedLoader.wrappedValue
             ) {
                 view
             } else {
