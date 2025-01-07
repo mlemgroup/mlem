@@ -332,7 +332,7 @@ extension Post1Providing {
                     content: crossPostContent,
                     url: self.linkUrl,
                     nsfw: self.nsfw,
-                    feedLoader: .init(wrappedValue: nil) // TODO: NOW
+                    feedLoader: .init(wrappedValue: nil)
                 ))
             }
         )
