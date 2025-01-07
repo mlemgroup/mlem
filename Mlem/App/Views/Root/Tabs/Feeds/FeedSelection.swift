@@ -66,11 +66,11 @@ enum FeedSelection: String, CaseIterable, Codable {
 }
 
 enum FeedContext {
-    case all, local, subscribed, saved, moderated, community, search, person
+    case all, local, subscribed, saved, moderated, community, search, person, post
     
     var showSubscriptionIndicator: Bool {
         switch self {
-        case .all, .local, .saved, .search, .person:
+        case .all, .local, .saved, .search, .person, .post:
             return true
         default:
             return false
