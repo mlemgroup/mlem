@@ -160,4 +160,30 @@ class PostEditorTarget: Identifiable {
         self.community = community
         self.account = account
     }
+    
+    /// If this target matches the given feedLoader, prepends the given post
+    func prepend(post: Post2, to feedLoader: (any FeedLoading)?) {
+        guard let feedLoader else { return }
+        
+        if let community,
+           let communityFeedLoader = feedLoader as? CommunityPostFeedLoader,
+           communityFeedLoader.community.actorId == community.actorId {
+            Task { @MainActor in
+                withAnimation {
+                    communityFeedLoader.prependItem(post)
+                }
+            }
+            return
+        }
+        
+        if let personContentFeedLoader = feedLoader as? PersonContentFeedLoader,
+           personContentFeedLoader.userId == account.id {
+            Task { @MainActor in
+                withAnimation {
+                    personContentFeedLoader.prependItem(.init(wrappedValue: .post(post)))
+                }
+            }
+            return
+        }
+    }
 }

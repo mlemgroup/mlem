@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -337,7 +337,6 @@
 		CD4368C12AE23FD400BD8BD1 /* Semaphore in Frameworks */ = {isa = PBXBuildFile; productRef = CD4368C02AE23FD400BD8BD1 /* Semaphore */; };
 		CD43E8B32BF2C24E007C3D71 /* ContentLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */; };
 		CD45CB0D2D1880E8008BC729 /* FiltersSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD45CB0C2D1880E3008BC729 /* FiltersSettingsView.swift */; };
-		CD4A6BCE2D1A1E570046468E /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CD4A6BCD2D1A1E570046468E /* MlemMiddleware */; };
 		CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */; };
 		CD4D583F2B86855F00B82964 /* MlemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D583E2B86855F00B82964 /* MlemTests.swift */; };
 		CD4D58412B86858100B82964 /* MlemUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D58402B86858100B82964 /* MlemUITests.swift */; };
@@ -397,6 +396,7 @@
 		CDAA02DD2C81792500D75633 /* SolarizedPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAA02DC2C81792500D75633 /* SolarizedPalette.swift */; };
 		CDAA02E12C817AAB00D75633 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAA02E02C817AAB00D75633 /* Color+Extensions.swift */; };
 		CDAA02E32C821C9100D75633 /* Divider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAA02E22C821C9100D75633 /* Divider.swift */; };
+		CDB190AF2D2C9DF90044B05B /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CDB190AE2D2C9DF90044B05B /* MlemMiddleware */; };
 		CDB2EC7D2BFADAB300DBC0EF /* CompactPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7C2BFADAB300DBC0EF /* CompactPostView.swift */; };
 		CDB2EC7F2BFADACC00DBC0EF /* HeadlinePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7E2BFADACC00DBC0EF /* HeadlinePostView.swift */; };
 		CDB2EC812BFADADF00DBC0EF /* LargePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC802BFADADF00DBC0EF /* LargePostView.swift */; };
@@ -918,7 +918,7 @@
 				636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */,
 				CDE4AC452CA370E000981010 /* SDWebImageSwiftUI in Frameworks */,
 				CD4368C12AE23FD400BD8BD1 /* Semaphore in Frameworks */,
-				CD4A6BCE2D1A1E570046468E /* MlemMiddleware in Frameworks */,
+				CDB190AF2D2C9DF90044B05B /* MlemMiddleware in Frameworks */,
 				B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */,
 				CDE4AC472CA372B600981010 /* SDWebImageWebPCoder in Frameworks */,
 				B104A6DC2A59BF3C00B3E725 /* NukeUI in Frameworks */,
@@ -2083,7 +2083,7 @@
 				CDE4AC442CA370E000981010 /* SDWebImageSwiftUI */,
 				CDE4AC462CA372B600981010 /* SDWebImageWebPCoder */,
 				CD64A9192CA37E8D007CA7E6 /* Gifu */,
-				CD4A6BCD2D1A1E570046468E /* MlemMiddleware */,
+				CDB190AE2D2C9DF90044B05B /* MlemMiddleware */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -2171,7 +2171,7 @@
 				CDE4AC402CA3706400981010 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				CDE4AC412CA3706F00981010 /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */,
 				CD64A9182CA37D63007CA7E6 /* XCRemoteSwiftPackageReference "Gifu" */,
-				CD4A6BCC2D1A1E4E0046468E /* XCRemoteSwiftPackageReference "MlemMiddleware" */,
+				CDB190AD2D2C9DC90044B05B /* XCLocalSwiftPackageReference "../MlemMiddleware" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -3033,6 +3033,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		CDB190AD2D2C9DC90044B05B /* XCLocalSwiftPackageReference "../MlemMiddleware" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../MlemMiddleware;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		037386452BDAFE81007492B5 /* XCRemoteSwiftPackageReference "LemmyMarkdownUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -3088,14 +3095,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.0.8;
-			};
-		};
-		CD4A6BCC2D1A1E4E0046468E /* XCRemoteSwiftPackageReference "MlemMiddleware" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
-			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 0.60.0;
 			};
 		};
 		CD64A9182CA37D63007CA7E6 /* XCRemoteSwiftPackageReference "Gifu" */ = {
@@ -3175,15 +3174,15 @@
 			package = CD4368BF2AE23FD400BD8BD1 /* XCRemoteSwiftPackageReference "Semaphore" */;
 			productName = Semaphore;
 		};
-		CD4A6BCD2D1A1E570046468E /* MlemMiddleware */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CD4A6BCC2D1A1E4E0046468E /* XCRemoteSwiftPackageReference "MlemMiddleware" */;
-			productName = MlemMiddleware;
-		};
 		CD64A9192CA37E8D007CA7E6 /* Gifu */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CD64A9182CA37D63007CA7E6 /* XCRemoteSwiftPackageReference "Gifu" */;
 			productName = Gifu;
+		};
+		CDB190AE2D2C9DF90044B05B /* MlemMiddleware */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CDB190AD2D2C9DC90044B05B /* XCLocalSwiftPackageReference "../MlemMiddleware" */;
+			productName = MlemMiddleware;
 		};
 		CDE4AC442CA370E000981010 /* SDWebImageSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;

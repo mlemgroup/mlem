@@ -15,7 +15,7 @@ extension MessageFeedView {
             guard let person = person.wrappedValue as? any Person, !textView.text.isEmpty else { return }
             let message = try await appState.firstApi.createMessage(personId: person.id, content: textView.text)
             withAnimation {
-                feedLoader?.insertCreatedMessage(message)
+                feedLoader?.prependItem(message)
                 scrollProxy.scrollTo(message.id, anchor: .bottom)
             }
             textView.text = ""

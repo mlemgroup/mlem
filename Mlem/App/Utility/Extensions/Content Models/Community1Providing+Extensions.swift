@@ -21,7 +21,7 @@ extension Community1Providing {
     
     @MainActor
     func showNewPostSheet() {
-        NavigationModel.main.openSheet(.createPost(community: self))
+        NavigationModel.main.openSheet(.createPost(community: self, feedLoader: nil)) // TODO: NOW
     }
     
     func toggleSubscribe(feedback: Set<FeedbackType>) {

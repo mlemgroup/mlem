@@ -44,6 +44,9 @@ struct PostEditorView: View {
         
     @State var targets: [PostEditorTarget]
     
+    var feedLoader: (any FeedLoading)?
+    
+    /// Initializer for editing a post
     init?(
         postToEdit: Post2,
         community: AnyCommunity?
@@ -53,23 +56,27 @@ struct PostEditorView: View {
             title: postToEdit.title,
             content: postToEdit.content ?? "",
             url: postToEdit.linkUrl,
-            nsfw: postToEdit.nsfw
+            nsfw: postToEdit.nsfw,
+            feedLoader: nil
         )
         self.postToEdit = postToEdit
     }
     
+    /// Initializer for creating a post
     init?(
         community: AnyCommunity?,
         title: String = "",
         content: String = "",
         url: URL? = nil,
-        nsfw: Bool = false
+        nsfw: Bool = false,
+        feedLoader: (any FeedLoading)?
     ) {
         if let account = (AppState.main.firstAccount as? UserAccount) {
             self._targets = .init(wrappedValue: [.init(community: community?.wrappedValue, account: account)])
         } else {
             return nil
         }
+        self.feedLoader = feedLoader
         self.titleTextView = .init()
         self.contentTextView = .init()
         titleTextView.tag = 0
