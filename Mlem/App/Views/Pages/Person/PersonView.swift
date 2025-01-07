@@ -236,7 +236,7 @@ struct PersonView: View {
                 if let feedLoader {
                     if isProfileTab, selectedTab == .overview || selectedTab == .posts {
                         Button("New Post", systemImage: "plus") {
-                            navigation.openSheet(.createPost(community: nil))
+                            navigation.openSheet(.createPost(community: nil, feedLoader: feedLoader))
                         }
                         .buttonStyle(.capsule)
                         .padding([.horizontal, .bottom], Constants.main.standardSpacing)

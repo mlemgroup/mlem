@@ -127,7 +127,7 @@ struct CommunityView: View {
         .isAtTopSubscriber(isAtTop: $isAtTop)
         .toolbar {
             ToolbarItemGroup(placement: .secondaryAction) {
-                MenuButtons { community.menuActions(navigation: navigation) }
+                MenuButtons { community.menuActions(navigation: navigation, feedLoader: postFeedLoader) }
             }
         }
         .popupAnchor()

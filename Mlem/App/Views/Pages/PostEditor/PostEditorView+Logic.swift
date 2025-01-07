@@ -101,6 +101,7 @@ extension PostEditorView {
             while let result = await taskGroup.next() {
                 if let post = result.post {
                     posts.append(post)
+                    result.target.prepend(post: post, to: feedLoader)
                     if self.targets.count == 1 {
                         result.target.sendState = .sent
                     }
