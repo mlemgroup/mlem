@@ -58,6 +58,7 @@ struct FullyQualifiedLabelView: View {
     
     var showSubscriptionIndicator: Bool {
         guard showSubscribedStatus,
+              entity is any CommunityStubProviding,
               let userSession = appState.firstSession as? UserSession,
               let communityId = postContext?.communityId,
               let feedContextShowsIndicator = feedContext?.showSubscriptionIndicator else {
