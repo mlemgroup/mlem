@@ -112,7 +112,7 @@ extension Person1Providing {
             if api.isAdmin {
                 purgeAction()
             }
-            if api.isAdmin, let myInstance = api.myInstance {
+            if local, api.isAdmin, let myInstance = api.myInstance {
                 if api.isHigherAdmin(than: self) {
                     addAdminAction(instance: myInstance, isOn: true)
                 } else if !(self.isAdmin_ ?? false) {
