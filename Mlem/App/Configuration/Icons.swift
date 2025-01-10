@@ -254,6 +254,7 @@ enum Icons {
     static let select: String = "selection.pin.in.out"
     static let crossPost: String = "shuffle"
     static let chooseFile: String = "folder"
+    static let add: String = "plus"
     
     // settings
     static let upvoteOnSave: String = "arrow.up.heart"

@@ -219,6 +219,9 @@
     "Add Account" : {
 
     },
+    "Add Administrator" : {
+
+    },
     "Add Guest" : {
 
     },
@@ -1411,6 +1414,9 @@
 
     },
     "Remove Content" : {
+
+    },
+    "Remove from Administrators" : {
 
     },
     "Removed: %@" : {

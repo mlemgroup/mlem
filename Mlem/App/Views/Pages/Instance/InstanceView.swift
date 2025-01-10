@@ -34,6 +34,7 @@ struct InstanceView: View {
     var uptimeRefreshTimer = Timer.publish(every: 30, tolerance: 0.5, on: .main, in: .common)
         .autoconnect()
     
+    @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     @Environment(AppState.self) var appState
     @Environment(\.colorScheme) var colorScheme
@@ -48,6 +49,13 @@ struct InstanceView: View {
     
     @State var selectedTab: Tab = .about
     @State var isAtTop: Bool = true
+    
+    var admins: [Person2] { instance.administrators_ ?? [] }
+    
+    var adminIndex: Int? {
+        guard let firstPerson = appState.firstPerson?.person2 else { return nil }
+        return admins.firstIndex(of: firstPerson)
+    }
     
     init(instance: any InstanceStubProviding, visitContext: VisitHistory.VisitContext?) {
         self._instance = .init(wrappedValue: instance)
@@ -131,8 +139,18 @@ struct InstanceView: View {
     func administrationTab(instance: any Instance) -> some View {
         VStack(spacing: Constants.main.halfSpacing) {
             ModlogButtonView(community: nil)
-            ForEach(instance.administrators_ ?? []) { person in
+            ForEach(admins) { person in
                 PersonListRow(person)
+            }
+            
+            if adminIndex != nil {
+                Button("Add Administrator", systemImage: Icons.add) {
+                    navigation.openSheet(.personPicker { person in
+                        Task { await addAdmin(person.id, added: true) }
+                    })
+                }
+                .buttonStyle(.capsule)
+                .padding(.top, Constants.main.halfSpacing)
             }
         }
         .padding([.horizontal, .bottom], Constants.main.standardSpacing)

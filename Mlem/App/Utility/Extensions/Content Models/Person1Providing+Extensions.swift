@@ -112,6 +112,9 @@ extension Person1Providing {
             if api.isAdmin {
                 purgeAction()
             }
+            if api.isHigherAdmin(than: self), let myInstance = api.myInstance {
+                removeAdminAction(instance: myInstance)
+            }
         }
     }
     
@@ -194,6 +197,24 @@ extension Person1Providing {
         return .init(
             id: "banFromCommunity\(uid)",
             appearance: .banFromCommunity(isOn: isBanned ?? false, withUserLabel: withUserLabel),
+            callback: callback
+        )
+    }
+    
+    func removeAdminAction(instance: any Instance3Providing) -> BasicAction {
+        let callback: (@MainActor () -> Void) = {
+            Task {
+                do {
+                    try await instance.addAdmin(personId: self.id, added: false)
+                } catch {
+                    handleError(error)
+                }
+            }
+        }
+        
+        return .init(
+            id: "removeAdmin\(uid)",
+            appearance: .removeAdmin(),
             callback: callback
         )
     }

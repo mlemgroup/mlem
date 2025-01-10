@@ -28,6 +28,25 @@ extension InstanceView {
         }
     }
     
+    func addAdmin(_ personId: Int, added: Bool) async {
+        do {
+            let myInstance: Instance3
+            if let apiInstance = appState.firstApi.myInstance {
+                myInstance = apiInstance
+            } else {
+                myInstance = try await appState.firstApi.getMyInstance()
+            }
+            
+            Task { @MainActor in
+                self.instance = myInstance
+            }
+            
+            try await myInstance.addAdmin(personId: personId, added: added)
+        } catch {
+            handleError(error)
+        }
+    }
+    
     func attemptToLoadUptimeData() {
         print("Fetching uptime data...")
         if let url = instance.uptimeDataUrl {
