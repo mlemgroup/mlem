@@ -204,11 +204,13 @@ extension ActionAppearance {
         )
     }
     
-    static func removeAdmin() -> Self {
-        .init(label: "Remove Administrator",
-              isDestructive: true,
-              color: Palette.main.warning,
-              icon: "arrow.down")
+    /// Adds or removes a user as administrator
+    /// - Parameter isOn: true when user is admin, false otherwise
+    static func addAdmin(isOn: Bool) -> Self {
+        .init(label: isOn ? "Remove Administrator" : "Appoint Administrator",
+              isDestructive: isOn,
+              color: isOn ? Palette.main.negative : Palette.main.positive,
+              icon: isOn ? "arrow.down" : "crown") // TODO: NOW icons
     }
     
     static func purge(isInProgress: Bool = false) -> Self {

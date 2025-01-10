@@ -112,8 +112,12 @@ extension Person1Providing {
             if api.isAdmin {
                 purgeAction()
             }
-            if api.isHigherAdmin(than: self), let myInstance = api.myInstance {
-                removeAdminAction(instance: myInstance)
+            if api.isAdmin, let myInstance = api.myInstance {
+                if api.isHigherAdmin(than: self) {
+                    addAdminAction(instance: myInstance, isOn: true)
+                } else if !(self.isAdmin_ ?? false) {
+                    addAdminAction(instance: myInstance, isOn: false)
+                }
             }
         }
     }
@@ -201,11 +205,15 @@ extension Person1Providing {
         )
     }
     
-    func removeAdminAction(instance: any Instance3Providing) -> BasicAction {
+    /// Action to add/remove admin
+    /// - Parameters:
+    ///   - instance: instance to add the admin to
+    ///   - isOn: true if the user is already an admin, false otherwise
+    func addAdminAction(instance: any Instance3Providing, isOn: Bool) -> BasicAction {
         let callback: (@MainActor () -> Void) = {
             Task {
                 do {
-                    try await instance.addAdmin(personId: self.id, added: false)
+                    try await instance.addAdmin(personId: self.id, added: !isOn)
                 } catch {
                     handleError(error)
                 }
@@ -213,8 +221,8 @@ extension Person1Providing {
         }
         
         return .init(
-            id: "removeAdmin\(uid)",
-            appearance: .removeAdmin(),
+            id: "addAdmin\(uid)",
+            appearance: .addAdmin(isOn: isOn),
             callback: callback
         )
     }
