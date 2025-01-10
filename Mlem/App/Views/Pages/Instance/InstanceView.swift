@@ -50,13 +50,6 @@ struct InstanceView: View {
     @State var selectedTab: Tab = .about
     @State var isAtTop: Bool = true
     
-    var admins: [Person2] { instance.administrators_ ?? [] }
-    
-    var adminIndex: Int? {
-        guard let firstPerson = appState.firstPerson?.person2 else { return nil }
-        return admins.firstIndex(of: firstPerson)
-    }
-    
     init(instance: any InstanceStubProviding, visitContext: VisitHistory.VisitContext?) {
         self._instance = .init(wrappedValue: instance)
         self.visitContext = visitContext
@@ -139,13 +132,13 @@ struct InstanceView: View {
     func administrationTab(instance: any Instance) -> some View {
         VStack(spacing: Constants.main.halfSpacing) {
             ModlogButtonView(community: nil)
-            ForEach(admins) { person in
+            ForEach(instance.administrators_ ?? []) { person in
                 PersonListRow(person)
             }
             
-            if adminIndex != nil {
+            if appState.firstApi.isAdmin {
                 Button("Add Administrator", systemImage: Icons.add) {
-                    navigation.openSheet(.personPicker { person in
+                    navigation.openSheet(.personPicker(filter: .local) { person in
                         Task { await addAdmin(person.id, added: true) }
                     })
                 }

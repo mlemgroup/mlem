@@ -33,7 +33,7 @@ enum NavigationPage: Hashable {
     case externalApiInfo(api: ApiClient, actorId: URL)
     case imageViewer(_ url: URL)
     case communityPicker(api: ApiClient?, callback: HashWrapper<(Community2, NavigationLayer) -> Void>)
-    case personPicker(api: ApiClient?, callback: HashWrapper<(Person2, NavigationLayer) -> Void>)
+    case personPicker(api: ApiClient?, filter: ApiListingType, callback: HashWrapper<(Person2, NavigationLayer) -> Void>)
     case instancePicker(callback: HashWrapper<(InstanceSummary, NavigationLayer) -> Void>, minimumVersion: SiteVersion? = nil)
     case selectText(_ string: String)
     case subscriptionList
@@ -166,9 +166,10 @@ enum NavigationPage: Hashable {
     
     static func personPicker(
         api: ApiClient? = nil,
+        filter: ApiListingType = .all,
         callback: @escaping (Person2, NavigationLayer) -> Void
     ) -> NavigationPage {
-        personPicker(api: api, callback: .init(wrappedValue: callback))
+        personPicker(api: api, filter: filter, callback: .init(wrappedValue: callback))
     }
     
     static func instancePicker(
@@ -203,9 +204,10 @@ enum NavigationPage: Hashable {
     
     static func personPicker(
         api: ApiClient? = nil,
+        filter: ApiListingType = .all,
         callback: @escaping (Person2) -> Void
     ) -> NavigationPage {
-        personPicker(api: api, callback: .init(wrappedValue: { value, navigation in
+        personPicker(api: api, filter: filter, callback: .init(wrappedValue: { value, navigation in
             callback(value)
             Task { @MainActor in
                 navigation.dismissSheet()

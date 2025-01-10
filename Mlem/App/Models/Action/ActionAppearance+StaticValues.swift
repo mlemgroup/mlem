@@ -205,7 +205,7 @@ extension ActionAppearance {
     }
     
     static func removeAdmin() -> Self {
-        .init(label: "Remove from Administrators",
+        .init(label: "Remove Administrator",
               isDestructive: true,
               color: Palette.main.warning,
               icon: "arrow.down")

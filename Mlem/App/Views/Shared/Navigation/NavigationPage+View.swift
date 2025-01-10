@@ -108,8 +108,8 @@ extension NavigationPage {
                         .background(Palette.main.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                 }
             }
-        case let .personPicker(api: api, callback: callback):
-            SearchSheetView(api: api) { (person: Person2, navigation: NavigationLayer) in
+        case let .personPicker(api: api, filter: filter, callback: callback):
+            SearchSheetView(api: api, filter: filter) { (person: Person2, navigation: NavigationLayer) in
                 Button {
                     callback.wrappedValue(person, navigation)
                 } label: {
