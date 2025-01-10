@@ -210,7 +210,7 @@ extension ActionAppearance {
         .init(label: isOn ? "Remove Administrator" : "Appoint Administrator",
               isDestructive: isOn,
               color: isOn ? Palette.main.negative : Palette.main.positive,
-              icon: isOn ? "arrow.down" : "crown") // TODO: NOW icons
+              icon: isOn ? Icons.removeAdministrator : Icons.administration)
     }
     
     static func purge(isInProgress: Bool = false) -> Self {
