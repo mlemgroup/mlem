@@ -28,7 +28,7 @@ extension InstanceView {
         }
     }
     
-    func addAdmin(_ personId: Int, added: Bool) async {
+    func addAdmin(_ person: any Person, added: Bool) async {
         do {
             let myInstance: Instance3
             if let apiInstance = appState.firstApi.myInstance {
@@ -41,7 +41,7 @@ extension InstanceView {
                 self.instance = myInstance
             }
             
-            try await myInstance.addAdmin(personId: personId, added: added)
+            try await myInstance.addAdmin(person: person, added: added)
         } catch {
             handleError(error)
         }
