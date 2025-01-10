@@ -29,4 +29,15 @@ extension PersonView {
         }
         return output
     }
+    
+    func logVisit(_ person: Person2) {
+        guard let visitContext else { return }
+        if let session = (appState.firstSession as? UserSession), let visitHistory = session.visitHistory {
+            guard session.api === person.api else { return }
+            visitHistory.addPerson(person, context: visitContext)
+            Task(priority: .background) {
+                try await session.saveVisitHistory()
+            }
+        }
+    }
 }

@@ -39,7 +39,7 @@ struct PostPage: View {
                 }
             }
             .refreshable {
-                _ = await Task {
+                _ = await Task { @MainActor in
                     do {
                         try await post.refresh(upgradeOperation: nil)
                         await tracker?.refresh()

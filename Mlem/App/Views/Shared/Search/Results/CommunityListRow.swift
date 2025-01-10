@@ -16,30 +16,35 @@ struct CommunityListRow<Content2: View>: View {
     
     let community: any Community
     let content: Content
+    let visitContext: VisitHistory.VisitContext
 
     init(
         _ community: any Community,
         complications: [Content.Complication] = [.instance],
         showBlockStatus: Bool = true,
+        visitContext: VisitHistory.VisitContext = .other,
         @ViewBuilder content: @escaping () -> Content2
     ) {
         self.community = community
         self.content = .init(community, complications: complications, showBlockStatus: showBlockStatus, content: content)
+        self.visitContext = visitContext
     }
     
     init(
         _ community: any Community,
         complications: [Content.Complication] = [.instance],
         showBlockStatus: Bool = true,
-        readout: Content.Readout? = nil
+        readout: Content.Readout? = nil,
+        visitContext: VisitHistory.VisitContext = .other
     ) where Content2 == EmptyView {
         self.community = community
         self.content = .init(community, complications: complications, showBlockStatus: showBlockStatus, readout: readout)
+        self.visitContext = visitContext
     }
     
     var body: some View {
         Button {
-            navigation.push(.community(community))
+            navigation.push(.community(community, visitContext: visitContext))
         } label: {
             FormChevron { content }
                 .padding(.trailing)
@@ -48,7 +53,7 @@ struct CommunityListRow<Content2: View>: View {
         .padding(.vertical, 6)
         .background(palette.secondaryGroupedBackground)
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .contextMenu { community.menuActions(navigation: navigation) }
+        .contextMenu { community.menuActions(navigation: navigation, feedLoader: nil) }
         .quickSwipes(community.swipeActions(behavior: .standard))
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
     }

@@ -131,6 +131,7 @@ class CommentTreeTracker: Hashable {
         loadingState = .idle
     }
     
+    @MainActor
     func refresh() async {
         errorDetails = nil
         loadingState = .idle

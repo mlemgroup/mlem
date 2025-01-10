@@ -26,6 +26,7 @@ class Settings: ObservableObject {
     @AppStorage("post.fallbackSort") var fallbackPostSort: ApiSortType = .hot
     @AppStorage("post.thumbnailLocation") var thumbnailLocation: ThumbnailLocation = .left
     @AppStorage("post.showCreator") var showPostCreator: Bool = false
+    @AppStorage("post.showSubscribedStatus") var showSubscribedStatus: Bool = true
     
     @AppStorage("quickSwipes.enabled") var quickSwipesEnabled: Bool = true
     
@@ -85,6 +86,9 @@ class Settings: ObservableObject {
     @AppStorage("navigation.sidebarVisibleByDefault") var sidebarVisibleByDefault: Bool = true
     @AppStorage("navigation.swipeAnywhere") var swipeAnywhereToNavigate: Bool = false
     
+    @AppStorage("tab.profile.labelType") var tabProfileLabelType: ProfileTabLabel = .nickname
+    @AppStorage("tab.profile.showAvatar") var tabProfileShowAvatar: Bool = true
+    
     @AppStorage("menus.moderatorActionGrouping") var moderatorActionGrouping: ModeratorActionGrouping = .divider
     @AppStorage("menus.allModActions") var showAllModActions: Bool = false
     
@@ -124,6 +128,7 @@ class Settings: ObservableObject {
         fallbackPostSort = settings.post_fallbackSort
         thumbnailLocation = settings.post_thumbnailLocation
         showPostCreator = settings.post_showCreator
+        showSubscribedStatus = settings.post_showSubscribedStatus
         quickSwipesEnabled = settings.behavior_enableQuickSwipes
         hapticLevel = settings.behavior_hapticLevel
         upvoteOnSave = settings.behavior_upvoteOnSave
@@ -167,6 +172,8 @@ class Settings: ObservableObject {
         readPostIndicator = settings.a11y_readPostIndicator
         readOutlineThickness = settings.a11y_readOutlineThickness
         keywordFilterEnabled = settings.filters_keywordFilterEnabled
+        tabProfileLabelType = settings.tab_profile_labelType
+        tabProfileShowAvatar = settings.tab_profile_showAvatar
         
         Task {
             await FiltersTracker.main.resetFilteredKeywords(to: settings.filteredKeywords)

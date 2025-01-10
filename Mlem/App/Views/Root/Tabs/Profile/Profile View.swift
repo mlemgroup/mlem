@@ -16,7 +16,7 @@ struct ProfileView: View {
     
     var body: some View {
         if let person = appState.firstPerson {
-            PersonView(person: .init(person), isProfileTab: true)
+            PersonView(person: .init(person), isProfileTab: true, visitContext: nil)
                 .toolbar {
                     ToolbarItem(placement: .secondaryAction) {
                         Button("Edit", systemImage: Icons.edit) {
@@ -26,7 +26,7 @@ struct ProfileView: View {
                 }
                 .id(person.actorId)
         } else if let instance = appState.firstSession.instance {
-            InstanceView(instance: instance)
+            InstanceView(instance: instance, visitContext: nil)
                 .id(instance.actorId)
         }
     }

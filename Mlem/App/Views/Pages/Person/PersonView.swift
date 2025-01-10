@@ -33,6 +33,8 @@ struct PersonView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(FiltersTracker.self) var filtersTracker
     
+    let visitContext: VisitHistory.VisitContext?
+    
     @State var person: AnyPerson
     @State private var selectedTab: Tab = .overview
     @State private var selectedContentType: PersonContentType = .all
@@ -41,7 +43,12 @@ struct PersonView: View {
     @State var isAdmin: Bool
     let isProfileTab: Bool
     
-    init(person: AnyPerson, isProfileTab: Bool = false) {
+    init(
+        person: AnyPerson,
+        isProfileTab: Bool = false,
+        visitContext: VisitHistory.VisitContext?
+    ) {
+        self.visitContext = visitContext
         self._person = .init(wrappedValue: person)
         self._isAdmin = .init(wrappedValue: person.wrappedValue.isAdmin_ ?? false)
         self.isProfileTab = isProfileTab
@@ -70,6 +77,7 @@ struct PersonView: View {
                 default: selectedContentType = .all
                 }
             }
+            .environment(\.feedContext, .person)
     }
     
     var content: some View {
@@ -77,6 +85,11 @@ struct PersonView: View {
             if let person = proxy.entity {
                 content(person: person)
                     .externalApiWarning(entity: person, isLoading: proxy.isLoading)
+                    .onChange(of: (person as? any Person2Providing)?.person2 == nil, initial: true) {
+                        if let person2 = (person as? any Person2Providing)?.person2 {
+                            logVisit(person2)
+                        }
+                    }
                     .toolbar {
                         ToolbarItemGroup(placement: .secondaryAction) {
                             SwiftUI.Section {
@@ -223,7 +236,7 @@ struct PersonView: View {
                 if let feedLoader {
                     if isProfileTab, selectedTab == .overview || selectedTab == .posts {
                         Button("New Post", systemImage: "plus") {
-                            navigation.openSheet(.createPost(community: nil))
+                            navigation.openSheet(.createPost(community: nil, feedLoader: feedLoader))
                         }
                         .buttonStyle(.capsule)
                         .padding([.horizontal, .bottom], Constants.main.standardSpacing)

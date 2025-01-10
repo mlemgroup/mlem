@@ -37,6 +37,8 @@ struct CommunityView: View {
     
     @ObservationIgnored @Dependency(\.persistenceRepository) private var persistenceRepository
     
+    let visitContext: VisitHistory.VisitContext
+
     @State var community: AnyCommunity
     @State private var selectedTab: Tab = .posts
     @State var postFeedLoader: CommunityPostFeedLoader?
@@ -44,9 +46,13 @@ struct CommunityView: View {
     
     @State var isAtTop: Bool = true
     
-    init(community: AnyCommunity) {
+    init(
+        community: AnyCommunity,
+        visitContext: VisitHistory.VisitContext
+    ) {
         @Setting(\.showNsfwCommunityWarning) var showNsfwCommunityWarning
         self.community = community
+        self.visitContext = visitContext
         self._warningPresented = .init(wrappedValue: showNsfwCommunityWarning && (community.wrappedValue.nsfw_ ?? false))
     }
     
@@ -55,6 +61,11 @@ struct CommunityView: View {
             if let community = proxy.entity {
                 content(community: community)
                     .externalApiWarning(entity: community, isLoading: proxy.isLoading)
+                    .onChange(of: (community as? any Community2Providing)?.community2 == nil, initial: true) {
+                        if let community2 = (community as? any Community2Providing)?.community2 {
+                            logVisit(community2)
+                        }
+                    }
             } else {
                 ProgressView()
                     .tint(palette.secondary)
@@ -62,11 +73,7 @@ struct CommunityView: View {
         } upgradeOperation: { model, api in
             try await model.upgrade(api: api, upgradeOperation: nil)
             if let community = model.wrappedValue as? any Community {
-                if postFeedLoader == nil {
-                    setupFeedLoader(community: community)
-                } else if postFeedLoader?.community.api != community.api {
-                    postFeedLoader?.community = community
-                }
+                setupFeedLoader(community: community)
             }
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -120,7 +127,7 @@ struct CommunityView: View {
         .isAtTopSubscriber(isAtTop: $isAtTop)
         .toolbar {
             ToolbarItemGroup(placement: .secondaryAction) {
-                MenuButtons { community.menuActions(navigation: navigation) }
+                MenuButtons { community.menuActions(navigation: navigation, feedLoader: postFeedLoader) }
             }
         }
         .popupAnchor()
@@ -131,6 +138,7 @@ struct CommunityView: View {
                 showWarningAgain: $showNsfwCommunityWarning
             )
         }
+        .environment(\.feedContext, .community)
     }
     
     @ViewBuilder
@@ -213,19 +221,33 @@ struct CommunityView: View {
     }
     
     func setupFeedLoader(community: any Community) {
-        Task { @MainActor in
-            @Setting(\.internetSpeed) var internetSpeed
-            @Setting(\.showReadInFeed) var showReadInFeed
-            
-            postFeedLoader = try await .init(
-                pageSize: internetSpeed.pageSize,
-                sortType: appState.initialFeedSortType,
-                showReadPosts: showReadInFeed,
-                filterContext: filtersTracker.filterContext,
-                prefetchingConfiguration: .forPostSize(postSize),
-                urlCache: Constants.main.urlCache,
-                community: community
-            )
+        if postFeedLoader == nil {
+            Task { @MainActor in
+                @Setting(\.internetSpeed) var internetSpeed
+                @Setting(\.showReadInFeed) var showReadInFeed
+                
+                postFeedLoader = try await .init(
+                    pageSize: internetSpeed.pageSize,
+                    sortType: appState.initialFeedSortType,
+                    showReadPosts: showReadInFeed,
+                    filterContext: filtersTracker.filterContext,
+                    prefetchingConfiguration: .forPostSize(postSize),
+                    urlCache: Constants.main.urlCache,
+                    community: community
+                )
+            }
+        } else if postFeedLoader?.community.api != community.api {
+            postFeedLoader?.community = community
+        }
+    }
+    
+    func logVisit(_ community: Community2) {
+        if let session = (appState.firstSession as? UserSession), let visitHistory = session.visitHistory {
+            guard session.api === community.api else { return }
+            visitHistory.addCommunity(community, context: visitContext)
+            Task(priority: .background) {
+                try await session.saveVisitHistory()
+            }
         }
     }
 }

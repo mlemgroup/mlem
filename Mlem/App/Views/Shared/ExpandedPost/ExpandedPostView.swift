@@ -178,10 +178,17 @@ struct ExpandedPostView<Content: View>: View {
             if isLoading || post.shouldShowLoadingSymbol() {
                 ProgressView()
             } else {
-                ToolbarEllipsisMenu(post.allMenuActions(expanded: true, navigation: navigation))
+                ToolbarEllipsisMenu(
+                    post.allMenuActions(
+                        expanded: true,
+                        navigation: navigation,
+                        commentTreeTracker: tracker
+                    )
+                )
             }
         }
         .environment(tracker)
+        .environment(\.feedContext, .post)
     }
     
     @ViewBuilder

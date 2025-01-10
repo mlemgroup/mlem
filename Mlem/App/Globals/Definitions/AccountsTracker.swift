@@ -82,6 +82,11 @@ class AccountsTracker {
             assertionFailure()
         }
         AppState.main.deactivate(account: account)
+        do {
+            try PersistenceRepository.liveValue.deleteAccountSettings(for: account)
+        } catch {
+            handleError(error)
+        }
         GuestAccountCache.main.clean()
     }
     

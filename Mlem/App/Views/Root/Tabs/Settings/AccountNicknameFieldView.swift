@@ -10,6 +10,8 @@ import SwiftUI
 struct AccountNicknameFieldView: View {
     @Environment(AppState.self) var appState
     
+    @Setting(\.tabProfileLabelType) var tabProfileLabelType
+
     @State var nickname: String
 
     init() {
@@ -27,7 +29,11 @@ struct AccountNicknameFieldView: View {
                 AppState.main.firstAccount.setNickname(nickname)
             }
         } footer: {
-            Text("The name shown in the account switcher.")
+            if tabProfileLabelType == .nickname {
+                Text("The name shown in the account switcher and tab bar.")
+            } else {
+                Text("The name shown in the account switcher.")
+            }
         }
     }
 }

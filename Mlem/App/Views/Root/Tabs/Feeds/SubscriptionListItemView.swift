@@ -20,7 +20,7 @@ struct SubscriptionListItemView: View {
     
     var body: some View {
         SubscriptionListNavigationButton(.community(community), label: label)
-            .contextMenu { community.menuActions(feedback: [.toast], navigation: navigation) }
+            .contextMenu { community.menuActions(feedback: [.toast], navigation: navigation, feedLoader: nil) }
             .swipeActions(edge: .trailing) {
                 Button("Unsubscribe", systemImage: Icons.failure) {
                     community.toggleSubscribe(feedback: [.toast])

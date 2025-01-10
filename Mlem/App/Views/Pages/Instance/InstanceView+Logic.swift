@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 23/09/2024.
 //
 
+import MlemMiddleware
 import SwiftUI
 
 extension InstanceView {
@@ -15,6 +16,16 @@ extension InstanceView {
         }
         output.append(.safety)
         return output
+    }
+    
+    func logVisit(_ instance: any Instance3Providing) {
+        guard let visitContext else { return }
+        if let session = (appState.firstSession as? UserSession), let visitHistory = session.visitHistory {
+            visitHistory.addInstance(instance.instance3.instanceSummary, context: visitContext)
+            Task(priority: .background) {
+                try await session.saveVisitHistory()
+            }
+        }
     }
     
     func attemptToLoadUptimeData() {
