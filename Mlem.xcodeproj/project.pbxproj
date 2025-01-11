@@ -20,6 +20,7 @@
 		03049A202C650A8100FF6889 /* FormReadout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03049A1F2C650A8100FF6889 /* FormReadout.swift */; };
 		03049A222C650B2C00FF6889 /* CommunityDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03049A212C650B2C00FF6889 /* CommunityDetailsView.swift */; };
 		0305EBAA2D32B3B80066E5AD /* ModlogView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0305EBA92D32B3B80066E5AD /* ModlogView+Logic.swift */; };
+		0305EBAC2D32C9300066E5AD /* ApiModlogActionType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0305EBAB2D32C9300066E5AD /* ApiModlogActionType+Extensions.swift */; };
 		030778EC2C52ED350018E61C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 030778EB2C52ED350018E61C /* Localizable.xcstrings */; };
 		030BCB1B2C3EA5FD0037680F /* InstanceDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030BCB1A2C3EA5FD0037680F /* InstanceDetailsView.swift */; };
 		030E95E72C80A20A0045BC2C /* View+NavigationTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E95E62C80A20A0045BC2C /* View+NavigationTransition.swift */; };
@@ -260,7 +261,6 @@
 		03D283FE2D25EEC500A6659B /* SearchView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D283FD2D25EEC500A6659B /* SearchView+Views.swift */; };
 		03D284002D26F09500A6659B /* Instance3+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D283FF2D26F09500A6659B /* Instance3+Extensions.swift */; };
 		03D284022D29E03C00A6659B /* FeedFilterButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D284012D29E03C00A6659B /* FeedFilterButtonStyle.swift */; };
-		03D284042D29E1C900A6659B /* Modlog+LocationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D284032D29E1C900A6659B /* Modlog+LocationPicker.swift */; };
 		03D284062D2AEE3A00A6659B /* TabBarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D284052D2AEE3A00A6659B /* TabBarSettingsView.swift */; };
 		03D284082D2AF05200A6659B /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D284072D2AF05200A6659B /* Checkbox.swift */; };
 		03D2A6372C00F92400ED4FF2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2A6362C00F92400ED4FF2 /* Session.swift */; };
@@ -483,8 +483,8 @@
 		03049A1D2C6508F400FF6889 /* ApiRegistrationMode+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiRegistrationMode+Extensions.swift"; sourceTree = "<group>"; };
 		03049A1F2C650A8100FF6889 /* FormReadout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormReadout.swift; sourceTree = "<group>"; };
 		03049A212C650B2C00FF6889 /* CommunityDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityDetailsView.swift; sourceTree = "<group>"; };
-		0305EBA82D32B3200066E5AD /* MlemMiddleware */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MlemMiddleware; path = ../MlemMiddleware; sourceTree = SOURCE_ROOT; };
 		0305EBA92D32B3B80066E5AD /* ModlogView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModlogView+Logic.swift"; sourceTree = "<group>"; };
+		0305EBAB2D32C9300066E5AD /* ApiModlogActionType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiModlogActionType+Extensions.swift"; sourceTree = "<group>"; };
 		030778EB2C52ED350018E61C /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		030BCB1A2C3EA5FD0037680F /* InstanceDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceDetailsView.swift; sourceTree = "<group>"; };
 		030E95E62C80A20A0045BC2C /* View+NavigationTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+NavigationTransition.swift"; sourceTree = "<group>"; };
@@ -724,7 +724,6 @@
 		03D283FD2D25EEC500A6659B /* SearchView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+Views.swift"; sourceTree = "<group>"; };
 		03D283FF2D26F09500A6659B /* Instance3+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Instance3+Extensions.swift"; sourceTree = "<group>"; };
 		03D284012D29E03C00A6659B /* FeedFilterButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedFilterButtonStyle.swift; sourceTree = "<group>"; };
-		03D284032D29E1C900A6659B /* Modlog+LocationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Modlog+LocationPicker.swift"; sourceTree = "<group>"; };
 		03D284052D2AEE3A00A6659B /* TabBarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarSettingsView.swift; sourceTree = "<group>"; };
 		03D284072D2AF05200A6659B /* Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
 		03D2A6362C00F92400ED4FF2 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
@@ -1063,7 +1062,6 @@
 				033F84702D1C784600D87A9E /* ModlogEntryView.swift */,
 				033F84712D1C784600D87A9E /* ModlogView.swift */,
 				0305EBA92D32B3B80066E5AD /* ModlogView+Logic.swift */,
-				03D284032D29E1C900A6659B /* Modlog+LocationPicker.swift */,
 			);
 			path = Modlog;
 			sourceTree = "<group>";
@@ -1377,7 +1375,6 @@
 		6363D5B827EE196700E34822 = {
 			isa = PBXGroup;
 			children = (
-				0305EBA82D32B3200066E5AD /* MlemMiddleware */,
 				6363D5C327EE196700E34822 /* Mlem */,
 				6363D5D927EE196A00E34822 /* MlemTests */,
 				6363D5E327EE196A00E34822 /* MlemUITests */,
@@ -1881,6 +1878,7 @@
 			isa = PBXGroup;
 			children = (
 				032C32032C3439C600595286 /* ActorIdentifiable+Extensions.swift */,
+				0305EBAB2D32C9300066E5AD /* ApiModlogActionType+Extensions.swift */,
 				033F84BE2C2ACC9F002E3EDF /* Comment1Providing+Extensions.swift */,
 				037658DE2BE7D9EF00F4DD4D /* Community1Providing+Extensions.swift */,
 				034B94802C09306D00039AF4 /* CommunityOrPersonStub+Extensions.swift */,
@@ -2309,6 +2307,7 @@
 				03C93CF02BEFFB1A00327BFE /* LoginCredentialsView.swift in Sources */,
 				CD332D7C2CA71E6F00A53988 /* GifView.swift in Sources */,
 				CD13CC652C5D2B9D001AF428 /* CircleCroppedImageView.swift in Sources */,
+				0305EBAC2D32C9300066E5AD /* ApiModlogActionType+Extensions.swift in Sources */,
 				03D284022D29E03C00A6659B /* FeedFilterButtonStyle.swift in Sources */,
 				03AD0A842CFDC557001EF9F7 /* AccountNicknameFieldView.swift in Sources */,
 				CDAA02DD2C81792500D75633 /* SolarizedPalette.swift in Sources */,
@@ -2407,7 +2406,6 @@
 				035394862C9CDC1100795AA5 /* SubscriptionListNavigationButton.swift in Sources */,
 				039F58842C7A7F2C00C61658 /* CommentJumpButtonLocation.swift in Sources */,
 				CD1B2E212C7F84160075C7EA /* View+MarkReadOnScroll.swift in Sources */,
-				03D284042D29E1C900A6659B /* Modlog+LocationPicker.swift in Sources */,
 				033F84AD2C298466002E3EDF /* SectionIndexTitles.swift in Sources */,
 				CDCA44B62C176C5000C092B3 /* View+EdgeBorders.swift in Sources */,
 				CDEE15542D22364B00EB9D7B /* ErrorLogView.swift in Sources */,
@@ -3116,8 +3114,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.61.0;
+				branch = "sjmarf/modlog-filters";
+				kind = branch;
 			};
 		};
 		CDE4AC402CA3706400981010 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {

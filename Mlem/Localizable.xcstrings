@@ -204,6 +204,9 @@
     "Accounts" : {
 
     },
+    "Action Type" : {
+
+    },
     "Active" : {
 
     },
@@ -261,6 +264,12 @@
     "Answer..." : {
 
     },
+    "Any" : {
+
+    },
+    "Any Community" : {
+
+    },
     "Any Instance" : {
 
     },
@@ -280,6 +289,12 @@
 
     },
     "Apply to All Interaction Bars" : {
+
+    },
+    "Appoint Administrator" : {
+
+    },
+    "Appoint Moderator" : {
 
     },
     "Appointed: %@" : {
@@ -339,6 +354,12 @@
 
     },
     "Ban Duration" : {
+
+    },
+    "Ban from Community" : {
+
+    },
+    "Ban from Instance" : {
 
     },
     "Ban Target" : {
@@ -487,6 +508,9 @@
     "Code Block" : {
 
     },
+    "Comment" : {
+
+    },
     "Comment was deleted" : {
 
     },
@@ -503,6 +527,9 @@
 
     },
     "Communities" : {
+
+    },
+    "Community" : {
 
     },
     "Community Creation" : {
@@ -879,6 +906,9 @@
     "Hide" : {
 
     },
+    "Hide Community" : {
+
+    },
     "Hide Older Incidents" : {
 
     },
@@ -1018,6 +1048,9 @@
 
     },
     "Lock" : {
+
+    },
+    "Lock Post" : {
 
     },
     "Log In" : {
@@ -1251,6 +1284,9 @@
     "Pin" : {
 
     },
+    "Pin Post" : {
+
+    },
     "Pin to Community" : {
 
     },
@@ -1258,6 +1294,9 @@
 
     },
     "Pink" : {
+
+    },
+    "Post" : {
 
     },
     "Post failed to send." : {
@@ -1327,6 +1366,18 @@
 
     },
     "Purge" : {
+
+    },
+    "Purge Comment" : {
+
+    },
+    "Purge Community" : {
+
+    },
+    "Purge Person" : {
+
+    },
+    "Purge Post" : {
 
     },
     "Purge User" : {
@@ -1410,7 +1461,16 @@
     "Remove" : {
 
     },
+    "Remove Comment" : {
+
+    },
+    "Remove Community" : {
+
+    },
     "Remove Content" : {
+
+    },
+    "Remove Post" : {
 
     },
     "Removed: %@" : {
@@ -1953,6 +2013,12 @@
     "Trailing" : {
 
     },
+    "Transfer Community" : {
+
+    },
+    "Transfer Ownership" : {
+
+    },
     "Troll" : {
 
     },
@@ -2080,6 +2146,9 @@
 
     },
     "Upvote on Save" : {
+
+    },
+    "User" : {
 
     },
     "User Link" : {

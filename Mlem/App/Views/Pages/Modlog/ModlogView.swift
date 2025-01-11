@@ -10,15 +10,19 @@ import SwiftUI
 
 struct ModlogView: View {
     @Environment(AppState.self) var appState
+    @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     
     @Setting(\.showModlogWarning) var showModlogWarning
     
+    let api: ApiClient
     let initialTarget: InitialTarget
     
     @State var feedLoader: ModlogFeedLoader
     @State var warningPresented: Bool = Settings.main.showModlogWarning
-    @State var targetFilter: TargetFilter?
+    
+    @State var communityFilter: CommunityFilter?
+    @State var actionTypeFilter: ApiModlogActionType?
     
     init(initialTarget: InitialTarget) {
         self._feedLoader = .init(
@@ -33,12 +37,12 @@ struct ModlogView: View {
         switch initialTarget {
         case let .community(community):
             if let community = community.wrappedValue as? any Community {
-                self._targetFilter = .init(wrappedValue: .community(community))
+                self._communityFilter = .init(wrappedValue: .community(community))
             }
+            self.api = community.wrappedValue.api
         case let .instance(instance):
-            if let instance = instance.wrappedValue as? any Instance3Providing {
-                self._targetFilter = .init(wrappedValue: .instance(instance.instance3.instanceSummary))
-            }
+            self._communityFilter = .init(wrappedValue: .any)
+            self.api = instance.wrappedValue.api
         }
     }
     
@@ -48,31 +52,23 @@ struct ModlogView: View {
             case let .community(initialCommunity):
                 ContentLoader(model: initialCommunity) { proxy in
                     Group {
-                        if let targetFilter {
-                            content(targetFilter: targetFilter)
+                        if let communityFilter {
+                            content(communityFilter: communityFilter)
                         } else {
                             ProgressView()
                                 .onAppear {
-                                    if targetFilter == nil, let community = proxy.entity {
-                                        targetFilter = .community(community)
+                                    if communityFilter == nil, let community = proxy.entity {
+                                        communityFilter = .community(community)
                                     }
                                 }
                         }
                     }
                 }
             case let .instance(instanceHashWrapper):
-                if let targetFilter {
-                    content(targetFilter: targetFilter)
+                if let communityFilter {
+                    content(communityFilter: communityFilter)
                 } else {
                     ProgressView()
-                        .onAppear {
-                            if targetFilter == nil {
-                                Task { @MainActor in
-                                    let instance = try await instanceHashWrapper.wrappedValue.upgradeLocal()
-                                    targetFilter = .instance(instance.instanceSummary)
-                                }
-                            }
-                        }
                 }
             }
         }
@@ -85,12 +81,12 @@ struct ModlogView: View {
                 showWarningAgain: $showModlogWarning
             )
         }
-        .onChange(of: targetFilter, initial: true) { oldValue, newValue in
+        .onChange(of: communityFilter, initial: true) { oldValue, newValue in
             // This prevents the feed from refreshing when changing tabs
             guard oldValue != newValue || (feedLoader.loadingState == .loading && feedLoader.items.isEmpty) else {
                 return
             }
-            if let targetFilter {
+            if communityFilter != nil {
                 Task {
                     do {
                         try await refresh()
@@ -103,21 +99,15 @@ struct ModlogView: View {
     }
     
     @ViewBuilder
-    func content(targetFilter: TargetFilter) -> some View {
+    func content(communityFilter: CommunityFilter) -> some View {
         ScrollView {
-            filtersView(targetFilter: targetFilter)
+            filtersView(communityFilter: communityFilter)
             LazyVStack(spacing: Constants.main.standardSpacing) {
-                ForEach(Array(feedLoader.items.enumerated()), id: \.offset) { _, entry in
-                    ModlogEntryView(entry: entry, targetCommunity: targetFilter.communityValue)
-                        .onAppear {
-                            do {
-                                try feedLoader.loadIfThreshold(entry)
-                            } catch {
-                                handleError(error)
-                            }
-                        }
-                }
-                EndOfFeedView(loadingState: feedLoader.loadingState, loadMore: nil, viewType: .hobbit)
+                ForEach(
+                    Array(feedLoader.items(ofType: actionTypeFilter).enumerated()),
+                    id: \.offset
+                ) { _, entry in entryView(entry) }
+                EndOfFeedView(loadingState: activeFeedLoader.loadingState, loadMore: nil, viewType: .hobbit)
             }
             .padding([.horizontal, .bottom], Constants.main.standardSpacing)
         }
@@ -125,25 +115,93 @@ struct ModlogView: View {
     }
     
     @ViewBuilder
-    func filtersView(targetFilter: TargetFilter) -> some View {
+    func entryView(_ entry: ModlogEntry) -> some View {
+        ModlogEntryView(entry: entry, targetCommunity: communityFilter?.communityValue)
+            .onAppear {
+                do {
+                    try activeFeedLoader.loadIfThreshold(entry)
+                } catch {
+                    handleError(error)
+                }
+            }
+    }
+    
+    @ViewBuilder
+    func filtersView(communityFilter: CommunityFilter) -> some View {
         ScrollView(.horizontal) {
             HStack {
-                LocationPicker(
-                    filter: .init(get: { targetFilter }, set: { self.targetFilter = $0 })
+                Button {
+                    if communityFilter == .any {
+                        navigation.openSheet(.communityPicker(api: api) { community in
+                            self.communityFilter = .community(community)
+                        })
+                    } else {
+                        self.communityFilter = .any
+                    }
+                } label: {
+                    Label(communityFilter.label, systemImage: Icons.community)
+                }
+                .buttonStyle(
+                    .feedFilter(
+                        isOn: communityFilter != .any,
+                        systemImage: communityFilter == .any ? Icons.dropDownCircleFill : Icons.closeCircleFill
+                    )
                 )
-                .buttonStyle(.feedFilter(isOn: locationFilterIsOn))
+                typeFilterView()
+                    .buttonStyle(.feedFilter(isOn: actionTypeFilter != nil))
             }
             .padding(.horizontal, Constants.main.standardSpacing)
         }
     }
     
-    var locationFilterIsOn: Bool {
-        guard let targetFilter else { return false }
-        switch targetFilter {
-        case let .community(community):
-            return initialTarget.communityValue?.actorId == community.actorId
-        case let .instance(instanceSummary):
-            return initialTarget.instanceValue?.host == instanceSummary.host
+    @ViewBuilder
+    func typeFilterView() -> some View {
+        Menu(
+            String(localized: actionTypeFilter?.label ?? "Action Type"),
+            systemImage: actionTypeFilter?.systemImage ?? "diamond"
+        ) {
+            Section {
+                Toggle(
+                    "Any",
+                    systemImage: "diamond",
+                    isOn: .init(get: { actionTypeFilter == nil }, set: { _ in actionTypeFilter = nil })
+                )
+            }
+            Section {
+                Picker("Post", systemImage: Icons.posts, selection: $actionTypeFilter) {
+                    typeFilterLabel(.modRemovePost)
+                    typeFilterLabel(.modLockPost)
+                    typeFilterLabel(.modFeaturePost)
+                    typeFilterLabel(.adminPurgePost)
+                }
+                Picker("Comment", systemImage: Icons.replies, selection: $actionTypeFilter) {
+                    typeFilterLabel(.modRemoveComment)
+                    typeFilterLabel(.adminPurgeComment)
+                }
+                Picker("Community", systemImage: Icons.community, selection: $actionTypeFilter) {
+                    typeFilterLabel(.modRemoveCommunity)
+                    typeFilterLabel(.modHideCommunity)
+                    typeFilterLabel(.modAddCommunity)
+                    typeFilterLabel(.modTransferCommunity)
+                    typeFilterLabel(.adminPurgeCommunity)
+                }
+                Picker("User", systemImage: Icons.person, selection: $actionTypeFilter) {
+                    typeFilterLabel(.modBan)
+                    typeFilterLabel(.modBanFromCommunity)
+                    typeFilterLabel(.modAddCommunity)
+                    typeFilterLabel(.modAdd)
+                    typeFilterLabel(.adminPurgePerson)
+                }
+            }
+        }
+        .pickerStyle(.menu)
+    }
+    
+    @ViewBuilder
+    func typeFilterLabel(_ type: ApiModlogActionType) -> some View {
+        if type.appliesToCommunity || communityFilter == .any {
+            Label(String(localized: type.contextualLabel), systemImage: type.systemImage)
+                .tag(type)
         }
     }
 }

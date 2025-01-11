@@ -208,7 +208,7 @@ struct PersonView: View {
                         .tint(palette.colorfulAccent(4))
                 }
                 if isAdmin {
-                    Label("\(person.host ?? "") Administrator", systemImage: Icons.adminFlair)
+                    Label("\(person.host ?? "") Administrator", systemImage: Icons.administrationFill)
                         .tint(palette.administration)
                 }
                 if person.isBot {

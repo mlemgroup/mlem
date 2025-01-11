@@ -12,43 +12,48 @@ extension ModlogView {
     enum InitialTarget: Hashable {
         case community(AnyCommunity)
         case instance(InstanceHashWrapper)
+    }
+    
+    enum CommunityFilter: Equatable {
+        case any
+        case community(any Community)
         
-        var communityValue: (any CommunityStubProviding)? {
+        var label: String {
             switch self {
-            case let .community(community): community.wrappedValue
+            case .any: .init(localized: "Any Community")
+            case let .community(community): community.name
+            }
+        }
+        
+        var communityValue: (any Community)? {
+            switch self {
+            case let .community(community): community
             default: nil
             }
         }
         
-        var instanceValue: (any InstanceStubProviding)? {
-            switch self {
-            case let .instance(instance): instance.wrappedValue
-            default: nil
+        static func == (lhs: CommunityFilter, rhs: CommunityFilter) -> Bool {
+            switch (lhs, rhs) {
+            case let (.community(lhs), .community(rhs)): lhs === rhs
+            case (.any, .any): true
+            default: false
             }
         }
     }
     
     func refresh() async throws {
-        let api: ApiClient
-        switch targetFilter {
-        case let .instance(instance):
-            guard let url = instance.url else {
-                assertionFailure()
-                throw ApiClientError.unsuccessful
-            }
-            if AppState.main.firstApi.host == url.host {
-                api = AppState.main.firstApi
-            } else {
-                api = .getApiClient(for: url, with: nil)
-            }
-        default:
-            api = AppState.main.firstApi
-        }
-        print("API", api)
         try await feedLoader.refresh(
             api: api,
-            communityId: targetFilter?.communityValue?.id,
+            communityId: communityFilter?.communityValue?.id,
             clearBeforeRefresh: true
         )
+    }
+    
+    var activeFeedLoader: any FeedLoading<ModlogEntry> {
+        if let actionTypeFilter {
+            feedLoader.childLoader(ofType: actionTypeFilter)
+        } else {
+            feedLoader
+        }
     }
 }
