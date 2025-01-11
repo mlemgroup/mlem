@@ -14,31 +14,68 @@ struct ModlogView: View {
     
     @Setting(\.showModlogWarning) var showModlogWarning
     
-    let community: AnyCommunity?
+    enum InitialTarget {
+        case community(AnyCommunity)
+        case instance(InstanceHashWrapper)
+        
+        var communityValue: (any CommunityStubProviding)? {
+            switch self {
+            case let .community(community): community.wrappedValue
+            default: nil
+            }
+        }
+    }
+    
+    let initialTarget: InitialTarget
     
     @State var feedLoader: ModlogFeedLoader
-    
     @State var warningPresented: Bool = Settings.main.showModlogWarning
+    @State var targetFilter: TargetFilter?
     
-    init(community: AnyCommunity?) {
+    init(initialTarget: InitialTarget) {
         self._feedLoader = .init(
             wrappedValue: .init(
                 api: AppState.main.firstApi,
                 pageSize: Settings.main.internetSpeed.pageSize,
+                communityId: nil,
                 sortType: .new
             )
         )
-        self.community = nil
+        self.initialTarget = initialTarget
+        switch initialTarget {
+        case let .community(community):
+            if let community = community.wrappedValue as? any Community {
+                self._targetFilter = .init(wrappedValue: .community(community))
+            }
+        case let .instance(instance):
+            if let instance = AppState.main.firstSession.instance?.instanceSummary {
+                self._targetFilter = .init(wrappedValue: .instance(instance))
+            }
+        }
     }
     
     var body: some View {
         Group {
-            if let community {
-                ContentLoader(model: community) { proxy in
-                    content(community: proxy.entity)
+            switch initialTarget {
+            case let .community(initialCommunity):
+                ContentLoader(model: initialCommunity) { proxy in
+                    Group {
+                        if let targetFilter {
+                            content(targetFilter: targetFilter)
+                        } else {
+                            ProgressView()
+                                .onAppear {
+                                    if targetFilter == nil, let community = proxy.entity {
+                                        targetFilter = .community(community)
+                                    }
+                                }
+                        }
+                    }
                 }
-            } else {
-                content(community: nil)
+            case let .instance(instanceHashWrapper):
+                if let targetFilter {
+                    content(targetFilter: targetFilter)
+                }
             }
         }
         .navigationTitle("Modlog")
@@ -50,17 +87,33 @@ struct ModlogView: View {
                 showWarningAgain: $showModlogWarning
             )
         }
+        .onChange(of: targetFilter, initial: true) { oldValue, newValue in
+            // This prevents the feed from refreshing when changing tabs
+            guard oldValue != newValue || (feedLoader.loadingState == .loading && feedLoader.items.isEmpty) else {
+                return
+            }
+            if let targetFilter {
+                Task {
+                    do {
+                        try await feedLoader.refresh(
+                            communityId: targetFilter.communityValue?.id,
+                            clearBeforeRefresh: true
+                        )
+                    } catch {
+                        handleError(error)
+                    }
+                }
+            }
+        }
     }
     
     @ViewBuilder
-    func content(community: (any Community)?) -> some View {
+    func content(targetFilter: TargetFilter) -> some View {
         ScrollView {
-            ScrollView(.horizontal) {
-                HStack {}
-            }
+            filtersView(targetFilter: targetFilter)
             LazyVStack(spacing: Constants.main.standardSpacing) {
                 ForEach(Array(feedLoader.items.enumerated()), id: \.offset) { _, entry in
-                    ModlogEntryView(entry: entry, targetCommunity: community)
+                    ModlogEntryView(entry: entry, targetCommunity: targetFilter.communityValue)
                         .onAppear {
                             do {
                                 try feedLoader.loadIfThreshold(entry)
@@ -74,6 +127,23 @@ struct ModlogView: View {
             .padding([.horizontal, .bottom], Constants.main.standardSpacing)
         }
         .background(palette.groupedBackground)
-        .loadFeed(feedLoader)
+    }
+    
+    @ViewBuilder
+    func filtersView(targetFilter: TargetFilter) -> some View {
+        ScrollView(.horizontal) {
+            HStack {
+                LocationPicker(
+                    filter: .init(get: { targetFilter }, set: { self.targetFilter = $0 })
+                )
+                .buttonStyle(.feedFilter(isOn: locationFilterIsOn))
+            }
+            .padding(.horizontal, Constants.main.standardSpacing)
+        }
+    }
+    
+    var locationFilterIsOn: Bool {
+        guard let targetFilter else { return false }
+        return initialCommunity?.wrappedValue.actorId != targetFilter.communityValue?.actorId
     }
 }
