@@ -14,18 +14,6 @@ struct ModlogView: View {
     
     @Setting(\.showModlogWarning) var showModlogWarning
     
-    enum InitialTarget {
-        case community(AnyCommunity)
-        case instance(InstanceHashWrapper)
-        
-        var communityValue: (any CommunityStubProviding)? {
-            switch self {
-            case let .community(community): community.wrappedValue
-            default: nil
-            }
-        }
-    }
-    
     let initialTarget: InitialTarget
     
     @State var feedLoader: ModlogFeedLoader
@@ -48,8 +36,8 @@ struct ModlogView: View {
                 self._targetFilter = .init(wrappedValue: .community(community))
             }
         case let .instance(instance):
-            if let instance = AppState.main.firstSession.instance?.instanceSummary {
-                self._targetFilter = .init(wrappedValue: .instance(instance))
+            if let instance = instance.wrappedValue as? any Instance3Providing {
+                self._targetFilter = .init(wrappedValue: .instance(instance.instance3.instanceSummary))
             }
         }
     }
@@ -75,6 +63,16 @@ struct ModlogView: View {
             case let .instance(instanceHashWrapper):
                 if let targetFilter {
                     content(targetFilter: targetFilter)
+                } else {
+                    ProgressView()
+                        .onAppear {
+                            if targetFilter == nil {
+                                Task { @MainActor in
+                                    let instance = try await instanceHashWrapper.wrappedValue.upgradeLocal()
+                                    targetFilter = .instance(instance.instanceSummary)
+                                }
+                            }
+                        }
                 }
             }
         }
@@ -95,10 +93,7 @@ struct ModlogView: View {
             if let targetFilter {
                 Task {
                     do {
-                        try await feedLoader.refresh(
-                            communityId: targetFilter.communityValue?.id,
-                            clearBeforeRefresh: true
-                        )
+                        try await refresh()
                     } catch {
                         handleError(error)
                     }
@@ -144,6 +139,11 @@ struct ModlogView: View {
     
     var locationFilterIsOn: Bool {
         guard let targetFilter else { return false }
-        return initialCommunity?.wrappedValue.actorId != targetFilter.communityValue?.actorId
+        switch targetFilter {
+        case let .community(community):
+            return initialTarget.communityValue?.actorId == community.actorId
+        case let .instance(instanceSummary):
+            return initialTarget.instanceValue?.host == instanceSummary.host
+        }
     }
 }

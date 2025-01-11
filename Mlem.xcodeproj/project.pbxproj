@@ -19,6 +19,7 @@
 		03049A1E2C6508F400FF6889 /* ApiRegistrationMode+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03049A1D2C6508F400FF6889 /* ApiRegistrationMode+Extensions.swift */; };
 		03049A202C650A8100FF6889 /* FormReadout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03049A1F2C650A8100FF6889 /* FormReadout.swift */; };
 		03049A222C650B2C00FF6889 /* CommunityDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03049A212C650B2C00FF6889 /* CommunityDetailsView.swift */; };
+		0305EBAA2D32B3B80066E5AD /* ModlogView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0305EBA92D32B3B80066E5AD /* ModlogView+Logic.swift */; };
 		030778EC2C52ED350018E61C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 030778EB2C52ED350018E61C /* Localizable.xcstrings */; };
 		030BCB1B2C3EA5FD0037680F /* InstanceDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030BCB1A2C3EA5FD0037680F /* InstanceDetailsView.swift */; };
 		030E95E72C80A20A0045BC2C /* View+NavigationTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E95E62C80A20A0045BC2C /* View+NavigationTransition.swift */; };
@@ -482,6 +483,8 @@
 		03049A1D2C6508F400FF6889 /* ApiRegistrationMode+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiRegistrationMode+Extensions.swift"; sourceTree = "<group>"; };
 		03049A1F2C650A8100FF6889 /* FormReadout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormReadout.swift; sourceTree = "<group>"; };
 		03049A212C650B2C00FF6889 /* CommunityDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityDetailsView.swift; sourceTree = "<group>"; };
+		0305EBA82D32B3200066E5AD /* MlemMiddleware */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MlemMiddleware; path = ../MlemMiddleware; sourceTree = SOURCE_ROOT; };
+		0305EBA92D32B3B80066E5AD /* ModlogView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModlogView+Logic.swift"; sourceTree = "<group>"; };
 		030778EB2C52ED350018E61C /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		030BCB1A2C3EA5FD0037680F /* InstanceDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceDetailsView.swift; sourceTree = "<group>"; };
 		030E95E62C80A20A0045BC2C /* View+NavigationTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+NavigationTransition.swift"; sourceTree = "<group>"; };
@@ -1059,6 +1062,7 @@
 			children = (
 				033F84702D1C784600D87A9E /* ModlogEntryView.swift */,
 				033F84712D1C784600D87A9E /* ModlogView.swift */,
+				0305EBA92D32B3B80066E5AD /* ModlogView+Logic.swift */,
 				03D284032D29E1C900A6659B /* Modlog+LocationPicker.swift */,
 			);
 			path = Modlog;
@@ -1373,6 +1377,7 @@
 		6363D5B827EE196700E34822 = {
 			isa = PBXGroup;
 			children = (
+				0305EBA82D32B3200066E5AD /* MlemMiddleware */,
 				6363D5C327EE196700E34822 /* Mlem */,
 				6363D5D927EE196A00E34822 /* MlemTests */,
 				6363D5E327EE196A00E34822 /* MlemUITests */,
@@ -2290,6 +2295,7 @@
 				03FE14042BF93FDD00A8377F /* ErrorDetails.swift in Sources */,
 				0353948B2CA076D000795AA5 /* InboxView+Views.swift in Sources */,
 				0389DDD12C39E1030005B808 /* InstanceListRowBody.swift in Sources */,
+				0305EBAA2D32B3B80066E5AD /* ModlogView+Logic.swift in Sources */,
 				033FCAF42C59843E007B7CD1 /* CommunityView.swift in Sources */,
 				CD7928262C73E73400FA712D /* PersonView+Logic.swift in Sources */,
 				CD13CC632C5D26C3001AF428 /* MediaLoadingPreferenceKey.swift in Sources */,

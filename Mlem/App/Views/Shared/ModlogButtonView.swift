@@ -11,10 +11,18 @@ import SwiftUI
 struct ModlogButtonView: View {
     @Environment(Palette.self) private var palette
     
-    let community: (any Community)?
+    let target: ModlogView.InitialTarget
+    
+    init(community: any Community) {
+        self.target = .community(.init(community))
+    }
+    
+    init(instance: any Instance) {
+        self.target = .instance(.init(wrappedValue: instance))
+    }
     
     var body: some View {
-        NavigationLink(.modlog(community: community)) {
+        NavigationLink(.modlog(target)) {
             FormChevron {
                 Label {
                     Text("Modlog")
