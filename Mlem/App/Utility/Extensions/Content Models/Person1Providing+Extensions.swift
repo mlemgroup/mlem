@@ -213,7 +213,7 @@ extension Person1Providing {
         let callback: (@MainActor () -> Void) = {
             Task {
                 do {
-                    try await instance.addAdmin(person: self, added: !isOn)
+                    try await instance.addAdmin(self, added: !isOn)
                 } catch {
                     handleError(error)
                 }

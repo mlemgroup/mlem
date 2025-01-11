@@ -139,7 +139,7 @@ struct InstanceView: View {
             if appState.firstApi.isAdmin {
                 Button("Add Administrator", systemImage: Icons.add) {
                     navigation.openSheet(.personPicker(filter: .local) { person in
-                        Task { await addAdmin(person, added: true) }
+                        Task { await addAdmin(personId: person.id, added: true) }
                     })
                 }
                 .buttonStyle(.capsule)
