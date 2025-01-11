@@ -7,73 +7,116 @@
 
 import SwiftUI
 
+private struct NavigationSheetModifier: ViewModifier {
+    let nextLayer: NavigationLayer?
+    let contentPickerTracker_: () -> NavigationModel.ContentPickerTracker?
+    
+    init(
+        nextLayer: NavigationLayer?,
+        // This tomfoolery exists to prevent this view being subject to NavigationModel view updates, which caused #1492
+        contentPickerTracker: @escaping () -> NavigationModel.ContentPickerTracker?
+    ) {
+        self.nextLayer = nextLayer
+        self.contentPickerTracker_ = contentPickerTracker
+    }
+    
+    // DO NOT access this in the view body; see #1492
+    var contentPickerTracker: NavigationModel.ContentPickerTracker? {
+        contentPickerTracker_()
+    }
+    
+    func body(content: Content) -> some View {
+        content
+            .sheet(isPresented: Binding(
+                get: { !(nextLayer?.isFullScreenCover ?? true) },
+                set: { newValue in
+                    if !newValue, let nextLayer, let model = nextLayer.model {
+                        model.closeSheets(aboveIndex: nextLayer.index)
+                    }
+                }
+            )) {
+                if let nextLayer {
+                    NavigationLayerView(layer: nextLayer, hasSheetModifiers: true)
+                }
+            }
+            .fullScreenCover(isPresented: Binding(
+                get: { nextLayer?.isFullScreenCover ?? false },
+                set: { newValue in
+                    if !newValue, let nextLayer, let model = nextLayer.model {
+                        model.closeSheets(aboveIndex: nextLayer.index)
+                    }
+                }
+            )) {
+                if let nextLayer {
+                    NavigationLayerView(layer: nextLayer, hasSheetModifiers: true)
+                }
+            }
+            .photosPicker(
+                isPresented: .init(
+                    get: { nextLayer == nil && contentPickerTracker?.photosPickerCallback != nil },
+                    set: { contentPickerTracker?.photosPickerCallback = $0 ? contentPickerTracker?.photosPickerCallback : nil }
+                ),
+                selection: .init(get: { nil }, set: { photo in
+                    if let photo {
+                        contentPickerTracker?.photosPickerCallback?(photo)
+                        contentPickerTracker?.photosPickerCallback = nil
+                    }
+                }),
+                matching: .images
+            )
+            .fileImporter(
+                isPresented: .init(
+                    get: { nextLayer == nil && (contentPickerTracker?.showingFilePicker ?? false) },
+                    set: { contentPickerTracker?.showingFilePicker = $0 }
+                ),
+                allowedContentTypes: [.image],
+                onCompletion: { result in
+                    do {
+                        try contentPickerTracker?.filePickerCallback?(result.get())
+                    } catch {
+                        handleError(error)
+                    }
+                }
+            )
+    }
+}
+
+private struct ComputeNextLayerModifier: ViewModifier {
+    let layer: NavigationLayer
+    
+    // This exists to prevent the view from being subject to NavigationModel state updates, which caused #1492
+    @State var nextLayer: NavigationLayer?
+    
+    func body(content: Content) -> some View {
+        Group {
+            content.navigationSheetModifiers(
+                nextLayer: nextLayer,
+                contentPickerTracker: layer.model?.contentPickerTracker
+            )
+        }.onChange(of: computeNextLayer()?.id, initial: true) {
+            nextLayer = computeNextLayer()
+        }
+    }
+    
+    func computeNextLayer() -> NavigationLayer? {
+        if let model = layer.model {
+            (layer.index < model.layers.count - 1) ? model.layers[layer.index + 1] : nil
+        } else {
+            nil
+        }
+    }
+}
+
 extension View {
     @ViewBuilder func navigationSheetModifiers(for layer: NavigationLayer) -> some View {
-        if let model = layer.model {
-            navigationSheetModifiers(
-                nextLayer: (layer.index < model.layers.count - 1) ? model.layers[layer.index + 1] : nil,
-                model: model
-            )
-        } else {
-            self
-        }
+        modifier(ComputeNextLayerModifier(layer: layer))
     }
         
     // swiftlint:disable:next function_body_length
     @ViewBuilder func navigationSheetModifiers(
         nextLayer: NavigationLayer?,
-        model: NavigationModel
+        contentPickerTracker: @autoclosure @escaping () -> NavigationModel.ContentPickerTracker?
     ) -> some View {
-        sheet(isPresented: Binding(
-            get: { !(nextLayer?.isFullScreenCover ?? true) },
-            set: { newValue in
-                if !newValue, let nextLayer {
-                    model.closeSheets(aboveIndex: nextLayer.index)
-                }
-            }
-        )) {
-            if let nextLayer {
-                NavigationLayerView(layer: nextLayer, hasSheetModifiers: true)
-            }
-        }
-        .fullScreenCover(isPresented: Binding(
-            get: { nextLayer?.isFullScreenCover ?? false },
-            set: { newValue in
-                if !newValue, let nextLayer {
-                    model.closeSheets(aboveIndex: nextLayer.index)
-                }
-            }
-        )) {
-            if let nextLayer {
-                NavigationLayerView(layer: nextLayer, hasSheetModifiers: true)
-            }
-        }
-        .photosPicker(
-            isPresented: .init(
-                get: { nextLayer == nil && model.photosPickerCallback != nil },
-                set: { model.photosPickerCallback = $0 ? model.photosPickerCallback : nil }
-            ),
-            selection: .init(get: { nil }, set: { photo in
-                if let photo {
-                    model.photosPickerCallback?(photo)
-                    model.photosPickerCallback = nil
-                }
-            }),
-            matching: .images
-        )
-        .fileImporter(
-            isPresented: .init(
-                get: { nextLayer == nil && model.showingFilePicker },
-                set: { model.showingFilePicker = $0 }
-            ),
-            allowedContentTypes: [.image],
-            onCompletion: { result in
-                do {
-                    try model.filePickerCallback?(result.get())
-                } catch {
-                    handleError(error)
-                }
-            }
-        )
+        modifier(NavigationSheetModifier(nextLayer: nextLayer, contentPickerTracker: contentPickerTracker))
     }
 }
