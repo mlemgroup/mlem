@@ -29,10 +29,8 @@ private struct NavigationSheetModifier: ViewModifier {
         content
             .sheet(isPresented: Binding(
                 get: { !(nextLayer?.isFullScreenCover ?? true) },
-                set: { newValue in
-                    if !newValue, let nextLayer, let model = nextLayer.model {
-                        model.closeSheets(aboveIndex: nextLayer.index)
-                    }
+                set: {
+                    if !$0 { closeSheet() }
                 }
             )) {
                 if let nextLayer {
@@ -41,10 +39,8 @@ private struct NavigationSheetModifier: ViewModifier {
             }
             .fullScreenCover(isPresented: Binding(
                 get: { nextLayer?.isFullScreenCover ?? false },
-                set: { newValue in
-                    if !newValue, let nextLayer, let model = nextLayer.model {
-                        model.closeSheets(aboveIndex: nextLayer.index)
-                    }
+                set: {
+                    if !$0 { closeSheet() }
                 }
             )) {
                 if let nextLayer {
@@ -79,6 +75,12 @@ private struct NavigationSheetModifier: ViewModifier {
                 }
             )
     }
+    
+    func closeSheet() {
+        if let nextLayer, let model = nextLayer.model {
+            model.closeSheets(aboveIndex: nextLayer.index)
+        }
+    }
 }
 
 private struct ComputeNextLayerModifier: ViewModifier {
@@ -112,7 +114,6 @@ extension View {
         modifier(ComputeNextLayerModifier(layer: layer))
     }
         
-    // swiftlint:disable:next function_body_length
     @ViewBuilder func navigationSheetModifiers(
         nextLayer: NavigationLayer?,
         contentPickerTracker: @autoclosure @escaping () -> NavigationModel.ContentPickerTracker?
