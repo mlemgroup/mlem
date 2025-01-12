@@ -10,6 +10,7 @@ import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
 
+// swiftlint:disable:next type_body_length
 struct PersonView: View {
     enum Tab: String, CaseIterable, Identifiable {
         case overview, comments, posts, communities
@@ -41,6 +42,7 @@ struct PersonView: View {
     @State private var isAtTop: Bool = true
     @State var feedLoader: PersonContentFeedLoader?
     @State var isAdmin: Bool
+    @State var upgraded: Bool = false
     let isProfileTab: Bool
     
     init(
@@ -75,6 +77,12 @@ struct PersonView: View {
                 case .comments: selectedContentType = .comments
                 case .posts: selectedContentType = .posts
                 default: selectedContentType = .all
+                }
+            }
+            .onChange(of: person.wrappedValue.isAdmin_, initial: false) {
+                // track changes to the upgraded model while ignoring upgrade-related state changes
+                if upgraded {
+                    isAdmin = person.wrappedValue.isAdmin_ ?? isAdmin
                 }
             }
             .environment(\.feedContext, .person)
@@ -137,6 +145,8 @@ struct PersonView: View {
             if model.wrappedValue.isAdmin_ ?? false {
                 isAdmin = true
             }
+            
+            upgraded = true
         }
         .navigationTitle(isAtTop ? "" : (person.wrappedValue.displayName_ ?? person.wrappedValue.name))
         .navigationBarTitleDisplayMode(.inline)
@@ -235,7 +245,7 @@ struct PersonView: View {
             default:
                 if let feedLoader {
                     if isProfileTab, selectedTab == .overview || selectedTab == .posts {
-                        Button("New Post", systemImage: "plus") {
+                        Button("New Post", systemImage: Icons.add) {
                             navigation.openSheet(.createPost(community: nil, feedLoader: feedLoader))
                         }
                         .buttonStyle(.capsule)

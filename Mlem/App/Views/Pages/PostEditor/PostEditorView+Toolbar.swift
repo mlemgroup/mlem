@@ -16,7 +16,7 @@ extension PostEditorView {
             }
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
-            Menu("Add", systemImage: "plus") {
+            Menu("Add", systemImage: Icons.add) {
                 Toggle(
                     "Link",
                     systemImage: Icons.websiteAddress,

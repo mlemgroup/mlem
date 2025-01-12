@@ -20,6 +20,7 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
     
     @ViewBuilder let content: ([Item], NavigationLayer) -> Content
     let api: ApiClient
+    let filter: ApiListingType
     let closeButtonLabel: CloseButtonLabel
     
     @State var query: String = ""
@@ -31,10 +32,12 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
     /// If `api` is `nil`, the active ApiClient will be used.
     init(
         api: ApiClient? = nil,
+        filter: ApiListingType? = nil,
         closeButtonLabel: CloseButtonLabel = .cancel,
         @ViewBuilder content: @escaping ([Item], NavigationLayer) -> Content
     ) {
         self.api = api ?? AppState.main.firstApi
+        self.filter = filter ?? .all
         self.content = content
         self.closeButtonLabel = closeButtonLabel
     }
@@ -70,7 +73,8 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
                     api: api,
                     query: query,
                     page: 1,
-                    limit: 20
+                    limit: 20,
+                    filter: filter
                 )
                 Task { @MainActor in
                     results = response
@@ -88,10 +92,12 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
 extension SearchSheetView {
     init<RowContent: View>(
         api: ApiClient? = nil,
+        filter: ApiListingType? = nil,
         closeButtonLabel: CloseButtonLabel = .cancel,
         @ViewBuilder content: @escaping (Item, NavigationLayer) -> RowContent
     ) where Content == SearchResultsView<Item, RowContent> {
         self.api = api ?? AppState.main.firstApi
+        self.filter = filter ?? .all
         self.closeButtonLabel = closeButtonLabel
         self.content = { (results: [Item], navigation: NavigationLayer) in
             SearchResultsView(results: results) { item in
@@ -102,11 +108,13 @@ extension SearchSheetView {
     
     init<RowContent: View, HeaderContent: View>(
         api: ApiClient? = nil,
+        filter: ApiListingType? = nil,
         closeButtonLabel: CloseButtonLabel = .cancel,
         @ViewBuilder content: @escaping (Item, NavigationLayer) -> RowContent,
         @ViewBuilder header: @escaping () -> HeaderContent
     ) where Content == VStack<TupleView<(HeaderContent, SearchResultsView<Item, RowContent>)>> {
         self.api = api ?? AppState.main.firstApi
+        self.filter = filter ?? .all
         self.closeButtonLabel = closeButtonLabel
         self.content = { (results: [Item], dismiss: NavigationLayer) in
             VStack(alignment: .leading, spacing: 0) {

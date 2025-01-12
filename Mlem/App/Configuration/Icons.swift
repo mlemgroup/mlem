@@ -52,6 +52,7 @@ enum Icons {
     static let moderationReport: String = "flag"
     static let modlog: String = "book.pages"
     static let transferCommunity: String = "arrow.right"
+    static let removeAdministrator: String = "arrow.down"
     
     // inbox
     static let mention: String = "quote.bubble"
@@ -255,6 +256,7 @@ enum Icons {
     static let select: String = "selection.pin.in.out"
     static let crossPost: String = "shuffle"
     static let chooseFile: String = "folder"
+    static let add: String = "plus"
     
     // settings
     static let upvoteOnSave: String = "arrow.up.heart"

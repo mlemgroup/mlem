@@ -277,6 +277,9 @@
     "Add Account" : {
 
     },
+    "Add Administrator" : {
+
+    },
     "Add Guest" : {
 
     },
@@ -1459,6 +1462,19 @@
     "Really apply configuration to all?" : {
 
     },
+    "Really appoint %@ as an administrator of %@?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Really appoint %1$@ as an administrator of %2$@?"
+          }
+        }
+      }
+    },
+    "Really appoint this user as an administrator of %@?" : {
+
+    },
     "Really delete %@?" : {
 
     },
@@ -1514,6 +1530,9 @@
 
     },
     "Remove" : {
+
+    },
+    "Remove Administrator" : {
 
     },
     "Remove Comment" : {
