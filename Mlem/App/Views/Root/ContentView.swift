@@ -63,7 +63,10 @@ struct ContentView: View {
                         try await (appState.firstSession as? UserSession)?.unreadCount?.refresh()
                     }
                 }
-                .navigationSheetModifiers(nextLayer: navigationModel.layers.first, model: navigationModel)
+                .navigationSheetModifiers(
+                    nextLayer: navigationModel.layers.first,
+                    contentPickerTracker: navigationModel.contentPickerTracker
+                )
                 .tint(palette.accent)
                 .environment(palette)
                 .environment(tabReselectTracker)
