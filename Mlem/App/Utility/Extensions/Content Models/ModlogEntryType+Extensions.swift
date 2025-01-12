@@ -28,7 +28,7 @@ extension ModlogEntryType {
         case let .updatePersonModeratorStatus(_, _, appointed):
             appointed ? Icons.moderation : Icons.demoteModerator
         case .updatePersonAdminStatus:
-            Icons.adminFlair
+            Icons.administrationFill
         case let .banPersonFromCommunity(_, _, banned, _, _):
             banned ? Icons.banFromCommunity : Icons.unbanFromCommunity
         case let .banPersonFromInstance(_, banned, _, _):

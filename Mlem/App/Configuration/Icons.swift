@@ -46,6 +46,8 @@ enum Icons {
     // moderation
     static let moderation: String = "shield"
     static let moderationFill: String = "shield.fill"
+    static let administration: String = "crown"
+    static let administrationFill: String = "crown.fill"
     static let demoteModerator: String = "shield.slash"
     static let moderationReport: String = "flag"
     static let modlog: String = "book.pages"
@@ -129,7 +131,6 @@ enum Icons {
     
     // user flairs
     static let developerFlair: String = "hammer.fill"
-    static let adminFlair: String = "crown.fill"
     static let botFlair: String = "terminal.fill"
     static let opFlair: String = "person.fill"
     static let instanceBannedFlair: String = "xmark.circle.fill"
@@ -297,6 +298,7 @@ enum Icons {
     static let `private`: String = "lock"
     static let email: String = "envelope"
     static let photo: String = "photo"
+    static let action: String = "diamond"
     static let switchUser: String = "person.crop.circle.badge.plus"
     static let missing: String = "questionmark.square.dashed"
     static let connection: String = "antenna.radiowaves.left.and.right"
