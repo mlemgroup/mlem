@@ -195,7 +195,7 @@ struct CommunityView: View {
             
             if let firstPerson = appState.firstPerson,
                firstPerson.isAdmin || firstPerson.moderates(community: community) {
-                Button("Add Moderator", systemImage: "plus", action: openAddModSheet) // TODO: NOW icons
+                Button("Add Moderator", systemImage: Icons.add, action: openAddModSheet)
                     .buttonStyle(.capsule)
                     .confirmationDialog("Add Moderator", isPresented: $showingConfirmation) {
                          Button("Yes", action: addNewMod)
