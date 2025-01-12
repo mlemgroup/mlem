@@ -40,10 +40,10 @@ struct ProfileDateView: View {
     }
     
     func format(_ date: Date) -> String {
-        var relTime = date.getRelativeTime(unitsStyle: .abbreviated)
         if profilable.isCakeDay {
-            relTime = String(localized: "\(relTime) today!")
+            let components = Calendar.current.dateComponents([.year], from: profilable.created, to: .now)
+            return "\(date.dateString), " + String(localized: "\(components.year ?? 0) years ago today!")
         }
-        return "\(date.dateString), \(relTime)"
+        return "\(date.dateString), \(date.getRelativeTime(unitsStyle: .abbreviated))"
     }
 }
