@@ -46,31 +46,33 @@ extension InstanceView {
             ToastModel.main.add(.error(.init(title: "Cannot appoint non-local user as administrator")))
             return
         }
-        addAdminHelper(personId: newAdmin.id)
+        guard let instance3 = instance as? any Instance3Providing else {
+            assertionFailure("Instance is not upgraded")
+            return
+        }
+        guard instance.local || instance.host == "localhost" else {
+            assertionFailure("Instance is not local")
+            return
+        }
+        
+        Task {
+            do {
+                try await instance3.addAdmin(personId: newAdmin.id, added: true)
+            } catch {
+                handleError(error)
+            }
+        }
     }
     
     func administratorQuickSwipes(person: any Person) -> SwipeConfiguration {
         guard let myPerson = appState.firstPerson,
-              myPerson.api.isHigherAdmin(than: person) else {
+              myPerson.api.isHigherAdmin(than: person),
+              let myInstance = appState.firstApi.myInstance,
+              let isAdmin = person.isAdmin_ else {
             return .none()
         }
         
-        let instanceName: String = instance.displayName_ ?? "this instance"
-        
-        let removeAdministratorAction: BasicAction = .init(
-            id: "removeAdministrator\(person.id)",
-            appearance: .init(
-                label: "Remove Administrator",
-                color: palette.negative,
-                icon: Icons.removeAdministrator,
-                swipeIcon1: Icons.removeAdministrator,
-                swipeIcon2: Icons.removeAdministratorFill),
-            confirmationPrompt: "Really remove administrator \(person.displayName) from \(instanceName)?",
-            enabled: true) {
-                addAdminHelper(personId: person.id)
-            }
-        
-        return .init(trailingActions: [removeAdministratorAction])
+        return .init(trailingActions: [person.addAdminAction(instance: myInstance, isOn: isAdmin)])
     }
     
     func attemptToLoadUptimeData() {
@@ -138,27 +140,6 @@ extension InstanceView {
                 } catch {
                     handleError(error)
                 }
-            }
-        }
-    }
-    
-    private func addAdminHelper(personId: Int) {
-        Task {
-            do {
-                let myInstance: Instance3
-                if let apiInstance = appState.firstApi.myInstance {
-                    myInstance = apiInstance
-                } else {
-                    myInstance = try await appState.firstApi.getMyInstance()
-                }
-                
-                Task { @MainActor in
-                    self.instance = myInstance
-                }
-                
-                try await myInstance.addAdmin(personId: personId, added: true)
-            } catch {
-                handleError(error)
             }
         }
     }

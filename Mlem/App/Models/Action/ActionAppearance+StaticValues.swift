@@ -210,7 +210,10 @@ extension ActionAppearance {
         .init(label: isOn ? "Remove Administrator" : "Appoint Administrator",
               isDestructive: isOn,
               color: isOn ? Palette.main.negative : Palette.main.positive,
-              icon: isOn ? Icons.removeAdministrator : Icons.administration)
+              icon: isOn ? Icons.removeAdministrator : Icons.administration,
+              swipeIcon1: isOn ? Icons.removeAdministrator : Icons.administration,
+              swipeIcon2: isOn ? Icons.removeAdministratorFill : Icons.administrationFill
+        )
     }
     
     /// Adds or removes a user as moderator
