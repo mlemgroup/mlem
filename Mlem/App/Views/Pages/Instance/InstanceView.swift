@@ -149,7 +149,11 @@ struct InstanceView: View {
                     .confirmationDialog("", isPresented: $showingConfirmation) {
                         Button("Yes", action: addNewAdmin)
                     } message: {
-                        Text("Really appoint \(newAdmin?.displayName ?? "this user") as administrator of \(instance.displayName)?")
+    if let displayName = newAdmin?.displayName {
+        Text("Really appoint \(displayName) as an administrator of \(instance.displayName)?")
+    } else {
+        Text("Really appoint this user as an administrator of \(instance.displayName)?")
+    }
                     }
             }
         }
