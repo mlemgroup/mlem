@@ -28,22 +28,37 @@ extension InstanceView {
         }
     }
     
-    func addAdmin(personId: Int, added: Bool) async {
-        do {
-            let myInstance: Instance3
-            if let apiInstance = appState.firstApi.myInstance {
-                myInstance = apiInstance
-            } else {
-                myInstance = try await appState.firstApi.getMyInstance()
+    func openAddAdminSheet() {
+        navigation.openSheet(.personPicker(filter: .local) { person in
+            newAdmin = person
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                showingConfirmation = true
             }
-            
-            Task { @MainActor in
-                self.instance = myInstance
+        })
+    }
+    
+    func addNewAdmin() {
+        guard let newAdmin else {
+            assertionFailure("newAdmin cannot be nil")
+            return
+        }
+        Task {
+            do {
+                let myInstance: Instance3
+                if let apiInstance = appState.firstApi.myInstance {
+                    myInstance = apiInstance
+                } else {
+                    myInstance = try await appState.firstApi.getMyInstance()
+                }
+                
+                Task { @MainActor in
+                    self.instance = myInstance
+                }
+                
+                try await myInstance.addAdmin(personId: newAdmin.id, added: true)
+            } catch {
+                handleError(error)
             }
-            
-            try await myInstance.addAdmin(personId: personId, added: added)
-        } catch {
-            handleError(error)
         }
     }
     

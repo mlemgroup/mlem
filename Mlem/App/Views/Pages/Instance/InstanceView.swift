@@ -50,6 +50,9 @@ struct InstanceView: View {
     @State var selectedTab: Tab = .about
     @State var isAtTop: Bool = true
     
+    @State var showingConfirmation: Bool = false
+    @State var newAdmin: Person2?
+    
     init(instance: any InstanceStubProviding, visitContext: VisitHistory.VisitContext?) {
         self._instance = .init(wrappedValue: instance)
         self.visitContext = visitContext
@@ -130,20 +133,24 @@ struct InstanceView: View {
     
     @ViewBuilder
     func administrationTab(instance: any Instance) -> some View {
-        VStack(spacing: Constants.main.halfSpacing) {
+        VStack(spacing: Constants.main.standardSpacing) {
             ModlogButtonView(community: nil)
-            ForEach(instance.administrators_ ?? []) { person in
-                PersonListRow(person)
+            
+            VStack(spacing: Constants.main.halfSpacing) {
+                ForEach(instance.administrators_ ?? []) { person in
+                    PersonListRow(person)
+                }
             }
             
             if appState.firstApi.isAdmin {
-                Button("Add Administrator", systemImage: Icons.add) {
-                    navigation.openSheet(.personPicker(filter: .local) { person in
-                        Task { await addAdmin(personId: person.id, added: true) }
-                    })
-                }
-                .buttonStyle(.capsule)
-                .padding(.top, Constants.main.halfSpacing)
+                Button("Add Administrator", systemImage: Icons.add, action: openAddAdminSheet)
+                    .buttonStyle(.capsule)
+                    .padding(.bottom, Constants.main.halfSpacing)
+                    .confirmationDialog("", isPresented: $showingConfirmation) {
+                        Button("Yes", action: addNewAdmin)
+                    } message: {
+                        Text("Really appoint \(newAdmin?.displayName ?? "this user") as administrator of \(instance.displayName)?")
+                    }
             }
         }
         .padding([.horizontal, .bottom], Constants.main.standardSpacing)

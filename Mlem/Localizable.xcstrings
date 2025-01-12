@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "**%@** and **%@** chose to defederate from one another." : {
       "localizations" : {
         "en" : {
@@ -1358,6 +1361,16 @@
     },
     "Really apply configuration to all?" : {
 
+    },
+    "Really appoint %@ as administrator of %@?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Really appoint %1$@ as administrator of %2$@?"
+          }
+        }
+      }
     },
     "Really delete %@?" : {
 
