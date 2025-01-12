@@ -298,6 +298,7 @@ enum Icons {
     static let `private`: String = "lock"
     static let email: String = "envelope"
     static let photo: String = "photo"
+    static let action: String = "diamond"
     static let switchUser: String = "person.crop.circle.badge.plus"
     static let missing: String = "questionmark.square.dashed"
     static let connection: String = "antenna.radiowaves.left.and.right"

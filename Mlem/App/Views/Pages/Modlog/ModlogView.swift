@@ -158,12 +158,12 @@ struct ModlogView: View {
     func typeFilterView() -> some View {
         Menu(
             String(localized: actionTypeFilter?.label ?? "Action Type"),
-            systemImage: actionTypeFilter?.systemImage ?? "diamond"
+            systemImage: actionTypeFilter?.systemImage ?? Icons.action
         ) {
             Section {
                 Toggle(
                     "Any",
-                    systemImage: "diamond",
+                    systemImage: Icons.action,
                     isOn: .init(get: { actionTypeFilter == nil }, set: { _ in actionTypeFilter = nil })
                 )
             }
