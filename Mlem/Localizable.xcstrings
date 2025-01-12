@@ -226,7 +226,7 @@
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
+                  "state" : "translated",
                   "value" : "%lld years ago today!"
                 }
               }
@@ -1889,7 +1889,7 @@
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
+                  "state" : "translated",
                   "value" : "There were %lld recorded incidents today."
                 }
               }
