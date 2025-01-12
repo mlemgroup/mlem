@@ -3102,8 +3102,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
-				branch = "eric/add-admin";
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.62.0;
 			};
 		};
 		CDE4AC402CA3706400981010 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
