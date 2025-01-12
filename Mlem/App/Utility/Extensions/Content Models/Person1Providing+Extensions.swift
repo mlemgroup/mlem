@@ -224,8 +224,8 @@ extension Person1Providing {
             id: "addAdmin\(uid)",
             appearance: .addAdmin(isOn: isOn),
             confirmationPrompt: isOn
-            ? "Really remove \(displayName) from administrators of \(instance.displayName)?"
-            : "Really appoint \(displayName) as administrator of \(instance.displayName)?",
+            ? "Really remove administrator \(displayName) from \(instance.displayName)?"
+            : "Really appoint \(displayName) as an administrator of \(instance.displayName)?",
             callback: callback
         )
     }

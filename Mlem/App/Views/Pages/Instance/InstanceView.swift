@@ -146,14 +146,14 @@ struct InstanceView: View {
                 Button("Add Administrator", systemImage: Icons.add, action: openAddAdminSheet)
                     .buttonStyle(.capsule)
                     .padding(.bottom, Constants.main.halfSpacing)
-                    .confirmationDialog("", isPresented: $showingConfirmation) {
+                    .confirmationDialog("Add Administrator", isPresented: $showingConfirmation) {
                         Button("Yes", action: addNewAdmin)
                     } message: {
-    if let displayName = newAdmin?.displayName {
-        Text("Really appoint \(displayName) as an administrator of \(instance.displayName)?")
-    } else {
-        Text("Really appoint this user as an administrator of \(instance.displayName)?")
-    }
+                        if let displayName = newAdmin?.displayName {
+                            Text("Really appoint \(displayName) as an administrator of \(instance.displayName)?")
+                        } else {
+                            Text("Really appoint this user as an administrator of \(instance.displayName)?")
+                        }
                     }
             }
         }
