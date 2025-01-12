@@ -46,9 +46,9 @@ extension SearchView {
     @ViewBuilder
     private var communityFiltersView: some View {
         CommunitySearchSortPicker(sort: $communityFilters.sort)
-            .buttonStyle(FilterButtonStyle(isOn: communityFilters.sort != .topAll))
+            .buttonStyle(.feedFilter(isOn: communityFilters.sort != .topAll))
         InstancePicker(filter: $communityFilters.instance, isForPersonSearch: false)
-            .buttonStyle(FilterButtonStyle(isOn: communityFilters.instance != .any))
+            .buttonStyle(.feedFilter(isOn: communityFilters.instance != .any))
     }
     
     @ViewBuilder
@@ -60,17 +60,17 @@ extension SearchView {
                 }
             }
         }
-        .buttonStyle(FilterButtonStyle(isOn: personFilters.sort != .topAll))
+        .buttonStyle(.feedFilter(isOn: personFilters.sort != .topAll))
         InstancePicker(filter: $personFilters.instance, isForPersonSearch: true)
-            .buttonStyle(FilterButtonStyle(isOn: personFilters.instance != .any))
+            .buttonStyle(.feedFilter(isOn: personFilters.instance != .any))
     }
     
     @ViewBuilder
     private var postFiltersView: some View {
         FeedSortPicker(sort: $postFilters.sort)
-            .buttonStyle(FilterButtonStyle(isOn: postFilters.sort != .topAll))
+            .buttonStyle(.feedFilter(isOn: postFilters.sort != .topAll))
         LocationPicker(filter: $postFilters.location)
-            .buttonStyle(FilterButtonStyle(isOn: postFilters.location != .any))
+            .buttonStyle(.feedFilter(isOn: postFilters.location != .any))
         Button(postFilters.creator?.name ?? .init(localized: "Anyone"), systemImage: Icons.person) {
             if postFilters.creator == nil {
                 navigation.openSheet(.personPicker(
@@ -83,7 +83,7 @@ extension SearchView {
                 postFilters.creator = nil
             }
         }
-        .buttonStyle(FilterButtonStyle(
+        .buttonStyle(FeedFilterButtonStyle(
             isOn: postFilters.creator != nil,
             systemImage: postFilters.creator == nil ? Icons.dropDownCircleFill : Icons.closeCircleFill
         ))
@@ -102,35 +102,6 @@ extension SearchView {
             }
             .pickerStyle(.inline)
         }
-        .buttonStyle(FilterButtonStyle(isOn: instanceFilters.sort != .score))
-    }
-    
-    private struct FilterButtonStyle: ButtonStyle {
-        @Environment(Palette.self) var palette
-        
-        let isOn: Bool
-        var systemImage: String? = Icons.dropDownCircleFill
-        
-        @ScaledMetric(relativeTo: .footnote) var height: CGFloat = 32
-        
-        func makeBody(configuration: Configuration) -> some View {
-            HStack(spacing: 4) {
-                configuration.label
-                if let systemImage {
-                    Image(systemName: systemImage)
-                        .symbolRenderingMode(.hierarchical)
-                        .padding(.trailing, 8)
-                }
-            }
-            .frame(height: height)
-            .foregroundStyle(isOn ? palette.selectedInteractionBarItem : palette.accent)
-            .font(.footnote)
-            .padding(systemImage == nil ? .horizontal : .leading, 12)
-            .background(
-                Capsule()
-                    .fill(isOn ? palette.accent : .clear)
-                    .strokeBorder(palette.accent, lineWidth: isOn ? 0 : 1)
-            )
-        }
+        .buttonStyle(.feedFilter(isOn: instanceFilters.sort != .score))
     }
 }

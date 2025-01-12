@@ -11,8 +11,8 @@ import MlemMiddleware
 extension Instance3 {
     var instanceSummary: InstanceSummary {
         .init(
-            name: displayName,
-            host: name,
+            displayName: displayName,
+            name: name,
             userCount: userCount,
             avatar: avatar,
             version: version

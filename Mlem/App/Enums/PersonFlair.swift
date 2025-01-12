@@ -71,7 +71,7 @@ enum PersonFlair: Hashable {
     var icon: String {
         switch self {
         case .admin:
-            return Icons.adminFlair
+            return Icons.administrationFill
         case .moderator:
             return Icons.moderationFill
         case .op:

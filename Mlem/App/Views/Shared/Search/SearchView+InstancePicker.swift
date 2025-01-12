@@ -36,13 +36,17 @@ extension SearchView {
                 }
                 switch filter {
                 case let .other(instance):
-                    Toggle(isOn: .constant(true)) {
-                        Label {
-                            Text(instance.host)
-                        } icon: {
-                            SimpleAvatarView(url: instance.avatar, type: .instance)
-                                .id(instance.avatar)
+                    if instance.host != AppState.main.firstApi.host {
+                        Toggle(isOn: .constant(true)) {
+                            Label {
+                                Text(instance.host)
+                            } icon: {
+                                SimpleAvatarView(url: instance.avatar, type: .instance)
+                                    .id(instance.avatar)
+                            }
                         }
+                    } else {
+                        EmptyView()
                     }
                 default:
                     EmptyView()

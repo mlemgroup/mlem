@@ -130,7 +130,7 @@ struct InstanceView: View {
     @ViewBuilder
     func administrationTab(instance: any Instance) -> some View {
         VStack(spacing: Constants.main.halfSpacing) {
-            ModlogButtonView(community: nil)
+            ModlogButtonView(instance: instance)
             ForEach(instance.administrators_ ?? []) { person in
                 PersonListRow(person)
             }
