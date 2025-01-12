@@ -139,6 +139,7 @@ struct InstanceView: View {
             VStack(spacing: Constants.main.halfSpacing) {
                 ForEach(instance.administrators_ ?? []) { person in
                     PersonListRow(person)
+                        .quickSwipes(administratorQuickSwipes(person: person))
                 }
             }
             

@@ -193,7 +193,8 @@ struct CommunityView: View {
                 }
             }
             
-            if appState.firstApi.myPerson?.moderates(community: community) ?? false {
+            if let firstPerson = appState.firstPerson,
+               firstPerson.isAdmin || firstPerson.moderates(community: community) {
                 Button("Add Moderator", systemImage: "plus", action: openAddModSheet) // TODO: NOW icons
                     .buttonStyle(.capsule)
                     .confirmationDialog("Add Moderator", isPresented: $showingConfirmation) {

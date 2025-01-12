@@ -53,7 +53,8 @@ enum Icons {
     static let moderationReport: String = "flag"
     static let modlog: String = "book.pages"
     static let transferCommunity: String = "arrow.right"
-    static let removeAdministrator: String = "arrow.down"
+    static let removeAdministrator: String = "arrowshape.down"
+    static let removeAdministratorFill: String = "arrowshape.down.fill"
     
     // inbox
     static let mention: String = "quote.bubble"
