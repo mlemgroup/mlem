@@ -14,14 +14,19 @@ class NavigationModel {
     
     private(set) var layers: [NavigationLayer] = .init()
     
-    var photosPickerCallback: ((PhotosPickerItem) -> Void)?
+    @Observable
+    class ContentPickerTracker {
+        var photosPickerCallback: ((PhotosPickerItem) -> Void)?
+        
+        // This needs two values unlike `photosPickerCallback` because
+        // `fileImporter` sets `isPresented` to `false` before calling
+        // `onCompletion`, which makes it impossible to call the callback
+        // before setting it to `nil`.
+        var showingFilePicker: Bool = false
+        var filePickerCallback: ((URL) -> Void)?
+    }
     
-    // This needs two values unlike `photosPickerCallback` because
-    // `fileImporter` sets `isPresented` to `false` before calling
-    // `onCompletion`, which makes it impossible to call the callback
-    // before setting it to `nil`.
-    var showingFilePicker: Bool = false
-    var filePickerCallback: ((URL) -> Void)?
+    var contentPickerTracker: ContentPickerTracker = .init()
     
     var mediaUrl: URL?
     

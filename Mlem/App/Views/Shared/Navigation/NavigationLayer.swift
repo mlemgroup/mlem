@@ -9,7 +9,7 @@ import MlemMiddleware
 import SwiftUI
 
 @Observable
-class NavigationLayer {
+class NavigationLayer: Identifiable {
     struct ShareInfo {
         let url: URL
         let activities: [ShareActivity]
@@ -30,6 +30,8 @@ class NavigationLayer {
             }
         }
     }
+    
+    var id: ObjectIdentifier { .init(self) }
     
     weak var model: NavigationModel?
     var index: Int
@@ -125,7 +127,7 @@ class NavigationLayer {
     
     @MainActor
     func showPhotosPicker(for imageUploadManager: ImageUploadManager, api: ApiClient) {
-        model?.photosPickerCallback = { photo in
+        model?.contentPickerTracker.photosPickerCallback = { photo in
             Task {
                 do {
                     guard let data = try await photo.loadTransferable(type: Data.self) else {
@@ -145,8 +147,8 @@ class NavigationLayer {
     
     @MainActor
     func showFilePicker(for imageUploadManager: ImageUploadManager, api: ApiClient) {
-        model?.showingFilePicker = true
-        model?.filePickerCallback = { url in
+        model?.contentPickerTracker.showingFilePicker = true
+        model?.contentPickerTracker.filePickerCallback = { url in
             Task {
                 do {
                     guard url.startAccessingSecurityScopedResource() else {
