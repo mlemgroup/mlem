@@ -228,7 +228,7 @@ extension Person1Providing {
         }
         
         return .init(
-            id: "appointAdmin\(uid)",
+            id: "addAdmin\(uid)",
             appearance: .addAdmin(isOn: isOn),
             confirmationPrompt: isOn
             ? "Really remove administrator \(displayName) from \(instance.displayName)?"

@@ -45,26 +45,7 @@ extension CommunityView {
             return .none()
         }
         
-        let removeModeratorAction: BasicAction = .init(
-            id: "removeModerator\(person.id)",
-            appearance: .init(
-                label: "Remove Moderator",
-                color: palette.negative,
-                icon: Icons.demoteModerator,
-                swipeIcon1: Icons.demoteModerator,
-                swipeIcon2: Icons.demoteModeratorFill),
-            confirmationPrompt: "Really remove moderator \(person.displayName) from \(community.displayName)?",
-            enabled: true) {
-                Task {
-                    do {
-                        try await community.addModerator(person, added: false)
-                    } catch {
-                        handleError(error)
-                    }
-                }
-            }
-        
-        return .init(trailingActions: [removeModeratorAction])
+        return .init(trailingActions: [person.addModAction(community: community, isOn: true)])
     }
     
     func setupFeedLoader(community: any Community) {
