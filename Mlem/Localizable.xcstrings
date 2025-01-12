@@ -120,9 +120,6 @@
     "%@ rules..." : {
 
     },
-    "%@ today!" : {
-
-    },
     "%@ transferred ownership of a community" : {
 
     },
@@ -164,6 +161,24 @@
               }
             }
           }
+        },
+        "en-GB" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Crosspost..."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Crossposts..."
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -179,6 +194,46 @@
     },
     "%lld on your instance" : {
 
+    },
+    "%lld years ago today!" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld year ago today!"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld years ago today!"
+                }
+              }
+            }
+          }
+        },
+        "en-GB" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld year ago today!"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld years ago today!"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "A censure signifies that an instance disapproves of another instance. Like an endorsement, it is completely subjective and a reason does not have to be given." : {
 
@@ -204,6 +259,9 @@
     "Accounts" : {
 
     },
+    "Action Type" : {
+
+    },
     "Active" : {
 
     },
@@ -217,6 +275,9 @@
 
     },
     "Add Account" : {
+
+    },
+    "Add Administrator" : {
 
     },
     "Add Guest" : {
@@ -264,6 +325,12 @@
     "Answer..." : {
 
     },
+    "Any" : {
+
+    },
+    "Any Community" : {
+
+    },
     "Any Instance" : {
 
     },
@@ -283,6 +350,12 @@
 
     },
     "Apply to All Interaction Bars" : {
+
+    },
+    "Appoint Administrator" : {
+
+    },
+    "Appoint Moderator" : {
 
     },
     "Appointed: %@" : {
@@ -342,6 +415,12 @@
 
     },
     "Ban Duration" : {
+
+    },
+    "Ban from Community" : {
+
+    },
+    "Ban from Instance" : {
 
     },
     "Ban Target" : {
@@ -490,6 +569,9 @@
     "Code Block" : {
 
     },
+    "Comment" : {
+
+    },
     "Comment was deleted" : {
 
     },
@@ -506,6 +588,9 @@
 
     },
     "Communities" : {
+
+    },
+    "Community" : {
 
     },
     "Community Creation" : {
@@ -882,6 +967,9 @@
     "Hide" : {
 
     },
+    "Hide Community" : {
+
+    },
     "Hide Older Incidents" : {
 
     },
@@ -1021,6 +1109,9 @@
 
     },
     "Lock" : {
+
+    },
+    "Lock Post" : {
 
     },
     "Log In" : {
@@ -1254,6 +1345,9 @@
     "Pin" : {
 
     },
+    "Pin Post" : {
+
+    },
     "Pin to Community" : {
 
     },
@@ -1261,6 +1355,9 @@
 
     },
     "Pink" : {
+
+    },
+    "Post" : {
 
     },
     "Post failed to send." : {
@@ -1332,6 +1429,18 @@
     "Purge" : {
 
     },
+    "Purge Comment" : {
+
+    },
+    "Purge Community" : {
+
+    },
+    "Purge Person" : {
+
+    },
+    "Purge Post" : {
+
+    },
     "Purge User" : {
 
     },
@@ -1354,6 +1463,19 @@
 
     },
     "Really apply configuration to all?" : {
+
+    },
+    "Really appoint %@ as an administrator of %@?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Really appoint %1$@ as an administrator of %2$@?"
+          }
+        }
+      }
+    },
+    "Really appoint this user as an administrator of %@?" : {
 
     },
     "Really appoint %@ as a moderator of %@?" : {
@@ -1426,10 +1548,22 @@
     "Remove" : {
 
     },
+    "Remove Administrator" : {
+
+    },
+    "Remove Comment" : {
+
+    },
+    "Remove Community" : {
+
+    },
     "Remove Content" : {
 
     },
     "Remove Moderator" : {
+
+    },
+    "Remove Post" : {
 
     },
     "Removed: %@" : {
@@ -1841,6 +1975,24 @@
               }
             }
           }
+        },
+        "en-GB" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "There was %lld recorded incidents today."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "There were %lld recorded incidents today."
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1972,6 +2124,12 @@
     "Trailing" : {
 
     },
+    "Transfer Community" : {
+
+    },
+    "Transfer Ownership" : {
+
+    },
     "Troll" : {
 
     },
@@ -2099,6 +2257,9 @@
 
     },
     "Upvote on Save" : {
+
+    },
+    "User" : {
 
     },
     "User Link" : {

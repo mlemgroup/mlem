@@ -112,6 +112,20 @@ extension Person1Providing {
             if api.isAdmin {
                 purgeAction()
             }
+            
+            if let community3 = community as? any Community3Providing,
+               let myPerson = api.myPerson,
+               myPerson.canModerate(self, in: community3) {
+                addModAction(community: community3, isOn: community3.moderators.contains(where: { $0.id == id }))
+            }
+            
+            if apiIsLocal, api.isAdmin, let myInstance = api.myInstance {
+                if api.isHigherAdmin(than: self) {
+                    addAdminAction(instance: myInstance, isOn: true)
+                } else if !(self.isAdmin_ ?? false) {
+                    addAdminAction(instance: myInstance, isOn: false)
+                }
+            }
         }
     }
     
@@ -194,6 +208,52 @@ extension Person1Providing {
         return .init(
             id: "banFromCommunity\(uid)",
             appearance: .banFromCommunity(isOn: isBanned ?? false, withUserLabel: withUserLabel),
+            callback: callback
+        )
+    }
+    
+    /// Action to add/remove admin
+    /// - Parameters:
+    ///   - instance: instance to add the admin to
+    ///   - isOn: true if the user is already an admin, false otherwise
+    func addAdminAction(instance: any Instance3Providing, isOn: Bool) -> BasicAction {
+        let callback: (@MainActor () -> Void) = {
+            Task {
+                do {
+                    try await instance.addAdmin(self, added: !isOn)
+                } catch {
+                    handleError(error)
+                }
+            }
+        }
+        
+        return .init(
+            id: "appointAdmin\(uid)",
+            appearance: .addAdmin(isOn: isOn),
+            confirmationPrompt: isOn
+            ? "Really remove administrator \(displayName) from \(instance.displayName)?"
+            : "Really appoint \(displayName) as an administrator of \(instance.displayName)?",
+            callback: callback
+        )
+    }
+    
+    func addModAction(community: any Community3Providing, isOn: Bool) -> BasicAction {
+        let callback: (@MainActor () -> Void) = {
+            Task {
+                do {
+                    try await community.addModerator(self, added: !isOn)
+                } catch {
+                    handleError(error)
+                }
+            }
+        }
+        
+        return .init(
+            id: "addMod\(uid)",
+            appearance: .addMod(isOn: isOn),
+            confirmationPrompt: isOn
+            ? "Really remove moderator \(displayName) from \(community.displayName)?"
+            : "Really appoint \(displayName) as a moderator of \(community.displayName)?",
             callback: callback
         )
     }

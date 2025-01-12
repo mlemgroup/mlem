@@ -204,6 +204,24 @@ extension ActionAppearance {
         )
     }
     
+    /// Adds or removes a user as administrator
+    /// - Parameter isOn: true when user is admin, false otherwise
+    static func addAdmin(isOn: Bool) -> Self {
+        .init(label: isOn ? "Remove Administrator" : "Appoint Administrator",
+              isDestructive: isOn,
+              color: isOn ? Palette.main.negative : Palette.main.positive,
+              icon: isOn ? Icons.removeAdministrator : Icons.administration)
+    }
+    
+    /// Adds or removes a user as moderator
+    /// - Parameter isOn: true when user is moderator, false otherwise
+    static func addMod(isOn: Bool) -> Self {
+        .init(label: isOn ? "Remove Moderator" : "Appoint Moderator",
+              isDestructive: isOn,
+              color: isOn ? Palette.main.negative : Palette.main.positive,
+              icon: isOn ? Icons.demoteModerator : Icons.moderation)
+    }
+    
     static func purge(isInProgress: Bool = false) -> Self {
         .init(
             label: "Purge",

@@ -108,8 +108,8 @@ extension NavigationPage {
                         .background(Palette.main.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                 }
             }
-        case let .personPicker(api: api, callback: callback):
-            SearchSheetView(api: api) { (person: Person2, navigation: NavigationLayer) in
+        case let .personPicker(api: api, filter: filter, callback: callback):
+            SearchSheetView(api: api, filter: filter) { (person: Person2, navigation: NavigationLayer) in
                 Button {
                     callback.wrappedValue(person, navigation)
                 } label: {
@@ -164,8 +164,8 @@ extension NavigationPage {
             VotesListView(target: target)
         case let .messageFeed(person, focusTextField: focusTextField, editing: editing):
             MessageFeedView(person: person, focusTextField: focusTextField, editing: editing?.wrappedValue)
-        case let .modlog(community: community):
-            ModlogView(community: community)
+        case let .modlog(target):
+            ModlogView(initialTarget: target)
         }
     }
 }

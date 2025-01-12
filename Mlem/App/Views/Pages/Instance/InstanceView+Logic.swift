@@ -28,6 +28,44 @@ extension InstanceView {
         }
     }
     
+    func openAddAdminSheet() {
+        navigation.openSheet(.personPicker(filter: .local) { person in
+            newAdmin = person
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                showingConfirmation = true
+            }
+        })
+    }
+    
+    func addNewAdmin() {
+        guard let newAdmin else {
+            assertionFailure("newAdmin cannot be nil")
+            return
+        }
+        guard newAdmin.apiIsLocal else {
+            ToastModel.main.add(.error(.init(title: "Cannot appoint non-local user as administrator")))
+            return
+        }
+        Task {
+            do {
+                let myInstance: Instance3
+                if let apiInstance = appState.firstApi.myInstance {
+                    myInstance = apiInstance
+                } else {
+                    myInstance = try await appState.firstApi.getMyInstance()
+                }
+                
+                Task { @MainActor in
+                    self.instance = myInstance
+                }
+                
+                try await myInstance.addAdmin(personId: newAdmin.id, added: true)
+            } catch {
+                handleError(error)
+            }
+        }
+    }
+    
     func attemptToLoadUptimeData() {
         print("Fetching uptime data...")
         if let url = instance.uptimeDataUrl {

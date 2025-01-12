@@ -39,7 +39,9 @@ extension CommunityView {
     }
     
     func moderatorQuickSwipes(community: any Community, person: any Person) -> SwipeConfiguration {
-        guard appState.firstApi.myPerson?.moderates(community: community) ?? false else {
+        guard let community = community as? any Community3Providing,
+              let myPerson = appState.firstPerson,
+              myPerson.canModerate(person, in: community) else {
             return .none()
         }
         
