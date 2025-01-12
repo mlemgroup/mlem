@@ -40,6 +40,11 @@ public struct SwipeConfiguration {
             trailingActions: trailingActions()
         )
     }
+    
+    static func none() -> SwipeConfiguration {
+        // need to supply at least one parameter or the compiler can't pick an initializer
+        return .init(leadingActions: [])
+    }
 }
 
 struct SwipeBehavior {
