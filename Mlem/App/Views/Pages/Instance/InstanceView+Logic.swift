@@ -42,6 +42,10 @@ extension InstanceView {
             assertionFailure("newAdmin cannot be nil")
             return
         }
+        guard newAdmin.apiIsLocal else {
+            ToastModel.main.add(.error(.init(title: "Admin must be local")))
+            return
+        }
         Task {
             do {
                 let myInstance: Instance3
