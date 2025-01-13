@@ -69,7 +69,7 @@ extension InstanceView {
               myPerson.api.isHigherAdmin(than: person),
               let myInstance = appState.firstApi.myInstance,
               let isAdmin = person.isAdmin_ else {
-            return .none()
+            return .init()
         }
         
         return .init(trailingActions: [person.addAdminAction(instance: myInstance, isOn: isAdmin)])

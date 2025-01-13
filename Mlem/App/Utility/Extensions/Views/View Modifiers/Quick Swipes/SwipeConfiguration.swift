@@ -15,6 +15,12 @@ public struct SwipeConfiguration {
     
     let behavior: SwipeBehavior
     
+    init() {
+        self.behavior = .standard
+        self.leadingActions = .init()
+        self.trailingActions = .init()
+    }
+    
     init(
         behavior: SwipeBehavior = .standard,
         leadingActions: [any Action] = [],
@@ -39,11 +45,6 @@ public struct SwipeConfiguration {
             leadingActions: leadingActions(),
             trailingActions: trailingActions()
         )
-    }
-    
-    static func none() -> SwipeConfiguration {
-        // need to supply at least one parameter or the compiler can't pick an initializer
-        return .init(leadingActions: [])
     }
 }
 

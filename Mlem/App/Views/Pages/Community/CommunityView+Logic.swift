@@ -42,7 +42,7 @@ extension CommunityView {
         guard let community = community as? any Community3Providing,
               let myPerson = appState.firstPerson,
               myPerson.canModerate(person, in: community) else {
-            return .none()
+            return .init()
         }
         
         return .init(trailingActions: [person.addModAction(community: community, isOn: true)])
