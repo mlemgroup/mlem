@@ -283,6 +283,9 @@
     "Add Guest" : {
 
     },
+    "Add Moderator" : {
+
+    },
     "Administration" : {
 
     },
@@ -1475,6 +1478,19 @@
     "Really appoint this user as an administrator of %@?" : {
 
     },
+    "Really appoint %@ as a moderator of %@?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Really appoint %1$@ as a moderator of %2$@?"
+          }
+        }
+      }
+    },
+    "Really appoint this user as a moderator of %@?" : {
+
+    },
     "Really delete %@?" : {
 
     },
@@ -1542,6 +1558,9 @@
 
     },
     "Remove Content" : {
+
+    },
+    "Remove Moderator" : {
 
     },
     "Remove Post" : {

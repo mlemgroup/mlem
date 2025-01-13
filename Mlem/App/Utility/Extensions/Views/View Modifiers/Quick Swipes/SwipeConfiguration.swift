@@ -15,6 +15,12 @@ public struct SwipeConfiguration {
     
     let behavior: SwipeBehavior
     
+    init() {
+        self.behavior = .standard
+        self.leadingActions = .init()
+        self.trailingActions = .init()
+    }
+    
     init(
         behavior: SwipeBehavior = .standard,
         leadingActions: [any Action] = [],

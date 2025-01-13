@@ -112,6 +112,13 @@ extension Person1Providing {
             if api.isAdmin {
                 purgeAction()
             }
+            
+            if let community3 = community as? any Community3Providing,
+               let myPerson = api.myPerson,
+               myPerson.canModerate(self, in: community3) {
+                addModAction(community: community3, isOn: community3.moderators.contains(where: { $0.id == id }))
+            }
+            
             if apiIsLocal, api.isAdmin, let myInstance = api.myInstance {
                 if api.isHigherAdmin(than: self) {
                     addAdminAction(instance: myInstance, isOn: true)
@@ -226,6 +233,27 @@ extension Person1Providing {
             confirmationPrompt: isOn
             ? "Really remove administrator \(displayName) from \(instance.displayName)?"
             : "Really appoint \(displayName) as an administrator of \(instance.displayName)?",
+            callback: callback
+        )
+    }
+    
+    func addModAction(community: any Community3Providing, isOn: Bool) -> BasicAction {
+        let callback: (@MainActor () -> Void) = {
+            Task {
+                do {
+                    try await community.addModerator(self, added: !isOn)
+                } catch {
+                    handleError(error)
+                }
+            }
+        }
+        
+        return .init(
+            id: "addMod\(uid)",
+            appearance: .addMod(isOn: isOn),
+            confirmationPrompt: isOn
+            ? "Really remove moderator \(displayName) from \(community.displayName)?"
+            : "Really appoint \(displayName) as a moderator of \(community.displayName)?",
             callback: callback
         )
     }

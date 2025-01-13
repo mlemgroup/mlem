@@ -210,7 +210,22 @@ extension ActionAppearance {
         .init(label: isOn ? "Remove Administrator" : "Appoint Administrator",
               isDestructive: isOn,
               color: isOn ? Palette.main.negative : Palette.main.positive,
-              icon: isOn ? Icons.removeAdministrator : Icons.administration)
+              icon: isOn ? Icons.removeAdministrator : Icons.administration,
+              swipeIcon1: isOn ? Icons.removeAdministrator : Icons.administration,
+              swipeIcon2: isOn ? Icons.removeAdministratorFill : Icons.administrationFill
+        )
+    }
+    
+    /// Adds or removes a user as moderator
+    /// - Parameter isOn: true when user is moderator, false otherwise
+    static func addMod(isOn: Bool) -> Self {
+        .init(
+            label: isOn ? "Remove Moderator" : "Appoint Moderator",
+            color: isOn ? Palette.main.negative : Palette.main.positive,
+            icon: isOn ? Icons.demoteModerator : Icons.moderation,
+            swipeIcon1: isOn ? Icons.demoteModerator : Icons.moderation,
+            swipeIcon2: isOn ? Icons.demoteModeratorFill : Icons.moderationFill
+        )
     }
     
     static func purge(isInProgress: Bool = false) -> Self {
