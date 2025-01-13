@@ -208,7 +208,7 @@ extension InboxView {
     
     func loadReports() {
         if reports == nil {
-            Task {
+            Task { @MainActor in
                 do {
                     async let postReports = await appState.firstApi.getPostReports()
                     async let commentReports = await appState.firstApi.getCommentReports()
@@ -222,6 +222,18 @@ extension InboxView {
                     
                     let combined = try await (postReports + commentReports + messageReports)
                     self.reports = combined.sorted { $0.created > $1.created }
+                } catch {
+                    handleError(error)
+                }
+            }
+        }
+    }
+    
+    func loadApplications() {
+        if applications == nil {
+            Task { @MainActor in
+                do {
+                    self.applications = try await appState.firstApi.getRegistrationApplications()
                 } catch {
                     handleError(error)
                 }

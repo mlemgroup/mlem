@@ -69,4 +69,17 @@ extension InboxView {
             }
         }
     }
+    
+    enum ModTab: CaseIterable, Identifiable {
+        case reports, applications
+        
+        var id: ModTab { self }
+        
+        var label: LocalizedStringResource {
+            switch self {
+            case .reports: "Reports"
+            case .applications: "Applications"
+            }
+        }
+    }
 }
