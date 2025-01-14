@@ -46,6 +46,9 @@ struct CommunityView: View {
     
     @State var isAtTop: Bool = true
     
+    @State var showingConfirmation: Bool = false
+    @State var newMod: Person2?
+    
     init(
         community: AnyCommunity,
         visitContext: VisitHistory.VisitContext
@@ -180,10 +183,29 @@ struct CommunityView: View {
     
     @ViewBuilder
     func moderationTab(community: any Community) -> some View {
-        VStack(spacing: Constants.main.halfSpacing) {
+        VStack(spacing: Constants.main.standardSpacing) {
             ModlogButtonView(community: community)
-            ForEach(community.moderators_ ?? []) { person in
-                PersonListRow(person)
+
+            VStack(spacing: Constants.main.halfSpacing) {
+                ForEach(community.moderators_ ?? []) { person in
+                    PersonListRow(person)
+                        .quickSwipes(moderatorQuickSwipes(community: community, person: person))
+                }
+            }
+            
+            if let firstPerson = appState.firstPerson,
+               firstPerson.isAdmin || firstPerson.moderates(community: community) {
+                Button("Add Moderator", systemImage: Icons.add, action: openAddModSheet)
+                    .buttonStyle(.capsule)
+                    .confirmationDialog("Add Moderator", isPresented: $showingConfirmation) {
+                        Button("Yes", action: addNewMod)
+                    } message: {
+                        if let displayName = newMod?.displayName {
+                            Text("Really appoint \(displayName) as a moderator of \(community.displayName)?")
+                        } else {
+                            Text("Really appoint this user as a moderator of \(community.displayName)?")
+                        }
+                    }
             }
         }
         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
@@ -219,36 +241,5 @@ struct CommunityView: View {
             output.insert(.about, at: 1)
         }
         return output
-    }
-    
-    func setupFeedLoader(community: any Community) {
-        if postFeedLoader == nil {
-            Task { @MainActor in
-                @Setting(\.internetSpeed) var internetSpeed
-                @Setting(\.showReadInFeed) var showReadInFeed
-                
-                postFeedLoader = try await .init(
-                    pageSize: internetSpeed.pageSize,
-                    sortType: appState.initialFeedSortType,
-                    showReadPosts: showReadInFeed,
-                    filterContext: filtersTracker.filterContext,
-                    prefetchingConfiguration: .forPostSize(postSize),
-                    urlCache: Constants.main.urlCache,
-                    community: community
-                )
-            }
-        } else if postFeedLoader?.community.api != community.api {
-            postFeedLoader?.community = community
-        }
-    }
-    
-    func logVisit(_ community: Community2) {
-        if let session = (appState.firstSession as? UserSession), let visitHistory = session.visitHistory {
-            guard session.api === community.api else { return }
-            visitHistory.addCommunity(community, context: visitContext)
-            Task(priority: .background) {
-                try await session.saveVisitHistory()
-            }
-        }
     }
 }

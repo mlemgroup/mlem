@@ -85,6 +85,24 @@ struct InstanceView: View {
                 handleError(error)
             }
         }
+        .task {
+            if instance.local {
+                do {
+                    let myInstance: Instance3
+                    if let apiInstance = appState.firstApi.myInstance {
+                        myInstance = apiInstance
+                    } else {
+                        myInstance = try await appState.firstApi.getMyInstance()
+                    }
+                    
+                    Task { @MainActor in
+                        instance = myInstance
+                    }
+                } catch {
+                    handleError(error)
+                }
+            }
+        }
         .isAtTopSubscriber(isAtTop: $isAtTop)
         .navigationBarTitleDisplayMode(.inline)
         .background(palette.groupedBackground)
@@ -139,6 +157,7 @@ struct InstanceView: View {
             VStack(spacing: Constants.main.halfSpacing) {
                 ForEach(instance.administrators_ ?? []) { person in
                     PersonListRow(person)
+                        .quickSwipes(administratorQuickSwipes(person: person))
                 }
             }
             

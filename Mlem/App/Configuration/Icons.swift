@@ -49,10 +49,12 @@ enum Icons {
     static let administration: String = "crown"
     static let administrationFill: String = "crown.fill"
     static let demoteModerator: String = "shield.slash"
+    static let demoteModeratorFill: String = "shield.slash.fill"
     static let moderationReport: String = "flag"
     static let modlog: String = "book.pages"
     static let transferCommunity: String = "arrow.right"
-    static let removeAdministrator: String = "arrow.down"
+    static let removeAdministrator: String = "arrowshape.down"
+    static let removeAdministratorFill: String = "arrowshape.down.fill"
     
     // inbox
     static let mention: String = "quote.bubble"
