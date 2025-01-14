@@ -40,17 +40,42 @@ extension InboxView {
     @ViewBuilder
     var modMailFeedView: some View {
         LazyVStack(spacing: 0) {
-            if let reports {
-                ForEach(reports, id: \.cacheId) { report in
-                    ReportView(report: report)
-                        .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+            if appState.firstApi.isAdmin {
+                BubblePicker(
+                    ModTab.allCases,
+                    selected: $selectedModTab,
+                    label: \.label
+                )
+            }
+            switch selectedModTab {
+            case .reports:
+                Group {
+                    if let reports {
+                        ForEach(reports, id: \.cacheId) { report in
+                            ReportView(report: report)
+                                .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+                        }
+                    } else {
+                        ProgressView()
+                            .padding(.top)
+                    }
                 }
-            } else {
-                ProgressView()
-                    .padding(.top)
+                .onAppear(perform: loadReports)
+            case .applications:
+                Group {
+                    if let applications {
+                        ForEach(applications, id: \.cacheId) { application in
+                            RegistrationApplicationView(application: application)
+                                .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+                        }
+                    } else {
+                        ProgressView()
+                            .padding(.top)
+                    }
+                }
+                .onAppear(perform: loadApplications)
             }
         }
-        .onAppear(perform: loadReports)
         .padding(.top, Constants.main.standardSpacing)
     }
     

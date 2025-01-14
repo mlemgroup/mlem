@@ -166,6 +166,8 @@ extension NavigationPage {
             MessageFeedView(person: person, focusTextField: focusTextField, editing: editing?.wrappedValue)
         case let .modlog(target):
             ModlogView(initialTarget: target)
+        case let .denyApplication(application):
+            RegistrationApplicationDenialEditorView(application: application)
         }
     }
 }
