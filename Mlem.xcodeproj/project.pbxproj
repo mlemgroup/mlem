@@ -3122,8 +3122,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.64.1;
+				branch = sjmarf/application;
+				kind = branch;
 			};
 		};
 		CD64A9182CA37D63007CA7E6 /* XCRemoteSwiftPackageReference "Gifu" */ = {
@@ -3131,14 +3131,6 @@
 			repositoryURL = "https://github.com/kaishin/Gifu";
 			requirement = {
 				branch = master;
-				kind = branch;
-			};
-		};
-		CDA38A6D2D31C4DD000C5B20 /* XCRemoteSwiftPackageReference "MlemMiddleware" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mlemgroup/MlemMiddleware";
-			requirement = {
-				branch = sjmarf/application;
 				kind = branch;
 			};
 		};
