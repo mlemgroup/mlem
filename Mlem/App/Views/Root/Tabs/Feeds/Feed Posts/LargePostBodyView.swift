@@ -27,6 +27,7 @@ struct LargePostBodyView: View {
             switch post.type {
             case let .image(url):
                 NewMediaView(url: url, verticalAspectRatioBounds: .init(width: 4, height: 5))
+                    .withContextMenu()
 //                LargeImageView(
 //                    url: url,
 //                    shouldBlur: shouldBlur

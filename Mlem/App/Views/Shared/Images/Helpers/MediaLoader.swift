@@ -49,35 +49,34 @@ enum MediaType {
 class MediaLoader {
     @ObservationIgnored @Setting(\.autoBypassImageProxy) var bypassImageProxy
     
-    private(set) var url: URL
-    private(set) var activeUrl: URL? // URL currently being loaded; supports proxy bypass
+    private(set) var url: URL?
     private var proxyBypass: URL?
     private(set) var mediaType: MediaType
     private(set) var loading: MediaLoadingState
     private(set) var error: ImageLoadingError?
     
-    init(url: URL) {
+    init(url: URL?) {
         self.url = url
-        self.activeUrl = url
-        if let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+        if let url,
+           let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
            let base = components.queryItems?.first(where: { $0.name == "url" })?.value {
             self.proxyBypass = URL(string: base)
         }
         
-        if let container = ImagePipeline.shared.cache.cachedImage(for: .init(url: url)) {
+        if let url, let container = ImagePipeline.shared.cache.cachedImage(for: .init(url: url)) {
             self.mediaType = container.animatedMediaType
             self.loading = .done
             return
         }
         
         self.mediaType = .image(.blank)
-        self.loading = .loading
+        self.loading = url == nil ? .failed : .loading
     }
     
     func load() async {
-        guard let activeUrl, loading == .loading else { return }
+        guard let url, loading == .loading else { return }
         do {
-            let imageTask = ImagePipeline.shared.imageTask(with: activeUrl)
+            let imageTask = ImagePipeline.shared.imageTask(with: url)
             imageTask.priority = .veryHigh
             
             let container = try await imageTask.response.container
@@ -104,7 +103,7 @@ class MediaLoader {
     func bypassProxy() async {
         error = nil
         loading = .loading
-        activeUrl = proxyBypass
+        url = proxyBypass
         proxyBypass = nil
         await load()
     }

@@ -115,7 +115,7 @@ struct DynamicMediaView: View {
                 }
             }
             .overlay {
-                if developerMode, let ext = loader.url.proxyAwarePathExtension?.uppercased() {
+                if developerMode, let ext = loader.url?.proxyAwarePathExtension?.uppercased() {
                     Text(ext)
                         .font(.footnote)
                         .fontWeight(.semibold)
