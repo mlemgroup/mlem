@@ -32,7 +32,7 @@ struct DynamicMediaView: View {
     let actionsEnabled: Bool
     
     init(
-        url: URL?,
+        url: URL,
         maxSize: CGFloat? = nil,
         cornerRadius: CGFloat = Constants.main.mediumItemCornerRadius,
         actionsEnabled: Bool = true,
@@ -115,7 +115,7 @@ struct DynamicMediaView: View {
                 }
             }
             .overlay {
-                if developerMode, let ext = loader.url?.proxyAwarePathExtension?.uppercased() {
+                if developerMode, let ext = loader.url.proxyAwarePathExtension?.uppercased() {
                     Text(ext)
                         .font(.footnote)
                         .fontWeight(.semibold)

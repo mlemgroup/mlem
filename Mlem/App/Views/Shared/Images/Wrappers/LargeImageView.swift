@@ -14,14 +14,14 @@ import SwiftUI
 struct LargeImageView: View {
     @Environment(NavigationLayer.self) private var navigation
 
-    let url: URL?
+    let url: URL
     let shouldBlur: Bool
     let onTapActions: (() -> Void)?
     let cornerRadius: CGFloat
     @State var blurred: Bool = false
     
     init(
-        url: URL?,
+        url: URL,
         shouldBlur: Bool,
         cornerRadius: CGFloat = Constants.main.mediumItemCornerRadius,
         onTapActions: (() -> Void)? = nil
@@ -52,7 +52,7 @@ struct LargeImageView: View {
                 if let onTapActions {
                     onTapActions()
                 }
-                if loading == .done || loading == nil, let url {
+                if loading == .done || loading == nil {
                     navigation.showImageViewer(url: url)
                 }
             }
