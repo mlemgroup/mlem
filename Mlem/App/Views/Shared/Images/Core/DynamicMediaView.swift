@@ -28,19 +28,16 @@ struct DynamicMediaView: View {
     @State var quickLookUrl: URL?
     @State var playing: Bool
     
-    let showError: Bool
     let cornerRadius: CGFloat
     let actionsEnabled: Bool
     
     init(
         url: URL?,
         maxSize: CGFloat? = nil,
-        showError: Bool = true,
         cornerRadius: CGFloat = Constants.main.mediumItemCornerRadius,
         actionsEnabled: Bool = true,
         playImmediately: Bool = false
     ) {
-        self.showError = showError
         self.cornerRadius = cornerRadius
         self.actionsEnabled = actionsEnabled
         self._loader = .init(wrappedValue: .init(url: url))
@@ -98,7 +95,7 @@ struct DynamicMediaView: View {
     var content: some View {
         MediaView(media: loader.mediaType, playing: playing)
             .overlay {
-                if showError, loader.error != nil {
+                if loader.error != nil {
                     errorOverlay
                 } else if loader.mediaType.isAnimated {
                     if !playing {

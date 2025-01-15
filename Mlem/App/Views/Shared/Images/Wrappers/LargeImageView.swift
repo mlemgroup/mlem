@@ -13,7 +13,6 @@ import SwiftUI
 
 struct LargeImageView: View {
     @Environment(NavigationLayer.self) private var navigation
-    @Setting(\.blurNsfw) var blurNsfw
 
     let url: URL?
     let shouldBlur: Bool
@@ -39,7 +38,6 @@ struct LargeImageView: View {
     var body: some View {
         DynamicMediaView(url: url, cornerRadius: cornerRadius)
             .dynamicBlur(blurred: blurred)
-            .clipShape(.rect(cornerRadius: cornerRadius))
             .overlay {
                 NsfwOverlay(blurred: $blurred, shouldBlur: shouldBlur)
             }

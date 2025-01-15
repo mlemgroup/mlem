@@ -34,7 +34,17 @@ struct MediaView: View {
     var image: some View {
         Image(uiImage: media.image)
             .resizable()
-            .aspectRatio(media.image.validSize(fallback: .init(width: 4, height: 3)), contentMode: .fit)
+            .aspectRatio(contentMode: .fill)
+            .frame(
+                minWidth: 0,
+                maxWidth: .infinity,
+                minHeight: 0,
+                maxHeight: .infinity
+            )
+            .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
+            .clipped()
+//            .resizable()
+//            .aspectRatio(media.image.validSize(fallback: .init(width: 4, height: 3)), contentMode: .fit)
     }
     
     @ViewBuilder
