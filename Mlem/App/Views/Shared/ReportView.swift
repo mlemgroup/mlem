@@ -17,8 +17,7 @@ struct ReportView: View {
     var body: some View {
         targetView
             .buttonStyle(.empty)
-            .background(palette.secondaryGroupedBackground)
-            .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
+            .background(palette.secondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
             .environment(\.reportContext, report)
     }
     

@@ -231,8 +231,8 @@ extension Person1Providing {
             id: "addAdmin\(uid)",
             appearance: .addAdmin(isOn: isOn),
             confirmationPrompt: isOn
-            ? "Really remove administrator \(displayName) from \(instance.displayName)?"
-            : "Really appoint \(displayName) as an administrator of \(instance.displayName)?",
+                ? "Really remove administrator \(displayName) from \(instance.displayName)?"
+                : "Really appoint \(displayName) as an administrator of \(instance.displayName)?",
             callback: callback
         )
     }
@@ -252,8 +252,8 @@ extension Person1Providing {
             id: "addMod\(uid)",
             appearance: .addMod(isOn: isOn),
             confirmationPrompt: isOn
-            ? "Really remove moderator \(displayName) from \(community.displayName)?"
-            : "Really appoint \(displayName) as a moderator of \(community.displayName)?",
+                ? "Really remove moderator \(displayName) from \(community.displayName)?"
+                : "Really appoint \(displayName) as a moderator of \(community.displayName)?",
             callback: callback
         )
     }

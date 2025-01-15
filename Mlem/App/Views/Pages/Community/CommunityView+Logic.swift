@@ -5,8 +5,8 @@
 //  Created by Eric Andrews on 2025-01-12.
 //
 
-import MlemMiddleware
 import Foundation
+import MlemMiddleware
 
 extension CommunityView {
     func openAddModSheet() {
