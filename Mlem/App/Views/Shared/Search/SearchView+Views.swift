@@ -161,7 +161,7 @@ extension SearchView {
     var recentSearchesHeader: some View {
         HStack {
             if editingRecentSearches {
-                Button("Cancel") {
+                Button("Done") {
                     withAnimation {
                         editingRecentSearches = false
                     }
