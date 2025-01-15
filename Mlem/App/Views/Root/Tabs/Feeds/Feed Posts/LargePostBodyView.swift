@@ -26,14 +26,15 @@ struct LargePostBodyView: View {
             
             switch post.type {
             case let .image(url):
-                LargeImageView(
-                    url: url,
-                    shouldBlur: shouldBlur
-                ) {
-                    post.markRead()
-                }
-                // Set maximum image height to 1.2 * width
-                .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
+                NewMediaView(url: url)
+//                LargeImageView(
+//                    url: url,
+//                    shouldBlur: shouldBlur
+//                ) {
+//                    post.markRead()
+//                }
+//                // Set maximum image height to 1.2 * width
+                .aspectRatio(CGSize(width: 4, height: 5), contentMode: .fill)
                 .frame(maxWidth: .infinity)
             case let .link(link):
                 WebsitePreviewView(link: link, shouldBlur: shouldBlur) {

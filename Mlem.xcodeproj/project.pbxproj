@@ -333,6 +333,7 @@
 		CD1C64152D3428710006B3C1 /* CommunityView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1C64142D34286E0006B3C1 /* CommunityView+Logic.swift */; };
 		CD1CEDD22D35D157006BB0BB /* MlemMiddleware in Frameworks */ = {isa = PBXBuildFile; productRef = CD1CEDD12D35D157006BB0BB /* MlemMiddleware */; };
 		CD1D31832C56D742001B434B /* View+WidthReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1D31822C56D742001B434B /* View+WidthReader.swift */; };
+		CD1DF6382D38357500F7851E /* NewMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1DF6372D38357100F7851E /* NewMediaView.swift */; };
 		CD3153072C38421B00BC5FBE /* View+LoadFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3153062C38421B00BC5FBE /* View+LoadFeed.swift */; };
 		CD317D4C2BE97FED008F63E2 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD317D4B2BE97FED008F63E2 /* Palette.swift */; };
 		CD317D4F2BE983ED008F63E2 /* MonochromePalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD317D4E2BE983ED008F63E2 /* MonochromePalette.swift */; };
@@ -793,6 +794,7 @@
 		CD1B2E202C7F84160075C7EA /* View+MarkReadOnScroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+MarkReadOnScroll.swift"; sourceTree = "<group>"; };
 		CD1C64142D34286E0006B3C1 /* CommunityView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunityView+Logic.swift"; sourceTree = "<group>"; };
 		CD1D31822C56D742001B434B /* View+WidthReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+WidthReader.swift"; sourceTree = "<group>"; };
+		CD1DF6372D38357100F7851E /* NewMediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMediaView.swift; sourceTree = "<group>"; };
 		CD3153062C38421B00BC5FBE /* View+LoadFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+LoadFeed.swift"; sourceTree = "<group>"; };
 		CD317D4B2BE97FED008F63E2 /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
 		CD317D4E2BE983ED008F63E2 /* MonochromePalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonochromePalette.swift; sourceTree = "<group>"; };
@@ -1268,6 +1270,7 @@
 		039D75652C4FC56A004F24C2 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				CD1DF6372D38357100F7851E /* NewMediaView.swift */,
 				CD13CC682C5D3CCA001AF428 /* Wrappers */,
 				CD13CC672C5D3CBE001AF428 /* Core */,
 				CD13CC662C5D3CA7001AF428 /* Helpers */,
@@ -2307,6 +2310,7 @@
 				033F84662D1C780900D87A9E /* ModlogButtonView.swift in Sources */,
 				03D2A6392C00FAE000ED4FF2 /* UserAccount.swift in Sources */,
 				CDB738292CB8A6A5005B11BB /* View+PaletteBorder.swift in Sources */,
+				CD1DF6382D38357500F7851E /* NewMediaView.swift in Sources */,
 				03C93CF02BEFFB1A00327BFE /* LoginCredentialsView.swift in Sources */,
 				CD332D7C2CA71E6F00A53988 /* GifView.swift in Sources */,
 				CD13CC652C5D2B9D001AF428 /* CircleCroppedImageView.swift in Sources */,

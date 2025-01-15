@@ -62,7 +62,7 @@ struct MediaView: View {
     }
 }
 
-private extension UIImage {
+extension UIImage {
     func validSize(fallback: CGSize) -> CGSize {
         size == .zero ? fallback : size
     }
