@@ -76,8 +76,18 @@ class VisitHistory {
     }
     
     @MainActor
+    func removeCommunity(_ community: Community2, context: VisitContext) {
+        removeValue(community, from: &communityRecords, context: context)
+    }
+    
+    @MainActor
     func addPerson(_ person: Person2, context: VisitContext) {
         addValue(person, to: &personRecords, context: context)
+    }
+    
+    @MainActor
+    func removePerson(_ person: Person2, context: VisitContext) {
+        removeValue(person, from: &personRecords, context: context)
     }
     
     @MainActor
@@ -85,14 +95,17 @@ class VisitHistory {
         addValue(instance, to: &instanceRecords, context: context)
     }
     
+    @MainActor
+    func removeInstance(_ instance: InstanceSummary, context: VisitContext) {
+        removeValue(instance, from: &instanceRecords, context: context)
+    }
+    
     private func addValue<T: Equatable>(
         _ value: T,
         to dict: inout [VisitContext: [VisitRecord<T>]],
         context: VisitContext
     ) {
-        if let index = dict[context, default: []].firstIndex(where: { $0.value == value }) {
-            dict[context, default: []].remove(at: index)
-        }
+        removeValue(value, from: &dict, context: context)
         
         if !dict.keys.contains(context) {
             dict[context] = []
@@ -101,6 +114,16 @@ class VisitHistory {
         
         if dict[context, default: []].count > context.maximumHistorySize {
             dict[context, default: []].removeLast()
+        }
+    }
+    
+    private func removeValue<T: Equatable>(
+        _ value: T,
+        from dict: inout [VisitContext: [VisitRecord<T>]],
+        context: VisitContext
+    ) {
+        if let index = dict[context, default: []].firstIndex(where: { $0.value == value }) {
+            dict[context, default: []].remove(at: index)
         }
     }
     
