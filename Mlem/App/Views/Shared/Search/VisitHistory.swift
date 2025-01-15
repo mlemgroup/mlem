@@ -129,6 +129,8 @@ class VisitHistory {
     
     func clear() {
         communityRecords = [:]
+        personRecords = [:]
+        instanceRecords = [:]
     }
 }
 
