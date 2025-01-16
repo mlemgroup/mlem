@@ -1465,19 +1465,6 @@
     "Really apply configuration to all?" : {
 
     },
-    "Really appoint %@ as an administrator of %@?" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Really appoint %1$@ as an administrator of %2$@?"
-          }
-        }
-      }
-    },
-    "Really appoint this user as an administrator of %@?" : {
-
-    },
     "Really appoint %@ as a moderator of %@?" : {
       "localizations" : {
         "en" : {
@@ -1488,7 +1475,20 @@
         }
       }
     },
+    "Really appoint %@ as an administrator of %@?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Really appoint %1$@ as an administrator of %2$@?"
+          }
+        }
+      }
+    },
     "Really appoint this user as a moderator of %@?" : {
+
+    },
+    "Really appoint this user as an administrator of %@?" : {
 
     },
     "Really delete %@?" : {
@@ -1564,6 +1564,9 @@
 
     },
     "Remove Post" : {
+
+    },
+    "Remove Recent Search" : {
 
     },
     "Removed: %@" : {

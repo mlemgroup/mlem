@@ -265,18 +265,17 @@ extension SearchView {
     @ViewBuilder
     func deleteRecentSearchButton(session: UserSession, callback: @escaping (() -> Void)) -> some View {
         if editingRecentSearches {
-            Button {
+            Button("Remove Recent Search", systemImage: Icons.delete) {
                 withAnimation {
                     callback()
                 }
                 Task(priority: .background) {
                     try await session.saveVisitHistory()
                 }
-            } label: {
-                Image(systemName: Icons.delete)
-                    .foregroundStyle(palette.negative)
-                    .padding(.horizontal, Constants.main.halfSpacing)
             }
+            .labelStyle(.iconOnly)
+            .foregroundStyle(palette.negative)
+            .padding(.horizontal, Constants.main.halfSpacing)
         }
     }
 }
