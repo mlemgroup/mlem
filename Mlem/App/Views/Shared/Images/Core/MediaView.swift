@@ -77,7 +77,7 @@ struct MediaView: View {
     var body: some View {
         content
             .blur(radius: blurValue, opaque: true)
-            .overlay(animatedContentOverlay) // overlay prevents visual hitch when swapping views and preserves frame/cropping
+            .overlay(animationControlOverlay)
             .overlay(nsfwOverlay)
             .overlay(developerOverlay)
             .overlay(errorOverlay)

@@ -9,28 +9,103 @@ import SwiftUI
 
 extension MediaView {
     
+    /// Struct to actually render the media. This is declared as its own struct to prevent state updates from the parent view
+    /// causing unwanted behavior.
+    private struct InternalMediaView: View {
+        
+        let media: MediaType
+        let playing: Bool
+        let blurred: Bool
+        let aspectRatio: CGSize
+        let contentMode: ContentMode
+        
+        var uiImage: UIImage { media.image }
+        
+        var body: some View {
+            if media.isAnimated {
+                image
+                    .overlay {
+                        // overlay to prevent visual hitch when swapping views and to implicitly preserve frame/cropping
+                        if playing {
+                            animatedContent
+                                .background {
+                                    if !blurred {
+                                        ProgressView()
+                                    }
+                                }
+                        }
+                    }
+            } else {
+                image
+            }
+        }
+
+        @ViewBuilder
+        var image: some View {
+            if contentMode == .fit {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+            } else if contentMode == .fill {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .aspectRatio(contentMode: contentMode)
+                    // trick adapted from https://alejandromp.com/development/blog/image-aspectratio-without-frames/
+                    .frame(
+                        minWidth: 0,
+                        maxWidth: .infinity,
+                        minHeight: 0,
+                        maxHeight: .infinity
+                    )
+                    .aspectRatio(aspectRatio, contentMode: .fill)
+                    .clipped()
+            }
+        }
+        
+        @ViewBuilder
+        var animatedContent: some View {
+            switch media {
+            case let .video(_, animated):
+                VideoView(asset: animated)
+            case let .gif(_, animated):
+                GifView(data: animated)
+            case let .webp(_, animated):
+                WebpView(data: animated)
+            default:
+                EmptyView()
+            }
+        }
+    }
+    
     // MARK: - Core
     
     @ViewBuilder
     var image: some View {
-        if contentMode == .fit {
-            Image(uiImage: uiImage)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-        } else if contentMode == .fill {
-            Image(uiImage: uiImage)
-                .resizable()
-                .aspectRatio(contentMode: contentMode)
-                // trick adapted from https://alejandromp.com/development/blog/image-aspectratio-without-frames/
-                .frame(
-                    minWidth: 0,
-                    maxWidth: .infinity,
-                    minHeight: 0,
-                    maxHeight: .infinity
-                )
-                .aspectRatio(uiImage.verticallyBoundedAspectRatio(bounds: aspectRatio), contentMode: contentMode)
-                .clipped()
-        }
+        InternalMediaView(
+            media: loader.mediaType,
+            playing: playing,
+            blurred: blurred,
+            aspectRatio: uiImage.verticallyBoundedAspectRatio(bounds: aspectRatio),
+            contentMode: contentMode)
+            // .aspectRatio(uiImage.verticallyBoundedAspectRatio(bounds: aspectRatio), contentMode: contentMode)
+//        if contentMode == .fit {
+//            Image(uiImage: uiImage)
+//                .resizable()
+//                .aspectRatio(contentMode: .fit)
+//        } else if contentMode == .fill {
+//            Image(uiImage: uiImage)
+//                .resizable()
+//                .aspectRatio(contentMode: contentMode)
+//                // trick adapted from https://alejandromp.com/development/blog/image-aspectratio-without-frames/
+//                .frame(
+//                    minWidth: 0,
+//                    maxWidth: .infinity,
+//                    minHeight: 0,
+//                    maxHeight: .infinity
+//                )
+//                .aspectRatio(uiImage.verticallyBoundedAspectRatio(bounds: aspectRatio), contentMode: contentMode)
+//                .clipped()
+//        }
     }
     
     @ViewBuilder
@@ -57,22 +132,32 @@ extension MediaView {
     }
     
     @ViewBuilder
-    var animatedContentOverlay: some View {
-        if loader.mediaType.isAnimated, !blurred {
-            if playing {
-                animatedContent
-                    // .aspectRatio(contentMode: .fit)
-                    .background {
-                        ProgressView()
-                    }
-            } else {
-                PlayButton(postSize: .large)
-                    .onTapGesture {
-                        playing = true
-                    }
-            }
+    var animationControlOverlay: some View {
+        if loader.mediaType.isAnimated, !blurred, !playing {
+            PlayButton(postSize: .large)
+                .onTapGesture {
+                    playing = true
+                }
         }
     }
+    
+//    @ViewBuilder
+//    var animatedContentOverlay: some View {
+//        if loader.mediaType.isAnimated, !blurred {
+//            if playing {
+//                animatedContent
+//                    // .aspectRatio(contentMode: .fit)
+//                    .background {
+//                        ProgressView()
+//                    }
+//            } else {
+//                PlayButton(postSize: .large)
+//                    .onTapGesture {
+//                        playing = true
+//                    }
+//            }
+//        }
+//    }
     
     @ViewBuilder
     var errorOverlay: some View {
