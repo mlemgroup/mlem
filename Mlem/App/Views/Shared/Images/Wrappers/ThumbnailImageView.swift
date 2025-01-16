@@ -8,6 +8,7 @@
 import Foundation
 import MlemMiddleware
 import SwiftUI
+import _QuickLook_SwiftUI // https://github.com/swiftlang/swift/issues/73048
 
 struct ThumbnailImageView: View {
     @Environment(Palette.self) var palette
@@ -70,7 +71,7 @@ struct ThumbnailImageView: View {
                             }
                         }
                     }
-                    // .quickLookPreview($quickLookUrl) // TODO: NOW wtf?
+                    .quickLookPreview($quickLookUrl)
             case let .link(link):
                 content
                     .onTapGesture {
