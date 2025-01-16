@@ -101,34 +101,50 @@ extension SearchView {
     
     @ViewBuilder
     var recentSearchesListView: some View {
-        if let userSession = appState.firstSession as? UserSession {
+        if let session = appState.firstSession as? UserSession,
+           let visitHistory = session.visitHistory {
             switch selectedTab {
             case .communities:
-                if let items = userSession.visitHistory?.communities(withContext: .search),
-                   !items.isEmpty {
+                let items = visitHistory.communities(withContext: .search)
+                if !items.isEmpty {
                     recentSearchesHeader
                     SearchResultsView(results: items) { community in
-                        CommunityListRow(community, readout: .subscribers)
+                        HStack {
+                            CommunityListRow(community, readout: .subscribers)
+                            deleteRecentSearchButton(session: session) {
+                                visitHistory.removeCommunity(community, context: .search)
+                            }
+                        }
                     }
                 } else {
                     searchPlaceholder
                 }
             case .people:
-                if let items = userSession.visitHistory?.people(withContext: .search),
-                   !items.isEmpty {
+                let items = visitHistory.people(withContext: .search)
+                if !items.isEmpty {
                     recentSearchesHeader
                     SearchResultsView(results: items) { person in
-                        PersonListRow(person, readout: .postsAndComments)
+                        HStack {
+                            PersonListRow(person, readout: .postsAndComments)
+                            deleteRecentSearchButton(session: session) {
+                                visitHistory.removePerson(person, context: .search)
+                            }
+                        }
                     }
                 } else {
                     searchPlaceholder
                 }
             case .instances:
-                if let items = userSession.visitHistory?.instances(withContext: .search),
-                   !items.isEmpty {
+                let items = visitHistory.instances(withContext: .search)
+                if !items.isEmpty {
                     recentSearchesHeader
                     SearchResultsView(results: items) { instance in
-                        InstanceListRow(instance, readout: .users)
+                        HStack {
+                            InstanceListRow(instance, readout: .users)
+                            deleteRecentSearchButton(session: session) {
+                                visitHistory.removeInstance(instance, context: .search)
+                            }
+                        }
                     }
                 } else {
                     searchPlaceholder
@@ -144,10 +160,28 @@ extension SearchView {
     @ViewBuilder
     var recentSearchesHeader: some View {
         HStack {
-            Text("Recently Searched")
-                .foregroundStyle(palette.primary)
+            if editingRecentSearches {
+                Button("Done") {
+                    withAnimation {
+                        editingRecentSearches = false
+                    }
+                }
+            } else {
+                Text("Recently Searched")
+                    .foregroundStyle(palette.primary)
+            }
+            
             Spacer()
-            ClearRecentSearchesButton()
+            
+            if editingRecentSearches {
+                ClearRecentSearchesButton()
+            } else {
+                Button("Edit") {
+                    withAnimation {
+                        editingRecentSearches = true
+                    }
+                }
+            }
         }
         .font(.callout)
         .bold()
@@ -225,6 +259,23 @@ extension SearchView {
             } message: {
                 Text("You can also turn off search history completely for this account.")
             }
+        }
+    }
+    
+    @ViewBuilder
+    func deleteRecentSearchButton(session: UserSession, callback: @escaping (() -> Void)) -> some View {
+        if editingRecentSearches {
+            Button("Remove Recent Search", systemImage: Icons.delete) {
+                withAnimation {
+                    callback()
+                }
+                Task(priority: .background) {
+                    try await session.saveVisitHistory()
+                }
+            }
+            .labelStyle(.iconOnly)
+            .foregroundStyle(palette.negative)
+            .padding(.horizontal, Constants.main.halfSpacing)
         }
     }
 }

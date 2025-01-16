@@ -57,6 +57,8 @@ struct SearchView: View {
         urlCache: Constants.main.urlCache
     )
     
+    @State var editingRecentSearches: Bool = false
+    
     var body: some View {
         content
             .background(palette.groupedBackground)
@@ -99,6 +101,7 @@ struct SearchView: View {
             }
             // Don't use `.task` here, because it triggers when navigating back
             .onChange(of: query, initial: true) { oldValue, newValue in
+                editingRecentSearches = false
                 Task { @MainActor in
                     if selectedTab == .posts {
                         if oldValue != newValue {
@@ -117,6 +120,7 @@ struct SearchView: View {
                 }
             }
             .onChange(of: selectedTab) {
+                editingRecentSearches = false
                 if selectedTab == .posts {
                     if page != .results {
                         searchBarFocused = true
@@ -134,6 +138,9 @@ struct SearchView: View {
             }
             .onChange(of: postFilters.location.instanceStub) {
                 resolvePostFilterCreator()
+            }
+            .onDisappear {
+                editingRecentSearches = false
             }
             .environment(\.feedContext, .search)
     }
