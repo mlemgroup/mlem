@@ -11,10 +11,26 @@ extension MediaView {
     
     // MARK: - Core
     
+    @ViewBuilder
     var image: some View {
-        Image(uiImage: uiImage)
-            .resizable()
-            .aspectRatio(contentMode: contentMode)
+        if contentMode == .fit {
+            Image(uiImage: uiImage)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+        } else if contentMode == .fill {
+            Image(uiImage: uiImage)
+                .resizable()
+                .aspectRatio(contentMode: contentMode)
+                // trick adapted from https://alejandromp.com/development/blog/image-aspectratio-without-frames/
+                .frame(
+                    minWidth: 0,
+                    maxWidth: .infinity,
+                    minHeight: 0,
+                    maxHeight: .infinity
+                )
+                .aspectRatio(uiImage.verticallyBoundedAspectRatio(bounds: aspectRatio), contentMode: contentMode)
+                .clipped()
+        }
     }
     
     @ViewBuilder
@@ -45,7 +61,7 @@ extension MediaView {
         if loader.mediaType.isAnimated, !blurred {
             if playing {
                 animatedContent
-                    .aspectRatio(contentMode: .fit)
+                    // .aspectRatio(contentMode: .fit)
                     .background {
                         ProgressView()
                     }

@@ -82,15 +82,8 @@ struct MediaView: View {
             .overlay(developerOverlay)
             .overlay(errorOverlay)
             .clipShape(.rect(cornerRadius: cornerRadius))
-            // trick adapted from https://alejandromp.com/development/blog/image-aspectratio-without-frames/
-            .frame(
-                minWidth: 0,
-                maxWidth: .infinity,
-                minHeight: 0,
-                maxHeight: .infinity
-            )
+            .frame(maxWidth: .infinity)
             .aspectRatio(uiImage.verticallyBoundedAspectRatio(bounds: aspectRatio), contentMode: contentMode)
-            .clipped()
             .onAppear {
                 Task {
                     await loader.load()
