@@ -9,6 +9,7 @@ import SwiftUI
 
 struct NewMediaView: View {
     @Environment(NavigationLayer.self) var navigation
+    @Environment(Palette.self) var palette
     
     @Setting(\.bypassImageProxyShown) var bypassImageProxyShown
     @Setting(\.autoplayMedia) var autoplayMedia
@@ -79,9 +80,21 @@ struct NewMediaView: View {
     
     var body: some View {
         content
+            .blur(radius: blurValue, opaque: true)
             .overlay(animatedContentOverlay) // overlay prevents visual hitch when swapping views and preserves frame/cropping
             .overlay(nsfwOverlay)
             .overlay(developerOverlay)
+            .overlay(errorOverlay)
+            .clipShape(.rect(cornerRadius: cornerRadius))
+            // trick adapted from https://alejandromp.com/development/blog/image-aspectratio-without-frames/
+            .frame(
+                minWidth: 0,
+                maxWidth: .infinity,
+                minHeight: 0,
+                maxHeight: .infinity
+            )
+            .aspectRatio(uiImage.verticallyBoundedAspectRatio(bounds: aspectRatio), contentMode: contentMode)
+            .clipped()
             .onAppear {
                 Task {
                     await loader.load()
@@ -93,37 +106,28 @@ struct NewMediaView: View {
                 }
             }
             .onTapGesture(perform: tapActions)
-        // TEMP BELOW THIS POINT
-//            .overlay {
-//                if loader.loading != .done {
-//                    ProgressView()
-//                }
-//            }
     }
     
     @ViewBuilder
     var content: some View {
-        if #available(iOS 18.0, *) {
-            ios18Content
-        } else {
-            image.onDisappear {
-                playing = false
+        Group {
+            if #available(iOS 18.0, *) {
+                image
+                    .onScrollVisibilityChange(threshold: 0.5) { isVisible in
+                        if isVisible, autoplayMedia {
+                            playing = isVisible
+                        }
+                        if !isVisible {
+                            playing = false
+                        }
+                    }
+            } else {
+                image
+                    .onDisappear {
+                        playing = false
+                    }
             }
         }
-    }
-    
-    @available(iOS 18.0, *)
-    @ViewBuilder
-    var ios18Content: some View {
-        image
-            .onScrollVisibilityChange(threshold: 0.5) { isVisible in
-                if isVisible, autoplayMedia {
-                    playing = isVisible
-                }
-                if !isVisible {
-                    playing = false
-                }
-            }
     }
 }
 

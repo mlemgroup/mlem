@@ -147,9 +147,11 @@ struct ProfileSettingsView: View {
         Section {
             VStack(spacing: 0) {
                 if let bannerUrl {
-                    LargeImageView(url: bannerUrl, shouldBlur: false, cornerRadius: 0)
-                        .id(bannerUrl)
-                        .aspectRatio(contentMode: .fill)
+                    NewMediaView(
+                        url: bannerUrl,
+                        contentMode: .fill,
+                        enableContextMenu: true,
+                        enableImageViewer: true)
                         .frame(height: 150)
                         .clipped()
                 } else {

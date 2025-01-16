@@ -16,16 +16,6 @@ extension NewMediaView {
         Image(uiImage: uiImage)
             .resizable()
             .aspectRatio(contentMode: contentMode)
-            .blur(radius: blurValue, opaque: true)
-            .clipShape(.rect(cornerRadius: cornerRadius))
-            .frame(
-                minWidth: 0,
-                maxWidth: .infinity,
-                minHeight: 0,
-                maxHeight: .infinity
-            )
-            .aspectRatio(uiImage.verticallyBoundedAspectRatio(bounds: aspectRatio), contentMode: contentMode)
-            .clipped()
     }
     
     @ViewBuilder
@@ -56,9 +46,7 @@ extension NewMediaView {
         if loader.mediaType.isAnimated {
             if playing {
                 animatedContent
-                    .blur(radius: blurValue, opaque: true)
                     .aspectRatio(contentMode: .fit)
-                    .clipShape(.rect(cornerRadius: cornerRadius))
                     .background {
                         if !blurred {
                             ProgressView()
@@ -69,6 +57,53 @@ extension NewMediaView {
                     .onTapGesture {
                         playing = true
                     }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var errorOverlay: some View {
+        if let loaderError = loader.error {
+            palette.secondaryBackground.overlay {
+                switch loaderError {
+                case let .proxyFailure(proxyBypass):
+                    VStack(spacing: Constants.main.standardSpacing) {
+                        Image(systemName: Icons.proxy)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: 50)
+                            .padding(4)
+                        
+                        Text("Proxy Failure")
+                            .fontWeight(.semibold)
+                        
+                        Button("Load directly from \(proxyBypass.host() ?? "unknown host")") {
+                            if !bypassImageProxyShown {
+                                bypassImageProxyShown = true
+                                navigation.openSheet(.bypassImageProxyWarning {
+                                    Task {
+                                        await loader.bypassProxy()
+                                    }
+                                })
+                            } else {
+                                Task {
+                                    await loader.bypassProxy()
+                                }
+                            }
+                        }
+                        .foregroundStyle(palette.accent)
+                        .buttonStyle(.bordered)
+                        .padding(.horizontal, Constants.main.standardSpacing)
+                    }
+                    .foregroundStyle(palette.tertiary)
+                case .error:
+                    Image(systemName: Icons.missing)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: 50)
+                        .padding(4)
+                        .foregroundStyle(palette.tertiary)
+                }
             }
         }
     }
