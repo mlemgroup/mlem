@@ -75,15 +75,14 @@ struct MediaView: View {
     
     var body: some View {
         content
-            .allowsHitTesting(onTapActions != nil) // prevent conflict with parent onTapActions
             .blur(radius: blurValue, opaque: true)
             .overlay(animationControlOverlay)
             .overlay(nsfwOverlay)
             .overlay(developerOverlay)
             .overlay(errorOverlay)
             .clipShape(.rect(cornerRadius: cornerRadius))
-            .withContextMenu(enabled: enableContextMenu, menuContent: contextMenuContent)
-            .onTapGesture(perform: tapActions)
+            .withContextMenu(menuContent: contextMenuContent, isEnabled: enableContextMenu)
+            .gesture(TapGesture().onEnded(tapActions), isEnabled: onTapActions != nil)
             .frame(maxWidth: .infinity)
             .onAppear {
                 Task {
@@ -117,14 +116,14 @@ struct MediaView: View {
 }
 
 private struct MediaViewWithContextMenu<MenuItems: View>: ViewModifier {
-    let enabled: Bool
     let menuContent: () -> MenuItems
+    let isEnabled: Bool
     
     // This sort of conditional view modifier is generally considered bad form because it can cause unexpected view identity updates.
     // Since `enableContextMenu` is unlikely to be a dynamic value it's acceptable here; nevertheless I have put a warning
     // in the function doc making that behavior explicit. [ Eric 2025-01-16 ]
     func body(content: Content) -> some View {
-        if enabled {
+        if isEnabled {
             content
                 .contextMenu {
                     menuContent()
@@ -138,7 +137,7 @@ private struct MediaViewWithContextMenu<MenuItems: View>: ViewModifier {
 private extension View {
     /// This view modifier ensures that the context menu is only applied if enabled. If the context menu is instead always applied
     /// but only populated if enabled, it will disable parent context menus (e.g., in `WebsitePreviewView`).
-    func withContextMenu(enabled: Bool, menuContent: @escaping () -> some View) -> some View {
-        modifier(MediaViewWithContextMenu(enabled: enabled, menuContent: menuContent))
+    func withContextMenu(menuContent: @escaping () -> some View, isEnabled: Bool) -> some View {
+        return modifier(MediaViewWithContextMenu(menuContent: menuContent, isEnabled: isEnabled))
     }
 }
