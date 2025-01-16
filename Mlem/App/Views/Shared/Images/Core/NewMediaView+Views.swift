@@ -12,7 +12,6 @@ extension MediaView {
     // MARK: - Core
     
     var image: some View {
-        // adapted from https://alejandromp.com/development/blog/image-aspectratio-without-frames/
         Image(uiImage: uiImage)
             .resizable()
             .aspectRatio(contentMode: contentMode)
@@ -43,16 +42,14 @@ extension MediaView {
     
     @ViewBuilder
     var animatedContentOverlay: some View {
-        if loader.mediaType.isAnimated {
+        if loader.mediaType.isAnimated, !blurred {
             if playing {
                 animatedContent
                     .aspectRatio(contentMode: .fit)
                     .background {
-                        if !blurred {
-                            ProgressView()
-                        }
+                        ProgressView()
                     }
-            } else if !blurred {
+            } else {
                 PlayButton(postSize: .large)
                     .onTapGesture {
                         playing = true
