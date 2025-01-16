@@ -20,7 +20,9 @@ struct InboxView: View {
     @State var headerPinned: Bool = false
     @State var selectedFeed: Feed = .inbox
     @State var selectedTab: Tab = .all
+    @State var selectedModTab: ModTab = .reports
     
+    @State var applications: [RegistrationApplication]?
     @State var reports: [Report]?
     
     @State var replyFeedLoader: ReplyChildFeedLoader

@@ -207,12 +207,13 @@ extension ActionAppearance {
     /// Adds or removes a user as administrator
     /// - Parameter isOn: true when user is admin, false otherwise
     static func addAdmin(isOn: Bool) -> Self {
-        .init(label: isOn ? "Remove Administrator" : "Appoint Administrator",
-              isDestructive: isOn,
-              color: isOn ? Palette.main.negative : Palette.main.positive,
-              icon: isOn ? Icons.removeAdministrator : Icons.administration,
-              swipeIcon1: isOn ? Icons.removeAdministrator : Icons.administration,
-              swipeIcon2: isOn ? Icons.removeAdministratorFill : Icons.administrationFill
+        .init(
+            label: isOn ? "Remove Administrator" : "Appoint Administrator",
+            isDestructive: isOn,
+            color: isOn ? Palette.main.negative : Palette.main.positive,
+            icon: isOn ? Icons.removeAdministrator : Icons.administration,
+            swipeIcon1: isOn ? Icons.removeAdministrator : Icons.administration,
+            swipeIcon2: isOn ? Icons.removeAdministratorFill : Icons.administrationFill
         )
     }
     

@@ -346,6 +346,9 @@
     "Application Submitted!" : {
 
     },
+    "Applications" : {
+
+    },
     "Applications Email Admins" : {
 
     },
@@ -370,6 +373,12 @@
           }
         }
       }
+    },
+    "Approve" : {
+
+    },
+    "Approved by %@" : {
+
     },
     "Are you sure you want to delete all community favorites for this account? This cannot be undone." : {
       "localizations" : {
@@ -723,6 +732,25 @@
 
     },
     "Deleted" : {
+
+    },
+    "Denied by %@" : {
+
+    },
+    "Denied by %@: \"%@\"" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Denied by %1$@: \"%2$@\""
+          }
+        }
+      }
+    },
+    "Deny" : {
+
+    },
+    "Deny Application" : {
 
     },
     "Details" : {
@@ -1603,6 +1631,9 @@
           }
         }
       }
+    },
+    "Reports" : {
+
     },
     "Reports and Registration Applications" : {
 
