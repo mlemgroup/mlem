@@ -77,8 +77,6 @@ extension MediaView {
         }
     }
     
-    // MARK: - Core
-    
     @ViewBuilder
     var image: some View {
         InternalMediaView(
@@ -87,42 +85,7 @@ extension MediaView {
             blurred: blurred,
             aspectRatio: uiImage.verticallyBoundedAspectRatio(bounds: aspectRatio),
             contentMode: contentMode)
-            // .aspectRatio(uiImage.verticallyBoundedAspectRatio(bounds: aspectRatio), contentMode: contentMode)
-//        if contentMode == .fit {
-//            Image(uiImage: uiImage)
-//                .resizable()
-//                .aspectRatio(contentMode: .fit)
-//        } else if contentMode == .fill {
-//            Image(uiImage: uiImage)
-//                .resizable()
-//                .aspectRatio(contentMode: contentMode)
-//                // trick adapted from https://alejandromp.com/development/blog/image-aspectratio-without-frames/
-//                .frame(
-//                    minWidth: 0,
-//                    maxWidth: .infinity,
-//                    minHeight: 0,
-//                    maxHeight: .infinity
-//                )
-//                .aspectRatio(uiImage.verticallyBoundedAspectRatio(bounds: aspectRatio), contentMode: contentMode)
-//                .clipped()
-//        }
     }
-    
-    @ViewBuilder
-    var animatedContent: some View {
-        switch loader.mediaType {
-        case let .video(_, animated):
-            VideoView(asset: animated)
-        case let .gif(_, animated):
-            GifView(data: animated)
-        case let .webp(_, animated):
-            WebpView(data: animated)
-        default:
-            EmptyView()
-        }
-    }
-    
-    // MARK: - Helpers
     
     @ViewBuilder
     var nsfwOverlay: some View {
@@ -140,24 +103,6 @@ extension MediaView {
                 }
         }
     }
-    
-//    @ViewBuilder
-//    var animatedContentOverlay: some View {
-//        if loader.mediaType.isAnimated, !blurred {
-//            if playing {
-//                animatedContent
-//                    // .aspectRatio(contentMode: .fit)
-//                    .background {
-//                        ProgressView()
-//                    }
-//            } else {
-//                PlayButton(postSize: .large)
-//                    .onTapGesture {
-//                        playing = true
-//                    }
-//            }
-//        }
-//    }
     
     @ViewBuilder
     var errorOverlay: some View {
