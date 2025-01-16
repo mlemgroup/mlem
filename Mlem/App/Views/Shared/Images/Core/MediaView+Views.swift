@@ -167,15 +167,17 @@ extension MediaView {
     }
     
     @ViewBuilder
-    func contextMenuContent(url: URL) -> some View {
-        Button("Save Image", systemImage: Icons.import) {
-            Task { await saveImage(url: url) }
-        }
-        Button("Share Image", systemImage: Icons.share) {
-            Task { await shareImage(url: url) }
-        }
-        Button("Quick Look", systemImage: Icons.imageDetails) {
-            Task { await showQuickLook(url: url) }
+    func contextMenuContent() -> some View {
+        if let fullSizeUrl {
+            Button("Save Image", systemImage: Icons.import) {
+                Task { await saveImage(url: fullSizeUrl) }
+            }
+            Button("Share Image", systemImage: Icons.share) {
+                Task { await shareImage(url: fullSizeUrl) }
+            }
+            Button("Quick Look", systemImage: Icons.imageDetails) {
+                Task { await showQuickLook(url: fullSizeUrl) }
+            }
         }
     }
 }

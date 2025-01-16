@@ -35,7 +35,6 @@ struct MediaView: View {
     var uiImage: UIImage { loader.mediaType.image }
     var blurValue: CGFloat { blurred ? max(uiImage.size.width, uiImage.size.height) / 12 : 0 }
     var fullSizeUrl: URL? { Mlem.fullSizeUrl(url: loader.url) }
-    var contextMenuUrl: URL? { enableContextMenu ? fullSizeUrl : nil }
 
     // TODO: update verticalAspectRatioBounds to aspectRatio, include aspectBounding enum (.vertical, .horizontal, .absolute)
     
@@ -48,7 +47,7 @@ struct MediaView: View {
     ///   - cornerRadius: corner radius to apply to the image
     ///   - enableContextMenu: true if the default context menu (save/share/quick look) should appear
     ///   - enableImageViewer: true if tapping the image should open the image viewer
-    ///   - playImmediately: true if animated media should play without user interaction.
+    ///   - playImmediately: true if animated media should play without user interaction
     ///   - onTapActions: actions to perform when the image is tapped. If `enableImageViewer: true`, tapping the image will both execute
     ///     the specified actions and open the image viewer
     init(url: URL,
@@ -77,15 +76,15 @@ struct MediaView: View {
     
     var body: some View {
         content
-            // .allowsHitTesting(onTapActions != nil)
+            .allowsHitTesting(onTapActions != nil) // prevent conflict with parent onTapActions
             .blur(radius: blurValue, opaque: true)
             .overlay(animationControlOverlay)
             .overlay(nsfwOverlay)
             .overlay(developerOverlay)
             .overlay(errorOverlay)
             .clipShape(.rect(cornerRadius: cornerRadius))
-            .withContextMenu(url: contextMenuUrl, menuContent: contextMenuContent)
-            // .onTapGesture(perform: tapActions)
+            .withContextMenu(enabled: enableContextMenu, menuContent: contextMenuContent)
+            .onTapGesture(perform: tapActions)
             .frame(maxWidth: .infinity)
             .onAppear {
                 Task {
@@ -118,20 +117,15 @@ struct MediaView: View {
     }
 }
 
-// MARK: - Modifiers
-
-// Applying these as conditional modifiers rather than modifiers with empty bodies/callbacks prevents
-// them from disabling parent view behavior in unexpected ways
-
 private struct MediaViewWithContextMenu<MenuItems: View>: ViewModifier {
-    let url: URL?
-    let menuContent: (URL) -> MenuItems
+    let enabled: Bool
+    let menuContent: () -> MenuItems
     
     func body(content: Content) -> some View {
-        if let url {
+        if enabled {
             content
                 .contextMenu {
-                    menuContent(url)
+                    menuContent()
                 }
         } else {
             content
@@ -140,7 +134,9 @@ private struct MediaViewWithContextMenu<MenuItems: View>: ViewModifier {
 }
 
 private extension View {
-    func withContextMenu(url: URL?, menuContent: @escaping (URL) -> some View) -> some View {
-        modifier(MediaViewWithContextMenu(url: url, menuContent: menuContent))
+    /// This view modifier ensures that the context menu is only applied if enabled. If the context menu is instead always applied
+    /// but only populated if enabled, it will disable parent context menus (e.g., in `WebsitePreviewView`).
+    func withContextMenu(enabled: Bool, menuContent: @escaping () -> some View) -> some View {
+        modifier(MediaViewWithContextMenu(enabled: enabled, menuContent: menuContent))
     }
 }
