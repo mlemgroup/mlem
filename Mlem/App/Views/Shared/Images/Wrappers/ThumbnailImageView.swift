@@ -70,7 +70,7 @@ struct ThumbnailImageView: View {
                             }
                         }
                     }
-                    .quickLookPreview($quickLookUrl)
+                    // .quickLookPreview($quickLookUrl) // TODO: NOW wtf?
             case let .link(link):
                 content
                     .onTapGesture {

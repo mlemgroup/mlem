@@ -15,6 +15,8 @@ extension UIImage {
     var breadthSize: CGSize { .init(width: breadth, height: breadth) }
     var breadthRect: CGRect { .init(origin: .zero, size: breadthSize) }
     
+    static let blank: UIImage = .init()
+    
     var circleMasked: UIImage {
         let diameter = min(size.width, size.height)
         let isLandscape = size.width > size.height
