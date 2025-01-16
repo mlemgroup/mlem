@@ -83,7 +83,6 @@ struct MediaView: View {
             .overlay(errorOverlay)
             .clipShape(.rect(cornerRadius: cornerRadius))
             .frame(maxWidth: .infinity)
-            .aspectRatio(uiImage.verticallyBoundedAspectRatio(bounds: aspectRatio), contentMode: contentMode)
             .onAppear {
                 Task {
                     await loader.load()

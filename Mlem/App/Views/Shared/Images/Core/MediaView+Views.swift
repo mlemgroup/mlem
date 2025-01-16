@@ -9,8 +9,8 @@ import SwiftUI
 
 extension MediaView {
     
-    /// Struct to actually render the media. This is declared as its own struct to prevent state updates from the parent view
-    /// causing unwanted behavior.
+    /// Struct to actually render the media.
+    /// This is declared as its own struct to prevent state updates from the parent view causing unwanted behavior.
     private struct InternalMediaView: View {
         
         let media: MediaType
@@ -22,44 +22,42 @@ extension MediaView {
         var uiImage: UIImage { media.image }
         
         var body: some View {
-            if media.isAnimated {
-                image
-                    .overlay {
-                        // overlay to prevent visual hitch when swapping views and to implicitly preserve frame/cropping
-                        if playing {
-                            animatedContent
-                                .background {
-                                    if !blurred {
-                                        ProgressView()
-                                    }
+            image
+                .overlay {
+                    if media.isAnimated, playing {
+                        animatedContent
+                            .background {
+                                if !blurred {
+                                    ProgressView()
                                 }
-                        }
+                            }
                     }
-            } else {
-                image
-            }
+                }
         }
 
         @ViewBuilder
         var image: some View {
-            if contentMode == .fit {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-            } else if contentMode == .fill {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .aspectRatio(contentMode: contentMode)
-                    // trick adapted from https://alejandromp.com/development/blog/image-aspectratio-without-frames/
-                    .frame(
-                        minWidth: 0,
-                        maxWidth: .infinity,
-                        minHeight: 0,
-                        maxHeight: .infinity
-                    )
-                    .aspectRatio(aspectRatio, contentMode: .fill)
-                    .clipped()
+            // WARNING: the combination of .aspectRatio and .frame modifiers in this view is very precise and
+            // breaks easily. If you have to modify it, be sure to thoroughly regression test!
+            // More info here: https://alejandromp.com/development/blog/image-aspectratio-without-frames/
+            Group {
+                if contentMode == .fit {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                } else if contentMode == .fill {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(
+                            minWidth: 0,
+                            maxWidth: .infinity,
+                            minHeight: 0,
+                            maxHeight: .infinity
+                        )
+                }
             }
+            .aspectRatio(aspectRatio, contentMode: .fit)
         }
         
         @ViewBuilder
