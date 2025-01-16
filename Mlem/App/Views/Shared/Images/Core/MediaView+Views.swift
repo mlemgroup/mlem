@@ -13,9 +13,10 @@ extension MediaView {
     /// This is declared as its own struct to prevent state updates from the parent view causing unwanted behavior.
     private struct InternalMediaView: View {
         
+        @Environment(\.blurred) var blurred
+        
         let media: MediaType
         let playing: Bool
-        let blurred: Bool
         let aspectRatio: CGSize
         let contentMode: ContentMode
         
@@ -80,7 +81,6 @@ extension MediaView {
         InternalMediaView(
             media: loader.mediaType,
             playing: playing,
-            blurred: blurred,
             aspectRatio: uiImage.verticallyBoundedAspectRatio(bounds: aspectRatio),
             contentMode: contentMode)
     }

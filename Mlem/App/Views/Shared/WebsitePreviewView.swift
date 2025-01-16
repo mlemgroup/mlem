@@ -62,17 +62,17 @@ struct WebsitePreviewView: View {
                     verticalAspectRatioBounds: .init(width: 4, height: 5),
                     contentMode: .fill,
                     enableNsfwBlur: shouldBlur)
-                    .overlay(alignment: .bottomLeading) {
-                        linkHost
-                            .padding(Constants.main.halfSpacing)
-                            .padding(.trailing, 3)
-                            .background {
-                                Capsule()
-                                    .fill(.regularMaterial)
-                                    .overlay(Capsule().fill(palette.background.opacity(0.25)))
-                            }
-                            .padding(Constants.main.halfSpacing)
-                    }
+                .overlay(alignment: .bottomLeading) {
+                    linkHost
+                        .padding(Constants.main.halfSpacing)
+                        .padding(.trailing, 3)
+                        .background {
+                            Capsule()
+                                .fill(.regularMaterial)
+                                .overlay(Capsule().fill(palette.background.opacity(0.25)))
+                        }
+                        .padding(Constants.main.halfSpacing)
+                }
             } else {
                 linkHost
                     .padding([.horizontal, .top], Constants.main.standardSpacing)

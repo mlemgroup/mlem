@@ -35,6 +35,7 @@ struct MediaView: View {
     var uiImage: UIImage { loader.mediaType.image }
     var blurValue: CGFloat { blurred ? max(uiImage.size.width, uiImage.size.height) / 12 : 0 }
     var fullSizeUrl: URL? { Mlem.fullSizeUrl(url: loader.url) }
+    var contextMenuUrl: URL? { enableContextMenu ? fullSizeUrl : nil }
 
     // TODO: update verticalAspectRatioBounds to aspectRatio, include aspectBounding enum (.vertical, .horizontal, .absolute)
     
@@ -76,24 +77,22 @@ struct MediaView: View {
     
     var body: some View {
         content
+            // .allowsHitTesting(onTapActions != nil)
             .blur(radius: blurValue, opaque: true)
             .overlay(animationControlOverlay)
             .overlay(nsfwOverlay)
             .overlay(developerOverlay)
             .overlay(errorOverlay)
             .clipShape(.rect(cornerRadius: cornerRadius))
+            .withContextMenu(url: contextMenuUrl, menuContent: contextMenuContent)
+            // .onTapGesture(perform: tapActions)
             .frame(maxWidth: .infinity)
             .onAppear {
                 Task {
                     await loader.load()
                 }
             }
-            .contextMenu {
-                if enableContextMenu, let fullSizeUrl = fullSizeUrl {
-                    contextMenuContent(url: fullSizeUrl)
-                }
-            }
-            .onTapGesture(perform: tapActions)
+            .environment(\.blurred, blurred)
     }
     
     @ViewBuilder
@@ -116,5 +115,32 @@ struct MediaView: View {
                     }
             }
         }
+    }
+}
+
+// MARK: - Modifiers
+
+// Applying these as conditional modifiers rather than modifiers with empty bodies/callbacks prevents
+// them from disabling parent view behavior in unexpected ways
+
+private struct MediaViewWithContextMenu<MenuItems: View>: ViewModifier {
+    let url: URL?
+    let menuContent: (URL) -> MenuItems
+    
+    func body(content: Content) -> some View {
+        if let url {
+            content
+                .contextMenu {
+                    menuContent(url)
+                }
+        } else {
+            content
+        }
+    }
+}
+
+private extension View {
+    func withContextMenu(url: URL?, menuContent: @escaping (URL) -> some View) -> some View {
+        modifier(MediaViewWithContextMenu(url: url, menuContent: menuContent))
     }
 }

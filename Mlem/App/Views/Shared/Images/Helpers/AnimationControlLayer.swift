@@ -7,7 +7,13 @@
 
 import SwiftUICore
 
+extension EnvironmentValues {
+    @Entry var blurred: Bool = false
+}
+
 private struct AnimationControlLayer: ViewModifier {
+    @Environment(\.blurred) var blurred
+    
     @Binding var animating: Bool
     var muted: Binding<Bool>?
     
@@ -19,7 +25,7 @@ private struct AnimationControlLayer: ViewModifier {
                         .onTapGesture {
                             animating = false
                         }
-                } else {
+                } else if !blurred {
                     PlayButton(postSize: .large)
                         .onTapGesture {
                             animating = true
