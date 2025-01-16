@@ -50,6 +50,7 @@ struct MediaView: View {
     ///   - playImmediately: true if animated media should play without user interaction
     ///   - onTapActions: actions to perform when the image is tapped. If `enableImageViewer: true`, tapping the image will both execute
     ///     the specified actions and open the image viewer
+    ///  - Warning: Changing the following parameters may cause unexpected view identity changes: `enableContextMenu`, `contentMode`
     init(url: URL,
          verticalAspectRatioBounds: CGSize? = nil,
          contentMode: ContentMode = .fit,
@@ -121,6 +122,9 @@ private struct MediaViewWithContextMenu<MenuItems: View>: ViewModifier {
     let enabled: Bool
     let menuContent: () -> MenuItems
     
+    // This sort of conditional view modifier is generally considered bad form because it can cause unexpected view identity updates.
+    // Since `enableContextMenu` is unlikely to be a dynamic value it's acceptable here; nevertheless I have put a warning
+    // in the function doc making that behavior explicit. [ Eric 2025-01-16 ]
     func body(content: Content) -> some View {
         if enabled {
             content
