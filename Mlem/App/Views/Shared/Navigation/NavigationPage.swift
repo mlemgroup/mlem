@@ -60,6 +60,7 @@ enum NavigationPage: Hashable {
     case advancedSorting(_ sort: HashWrapper<Binding<ApiSortType>>)
     case votesList(_ target: VotesListView.Target)
     case modlog(ModlogView.InitialTarget)
+    case denyApplication(RegistrationApplication)
     
     static func post(_ post: any PostStubProviding, scrollTargetedComment: (any CommentStubProviding)? = nil) -> NavigationPage {
         if let scrollTargetedComment {
@@ -301,7 +302,8 @@ enum NavigationPage: Hashable {
     
     var hasNavigationStack: Bool {
         switch self {
-        case .quickSwitcher, .report, .externalApiInfo, .selectText, .createComment, .editComment, .createPost, .editPost:
+        case .quickSwitcher, .report, .externalApiInfo, .selectText, .createComment,
+             .editComment, .createPost, .editPost, .denyApplication:
             false
         default:
             true

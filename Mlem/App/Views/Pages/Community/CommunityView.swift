@@ -202,15 +202,14 @@ struct CommunityView: View {
                 Button("Add Moderator", systemImage: Icons.add, action: openAddModSheet)
                     .buttonStyle(.capsule)
                     .confirmationDialog("Add Moderator", isPresented: $showingConfirmation) {
-                         Button("Yes", action: addNewMod)
-                     } message: {
-                         if let displayName = newMod?.displayName {
-                             Text("Really appoint \(displayName) as a moderator of \(community.displayName)?")
-                         } else {
-                             Text("Really appoint this user as a moderator of \(community.displayName)?")
-                         }
-                     }
-                
+                        Button("Yes", action: addNewMod)
+                    } message: {
+                        if let displayName = newMod?.displayName {
+                            Text("Really appoint \(displayName) as a moderator of \(community.displayName)?")
+                        } else {
+                            Text("Really appoint this user as a moderator of \(community.displayName)?")
+                        }
+                    }
             }
         }
         .padding([.horizontal, .bottom], Constants.main.standardSpacing)

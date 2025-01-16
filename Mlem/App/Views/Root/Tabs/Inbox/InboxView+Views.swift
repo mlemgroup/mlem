@@ -40,17 +40,42 @@ extension InboxView {
     @ViewBuilder
     var modMailFeedView: some View {
         LazyVStack(spacing: 0) {
-            if let reports {
-                ForEach(reports, id: \.cacheId) { report in
-                    ReportView(report: report)
-                        .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+            if appState.firstApi.isAdmin {
+                BubblePicker(
+                    ModTab.allCases,
+                    selected: $selectedModTab,
+                    label: \.label
+                )
+            }
+            switch selectedModTab {
+            case .reports:
+                Group {
+                    if let reports {
+                        ForEach(reports, id: \.cacheId) { report in
+                            ReportView(report: report)
+                                .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+                        }
+                    } else {
+                        ProgressView()
+                            .padding(.top)
+                    }
                 }
-            } else {
-                ProgressView()
-                    .padding(.top)
+                .onAppear(perform: loadReports)
+            case .applications:
+                Group {
+                    if let applications {
+                        ForEach(applications, id: \.cacheId) { application in
+                            RegistrationApplicationView(application: application)
+                                .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+                        }
+                    } else {
+                        ProgressView()
+                            .padding(.top)
+                    }
+                }
+                .onAppear(perform: loadApplications)
             }
         }
-        .onAppear(perform: loadReports)
         .padding(.top, Constants.main.standardSpacing)
     }
     
@@ -208,7 +233,7 @@ extension InboxView {
     
     func loadReports() {
         if reports == nil {
-            Task {
+            Task { @MainActor in
                 do {
                     async let postReports = await appState.firstApi.getPostReports()
                     async let commentReports = await appState.firstApi.getCommentReports()
@@ -222,6 +247,18 @@ extension InboxView {
                     
                     let combined = try await (postReports + commentReports + messageReports)
                     self.reports = combined.sorted { $0.created > $1.created }
+                } catch {
+                    handleError(error)
+                }
+            }
+        }
+    }
+    
+    func loadApplications() {
+        if applications == nil {
+            Task { @MainActor in
+                do {
+                    self.applications = try await appState.firstApi.getRegistrationApplications()
                 } catch {
                     handleError(error)
                 }

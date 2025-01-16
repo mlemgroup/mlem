@@ -96,7 +96,7 @@ struct InstanceView: View {
                     }
                     
                     Task { @MainActor in
-                        self.instance = myInstance
+                        instance = myInstance
                     }
                 } catch {
                     handleError(error)
