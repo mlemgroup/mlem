@@ -147,7 +147,7 @@ struct ProfileSettingsView: View {
         Section {
             VStack(spacing: 0) {
                 if let bannerUrl {
-                    NewMediaView(
+                    MediaView(
                         url: bannerUrl,
                         contentMode: .fill,
                         enableContextMenu: true,

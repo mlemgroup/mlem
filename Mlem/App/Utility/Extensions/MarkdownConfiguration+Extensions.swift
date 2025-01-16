@@ -68,7 +68,7 @@ extension MarkdownConfiguration {
 
 private func imageView(_ inlineImage: InlineImage, shouldBlur: Bool) -> AnyView {
     AnyView(
-        NewMediaView(
+        MediaView(
             url: inlineImage.url,
             verticalAspectRatioBounds: .init(width: 4, height: 5),
             enableContextMenu: true,

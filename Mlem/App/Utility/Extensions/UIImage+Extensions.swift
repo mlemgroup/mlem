@@ -17,6 +17,21 @@ extension UIImage {
     
     static let blank: UIImage = .init()
     
+    func validSize(fallback: CGSize) -> CGSize {
+        size == .zero ? fallback : size
+    }
+    
+    /// Returns this image's aspect ratio or the given bounds, whichever is shorter
+    func verticallyBoundedAspectRatio(bounds: CGSize) -> CGSize {
+        guard size != .zero else { return bounds }
+
+        if size.height / size.width > bounds.height / bounds.width {
+            return bounds
+        }
+        
+        return size
+    }
+    
     var circleMasked: UIImage {
         let diameter = min(size.width, size.height)
         let isLandscape = size.width > size.height

@@ -1,5 +1,5 @@
 //
-//  NewMediaView+Functions.swift
+//  MediaView+Functions.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2025-01-15.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension NewMediaView {
+extension MediaView {
     func tapActions() {
         if let onTapActions {
             onTapActions()

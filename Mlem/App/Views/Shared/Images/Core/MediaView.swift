@@ -1,5 +1,5 @@
 //
-//  NewMediaView.swift
+//  MediaView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2025-01-15.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NewMediaView: View {
+struct MediaView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     
@@ -37,7 +37,6 @@ struct NewMediaView: View {
     var fullSizeUrl: URL? { Mlem.fullSizeUrl(url: loader.url) }
 
     // TODO: update verticalAspectRatioBounds to aspectRatio, include aspectBounding enum (.vertical, .horizontal, .absolute)
-    // TODO: loader takes animationEnabled, if not enabled defaults to bare image
     
     /// Creates a new MediaView. This view is simple by default; if no complex behaviors are specified, it will
     /// return a plain image that fits the bounds of its parent frame.
@@ -48,9 +47,7 @@ struct NewMediaView: View {
     ///   - cornerRadius: corner radius to apply to the image
     ///   - enableContextMenu: true if the default context menu (save/share/quick look) should appear
     ///   - enableImageViewer: true if tapping the image should open the image viewer
-    ///   - enableAnimation: true if animated content should be enabled
-    ///   - playImmediately: true if animated media should play without user interaction. If `enableAnimation: false`, this parameter has
-    ///     no effect.
+    ///   - playImmediately: true if animated media should play without user interaction.
     ///   - onTapActions: actions to perform when the image is tapped. If `enableImageViewer: true`, tapping the image will both execute
     ///     the specified actions and open the image viewer
     init(url: URL,
@@ -60,7 +57,6 @@ struct NewMediaView: View {
          enableContextMenu: Bool = false,
          enableImageViewer: Bool = false,
          enableNsfwBlur: Bool = false,
-         // enableAnimation: Bool = false,
          playImmediately: Bool = false,
          onTapActions: (() -> Void)? = nil
     ) {
@@ -128,18 +124,5 @@ struct NewMediaView: View {
                     }
             }
         }
-    }
-}
-
-extension UIImage {
-    /// Returns this image's aspect ratio or the given bounds, whichever is shorter
-    func verticallyBoundedAspectRatio(bounds: CGSize) -> CGSize {
-        guard size != .zero else { return bounds }
-
-        if size.height / size.width > bounds.height / bounds.width {
-            return bounds
-        }
-        
-        return size
     }
 }

@@ -26,7 +26,7 @@ struct LargePostBodyView: View {
             
             switch post.type {
             case let .image(url):
-                NewMediaView(
+                MediaView(
                     url: url,
                     verticalAspectRatioBounds: .init(width: 4, height: 5),
                     cornerRadius: Constants.main.mediumItemCornerRadius,

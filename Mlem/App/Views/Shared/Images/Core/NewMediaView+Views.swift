@@ -1,5 +1,5 @@
 //
-//  NewMediaView+Views.swift
+//  MediaView+Views.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2025-01-15.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension NewMediaView {
+extension MediaView {
     
     // MARK: - Core
     

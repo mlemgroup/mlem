@@ -59,7 +59,7 @@ struct WebsitePreviewView: View {
     var complex: some View {
         VStack(alignment: .leading, spacing: 0) {
             if let thumbnailUrl = link.thumbnail {
-                NewMediaView(url: thumbnailUrl, verticalAspectRatioBounds: .init(width: 4, height: 5), contentMode: .fill)
+                MediaView(url: thumbnailUrl, verticalAspectRatioBounds: .init(width: 4, height: 5), contentMode: .fill)
 //                DynamicMediaView(url: thumbnailUrl, cornerRadius: 0, actionsEnabled: false)
 //                    .dynamicBlur(blurred: blurred)
 //                    .clipped()

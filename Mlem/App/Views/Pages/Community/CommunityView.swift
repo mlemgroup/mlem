@@ -169,7 +169,7 @@ struct CommunityView: View {
     func aboutTab(community: any Community) -> some View {
         VStack(spacing: Constants.main.standardSpacing) {
             if let banner = community.banner {
-                NewMediaView(
+                MediaView(
                     url: banner,
                     verticalAspectRatioBounds: .init(width: 4, height: 5),
                     enableContextMenu: true,

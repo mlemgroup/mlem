@@ -49,7 +49,7 @@ extension PostEditorView {
     
     @ViewBuilder
     private func uploadedImageView(url: URL, onRemove: @escaping () -> Void = {}) -> some View {
-        NewMediaView(
+        MediaView(
             url: url,
             verticalAspectRatioBounds: .init(width: 4, height: 5),
             cornerRadius: Constants.main.mediumItemCornerRadius)
