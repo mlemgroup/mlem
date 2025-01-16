@@ -10,16 +10,8 @@ import SwiftUI
 
 struct NsfwOverlay: View {
     @Binding var blurred: Bool
-    let shouldBlur: Bool
-    
+        
     var body: some View {
-        if shouldBlur {
-            content
-        }
-    }
-    
-    @ViewBuilder
-    var content: some View {
         if blurred {
             VStack(spacing: 8) {
                 Image(systemName: Icons.warning)

@@ -1,0 +1,105 @@
+//
+//  NewMediaView+Views.swift
+//  Mlem
+//
+//  Created by Eric Andrews on 2025-01-15.
+//
+
+import SwiftUI
+
+extension NewMediaView {
+    
+    // MARK: - Core
+    
+    var image: some View {
+        // adapted from https://alejandromp.com/development/blog/image-aspectratio-without-frames/
+        Image(uiImage: uiImage)
+            .resizable()
+            .aspectRatio(contentMode: contentMode)
+            .blur(radius: blurValue, opaque: true)
+            .clipShape(.rect(cornerRadius: cornerRadius))
+            .frame(
+                minWidth: 0,
+                maxWidth: .infinity,
+                minHeight: 0,
+                maxHeight: .infinity
+            )
+            .aspectRatio(uiImage.verticallyBoundedAspectRatio(bounds: aspectRatio), contentMode: contentMode)
+            .clipped()
+    }
+    
+    @ViewBuilder
+    var animatedContent: some View {
+        switch loader.mediaType {
+        case let .video(_, animated):
+            VideoView(asset: animated)
+        case let .gif(_, animated):
+            GifView(data: animated)
+        case let .webp(_, animated):
+            WebpView(data: animated)
+        default:
+            EmptyView()
+        }
+    }
+    
+    // MARK: - Helpers
+    
+    @ViewBuilder
+    var nsfwOverlay: some View {
+        if enableNsfwBlur {
+            NsfwOverlay(blurred: $blurred)
+        }
+    }
+    
+    @ViewBuilder
+    var animatedContentOverlay: some View {
+        if loader.mediaType.isAnimated {
+            if playing {
+                animatedContent
+                    .blur(radius: blurValue, opaque: true)
+                    .aspectRatio(contentMode: .fit)
+                    .clipShape(.rect(cornerRadius: cornerRadius))
+                    .background {
+                        if !blurred {
+                            ProgressView()
+                        }
+                    }
+            } else if !blurred {
+                PlayButton(postSize: .large)
+                    .onTapGesture {
+                        playing = true
+                    }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var developerOverlay: some View {
+        if developerMode, let ext = loader.url?.proxyAwarePathExtension?.uppercased() {
+            Text(ext)
+                .font(.footnote)
+                .fontWeight(.semibold)
+                .padding(2)
+                .padding(.horizontal, 2)
+                .background {
+                    Capsule()
+                        .fill(.regularMaterial)
+                }
+                .padding(4)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+        }
+    }
+    
+    @ViewBuilder
+    func contextMenuContent(url: URL) -> some View {
+        Button("Save Image", systemImage: Icons.import) {
+            Task { await saveImage(url: url) }
+        }
+        Button("Share Image", systemImage: Icons.share) {
+            Task { await shareImage(url: url) }
+        }
+        Button("Quick Look", systemImage: Icons.imageDetails) {
+            Task { await showQuickLook(url: url) }
+        }
+    }
+}

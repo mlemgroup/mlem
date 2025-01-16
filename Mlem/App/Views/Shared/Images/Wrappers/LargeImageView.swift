@@ -39,7 +39,9 @@ struct LargeImageView: View {
         DynamicMediaView(url: url, cornerRadius: cornerRadius)
             .dynamicBlur(blurred: blurred)
             .overlay {
-                NsfwOverlay(blurred: $blurred, shouldBlur: shouldBlur)
+                if shouldBlur {
+                    NsfwOverlay(blurred: $blurred)
+                }
             }
             .onChange(of: blurred, initial: false) {
                 // trigger tap actions when post unblurred
