@@ -13,17 +13,15 @@ struct WebsitePreviewView: View {
     @Environment(Palette.self) var palette
     @Environment(\.openURL) private var openURL
     
-    @State var blurred: Bool
+    let shouldBlur: Bool
     
     let link: PostLink
     var onTapActions: (() -> Void)?
-    let shouldBlur: Bool
     
     init(link: PostLink, shouldBlur: Bool, onTapActions: (() -> Void)? = nil) {
         self.link = link
         self.onTapActions = onTapActions
         self.shouldBlur = shouldBlur
-        self._blurred = .init(wrappedValue: shouldBlur)
     }
     
     var body: some View {
@@ -59,25 +57,22 @@ struct WebsitePreviewView: View {
     var complex: some View {
         VStack(alignment: .leading, spacing: 0) {
             if let thumbnailUrl = link.thumbnail {
-                MediaView(url: thumbnailUrl, verticalAspectRatioBounds: .init(width: 4, height: 5), contentMode: .fill)
-//                DynamicMediaView(url: thumbnailUrl, cornerRadius: 0, actionsEnabled: false)
-//                    .dynamicBlur(blurred: blurred)
-//                    .clipped()
-//                    .overlay {
-//                        NsfwOverlay(blurred: $blurred, shouldBlur: shouldBlur)
-//                    }
-//                    .animation(.easeOut(duration: 0.1), value: blurred)
-//                    .overlay(alignment: .bottomLeading) {
-//                        linkHost
-//                            .padding(Constants.main.halfSpacing)
-//                            .padding(.trailing, 3)
-//                            .background {
-//                                Capsule()
-//                                    .fill(.regularMaterial)
-//                                    .overlay(Capsule().fill(palette.background.opacity(0.25)))
-//                            }
-//                            .padding(Constants.main.halfSpacing)
-//                    }
+                MediaView(
+                    url: thumbnailUrl,
+                    verticalAspectRatioBounds: .init(width: 4, height: 5),
+                    contentMode: .fill,
+                    enableNsfwBlur: shouldBlur)
+                    .overlay(alignment: .bottomLeading) {
+                        linkHost
+                            .padding(Constants.main.halfSpacing)
+                            .padding(.trailing, 3)
+                            .background {
+                                Capsule()
+                                    .fill(.regularMaterial)
+                                    .overlay(Capsule().fill(palette.background.opacity(0.25)))
+                            }
+                            .padding(Constants.main.halfSpacing)
+                    }
             } else {
                 linkHost
                     .padding([.horizontal, .top], Constants.main.standardSpacing)
