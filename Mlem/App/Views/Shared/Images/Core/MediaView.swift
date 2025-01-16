@@ -36,8 +36,6 @@ struct MediaView: View {
     var blurValue: CGFloat { blurred ? max(uiImage.size.width, uiImage.size.height) / 12 : 0 }
     var fullSizeUrl: URL? { Mlem.fullSizeUrl(url: loader.url) }
 
-    // TODO: update verticalAspectRatioBounds to aspectRatio, include aspectBounding enum (.vertical, .horizontal, .absolute)
-    
     /// Creates a new MediaView. This view is simple by default; if no complex behaviors are specified, it will
     /// return a plain image that fits the bounds of its parent frame.
     /// - Parameters:
