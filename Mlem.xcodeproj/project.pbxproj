@@ -97,6 +97,7 @@
 		033FCB292C5E3933007B7CD1 /* IconSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033FCB252C5E3933007B7CD1 /* IconSettingsView.swift */; };
 		033FCB2A2C5E3933007B7CD1 /* AlternateIconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033FCB232C5E3933007B7CD1 /* AlternateIconCell.swift */; };
 		033FCB3E2C5E7FA9007B7CD1 /* View+OutdatedFeedPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033FCB3D2C5E7FA9007B7CD1 /* View+OutdatedFeedPopup.swift */; };
+		0343C0482D3AD6DB001CF709 /* Set+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0343C0472D3AD6DB001CF709 /* Set+Extensions.swift */; };
 		034690932D0F4D720073E664 /* RemovableProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034690922D0F4D720073E664 /* RemovableProviding+Extensions.swift */; };
 		034690992D105DFD0073E664 /* InboxView+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034690982D105DFD0073E664 /* InboxView+Types.swift */; };
 		034B947F2C091EDD00039AF4 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034B947E2C091EDD00039AF4 /* ProfileHeaderView.swift */; };
@@ -566,6 +567,7 @@
 		033FCB242C5E3933007B7CD1 /* AlternateIconLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternateIconLabel.swift; sourceTree = "<group>"; };
 		033FCB252C5E3933007B7CD1 /* IconSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSettingsView.swift; sourceTree = "<group>"; };
 		033FCB3D2C5E7FA9007B7CD1 /* View+OutdatedFeedPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OutdatedFeedPopup.swift"; sourceTree = "<group>"; };
+		0343C0472D3AD6DB001CF709 /* Set+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Set+Extensions.swift"; sourceTree = "<group>"; };
 		034690922D0F4D720073E664 /* RemovableProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemovableProviding+Extensions.swift"; sourceTree = "<group>"; };
 		034690982D105DFD0073E664 /* InboxView+Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InboxView+Types.swift"; sourceTree = "<group>"; };
 		034B947E2C091EDD00039AF4 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
@@ -1727,6 +1729,7 @@
 				CD0E06F62C0E739F00445849 /* PostType+Extensions.swift */,
 				0397D4712C68078F002C6CDC /* PrefetchingConfiguration+Extensions.swift */,
 				CD4D59152B87B38C00B82964 /* UIApplication+Extensions.swift */,
+				0343C0472D3AD6DB001CF709 /* Set+Extensions.swift */,
 				03AF91E02C1B25DE00E56644 /* UIDevice+Extensions.swift */,
 				03B431B52C454D49001A1EB5 /* UIImage+Extensions.swift */,
 				03B431BF2C45ABFB001A1EB5 /* UITextView+Extensions.swift */,
@@ -2632,6 +2635,7 @@
 				036ED6792D0AF3740018E5EA /* PinnedSortTracker.swift in Sources */,
 				CDC44A362D1CBC280030F01C /* ReadPostIndicator.swift in Sources */,
 				0353948D2CA080EB00795AA5 /* FeedWelcomeView.swift in Sources */,
+				0343C0482D3AD6DB001CF709 /* Set+Extensions.swift in Sources */,
 				03049A202C650A8100FF6889 /* FormReadout.swift in Sources */,
 				030050D32D109B7E002B1E99 /* ReportView.swift in Sources */,
 				0397D49A2C6EA6EE002C6CDC /* InteractionBarEditorView.swift in Sources */,
