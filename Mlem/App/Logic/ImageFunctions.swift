@@ -25,6 +25,12 @@ func saveImage(url: URL) async {
     }
 }
 
+func shareImage(url: URL, navigation: NavigationLayer) async {
+    if let fileUrl = await downloadImageToFileSystem(url: url) {
+        navigation.shareInfo = .init(url: fileUrl)
+    }
+}
+
 func fullSizeUrl(url: URL?) -> URL? {
     if let url, var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
         components.queryItems = components.queryItems?.filter { $0.name != "thumbnail" }

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ImageViewer: View {
+    @Environment(NavigationLayer.self) var navigation
     @Environment(Palette.self) var palette
     @Environment(\.dismiss) var dismiss
     
@@ -18,11 +19,28 @@ struct ImageViewer: View {
     
     @GestureState var dragState: Bool = false
     
+    /// True when the image is zoomed in, false otherwise
     @State var isZoomed: Bool = false
-    @State var offset: CGFloat = 0
+    
+    /// True when dimissal is in progress, false otherwise
     @State var isDismissing: Bool = false
+    
+    /// Vertical offset of the viewer
+    @State var offset: CGFloat = 0
+    
+    /// Opacity of the viewer
     @State var opacity: CGFloat = 0
-    @State var showingControlLayer: Bool = true
+    
+    /// Whether the controls should be shown/hidden
+    @State var showControls: Bool = true
+    
+    /// Vertical offset for the control overlay
+    @State var controlOffset: CGFloat = 0
+    
+    /// When true, enables tapping to show/hide controls
+    @State var enableControlTap: Bool = true
+    
+    @State var quickLookUrl: URL?
     
     init(url: URL) {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
@@ -32,25 +50,34 @@ struct ImageViewer: View {
     
     var body: some View {
         ZoomableContainer(isZoomed: $isZoomed) {
-            MediaView(url: url, enableContextMenu: true, playImmediately: true)
+            MediaView(url: url, playImmediately: true)
         }
         .offset(y: offset)
         .background(.black)
         .opacity(opacity)
         .overlay {
-            if showingControlLayer {
-                controlLayer
-                    .opacity(opacity)
+            controlLayer
+                .opacity(opacity)
+        }
+        .onChange(of: showControls) {
+            withAnimation(.easeOut(duration: duration)) {
+                controlOffset = showControls ? 0 : 100
+            }
+        }
+        .onChange(of: isZoomed) {
+            if isZoomed {
+                showControls = false
             }
         }
         .onTapGesture {
-            showingControlLayer = !showingControlLayer
+            if enableControlTap {
+                showControls = !showControls
+            }
         }
         .simultaneousGesture(DragGesture(minimumDistance: 1.0)
             .onChanged { value in
                 if !isZoomed, !isDismissing {
-                    offset = value.translation.height
-                    opacity = 1.0 - (abs(value.translation.height) / screenHeight)
+                    handleOffsetUpdate(value.translation.height)
                 }
             }
             .updating($dragState) { _, state, _ in
@@ -59,17 +86,24 @@ struct ImageViewer: View {
             }
         )
         .onAppear {
-            updateOpacity(1.0)
+            animateOpacityUpdate(1.0)
         }
         .onChange(of: dragState) {
-            if !dragState {
+            if dragState {
+                // drag gesture conflicts with control tap, so we disable it for a brief window after detecting a drag
+                enableControlTap = false
+            } else {
                 if abs(offset) > 100 {
                     swipeDismiss(finalOffset: offset > 0 ? screenHeight : -screenHeight)
                 } else {
-                    updateDragDistance(0)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        enableControlTap = true
+                    }
+                    animateOffsetUpdate(0)
                 }
             }
         }
+        .quickLookPreview($quickLookUrl)
         .background(ClearBackgroundView())
     }
     
@@ -86,49 +120,59 @@ struct ImageViewer: View {
                 }
                 .padding(Constants.main.standardSpacing)
                 .contentShape(.rect)
+                .background {
+                    Circle().fill(.ultraThinMaterial)
+                        .environment(\.colorScheme, .dark)
+                }
                 .padding(.trailing, Constants.main.standardSpacing)
             }
-            .offset(y: -abs(offset))
+            .offset(y: -controlOffset)
             
             Spacer()
             
             HStack {
                 Button {
-                    print("Save")
+                    Task { await saveImage(url: url) }
                 } label: {
                     Label("Save", systemImage: Icons.import)
                 }
                 .padding(Constants.main.standardSpacing)
                 .contentShape(.rect)
+                .offset(y: -2)
                 
                 Button {
-                    print("Share")
+                    Task { await shareImage(url: url, navigation: navigation) }
                 } label: {
                     Label("Share", systemImage: Icons.share)
                 }
                 .padding(Constants.main.standardSpacing)
                 .contentShape(.rect)
+                .offset(y: -2)
                 
                 Button {
-                    print("QuickLook")
+                    Task { await showQuickLook(url: url) }
                 } label: {
-                    Label("QuickLook", systemImage: Icons.imageDetails)
+                    Label("QuickLook", systemImage: Icons.menuCircle)
                 }
                 .padding(Constants.main.standardSpacing)
                 .contentShape(.rect)
             }
-            .offset(y: abs(offset))
+            .padding(.horizontal, Constants.main.halfSpacing)
+            .background {
+                Capsule().fill(.ultraThinMaterial)
+                    .environment(\.colorScheme, .dark)
+            }
+            .offset(y: controlOffset)
         }
-        .font(.title)
+        .font(.title2)
         .fontWeight(.light)
         .foregroundStyle(.white)
         .labelStyle(.iconOnly)
-        .shadow(color: .black, radius: 2)
     }
     
     private func fadeDismiss() {
         isDismissing = true
-        updateOpacity(0) {
+        animateOpacityUpdate(0) {
             withoutAnimation {
                 dismiss()
             }
@@ -137,14 +181,14 @@ struct ImageViewer: View {
     
     private func swipeDismiss(finalOffset: CGFloat = UIScreen.main.bounds.height) {
         isDismissing = true
-        updateDragDistance(finalOffset) {
+        animateOffsetUpdate(finalOffset) {
             withoutAnimation {
                 dismiss()
             }
         }
     }
     
-    private func updateOpacity(_ newOpacity: CGFloat, callback: (() -> Void)? = nil) {
+    private func animateOpacityUpdate(_ newOpacity: CGFloat, callback: (() -> Void)? = nil) {
         withAnimation(.easeOut(duration: duration)) {
             opacity = newOpacity
         }
@@ -155,15 +199,35 @@ struct ImageViewer: View {
         }
     }
     
-    private func updateDragDistance(_ newDistance: CGFloat, callback: (() -> Void)? = nil) {
+    /// Sets the offsets to the given value with animation. If a callback is given, calls it when the animation completes.
+    /// - Parameters:
+    ///   - newOffset: value to update offsets to
+    ///   - callback: function to call when animation completes
+    private func animateOffsetUpdate(_ newOffset: CGFloat, callback: (() -> Void)? = nil) {
         withAnimation(.easeOut(duration: duration)) {
-            offset = newDistance
-            opacity = 1.0 - (abs(newDistance) / screenHeight)
+            handleOffsetUpdate(newOffset)
         }
         if let callback {
             DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
                 callback()
             }
+        }
+    }
+    
+    /// Updates offset, controlOffset, and opacity to match the given raw offset˜
+    /// - Parameter newOffset: raw offset to update for
+    private func handleOffsetUpdate(_ newOffset: CGFloat) {
+        let absOffset = abs(newOffset)
+        offset = newOffset
+        if showControls {
+            controlOffset = absOffset
+        }
+        opacity = 1.0 - (absOffset / screenHeight)
+    }
+    
+    private func showQuickLook(url: URL) async {
+        if let fileUrl = await downloadImageToFileSystem(url: url) {
+            quickLookUrl = fileUrl
         }
     }
 }

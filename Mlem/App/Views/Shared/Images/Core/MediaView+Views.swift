@@ -168,7 +168,7 @@ extension MediaView {
                 Task { await saveImage(url: url) }
             }
             Button("Share Image", systemImage: Icons.share) {
-                Task { await shareImage(url: url) }
+                Task { await shareImage(url: url, navigation: navigation) }
             }
             Button("Quick Look", systemImage: Icons.imageDetails) {
                 Task { await showQuickLook(url: url) }
