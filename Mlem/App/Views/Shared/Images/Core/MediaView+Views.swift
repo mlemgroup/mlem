@@ -27,11 +27,6 @@ extension MediaView {
                 .overlay {
                     if media.isAnimated, playing {
                         animatedContent
-                            .background {
-                                if !blurred {
-                                    ProgressView()
-                                }
-                            }
                     }
                 }
         }

@@ -83,6 +83,9 @@ struct MediaView: View {
             .withContextMenu(menuContent: contextMenuContent, isEnabled: enableContextMenu)
             .gesture(TapGesture().onEnded(tapActions), isEnabled: (onTapActions != nil) || enableImageViewer)
             .frame(maxWidth: .infinity)
+            .onChange(of: blurred) {
+                if !blurred { playing = true }
+            }
             .onAppear {
                 Task {
                     await loader.load()

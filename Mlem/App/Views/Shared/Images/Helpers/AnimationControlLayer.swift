@@ -5,7 +5,7 @@
 //  Created by Eric Andrews on 2024-12-06.
 //
 
-import SwiftUICore
+import SwiftUI
 
 extension EnvironmentValues {
     @Entry var blurred: Bool = false
@@ -18,22 +18,19 @@ private struct AnimationControlLayer: ViewModifier {
     var muted: Binding<Bool>?
     
     // decouple play button state from blurred because the blur animation and material don't get along
-    @State var showPlayButton: Bool
+    @State var showControls: Bool
     
     init(animating: Binding<Bool>, muted: Binding<Bool>?) {
         self._animating = animating
         self.muted = muted
-        self.showPlayButton = !animating.wrappedValue
+        self.showControls = !animating.wrappedValue
     }
     
     func body(content: Content) -> some View {
         content
-            .onChange(of: blurred) {
-                if blurred {
-                    showPlayButton = false
-                } else {
-                    animating = true
-                    showPlayButton = true
+            .background {
+                if showControls {
+                    ProgressView()
                 }
             }
             .overlay {
@@ -42,7 +39,7 @@ private struct AnimationControlLayer: ViewModifier {
                         .onTapGesture {
                             animating = false
                         }
-                } else if showPlayButton {
+                } else if showControls {
                     PlayButton(postSize: .large)
                         .onTapGesture {
                             animating = true
@@ -64,6 +61,14 @@ private struct AnimationControlLayer: ViewModifier {
                         .onTapGesture {
                             muted.wrappedValue = !muted.wrappedValue
                         }
+                }
+            }
+            .onChange(of: blurred) {
+                if blurred {
+                    showControls = false
+                } else {
+                    animating = true
+                    showControls = true
                 }
             }
     }
