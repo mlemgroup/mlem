@@ -33,7 +33,6 @@ struct MediaView: View {
     let onTapActions: (() -> Void)?
     
     var uiImage: UIImage { loader.mediaType.image }
-    var blurValue: CGFloat { blurred ? max(uiImage.size.width, uiImage.size.height) / 12 : 0 }
     var fullSizeUrl: URL? { Mlem.fullSizeUrl(url: loader.url) }
 
     /// Creates a new MediaView. This view is simple by default; if no complex behaviors are specified, it will
@@ -75,7 +74,7 @@ struct MediaView: View {
     
     var body: some View {
         content
-            .blur(radius: blurValue, opaque: true)
+            .dynamicBlur(blurred: blurred)
             .overlay(animationControlOverlay)
             .overlay(nsfwOverlay)
             .overlay(developerOverlay)

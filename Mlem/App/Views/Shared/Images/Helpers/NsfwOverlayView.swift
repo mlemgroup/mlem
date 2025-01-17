@@ -11,6 +11,13 @@ import SwiftUI
 struct NsfwOverlay: View {
     @Binding var blurred: Bool
         
+    @MainActor
+    func setBlurred(_ newValue: Bool) {
+        withAnimation(newValue ? .easeIn(duration: 0.15) : .easeOut(duration: 0.12)) {
+            blurred = newValue
+        }
+    }
+    
     var body: some View {
         if blurred {
             VStack(spacing: 8) {
@@ -23,11 +30,11 @@ struct NsfwOverlay: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .contentShape(.rect)
             .onTapGesture {
-                blurred = false
+                setBlurred(false)
             }
         } else {
             Button {
-                blurred = true
+                setBlurred(true)
             } label: {
                 Image(systemName: Icons.hide)
                     .padding(.vertical, 4)
