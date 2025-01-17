@@ -140,7 +140,7 @@ struct CommentView<EmbeddedContent: View>: View {
             if moderatorActionGrouping == .separateMenu {
                 if comment.canModerate {
                     EllipsisMenu(systemImage: Icons.moderation, size: 24) {
-                        comment.moderatorMenuActions(report: reportContext)
+                        comment.moderatorMenuActions(showAllActions: !inFeed, report: reportContext)
                     }
                 }
                 EllipsisMenu(size: 24) {
@@ -148,7 +148,7 @@ struct CommentView<EmbeddedContent: View>: View {
                 }
             } else {
                 EllipsisMenu(size: 24) {
-                    comment.allMenuActions(commentTreeTracker: commentTreeTracker, report: reportContext)
+                    comment.allMenuActions(showAllActions: !inFeed, commentTreeTracker: commentTreeTracker, report: reportContext)
                 }
             }
         }
