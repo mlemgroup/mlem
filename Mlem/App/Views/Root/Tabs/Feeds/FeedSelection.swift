@@ -30,7 +30,7 @@ enum FeedSelection: String, CaseIterable, Codable {
         switch accountType {
         case .guest: guestCases
         case .user: userCases
-        case .moderator: moderatorCases
+        case .moderator, .admin: moderatorCases
         }
     }
     

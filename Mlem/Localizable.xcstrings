@@ -352,6 +352,9 @@
     "Applications Email Admins" : {
 
     },
+    "Applications Only" : {
+
+    },
     "Apply to All Interaction Bars" : {
 
     },
@@ -584,6 +587,12 @@
     "Comment" : {
 
     },
+    "Comment Reports" : {
+
+    },
+    "Comment Reports Only" : {
+
+    },
     "Comment was deleted" : {
 
     },
@@ -643,6 +652,9 @@
 
     },
     "Compact Comments" : {
+
+    },
+    "Configure which types of notification should be included in the notification badge." : {
 
     },
     "Confirm" : {
@@ -832,6 +844,27 @@
 
     },
     "example.com" : {
+
+    },
+    "Except Applications" : {
+
+    },
+    "Except Comment Reports" : {
+
+    },
+    "Except Mentions" : {
+
+    },
+    "Except Message Reports" : {
+
+    },
+    "Except Messages" : {
+
+    },
+    "Except Post Reports" : {
+
+    },
+    "Except Replies" : {
 
     },
     "Expires:" : {
@@ -1175,10 +1208,22 @@
     "Mentions" : {
 
     },
+    "Mentions Only" : {
+
+    },
+    "Message Reports" : {
+
+    },
+    "Message Reports Only" : {
+
+    },
     "Message was deleted" : {
 
     },
     "Messages" : {
+
+    },
+    "Messages Only" : {
 
     },
     "Mlem %@" : {
@@ -1191,6 +1236,9 @@
 
     },
     "Mod Mail" : {
+
+    },
+    "Mod Mail Only" : {
 
     },
     "Moderated" : {
@@ -1275,6 +1323,9 @@
 
     },
     "Not Guaranteed" : {
+
+    },
+    "Notification Badge" : {
 
     },
     "Notifications will be sent to %@." : {
@@ -1367,6 +1418,9 @@
     "Permanently delete %@" : {
 
     },
+    "Personal Only" : {
+
+    },
     "Photo Library" : {
 
     },
@@ -1392,6 +1446,12 @@
 
     },
     "Post failed to send." : {
+
+    },
+    "Post Reports" : {
+
+    },
+    "Post Reports Only" : {
 
     },
     "Post Size" : {
@@ -1452,6 +1512,9 @@
 
     },
     "Profile" : {
+
+    },
+    "Profile Tab" : {
 
     },
     "Proxy Failure" : {
@@ -1567,6 +1630,9 @@
     "Registration" : {
 
     },
+    "Registration Applications" : {
+
+    },
     "Registrations are closed on this instance." : {
 
     },
@@ -1619,6 +1685,9 @@
     "Replies" : {
 
     },
+    "Replies Only" : {
+
+    },
     "Replies, mentions and messages" : {
 
     },
@@ -1648,6 +1717,9 @@
 
     },
     "Reports from communities you moderate" : {
+
+    },
+    "Reports Only" : {
 
     },
     "Requires Application" : {

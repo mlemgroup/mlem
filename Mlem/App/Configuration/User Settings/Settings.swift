@@ -88,6 +88,7 @@ class Settings: ObservableObject {
     
     @AppStorage("tab.profile.labelType") var tabProfileLabelType: ProfileTabLabel = .nickname
     @AppStorage("tab.profile.showAvatar") var tabProfileShowAvatar: Bool = true
+    @AppStorage("tab.inbox.badgeIncludedTypes") var tabInboxBadgeIncludedTypes: Set<InboxItemType> = .all
     
     @AppStorage("menus.moderatorActionGrouping") var moderatorActionGrouping: ModeratorActionGrouping = .divider
     @AppStorage("menus.allModActions") var showAllModActions: Bool = false
@@ -174,6 +175,7 @@ class Settings: ObservableObject {
         keywordFilterEnabled = settings.filters_keywordFilterEnabled
         tabProfileLabelType = settings.tab_profile_labelType
         tabProfileShowAvatar = settings.tab_profile_showAvatar
+        tabInboxBadgeIncludedTypes = settings.tab_inbox_badgeIncludedTypes
         
         Task {
             await FiltersTracker.main.resetFilteredKeywords(to: settings.filteredKeywords)

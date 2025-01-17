@@ -36,7 +36,11 @@ struct FeedCommentView<EmbeddedContent: View>: View {
         content
             .contentShape(.interaction, .rect)
             .quickSwipes(comment.swipeActions(behavior: postSize.swipeBehavior, commentTreeTracker: commentTreeTracker))
-            .contextMenu { comment.allMenuActions(commentTreeTracker: commentTreeTracker, report: reportContext) }
+            .contextMenu { comment.allMenuActions(
+                showAllActions: false,
+                commentTreeTracker: commentTreeTracker,
+                report: reportContext
+            ) }
             .paletteBorder(cornerRadius: postSize.swipeBehavior.cornerRadius)
     }
     

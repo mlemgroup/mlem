@@ -47,10 +47,6 @@ struct CodableSettings: Codable {
     var feed_default: FeedSelection
     var feed_markReadOnScroll: Bool
     var feed_showRead: Bool
-    var inbox_badge_includeApplications: Bool
-    var inbox_badge_includeMessageReports: Bool
-    var inbox_badge_includeMod: Bool
-    var inbox_badge_includePersonal: Bool
     var inbox_showRead: Bool
     var links_displayMode: String // TODO: pending easy-tap links
     var links_openInBrowser: Bool
@@ -78,6 +74,7 @@ struct CodableSettings: Codable {
     var tab_gestures_enableSwipeUp: Bool
     var tab_profile_labelType: ProfileTabLabel
     var tab_profile_showAvatar: Bool
+    var tab_inbox_badgeIncludedTypes: Set<InboxItemType>
     var tab_showNames: Bool
     var person_showAvatar: Bool
     var person_showInstance: Bool
@@ -87,6 +84,12 @@ struct CodableSettings: Codable {
     var navigation_sidebarVisibleByDefault: Bool
     var navigation_swipeAnywhere: Bool
     var filters_keywordFilterEnabled: Bool
+    
+    // These are here for the coding keys only
+    private var inbox_badge_includeApplications: Bool = false
+    private var inbox_badge_includeMessageReports: Bool = false
+    private var inbox_badge_includeMod: Bool = false
+    private var inbox_badge_includePersonal: Bool = false
     
     // MARK: Settings saved in files
 
@@ -129,10 +132,29 @@ struct CodableSettings: Codable {
         self.feed_default = try container.decodeIfPresent(FeedSelection.self, forKey: .feed_default) ?? .subscribed
         self.feed_markReadOnScroll = try container.decodeIfPresent(Bool.self, forKey: .feed_markReadOnScroll) ?? false
         self.feed_showRead = try container.decodeIfPresent(Bool.self, forKey: .feed_showRead) ?? true
-        self.inbox_badge_includeApplications = try container.decodeIfPresent(Bool.self, forKey: .inbox_badge_includeApplications) ?? true
-        self.inbox_badge_includeMessageReports = try container.decodeIfPresent(Bool.self, forKey: .inbox_badge_includeMessageReports) ?? true
-        self.inbox_badge_includeMod = try container.decodeIfPresent(Bool.self, forKey: .inbox_badge_includeMod) ?? true
-        self.inbox_badge_includePersonal = try container.decodeIfPresent(Bool.self, forKey: .inbox_badge_includePersonal) ?? true
+        
+        if let tab_inbox_badgeIncludedTypes = try container.decodeIfPresent(Set<InboxItemType>.self, forKey: .tab_inbox_badgeIncludedTypes) {
+            self.tab_inbox_badgeIncludedTypes = tab_inbox_badgeIncludedTypes
+        } else {
+            let inbox_badge_includeApplications: Bool? = try container.decodeIfPresent(Bool.self, forKey: .inbox_badge_includeApplications)
+            let inbox_badge_includeMessageReports: Bool? = try container.decodeIfPresent(Bool.self, forKey: .inbox_badge_includeMessageReports)
+            let inbox_badge_includeMod: Bool? = try container.decodeIfPresent(Bool.self, forKey: .inbox_badge_includeMod)
+            let inbox_badge_includePersonal: Bool? = try container.decodeIfPresent(Bool.self, forKey: .inbox_badge_includePersonal)
+            var includedTypes: Set<InboxItemType> = []
+            if inbox_badge_includePersonal ?? true {
+                includedTypes.formUnion([.reply, .mention, .message])
+            }
+            if inbox_badge_includeMod ?? true {
+                includedTypes.formUnion([.postReport, .commentReport])
+            }
+            if inbox_badge_includeMessageReports ?? true {
+                includedTypes.formUnion([.messageReport])
+            }
+            if inbox_badge_includeApplications ?? true {
+                includedTypes.insert(.registrationApplication)
+            }
+            self.tab_inbox_badgeIncludedTypes = includedTypes
+        }
         self.inbox_showRead = try container.decodeIfPresent(Bool.self, forKey: .inbox_showRead) ?? true
         self.links_displayMode = try container.decodeIfPresent(String.self, forKey: .links_displayMode) ?? "contextual"
         self.links_openInBrowser = try container.decodeIfPresent(Bool.self, forKey: .links_openInBrowser) ?? false
@@ -209,10 +231,6 @@ struct CodableSettings: Codable {
         self.feed_default = settings.defaultFeed
         self.feed_markReadOnScroll = settings.markReadOnScroll
         self.feed_showRead = settings.showReadInFeed
-        self.inbox_badge_includeApplications = true
-        self.inbox_badge_includeMessageReports = true
-        self.inbox_badge_includeMod = true
-        self.inbox_badge_includePersonal = true
         self.inbox_showRead = settings.showReadInInbox
         self.links_displayMode = "contextual"
         self.links_openInBrowser = settings.openLinksInBrowser
@@ -239,6 +257,7 @@ struct CodableSettings: Codable {
         self.tab_gestures_enableSwipeUp = true
         self.tab_profile_labelType = settings.tabProfileLabelType
         self.tab_profile_showAvatar = settings.tabProfileShowAvatar
+        self.tab_inbox_badgeIncludedTypes = settings.tabInboxBadgeIncludedTypes
         self.tab_showNames = true
         self.person_showAvatar = settings.showPersonAvatar
         self.person_showInstance = true
