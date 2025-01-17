@@ -8,7 +8,7 @@
 import Foundation
 import MlemMiddleware
 import SwiftUI
-import _QuickLook_SwiftUI // https://github.com/swiftlang/swift/issues/73048
+import QuickLook
 
 struct ThumbnailImageView: View {
     @Environment(Palette.self) var palette
