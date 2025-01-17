@@ -51,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mlemgroup/MlemMiddleware",
       "state" : {
-        "revision" : "db3db540a5df7ae8b002fe9abd0ef10118a20f92",
-        "version" : "0.65.0"
+        "branch" : "sjmarf/moderator-unread-count",
+        "revision" : "77fb55d450ce6bc35a757eeea4bda38a3d5a7b55"
       }
     },
     {

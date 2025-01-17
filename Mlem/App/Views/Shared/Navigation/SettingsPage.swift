@@ -16,6 +16,7 @@ enum SettingsPage: Hashable {
     case importExportSettings
     case theme, icon
     case post, comment, inbox, subscriptionList, tabBar
+    case inboxBadge
     case about, advanced, developer, errorLog
     case postInteractionBar, commentInteractionBar, replyInteractionBar
     case moderation
@@ -83,6 +84,8 @@ enum SettingsPage: Hashable {
             SubscriptionListSettingsView()
         case .tabBar:
             TabBarSettingsView()
+        case .inboxBadge:
+            InboxBadgeSettingsView()
         case .postInteractionBar:
             InteractionBarEditorView(setting: \.postInteractionBar)
         case .commentInteractionBar:

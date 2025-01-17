@@ -116,7 +116,7 @@ struct FeedsView: View {
                 Task {
                     if !FeedSelection.cases(for: appState.firstAccount.accountType).contains(feedSelection) {
                         try await postFeedLoader?.changeSortType(to: appState.initialFeedSortType)
-                        let newFeedSelection: FeedSelection = appState.firstAccount.accountType == .user ? .subscribed : .all
+                        let newFeedSelection: FeedSelection = appState.firstAccount.accountType == .guest ? .all : .subscribed
                         if newFeedSelection != feedSelection {
                             await postFeedLoader?.changeApi(to: appState.firstApi, context: filtersTracker.filterContext)
                         }

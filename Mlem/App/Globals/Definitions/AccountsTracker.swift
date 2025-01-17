@@ -148,4 +148,8 @@ class AccountsTracker {
             }
         }
     }
+    
+    var highestLevelAccountType: AccountType {
+        userAccounts.lazy.map(\.accountType).max() ?? .guest
+    }
 }
