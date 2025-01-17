@@ -31,7 +31,7 @@ struct ImageViewer: View {
     
     var body: some View {
         ZoomableContainer(isZoomed: $isZoomed) {
-            DynamicMediaView(url: url, cornerRadius: 0, playImmediately: true)
+            MediaView(url: url, enableContextMenu: true, playImmediately: true)
         }
         .offset(y: offset)
         .background(.black)

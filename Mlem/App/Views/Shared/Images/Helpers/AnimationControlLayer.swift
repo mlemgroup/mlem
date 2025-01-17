@@ -5,21 +5,40 @@
 //  Created by Eric Andrews on 2024-12-06.
 //
 
-import SwiftUICore
+import SwiftUI
+
+extension EnvironmentValues {
+    @Entry var blurred: Bool = false
+}
 
 private struct AnimationControlLayer: ViewModifier {
+    @Environment(\.blurred) var blurred
+    
     @Binding var animating: Bool
     var muted: Binding<Bool>?
     
+    // decouple controls state from blurred because the blur animation and material/ProgressView don't get along
+    @State var showControls: Bool = true
+    
+    init(animating: Binding<Bool>, muted: Binding<Bool>?) {
+        self._animating = animating
+        self.muted = muted
+    }
+    
     func body(content: Content) -> some View {
         content
+            .background {
+                if showControls {
+                    ProgressView()
+                }
+            }
             .overlay {
                 if animating {
                     Color.clear.contentShape(.rect)
                         .onTapGesture {
                             animating = false
                         }
-                } else {
+                } else if showControls {
                     PlayButton(postSize: .large)
                         .onTapGesture {
                             animating = true
@@ -41,6 +60,14 @@ private struct AnimationControlLayer: ViewModifier {
                         .onTapGesture {
                             muted.wrappedValue = !muted.wrappedValue
                         }
+                }
+            }
+            .onChange(of: blurred, initial: true) {
+                if blurred {
+                    showControls = false
+                } else {
+                    animating = true
+                    showControls = true
                 }
             }
     }

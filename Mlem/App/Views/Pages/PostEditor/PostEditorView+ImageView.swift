@@ -49,21 +49,22 @@ extension PostEditorView {
     
     @ViewBuilder
     private func uploadedImageView(url: URL, onRemove: @escaping () -> Void = {}) -> some View {
-        DynamicMediaView(url: url, actionsEnabled: false)
-            .overlay(alignment: .topTrailing) {
-                Button("Remove", systemImage: Icons.closeCircleFill) {
-                    onRemove()
-                    self.imageManager = nil
-                    self.imageUrl = nil
-                }
-                .symbolRenderingMode(.palette)
-                .foregroundStyle(.secondary, .thinMaterial)
-                .font(.title)
-                .labelStyle(.iconOnly)
-                .padding()
+        MediaView(
+            url: url,
+            verticalAspectRatioBounds: .init(width: 4, height: 5),
+            cornerRadius: Constants.main.mediumItemCornerRadius)
+        .overlay(alignment: .topTrailing) {
+            Button("Remove", systemImage: Icons.closeCircleFill) {
+                onRemove()
+                self.imageManager = nil
+                self.imageUrl = nil
             }
-            .aspectRatio(CGSize(width: 1, height: 1.2), contentMode: .fill)
-            .frame(maxWidth: .infinity)
+            .symbolRenderingMode(.palette)
+            .foregroundStyle(.secondary, .thinMaterial)
+            .font(.title)
+            .labelStyle(.iconOnly)
+            .padding()
+        }
     }
     
     @ViewBuilder
